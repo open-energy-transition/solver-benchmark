@@ -1,0 +1,10 @@
+Solver Name,Solver Version,Benchmark Name,Benchmark Size,Runtime (mean),Runtime (stddev),Memory (mean),Memory (stddev),Cores,Feasibility,Objective Value
+Solver A,v1.2.3,Benchmark 1,Small,0.45,0.02,256,16,4,TRUE,12.5
+Solver B,v1.2.3,Benchmark 2,Medium,0.78,0.04,512,32,8,TRUE,18.2
+Solver C,v1.2.3,Benchmark 3,Large,1.12,0.07,1024,64,12,TRUE,24.3
+Solver D,v2.0.1,Benchmark 1,Small,0.52,0.03,384,24,6,TRUE,13.8
+Solver E,v2.0.1,Benchmark 2,Medium,0.92,0.05,768,48,10,TRUE,20.1
+Solver F,v2.0.1,Benchmark 3,Large,1.28,0.09,1536,96,14,TRUE,26.4
+Solver G,v1.5.2,Benchmark 1,Small,0.62,0.03,512,32,8,TRUE,15.2
+Solver H,v1.5.2,Benchmark 2,Medium,1.05,0.06,1024,64,12,TRUE,22.3
+Solver I,v1.5.2,Benchmark 3,Large,1.42,0.11,2048,128,16,TRUE,28.7
