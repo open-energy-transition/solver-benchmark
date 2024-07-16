@@ -1,9 +1,9 @@
 # Collecting PyPSA Benchmarks
 
-Here are some (subject-to-change) instructions on how to collect benchmarks from PyPSA as NC files:
+Here are some (subject-to-change) instructions on how to collect benchmarks from PyPSA-Eur as NC files:
 
-First, follow the instructions from the [PyPSA docs](https://pypsa-eur.readthedocs.io/en/latest/installation.html) on how to install PyPSA.
-We recommend using [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html) to install the dependencies of PyPSA.
+First, follow the instructions from the [PyPSA-Eur docs](https://pypsa-eur.readthedocs.io/en/latest/installation.html) on how to install PyPSA-Eur.
+We recommend using [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html) to install the dependencies of PyPSA-Eur.
 
 In order to generate an NC file instead of solving the model directly, we need to use the `oetc` branch of OET's fork of `linopy`. Install it in the conda environment as follows:
 ```bash
@@ -14,7 +14,17 @@ git checkout 7777506  # This is the commit containing the code to dump NC files
 pip install -e . --no-deps
 ```
 
-To collect an NC file from, for example, the [Tutorial](https://pypsa-eur.readthedocs.io/en/latest/tutorial.html) run of PyPSA:
+To collect an NC file from, for example, the [Tutorial](https://pypsa-eur.readthedocs.io/en/latest/tutorial.html) run of PyPSA-Eur, first modify the relevant section of the config file `config/test/config.electricity.yaml` to look like:
+```yaml
+solving:
+  solver:
+    name: glpk
+    options: "glpk-oetc"
+  solver_options:
+    glpk-oetc:
+      remote: "oet-cloud"
+```
+Then, start the run:
 ```bash
 cd /path/to/pypsa-eur/
 micromamba activate pypsa-eur
