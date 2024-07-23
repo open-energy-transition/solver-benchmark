@@ -80,7 +80,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-data_url = "./solvers.csv"
+data_url = "./pocs/solvers.csv"
 
 df = pd.read_csv(data_url)
 

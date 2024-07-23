@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-data_url = "./solvers.csv"
+data_url = "./pocs/solvers.csv"
 
 df = pd.read_csv(data_url)
 
