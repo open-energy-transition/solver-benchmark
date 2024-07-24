@@ -14,24 +14,24 @@ Preferred use:
       ```shell
       python -m venv venv
       ```  
-   2. Install 
+   2. Open terminal
+      - Windows
+         ```shell
+         .\venv\Scripts\activate
+         ```
+      - Linux/Macos
+         ```shell
+         source venv/bin/activate
+         ```
+   3. Install 
       ```shell
       pip install streamlit
       pip install streamlit_shadcn_ui
-      pip install dash
-      pip install pandas
-      ```
-   3. Open terminal
-      ```shell
-      .\venv\Scripts\activate
+      pip install streamlit-aggrid
       ```
    4. Run project
-      - streamlit
          ```shell
          streamlit run pocs\streamlit\app.py
          ```
-      - plotly/dash
-         ```shell
-         py pocs\dash\app.py
-         ```
-The streamlit app will be running on the host: [http://localhost:8501](http://localhost:8501) and the dash app will be running on the host: [http://localhost:8050](http://localhost:8050)
+      
+The app will be running on the host: [http://localhost:8501](http://localhost:8501)
