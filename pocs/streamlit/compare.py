@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from components.CompareChart import create_comparison_chart
 
 data_url = "./pocs/solvers.csv"
 
@@ -21,10 +22,7 @@ if st.button("Compare Solvers"):
     solver2_data = df[df["Solver Name"] == solver2]
 
     # Create the scatter plot
-    fig, ax = plt.subplots(figsize=(8, 8))
-    ax.scatter(solver1_data["Runtime (mean)"], solver2_data["Runtime (mean)"])
-    ax.set_xlabel(f"{solver1} Runtime (mean)")
-    ax.set_ylabel(f"{solver2} Runtime (mean)")
-    ax.set_title(f"Comparison of {solver1} and {solver2} Runtimes")
+    fig = create_comparison_chart(solver1_data, solver2_data, solver1, solver2)
 
-    st.pyplot(fig)
+
+    st.pyplot(fig)  
