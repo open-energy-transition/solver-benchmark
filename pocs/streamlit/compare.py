@@ -4,6 +4,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 from components.CompareChart import create_comparison_chart
 
+# Custom CSS
+st.markdown(
+    """
+    <style>
+    .stButton {
+        text-align: right;
+    }
+    .stButton>button {        
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 data_url = "./pocs/solvers.csv"
 
 df = pd.read_csv(data_url)

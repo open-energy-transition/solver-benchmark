@@ -24,11 +24,34 @@ def BenchmarkTable():
 
         style_table={
             'height': 400,
+            'overflowY': 'auto',  # Added vertical scroll
         },
         style_data={
             'width': '150px', 'minWidth': '150px', 'maxWidth': '150px',
             'overflow': 'hidden',
             'textOverflow': 'ellipsis',
-            'textAlign': 'left'
-        }
+            'textAlign': 'left',
+            'backgroundColor': '#f9f9f9',  # Light background for data cells
+            'color': '#333',  # Dark text color
+        },
+        style_header={
+            'backgroundColor': '#4CAF50',  # Green header background
+            'fontWeight': 'bold',
+            'color': 'white',  # White text color
+            'textAlign': 'center',
+        },
+        style_cell={
+            'padding': '5px',  # Padding for cells
+        },
+        style_data_conditional=[
+            {
+                'if': {'row_index': 'odd'},
+                'backgroundColor': '#f2f2f2'  # Light grey background for odd rows
+            },
+            {
+                'if': {'column_id': 'Runtime (mean)'},
+                'color': 'red',  # Red text for Runtime (mean) column
+                'fontWeight': 'bold'
+            }
+        ]
     )
