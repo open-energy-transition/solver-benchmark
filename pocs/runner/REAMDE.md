@@ -1,28 +1,30 @@
-Here is a list of pypsa networks
+# Measure Benchmark Runtime and Memory Consumption
 
+## Run Project
 
- - model-energy-default.nc, simple power system model retrieved from [model.energy](https://model.energy/) with default parameters
- - model-energy-products.nc, simple energy model with hydrogen production retrieved from [model.energy/products](https://model.energy/products)  
- - pypsa-eur-tutorial.nc, a small tutorial network of the European electricity system from the [PyPSA-Eur repository](https://github.com/PyPSA/PyPSA-Eur)
+1. **Create Virtual Environment**
+   ```shell
+   python -m venv venv
+   ```
 
+2. **Activate Virtual Environment**
+   - **Windows**
+     ```shell
+     .\venv\Scripts\activate
+     ```
+   - **Linux/MacOS**
+     ```shell
+     source venv/bin/activate
+     ```
 
- To create lp files from the networks, run the following python code:
- ```python
-import pypsa
-from pathlib import Path
-n = pypsa.Network("model-energy-electricity.nc")
-n.optimize.create_model()
-n.model.to_file(Path("model-energy-electricity.lp"))
- ```
+3. **Install Dependencies**
+   ```shell
+   pip install -r requirements.txt
+   ```
 
-to write out linopy netcdf files, run the following python code:
-```python
-n.model.to_netcdf("model-energy-default-linopy.nc")
-```
+4. **Run Project**
+   ```shell
+   python pocs/runner/app.py
+   ```
 
-
-to run the optimization, run the following command:
-```python
-n.optimize()
-```
-
+The app will save the runtime and memory consumption into a CSV file.

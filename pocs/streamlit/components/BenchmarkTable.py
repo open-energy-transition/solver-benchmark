@@ -9,7 +9,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     
     # Add styling options
     gb.configure_grid_options(domLayout='autoHeight')
-    gb.configure_pagination(paginationAutoPageSize=True)
+    gb.configure_pagination(paginationAutoPageSize=False, paginationPageSize=10)
     gb.configure_side_bar()
     gb.configure_default_column(
         resizable=True,
@@ -27,7 +27,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         update_mode=GridUpdateMode.SELECTION_CHANGED | GridUpdateMode.FILTERING_CHANGED,
         fit_columns_on_grid_load=True,
         enable_enterprise_modules=True,
-        theme='alpine',  # You can choose from 'streamlit', 'light', 'dark', 'blue', 'fresh', 'material'
+        theme='alpine',
     )
 
     filtered_df = pd.DataFrame(grid_response['data'])

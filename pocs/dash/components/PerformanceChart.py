@@ -4,15 +4,15 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
 
-data_url = "./pocs/solvers.csv"
+data_url = "./pocs/benchmark_results.csv"
 df = pd.read_csv(data_url)
 
 def PerformanceChart():
     return html.Div([
         dcc.Dropdown(
             id='history-solver-dropdown',
-            options=[{'label': solver, 'value': solver} for solver in df["Solver Name"].unique()],
-            value=df["Solver Name"].unique()[0],
+            options=[{'label': solver, 'value': solver} for solver in df["Solver"].unique()],
+            value=df["Solver"].unique()[0],
             style={
                 'marginBottom': '10px',
                 'fontSize': '16px'
@@ -28,13 +28,16 @@ def PerformanceChart():
     Input('history-solver-dropdown', 'value')
 )
 def update_history_graph(solver):
-    solver_data = df[df["Solver Name"] == solver]
+    solver_data = df[df["Solver"] == solver]
+    
+    # Calculate average runtime for each benchmark
+    avg_solver_data = solver_data.groupby("Benchmark", as_index=False)["Runtime (s)"].mean()
 
     fig = px.line(
-        solver_data,
-        x="Solver Version",
-        y="Runtime (mean)",
-        labels={'Solver Version': 'Solver Version', 'Runtime (mean)': 'Runtime (mean)'},
+        avg_solver_data,
+        x="Benchmark",
+        y="Runtime (s)",
+        labels={'Benchmark': 'Benchmark', 'Runtime (s)': 'Runtime (s)'},
         title=f'Solver Runtime History',
         template='plotly_white',  # Custom color
     )
@@ -47,8 +50,8 @@ def update_history_graph(solver):
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title='Solver Version',
-        yaxis_title='Runtime (mean)',
+        xaxis_title='Benchmark',
+        yaxis_title='Runtime (s)',
         font=dict(
             family="Courier New, monospace",
             size=12,

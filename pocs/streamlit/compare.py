@@ -29,22 +29,22 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-data_url = "./pocs/solvers.csv"
+data_url = "./pocs/benchmark_results.csv"
 
 df = pd.read_csv(data_url)
 
 st.title("Compare Solvers")
 
 # Dropdown to select Solver 1
-solver1 = st.selectbox("Select Solver 1", df["Solver Name"].unique())
+solver1 = st.selectbox("Select Solver 1", df["Solver"].unique())
 
 # Dropdown to select Solver 2
-solver2 = st.selectbox("Select Solver 2", df["Solver Name"].unique())
+solver2 = st.selectbox("Select Solver 2", df["Solver"].unique())
 
 if st.button("Compare Solvers"):
     # Filter data for the selected solvers
-    solver1_data = df[df["Solver Name"] == solver1]
-    solver2_data = df[df["Solver Name"] == solver2]
+    solver1_data = df[df["Solver"] == solver1]
+    solver2_data = df[df["Solver"] == solver2]
 
     # Create the scatter plot
     fig = create_comparison_chart(solver1_data, solver2_data, solver1, solver2)

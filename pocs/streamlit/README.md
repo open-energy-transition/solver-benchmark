@@ -25,9 +25,7 @@ Preferred use:
          ```
    3. Install 
       ```shell
-      pip install streamlit
-      pip install streamlit_shadcn_ui
-      pip install streamlit-aggrid
+      pip install -r requirements.txt
       ```
    4. Run project
          ```shell

@@ -16,7 +16,7 @@ st.markdown(
 
 st.title("Benchmarks")
 
-data_url = "./pocs/solvers.csv"
+data_url = "./pocs/benchmark_results.csv"
 
 df = pd.read_csv(data_url)
 
