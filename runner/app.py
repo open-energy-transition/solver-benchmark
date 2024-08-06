@@ -3,6 +3,7 @@ import tracemalloc
 import linopy
 import csv
 import pypsa
+import statistics
 
 
 def prepare_model(file_path):
@@ -43,35 +44,75 @@ def benchmark_solver(m, solver_name, iterations=10):
         # Record memory usage
         memory_usages.append(peak / 10**6)  # Convert to MB    
 
-    return runtimes, memory_usages
+    # Calculate mean and standard deviation
+    runtime_mean, runtime_stddev, memory_mean, memory_stddev = None, None, None, None
+    if iterations >= 10:
+        runtime_mean = statistics.mean(runtimes)
+        runtime_stddev = statistics.stdev(runtimes)
+        memory_mean = statistics.mean(memory_usages)
+        memory_stddev = statistics.stdev(memory_usages)
+
+    return runtimes, memory_usages, runtime_mean, runtime_stddev, memory_mean, memory_stddev
 
 
 def main(benchmark_files, solvers):
     results = {}
+    meanStdResults = {}
 
     for file_path in benchmark_files:
         # Prepare the model once for each file
         m = prepare_model(file_path)
 
         for solver in solvers:
-            runtimes, memory_usages = benchmark_solver(m, solver)
+            runtimes, memory_usages, runtime_mean, runtime_stddev, memory_mean, memory_stddev = benchmark_solver(m, solver)
             results[(file_path, solver)] = {
                 'runtimes': runtimes,
                 'memory_usages': memory_usages,
             }
-
-    return results
+            meanStdResults[(file_path, solver)] = {
+                'runtime_mean': [runtime_mean],
+                'runtime_stddev': [runtime_stddev],
+                'memory_mean': [memory_mean],
+                'memory_stddev': [memory_stddev],
+            }
+    return results, meanStdResults
 
 
 def write_results_to_csv(results, output_file):
     with open(output_file, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Benchmark', 'Solver', 'Runtime (s)', 'Memory Usage (MB)', 'Runtime Mean (s)', 'Runtime StdDev (s)', 'Memory Mean (MB)', 'Memory StdDev (MB)'])
+        writer.writerow(['Benchmark', 'Solver', 'Runtime (s)', 'Memory Usage (MB)'])
 
         for (file_path, solver), metrics in results.items():
-            writer.writerow([file_path, solver, metrics['runtime_mean'], metrics['memory_mean'], metrics['runtime_stddev'], metrics['memory_stddev']])
             for runtime, memory_usage in zip(metrics['runtimes'], metrics['memory_usages']):
                 writer.writerow([file_path, solver, runtime, memory_usage])
+
+
+def write_mean_stddev_results_to_csv(results, output_file):
+    with open(output_file, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([
+            'Benchmark',
+            'Solver',
+            'Runtime Mean (s)',
+            'Runtime StdDev (s)',
+            'Memory Mean (MB)',
+            'Memory StdDev (MB)',
+            ])
+
+        for (file_path, solver), metrics in results.items():
+            for runtime_mean, runtime_stddev, memory_mean, memory_stddev in zip(
+                metrics['runtime_mean'],
+                metrics['runtime_stddev'],
+                metrics['memory_mean'],
+                metrics['memory_stddev'],
+            ):
+                writer.writerow([
+                    file_path,
+                    solver,
+                    runtime_mean,
+                    runtime_stddev,
+                    memory_mean, memory_stddev])
 
 if __name__ == "__main__":
     benchmark_files = [
@@ -81,5 +122,9 @@ if __name__ == "__main__":
     ]
     solvers = ['highs', 'glpk']
 
-    results = main(benchmark_files, solvers)
+    results, meanStdResults = main(benchmark_files, solvers)
     write_results_to_csv(results, 'pocs/benchmark_results.csv')
+    write_mean_stddev_results_to_csv(
+        meanStdResults,
+        "pocs/benchmark_results_mean_stddev.csv",
+        )
