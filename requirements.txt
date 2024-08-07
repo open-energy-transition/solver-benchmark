@@ -8,3 +8,4 @@ pypsa
 linopy
 highspy
 pyomo
+memory_profiler

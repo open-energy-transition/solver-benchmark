@@ -4,6 +4,8 @@ import linopy
 import csv
 import pypsa
 import statistics
+import os
+from _benchmark import memory_logger
 
 
 def prepare_model(file_path):
@@ -19,14 +21,25 @@ def prepare_model(file_path):
     # Load the linopy model
     m = linopy.read_netcdf(linopy_model_path)
 
-    return m
+    # Get the model size (bytes)
+    model_size = os.path.getsize(linopy_model_path)
+    # Convert model size to MB
+    model_size_mb = model_size / (1024 * 1024)
+
+    return m, model_size_mb
 
 
 def benchmark_solver(m, solver_name, iterations=10):
     runtimes = []
     memory_usages = []
+    max_mem_usages = []
 
     for _ in range(iterations):
+        with memory_logger(max_usage=True) as mem:
+            m.solve(solver_name=solver_name)  # Solve the model to measure memory
+        max_mem, timestamp = mem.mem_usage
+        max_mem_usages.append(max_mem)
+
         # Measure runtime
         start_time = time.time()
         m.solve(solver_name=solver_name)
@@ -35,47 +48,71 @@ def benchmark_solver(m, solver_name, iterations=10):
         # Record runtime
         runtimes.append(end_time - start_time)
 
-        # Measure memory usage
+        # Measure memory usage by tracemalloc
         tracemalloc.start()
         m.solve(solver_name=solver_name)  # Run again for memory measurement
         current, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
-
         # Record memory usage
-        memory_usages.append(peak / 10**6)  # Convert to MB    
+        memory_usages.append(peak / 10**6)  # Convert to MB
+
+        # Measure memory usage by tracemalloc memory_logger
+        with memory_logger(max_usage=True) as mem:
+            m.solve(solver_name=solver_name)  # Solve the model to measure memory
+        max_mem, timestamp = mem.mem_usage
+        max_mem_usages.append(max_mem)
 
     # Calculate mean and standard deviation
-    runtime_mean, runtime_stddev, memory_mean, memory_stddev = None, None, None, None
+    runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
     if iterations >= 10:
         runtime_mean = statistics.mean(runtimes)
         runtime_stddev = statistics.stdev(runtimes)
         memory_mean = statistics.mean(memory_usages)
         memory_stddev = statistics.stdev(memory_usages)
 
-    return runtimes, memory_usages, runtime_mean, runtime_stddev, memory_mean, memory_stddev
+    results = {
+        'runtimes': runtimes,
+        'memory_usages': memory_usages,
+        'runtime_mean': runtime_mean,
+        'runtime_stddev': runtime_stddev,
+        'memory_mean': memory_mean,
+        'memory_stddev': memory_stddev,
+        'max_mem_usages': max_mem_usages
+    }
+    return results
 
 
 def main(benchmark_files, solvers):
     results = {}
-    meanStdResults = {}
+    r_mean_std = {}
 
     for file_path in benchmark_files:
         # Prepare the model once for each file
-        m = prepare_model(file_path)
+        m, model_size = prepare_model(file_path)
 
         for solver in solvers:
-            runtimes, memory_usages, runtime_mean, runtime_stddev, memory_mean, memory_stddev = benchmark_solver(m, solver)
+            benchmark_result = benchmark_solver(m, solver)
+            runtimes = benchmark_result['runtimes']
+            memory_usages = benchmark_result['memory_usages']
+            runtime_mean = benchmark_result['runtime_mean']
+            runtime_stddev = benchmark_result['runtime_stddev']
+            memory_mean = benchmark_result['memory_mean']
+            memory_stddev = benchmark_result['memory_stddev']
+            max_mem_usages = benchmark_result['max_mem_usages']
+
             results[(file_path, solver)] = {
                 'runtimes': runtimes,
                 'memory_usages': memory_usages,
+                'max_mem_usages': max_mem_usages,
+                'model_size': [model_size],
             }
-            meanStdResults[(file_path, solver)] = {
+            r_mean_std[(file_path, solver)] = {
                 'runtime_mean': [runtime_mean],
                 'runtime_stddev': [runtime_stddev],
                 'memory_mean': [memory_mean],
                 'memory_stddev': [memory_stddev],
             }
-    return results, meanStdResults
+    return results, r_mean_std
 
 
 def write_results_to_csv(results, output_file):
@@ -114,6 +151,35 @@ def write_mean_stddev_results_to_csv(results, output_file):
                     runtime_stddev,
                     memory_mean, memory_stddev])
 
+
+def write_benchmark_to_csv(results, output_file):
+    with open(output_file, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([
+            'Benchmark',
+            'Solver',
+            'Runtime (s)',
+            'Memory Usage (MB)',
+            'Max Memory Usage (MB)',
+            'Model Size (MB)',
+            ])
+
+        for (file_path, solver), metrics in results.items():
+            for runtime, memory_usage, max_mem, model_size in zip(
+                metrics['runtimes'],
+                metrics['memory_usages'],
+                metrics['max_mem_usages'],
+                metrics['model_size'],
+            ):
+                writer.writerow([
+                    file_path,
+                    solver,
+                    runtime,
+                    memory_usage,
+                    max_mem,
+                    model_size,
+                    ])
+
 if __name__ == "__main__":
     benchmark_files = [
         'model-energy-electricity.nc',
@@ -122,9 +188,10 @@ if __name__ == "__main__":
     ]
     solvers = ['highs', 'glpk']
 
-    results, meanStdResults = main(benchmark_files, solvers)
+    results, r_mean_std = main(benchmark_files, solvers)
     write_results_to_csv(results, 'pocs/benchmark_results.csv')
     write_mean_stddev_results_to_csv(
-        meanStdResults,
+        r_mean_std,
         "pocs/benchmark_results_mean_stddev.csv",
         )
+    write_benchmark_to_csv(results, 'pocs/benchmark.csv')
