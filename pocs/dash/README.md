@@ -25,8 +25,7 @@ Preferred use:
          ```
    3. Install 
       ```shell
-      pip install dash
-      pip install pandas
+      pip install -r requirements.txt
       ```
    4. Run project
          ```shell

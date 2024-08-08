@@ -1,0 +1,11 @@
+dash
+pandas
+streamlit
+streamlit_shadcn_ui
+streamlit-aggrid
+ipython
+pypsa
+linopy
+highspy
+pyomo
+memory_profiler
