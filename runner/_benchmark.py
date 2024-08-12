@@ -158,7 +158,6 @@ class memory_logger(object):
 
     def __enter__(self):
         backend = choose_backend()
-        print(f"The chosen backend is: {backend}")
         self.child_conn, self.parent_conn = Pipe()  # this will store MemTimer's results
         self.p = MemTimer(
             os.getpid(),
