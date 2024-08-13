@@ -1,21 +1,5 @@
-Benchmark,Solver,Runtime (s),Memory Usage (MB)
-model-energy-electricity.nc,highs,15.055613279342651,23.749898
-model-energy-electricity.nc,highs,14.702615022659302,23.745884
-model-energy-electricity.nc,highs,14.509567022323608,23.740618
-model-energy-electricity.nc,highs,14.402788162231445,23.759176
-model-energy-electricity.nc,highs,14.411752939224243,23.739124
-model-energy-electricity.nc,highs,14.508737087249756,23.739934
-model-energy-electricity.nc,highs,14.679950714111328,23.739331
-model-energy-electricity.nc,highs,14.738549947738647,23.750575
-model-energy-electricity.nc,highs,14.531761884689331,23.754133
-model-energy-electricity.nc,highs,14.741491794586182,23.739827
-model-energy-electricity.nc,glpk,39.63275480270386,72.111561
-model-energy-electricity.nc,glpk,39.29239201545715,69.639249
-model-energy-electricity.nc,glpk,39.13338088989258,72.111331
-model-energy-electricity.nc,glpk,39.7723069190979,72.1125
-model-energy-electricity.nc,glpk,40.441235065460205,69.640498
-model-energy-electricity.nc,glpk,40.34984612464905,72.111959
-model-energy-electricity.nc,glpk,41.51301717758179,72.114974
-model-energy-electricity.nc,glpk,40.03739881515503,69.645724
-model-energy-electricity.nc,glpk,53.58363485336304,72.10958
-model-energy-electricity.nc,glpk,45.6837842464447,72.112164
+Model Size,Solver,Runtime (s),Memory Usage (MB)
+10,highs,0.03242015838623047,0.190907
+10,glpk,0.06861710548400879,0.337837
+100,highs,0.26416826248168945,7.895186
+100,glpk,5.7954089641571045,23.738012

@@ -4,6 +4,7 @@ import linopy
 import csv
 import pypsa
 import statistics
+from _benchmark import memory_logger
 
 
 def prepare_model(file_path):
@@ -25,6 +26,7 @@ def prepare_model(file_path):
 def benchmark_solver(m, solver_name, iterations=10):
     runtimes = []
     memory_usages = []
+    max_mem_usages = []
 
     for _ in range(iterations):
         # Measure runtime
@@ -43,6 +45,12 @@ def benchmark_solver(m, solver_name, iterations=10):
         # Record memory usage
         memory_usages.append(peak / 10**6)  # Convert to MB
 
+        # Measure memory usage by tracemalloc memory_logger
+        with memory_logger(max_usage=True) as mem:
+            m.solve(solver_name=solver_name)  # Solve the model to measure memory
+        max_mem, timestamp = mem.mem_usage
+        max_mem_usages.append(max_mem)
+
     # Calculate mean and standard deviation
     runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
     if iterations >= 10:
@@ -58,6 +66,7 @@ def benchmark_solver(m, solver_name, iterations=10):
         'runtime_stddev': runtime_stddev,
         'memory_mean': memory_mean,
         'memory_stddev': memory_stddev,
+        'max_mem_usages': max_mem_usages
     }
     return results
 
@@ -78,10 +87,12 @@ def main(benchmark_files, solvers):
             runtime_stddev = benchmark_result['runtime_stddev']
             memory_mean = benchmark_result['memory_mean']
             memory_stddev = benchmark_result['memory_stddev']
+            max_mem_usages = benchmark_result['max_mem_usages']
 
             results[(file_path, solver)] = {
                 'runtimes': runtimes,
                 'memory_usages': memory_usages,
+                'max_mem_usages': max_mem_usages,
             }
             r_mean_std[(file_path, solver)] = {
                 'runtime_mean': [runtime_mean],
@@ -129,6 +140,31 @@ def write_mean_stddev_results_to_csv(results, output_file):
                     memory_mean, memory_stddev])
 
 
+def write_benchmark_to_csv(results, output_file):
+    with open(output_file, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([
+            'Benchmark',
+            'Solver',
+            'Runtime (s)',
+            'Tracemalloc test Memory Usage (MB)',
+            'PyPSA _benchmark test Memory Usage (MB)',
+            ])
+
+        for (file_path, solver), metrics in results.items():
+            for runtime, memory_usage, max_mem in zip(
+                metrics['runtimes'],
+                metrics['memory_usages'],
+                metrics['max_mem_usages'],
+            ):
+                writer.writerow([
+                    file_path,
+                    solver,
+                    runtime,
+                    memory_usage,
+                    max_mem,
+                    ])
+
 if __name__ == "__main__":
     benchmark_files = [
         'model-energy-electricity.nc',
@@ -143,3 +179,4 @@ if __name__ == "__main__":
         r_mean_std,
         "pocs/benchmark_results_mean_stddev.csv",
         )
+    write_benchmark_to_csv(results, 'pocs/benchmark.csv')

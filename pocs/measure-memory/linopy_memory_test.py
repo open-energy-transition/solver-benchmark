@@ -12,7 +12,7 @@ def prepare_model(n):
     return m
 
 
-def benchmark_solver(m, solver_name, iterations=2):
+def benchmark_solver(m, solver_name, iterations=10):
     runtimes = []
     memory_usages = []
 
@@ -120,12 +120,12 @@ def write_mean_stddev_results_to_csv(results, output_file):
 
 
 if __name__ == "__main__":
-    benchmark_sizes = [10, 100, 500, 1000]  # Vary this list as needed
+    benchmark_sizes = [10, 50, 100]
     solvers = ['highs', 'glpk']
 
     results, r_mean_std = main(benchmark_sizes, solvers)
-    write_results_to_csv(results, 'pocs/benchmark_results.csv')
+    write_results_to_csv(results, 'pocs/benchmark_linopy_memory_test_results.csv')
     write_mean_stddev_results_to_csv(
         r_mean_std,
-        "pocs/benchmark_results_mean_stddev.csv",
+        "pocs/benchmark_results_mean_stddev_linopy_memory_test.csv",
     )
