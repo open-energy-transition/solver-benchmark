@@ -2,7 +2,7 @@
 
 ## PyPSA-EUR-based sample problems
 - First, follow the traditional steps for PyPSA-EUR [installation](https://pypsa-eur.readthedocs.io/en/latest/installation.html).
-- Get the config files for the sample problems from ... and put them in <code>/pypsa-eur/config</code>
+- Get the config files for the sample problems from ... and put them in `/pypsa-eur/config`
 - Get the <code>solver_benchmark_pypsa_eur.py</code> and place it in the <code>/pypsa-eur</code> folder
 - In order to produce the .lp files, the line  <code>kwargs["keep_files"] = cf_solving.get("keep_files", True)</code> must be passed to <code>/pypsa-eur/scripts/solve_network.py</code> (can be added anywhere under <code>def solve_network(n, config, solving, **kwargs):</code> among the several **kwargs extra arguments
 - Run the solver_benchmark_pypsa_eur.py file: <code>python solver_benchmark_pypsa_eur.py</code>
