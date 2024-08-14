@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: : 2020-2024 The PyPSA-Eur Authors
 #
 # SPDX-License-Identifier: MIT
+# This file was taken from https://github.com/PyPSA/pypsa-eur/blob/16e2286188d25e40056296fa979c59564ae45887/scripts/_benchmark.py
 """
 
 """

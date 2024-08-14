@@ -4,7 +4,7 @@ import linopy
 import csv
 import pypsa
 import statistics
-from _benchmark import memory_logger
+from run_benchmarks import memory_logger
 
 
 def prepare_model(file_path):
@@ -148,7 +148,7 @@ def write_benchmark_to_csv(results, output_file):
             'Solver',
             'Runtime (s)',
             'Tracemalloc test Memory Usage (MB)',
-            'PyPSA _benchmark test Memory Usage (MB)',
+            'PyPSA run_benchmarks test Memory Usage (MB)',
             ])
 
         for (file_path, solver), metrics in results.items():
@@ -179,4 +179,4 @@ if __name__ == "__main__":
         r_mean_std,
         "pocs/benchmark_results_mean_stddev.csv",
         )
-    write_benchmark_to_csv(results, 'pocs/benchmark.csv')
+    write_benchmark_to_csv(results, 'pocs/pypsa_benchmark_test_result.csv')

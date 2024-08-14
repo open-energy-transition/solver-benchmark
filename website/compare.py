@@ -45,7 +45,6 @@ if st.button("Compare Solvers"):
     # Filter data for the selected solvers
     solver1_data = df[df["Solver"] == solver1]
     solver2_data = df[df["Solver"] == solver2]
-    print('solver1_data', solver1_data, 'solver2_data', solver2_data, 'solver1', solver1, 'solver2', solver2)
     # Create the scatter plot
     fig = create_comparison_chart(solver1_data, solver2_data, solver1, solver2)
 
