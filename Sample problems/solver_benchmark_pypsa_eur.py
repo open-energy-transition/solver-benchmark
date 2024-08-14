@@ -48,6 +48,7 @@ pathlib.Path(log_file_dir).mkdir(exist_ok=True)
 
 # Define paths
 pypsa_eur_path = pathlib.Path(base_path, "pypsa-eur")
+# TODO set this by a command line argument instead of hardcoding
 config_path = pathlib.Path(base_path, "config", "config_1.yaml")
 
 # Open log_output
