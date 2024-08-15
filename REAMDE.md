@@ -41,7 +41,7 @@ Preferred use:
 
 5. **Run benchmark runner**
    ```shell
-   python runner/app.py
+   python runner/run_benchmarks.py
    ```
 
 The app will save the runtime and memory consumption into a CSV file.

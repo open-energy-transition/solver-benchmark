@@ -1,5 +1,3 @@
-Model Size,Solver,Runtime (s),Memory Usage (MB)
-10,highs,0.03242015838623047,0.190907
-10,glpk,0.06861710548400879,0.337837
-100,highs,0.26416826248168945,7.895186
-100,glpk,5.7954089641571045,23.738012
+Benchmark,Solver,Runtime (s),Memory Usage (MB)
+model-energy-electricity.nc,highs,14.63230276107788,836.90625
+model-energy-electricity.nc,glpk,39.377609968185425,807.484375

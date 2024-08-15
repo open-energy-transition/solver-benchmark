@@ -24,5 +24,5 @@
 
 4. **Run Project**
    ```shell
-   python pocs/runner/app.py
+   python pocs/runner/run_benchmarks.py
    ```

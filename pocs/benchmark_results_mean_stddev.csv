@@ -1,5 +1,3 @@
-Model Size,Solver,Runtime Mean (s),Runtime StdDev (s),Memory Mean (MB),Memory StdDev (MB)
-10,highs,,,,
-10,glpk,,,,
-100,highs,,,,
-100,glpk,,,,
+Benchmark,Solver,Runtime Mean (s),Runtime StdDev (s),Memory Mean (MB),Memory StdDev (MB)
+model-energy-electricity.nc,highs,,,,
+model-energy-electricity.nc,glpk,,,,
