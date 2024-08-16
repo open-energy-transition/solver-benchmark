@@ -1,3 +1,3 @@
 Benchmark,Solver,Runtime Mean (s),Runtime StdDev (s),Memory Mean (MB),Memory StdDev (MB)
-model-energy-electricity.nc,highs,,,,
-model-energy-electricity.nc,glpk,,,,
+pypsa-eur-tutorial-linopy.nc,highs,1.557,0.06783149055645989,178.18359375,0.1679939822779293
+pypsa-eur-tutorial-linopy.nc,glpk,1.54,0.012472191289246483,175.620703125,0.16611082850290085

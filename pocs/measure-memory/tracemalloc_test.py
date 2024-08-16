@@ -10,11 +10,11 @@ import statistics
 def prepare_model(file_path):
     """Prepare the model outside the benchmarking loop."""
     # Load the pypsa network and create the optimization model
-    n = pypsa.Network('../../runner/' + file_path)
+    n = pypsa.Network(file_path)
     n.optimize.create_model()
 
     # Save the model to NetCDF
-    linopy_model_path = '../../runner/' + file_path.replace(".nc", "-linopy.nc")
+    linopy_model_path = file_path.replace(".nc", "-linopy.nc")
     n.model.to_netcdf(linopy_model_path)
 
     # Load the linopy model

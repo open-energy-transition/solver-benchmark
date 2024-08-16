@@ -1,11 +1,10 @@
-import time
-import linopy
-
+import subprocess
 import csv
 import statistics
 import requests
-from _benchmarks import memory_logger
 import os
+# local
+from utils import parse_time
 
 
 def download_file_from_google_drive(url, dest_path):
@@ -15,99 +14,89 @@ def download_file_from_google_drive(url, dest_path):
 
     with open(dest_path, 'wb') as f:
         f.write(response.content)
+    print(f"File downloaded and saved to: {dest_path}")
 
 
-def prepare_model(file_url):
-    """Prepare the model outside the benchmarking loop."""
-    # Download from file_url
-    local_file_path = 'runner/temporary.nc'
-    download_file_from_google_drive(file_url, local_file_path)
+def benchmark_solver(input_file, solver_name):
+    command = ['/usr/bin/time', '-v', 'python',
+               'runner/run_solver.py', solver_name, input_file]
+    # Run the command and capture the output
+    result = subprocess.run(command, capture_output=True, text=True)
 
-    # Load the Linopy model from the NetCDF file
-    m = linopy.read_netcdf(local_file_path)
+    # Parse the output for runtime and memory usage
+    output = result.stderr
+    runtime = None
+    memory_usage = None
+    for line in output.splitlines():
+        if "Elapsed (wall clock) time" in line:
+            runtime = parse_time(line.split()[-1])
+        if "Maximum resident set size" in line:
+            parts = line.strip().split()
+            max_resident_set_size = parts[-1]
+            memory_usage = float(max_resident_set_size) / 1024  # Convert to MB
 
-    # remove the temporary file
-    os.remove(local_file_path)
+    if runtime is None:
+        print("Runtime information not found in output.")
+    if memory_usage is None:
+        print("Memory usage information not found in output.")
 
-    return m
-
-
-def benchmark_solver(m, solver_name, iterations=10):
-    runtimes = []
-    memory_usages = []
-
-    for _ in range(iterations):
-        # Measure runtime
-        start_time = time.time()
-        m.solve(solver_name=solver_name)
-        end_time = time.time()
-
-        # Record runtime
-        runtimes.append(end_time - start_time)
-
-        # Measure memory usage by memory_logger
-        with memory_logger(max_usage=True) as mem:
-            m.solve(solver_name=solver_name)
-        max_mem, timestamp = mem.mem_usage
-        memory_usages.append(max_mem)
-
-    # Calculate mean and standard deviation
-    runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
-    if iterations >= 10:
-        runtime_mean = statistics.mean(runtimes)
-        runtime_stddev = statistics.stdev(runtimes)
-        memory_mean = statistics.mean(memory_usages)
-        memory_stddev = statistics.stdev(memory_usages)
-
-    results = {
-        'runtimes': runtimes,
-        'memory_usages': memory_usages,
-        'runtime_mean': runtime_mean,
-        'runtime_stddev': runtime_stddev,
-        'memory_mean': memory_mean,
-        'memory_stddev': memory_stddev,
-    }
-    return results
+    return runtime, memory_usage
 
 
-def main(benchmark_files_info, solvers):
+def main(benchmark_files_info, solvers, iterations=10):
     results = {}
     r_mean_std = {}
 
     for file_info in benchmark_files_info:
-        # Prepare the model once for each file
-        m = prepare_model(file_info['url'])
+        local_file_path = 'runner/temporary.nc'
+        print(f"Starting download {file_info['name']} from: {file_info['url']}")
+        download_file_from_google_drive(file_info['url'], local_file_path)
 
         for solver in solvers:
-            benchmark_result = benchmark_solver(m, solver)
-            runtimes = benchmark_result['runtimes']
-            memory_usages = benchmark_result['memory_usages']
-            runtime_mean = benchmark_result['runtime_mean']
-            runtime_stddev = benchmark_result['runtime_stddev']
-            memory_mean = benchmark_result['memory_mean']
-            memory_stddev = benchmark_result['memory_stddev']
+            runtimes = []
+            memory_usages = []
+
+            for i in range(iterations):
+                print(f"Running solver ({i}): {solver}")
+                runtime, memory_usage = benchmark_solver(
+                    local_file_path, solver)
+                runtimes.append(runtime)
+                memory_usages.append(memory_usage)
+            runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
+            # Calculate mean and standard deviation
+            if iterations >= 10:
+                runtime_mean = statistics.mean(runtimes)
+                runtime_stddev = statistics.stdev(runtimes)
+                memory_mean = statistics.mean(memory_usages)
+                memory_stddev = statistics.stdev(memory_usages)
 
             results[(file_info['name'], solver)] = {
                 'runtimes': runtimes,
                 'memory_usages': memory_usages,
             }
             r_mean_std[(file_info['name'], solver)] = {
-                'runtime_mean': [runtime_mean],
-                'runtime_stddev': [runtime_stddev],
-                'memory_mean': [memory_mean],
-                'memory_stddev': [memory_stddev],
+                'runtime_mean': runtime_mean,
+                'runtime_stddev': runtime_stddev,
+                'memory_mean': memory_mean,
+                'memory_stddev': memory_stddev,
             }
+
+        os.remove(local_file_path)
+
     return results, r_mean_std
 
 
 def write_results_to_csv(results, output_file):
     with open(output_file, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Benchmark', 'Solver', 'Runtime (s)', 'Memory Usage (MB)'])
+        writer.writerow(
+            ['Benchmark', 'Solver', 'Runtime (s)', 'Memory Usage (MB)'])
 
         for (file_path, solver), metrics in results.items():
             for runtime, memory_usage in zip(metrics['runtimes'], metrics['memory_usages']):
                 writer.writerow([file_path, solver, runtime, memory_usage])
+
+    print(f"Results successfully written to {output_file}.")
 
 
 def write_mean_stddev_results_to_csv(results, output_file):
@@ -123,18 +112,15 @@ def write_mean_stddev_results_to_csv(results, output_file):
         ])
 
         for (file_path, solver), metrics in results.items():
-            for runtime_mean, runtime_stddev, memory_mean, memory_stddev in zip(
+            writer.writerow([
+                file_path,
+                solver,
                 metrics['runtime_mean'],
                 metrics['runtime_stddev'],
                 metrics['memory_mean'],
-                metrics['memory_stddev'],
-            ):
-                writer.writerow([
-                    file_path,
-                    solver,
-                    runtime_mean,
-                    runtime_stddev,
-                    memory_mean, memory_stddev])
+                metrics['memory_stddev']
+            ])
+    print(f"Mean and standard deviation results successfully written to {output_file}.")
 
 
 if __name__ == "__main__":
@@ -160,3 +146,5 @@ if __name__ == "__main__":
         r_mean_std,
         "pocs/benchmark_results_mean_stddev.csv",
     )
+     # Print a message indicating completion
+    print("Benchmarking complete.")

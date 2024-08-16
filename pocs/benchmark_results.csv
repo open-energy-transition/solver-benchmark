@@ -1,3 +1,21 @@
 Benchmark,Solver,Runtime (s),Memory Usage (MB)
-model-energy-electricity.nc,highs,14.63230276107788,836.90625
-model-energy-electricity.nc,glpk,39.377609968185425,807.484375
+pypsa-eur-tutorial-linopy.nc,highs,1.69,177.96875
+pypsa-eur-tutorial-linopy.nc,highs,1.68,178.36328125
+pypsa-eur-tutorial-linopy.nc,highs,1.52,178.3515625
+pypsa-eur-tutorial-linopy.nc,highs,1.52,177.9375
+pypsa-eur-tutorial-linopy.nc,highs,1.51,178.1015625
+pypsa-eur-tutorial-linopy.nc,highs,1.53,178.36328125
+pypsa-eur-tutorial-linopy.nc,highs,1.53,178.2421875
+pypsa-eur-tutorial-linopy.nc,highs,1.53,178.08984375
+pypsa-eur-tutorial-linopy.nc,highs,1.53,178.078125
+pypsa-eur-tutorial-linopy.nc,highs,1.53,178.33984375
+pypsa-eur-tutorial-linopy.nc,glpk,1.53,175.45703125
+pypsa-eur-tutorial-linopy.nc,glpk,1.55,175.6953125
+pypsa-eur-tutorial-linopy.nc,glpk,1.55,175.44921875
+pypsa-eur-tutorial-linopy.nc,glpk,1.56,175.60546875
+pypsa-eur-tutorial-linopy.nc,glpk,1.54,175.70703125
+pypsa-eur-tutorial-linopy.nc,glpk,1.53,175.9375
+pypsa-eur-tutorial-linopy.nc,glpk,1.52,175.43359375
+pypsa-eur-tutorial-linopy.nc,glpk,1.55,175.5546875
+pypsa-eur-tutorial-linopy.nc,glpk,1.54,175.80859375
+pypsa-eur-tutorial-linopy.nc,glpk,1.53,175.55859375
