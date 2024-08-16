@@ -8,7 +8,7 @@
    # Record memory usage
    memory_usages.append(peak / 10**6)  # Convert to MB
 
-   # Measure memory usage by tracemalloc memory_logger
+   # Measure memory usage by memory_logger
    with memory_logger(max_usage=True) as mem:
       m.solve(solver_name=solver_name)  # Solve the model to measure memory
    max_mem, timestamp = mem.mem_usage
@@ -17,7 +17,7 @@
 
 1. **Run Test**
    ```shell
-   python pocs/measure-memory/pypsa_test.py
+   python pocs/measure-memory/tracemalloc_pypsa_test.py
    ```
 
 The result in **benchmark.csv** file
