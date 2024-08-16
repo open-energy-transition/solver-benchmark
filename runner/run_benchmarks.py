@@ -1,23 +1,33 @@
 import time
 import linopy
+
 import csv
-import pypsa
 import statistics
+import requests
 from _benchmarks import memory_logger
+import os
 
 
-def prepare_model(file_path):
+def download_file_from_google_drive(url, dest_path):
+    """Download a file from url and save it locally."""
+    response = requests.get(url)
+    response.raise_for_status()  # Check for request errors
+
+    with open(dest_path, 'wb') as f:
+        f.write(response.content)
+
+
+def prepare_model(file_url):
     """Prepare the model outside the benchmarking loop."""
-    # Load the pypsa network and create the optimization model
-    n = pypsa.Network('runner/' + file_path)
-    n.optimize.create_model()
+    # Download from file_url
+    local_file_path = 'runner/temporary.nc'
+    download_file_from_google_drive(file_url, local_file_path)
 
-    # Save the model to NetCDF
-    linopy_model_path = 'runner/' + file_path.replace(".nc", "-linopy.nc")
-    n.model.to_netcdf(linopy_model_path)
+    # Load the Linopy model from the NetCDF file
+    m = linopy.read_netcdf(local_file_path)
 
-    # Load the linopy model
-    m = linopy.read_netcdf(linopy_model_path)
+    # remove the temporary file
+    os.remove(local_file_path)
 
     return m
 
@@ -60,13 +70,13 @@ def benchmark_solver(m, solver_name, iterations=10):
     return results
 
 
-def main(benchmark_files, solvers):
+def main(benchmark_files_info, solvers):
     results = {}
     r_mean_std = {}
 
-    for file_path in benchmark_files:
+    for file_info in benchmark_files_info:
         # Prepare the model once for each file
-        m = prepare_model(file_path)
+        m = prepare_model(file_info['url'])
 
         for solver in solvers:
             benchmark_result = benchmark_solver(m, solver)
@@ -77,11 +87,11 @@ def main(benchmark_files, solvers):
             memory_mean = benchmark_result['memory_mean']
             memory_stddev = benchmark_result['memory_stddev']
 
-            results[(file_path, solver)] = {
+            results[(file_info['name'], solver)] = {
                 'runtimes': runtimes,
                 'memory_usages': memory_usages,
             }
-            r_mean_std[(file_path, solver)] = {
+            r_mean_std[(file_info['name'], solver)] = {
                 'runtime_mean': [runtime_mean],
                 'runtime_stddev': [runtime_stddev],
                 'memory_mean': [memory_mean],
@@ -110,7 +120,7 @@ def write_mean_stddev_results_to_csv(results, output_file):
             'Runtime StdDev (s)',
             'Memory Mean (MB)',
             'Memory StdDev (MB)',
-            ])
+        ])
 
         for (file_path, solver), metrics in results.items():
             for runtime_mean, runtime_stddev, memory_mean, memory_stddev in zip(
@@ -128,16 +138,25 @@ def write_mean_stddev_results_to_csv(results, output_file):
 
 
 if __name__ == "__main__":
-    benchmark_files = [
-        'model-energy-electricity.nc',
-        'model-energy-products.nc',
-        'pypsa-eur-tutorial.nc',
+    benchmark_files_info = [
+        {
+            'name': 'pypsa-eur-tutorial-linopy.nc',
+            'url': 'https://drive.usercontent.google.com/download?id=1JezcmnLBM3mLqfpZL1nduy--WmJLMiqm&export=download&authuser=0'
+        },
+        {
+            'name': 'model-energy-products-linopy.nc',
+            'url': 'https://drive.usercontent.google.com/download?id=1onnBdnIiJ5-V6-JQsKuRMeDzAmpiV1OM&export=download&authuser=0'
+        },
+        {
+            'name': 'model-energy-electricity-linopy.nc',
+            'url': 'https://drive.usercontent.google.com/download?id=18WeMK8PU9JHT3efQpo_SEMzIvM5Mij8b&export=download&authuser=0'
+        },
     ]
     solvers = ['highs', 'glpk']
 
-    results, r_mean_std = main(benchmark_files, solvers)
+    results, r_mean_std = main(benchmark_files_info, solvers)
     write_results_to_csv(results, 'pocs/benchmark_results.csv')
     write_mean_stddev_results_to_csv(
         r_mean_std,
         "pocs/benchmark_results_mean_stddev.csv",
-        )
+    )
