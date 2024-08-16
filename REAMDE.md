@@ -29,6 +29,7 @@ Preferred use:
 
 3. **Install Dependencies**
    ```shell
+   sudo apt install glpk-utils libglpk-dev  # GLPK solver cannot be installed purely with pip
    pip install -r requirements.txt
    ```
 
