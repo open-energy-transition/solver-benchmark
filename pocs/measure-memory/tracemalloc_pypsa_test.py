@@ -25,7 +25,7 @@ def prepare_model(file_path):
     return m
 
 
-def benchmark_solver(m, solver_name, iterations=1):
+def benchmark_solver(m, solver_name, iterations=10):
     runtimes = []
     memory_usages = []
     max_mem_usages = []
@@ -187,9 +187,9 @@ if __name__ == "__main__":
     solvers = ['highs', 'glpk']
 
     results, r_mean_std = main(benchmark_files, solvers)
-    write_results_to_csv(results, './benchmark_results.csv')
+    write_results_to_csv(results, 'pocs/measure-memory/benchmark_results.csv')
     write_mean_stddev_results_to_csv(
         r_mean_std,
-        "./benchmark_results_mean_stddev.csv",
+        "pocs/measure-memory/benchmark_results_mean_stddev.csv",
     )
-    write_benchmark_to_csv(results, './tracemalloc_benchmark_test_result.csv')
+    write_benchmark_to_csv(results, 'pocs/measure-memory/tracemalloc_benchmark_test_result.csv')

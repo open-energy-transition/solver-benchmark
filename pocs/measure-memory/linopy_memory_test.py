@@ -124,8 +124,8 @@ if __name__ == "__main__":
     solvers = ['highs', 'glpk']
 
     results, r_mean_std = main(benchmark_sizes, solvers)
-    write_results_to_csv(results, 'pocs/benchmark_linopy_memory_test_results.csv')
+    write_results_to_csv(results, 'pocs/measure-memory/benchmark_linopy_memory_test_results.csv')
     write_mean_stddev_results_to_csv(
         r_mean_std,
-        "pocs/benchmark_results_mean_stddev_linopy_memory_test.csv",
+        "pocs/measure-memory/benchmark_results_mean_stddev_linopy_memory_test.csv",
     )

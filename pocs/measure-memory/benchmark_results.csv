@@ -1,2 +1,2 @@
 Benchmark,Solver,Runtime (s),Memory Usage (MB)
-model-energy-electricity.nc,highs,14.67336916923523,23.771749
+model-energy-electricity.nc,highs,15.295506238937378,23.772765,975.359375

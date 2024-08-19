@@ -15,12 +15,14 @@
    max_mem_usages.append(max_mem)
 ```
 
-1. **Run Test**
+1. **Download and move *nc file to pocs/measure-memory**
+
+2. **Run Test**
    ```shell
    python pocs/measure-memory/tracemalloc_pypsa_test.py
    ```
 
-The result in **benchmark.csv** file
+The result in **csv** file
 ```
 Benchmark,Solver,Runtime (s),Tracemalloc test Memory Usage (MB),PyPSA run_benchmarks test Memory Usage (MB)
 model-energy-electricity.nc,highs,15.197204351425171,23.772888,617.71875
