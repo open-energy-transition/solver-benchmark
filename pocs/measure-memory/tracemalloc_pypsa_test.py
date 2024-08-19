@@ -181,8 +181,8 @@ def write_benchmark_to_csv(results, output_file):
 if __name__ == "__main__":
     benchmark_files = [
         'model-energy-electricity.nc',
-        # 'model-energy-products.nc',
-        # 'pypsa-eur-tutorial.nc',
+        'model-energy-products.nc',
+        'pypsa-eur-tutorial.nc',
     ]
     solvers = ['highs', 'glpk']
 
