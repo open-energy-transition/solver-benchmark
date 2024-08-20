@@ -48,8 +48,9 @@ def main(benchmark_files_info, solvers, iterations=10):
     r_mean_std = {}
 
     for file_info in benchmark_files_info:
-        local_file_path = 'runner/temporary.nc'
-        print(f"Starting download {file_info['name']} from: {file_info['url']}")
+        local_file_path = 'runner/temporary.lp'
+        print(
+            f"Starting download {file_info['name']} from: {file_info['url']}")
         download_file_from_google_drive(file_info['url'], local_file_path)
 
         for solver in solvers:
@@ -120,23 +121,28 @@ def write_mean_stddev_results_to_csv(results, output_file):
                 metrics['memory_mean'],
                 metrics['memory_stddev']
             ])
-    print(f"Mean and standard deviation results successfully written to {output_file}.")
+    print(
+        f"Mean and standard deviation results successfully written to {output_file}.")
 
 
 if __name__ == "__main__":
     benchmark_files_info = [
         {
-            'name': 'pypsa-eur-tutorial-linopy.nc',
-            'url': 'https://drive.usercontent.google.com/download?id=1JezcmnLBM3mLqfpZL1nduy--WmJLMiqm&export=download&authuser=0'
+            'name': 'config_1.lp',
+            'url': 'https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0',
         },
         {
-            'name': 'model-energy-products-linopy.nc',
-            'url': 'https://drive.usercontent.google.com/download?id=1onnBdnIiJ5-V6-JQsKuRMeDzAmpiV1OM&export=download&authuser=0'
+            'name': 'config_2.lp',
+            'url': 'https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473',
         },
         {
-            'name': 'model-energy-electricity-linopy.nc',
-            'url': 'https://drive.usercontent.google.com/download?id=18WeMK8PU9JHT3efQpo_SEMzIvM5Mij8b&export=download&authuser=0'
+            'name': 'problem_5.lp',
+            'url': 'https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0',
         },
+        {
+            'name': 'problem_6.lp',
+            'url': 'https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0',
+        }
     ]
     solvers = ['highs', 'glpk']
 
