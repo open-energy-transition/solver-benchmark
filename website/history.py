@@ -28,29 +28,32 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-data_url = "./pocs/solvers.csv"
+data_url = "./pocs/benchmark_results.csv"
 
 df = pd.read_csv(data_url)
 
-st.title("Compare Solvers")
+st.title("Solver performance history")
 
 # Dropdown to select Solver 1
-solver = st.selectbox("Select Solver", df["Solver Name"].unique())
+solver = st.selectbox("Select Solver", df["Solver"].unique())
 
-if st.button("Compare Solvers"):
+if st.button("Show history"):
     # Filter data for the selected solvers
-    solver_data = df[df["Solver Name"] == solver]
+    solver_data = df[df["Solver"] == solver]
+    
+    # Group by Benchmark and calculate the mean Runtime
+    avg_solver_data = solver_data.groupby("Benchmark", as_index=False)["Runtime (s)"].mean()
 
     # Create the scatter plot with enhanced style
     fig, ax = plt.subplots(figsize=(8, 8))
     
-    ax.plot(solver_data["Solver Version"], solver_data["Runtime (mean)"], marker='o', linestyle='-', color='b', label='Runtime')
+    ax.plot(avg_solver_data["Benchmark"], avg_solver_data["Runtime (s)"], marker='o', linestyle='-', color='b', label='Average Runtime')
     
-    ax.set_xlabel("Solver Version", fontsize=12)
-    ax.set_ylabel("Runtime (mean)", fontsize=12)
+    ax.set_xlabel("Benchmark", fontsize=12)
+    ax.set_ylabel("Runtime (s)", fontsize=12)
     
-    ax.set_title(f"Solver Runtime by Version", fontsize=14, fontweight='bold')
-    ax.grid(True, linestyle='--', alpha=0.7)
+    ax.set_title(f"Solver Runtime by Benchmark", fontsize=14, fontweight='bold')
+    ax.grid(True, linestyle='--', alpha=0.7)  
     ax.legend()
 
     st.pyplot(fig)

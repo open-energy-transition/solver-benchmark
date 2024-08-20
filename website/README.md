@@ -25,13 +25,11 @@ Preferred use:
          ```
    3. Install 
       ```shell
-      pip install streamlit
-      pip install streamlit_shadcn_ui
-      pip install streamlit-aggrid
+      pip install -r requirements.txt
       ```
    4. Run project
          ```shell
-         streamlit run pocs\streamlit\app.py
+         streamlit run pocs/streamlit/app.py
          ```
       
 The app will be running on the host: [http://localhost:8501](http://localhost:8501)

@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.express as px
 from components.CompareChart import CompareChart
 
-data_url = "./pocs/solvers.csv"
+data_url = "./pocs/benchmark_results.csv"
 df = pd.read_csv(data_url)
 
 dash.register_page(__name__)
@@ -16,14 +16,14 @@ layout = html.Div([
         [
             dcc.Dropdown(
                 id='solver1-dropdown',
-                options=[{'label': solver, 'value': solver} for solver in df["Solver Name"].unique()],
-                value=df["Solver Name"].unique()[0],
+                options=[{'label': solver, 'value': solver} for solver in df["Solver"].unique()],
+                value=df["Solver"].unique()[0],
                 style={'flex': '1'}
             ),
             dcc.Dropdown(
                 id='solver2-dropdown',
-                options=[{'label': solver, 'value': solver} for solver in df["Solver Name"].unique()],
-                value=df["Solver Name"].unique()[1],
+                options=[{'label': solver, 'value': solver} for solver in df["Solver"].unique()],
+                value=df["Solver"].unique()[1],
                 style={'flex': '1'}
             )
         ], 
