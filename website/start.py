@@ -3,7 +3,6 @@ import streamlit_shadcn_ui as ui
 import pandas as pd
 import streamlit as st
 import pandas as pd
-import numpy as np
 
 input18 = [
   {"code": "4.chpl", "time": "1944ms", "mem": "66.2MB", "compiler": "chpl 1.31.0"},
