@@ -5,7 +5,7 @@
 - Get the config files for the sample problems from ... and put them in `/pypsa-eur/config`
 - Get the `solver_benchmark_pypsa_eur.py` and place it in the `/pypsa-eur` folder
 - In order to produce the .lp files, the line  `kwargs["keep_files"] = cf_solving.get("keep_files", True)` must be passed to `/pypsa-eur/scripts/solve_network.py` (can be added anywhere under `def solve_network(n, config, solving, **kwargs):` among the several **kwargs extra arguments
-- Run the solver_benchmark_pypsa_eur.py file: `python solver_benchmark_pypsa_eur.py`
+- Run the solver_benchmark_pypsa_eur.py file: `python solver_benchmark_pypsa_eur.py --configfile config/your_config_file.yaml` (where `your_config_file` has to be replaced with either `pypsa-infr-1`, `pypsa-infr-2`, `pypsa-infr-3` or `pypsa-infr-4`)
 - The generated .lp file will be located in `/tmp`
 
 ## Simpler sample problems (pypsa-infr-5, pypsa-infr-6)
