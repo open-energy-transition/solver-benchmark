@@ -92,7 +92,7 @@ elif configfile.name == "pypsa-infr-2.yaml":
     ])
 elif configfile.name in ["pypsa-infr-3.yaml", "pypsa-infr-4.yaml"]:
     subprocess.run([
-        "snakemake", "-call", "results / networks / results/networks/elec_s_20_ec_lv1_24h_op.nc", "--cores", "all",
+        "snakemake", "-call", "results/networks/elec_s_20_ec_lv1_24h_op.nc", "--cores", "all",
         "--printshellcmds", "--configfile", str(configfile)
     ])
 
