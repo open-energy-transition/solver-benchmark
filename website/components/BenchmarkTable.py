@@ -5,8 +5,6 @@ from st_aggrid.shared import GridUpdateMode
 
 def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_default_column(editable=True, filter=True)
-    gb.configure_selection('multiple', use_checkbox=True)
     gb.configure_grid_options(
         paginationPageSizeSelector=[10, 20, 50, 100],
     )
@@ -17,7 +15,6 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         resizable=True,
         sortable=True,
         filter=True,
-        editable=True,
         floatingFilter=True,
     )
 

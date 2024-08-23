@@ -136,6 +136,14 @@ if __name__ == "__main__":
             'url': 'https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473',
         },
         {
+            'name': 'config_3.lp',
+            'url': 'https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0'  
+        },
+        {
+            'name': 'config_4.lp',
+            'url': 'https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0'  
+        },
+        {
             'name': 'problem_5.lp',
             'url': 'https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0',
         },
