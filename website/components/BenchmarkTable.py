@@ -27,10 +27,10 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         update_mode=GridUpdateMode.SELECTION_CHANGED | GridUpdateMode.FILTERING_CHANGED,
         fit_columns_on_grid_load=True,
         enable_enterprise_modules=True,
-        theme='alpine',
+        theme="alpine",
     )
 
-    filtered_df = pd.DataFrame(grid_response['data'])
+    filtered_df = pd.DataFrame(grid_response["data"])
     return filtered_df
 
 

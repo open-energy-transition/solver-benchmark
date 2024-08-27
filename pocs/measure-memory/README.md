@@ -37,4 +37,3 @@ model-energy-electricity.nc,highs,14.47638201713562,23.741457,958.03125
    ```
 
 The result in **benchmark_linopy_memory_test_results.csv** file
-

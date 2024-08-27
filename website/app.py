@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.markdown(
-  """
+    """
   <style>
     .banner-container {
       position: fixed;
@@ -17,11 +17,11 @@ st.markdown(
       align-items: center;
       font-size: 18px;
     }
-    
+
     .appview-container {
       margin-top: 56px;
     }
-    
+
     header.st-emotion-cache-12fmjuu {
       top: 56px;
     }
@@ -30,13 +30,13 @@ st.markdown(
       <strong>This website is under development. All content is for testing purposes, and is subject to change.</strong>
   </div>
   """,
-  unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 pages = [
-  st.Page("raw-results.py", title="Raw Results"),
-  st.Page("compare.py", title="Compare solvers"),
-  st.Page("history.py", title="Solver performance history")
+    st.Page("raw-results.py", title="Raw Results"),
+    st.Page("compare.py", title="Compare solvers"),
+    st.Page("history.py", title="Solver performance history"),
 ]
 
 pg = st.navigation(pages)
