@@ -25,4 +25,4 @@ if ui.button(text="Compare Solvers",
     # Create the scatter plot
     fig = create_comparison_chart(solver1_data, solver2_data, solver1, solver2)
 
-    st.pyplot(fig)
+    st.plotly_chart(fig)

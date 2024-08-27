@@ -1,43 +1,74 @@
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import numpy as np
 
 
 def create_comparison_chart(solver1_data, solver2_data, solver1, solver2):
-    fig, ax = plt.subplots(2, 1, figsize=(8, 8))
+    fig = go.Figure()
 
-    # Scatter plot with different colors
-    ax[0].scatter(solver1_data["Runtime (s)"], solver2_data["Runtime (s)"], color='blue', label='data point per benchmark')
-    # ax.scatter(solver2_data["Runtime (s)"], solver1_data["Runtime (s)"], color='red', label=solver2)
+    # Scatter plot for runtime comparison
+    fig.add_trace(go.Scatter(
+        x=solver1_data["Runtime (s)"],
+        y=solver2_data["Runtime (s)"],
+        mode='markers',
+        name='Runtime Comparison',
+        marker=dict(color='blue')
+    ))
 
-    # Adding grid lines
-    ax[0].grid(True, which='both', linestyle='--', linewidth=0.5)
+    # Define axis range for both axes
+    min_runtime = min(min(solver1_data["Runtime (s)"]), min(
+        solver2_data["Runtime (s)"]))
+    max_runtime = max(max(solver1_data["Runtime (s)"]), max(
+        solver2_data["Runtime (s)"]))
 
-    # Adding labels and title
-    ax[0].set_xlabel(f"{solver1} Runtime (s)")
-    ax[0].set_ylabel(f"{solver2} Runtime (s)")
-    ax[0].set_title(f"Comparison of {solver1} and {solver2} Runtimes")
+    # Add line y=x for runtime comparison
+    fig.add_trace(go.Scatter(
+        x=[min_runtime, max_runtime],
+        y=[min_runtime, max_runtime],
+        mode='lines',
+        name='y=x',
+        line=dict(color='red', dash='dash')
+    ))
 
-    # Adding legend
-    ax[0].legend()
+    # Adding grid lines and labels for the runtime scatter plot
+    fig.update_xaxes(showgrid=True, gridcolor='LightGray',
+                     gridwidth=0.5, range=[min_runtime, max_runtime])
+    fig.update_yaxes(showgrid=True, gridcolor='LightGray',
+                     gridwidth=0.5, range=[min_runtime, max_runtime])
+    fig.update_layout(
+        xaxis_title=f"{solver1} Runtime (s)",
+        yaxis_title=f"{solver2} Runtime (s)",
+        title=f"Comparison of {solver1} and {solver2} Runtimes",
+        width=600,  # Fixed width
+        height=600,  # Fixed height
+        legend_title='Legend'
+    )
 
-    # Second subplot: Bar chart showing the runtime differences
-    indices = np.arange(len(solver1_data))
-    bar_width = 0.35
+    # Scatter plot for peak memory comparison (assuming similar data structure)
+    fig.add_trace(go.Scatter(
+        x=solver1_data["Runtime (s)"], 
+        y=solver2_data["Runtime (s)"],
+        mode='markers',
+        name='Peak Memory Comparison',
+        marker=dict(color='green')
+    ))
 
-    ax[1].bar(indices, solver1_data["Runtime (s)"], bar_width, label=f'{solver1} Runtime (s)')
-    ax[1].bar(indices + bar_width, solver2_data["Runtime (s)"], bar_width, label=f'{solver2} Runtime (s)')
+    # Add line y=x for memory comparison
+    fig.add_trace(go.Scatter(
+        x=[min_runtime, max_runtime],
+        y=[min_runtime, max_runtime],
+        mode='lines',
+        name='y=x (Memory)',
+        line=dict(color='orange', dash='dash')
+    ))
 
-    # Adding grid lines, labels, and title to the second subplot
-    ax[1].grid(True, which='both', linestyle='--', linewidth=0.5)
-    ax[1].set_xlabel("Benchmark Index")
-    ax[1].set_ylabel("Runtime (s)")
-    ax[1].set_title(f"Runtime Comparison of {solver1} and {solver2} (Bar Chart)")
-    ax[1].legend()
-
-    # Adjust layout to avoid overlap
-    plt.tight_layout()
-    
-    # Increase space between the subplots
-    plt.subplots_adjust(hspace=0.4)  # Adjust the value as needed
+    # Adding labels and title for the peak memory scatter plot
+    fig.update_layout(
+        xaxis_title=f"{solver1} Runtime (s)",
+        yaxis_title=f"{solver2} Runtime (s)",
+        title=f"Comparison of Peak Memory Consumption for {solver1} and {solver2}",
+        width=600,
+        height=600,
+        legend_title='Legend'
+    )
 
     return fig
