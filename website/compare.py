@@ -23,6 +23,23 @@ if ui.button(text="Compare Solvers",
     solver1_data = df[df["Solver"] == solver1]
     solver2_data = df[df["Solver"] == solver2]
     # Create the scatter plot
-    fig = create_comparison_chart(solver1_data, solver2_data, solver1, solver2)
+    run_time_fig = create_comparison_chart(
+        solver1_data,
+        solver2_data,
+        solver1,
+        solver2,
+        metric_name="Runtime (s)",
+        comparison_type="Runtime"
+    )
 
-    st.plotly_chart(fig)
+    mem_use_fig = create_comparison_chart(
+        solver1_data,
+        solver2_data,
+        solver1,
+        solver2,
+        metric_name="Memory Usage (MB)",
+        comparison_type="Memory Usage"
+    )
+
+    st.plotly_chart(run_time_fig)
+    st.plotly_chart(mem_use_fig)
