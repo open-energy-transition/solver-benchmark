@@ -34,6 +34,7 @@ st.markdown(
 )
 
 pages = [
+  st.Page("home.py", title="Home"),
   st.Page("raw-results.py", title="Raw Results"),
   st.Page("compare.py", title="Compare solvers"),
   st.Page("history.py", title="Solver performance history")
