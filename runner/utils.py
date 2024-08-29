@@ -1,7 +1,7 @@
 def parse_time(time_str):
     try:
         # Split the time string by the colon
-        parts = time_str.split(':')
+        parts = time_str.split(":")
 
         if len(parts) == 3:  # h:mm:ss format
             hours = int(parts[0])
