@@ -7,7 +7,8 @@ def create_comparison_chart(
     solver1,
     solver2,
     metric_name,
-    comparison_type
+    comparison_type,
+    axis_title
 ):
     fig = go.Figure()
 
@@ -35,12 +36,12 @@ def create_comparison_chart(
     # Set aspect ratio to ensure equal height and width
     fig.update_layout(
         xaxis=dict(
-            title=f"{solver1} {metric_name}",
+            title=f"{solver1} {axis_title}",
             scaleanchor="y",
             scaleratio=1
         ),
         yaxis=dict(
-            title=f"{solver2} {metric_name}",
+            title=f"{solver2} {axis_title}",
             scaleanchor="x",
             scaleratio=1
         ),

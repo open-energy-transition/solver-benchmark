@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
-from components.BenchmarkTable import display_table
+from components.benchmark_table import display_table
 
 # Custom CSS
 st.markdown(
