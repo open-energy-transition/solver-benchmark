@@ -1,6 +1,6 @@
+import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
-import pandas as pd
 
 data = pd.read_csv('./pocs/benchmark_results.csv')
 

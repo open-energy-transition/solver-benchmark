@@ -34,6 +34,21 @@ And this is how to install the required dependencies once a `venv` is activated:
    pip install -r website/requirements.txt
    ```
 
+### Development
+
+We use the [ruff](https://docs.astral.sh/ruff) code linter and formatter, and GitHub Actions runs various pre-commit checks to ensure code and files are clean.
+
+You can install a git pre-commit that will ensure that your changes are formatted
+and no lint issues are detected before creating new commits:
+```bash
+pip install pre-commit
+pre-commit install
+```
+If you want to skip these pre-commit steps for a particular commit, you can run:
+```bash
+git commit --no-verify
+```
+
 ## Run Project
 
 Remember to activate the appropriate virtual environment before running the runner or the website.

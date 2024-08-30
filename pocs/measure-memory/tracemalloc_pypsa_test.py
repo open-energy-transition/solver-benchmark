@@ -1,10 +1,11 @@
-
+import csv
+import statistics
 import time
 import tracemalloc
+
 import linopy
-import csv
 import pypsa
-import statistics
+
 # local
 from _benchmarks import memory_logger
 
@@ -12,7 +13,7 @@ from _benchmarks import memory_logger
 def prepare_model(file_path):
     """Prepare the model outside the benchmarking loop."""
     # Load the pypsa network and create the optimization model
-    n = pypsa.Network('pocs/measure-memory/' + file_path)
+    n = pypsa.Network("pocs/measure-memory/" + file_path)
     n.optimize.create_model()
 
     # Save the model to NetCDF
@@ -64,13 +65,13 @@ def benchmark_solver(m, solver_name, iterations=10):
         memory_stddev = statistics.stdev(memory_usages)
 
     results = {
-        'runtimes': runtimes,
-        'memory_usages': memory_usages,
-        'runtime_mean': runtime_mean,
-        'runtime_stddev': runtime_stddev,
-        'memory_mean': memory_mean,
-        'memory_stddev': memory_stddev,
-        'max_mem_usages': max_mem_usages
+        "runtimes": runtimes,
+        "memory_usages": memory_usages,
+        "runtime_mean": runtime_mean,
+        "runtime_stddev": runtime_stddev,
+        "memory_mean": memory_mean,
+        "memory_stddev": memory_stddev,
+        "max_mem_usages": max_mem_usages,
     }
     return results
 
@@ -85,111 +86,116 @@ def main(benchmark_files, solvers):
 
         for solver in solvers:
             benchmark_result = benchmark_solver(m, solver)
-            runtimes = benchmark_result['runtimes']
-            memory_usages = benchmark_result['memory_usages']
-            runtime_mean = benchmark_result['runtime_mean']
-            runtime_stddev = benchmark_result['runtime_stddev']
-            memory_mean = benchmark_result['memory_mean']
-            memory_stddev = benchmark_result['memory_stddev']
-            max_mem_usages = benchmark_result['max_mem_usages']
+            runtimes = benchmark_result["runtimes"]
+            memory_usages = benchmark_result["memory_usages"]
+            runtime_mean = benchmark_result["runtime_mean"]
+            runtime_stddev = benchmark_result["runtime_stddev"]
+            memory_mean = benchmark_result["memory_mean"]
+            memory_stddev = benchmark_result["memory_stddev"]
+            max_mem_usages = benchmark_result["max_mem_usages"]
 
             results[(file_path, solver)] = {
-                'runtimes': runtimes,
-                'memory_usages': memory_usages,
-                'max_mem_usages': max_mem_usages,
+                "runtimes": runtimes,
+                "memory_usages": memory_usages,
+                "max_mem_usages": max_mem_usages,
             }
             r_mean_std[(file_path, solver)] = {
-                'runtime_mean': [runtime_mean],
-                'runtime_stddev': [runtime_stddev],
-                'memory_mean': [memory_mean],
-                'memory_stddev': [memory_stddev],
+                "runtime_mean": [runtime_mean],
+                "runtime_stddev": [runtime_stddev],
+                "memory_mean": [memory_mean],
+                "memory_stddev": [memory_stddev],
             }
     return results, r_mean_std
 
 
 def write_results_to_csv(results, output_file):
-    with open(output_file, mode='w', newline='') as file:
+    with open(output_file, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(
-            ['Benchmark', 'Solver', 'Runtime (s)', 'Memory Usage (MB)'])
+        writer.writerow(["Benchmark", "Solver", "Runtime (s)", "Memory Usage (MB)"])
 
         for (file_path, solver), metrics in results.items():
             for runtime, memory_usage, max_mem_usages in zip(
-                metrics['runtimes'],
-                metrics['memory_usages'],
-                metrics['max_mem_usages']
+                metrics["runtimes"], metrics["memory_usages"], metrics["max_mem_usages"]
             ):
-                writer.writerow([
-                    file_path,
-                    solver,
-                    runtime,
-                    memory_usage,
-                    max_mem_usages
-                ])
+                writer.writerow(
+                    [file_path, solver, runtime, memory_usage, max_mem_usages]
+                )
 
 
 def write_mean_stddev_results_to_csv(results, output_file):
-    with open(output_file, mode='w', newline='') as file:
+    with open(output_file, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([
-            'Benchmark',
-            'Solver',
-            'Runtime Mean (s)',
-            'Runtime StdDev (s)',
-            'Memory Mean (MB)',
-            'Memory StdDev (MB)',
-        ])
+        writer.writerow(
+            [
+                "Benchmark",
+                "Solver",
+                "Runtime Mean (s)",
+                "Runtime StdDev (s)",
+                "Memory Mean (MB)",
+                "Memory StdDev (MB)",
+            ]
+        )
 
         for (file_path, solver), metrics in results.items():
             for runtime_mean, runtime_stddev, memory_mean, memory_stddev in zip(
-                metrics['runtime_mean'],
-                metrics['runtime_stddev'],
-                metrics['memory_mean'],
-                metrics['memory_stddev'],
+                metrics["runtime_mean"],
+                metrics["runtime_stddev"],
+                metrics["memory_mean"],
+                metrics["memory_stddev"],
             ):
-                writer.writerow([
-                    file_path,
-                    solver,
-                    runtime_mean,
-                    runtime_stddev,
-                    memory_mean, memory_stddev])
+                writer.writerow(
+                    [
+                        file_path,
+                        solver,
+                        runtime_mean,
+                        runtime_stddev,
+                        memory_mean,
+                        memory_stddev,
+                    ]
+                )
 
 
 def write_benchmark_to_csv(results, output_file):
-    with open(output_file, mode='w', newline='') as file:
+    with open(output_file, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([
-            'Benchmark',
-            'Solver',
-            'Runtime (s)',
-            'Tracemalloc test Memory Usage (MB)',
-        ])
+        writer.writerow(
+            [
+                "Benchmark",
+                "Solver",
+                "Runtime (s)",
+                "Tracemalloc test Memory Usage (MB)",
+            ]
+        )
 
         for (file_path, solver), metrics in results.items():
             for runtime, memory_usage in zip(
-                metrics['runtimes'],
-                metrics['memory_usages'],
+                metrics["runtimes"],
+                metrics["memory_usages"],
             ):
-                writer.writerow([
-                    file_path,
-                    solver,
-                    runtime,
-                    memory_usage,
-                ])
+                writer.writerow(
+                    [
+                        file_path,
+                        solver,
+                        runtime,
+                        memory_usage,
+                    ]
+                )
 
 
 if __name__ == "__main__":
     benchmark_files = [
-        'model-energy-electricity.nc',
-        'model-energy-products.nc',
-        'pypsa-eur-tutorial.nc',
+        "model-energy-electricity.nc",
+        "model-energy-products.nc",
+        "pypsa-eur-tutorial.nc",
     ]
-    solvers = ['highs', 'glpk']
+    solvers = ["highs", "glpk"]
 
     results, r_mean_std = main(benchmark_files, solvers)
-    write_results_to_csv(results, 'pocs/measure-memory/benchmark_results.csv')
+    write_results_to_csv(results, "pocs/measure-memory/benchmark_results.csv")
     write_mean_stddev_results_to_csv(
         r_mean_std,
         "pocs/measure-memory/benchmark_results_mean_stddev.csv",
     )
-    write_benchmark_to_csv(results, 'pocs/measure-memory/tracemalloc_benchmark_test_result.csv')
+    write_benchmark_to_csv(
+        results, "pocs/measure-memory/tracemalloc_benchmark_test_result.csv"
+    )

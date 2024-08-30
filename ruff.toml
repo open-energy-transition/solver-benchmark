@@ -1,0 +1,13 @@
+target-version = "py312"
+
+[lint]
+extend-select = [
+    "I", # isort
+    "TID", # tidy imports
+]
+
+# Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
+ignore = []
+
+[format]
+docstring-code-format = true
