@@ -41,7 +41,7 @@ def benchmark_solver(input_file, solver_name):
         if "Maximum resident set size" in line:
             parts = line.strip().split()
             max_resident_set_size = parts[-1]
-            memory_usage = float(max_resident_set_size) / 1024  # Convert to MB
+            memory_usage = float(max_resident_set_size) / 1000  # Convert to MB
 
     if runtime is None:
         print("Runtime information not found in output.")
