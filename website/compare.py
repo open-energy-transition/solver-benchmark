@@ -1,7 +1,7 @@
 import pandas as pd
-from components.compare_chart import create_comparison_chart
 import streamlit as st
 import streamlit_shadcn_ui as ui
+from components.compare_chart import create_comparison_chart
 
 data_url = "./pocs/benchmark_results.csv"
 
@@ -31,7 +31,7 @@ if ui.button(
         solver2,
         metric_name="Runtime (s)",
         axis_title="runtime (s)",
-        comparison_type="runtime"
+        comparison_type="runtime",
     )
 
     mem_use_fig = create_comparison_chart(
@@ -41,7 +41,7 @@ if ui.button(
         solver2,
         axis_title="peak memory usage (MB)",
         metric_name="Memory Usage (MB)",
-        comparison_type="peak memory usage"
+        comparison_type="peak memory usage",
     )
 
     st.plotly_chart(run_time_fig)
