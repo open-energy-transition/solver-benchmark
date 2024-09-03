@@ -20,5 +20,4 @@ data_url = "./pocs/benchmark_results.csv"
 
 df = pd.read_csv(data_url)
 
-# Remove the st.dataframe call and use AgGrid directly
 filtered_df = display_table(df)
