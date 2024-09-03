@@ -13,7 +13,7 @@ Preferred use:
    1. Create folder "venv"
       ```shell
       python -m venv venv
-      ```  
+      ```
    2. Open terminal
       - Windows
          ```shell
@@ -23,7 +23,7 @@ Preferred use:
          ```shell
          source venv/bin/activate
          ```
-   3. Install 
+   3. Install
       ```shell
       pip install -r requirements.txt
       ```

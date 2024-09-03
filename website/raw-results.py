@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from components.BenchmarkTable import display_table
+from components.benchmark_table import display_table
 
 # Custom CSS
 st.markdown(
@@ -11,7 +11,7 @@ st.markdown(
     }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 st.title("Benchmarks")

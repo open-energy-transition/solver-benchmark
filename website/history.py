@@ -1,59 +1,61 @@
-import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import streamlit as st
 
-# Custom CSS
-st.markdown(
-    """
-    <style>
-    .stButton {
-        text-align: right;
-    }
-    .stButton>button {        
-        color: white;
-        background-color: #4CAF50;
-        border: none;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 12px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
+data = pd.read_csv("./pocs/benchmark_results.csv")
+
+st.title("Solver Performance History")
+
+# Find the peak memory usage and average runtime for each solver and benchmark
+peak_memory = (
+    data.groupby(["Benchmark", "Solver"])["Memory Usage (MB)"].max().reset_index()
+)
+average_runtime = (
+    data.groupby(["Benchmark", "Solver"])["Runtime (s)"].mean().reset_index()
 )
 
-data_url = "./pocs/benchmark_results.csv"
+# Runtimes
+fig_runtime = go.Figure()
 
-df = pd.read_csv(data_url)
+# Add lines
+for benchmark in average_runtime["Benchmark"].unique():
+    subset = average_runtime[average_runtime["Benchmark"] == benchmark]
+    fig_runtime.add_trace(
+        go.Scatter(
+            x=subset["Solver"],
+            y=subset["Runtime (s)"],
+            mode="lines+markers",
+            name=f"{benchmark}",
+        )
+    )
 
-st.title("Solver performance history")
+fig_runtime.update_layout(
+    title="Solver Runtime Comparison",
+    xaxis_title="Solver Version",
+    yaxis_title="Runtime (s)",
+    template="plotly_dark",
+)
 
-# Dropdown to select Solver 1
-solver = st.selectbox("Select Solver", df["Solver"].unique())
+# Memory usage
+fig_memory = go.Figure()
 
-if st.button("Show history"):
-    # Filter data for the selected solvers
-    solver_data = df[df["Solver"] == solver]
-    
-    # Group by Benchmark and calculate the mean Runtime
-    avg_solver_data = solver_data.groupby("Benchmark", as_index=False)["Runtime (s)"].mean()
+for benchmark in peak_memory["Benchmark"].unique():
+    subset = peak_memory[peak_memory["Benchmark"] == benchmark]
+    fig_memory.add_trace(
+        go.Scatter(
+            x=subset["Solver"],
+            y=subset["Memory Usage (MB)"],
+            mode="lines+markers",
+            name=f"{benchmark}",
+        )
+    )
 
-    # Create the scatter plot with enhanced style
-    fig, ax = plt.subplots(figsize=(8, 8))
-    
-    ax.plot(avg_solver_data["Benchmark"], avg_solver_data["Runtime (s)"], marker='o', linestyle='-', color='b', label='Average Runtime')
-    
-    ax.set_xlabel("Benchmark", fontsize=12)
-    ax.set_ylabel("Runtime (s)", fontsize=12)
-    
-    ax.set_title(f"Solver Runtime by Benchmark", fontsize=14, fontweight='bold')
-    ax.grid(True, linestyle='--', alpha=0.7)  
-    ax.legend()
+fig_memory.update_layout(
+    title="Solver Peak Memory Consumption",
+    xaxis_title="Solver Version",
+    yaxis_title="Memory Usage (MB)",
+    template="plotly_dark",
+)
 
-    st.pyplot(fig)
+st.plotly_chart(fig_runtime)
+st.plotly_chart(fig_memory)
