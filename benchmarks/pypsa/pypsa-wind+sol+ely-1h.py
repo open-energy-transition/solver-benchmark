@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-
 import pypsa
 
 plt.style.use("bmh")
@@ -36,19 +35,23 @@ defaults = {
 }
 costs = costs.value.unstack().fillna(defaults)
 
-#costs.at["OCGT", "fuel"] = costs.at["gas", "fuel"]
-#costs.at["CCGT", "fuel"] = costs.at["gas", "fuel"]
-#costs.at["OCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
-#costs.at["CCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
+# costs.at["OCGT", "fuel"] = costs.at["gas", "fuel"]
+# costs.at["CCGT", "fuel"] = costs.at["gas", "fuel"]
+# costs.at["OCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
+# costs.at["CCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
 
 
 # Let's also write a small utility function that calculates the **annuity** to annualise investment costs. The formula is
 
-def annuity(r, n):
+
+def calculate_annuity(r, n):
     return r / (1.0 - 1.0 / (1.0 + r) ** n)
 
+
 costs["marginal_cost"] = costs["VOM"] + costs["fuel"] / costs["efficiency"]
-annuity = costs.apply(lambda x: annuity(x["discount rate"], x["lifetime"]), axis=1)
+annuity = costs.apply(
+    lambda x: calculate_annuity(x["discount rate"], x["lifetime"]), axis=1
+)
 costs["capital_cost"] = (annuity + costs["FOM"] / 100) * costs["investment"]
 
 # ## Loading time series data
@@ -78,7 +81,7 @@ carriers = [
     "offwind",
     "solar",
     "hydrogen storage underground",
-#    "battery storage",
+    #    "battery storage",
 ]
 
 n.madd(
@@ -127,7 +130,7 @@ for tech in ["solar"]:
 
 ## ## Adding Storage Units
 #
-#n.add(
+# n.add(
 #    "StorageUnit",
 #    "battery storage",
 #    bus="electricity",
@@ -139,7 +142,7 @@ for tech in ["solar"]:
 #    efficiency_dispatch=costs.at["battery inverter", "efficiency"],
 #    p_nom_extendable=True,
 #    cyclic_state_of_charge=True,
-#)
+# )
 
 # Second, the hydrogen storage. This one is composed of an electrolysis to convert electricity to hydrogen, a fuel cell to re-convert hydrogen to electricity and underground storage (e.g. in salt caverns). We assume an energy-to-power ratio of 168 hours, such that this type of storage can be used for weekly balancing.
 
@@ -165,12 +168,12 @@ n.add(
 n.optimize(solver_name="highs", keep_files=True)
 
 # ### Adding emission limits
-#n.add(
+# n.add(
 #    "GlobalConstraint",
 #    "CO2Limit",
 #    carrier_attribute="co2_emissions",
 #    sense="<=",
 #    constant=0,
-#)
+# )
 
-#n.optimize(solver_name="highs")
+# n.optimize(solver_name="highs")

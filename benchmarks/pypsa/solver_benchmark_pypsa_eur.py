@@ -31,12 +31,10 @@
 #                                                           #
 #############################################################
 
-import pathlib
-import os
-import subprocess
-import datetime as dt
-import pypsa
 import argparse
+import datetime as dt
+import pathlib
+import subprocess
 
 # Initial configurations
 
@@ -54,10 +52,7 @@ parser = argparse.ArgumentParser(description="Script to process configuration pa
 
 # Step 2: Add a command-line argument for the config file
 parser.add_argument(
-    '--configfile',
-    type=str,
-    required=True,
-    help="Path to the configuration file"
+    "--configfile", type=str, required=True, help="Path to the configuration file"
 )
 
 # Step 3: Parse the arguments
@@ -71,7 +66,7 @@ print(f"Using config file at: {configfile}")
 
 # Open log_output
 today_date = str(dt.datetime.now())
-log_output_file = open(log_file_dir / f'output_pypsa_eur_{today_date[:10]}.txt', 'w')
+log_output_file = open(log_file_dir / f"output_pypsa_eur_{today_date[:10]}.txt", "w")
 
 subprocess.run(["snakemake", "--unlock"])
 
@@ -81,19 +76,43 @@ log_output_file.write("Execute model run \n")
 print("Execute model run \n")
 
 if configfile.name == "pypsa-infr-1.yaml":
-    subprocess.run([
-        "snakemake", "-call", "all", "--cores", "all",
-        "--printshellcmds", "--configfile", str(configfile)
-    ])
+    subprocess.run(
+        [
+            "snakemake",
+            "-call",
+            "all",
+            "--cores",
+            "all",
+            "--printshellcmds",
+            "--configfile",
+            str(configfile),
+        ]
+    )
 elif configfile.name == "pypsa-infr-2.yaml":
-    subprocess.run([
-        "snakemake", "-call", "solve_elec_networks", "--cores", "all",
-        "--printshellcmds", "--configfile", str(configfile)
-    ])
+    subprocess.run(
+        [
+            "snakemake",
+            "-call",
+            "solve_elec_networks",
+            "--cores",
+            "all",
+            "--printshellcmds",
+            "--configfile",
+            str(configfile),
+        ]
+    )
 elif configfile.name in ["pypsa-infr-3.yaml", "pypsa-infr-4.yaml"]:
-    subprocess.run([
-        "snakemake", "-call", "results/networks/elec_s_20_ec_lv1_24h_op.nc", "--cores", "all",
-        "--printshellcmds", "--configfile", str(configfile)
-    ])
+    subprocess.run(
+        [
+            "snakemake",
+            "-call",
+            "results/networks/elec_s_20_ec_lv1_24h_op.nc",
+            "--cores",
+            "all",
+            "--printshellcmds",
+            "--configfile",
+            str(configfile),
+        ]
+    )
 
 log_output_file.close()
