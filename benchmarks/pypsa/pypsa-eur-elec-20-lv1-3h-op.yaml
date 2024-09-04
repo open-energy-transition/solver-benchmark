@@ -42,9 +42,9 @@ scenario:
   ll:
   - v1
   clusters:
-  - 235
+  - 20
   opts:
-  - ''
+  - 3h
   sector_opts:
   - ''
   planning_horizons:
@@ -59,7 +59,7 @@ countries: ['IT']
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#snapshots
 snapshots:
   start: "2013-01-01"
-  end: "2013-02-01"
+  end: "2014-01-01"
   inclusive: 'left'
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable
