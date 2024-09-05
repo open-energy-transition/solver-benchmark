@@ -1,0 +1,66 @@
+pypsa-eur-sec-2-lv1-3h:
+  - Kind of model: PyPSA-Eur
+    Type of study: Infrastructure
+    Sector: Sector coupled
+    Time resolution: 3 hourly X 1 year
+    Spatial resolution: Country level (IT, 2 nodes)
+    Transmission expansion: '-'
+    Unit commitment: '-'
+    Specifications: Linear, lot of variables, strongly intermeshed constraints
+    Solution time: Highs':' 3356 s
+    '': Constraints':' 393568, Variables':'' 390692, Free variables':' 1431
+pypsa-eur-elec-20-lvopt-3h:
+  - Kind of model: PyPSA-Eur
+    Type of study: Infrastructure
+    Sector: Power system
+    Time resolution: 3 hourly X 1 year
+    Spatial resolution: Sub-country level (IT, 20 nodes)
+    Transmission expansion: Yes
+    Unit commitment: '-'
+    Specifications: MIP, lot of variables, intermeshed constraints
+    Solution time: Highs':' 45178 s
+    '': Constraints':' 1432032, Variables':' 1099126, Free variables':' 73000
+pypsa-eur-elec-20-lv1-3h-op:
+  - Kind of model: PyPSA-Eur
+    Type of study: Operational
+    Sector: Power system
+    Time resolution: 24 hourly X 1 year
+    Spatial resolution: Sub-country level
+    Transmission expansion: '-'
+    Unit commitment: '-'
+    Specifications: Linear, lot of variables, less intermeshed constraints
+    Solution time: Highs':' 19.48 s
+    '': Constraints':' 82134, Variables':' 6935, Free variables':' 82803
+pypsa-eur-elec-20-lv1-3h-op-ucconv:
+  - Kind of model: PyPSA-Eur
+    Type of study: Operational
+    Sector: Power system
+    Time resolution: Hourly X 1 month
+    Spatial resolution: Sub-country level
+    Transmission expansion:
+    Unit commitment: Unit commitment on conventional fleet
+    Specifications: MIP, lot of variables, less intermeshed constraint
+    Solution time: Highs':' 56.15 s
+    '': Constraints':' 108984, Variables':' 15998, Free variables':' 146571
+pypsa-wind+sol+ely-1h-ucwind:
+  - Kind of model: Wind + solar + electrolyzer
+    Type of study: '-'
+    Sector: '-'
+    Time resolution: Hourly X 1 year
+    Spatial resolution: '-'
+    Transmission expansion: '-'
+    Unit commitment: Unit commitment (onwind, offwind)
+    Specifications: MIP, less variables, less intermeshed constraints
+    Solution time: Highs':' 13.66 s
+    '': Constraints':' 19, Continuous variables':' 6, Binary variables':' 3
+pypsa-wind+sol+ely-1h:
+  - Kind of model: Wind + solar + electrolyzer
+    Type of study: '-'
+    Sector: '-'
+    Time resolution: Hourly X 1 year
+    Spatial resolution: '-'
+    Transmission expansion: '-'
+    Unit commitment: '-'
+    Specifications: Linear, less variables, less intermeshed
+    Solution time: Highs':' 66.59 s
+    '': Constraints':' 14, Continuous variables':' 6
