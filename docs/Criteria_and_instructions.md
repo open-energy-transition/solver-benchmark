@@ -30,13 +30,13 @@ The features of the sample problems to be collected should meet any combinations
 ||||||||
 | -- | -- | -- | -- | -- | -- | -- |
 | **Model name** |
-| **Version** | 
+| **Version** |
 | **Problem name** |
 | **Technique** | LP | MILP |
-| **Kind of problem** | Infrastructure (capacity expansion) | Operational (dispatch only) | 
+| **Kind of problem** | Infrastructure (capacity expansion) | Operational (dispatch only) |
 | **Sectors** | Sector-coupled (power + heating, industry, transport) | Power sector |
 | **Time horizon** | Single-period | Multi-period (indicate n. of periods)) |
-| **Temporal resolution** | Hourly | 3 hourly | Daily | Yearly |  
+| **Temporal resolution** | Hourly | 3 hourly | Daily | Yearly |
 | **Spatial resolution** | Single node / 2 nodes (indicate countries/regions) | Multi-nodal (10 $\div$ 20) (indicate countries/regions) |
 | **MILP features** | None | Unit commitment | Transmission expansion | Other (please indicate) |
 | **N. of constraints** | <100| 100-1'000| 1'000-10'000| 10'000-100'000| 100'000-1'000'000 | 1'000'000-10'000'000 |
