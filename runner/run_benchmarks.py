@@ -20,22 +20,10 @@ def download_file_from_google_drive(url, dest_path):
     print(f"File downloaded and saved to: {dest_path}")
 
 
-def benchmark_solver(input_file, solver_name):
-    command = [
-        "/usr/bin/time",
-        "-v",
-        "python",
-        Path(__file__).parent / "run_solver.py",
-        solver_name,
-        input_file,
-    ]
-    # Run the command and capture the output
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    # Parse the output for runtime and memory usage
-    output = result.stderr
+def parse_time_memory(output):
     runtime = None
     memory_usage = None
+    # TODO use the output format options of /usr/bin/time to make this parsing easier
     for line in output.splitlines():
         if "Elapsed (wall clock) time" in line:
             runtime = parse_time(line.split()[-1])
@@ -48,8 +36,36 @@ def benchmark_solver(input_file, solver_name):
         print("Runtime information not found in output.")
     if memory_usage is None:
         print("Memory usage information not found in output.")
-
     return runtime, memory_usage
+
+
+class SolverFailed(Exception):
+    pass
+
+
+def benchmark_solver(input_file, solver_name):
+    command = [
+        "/usr/bin/time",
+        "-v",
+        "python",
+        Path(__file__).parent / "run_solver.py",
+        solver_name,
+        input_file,
+    ]
+    # Run the command and capture the output
+    result = subprocess.run(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        check=False,
+        encoding="utf-8",
+    )
+    if result.returncode != 0:
+        print(f"ERROR running solver {solver_name} on {input_file}:\n{result.stdout}")
+        raise SolverFailed()
+
+    return parse_time_memory(result.stdout)
 
 
 def main(benchmark_files_info, solvers, iterations=10):
@@ -70,12 +86,16 @@ def main(benchmark_files_info, solvers, iterations=10):
 
             for i in range(iterations):
                 print(f"Running solver ({i}): {solver}")
-                runtime, memory_usage = benchmark_solver(benchmark_path, solver)
+                try:
+                    runtime, memory_usage = benchmark_solver(benchmark_path, solver)
+                except SolverFailed:
+                    break
                 runtimes.append(runtime)
                 memory_usages.append(memory_usage)
-            runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
+
             # Calculate mean and standard deviation
-            if iterations >= 10:
+            runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
+            if iterations >= 10 and len(runtimes) > 0:
                 runtime_mean = statistics.mean(runtimes)
                 runtime_stddev = statistics.stdev(runtimes)
                 memory_mean = statistics.mean(memory_usages)
