@@ -43,10 +43,12 @@ class SolverFailed(Exception):
     pass
 
 
-def benchmark_solver(input_file, solver_name):
+def benchmark_solver(input_file, solver_name, timeout):
     command = [
         "/usr/bin/time",
         "-v",
+        "timeout",
+        f"{timeout}s",
         "python",
         Path(__file__).parent / "run_solver.py",
         solver_name,
@@ -61,14 +63,17 @@ def benchmark_solver(input_file, solver_name):
         check=False,
         encoding="utf-8",
     )
-    if result.returncode != 0:
-        print(f"ERROR running solver {solver_name} on {input_file}:\n{result.stdout}")
+    if result.returncode == 124:
+        print("TIMEOUT")
+        # TODO also raise an exception here to prevent retrying
+    elif result.returncode != 0:
+        print(f"ERROR running solver. Captured output:\n{result.stdout}")
         raise SolverFailed()
 
     return parse_time_memory(result.stdout)
 
 
-def main(benchmark_files_info, solvers, iterations=10):
+def main(benchmark_files_info, solvers, iterations=1, timeout=60):
     results = {}
     r_mean_std = {}
 
@@ -85,9 +90,11 @@ def main(benchmark_files_info, solvers, iterations=10):
             memory_usages = []
 
             for i in range(iterations):
-                print(f"Running solver ({i}): {solver}")
+                print(f"Running solver {solver} on {benchmark_path.name} ({i})...")
                 try:
-                    runtime, memory_usage = benchmark_solver(benchmark_path, solver)
+                    runtime, memory_usage = benchmark_solver(
+                        benchmark_path, solver, timeout
+                    )
                 except SolverFailed:
                     break
                 runtimes.append(runtime)
