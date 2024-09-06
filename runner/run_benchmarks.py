@@ -60,7 +60,7 @@ def benchmark_solver(input_file, solver_name):
 def main(benchmark_files_info, solvers, iterations=10):
     results = {}
     r_mean_std = {}
-    
+
     results_csv = "pocs/benchmark_results.csv"
     mean_stddev_csv = "pocs/benchmark_results_mean_stddev.csv"
 
@@ -84,11 +84,11 @@ def main(benchmark_files_info, solvers, iterations=10):
 
     dest_folder = "runner/lp_file"
     for file_info in benchmark_files_info:
-        dest_filename = file_info.get('name')
+        dest_filename = file_info.get("name")
         print(f"Starting download {file_info['name']} from: {file_info['url']}")
         download_file_from_google_drive(file_info["url"], dest_folder, dest_filename)
 
-        local_file_path = os.path.join(dest_folder, file_info.get('name'))
+        local_file_path = os.path.join(dest_folder, file_info.get("name"))
 
         for solver in solvers:
             runtimes = []
@@ -108,7 +108,9 @@ def main(benchmark_files_info, solvers, iterations=10):
             # Calculate mean and standard deviation
             runtime_mean = statistics.mean(runtimes) if iterations > 1 else runtimes[0]
             runtime_stddev = statistics.stdev(runtimes) if iterations > 1 else 0
-            memory_mean = statistics.mean(memory_usages) if iterations > 1 else memory_usages[0]
+            memory_mean = (
+                statistics.mean(memory_usages) if iterations > 1 else memory_usages[0]
+            )
             memory_stddev = statistics.stdev(memory_usages) if iterations > 1 else 0
 
             # Write mean and standard deviation to CSV
@@ -137,6 +139,7 @@ def main(benchmark_files_info, solvers, iterations=10):
             }
 
     return results, r_mean_std
+
 
 if __name__ == "__main__":
     benchmark_files_info = [
@@ -173,7 +176,7 @@ if __name__ == "__main__":
     ]
     solvers = ["highs", "glpk"]
 
-    main(benchmark_files_info, solvers)    
+    main(benchmark_files_info, solvers)
 
     # Print a message indicating completion
     print("Benchmarking complete.")

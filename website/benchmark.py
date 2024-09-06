@@ -5,17 +5,19 @@ import yaml
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
+
 # Load the metadata from the YAML file
 def load_metadata(yaml_file):
-    with open(yaml_file, 'r') as file:
+    with open(yaml_file, "r") as file:
         return yaml.safe_load(file)
+
 
 # Load the data from the CSV file
 data_url = "./pocs/benchmark_results_mean_stddev.csv"
 df = pd.read_csv(data_url)
 
 # Load benchmark metadata
-metadata = load_metadata('website/metadata.yaml')
+metadata = load_metadata("website/metadata.yaml")
 
 # Title of the Benchmarks page
 st.title("Benchmarks")
@@ -36,24 +38,36 @@ if selected_benchmark in metadata:
 
     # Transpose the DataFrame to display headers in the first column
     metadata_df_transposed = metadata_df.transpose().reset_index()
-    metadata_df_transposed.columns = ['Header', 'Value']
+    metadata_df_transposed.columns = ["Header", "Value"]
 
     # Build grid options with custom row height
     gb = GridOptionsBuilder.from_dataframe(metadata_df_transposed)
 
-    gb.configure_grid_options(domLayout='autoHeight')
+    gb.configure_grid_options(domLayout="autoHeight")
 
     grid_options = gb.build()
 
     # Add custom column definitions
     column_defs = [
-        {'headerName': 'Header', 'field': 'Header'},
-        {'headerName': 'Value', 'field': 'Value', 'flex': 1, 'cellStyle': {'textAlign': 'left'}}
+        {"headerName": "Header", "field": "Header"},
+        {
+            "headerName": "Value",
+            "field": "Value",
+            "flex": 1,
+            "cellStyle": {"textAlign": "left"},
+        },
     ]
-    grid_options['columnDefs'] = column_defs
+    grid_options["columnDefs"] = column_defs
 
     # Display the transposed DataFrame using ag-Grid
-    AgGrid(metadata_df_transposed, editable=True, sortable=True, filter=True, gridOptions=grid_options, fit_columns_on_grid_load=True)
+    AgGrid(
+        metadata_df_transposed,
+        editable=True,
+        sortable=True,
+        filter=True,
+        gridOptions=grid_options,
+        fit_columns_on_grid_load=True,
+    )
 
     #########
     # Chart #
@@ -86,7 +100,7 @@ if selected_benchmark in metadata:
                 name=solver,
                 text=subset["Solver"],
                 hoverinfo="text+x+y",
-                marker=dict(size=10)  
+                marker=dict(size=10),
             )
         )
 
@@ -97,7 +111,7 @@ if selected_benchmark in metadata:
         template="plotly_dark",
         legend_title="Solver",
         xaxis=dict(range=[min(merged_df[xTitle]) - 0.5, max(merged_df[xTitle]) + 0.5]),
-        yaxis=dict(range=[min(merged_df[yTitle]) - 0.5, max(merged_df[yTitle]) + 0.5])
+        yaxis=dict(range=[min(merged_df[yTitle]) - 0.5, max(merged_df[yTitle]) + 0.5]),
     )
 
     st.plotly_chart(fig_filtered)
