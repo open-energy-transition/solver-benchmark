@@ -2,6 +2,7 @@ import csv
 import os
 import statistics
 import subprocess
+from pathlib import Path
 
 import requests
 
@@ -24,7 +25,7 @@ def benchmark_solver(input_file, solver_name):
         "/usr/bin/time",
         "-v",
         "python",
-        "runner/run_solver.py",
+        Path(__file__).parent / "run_solver.py",
         solver_name,
         input_file,
     ]
@@ -56,9 +57,12 @@ def main(benchmark_files_info, solvers, iterations=10):
     r_mean_std = {}
 
     for file_info in benchmark_files_info:
-        local_file_path = "runner/temporary.lp"
-        print(f"Starting download {file_info['name']} from: {file_info['url']}")
-        download_file_from_google_drive(file_info["url"], local_file_path)
+        # TODO put the benchmarks in a better place; for now storing in runner/
+        benchmarks_folder = Path(__file__).parent
+        benchmark_path = benchmarks_folder / file_info["name"]
+        if not os.path.exists(benchmark_path):
+            print(f"Starting download {file_info['name']} from: {file_info['url']}")
+            download_file_from_google_drive(file_info["url"], benchmark_path)
 
         for solver in solvers:
             runtimes = []
@@ -66,7 +70,7 @@ def main(benchmark_files_info, solvers, iterations=10):
 
             for i in range(iterations):
                 print(f"Running solver ({i}): {solver}")
-                runtime, memory_usage = benchmark_solver(local_file_path, solver)
+                runtime, memory_usage = benchmark_solver(benchmark_path, solver)
                 runtimes.append(runtime)
                 memory_usages.append(memory_usage)
             runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
@@ -87,8 +91,6 @@ def main(benchmark_files_info, solvers, iterations=10):
                 "memory_mean": memory_mean,
                 "memory_stddev": memory_stddev,
             }
-
-        os.remove(local_file_path)
 
     return results, r_mean_std
 
@@ -165,10 +167,10 @@ if __name__ == "__main__":
     solvers = ["highs", "glpk"]
 
     results, r_mean_std = main(benchmark_files_info, solvers)
-    write_results_to_csv(results, "pocs/benchmark_results.csv")
+    write_results_to_csv(results, "benchmark_results.csv")
     write_mean_stddev_results_to_csv(
         r_mean_std,
-        "pocs/benchmark_results_mean_stddev.csv",
+        "benchmark_results_mean_stddev.csv",
     )
     # Print a message indicating completion
     print("Benchmarking complete.")
