@@ -73,7 +73,7 @@ def benchmark_solver(input_file, solver_name, timeout):
     return parse_time_memory(result.stdout)
 
 
-def main(benchmark_files_info, solvers, iterations=1, timeout=60):
+def main(benchmark_files_info, solvers, iterations=1, timeout=60 * 60):
     results = {}
     r_mean_std = {}
 
@@ -166,32 +166,33 @@ def write_mean_stddev_results_to_csv(results, output_file):
 
 if __name__ == "__main__":
     benchmark_files_info = [
+        # {
+        #     "name": "pypsa-eur-sec-2-lv1-3h.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
+        # },
         {
-            "name": "config_1.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
-        },
-        {
-            "name": "config_2.lp",
+            "name": "pypsa-eur-elec-20-lvopt-3h.nc",
             "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
         },
         {
-            "name": "config_3.lp",
+            "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
             "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
         },
         {
-            "name": "config_4.lp",
+            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
             "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
         },
-        {
-            "name": "problem_5.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
-        },
-        {
-            "name": "problem_6.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
-        },
+        # {
+        #     "name": "pypsa-wind+sol+ely-1h-ucwind.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
+        # },
+        # {
+        #     "name": "pypsa-wind+sol+ely-1h.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
+        # },
     ]
-    solvers = ["highs", "glpk"]
+    # solvers = ["highs", "glpk"] # For dev and testing
+    solvers = ["highs", "glpk", "scip", "gurobi"]  # For production
 
     results, r_mean_std = main(benchmark_files_info, solvers)
     write_results_to_csv(results, "benchmark_results.csv")
