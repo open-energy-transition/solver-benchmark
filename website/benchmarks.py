@@ -33,7 +33,9 @@ if selected_benchmark in metadata:
     st.subheader(f"Metadata for {selected_benchmark}")
 
     # Convert metadata to DataFrame
-    metadata_df = pd.DataFrame.from_dict(metadata[selected_benchmark], orient='index', columns=['Value']).reset_index()
+    metadata_df = pd.DataFrame.from_dict(
+        metadata[selected_benchmark], orient="index", columns=["Value"]
+    ).reset_index()
     metadata_df.columns = ["Header", "Value"]
 
     # Build grid options with custom row height
