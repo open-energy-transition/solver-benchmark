@@ -1,13 +1,11 @@
 import csv
+import json
 import os
 import statistics
 import subprocess
 from pathlib import Path
 
 import requests
-
-# local
-from utils import parse_time
 
 
 def download_file_from_google_drive(url, dest_path):
@@ -20,23 +18,13 @@ def download_file_from_google_drive(url, dest_path):
     print(f"File downloaded and saved to: {dest_path}")
 
 
-def parse_time_memory(output):
-    runtime = None
-    memory_usage = None
-    # TODO use the output format options of /usr/bin/time to make this parsing easier
-    for line in output.splitlines():
-        if "Elapsed (wall clock) time" in line:
-            runtime = parse_time(line.split()[-1])
-        if "Maximum resident set size" in line:
-            parts = line.strip().split()
-            max_resident_set_size = parts[-1]
-            memory_usage = float(max_resident_set_size) / 1000  # Convert to MB
-
-    if runtime is None:
-        print("Runtime information not found in output.")
-    if memory_usage is None:
-        print("Memory usage information not found in output.")
-    return runtime, memory_usage
+def parse_memory(output):
+    line = output.splitlines()[-1]
+    if "MaxResidentSetSizeKB=" in line:
+        parts = line.strip().split("=")
+        max_resident_set_size = parts[-1]
+        return float(max_resident_set_size) / 1000  # Convert to MB
+    raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
 class SolverFailed(Exception):
@@ -46,7 +34,8 @@ class SolverFailed(Exception):
 def benchmark_solver(input_file, solver_name, timeout):
     command = [
         "/usr/bin/time",
-        "-v",
+        "--format",
+        "MaxResidentSetSizeKB=%M",
         "timeout",
         f"{timeout}s",
         "python",
@@ -57,23 +46,30 @@ def benchmark_solver(input_file, solver_name, timeout):
     # Run the command and capture the output
     result = subprocess.run(
         command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        capture_output=True,
         text=True,
         check=False,
         encoding="utf-8",
     )
+
+    memory = parse_memory(result.stderr)
     if result.returncode == 124:
         print("TIMEOUT")
+        metrics = {"status": "TO", "runtime": timeout, "memory": memory}
+        return metrics
         # TODO also raise an exception here to prevent retrying
     elif result.returncode != 0:
-        print(f"ERROR running solver. Captured output:\n{result.stdout}")
+        print(
+            f"ERROR running solver. Captured output:\n{result.stdout}\n{result.stderr}"
+        )
         raise SolverFailed()
+    metrics = json.loads(result.stdout.splitlines()[-1])
+    metrics["memory"] = memory
 
-    return parse_time_memory(result.stdout)
+    return metrics
 
 
-def main(benchmark_files_info, solvers, iterations=1, timeout=60 * 60):
+def main(benchmark_files_info, solvers, iterations=1, timeout=20):
     results = {}
     r_mean_std = {}
 
@@ -92,13 +88,12 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=60 * 60):
             for i in range(iterations):
                 print(f"Running solver {solver} on {benchmark_path.name} ({i})...")
                 try:
-                    runtime, memory_usage = benchmark_solver(
-                        benchmark_path, solver, timeout
-                    )
+                    metrics = benchmark_solver(benchmark_path, solver, timeout)
                 except SolverFailed:
                     break
-                runtimes.append(runtime)
-                memory_usages.append(memory_usage)
+                # TODO dump all results to CSV here
+                runtimes.append(metrics["runtime"])
+                memory_usages.append(metrics["memory"])
 
             # Calculate mean and standard deviation
             runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
@@ -170,29 +165,30 @@ if __name__ == "__main__":
         #     "name": "pypsa-eur-sec-2-lv1-3h.nc",
         #     "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
         # },
-        {
-            "name": "pypsa-eur-elec-20-lvopt-3h.nc",
-            "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
-        },
+        # {
+        #     "name": "pypsa-eur-elec-20-lvopt-3h.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
+        # },
         {
             "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
             "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
         },
-        {
-            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
-        },
         # {
-        #     "name": "pypsa-wind+sol+ely-1h-ucwind.nc",
-        #     "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
+        #     "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
         # },
+        {
+            "name": "pypsa-wind+sol+ely-1h-ucwind.nc",
+            "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
+        },
         # {
         #     "name": "pypsa-wind+sol+ely-1h.nc",
         #     "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
         # },
     ]
     # solvers = ["highs", "glpk"] # For dev and testing
-    solvers = ["highs", "glpk", "scip", "gurobi"]  # For production
+    # solvers = ["highs", "glpk", "scip", "gurobi"]  # For production
+    solvers = ["gurobi"]
 
     results, r_mean_std = main(benchmark_files_info, solvers)
     write_results_to_csv(results, "benchmark_results.csv")
