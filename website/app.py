@@ -35,10 +35,10 @@ st.markdown(
 
 pages = [
     st.Page("home.py", title="Home"),
-    st.Page("raw-results.py", title="Raw Results"),
+    st.Page("benchmarks.py", title="Benchmark"),
     st.Page("compare.py", title="Compare Solvers"),
     st.Page("history.py", title="Solver Performance History"),
-    st.Page("benchmark.py", title="Benchmark"),
+    st.Page("raw-results.py", title="Raw Results"),
 ]
 
 pg = st.navigation(pages)

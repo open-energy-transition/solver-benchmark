@@ -17,11 +17,10 @@ data_url = "./pocs/benchmark_results_mean_stddev.csv"
 df = pd.read_csv(data_url)
 
 # Load benchmark metadata
-metadata = load_metadata("website/metadata.yaml")
+metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 
 # Title of the Benchmarks page
 st.title("Benchmarks")
-
 # Dropdown to select a benchmark
 benchmark_list = df["Benchmark"].unique()
 selected_benchmark = st.selectbox("Select a Benchmark", benchmark_list)
@@ -34,14 +33,11 @@ if selected_benchmark in metadata:
     st.subheader(f"Metadata for {selected_benchmark}")
 
     # Convert metadata to DataFrame
-    metadata_df = pd.DataFrame(metadata[selected_benchmark])
-
-    # Transpose the DataFrame to display headers in the first column
-    metadata_df_transposed = metadata_df.transpose().reset_index()
-    metadata_df_transposed.columns = ["Header", "Value"]
+    metadata_df = pd.DataFrame.from_dict(metadata[selected_benchmark], orient='index', columns=['Value']).reset_index()
+    metadata_df.columns = ["Header", "Value"]
 
     # Build grid options with custom row height
-    gb = GridOptionsBuilder.from_dataframe(metadata_df_transposed)
+    gb = GridOptionsBuilder.from_dataframe(metadata_df)
 
     gb.configure_grid_options(domLayout="autoHeight")
 
@@ -61,7 +57,7 @@ if selected_benchmark in metadata:
 
     # Display the transposed DataFrame using ag-Grid
     AgGrid(
-        metadata_df_transposed,
+        metadata_df,
         editable=True,
         sortable=True,
         filter=True,
