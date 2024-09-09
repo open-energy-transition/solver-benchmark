@@ -8,14 +8,18 @@ from pathlib import Path
 import requests
 
 
-def download_file_from_google_drive(url, dest_path):
-    """Download a file from url and save it locally."""
-    response = requests.get(url)
-    response.raise_for_status()  # Check for request errors
+def download_file_from_google_drive(url, dest_path: Path):
+    """Download a file from url and save it locally in the specified folder if it doesn't already exist."""
+    # Ensure the destination folder exists
+    os.makedirs(dest_path.parent, exist_ok=True)
 
-    with open(dest_path, "wb") as f:
-        f.write(response.content)
-    print(f"File downloaded and saved to: {dest_path}")
+    if os.path.exists(dest_path):
+        print(f"File already exists at {dest_path}. Skipping download.")
+        return
+    print(f"Downloading {url} to {dest_path}...")
+
+    response = requests.get(url)
+    response.raise_for_status()
 
 
 def parse_memory(output):
@@ -73,13 +77,32 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=20):
     results = {}
     r_mean_std = {}
 
+    results_csv = "benchmark_results.csv"
+    mean_stddev_csv = "benchmark_results_mean_stddev.csv"
+
+    # Initialize CSV files with headers
+    with open(results_csv, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Benchmark", "Solver", "Runtime (s)", "Memory Usage (MB)"])
+
+    with open(mean_stddev_csv, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            [
+                "Benchmark",
+                "Solver",
+                "Runtime Mean (s)",
+                "Runtime StdDev (s)",
+                "Memory Mean (MB)",
+                "Memory StdDev (MB)",
+            ]
+        )
+
+    # TODO put the benchmarks in a better place; for now storing in runner/
+    benchmarks_folder = Path(__file__).parent
     for file_info in benchmark_files_info:
-        # TODO put the benchmarks in a better place; for now storing in runner/
-        benchmarks_folder = Path(__file__).parent
         benchmark_path = benchmarks_folder / file_info["name"]
-        if not os.path.exists(benchmark_path):
-            print(f"Starting download {file_info['name']} from: {file_info['url']}")
-            download_file_from_google_drive(file_info["url"], benchmark_path)
+        download_file_from_google_drive(file_info["url"], benchmark_path)
 
         for solver in solvers:
             runtimes = []
@@ -95,13 +118,34 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=20):
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
 
+                # Write each benchmark result immediately after the measurement
+                with open(results_csv, mode="a", newline="") as file:
+                    writer = csv.writer(file)
+                    writer.writerow(
+                        [file_info["name"], solver, runtimes[-1], memory_usages[-1]]
+                    )
+
             # Calculate mean and standard deviation
-            runtime_mean = runtime_stddev = memory_mean = memory_stddev = None
-            if iterations >= 10 and len(runtimes) > 0:
-                runtime_mean = statistics.mean(runtimes)
-                runtime_stddev = statistics.stdev(runtimes)
-                memory_mean = statistics.mean(memory_usages)
-                memory_stddev = statistics.stdev(memory_usages)
+            runtime_mean = statistics.mean(runtimes) if iterations > 1 else runtimes[0]
+            runtime_stddev = statistics.stdev(runtimes) if iterations > 1 else 0
+            memory_mean = (
+                statistics.mean(memory_usages) if iterations > 1 else memory_usages[0]
+            )
+            memory_stddev = statistics.stdev(memory_usages) if iterations > 1 else 0
+
+            # Write mean and standard deviation to CSV
+            with open(mean_stddev_csv, mode="a", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(
+                    [
+                        file_info["name"],
+                        solver,
+                        runtime_mean,
+                        runtime_stddev,
+                        memory_mean,
+                        memory_stddev,
+                    ]
+                )
 
             results[(file_info["name"], solver)] = {
                 "runtimes": runtimes,
@@ -115,48 +159,6 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=20):
             }
 
     return results, r_mean_std
-
-
-def write_results_to_csv(results, output_file):
-    with open(output_file, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Benchmark", "Solver", "Runtime (s)", "Memory Usage (MB)"])
-
-        for (file_path, solver), metrics in results.items():
-            for runtime, memory_usage in zip(
-                metrics["runtimes"], metrics["memory_usages"]
-            ):
-                writer.writerow([file_path, solver, runtime, memory_usage])
-
-    print(f"Results successfully written to {output_file}.")
-
-
-def write_mean_stddev_results_to_csv(results, output_file):
-    with open(output_file, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(
-            [
-                "Benchmark",
-                "Solver",
-                "Runtime Mean (s)",
-                "Runtime StdDev (s)",
-                "Memory Mean (MB)",
-                "Memory StdDev (MB)",
-            ]
-        )
-
-        for (file_path, solver), metrics in results.items():
-            writer.writerow(
-                [
-                    file_path,
-                    solver,
-                    metrics["runtime_mean"],
-                    metrics["runtime_stddev"],
-                    metrics["memory_mean"],
-                    metrics["memory_stddev"],
-                ]
-            )
-    print(f"Mean and standard deviation results successfully written to {output_file}.")
 
 
 if __name__ == "__main__":
@@ -190,11 +192,7 @@ if __name__ == "__main__":
     # solvers = ["highs", "glpk", "scip", "gurobi"]  # For production
     solvers = ["gurobi"]
 
-    results, r_mean_std = main(benchmark_files_info, solvers)
-    write_results_to_csv(results, "benchmark_results.csv")
-    write_mean_stddev_results_to_csv(
-        r_mean_std,
-        "benchmark_results_mean_stddev.csv",
-    )
+    main(benchmark_files_info, solvers)
+
     # Print a message indicating completion
     print("Benchmarking complete.")
