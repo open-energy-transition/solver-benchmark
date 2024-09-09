@@ -16,10 +16,14 @@ def download_file_from_google_drive(url, dest_path: Path):
     if os.path.exists(dest_path):
         print(f"File already exists at {dest_path}. Skipping download.")
         return
-    print(f"Downloading {url} to {dest_path}...")
 
+    print(f"Downloading {url} to {dest_path}...", end="")
     response = requests.get(url)
     response.raise_for_status()
+
+    with open(dest_path, "wb") as f:
+        f.write(response.content)
+    print("done.")
 
 
 def parse_memory(output):
@@ -229,7 +233,7 @@ if __name__ == "__main__":
         },
     ]
     # solvers = ["highs", "glpk"] # For dev and testing
-    solvers = ["highs", "glpk", "scip", "gurobi"]  # For production
+    solvers = ["gurobi", "highs", "glpk", "scip"]  # For production
 
     main(benchmark_files_info, solvers)
 
