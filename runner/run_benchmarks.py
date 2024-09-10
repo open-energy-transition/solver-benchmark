@@ -1,73 +1,55 @@
 import csv
+import json
 import os
 import statistics
 import subprocess
+from pathlib import Path
 
 import requests
 
-# local
-from utils import parse_time
 
-
-def download_file_from_google_drive(url, dest_folder, dest_filename):
+def download_file_from_google_drive(url, dest_path: Path):
     """Download a file from url and save it locally in the specified folder if it doesn't already exist."""
     # Ensure the destination folder exists
-    os.makedirs(dest_folder, exist_ok=True)
-
-    dest_path = os.path.join(dest_folder, dest_filename)
+    os.makedirs(dest_path.parent, exist_ok=True)
 
     if os.path.exists(dest_path):
         print(f"File already exists at {dest_path}. Skipping download.")
         return
 
+    print(f"Downloading {url} to {dest_path}...", end="")
     response = requests.get(url)
     response.raise_for_status()
 
-
-def benchmark_solver(input_file, solver_name):
-    command = [
-        "/usr/bin/time",
-        "-v",
-        "python",
-        "runner/run_solver.py",
-        solver_name,
-        input_file,
-    ]
-    # Run the command and capture the output
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    # Parse the output for runtime and memory usage
-    output = result.stderr
-    runtime = None
-    memory_usage = None
-    for line in output.splitlines():
-        print(line)
-        if "Elapsed (wall clock) time" in line:
-            runtime = parse_time(line.split()[-1])
-        if "Maximum resident set size" in line:
-            parts = line.strip().split()
-            max_resident_set_size = parts[-1]
-            memory_usage = float(max_resident_set_size) / 1000  # Convert to MB
-
-    if runtime is None:
-        print("Runtime information not found in output.")
-    if memory_usage is None:
-        print("Memory usage information not found in output.")
-
-    return runtime, memory_usage
+    with open(dest_path, "wb") as f:
+        f.write(response.content)
+    print("done.")
 
 
-def main(benchmark_files_info, solvers, iterations=10):
-    results = {}
-    r_mean_std = {}
+def parse_memory(output):
+    line = output.splitlines()[-1]
+    if "MaxResidentSetSizeKB=" in line:
+        parts = line.strip().split("=")
+        max_resident_set_size = parts[-1]
+        return float(max_resident_set_size) / 1000  # Convert to MB
+    raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
-    results_csv = "pocs/benchmark_results.csv"
-    mean_stddev_csv = "pocs/benchmark_results_mean_stddev.csv"
 
+def write_csv_headers(results_csv, mean_stddev_csv):
     # Initialize CSV files with headers
     with open(results_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["Benchmark", "Solver", "Runtime (s)", "Memory Usage (MB)"])
+        writer.writerow(
+            [
+                "Benchmark",
+                "Solver",
+                "Status",
+                "Termination Condition",
+                "Objective Value",
+                "Runtime (s)",
+                "Memory Usage (MB)",
+            ]
+        )
 
     with open(mean_stddev_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
@@ -75,6 +57,9 @@ def main(benchmark_files_info, solvers, iterations=10):
             [
                 "Benchmark",
                 "Solver",
+                "Status",
+                "Termination Condition",
+                "Objective Value",
                 "Runtime Mean (s)",
                 "Runtime StdDev (s)",
                 "Memory Mean (MB)",
@@ -82,99 +67,176 @@ def main(benchmark_files_info, solvers, iterations=10):
             ]
         )
 
-    dest_folder = "runner/lp_file"
-    for file_info in benchmark_files_info:
-        dest_filename = file_info.get("name")
-        print(f"Starting download {file_info['name']} from: {file_info['url']}")
-        download_file_from_google_drive(file_info["url"], dest_folder, dest_filename)
 
-        local_file_path = os.path.join(dest_folder, file_info.get("name"))
+def write_csv_row(results_csv, benchmark_name, solver, metrics):
+    # NOTE: ensure the order is the same as the headers above
+    with open(results_csv, mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            [
+                benchmark_name,
+                solver,
+                metrics["status"],
+                metrics["condition"],
+                metrics["objective"],
+                metrics["runtime"],
+                metrics["memory"],
+            ]
+        )
+
+
+def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
+    # NOTE: ensure the order is the same as the headers above
+    with open(mean_stddev_csv, mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            [
+                benchmark_name,
+                solver,
+                metrics["status"],
+                metrics["condition"],
+                metrics["objective"],
+                metrics["runtime_mean"],
+                metrics["runtime_stddev"],
+                metrics["memory_mean"],
+                metrics["memory_stddev"],
+            ]
+        )
+
+
+def benchmark_solver(input_file, solver_name, timeout):
+    command = [
+        "/usr/bin/time",
+        "--format",
+        "MaxResidentSetSizeKB=%M",
+        "timeout",
+        f"{timeout}s",
+        "python",
+        Path(__file__).parent / "run_solver.py",
+        solver_name,
+        input_file,
+    ]
+    # Run the command and capture the output
+    result = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=False,
+        encoding="utf-8",
+    )
+
+    memory = parse_memory(result.stderr)
+    if result.returncode == 124:
+        print("TIMEOUT")
+        metrics = {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": None,
+            "runtime": timeout,
+        }
+    elif result.returncode != 0:
+        print(
+            f"ERROR running solver. Captured output:\n{result.stdout}\n{result.stderr}"
+        )
+        # Errors are also said to have run for `timeout`s, so that they appear
+        # along with timeouts in charts
+        metrics = {
+            "status": "ER",
+            "condition": "Error",
+            "objective": None,
+            "runtime": timeout,
+        }
+    else:
+        metrics = json.loads(result.stdout.splitlines()[-1])
+    metrics["memory"] = memory
+
+    return metrics
+
+
+def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
+    results = {}
+
+    # Create results folder `results/` if it doesn't exist
+    results_folder = Path(__file__).parent.parent / "results"
+    os.makedirs(results_folder, exist_ok=True)
+    results_csv = results_folder / "benchmark_results.csv"
+    mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
+    write_csv_headers(results_csv, mean_stddev_csv)
+
+    # TODO put the benchmarks in a better place; for now storing in runner/
+    benchmarks_folder = Path(__file__).parent
+    for file_info in benchmark_files_info:
+        benchmark_path = benchmarks_folder / file_info["name"]
+        download_file_from_google_drive(file_info["url"], benchmark_path)
 
         for solver in solvers:
+            metrics = {}
             runtimes = []
             memory_usages = []
 
             for i in range(iterations):
-                print(f"Running solver ({i}): {solver}")
-                runtime, memory_usage = benchmark_solver(local_file_path, solver)
-                runtimes.append(runtime)
-                memory_usages.append(memory_usage)
+                print(f"Running solver {solver} on {benchmark_path.name} ({i})...")
+                metrics = benchmark_solver(benchmark_path, solver, timeout)
+
+                runtimes.append(metrics["runtime"])
+                memory_usages.append(metrics["memory"])
 
                 # Write each benchmark result immediately after the measurement
-                with open(results_csv, mode="a", newline="") as file:
-                    writer = csv.writer(file)
-                    writer.writerow([file_info["name"], solver, runtime, memory_usage])
+                write_csv_row(results_csv, benchmark_path.stem, solver, metrics)
+
+                # If solver errors or times out, don't run further iterations
+                if metrics["status"] in {"ER", "TO"}:
+                    break
 
             # Calculate mean and standard deviation
-            runtime_mean = statistics.mean(runtimes) if iterations > 1 else runtimes[0]
-            runtime_stddev = statistics.stdev(runtimes) if iterations > 1 else 0
-            memory_mean = (
-                statistics.mean(memory_usages) if iterations > 1 else memory_usages[0]
-            )
-            memory_stddev = statistics.stdev(memory_usages) if iterations > 1 else 0
+            if iterations > 1:
+                metrics["runtime_mean"] = statistics.mean(runtimes)
+                metrics["runtime_stddev"] = statistics.stdev(runtimes)
+                metrics["memory_mean"] = statistics.mean(memory_usages)
+                metrics["memory_stddev"] = statistics.stdev(memory_usages)
+            else:
+                metrics["runtime_mean"] = runtimes[0]
+                metrics["runtime_stddev"] = 0
+                metrics["memory_mean"] = memory_usages[0]
+                metrics["memory_stddev"] = 0
 
             # Write mean and standard deviation to CSV
-            with open(mean_stddev_csv, mode="a", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerow(
-                    [
-                        file_info["name"],
-                        solver,
-                        runtime_mean,
-                        runtime_stddev,
-                        memory_mean,
-                        memory_stddev,
-                    ]
-                )
+            # NOTE: this uses the last iteration's values for status, condition, etc
+            write_csv_summary_row(mean_stddev_csv, benchmark_path.stem, solver, metrics)
 
-            results[(file_info["label"], solver)] = {
-                "runtimes": runtimes,
-                "memory_usages": memory_usages,
-            }
-            r_mean_std[(file_info["label"], solver)] = {
-                "runtime_mean": runtime_mean,
-                "runtime_stddev": runtime_stddev,
-                "memory_mean": memory_mean,
-                "memory_stddev": memory_stddev,
-            }
-
-    return results, r_mean_std
+            results[(benchmark_path.stem, solver)] = metrics
+    return results
 
 
 if __name__ == "__main__":
     benchmark_files_info = [
         {
-            "label": "pypsa-eur-sec-2-lv1-3h",
-            "name": "config_1.lp",
+            "name": "pypsa-eur-sec-2-lv1-3h.nc",
             "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
         },
         {
-            "label": "pypsa-eur-elec-20-lvopt-3h",
-            "name": "config_2.lp",
+            "name": "pypsa-eur-elec-10-lvopt-3h.nc",
             "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
         },
         {
-            "label": "pypsa-eur-elec-20-lv1-3h-op",
-            "name": "config_3.lp",
+            "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
             "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
         },
         {
-            "label": "pypsa-eur-elec-20-lv1-3h-op-ucconv",
-            "name": "config_4.lp",
+            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
             "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
         },
         {
-            "label": "pypsa-wind+sol+ely-1h-ucwind",
-            "name": "problem_5.lp",
+            "name": "pypsa-wind+sol+ely-1h-ucwind.nc",
             "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
         },
         {
-            "label": "pypsa-wind+sol+ely-1h",
-            "name": "problem_6.lp",
+            "name": "pypsa-wind+sol+ely-1h.nc",
             "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
         },
     ]
-    solvers = ["highs", "glpk"]
+    # solvers = ["highs", "glpk"] # For dev and testing
+    solvers = ["gurobi", "highs", "glpk", "scip"]  # For production
 
     main(benchmark_files_info, solvers)
 

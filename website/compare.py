@@ -1,9 +1,11 @@
+from pathlib import Path
+
 import pandas as pd
 import streamlit as st
 import streamlit_shadcn_ui as ui
 from components.compare_chart import create_comparison_chart
 
-data_url = "./pocs/benchmark_results.csv"
+data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 
 df = pd.read_csv(data_url)
 
