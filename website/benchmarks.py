@@ -23,6 +23,7 @@ metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 
 # Title of the Benchmarks page
 st.title("Benchmarks")
+
 # Dropdown to select a benchmark
 benchmark_list = df["Benchmark"].unique()
 selected_benchmark = st.selectbox("Select a Benchmark", benchmark_list)
@@ -42,9 +43,7 @@ if selected_benchmark in metadata:
 
     # Build grid options with custom row height
     gb = GridOptionsBuilder.from_dataframe(metadata_df)
-
     gb.configure_grid_options(domLayout="autoHeight")
-
     grid_options = gb.build()
 
     # Add custom column definitions
@@ -78,40 +77,53 @@ if selected_benchmark in metadata:
     # Show the "peak memory vs runtime" plot for the selected benchmark
     fig_filtered = go.Figure()
 
+    # Define marker symbols based on status
+    status_symbols = {
+        "TO": "x",  # Timeout gets an "X"
+        "ok": "circle",  # Normal execution gets a circle
+    }
+
     # Get peak memory usage and runtime for the selected benchmark
     peak_memory = (
-        benchmark_data.groupby("Solver")["Memory Mean (MB)"].max().reset_index()
+        benchmark_data.groupby(["Solver", "Status"])["Memory Mean (MB)"]
+        .max()
+        .reset_index()
     )
     xTitle = "Runtime Mean (s)"
     yTitle = "Memory Mean (MB)"
-    runtime = benchmark_data[["Solver", xTitle]]
+    runtime = benchmark_data[["Solver", "Status", xTitle]]
 
     # Merge data to have a common DataFrame for plotting
-    merged_df = pd.merge(peak_memory, runtime, on="Solver")
+    merged_df = pd.merge(peak_memory, runtime, on=["Solver", "Status"])
 
-    # Add lines for runtime vs peak memory
-    for solver in merged_df["Solver"].unique():
-        subset = merged_df[merged_df["Solver"] == solver]
-        fig_filtered.add_trace(
-            go.Scatter(
-                x=subset[xTitle],
-                y=subset[yTitle],
-                mode="lines+markers",
-                name=solver,
-                text=subset["Solver"],
-                hoverinfo="text+x+y",
-                marker=dict(size=10),
+    # Add traces for runtime vs peak memory with different symbols
+    for status, symbol in status_symbols.items():
+        status_subset = merged_df[merged_df["Status"] == status]
+        for solver in status_subset["Solver"].unique():
+            subset = status_subset[status_subset["Solver"] == solver]
+            fig_filtered.add_trace(
+                go.Scatter(
+                    x=subset[xTitle],
+                    y=subset[yTitle],
+                    mode="markers",
+                    name=f"{solver} - {status}",
+                    marker=dict(
+                        symbol=symbol,  # Marker shape based on status
+                        size=10,
+                    ),
+                    text=subset["Solver"],
+                    hoverinfo="text+x+y",
+                )
             )
-        )
 
     fig_filtered.update_layout(
         title=f"Runtime vs Peak Memory Consumption for {selected_benchmark}",
         xaxis_title=xTitle,
         yaxis_title="Peak Memory Usage mean (MB)",
         template="plotly_dark",
-        legend_title="Solver",
+        legend_title="Solver - Status",
         xaxis=dict(range=[min(merged_df[xTitle]) - 0.5, max(merged_df[xTitle]) + 0.5]),
-        yaxis=dict(range=[min(merged_df[yTitle]) - 0.5, max(merged_df[yTitle]) + 0.5]),
+        yaxis=dict(range=[min(merged_df[yTitle]) - 10, max(merged_df[yTitle]) + 10]),
     )
 
     st.plotly_chart(fig_filtered)
