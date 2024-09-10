@@ -1,3 +1,4 @@
+import pandas as pd
 import plotly.graph_objects as go
 
 
@@ -12,20 +13,42 @@ def create_comparison_chart(
 ):
     fig = go.Figure()
 
+    # Define marker symbols based on status
+    status_symbols = {
+        "TO": "x",  # Timeout gets an "X"
+        "ok": "circle",  # Normal execution gets a circle
+    }
+
+    # Create a DataFrame to merge data from both solvers
+    merged_data = pd.merge(
+        solver1_data, solver2_data, on="Benchmark", suffixes=("_1", "_2")
+    )
+
     # Scatter plot for comparison
     fig.add_trace(
         go.Scatter(
-            x=solver1_data[metric_name],
-            y=solver2_data[metric_name],
+            x=merged_data[f"{metric_name}_1"],
+            y=merged_data[f"{metric_name}_2"],
             mode="markers",
             name=f"{comparison_type} Comparison",
-            marker=dict(color="blue"),
+            marker=dict(
+                color="blue",
+                symbol=[
+                    status_symbols.get(status, "circle")
+                    for status in merged_data["Status_1"]
+                ],  # Use symbols based on status
+                size=10,
+            ),
         )
     )
 
     # Define axis range for both axes
-    min_runtime = min(min(solver1_data[metric_name]), min(solver2_data[metric_name]))
-    max_runtime = max(max(solver1_data[metric_name]), max(solver2_data[metric_name]))
+    min_runtime = min(
+        min(merged_data[f"{metric_name}_1"]), min(merged_data[f"{metric_name}_2"])
+    )
+    max_runtime = max(
+        max(merged_data[f"{metric_name}_1"]), max(merged_data[f"{metric_name}_2"])
+    )
 
     # Adding grid lines and labels for the runtime scatter plot
     fig.update_xaxes(

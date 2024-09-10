@@ -1,13 +1,13 @@
-Benchmark,Solver,Runtime Mean (s),Runtime StdDev (s),Memory Mean (MB),Memory StdDev (MB)
-pypsa-eur-sec-2-lv1-3h,highs,0.991,0.336665016497606,151.6248,0.33301211189184976
-pypsa-eur-sec-2-lv1-3h,glpk,0.971,0.27497272592022654,151.8272,0.18667428555880008
-pypsa-eur-elec-20-lvopt-3h,highs,0.8150000000000001,0.01957890020745119,151.66320000000002,0.17239541112738263
-pypsa-eur-elec-20-lvopt-3h,glpk,0.8119999999999999,0.010327955589886396,151.6868,0.21534096993682886
-pypsa-eur-elec-20-lv1-3h-op,highs,0.8250000000000001,0.04089281382128432,151.7704,0.17937372531486992
-pypsa-eur-elec-20-lv1-3h-op,glpk,0.81,0.01054092553389456,151.7956,0.13703462660542884
-pypsa-eur-elec-20-lv1-3h-op-ucconv,highs,0.817,0.012516655570345689,151.708,0.15129661816005116
-pypsa-eur-elec-20-lv1-3h-op-ucconv,glpk,0.8170000000000001,0.024517567397911038,151.6932,0.16028918311047446
-pypsa-wind+sol+ely-1h-ucwind,highs,0.831,0.022335820757001253,151.7184,0.12044657644689744
-pypsa-wind+sol+ely-1h-ucwind,glpk,0.803,0.009486832980505124,151.8332,0.12004517668129731
-pypsa-wind+sol+ely-1h,highs,0.822,0.022509257354845488,151.7288,0.1764922409374124
-pypsa-wind+sol+ely-1h,glpk,0.804,0.010749676997731373,151.678,0.1413238990561886
+Benchmark,Solver,Status,Termination Condition,Objective Value,Runtime Mean (s),Runtime StdDev (s),Memory Mean (MB),Memory StdDev (MB)
+pypsa-eur-sec-2-lv1-3h,gurobi,TO,Timeout,,10,0,569.456,0
+pypsa-eur-sec-2-lv1-3h,highs,TO,Timeout,,10,0,550.112,0
+pypsa-eur-elec-20-lvopt-3h,gurobi,TO,Timeout,,10,0,581.7,0
+pypsa-eur-elec-20-lvopt-3h,highs,TO,Timeout,,10,0,582.724,0
+pypsa-eur-elec-20-lv1-3h-op,gurobi,TO,Timeout,,10,0,883.924,0
+pypsa-eur-elec-20-lv1-3h-op,highs,TO,Timeout,,10,0,706.552,0
+pypsa-eur-elec-20-lv1-3h-op-ucconv,gurobi,TO,Timeout,,10,0,689.34,0
+pypsa-eur-elec-20-lv1-3h-op-ucconv,highs,TO,Timeout,,10,0,657.88,0
+pypsa-wind+sol+ely-1h-ucwind,gurobi,ok,optimal,313963605214.4336,5.212889194488525,0,429.88,0
+pypsa-wind+sol+ely-1h-ucwind,highs,TO,Timeout,,10,0,536.108,0
+pypsa-wind+sol+ely-1h,gurobi,ok,optimal,84667526618.31015,5.6979570388793945,0,454.428,0
+pypsa-wind+sol+ely-1h,highs,TO,Timeout,,10,0,414.988,0
