@@ -14,7 +14,7 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
 1. Run the following commands to generate the NC files for each benchmark. This assumes your current working directory is `pypsa-eur/` and that this repo is checked out at `~/code/solver-benchmarks/`; modify this path accordingly.
      ```bash
      time snakemake -call all --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-3h.yaml ; echo -e '\a'
-     time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lvopt-3h.yaml ; echo -e '\a'
+     time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-10-lvopt-3h.yaml ; echo -e '\a'
      time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
      time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml ; echo -e '\a'
      time python pypsa-wind+sol+ely-1h-ucwind.py
@@ -73,7 +73,7 @@ index bdc10dd1..419ca641 100644
      kwargs["linearized_unit_commitment"] = cf_solving.get(
 ```
 
-## PyPSA-EUR-based sample problems (pypsa-eur-sec-2-lv1-3h, pypsa-eur-elec-20-lvopt-3h, pypsa-eur-elec-20-lv1-3h-op, pypsa-eur-elec-20-lv1-3h-op-ucconv)
+## PyPSA-EUR-based sample problems (pypsa-eur-sec-2-lv1-3h, pypsa-eur-elec-10-lvopt-3h, pypsa-eur-elec-20-lv1-3h-op, pypsa-eur-elec-20-lv1-3h-op-ucconv)
 - First, follow the traditional steps for PyPSA-EUR [installation](https://pypsa-eur.readthedocs.io/en/latest/installation.html).
 - Get the config files for the sample problems from ... and put them in `/pypsa-eur/config`
 - Get the `solver_benchmark_pypsa_eur.py` and place it in the `/pypsa-eur` folder
