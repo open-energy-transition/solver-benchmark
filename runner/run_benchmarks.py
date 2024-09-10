@@ -156,8 +156,11 @@ def benchmark_solver(input_file, solver_name, timeout):
 def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
     results = {}
 
-    results_csv = "benchmark_results.csv"
-    mean_stddev_csv = "benchmark_results_mean_stddev.csv"
+    # Create results folder `results/` if it doesn't exist
+    results_folder = Path(__file__).parent.parent / "results"
+    os.makedirs(results_folder, exist_ok=True)
+    results_csv = results_folder / "benchmark_results.csv"
+    mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
     write_csv_headers(results_csv, mean_stddev_csv)
 
     # TODO put the benchmarks in a better place; for now storing in runner/
@@ -179,7 +182,7 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
                 memory_usages.append(metrics["memory"])
 
                 # Write each benchmark result immediately after the measurement
-                write_csv_row(results_csv, file_info["name"], solver, metrics)
+                write_csv_row(results_csv, benchmark_path.stem, solver, metrics)
 
                 # If solver errors or times out, don't run further iterations
                 if metrics["status"] in {"ER", "TO"}:
@@ -199,9 +202,9 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
 
             # Write mean and standard deviation to CSV
             # NOTE: this uses the last iteration's values for status, condition, etc
-            write_csv_summary_row(mean_stddev_csv, file_info["name"], solver, metrics)
+            write_csv_summary_row(mean_stddev_csv, benchmark_path.stem, solver, metrics)
 
-            results[(file_info["name"], solver)] = metrics
+            results[(benchmark_path.stem, solver)] = metrics
     return results
 
 

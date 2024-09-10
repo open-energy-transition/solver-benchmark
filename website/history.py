@@ -1,8 +1,11 @@
+from pathlib import Path
+
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-data = pd.read_csv("./pocs/benchmark_results.csv")
+data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
+data = pd.read_csv(data_url)
 
 st.title("Solver Performance History")
 
