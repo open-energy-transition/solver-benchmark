@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -13,7 +15,7 @@ def load_metadata(yaml_file):
 
 
 # Load the data from the CSV file
-data_url = "./pocs/benchmark_results_mean_stddev.csv"
+data_url = Path(__file__).parent.parent / "results/benchmark_results_mean_stddev.csv"
 df = pd.read_csv(data_url)
 
 # Load benchmark metadata

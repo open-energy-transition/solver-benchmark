@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -18,7 +20,7 @@ st.markdown(
 st.title("Benchmarks")
 
 # Load the data from the CSV file
-data_url = "./pocs/benchmark_results.csv"
+data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df = pd.read_csv(data_url)
 
 # Create a figure for runtime vs peak memory
@@ -81,6 +83,6 @@ st.markdown(
     """
     **Legend Explanation:**
     - **X**: Timeout (TO)
-    - **Circle**: Successful run (OK)
+    - **O**: Successful run (OK)
     """
 )

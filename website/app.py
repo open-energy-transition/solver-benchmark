@@ -35,7 +35,7 @@ st.markdown(
 
 pages = [
     st.Page("home.py", title="Home"),
-    st.Page("benchmarks.py", title="Benchmark"),
+    st.Page("benchmarks.py", title="Benchmarks"),
     st.Page("compare.py", title="Compare Solvers"),
     st.Page("history.py", title="Solver Performance History"),
     st.Page("raw-results.py", title="Raw Results"),
