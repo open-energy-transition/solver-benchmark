@@ -75,3 +75,12 @@ fig.update_layout(
 
 # Show the plot
 st.plotly_chart(fig)
+
+# Add a line of text explaining the symbols
+st.markdown(
+    """
+    **Legend Explanation:**
+    - **X**: Timeout (TO)
+    - **Circle**: Successful run (OK)
+    """
+)
