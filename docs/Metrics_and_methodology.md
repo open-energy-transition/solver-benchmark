@@ -12,9 +12,9 @@ We record the following metrics for each benchmark and solver combination:
 
 ## Methodology
 
-Given a time out `T` (seconds) and a number of iterations `N`, the benchmark runner operates as follows:
+Given a time out `T` (seconds) and a number of iterations `N`, the benchmark runner `runner/run_benchmarks.py` operates as follows:
 
-- The benchmark LP/NC files are downloaded from Zenodo (TODO, currently Google Drive)
+- The benchmark LP/NC files are downloaded from Zenodo (TODO, currently NC files from Google Drive)
 - For each benchmark and solver combination, the runner calls `runner/run_solver.py`, which imports the input file into linopy and calls `linopy.Model.solve()` with the chosen solver
 - `run_solver.py` reports the time taken for the `solve()` call, along with the status, termination condition, and objective value returned by the solver
 - The runner uses `/usr/bin/time` to measure the peak memory usage of the `run_solver.py` script
