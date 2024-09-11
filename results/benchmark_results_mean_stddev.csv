@@ -1,0 +1,25 @@
+Benchmark,Solver,Status,Termination Condition,Objective Value,Runtime Mean (s),Runtime StdDev (s),Memory Mean (MB),Memory StdDev (MB)
+pypsa-eur-sec-2-lv1-3h,gurobi,TO,Timeout,,300,0,1787.848,0
+pypsa-eur-sec-2-lv1-3h,highs,TO,Timeout,,300,0,1855.136,0
+pypsa-eur-sec-2-lv1-3h,glpk,TO,Timeout,,300,0,566.772,0
+pypsa-eur-sec-2-lv1-3h,scip,TO,Timeout,,300,0,4208.88,0
+pypsa-eur-elec-10-lvopt-3h,gurobi,ok,optimal,8338089380.280747,108.03125429153442,0,2684.152,0
+pypsa-eur-elec-10-lvopt-3h,highs,TO,Timeout,,300,0,2414.744,0
+pypsa-eur-elec-10-lvopt-3h,glpk,TO,Timeout,,300,0,566.764,0
+pypsa-eur-elec-10-lvopt-3h,scip,TO,Timeout,,300,0,5756.92,0
+pypsa-eur-elec-20-lv1-3h-op,gurobi,ok,optimal,7070825187.397594,26.436074018478394,0,1017.264,0
+pypsa-eur-elec-20-lv1-3h-op,highs,TO,Timeout,,300,0,853.76,0
+pypsa-eur-elec-20-lv1-3h-op,glpk,TO,Timeout,,300,0,319.676,0
+pypsa-eur-elec-20-lv1-3h-op,scip,TO,Timeout,,300,0,1668.304,0
+pypsa-eur-elec-20-lv1-3h-op-ucconv,gurobi,ok,optimal,10504487082.690851,44.94551229476929,0,1140.84,0
+pypsa-eur-elec-20-lv1-3h-op-ucconv,highs,TO,Timeout,,300,0,1047.224,0
+pypsa-eur-elec-20-lv1-3h-op-ucconv,glpk,TO,Timeout,,300,0,326.776,0
+pypsa-eur-elec-20-lv1-3h-op-ucconv,scip,TO,Timeout,,300,0,1970.784,0
+pypsa-wind+sol+ely-1h-ucwind,gurobi,ok,optimal,313963605214.4336,5.462620973587036,0,451.772,0
+pypsa-wind+sol+ely-1h-ucwind,highs,ok,optimal,313963605214.43445,19.595200538635254,0,536.044,0
+pypsa-wind+sol+ely-1h-ucwind,glpk,ok,optimal,313963605200.0,52.29001998901367,0,408.768,0
+pypsa-wind+sol+ely-1h-ucwind,scip,ok,optimal,313963605214.43396,111.93103623390198,0,1103.992,0
+pypsa-wind+sol+ely-1h,gurobi,ok,optimal,84667526618.31015,5.820308685302734,0,454.436,0
+pypsa-wind+sol+ely-1h,highs,ok,optimal,84667526618.31026,102.11832928657532,0,519.06,0
+pypsa-wind+sol+ely-1h,glpk,ok,optimal,84667526620.0,228.0925920009613,0,347.772,0
+pypsa-wind+sol+ely-1h,scip,ok,optimal,84667526618.308,196.46365356445312,0,714.24,0
