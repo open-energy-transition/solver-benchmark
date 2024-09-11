@@ -8,7 +8,7 @@
   Time horizon: Single period (1 year)
   Temporal resolution: 3 hourly
   Spatial resolution: 2 nodes (Italy)
-  MILP features: None
+  MILP features: -
   N. of constraints: 393568
   N. of variables': 390692
 
@@ -17,38 +17,38 @@
   Model name: PyPSA-Eur
   Version: 0.12.0 (commit b328169)
   Technique: MILP
-  Kind of problem: Infrastructure 
+  Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 3 hourly 
+  Temporal resolution: 3 hourly
   Spatial resolution: 10 nodes (Italy)
   MILP features: Transmission expansion
   N. of constraints: 1432032
   N. of variables': 1099126
 
   Problem name: pypsa-eur-elec-20-lv1-3h-op
-  Short description: PyPSA-Eur power sector operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints)
+  Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.12.0 (commit b328169)
   Technique: LP
-  Kind of problem: Operational 
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 3 hourly 
+  Temporal resolution: 3 hourly
   Spatial resolution: 20 nodes (Italy)
-  MILP features: None
+  MILP features: -
   N. of constraints: 82134
   N. of variables': 6935
 
   Problem name: pypsa-eur-elec-20-lv1-3h-op-ucconv
-  Short description: PyPSA-Eur power sector operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints)
+  Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.12.0 (commit b328169)
   Technique: MILP
-  Kind of problem: Operational 
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 3 hourly 
+  Temporal resolution: 3 hourly
   Spatial resolution: 20 nodes (Italy)
   MILP features: Unit commitment for conventional fleet
   N. of constraints: 108984
@@ -59,10 +59,10 @@
   Model name: PyPSA
   Version: 0.30.1
   Technique: MILP
-  Kind of problem: Infrastructure 
+  Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: hourly 
+  Temporal resolution: hourly
   Spatial resolution: Single-node
   MILP features: Unit commitment on wind generators
   N. of constraints: 19
@@ -73,10 +73,10 @@
   Model name: PyPSA
   Version: 0.12.0 (commit b328169)
   Technique: LP
-  Kind of problem: Infrastructure 
+  Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: hourly 
+  Temporal resolution: hourly
   Spatial resolution: 1 node
   MILP features: None
   N. of constraints: 14
