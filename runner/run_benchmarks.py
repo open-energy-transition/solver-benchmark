@@ -153,7 +153,7 @@ def benchmark_solver(input_file, solver_name, timeout):
     return metrics
 
 
-def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
+def main(benchmark_files_info, solvers, iterations=10, timeout=5 * 60):
     results = {}
 
     # Create results folder `results/` if it doesn't exist
@@ -211,22 +211,22 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
 
 if __name__ == "__main__":
     benchmark_files_info = [
-        {
-            "name": "pypsa-eur-sec-2-lv1-3h.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
-        },
-        {
-            "name": "pypsa-eur-elec-10-lvopt-3h.nc",
-            "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
-        },
-        {
-            "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
-        },
-        {
-            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
-        },
+        # {
+        #     "name": "pypsa-eur-sec-2-lv1-3h.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
+        # },
+        # {
+        #     "name": "pypsa-eur-elec-10-lvopt-3h.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
+        # },
+        # {
+        #     "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
+        # },
+        # {
+        #     "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
+        #     "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
+        # },
         {
             "name": "pypsa-wind+sol+ely-1h-ucwind.nc",
             "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
