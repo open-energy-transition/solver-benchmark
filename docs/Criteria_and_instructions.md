@@ -38,7 +38,7 @@ Please include along with each benchmark submission, the following metadata. Fur
 | **Model name** |
 | **Version** |
 | **Technique** | LP | MILP |
-| **Kind of problem** | Infrastructure (capacity expansion) | Operational (dispatch only) |
+| **Kind of problem** | Infrastructure (capacity expansion) | Operational (dispatch only) | Other (please indicate) |
 | **Sectors** | Sector-coupled (power + heating, industry, transport) | Power sector |
 | **Time horizon** | Single-period | Multi-period (indicate n. of periods)) |
 | **Temporal resolution** | Hourly | 3 hourly | Daily | Yearly |
@@ -50,17 +50,19 @@ Please include along with each benchmark submission, the following metadata. Fur
 For example, here is an entry in the `benchmarks/pypsa/metadata.yaml` file:
 
 ```yaml
-pypsa-eur-sec-2-lv1-3h:
-  Kind of model: PyPSA-Eur
-  Type of study: Infrastructure
-  Sector: Sector coupled
-  Time resolution: 3 hourly X 1 year
-  Spatial resolution: Country level (IT, 2 nodes)
-  Transmission expansion: '-'
-  Unit commitment: '-'
-  Specifications: Linear, lot of variables, strongly intermeshed constraints
-  Solution time: Highs':' 3356 s
-  '': Constraints':' 393568, Variables':'' 390692, Free variables':' 1431
+  Problem name: pypsa-eur-sec-2-lv1-3h
+  Short description: Sector-coupled PyPSA-Eur run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
+  Model name: PyPSA-Eur
+  Version: 0.12.0 (commit b328169)
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
+  Time horizon: Single period (1 year)
+  Temporal resolution: 3 hourly
+  Spatial resolution: 2 nodes (Italy)
+  MILP features: None
+  N. of constraints: 393568
+  N. of variables': 390692
 ```
 
 ## Target modelling frameworks
@@ -85,5 +87,3 @@ Based on the classification in *M. G. Prina et al., ["Classification and challen
 - TIMES
 - OSeMOSYS
 - TEMOA
-
-[^1]: Based on the response from the respective modelling community concerning the generation of sample problems.
