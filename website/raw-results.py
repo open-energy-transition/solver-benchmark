@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 import streamlit as st
 from components.benchmark_table import display_table
@@ -16,7 +18,7 @@ st.markdown(
 
 st.title("Benchmarks")
 
-data_url = "./pocs/benchmark_results.csv"
+data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 
 df = pd.read_csv(data_url)
 

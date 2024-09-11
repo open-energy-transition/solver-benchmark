@@ -165,7 +165,7 @@ n.add(
     cyclic_state_of_charge=True,
 )
 
-n.optimize(solver_name="highs", keep_files=True)
+n.optimize(solver_name="highs", only_generate_problem_file=True)
 
 # ### Adding emission limits
 # n.add(
