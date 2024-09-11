@@ -16,16 +16,16 @@ We also encourage benchmarks to help the project meet the following overall targ
 
 1. A set of benchmarks that are diverse in terms of modelling frameworks that generated them, problem structure, and model features.
 
-1. Benchmarks that help open-source solver developers improve their solvers: benchmarks that can be solved rapidly (< 5 minutes) by Gurobi but are slow (~1 hour or higher) to be solved by an open-source solver.
+1. Benchmarks that help open-source solver developers improve their solvers: benchmarks that can be solved rapidly (< 5 minutes) by Gurobi but are slow (~1 hour or higher) when solved by an open-source solver.
 
 ## Instructions for submitting benchmarks
 
 The prefered and recommended approach for submission is to open a pull request to this repository that adds to the `benchmarks/<framework>/` folder:
-- A YAML file specifying the name, description, and other metadata of the benchmark (see below)
-- The configuration file that is used as an input to the modelling framework
+- Metadata (name, description, etc; see below) added to a YAML file `benchmarks/<framework>/metadata.yaml`, create this if it doesn't exist already
+- A configuration file that is used as an input to the modelling framework
 - A dockerfile that specifies the modelling framework version (preferably a commit hash), pinned versions of all dependencies, and a script to run the modelling framework and obtain the LP file given to the solver.
     - For example, see the benchmarks in the `benchmarks/pypsa/` folder.
-- For non fully open-source modelling frameworks, where LP files cannot be reproduced automatically as above, we will accept LP files hosted on a public immutable file storage service such as Zenodo along with metadata file
+- For non fully open-source modelling frameworks, where LP files cannot be reproduced automatically as above, we will accept LP files hosted on a public immutable file storage service such as Zenodo. In such cases, the metadata file and a script to download the benchmark (prefereably via a permalink) is sufficient.
 
 ### Benchmark metadata
 
@@ -47,23 +47,25 @@ Please include along with each benchmark submission, the following metadata. Fur
 | **N. of constraints** | <100| 100-1'000| 1'000-10'000| 10'000-100'000| 100'000-1'000'000 | 1'000'000-10'000'000 |
 | **N. of variables** | <100| 100-1'000| 1'000-10'000| 10'000-100'000| 100'000-1'000'000 | 1'000'000-10'000'000 |
 
-## Sample benchmarks metadata
+For example, here is an entry in the `benchmarks/pypsa/metadata.yaml` file:
 
-### PyPSA
-
-| **Model name**   | **Version** | **Problem name** |  **Technique** | **Kind of problem** | **Sectors** | **Time horizon** | **Time resolution** | **Spatial resolution** | **MILP features** | **N.of constraints** | **N. of variables** |                                                                |
-| -- | --------------------------- | ----------------- | -------------- | ------------------- | --------------------------- | -------------------------- | ------------------------------------- | ---------------------------------------------------------- | ----------------- | --------------------------------------------------------------- | ------------ | --------- |
-| PyPSA-EUR | v0.12.0 | pypsa-eur-sec-2-lv1-3h | LP | Infrastructure | Sector coupled (power, transport, heating, biomass, industry, agriculture) | Single-period | 3 hourly | 2 nodes (Italy) | - | 100'000-1'000'000 | 100'000-1'000'000 |
-
-### Modelling framework
-
-| **Model name**   | **Version** | **Problem name** |  **Technique** | **Kind of problem** | **Sectors** | **Time horizon** | **Time resolution** | **Spatial resolution** | **MILP features** | **N.of constraints** | **N. of variables** |                                                                |
-| -- | --------------------------- | ----------------- | -------------- | ------------------- | --------------------------- | -------------------------- | ------------------------------------- | ---------------------------------------------------------- | ----------------- | --------------------------------------------------------------- | ------------ | --------- |
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+```yaml
+pypsa-eur-sec-2-lv1-3h:
+  Kind of model: PyPSA-Eur
+  Type of study: Infrastructure
+  Sector: Sector coupled
+  Time resolution: 3 hourly X 1 year
+  Spatial resolution: Country level (IT, 2 nodes)
+  Transmission expansion: '-'
+  Unit commitment: '-'
+  Specifications: Linear, lot of variables, strongly intermeshed constraints
+  Solution time: Highs':' 3356 s
+  '': Constraints':' 393568, Variables':'' 390692, Free variables':' 1431
+```
 
 ## Target modelling frameworks
 
-Based on the classification in *M. G. Prina et al., ["Classification and challenges of bottom-up energy system models - A review"](https://www.sciencedirect.com/science/article/pii/S1364032120302082), Renewable and Sustainable Energy Reviews, vol. 129, 2020, 109917* and the [results of the survey recently conducted by OET](https://zenodo.org/records/13354034), the list of models targeted for the solver benchmark website considers either short- or long-term bottom-up models including but not limited to [^1]:
+Based on the classification in *M. G. Prina et al., ["Classification and challenges of bottom-up energy system models - A review"](https://www.sciencedirect.com/science/article/pii/S1364032120302082), Renewable and Sustainable Energy Reviews, vol. 129, 2020, 109917* and the [results of the survey](https://zenodo.org/records/13354034) recently conducted by OET, the list of models targeted for the solver benchmark website considers either short- or long-term bottom-up models including but not limited to [^1]:
 - PyPSA
 - Switch
 - oemof
