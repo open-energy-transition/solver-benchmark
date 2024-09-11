@@ -1,6 +1,5 @@
 import pandas as pd
 import plotly.graph_objects as go
-from utils.number import round_number
 
 
 def render_benchmark_chart_for_benchmarks(data: pd.DataFrame) -> go.Figure:
@@ -56,8 +55,8 @@ def render_benchmark_chart_for_benchmarks(data: pd.DataFrame) -> go.Figure:
 
         fig.add_trace(
             go.Scatter(
-                x=round_number(subset["Runtime (s)"]),
-                y=round_number(subset["Memory Usage (MB)"], 0),
+                x=round(subset["Runtime (s)"], 1),
+                y=round(subset["Memory Usage (MB)"]),
                 mode="lines+markers",
                 name=benchmark,
                 text=tooltip_text,  # Tooltip text showing Solver and Benchmark
@@ -133,8 +132,8 @@ def render_benchmark_chart_for_solvers(data: pd.DataFrame) -> go.Figure:
 
         fig.add_trace(
             go.Scatter(
-                x=round_number(subset["Runtime (s)"]),
-                y=round_number(subset["Memory Usage (MB)"], 0),
+                x=round(subset["Runtime (s)"], 1),
+                y=round(subset["Memory Usage (MB)"]),
                 mode="lines+markers",
                 name=solver,
                 text=subset["Benchmark"],  # Tooltip text

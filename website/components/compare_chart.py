@@ -1,9 +1,6 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-# local
-from utils.number import round_number
-
 
 def create_comparison_chart(
     solver1_data,
@@ -49,8 +46,8 @@ def create_comparison_chart(
         ]
         fig.add_trace(
             go.Scatter(
-                x=round_number(subset[f"{metric_name}_1"], decimal_places),
-                y=round_number(subset[f"{metric_name}_2"], decimal_places),
+                x=round(subset[f"{metric_name}_1"], decimal_places),
+                y=round(subset[f"{metric_name}_2"], decimal_places),
                 mode="markers",
                 name=f"{status_1}-{status_2}",
                 text=subset["Benchmark"],

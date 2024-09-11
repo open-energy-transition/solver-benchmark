@@ -4,9 +4,6 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-# local
-from utils.number import round_number
-
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 data = pd.read_csv(data_url)
 
@@ -42,7 +39,7 @@ for benchmark in average_runtime["Benchmark"].unique():
         fig_runtime.add_trace(
             go.Scatter(
                 x=status_subset["Solver"],
-                y=round_number(status_subset["Runtime (s)"]),
+                y=round(status_subset["Runtime (s)"], 1),
                 mode="markers",
                 name=f"{benchmark} - {status}",
                 marker=dict(
@@ -75,7 +72,7 @@ for benchmark in peak_memory["Benchmark"].unique():
         fig_memory.add_trace(
             go.Scatter(
                 x=status_subset["Solver"],
-                y=round_number(status_subset["Memory Usage (MB)"], 0),
+                y=round(status_subset["Memory Usage (MB)"]),
                 mode="markers",
                 name=f"{benchmark} - {status}",
                 marker=dict(

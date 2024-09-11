@@ -7,9 +7,6 @@ import yaml
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
-# local
-from utils.number import round_number
-
 
 # Load the metadata from the YAML file
 def load_metadata(yaml_file):
@@ -106,8 +103,8 @@ if selected_benchmark in metadata:
             subset = status_subset[status_subset["Solver"] == solver]
             fig_filtered.add_trace(
                 go.Scatter(
-                    x=round_number(subset[xTitle]),
-                    y=round_number(subset[yTitle], 0),
+                    x=round(subset[xTitle], 1),
+                    y=round(subset[yTitle]),
                     mode="markers",
                     name=f"{solver} - {status}",
                     marker=dict(

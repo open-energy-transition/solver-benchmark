@@ -40,7 +40,7 @@ df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 # Define marker symbols based on status
 status_symbols = {
     "TO": "x",  # Timeout gets an "X"
-    "ok": "circle",  # Successful execution gets a circle
+    "ok": "circle",  # Normal execution gets a circle
 }
 
 # Add a line of text explaining the plot and the marker symbols
