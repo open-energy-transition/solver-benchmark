@@ -40,16 +40,6 @@ if selected_benchmark in metadata:
         metadata[selected_benchmark], orient="index", columns=["Value"]
     ).reset_index()
     metadata_df.columns = ["Header", "Value"]
-    # Add legend explanation at the bottom of the table
-    legend_data = pd.DataFrame(
-        {
-            "Header": ["Legend Explanation"],
-            "Value": ["X: Timeout (TO), O: Successful run (OK)"],
-        }
-    )
-
-    # Append the legend to the DataFrame
-    metadata_df = pd.concat([metadata_df, legend_data], ignore_index=True)
 
     # Build grid options with custom row height
     gb = GridOptionsBuilder.from_dataframe(metadata_df)
