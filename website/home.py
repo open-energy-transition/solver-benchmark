@@ -61,7 +61,7 @@ st.plotly_chart(
         data=df,
         yaxis_data="Runtime (s)",
         yaxis_title="Runtime (s)",
-        chart_title="Distribution of Runtime Consumption by Solver",
+        chart_title="Distribution of Runtime by Solver",
     )
 )
 st.plotly_chart(
@@ -69,7 +69,7 @@ st.plotly_chart(
         data=df,
         yaxis_data="Memory Usage (MB)",
         yaxis_title="Memory Usage (MB)",
-        chart_title="Distribution of Memory Usage Consumption by Solver",
+        chart_title="Distribution of Memory Usage by Solver",
     )
 )
 

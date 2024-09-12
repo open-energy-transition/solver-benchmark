@@ -36,12 +36,22 @@ status_symbols = {
     "ok": "circle",  # Normal execution gets a circle
 }
 
+# Add a dropdown for solver selection
+solver_options = data_repeated["Solver"].unique()
+selected_solver = st.selectbox("Select Solver", solver_options)
+
+# Filter the data for the selected solver
+peak_memory_filtered = peak_memory[peak_memory["Solver"] == selected_solver]
+average_runtime_filtered = average_runtime[average_runtime["Solver"] == selected_solver]
+
 # Runtime plot
 fig_runtime = go.Figure()
 
 # Add traces with different markers for statuses
-for benchmark in average_runtime["Benchmark"].unique():
-    subset = average_runtime[average_runtime["Benchmark"] == benchmark]
+for benchmark in average_runtime_filtered["Benchmark"].unique():
+    subset = average_runtime_filtered[
+        average_runtime_filtered["Benchmark"] == benchmark
+    ]
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
         tooltip_text = status_subset.apply(
@@ -63,7 +73,7 @@ for benchmark in average_runtime["Benchmark"].unique():
         )
 
 fig_runtime.update_layout(
-    title="Solver Runtime Comparison",
+    title=f"Solver Runtime Comparison for {selected_solver}",
     xaxis_title="Year",
     yaxis_title="Runtime (s)",
     template="plotly_dark",
@@ -73,8 +83,8 @@ fig_runtime.update_layout(
 fig_memory = go.Figure()
 
 # Add traces with different markers for statuses
-for benchmark in peak_memory["Benchmark"].unique():
-    subset = peak_memory[peak_memory["Benchmark"] == benchmark]
+for benchmark in peak_memory_filtered["Benchmark"].unique():
+    subset = peak_memory_filtered[peak_memory_filtered["Benchmark"] == benchmark]
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
         tooltip_text = status_subset.apply(
@@ -96,7 +106,7 @@ for benchmark in peak_memory["Benchmark"].unique():
         )
 
 fig_memory.update_layout(
-    title="Solver Peak Memory Consumption",
+    title=f"Solver Peak Memory Consumption for {selected_solver}",
     xaxis_title="Year",
     yaxis_title="Memory Usage (MB)",
     template="plotly_dark",
