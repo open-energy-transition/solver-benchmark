@@ -7,6 +7,7 @@ import streamlit as st
 from components.home_chart import (
     render_benchmark_chart_for_benchmarks,
     render_benchmark_chart_for_solvers,
+    render_benchmark_violin_plot,
 )
 
 # Custom CSS for full-width container
@@ -64,13 +65,26 @@ status_symbols = {
 
 # Render the chart and display it
 
-fig_solvers = render_benchmark_chart_for_solvers(df)
 
-fig_benchmarks = render_benchmark_chart_for_benchmarks(df)
+st.plotly_chart(
+    render_benchmark_violin_plot(
+        data=df,
+        yaxis_data="Runtime (s)",
+        yaxis_title="Runtime (s)",
+        chart_title="Distribution of Runtime by Solver",
+    )
+)
+st.plotly_chart(
+    render_benchmark_violin_plot(
+        data=df,
+        yaxis_data="Memory Usage (MB)",
+        yaxis_title="Memory Usage (MB)",
+        chart_title="Distribution of Memory Usage by Solver",
+    )
+)
 
-
-st.plotly_chart(fig_solvers)
-st.plotly_chart(fig_benchmarks)
+st.plotly_chart(render_benchmark_chart_for_solvers(df))
+st.plotly_chart(render_benchmark_chart_for_benchmarks(df))
 
 # Add a line of text explaining the plot and the marker symbols
 st.markdown(
