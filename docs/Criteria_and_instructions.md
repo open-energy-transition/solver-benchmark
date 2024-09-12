@@ -50,7 +50,7 @@ Please include along with each benchmark submission, the following metadata. Fur
 For example, here is an entry in the `benchmarks/pypsa/metadata.yaml` file:
 
 ```yaml
-  Problem name: pypsa-eur-sec-2-lv1-3h
+pypsa-eur-sec-2-lv1-3h:
   Short description: Sector-coupled PyPSA-Eur run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.12.0 (commit b328169)
