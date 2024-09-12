@@ -128,5 +128,12 @@ if selected_benchmark in metadata:
 
     st.plotly_chart(fig_filtered)
 
+    st.markdown(
+        """
+        **Legend Explanation:**
+        - **X**: Timeout (TO)
+        - **O**: Successful run (OK)
+        """
+    )
 else:
     st.write("No metadata available for the selected benchmark.")

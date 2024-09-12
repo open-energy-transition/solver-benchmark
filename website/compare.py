@@ -63,6 +63,13 @@ if ui.button(
         decimal_places=0,
     )
 
+    st.markdown(
+        """
+        **Legend Explanation:**
+        - **X**: Timeout (TO)
+        - **O**: Successful run (OK)
+        """
+    )
     # Display the charts
     st.plotly_chart(run_time_fig)
     st.plotly_chart(mem_use_fig)

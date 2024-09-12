@@ -91,6 +91,13 @@ fig_memory.update_layout(
     template="plotly_dark",
 )
 
+st.markdown(
+    """
+        **Legend Explanation:**
+        - **X**: Timeout (TO)
+        - **O**: Successful run (OK)
+        """
+)
 # Display plots
 st.plotly_chart(fig_runtime)
 st.plotly_chart(fig_memory)
