@@ -22,7 +22,26 @@ st.markdown(
 )
 
 # Title of the app
-st.title("Benchmarks")
+st.title("OET/BE Solver Benchmark")
+
+st.markdown(
+    """
+    This website is an open-source benchmark of LP/MILP solvers on representative problems from the energy planning domain.
+    The website aims to help energy system modelers decide the best solver for their application; solver developers improve their solvers using realistic and important examples; and funders accelerate the green transition by giving them reliable metrics to evaluate solver performance over time.
+    We accept community contributions for new benchmarks, new / updated solver versions, and feedback on the benchmarking methodology and metrics via our [GitHub repository](https://github.com/orgs/open-energy-transition/solver-benchmark).
+
+    This project was developed by [Open Energy Transition](https://openenergytransition.org/), with funding from [Breakthrough Energy](https://www.breakthroughenergy.org/).
+
+    | **Details** | |
+    | ------------- | ------------- |
+    | **Solvers** | 4: Gurobi, HiGHS, GLPK, SCIP |
+    | **Benchmarks** | 6 |
+    | **Iterations** | 1 |
+    | **Timeout** | 15 min |
+    | **vCPU** | 8 |
+    | **Memory** | 32GB |
+    """
+)
 
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
@@ -43,15 +62,6 @@ status_symbols = {
     "ok": "circle",  # Normal execution gets a circle
 }
 
-# Add a line of text explaining the plot and the marker symbols
-st.markdown(
-    """
-    **Legend Explanation:**
-    - **X**: Timeout (TO)
-    - **O**: Successful run (OK)
-    """
-)
-
 # Render the chart and display it
 
 fig_solvers = render_benchmark_chart_for_solvers(df)
@@ -61,3 +71,12 @@ fig_benchmarks = render_benchmark_chart_for_benchmarks(df)
 
 st.plotly_chart(fig_solvers)
 st.plotly_chart(fig_benchmarks)
+
+# Add a line of text explaining the plot and the marker symbols
+st.markdown(
+    """
+    **Legend Explanation:**
+    - **X**: Timeout (TO)
+    - **O**: Successful run (OK)
+    """
+)
