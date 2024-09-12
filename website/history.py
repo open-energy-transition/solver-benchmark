@@ -115,9 +115,9 @@ fig_memory.update_layout(
 # Explanation for the legend
 st.markdown(
     """
-    **Legend Explanation:**
-    - **X**: Timeout (TO)
-    - **O**: Successful run (OK)
+    These plots show the evolution of solver performance over time.
+
+    **Legend:** an **X** represents benchmarks that timed out (TO), while an **O** indicates a successful run (OK).
     """
 )
 

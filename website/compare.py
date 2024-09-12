@@ -64,10 +64,12 @@ if ui.button(
     )
 
     st.markdown(
-        """
-        **Legend Explanation:**
-        - **X**: Timeout (TO)
-        - **O**: Successful run (OK)
+        f"""
+        The scatter plots below compare runtime and memory consumption of the selected solvers.
+        Each point represents a benchmark, and its position relative to the `y = x` line indicates which solver performs better on it.
+        For example, benchmarks above the diagonal in the first plot are those where {solver1} is faster than {solver2} and vice versa for those below the diagonal.
+
+        **Legend:** an **X** represents benchmarks that timed out (TO), while an **O** indicates a successful run (OK).
         """
     )
     # Display the charts

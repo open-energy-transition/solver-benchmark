@@ -153,7 +153,7 @@ def benchmark_solver(input_file, solver_name, timeout):
     return metrics
 
 
-def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
+def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
     results = {}
 
     # Create results folder `results/` if it doesn't exist
@@ -163,8 +163,9 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
     write_csv_headers(results_csv, mean_stddev_csv)
 
-    # TODO put the benchmarks in a better place; for now storing in runner/
-    benchmarks_folder = Path(__file__).parent
+    # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
+    benchmarks_folder = Path(__file__).parent / "benchmarks/"
+    os.makedirs(benchmarks_folder, exist_ok=True)
     for file_info in benchmark_files_info:
         benchmark_path = benchmarks_folder / file_info["name"]
         download_file_from_google_drive(file_info["url"], benchmark_path)
