@@ -33,17 +33,20 @@ for benchmark in average_runtime["Benchmark"].unique():
     subset = average_runtime[average_runtime["Benchmark"] == benchmark]
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
+        tooltip_text = subset.apply(
+            lambda row: f"{row['Benchmark']} - {row['Status']}", axis=1
+        )
         fig_runtime.add_trace(
             go.Scatter(
                 x=status_subset["Solver"],
-                y=status_subset["Runtime (s)"],
+                y=round(status_subset["Runtime (s)"], 1),
                 mode="markers",
                 name=f"{benchmark} - {status}",
                 marker=dict(
                     symbol=symbol,  # Marker shape based on status
                     size=10,
                 ),
-                text=status_subset["Status"],  # Tooltip text
+                text=tooltip_text,  # Tooltip text
                 hoverinfo="text+x+y",  # Display tooltip text with x and y values
             )
         )
@@ -63,17 +66,20 @@ for benchmark in peak_memory["Benchmark"].unique():
     subset = peak_memory[peak_memory["Benchmark"] == benchmark]
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
+        tooltip_text = subset.apply(
+            lambda row: f"{row['Benchmark']} - {row['Status']}", axis=1
+        )
         fig_memory.add_trace(
             go.Scatter(
                 x=status_subset["Solver"],
-                y=status_subset["Memory Usage (MB)"],
+                y=round(status_subset["Memory Usage (MB)"]),
                 mode="markers",
                 name=f"{benchmark} - {status}",
                 marker=dict(
                     symbol=symbol,  # Marker shape based on status
                     size=10,
                 ),
-                text=status_subset["Status"],  # Tooltip text
+                text=tooltip_text,  # Tooltip text
                 hoverinfo="text+x+y",  # Display tooltip text with x and y values
             )
         )
@@ -85,6 +91,13 @@ fig_memory.update_layout(
     template="plotly_dark",
 )
 
+st.markdown(
+    """
+        **Legend Explanation:**
+        - **X**: Timeout (TO)
+        - **O**: Successful run (OK)
+        """
+)
 # Display plots
 st.plotly_chart(fig_runtime)
 st.plotly_chart(fig_memory)
