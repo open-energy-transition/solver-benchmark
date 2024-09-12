@@ -10,6 +10,7 @@ def create_comparison_chart(
     metric_name,
     comparison_type,
     axis_title,
+    decimal_places=1,
 ):
     fig = go.Figure()
 
@@ -45,10 +46,11 @@ def create_comparison_chart(
         ]
         fig.add_trace(
             go.Scatter(
-                x=subset[f"{metric_name}_1"],
-                y=subset[f"{metric_name}_2"],
+                x=round(subset[f"{metric_name}_1"], decimal_places),
+                y=round(subset[f"{metric_name}_2"], decimal_places),
                 mode="markers",
                 name=f"{status_1}-{status_2}",
+                text=subset["Benchmark"],
                 marker=dict(
                     color=color,
                     symbol=symbol,

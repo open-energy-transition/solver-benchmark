@@ -1,8 +1,13 @@
 from pathlib import Path
 
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
+
+# internal
+from components.home_chart import (
+    render_benchmark_chart_for_benchmarks,
+    render_benchmark_chart_for_solvers,
+)
 
 # Custom CSS for full-width container
 st.markdown(
@@ -23,21 +28,14 @@ st.title("Benchmarks")
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df = pd.read_csv(data_url)
 
-# Create a figure for runtime vs peak memory
-fig = go.Figure()
+# Ensure we plot the latest version of each solver if there are multiple versions.
+if "Solver Version" in df.columns:
+    # Sort by Solver and Solver Version and keep the latest version
+    df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
+    df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
 
-# Find the peak memory usage and average runtime for each solver and benchmark
-peak_memory = (
-    df.groupby(["Benchmark", "Solver", "Status"])["Memory Usage (MB)"]
-    .max()
-    .reset_index()
-)
-average_runtime = (
-    df.groupby(["Benchmark", "Solver", "Status"])["Runtime (s)"].mean().reset_index()
-)
-
-# Merge the data to have a common DataFrame for plotting
-merged_df = pd.merge(peak_memory, average_runtime, on=["Benchmark", "Solver", "Status"])
+# Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
+df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
 # Define marker symbols based on status
 status_symbols = {
@@ -45,40 +43,7 @@ status_symbols = {
     "ok": "circle",  # Normal execution gets a circle
 }
 
-# Add lines for runtime vs peak memory
-for solver in merged_df["Solver"].unique():
-    subset = merged_df[merged_df["Solver"] == solver]
-
-    # Get the appropriate marker symbol for each status
-    marker_symbol = [
-        status_symbols.get(status, "circle") for status in subset["Status"]
-    ]
-
-    fig.add_trace(
-        go.Scatter(
-            x=subset["Runtime (s)"],
-            y=subset["Memory Usage (MB)"],
-            mode="lines+markers",
-            name=solver,
-            text=subset["Benchmark"],  # Tooltip text
-            hoverinfo="text+x+y",  # Display tooltip text with x and y values
-            marker=dict(symbol=marker_symbol, size=10),  # Use symbols based on status
-        )
-    )
-
-# Update layout for the plot
-fig.update_layout(
-    title="Runtime vs Peak Memory Consumption",
-    xaxis_title="Runtime (s)",
-    yaxis_title="Peak Memory Usage (MB)",
-    template="plotly_dark",
-    legend_title="Solver",
-)
-
-# Show the plot
-st.plotly_chart(fig)
-
-# Add a line of text explaining the symbols
+# Add a line of text explaining the plot and the marker symbols
 st.markdown(
     """
     **Legend Explanation:**
@@ -86,3 +51,13 @@ st.markdown(
     - **O**: Successful run (OK)
     """
 )
+
+# Render the chart and display it
+
+fig_solvers = render_benchmark_chart_for_solvers(df)
+
+fig_benchmarks = render_benchmark_chart_for_benchmarks(df)
+
+
+st.plotly_chart(fig_solvers)
+st.plotly_chart(fig_benchmarks)
