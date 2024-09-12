@@ -153,7 +153,7 @@ def benchmark_solver(input_file, solver_name, timeout):
     return metrics
 
 
-def main(benchmark_files_info, solvers, iterations=1, timeout=5 * 60):
+def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
     results = {}
 
     # Create results folder `results/` if it doesn't exist
