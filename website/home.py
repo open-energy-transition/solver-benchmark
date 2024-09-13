@@ -9,18 +9,6 @@ from components.home_chart import (
     render_benchmark_violin_plot,
 )
 
-# Custom CSS for full-width container
-# st.markdown(
-#     """
-#     <style>
-#     .block-container {
-#       max-width: 100%;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True,
-# )
-
 # Title of the app
 st.title("OET/BE Solver Benchmark")
 
