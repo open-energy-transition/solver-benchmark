@@ -1,5 +1,8 @@
+import random
+
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.graph_objs as go_obj
 
 
 # TODO this can probably be removed because without lines, this plot looks the same as the one below?
@@ -87,74 +90,40 @@ def render_benchmark_chart_for_benchmarks(data: pd.DataFrame) -> go.Figure:
 
 
 def render_benchmark_chart_for_solvers(data: pd.DataFrame) -> go.Figure:
-    """
-    Render a chart showing runtime vs peak memory consumption with lines connecting benchmarks.
+    # ref: https://stackoverflow.com/questions/53327572/how-do-i-highlight-an-entire-trace-upon-hover-in-plotly-for-python
+    f = go_obj.FigureWidget()
+    f.layout.hovermode = "closest"
+    f.layout.hoverdistance = -1  # ensures no "gaps" for selecting sparse data
+    default_linewidth = 2
+    highlighted_linewidth_delta = 2
 
-    Args:
-        data (pd.DataFrame): The DataFrame containing benchmark data.
+    # just some traces with random data points
+    num_of_traces = 5
+    random.seed = 42
+    for i in range(num_of_traces):
+        y = [random.random() + i / 2 for _ in range(100)]
+        trace = go.Scatter(y=y, mode="lines", line={"width": default_linewidth})
+        f.add_trace(trace)
 
-    Returns:
-        go.Figure: The Plotly figure object.
-    """
-    # Create a figure for runtime vs peak memory
-    fig = go.Figure()
+    # our custom event handler
+    def update_trace(trace, points, selector):
+        # this list stores the points which were clicked on
+        # in all but one trace they are empty
+        if len(points.point_inds) == 0:
+            return
 
-    # Find the peak memory usage and average runtime for each solver and benchmark
-    peak_memory = (
-        data.groupby(["Benchmark", "Solver", "Status"])["Memory Usage (MB)"]
-        .max()
-        .reset_index()
-    )
-    average_runtime = (
-        data.groupby(["Benchmark", "Solver", "Status"])["Runtime (s)"]
-        .mean()
-        .reset_index()
-    )
-
-    # Merge the data to have a common DataFrame for plotting
-    merged_df = pd.merge(
-        peak_memory, average_runtime, on=["Benchmark", "Solver", "Status"]
-    )
-
-    # Define marker symbols based on status
-    status_symbols = {
-        "TO": "x",  # Timeout gets an "X"
-        "ok": "circle",  # Successful execution gets a circle
-    }
-
-    # Add lines for runtime vs peak memory
-    for solver in merged_df["Solver"].unique():
-        subset = merged_df[merged_df["Solver"] == solver]
-
-        # Get the appropriate marker symbol for each status
-        marker_symbol = [
-            status_symbols.get(status, "circle") for status in subset["Status"]
-        ]
-
-        fig.add_trace(
-            go.Scatter(
-                x=round(subset["Runtime (s)"], 1),
-                y=round(subset["Memory Usage (MB)"]),
-                mode="markers",
-                name=solver,
-                text=subset["Benchmark"],  # Tooltip text
-                hoverinfo="text+x+y",  # Display tooltip text with x and y values
-                marker=dict(
-                    symbol=marker_symbol, size=10
-                ),  # Use symbols based on status
+        for i, _ in enumerate(f.data):
+            f.data[i]["line"]["width"] = (
+                default_linewidth
+                + highlighted_linewidth_delta * (i == points.trace_index)
             )
-        )
 
-    # Update layout for the plot
-    fig.update_layout(
-        title="Runtime vs Peak Memory Consumption for all Solvers and Benchmarks",
-        xaxis_title="Runtime (s)",
-        yaxis_title="Peak Memory Usage (MB)",
-        template="plotly_dark",
-        legend_title="Solver",
-    )
+    # we need to add the on_click event to each trace separately
+    for i in range(len(f.data)):
+        f.data[i].on_click(update_trace)
 
-    return fig
+    # let's show the figure
+    return f
 
 
 def render_benchmark_violin_plot(
@@ -194,7 +163,8 @@ def render_benchmark_violin_plot(
                 y=data[yaxis_data][data["Solver"] == solver],
                 name=f"{solver} Runtime",
                 box_visible=True,  # Show box plot inside violin
-                line_color=colors[i % len(colors)],  # Assign color from the list
+                # Assign color from the list
+                line_color=colors[i % len(colors)],
                 fillcolor=colors[i % len(colors)],  # Same color for fill
                 hoverinfo="x+y+name",
             )
