@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 
+# TODO this can probably be removed because without lines, this plot looks the same as the one below?
 def render_benchmark_chart_for_benchmarks(data: pd.DataFrame) -> go.Figure:
     """
     Render a chart showing runtime vs peak memory consumption with lines connecting benchmarks,
@@ -146,7 +147,7 @@ def render_benchmark_chart_for_solvers(data: pd.DataFrame) -> go.Figure:
 
     # Update layout for the plot
     fig.update_layout(
-        title="Runtime vs Peak Memory Consumption for Solvers",
+        title="Runtime vs Peak Memory Consumption for all Solvers and Benchmarks",
         xaxis_title="Runtime (s)",
         yaxis_title="Peak Memory Usage (MB)",
         template="plotly_dark",

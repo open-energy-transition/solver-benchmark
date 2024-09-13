@@ -117,7 +117,7 @@ st.markdown(
     """
     These plots show the evolution of solver performance over time.
 
-    **Legend:** an **X** represents benchmarks that timed out (TO), while an **O** indicates a successful run (OK).
+    **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
     """
 )
 
