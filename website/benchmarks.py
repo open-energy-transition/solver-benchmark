@@ -130,9 +130,7 @@ if selected_benchmark in metadata:
 
     st.markdown(
         """
-        **Legend Explanation:**
-        - **X**: Timeout (TO)
-        - **O**: Successful run (OK)
+        **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
         """
     )
 else:

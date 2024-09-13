@@ -5,22 +5,21 @@ import streamlit as st
 
 # internal
 from components.home_chart import (
-    render_benchmark_chart_for_benchmarks,
     render_benchmark_chart_for_solvers,
     render_benchmark_violin_plot,
 )
 
 # Custom CSS for full-width container
-st.markdown(
-    """
-    <style>
-    .block-container {
-      max-width: 100%;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# st.markdown(
+#     """
+#     <style>
+#     .block-container {
+#       max-width: 100%;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 # Title of the app
 st.title("OET/BE Solver Benchmark")
@@ -84,13 +83,10 @@ st.plotly_chart(
 )
 
 st.plotly_chart(render_benchmark_chart_for_solvers(df))
-st.plotly_chart(render_benchmark_chart_for_benchmarks(df))
 
 # Add a line of text explaining the plot and the marker symbols
 st.markdown(
     """
-    **Legend Explanation:**
-    - **X**: Timeout (TO)
-    - **O**: Successful run (OK)
+    **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
     """
 )

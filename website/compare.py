@@ -69,7 +69,7 @@ if ui.button(
         Each point represents a benchmark, and its position relative to the `y = x` line indicates which solver performs better on it.
         For example, benchmarks above the diagonal in the first plot are those where {solver1} is faster than {solver2} and vice versa for those below the diagonal.
 
-        **Legend:** an **X** represents benchmarks that timed out (TO), while an **O** indicates a successful run (OK).
+        **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
         """
     )
     # Display the charts
