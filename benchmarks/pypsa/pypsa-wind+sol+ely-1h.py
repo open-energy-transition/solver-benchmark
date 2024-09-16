@@ -35,10 +35,8 @@ defaults = {
 }
 costs = costs.value.unstack().fillna(defaults)
 
-# costs.at["OCGT", "fuel"] = costs.at["gas", "fuel"]
-# costs.at["CCGT", "fuel"] = costs.at["gas", "fuel"]
-# costs.at["OCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
-# costs.at["CCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
+costs.at["OCGT", "fuel"] = costs.at["gas", "fuel"]
+costs.at["OCGT", "CO2 intensity"] = costs.at["gas", "CO2 intensity"]
 
 
 # Let's also write a small utility function that calculates the **annuity** to annualise investment costs. The formula is
@@ -80,14 +78,14 @@ carriers = [
     "onwind",
     "offwind",
     "solar",
+    "OCGT",
     "hydrogen storage underground",
-    #    "battery storage",
 ]
 
 n.madd(
     "Carrier",
     carriers,
-    color=["aquamarine", "gold", "indianred", "magenta"],
+    color=["dodgerblue","aquamarine", "gold", "indianred", "magenta"],
     co2_emissions=[costs.at[c, "CO2 intensity"] for c in carriers],
 )
 
@@ -115,6 +113,17 @@ for tech in ["onwind", "offwind"]:
         p_nom_extendable=True,
     )
 
+n.add(
+    "Generator",
+    "OCGT",
+    bus="electricity",
+    carrier="OCGT",
+    capital_cost=costs.at["OCGT", "capital_cost"],
+    marginal_cost=costs.at["OCGT", "marginal_cost"],
+    efficiency=costs.at["OCGT", "efficiency"],
+    p_nom_extendable=True,
+)
+
 for tech in ["solar"]:
     n.add(
         "Generator",
@@ -127,22 +136,6 @@ for tech in ["solar"]:
         efficiency=costs.at[tech, "efficiency"],
         p_nom_extendable=True,
     )
-
-## ## Adding Storage Units
-#
-# n.add(
-#    "StorageUnit",
-#    "battery storage",
-#    bus="electricity",
-#    carrier="battery storage",
-#    max_hours=6,
-#    capital_cost=costs.at["battery inverter", "capital_cost"]
-#    + 6 * costs.at["battery storage", "capital_cost"],
-#    efficiency_store=costs.at["battery inverter", "efficiency"],
-#    efficiency_dispatch=costs.at["battery inverter", "efficiency"],
-#    p_nom_extendable=True,
-#    cyclic_state_of_charge=True,
-# )
 
 # Second, the hydrogen storage. This one is composed of an electrolysis to convert electricity to hydrogen, a fuel cell to re-convert hydrogen to electricity and underground storage (e.g. in salt caverns). We assume an energy-to-power ratio of 168 hours, such that this type of storage can be used for weekly balancing.
 
@@ -166,14 +159,3 @@ n.add(
 )
 
 n.optimize(solver_name="highs", only_generate_problem_file=True)
-
-# ### Adding emission limits
-# n.add(
-#    "GlobalConstraint",
-#    "CO2Limit",
-#    carrier_attribute="co2_emissions",
-#    sense="<=",
-#    constant=0,
-# )
-
-# n.optimize(solver_name="highs")

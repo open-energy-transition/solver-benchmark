@@ -54,20 +54,6 @@ pypsa-eur-elec-20-lv1-3h-op-ucconv:
   N. of constraints: 108984
   N. of variables: 15998
 
-pypsa-wind+sol+ely-1h-ucwind:
-  Short description: Simple PyPSA-based single-node wind + solar + electrolyzer infrastructure model with unit commitment on wind generators
-  Model name: PyPSA
-  Version: 0.30.1
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: 1 year
-  Temporal resolution: hourly
-  Spatial resolution: Single-node
-  MILP features: Unit commitment on wind generators
-  N. of constraints: 19
-  N. of variables: 6
-
 pypsa-wind+sol+ely-1h:
   Short description: Simple PyPSA-based single-node wind + solar + electrolyzer infrastructure model
   Model name: PyPSA
@@ -81,3 +67,18 @@ pypsa-wind+sol+ely-1h:
   MILP features: None
   N. of constraints: 14
   N. of variables: 6
+  
+  pypsa-wind+sol+ely-1h-ucgas:
+  Short description: Simple PyPSA-based single-node wind + solar + electrolyzer infrastructure model with unit commitment on the gas generator
+  Model name: PyPSA
+  Version: 0.30.1
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  Temporal resolution: hourly
+  Spatial resolution: Single-node
+  MILP features: Unit commitment on gas generator
+  N. of constraints: 19
+  N. of variables: 6
+

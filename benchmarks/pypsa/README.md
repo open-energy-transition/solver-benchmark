@@ -17,7 +17,7 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
      time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-10-lvopt-3h.yaml ; echo -e '\a'
      time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
      time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml ; echo -e '\a'
-     time python pypsa-wind+sol+ely-1h-ucwind.py
+     time python pypsa-wind+sol+ely-1h-ucgas.py
      time python pypsa-wind+sol+ely-1h.py
      ```
      When the command exits, look for an output line like follows:
@@ -81,7 +81,7 @@ index bdc10dd1..419ca641 100644
 - Run the solver_benchmark_pypsa_eur.py file: `python solver_benchmark_pypsa_eur.py --configfile config/your_config_file.yaml` (where `your_config_file` has to be replaced with either `pypsa-eur-sec-2-lv1-3h`, `pypsa-eur-elec-10-lvopt-3h`, `pypsa-eur-elec-20-lv1-3h-op` or `pypsa-eur-elec-20-lv1-3h-op-ucconv`)
 - The generated .lp file will be located in `/tmp`
 
-## Simpler sample problems (pypsa-wind+sol+ely-1h-ucwind, pypsa-wind+sol+ely-1h)
+## Simpler sample problems (pypsa-wind+sol+ely-1h, pypsa-wind+sol+ely-1h-ucgas)
 - First, follow the traditional steps for PyPSA-EUR [installation](https://pypsa-eur.readthedocs.io/en/latest/installation.html) (ignore if already executed, but the `pypsa-eur` environment is required anyway.
-- Run `python pypsa-wind+sol+ely-1h.py` and `pypsa-wind+sol+ely-1h-ucwind.py`
+- Run `python pypsa-wind+sol+ely-1h.py` and `pypsa-wind+sol+ely-1h-ucgas.py`
 - The .lp file will be automatically produced thanks to the `keep_files=True` argument passed to `n.optimize()` and located in `/tmp`
