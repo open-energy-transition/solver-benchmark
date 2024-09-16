@@ -66,9 +66,9 @@ pypsa-wind+sol+ely-1h:
   Spatial resolution: 1 node
   MILP features: None
   N. of constraints: 14
-  N. of variables: 6
-  
-  pypsa-wind+sol+ely-1h-ucgas:
+  N. of variables: 7
+
+pypsa-wind+sol+ely-1h-ucgas:
   Short description: Simple PyPSA-based single-node wind + solar + electrolyzer infrastructure model with unit commitment on the gas generator
   Model name: PyPSA
   Version: 0.30.1
@@ -80,5 +80,4 @@ pypsa-wind+sol+ely-1h:
   Spatial resolution: Single-node
   MILP features: Unit commitment on gas generator
   N. of constraints: 19
-  N. of variables: 6
-
+  N. of variables: 7

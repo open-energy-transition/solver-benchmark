@@ -85,7 +85,7 @@ carriers = [
 n.madd(
     "Carrier",
     carriers,
-    color=["dodgerblue","aquamarine", "gold", "indianred", "magenta"],
+    color=["dodgerblue", "aquamarine", "gold", "indianred", "magenta"],
     co2_emissions=[costs.at[c, "CO2 intensity"] for c in carriers],
 )
 
