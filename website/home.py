@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import pandas as pd
 import streamlit as st
 import yaml
@@ -20,7 +21,7 @@ metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 
 # Convert metadata to a DataFrame for easier filtering
 metadata_df = pd.DataFrame(metadata).T.reset_index()
-metadata_df.rename(columns={"index": "Model Key"}, inplace=True)
+metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Title of the app
 st.title("OET/BE Solver Benchmark")
@@ -69,25 +70,25 @@ with st.sidebar:
 
     # Add select boxes for filtering metadata with default values set to all items
     selected_model_name = st.multiselect(
-        "Select Model Name",
+        "Model Name",
         options=metadata_df["Model name"].unique(),
         default=metadata_df["Model name"].unique(),
     )
 
     selected_technique = st.multiselect(
-        "Select Technique",
+        "Technique",
         options=metadata_df["Technique"].unique(),
         default=metadata_df["Technique"].unique(),
     )
 
     selected_problem_kind = st.multiselect(
-        "Select Kind of Problem",
+        "Kind of Problem",
         options=metadata_df["Kind of problem"].unique(),
         default=metadata_df["Kind of problem"].unique(),
     )
 
     selected_sectors = st.multiselect(
-        "Select Sectors",
+        "Sectors",
         options=metadata_df["Sectors"].unique(),
         default=metadata_df["Sectors"].unique(),
     )
@@ -114,7 +115,7 @@ filtered_metadata = metadata_df[
 
 # Show filtered metadata (optional)
 if not filtered_metadata.empty:
-    st.write("### Benchmark Metadata")
+    st.write("### Benchmark Details")
     st.write(filtered_metadata)
 else:
     st.warning("No matching models found. Please adjust your filter selections.")
@@ -130,7 +131,7 @@ if "Solver Version" in df.columns:
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
-    filtered_benchmarks = filtered_metadata["Model Key"].unique()
+    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
     df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
 # Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
