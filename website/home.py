@@ -1,10 +1,12 @@
+# main script
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 import yaml
+from components.filter import generate_filtered_metadata
 
-# internal
+# local
 from components.home_chart import (
     render_benchmark_chart_for_solvers,
     render_benchmark_violin_plot,
@@ -45,80 +47,26 @@ st.markdown(
     """
 )
 
-# Custom CSS for select box background color
-st.markdown(
-    """
-    <style>
-    .st-multiselect {
-        background-color: rgba(151, 166, 195, 0.25) !important;
-        color: black; /* Text color */
-    }
-    .st-multiselect select {
-        background-color: rgba(151, 166, 195, 0.25) !important;
-    }
-    .st-multiselect select option {
-        background-color: rgba(151, 166, 195, 0.25) !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
-# Create a sidebar for filters
-with st.sidebar:
-    st.markdown("### Filters")
+# Filter
+filtered_metadata = generate_filtered_metadata(metadata_df)
 
-    # Add select boxes for filtering metadata with default values set to all items
-    selected_model_name = st.multiselect(
-        "Model Name",
-        options=metadata_df["Model name"].unique(),
-        default=metadata_df["Model name"].unique(),
-    )
 
-    selected_technique = st.multiselect(
-        "Technique",
-        options=metadata_df["Technique"].unique(),
-        default=metadata_df["Technique"].unique(),
-    )
-
-    selected_problem_kind = st.multiselect(
-        "Kind of Problem",
-        options=metadata_df["Kind of problem"].unique(),
-        default=metadata_df["Kind of problem"].unique(),
-    )
-
-    selected_sectors = st.multiselect(
-        "Sectors",
-        options=metadata_df["Sectors"].unique(),
-        default=metadata_df["Sectors"].unique(),
-    )
-
-# Create boolean masks for each condition
-mask_model_name = (
-    metadata_df["Model name"].isin(selected_model_name) if selected_model_name else True
-)
-mask_technique = (
-    metadata_df["Technique"].isin(selected_technique) if selected_technique else True
-)
-mask_problem_kind = (
-    metadata_df["Kind of problem"].isin(selected_problem_kind)
-    if selected_problem_kind
-    else True
-)
-mask_sectors = (
-    metadata_df["Sectors"].isin(selected_sectors) if selected_sectors else True
-)
-
-filtered_metadata = metadata_df[
-    mask_model_name & mask_technique & mask_problem_kind & mask_sectors
-]
-
-# Show filtered metadata (optional)
+# Show filtered metadata
 if not filtered_metadata.empty:
-    st.write("### Benchmark Details")
+    total_benchmarks = len(metadata_df["Benchmark Name"].unique())
+    active_benchmarks = len(filtered_metadata["Benchmark Name"].unique())
+    if total_benchmarks is not active_benchmarks:
+        st.write(
+            f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
+        )
+    else:
+        st.write("### Showing all benchmarks")
+
     st.write(filtered_metadata)
 else:
     st.warning("No matching models found. Please adjust your filter selections.")
+
 
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
@@ -137,13 +85,9 @@ if not filtered_metadata.empty:
 # Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
 df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
-# Define marker symbols based on status
-status_symbols = {
-    "TO": "x",  # Timeout gets an "X"
-    "ok": "circle",  # Normal execution gets a circle
-}
-
 # Render the charts and display them
+st.plotly_chart(render_benchmark_chart_for_solvers(df))
+
 st.plotly_chart(
     render_benchmark_violin_plot(
         data=df,
@@ -161,8 +105,6 @@ st.plotly_chart(
         chart_title="Distribution of Memory Usage by Solver",
     )
 )
-
-st.plotly_chart(render_benchmark_chart_for_solvers(df))
 
 # Add a line of text explaining the plot and the marker symbols
 st.markdown(

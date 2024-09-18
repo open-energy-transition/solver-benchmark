@@ -6,6 +6,7 @@ import yaml
 
 # local
 from components.benchmark_table import display_table
+from components.filter import generate_filtered_metadata
 
 
 # Load benchmark metadata
@@ -46,54 +47,7 @@ st.markdown(
 
 st.title("Benchmarks")
 
-# Create a sidebar for filters
-with st.sidebar:
-    st.markdown("### Filters")
-
-    # Add select boxes for filtering metadata with default values set to all items
-    selected_model_name = st.multiselect(
-        "Model Name",
-        options=metadata_df["Model name"].unique(),
-        default=metadata_df["Model name"].unique(),
-    )
-
-    selected_technique = st.multiselect(
-        "Technique",
-        options=metadata_df["Technique"].unique(),
-        default=metadata_df["Technique"].unique(),
-    )
-
-    selected_problem_kind = st.multiselect(
-        "Kind of Problem",
-        options=metadata_df["Kind of problem"].unique(),
-        default=metadata_df["Kind of problem"].unique(),
-    )
-
-    selected_sectors = st.multiselect(
-        "Sectors",
-        options=metadata_df["Sectors"].unique(),
-        default=metadata_df["Sectors"].unique(),
-    )
-
-# Create boolean masks for each condition
-mask_model_name = (
-    metadata_df["Model name"].isin(selected_model_name) if selected_model_name else True
-)
-mask_technique = (
-    metadata_df["Technique"].isin(selected_technique) if selected_technique else True
-)
-mask_problem_kind = (
-    metadata_df["Kind of problem"].isin(selected_problem_kind)
-    if selected_problem_kind
-    else True
-)
-mask_sectors = (
-    metadata_df["Sectors"].isin(selected_sectors) if selected_sectors else True
-)
-
-filtered_metadata = metadata_df[
-    mask_model_name & mask_technique & mask_problem_kind & mask_sectors
-]
+filtered_metadata = generate_filtered_metadata(metadata_df)
 
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
@@ -106,6 +60,15 @@ if "Solver Version" in df.columns:
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
+    total_benchmarks = len(metadata_df["Benchmark Name"].unique())
+    active_benchmarks = len(filtered_metadata["Benchmark Name"].unique())
+    if total_benchmarks is not active_benchmarks:
+        st.write(
+            f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
+        )
+    else:
+        st.write("### Showing all benchmarks")
+
     filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
     df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
