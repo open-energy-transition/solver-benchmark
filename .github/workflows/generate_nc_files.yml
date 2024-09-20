@@ -1,0 +1,56 @@
+name: Generate NC Files for PyPSA Benchmarks
+
+on:
+  push:
+    paths:
+      - 'benchmarks/**' # Trigger on changes in the benchmarks directory
+  pull_request:
+
+jobs:
+  generate_nc_files:
+    runs-on: ubuntu-latest
+    container:
+      image: mambaorg/micromamba:latest # Use a Docker image with micromamba
+    steps:
+      - name: Checkout Repositories
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all history for versioning
+
+      - name: Install Git
+        run: |
+          apt-get update && apt-get install -y git
+
+      - name: Clone PyPSA-Eur
+        run: |
+          git clone --branch master https://github.com/PyPSA/pypsa-eur.git
+          cd pypsa-eur
+          git checkout a69373b9
+
+      - name: Set Up Conda Environment
+        run: |
+          micromamba create -f envs/environment.yaml -n pypsa-eur
+          micromamba activate pypsa-eur
+          micromamba install -y -n pypsa-eur python=3.8 # Ensure python version
+          micromamba run -n pypsa-eur pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps
+
+      - name: Run Snakemake Commands
+        run: |
+          cd pypsa-eur
+          micromamba run -n pypsa-eur time snakemake -call all --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-3h.yaml
+          micromamba run -n pypsa-eur time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-10-lvopt-3h.yaml
+          micromamba run -n pypsa-eur time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml
+          micromamba run -n pypsa-eur time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml
+          micromamba run -n pypsa-eur time python pypsa-wind+sol+ely-1h-ucwind.py
+          micromamba run -n pypsa-eur time python pypsa-wind+sol+ely-1h.py
+
+      - name: Copy NC Files
+        run: |
+          # Replace this with the actual path to your NC file
+          cp /tmp/linopy-problem-*.nc ~/code/solver-benchmarks/runner/benchmarks/
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nc-files
+          path: ~/code/solver-benchmarks/runner/benchmarks/*.nc
