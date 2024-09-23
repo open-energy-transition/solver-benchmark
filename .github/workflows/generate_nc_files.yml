@@ -9,48 +9,25 @@ on:
 jobs:
   generate_nc_files:
     runs-on: ubuntu-latest
-    container:
-      image: mambaorg/micromamba:latest # Use a Docker image with micromamba
+    container: snakemake/snakemake:v8.20.4 # Use the Docker container for the entire job
+
     steps:
       - name: Checkout Repositories
         uses: actions/checkout@v2
         with:
           fetch-depth: 0 # Fetch all history for versioning
 
-      - name: Install Git
+      - name: Clone PyPSA-eur Repository
         run: |
-          apt-get update && apt-get install -y git
+            git clone --branch master https://github.com/PyPSA/pypsa-eur.git
+            cd pypsa-eur
+            git checkout a69373b9
 
-      - name: Clone PyPSA-Eur
+      - name: Set Up Environment
         run: |
-          git clone --branch master https://github.com/PyPSA/pypsa-eur.git
-          cd pypsa-eur
-          git checkout a69373b9
+            cd pypsa-eur
 
-      - name: Set Up Conda Environment
-        run: |
-          micromamba create -f envs/environment.yaml -n pypsa-eur
-          micromamba activate pypsa-eur
-          micromamba install -y -n pypsa-eur python=3.8 # Ensure python version
-          micromamba run -n pypsa-eur pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps
+            micromamba env create -f envs/environment.yaml --yes
+            micromamba run -n pypsa-eur pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps
+            micromamba run -n pypsa-eur snakemake results/networks/elec_s_20_ec_lv1_3h_op.nc --cores all --printshellcmds --configfile ../benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
 
-      - name: Run Snakemake Commands
-        run: |
-          cd pypsa-eur
-          micromamba run -n pypsa-eur time snakemake -call all --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-3h.yaml
-          micromamba run -n pypsa-eur time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-10-lvopt-3h.yaml
-          micromamba run -n pypsa-eur time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml
-          micromamba run -n pypsa-eur time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml
-          micromamba run -n pypsa-eur time python pypsa-wind+sol+ely-1h-ucwind.py
-          micromamba run -n pypsa-eur time python pypsa-wind+sol+ely-1h.py
-
-      - name: Copy NC Files
-        run: |
-          # Replace this with the actual path to your NC file
-          cp /tmp/linopy-problem-*.nc ~/code/solver-benchmarks/runner/benchmarks/
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: nc-files
-          path: ~/code/solver-benchmarks/runner/benchmarks/*.nc
