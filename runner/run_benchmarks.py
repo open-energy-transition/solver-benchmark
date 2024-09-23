@@ -228,11 +228,11 @@ if __name__ == "__main__":
             "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
         },
         {
-            "name": "pypsa-wind+sol+ely-1h-ucwind.nc",
+            "name": "pypsa-gas+wind+sol+ely-1h-ucgas.nc",
             "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
         },
         {
-            "name": "pypsa-wind+sol+ely-1h.nc",
+            "name": "pypsa-gas+wind+sol+ely-1h.nc",
             "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
         },
     ]
