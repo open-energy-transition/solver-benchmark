@@ -15,10 +15,10 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
      ```bash
      time snakemake -call all --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-3h.yaml ; echo -e '\a'
      time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-10-lvopt-3h.yaml ; echo -e '\a'
-     time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
-     time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml ; echo -e '\a'
-     time python pypsa-wind+sol+ely-1h-ucgas.py
-     time python pypsa-wind+sol+ely-1h.py
+     time snakemake -call results/networks/elec_s_20_ec_lv1_3h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
+     time snakemake -call results/networks/elec_s_20_ec_lv1_3h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml ; echo -e '\a'
+     time python pypsa-gas+wind+sol+ely-1h-ucgas.py
+     time python pypsa-gas+wind+sol+ely-1h.py
      ```
      When the command exits, look for an output line like follows:
      ```
