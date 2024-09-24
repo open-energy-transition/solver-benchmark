@@ -64,15 +64,6 @@ if ui.button(
     key="compare_solvers",
     class_name="absolute right-1 -mx-1",
 ):
-    total_benchmarks = len(metadata_df["Benchmark Name"].unique())
-    active_benchmarks = len(filtered_metadata["Benchmark Name"].unique())
-    if total_benchmarks is not active_benchmarks:
-        st.write(
-            f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
-        )
-    else:
-        st.write("### Showing all benchmarks")
-
     # Filter data for the selected solvers
     solver1_data = df[df["Solver"] == solver1]
     solver2_data = df[df["Solver"] == solver2]
