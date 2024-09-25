@@ -1,13 +1,29 @@
+# main script
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+import yaml
+from components.filter import generate_filtered_metadata
 
-# internal
+# local
 from components.home_chart import (
     render_benchmark_chart_for_solvers,
     render_benchmark_violin_plot,
 )
+
+
+# Load benchmark metadata
+def load_metadata(file_path):
+    with open(file_path, "r") as file:
+        return yaml.safe_load(file)
+
+
+metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+
+# Convert metadata to a DataFrame for easier filtering
+metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Title of the app
 st.title("OET/BE Solver Benchmark")
@@ -31,27 +47,37 @@ st.markdown(
     """
 )
 
+
+# Filter
+filtered_metadata = generate_filtered_metadata(metadata_df)
+
+
+# Show filtered metadata
+if not filtered_metadata.empty:
+    st.write(filtered_metadata)
+else:
+    st.warning("No matching models found. Please adjust your filter selections.")
+
+
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df = pd.read_csv(data_url)
 
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:
-    # Sort by Solver and Solver Version and keep the latest version
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
     df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
+
+# Filter the benchmark data to match the filtered metadata
+if not filtered_metadata.empty:
+    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
+    df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
 # Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
 df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
-# Define marker symbols based on status
-status_symbols = {
-    "TO": "x",  # Timeout gets an "X"
-    "ok": "circle",  # Normal execution gets a circle
-}
-
-# Render the chart and display it
-
+# Render the charts and display them
+st.plotly_chart(render_benchmark_chart_for_solvers(df))
 
 st.plotly_chart(
     render_benchmark_violin_plot(
@@ -61,6 +87,7 @@ st.plotly_chart(
         chart_title="Distribution of Runtime by Solver",
     )
 )
+
 st.plotly_chart(
     render_benchmark_violin_plot(
         data=df,
@@ -69,8 +96,6 @@ st.plotly_chart(
         chart_title="Distribution of Memory Usage by Solver",
     )
 )
-
-st.plotly_chart(render_benchmark_chart_for_solvers(df))
 
 # Add a line of text explaining the plot and the marker symbols
 st.markdown(

@@ -3,13 +3,41 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 import streamlit_shadcn_ui as ui
+import yaml
 
 # local
 from components.compare_chart import create_comparison_chart
+from components.filter import generate_filtered_metadata
+
+
+# Load benchmark metadata
+def load_metadata(file_path):
+    with open(file_path, "r") as file:
+        return yaml.safe_load(file)
+
+
+metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+
+# Convert metadata to a DataFrame for easier filtering
+metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
+
+# Filter
+filtered_metadata = generate_filtered_metadata(metadata_df)
 
 # Load the data
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df = pd.read_csv(data_url)
+
+# Filter the benchmark data to match the filtered metadata
+if not filtered_metadata.empty:
+    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
+    df = df[df["Benchmark"].isin(filtered_benchmarks)]
+
+# Ensure we plot the latest version of each solver if there are multiple versions.
+if "Solver Version" in df.columns:
+    df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
+    df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
 
 st.title("Compare Solvers")
 
