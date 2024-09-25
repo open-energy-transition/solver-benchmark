@@ -3,34 +3,12 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-import yaml
 
-# local
-from components.filter import generate_filtered_metadata
-
-
-def load_metadata(file_path):
-    with open(file_path, "r") as file:
-        return yaml.safe_load(file)
-
-
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
-
-# Convert metadata to a DataFrame for easier filtering
-metadata_df = pd.DataFrame(metadata).T.reset_index()
-metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
-
-# Filter
-filtered_metadata = generate_filtered_metadata(metadata_df)
-
-# Load the benchmark data
+# Load the data
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 data = pd.read_csv(data_url)
 
-# Filter the benchmark data to match the filtered metadata
-if not filtered_metadata.empty:
-    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
-    data = data[data["Benchmark"].isin(filtered_benchmarks)]
+st.title("Solver Performance History")
 
 # Define years to display on the x-axis
 years = [2019, 2020, 2021, 2022, 2023]
@@ -57,8 +35,6 @@ status_symbols = {
     "TO": "x",  # Timeout gets an "X"
     "ok": "circle",  # Normal execution gets a circle
 }
-
-st.title("Solver Performance History")
 
 # Add a dropdown for solver selection
 solver_options = data_repeated["Solver"].unique()

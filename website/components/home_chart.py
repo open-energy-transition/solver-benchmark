@@ -1,8 +1,6 @@
-import random
-
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.graph_objs as go_obj
+import streamlit as st
 
 
 # TODO this can probably be removed because without lines, this plot looks the same as the one below?
@@ -89,43 +87,6 @@ def render_benchmark_chart_for_benchmarks(data: pd.DataFrame) -> go.Figure:
     return fig
 
 
-def render_benchmark_chart_for_solvers(data: pd.DataFrame) -> go.Figure:
-    # ref: https://stackoverflow.com/questions/53327572/how-do-i-highlight-an-entire-trace-upon-hover-in-plotly-for-python
-    f = go_obj.FigureWidget()
-    f.layout.hovermode = "closest"
-    f.layout.hoverdistance = -1  # ensures no "gaps" for selecting sparse data
-    default_linewidth = 2
-    highlighted_linewidth_delta = 2
-
-    # just some traces with random data points
-    num_of_traces = 5
-    random.seed = 42
-    for i in range(num_of_traces):
-        y = [random.random() + i / 2 for _ in range(100)]
-        trace = go.Scatter(y=y, mode="lines", line={"width": default_linewidth})
-        f.add_trace(trace)
-
-    # our custom event handler
-    def update_trace(trace, points, selector):
-        # this list stores the points which were clicked on
-        # in all but one trace they are empty
-        if len(points.point_inds) == 0:
-            return
-
-        for i, _ in enumerate(f.data):
-            f.data[i]["line"]["width"] = (
-                default_linewidth
-                + highlighted_linewidth_delta * (i == points.trace_index)
-            )
-
-    # we need to add the on_click event to each trace separately
-    for i in range(len(f.data)):
-        f.data[i].on_click(update_trace)
-
-    # let's show the figure
-    return f
-
-
 def render_benchmark_violin_plot(
     data: pd.DataFrame,
     yaxis_title: str,
@@ -163,8 +124,7 @@ def render_benchmark_violin_plot(
                 y=data[yaxis_data][data["Solver"] == solver],
                 name=f"{solver} Runtime",
                 box_visible=True,  # Show box plot inside violin
-                # Assign color from the list
-                line_color=colors[i % len(colors)],
+                line_color=colors[i % len(colors)],  # Assign color from the list
                 fillcolor=colors[i % len(colors)],  # Same color for fill
                 hoverinfo="x+y+name",
             )
@@ -184,6 +144,99 @@ def render_benchmark_violin_plot(
             traceorder="normal",
             orientation="v",
         ),
+    )
+
+    return fig
+
+
+def render_benchmark_scatter_plot(data: pd.DataFrame, key="my_scatter") -> go.Figure:
+    selected_benchmark = None
+
+    try:
+        selected_benchmark = st.session_state[key].selection["points"][0]["text"]
+    except (KeyError, IndexError):
+        selected_benchmark = None
+
+    fig = go.Figure()
+
+    # Find the peak memory usage and average runtime for each solver and benchmark
+    peak_memory = (
+        data.groupby(["Benchmark", "Solver", "Status"])["Memory Usage (MB)"]
+        .max()
+        .reset_index()
+    )
+    average_runtime = (
+        data.groupby(["Benchmark", "Solver", "Status"])["Runtime (s)"]
+        .mean()
+        .reset_index()
+    )
+
+    merged_df = pd.merge(
+        peak_memory, average_runtime, on=["Benchmark", "Solver", "Status"]
+    )
+
+    status_symbols = {
+        "TO": "x",  # Timeout gets an "X"
+        "ok": "circle",  # Successful execution gets a circle
+    }
+
+    solver_colors = {
+        "scip": "#AB62FA",
+        "gurobi": "#EE553B",
+        "glpk": "#636EFA",
+        "highs": "#00CC96",
+    }
+
+    for solver in merged_df["Solver"].unique():
+        subset = merged_df[merged_df["Solver"] == solver]
+
+        marker_symbol = [
+            status_symbols.get(status, "circle") for status in subset["Status"]
+        ]
+
+        # Update marker sizes: selected benchmark has a larger size
+        marker_sizes = [
+            20 if benchmark == selected_benchmark else 10
+            for benchmark in subset["Benchmark"]
+        ]
+
+        if selected_benchmark is not None:
+            # Grey out other points, but keep the color legend intact
+            marker_colors = [
+                solver_colors[solver] if benchmark == selected_benchmark else "grey"
+                for benchmark in subset["Benchmark"]
+            ]
+        else:
+            # When no benchmark is selected, use default colors
+            marker_colors = [solver_colors[solver] for _ in subset["Solver"]]
+
+        # Add trace for the solver
+        fig.add_trace(
+            go.Scatter(
+                x=round(subset["Runtime (s)"], 1),
+                y=round(subset["Memory Usage (MB)"]),
+                mode="markers",
+                name=solver,
+                text=subset["Benchmark"],  # Tooltip text
+                hoverinfo="text+x+y",  # Display tooltip text with x and y values
+                marker=dict(
+                    symbol=marker_symbol,
+                    size=marker_sizes,  # Size is larger for the selected benchmark
+                    color=marker_colors,  # Color based on selection or solver
+                ),
+                showlegend=True,  # Keep the color of the legend intact
+                legendgroup=solver,  # Ensure the legend remains per solver
+                marker_color=marker_colors,  # Ensure legend color is based on solver
+            )
+        )
+
+    # Update layout for the plot
+    fig.update_layout(
+        title="Runtime vs Peak Memory Consumption for all Solvers and Benchmarks",
+        xaxis_title="Runtime (s)",
+        yaxis_title="Peak Memory Usage (MB)",
+        template="plotly_dark",
+        legend_title="Solver",
     )
 
     return fig
