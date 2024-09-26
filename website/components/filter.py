@@ -56,4 +56,14 @@ def generate_filtered_metadata(metadata_df):
         mask_model_name & mask_technique & mask_problem_kind & mask_sectors
     ]
 
+    total_benchmarks = len(metadata_df["Benchmark Name"].unique())
+    active_benchmarks = len(filtered_metadata["Benchmark Name"].unique())
+    with st.sidebar:
+        if total_benchmarks is not active_benchmarks:
+            st.write(
+                f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
+            )
+        else:
+            st.write("### Showing all benchmarks")
+
     return filtered_metadata

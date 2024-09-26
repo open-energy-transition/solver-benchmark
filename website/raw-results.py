@@ -60,15 +60,6 @@ if "Solver Version" in df.columns:
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
-    total_benchmarks = len(metadata_df["Benchmark Name"].unique())
-    active_benchmarks = len(filtered_metadata["Benchmark Name"].unique())
-    if total_benchmarks is not active_benchmarks:
-        st.write(
-            f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
-        )
-    else:
-        st.write("### Showing all benchmarks")
-
     filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
     df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
