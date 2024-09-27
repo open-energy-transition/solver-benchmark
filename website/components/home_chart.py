@@ -149,13 +149,16 @@ def render_benchmark_violin_plot(
     return fig
 
 
-def render_benchmark_scatter_plot(data: pd.DataFrame, key="my_scatter") -> go.Figure:
+def render_benchmark_scatter_plot(data: pd.DataFrame, key):
     selected_benchmark = None
+    on_select = "rerun"
 
     try:
         selected_benchmark = st.session_state[key].selection["points"][0]["text"]
+        on_select = "ignore"
     except (KeyError, IndexError):
         selected_benchmark = None
+        on_select = "rerun"
 
     fig = go.Figure()
 
@@ -180,15 +183,13 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key="my_scatter") -> go.Fi
         "ok": "circle",  # Successful execution gets a circle
     }
 
-    solver_colors = {
-        "scip": "#AB62FA",
-        "gurobi": "#EE553B",
-        "glpk": "#636EFA",
-        "highs": "#00CC96",
-    }
+    if selected_benchmark:
+        filtered_df = merged_df[merged_df["Benchmark"] == selected_benchmark]
+    else:
+        filtered_df = merged_df
 
-    for solver in merged_df["Solver"].unique():
-        subset = merged_df[merged_df["Solver"] == solver]
+    for solver in filtered_df["Solver"].unique():
+        subset = filtered_df[filtered_df["Solver"] == solver]
 
         marker_symbol = [
             status_symbols.get(status, "circle") for status in subset["Status"]
@@ -199,16 +200,6 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key="my_scatter") -> go.Fi
             20 if benchmark == selected_benchmark else 10
             for benchmark in subset["Benchmark"]
         ]
-
-        if selected_benchmark is not None:
-            # Grey out other points, but keep the color legend intact
-            marker_colors = [
-                solver_colors[solver] if benchmark == selected_benchmark else "grey"
-                for benchmark in subset["Benchmark"]
-            ]
-        else:
-            # When no benchmark is selected, use default colors
-            marker_colors = [solver_colors[solver] for _ in subset["Solver"]]
 
         # Add trace for the solver
         fig.add_trace(
@@ -222,11 +213,9 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key="my_scatter") -> go.Fi
                 marker=dict(
                     symbol=marker_symbol,
                     size=marker_sizes,  # Size is larger for the selected benchmark
-                    color=marker_colors,  # Color based on selection or solver
                 ),
                 showlegend=True,  # Keep the color of the legend intact
                 legendgroup=solver,  # Ensure the legend remains per solver
-                marker_color=marker_colors,  # Ensure legend color is based on solver
             )
         )
 
@@ -239,4 +228,31 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key="my_scatter") -> go.Fi
         legend_title="Solver",
     )
 
-    return fig
+    # Render the figure
+    st.plotly_chart(
+        fig,
+        on_select=on_select,
+        selection_mode="points",
+        key=key,
+    )
+
+    # "Show all" button to reset the view
+    if selected_benchmark and st.button("Show all"):
+        selected_benchmark = None
+
+    # Display metadata for the selected benchmark below the scatter plot
+    if selected_benchmark:
+        st.write(f"**Metadata for Benchmark: {selected_benchmark}**")
+
+        # Round Memory Usage to 0 decimal places and Runtime to 1 decimal place
+        filtered_data = merged_df[merged_df["Benchmark"] == selected_benchmark].copy()
+        filtered_data["Memory Usage (MB)"] = (
+            filtered_data["Memory Usage (MB)"].round(0).astype(int)
+        )
+        filtered_data["Runtime (s)"] = (
+            filtered_data["Runtime (s)"]
+            .round(1)
+            .apply(lambda x: f"{int(x)}" if x.is_integer() else f"{x:.1f}")
+        )
+
+        st.table(filtered_data)
