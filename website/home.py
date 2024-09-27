@@ -7,10 +7,7 @@ import yaml
 from components.filter import generate_filtered_metadata
 
 # local
-from components.home_chart import (
-    render_benchmark_scatter_plot,
-    render_benchmark_violin_plot,
-)
+from components.home_chart import render_benchmark_scatter_plot
 
 
 # Load benchmark metadata
@@ -51,11 +48,7 @@ st.markdown(
 # Filter
 filtered_metadata = generate_filtered_metadata(metadata_df)
 
-
-# Show filtered metadata
-if not filtered_metadata.empty:
-    st.write(filtered_metadata)
-else:
+if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
 
 
@@ -76,27 +69,7 @@ if not filtered_metadata.empty:
 # Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
 df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
-plotly_chart_key = "home_scatter_plot"
-render_benchmark_scatter_plot(df, key=plotly_chart_key)
-
-st.plotly_chart(
-    render_benchmark_violin_plot(
-        data=df,
-        yaxis_data="Runtime (s)",
-        yaxis_title="Runtime (s)",
-        chart_title="Distribution of Runtime by Solver",
-    )
-)
-
-st.plotly_chart(
-    render_benchmark_violin_plot(
-        data=df,
-        yaxis_data="Memory Usage (MB)",
-        yaxis_title="Memory Usage (MB)",
-        chart_title="Distribution of Memory Usage by Solver",
-    )
-)
-
+render_benchmark_scatter_plot(df, key="home_scatter_plot")
 
 # Add a line of text explaining the plot and the marker symbols
 st.markdown(
