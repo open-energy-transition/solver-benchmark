@@ -1,23 +1,11 @@
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-import yaml
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 
-def render_benchmark_scatter_plot(data: pd.DataFrame, key):
-    # Load benchmark metadata
-    def load_metadata(file_path):
-        with open(file_path, "r") as file:
-            return yaml.safe_load(file)
-
-    metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
-
-    # Convert metadata to a DataFrame for easier filtering
-    metadata_df = pd.DataFrame(metadata).T.reset_index()
-    metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
-
+def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
     selected_benchmark = None
     on_select = "rerun"
 
