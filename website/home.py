@@ -70,10 +70,3 @@ if not filtered_metadata.empty:
 df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
 render_benchmark_scatter_plot(df, key="home_scatter_plot")
-
-# Add a line of text explaining the plot and the marker symbols
-st.markdown(
-    """
-    **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
-    """
-)

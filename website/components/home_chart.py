@@ -1,9 +1,23 @@
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+import yaml
+from st_aggrid import AgGrid
+from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 
 def render_benchmark_scatter_plot(data: pd.DataFrame, key):
+    # Load benchmark metadata
+    def load_metadata(file_path):
+        with open(file_path, "r") as file:
+            return yaml.safe_load(file)
+
+    metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+
+    # Convert metadata to a DataFrame for easier filtering
+    metadata_df = pd.DataFrame(metadata).T.reset_index()
+    metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
+
     selected_benchmark = None
     on_select = "rerun"
 
@@ -17,7 +31,6 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key):
     fig = go.Figure()
 
     # Find the peak memory usage and average runtime for each solver and benchmark
-    # TODO why not use benchmark_results_mean_stddev.csv?
     peak_memory = (
         data.groupby(["Benchmark", "Solver", "Status"])["Memory Usage (MB)"]
         .max()
@@ -89,6 +102,13 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key):
         key=key,
     )
 
+    # Add a line of text explaining the plot and the marker symbols
+    st.markdown(
+        """
+        **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
+        """
+    )
+
     # "Show all" button to reset the view
     if selected_benchmark and st.button("Show all"):
         selected_benchmark = None
@@ -97,15 +117,35 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, key):
     if selected_benchmark:
         st.write(f"**Metadata for Benchmark: {selected_benchmark}**")
 
-        # Round Memory Usage to 0 decimal places and Runtime to 1 decimal place
-        filtered_data = merged_df[merged_df["Benchmark"] == selected_benchmark].copy()
-        filtered_data["Memory Usage (MB)"] = (
-            filtered_data["Memory Usage (MB)"].round(0).astype(int)
-        )
-        filtered_data["Runtime (s)"] = (
-            filtered_data["Runtime (s)"]
-            .round(1)
-            .apply(lambda x: f"{int(x)}" if x.is_integer() else f"{x:.1f}")
-        )
+        # Convert metadata to DataFrame
+        metadata_df = pd.DataFrame.from_dict(
+            metadata[selected_benchmark], orient="index", columns=["Value"]
+        ).reset_index()
+        metadata_df.columns = ["Header", "Value"]
 
-        st.table(filtered_data)
+        # Build grid options with custom row height
+        gb = GridOptionsBuilder.from_dataframe(metadata_df)
+        gb.configure_grid_options(domLayout="autoHeight")
+        grid_options = gb.build()
+
+        # Add custom column definitions
+        column_defs = [
+            {"headerName": "Header", "field": "Header"},
+            {
+                "headerName": "Value",
+                "field": "Value",
+                "flex": 1,
+                "cellStyle": {"textAlign": "left"},
+            },
+        ]
+        grid_options["columnDefs"] = column_defs
+
+        # Display the transposed DataFrame using ag-Grid
+        AgGrid(
+            metadata_df,
+            editable=True,
+            sortable=True,
+            filter=True,
+            gridOptions=grid_options,
+            fit_columns_on_grid_load=True,
+        )
