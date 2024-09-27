@@ -57,11 +57,6 @@ data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 raw_df = pd.read_csv(data_url)
 df = raw_df
 
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
-
-# Convert metadata to a DataFrame for easier filtering
-metadata_df = pd.DataFrame(metadata).T.reset_index()
-metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Assert that the set of benchmark names in the metadata matches those in the data
 csv_benchmarks = set(raw_df["Benchmark"].unique())
