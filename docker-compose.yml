@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  pypsa:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: solver_benchmark
+    stdin_open: true
+    tty: true
