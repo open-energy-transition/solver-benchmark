@@ -52,7 +52,7 @@ pypsa-eur-elec-20-lv1-3h-op-ucconv:
   Spatial resolution: 20 nodes (Italy)
   MILP features: Unit commitment for conventional fleet
   N. of constraints: 108984
-  N. of variables: 15998
+  N. of variables: 1395780 (continuous), 219000 (binary)
 
 pypsa-gas+wind+sol+ely-1h:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model
