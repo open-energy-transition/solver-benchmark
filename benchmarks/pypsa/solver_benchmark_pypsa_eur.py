@@ -109,7 +109,7 @@ elif configfile.name in [
         [
             "snakemake",
             "-call",
-            "results/networks/elec_s_20_ec_lv1_24h_op.nc",
+            "results/networks/base_s_20_elec_lv1_3h_op.nc",
             "--cores",
             "all",
             "--printshellcmds",
