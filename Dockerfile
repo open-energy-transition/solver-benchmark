@@ -1,40 +1,26 @@
-FROM ubuntu:20.04
+# Use a lightweight base image with micromamba support
+FROM mambaorg/micromamba
 
-# Install necessary dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    wget \
-    build-essential \
-    curl \
-    coreutils \
-    time \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Set environment variables for micromamba
+ENV MAMBA_DOCKERFILE_ACTIVATE=1
+ENV CONDA_ENV_NAME=pypsa-eur
 
-# Install micromamba
-RUN curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin/ --strip-components=1 bin/micromamba
-
-# Set working directory
+# Set working directory to /app
 WORKDIR /app
-COPY . .
 
-# Install necessary tools and clone PyPSA-Eur repo
-RUN git clone https://github.com/PyPSA/pypsa-eur.git && \
-    cd pypsa-eur && \
-    git checkout a69373b9
+# Install git for cloning repositories
+RUN micromamba install -n base -c conda-forge git -y
 
-# Install the conda environment using micromamba
-RUN micromamba create -f ./pypsa-eur/envs/environment.yaml --yes && \
-    micromamba clean --all --yes
+# Copy the current directory (your local files) into /app
+COPY . /app
 
-# Install snakemake within the environment
-RUN micromamba run -n pypsa-eur pip install snakemake
+# Clone the PyPSA-Eur repository into /app/pypsa-eur
+RUN git clone https://github.com/PyPSA/pypsa-eur.git /app/pypsa-eur
 
-# Install the custom linopy branch
-RUN micromamba run -n pypsa-eur pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps
+# Check the current commit and checkout the specified commit
+# RUN cd /app/pypsa-eur
+    # git checkout b328169
+RUN micromamba env create -f pypsa-eur/envs/environment.yaml --yes
 
-RUN cd pypsa-eur && \
-    micromamba run -n pypsa-eur time snakemake -call results/networks/elec_s_20_ec_lv1_3h_op.nc --cores all --printshellcmds --configfile ../benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
-
-# Use micromamba and activate the environment by default
-CMD ["/bin/bash", "-c", "micromamba shell hook --shell bash > ~/.bashrc && source ~/.bashrc && micromamba activate pypsa-eur && exec /bin/bash"]
+# Run boot.sh when the container starts
+ENTRYPOINT [ "/app/boot.sh" ]
