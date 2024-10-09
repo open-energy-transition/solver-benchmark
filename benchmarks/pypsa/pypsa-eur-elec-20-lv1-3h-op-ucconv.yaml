@@ -13,6 +13,7 @@ conventional:
   unit_commitment: true
 
 solving:
+  options:
       linearized_unit_commitment: false
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector
