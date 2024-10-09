@@ -1,0 +1,171 @@
+## Proposed benchmarks
+
+genx-elec-3-3h:
+  Short description: Three Zones, a one-year example with 3 hourly resolution, contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. Expansion of transmission lines is allowed.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: 3 Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None
+  N. of constraints:
+  N. of variables:
+
+genx-elec-3-3h-ucconv:
+  Short description: Three Zones, a one-year example with 3 hourly resolution, contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. Unit commitment is applied to conventional generators.
+  Model name: GenX
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: 3 Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: Unit commitment
+  N. of constraints:
+  N. of variables:
+
+## Metadata for samples from https://github.com/GenXProject/GenX.jl/tree/73ab92d78fef9d8a934f3bb20b74795096da3ca9/example_systems
+
+1_three_zones:
+  Short description: Three Zones, a one-year example with hourly resolution, contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 120137
+  N. of variables: 153397
+
+2_three_zones_w_electrolyzer:
+  Short description: This is a one-year example with hourly resolution which contains three zones representing Massachusetts, Connecticut, and Maine. It is designed to show the electrolyzer feature in GenX. The sixteen represented resources include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 170044
+  N. of variables: 214386
+
+3_three_zones_w_co2_capture:
+  Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 120137
+  N. of variables: 153397
+
+4_three_zones_w_policies_slack:
+  Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. It additionally contains example input files (inside the policies folder) establishing slack variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap, etc.). These slack variables allow the relevant constraints to be violated at the cost of a specified objective function penalty, which can be used to either identify problematic constraints without causing infeasibilities in GenX, or to set price caps beyond which policies are no longer enforced. These slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv, CO2_cap_slack.csv, Energy_share_requirement_slack.csv, or the PriceCap column in Minimum_capacity_requirement.csv and Maximum_capacity_requirement.csv) are present. If any of these inputs are not present, GenX will instantiate the relevant policy as a hard constraint, which will throw an infeasibility error if violated.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 138623
+  N. of variables: 166336
+
+5_three_zones_w_piecewise_fuel:
+  Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. For natural gas ccs generator, we provide picewise fuel usage (PWFU) parameters to represent the fuel consumption at differernt load point. Please refer to the documentation for more details on PWFU parameters and corresponding data requirements. When settings["UCommit"] >= 1 and PWFU parameters are provided in Thermal.csv, the standard heat rate (i.e., Heat_Rate_MMBTU_per_MWh) will not be used. Instead, the heat rate will be calculated based on the PWFU parameters.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 133073
+  N. of variables: 186661
+
+6_three_zones_w_multistage:
+  Short description: This is a toy multi-stage example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to run multi-stage investment planning models. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Multi-period (3 years)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 120243
+  N. of variables: 153463
+
+7_three_zones_w_colocated_VRE_storage:
+  Short description: This example system shows the functionalities of the colocated VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: 24 hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 4163
+  N. of variables: 4084
+
+8_three_zones_w_colocated_VRE_storage_electrolyzers:
+  Short description: This example system shows the functionalities of the colocated VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 250408
+  N. of variables: 285648
+
+9_three_zones_w_retrofit:
+  Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented resources include natural gas, solar PV, wind, lithium-ion battery, and coal power plants. This examples shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency. 
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 3 nodes (Massachussetts, Connecticut, Maine)
+  MILP features: None (unit commitment is linearized)
+  N. of constraints: 419527
+  N. of variables: 253211
+
+10_IEEE_9_bus_DC_OPF:
+  Short description: The IEEE 9-bus system is a standard test case for power system optimization problems. In this example, there are three thermal generators and three loads (no transmission network expansion).
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  Temporal resolution: Hourly
+  Spatial resolution: 9 nodes
+  MILP features: None
+  N. of constraints: 560642
+  N. of variables: 1051205
