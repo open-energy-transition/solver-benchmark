@@ -75,7 +75,7 @@ log_output_file.write("        \n")
 log_output_file.write("Execute model run \n")
 print("Execute model run \n")
 
-if configfile.name == "pypsa-infr-1.yaml":
+if configfile.name == "pypsa-eur-sec-2-lv1-3h.yaml":
     subprocess.run(
         [
             "snakemake",
@@ -88,7 +88,7 @@ if configfile.name == "pypsa-infr-1.yaml":
             str(configfile),
         ]
     )
-elif configfile.name == "pypsa-infr-2.yaml":
+elif configfile.name == "pypsa-eur-elec-10-lvopt-3h.yaml":
     subprocess.run(
         [
             "snakemake",
@@ -101,7 +101,10 @@ elif configfile.name == "pypsa-infr-2.yaml":
             str(configfile),
         ]
     )
-elif configfile.name in ["pypsa-infr-3.yaml", "pypsa-infr-4.yaml"]:
+elif configfile.name in [
+    "pypsa-eur-elec-20-lv1-3h-op.yaml",
+    "pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml",
+]:
     subprocess.run(
         [
             "snakemake",

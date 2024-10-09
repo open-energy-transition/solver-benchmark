@@ -1,88 +1,84 @@
+# main script
 from pathlib import Path
 
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
+import yaml
+from components.filter import generate_filtered_metadata
 
-# Custom CSS for full-width container
-st.markdown(
-    """
-    <style>
-    .block-container {
-      max-width: 100%;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# local
+from components.home_chart import render_benchmark_scatter_plot
+
+
+# Load benchmark metadata
+def load_metadata(file_path):
+    with open(file_path, "r") as file:
+        return yaml.safe_load(file)
+
+
+metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+
+# Convert metadata to a DataFrame for easier filtering
+metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Title of the app
-st.title("Benchmarks")
+st.title("OET/BE Solver Benchmark")
+
+st.markdown(
+    """
+    This website is an open-source benchmark of LP/MILP solvers on representative problems from the energy planning domain.
+    The website aims to help energy system modelers decide the best solver for their application; solver developers improve their solvers using realistic and important examples; and funders accelerate the green transition by giving them reliable metrics to evaluate solver performance over time.
+    We accept community contributions for new benchmarks, new / updated solver versions, and feedback on the benchmarking methodology and metrics via our [GitHub repository](https://github.com/orgs/open-energy-transition/solver-benchmark).
+
+    This project was developed by [Open Energy Transition](https://openenergytransition.org/), with funding from [Breakthrough Energy](https://www.breakthroughenergy.org/).
+
+    | **Details** | |
+    | ------------- | ------------- |
+    | **Solvers** | 4: Gurobi, HiGHS, GLPK, SCIP |
+    | **Benchmarks** | 6 |
+    | **Iterations** | 1 |
+    | **Timeout** | 15 min |
+    | **vCPU** | 8 |
+    | **Memory** | 32GB |
+    """
+)
+
+
+# Filter
+filtered_metadata = generate_filtered_metadata(metadata_df)
+
+if filtered_metadata.empty:
+    st.warning("No matching models found. Please adjust your filter selections.")
+
 
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-df = pd.read_csv(data_url)
+raw_df = pd.read_csv(data_url)
+df = raw_df
 
-# Create a figure for runtime vs peak memory
-fig = go.Figure()
 
-# Find the peak memory usage and average runtime for each solver and benchmark
-peak_memory = (
-    df.groupby(["Benchmark", "Solver", "Status"])["Memory Usage (MB)"]
-    .max()
-    .reset_index()
-)
-average_runtime = (
-    df.groupby(["Benchmark", "Solver", "Status"])["Runtime (s)"].mean().reset_index()
-)
-
-# Merge the data to have a common DataFrame for plotting
-merged_df = pd.merge(peak_memory, average_runtime, on=["Benchmark", "Solver", "Status"])
-
-# Define marker symbols based on status
-status_symbols = {
-    "TO": "x",  # Timeout gets an "X"
-    "ok": "circle",  # Normal execution gets a circle
-}
-
-# Add lines for runtime vs peak memory
-for solver in merged_df["Solver"].unique():
-    subset = merged_df[merged_df["Solver"] == solver]
-
-    # Get the appropriate marker symbol for each status
-    marker_symbol = [
-        status_symbols.get(status, "circle") for status in subset["Status"]
-    ]
-
-    fig.add_trace(
-        go.Scatter(
-            x=subset["Runtime (s)"],
-            y=subset["Memory Usage (MB)"],
-            mode="lines+markers",
-            name=solver,
-            text=subset["Benchmark"],  # Tooltip text
-            hoverinfo="text+x+y",  # Display tooltip text with x and y values
-            marker=dict(symbol=marker_symbol, size=10),  # Use symbols based on status
-        )
-    )
-
-# Update layout for the plot
-fig.update_layout(
-    title="Runtime vs Peak Memory Consumption",
-    xaxis_title="Runtime (s)",
-    yaxis_title="Peak Memory Usage (MB)",
-    template="plotly_dark",
-    legend_title="Solver",
+# Assert that the set of benchmark names in the metadata matches those in the data
+csv_benchmarks = set(raw_df["Benchmark"].unique())
+metadata_benchmarks = set(metadata_df["Benchmark Name"].unique())
+# Assertion to check if both sets are the same
+assert csv_benchmarks == metadata_benchmarks, (
+    f"Mismatch between CSV benchmarks and metadata benchmarks:\n"
+    f"In CSV but not metadata: {csv_benchmarks - metadata_benchmarks}\n"
+    f"In metadata but not CSV: {metadata_benchmarks - csv_benchmarks}"
 )
 
-# Show the plot
-st.plotly_chart(fig)
+# Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
+df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
-# Add a line of text explaining the symbols
-st.markdown(
-    """
-    **Legend Explanation:**
-    - **X**: Timeout (TO)
-    - **O**: Successful run (OK)
-    """
-)
+# Ensure we plot the latest version of each solver if there are multiple versions.
+if "Solver Version" in df.columns:
+    df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
+    df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
+
+# Filter the benchmark data to match the filtered metadata
+if not filtered_metadata.empty:
+    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
+    df = df[df["Benchmark"].isin(filtered_benchmarks)]
+
+render_benchmark_scatter_plot(df, metadata, key="home_scatter_plot")

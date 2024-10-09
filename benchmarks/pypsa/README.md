@@ -15,10 +15,10 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
      ```bash
      time snakemake -call all --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-3h.yaml ; echo -e '\a'
      time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-10-lvopt-3h.yaml ; echo -e '\a'
-     time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
-     time snakemake -call results/networks/elec_s_20_ec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml ; echo -e '\a'
-     time python pypsa-wind+sol+ely-1h-ucwind.py
-     time python pypsa-wind+sol+ely-1h.py
+     time snakemake -call results/networks/elec_s_20_ec_lv1_3h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op.yaml ; echo -e '\a'
+     time snakemake -call results/networks/elec_s_20_ec_lv1_3h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-20-lv1-3h-op-ucconv.yaml ; echo -e '\a'
+     time python pypsa-gas+wind+sol+ely-1h-ucgas.py
+     time python pypsa-gas+wind+sol+ely-1h.py
      ```
      When the command exits, look for an output line like follows:
      ```
@@ -78,10 +78,10 @@ index bdc10dd1..419ca641 100644
 - Get the config files for the sample problems from ... and put them in `/pypsa-eur/config`
 - Get the `solver_benchmark_pypsa_eur.py` and place it in the `/pypsa-eur` folder
 - In order to produce the .lp files, the line  `kwargs["keep_files"] = cf_solving.get("keep_files", True)` must be added to `/pypsa-eur/scripts/solve_network.py` (can be added anywhere under `def solve_network(n, config, solving, **kwargs):` among the several **kwargs extra arguments
-- Run the solver_benchmark_pypsa_eur.py file: `python solver_benchmark_pypsa_eur.py --configfile config/your_config_file.yaml` (where `your_config_file` has to be replaced with either `pypsa-infr-1`, `pypsa-infr-2`, `pypsa-infr-3` or `pypsa-infr-4`)
+- Run the solver_benchmark_pypsa_eur.py file: `python solver_benchmark_pypsa_eur.py --configfile config/your_config_file.yaml` (where `your_config_file` has to be replaced with either `pypsa-eur-sec-2-lv1-3h`, `pypsa-eur-elec-10-lvopt-3h`, `pypsa-eur-elec-20-lv1-3h-op` or `pypsa-eur-elec-20-lv1-3h-op-ucconv`)
 - The generated .lp file will be located in `/tmp`
 
-## Simpler sample problems (pypsa-wind+sol+ely-1h-ucwind, pypsa-wind+sol+ely-1h)
+## Simpler sample problems (pypsa-gas+wind+sol+ely-1h, pypsa-gas+wind+sol+ely-1h-ucgas)
 - First, follow the traditional steps for PyPSA-EUR [installation](https://pypsa-eur.readthedocs.io/en/latest/installation.html) (ignore if already executed, but the `pypsa-eur` environment is required anyway.
-- Run `python pypsa-infr-5.py` and `python pypsa-infr-6.py`
+- Run `python pypsa-gas+wind+sol+ely-1h.py` and `pypsa-gas+wind+sol+ely-1h-ucgas.py`
 - The .lp file will be automatically produced thanks to the `keep_files=True` argument passed to `n.optimize()` and located in `/tmp`

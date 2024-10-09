@@ -103,8 +103,8 @@ if selected_benchmark in metadata:
             subset = status_subset[status_subset["Solver"] == solver]
             fig_filtered.add_trace(
                 go.Scatter(
-                    x=subset[xTitle],
-                    y=subset[yTitle],
+                    x=round(subset[xTitle], 1),
+                    y=round(subset[yTitle]),
                     mode="markers",
                     name=f"{solver} - {status}",
                     marker=dict(
@@ -122,11 +122,16 @@ if selected_benchmark in metadata:
         yaxis_title="Peak Memory Usage mean (MB)",
         template="plotly_dark",
         legend_title="Solver - Status",
-        xaxis=dict(range=[min(merged_df[xTitle]) - 0.5, max(merged_df[xTitle]) + 0.5]),
-        yaxis=dict(range=[min(merged_df[yTitle]) - 10, max(merged_df[yTitle]) + 10]),
+        xaxis=dict(range=[min(merged_df[xTitle]) * 0.85, max(merged_df[xTitle]) * 1.1]),
+        yaxis=dict(range=[min(merged_df[yTitle]) * 0.85, max(merged_df[yTitle]) * 1.1]),
     )
 
     st.plotly_chart(fig_filtered)
 
+    st.markdown(
+        """
+        **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
+        """
+    )
 else:
     st.write("No metadata available for the selected benchmark.")
