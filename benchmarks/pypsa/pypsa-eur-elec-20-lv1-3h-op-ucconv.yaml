@@ -13,7 +13,12 @@ conventional:
   unit_commitment: true
 
 solving:
-      linearized_unit_commitment: false
+  options:
+    linearized_unit_commitment: false
+    only_generate_problem_file: true
+  solver:
+    name: highs
+    options: highs-default
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector
 sector:

@@ -7,3 +7,10 @@ scenario:
   - 3h
 
 countries: ['IT']
+
+solving:
+  options:
+    only_generate_problem_file: true
+  solver:
+    name: highs
+    options: highs-default
