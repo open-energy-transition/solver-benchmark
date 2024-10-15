@@ -1,25 +1,35 @@
 import json
 import sys
+from pathlib import Path
 from time import time
 
 import linopy
+from linopy.solvers import SolverName
+
+
+def get_solver(solver_name):
+    try:
+        solver_enum = SolverName(solver_name.lower())
+    except ValueError:
+        raise ValueError(f"Solver '{solver_name}' is not recognized")
+
+    solver_class = getattr(linopy.solvers, solver_enum.name)
+    return solver_class()
 
 
 def main(solver_name, input_file):
-    print(f"Solver: {solver_name} | Input File: {input_file}")
-    # Load the Linopy model from the NetCDF file
-    model = linopy.read_netcdf(input_file)
+    problem_file = Path(input_file)
+    solver = get_solver(solver_name)
 
-    # Solve the model with the specified solver
     start_time = time()
-    status, condition = model.solve(solver_name=solver_name)
+    res = solver.solve_problem(problem_fn=problem_file)
     runtime = time() - start_time
 
     results = {
         "runtime": runtime,
-        "status": status,
-        "condition": condition,
-        "objective": model.objective.value,
+        "status": res.status.status.value,
+        "condition": res.status.termination_condition.value,
+        "objective": res.solution.objective,
     }
     print(json.dumps(results))
 
