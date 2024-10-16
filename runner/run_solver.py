@@ -17,19 +17,30 @@ def get_solver(solver_name):
     return solver_class()
 
 
+def select_solver_method(solver_name, solver, problem_file):
+    if solver_name == "glpk":
+        solution_fn = f"runner/solution/{problem_file.stem}.sol"
+        return lambda: solver.solve_problem(
+            problem_fn=problem_file, solution_fn=solution_fn
+        )
+    else:
+        return lambda: solver.solve_problem(problem_fn=problem_file)
+
+
 def main(solver_name, input_file):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
+    solve_problem = select_solver_method(solver_name, solver, problem_file)
 
     start_time = time()
-    res = solver.solve_problem(problem_fn=problem_file)
+    solver_result = solve_problem()
     runtime = time() - start_time
 
     results = {
         "runtime": runtime,
-        "status": res.status.status.value,
-        "condition": res.status.termination_condition.value,
-        "objective": res.solution.objective,
+        "status": solver_result.status.status.value,
+        "condition": solver_result.status.termination_condition.value,
+        "objective": solver_result.solution.objective,
     }
     print(json.dumps(results))
 

@@ -2,6 +2,35 @@
 
 This repository contains code for benchmarking LP/MILP solvers, and an interactive website for analyzing the results.
 
+
+## Run Custom Linopy by Daniel-RDT
+#### TODO: Remove this section once the pull request for linopy_solver_class by Daniel-RDT is merged into the main Linopy repository.
+### Install micromamba
+1. Update your system and install bzip2:
+   ```shell
+      sudo apt update
+      sudo apt install bzip2 -y
+   ```
+2. Download and install Micromamba:
+   ```shell
+      curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+      sudo mv bin/micromamba /usr/local/bin/
+   ```
+
+### Install Git and Custom Linopy by Daniel-RDT
+1. Install Git using Micromamba:
+   ```shell
+      micromamba install -n base -c conda-forge git -y
+   ```
+2. Clone and install the custom version of Linopy:
+   ```shell
+      git clone https://github.com/daniel-rdt/linopy
+      cd linopy
+      git checkout linopy_solver_class
+      pip install -e . --no-deps
+   ```
+Note: When using the custom Linopy version, use `runner/requirements_custom_linopy.txt` instead of `runner/requirements.txt` for installing dependencies.
+
 ## Initial Setup
 
 Before you begin, make sure your development environment includes [Python](https://www.python.org/).
