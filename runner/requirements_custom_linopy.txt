@@ -1,5 +1,0 @@
-pypsa==0.29.0
-highspy==1.7.2
-glpk==0.4.7
-xarray==2024.9.0
-zstandard==0.22.0
