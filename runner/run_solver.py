@@ -14,7 +14,7 @@ def get_solver(solver_name):
         raise ValueError(f"Solver '{solver_name}' is not recognized")
 
     solver_class = getattr(linopy.solvers, solver_enum.name)
-    return solver_class()
+    return solver_class(random_seed = 0)
 
 
 def main(solver_name, input_file):
