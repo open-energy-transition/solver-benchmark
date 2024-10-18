@@ -14,7 +14,20 @@ def get_solver(solver_name):
         raise ValueError(f"Solver '{solver_name}' is not recognized")
 
     solver_class = getattr(linopy.solvers, solver_enum.name)
-    return solver_class()
+
+    seed_options = {
+        "highs": {"random_seed": 0},
+        "glpk": {"seed": 0},
+        "gurobi": {"seed": 0},
+        "scip": {
+            "randomization/randomseedshift": 0,
+        },
+    }
+
+    if solver_name.lower() in seed_options:
+        return solver_class(**seed_options[solver_name.lower()])
+    else:
+        return solver_class()
 
 
 def main(solver_name, input_file):
