@@ -42,6 +42,23 @@ def main(solver_name, input_file):
     )
     runtime = time() - start_time
 
+    solver_model = solver_result.solver_model
+
+    if solver_name == "highs":
+        info = solver_model.getInfo()
+        mip_gap = info.mip_gap
+        max_integrality_violation = info.max_integrality_violation
+
+        if max_integrality_violation == 0.0:
+            print("Integer feasible solution found.")
+        else:
+            print("Integer feasible solution not found.")
+
+        if mip_gap == 0.0:
+            print("Optimal solution found with a duality gap of 0%.")
+        else:
+            print(f"Non-zero duality gap: {mip_gap * 100:.2f}%")
+
     results = {
         "runtime": runtime,
         "status": solver_result.status.status.value,
