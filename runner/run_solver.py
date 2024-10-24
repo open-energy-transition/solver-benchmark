@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 from time import time
 
+import numpy as np
+
 import linopy
 from linopy.solvers import SolverName
 
@@ -42,11 +44,18 @@ def main(solver_name, input_file):
     )
     runtime = time() - start_time
 
+    primal_values = solver_result.solution.primal
+    integrality_violations = [abs(val - round(val)) for val in primal_values]
+    max_integrality_violation = None
+    if len(integrality_violations):
+        max_integrality_violation = np.max(integrality_violations)
+
     results = {
         "runtime": runtime,
         "status": solver_result.status.status.value,
         "condition": solver_result.status.termination_condition.value,
         "objective": solver_result.solution.objective,
+        "max_integrality_violation": max_integrality_violation,
     }
     print(json.dumps(results))
 
