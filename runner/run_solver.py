@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 from time import time
 
+import numpy as np
+
 import linopy
 from linopy.solvers import SolverName
 
@@ -42,28 +44,18 @@ def main(solver_name, input_file):
     )
     runtime = time() - start_time
 
-    solver_model = solver_result.solver_model
-
-    if solver_name == "highs":
-        info = solver_model.getInfo()
-        mip_gap = info.mip_gap
-        max_integrality_violation = info.max_integrality_violation
-
-        if max_integrality_violation == 0.0:
-            print("Integer feasible solution found.")
-        else:
-            print("Integer feasible solution not found.")
-
-        if mip_gap == 0.0:
-            print("Optimal solution found with a duality gap of 0%.")
-        else:
-            print(f"Non-zero duality gap: {mip_gap * 100:.2f}%")
+    primal_values = solver_result.solution.primal
+    integrality_violations = [abs(val - round(val)) for val in primal_values]
+    max_integrality_violation = None
+    if len(integrality_violations):
+        max_integrality_violation = np.max(integrality_violations)
 
     results = {
         "runtime": runtime,
         "status": solver_result.status.status.value,
         "condition": solver_result.status.termination_condition.value,
         "objective": solver_result.solution.objective,
+        "max_integrality_violation": max_integrality_violation,
     }
     print(json.dumps(results))
 
