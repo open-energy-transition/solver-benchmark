@@ -43,7 +43,21 @@ def main(solver_name, input_file):
         solution_fn=solution_fn,
     )
     runtime = time() - start_time
+    solver_model = solver_result.solver_model
 
+    duality_gap = None
+    if solver_name == "scip":
+        duality_gap = solver_model.getGap()
+    elif solver_name == "gurobi":
+        print("MIPGap", solver_model.MIPGap)
+        duality_gap = solver_model.MIPGap
+    elif solver_name == "glpk":
+        print(solver_result.info)
+    else:
+        info = solver_model.getInfo()
+        duality_gap = info.mip_gap
+
+    # We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers.
     primal_values = solver_result.solution.primal
     integrality_violations = [abs(val - round(val)) for val in primal_values]
     max_integrality_violation = None
@@ -56,6 +70,7 @@ def main(solver_name, input_file):
         "condition": solver_result.status.termination_condition.value,
         "objective": solver_result.solution.objective,
         "max_integrality_violation": max_integrality_violation,
+        "duality_gap": duality_gap,
     }
     print(json.dumps(results))
 
