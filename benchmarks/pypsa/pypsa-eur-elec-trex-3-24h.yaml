@@ -1,15 +1,15 @@
 scenario:
   clusters:
-  - 10
+  - 3
   opts:
-  - 3h
+  - 24h
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries
 countries: ['IT']
 
 solving:
   options:
-    only_generate_problem_file: true
+    only_generate_problem_file: /tmp/pypsa-eur-elec-trex-3-24h.lp
   solver:
     name: highs
     options: highs-default

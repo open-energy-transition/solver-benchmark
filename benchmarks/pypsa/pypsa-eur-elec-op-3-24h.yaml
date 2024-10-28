@@ -1,21 +1,19 @@
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario
+# Wildcard docs in https://pypsa-eur.readthedocs.io/en/latest/wildcards.html
 scenario:
   ll:
   - v1
   clusters:
-  - 20
+  - 3
   opts:
-  - 3h
+  - 24h
 
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries
 countries: ['IT']
-
-# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#conventional
-conventional:
-  unit_commitment: true
 
 solving:
   options:
-    linearized_unit_commitment: false
-    only_generate_problem_file: true
+    only_generate_problem_file: /tmp/pypsa-eur-elec-lv1-3-24h.lp
   solver:
     name: highs
     options: highs-default
