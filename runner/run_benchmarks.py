@@ -48,6 +48,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Runtime (s)",
                 "Memory Usage (MB)",
+                "Max Integrality Violation",
+                "Duality Gap",
             ]
         )
 
@@ -81,6 +83,8 @@ def write_csv_row(results_csv, benchmark_name, solver, metrics):
                 metrics["objective"],
                 metrics["runtime"],
                 metrics["memory"],
+                metrics["max_integrality_violation"],
+                metrics["duality_gap"],
             ]
         )
 
@@ -133,6 +137,8 @@ def benchmark_solver(input_file, solver_name, timeout):
             "condition": "Timeout",
             "objective": None,
             "runtime": timeout,
+            "duality_gap": None,
+            "max_integrality_violation": None,
         }
     elif result.returncode != 0:
         print(
@@ -145,6 +151,8 @@ def benchmark_solver(input_file, solver_name, timeout):
             "condition": "Error",
             "objective": None,
             "runtime": timeout,
+            "duality_gap": None,
+            "max_integrality_violation": None,
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
@@ -212,27 +220,27 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
 if __name__ == "__main__":
     benchmark_files_info = [
         {
-            "name": "pypsa-eur-sec-2-lv1-3h.nc",
+            "name": "pypsa-eur-sec-2-lv1-3h.lp",
             "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
         },
         {
-            "name": "pypsa-eur-elec-10-lvopt-3h.nc",
+            "name": "pypsa-eur-elec-10-lvopt-3h.lp",
             "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
         },
         {
-            "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
+            "name": "pypsa-eur-elec-20-lv1-3h-op.lp",
             "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
         },
         {
-            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
+            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.lp",
             "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
         },
         {
-            "name": "pypsa-gas+wind+sol+ely-1h-ucgas.nc",
+            "name": "pypsa-gas+wind+sol+ely-1h-ucgas.lp",
             "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
         },
         {
-            "name": "pypsa-gas+wind+sol+ely-1h.nc",
+            "name": "pypsa-gas+wind+sol+ely-1h.lp",
             "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
         },
     ]

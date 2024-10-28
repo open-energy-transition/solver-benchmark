@@ -44,24 +44,25 @@ def main(solver_name, input_file):
     )
     runtime = time() - start_time
     solver_model = solver_result.solver_model
-
     duality_gap = None
+    max_integrality_violation = None
+
     if solver_name == "scip":
         duality_gap = solver_model.getGap()
     elif solver_name == "gurobi":
-        print("MIPGap", solver_model.MIPGap)
         duality_gap = solver_model.MIPGap
     elif solver_name == "glpk":
-        print(solver_result.info)
-    else:
+        # GLPK does not provide a solver model with duality gap information.
+        duality_gap = None
+    elif solver_model:
         info = solver_model.getInfo()
-        duality_gap = info.mip_gap
+        duality_gap = info.mip_gap if hasattr(info, "mip_gap") else None
 
-    # We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers.
     primal_values = solver_result.solution.primal
-    integrality_violations = [abs(val - round(val)) for val in primal_values]
-    max_integrality_violation = None
-    if len(integrality_violations):
+    integrality_violations = [
+        abs(val - round(val)) for val in primal_values if val is not None
+    ]
+    if integrality_violations:
         max_integrality_violation = np.max(integrality_violations)
 
     results = {
@@ -69,8 +70,8 @@ def main(solver_name, input_file):
         "status": solver_result.status.status.value,
         "condition": solver_result.status.termination_condition.value,
         "objective": solver_result.solution.objective,
-        "max_integrality_violation": max_integrality_violation,
         "duality_gap": duality_gap,
+        "max_integrality_violation": max_integrality_violation,
     }
     print(json.dumps(results))
 
