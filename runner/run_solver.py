@@ -50,7 +50,8 @@ def main(solver_name, input_file):
     if solver_name == "scip":
         duality_gap = solver_model.getGap()
     elif solver_name == "gurobi":
-        duality_gap = solver_model.MIPGap
+        if solver_model.IsMIP:
+            duality_gap = solver_model.MIPGap
     elif solver_name == "glpk":
         # GLPK does not provide a solver model with duality gap information.
         duality_gap = None
