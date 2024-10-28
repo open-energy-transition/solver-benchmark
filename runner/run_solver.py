@@ -1,25 +1,52 @@
 import json
 import sys
+from pathlib import Path
 from time import time
 
 import linopy
+from linopy.solvers import SolverName
+
+
+def get_solver(solver_name):
+    try:
+        solver_enum = SolverName(solver_name.lower())
+    except ValueError:
+        raise ValueError(f"Solver '{solver_name}' is not recognized")
+
+    solver_class = getattr(linopy.solvers, solver_enum.name)
+
+    seed_options = {
+        "highs": {"random_seed": 0},
+        "glpk": {"seed": 0},
+        "gurobi": {"seed": 0},
+        "scip": {
+            "randomization/randomseedshift": 0,
+        },
+    }
+
+    if solver_name.lower() in seed_options:
+        return solver_class(**seed_options[solver_name.lower()])
+    else:
+        return solver_class()
 
 
 def main(solver_name, input_file):
-    print(f"Solver: {solver_name} | Input File: {input_file}")
-    # Load the Linopy model from the NetCDF file
-    model = linopy.read_netcdf(input_file)
+    problem_file = Path(input_file)
+    solver = get_solver(solver_name)
+    solution_fn = Path(f"runner/solution/{problem_file.stem}-{solver_name}.sol")
 
-    # Solve the model with the specified solver
     start_time = time()
-    status, condition = model.solve(solver_name=solver_name)
+    solver_result = solver.solve_problem(
+        problem_fn=problem_file,
+        solution_fn=solution_fn,
+    )
     runtime = time() - start_time
 
     results = {
         "runtime": runtime,
-        "status": status,
-        "condition": condition,
-        "objective": model.objective.value,
+        "status": solver_result.status.status.value,
+        "condition": solver_result.status.termination_condition.value,
+        "objective": solver_result.solution.objective,
     }
     print(json.dumps(results))
 

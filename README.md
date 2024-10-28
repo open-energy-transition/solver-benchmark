@@ -28,7 +28,9 @@ And this is how to install the required dependencies once a `venv` is activated:
    ```shell
    sudo apt install glpk-utils libglpk-dev  # GLPK solver cannot be installed purely with pip
    pip install -r runner/requirements.txt
+   pip install git+https://github.com/daniel-rdt/linopy.git@linopy_solver_class
    ```
+   **NOTE**: The last line is required to install a custom branch of linopy that supports reading in LP files. When the [PR](https://github.com/PyPSA/linopy/pull/349) is merged in and a new version is released, we can remove this line and use the latest version of linopy instead.
 - Website:
    ```shell
    pip install -r website/requirements.txt
