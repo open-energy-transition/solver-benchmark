@@ -3,12 +3,11 @@ import statistics
 import time
 import tracemalloc
 
+import linopy
 import pypsa
 
 # local
 from _benchmarks import memory_logger
-
-import linopy
 
 
 def prepare_model(file_path):

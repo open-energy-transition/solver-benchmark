@@ -3,9 +3,8 @@ import sys
 from pathlib import Path
 from time import time
 
-import numpy as np
-
 import linopy
+import numpy as np
 from linopy.solvers import SolverName
 
 
@@ -35,7 +34,9 @@ def get_solver(solver_name):
 def main(solver_name, input_file):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
-    solution_fn = Path(f"runner/solution/{problem_file.stem}-{solver_name}.sol")
+    solution_fn = (
+        Path(__file__).parent / "solution/{problem_file.stem}-{solver_name}.sol"
+    )
 
     start_time = time()
     solver_result = solver.solve_problem(
@@ -58,7 +59,7 @@ def main(solver_name, input_file):
     elif solver_model:
         info = solver_model.getInfo()
         duality_gap = info.mip_gap if hasattr(info, "mip_gap") else None
-
+    # We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers.
     primal_values = solver_result.solution.primal
     integrality_violations = [
         abs(val - round(val)) for val in primal_values if val is not None
