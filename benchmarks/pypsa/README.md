@@ -7,7 +7,7 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
 cd pypsa-eur
 micromamba env create -f envs/linux-pinned.yaml -n benchmark-gen
 micromamba activate benchmark-gen
-pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps
+pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps  # Used commit 92e289a
 
 # TODO these are smallest versions of benchmarks:
 time snakemake -call all --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-24h.yaml ; echo -e '\a'
