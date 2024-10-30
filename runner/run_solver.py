@@ -3,8 +3,8 @@ import sys
 from pathlib import Path
 from time import time
 
-import linopy
 import numpy as np
+from linopy import solvers
 from linopy.solvers import SolverName
 
 
@@ -14,7 +14,7 @@ def get_solver(solver_name):
     except ValueError:
         raise ValueError(f"Solver '{solver_name}' is not recognized")
 
-    solver_class = getattr(linopy.solvers, solver_enum.name)
+    solver_class = getattr(solvers, solver_enum.name)
 
     seed_options = {
         "highs": {"random_seed": 0},
@@ -31,9 +31,46 @@ def get_solver(solver_name):
         return solver_class()
 
 
+def is_mip_problem(solver_model, solver_name):
+    if solver_name == "scip":
+        if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
+            return True
+        return False
+    elif solver_name == "gurobi":
+        return solver_model.IsMIP
+    elif solver_name == "highs":
+        info = solver_model.getInfo()
+        return info.mip_node_count >= 0
+
+
+def calculate_integrality_violation(primal_values) -> float:
+    """Calculate the maximum integrality violation from primal values."""
+    integrality_violations = [
+        abs(val - round(val)) for val in primal_values if val is not None
+    ]
+    return np.max(integrality_violations) if integrality_violations else None
+
+
+def get_duality_gap(solver_model, solver_name: str):
+    """Retrieve the duality gap for the given solver model, if available.
+    Note: GLPK does not provide a solver model in solver_result, so we cannot calculate the mip_gap.
+    """
+
+    if solver_name == "scip":
+        return solver_model.getGap()
+    elif solver_name == "gurobi" and solver_model.IsMIP:
+        return solver_model.MIPGap
+    elif solver_name == "highs" and solver_model:
+        info = solver_model.getInfo()
+        return info.mip_gap if hasattr(info, "mip_gap") else None
+    return None
+
+
 def main(solver_name, input_file):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
+    solution_dir = Path(__file__).parent / "solution"
+    solution_dir.mkdir(parents=True, exist_ok=True)
     solution_fn = (
         Path(__file__).parent / "solution/{problem_file.stem}-{solver_name}.sol"
     )
@@ -48,24 +85,12 @@ def main(solver_name, input_file):
     duality_gap = None
     max_integrality_violation = None
 
-    if solver_name == "scip":
-        duality_gap = solver_model.getGap()
-    elif solver_name == "gurobi":
-        if solver_model.IsMIP:
-            duality_gap = solver_model.MIPGap
-    elif solver_name == "glpk":
-        # GLPK does not provide a solver model with duality gap information.
-        duality_gap = None
-    elif solver_model:
-        info = solver_model.getInfo()
-        duality_gap = info.mip_gap if hasattr(info, "mip_gap") else None
-    # We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers.
-    primal_values = solver_result.solution.primal
-    integrality_violations = [
-        abs(val - round(val)) for val in primal_values if val is not None
-    ]
-    if integrality_violations:
-        max_integrality_violation = np.max(integrality_violations)
+    if is_mip_problem(solver_model, solver_name):
+        duality_gap = get_duality_gap(solver_model, solver_name)
+        max_integrality_violation = calculate_integrality_violation(
+            # We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers.
+            solver_result.solution.primal
+        )
 
     results = {
         "runtime": runtime,
