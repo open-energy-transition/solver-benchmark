@@ -213,27 +213,27 @@ if __name__ == "__main__":
     benchmark_files_info = [
         {
             "name": "pypsa-eur-sec-2-24h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1AtP-TyqE-Y0c_M_235bh7578i4pG8q-1&export=download&authuser=0",
+            "url": "https://drive.usercontent.google.com/download?id=1AtP-TyqE-Y0c_M_235bh7578i4pG8q-1&export=download&authuser=0&confirm=t",
         },
         {
             "name": "pypsa-eur-elec-trex-3-24h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1Ff-NkIJgnW6h7GCL-VRrT2kIkPYi40Le&export=download&authuser=0",
+            "url": "https://drive.usercontent.google.com/download?id=1Z1FtUx-y7yPeU3TllWGdu2jv6yFd6esd&export=download&authuser=0&confirm=t",
         },
         {
             "name": "pypsa-eur-elec-op-3-24h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1OcseelQMVPewwI1UIHPQJkagcIxiSxAd&export=download&authuser=0",
+            "url": "https://drive.usercontent.google.com/download?id=1PkbMQPaTS2Mkq9K8tKzUHyL6GDeiPjZ0&export=download&authuser=0&confirm=t",
         },
         {
             "name": "pypsa-eur-elec-op-ucconv-3-24h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1PkbMQPaTS2Mkq9K8tKzUHyL6GDeiPjZ0&export=download&authuser=0",
+            "url": "https://drive.usercontent.google.com/download?id=1Ff-NkIJgnW6h7GCL-VRrT2kIkPYi40Le&export=download&authuser=0&confirm=t",
         },
         {
             "name": "pypsa-gas+wind+sol+ely-1-1h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1Z1FtUx-y7yPeU3TllWGdu2jv6yFd6esd&export=download&authuser=0",
+            "url": "https://drive.usercontent.google.com/download?id=1OcseelQMVPewwI1UIHPQJkagcIxiSxAd&export=download&authuser=0&confirm=t",
         },
         {
             "name": "pypsa-gas+wind+sol+ely-ucgas-1-1h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1ilhfQTYeeLN8nPTJjeNMjXfEE-Q2UXXP&export=download&authuser=0",
+            "url": "https://drive.usercontent.google.com/download?id=1ilhfQTYeeLN8nPTJjeNMjXfEE-Q2UXXP&export=download&authuser=0&confirm=t",
         },
     ]
     # solvers = ["highs", "glpk"] # For dev and testing

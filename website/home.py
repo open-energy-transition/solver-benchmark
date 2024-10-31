@@ -39,8 +39,8 @@ st.markdown(
     | **Benchmarks** | 6 |
     | **Iterations** | 1 |
     | **Timeout** | 15 min |
-    | **vCPU** | 8 |
-    | **Memory** | 32GB |
+    | **vCPU** | 2 (1 core) |
+    | **Memory** | 16GB |
     """
 )
 

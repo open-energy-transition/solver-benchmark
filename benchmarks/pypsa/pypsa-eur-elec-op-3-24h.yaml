@@ -13,7 +13,7 @@ countries: ['IT']
 
 solving:
   options:
-    only_generate_problem_file: /tmp/pypsa-eur-elec-lv1-3-24h.lp
+    only_generate_problem_file: /tmp/pypsa-eur-elec-op-3-24h.lp
   solver:
     name: highs
     options: highs-default
