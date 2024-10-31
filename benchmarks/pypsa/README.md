@@ -10,7 +10,7 @@ micromamba activate benchmark-gen
 pip install git+https://github.com/open-energy-transition/linopy.git@only-generate-problem-files --no-deps  # Used commit 92e289a
 
 # TODO these are smallest versions of benchmarks:
-time snakemake -call all --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-lv1-24h.yaml ; echo -e '\a'
+time snakemake -call all --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-sec-2-24h.yaml ; echo -e '\a'
 time snakemake -call solve_elec_networks --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-trex-3-24h.yaml ; echo -e '\a'
 time snakemake -call results/networks/base_s_3_elec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-op-3-24h.yaml ; echo -e '\a'
 time snakemake -call results/networks/base_s_3_elec_lv1_24h_op.nc --cores all --printshellcmds --configfile  ~/code/solver-benchmark/benchmarks/pypsa/pypsa-eur-elec-op-ucconv-3-24h.yaml ; echo -e '\a'
