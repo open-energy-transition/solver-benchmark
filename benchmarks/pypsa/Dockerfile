@@ -32,12 +32,14 @@ RUN eval "$(micromamba shell hook --shell bash)" \
 COPY solve_network.patch pypsa-eur/solve_network.patch
 RUN cd pypsa-eur && git apply solve_network.patch
 
-FROM mamaba_env AS tutorial
-RUN eval "$(micromamba shell hook --shell bash)" \
-    && micromamba activate benchmark-gen \
-    && cd pypsa-eur \
-    && snakemake -call results/test-elec/networks/base_s_6_elec_lcopt_.nc --configfile config/test/config.electricity.yaml
+FROM mamaba_env AS benchmark_gen
+COPY --chown=mambauser . pypsa-eur/solver-benchmarks
 
-# CONTINUE (tutorial gens LP, but retcode 1 fails docker build)
-# write bash script to gen benchs, allowing snakemake failure if LP produced
+# For now, let's run this command manually in the above docker container:
+
+# RUN eval "$(micromamba shell hook --shell bash)" \
+#     && micromamba activate benchmark-gen \
+#     && cd pypsa-eur \
+#     && ./benchmarks/generate.sh
+
 # Cache data downloads? .snakemake/storage?
