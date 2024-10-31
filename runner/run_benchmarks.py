@@ -3,9 +3,11 @@ import json
 import os
 import statistics
 import subprocess
+import sys
 from pathlib import Path
 
 import requests
+import yaml
 
 
 def download_file_from_google_drive(url, dest_path: Path):
@@ -153,8 +155,12 @@ def benchmark_solver(input_file, solver_name, timeout):
     return metrics
 
 
-def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
+def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
     results = {}
+
+    # Load benchmarks from YAML file
+    with open(benchmark_file_path, "r") as file:
+        benchmark_files_info = yaml.safe_load(file)["benchmarks"]
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
@@ -166,9 +172,20 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
     # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
+
     for file_info in benchmark_files_info:
-        benchmark_path = benchmarks_folder / file_info["name"]
-        download_file_from_google_drive(file_info["url"], benchmark_path)
+        # Determine the file path to use for the benchmark
+        if "path" in file_info:
+            benchmark_path = Path(file_info["path"])
+            if not benchmark_path.exists():
+                print(f"File specified in 'path' does not exist: {benchmark_path}")
+                continue
+        elif "url" in file_info:
+            benchmark_path = benchmarks_folder / file_info["name"]
+            download_file_from_google_drive(file_info["url"], benchmark_path)
+        else:
+            print("No valid 'path' or 'url' found for benchmark entry.")
+            continue
 
         for solver in solvers:
             metrics = {}
@@ -210,36 +227,17 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
 
 
 if __name__ == "__main__":
-    benchmark_files_info = [
-        {
-            "name": "pypsa-eur-sec-2-lv1-3h.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
-        },
-        {
-            "name": "pypsa-eur-elec-10-lvopt-3h.nc",
-            "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
-        },
-        {
-            "name": "pypsa-eur-elec-20-lv1-3h-op.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
-        },
-        {
-            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
-        },
-        {
-            "name": "pypsa-gas+wind+sol+ely-1h-ucgas.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
-        },
-        {
-            "name": "pypsa-gas+wind+sol+ely-1h.nc",
-            "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
-        },
-    ]
-    # solvers = ["highs", "glpk"] # For dev and testing
+    # Check for benchmark file argument
+    if len(sys.argv) < 2:
+        print("Usage: python run_benchmarks.py <path_to_benchmarks.yaml>")
+        sys.exit(1)
+
+    benchmark_file_path = sys.argv[1]
+
+    # solvers = ["highs", "glpk"]  # For dev and testing
     solvers = ["gurobi", "highs", "glpk", "scip"]  # For production
 
-    main(benchmark_files_info, solvers)
+    main(benchmark_file_path, solvers)
 
     # Print a message indicating completion
     print("Benchmarking complete.")
