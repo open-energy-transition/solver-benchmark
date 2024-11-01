@@ -1,0 +1,16 @@
+scenario:
+  ll:
+  - v1
+  clusters:
+  - 2
+  opts:
+  - 24h
+
+countries: ['IT']
+
+solving:
+  options:
+    only_generate_problem_file: /tmp/pypsa-eur-sec-2-24h.lp
+  solver:
+    name: highs
+    options: highs-default

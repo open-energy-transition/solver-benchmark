@@ -2,3 +2,5 @@ pypsa==0.29.0
 linopy==0.3.14
 highspy==1.7.2
 glpk==0.4.7
+gurobipy==11.0.3
+PySCIPOpt==5.2.1
