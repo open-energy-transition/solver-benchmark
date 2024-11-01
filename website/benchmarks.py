@@ -148,10 +148,10 @@ if selected_benchmark in metadata:
         if not mip_data.empty:
             st.subheader(f"MIP Information for {selected_benchmark}")
 
-            # Display MIP-specific information in a table
-            mip_table = mip_data[
+            # Keep only the last row for each solver
+            mip_table = mip_data.groupby("Solver").tail(1)[
                 ["Solver", "Max Integrality Violation", "Duality Gap"]
-            ].drop_duplicates()
+            ]
 
             gb_mip = GridOptionsBuilder.from_dataframe(mip_table)
             gb_mip.configure_grid_options(domLayout="normal")

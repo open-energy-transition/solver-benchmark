@@ -41,10 +41,15 @@ def is_mip_problem(solver_model, solver_name):
     elif solver_name == "highs":
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
+    else:
+        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
 def calculate_integrality_violation(primal_values) -> float:
-    """Calculate the maximum integrality violation from primal values."""
+    """Calculate the maximum integrality violation from primal values.
+    Note:
+        We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solve
+    """
     integrality_violations = [
         abs(val - round(val)) for val in primal_values if val is not None
     ]
@@ -69,11 +74,9 @@ def get_duality_gap(solver_model, solver_name: str):
 def main(solver_name, input_file):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
-    solution_dir = Path(__file__).parent / "solution"
+    solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
-    solution_fn = (
-        Path(__file__).parent / "solution/{problem_file.stem}-{solver_name}.sol"
-    )
+    solution_fn = solution_dir / f"{problem_file.stem}-{solver_name}.sol"
 
     start_time = time()
     solver_result = solver.solve_problem(
@@ -88,7 +91,6 @@ def main(solver_name, input_file):
     if is_mip_problem(solver_model, solver_name):
         duality_gap = get_duality_gap(solver_model, solver_name)
         max_integrality_violation = calculate_integrality_violation(
-            # We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers.
             solver_result.solution.primal
         )
 
