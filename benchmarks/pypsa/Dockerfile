@@ -40,6 +40,6 @@ COPY --chown=mambauser . pypsa-eur/solver-benchmarks
 # RUN eval "$(micromamba shell hook --shell bash)" \
 #     && micromamba activate benchmark-gen \
 #     && cd pypsa-eur \
-#     && ./benchmarks/generate.sh
+#     && ./solver-benchmarks/generate.sh
 
 # Cache data downloads? .snakemake/storage?
