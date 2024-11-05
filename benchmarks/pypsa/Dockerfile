@@ -16,12 +16,12 @@ USER mambauser
 FROM benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout 1f471cee
+    && git checkout 4435f021
 
 FROM repo_clone AS mamaba_env
 RUN --mount=type=cache,target=/opt/conda/pkgs \
     cd pypsa-eur \
-    && micromamba env create -f envs/linux-pinned.yaml -n benchmark-gen
+    && micromamba env create -f envs/environment.fixed.yaml -n benchmark-gen
 
 RUN eval "$(micromamba shell hook --shell bash)" \
     && micromamba activate benchmark-gen \

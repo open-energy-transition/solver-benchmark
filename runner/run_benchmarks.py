@@ -237,7 +237,7 @@ if __name__ == "__main__":
         },
     ]
     # solvers = ["highs", "glpk"] # For dev and testing
-    solvers = ["gurobi", "highs", "glpk", "scip"]  # For production
+    solvers = ["highs", "glpk", "scip"]  # For production
 
     main(benchmark_files_info, solvers)
 
