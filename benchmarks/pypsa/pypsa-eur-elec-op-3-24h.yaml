@@ -1,0 +1,309 @@
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario
+# Wildcard docs in https://pypsa-eur.readthedocs.io/en/latest/wildcards.html
+scenario:
+  ll:
+  - v1
+  clusters:
+  - 3
+  opts:
+  - 24h
+
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries
+countries: ['IT']
+
+solving:
+  options:
+    only_generate_problem_file: /tmp/pypsa-eur-elec-op-3-24h.lp
+  solver:
+    name: highs
+    options: highs-default
+
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#sector
+sector:
+  transport: false
+  heating: false
+  biomass: false
+  industry: false
+  agriculture: false
+  fossil_fuels: false
+  district_heating:
+    potential: 0.6
+    progress:
+      2020: 0.0
+      2025: 0.15
+      2030: 0.3
+      2035: 0.45
+      2040: 0.6
+      2045: 0.8
+      2050: 1.0
+    district_heating_loss: 0.15
+    supply_temperature_approximation:
+      max_forward_temperature:
+        FR: 110
+        DK: 75
+        DE: 109
+        CZ: 130
+        FI: 115
+        PL: 130
+        SE: 102
+        IT: 90
+      min_forward_temperature:
+        DE: 82
+      return_temperature:
+        DE: 58
+      lower_threshold_ambient_temperature: 0
+      upper_threshold_ambient_temperature: 10
+      rolling_window_ambient_temperature: 72
+    heat_source_cooling: 6 #K
+    heat_pump_cop_approximation:
+      refrigerant: ammonia
+      heat_exchanger_pinch_point_temperature_difference: 5 #K
+      isentropic_compressor_efficiency: 0.8
+      heat_loss: 0.0
+  heat_pump_sources:
+    urban central:
+    - air
+    urban decentral:
+    - air
+    rural:
+    - air
+    - ground
+  cluster_heat_buses: false
+  heat_demand_cutout: default
+  bev_dsm_restriction_value: 0.75
+  bev_dsm_restriction_time: 7
+  transport_heating_deadband_upper: 20.
+  transport_heating_deadband_lower: 15.
+  ICE_lower_degree_factor: 0.375
+  ICE_upper_degree_factor: 1.6
+  EV_lower_degree_factor: 0.98
+  EV_upper_degree_factor: 0.63
+  bev_dsm: false
+  bev_availability: 0.5
+  bev_energy: 0.05
+  bev_charge_efficiency: 0.9
+  bev_charge_rate: 0.011
+  bev_avail_max: 0.95
+  bev_avail_mean: 0.8
+  v2g: false
+  land_transport_fuel_cell_share:
+    2020: 0
+    2025: 0
+    2030: 0
+    2035: 0
+    2040: 0
+    2045: 0
+    2050: 0
+  land_transport_electric_share:
+    2020: 0
+    2025: 0.15
+    2030: 0.3
+    2035: 0.45
+    2040: 0.7
+    2045: 0.85
+    2050: 1
+  land_transport_ice_share:
+    2020: 1
+    2025: 0.85
+    2030: 0.7
+    2035: 0.55
+    2040: 0.3
+    2045: 0.15
+    2050: 0
+  transport_electric_efficiency: 53.19 # 1 MWh_el = 53.19*100 km
+  transport_fuel_cell_efficiency: 30.003 # 1 MWh_H2 = 30.003*100 km
+  transport_ice_efficiency: 16.0712 # 1 MWh_oil = 16.0712 * 100 km
+  agriculture_machinery_electric_share: 0
+  agriculture_machinery_oil_share: 1
+  agriculture_machinery_fuel_efficiency: 0.7
+  agriculture_machinery_electric_efficiency: 0.3
+  MWh_MeOH_per_MWh_H2: 0.8787
+  MWh_MeOH_per_tCO2: 4.0321
+  MWh_MeOH_per_MWh_e: 3.6907
+  shipping_hydrogen_liquefaction: false
+  shipping_hydrogen_share:
+    2020: 0
+    2025: 0
+    2030: 0
+    2035: 0
+    2040: 0
+    2045: 0
+    2050: 0
+  shipping_methanol_share:
+    2020: 0
+    2025: 0.15
+    2030: 0.3
+    2035: 0.5
+    2040: 0.7
+    2045: 0.85
+    2050: 1
+  shipping_oil_share:
+    2020: 1
+    2025: 0.85
+    2030: 0.7
+    2035: 0.5
+    2040: 0.3
+    2045: 0.15
+    2050: 0
+  shipping_methanol_efficiency: 0.46
+  shipping_oil_efficiency: 0.40
+  aviation_demand_factor: 1.
+  HVC_demand_factor: 1.
+  time_dep_hp_cop: false
+  heat_pump_sink_T_individual_heating: 55.
+  reduce_space_heat_exogenously: false
+  reduce_space_heat_exogenously_factor:
+    2020: 0.10  # this results in a space heat demand reduction of 10%
+    2025: 0.09  # first heat demand increases compared to 2020 because of larger floor area per capita
+    2030: 0.09
+    2035: 0.11
+    2040: 0.16
+    2045: 0.21
+    2050: 0.29
+  retrofitting:
+    retro_endogen: false
+    cost_factor: 1.0
+    interest_rate: 0.04
+    annualise_cost: false
+    tax_weighting: false
+    construction_index: false
+  tes: false
+  tes_tau:
+    decentral: 3
+    central: 180
+  boilers: false
+  resistive_heaters: false
+  oil_boilers: false
+  biomass_boiler: false
+  overdimension_heat_generators:
+    decentral: 1.1  #to cover demand peaks bigger than data
+    central: 1.0
+  chp: false
+  micro_chp: false
+  solar_thermal: false
+  solar_cf_correction: 0.788457  # =  >>> 1/1.2683
+  marginal_cost_storage: 0. #1e-4
+  methanation: false
+  coal_cc: false
+  dac: false
+  co2_vent: false
+  central_heat_vent: false
+  allam_cycle_gas: false
+  hydrogen_fuel_cell: false
+  hydrogen_turbine: false
+  SMR: false
+  SMR_cc: false
+  regional_oil_demand: false
+  regional_coal_demand: false
+  regional_co2_sequestration_potential:
+    enable: false
+    attribute:
+    - conservative estimate Mt
+    - conservative estimate GAS Mt
+    - conservative estimate OIL Mt
+    - conservative estimate aquifer Mt
+    include_onshore: false
+    min_size: 3
+    max_size: 25
+    years_of_storage: 25
+  co2_sequestration_potential:
+    2020: 0
+    2025: 0
+    2030: 50
+    2035: 100
+    2040: 200
+    2045: 200
+    2050: 200
+  co2_sequestration_cost: 10
+  co2_sequestration_lifetime: 50
+  co2_spatial: false
+  co2network: false
+  co2_network_cost_factor: 1
+  cc_fraction: 0.9
+  hydrogen_underground_storage: false
+  hydrogen_underground_storage_locations:
+    # - onshore  # more than 50 km from sea
+  - nearshore    # within 50 km of sea
+    # - offshore
+  methanol:
+    regional_methanol_demand: false
+    methanol_reforming: false
+    methanol_reforming_cc: false
+    methanol_to_kerosene: false
+    methanol_to_power:
+      ccgt: false
+      ccgt_cc: false
+      ocgt: false
+      allam: false
+    biomass_to_methanol: false
+    biomass_to_methanol_cc: false
+  ammonia: false
+  min_part_load_fischer_tropsch: 0.5
+  min_part_load_methanolisation: 0.3
+  min_part_load_methanation: 0.3
+  use_fischer_tropsch_waste_heat: 0.25
+  use_haber_bosch_waste_heat: 0.25
+  use_methanolisation_waste_heat: 0.25
+  use_methanation_waste_heat: 0.25
+  use_fuel_cell_waste_heat: 0.25
+  use_electrolysis_waste_heat: 0.25
+  electricity_transmission_grid: false
+  electricity_distribution_grid: false
+  electricity_grid_connection: false
+  transmission_efficiency:
+    DC:
+      efficiency_static: 0.98
+      efficiency_per_1000km: 0.977
+    H2 pipeline:
+      efficiency_per_1000km: 1 # 0.982
+      compression_per_1000km: 0.018
+    gas pipeline:
+      efficiency_per_1000km: 1 #0.977
+      compression_per_1000km: 0.01
+    electricity distribution grid:
+      efficiency_static: 0.97
+  H2_network: false
+  gas_network: false
+  H2_retrofit: false
+  H2_retrofit_capacity_per_CH4: 0.6
+  gas_network_connectivity_upgrade: 1
+  gas_distribution_grid: false
+  gas_distribution_grid_cost_factor: 1.0
+  biomass_spatial: false
+  biomass_transport: false
+  biogas_upgrading_cc: false
+  conventional_generation:
+    OCGT: gas
+  biomass_to_liquid: false
+  biomass_to_liquid_cc: false
+  electrobiofuels: false
+  biosng: false
+  biosng_cc: false
+  bioH2: false
+  municipal_solid_waste: false
+  limit_max_growth:
+    enable: false
+    # allowing 30% larger than max historic growth
+    factor: 1.3
+    max_growth:  # unit GW
+      onwind: 16 # onshore max grow so far 16 GW in Europe https://www.iea.org/reports/renewables-2020/wind
+      solar: 28 # solar max grow so far 28 GW in Europe https://www.iea.org/reports/renewables-2020/solar-pv
+      offwind-ac: 35 # offshore max grow so far 3.5 GW in Europe https://windeurope.org/about-wind/statistics/offshore/european-offshore-wind-industry-key-trends-statistics-2019/
+      offwind-dc: 35
+    max_relative_growth:
+      onwind: 3
+      solar: 3
+      offwind-ac: 3
+      offwind-dc: 3
+  enhanced_geothermal:
+    enable: false
+    flexible: false
+    max_hours: 240
+    max_boost: 0.25
+    var_cf: false
+    sustainability_factor: 0.0025
+  solid_biomass_import:
+    enable: false
+    price: 54 #EUR/MWh
+    max_amount: 1390 # TWh
+    upstream_emissions_factor: .1 #share of solid biomass CO2 emissions at full combustion
