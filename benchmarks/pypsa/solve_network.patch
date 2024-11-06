@@ -1,5 +1,5 @@
 diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index 4b197385..0b792438 100644
+index 3982e767..aeb316a8 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
 @@ -995,6 +995,7 @@ def solve_network(n, config, params, solving, **kwargs):
