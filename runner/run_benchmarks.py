@@ -48,6 +48,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Runtime (s)",
                 "Memory Usage (MB)",
+                "Max Integrality Violation",
+                "Duality Gap",
             ]
         )
 
@@ -81,6 +83,8 @@ def write_csv_row(results_csv, benchmark_name, solver, metrics):
                 metrics["objective"],
                 metrics["runtime"],
                 metrics["memory"],
+                metrics["max_integrality_violation"],
+                metrics["duality_gap"],
             ]
         )
 
@@ -133,6 +137,8 @@ def benchmark_solver(input_file, solver_name, timeout):
             "condition": "Timeout",
             "objective": None,
             "runtime": timeout,
+            "duality_gap": None,
+            "max_integrality_violation": None,
         }
     elif result.returncode != 0:
         print(
@@ -145,6 +151,8 @@ def benchmark_solver(input_file, solver_name, timeout):
             "condition": "Error",
             "objective": None,
             "runtime": timeout,
+            "duality_gap": None,
+            "max_integrality_violation": None,
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
