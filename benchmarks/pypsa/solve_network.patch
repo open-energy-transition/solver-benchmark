@@ -1,0 +1,12 @@
+diff --git a/scripts/solve_network.py b/scripts/solve_network.py
+index 3982e767..aeb316a8 100644
+--- a/scripts/solve_network.py
++++ b/scripts/solve_network.py
+@@ -995,6 +995,7 @@ def solve_network(n, config, params, solving, **kwargs):
+         solving["solver_options"][set_of_options] if set_of_options else {}
+     )
+     kwargs["solver_name"] = solving["solver"]["name"]
++    kwargs["only_generate_problem_file"] = cf_solving.get("only_generate_problem_file", False)
+     kwargs["extra_functionality"] = extra_functionality
+     kwargs["transmission_losses"] = cf_solving.get("transmission_losses", False)
+     kwargs["linearized_unit_commitment"] = cf_solving.get(

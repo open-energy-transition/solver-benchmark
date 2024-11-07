@@ -32,6 +32,9 @@ def get_solver(solver_name):
 
 
 def is_mip_problem(solver_model, solver_name):
+    """
+    Determines if a given solver model is a Mixed Integer Programming (MIP) problem.
+    """
     if solver_name == "scip":
         if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
             return True
@@ -41,6 +44,9 @@ def is_mip_problem(solver_model, solver_name):
     elif solver_name == "highs":
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
+    elif solver_name == "glpk":
+        # GLPK does not provide a solver model in the solver result, so MIP problem detection is not possible.
+        return False
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
@@ -48,7 +54,7 @@ def is_mip_problem(solver_model, solver_name):
 def calculate_integrality_violation(primal_values) -> float:
     """Calculate the maximum integrality violation from primal values.
     Note:
-        We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solve
+        We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers
     """
     integrality_violations = [
         abs(val - round(val)) for val in primal_values if val is not None
@@ -57,10 +63,7 @@ def calculate_integrality_violation(primal_values) -> float:
 
 
 def get_duality_gap(solver_model, solver_name: str):
-    """Retrieve the duality gap for the given solver model, if available.
-    Note: GLPK does not provide a solver model in solver_result, so we cannot calculate the mip_gap.
-    """
-
+    """Retrieve the duality gap for the given solver model, if available."""
     if solver_name == "scip":
         return solver_model.getGap()
     elif solver_name == "gurobi" and solver_model.IsMIP:
@@ -68,7 +71,11 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "highs" and solver_model:
         info = solver_model.getInfo()
         return info.mip_gap if hasattr(info, "mip_gap") else None
-    return None
+    elif solver_name == "glpk" and solver_model:
+        # GLPK does not provide a solver model in solver_result, so we cannot calculate the mip_gap.
+        return None
+    else:
+        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
 def main(solver_name, input_file):

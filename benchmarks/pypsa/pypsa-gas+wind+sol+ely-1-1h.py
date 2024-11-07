@@ -122,8 +122,6 @@ n.add(
     marginal_cost=costs.at["OCGT", "marginal_cost"],
     efficiency=costs.at["OCGT", "efficiency"],
     p_nom_extendable=True,
-    committable=True,
-    p_min_pu=0.3,
 )
 
 for tech in ["solar"]:
@@ -160,4 +158,7 @@ n.add(
     cyclic_state_of_charge=True,
 )
 
-n.optimize(solver_name="highs", only_generate_problem_file=True)
+n.optimize(
+    solver_name="highs",
+    only_generate_problem_file="/tmp/pypsa-gas+wind+sol+ely-1-1h.lp",
+)

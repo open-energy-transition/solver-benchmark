@@ -220,32 +220,32 @@ def main(benchmark_files_info, solvers, iterations=1, timeout=15 * 60):
 if __name__ == "__main__":
     benchmark_files_info = [
         {
-            "name": "pypsa-eur-sec-2-lv1-3h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1H0oDfpE82ghD8ILywai-b74ytfeYfY8a&export=download&authuser=0",
+            "name": "pypsa-eur-sec-2-24h.lp",
+            "url": "https://drive.usercontent.google.com/download?id=1lSsWnAbF6-x2AGR0wmJRC6oyPVJzoHPX&export=download&authuser=0&confirm=t",
         },
         {
-            "name": "pypsa-eur-elec-10-lvopt-3h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=143Owqp5znOeHGenMyxtSSjOoFzq3VEM7&export=download&authuser=0&confirm=t&uuid=3c0e048e-af28-45c0-9c00-0f11786d5ce9&at=APZUnTW8w3kMlFMcj2B9w22ujIUv%3A1724140207473",
+            "name": "pypsa-eur-elec-trex-3-24h.lp",
+            "url": "https://drive.usercontent.google.com/download?id=1a4BqDhk-pzj5vkIftJW66GVsCUw9PXEh&export=download&authuser=0&confirm=t",
         },
         {
-            "name": "pypsa-eur-elec-20-lv1-3h-op.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1xHcVl01Po75pM1OEQ6iXRvoSUHNHw0EL&export=download&authuser=0",
+            "name": "pypsa-eur-elec-op-3-24h.lp",
+            "url": "https://drive.usercontent.google.com/download?id=1T9LR92TX8_SRIx55uLqUYDo-MKq3VeVm&export=download&authuser=0&confirm=t",
         },
         {
-            "name": "pypsa-eur-elec-20-lv1-3h-op-ucconv.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1qPtdwSKI9Xv3m4d6a5PNwqGbvwn0grwl&export=download&authuser=0",
+            "name": "pypsa-eur-elec-op-ucconv-3-24h.lp",
+            "url": "https://drive.usercontent.google.com/download?id=1MtfPguzZJ4ifTwJL_OpdPQbky9Xh0M4Y&export=download&authuser=0&confirm=t",
         },
         {
-            "name": "pypsa-gas+wind+sol+ely-1h-ucgas.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1SrFi3qDK6JpUM-pzyyz11c8PzFq74XEO&export=download&authuser=0",
+            "name": "pypsa-gas+wind+sol+ely-1-1h.lp",
+            "url": "https://drive.usercontent.google.com/download?id=1fEiHuIwIxbkeu-QLuOZV2yeTeH3O1zbm&export=download&authuser=0&confirm=t",
         },
         {
-            "name": "pypsa-gas+wind+sol+ely-1h.lp",
-            "url": "https://drive.usercontent.google.com/download?id=1D0_mo--5r9m46F05hjHpdzGDoV0fbsfd&export=download&authuser=0",
+            "name": "pypsa-gas+wind+sol+ely-ucgas-1-1h.lp",
+            "url": "https://drive.usercontent.google.com/download?id=11jEBh4ypLqRgnP5DsQ2NkZomU4FjnDRU&export=download&authuser=0&confirm=t",
         },
     ]
     # solvers = ["highs", "glpk"] # For dev and testing
-    solvers = ["gurobi", "highs", "glpk", "scip"]  # For production
+    solvers = ["highs", "glpk", "scip"]  # For production
 
     main(benchmark_files_info, solvers)
 
