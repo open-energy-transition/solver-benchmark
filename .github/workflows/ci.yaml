@@ -20,9 +20,30 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check code formatting
+      - name: Set up virtual environment and install dependencies
         run: |
           python -m venv /tmp/venv
-          pip install --upgrade pip pre-commit
+          source /tmp/venv/bin/activate
+          pip install --upgrade pip
+          sudo apt update
+          sudo apt install -y glpk-utils libglpk-dev
+          pip install -r runner/requirements.txt
+          pip install git+https://github.com/PyPSA/linopy.git@40a27f9e7f5d33acd1d256334a1b193899b166ad
+
+      - name: Check code formatting
+        run: |
+          pip install pre-commit
           pre-commit install
           pre-commit run --all-files
+
+      - name: Run sample benchmarks
+        run: |
+          source /tmp/venv/bin/activate
+          python runner/run_benchmarks.py benchmarks/tests.yaml
+
+          if awk -F',' 'NR>1 {if ($3 != "ok") exit 1}' results/benchmark_results.csv; then
+            echo "All benchmarks ran successfully."
+          else
+            echo "Some benchmarks did not complete successfully."
+            exit 1
+          fi
