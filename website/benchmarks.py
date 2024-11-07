@@ -14,9 +14,13 @@ def load_metadata(yaml_file):
         return yaml.safe_load(file)
 
 
-# Load the data from the CSV file
-data_url = Path(__file__).parent.parent / "results/benchmark_results_mean_stddev.csv"
-df = pd.read_csv(data_url)
+# Load the data from the CSV files
+data_url_mean_stddev = (
+    Path(__file__).parent.parent / "results/benchmark_results_mean_stddev.csv"
+)
+data_url_result = Path(__file__).parent.parent / "results/benchmark_results.csv"
+df_mean_stddev = pd.read_csv(data_url_mean_stddev)
+df_result = pd.read_csv(data_url_result)
 
 # Load benchmark metadata
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
@@ -25,7 +29,7 @@ metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 st.title("Benchmarks")
 
 # Dropdown to select a benchmark
-benchmark_list = df["Benchmark"].unique()
+benchmark_list = df_mean_stddev["Benchmark"].unique()
 selected_benchmark = st.selectbox("Select a Benchmark", benchmark_list)
 
 # Display metadata for the selected benchmark
@@ -72,7 +76,7 @@ if selected_benchmark in metadata:
     # Chart #
     #########
     # Filter data for the selected benchmark
-    benchmark_data = df[df["Benchmark"] == selected_benchmark]
+    benchmark_data = df_mean_stddev[df_mean_stddev["Benchmark"] == selected_benchmark]
 
     # Show the "peak memory vs runtime" plot for the selected benchmark
     fig_filtered = go.Figure()
@@ -133,5 +137,34 @@ if selected_benchmark in metadata:
         **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
         """
     )
+
+    #########
+    # MIP Table #
+    #########
+    # Display MIP-specific information only if Technique is MILP
+    if metadata[selected_benchmark].get("Technique") == "MILP":
+        mip_data = df_result[(df_result["Benchmark"] == selected_benchmark)]
+
+        if not mip_data.empty:
+            st.subheader(f"MIP Information for {selected_benchmark}")
+
+            # Keep only the last row for each solver
+            mip_table = mip_data.groupby("Solver").tail(1)[
+                ["Solver", "Max Integrality Violation", "Duality Gap"]
+            ]
+
+            gb_mip = GridOptionsBuilder.from_dataframe(mip_table)
+            gb_mip.configure_grid_options(domLayout="normal")
+            grid_options_mip = gb_mip.build()
+
+            AgGrid(
+                mip_table,
+                editable=False,
+                sortable=True,
+                filter=True,
+                gridOptions=grid_options_mip,
+                height=150,
+                fit_columns_on_grid_load=True,
+            )
 else:
     st.write("No metadata available for the selected benchmark.")
