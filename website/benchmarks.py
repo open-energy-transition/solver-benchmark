@@ -3,16 +3,11 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-import yaml
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
-
-# Load the metadata from the YAML file
-def load_metadata(yaml_file):
-    with open(yaml_file, "r") as file:
-        return yaml.safe_load(file)
-
+# local
+from utils.file_utils import load_metadata
 
 # Load the data from the CSV files
 data_url_mean_stddev = (

@@ -1,4 +1,10 @@
+from pathlib import Path
+
+import pandas as pd
 import streamlit as st
+
+# local
+from utils.file_utils import load_metadata
 
 st.markdown(
     """
@@ -40,6 +46,27 @@ pages = [
     st.Page("history.py", title="Solver Performance History"),
     st.Page("raw-results.py", title="Full Results"),
 ]
+
+metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+
+# Convert metadata to a DataFrame for easier filtering
+metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
+# Load the data from the CSV file
+data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
+raw_df = pd.read_csv(data_url)
+df = raw_df
+
+
+# Assert that the set of benchmark names in the metadata matches those in the data
+csv_benchmarks = set(raw_df["Benchmark"].unique())
+metadata_benchmarks = set(metadata_df["Benchmark Name"].unique())
+# Assertion to check if both sets are the same
+assert csv_benchmarks == metadata_benchmarks, (
+    f"Mismatch between CSV benchmarks and metadata benchmarks:\n"
+    f"In CSV but not metadata: {csv_benchmarks - metadata_benchmarks}\n"
+    f"In metadata but not CSV: {metadata_benchmarks - csv_benchmarks}"
+)
 
 pg = st.navigation(pages)
 pg.run()

@@ -3,16 +3,10 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-import yaml
 
 # local
 from components.filter import generate_filtered_metadata
-
-
-def load_metadata(file_path):
-    with open(file_path, "r") as file:
-        return yaml.safe_load(file)
-
+from utils.file_utils import load_metadata
 
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 
