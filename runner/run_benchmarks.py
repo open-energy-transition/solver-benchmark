@@ -178,14 +178,14 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
         if "path" in file_info:
             benchmark_path = Path(file_info["path"])
             if not benchmark_path.exists():
-                print(f"File specified in 'path' does not exist: {benchmark_path}")
-                continue
+                raise FileNotFoundError(
+                    f"File specified in 'path' does not exist: {benchmark_path}"
+                )
         elif "url" in file_info:
             benchmark_path = benchmarks_folder / file_info["name"]
             download_file_from_google_drive(file_info["url"], benchmark_path)
         else:
-            print("No valid 'path' or 'url' found for benchmark entry.")
-            continue
+            raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
 
         for solver in solvers:
             metrics = {}
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     benchmark_file_path = sys.argv[1]
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["gurobi", "highs", "glpk", "scip"]  # For production
+    solvers = ["highs", "glpk", "scip"]  # For production
 
     main(benchmark_file_path, solvers)
 

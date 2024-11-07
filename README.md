@@ -57,7 +57,7 @@ Remember to activate the appropriate virtual environment before running the runn
 
 1. **Run Benchmark Runner**
    ```shell
-   python runner/run_benchmarks.py benchmarks/pypsa/benchmarks.yaml
+   python runner/run_benchmarks.py benchmarks/benchmark_config.yaml
    ```
 
    The app will save the runtime and memory consumption into a CSV file.

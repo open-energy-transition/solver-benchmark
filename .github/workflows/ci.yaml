@@ -40,7 +40,7 @@ jobs:
       - name: Run sample benchmarks
         run: |
           source /tmp/venv/bin/activate
-          python runner/run_benchmarks.py benchmarks/pypsa/tests.yaml
+          python runner/run_benchmarks.py benchmarks/tests.yaml
 
           if awk -F',' 'NR>1 {if ($3 != "ok") exit 1}' results/benchmark_results.csv; then
             echo "All benchmarks ran successfully."
