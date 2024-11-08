@@ -1,4 +1,4 @@
-Benchmark,Solver,Status,Termination Condition,Objective Value,Runtime (s),Memory Usage (MB)
+Benchmark,Solver,Status,Termination Condition,Objective Value,Runtime (s),Memory Usage (MB),Max Integrality Violation,Duality Gap
 pypsa-eur-sec-2-24h,highs,ok,optimal,15337522234.402815,52.85370707511902,431.176,,
 pypsa-eur-sec-2-24h,glpk,TO,Timeout,,900,193.164,,
 pypsa-eur-sec-2-24h,scip,ok,optimal,15337522234.40238,284.5882496833801,761.444,,

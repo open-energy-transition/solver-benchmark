@@ -3,18 +3,11 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 import streamlit_shadcn_ui as ui
-import yaml
 
 # local
 from components.compare_chart import create_comparison_chart
 from components.filter import generate_filtered_metadata
-
-
-# Load benchmark metadata
-def load_metadata(file_path):
-    with open(file_path, "r") as file:
-        return yaml.safe_load(file)
-
+from utils.file_utils import load_metadata
 
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 
@@ -41,22 +34,29 @@ if "Solver Version" in df.columns:
 
 st.title("Compare Solvers")
 
-# Set default solvers
-default_solver1 = "gurobi"
-default_solver2 = "highs"
+# Get list of unique solvers from the data
+solver_list = df["Solver"].unique()
+# Set default solvers based on available solver list length
+if len(solver_list) > 1:
+    default_solver1 = solver_list[0]
+    default_solver2 = solver_list[1]
+else:
+    st.write(
+        "Fewer than 2 solvers available for comparison. Please add more solvers to compare."
+    )
+    st.stop()
 
-# Dropdown to select Solver 1 with default value Gurobi
+# Dropdown to select Solver 1 with default value
 solver1 = st.selectbox(
     "Select Solver 1",
-    df["Solver"].unique(),
-    index=df["Solver"].unique().tolist().index(default_solver1),
+    solver_list,
+    index=solver_list.tolist().index(default_solver1),
 )
 
-# Dropdown to select Solver 2 with default value Highs
 solver2 = st.selectbox(
     "Select Solver 2",
-    df["Solver"].unique(),
-    index=df["Solver"].unique().tolist().index(default_solver2),
+    solver_list,
+    index=solver_list.tolist().index(default_solver2),
 )
 
 if ui.button(
