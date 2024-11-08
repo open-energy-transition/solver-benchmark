@@ -40,11 +40,10 @@ solver_list = df["Solver"].unique()
 if len(solver_list) > 1:
     default_solver1 = solver_list[0]
     default_solver2 = solver_list[1]
-elif len(solver_list) == 1:
-    default_solver1 = solver_list[0]
-    default_solver2 = None
 else:
-    st.write("No solvers available for comparison.")
+    st.write(
+        "Fewer than 2 solvers available for comparison. Please add more solvers to compare."
+    )
     st.stop()
 
 # Dropdown to select Solver 1 with default value

@@ -54,12 +54,11 @@ metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-raw_df = pd.read_csv(data_url)
-df = raw_df
+data_df = pd.read_csv(data_url)
 
 
 # Assert that the set of benchmark names in the metadata matches those in the data
-csv_benchmarks = set(raw_df["Benchmark"].unique())
+csv_benchmarks = set(data_df["Benchmark"].unique())
 metadata_benchmarks = set(metadata_df["Benchmark Name"].unique())
 # Assertion to check if both sets are the same
 assert csv_benchmarks == metadata_benchmarks, (
