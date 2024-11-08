@@ -53,16 +53,11 @@ solver1 = st.selectbox(
     index=solver_list.tolist().index(default_solver1),
 )
 
-# Dropdown to select Solver 2 only if there’s more than one solver
-if default_solver2:
-    solver2 = st.selectbox(
-        "Select Solver 2",
-        solver_list,
-        index=solver_list.tolist().index(default_solver2),
-    )
-else:
-    st.write("Only one solver available. Please add more solvers to compare.")
-    st.stop()
+solver2 = st.selectbox(
+    "Select Solver 2",
+    solver_list,
+    index=solver_list.tolist().index(default_solver2),
+)
 
 if ui.button(
     text="Compare Solvers",
