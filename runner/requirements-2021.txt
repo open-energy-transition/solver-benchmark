@@ -1,8 +1,7 @@
 glpk==0.4.7
 gurobipy==11.0.3
-highspy==1.7.2
+highspy==1.5.0.dev0
 linopy==0.3.14
 PySCIPOpt==5.2.1
 pypsa==0.31.1
 requests==2.31.0
-pytest==8.3.3

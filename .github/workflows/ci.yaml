@@ -47,3 +47,7 @@ jobs:
             echo "Some benchmarks did not complete successfully."
             exit 1
           fi
+
+      - name: Run Streamlit tests
+        run: |
+          python -m pytest -v website/tests

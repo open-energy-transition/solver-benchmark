@@ -4,10 +4,25 @@ import os
 import statistics
 import subprocess
 import sys
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 import requests
 import yaml
+
+
+def get_solver_version(solver_name):
+    try:
+        if solver_name == "highs":
+            return version("highspy")
+        elif solver_name == "scip":
+            return version("PySCIPOpt")
+        elif solver_name == "gurobi":
+            return version("gurobipy")
+        else:
+            return version("glpk")
+    except PackageNotFoundError:
+        return ValueError(f"Package Not Found Error {solver_name}")
 
 
 def download_file_from_google_drive(url, dest_path: Path):
@@ -37,9 +52,13 @@ def parse_memory(output):
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
-def write_csv_headers(results_csv, mean_stddev_csv):
+def write_csv_headers(results_csv, mean_stddev_csv, override):
+    if override:
+        mode = "w"
+    else:
+        mode = "a"
     # Initialize CSV files with headers
-    with open(results_csv, mode="w", newline="") as file:
+    with open(results_csv, mode=mode, newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [
@@ -52,10 +71,12 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Memory Usage (MB)",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Solver Version",
+                "Solver Release Year",
             ]
         )
 
-    with open(mean_stddev_csv, mode="w", newline="") as file:
+    with open(mean_stddev_csv, mode=mode, newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [
@@ -68,6 +89,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Runtime StdDev (s)",
                 "Memory Mean (MB)",
                 "Memory StdDev (MB)",
+                "Solver Version",
+                "Solver Release Year",
             ]
         )
 
@@ -87,6 +110,8 @@ def write_csv_row(results_csv, benchmark_name, solver, metrics):
                 metrics["memory"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["solver_version"],
+                metrics["solver_release_year"],
             ]
         )
 
@@ -110,7 +135,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout):
+def benchmark_solver(input_file, solver_name, timeout, year):
     command = [
         "/usr/bin/time",
         "--format",
@@ -158,12 +183,22 @@ def benchmark_solver(input_file, solver_name, timeout):
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
+
     metrics["memory"] = memory
+    metrics["solver_version"] = get_solver_version(solver_name)
+    metrics["solver_release_year"] = year
 
     return metrics
 
 
-def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
+def main(
+    benchmark_file_path,
+    solvers,
+    year=None,
+    iterations=1,
+    timeout=15 * 60,
+    override=True,
+):
     results = {}
 
     # Load benchmarks from YAML file
@@ -173,10 +208,13 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
     os.makedirs(results_folder, exist_ok=True)
+
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
-    write_csv_headers(results_csv, mean_stddev_csv)
 
+    # Write headers if overriding or file doesn't exist
+    if override or not results_csv.exists() or not mean_stddev_csv.exists():
+        write_csv_headers(results_csv, mean_stddev_csv, override)
     # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
@@ -202,7 +240,7 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
 
             for i in range(iterations):
                 print(f"Running solver {solver} on {benchmark_path.name} ({i})...")
-                metrics = benchmark_solver(benchmark_path, solver, timeout)
+                metrics = benchmark_solver(benchmark_path, solver, timeout, year)
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
@@ -235,17 +273,20 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
 
 
 if __name__ == "__main__":
-    # Check for benchmark file argument
+    # Check for benchmark file argument and optional year and override arguments
     if len(sys.argv) < 2:
-        print("Usage: python run_benchmarks.py <path_to_benchmarks.yaml>")
+        raise ValueError(
+            "Usage: python run_benchmarks.py <path_to_benchmarks.yaml> [<year>] [<override>]"
+        )
         sys.exit(1)
 
     benchmark_file_path = sys.argv[1]
+    year = sys.argv[2] if len(sys.argv) > 2 else None
+    override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
     solvers = ["highs", "glpk", "scip"]  # For production
 
-    main(benchmark_file_path, solvers)
-
+    main(benchmark_file_path, solvers, year, override=override)
     # Print a message indicating completion
     print("Benchmarking complete.")
