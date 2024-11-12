@@ -12,17 +12,16 @@ import yaml
 
 
 def get_solver_version(solver_name):
-    try:
-        if solver_name == "highs":
-            return version("highspy")
-        elif solver_name == "scip":
-            return version("PySCIPOpt")
-        elif solver_name == "gurobi":
-            return version("gurobipy")
-        else:
-            return version("glpk")
-    except PackageNotFoundError:
-        return ValueError(f"Package Not Found Error {solver_name}")
+    if solver_name == "highs":
+        return version("highspy")
+    elif solver_name == "scip":
+        return version("PySCIPOpt")
+    elif solver_name == "gurobi":
+        return version("gurobipy")
+    elif solver_name == "glpk":
+        return version("glpk")
+    else:
+        raise NotImplementedError(f"We do not yet support {solver_name}")
 
 
 def download_file_from_google_drive(url, dest_path: Path):
@@ -53,10 +52,7 @@ def parse_memory(output):
 
 
 def write_csv_headers(results_csv, mean_stddev_csv, override):
-    if override:
-        mode = "w"
-    else:
-        mode = "a"
+    mode = "w" if override else "a"
     # Initialize CSV files with headers
     with open(results_csv, mode=mode, newline="") as file:
         writer = csv.writer(file)
@@ -135,7 +131,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout, year):
+def benchmark_solver(input_file, solver_name, timeout, year, solver_version):
     command = [
         "/usr/bin/time",
         "--format",
@@ -185,7 +181,7 @@ def benchmark_solver(input_file, solver_name, timeout, year):
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     metrics["memory"] = memory
-    metrics["solver_version"] = get_solver_version(solver_name)
+    metrics["solver_version"] = solver_version
     metrics["solver_release_year"] = year
 
     return metrics
@@ -234,13 +230,28 @@ def main(
             raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
 
         for solver in solvers:
+            try:
+                solver_version = get_solver_version(solver)
+            except PackageNotFoundError:
+                print(f"Solver {solver} is not available. Skipping.")
+                continue
+
             metrics = {}
             runtimes = []
             memory_usages = []
 
             for i in range(iterations):
-                print(f"Running solver {solver} on {benchmark_path.name} ({i})...")
-                metrics = benchmark_solver(benchmark_path, solver, timeout, year)
+                print(
+                    f"Running solver {solver} (version {solver_version}) on {benchmark_path.name} ({i})..."
+                )
+
+                metrics = benchmark_solver(
+                    benchmark_path,
+                    solver,
+                    timeout,
+                    year,
+                    solver_version,
+                )
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
