@@ -2,6 +2,6 @@ glpk==0.4.7
 gurobipy==11.0.0
 highspy==1.5.3
 linopy==0.3.14
-PySCIPOpt==5.2.1
+PySCIPOpt==4.3.0
 pypsa==0.31.1
 requests==2.31.0
