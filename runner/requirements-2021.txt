@@ -1,4 +1,0 @@
-linopy==0.3.14
-PySCIPOpt==3.5.0
-pypsa==0.31.1
-requests==2.31.0

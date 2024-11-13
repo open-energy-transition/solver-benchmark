@@ -57,10 +57,14 @@ Remember to activate the appropriate virtual environment before running the runn
 
 1. **Run Benchmark Runner**
    ```shell
-   python runner/run_benchmarks.py benchmarks/benchmark_config.yaml
+   ./runner/benchmark_all.sh
    ```
-
    The app will save the runtime and memory consumption into a CSV file.
+
+   *Note: If you encounter a "permission denied" error, make sure to set the script as executable by running:*
+   ```shell
+   chmod +x ./runner/benchmark_all.sh
+   ```
 
 1. **Run Website**
    ```shell

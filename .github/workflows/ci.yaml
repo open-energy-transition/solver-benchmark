@@ -47,8 +47,3 @@ jobs:
             echo "Some benchmarks did not complete successfully."
             exit 1
           fi
-
-      - name: Run Streamlit App Action
-        uses: streamlit/streamlit-app-action@v0.0.3
-        with:
-            app-path: website/app.py
