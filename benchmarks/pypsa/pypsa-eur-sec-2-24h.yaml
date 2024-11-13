@@ -1,10 +1,6 @@
 scenario:
   ll:
   - v1
-  clusters:
-  - 2
-  opts:
-  - 24h
 
 countries: ['IT']
 
