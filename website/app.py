@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 
 # local
-from utils.file_utils import load_metadata
+from website.utils.file_utils import load_metadata
 
 st.markdown(
     """
