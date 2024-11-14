@@ -27,7 +27,7 @@ st.markdown(
 
     | **Details** | |
     | ------------- | ------------- |
-    | **Solvers** | 4: Gurobi, HiGHS, GLPK, SCIP |
+    | **Solvers** | 3: HiGHS, GLPK, SCIP |
     | **Benchmarks** | 6 |
     | **Iterations** | 1 |
     | **Timeout** | 15 min |

@@ -163,7 +163,7 @@ def benchmark_solver(input_file, solver_name, timeout):
     return metrics
 
 
-def main(benchmark_file_path, solvers, iterations=1, timeout=15 * 60):
+def main(benchmark_file_path, solvers, iterations=1, timeout=10 * 60):
     results = {}
 
     # Load benchmarks from YAML file
@@ -243,9 +243,12 @@ if __name__ == "__main__":
     benchmark_file_path = sys.argv[1]
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "glpk", "scip"]  # For production
+    solvers = ["highs", "scip"]  # For production
 
     main(benchmark_file_path, solvers)
 
     # Print a message indicating completion
     print("Benchmarking complete.")
+
+# srun --job-name=benchmark-sizes-sec -N1 -n1 --partition=small --cpus-per-task=2 --mem=8G --time=9:00:00 --constraint=Gold6342 --mail-user=siddharth.krishna@openenergytransition.org
+
