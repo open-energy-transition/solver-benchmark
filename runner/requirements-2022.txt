@@ -1,4 +1,3 @@
 highspy==1.5.0.dev0
 linopy==0.3.14
-pypsa==0.31.1
 requests==2.31.0

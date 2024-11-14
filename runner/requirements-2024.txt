@@ -3,5 +3,4 @@ gurobipy==11.0.3
 highspy==1.8.0
 linopy==0.3.14
 PySCIPOpt==5.2.1
-pypsa==0.31.1
 requests==2.31.0

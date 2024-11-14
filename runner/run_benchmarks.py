@@ -51,10 +51,9 @@ def parse_memory(output):
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
-def write_csv_headers(results_csv, mean_stddev_csv, override):
-    mode = "w" if override else "a"
+def write_csv_headers(results_csv, mean_stddev_csv):
     # Initialize CSV files with headers
-    with open(results_csv, mode=mode, newline="") as file:
+    with open(results_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [
@@ -72,7 +71,7 @@ def write_csv_headers(results_csv, mean_stddev_csv, override):
             ]
         )
 
-    with open(mean_stddev_csv, mode=mode, newline="") as file:
+    with open(mean_stddev_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [
@@ -210,7 +209,7 @@ def main(
 
     # Write headers if overriding or file doesn't exist
     if override or not results_csv.exists() or not mean_stddev_csv.exists():
-        write_csv_headers(results_csv, mean_stddev_csv, override)
+        write_csv_headers(results_csv, mean_stddev_csv)
     # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
