@@ -3,9 +3,8 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 from components.filter import generate_filtered_metadata
-
-# local
 from components.home_chart import render_benchmark_scatter_plot
+from packaging.version import parse
 from utils.file_utils import load_metadata
 
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
@@ -65,6 +64,7 @@ df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:
+    df["Solver Version"] = df["Solver Version"].apply(parse)
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
     df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
 
