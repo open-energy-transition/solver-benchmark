@@ -11,15 +11,35 @@ import requests
 import yaml
 
 
+def get_conda_package_version(package_name, env_name=None):
+    try:
+        # Base command
+        cmd = ["conda", "list", package_name]
+
+        # Add environment name if provided
+        if env_name:
+            cmd.extend(["-n", env_name])
+
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+        # Parse the output for the package version
+        for line in result.stdout.splitlines():
+            if line.startswith(package_name):
+                return line.split()[1]  # Return the version (second column)
+        return f"{package_name} not found"
+    except subprocess.CalledProcessError as e:
+        return f"Error occurred: {e}"
+
+
 def get_solver_version(solver_name):
     if solver_name == "highs":
         return version("highspy")
     elif solver_name == "scip":
-        return version("PySCIPOpt")
+        return get_conda_package_version("scip")
     elif solver_name == "gurobi":
         return version("gurobipy")
     elif solver_name == "glpk":
-        return version("glpk")
+        return get_conda_package_version("glpk")
     else:
         raise NotImplementedError(f"We do not yet support {solver_name}")
 
