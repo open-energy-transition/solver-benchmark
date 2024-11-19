@@ -21,12 +21,19 @@ for req_file in ./runner/requirements-*.txt; do
         pip install -r "$req_file"
 
         # TODO Update versions of GLPK and SCIP based on the year
-        if [ "$year" -eq 2023 ]; then
-            conda install -c conda-forge glpk==4.65 scip==9.0.1 pyscipopt -y
+        if [ "$year" -eq 2020 ]; then
+            conda install -c conda-forge glpk==5.0 scip==7.0.1 pyscipopt -y
+        elif [ "$year" -eq 2021 ]; then
+            conda install -c conda-forge glpk==5.0 scip==7.0.3 pyscipopt -y
+        elif [ "$year" -eq 2022 ]; then
+            conda install -c conda-forge glpk==5.0 scip==8.0.3 pyscipopt -y
+        elif [ "$year" -eq 2023 ]; then
+            conda install -c conda-forge glpk==5.0 scip==8.1.0 pyscipopt -y
         elif [ "$year" -eq 2024 ]; then
             conda install -c conda-forge glpk==5.0 scip==9.1.1 pyscipopt -y
         else
-            conda install -c conda-forge glpk scip pyscipopt -y
+            echo "Error: Unsupported year '$year'. No installation rules defined."
+            continue
         fi
 
         pip install git+https://github.com/PyPSA/linopy.git@40a27f9e7f5d33acd1d256334a1b193899b166ad
@@ -37,6 +44,7 @@ for req_file in ./runner/requirements-*.txt; do
         continue
     fi
 
+    # Run the benchmark script for the year
     if [ "$idx" -eq 0 ]; then
         conda run -n "$env_name" python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year"
     else
