@@ -24,13 +24,6 @@ This is how to activate one:
    source venv/bin/activate
    ```
 And this is how to install the required dependencies once a `venv` is activated:
-- Benchmark Runner:
-   ```shell
-   sudo apt install glpk-utils libglpk-dev  # GLPK solver cannot be installed purely with pip
-   pip install -r runner/requirements.txt
-   pip install git+https://github.com/PyPSA/linopy.git@40a27f9e7f5d33acd1d256334a1b193899b166ad
-   ```
-**NOTE**: The last line is required to install the master branch of linopy, which includes updates from the [merged PR](https://github.com/PyPSA/linopy/pull/349) that support reading LP files. Once a new version of linopy is released, we can remove this line and rely on the latest version of linopy from PyPI instead.
 - Website:
    ```shell
    pip install -r website/requirements.txt
