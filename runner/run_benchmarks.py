@@ -26,9 +26,11 @@ def get_conda_package_version(package_name, env_name=None):
         for line in result.stdout.splitlines():
             if line.startswith(package_name):
                 return line.split()[1]  # Return the version (second column)
-        return f"{package_name} not found"
+        raise PackageNotFoundError(
+            f"{package_name} not found in environment '{env_name or ''}'."
+        )
     except subprocess.CalledProcessError as e:
-        return f"Error occurred: {e}"
+        raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
 
 
 def get_solver_version(solver_name):

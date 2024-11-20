@@ -20,17 +20,16 @@ for req_file in ./runner/requirements-*.txt; do
         pip install --upgrade pip
         pip install -r "$req_file"
 
-        # TODO Update versions of GLPK and SCIP based on the year
         if [ "$year" -eq 2020 ]; then
-            conda install -c conda-forge glpk==5.0 scip==7.0.1 pyscipopt -y
+            conda install -c conda-forge glpk==5.0 scip==7.0.2 pyscipopt==3.1.0 -y
         elif [ "$year" -eq 2021 ]; then
-            conda install -c conda-forge glpk==5.0 scip==7.0.3 pyscipopt -y
+            conda install -c conda-forge scip==7.0.3 pyscipopt==3.4.0 -y
         elif [ "$year" -eq 2022 ]; then
-            conda install -c conda-forge glpk==5.0 scip==8.0.3 pyscipopt -y
+            conda install -c conda-forge scip==8.0.3 pyscipopt==4.3.0 -y
         elif [ "$year" -eq 2023 ]; then
-            conda install -c conda-forge glpk==5.0 scip==8.1.0 pyscipopt -y
+            conda install -c conda-forge scip==8.1.0 pyscipopt==4.4.0 -y
         elif [ "$year" -eq 2024 ]; then
-            conda install -c conda-forge glpk==5.0 scip==9.1.1 pyscipopt -y
+            conda install -c conda-forge scip==9.1.1 pyscipopt==5.2.1 -y
         else
             echo "Error: Unsupported year '$year'. No installation rules defined."
             continue
