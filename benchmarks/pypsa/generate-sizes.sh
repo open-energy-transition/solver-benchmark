@@ -18,6 +18,10 @@ line=$(eval printf '=%.0s' {1..80})
 benchmark="pypsa-eur-sec"
 # benchmark="pypsa-eur-elec-op" # TODO next
 
+# Create a list of target postnetworks for all sizes
+targets=$(for n in {2..10}; do for res in 1h 3h 12h 24h; do echo results/postnetworks/base_s_${n}_lv1_${res}__2050.nc; done; done)
+CONTINUE do pre nets in parallel and dump LPs in sequence (can also solve if required)
+
 for n in {3..10}; do
     res="24h"
     output_file="results/postnetworks/base_s_${n}_lv1_${res}__2050.nc"
@@ -42,3 +46,5 @@ done
 
 # TODO --cores all?
 # TODO rename config files to remove nodes? also change paths here
+
+# snakemake results/postnetworks/base_s_2_lv1_3h__2050.nc --configfile ./solver-benchmarks/pypsa-eur-sec-2-24h.yaml --dry-run
