@@ -27,7 +27,7 @@ st.markdown(
 
     | **Details** | |
     | ------------- | ------------- |
-    | **Solvers** | 4: Gurobi, HiGHS, GLPK, SCIP |
+    | **Solvers** | 3: HiGHS, GLPK, SCIP |
     | **Benchmarks** | 6 |
     | **Iterations** | 1 |
     | **Timeout** | 15 min |
@@ -81,16 +81,16 @@ def calculate_sgm(df, shift=10, column_name="Runtime (s)"):
     grouped = df.groupby("Solver")
     for solver, group in grouped:
         column_values = group[column_name]
-        # Calculate SGM
+        # Calculate SGM # TODO this can be done within pd DataFrames
         sgm = np.exp(np.mean(np.log(np.maximum(1, column_values + shift)))) - shift
         sgm_data.append({"Solver": solver, "SGM (Raw)": sgm})
 
     # Normalize SGM
     min_sgm = min(entry["SGM (Raw)"] for entry in sgm_data)
     for entry in sgm_data:
-        entry["SGM (Scaled)"] = entry["SGM (Raw)"] / min_sgm
+        entry["SGM (Normalized)"] = entry["SGM (Raw)"] / min_sgm
 
-    return pd.DataFrame(sgm_data)
+    return pd.DataFrame(sgm_data).sort_values(by="SGM (Normalized)")
 
 
 # Display SGM Table for Runtimes
