@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import streamlit as st
 from components.filter import generate_filtered_metadata
@@ -27,7 +28,7 @@ st.markdown(
 
     | **Details** | |
     | ------------- | ------------- |
-    | **Solvers** | 4: Gurobi, HiGHS, GLPK, SCIP |
+    | **Solvers** | 3: HiGHS, GLPK, SCIP |
     | **Benchmarks** | 6 |
     | **Iterations** | 1 |
     | **Timeout** | 15 min |
@@ -36,19 +37,16 @@ st.markdown(
     """
 )
 
-
 # Filter
 filtered_metadata = generate_filtered_metadata(metadata_df)
 
 if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
 
-
 # Load the data from the CSV file
 data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
 raw_df = pd.read_csv(data_url)
 df = raw_df
-
 
 # Assert that the set of benchmark names in the metadata matches those in the data
 csv_benchmarks = set(raw_df["Benchmark"].unique())
@@ -73,4 +71,39 @@ if not filtered_metadata.empty:
     filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
     df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
+
+# Calculate Shifted Geometric Mean (SGM)
+def calculate_sgm(df, shift=10, column_name="Runtime (s)"):
+    """
+    Calculate the Shifted Geometric Mean (SGM) for each solver.
+    """
+    sgm_data = []
+    grouped = df.groupby("Solver")
+    for solver, group in grouped:
+        column_values = group[column_name]
+        # Calculate SGM # TODO this can be done within pd DataFrames
+        sgm = np.exp(np.mean(np.log(np.maximum(1, column_values + shift)))) - shift
+        sgm_data.append({"Solver": solver, "SGM (Raw)": sgm})
+
+    # Normalize SGM
+    min_sgm = min(entry["SGM (Raw)"] for entry in sgm_data)
+    for entry in sgm_data:
+        entry["SGM (Normalized)"] = entry["SGM (Raw)"] / min_sgm
+
+    return pd.DataFrame(sgm_data).sort_values(by="SGM (Normalized)")
+
+
+# Display SGM Table for Runtimes
+sgm_runtime_df = calculate_sgm(df)
+st.subheader("Shifted Geometric Mean (SGM) of Runtimes")
+st.table(sgm_runtime_df)
+
+
+# Display SGM Table for Memory Usage
+sgm_memoryuse_df = calculate_sgm(df, column_name="Memory Usage (MB)")
+st.subheader("Shifted Geometric Mean (SGM) of Memory Usage")
+st.table(sgm_memoryuse_df)
+
+
+# Render scatter plot
 render_benchmark_scatter_plot(df, metadata, key="home_scatter_plot")
