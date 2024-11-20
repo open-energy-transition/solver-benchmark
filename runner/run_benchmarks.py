@@ -4,46 +4,45 @@ import os
 import statistics
 import subprocess
 import sys
-from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 import requests
 import yaml
 
 
-def get_conda_package_version(package_name, env_name=None):
+def get_conda_package_versions(solvers, env_name=None):
     try:
         # Base command
-        cmd = ["conda", "list", package_name]
+        cmd = ["conda", "list"]
 
         # Add environment name if provided
         if env_name:
             cmd.extend(["-n", env_name])
 
+        # Run the conda list command
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 
-        # Parse the output for the package version
+        # Parse the output into a dictionary of package versions
+        installed_packages = {}
         for line in result.stdout.splitlines():
-            if line.startswith(package_name):
-                return line.split()[1]  # Return the version (second column)
-        raise PackageNotFoundError(
-            f"{package_name} not found in environment '{env_name or ''}'."
-        )
+            if not line.strip() or line.startswith(
+                "#"
+            ):  # Skip comments and empty lines
+                continue
+            parts = line.split()
+            if len(parts) >= 2:  # Ensure package name and version are present
+                installed_packages[parts[0]] = parts[1]
+
+        solver_versions = {}
+        for solver in solvers:
+            solver_versions[solver] = installed_packages.get(
+                solver, None
+            )  # None if not found
+
+        return solver_versions
+
     except subprocess.CalledProcessError as e:
         raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
-
-
-def get_solver_version(solver_name):
-    if solver_name == "highs":
-        return version("highspy")
-    elif solver_name == "scip":
-        return get_conda_package_version("scip")
-    elif solver_name == "gurobi":
-        return version("gurobipy")
-    elif solver_name == "glpk":
-        return get_conda_package_version("glpk")
-    else:
-        raise NotImplementedError(f"We do not yet support {solver_name}")
 
 
 def download_file_from_google_drive(url, dest_path: Path):
@@ -236,6 +235,8 @@ def main(
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
 
+    solvers_versions = get_conda_package_versions(solvers, f"env-{year}")
+
     for file_info in benchmark_files_info:
         # Determine the file path to use for the benchmark
         if "path" in file_info:
@@ -251,9 +252,8 @@ def main(
             raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
 
         for solver in solvers:
-            try:
-                solver_version = get_solver_version(solver)
-            except PackageNotFoundError:
+            solver_version = solvers_versions.get(solver)
+            if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
 

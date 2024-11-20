@@ -1,4 +1,0 @@
-gurobipy==11.0.3
-highspy==1.8.0
-linopy==0.3.14
-requests==2.31.0

@@ -27,7 +27,6 @@ jobs:
           pip install --upgrade pip
           sudo apt update
           sudo apt install -y glpk-utils libglpk-dev
-          pip install -r runner/requirements.txt
           pip install git+https://github.com/PyPSA/linopy.git@40a27f9e7f5d33acd1d256334a1b193899b166ad
 
       - name: Check code formatting
@@ -36,14 +35,10 @@ jobs:
           pre-commit install
           pre-commit run --all-files
 
-      - name: Run sample benchmarks
+      - name: Install Dependencies for Streamlit App Action
         run: |
-          source /tmp/venv/bin/activate
-          python runner/run_benchmarks.py benchmarks/tests.yaml
-
-          if awk -F',' 'NR>1 {if ($3 != "ok") exit 1}' results/benchmark_results.csv; then
-            echo "All benchmarks ran successfully."
-          else
-            echo "Some benchmarks did not complete successfully."
-            exit 1
-          fi
+            pip install -r website/requirements.txt
+      - name: Run Streamlit App Action
+        uses: streamlit/streamlit-app-action@v0.0.3
+        with:
+            app-path: website/app.py
