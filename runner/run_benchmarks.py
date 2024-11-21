@@ -80,15 +80,15 @@ def write_csv_headers(results_csv, mean_stddev_csv):
             [
                 "Benchmark",
                 "Solver",
-                "Status",
-                "Termination Condition",
-                "Objective Value",
-                "Runtime (s)",
-                "Memory Usage (MB)",
-                "Max Integrality Violation",
-                "Duality Gap",
                 "Solver Version",
                 "Solver Release Year",
+                "Status",
+                "Termination Condition",
+                "Runtime (s)",
+                "Memory Usage (MB)",
+                "Objective Value",
+                "Max Integrality Violation",
+                "Duality Gap",
             ]
         )
 
@@ -98,15 +98,15 @@ def write_csv_headers(results_csv, mean_stddev_csv):
             [
                 "Benchmark",
                 "Solver",
+                "Solver Version",
+                "Solver Release Year",
                 "Status",
                 "Termination Condition",
-                "Objective Value",
                 "Runtime Mean (s)",
                 "Runtime StdDev (s)",
                 "Memory Mean (MB)",
                 "Memory StdDev (MB)",
-                "Solver Version",
-                "Solver Release Year",
+                "Objective Value",
             ]
         )
 
@@ -119,15 +119,15 @@ def write_csv_row(results_csv, benchmark_name, solver, metrics):
             [
                 benchmark_name,
                 solver,
-                metrics["status"],
-                metrics["condition"],
-                metrics["objective"],
-                metrics["runtime"],
-                metrics["memory"],
-                metrics["max_integrality_violation"],
-                metrics["duality_gap"],
                 metrics["solver_version"],
                 metrics["solver_release_year"],
+                metrics["status"],
+                metrics["condition"],
+                metrics["runtime"],
+                metrics["memory"],
+                metrics["objective"],
+                metrics["max_integrality_violation"],
+                metrics["duality_gap"],
             ]
         )
 
@@ -140,13 +140,15 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
             [
                 benchmark_name,
                 solver,
+                metrics["solver_version"],
+                metrics["solver_release_year"],
                 metrics["status"],
                 metrics["condition"],
-                metrics["objective"],
                 metrics["runtime_mean"],
                 metrics["runtime_stddev"],
                 metrics["memory_mean"],
                 metrics["memory_stddev"],
+                metrics["objective"],
             ]
         )
 
@@ -212,7 +214,7 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=15 * 60,
+    timeout=10 * 60,
     override=True,
 ):
     results = {}
