@@ -10,15 +10,46 @@ from website.utils.file_utils import load_metadata
 
 
 def create_subplots(data, y_metric, title):
+    status_symbols = {
+        "TO": "x",  # Timeout gets an "X"
+        "ok": "circle",  # Normal execution gets a circle
+    }
+
     figures = [
-        px.scatter(data, x="Spatial Resolution", y=y_metric, color="Solver"),
-        px.scatter(data, x="Num Variables", y=y_metric, color="Solver"),
-        px.scatter(data, x="Num Constraints", y=y_metric, color="Solver"),
+        px.scatter(
+            data,
+            x="Spatial Resolution",
+            y=y_metric,
+            color="Solver",
+            symbol="Status",
+            symbol_map=status_symbols,
+        ),
+        px.scatter(
+            data,
+            x="Num Variables",
+            y=y_metric,
+            color="Solver",
+            symbol="Status",
+            symbol_map=status_symbols,
+        ),
+        px.scatter(
+            data,
+            x="Num Constraints",
+            y=y_metric,
+            color="Solver",
+            symbol="Status",
+            symbol_map=status_symbols,
+        ),
     ]
 
     fig = make_subplots(
         rows=1,
         cols=len(figures),
+        subplot_titles=[
+            "Spatial Resolution",
+            "Num Variables",
+            "Num Constraints",
+        ],
     )
 
     # Add traces to subplots
@@ -40,6 +71,9 @@ def create_subplots(data, y_metric, title):
         title_text=title,
         showlegend=True,
     )
+
+    fig.update_yaxes(title_text="Run Solver", row=1, col=1)
+
     return fig
 
 
@@ -84,6 +118,7 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
                         "Spatial Resolution": size["Spatial resolution"],
                         "Num Constraints": size["N. of constraints"],
                         "Num Variables": size["N. of variables"],
+                        "Status": row["Status"],
                     }
                 )
 
@@ -102,6 +137,7 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
                 "Runtime (s)",
                 "Memory Usage (MB)",
                 "Solver",
+                "Status",
             ]
         ]
 
