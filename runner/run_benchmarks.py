@@ -35,9 +35,9 @@ def get_conda_package_versions(solvers, env_name=None):
 
         solver_versions = {}
         for solver in solvers:
-            solver_versions[solver] = installed_packages.get(
-                solver, None
-            )  # None if not found
+            # HiGHS is called highspy, so map that accordingly
+            package = 'highspy' if solver == 'highs' else solver
+            solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -235,7 +235,7 @@ def main(
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
 
-    solvers_versions = get_conda_package_versions(solvers, f"env-{year}")
+    solvers_versions = get_conda_package_versions(solvers, f"benchmark-{year}")
 
     for file_info in benchmark_files_info:
         # Determine the file path to use for the benchmark
