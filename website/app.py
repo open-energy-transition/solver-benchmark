@@ -47,6 +47,7 @@ pages = [
     st.Page("benchmarks.py", title="Benchmark Details"),
     st.Page("compare.py", title="Solver Comparison"),
     st.Page("history.py", title="Solver Performance History"),
+    st.Page("scaling.py", title="Solver Scaling"),
     st.Page("raw-results.py", title="Full Results"),
 ]
 

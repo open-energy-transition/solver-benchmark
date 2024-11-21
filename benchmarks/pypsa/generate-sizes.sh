@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 #SBATCH --job-name=benchmark-gen-pypsa-eur-sec
 #SBATCH -N1 -n1
 #SBATCH --partition=small

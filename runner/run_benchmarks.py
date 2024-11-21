@@ -251,4 +251,3 @@ if __name__ == "__main__":
     print("Benchmarking complete.")
 
 # srun --job-name=benchmark-sizes-sec -N1 -n1 --partition=small --cpus-per-task=2 --mem=8G --time=9:00:00 --constraint=Gold6342 --mail-user=siddharth.krishna@openenergytransition.org
-
