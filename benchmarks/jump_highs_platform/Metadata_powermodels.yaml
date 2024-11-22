@@ -9,7 +9,7 @@ pglib_opf_case162_ieee_dtc (https://github.com/jump-dev/open-energy-modeling-ben
   Time horizon: N/A
   Temporal resolution: N/A
   Spatial resolution: 162 nodes
-  MILP features: 
+  MILP features:
   N. of constraints: 1867
   N. of variables: 1869 (continuous), 0 (integer), 284 (binary)
 
@@ -17,7 +17,7 @@ pglib_opf_case1803_snem (https://github.com/jump-dev/open-energy-modeling-benchm
   Short description: Optimal Power Flow data for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork
   Model name: PowerModels
   Version:
-  Technique: LP  
+  Technique: LP
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
@@ -28,10 +28,10 @@ pglib_opf_case1803_snem (https://github.com/jump-dev/open-energy-modeling-benchm
   N. of variables: 18576 (continuous), 0 (integer), 2795 (binary)
 
 pglib_opf_case1951_rte (https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz):
-  Short description: 
+  Short description:
   Model name: PowerModels
   Version:
-  Technique: MILP  
+  Technique: MILP
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
@@ -42,16 +42,16 @@ pglib_opf_case1951_rte (https://github.com/jump-dev/open-energy-modeling-benchma
   N. of variables: 17530 (continuous), 0 (integer), 2596 (binary)
 
 pglib_opf_case2848 (https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz):
-  Short description: 
+  Short description:
   Model name: PowerModels
   Version:
-  Technique: MILP  
+  Technique: MILP
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
   Temporal resolution: N/A
   Spatial resolution: 2848 nodes
-  MILP features: 
+  MILP features:
   N. of constraints: 25505
   N. of variables: 25507 (continuous), 0 (integer), 3776 (binary)
 
@@ -59,14 +59,12 @@ pglib_opf_case2868 (https://github.com/jump-dev/open-energy-modeling-benchmarks/
   Short description:
   Model name: PowerModels
   Version:
-  Technique: MILP  
+  Technique: MILP
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
   Temporal resolution: N/A
   Spatial resolution: 2868 nodes
-  MILP features: 
+  MILP features:
   N. of constraints: 25717
   N. of variables: 25719 (continuous), 0 (integer), 3808 (binary)
-
-
