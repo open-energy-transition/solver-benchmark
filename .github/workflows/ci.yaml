@@ -23,10 +23,8 @@ jobs:
         with:
           python-version: ${{ env.PY_VERSION }}
 
-      - name: Set up virtual environment and install dependencies
+      - name: Install dependencies
         run: |
-          python -m venv /tmp/venv
-          source /tmp/venv/bin/activate
           pip install --upgrade pip pre-commit
           pip install -r website/requirements.txt
 
