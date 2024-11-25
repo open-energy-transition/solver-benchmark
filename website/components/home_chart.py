@@ -20,18 +20,18 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
 
     # Find the peak memory usage and average runtime for each solver and benchmark
     peak_memory = (
-        data.groupby(["Benchmark", "Solver", "Status"])["Memory Usage (MB)"]
+        data.groupby(["Benchmark", "Size", "Solver", "Status"])["Memory Usage (MB)"]
         .max()
         .reset_index()
     )
     average_runtime = (
-        data.groupby(["Benchmark", "Solver", "Status"])["Runtime (s)"]
+        data.groupby(["Benchmark", "Size", "Solver", "Status"])["Runtime (s)"]
         .mean()
         .reset_index()
     )
 
     merged_df = pd.merge(
-        peak_memory, average_runtime, on=["Benchmark", "Solver", "Status"]
+        peak_memory, average_runtime, on=["Benchmark", "Size", "Solver", "Status"]
     )
 
     status_symbols = {
@@ -50,6 +50,10 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
         marker_symbol = [
             status_symbols.get(status, "circle") for status in subset["Status"]
         ]
+        hover_text = subset.apply(
+            lambda row: f"{row['Benchmark']}-{row.get('Size')}",
+            axis=1,
+        )
 
         # Add trace for the solver
         fig.add_trace(
@@ -58,7 +62,7 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
                 y=round(subset["Memory Usage (MB)"]),
                 mode="markers",
                 name=solver,
-                text=subset["Benchmark"],  # Tooltip text
+                text=hover_text,  # Tooltip text
                 hoverinfo="text+x+y",  # Display tooltip text with x and y values
                 marker=dict(
                     symbol=marker_symbol,

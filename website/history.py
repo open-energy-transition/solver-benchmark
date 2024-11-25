@@ -34,14 +34,14 @@ data_repeated = pd.concat([data.assign(Year=year) for year in years])
 
 # Find the peak memory usage and average runtime for each solver, benchmark, and year
 peak_memory = (
-    data_repeated.groupby(["Benchmark", "Solver", "Status", "Year"])[
+    data_repeated.groupby(["Benchmark", "Size", "Solver", "Status", "Year"])[
         "Memory Usage (MB)"
     ]
     .max()
     .reset_index()
 )
 average_runtime = (
-    data_repeated.groupby(["Benchmark", "Solver", "Status", "Year"])["Runtime (s)"]
+    data_repeated.groupby(["Benchmark", "Size", "Solver", "Status", "Year"])["Runtime (s)"]
     .mean()
     .reset_index()
 )
@@ -73,7 +73,7 @@ for benchmark in average_runtime_filtered["Benchmark"].unique():
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
         tooltip_text = status_subset.apply(
-            lambda row: f"{row['Benchmark']} - {row['Status']}", axis=1
+            lambda row: f"{row['Benchmark']}-{row['Size']} - {row['Status']}", axis=1
         )
         fig_runtime.add_trace(
             go.Scatter(
@@ -106,7 +106,7 @@ for benchmark in peak_memory_filtered["Benchmark"].unique():
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
         tooltip_text = status_subset.apply(
-            lambda row: f"{row['Benchmark']} - {row['Status']}", axis=1
+            lambda row: f"{row['Benchmark']}-{row['Size']} - {row['Status']}", axis=1
         )
         fig_memory.add_trace(
             go.Scatter(

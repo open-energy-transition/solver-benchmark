@@ -30,7 +30,7 @@ selected_benchmark = st.selectbox("Select a Benchmark", benchmark_list)
 # Display metadata for the selected benchmark
 if selected_benchmark in metadata:
     #########
-    # Table #
+    # Metadata Table #
     #########
     st.subheader(f"Metadata for {selected_benchmark}")
 
@@ -66,6 +66,33 @@ if selected_benchmark in metadata:
         gridOptions=grid_options,
         fit_columns_on_grid_load=True,
     )
+
+    ###############
+    # Sizes Table #
+    ##############
+    st.subheader(f"Sizes for {selected_benchmark}")
+
+    sizes = metadata[selected_benchmark].get("Sizes", [])
+    if sizes:
+        # Convert sizes to a DataFrame
+        sizes_df = pd.DataFrame(sizes)
+
+        # Build grid options for sizes table
+        gb_sizes = GridOptionsBuilder.from_dataframe(sizes_df)
+        gb_sizes.configure_grid_options(domLayout="autoHeight")
+        grid_options_sizes = gb_sizes.build()
+
+        # Display sizes table using ag-Grid
+        AgGrid(
+            sizes_df,
+            editable=False,
+            sortable=True,
+            filter=True,
+            gridOptions=grid_options_sizes,
+            fit_columns_on_grid_load=True,
+        )
+    else:
+        st.write("No size information available for this benchmark.")
 
     #########
     # Chart #

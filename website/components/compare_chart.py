@@ -44,13 +44,19 @@ def create_comparison_chart(
             (merged_data["Status_1"] == status_1)
             & (merged_data["Status_2"] == status_2)
         ]
+        # Create tooltips for hover information
+        hover_text = subset.apply(
+            lambda row: f"{row['Benchmark']}-{row.get('Size_1')}",
+            axis=1,
+        )
+
         fig.add_trace(
             go.Scatter(
                 x=round(subset[f"{metric_name}_1"], decimal_places),
                 y=round(subset[f"{metric_name}_2"], decimal_places),
                 mode="markers",
                 name=f"{status_1}-{status_2}",
-                text=subset["Benchmark"],
+                text=hover_text,
                 marker=dict(
                     color=color,
                     symbol=symbol,
