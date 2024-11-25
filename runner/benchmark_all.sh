@@ -2,14 +2,38 @@
 
 set -euo pipefail
 
-# TODO take these as args
+# Parse command line arguments
+usage() {
+    echo "Usage: $0 [-a] [-y \"<space separated years>\"] <benchmarks yaml file>"
+    echo "Runs the solvers from the specified years (default all) on the benchmarks in the given file"
+    echo "Options:"
+    echo "    -a    Append to the results CSV file instead of overwriting. Default: overwrite"
+    echo "    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024"
+}
 overwrite_results="true"
+years=(2020 2021 2022 2023 2024)
+while getopts "hay:" flag
+do
+    case ${flag} in
+    h)  usage
+        exit 0
+        ;;
+    a)  echo "Append mode selected. The output results CSV file will NOT be overwritten."
+        overwrite="false"
+        ;;
+    y)  IFS=', ' read -r -a years <<< "$OPTARG"
+        ;;
+    esac
+done
+shift $(($OPTIND - 1))
+if [[ $# -ne 1 ]]; then
+    usage
+    exit 1
+fi
 
 BENCHMARK_SCRIPT="./runner/run_benchmarks.py"
-# BENCHMARK_CONFIG="./benchmarks/benchmark_config.yaml"
-BENCHMARK_CONFIG="./benchmarks/tests.yaml"
+BENCHMARK_CONFIG="$1"
 
-years=(2020 2021 2022 2023 2024)
 idx=0
 source "$(conda info --base)/etc/profile.d/conda.sh"  # Ensure conda is initialized
 
@@ -37,3 +61,5 @@ for year in "${years[@]}"; do
 done
 
 echo "All benchmarks completed."
+
+# TODO use abs paths

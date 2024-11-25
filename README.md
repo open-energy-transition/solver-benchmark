@@ -29,6 +29,8 @@ And this is how to install the required dependencies once a `venv` is activated:
    pip install -r website/requirements.txt
    ```
 
+We also use the `conda` package manager to manage different solver versions, so please make sure it is installed before running the benchmark runner.
+
 ### Development
 
 We use the [ruff](https://docs.astral.sh/ruff) code linter and formatter, and GitHub Actions runs various pre-commit checks to ensure code and files are clean.
@@ -46,13 +48,13 @@ git commit --no-verify
 
 ## Run Project
 
-Remember to activate the appropriate virtual environment before running the runner or the website.
-
 1. **Run Benchmark Runner**
+   The benchmark runner script creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary.
    ```shell
-   ./runner/benchmark_all.sh
+   ./runner/benchmark_all.sh ./benchmarks/benchmark_config.yaml
    ```
-   The app will save the runtime and memory consumption into a CSV file.
+   The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display.
+   The script has other options that you can see with the `-h` flag.
 
    *Note: If you encounter a "permission denied" error, make sure to set the script as executable by running:*
    ```shell
@@ -60,6 +62,7 @@ Remember to activate the appropriate virtual environment before running the runn
    ```
 
 1. **Run Website**
+   Remember to activate the virtual environment containing the website's requirements, and then run:
    ```shell
    streamlit run website/app.py
    ```
