@@ -49,6 +49,7 @@ jobs:
         shell: bash -el {0}
         run: |
           ./runner/benchmark_all.sh -y "tests" benchmarks/tests.yaml
+          cat results/benchmark_results.csv
           if awk -F',' 'NR>1 {if ($3 != "ok") exit 1}' results/benchmark_results.csv; then
             echo "All benchmarks ran successfully."
           else
