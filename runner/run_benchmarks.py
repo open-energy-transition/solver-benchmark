@@ -36,7 +36,7 @@ def get_conda_package_versions(solvers, env_name=None):
         solver_versions = {}
         for solver in solvers:
             # HiGHS is called highspy, so map that accordingly
-            package = 'highspy' if solver == 'highs' else solver
+            package = "highspy" if solver == "highs" else solver
             solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
