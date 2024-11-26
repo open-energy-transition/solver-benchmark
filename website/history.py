@@ -10,7 +10,7 @@ from components.filter import generate_filtered_metadata
 from utils.file_utils import load_metadata
 
 
-# SGM Calculation
+# SGM Calculation # TODO reuse same function in home.py and here
 def calculate_sgm(runtime_values, sh=10):
     runtime_values = np.maximum(1, runtime_values + sh)
     sgm = np.exp(np.mean(np.log(runtime_values))) - sh
@@ -64,7 +64,10 @@ solver_sgm_memory["Normalized SGM_Memory"] = (
 )
 
 # Plot SGM for Runtime (s)
-st.title("Solver Performance History - Shifted Geometric Mean (SGM)")
+st.title("Solver Performance History")
+st.write(
+    "We use the Shifted Geometric Mean (SGM) of runtime and memory consumption over all the benchmarks, and normalize according to the best performing solver version."
+)
 
 fig_sgm_runtime = go.Figure()
 
