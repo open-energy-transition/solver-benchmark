@@ -1,0 +1,17 @@
+name: benchmark-2021
+channels:
+- conda-forge
+- https://conda.anaconda.org/gurobi
+- nodefaults
+dependencies:
+- python>=3.9
+- pip
+
+- linopy>=0.4.1
+- requests>=2.32
+
+# - scip==7.0.3  # TODO errors with AttributeError: 'pyscipopt.scip.Model' object has no attribute 'getDualSolVal'
+# - pyscipopt==3.4.0
+# - gurobi==9.5.0  # TODO this doesn't work with py39 but linopy needs py39
+
+# TODO highspy 1.1.1 wasn't released to PyPI, and had no setup.py/pyproject.toml so couldn't install via conda or pip, so omitted..

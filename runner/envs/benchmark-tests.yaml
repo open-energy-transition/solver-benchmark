@@ -1,0 +1,18 @@
+name: benchmark-tests
+channels:
+- conda-forge
+- https://conda.anaconda.org/gurobi
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+
+- linopy>=0.4.1
+- requests>=2.32
+
+- scip>=9.1
+- pyscipopt>=5.2
+- glpk==5.0.0
+
+- pip:
+  - highspy>=1.8.1
