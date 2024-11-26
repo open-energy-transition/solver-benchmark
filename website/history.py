@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -8,9 +9,16 @@ import streamlit as st
 from components.filter import generate_filtered_metadata
 from utils.file_utils import load_metadata
 
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+
+# SGM Calculation
+def calculate_sgm(runtime_values, sh=10):
+    runtime_values = np.maximum(1, runtime_values + sh)
+    sgm = np.exp(np.mean(np.log(runtime_values))) - sh
+    return sgm
+
 
 # Convert metadata to a DataFrame for easier filtering
+metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
@@ -26,119 +34,105 @@ if not filtered_metadata.empty:
     filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
     data = data[data["Benchmark"].isin(filtered_benchmarks)]
 
-# Define marker symbols based on status
-status_symbols = {
-    "TO": "x",  # Timeout gets an "X"
-    "ok": "circle",  # Normal execution gets a circle
-}
+# Use existing years from data
+data["Year"] = data["Solver Release Year"].astype(int)
 
-st.title("Solver Performance History")
-
-# Add a dropdown for solver selection
-solver_options = data["Solver"].unique()
-selected_solver = st.selectbox("Select Solver", solver_options)
-
-# Filter the data for the selected solver
-data_filtered = data[data["Solver"] == selected_solver]
-
-# Get the unique Solver Release Years available for the selected solver
-available_years = sorted(data_filtered["Solver Release Year"].unique())
-
-# Find the peak memory usage and average runtime for each solver, benchmark, and year
-peak_memory = (
-    data_filtered.groupby(["Benchmark", "Status", "Solver Release Year"])[
-        "Memory Usage (MB)"
-    ]
-    .max()
-    .reset_index()
-)
-average_runtime = (
-    data_filtered.groupby(["Benchmark", "Status", "Solver Release Year"])["Runtime (s)"]
-    .mean()
-    .reset_index()
+# Group by Solver and Year to calculate SGMs for Runtime (s)
+solver_sgm_runtime = (
+    data.groupby(["Solver", "Year"])["Runtime (s)"]
+    .apply(lambda x: calculate_sgm(x))
+    .reset_index(name="SGM_Runtime")
 )
 
-# Runtime plot
-fig_runtime = go.Figure()
+# Normalize the SGMs for Runtime (s)
+min_sgm_runtime = solver_sgm_runtime["SGM_Runtime"].min()
+solver_sgm_runtime["Normalized SGM_Runtime"] = (
+    solver_sgm_runtime["SGM_Runtime"] / min_sgm_runtime
+)
 
-# Add traces with different markers for statuses
-for benchmark in average_runtime["Benchmark"].unique():
-    subset = average_runtime[average_runtime["Benchmark"] == benchmark]
-    for status, symbol in status_symbols.items():
-        status_subset = subset[subset["Status"] == status]
-        tooltip_text = status_subset.apply(
-            lambda row: f"{row['Benchmark']} - {row['Status']}", axis=1
-        )
-        fig_runtime.add_trace(
-            go.Scatter(
-                x=status_subset[
-                    "Solver Release Year"
-                ],  # Use Solver Release Year as x-axis
-                y=round(status_subset["Runtime (s)"], 1),
-                mode="markers",
-                name=f"{benchmark} - {status}",
-                marker=dict(
-                    symbol=symbol,  # Marker shape based on status
-                    size=10,
-                ),
-                text=tooltip_text,  # Tooltip text
-                hoverinfo="text+x+y",  # Display tooltip text with x and y values
-            )
-        )
+# Group by Solver and Year to calculate SGMs for Memory Usage (MB)
+solver_sgm_memory = (
+    data.groupby(["Solver", "Year"])["Memory Usage (MB)"]
+    .apply(lambda x: calculate_sgm(x))
+    .reset_index(name="SGM_Memory")
+)
 
-fig_runtime.update_layout(
-    title=f"Solver Runtime Comparison for {selected_solver}",
-    xaxis_title="Year",
-    yaxis_title="Runtime (s)",
+# Normalize the SGMs for Memory Usage (MB)
+min_sgm_memory = solver_sgm_memory["SGM_Memory"].min()
+solver_sgm_memory["Normalized SGM_Memory"] = (
+    solver_sgm_memory["SGM_Memory"] / min_sgm_memory
+)
+
+# Plot SGM for Runtime (s)
+st.title("Solver Performance History - Shifted Geometric Mean (SGM)")
+
+fig_sgm_runtime = go.Figure()
+
+for solver in solver_sgm_runtime["Solver"].unique():
+    subset = solver_sgm_runtime[solver_sgm_runtime["Solver"] == solver]
+    fig_sgm_runtime.add_trace(
+        go.Scatter(
+            x=subset["Year"],
+            y=subset["Normalized SGM_Runtime"],
+            mode="lines+markers",
+            name=solver,
+            marker=dict(size=10),
+            line=dict(width=2),
+            text=subset.apply(
+                lambda row: f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Normalized SGM (Runtime): {row['Normalized SGM_Runtime']:.2f}",
+                axis=1,
+            ),
+            hoverinfo="text+x+y",
+        )
+    )
+
+fig_sgm_runtime.update_layout(
+    title="Normalized SGM Comparison of Solvers Over Years (Runtime)",
+    xaxis=dict(
+        title="Year",
+        tickmode="linear",
+        dtick=1,
+    ),
+    yaxis_title="Normalized SGM (Runtime)",
     template="plotly_dark",
-    xaxis=dict(tickmode="array", tickvals=available_years),
+    height=600,
+    width=1000,
 )
 
-# Memory usage plot
-fig_memory = go.Figure()
+st.plotly_chart(fig_sgm_runtime)
 
-# Add traces with different markers for statuses
-for benchmark in peak_memory["Benchmark"].unique():
-    subset = peak_memory[peak_memory["Benchmark"] == benchmark]
-    for status, symbol in status_symbols.items():
-        status_subset = subset[subset["Status"] == status]
-        tooltip_text = status_subset.apply(
-            lambda row: f"{row['Benchmark']} - {row['Status']}", axis=1
-        )
-        fig_memory.add_trace(
-            go.Scatter(
-                x=status_subset[
-                    "Solver Release Year"
-                ],  # Use Solver Release Year as x-axis
-                y=round(status_subset["Memory Usage (MB)"]),
-                mode="markers",
-                name=f"{benchmark} - {status}",
-                marker=dict(
-                    symbol=symbol,  # Marker shape based on status
-                    size=10,
-                ),
-                text=tooltip_text,  # Tooltip text
-                hoverinfo="text+x+y",  # Display tooltip text with x and y values
-            )
-        )
+# Plot SGM for Memory Usage (MB)
+fig_sgm_memory = go.Figure()
 
-fig_memory.update_layout(
-    title=f"Solver Peak Memory Consumption for {selected_solver}",
-    xaxis_title="Year",
-    yaxis_title="Memory Usage (MB)",
+for solver in solver_sgm_memory["Solver"].unique():
+    subset = solver_sgm_memory[solver_sgm_memory["Solver"] == solver]
+    fig_sgm_memory.add_trace(
+        go.Scatter(
+            x=subset["Year"],
+            y=subset["Normalized SGM_Memory"],
+            mode="lines+markers",
+            name=solver,
+            marker=dict(size=10),
+            line=dict(width=2),
+            text=subset.apply(
+                lambda row: f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Normalized SGM (Memory): {row['Normalized SGM_Memory']:.2f}",
+                axis=1,
+            ),
+            hoverinfo="text+x+y",
+        )
+    )
+
+fig_sgm_memory.update_layout(
+    title="Normalized SGM Comparison of Solvers Over Years (Memory Usage)",
+    xaxis=dict(
+        title="Year",
+        tickmode="linear",
+        dtick=1,
+    ),
+    yaxis_title="Normalized SGM (Memory Usage)",
     template="plotly_dark",
-    xaxis=dict(tickmode="array", tickvals=available_years),
+    height=600,
+    width=1000,
 )
 
-# Explanation for the legend
-st.markdown(
-    """
-    These plots show the evolution of solver performance over time.
-
-    **Legend:** an **$\\times$** represents benchmarks that timed out (TO), while an **$\\bullet$** indicates a successful run (OK).
-    """
-)
-
-# Display plots
-st.plotly_chart(fig_runtime)
-st.plotly_chart(fig_memory)
+st.plotly_chart(fig_sgm_memory)
