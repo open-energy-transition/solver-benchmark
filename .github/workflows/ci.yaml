@@ -13,44 +13,45 @@ jobs:
   CI:
     runs-on: ubuntu-latest
 
+    env:
+      PY_VERSION: "3.12"
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ env.PY_VERSION }}
 
-      - name: Set up virtual environment and install dependencies
+      - name: Install dependencies
         run: |
-          python -m venv /tmp/venv
-          source /tmp/venv/bin/activate
-          pip install --upgrade pip
-          sudo apt update
-          sudo apt install -y glpk-utils libglpk-dev
-          pip install -r runner/requirements.txt
-          pip install git+https://github.com/PyPSA/linopy.git@40a27f9e7f5d33acd1d256334a1b193899b166ad
+          pip install --upgrade pip pre-commit
+          pip install -r website/requirements.txt
 
       - name: Check code formatting
         run: |
-          pip install pre-commit
           pre-commit install
           pre-commit run --all-files
-
-      - name: Install Dependencies for Streamlit App Action
-        run: |
-            pip install -r website/requirements.txt
 
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
             app-path: website/app.py
 
-      - name: Run sample benchmarks
-        run: |
-          source /tmp/venv/bin/activate
-          python runner/run_benchmarks.py benchmarks/tests.yaml
+      - name: Setup Conda for benchmark runner
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ env.PY_VERSION }}
+          # TODO cache conda pkgs dir
 
-          if awk -F',' 'NR>1 {if ($3 != "ok") exit 1}' results/benchmark_results.csv; then
+      - name: Run sample benchmarks
+        shell: bash -el {0}
+        run: |
+          ./runner/benchmark_all.sh -y "tests" benchmarks/tests.yaml
+          echo ""
+          cat results/benchmark_results.csv
+          if awk -F',' 'NR>1 {if ($5 != "ok") exit 1}' results/benchmark_results.csv; then
             echo "All benchmarks ran successfully."
           else
             echo "Some benchmarks did not complete successfully."

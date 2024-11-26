@@ -3,6 +3,7 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+from packaging.version import parse
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
@@ -15,7 +16,14 @@ data_url_mean_stddev = (
 )
 data_url_result = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df_mean_stddev = pd.read_csv(data_url_mean_stddev)
+
 df_result = pd.read_csv(data_url_result)
+df_result["Solver Version"] = df_result["Solver Version"].apply(parse)
+df_result = df_result.sort_values(
+    by=["Solver", "Solver Version"], ascending=[True, False]
+)
+
+df_result = df_result.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
 
 # Load benchmark metadata
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
@@ -174,7 +182,6 @@ if selected_benchmark in metadata:
             mip_table = mip_data.groupby("Solver").tail(1)[
                 ["Solver", "Max Integrality Violation", "Duality Gap"]
             ]
-
             gb_mip = GridOptionsBuilder.from_dataframe(mip_table)
             gb_mip.configure_grid_options(domLayout="normal")
             grid_options_mip = gb_mip.build()

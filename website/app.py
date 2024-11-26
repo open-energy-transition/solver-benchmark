@@ -26,11 +26,9 @@ st.markdown(
       align-items: center;
       font-size: 18px;
     }
-
     .appview-container {
       margin-top: 56px;
     }
-
     header.st-emotion-cache-12fmjuu {
       top: 56px;
     }
@@ -41,7 +39,6 @@ st.markdown(
   """,
     unsafe_allow_html=True,
 )
-
 pages = [
     st.Page("home.py", title="Home"),
     st.Page("benchmarks.py", title="Benchmark Details"),

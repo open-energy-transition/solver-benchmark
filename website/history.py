@@ -26,26 +26,6 @@ if not filtered_metadata.empty:
     filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
     data = data[data["Benchmark"].isin(filtered_benchmarks)]
 
-# Define years to display on the x-axis
-years = [2019, 2020, 2021, 2022, 2023]
-
-# Duplicate the data for each year
-data_repeated = pd.concat([data.assign(Year=year) for year in years])
-
-# Find the peak memory usage and average runtime for each solver, benchmark, and year
-peak_memory = (
-    data_repeated.groupby(["Benchmark", "Size", "Solver", "Status", "Year"])[
-        "Memory Usage (MB)"
-    ]
-    .max()
-    .reset_index()
-)
-average_runtime = (
-    data_repeated.groupby(["Benchmark", "Size", "Solver", "Status", "Year"])["Runtime (s)"]
-    .mean()
-    .reset_index()
-)
-
 # Define marker symbols based on status
 status_symbols = {
     "TO": "x",  # Timeout gets an "X"
@@ -55,21 +35,37 @@ status_symbols = {
 st.title("Solver Performance History")
 
 # Add a dropdown for solver selection
-solver_options = data_repeated["Solver"].unique()
+solver_options = data["Solver"].unique()
 selected_solver = st.selectbox("Select Solver", solver_options)
 
 # Filter the data for the selected solver
-peak_memory_filtered = peak_memory[peak_memory["Solver"] == selected_solver]
-average_runtime_filtered = average_runtime[average_runtime["Solver"] == selected_solver]
+data_filtered = data[data["Solver"] == selected_solver]
+
+# Get the unique Solver Release Years available for the selected solver
+available_years = sorted(data_filtered["Solver Release Year"].unique())
+
+# Find the peak memory usage and average runtime for each solver, benchmark, and year
+peak_memory = (
+    data_filtered.groupby(["Benchmark", "Size", "Status", "Solver Release Year"])[
+        "Memory Usage (MB)"
+    ]
+    .max()
+    .reset_index()
+)
+average_runtime = (
+    data_filtered.groupby(["Benchmark", "Size", "Status", "Solver Release Year"])[
+        "Runtime (s)"
+    ]
+    .mean()
+    .reset_index()
+)
 
 # Runtime plot
 fig_runtime = go.Figure()
 
 # Add traces with different markers for statuses
-for benchmark in average_runtime_filtered["Benchmark"].unique():
-    subset = average_runtime_filtered[
-        average_runtime_filtered["Benchmark"] == benchmark
-    ]
+for benchmark in average_runtime["Benchmark"].unique():
+    subset = average_runtime[average_runtime["Benchmark"] == benchmark]
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
         tooltip_text = status_subset.apply(
@@ -77,7 +73,9 @@ for benchmark in average_runtime_filtered["Benchmark"].unique():
         )
         fig_runtime.add_trace(
             go.Scatter(
-                x=status_subset["Year"],  # Use Year as x-axis
+                x=status_subset[
+                    "Solver Release Year"
+                ],  # Use Solver Release Year as x-axis
                 y=round(status_subset["Runtime (s)"], 1),
                 mode="markers",
                 name=f"{benchmark} - {status}",
@@ -95,14 +93,15 @@ fig_runtime.update_layout(
     xaxis_title="Year",
     yaxis_title="Runtime (s)",
     template="plotly_dark",
+    xaxis=dict(tickmode="array", tickvals=available_years),
 )
 
 # Memory usage plot
 fig_memory = go.Figure()
 
 # Add traces with different markers for statuses
-for benchmark in peak_memory_filtered["Benchmark"].unique():
-    subset = peak_memory_filtered[peak_memory_filtered["Benchmark"] == benchmark]
+for benchmark in peak_memory["Benchmark"].unique():
+    subset = peak_memory[peak_memory["Benchmark"] == benchmark]
     for status, symbol in status_symbols.items():
         status_subset = subset[subset["Status"] == status]
         tooltip_text = status_subset.apply(
@@ -110,7 +109,9 @@ for benchmark in peak_memory_filtered["Benchmark"].unique():
         )
         fig_memory.add_trace(
             go.Scatter(
-                x=status_subset["Year"],  # Use Year as x-axis
+                x=status_subset[
+                    "Solver Release Year"
+                ],  # Use Solver Release Year as x-axis
                 y=round(status_subset["Memory Usage (MB)"]),
                 mode="markers",
                 name=f"{benchmark} - {status}",
@@ -128,6 +129,7 @@ fig_memory.update_layout(
     xaxis_title="Year",
     yaxis_title="Memory Usage (MB)",
     template="plotly_dark",
+    xaxis=dict(tickmode="array", tickvals=available_years),
 )
 
 # Explanation for the legend

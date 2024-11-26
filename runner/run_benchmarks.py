@@ -10,6 +10,41 @@ import requests
 import yaml
 
 
+def get_conda_package_versions(solvers, env_name=None):
+    try:
+        # Base command
+        cmd = ["conda", "list"]
+
+        # Add environment name if provided
+        if env_name:
+            cmd.extend(["-n", env_name])
+
+        # Run the conda list command
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+        # Parse the output into a dictionary of package versions
+        installed_packages = {}
+        for line in result.stdout.splitlines():
+            if not line.strip() or line.startswith(
+                "#"
+            ):  # Skip comments and empty lines
+                continue
+            parts = line.split()
+            if len(parts) >= 2:  # Ensure package name and version are present
+                installed_packages[parts[0]] = parts[1]
+
+        solver_versions = {}
+        for solver in solvers:
+            # HiGHS is called highspy, so map that accordingly
+            package = "highspy" if solver == "highs" else solver
+            solver_versions[solver] = installed_packages.get(package, None)
+
+        return solver_versions
+
+    except subprocess.CalledProcessError as e:
+        raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
+
+
 def download_file_from_google_drive(url, dest_path: Path):
     """Download a file from url and save it locally in the specified folder if it doesn't already exist."""
     # Ensure the destination folder exists
@@ -45,11 +80,13 @@ def write_csv_headers(results_csv, mean_stddev_csv):
             [
                 "Benchmark",
                 "Solver",
+                "Solver Version",
+                "Solver Release Year",
                 "Status",
                 "Termination Condition",
-                "Objective Value",
                 "Runtime (s)",
                 "Memory Usage (MB)",
+                "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
             ]
@@ -61,13 +98,15 @@ def write_csv_headers(results_csv, mean_stddev_csv):
             [
                 "Benchmark",
                 "Solver",
+                "Solver Version",
+                "Solver Release Year",
                 "Status",
                 "Termination Condition",
-                "Objective Value",
                 "Runtime Mean (s)",
                 "Runtime StdDev (s)",
                 "Memory Mean (MB)",
                 "Memory StdDev (MB)",
+                "Objective Value",
             ]
         )
 
@@ -80,11 +119,13 @@ def write_csv_row(results_csv, benchmark_name, solver, metrics):
             [
                 benchmark_name,
                 solver,
+                metrics["solver_version"],
+                metrics["solver_release_year"],
                 metrics["status"],
                 metrics["condition"],
-                metrics["objective"],
                 metrics["runtime"],
                 metrics["memory"],
+                metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
             ]
@@ -99,18 +140,20 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
             [
                 benchmark_name,
                 solver,
+                metrics["solver_version"],
+                metrics["solver_release_year"],
                 metrics["status"],
                 metrics["condition"],
-                metrics["objective"],
                 metrics["runtime_mean"],
                 metrics["runtime_stddev"],
                 metrics["memory_mean"],
                 metrics["memory_stddev"],
+                metrics["objective"],
             ]
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout):
+def benchmark_solver(input_file, solver_name, timeout, year, solver_version):
     command = [
         "/usr/bin/time",
         "--format",
@@ -158,12 +201,22 @@ def benchmark_solver(input_file, solver_name, timeout):
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
+
     metrics["memory"] = memory
+    metrics["solver_version"] = solver_version
+    metrics["solver_release_year"] = year
 
     return metrics
 
 
-def main(benchmark_file_path, solvers, iterations=1, timeout=10 * 60):
+def main(
+    benchmark_file_path,
+    solvers,
+    year=None,
+    iterations=1,
+    timeout=10 * 60,
+    override=True,
+):
     results = {}
 
     # Load benchmarks from YAML file
@@ -173,13 +226,18 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=10 * 60):
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
     os.makedirs(results_folder, exist_ok=True)
+
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
-    write_csv_headers(results_csv, mean_stddev_csv)
 
+    # Write headers if overriding or file doesn't exist
+    if override or not results_csv.exists() or not mean_stddev_csv.exists():
+        write_csv_headers(results_csv, mean_stddev_csv)
     # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
+
+    solvers_versions = get_conda_package_versions(solvers, f"benchmark-{year}")
 
     for file_info in benchmark_files_info:
         # Determine the file path to use for the benchmark
@@ -196,13 +254,27 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=10 * 60):
             raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
 
         for solver in solvers:
+            solver_version = solvers_versions.get(solver)
+            if not solver_version:
+                print(f"Solver {solver} is not available. Skipping.")
+                continue
+
             metrics = {}
             runtimes = []
             memory_usages = []
 
             for i in range(iterations):
-                print(f"Running solver {solver} on {benchmark_path.name} ({i})...")
-                metrics = benchmark_solver(benchmark_path, solver, timeout)
+                print(
+                    f"Running solver {solver} (version {solver_version}) on {benchmark_path.name} ({i})..."
+                )
+
+                metrics = benchmark_solver(
+                    benchmark_path,
+                    solver,
+                    timeout,
+                    year,
+                    solver_version,
+                )
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
@@ -235,18 +307,21 @@ def main(benchmark_file_path, solvers, iterations=1, timeout=10 * 60):
 
 
 if __name__ == "__main__":
-    # Check for benchmark file argument
+    # Check for benchmark file argument and optional year and override arguments
     if len(sys.argv) < 2:
-        print("Usage: python run_benchmarks.py <path_to_benchmarks.yaml>")
+        raise ValueError(
+            "Usage: python run_benchmarks.py <path_to_benchmarks.yaml> [<year>] [<override>]"
+        )
         sys.exit(1)
 
     benchmark_file_path = sys.argv[1]
+    year = sys.argv[2] if len(sys.argv) > 2 else None
+    override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
     solvers = ["highs", "scip"]  # For production
 
-    main(benchmark_file_path, solvers)
-
+    main(benchmark_file_path, solvers, year, override=override)
     # Print a message indicating completion
     print("Benchmarking complete.")
 

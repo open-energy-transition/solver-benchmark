@@ -44,7 +44,7 @@ pypsa-eur-sec:
     Spatial resolution: 10
     N. of constraints: 612796
     N. of variables: 290747
-pypsa-eur-elec-trex-3-24h:
+pypsa-eur-elec-trex:
   Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -58,7 +58,7 @@ pypsa-eur-elec-trex-3-24h:
     Spatial resolution: 3
     N. of constraints: 1432032
     N. of variables: 1099126
-pypsa-eur-elec-op-3-24h:
+pypsa-eur-elec-op:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -72,7 +72,7 @@ pypsa-eur-elec-op-3-24h:
     Spatial resolution: 3
     N. of constraints: 82134
     N. of variables: 6935
-pypsa-eur-elec-op-ucconv-3-24h:
+pypsa-eur-elec-op-ucconv:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -86,7 +86,7 @@ pypsa-eur-elec-op-ucconv-3-24h:
     Spatial resolution: 3
     N. of constraints: 108984
     N. of variables: 1395780
-pypsa-gas+wind+sol+ely-1-1h:
+pypsa-gas+wind+sol+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model
   Model name: PyPSA
   Version: 0.13.0
@@ -100,7 +100,7 @@ pypsa-gas+wind+sol+ely-1-1h:
     Spatial resolution: 1
     N. of constraints: 140170
     N. of variables: 61325
-pypsa-gas+wind+sol+ely-ucgas-1-1h:
+pypsa-gas+wind+sol+ely-ucgas:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on the gas generator
   Model name: PyPSA
   Version: 0.30.1
