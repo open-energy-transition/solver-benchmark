@@ -53,13 +53,17 @@ SNAKEMAKE_RESOURCES=""
 line=$(eval printf '=%.0s' {1..80})
 
 case ${benchmark} in
-    pypsa-eur-sec)
+    pypsa-eur-sec )
         pre_solve_file_schema="results/prenetworks/base_s_\${n}_lv1_\${res}__2050.nc"
         result_file_schema="results/postnetworks/base_s_\${n}_lv1_\${res}__2050.nc"
         ;;
-    pypsa-eur-elec-trex)
+    pypsa-eur-elec-trex )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
         result_file_schema="results/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
+        ;;
+    pypsa-eur-elec-op | pypsa-eur-elec-op-ucconv )
+        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lv1_\${res}.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lv1_\${res}_op.nc"
         ;;
     *)
         echo "Unknown benchmark $benchmark"
@@ -74,7 +78,7 @@ echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
 # Loop over snakemake calls to solve_*_network rules to generate LP files
 for n in "${clusters[@]}"; do
     for res in "${resolutions[@]}"; do
-        lp_file="./${output_dir}/${benchmark}-${n}-${res}.lp"
+        lp_file="${output_dir}/${benchmark}-${n}-${res}.lp"
         result_file=$(eval echo $result_file_schema)
         echo -e "\n$line\nGenerating $lp_file\n$line"
 
