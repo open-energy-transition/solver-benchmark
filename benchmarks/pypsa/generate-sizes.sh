@@ -54,16 +54,20 @@ line=$(eval printf '=%.0s' {1..80})
 
 case ${benchmark} in
     pypsa-eur-sec)
-        pre_solve_file="results/prenetworks/base_s_\${n}_lv1_\${res}__2050.nc";;
+        pre_solve_file_schema="results/prenetworks/base_s_\${n}_lv1_\${res}__2050.nc"
+        result_file_schema="results/postnetworks/base_s_\${n}_lv1_\${res}__2050.nc"
+        ;;
     pypsa-eur-elec-trex)
-        pre_solve_file="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc";;
+        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
+        ;;
     *)
         echo "Unknown benchmark $benchmark"
         exit 1;;
 esac
 
 # Single snakemake call that builds all the inputs to the solve_*_network rule
-targets=$(for n in "${clusters[@]}"; do for res in "${resolutions[@]}"; do eval echo $pre_solve_file; done; done)
+targets=$(for n in "${clusters[@]}"; do for res in "${resolutions[@]}"; do eval echo $pre_solve_file_schema; done; done)
 echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
 /usr/bin/time snakemake --cores all --configfile ./solver-benchmarks/${benchmark}.yaml -call ${targets} ${dry_run}
 
@@ -71,12 +75,10 @@ echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
 for n in "${clusters[@]}"; do
     for res in "${resolutions[@]}"; do
         lp_file="./${output_dir}/${benchmark}-${n}-${res}.lp"
-        export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
+        result_file=$(eval echo $result_file_schema)
         echo -e "\n$line\nGenerating $lp_file\n$line"
 
-        result_file="results/postnetworks/base_s_${n}_lv1_${res}__2050.nc"
-        # result_file="results/networks/base_s_${n}_elec_lvopt_${res}.nc"
-
+        export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
         /usr/bin/time snakemake --cores all --configfile ./solver-benchmarks/${benchmark}.yaml -call ${result_file} ${dry_run}
     done
 done
