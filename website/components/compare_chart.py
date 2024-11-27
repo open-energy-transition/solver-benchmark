@@ -46,7 +46,7 @@ def create_comparison_chart(
         ]
         # Create tooltips for hover information
         hover_text = subset.apply(
-            lambda row: f"{row['Benchmark']}-{row.get('Size_1')}",
+            lambda row: f"{row['Benchmark']}<br>Size: {row['Size_1']}",
             axis=1,
         )
 

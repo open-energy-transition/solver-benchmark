@@ -10,7 +10,9 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
     on_select = "rerun"
 
     try:
-        selected_benchmark = st.session_state[key].selection["points"][0]["text"]
+        selected_benchmark = (
+            st.session_state[key].selection["points"][0]["text"].split("<br>")[0]
+        )
         on_select = "ignore"
     except (KeyError, IndexError):
         selected_benchmark = None
@@ -51,7 +53,7 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
             status_symbols.get(status, "circle") for status in subset["Status"]
         ]
         hover_text = subset.apply(
-            lambda row: f"{row['Benchmark']}-{row.get('Size')}",
+            lambda row: f"{row['Benchmark']}<br>Size: {row['Size']}",
             axis=1,
         )
 
@@ -114,6 +116,9 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
             metadata[selected_benchmark], orient="index", columns=["Value"]
         ).reset_index()
         metadata_df.columns = ["Header", "Value"]
+
+        # Remove the row with the header "Sizes"
+        metadata_df = metadata_df[metadata_df["Header"] != "Sizes"]
 
         # Build grid options with custom row height
         gb = GridOptionsBuilder.from_dataframe(metadata_df)

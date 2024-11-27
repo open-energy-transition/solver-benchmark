@@ -49,7 +49,7 @@ df = pd.read_csv(data_url)
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
-    df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
+    df = df.drop_duplicates(subset=["Solver", "Benchmark", "Size"], keep="first")
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
