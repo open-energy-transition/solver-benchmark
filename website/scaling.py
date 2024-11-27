@@ -23,6 +23,7 @@ def create_subplots(data, y_metric, title):
             color="Solver",
             symbol="Status",
             symbol_map=status_symbols,
+            hover_data=["Benchmark", "Size"],
         ),
         px.scatter(
             data,
@@ -31,6 +32,7 @@ def create_subplots(data, y_metric, title):
             color="Solver",
             symbol="Status",
             symbol_map=status_symbols,
+            hover_data=["Benchmark", "Size"],
         ),
         px.scatter(
             data,
@@ -39,6 +41,7 @@ def create_subplots(data, y_metric, title):
             color="Solver",
             symbol="Status",
             symbol_map=status_symbols,
+            hover_data=["Benchmark", "Size"],
         ),
     ]
 
@@ -95,10 +98,10 @@ filtered_metadata = generate_filtered_metadata(metadata_df)
 
 if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
+# Aggregate data from all benchmarks
+all_enriched_data = []
 
 for benchmark in filtered_metadata["Benchmark Name"].tolist():
-    # Enrich the data for the current benchmark
-    enriched_data = []
     benchmark_metadata = metadata.get(benchmark)
     if benchmark_metadata:
         for size in benchmark_metadata["Sizes"]:
@@ -107,7 +110,7 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
                 (raw_df["Benchmark"] == benchmark) & (raw_df["Size"] == size_key)
             ]
             for _, row in matching_rows.iterrows():
-                enriched_data.append(
+                all_enriched_data.append(
                     {
                         "Benchmark": row["Benchmark"],
                         "Size": row["Size"],
@@ -122,37 +125,41 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
                     }
                 )
 
-        # Create a DataFrame for the enriched data
-        enriched_df = pd.DataFrame(enriched_data)
+# Combine enriched data into a single DataFrame
+all_enriched_df = pd.DataFrame(all_enriched_data)
 
-        # Display benchmark-specific title
-        st.subheader(f"Scaling Data for {benchmark}-*-24h")
-
-        # Filter and prepare data for plotting
-        data = enriched_df[
-            [
-                "Spatial Resolution",
-                "Num Variables",
-                "Num Constraints",
-                "Runtime (s)",
-                "Memory Usage (MB)",
-                "Solver",
-                "Status",
-            ]
-        ]
-
-        # Generate runtime subplot
-        runtime_fig = create_subplots(
-            data,
+if all_enriched_df.empty:
+    st.warning("No data available after processing. Please adjust filters or data.")
+else:
+    # Display overall title
+    st.subheader("Scaling Data Across All Benchmarks")
+    # Filter and prepare data for plotting
+    combined_data = all_enriched_df[
+        [
+            "Spatial Resolution",
+            "Num Variables",
+            "Num Constraints",
             "Runtime (s)",
-            "Runtime (s) vs Num Clusters / Num Variables / Num Constraints",
-        )
-        st.plotly_chart(runtime_fig, use_container_width=True)
-
-        # Generate memory usage subplot
-        memory_usage_fig = create_subplots(
-            data,
             "Memory Usage (MB)",
-            "Memory Usage (MB) vs Num Clusters / Num Variables / Num Constraints",
-        )
-        st.plotly_chart(memory_usage_fig, use_container_width=True)
+            "Solver",
+            "Status",
+            "Benchmark",
+            "Size",
+        ]
+    ]
+
+    # Generate runtime subplot
+    runtime_fig = create_subplots(
+        combined_data,
+        "Runtime (s)",
+        "Runtime (s) vs Spatial Resolution / Num Variables / Num Constraints (All Benchmarks)",
+    )
+    st.plotly_chart(runtime_fig, use_container_width=True)
+
+    # Generate memory usage subplot
+    memory_usage_fig = create_subplots(
+        combined_data,
+        "Memory Usage (MB)",
+        "Memory Usage (MB) vs Spatial Resolution / Num Variables / Num Constraints (All Benchmarks)",
+    )
+    st.plotly_chart(memory_usage_fig, use_container_width=True)
