@@ -3,48 +3,81 @@
 #SBATCH --job-name=benchmark-gen-pypsa-eur-sec
 #SBATCH -N1 -n1
 #SBATCH --partition=small
-#SBATCH --cpus-per-task=2
-#SBATCH --mem=8G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
 #SBATCH --time=8:00:00  # 1h per benchmark size
 
-#SBATCH --constraint=Gold6342  # Run on Intel(R) Xeon(R) Gold 6342 CPUs
-#SBATCH --mail-user=siddharth.krishna@openenergytransition.org
+#SBATCH --mail-type=ALL --mail-user=siddharth.krishna@openenergytransition.org
+# #SBATCH --constraint=Gold6342  # Run on Intel(R) Xeon(R) Gold 6342 CPUs
 
-# SNAKEMAKE_RESOURCES=" --cores 1 --resources mem_mb=4000" # For testing on z1
+set -u # The snakemakae call that generates LPs returns nonzero exit code, so allow failures
+
+# Parse command line arguments
+usage() {
+    echo "Usage: $0 [-n] [-c \"<list of num clusters>\"] [-r \"<list of time resolutions>\"] <benchmark name>"
+    echo "Generates the given sizes of the given benchmark"
+    echo "Options:"
+    echo "    -n    Dry-run, just print snakemake DAGs but do nothing. Default: false"
+    echo "    -c    A space separated string of number of clusters. Default: 2 3 ... 10"
+    echo "    -r    A space separated string of time resolutions. Default: 1h 3h 12h 24h"
+    echo "    -h    Show this help and exit."
+}
+dry_run=""
+clusters=(2 3 4 5 6 7 8 9 10)
+resolutions=(1h 3h 12h 24h)
+while getopts "hnc:r:" flag
+do
+    case ${flag} in
+    h)  usage
+        exit 0
+        ;;
+    n)  dry_run="--dry-run"
+        ;;
+    c)  IFS=', ' read -r -a clusters <<< "$OPTARG"
+        ;;
+    r)  IFS=', ' read -r -a resolutions <<< "$OPTARG"
+        ;;
+    esac
+done
+shift $(($OPTIND - 1))
+if [[ $# -ne 1 ]]; then
+    usage
+    exit 1
+fi
+benchmark=$1
+
+# SNAKEMAKE_RESOURCES=" --cores 1 --resources mem_mb=4000" # For testing
 SNAKEMAKE_RESOURCES=""
 
 line=$(eval printf '=%.0s' {1..80})
 
-benchmark="pypsa-eur-sec"
-# benchmark="pypsa-eur-elec-op" # TODO next
+case ${benchmark} in
+    pypsa-eur-sec)
+        pre_solve_file="results/prenetworks/base_s_\${n}_lv1_\${res}__2050.nc";;
+    pypsa-eur-elec-trex)
+        pre_solve_file="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc";;
+    *)
+        echo "Unknown benchmark $benchmark"
+        exit 1;;
+esac
 
-# Create a list of target postnetworks for all sizes
-targets=$(for n in {2..10}; do for res in 1h 3h 12h 24h; do echo results/postnetworks/base_s_${n}_lv1_${res}__2050.nc; done; done)
-CONTINUE do pre nets in parallel and dump LPs in sequence (can also solve if required)
+# Single snakemake call that builds all the inputs to the solve_*_network rule
+targets=$(for n in "${clusters[@]}"; do for res in "${resolutions[@]}"; do eval echo $pre_solve_file; done; done)
+echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
+/usr/bin/time snakemake --cores all --configfile ./solver-benchmarks/${benchmark}.yaml -call ${targets} ${dry_run}
 
-for n in {3..10}; do
-    res="24h"
-    output_file="results/postnetworks/base_s_${n}_lv1_${res}__2050.nc"
-    LP_FILE="/scratch/htc/skrishna/solver-benchmark/benchmarks/${benchmark}-${n}-${res}.lp"
+# Loop over snakemake calls to solve_*_network rules to generate LP files
+for n in "${clusters[@]}"; do
+    for res in "${resolutions[@]}"; do
+        lp_file="/scratch/htc/skrishna/solver-benchmark/runner/benchmarks/${benchmark}-${n}-${res}.lp"
+        export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
+        echo -e "\n$line\nGenerating $lp_file\n$line"
 
-    # Once to run all previous rules until it generates the LP file
-    export ONLY_GENERATE_PROBLEM_FILE="$LP_FILE"
-    echo -e "\n$line\nGenerating $LP_FILE\n$line"
-    /usr/bin/time snakemake -call $output_file --configfile ./solver-benchmarks/pypsa-eur-sec-2-${res}.yaml $SNAKEMAKE_RESOURCES
+        result_file="results/postnetworks/base_s_${n}_lv1_${res}__2050.nc"
+        # result_file="results/networks/base_s_${n}_elec_lvopt_${res}.nc"
 
-    # Again to add a timeout to the solver
-    unset ONLY_GENERATE_PROBLEM_FILE
-    echo -e "\n$line\nSolving $LP_FILE\n$line"
-    /usr/bin/time timeout 3600s snakemake -call $output_file --configfile ./solver-benchmarks/pypsa-eur-sec-2-${res}.yaml $SNAKEMAKE_RESOURCES
-
-    retcode=$?
-    if [ $retcode -eq 124 ]; then
-        echo "The solver timed out. Exiting the generation script."
-        exit 0
-    fi
+        /usr/bin/time snakemake --cores all --configfile ./solver-benchmarks/${benchmark}.yaml -call ${result_file} ${dry_run}
+    done
 done
 
-# TODO --cores all?
 # TODO rename config files to remove nodes? also change paths here
-
-# snakemake results/postnetworks/base_s_2_lv1_3h__2050.nc --configfile ./solver-benchmarks/pypsa-eur-sec-2-24h.yaml --dry-run
