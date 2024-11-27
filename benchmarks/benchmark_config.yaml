@@ -11,3 +11,45 @@ benchmarks:
     url: "https://drive.usercontent.google.com/download?id=1fEiHuIwIxbkeu-QLuOZV2yeTeH3O1zbm&export=download&authuser=0&confirm=t"
   - name: "pypsa-gas+wind+sol+ely-ucgas-1-1h.lp"
     url: "https://drive.usercontent.google.com/download?id=11jEBh4ypLqRgnP5DsQ2NkZomU4FjnDRU&export=download&authuser=0&confirm=t"
+  - name: 1_three_zone-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
+  - name: 2_three_zones_w_electrolyzer-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
+  - name: 3_three_zones_w_co2_capture-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_3_three_zones_w_co2_capture-3222908514bd19ae55895811eb847ad882270e280657123420407a885ccb34bc.mps.gz
+  - name: 4_three_zones_w_policies_slack-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_4_three_zones_w_policies_slack-0be00acbe74d795dfc6aec53239998a93ac0310563b3e65fca00f2acebe2b6c1.mps.gz
+  - name: 5_three_zones_w_piecewise_fuel-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_5_three_zones_w_piecewise_fuel-51ff0e52d559b549f9e45a13eb267156a2416566f126d1567e1846353a4e9936.mps.gz
+  - name: 6_three_zones_w_multistage-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_6_three_zones_w_multistage-62d4538e93e8e775de4f754baf121d4996da332da11066a1a496e298f2319641.mps.gz
+  - name: 7_three_zones_w_colocated_VRE_storage-3-24h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_7_three_zones_w_colocated_VRE_storage-053eaf1f441d6cb6da75f0dfdaab95f8011afb3be0a34e3b0ae02dbd1043ee74.mps.gz
+  - name: 8_three_zones_w_colocated_VRE_storage_electrolyzers
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
+  - name: 9_three_zones_w_retrofit-3-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
+  - name: 10_IEEE_9_bus_DC_OPF-9-1h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
+  - name: pglib_opf_case162_ieee_dtc-162-NA
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
+  - name: pglib_opf_case1803_snem-1803-NA
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
+  - name: pglib_opf_case1951_rte-1951-NA
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
+  - name: pglib_opf_case2848-2848-NA
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
+  - name: pglib_opf_case2868-2868-NA
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
+  - name: 1_EU_investment_simple-28-24h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
+  - name: 1_EU_investment_simple-28-168h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_168h-a213cb9c037b9b9e0d0d38a1b7644a46407203a1f8e5f036c9e39870270c4a4f.mps.gz
+  - name: 1_EU_investment_simple-28-672h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_672h-336e9a77dd9deae1ef81069c4e3f0c4c39cbbe0bc24b4d4e3f666657cbc76ab6.mps.gz
+  - name: 1_EU_investment_simple-28-2016h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
+  - name: 1_EU_investment_simple-28-4032h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
+  - name: 1_EU_investment_simple-28-8760h
+    url: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
