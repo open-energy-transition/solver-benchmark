@@ -14,8 +14,8 @@ set -u # The snakemakae call that generates LPs returns nonzero exit code, so al
 
 # Parse command line arguments
 usage() {
-    echo "Usage: $0 [-n] [-c \"<list of num clusters>\"] [-r \"<list of time resolutions>\"] <benchmark name>"
-    echo "Generates the given sizes of the given benchmark"
+    echo "Usage: $0 [-n] [-c \"<list of num clusters>\"] [-r \"<list of time resolutions>\"] <benchmark name> <output dir>"
+    echo "Generates the given sizes of the given benchmark and puts LP files in <output dir>"
     echo "Options:"
     echo "    -n    Dry-run, just print snakemake DAGs but do nothing. Default: false"
     echo "    -c    A space separated string of number of clusters. Default: 2 3 ... 10"
@@ -40,11 +40,12 @@ do
     esac
 done
 shift $(($OPTIND - 1))
-if [[ $# -ne 1 ]]; then
+if [[ $# -ne 2 ]]; then
     usage
     exit 1
 fi
 benchmark=$1
+output_dir=$2
 
 # SNAKEMAKE_RESOURCES=" --cores 1 --resources mem_mb=4000" # For testing
 SNAKEMAKE_RESOURCES=""
@@ -69,7 +70,7 @@ echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
 # Loop over snakemake calls to solve_*_network rules to generate LP files
 for n in "${clusters[@]}"; do
     for res in "${resolutions[@]}"; do
-        lp_file="/scratch/htc/skrishna/solver-benchmark/runner/benchmarks/${benchmark}-${n}-${res}.lp"
+        lp_file="./${output_dir}/${benchmark}-${n}-${res}.lp"
         export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
         echo -e "\n$line\nGenerating $lp_file\n$line"
 
