@@ -1,6 +1,8 @@
 import csv
+import gzip
 import json
 import os
+import shutil
 import statistics
 import subprocess
 import sys
@@ -46,12 +48,20 @@ def get_conda_package_versions(solvers, env_name=None):
 
 
 def download_file_from_google_drive(url, dest_path: Path):
-    """Download a file from url and save it locally in the specified folder if it doesn't already exist."""
+    """Download a file from url and save it locally in the specified folder if it doesn't already exist.
+    If the file is gzipped (.gz), it will be unzipped after downloading.
+    """
     # Ensure the destination folder exists
     os.makedirs(dest_path.parent, exist_ok=True)
 
-    if os.path.exists(dest_path):
-        print(f"File already exists at {dest_path}. Skipping download.")
+    # If dest_path ends with .gz, prepare for the uncompressed version
+    if dest_path.suffix == ".gz":
+        uncompressed_dest_path = dest_path.with_suffix("")
+    else:
+        uncompressed_dest_path = dest_path
+
+    if os.path.exists(uncompressed_dest_path):
+        print(f"File already exists at {uncompressed_dest_path}. Skipping download.")
         return
 
     print(f"Downloading {url} to {dest_path}...", end="")
@@ -61,6 +71,14 @@ def download_file_from_google_drive(url, dest_path: Path):
     with open(dest_path, "wb") as f:
         f.write(response.content)
     print("done.")
+    if dest_path.suffix == ".gz":
+        print(f"Unzipping {dest_path}...")
+        with gzip.open(dest_path, "rb") as gz_file:
+            uncompressed_file_path = dest_path.with_suffix("")
+            with open(uncompressed_file_path, "wb") as uncompressed_file:
+                shutil.copyfileobj(gz_file, uncompressed_file)
+        os.remove(dest_path)
+        print(f"Unzipped to {uncompressed_file_path}.")
 
 
 def parse_memory(output):
@@ -250,6 +268,10 @@ def main(
         elif "url" in file_info:
             benchmark_path = benchmarks_folder / file_info["name"]
             download_file_from_google_drive(file_info["url"], benchmark_path)
+
+            # Check if the file is a gzip file and unzip it
+            if benchmark_path.suffix == ".gz":
+                benchmark_path = benchmark_path.with_suffix("")
         else:
             raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
 
