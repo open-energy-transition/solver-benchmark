@@ -2,7 +2,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29 (https://github.c
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -11,12 +11,12 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29 (https://github.c
   MILP features:
   N. of constraints: 6048
   N. of variables: 6050 (continuous), 0 (integer), 1944 (binary)
-  
+
   https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314-16130d073126ae057331ac06d84b99ec39ec673d90e6905b97d4a63326b48708.mps.gz):
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -25,59 +25,59 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29 (https://github.c
   MILP features:
   N. of constraints: 6048
   N. of variables: 6050 (continuous), 0 (integer), 1944 (binary)
-  
+
   https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332-3bf569a3c3108f4dde780873e6eabe9461cb9432af281c716efacfbad4837ba1.mps.gz):
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
-  Spatial resolution: 1 node 
+  Spatial resolution: 1 node
   MILP features:
   N. of constraints: 6048
   N. of variables: 6050 (continuous), 0 (integer), 1944 (binary)
-  
+
   https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29-fc330569fd9116b60a77ce31693e7b88ae4137cb463d769b9e21adf49c1eb6f1.mps.gz):
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
-  Spatial resolution: 1 node  
-  MILP features:
-  N. of constraints: 12096
-  N. of variables: 12098 (continuous), 0 (integer), 3888 (binary)
-  
-  https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz):
-  Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP 
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 1 node 
+  Spatial resolution: 1 node
   MILP features:
   N. of constraints: 12096
   N. of variables: 12098 (continuous), 0 (integer), 3888 (binary)
 
-https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-35f61df3d7e00db245b09ef67b21ea954c6bbff05511cb1702cd419bd7fd2711.mps.gz):  
+  https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz):
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
-  Spatial resolution: 1 node 
+  Spatial resolution: 1 node
+  MILP features:
+  N. of constraints: 12096
+  N. of variables: 12098 (continuous), 0 (integer), 3888 (binary)
+
+https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-35f61df3d7e00db245b09ef67b21ea954c6bbff05511cb1702cd419bd7fd2711.mps.gz):
+  Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  Temporal resolution: 1 hourly
+  Spatial resolution: 1 node
   MILP features:
   N. of constraints: 12096
   N. of variables: 12098 (continuous), 0 (integer), 3888 (binary)
@@ -86,7 +86,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -100,7 +100,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -114,7 +114,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -128,7 +128,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -142,7 +142,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -156,7 +156,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -170,7 +170,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
@@ -184,7 +184,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
@@ -198,7 +198,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
@@ -212,7 +212,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -226,7 +226,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -240,7 +240,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Direct Current Approximation
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -254,7 +254,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -268,7 +268,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -282,7 +282,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -296,10 +296,10 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
-  Time horizon: 
+  Time horizon:
   Temporal resolution: 1 hourly
   Spatial resolution: 1 node
   MILP features:
@@ -310,10 +310,10 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
-  Time horizon: 
+  Time horizon:
   Temporal resolution: 1 hourly
   Spatial resolution: 1 node
   MILP features:
@@ -324,10 +324,10 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
-  Time horizon: 
+  Time horizon:
   Temporal resolution: 1 hourly
   Spatial resolution: 1 node
   MILP features:
@@ -338,7 +338,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -352,7 +352,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -366,7 +366,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -380,7 +380,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -394,7 +394,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -408,7 +408,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
@@ -422,10 +422,10 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
-  Time horizon: 
+  Time horizon:
   Temporal resolution: 1 hourly
   Spatial resolution: 1 node
   MILP features:
@@ -436,10 +436,10 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
-  Time horizon: 
+  Time horizon:
   Temporal resolution: 1 hourly
   Spatial resolution: 1 node
   MILP features:
@@ -450,10 +450,10 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
-  Time horizon: 
+  Time horizon:
   Temporal resolution: 1 hourly
   Spatial resolution: 1 node
   MILP features:
@@ -464,7 +464,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
@@ -478,7 +478,7 @@ https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/
   Short description: Transport problem
   Model name: Sienna
   Version:
-  Technique: MILP 
+  Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
