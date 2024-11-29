@@ -16,13 +16,23 @@ data_url_mean_stddev = (
 )
 data_url_result = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df_mean_stddev = pd.read_csv(data_url_mean_stddev)
+df_mean_stddev["Solver Version"] = df_mean_stddev["Solver Version"].apply(parse)
+df_mean_stddev = df_mean_stddev.sort_values(
+    by=["Solver", "Solver Version"], ascending=[True, False]
+)
+df_mean_stddev = df_mean_stddev.drop_duplicates(
+    subset=["Solver", "Benchmark", "Size"], keep="first"
+)
+
+
 df_result = pd.read_csv(data_url_result)
 df_result["Solver Version"] = df_result["Solver Version"].apply(parse)
 df_result = df_result.sort_values(
     by=["Solver", "Solver Version"], ascending=[True, False]
 )
-
-df_result = df_result.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
+df_result = df_result.drop_duplicates(
+    subset=["Solver", "Benchmark", "Size"], keep="first"
+)
 
 # Load benchmark metadata
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
@@ -120,14 +130,13 @@ if selected_benchmark in metadata:
 
     # Get peak memory usage and runtime for the selected benchmark
     peak_memory = (
-        benchmark_data.groupby(["Solver", "Status"])[["Memory Mean (MB)", "Size"]]
+        benchmark_data.groupby(["Solver", "Status"])[["Solver Release Year"]]
         .max()
         .reset_index()
     )
     xTitle = "Runtime Mean (s)"
     yTitle = "Memory Mean (MB)"
-    runtime = benchmark_data[["Solver", "Status", xTitle]]
-
+    runtime = benchmark_data[["Solver", "Status", "Size", "Benchmark", yTitle, xTitle]]
     # Merge data to have a common DataFrame for plotting
     merged_df = pd.merge(peak_memory, runtime, on=["Solver", "Status"])
     # Add traces for runtime vs peak memory with different symbols
