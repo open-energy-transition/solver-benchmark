@@ -10,12 +10,12 @@
   MILP features: Unit commitment
   Sizes:
   - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
-  Temporal resolution: 1
-  Spatial resolution: 3
-  N. of constraints: 171878
-  N. of continuous variables: 171880
-  N. of integer variables: 16635
-  N. of binary variables: 3696
+    Temporal resolution: 1
+    Spatial resolution: 3
+    N. of constraints: 171878
+    N. of continuous variables: 171880
+    N. of integer variables: 16635
+    N. of binary variables: 3696
 2_three_zones_w_electrolyzer:
   Short description: This is a one-year example with hourly resolution which contains three zones representing Massachusetts, Connecticut, and Maine. It is designed to show the electrolyzer feature in GenX. The sixteen represented resources include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
   Model name: GenX

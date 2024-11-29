@@ -67,3 +67,10 @@ git commit --no-verify
    streamlit run website/app.py
    ```
    The website will be running on: [http://localhost:8501](http://localhost:8501)
+
+1. **Merge Metadata**
+   Run the script to generate a unified metadata.yaml file by executing:
+   ```shell
+   python benchmarks/merge_metadata.py
+   ```
+   This will parse all metadata*.yaml files under benchmarks/ and create results/metadata.yaml, containing metadata for all benchmarks.

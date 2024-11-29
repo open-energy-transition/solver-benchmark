@@ -8,7 +8,7 @@ from components.home_chart import render_benchmark_scatter_plot
 from packaging.version import parse
 from utils.file_utils import load_metadata
 
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+metadata = load_metadata("results/metadata.yaml")
 
 # Convert metadata to a DataFrame for easier filtering
 metadata_df = pd.DataFrame(metadata).T.reset_index()

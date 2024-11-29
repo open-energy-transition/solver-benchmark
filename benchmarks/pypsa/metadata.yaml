@@ -1,4 +1,4 @@
-pypsa-eur-sec-2-24h:
+pypsa-eur-sec:
   Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -6,13 +6,45 @@ pypsa-eur-sec-2-24h:
   Kind of problem: Infrastructure
   Sectors: Sector-coupled (power + heating, biomass, industry, transport)
   Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 2 nodes (Italy)
   MILP features: None
-  N. of constraints: 393568
-  N. of variables: 390692
-
-pypsa-eur-elec-trex-3-24h:
+  Sizes:
+  - Temporal resolution: 24
+    Spatial resolution: 2
+    N. of constraints: 132272
+    N. of variables: 63264
+  - Temporal resolution: 24
+    Spatial resolution: 3
+    N. of constraints: 192200
+    N. of variables: 91790
+  - Temporal resolution: 24
+    Spatial resolution: 4
+    N. of constraints: 255776
+    N. of variables: 121410
+  - Temporal resolution: 24
+    Spatial resolution: 5
+    N. of constraints: 318627
+    N. of variables: 150668
+  - Temporal resolution: 24
+    Spatial resolution: 6
+    N. of constraints: 377463
+    N. of variables: 178831
+  - Temporal resolution: 24
+    Spatial resolution: 7
+    N. of constraints: 438851
+    N. of variables: 207357
+  - Temporal resolution: 24
+    Spatial resolution: 8
+    N. of constraints: 494405
+    N. of variables: 235157
+  - Temporal resolution: 24
+    Spatial resolution: 9
+    N. of constraints: 552141
+    N. of variables: 262587
+  - Temporal resolution: 24
+    Spatial resolution: 10
+    N. of constraints: 612796
+    N. of variables: 290747
+pypsa-eur-elec-trex:
   Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -20,13 +52,13 @@ pypsa-eur-elec-trex-3-24h:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3 nodes (Italy)
   MILP features: None
-  N. of constraints: 1432032
-  N. of variables: 1099126
-
-pypsa-eur-elec-op-3-24h:
+  Sizes:
+  - Temporal resolution: 24
+    Spatial resolution: 3
+    N. of constraints: 1432032
+    N. of variables: 1099126
+pypsa-eur-elec-op:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -34,13 +66,13 @@ pypsa-eur-elec-op-3-24h:
   Kind of problem: Operational
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3 nodes (Italy)
   MILP features: None
-  N. of constraints: 82134
-  N. of variables: 6935
-
-pypsa-eur-elec-op-ucconv-3-24h:
+  Sizes:
+  - Temporal resolution: 24
+    Spatial resolution: 3
+    N. of constraints: 82134
+    N. of variables: 6935
+pypsa-eur-elec-op-ucconv:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
   Version: 0.13.0 (commit 8f1a6b1)
@@ -48,13 +80,13 @@ pypsa-eur-elec-op-ucconv-3-24h:
   Kind of problem: Operational
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3 nodes (Italy)
   MILP features: Unit commitment for conventional fleet
-  N. of constraints: 108984
-  N. of variables: 1395780 (continuous), 219000 (binary)
-
-pypsa-gas+wind+sol+ely-1-1h:
+  Sizes:
+  - Temporal resolution: 24
+    Spatial resolution: 3
+    N. of constraints: 108984
+    N. of variables: 1395780
+pypsa-gas+wind+sol+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model
   Model name: PyPSA
   Version: 0.13.0
@@ -62,13 +94,13 @@ pypsa-gas+wind+sol+ely-1-1h:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: hourly
-  Spatial resolution: 1 node
   MILP features: None
-  N. of constraints: 140170
-  N. of variables: 61325
-
-pypsa-gas+wind+sol+ely-ucgas-1-1h:
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints: 140170
+    N. of variables: 61325
+pypsa-gas+wind+sol+ely-ucgas:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on the gas generator
   Model name: PyPSA
   Version: 0.30.1
@@ -76,8 +108,9 @@ pypsa-gas+wind+sol+ely-ucgas-1-1h:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: hourly
-  Spatial resolution: Single-node
   MILP features: Unit commitment on gas generator
-  N. of constraints: 183970
-  N. of variables: 87605 (continuous), 26280 (binary)
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints: 183970
+    N. of variables: 87605
