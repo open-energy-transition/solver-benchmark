@@ -24,6 +24,10 @@
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-10-24h.lp
   - size: 4-12h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-4-12h.lp
+  - size: 5-12h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
+  - size: 2-3h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
 - name: pypsa-eur-elec-trex
   sizes:
   - size: 2-24h
@@ -66,6 +70,10 @@
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-9-12h.lp
   - size: 3-3h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-3h.lp
+  - size: 4-3h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-4-3h.lp
+  - size: 2-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-2-1h.lp
 - name: pypsa-eur-elec-op
   sizes:
   - size: 2-24h
@@ -108,6 +116,10 @@
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-10-12h.lp
   - size: 3-3h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-3-3h.lp
+  - size: 4-3h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
+  - size: 2-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
 - name: pypsa-eur-elec-op-ucconv
   sizes:
   - size: 2-24h
@@ -142,3 +154,11 @@
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
   - size: 7-24h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-7-24h.lp
+  - size: 10-24h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
+  - size: 9-12h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-9-12h.lp
+  - size: 3-3h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-3-3h.lp
+  - size: 2-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-1h.lp
