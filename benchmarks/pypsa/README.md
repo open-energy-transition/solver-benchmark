@@ -15,7 +15,19 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
      ```sh
      micromamba activate benchmark-gen
      cd pypsa-eur
-     ./solver-benchmarks/generate.sh
+     ./solver-benchmarks/generate-sizes.sh <benchmark-name> /tmp/
+     ```
+     where `<benchmark-name>` is one of:
+     ```
+     pypsa-eur-sec
+     pypsa-eur-elec-trex
+     pypsa-eur-elec-op
+     pypsa-eur-elec-op-ucconv
+     ```
+     To generate the plain pypsa benchmarks, run:
+     ```sh
+     python ./solver-benchmarks/pypsa-gas+wind+sol+ely-1-1h.py
+     python ./solver-benchmarks/pypsa-gas+wind+sol+ely-ucgas-1-1h.py
      ```
 
 The benchmarks can be found in `/tmp/pypsa*.lp` inside the docker container.
