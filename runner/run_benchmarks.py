@@ -336,10 +336,8 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs"]  # For production
+    solvers = ["highs", "glpk", "scip"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion
     print("Benchmarking complete.")
-
-# srun --job-name=benchmark-sizes-sec -N1 -n1 --partition=small --cpus-per-task=2 --mem=8G --time=9:00:00 --constraint=Gold6342 --mail-user=siddharth.krishna@openenergytransition.org

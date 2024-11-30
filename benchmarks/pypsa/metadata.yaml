@@ -20,6 +20,10 @@ pypsa-eur-sec:
     Spatial resolution: 4
     N. of constraints: 255776
     N. of variables: 121410
+  - Temporal resolution: 12
+    Spatial resolution: 2
+    N. of constraints: 264402
+    N. of variables: 126405
   - Temporal resolution: 24
     Spatial resolution: 5
     N. of constraints: 318627
@@ -28,6 +32,10 @@ pypsa-eur-sec:
     Spatial resolution: 6
     N. of constraints: 377463
     N. of variables: 178831
+  - Temporal resolution: 12
+    Spatial resolution: 3
+    N. of constraints: 384190
+    N. of variables: 183399
   - Temporal resolution: 24
     Spatial resolution: 7
     N. of constraints: 438851
@@ -36,6 +44,10 @@ pypsa-eur-sec:
     Spatial resolution: 8
     N. of constraints: 494405
     N. of variables: 235157
+  - Temporal resolution: 12
+    Spatial resolution: 4
+    N. of constraints: 511276
+    N. of variables: 242582
   - Temporal resolution: 24
     Spatial resolution: 9
     N. of constraints: 552141
@@ -44,6 +56,102 @@ pypsa-eur-sec:
     Spatial resolution: 10
     N. of constraints: 612796
     N. of variables: 290747
+  - Temporal resolution: 12
+    Spatial resolution: 5
+    N. of constraints: 636907
+    N. of variables: 301038
+  - Temporal resolution: 12
+    Spatial resolution: 6
+    N. of constraints: 754508
+    N. of variables: 357304
+  - Temporal resolution: 12
+    Spatial resolution: 7
+    N. of constraints: 877216
+    N. of variables: 414298
+  - Temporal resolution: 12
+    Spatial resolution: 8
+    N. of constraints: 988250
+    N. of variables: 469836
+  - Temporal resolution: 3
+    Spatial resolution: 2
+    N. of constraints: 1057182
+    N. of variables: 505253
+  - Temporal resolution: 12
+    Spatial resolution: 9
+    N. of constraints: 1103656
+    N. of variables: 524639
+  - Temporal resolution: 12
+    Spatial resolution: 10
+    N. of constraints: 1224901
+    N. of variables: 580902
+  - Temporal resolution: 3
+    Spatial resolution: 3
+    N. of constraints: 1536130
+    N. of variables: 733056
+  - Temporal resolution: 3
+    Spatial resolution: 4
+    N. of constraints: 2044276
+    N. of variables: 969618
+  - Temporal resolution: 3
+    Spatial resolution: 5
+    N. of constraints: 2546587
+    N. of variables: 1203263
+  - Temporal resolution: 3
+    Spatial resolution: 6
+    N. of constraints: 3016778
+    N. of variables: 1428148
+  - Temporal resolution: 1
+    Spatial resolution: 2
+    N. of constraints: 3171262
+    N. of variables: 1515511
+  - Temporal resolution: 3
+    Spatial resolution: 7
+    N. of constraints: 3507406
+    N. of variables: 1655951
+  - Temporal resolution: 3
+    Spatial resolution: 8
+    N. of constraints: 3951320
+    N. of variables: 1877918
+  - Temporal resolution: 3
+    Spatial resolution: 9
+    N. of constraints: 4412746
+    N. of variables: 2096960
+  - Temporal resolution: 1
+    Spatial resolution: 3
+    N. of constraints: 4607970
+    N. of variables: 2198803
+  - Temporal resolution: 3
+    Spatial resolution: 10
+    N. of constraints: 4897531
+    N. of variables: 2321842
+  - Temporal resolution: 1
+    Spatial resolution: 4
+    N. of constraints: 6132276
+    N. of variables: 2908374
+  - Temporal resolution: 1
+    Spatial resolution: 5
+    N. of constraints: 7639067
+    N. of variables: 3609188
+  - Temporal resolution: 1
+    Spatial resolution: 6
+    N. of constraints: 9049498
+    N. of variables: 4283722
+  - Temporal resolution: 1
+    Spatial resolution: 7
+    N. of constraints: 10521246
+    N. of variables: 4967014
+  - Temporal resolution: 1
+    Spatial resolution: 8
+    N. of constraints: 11852840
+    N. of variables: 5632790
+  - Temporal resolution: 1
+    Spatial resolution: 9
+    N. of constraints: 13236986
+    N. of variables: 6289801
+  - Temporal resolution: 1
+    Spatial resolution: 10
+    N. of constraints: 14691211
+    N. of variables: 6964332
 pypsa-eur-elec-trex:
   Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints)
   Model name: PyPSA-Eur
@@ -55,9 +163,93 @@ pypsa-eur-elec-trex:
   MILP features: None
   Sizes:
   - Temporal resolution: 24
+    Spatial resolution: 2
+    N. of constraints: 38732
+    N. of variables: 19007
+  - Temporal resolution: 24
     Spatial resolution: 3
-    N. of constraints: 1432032
-    N. of variables: 1099126
+    N. of constraints: 59926
+    N. of variables: 28876
+  - Temporal resolution: 12
+    Spatial resolution: 2
+    N. of constraints: 77422
+    N. of variables: 37983
+  - Temporal resolution: 24
+    Spatial resolution: 4
+    N. of constraints: 84773
+    N. of variables: 39842
+  - Temporal resolution: 24
+    Spatial resolution: 5
+    N. of constraints: 108888
+    N. of variables: 50442
+  - Temporal resolution: 12
+    Spatial resolution: 3
+    N. of constraints: 119786
+    N. of variables: 57705
+  - Temporal resolution: 24
+    Spatial resolution: 6
+    N. of constraints: 126798
+    N. of variables: 58852
+  - Temporal resolution: 24
+    Spatial resolution: 7
+    N. of constraints: 149453
+    N. of variables: 68722
+  - Temporal resolution: 24
+    Spatial resolution: 8
+    N. of constraints: 163342
+    N. of variables: 76399
+  - Temporal resolution: 12
+    Spatial resolution: 4
+    N. of constraints: 169453
+    N. of variables: 79619
+  - Temporal resolution: 24
+    Spatial resolution: 9
+    N. of constraints: 182343
+    N. of variables: 85172
+  - Temporal resolution: 24
+    Spatial resolution: 10
+    N. of constraints: 202802
+    N. of variables: 93944
+  - Temporal resolution: 12
+    Spatial resolution: 5
+    N. of constraints: 217658
+    N. of variables: 100802
+  - Temporal resolution: 12
+    Spatial resolution: 6
+    N. of constraints: 253453
+    N. of variables: 117605
+  - Temporal resolution: 12
+    Spatial resolution: 7
+    N. of constraints: 298738
+    N. of variables: 137328
+  - Temporal resolution: 3
+    Spatial resolution: 2
+    N. of constraints: 309562
+    N. of variables: 151841
+  - Temporal resolution: 12
+    Spatial resolution: 8
+    N. of constraints: 326497
+    N. of variables: 152668
+  - Temporal resolution: 12
+    Spatial resolution: 9
+    N. of constraints: 364478
+    N. of variables: 170199
+  - Temporal resolution: 12
+    Spatial resolution: 10
+    N. of constraints: 405377
+    N. of variables: 187729
+  - Temporal resolution: 3
+    Spatial resolution: 3
+    N. of constraints: 478946
+    N. of variables: 230682
+  - Temporal resolution: 3
+    Spatial resolution: 4
+    N. of constraints: 677533
+    N. of variables: 318285
+  - Temporal resolution: 1
+    Spatial resolution: 2
+    N. of constraints: 928602
+    N. of variables: 455459
 pypsa-eur-elec-op:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
@@ -69,9 +261,93 @@ pypsa-eur-elec-op:
   MILP features: None
   Sizes:
   - Temporal resolution: 24
+    Spatial resolution: 2
+    N. of constraints: 38730
+    N. of variables: 19006
+  - Temporal resolution: 24
     Spatial resolution: 3
-    N. of constraints: 82134
-    N. of variables: 6935
+    N. of constraints: 59920
+    N. of variables: 28873
+  - Temporal resolution: 12
+    Spatial resolution: 2
+    N. of constraints: 77420
+    N. of variables: 37982
+  - Temporal resolution: 24
+    Spatial resolution: 4
+    N. of constraints: 84759
+    N. of variables: 39835
+  - Temporal resolution: 24
+    Spatial resolution: 5
+    N. of constraints: 108870
+    N. of variables: 50433
+  - Temporal resolution: 12
+    Spatial resolution: 3
+    N. of constraints: 119780
+    N. of variables: 57702
+  - Temporal resolution: 24
+    Spatial resolution: 6
+    N. of constraints: 126776
+    N. of variables: 58841
+  - Temporal resolution: 24
+    Spatial resolution: 7
+    N. of constraints: 149427
+    N. of variables: 68709
+  - Temporal resolution: 24
+    Spatial resolution: 8
+    N. of constraints: 163318
+    N. of variables: 76387
+  - Temporal resolution: 12
+    Spatial resolution: 4
+    N. of constraints: 169439
+    N. of variables: 79612
+  - Temporal resolution: 24
+    Spatial resolution: 9
+    N. of constraints: 182317
+    N. of variables: 85159
+  - Temporal resolution: 24
+    Spatial resolution: 10
+    N. of constraints: 202772
+    N. of variables: 93929
+  - Temporal resolution: 12
+    Spatial resolution: 5
+    N. of constraints: 217640
+    N. of variables: 100793
+  - Temporal resolution: 12
+    Spatial resolution: 6
+    N. of constraints: 253431
+    N. of variables: 117594
+  - Temporal resolution: 12
+    Spatial resolution: 7
+    N. of constraints: 298712
+    N. of variables: 137315
+  - Temporal resolution: 3
+    Spatial resolution: 2
+    N. of constraints: 309560
+    N. of variables: 151840
+  - Temporal resolution: 12
+    Spatial resolution: 8
+    N. of constraints: 326473
+    N. of variables: 152656
+  - Temporal resolution: 12
+    Spatial resolution: 9
+    N. of constraints: 364452
+    N. of variables: 170186
+  - Temporal resolution: 12
+    Spatial resolution: 10
+    N. of constraints: 405347
+    N. of variables: 187714
+  - Temporal resolution: 3
+    Spatial resolution: 3
+    N. of constraints: 478940
+    N. of variables: 230679
+  - Temporal resolution: 3
+    Spatial resolution: 4
+    N. of constraints: 677519
+    N. of variables: 318278
+  - Temporal resolution: 1
+    Spatial resolution: 2
+    N. of constraints: 928600
+    N. of variables: 455458
 pypsa-eur-elec-op-ucconv:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
@@ -83,9 +359,85 @@ pypsa-eur-elec-op-ucconv:
   MILP features: Unit commitment for conventional fleet
   Sizes:
   - Temporal resolution: 24
+    Spatial resolution: 2
+    N. of constraints: 48218
+    N. of variables: 23386
+  - Temporal resolution: 24
     Spatial resolution: 3
-    N. of constraints: 108984
-    N. of variables: 1395780
+    N. of constraints: 71234
+    N. of variables: 34348
+  - Temporal resolution: 12
+    Spatial resolution: 2
+    N. of constraints: 96398
+    N. of variables: 46742
+  - Temporal resolution: 24
+    Spatial resolution: 4
+    N. of constraints: 100817
+    N. of variables: 47500
+  - Temporal resolution: 24
+    Spatial resolution: 5
+    N. of constraints: 129672
+    N. of variables: 60288
+  - Temporal resolution: 12
+    Spatial resolution: 3
+    N. of constraints: 142409
+    N. of variables: 68652
+  - Temporal resolution: 24
+    Spatial resolution: 6
+    N. of constraints: 150496
+    N. of variables: 69791
+  - Temporal resolution: 24
+    Spatial resolution: 7
+    N. of constraints: 176065
+    N. of variables: 80754
+  - Temporal resolution: 24
+    Spatial resolution: 8
+    N. of constraints: 192874
+    N. of variables: 89527
+  - Temporal resolution: 12
+    Spatial resolution: 4
+    N. of constraints: 201557
+    N. of variables: 94942
+  - Temporal resolution: 24
+    Spatial resolution: 9
+    N. of constraints: 214791
+    N. of variables: 99394
+  - Temporal resolution: 24
+    Spatial resolution: 10
+    N. of constraints: 238164
+    N. of variables: 109259
+  - Temporal resolution: 12
+    Spatial resolution: 5
+    N. of constraints: 259247
+    N. of variables: 120503
+  - Temporal resolution: 12
+    Spatial resolution: 6
+    N. of constraints: 300876
+    N. of variables: 139494
+  - Temporal resolution: 12
+    Spatial resolution: 7
+    N. of constraints: 351995
+    N. of variables: 161405
+  - Temporal resolution: 12
+    Spatial resolution: 8
+    N. of constraints: 385594
+    N. of variables: 178936
+  - Temporal resolution: 3
+    Spatial resolution: 2
+    N. of constraints: 385478
+    N. of variables: 186880
+  - Temporal resolution: 12
+    Spatial resolution: 9
+    N. of constraints: 429411
+    N. of variables: 198656
+  - Temporal resolution: 3
+    Spatial resolution: 3
+    N. of constraints: 569459
+    N. of variables: 274479
+  - Temporal resolution: 1
+    Spatial resolution: 2
+    N. of constraints: 1156358
+    N. of variables: 560578
 pypsa-gas+wind+sol+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model
   Model name: PyPSA
@@ -98,7 +450,7 @@ pypsa-gas+wind+sol+ely:
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
-    N. of constraints: 140170
+    N. of constraints: 140165
     N. of variables: 61325
 pypsa-gas+wind+sol+ely-ucgas:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on the gas generator
@@ -112,5 +464,5 @@ pypsa-gas+wind+sol+ely-ucgas:
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
-    N. of constraints: 183970
-    N. of variables: 87605
+    N. of constraints: 157684
+    N. of variables: 87604
