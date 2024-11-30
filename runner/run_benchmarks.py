@@ -79,6 +79,7 @@ def write_csv_headers(results_csv, mean_stddev_csv):
         writer.writerow(
             [
                 "Benchmark",
+                "Size",
                 "Solver",
                 "Solver Version",
                 "Solver Release Year",
@@ -97,6 +98,7 @@ def write_csv_headers(results_csv, mean_stddev_csv):
         writer.writerow(
             [
                 "Benchmark",
+                "Size",
                 "Solver",
                 "Solver Version",
                 "Solver Release Year",
@@ -111,14 +113,15 @@ def write_csv_headers(results_csv, mean_stddev_csv):
         )
 
 
-def write_csv_row(results_csv, benchmark_name, solver, metrics):
+def write_csv_row(results_csv, benchmark_name, metrics):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [
                 benchmark_name,
-                solver,
+                metrics["size"],
+                metrics["solver"],
                 metrics["solver_version"],
                 metrics["solver_release_year"],
                 metrics["status"],
@@ -132,14 +135,15 @@ def write_csv_row(results_csv, benchmark_name, solver, metrics):
         )
 
 
-def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
+def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
     # NOTE: ensure the order is the same as the headers above
     with open(mean_stddev_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [
                 benchmark_name,
-                solver,
+                metrics["size"],
+                metrics["solver"],
                 metrics["solver_version"],
                 metrics["solver_release_year"],
                 metrics["status"],
@@ -153,7 +157,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, solver, metrics):
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout, year, solver_version):
+def benchmark_solver(input_file, solver_name, timeout):
     command = [
         "/usr/bin/time",
         "--format",
@@ -203,14 +207,12 @@ def benchmark_solver(input_file, solver_name, timeout, year, solver_version):
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     metrics["memory"] = memory
-    metrics["solver_version"] = solver_version
-    metrics["solver_release_year"] = year
 
     return metrics
 
 
 def main(
-    benchmark_file_path,
+    benchmark_yaml_path,
     solvers,
     year=None,
     iterations=1,
@@ -220,8 +222,8 @@ def main(
     results = {}
 
     # Load benchmarks from YAML file
-    with open(benchmark_file_path, "r") as file:
-        benchmark_files_info = yaml.safe_load(file)["benchmarks"]
+    with open(benchmark_yaml_path, "r") as file:
+        benchmarks_info = yaml.safe_load(file)
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
@@ -239,20 +241,34 @@ def main(
 
     solvers_versions = get_conda_package_versions(solvers, f"benchmark-{year}")
 
-    for file_info in benchmark_files_info:
-        # Determine the file path to use for the benchmark
-        if "path" in file_info:
-            benchmark_path = Path(file_info["path"])
-            if not benchmark_path.exists():
-                raise FileNotFoundError(
-                    f"File specified in 'path' does not exist: {benchmark_path}"
+    # Preprocess the sizes and make a list of individual benchmark files to run on
+    processed_benchmarks = []
+    for benchmark_info in benchmarks_info:
+        for size in benchmark_info["sizes"]:
+            # Determine the file path to use for the benchmark
+            if "path" in size:
+                benchmark_path = Path(size["path"])
+                if not benchmark_path.exists():
+                    raise FileNotFoundError(
+                        f"File specified in 'path' does not exist: {benchmark_path}"
+                    )
+            elif "url" in size:
+                # TODO support MPS
+                benchmark_path = (
+                    benchmarks_folder / f'{benchmark_info["name"]}-{size["size"]}.lp'
                 )
-        elif "url" in file_info:
-            benchmark_path = benchmarks_folder / file_info["name"]
-            download_file_from_google_drive(file_info["url"], benchmark_path)
-        else:
-            raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
+                download_file_from_google_drive(size["url"], benchmark_path)
+            else:
+                raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
+            processed_benchmarks.append(
+                {
+                    "name": benchmark_info["name"],
+                    "size": size["size"],
+                    "path": benchmark_path,
+                }
+            )
 
+    for benchmark in processed_benchmarks:
         for solver in solvers:
             solver_version = solvers_versions.get(solver)
             if not solver_version:
@@ -265,22 +281,21 @@ def main(
 
             for i in range(iterations):
                 print(
-                    f"Running solver {solver} (version {solver_version}) on {benchmark_path.name} ({i})..."
+                    f"Running solver {solver} (version {solver_version}) on {benchmark['path']} ({i})..."
                 )
 
-                metrics = benchmark_solver(
-                    benchmark_path,
-                    solver,
-                    timeout,
-                    year,
-                    solver_version,
-                )
+                metrics = benchmark_solver(benchmark["path"], solver, timeout)
+
+                metrics["size"] = benchmark["size"]
+                metrics["solver"] = solver
+                metrics["solver_version"] = solver_version
+                metrics["solver_release_year"] = year
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
 
                 # Write each benchmark result immediately after the measurement
-                write_csv_row(results_csv, benchmark_path.stem, solver, metrics)
+                write_csv_row(results_csv, benchmark["name"], metrics)
 
                 # If solver errors or times out, don't run further iterations
                 if metrics["status"] in {"ER", "TO"}:
@@ -300,28 +315,30 @@ def main(
 
             # Write mean and standard deviation to CSV
             # NOTE: this uses the last iteration's values for status, condition, etc
-            write_csv_summary_row(mean_stddev_csv, benchmark_path.stem, solver, metrics)
+            write_csv_summary_row(mean_stddev_csv, benchmark["name"], metrics)
 
-            results[(benchmark_path.stem, solver)] = metrics
+            results[(benchmark["name"], benchmark["size"], solver, solver_version)] = (
+                metrics
+            )
     return results
 
 
 if __name__ == "__main__":
     # Check for benchmark file argument and optional year and override arguments
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         raise ValueError(
             "Usage: python run_benchmarks.py <path_to_benchmarks.yaml> [<year>] [<override>]"
         )
         sys.exit(1)
 
-    benchmark_file_path = sys.argv[1]
+    benchmark_yaml_path = sys.argv[1]
     year = sys.argv[2] if len(sys.argv) > 2 else None
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "scip"]  # For production
+    solvers = ["highs"]  # For production
 
-    main(benchmark_file_path, solvers, year, override=override)
+    main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion
     print("Benchmarking complete.")
 
