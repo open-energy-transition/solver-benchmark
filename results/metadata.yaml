@@ -1,4 +1,4 @@
-1_three_zones-3-1h:
+genx-1_three_zones:
   Short description: Three Zones, a one-year example with hourly resolution, contains
     zones representing Massachusetts, Connecticut, and Maine. The ten represented
     resources include natural gas, solar PV, wind, and lithium-ion battery storage.
@@ -8,14 +8,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment
-  N. of constraints: 171878
-  N. of continuous variables: 171880
-  N. of integer variables: 16635
-  N. of binary variables: 3696
-2_three_zones_w_electrolyzer-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 171878
+    N. of continuous variables: 171880
+    N. of integer variables: 16635
+    N. of binary variables: 3696
+genx-2_three_zones_w_electrolyzer:
   Short description: This is a one-year example with hourly resolution which contains
     three zones representing Massachusetts, Connecticut, and Maine. It is designed
     to show the electrolyzer feature in GenX. The sixteen represented resources include
@@ -26,14 +28,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment
-  N. of constraints: 232867
-  N. of continuous variables: 232869
-  N. of integer variables: 16635
-  N. of binary variables: 3696
-3_three_zones_w_co2_capture-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 232867
+    N. of continuous variables: 232869
+    N. of integer variables: 16635
+    N. of binary variables: 3696
+genx-3_three_zones_w_co2_capture:
   Short description: This is a one-year example with hourly resolution which contains
     zones representing Massachusetts, Connecticut, and Maine. The ten represented
     resources include natural gas, solar PV, wind, and lithium-ion battery storage
@@ -45,14 +49,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment
-  N. of constraints: 171878
-  N. of continuous variables: 171880
-  N. of integer variables: 16635
-  N. of binary variables: 3696
-4_three_zones_w_policies_slack-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 171878
+    N. of continuous variables: 171880
+    N. of integer variables: 16635
+    N. of binary variables: 3696
+genx-4_three_zones_w_policies_slack:
   Short description: "This is a one-year example with hourly resolution which contains\
     \ zones representing Massachusetts, Connecticut, and Maine. It is designed to\
     \ show how to use slack variables to meet a policy constraint if it cannot be\
@@ -76,14 +82,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment
-  N. of constraints: 184817
-  N. of continuous variables: 184819
-  N. of integer variables: 16635
-  N. of binary variables: 3696
-5_three_zones_w_piecewise_fuel-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 184817
+    N. of continuous variables: 184819
+    N. of integer variables: 16635
+    N. of binary variables: 3696
+genx-5_three_zones_w_piecewise_fuel:
   Short description: "This is a one-year example with hourly resolution which contains\
     \ zones representing Massachusetts, Connecticut, and Maine. The ten represented\
     \ resources include natural gas, solar PV, wind, and lithium-ion battery storage\
@@ -100,14 +108,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment and picewise fuel usage
-  N. of constraints: 205142
-  N. of continuous variables: 205144
-  N. of integer variables: 16635
-  N. of binary variables: 3696
-6_three_zones_w_multistage-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 205142
+    N. of continuous variables: 205144
+    N. of integer variables: 16635
+    N. of binary variables: 3696
+genx-6_three_zones_w_multistage:
   Short description: This is a toy multi-stage example with hourly resolution which
     contains zones representing Massachusetts, Connecticut, and Maine. It is designed
     to show how to run multi-stage investment planning models. The ten represented
@@ -118,14 +128,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Multi-period (3 years)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment
-  N. of constraints: 171944
-  N. of continuous variables: 171946
-  N. of integer variables: 16638
-  N. of binary variables: 3696
-7_three_zones_w_colocated_VRE_storage-3-24h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 171944
+    N. of continuous variables: 171946
+    N. of integer variables: 16638
+    N. of binary variables: 3696
+genx-7_three_zones_w_colocated_VRE_storage:
   Short description: This example system shows the functionalities of the colocated
     VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model,
     with a carbon constraint and with a long duration energy storage resource that
@@ -139,14 +151,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3
   MILP features: None (unit commitment is linearized)
-  N. of constraints: 4325
-  N. of continuous variables: 4327
-  N. of integer variables: 219
-  N. of binary variables: 48
-8_three_zones_w_colocated_VRE_storage_electrolyzers-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 24
+    N. of variables:
+    N. of constraints: 4325
+    N. of continuous variables: 4327
+    N. of integer variables: 219
+    N. of binary variables: 48
+genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
   Short description: This example system shows the functionalities of the colocated
     VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental
     US model, with a carbon constraint and with a long duration energy storage resource
@@ -160,14 +174,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: None (unit commitment is linearized)
-  N. of constraints: 302449
-  N. of continuous variables: 302451
-  N. of integer variables: 15123
-  N. of binary variables: 3360
-9_three_zones_w_retrofit-3-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 302449
+    N. of continuous variables: 302451
+    N. of integer variables: 15123
+    N. of binary variables: 3360
+genx-9_three_zones_w_retrofit:
   Short description: "This is a one-year example with hourly resolution which contains\
     \ zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented\
     \ resources include natural gas, solar PV, wind, lithium-ion battery, and coal\
@@ -180,14 +196,16 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 3
   MILP features: None (unit commitment is linearized)
-  N. of constraints: 438008
-  N. of continuous variables: 438010
-  N. of integer variables: 83181
-  N. of binary variables: 3696
-10_IEEE_9_bus_DC_OPF-9-1h:
+  Sizes:
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 438008
+    N. of continuous variables: 438010
+    N. of integer variables: 83181
+    N. of binary variables: 3696
+genx-10_IEEE_9_bus_DC_OPF:
   Short description: This examples shows the usage of DC_OPF related functions of
     GenX. The IEEE 9-bus system is a standard test case for power system optimization
     problems. In this example, there are three thermal generators and three loads.
@@ -197,14 +215,16 @@
   Kind of problem: DC optimal power flow
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 9
   MILP features: Unit commitment
-  N. of constraints: 1235166
-  N. of continuous variables: 1235168
-  N. of integer variables: 78843
-  N. of binary variables: 0
-1_EU_investment_simple-28-24h:
+  Sizes:
+  - Spatial resolution: 9
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 1235166
+    N. of continuous variables: 1235168
+    N. of integer variables: 78843
+    N. of binary variables: 0
+tulipa-1_EU_investment_simple:
   Short description: European-level investment and operation model to consider integer
     investments and unit commitment variables
   Model name: Tulipa
@@ -213,651 +233,51 @@
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 28
   MILP features: Unit commitment
-  N. of constraints: 4746
-  N. of continuous variables: 6658
-  N. of integer variables: 251
-  N. of binary variables: 7
-1_EU_investment_simple-28-168h:
-  Short description: European-level investment and operation model to consider integer
-    investments and unit commitment variables
-  Model name: Tulipa
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single period (1 year)
-  Temporal resolution: 168 hourly
-  Spatial resolution: 28
-  MILP features: Unit commitment
-  N. of constraints: 46592
-  N. of continuous variables: 46594
-  N. of integer variables: 251
-  N. of binary variables: 7
-1_EU_investment_simple-28-672h:
-  Short description: European-level investment and operation model to consider integer
-    investments and unit commitment variables
-  Model name: Tulipa
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single period (1 year)
-  Temporal resolution: 672 hourly
-  Spatial resolution: 28
-  MILP features: Unit commitment
-  N. of constraints: 186368
-  N. of continuous variables: 186370
-  N. of integer variables: 251
-  N. of binary variables: 7
-1_EU_investment_simple-28-2016h:
-  Short description: European-level investment and operation model to consider integer
-    investments and unit commitment variables
-  Model name: Tulipa
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single period (1 year)
-  Temporal resolution: 2016 hourly
-  Spatial resolution: 28
-  MILP features: Unit commitment
-  N. of constraints: 559104
-  N. of continuous variables: 559106
-  N. of integer variables: 251
-  N. of binary variables: 7
-1_EU_investment_simple-28-4032h:
-  Short description: European-level investment and operation model to consider integer
-    investments and unit commitment variables
-  Model name: Tulipa
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single period (1 year)
-  Temporal resolution: 4032 hourly
-  Spatial resolution: 28
-  MILP features: Unit commitment
-  N. of constraints: 1118208
-  N. of continuous variables: 1118210
-  N. of integer variables: 251
-  N. of binary variables: 7
-1_EU_investment_simple-28-8760h:
-  Short description: European-level investment and operation model to consider integer
-    investments and unit commitment variables
-  Model name: Tulipa
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single period (1 year)
-  Temporal resolution: 8760 hourly
-  Spatial resolution: 28
-  MILP features: Unit commitment
-  N. of constraints: 2429440
-  N. of continuous variables: 2429442
-  N. of integer variables: 251
-  N. of binary variables: 7
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29-1 node-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 6048
-  N. of continuous variables: 6050
-  N. of integer variables: 0
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314-1-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1
-  MILP features:
-  N. of constraints: 6048
-  N. of continuous variables: 6050
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332-1-1h:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly
-  Spatial resolution: 1
-  MILP features:
-  N. of constraints: 6048
-  N. of continuous variables: 6050
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29-1 node-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 12096
-  N. of continuous variables: 12098
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-1-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1
-  MILP features:
-  N. of constraints: 12096
-  N. of continuous variables: 12098
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-1-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1
-  MILP features:
-  N. of constraints: 12096
-  N. of continuous variables: 12098
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29-1 node-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 24192
-  N. of continuous variables: 24194
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314-1 node-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 24192
-  N. of continuous variables: 24194
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332-1 node-1 hourlyh:
-  Short description: Infinite capacity approximation of network flow to represent
-    entire system with a single node.
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 24192
-  N. of continuous variables: 24194
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 12540
-  N. of continuous variables: 12542
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 12540
-  N. of continuous variables: 12542
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 12540
-  N. of continuous variables: 12542
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 25080
-  N. of continuous variables: 25082
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 25080
-  N. of continuous variables: 25082
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 25080
-  N. of continuous variables: 25082
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 50160
-  N. of continuous variables: 50162
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 50160
-  N. of continuous variables: 50162
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332-1 node-1 hourlyh:
-  Short description: Direct Current Approximation
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 50160
-  N. of continuous variables: 50162
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 10368
-  N. of continuous variables: 10370
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 10368
-  N. of continuous variables: 10370
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 10368
-  N. of continuous variables: 10370
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 20736
-  N. of continuous variables: 20738
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 20736
-  N. of continuous variables: 20738
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 20736
-  N. of continuous variables: 20738
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 41742
-  N. of continuous variables: 41744
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 41742
-  N. of continuous variables: 41744
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332-1 node-1 hourlyh:
-  Short description: Uses the PTDF factor matrix to compute the fraction of power
-    transferred in the network across the branches
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 41742
-  N. of continuous variables: 41744
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 9792
-  N. of continuous variables: 9794
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 9792
-  N. of continuous variables: 9794
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (12 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 9792
-  N. of continuous variables: 9794
-  N. of integer variables: 0
-  N. of binary variables: 1944
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 19584
-  N. of continuous variables: 19856
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 19584
-  N. of continuous variables: 19856
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (24 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 19584
-  N. of continuous variables: 19856
-  N. of integer variables: 0
-  N. of binary variables: 3888
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 39168
-  N. of continuous variables: 39170
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 39168
-  N. of continuous variables: 39170
-  N. of integer variables: 0
-  N. of binary variables: 7776
-Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-1 node-1 hourlyh:
-  Short description: Transport problem
-  Model name: Sienna
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single stage (48 hours)
-  Temporal resolution: 1 hourly hourly
-  Spatial resolution: 1 node
-  MILP features:
-  N. of constraints: 39168
-  N. of continuous variables: 39170
-  N. of integer variables: 0
-  N. of binary variables: 7776
-pglib_opf_case162_ieee_dtc-162:
+  Sizes:
+  - Spatial resolution: 28
+    Temporal resolution: 24
+    N. of variables:
+    N. of constraints: 4746
+    N. of continuous variables: 6658
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 168
+    N. of variables:
+    N. of constraints: 46592
+    N. of continuous variables: 46594
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 672
+    N. of variables:
+    N. of constraints: 186368
+    N. of continuous variables: 186370
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 2016
+    N. of variables:
+    N. of constraints: 559104
+    N. of continuous variables: 559106
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 4032
+    N. of variables:
+    N. of constraints: 1118208
+    N. of continuous variables: 1118210
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 8760
+    N. of variables:
+    N. of constraints: 2429440
+    N. of continuous variables: 2429442
+    N. of integer variables: 251
+    N. of binary variables: 7
+pglib_opf_case162_ieee_dtc:
   Short description: System stability study based on the IEEE 17-Generator Dynamic
     Test Case with 162 buses and 17 generators
   Model name: PowerModels
@@ -866,14 +286,16 @@ pglib_opf_case162_ieee_dtc-162:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  Temporal resolution: NA
-  Spatial resolution: 162
   MILP features:
-  N. of constraints: 1867
-  N. of continuous variables: 1869
-  N. of integer variables: 0
-  N. of binary variables: 284
-pglib_opf_case1803_snem-1803:
+  Sizes:
+  - Spatial resolution: 162
+    Temporal resolution: NA
+    N. of variables:
+    N. of constraints: 1867
+    N. of continuous variables: 1869
+    N. of integer variables: 0
+    N. of binary variables: 284
+pglib_opf_case1803_snem:
   Short description: Optimal Power Flow data for the Synthetic National Electricity
     Market (SNEM) Australia - Mainland subnetwork
   Model name: PowerModels
@@ -882,14 +304,16 @@ pglib_opf_case1803_snem-1803:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  Temporal resolution: NA
-  Spatial resolution: 1803
   MILP features:
-  N. of constraints: 18574
-  N. of continuous variables: 18576
-  N. of integer variables: 0
-  N. of binary variables: 2795
-pglib_opf_case1951_rte-1951:
+  Sizes:
+  - Spatial resolution: 1803
+    Temporal resolution: NA
+    N. of variables:
+    N. of constraints: 18574
+    N. of continuous variables: 18576
+    N. of integer variables: 0
+    N. of binary variables: 2795
+pglib_opf_case1951_rte:
   Short description:
   Model name: PowerModels
   Version:
@@ -897,14 +321,16 @@ pglib_opf_case1951_rte-1951:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  Temporal resolution: NA
-  Spatial resolution: 1951
   MILP features:
-  N. of constraints: 17528
-  N. of continuous variables: 17530
-  N. of integer variables: 0
-  N. of binary variables: 2596
-pglib_opf_case2848-2848:
+  Sizes:
+  - Spatial resolution: 1951
+    Temporal resolution: NA
+    N. of variables:
+    N. of constraints: 17528
+    N. of continuous variables: 17530
+    N. of integer variables: 0
+    N. of binary variables: 2596
+pglib_opf_case2848:
   Short description:
   Model name: PowerModels
   Version:
@@ -912,14 +338,16 @@ pglib_opf_case2848-2848:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  Temporal resolution: NA
-  Spatial resolution: 2848
   MILP features:
-  N. of constraints: 25505
-  N. of continuous variables: 25507
-  N. of integer variables: 0
-  N. of binary variables: 3776
-pglib_opf_case2868-2868:
+  Sizes:
+  - Spatial resolution: 2848
+    Temporal resolution: NA
+    N. of variables:
+    N. of constraints: 25505
+    N. of continuous variables: 25507
+    N. of integer variables: 0
+    N. of binary variables: 3776
+pglib_opf_case2868:
   Short description:
   Model name: PowerModels
   Version:
@@ -927,14 +355,645 @@ pglib_opf_case2868-2868:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  Temporal resolution: NA
-  Spatial resolution: 2868
   MILP features:
-  N. of constraints: 25717
-  N. of continuous variables: 25719
-  N. of integer variables: 0
-  N. of binary variables: 3808
-pypsa-eur-sec-2-24h:
+  Sizes:
+  - Spatial resolution: 2868
+    Temporal resolution: NA
+    N. of variables:
+    N. of constraints: 25717
+    N. of continuous variables: 25719
+    N. of integer variables: 0
+    N. of binary variables: 3808
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 6048
+    N. of continuous variables: 6050
+    N. of integer variables: 0
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 6048
+    N. of continuous variables: 6050
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of variables:
+    N. of constraints: 6048
+    N. of continuous variables: 6050
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 12096
+    N. of continuous variables: 12098
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 12096
+    N. of continuous variables: 12098
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 12096
+    N. of continuous variables: 12098
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 24192
+    N. of continuous variables: 24194
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 24192
+    N. of continuous variables: 24194
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
+  Short description: Infinite capacity approximation of network flow to represent
+    entire system with a single node.
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 24192
+    N. of continuous variables: 24194
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 12540
+    N. of continuous variables: 12542
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 12540
+    N. of continuous variables: 12542
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 12540
+    N. of continuous variables: 12542
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 25080
+    N. of continuous variables: 25082
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 25080
+    N. of continuous variables: 25082
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 25080
+    N. of continuous variables: 25082
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 50160
+    N. of continuous variables: 50162
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 50160
+    N. of continuous variables: 50162
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
+  Short description: Direct Current Approximation
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 50160
+    N. of continuous variables: 50162
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 10368
+    N. of continuous variables: 10370
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 10368
+    N. of continuous variables: 10370
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 10368
+    N. of continuous variables: 10370
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 20736
+    N. of continuous variables: 20738
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 20736
+    N. of continuous variables: 20738
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 20736
+    N. of continuous variables: 20738
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 41742
+    N. of continuous variables: 41744
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 41742
+    N. of continuous variables: 41744
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
+  Short description: Uses the PTDF factor matrix to compute the fraction of power
+    transferred in the network across the branches
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 41742
+    N. of continuous variables: 41744
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 9792
+    N. of continuous variables: 9794
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 9792
+    N. of continuous variables: 9794
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (12 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 9792
+    N. of continuous variables: 9794
+    N. of integer variables: 0
+    N. of binary variables: 1944
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 19584
+    N. of continuous variables: 19856
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 19584
+    N. of continuous variables: 19856
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (24 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 19584
+    N. of continuous variables: 19856
+    N. of integer variables: 0
+    N. of binary variables: 3888
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 39168
+    N. of continuous variables: 39170
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 39168
+    N. of continuous variables: 39170
+    N. of integer variables: 0
+    N. of binary variables: 7776
+Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
+  Short description: Transport problem
+  Model name: Sienna
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single stage (48 hours)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 1 hourly
+    N. of variables:
+    N. of constraints: 39168
+    N. of continuous variables: 39170
+    N. of integer variables: 0
+    N. of binary variables: 7776
+pypsa-eur-sec:
   Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
     2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
   Model name: PyPSA-Eur
@@ -943,124 +1002,153 @@ pypsa-eur-sec-2-24h:
   Kind of problem: Infrastructure
   Sectors: Sector-coupled (power + heating, biomass, industry, transport)
   Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 2
   MILP features: None
-  N. of constraints: 132272
-  N. of variables: 63264
-pypsa-eur-sec-3-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3
-  MILP features: None
-  N. of constraints: 192200
-  N. of variables: 91790
-pypsa-eur-sec-4-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 4
-  MILP features: None
-  N. of constraints: 255776
-  N. of variables: 121410
-pypsa-eur-sec-5-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 5
-  MILP features: None
-  N. of constraints: 318627
-  N. of variables: 150668
-pypsa-eur-sec-6-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 6
-  MILP features: None
-  N. of constraints: 377463
-  N. of variables: 178831
-pypsa-eur-sec-7-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 7
-  MILP features: None
-  N. of constraints: 438851
-  N. of variables: 207357
-pypsa-eur-sec-8-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 8
-  MILP features: None
-  N. of constraints: 494405
-  N. of variables: 235157
-pypsa-eur-sec-9-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 9
-  MILP features: None
-  N. of constraints: 552141
-  N. of variables: 262587
-pypsa-eur-sec-10-24h:
-  Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-    2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.13.0 (commit 8f1a6b1)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  Temporal resolution: 24 hourly
-  Spatial resolution: 10
-  MILP features: None
-  N. of constraints: 612796
-  N. of variables: 290747
-pypsa-eur-elec-trex-3-24h:
+  Sizes:
+  - Spatial resolution: 2
+    Temporal resolution: 24
+    N. of variables: 63264
+    N. of constraints: 132272
+  - Spatial resolution: 3
+    Temporal resolution: 24
+    N. of variables: 91790
+    N. of constraints: 192200
+  - Spatial resolution: 4
+    Temporal resolution: 24
+    N. of variables: 121410
+    N. of constraints: 255776
+  - Spatial resolution: 2
+    Temporal resolution: 12
+    N. of variables: 126405
+    N. of constraints: 264402
+  - Spatial resolution: 5
+    Temporal resolution: 24
+    N. of variables: 150668
+    N. of constraints: 318627
+  - Spatial resolution: 6
+    Temporal resolution: 24
+    N. of variables: 178831
+    N. of constraints: 377463
+  - Spatial resolution: 3
+    Temporal resolution: 12
+    N. of variables: 183399
+    N. of constraints: 384190
+  - Spatial resolution: 7
+    Temporal resolution: 24
+    N. of variables: 207357
+    N. of constraints: 438851
+  - Spatial resolution: 8
+    Temporal resolution: 24
+    N. of variables: 235157
+    N. of constraints: 494405
+  - Spatial resolution: 4
+    Temporal resolution: 12
+    N. of variables: 242582
+    N. of constraints: 511276
+  - Spatial resolution: 9
+    Temporal resolution: 24
+    N. of variables: 262587
+    N. of constraints: 552141
+  - Spatial resolution: 10
+    Temporal resolution: 24
+    N. of variables: 290747
+    N. of constraints: 612796
+  - Spatial resolution: 5
+    Temporal resolution: 12
+    N. of variables: 301038
+    N. of constraints: 636907
+  - Spatial resolution: 6
+    Temporal resolution: 12
+    N. of variables: 357304
+    N. of constraints: 754508
+  - Spatial resolution: 7
+    Temporal resolution: 12
+    N. of variables: 414298
+    N. of constraints: 877216
+  - Spatial resolution: 8
+    Temporal resolution: 12
+    N. of variables: 469836
+    N. of constraints: 988250
+  - Spatial resolution: 2
+    Temporal resolution: 3
+    N. of variables: 505253
+    N. of constraints: 1057182
+  - Spatial resolution: 9
+    Temporal resolution: 12
+    N. of variables: 524639
+    N. of constraints: 1103656
+  - Spatial resolution: 10
+    Temporal resolution: 12
+    N. of variables: 580902
+    N. of constraints: 1224901
+  - Spatial resolution: 3
+    Temporal resolution: 3
+    N. of variables: 733056
+    N. of constraints: 1536130
+  - Spatial resolution: 4
+    Temporal resolution: 3
+    N. of variables: 969618
+    N. of constraints: 2044276
+  - Spatial resolution: 5
+    Temporal resolution: 3
+    N. of variables: 1203263
+    N. of constraints: 2546587
+  - Spatial resolution: 6
+    Temporal resolution: 3
+    N. of variables: 1428148
+    N. of constraints: 3016778
+  - Spatial resolution: 2
+    Temporal resolution: 1
+    N. of variables: 1515511
+    N. of constraints: 3171262
+  - Spatial resolution: 7
+    Temporal resolution: 3
+    N. of variables: 1655951
+    N. of constraints: 3507406
+  - Spatial resolution: 8
+    Temporal resolution: 3
+    N. of variables: 1877918
+    N. of constraints: 3951320
+  - Spatial resolution: 9
+    Temporal resolution: 3
+    N. of variables: 2096960
+    N. of constraints: 4412746
+  - Spatial resolution: 3
+    Temporal resolution: 1
+    N. of variables: 2198803
+    N. of constraints: 4607970
+  - Spatial resolution: 10
+    Temporal resolution: 3
+    N. of variables: 2321842
+    N. of constraints: 4897531
+  - Spatial resolution: 4
+    Temporal resolution: 1
+    N. of variables: 2908374
+    N. of constraints: 6132276
+  - Spatial resolution: 5
+    Temporal resolution: 1
+    N. of variables: 3609188
+    N. of constraints: 7639067
+  - Spatial resolution: 6
+    Temporal resolution: 1
+    N. of variables: 4283722
+    N. of constraints: 9049498
+  - Spatial resolution: 7
+    Temporal resolution: 1
+    N. of variables: 4967014
+    N. of constraints: 10521246
+  - Spatial resolution: 8
+    Temporal resolution: 1
+    N. of variables: 5632790
+    N. of constraints: 11852840
+  - Spatial resolution: 9
+    Temporal resolution: 1
+    N. of variables: 6289801
+    N. of constraints: 13236986
+  - Spatial resolution: 10
+    Temporal resolution: 1
+    N. of variables: 6964332
+    N. of constraints: 14691211
+pypsa-eur-elec-trex:
   Short description: PyPSA-Eur power sector infrastructure run for Italy considering
     2050 as single planning horizon with transmission expansion (LP, lot of variables,
     intermeshed constraints)
@@ -1070,12 +1158,97 @@ pypsa-eur-elec-trex-3-24h:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3
   MILP features: None
-  N. of constraints: 1432032
-  N. of variables: 1099126
-pypsa-eur-elec-op-3-24h:
+  Sizes:
+  - Spatial resolution: 2
+    Temporal resolution: 24
+    N. of variables: 19007
+    N. of constraints: 38732
+  - Spatial resolution: 3
+    Temporal resolution: 24
+    N. of variables: 28876
+    N. of constraints: 59926
+  - Spatial resolution: 2
+    Temporal resolution: 12
+    N. of variables: 37983
+    N. of constraints: 77422
+  - Spatial resolution: 4
+    Temporal resolution: 24
+    N. of variables: 39842
+    N. of constraints: 84773
+  - Spatial resolution: 5
+    Temporal resolution: 24
+    N. of variables: 50442
+    N. of constraints: 108888
+  - Spatial resolution: 3
+    Temporal resolution: 12
+    N. of variables: 57705
+    N. of constraints: 119786
+  - Spatial resolution: 6
+    Temporal resolution: 24
+    N. of variables: 58852
+    N. of constraints: 126798
+  - Spatial resolution: 7
+    Temporal resolution: 24
+    N. of variables: 68722
+    N. of constraints: 149453
+  - Spatial resolution: 8
+    Temporal resolution: 24
+    N. of variables: 76399
+    N. of constraints: 163342
+  - Spatial resolution: 4
+    Temporal resolution: 12
+    N. of variables: 79619
+    N. of constraints: 169453
+  - Spatial resolution: 9
+    Temporal resolution: 24
+    N. of variables: 85172
+    N. of constraints: 182343
+  - Spatial resolution: 10
+    Temporal resolution: 24
+    N. of variables: 93944
+    N. of constraints: 202802
+  - Spatial resolution: 5
+    Temporal resolution: 12
+    N. of variables: 100802
+    N. of constraints: 217658
+  - Spatial resolution: 6
+    Temporal resolution: 12
+    N. of variables: 117605
+    N. of constraints: 253453
+  - Spatial resolution: 7
+    Temporal resolution: 12
+    N. of variables: 137328
+    N. of constraints: 298738
+  - Spatial resolution: 2
+    Temporal resolution: 3
+    N. of variables: 151841
+    N. of constraints: 309562
+  - Spatial resolution: 8
+    Temporal resolution: 12
+    N. of variables: 152668
+    N. of constraints: 326497
+  - Spatial resolution: 9
+    Temporal resolution: 12
+    N. of variables: 170199
+    N. of constraints: 364478
+  - Spatial resolution: 10
+    Temporal resolution: 12
+    N. of variables: 187729
+    N. of constraints: 405377
+  - Spatial resolution: 3
+    Temporal resolution: 3
+    N. of variables: 230682
+    N. of constraints: 478946
+  - Spatial resolution: 4
+    Temporal resolution: 3
+    N. of variables: 318285
+    N. of constraints: 677533
+  - Spatial resolution: 2
+    Temporal resolution: 1
+    N. of variables: 455459
+    N. of constraints: 928602
+pypsa-eur-elec-op:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single
     planning horizon (LP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
@@ -1084,12 +1257,97 @@ pypsa-eur-elec-op-3-24h:
   Kind of problem: Operational
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3
   MILP features: None
-  N. of constraints: 82134
-  N. of variables: 6935
-pypsa-eur-elec-op-ucconv-3-24h:
+  Sizes:
+  - Spatial resolution: 2
+    Temporal resolution: 24
+    N. of variables: 19006
+    N. of constraints: 38730
+  - Spatial resolution: 3
+    Temporal resolution: 24
+    N. of variables: 28873
+    N. of constraints: 59920
+  - Spatial resolution: 2
+    Temporal resolution: 12
+    N. of variables: 37982
+    N. of constraints: 77420
+  - Spatial resolution: 4
+    Temporal resolution: 24
+    N. of variables: 39835
+    N. of constraints: 84759
+  - Spatial resolution: 5
+    Temporal resolution: 24
+    N. of variables: 50433
+    N. of constraints: 108870
+  - Spatial resolution: 3
+    Temporal resolution: 12
+    N. of variables: 57702
+    N. of constraints: 119780
+  - Spatial resolution: 6
+    Temporal resolution: 24
+    N. of variables: 58841
+    N. of constraints: 126776
+  - Spatial resolution: 7
+    Temporal resolution: 24
+    N. of variables: 68709
+    N. of constraints: 149427
+  - Spatial resolution: 8
+    Temporal resolution: 24
+    N. of variables: 76387
+    N. of constraints: 163318
+  - Spatial resolution: 4
+    Temporal resolution: 12
+    N. of variables: 79612
+    N. of constraints: 169439
+  - Spatial resolution: 9
+    Temporal resolution: 24
+    N. of variables: 85159
+    N. of constraints: 182317
+  - Spatial resolution: 10
+    Temporal resolution: 24
+    N. of variables: 93929
+    N. of constraints: 202772
+  - Spatial resolution: 5
+    Temporal resolution: 12
+    N. of variables: 100793
+    N. of constraints: 217640
+  - Spatial resolution: 6
+    Temporal resolution: 12
+    N. of variables: 117594
+    N. of constraints: 253431
+  - Spatial resolution: 7
+    Temporal resolution: 12
+    N. of variables: 137315
+    N. of constraints: 298712
+  - Spatial resolution: 2
+    Temporal resolution: 3
+    N. of variables: 151840
+    N. of constraints: 309560
+  - Spatial resolution: 8
+    Temporal resolution: 12
+    N. of variables: 152656
+    N. of constraints: 326473
+  - Spatial resolution: 9
+    Temporal resolution: 12
+    N. of variables: 170186
+    N. of constraints: 364452
+  - Spatial resolution: 10
+    Temporal resolution: 12
+    N. of variables: 187714
+    N. of constraints: 405347
+  - Spatial resolution: 3
+    Temporal resolution: 3
+    N. of variables: 230679
+    N. of constraints: 478940
+  - Spatial resolution: 4
+    Temporal resolution: 3
+    N. of variables: 318278
+    N. of constraints: 677519
+  - Spatial resolution: 2
+    Temporal resolution: 1
+    N. of variables: 455458
+    N. of constraints: 928600
+pypsa-eur-elec-op-ucconv:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single
     planning horizon and unit commitment for conventional fleet (MILP, lot of variables,
     poorly intermeshed constraints)
@@ -1099,12 +1357,89 @@ pypsa-eur-elec-op-ucconv-3-24h:
   Kind of problem: Operational
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 24 hourly
-  Spatial resolution: 3
   MILP features: Unit commitment for conventional fleet
-  N. of constraints: 108984
-  N. of variables: 1395780
-pypsa-gas+wind+sol+ely-1-1h:
+  Sizes:
+  - Spatial resolution: 2
+    Temporal resolution: 24
+    N. of variables: 23386
+    N. of constraints: 48218
+  - Spatial resolution: 3
+    Temporal resolution: 24
+    N. of variables: 34348
+    N. of constraints: 71234
+  - Spatial resolution: 2
+    Temporal resolution: 12
+    N. of variables: 46742
+    N. of constraints: 96398
+  - Spatial resolution: 4
+    Temporal resolution: 24
+    N. of variables: 47500
+    N. of constraints: 100817
+  - Spatial resolution: 5
+    Temporal resolution: 24
+    N. of variables: 60288
+    N. of constraints: 129672
+  - Spatial resolution: 3
+    Temporal resolution: 12
+    N. of variables: 68652
+    N. of constraints: 142409
+  - Spatial resolution: 6
+    Temporal resolution: 24
+    N. of variables: 69791
+    N. of constraints: 150496
+  - Spatial resolution: 7
+    Temporal resolution: 24
+    N. of variables: 80754
+    N. of constraints: 176065
+  - Spatial resolution: 8
+    Temporal resolution: 24
+    N. of variables: 89527
+    N. of constraints: 192874
+  - Spatial resolution: 4
+    Temporal resolution: 12
+    N. of variables: 94942
+    N. of constraints: 201557
+  - Spatial resolution: 9
+    Temporal resolution: 24
+    N. of variables: 99394
+    N. of constraints: 214791
+  - Spatial resolution: 10
+    Temporal resolution: 24
+    N. of variables: 109259
+    N. of constraints: 238164
+  - Spatial resolution: 5
+    Temporal resolution: 12
+    N. of variables: 120503
+    N. of constraints: 259247
+  - Spatial resolution: 6
+    Temporal resolution: 12
+    N. of variables: 139494
+    N. of constraints: 300876
+  - Spatial resolution: 7
+    Temporal resolution: 12
+    N. of variables: 161405
+    N. of constraints: 351995
+  - Spatial resolution: 8
+    Temporal resolution: 12
+    N. of variables: 178936
+    N. of constraints: 385594
+  - Spatial resolution: 2
+    Temporal resolution: 3
+    N. of variables: 186880
+    N. of constraints: 385478
+  - Spatial resolution: 9
+    Temporal resolution: 12
+    N. of variables: 198656
+    N. of constraints: 429411
+  - Spatial resolution: 3
+    Temporal resolution: 3
+    N. of variables: 274479
+    N. of constraints: 569459
+  - Spatial resolution: 2
+    Temporal resolution: 1
+    N. of variables: 560578
+    N. of constraints: 1156358
+pypsa-gas+wind+sol+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
     infrastructure model
   Model name: PyPSA
@@ -1113,12 +1448,13 @@ pypsa-gas+wind+sol+ely-1-1h:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 1 hourly
-  Spatial resolution: 1
   MILP features: None
-  N. of constraints: 140170
-  N. of variables: 61325
-pypsa-gas+wind+sol+ely-ucgas-1-1h:
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of variables: 61325
+    N. of constraints: 140165
+pypsa-gas+wind+sol+ely-ucgas:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
     infrastructure model with unit commitment on the gas generator
   Model name: PyPSA
@@ -1127,8 +1463,9 @@ pypsa-gas+wind+sol+ely-ucgas-1-1h:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  Temporal resolution: 1 hourly
-  Spatial resolution: 1
   MILP features: Unit commitment on gas generator
-  N. of constraints: 183970
-  N. of variables: 87605
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of variables: 87604
+    N. of constraints: 157684
