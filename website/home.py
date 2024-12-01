@@ -64,7 +64,7 @@ df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 if "Solver Version" in df.columns:
     df["Solver Version"] = df["Solver Version"].apply(parse)
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
-    df = df.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
+    df = df.drop_duplicates(subset=["Solver", "Size", "Benchmark"], keep="first")
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:

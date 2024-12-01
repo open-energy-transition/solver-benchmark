@@ -16,14 +16,23 @@ data_url_mean_stddev = (
 )
 data_url_result = Path(__file__).parent.parent / "results/benchmark_results.csv"
 df_mean_stddev = pd.read_csv(data_url_mean_stddev)
+df_mean_stddev["Solver Version"] = df_mean_stddev["Solver Version"].apply(parse)
+df_mean_stddev = df_mean_stddev.sort_values(
+    by=["Solver", "Solver Version"], ascending=[True, False]
+)
+df_mean_stddev = df_mean_stddev.drop_duplicates(
+    subset=["Solver", "Benchmark", "Size"], keep="first"
+)
+
 
 df_result = pd.read_csv(data_url_result)
 df_result["Solver Version"] = df_result["Solver Version"].apply(parse)
 df_result = df_result.sort_values(
     by=["Solver", "Solver Version"], ascending=[True, False]
 )
-
-df_result = df_result.drop_duplicates(subset=["Solver", "Benchmark"], keep="first")
+df_result = df_result.drop_duplicates(
+    subset=["Solver", "Benchmark", "Size"], keep="first"
+)
 
 # Load benchmark metadata
 metadata = load_metadata("results/metadata.yaml")
@@ -38,7 +47,7 @@ selected_benchmark = st.selectbox("Select a Benchmark", benchmark_list)
 # Display metadata for the selected benchmark
 if selected_benchmark in metadata:
     #########
-    # Table #
+    # Metadata Table #
     #########
     st.subheader(f"Metadata for {selected_benchmark}")
 
@@ -47,6 +56,9 @@ if selected_benchmark in metadata:
         metadata[selected_benchmark], orient="index", columns=["Value"]
     ).reset_index()
     metadata_df.columns = ["Header", "Value"]
+
+    # Remove the row with the header "Sizes"
+    metadata_df = metadata_df[metadata_df["Header"] != "Sizes"]
 
     # Build grid options with custom row height
     gb = GridOptionsBuilder.from_dataframe(metadata_df)
@@ -75,12 +87,38 @@ if selected_benchmark in metadata:
         fit_columns_on_grid_load=True,
     )
 
+    ###############
+    # Sizes Table #
+    ##############
+    st.subheader(f"Sizes for {selected_benchmark}")
+
+    sizes = metadata[selected_benchmark].get("Sizes", [])
+    if sizes:
+        # Convert sizes to a DataFrame
+        sizes_df = pd.DataFrame(sizes)
+
+        # Build grid options for sizes table
+        gb_sizes = GridOptionsBuilder.from_dataframe(sizes_df)
+        gb_sizes.configure_grid_options(domLayout="autoHeight")
+        grid_options_sizes = gb_sizes.build()
+
+        # Display sizes table using ag-Grid
+        AgGrid(
+            sizes_df,
+            editable=False,
+            sortable=True,
+            filter=True,
+            gridOptions=grid_options_sizes,
+            fit_columns_on_grid_load=True,
+        )
+    else:
+        st.write("No size information available for this benchmark.")
+
     #########
     # Chart #
     #########
     # Filter data for the selected benchmark
     benchmark_data = df_mean_stddev[df_mean_stddev["Benchmark"] == selected_benchmark]
-
     # Show the "peak memory vs runtime" plot for the selected benchmark
     fig_filtered = go.Figure()
 
@@ -92,22 +130,25 @@ if selected_benchmark in metadata:
 
     # Get peak memory usage and runtime for the selected benchmark
     peak_memory = (
-        benchmark_data.groupby(["Solver", "Status"])["Memory Mean (MB)"]
+        benchmark_data.groupby(["Solver", "Status"])[["Solver Release Year"]]
         .max()
         .reset_index()
     )
     xTitle = "Runtime Mean (s)"
     yTitle = "Memory Mean (MB)"
-    runtime = benchmark_data[["Solver", "Status", xTitle]]
-
+    runtime = benchmark_data[["Solver", "Status", "Size", "Benchmark", yTitle, xTitle]]
     # Merge data to have a common DataFrame for plotting
     merged_df = pd.merge(peak_memory, runtime, on=["Solver", "Status"])
-
     # Add traces for runtime vs peak memory with different symbols
     for status, symbol in status_symbols.items():
         status_subset = merged_df[merged_df["Status"] == status]
         for solver in status_subset["Solver"].unique():
             subset = status_subset[status_subset["Solver"] == solver]
+            tooltip_text = subset.apply(
+                lambda row: f"Solver: {row['Solver']}<br>Size: {row['Size']}",
+                axis=1,
+            )
+
             fig_filtered.add_trace(
                 go.Scatter(
                     x=round(subset[xTitle], 1),
@@ -118,7 +159,7 @@ if selected_benchmark in metadata:
                         symbol=symbol,  # Marker shape based on status
                         size=10,
                     ),
-                    text=subset["Solver"],
+                    text=tooltip_text,
                     hoverinfo="text+x+y",
                 )
             )

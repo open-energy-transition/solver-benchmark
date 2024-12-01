@@ -22,9 +22,22 @@ def create_comparison_chart(
         ("TO", "TO"): ("x", "red"),  # Both TO
     }
 
-    # Create a DataFrame to merge data from both solvers
+    common_rows = pd.merge(
+        solver1_data[["Benchmark", "Size"]],
+        solver2_data[["Benchmark", "Size"]],
+        on=["Benchmark", "Size"],
+    )
+
+    # Filter each dataframe
+    filtered_solver1_data = solver1_data.merge(common_rows, on=["Benchmark", "Size"])
+    filtered_solver2_data = solver2_data.merge(common_rows, on=["Benchmark", "Size"])
+
+    # Merge the filtered dataframes
     merged_data = pd.merge(
-        solver1_data, solver2_data, on="Benchmark", suffixes=("_1", "_2")
+        filtered_solver1_data,
+        filtered_solver2_data,
+        on=["Benchmark", "Size"],
+        suffixes=("_1", "_2"),
     )
 
     # Determine marker symbol and color based on the status of either solver
@@ -44,13 +57,19 @@ def create_comparison_chart(
             (merged_data["Status_1"] == status_1)
             & (merged_data["Status_2"] == status_2)
         ]
+        # Create tooltips for hover information
+        hover_text = subset.apply(
+            lambda row: f"{row['Benchmark']}<br>Size: {row['Size']}",
+            axis=1,
+        )
+
         fig.add_trace(
             go.Scatter(
                 x=round(subset[f"{metric_name}_1"], decimal_places),
                 y=round(subset[f"{metric_name}_2"], decimal_places),
                 mode="markers",
                 name=f"{status_1}-{status_2}",
-                text=subset["Benchmark"],
+                text=hover_text,
                 marker=dict(
                     color=color,
                     symbol=symbol,
@@ -92,8 +111,8 @@ def create_comparison_chart(
     )
 
     # Adjust axis ranges and add diagonal line
-    r_max_metric = round(max_metric)
-    g_min_metric = int(min_metric)
+    r_max_metric = round(float(max_metric))
+    g_min_metric = int(float(min_metric))
 
     fig.update_layout(yaxis_range=[g_min_metric, r_max_metric])
     fig.update_layout(xaxis_range=[g_min_metric, r_max_metric])
