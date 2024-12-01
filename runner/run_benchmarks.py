@@ -13,7 +13,7 @@ import yaml
 def get_conda_package_versions(solvers, env_name=None):
     try:
         # Base command
-        cmd = ["conda", "list"]
+        cmd = ["/opt/conda/bin/conda", "list"]
 
         # Add environment name if provided
         if env_name:
@@ -216,7 +216,7 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=10 * 60,
+    timeout=10,
     override=True,
 ):
     results = {}
