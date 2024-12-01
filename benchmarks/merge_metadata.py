@@ -34,54 +34,46 @@ def process_yaml_file(file_path):
                 return
 
             for model_name, model_info in benchmark_data.items():
+                sizes = []
                 for size in model_info.get("Sizes", []):
-                    temporal_res = size.get("Temporal resolution")
-                    spatial_res = size.get("Spatial resolution")
-
-                    # Determine temporal resolution value and key
-                    is_valid_temporal_res = temporal_res not in (None, "NA")
-                    temporal_res_value = (
-                        f"{temporal_res} hourly"
-                        if is_valid_temporal_res
-                        else temporal_res
-                    )
-                    key = (
-                        f"{model_name}-{spatial_res}-{temporal_res}h"
-                        if is_valid_temporal_res
-                        else f"{model_name}-{spatial_res}"
-                    )
-
-                    # Create metadata entry
-                    entry = {
-                        "Short description": model_info.get("Short description", None),
-                        "Model name": model_info.get("Model name", None),
-                        "Version": model_info.get("Version", None),
-                        "Technique": model_info.get("Technique", None),
-                        "Kind of problem": model_info.get("Kind of problem", None),
-                        "Sectors": model_info.get("Sectors", None),
-                        "Time horizon": model_info.get("Time horizon", None),
-                        "Temporal resolution": temporal_res_value,
-                        "Spatial resolution": spatial_res if spatial_res else None,
-                        "MILP features": model_info.get("MILP features", None),
+                    size_entry = {
+                        "Spatial resolution": size.get("Spatial resolution"),
+                        "Temporal resolution": size.get("Temporal resolution"),
+                        "N. of variables": size.get("N. of variables", None),
                         "N. of constraints": size.get("N. of constraints", None),
                     }
 
                     # Add optional fields if they exist
-                    if "N. of variables" in size:
-                        entry["N. of variables"] = size["N. of variables"]
+                    # if "N. of variables" in size:
+                    #     size_entry["N. of variables"] = size["N. of variables"]
                     if "N. of continuous variables" in size:
-                        entry["N. of continuous variables"] = size[
+                        size_entry["N. of continuous variables"] = size[
                             "N. of continuous variables"
                         ]
                     if "N. of integer variables" in size:
-                        entry["N. of integer variables"] = size[
+                        size_entry["N. of integer variables"] = size[
                             "N. of integer variables"
                         ]
                     if "N. of binary variables" in size:
-                        entry["N. of binary variables"] = size["N. of binary variables"]
+                        size_entry["N. of binary variables"] = size[
+                            "N. of binary variables"
+                        ]
+                    sizes.append(size_entry)
 
-                    # Add entry to unified metadata
-                    unified_metadata[key] = entry
+                # Create metadata entry
+                entry = {
+                    "Short description": model_info.get("Short description", None),
+                    "Model name": model_info.get("Model name", None),
+                    "Version": model_info.get("Version", None),
+                    "Technique": model_info.get("Technique", None),
+                    "Kind of problem": model_info.get("Kind of problem", None),
+                    "Sectors": model_info.get("Sectors", None),
+                    "Time horizon": model_info.get("Time horizon", None),
+                    "MILP features": model_info.get("MILP features", None),
+                    "Sizes": sizes,
+                }
+                # Add entry to unified metadata
+                unified_metadata[model_name] = entry
 
     except yaml.YAMLError as e:
         print(f"Error parsing YAML file {file_path}: {e}")
