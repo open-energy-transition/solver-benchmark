@@ -281,7 +281,8 @@ def main(
 
             for i in range(iterations):
                 print(
-                    f"Running solver {solver} (version {solver_version}) on {benchmark['path']} ({i})..."
+                    f"Running solver {solver} (version {solver_version}) on {benchmark['path']} ({i})...",
+                    flush=True,
                 )
 
                 metrics = benchmark_solver(benchmark["path"], solver, timeout)

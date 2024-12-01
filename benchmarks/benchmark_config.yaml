@@ -162,3 +162,11 @@
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-3-3h.lp
   - size: 2-1h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-1h.lp
+- name: pypsa-gas+wind+sol+ely
+  sizes:
+  - size: 1-1h
+    url: https://drive.usercontent.google.com/download?id=1fEiHuIwIxbkeu-QLuOZV2yeTeH3O1zbm&export=download&authuser=0&confirm=t
+- name: pypsa-gas+wind+sol+ely-ucgas
+  sizes:
+  - size: 1-1h
+    url: https://drive.usercontent.google.com/download?id=11jEBh4ypLqRgnP5DsQ2NkZomU4FjnDRU&export=download&authuser=0&confirm=t
