@@ -271,13 +271,20 @@ def main(
                         f"File specified in 'path' does not exist: {benchmark_path}"
                     )
             elif "url" in size:
-                # TODO support MPS
+                # TODO do something better like adding a yaml field for format
+                if size["url"].endswith(".mps"):
+                    format = "mps"
+                elif size["url"].endswith(".mps.gz"):
+                    format = "mps.gz"
+                else:
+                    format = "lp"
                 benchmark_path = (
-                    benchmarks_folder / f'{benchmark_info["name"]}-{size["size"]}.lp'
+                    benchmarks_folder
+                    / f'{benchmark_info["name"]}-{size["size"]}.{format}'
                 )
                 download_file_from_google_drive(size["url"], benchmark_path)
 
-                # Check if the file is a gzip file and unzip it
+                # Gzip files are unzipped by the above function, so update path accordingly
                 if benchmark_path.suffix == ".gz":
                     benchmark_path = benchmark_path.with_suffix("")
             else:
