@@ -8,17 +8,40 @@ from components.home_chart import render_benchmark_scatter_plot
 from packaging.version import parse
 from utils.file_utils import load_metadata
 
+# Load metadata
 metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
 
 # Convert metadata to a DataFrame for easier filtering
 metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
+# Load the data from the CSV file
+data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
+raw_df = pd.read_csv(data_url)
+df = raw_df
+
+# Compute "Solvers", "Benchmarks", and "Timeout" details from the results CSV
+solvers = df["Solver"].unique()
+solvers_count = len(solvers)
+solvers_list = ", ".join(solvers)
+
+benchmarks = df["Benchmark"].unique()
+benchmarks_count = len(benchmarks)
+# Convert benchmarks to uppercase
+benchmarks_list_uppercase = ", ".join([b.upper() for b in benchmarks])
+
+# Calculate the unique benchmark-size combinations
+unique_benchmark_sizes = df[["Benchmark", "Size"]].drop_duplicates()
+sizes_count = len(unique_benchmark_sizes)
+
+# Calculate the timeout from TO benchmarks
+timeout = df[df["Status"] == "TO"]["Runtime (s)"].max() // 1
+
 # Title of the app
 st.title("OET/BE Solver Benchmark")
 
 st.markdown(
-    """
+    f"""
     This website is an open-source benchmark of LP/MILP solvers on representative problems from the energy planning domain.
     The website aims to help energy system modelers decide the best solver for their application; solver developers improve their solvers using realistic and important examples; and funders accelerate the green transition by giving them reliable metrics to evaluate solver performance over time.
     We accept community contributions for new benchmarks, new / updated solver versions, and feedback on the benchmarking methodology and metrics via our [GitHub repository](https://github.com/orgs/open-energy-transition/solver-benchmark).
@@ -27,14 +50,14 @@ st.markdown(
 
     | **Details** | |
     | ------------- | ------------- |
-    | **Solvers** | 3: HiGHS, GLPK, SCIP |
-    | **Benchmarks** | 6 |
-    | **Iterations** | 1 |
-    | **Timeout** | 15 min |
+    | **Solvers** | {solvers_count}: {solvers_list} |
+    | **Benchmarks** | {benchmarks_count} ({sizes_count}, including sizes) |
+    | **Timeout** | {timeout} min |
     | **vCPU** | 2 (1 core) |
     | **Memory** | 16GB |
     """
 )
+
 
 # Filter
 filtered_metadata = generate_filtered_metadata(metadata_df)
@@ -42,10 +65,6 @@ filtered_metadata = generate_filtered_metadata(metadata_df)
 if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
 
-# Load the data from the CSV file
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-raw_df = pd.read_csv(data_url)
-df = raw_df
 
 # Assert that the set of benchmark names in the metadata matches those in the data
 csv_benchmarks = set(raw_df["Benchmark"].unique())
