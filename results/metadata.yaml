@@ -375,8 +375,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 6048
     N. of continuous variables: 6050
@@ -393,7 +393,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
   MILP features:
   Sizes:
   - Spatial resolution: 1
-    Temporal resolution: 1 hourly
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 6048
     N. of continuous variables: 6050
@@ -428,8 +428,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 12096
     N. of continuous variables: 12098
@@ -447,7 +447,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
   MILP features:
   Sizes:
   - Spatial resolution: 1
-    Temporal resolution: 1 hourly
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 12096
     N. of continuous variables: 12098
@@ -465,7 +465,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
   MILP features:
   Sizes:
   - Spatial resolution: 1
-    Temporal resolution: 1 hourly
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 12096
     N. of continuous variables: 12098
@@ -482,8 +482,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 24192
     N. of continuous variables: 24194
@@ -500,8 +500,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 24192
     N. of continuous variables: 24194
@@ -518,8 +518,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 24192
     N. of continuous variables: 24194
@@ -535,8 +535,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 12540
     N. of continuous variables: 12542
@@ -552,8 +552,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 12540
     N. of continuous variables: 12542
@@ -569,8 +569,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 12540
     N. of continuous variables: 12542
@@ -586,8 +586,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 25080
     N. of continuous variables: 25082
@@ -603,8 +603,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 25080
     N. of continuous variables: 25082
@@ -620,8 +620,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 25080
     N. of continuous variables: 25082
@@ -637,8 +637,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 50160
     N. of continuous variables: 50162
@@ -654,8 +654,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 50160
     N. of continuous variables: 50162
@@ -671,8 +671,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 50160
     N. of continuous variables: 50162
@@ -689,8 +689,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 10368
     N. of continuous variables: 10370
@@ -707,8 +707,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 10368
     N. of continuous variables: 10370
@@ -725,8 +725,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 10368
     N. of continuous variables: 10370
@@ -743,8 +743,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 20736
     N. of continuous variables: 20738
@@ -761,8 +761,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 20736
     N. of continuous variables: 20738
@@ -779,8 +779,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 20736
     N. of continuous variables: 20738
@@ -797,8 +797,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 41742
     N. of continuous variables: 41744
@@ -815,8 +815,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 41742
     N. of continuous variables: 41744
@@ -833,8 +833,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 41742
     N. of continuous variables: 41744
@@ -850,8 +850,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 9792
     N. of continuous variables: 9794
@@ -867,8 +867,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 9792
     N. of continuous variables: 9794
@@ -884,8 +884,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
   Time horizon: Single stage (12 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 9792
     N. of continuous variables: 9794
@@ -901,8 +901,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 19584
     N. of continuous variables: 19856
@@ -918,8 +918,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 19584
     N. of continuous variables: 19856
@@ -935,8 +935,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
   Time horizon: Single stage (24 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 19584
     N. of continuous variables: 19856
@@ -952,8 +952,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 39168
     N. of continuous variables: 39170
@@ -969,8 +969,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 39168
     N. of continuous variables: 39170
@@ -986,8 +986,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
   Time horizon: Single stage (48 hours)
   MILP features:
   Sizes:
-  - Spatial resolution: 1 node
-    Temporal resolution: 1 hourly
+  - Spatial resolution: 1
+    Temporal resolution: 1
     N. of variables:
     N. of constraints: 39168
     N. of continuous variables: 39170
