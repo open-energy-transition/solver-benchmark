@@ -18,7 +18,7 @@ def calculate_sgm(runtime_values, sh=10):
 
 
 # Convert metadata to a DataFrame for easier filtering
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+metadata = load_metadata("results/metadata.yaml")
 metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
