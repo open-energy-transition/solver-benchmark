@@ -32,7 +32,7 @@ st.markdown(
     | **Iterations** | 1 |
     | **Timeout** | 15 min |
     | **vCPU** | 2 (1 core) |
-    | **Memory** | 16GB |
+    | **Memory** | 8GB |
     """
 )
 
