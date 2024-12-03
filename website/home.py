@@ -72,37 +72,80 @@ if not filtered_metadata.empty:
     df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
 
-# Calculate Shifted Geometric Mean (SGM)
-def calculate_sgm(df, shift=10, column_name="Runtime (s)"):
+def combine_sgm_tables(df, shift=10):
     """
-    Calculate the Shifted Geometric Mean (SGM) for each solver.
+    Combine SGM tables into a single table with SGM Runtime, SGM Memory, and Solved Benchmarks.
+
+    Columns:
+    - Solver
+    - Version
+    - SGM Runtime (normalized)
+    - SGM Memory (normalized)
+    - Solved Benchmarks (number of benchmarks solved)
     """
-    sgm_data = []
-    grouped = df.groupby("Solver")
-    for solver, group in grouped:
-        column_values = group[column_name]
-        # Calculate SGM # TODO this can be done within pd DataFrames
-        sgm = np.exp(np.mean(np.log(np.maximum(1, column_values + shift)))) - shift
-        sgm_data.append({"Solver": solver, "SGM (Raw)": sgm})
+    sgm_runtime_data = []
+    grouped = df.groupby(["Solver", "Solver Version"])
+    for (solver, version), group in grouped:
+        # Calculate SGM for Runtime
+        runtime_values = group["Runtime (s)"]
+        sgm_runtime = np.exp(np.mean(np.log(np.maximum(1, runtime_values + shift)))) - shift
 
-    # Normalize SGM
-    min_sgm = min(entry["SGM (Raw)"] for entry in sgm_data)
-    for entry in sgm_data:
-        entry["SGM (Normalized)"] = entry["SGM (Raw)"] / min_sgm
+        # Calculate the number of benchmarks solved
+        solved_benchmarks = len(group[group["Status"] == "ok"])
 
-    return pd.DataFrame(sgm_data).sort_values(by="SGM (Normalized)")
+        sgm_runtime_data.append({
+            "Solver": solver,
+            "Version": version,
+            "SGM Runtime": sgm_runtime,
+            "Solved Benchmarks": solved_benchmarks,
+        })
+
+    # Normalize SGM Runtime
+    sgm_runtime_min = min(row["SGM Runtime"] for row in sgm_runtime_data)
+    for row in sgm_runtime_data:
+        row["SGM Runtime (Normalized)"] = row["SGM Runtime"] / sgm_runtime_min
+
+    # Calculate SGM for Memory Usage
+    sgm_memory_data = []
+    for (solver, version), group in grouped:
+        memory_values = group["Memory Usage (MB)"]
+        sgm_memory = np.exp(np.mean(np.log(np.maximum(1, memory_values + shift)))) - shift
+
+        sgm_memory_data.append({
+            "Solver": solver,
+            "Version": version,
+            "SGM Memory": sgm_memory,
+        })
+
+    # Normalize SGM Memory
+    sgm_memory_min = min(row["SGM Memory"] for row in sgm_memory_data)
+    for row in sgm_memory_data:
+        row["SGM Memory (Normalized)"] = row["SGM Memory"] / sgm_memory_min
+
+    # Combine Data into a Single Table
+    combined_df = pd.DataFrame(sgm_runtime_data).merge(
+        pd.DataFrame(sgm_memory_data),
+        on=["Solver", "Version"],
+    )
+
+    # Drop raw SGM values
+    combined_df = combined_df[
+        ["Solver", "Version", "SGM Runtime (Normalized)", "SGM Memory (Normalized)", "Solved Benchmarks"]
+    ]
+
+    # Sort by SGM Runtime (Normalized)
+    combined_df = combined_df.sort_values(by="SGM Runtime (Normalized)")
+
+    return combined_df
 
 
-# Display SGM Table for Runtimes
-sgm_runtime_df = calculate_sgm(df)
-st.subheader("Shifted Geometric Mean (SGM) of Runtimes")
-st.table(sgm_runtime_df)
+# Generate the Combined Table
+sgm_combined_df = combine_sgm_tables(df)
 
-
-# Display SGM Table for Memory Usage
-sgm_memoryuse_df = calculate_sgm(df, column_name="Memory Usage (MB)")
-st.subheader("Shifted Geometric Mean (SGM) of Memory Usage")
-st.table(sgm_memoryuse_df)
+# Display the Combined Table
+st.subheader("Results")
+st.caption("Solver performance across benchmarks")
+st.table(sgm_combined_df)
 
 
 # Render scatter plot

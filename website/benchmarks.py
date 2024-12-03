@@ -182,17 +182,21 @@ if selected_benchmark in metadata:
         """
     )
 
-    #########
+    ##############
     # MIP Table #
-    #########
+    ############
     # Display MIP-specific information only if Technique is MILP
     if metadata[selected_benchmark].get("Technique") == "MILP":
         mip_data = df_result[(df_result["Benchmark"] == selected_benchmark)]
-
         if not mip_data.empty:
             st.subheader(f"MIP Information for {selected_benchmark}")
 
             # Keep only the last row for each solver
+            print('00000')
+            print(mip_data.groupby("Solver"))
+            for group_name, group_df in mip_data.groupby("Solver"):
+                print(f"Group: {group_name}")
+                print(group_df)
             mip_table = mip_data.groupby("Solver").tail(1)[
                 ["Solver", "Max Integrality Violation", "Duality Gap"]
             ]
