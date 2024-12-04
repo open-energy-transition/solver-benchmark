@@ -10,8 +10,8 @@ pglib_opf_case162_ieee_dtc:
   MILP features:
   Sizes:
   - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
-    Temporal resolution: NA
-    Spatial resolution: 162
+    Temporal resolution: N/A
+    Spatial resolution: 162 nodes
     N. of constraints: 1867
     N. of continuous variables: 1869
     N. of integer variables: 0
@@ -27,8 +27,8 @@ pglib_opf_case1803_snem:
   MILP features:
   Sizes:
   - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
-    Temporal resolution: NA
-    Spatial resolution: 1803
+    Temporal resolution: N/A
+    Spatial resolution: 1803 nodes
     N. of constraints: 18574
     N. of continuous variables: 18576
     N. of integer variables: 0
@@ -45,8 +45,8 @@ pglib_opf_case1951_rte:
   MILP features:
   Sizes:
   - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
-    Temporal resolution: NA
-    Spatial resolution: 1951
+    Temporal resolution: N/A
+    Spatial resolution: 1951 nodes
     N. of constraints: 17528
     N. of continuous variables: 17530
     N. of integer variables: 0
@@ -63,8 +63,8 @@ pglib_opf_case2848:
   MILP features:
   Sizes:
   - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
-    Temporal resolution: NA
-    Spatial resolution: 2848
+    Temporal resolution: N/A
+    Spatial resolution: 2848 nodes
     N. of constraints: 25505
     N. of continuous variables: 25507
     N. of integer variables: 0
@@ -81,8 +81,8 @@ pglib_opf_case2868:
   MILP features:
   Sizes:
   - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
-    Temporal resolution: NA
-    Spatial resolution: 2868
+    Temporal resolution: N/A
+    Spatial resolution: 2868 nodes
     N. of constraints: 25717
     N. of continuous variables: 25719
     N. of integer variables: 0
