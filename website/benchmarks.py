@@ -8,14 +8,10 @@ from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 # local
-from utils.file_utils import load_metadata
+from utils.file_utils import load_benchmark_data, load_metadata
 
-# Load the data from the CSV files
-data_url_mean_stddev = (
-    Path(__file__).parent.parent / "results/benchmark_results_mean_stddev.csv"
-)
-data_url_result = Path(__file__).parent.parent / "results/benchmark_results.csv"
-df_mean_stddev = pd.read_csv(data_url_mean_stddev)
+
+df_mean_stddev = load_benchmark_data("results/benchmark_results_mean_stddev.csv")
 df_mean_stddev["Solver Version"] = df_mean_stddev["Solver Version"].apply(parse)
 df_mean_stddev = df_mean_stddev.sort_values(
     by=["Solver", "Solver Version"], ascending=[True, False]
@@ -25,7 +21,7 @@ df_mean_stddev = df_mean_stddev.drop_duplicates(
 )
 
 
-df_result = pd.read_csv(data_url_result)
+df_result = load_benchmark_data()
 df_result["Solver Version"] = df_result["Solver Version"].apply(parse)
 df_result = df_result.sort_values(
     by=["Solver", "Solver Version"], ascending=[True, False]

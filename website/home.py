@@ -5,7 +5,7 @@ import streamlit as st
 from components.filter import generate_filtered_metadata
 from components.home_chart import render_benchmark_scatter_plot
 from packaging.version import parse
-from utils.file_utils import load_metadata
+from utils.file_utils import load_benchmark_data, load_metadata
 
 from website.utils.calculations import calculate_sgm
 
@@ -16,8 +16,7 @@ metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Load the data from the CSV file
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-raw_df = pd.read_csv(data_url)
+raw_df = load_benchmark_data()
 df = raw_df
 
 # Compute "Solvers", "Benchmarks", and "Timeout" details from the results CSV

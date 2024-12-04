@@ -6,7 +6,7 @@ import streamlit_shadcn_ui as ui
 from components.compare_chart import create_comparison_chart
 from components.filter import generate_filtered_metadata
 from packaging.version import parse
-from utils.file_utils import load_metadata
+from utils.file_utils import load_benchmark_data, load_metadata
 
 metadata = load_metadata("results/metadata.yaml")
 
@@ -18,8 +18,7 @@ metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 filtered_metadata = generate_filtered_metadata(metadata_df)
 
 # Load the data
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-df = pd.read_csv(data_url)
+df = load_benchmark_data()
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:

@@ -1,11 +1,9 @@
-from pathlib import Path
-
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 from website.components.filter import generate_filtered_metadata
-from website.utils.file_utils import load_metadata
+from website.utils.file_utils import load_benchmark_data, load_metadata
 
 
 def create_subplots(data, y_metric):
@@ -65,11 +63,10 @@ st.title("OET/BE Solver Benchmark")
 
 
 # Load benchmark results
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-raw_df = pd.read_csv(data_url)
+raw_df = load_benchmark_data()
 
 # Load metadata
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+metadata = load_metadata("results/metadata.yaml")
 metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 

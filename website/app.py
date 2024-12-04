@@ -7,7 +7,7 @@ import streamlit as st
 # local
 # Adds the parent directory to sys.path to make imports work in both GitHub Actions CI and locally.
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from website.utils.file_utils import load_metadata
+from website.utils.file_utils import load_benchmark_data, load_metadata
 
 st.markdown(
     """
@@ -54,8 +54,7 @@ metadata = load_metadata("results/metadata.yaml")
 metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 # Load the data from the CSV file
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-data_df = pd.read_csv(data_url)
+data_df = load_benchmark_data()
 
 
 # Assert that the set of benchmark names in the metadata matches those in the data
