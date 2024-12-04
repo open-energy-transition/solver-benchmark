@@ -40,7 +40,7 @@ def process_yaml_file(file_path):
                         "Spatial resolution": size.get("Spatial resolution"),
                         "Temporal resolution": size.get("Temporal resolution"),
                         "N. of constraints": size.get("N. of constraints", None),
-                        "Total n. of variables": size.get("N. of variables", None),
+                        "N. of variables": size.get("N. of variables", None),
                     }
 
                     # Add optional fields if they exist
