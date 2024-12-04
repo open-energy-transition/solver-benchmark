@@ -170,3 +170,221 @@
   sizes:
   - size: 1-1h
     url: https://drive.usercontent.google.com/download?id=11jEBh4ypLqRgnP5DsQ2NkZomU4FjnDRU&export=download&authuser=0&confirm=t
+- name: genx-1_three_zones
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
+- name: genx-2_three_zones_w_electrolyzer
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
+- name: genx-3_three_zones_w_co2_capture
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_3_three_zones_w_co2_capture-3222908514bd19ae55895811eb847ad882270e280657123420407a885ccb34bc.mps.gz
+- name: genx-4_three_zones_w_policies_slack
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_4_three_zones_w_policies_slack-0be00acbe74d795dfc6aec53239998a93ac0310563b3e65fca00f2acebe2b6c1.mps.gz
+- name: genx-5_three_zones_w_piecewise_fuel
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_5_three_zones_w_piecewise_fuel-51ff0e52d559b549f9e45a13eb267156a2416566f126d1567e1846353a4e9936.mps.gz
+- name: genx-6_three_zones_w_multistage
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_6_three_zones_w_multistage-62d4538e93e8e775de4f754baf121d4996da332da11066a1a496e298f2319641.mps.gz
+- name: genx-7_three_zones_w_colocated_VRE_storage
+  sizes:
+    - size: 3-24h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_7_three_zones_w_colocated_VRE_storage-053eaf1f441d6cb6da75f0dfdaab95f8011afb3be0a34e3b0ae02dbd1043ee74.mps.gz
+- name: genx-8_three_zones_w_colocated_VRE_storage_electrolyzers
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
+- name: genx-9_three_zones_w_retrofit
+  sizes:
+    - size: 3-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
+- name: genx-10_IEEE_9_bus_DC_OPF
+  sizes:
+    - size: 9-1h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
+- name: pglib_opf_case162_ieee_dtc
+  sizes:
+    - size: 162-NA
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
+- name: pglib_opf_case1803_snem
+  sizes:
+    - size: 1803-NA
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
+- name: pglib_opf_case1951_rte
+  sizes:
+    - size: 1951-NA
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
+- name: pglib_opf_case2848
+  sizes:
+    - size: 2848-NA
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
+- name: pglib_opf_case2868
+  sizes:
+    - size: 2868-NA
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
+- name: tulipa-1_EU_investment_simple
+  sizes:
+    - size: 28-24h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
+    - size: 28-168h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_168h-a213cb9c037b9b9e0d0d38a1b7644a46407203a1f8e5f036c9e39870270c4a4f.mps.gz
+    - size: 28-672h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_672h-336e9a77dd9deae1ef81069c4e3f0c4c39cbbe0bc24b4d4e3f666657cbc76ab6.mps.gz
+    - size: 28-2016h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
+    - size: 28-4032h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
+    - size: 28-8760h
+      url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29-082507660a1ec655fed92d2b6d49a1d606f029e30cb0dfcd4915f8b8ce896f2e.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314-16130d073126ae057331ac06d84b99ec39ec673d90e6905b97d4a63326b48708.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332-3bf569a3c3108f4dde780873e6eabe9461cb9432af281c716efacfbad4837ba1.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29-fc330569fd9116b60a77ce31693e7b88ae4137cb463d769b9e21adf49c1eb6f1.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-35f61df3d7e00db245b09ef67b21ea954c6bbff05511cb1702cd419bd7fd2711.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29-bc96d26484b652f0ec372e43ddf2b30aa8af03386a3a5d7ee65200d1dc97e4b0.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314-2b77a5de6b6f96cfa72c7ec7940a1f701ee898ee8014816b7dc644baff15a89c.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332-1a6c28ae9bd6ab741441e47b9ec4ceddbbeb31eea0e243dddcea414d84171583.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29-0b223b43ed886810bf678ef53e6242e07e1528daff59505cb15567625fb866f2.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314-11b79112e8b2da7a756189e831d00d40b9bf05069c6b59183e7d88fa28da392a.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332-1079c962fa915ebe34bf2be8be82c6aed03bccea348410a8dc5f5d83a4a3dff1.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29-12a9e8c3e475aa02d68692347b1fbed9f4769d3b89c3d5f803ebcf8e06d05197.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314-a50a463915826563a3430374d34d27cf5cc7e7e8d4fce55b2371e6c12b261455.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29-dbf0e850812c48d60a10754b5a57f6ccc4fea126abd3fba4e32d68277501ca80.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314-534efa06a79fce256e898897b9f5fbeaab4294bdbf86b2650961ed940effb1a2.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332-a4c0a55a6159313ab87daae5e03fb8a9faca21d44bc6bd4ed085d46357eec3a7.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-584e340fc9e79c75e07daa790d8b956d159a81187e25c077b3d5666039d25e75.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314-4ea0f31269b786b7a96c59cf7ae7a7a6b782a96461ba9a05ca24091afa77b303.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332-94334977dd58464a000d3aa3515f45dce7afc672326d685df3a58b702508af0a.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29-273c75c90ebdad62f763619da32a0e44b6456f076aeff7345e8603659a19b3ee.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314-11aaca595a3ad6a8619f2e510a9fbcf9169b22449c76dd46776df829ab9aba64.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332-15df931033d1a5a3f0133bd141798d3b02c4211befb6f25c19e8218797a05447.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29-8cabe382d8293ca2c795321015d05603b54f9dbf2dbcfff3e9116c367bd42eac.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314-7fa7bf7b284cfc8f93c2541d159617c4964c40daf64cff299f083ba81c25b5ad.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332-864c7b757abad07ecb724ec46ef134aedc73ae5d286ce16129a9c913dd9a0975.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29-4c0d0a8855ccd93b4831a532eedc3d0dc9f33df77c1e98cf81e9834713337b60.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314-0bb1986753999d5831bc4345e6ce53f547ea0849b129fd761809e36d4a9906b4.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332-9329d35ea14edb840379be5519aa15021d5cfdbedec342326b9165ca6f0abc05.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-66258a0e8497e1e17a702b769ebc9c4dcb1ef285993d4f1f41d9dda59878c5cc.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332-b8b4fb5c2c4b0a5f18333028c8d9a7de9d11a5607bb8b660b73cd8a2f617d26a.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29-baddda2ca9ed73b7a9935f88b30a217e31cfa48670e659a44d07142f65039029.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314-ec745b9b237a474e1ed2a2ef455cba4c7cc926d59742ae1fd4930415cc1a46d4.mps.gz
+- name: Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332
+  sizes:
+  - size: 1-1h
+    url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-c5f9c340dae227b689ac284a47d285373a0cd023658a17e9e56bc68136fad3de.mps.gz

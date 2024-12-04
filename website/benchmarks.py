@@ -35,7 +35,7 @@ df_result = df_result.drop_duplicates(
 )
 
 # Load benchmark metadata
-metadata = load_metadata("benchmarks/pypsa/metadata.yaml")
+metadata = load_metadata("results/metadata.yaml")
 
 # Title of the Benchmarks page
 st.title("Benchmarks")
