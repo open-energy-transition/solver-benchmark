@@ -28,12 +28,19 @@ def load_benchmark_data(file_path="results/benchmark_results.csv"):
         data = pd.read_csv(absolute_file_path)
 
         # TODO: Replace the hardcoded Runtime and Memory Usage values with dynamically loaded values from a configuration file.
-        timeout_value = data.loc[data["Status"] == "TO", "Runtime (s)"].max()
+        if "Runtime (s)" in data.columns and "Status" in data.columns:
+            timeout_value = data.loc[data["Status"] == "TO", "Runtime (s)"].max()
+            data.loc[data["Status"] != "ok", "Runtime (s)"] = (
+                timeout_value if not pd.isna(timeout_value) else 60
+            )
+            data.loc[data["Status"] != "ok", "Memory Usage (MB)"] = 8192
+        elif "Runtime Mean (s)" in data.columns and "Status" in data.columns:
+            timeout_value = data.loc[data["Status"] == "TO", "Runtime Mean (s)"].max()
 
-        data.loc[data["Status"] != "ok", "Runtime (s)"] = (
-            timeout_value if not pd.isna(timeout_value) else 60
-        )
-        data.loc[data["Status"] != "ok", "Memory Usage (MB)"] = 8192
+            data.loc[data["Status"] != "ok", "Runtime Mean (s)"] = (
+                timeout_value if not pd.isna(timeout_value) else 60
+            )
+            data.loc[data["Status"] != "ok", "Memory Usage (MB)"] = 8192
 
         return data
     except FileNotFoundError:
