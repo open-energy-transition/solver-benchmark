@@ -1,12 +1,12 @@
-from pathlib import Path
-
-import numpy as np
+import humanize
 import pandas as pd
 import streamlit as st
 from components.filter import generate_filtered_metadata
 from components.home_chart import render_benchmark_scatter_plot
 from packaging.version import parse
-from utils.file_utils import load_metadata
+from utils.file_utils import load_benchmark_data, load_metadata
+
+from website.utils.calculations import calculate_sgm
 
 metadata = load_metadata("results/metadata.yaml")
 
@@ -14,11 +14,32 @@ metadata = load_metadata("results/metadata.yaml")
 metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
+# Load the data from the CSV file
+raw_df = load_benchmark_data()
+df = raw_df
+
+# Compute "Solvers", "Benchmarks", and "Timeout" details from the results CSV
+solvers = df["Solver"].unique()
+solvers_count = len(solvers)
+unique_solver_versions_count = len(df[["Solver", "Solver Version"]].drop_duplicates())
+
+benchmarks = df["Benchmark"].unique()
+benchmarks_count = len(benchmarks)
+
+# Calculate the unique benchmark-size combinations
+unique_benchmark_sizes = df[["Benchmark", "Size"]].drop_duplicates()
+sizes_count = len(unique_benchmark_sizes)
+
+# TODO: Retrieve this information (e.g., timeout, numCPUs, RAM, etc.) directly from the benchmark runner.
+# Calculate the timeout from TO benchmarks
+timeout_seconds = df[df["Status"] == "TO"]["Runtime (s)"].max()
+timeout_seconds = timeout_seconds if not pd.isna(timeout_seconds) else 60
+timeout_readable = humanize.precisedelta(timeout_seconds, minimum_unit="seconds")
 # Title of the app
 st.title("OET/BE Solver Benchmark")
 
 st.markdown(
-    """
+    f"""
     This website is an open-source benchmark of LP/MILP solvers on representative problems from the energy planning domain.
     The website aims to help energy system modelers decide the best solver for their application; solver developers improve their solvers using realistic and important examples; and funders accelerate the green transition by giving them reliable metrics to evaluate solver performance over time.
     We accept community contributions for new benchmarks, new / updated solver versions, and feedback on the benchmarking methodology and metrics via our [GitHub repository](https://github.com/orgs/open-energy-transition/solver-benchmark).
@@ -27,14 +48,14 @@ st.markdown(
 
     | **Details** | |
     | ------------- | ------------- |
-    | **Solvers** | 3: HiGHS, GLPK, SCIP |
-    | **Benchmarks** | 6 |
-    | **Iterations** | 1 |
-    | **Timeout** | 15 min |
+    | **Solvers** | {solvers_count} ({unique_solver_versions_count}, including versions) |
+    | **Benchmarks** | {benchmarks_count} ({sizes_count}, including sizes) |
+    | **Timeout** | {timeout_readable} |
     | **vCPU** | 2 (1 core) |
     | **Memory** | 8GB |
     """
 )
+
 
 # Filter
 filtered_metadata = generate_filtered_metadata(metadata_df)
@@ -42,10 +63,6 @@ filtered_metadata = generate_filtered_metadata(metadata_df)
 if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
 
-# Load the data from the CSV file
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-raw_df = pd.read_csv(data_url)
-df = raw_df
 
 # Assert that the set of benchmark names in the metadata matches those in the data
 csv_benchmarks = set(raw_df["Benchmark"].unique())
@@ -72,37 +89,86 @@ if not filtered_metadata.empty:
     df = df[df["Benchmark"].isin(filtered_benchmarks)]
 
 
-# Calculate Shifted Geometric Mean (SGM)
-def calculate_sgm(df, shift=10, column_name="Runtime (s)"):
+def combine_sgm_tables(df):
     """
-    Calculate the Shifted Geometric Mean (SGM) for each solver.
+    Combine SGM tables into a single table with SGM Runtime, SGM Memory, and Solved Benchmarks.
+
+    Columns:
+    - Solver
+    - Version
+    - SGM Runtime (normalized)
+    - SGM Memory (normalized)
+    - Solved Benchmarks (number of benchmarks solved)
     """
-    sgm_data = []
-    grouped = df.groupby("Solver")
-    for solver, group in grouped:
-        column_values = group[column_name]
-        # Calculate SGM # TODO this can be done within pd DataFrames
-        sgm = np.exp(np.mean(np.log(np.maximum(1, column_values + shift)))) - shift
-        sgm_data.append({"Solver": solver, "SGM (Raw)": sgm})
+    # Ensure the "Solver Version" column is in a compatible format
+    df["Solver Version"] = df["Solver Version"].astype(str)
 
-    # Normalize SGM
-    min_sgm = min(entry["SGM (Raw)"] for entry in sgm_data)
-    for entry in sgm_data:
-        entry["SGM (Normalized)"] = entry["SGM (Raw)"] / min_sgm
+    sgm_runtime_data = []
+    grouped = df.groupby(["Solver", "Solver Version"])
+    for (solver, version), group in grouped:
+        # Calculate SGM for Runtime
+        runtime_values = group["Runtime (s)"]
+        sgm_runtime = calculate_sgm(runtime_values)
 
-    return pd.DataFrame(sgm_data).sort_values(by="SGM (Normalized)")
+        # Calculate the number of benchmarks solved
+        solved_benchmarks = len(group[group["Status"] == "ok"])
+
+        sgm_runtime_data.append(
+            {
+                "Solver": solver,
+                "Version": version,
+                "SGM Runtime": sgm_runtime,
+                "Solved Benchmarks": solved_benchmarks,
+            }
+        )
+
+    # Normalize SGM Runtime
+    sgm_runtime_min = min(row["SGM Runtime"] for row in sgm_runtime_data)
+    for row in sgm_runtime_data:
+        row["SGM Runtime"] = row["SGM Runtime"] / sgm_runtime_min
+
+    # Calculate SGM for Memory Usage
+    sgm_memory_data = []
+    for (solver, version), group in grouped:
+        memory_values = group["Memory Usage (MB)"]
+        sgm_memory = calculate_sgm(memory_values)
+
+        sgm_memory_data.append(
+            {
+                "Solver": solver,
+                "Version": version,
+                "SGM Memory": sgm_memory,
+            }
+        )
+
+    # Normalize SGM Memory
+    sgm_memory_min = min(row["SGM Memory"] for row in sgm_memory_data)
+    for row in sgm_memory_data:
+        row["SGM Memory"] = row["SGM Memory"] / sgm_memory_min
+
+    # Combine Data into a Single Table
+    combined_df = pd.DataFrame(sgm_runtime_data).merge(
+        pd.DataFrame(sgm_memory_data),
+        on=["Solver", "Version"],
+    )
+
+    # Drop raw SGM values
+    combined_df = combined_df[
+        ["Solver", "Version", "SGM Runtime", "SGM Memory", "Solved Benchmarks"]
+    ]
+
+    # Sort by SGM Runtime
+    combined_df = combined_df.sort_values(by="SGM Runtime").reset_index(drop=True)
+
+    return combined_df
 
 
-# Display SGM Table for Runtimes
-sgm_runtime_df = calculate_sgm(df)
-st.subheader("Shifted Geometric Mean (SGM) of Runtimes")
-st.table(sgm_runtime_df)
+# Generate the Combined Table
+sgm_combined_df = combine_sgm_tables(df)
 
-
-# Display SGM Table for Memory Usage
-sgm_memoryuse_df = calculate_sgm(df, column_name="Memory Usage (MB)")
-st.subheader("Shifted Geometric Mean (SGM) of Memory Usage")
-st.table(sgm_memoryuse_df)
+# Display the Combined Table
+st.subheader("Results")
+st.table(sgm_combined_df)
 
 
 # Render scatter plot

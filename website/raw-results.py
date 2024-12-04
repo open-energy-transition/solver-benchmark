@@ -1,12 +1,10 @@
-from pathlib import Path
-
 import pandas as pd
 import streamlit as st
 
 # local
 from components.benchmark_table import display_table
 from components.filter import generate_filtered_metadata
-from utils.file_utils import load_metadata
+from utils.file_utils import load_benchmark_data, load_metadata
 
 metadata = load_metadata("results/metadata.yaml")
 
@@ -43,13 +41,11 @@ st.title("Benchmarks")
 filtered_metadata = generate_filtered_metadata(metadata_df)
 
 # Load the data from the CSV file
-data_url = Path(__file__).parent.parent / "results/benchmark_results.csv"
-df = pd.read_csv(data_url)
+df = load_benchmark_data()
 
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
-    df = df.drop_duplicates(subset=["Solver", "Benchmark", "Size"], keep="first")
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
