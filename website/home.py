@@ -1,5 +1,4 @@
-from pathlib import Path
-
+import humanize
 import pandas as pd
 import streamlit as st
 from components.filter import generate_filtered_metadata
@@ -33,8 +32,9 @@ sizes_count = len(unique_benchmark_sizes)
 
 # TODO: Retrieve this information (e.g., timeout, numCPUs, RAM, etc.) directly from the benchmark runner.
 # Calculate the timeout from TO benchmarks
-timeout = df[df["Status"] == "TO"]["Runtime (s)"].max() // 1
-
+timeout_seconds = df[df["Status"] == "TO"]["Runtime (s)"].max()
+timeout_seconds = timeout_seconds if not pd.isna(timeout_seconds) else 60
+timeout_readable = humanize.precisedelta(timeout_seconds, minimum_unit="seconds")
 # Title of the app
 st.title("OET/BE Solver Benchmark")
 
@@ -48,9 +48,9 @@ st.markdown(
 
     | **Details** | |
     | ------------- | ------------- |
-    | **Solvers** | {solvers_count}: ({unique_solver_versions_count}, including versions) |
+    | **Solvers** | {solvers_count} ({unique_solver_versions_count}, including versions) |
     | **Benchmarks** | {benchmarks_count} ({sizes_count}, including sizes) |
-    | **Timeout** | {timeout} min |
+    | **Timeout** | {timeout_readable} |
     | **vCPU** | 2 (1 core) |
     | **Memory** | 8GB |
     """

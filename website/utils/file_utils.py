@@ -1,6 +1,7 @@
-import yaml
 from pathlib import Path
+
 import pandas as pd
+import yaml
 
 
 # Load benchmark metadata
@@ -36,6 +37,10 @@ def load_benchmark_data(file_path="results/benchmark_results.csv"):
 
         return data
     except FileNotFoundError:
-        raise FileNotFoundError(f"The file {file_path} was not found. Please check the path and try again.")
+        raise FileNotFoundError(
+            f"The file {file_path} was not found. Please check the path and try again."
+        )
     except pd.errors.ParserError:
-        raise ValueError(f"Error parsing the file {file_path}. Please check the file format and ensure it's a valid CSV.")
+        raise ValueError(
+            f"Error parsing the file {file_path}. Please check the file format and ensure it's a valid CSV."
+        )

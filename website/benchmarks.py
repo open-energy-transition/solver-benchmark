@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -9,7 +7,6 @@ from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 # local
 from utils.file_utils import load_benchmark_data, load_metadata
-
 
 df_mean_stddev = load_benchmark_data("results/benchmark_results_mean_stddev.csv")
 df_mean_stddev["Solver Version"] = df_mean_stddev["Solver Version"].apply(parse)
