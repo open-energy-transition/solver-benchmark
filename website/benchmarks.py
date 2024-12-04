@@ -96,21 +96,39 @@ if selected_benchmark in metadata:
     if sizes:
         # Convert sizes to a DataFrame
         sizes_df = pd.DataFrame(sizes)
-
-        # Build grid options for sizes table
-        gb_sizes = GridOptionsBuilder.from_dataframe(sizes_df)
-        gb_sizes.configure_grid_options(domLayout="autoHeight")
-        grid_options_sizes = gb_sizes.build()
-
-        # Display sizes table using ag-Grid
-        AgGrid(
-            sizes_df,
-            editable=False,
-            sortable=True,
-            filter=True,
-            gridOptions=grid_options_sizes,
-            fit_columns_on_grid_load=True,
+        sizes_df["Size"] = (
+            sizes_df["Spatial resolution"].astype(str)
+            + "-"
+            + sizes_df["Temporal resolution"].astype(str)
+            + "h"
         )
+
+        # Filter the sizes_df to include only sizes present in the results CSV for the selected benchmark
+        filtered_results = df_result[df_result["Benchmark"] == selected_benchmark]
+        matching_sizes = filtered_results["Size"].unique()
+        filtered_sizes_df = sizes_df[sizes_df["Size"].isin(matching_sizes)]
+
+        if not filtered_sizes_df.empty:
+            display_sizes_df = filtered_sizes_df.drop(columns=["Size"])
+
+            # Build grid options for the filtered sizes table
+            gb_sizes = GridOptionsBuilder.from_dataframe(filtered_sizes_df)
+            gb_sizes.configure_grid_options(domLayout="autoHeight")
+            grid_options_sizes = gb_sizes.build()
+
+            # Display filtered sizes table using ag-Grid
+            AgGrid(
+                filtered_sizes_df,
+                editable=False,
+                sortable=True,
+                filter=True,
+                gridOptions=grid_options_sizes,
+                fit_columns_on_grid_load=True,
+            )
+        else:
+            st.write(
+                "No matching size information available for this benchmark in the results."
+            )
     else:
         st.write("No size information available for this benchmark.")
 
@@ -182,19 +200,18 @@ if selected_benchmark in metadata:
         """
     )
 
-    #########
+    ##############
     # MIP Table #
-    #########
+    ############
     # Display MIP-specific information only if Technique is MILP
     if metadata[selected_benchmark].get("Technique") == "MILP":
         mip_data = df_result[(df_result["Benchmark"] == selected_benchmark)]
-
         if not mip_data.empty:
             st.subheader(f"MIP Information for {selected_benchmark}")
 
             # Keep only the last row for each solver
-            mip_table = mip_data.groupby("Solver").tail(1)[
-                ["Solver", "Max Integrality Violation", "Duality Gap"]
+            mip_table = mip_data.groupby(["Solver", "Size"]).tail(1)[
+                ["Solver", "Size", "Max Integrality Violation", "Duality Gap"]
             ]
             gb_mip = GridOptionsBuilder.from_dataframe(mip_table)
             gb_mip.configure_grid_options(domLayout="normal")
@@ -206,8 +223,8 @@ if selected_benchmark in metadata:
                 sortable=True,
                 filter=True,
                 gridOptions=grid_options_mip,
-                height=150,
                 fit_columns_on_grid_load=True,
             )
+
 else:
     st.write("No metadata available for the selected benchmark.")

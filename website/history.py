@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -9,13 +8,7 @@ import streamlit as st
 from components.filter import generate_filtered_metadata
 from utils.file_utils import load_metadata
 
-
-# SGM Calculation # TODO reuse same function in home.py and here
-def calculate_sgm(runtime_values, sh=10):
-    runtime_values = np.maximum(1, runtime_values + sh)
-    sgm = np.exp(np.mean(np.log(runtime_values))) - sh
-    return sgm
-
+from website.utils.calculations import calculate_sgm
 
 # Convert metadata to a DataFrame for easier filtering
 metadata = load_metadata("results/metadata.yaml")
@@ -139,3 +132,47 @@ fig_sgm_memory.update_layout(
 )
 
 st.plotly_chart(fig_sgm_memory)
+
+
+# Group by Solver and Year to calculate the number of benchmarks solved
+benchmarks_solved = (
+    data[data["Status"] == "ok"]
+    .groupby(["Solver", "Year"])
+    .size()
+    .reset_index(name="Benchmarks Solved")
+)
+
+fig_benchmarks_solved = go.Figure()
+
+for solver in benchmarks_solved["Solver"].unique():
+    subset = benchmarks_solved[benchmarks_solved["Solver"] == solver]
+    fig_benchmarks_solved.add_trace(
+        go.Scatter(
+            x=subset["Year"],
+            y=subset["Benchmarks Solved"],
+            mode="lines+markers",
+            name=solver,
+            marker=dict(size=10),
+            line=dict(width=2),
+            text=subset.apply(
+                lambda row: f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Benchmarks Solved: {row['Benchmarks Solved']}",
+                axis=1,
+            ),
+            hoverinfo="text+x+y",
+        )
+    )
+
+fig_benchmarks_solved.update_layout(
+    title="Number of Benchmarks Solved Over Years",
+    xaxis=dict(
+        title="Year",
+        tickmode="linear",
+        dtick=1,
+    ),
+    yaxis_title="Number of Benchmarks Solved",
+    template="plotly_dark",
+    height=600,
+    width=1000,
+)
+
+st.plotly_chart(fig_benchmarks_solved)

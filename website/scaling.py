@@ -3,81 +3,61 @@ from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from plotly.subplots import make_subplots
 
 from website.components.filter import generate_filtered_metadata
 from website.utils.file_utils import load_metadata
 
 
-def create_subplots(data, y_metric, title):
+def create_subplots(data, y_metric):
     status_symbols = {
         "TO": "x",  # Timeout gets an "X"
         "ok": "circle",  # Normal execution gets a circle
     }
 
-    figures = [
-        px.scatter(
-            data,
-            x="Spatial Resolution",
-            y=y_metric,
-            color="Solver",
-            symbol="Status",
-            symbol_map=status_symbols,
-            hover_data=["Benchmark", "Size"],
-        ),
-        px.scatter(
-            data,
-            x="Num Variables",
-            y=y_metric,
-            color="Solver",
-            symbol="Status",
-            symbol_map=status_symbols,
-            hover_data=["Benchmark", "Size"],
-        ),
-        px.scatter(
-            data,
-            x="Num Constraints",
-            y=y_metric,
-            color="Solver",
-            symbol="Status",
-            symbol_map=status_symbols,
-            hover_data=["Benchmark", "Size"],
-        ),
-    ]
-
-    fig = make_subplots(
-        rows=1,
-        cols=len(figures),
-        subplot_titles=[
-            "Spatial Resolution",
-            "Num Variables",
-            "Num Constraints",
-        ],
+    # Create separate figures for each metric
+    fig_spatial_resolution = px.scatter(
+        data,
+        x="Spatial Resolution",
+        y=y_metric,
+        color="Solver",
+        symbol="Status",
+        symbol_map=status_symbols,
+        hover_data=["Benchmark", "Size"],
+        title="Spatial Resolution",
     )
 
-    # Add traces to subplots
-    added_legends = set()  # Keep track of solvers already added to the legend
-    for i, figure in enumerate(figures):
-        for trace in figure.data:
-            # Show legend only if the solver hasn't been added yet
-            if trace.name not in added_legends:
-                added_legends.add(trace.name)
-                trace.showlegend = True
-            else:
-                trace.showlegend = False
-
-            fig.add_trace(trace, row=1, col=i + 1)
-
-    fig.update_layout(
-        height=400,
-        width=1200,
-        title_text=title,
-        showlegend=True,
+    fig_num_variables = px.scatter(
+        data,
+        x="Num Variables",
+        y=y_metric,
+        color="Solver",
+        symbol="Status",
+        symbol_map=status_symbols,
+        hover_data=["Benchmark", "Size"],
+        title="Num Variables",
     )
 
-    fig.update_yaxes(title_text="Run Solver", row=1, col=1)
+    fig_num_constraints = px.scatter(
+        data,
+        x="Num Constraints",
+        y=y_metric,
+        color="Solver",
+        symbol="Status",
+        symbol_map=status_symbols,
+        hover_data=["Benchmark", "Size"],
+        title="Num Constraints",
+    )
 
-    return fig
+    # Update layout for each figure
+    for fig in [fig_spatial_resolution, fig_num_variables, fig_num_constraints]:
+        fig.update_layout(
+            height=400,
+            width=1200,
+            showlegend=True,  # Ensure each chart has its own legend
+        )
+        fig.update_yaxes(title_text=y_metric)
+
+    return fig_spatial_resolution, fig_num_variables, fig_num_constraints
 
 
 # Title
@@ -149,17 +129,21 @@ else:
     ]
 
     # Generate runtime subplot
-    runtime_fig = create_subplots(
+    st.markdown("#### Runtime (s)")
+    run_time_sr_fig, run_time_nv_fig, run_time_nc_fig = create_subplots(
         combined_data,
         "Runtime (s)",
-        "Runtime (s) vs Spatial Resolution / Num Variables / Num Constraints (All Benchmarks)",
     )
-    st.plotly_chart(runtime_fig, use_container_width=True)
+    st.plotly_chart(run_time_sr_fig, use_container_width=True)
+    st.plotly_chart(run_time_nv_fig, use_container_width=True)
+    st.plotly_chart(run_time_nc_fig, use_container_width=True)
 
     # Generate memory usage subplot
-    memory_usage_fig = create_subplots(
+    st.markdown("#### Memory Usage (MB)")
+    memory_usage_sr_fig, memory_usage_nv_fig, memory_usage_nc_fig = create_subplots(
         combined_data,
         "Memory Usage (MB)",
-        "Memory Usage (MB) vs Spatial Resolution / Num Variables / Num Constraints (All Benchmarks)",
     )
-    st.plotly_chart(memory_usage_fig, use_container_width=True)
+    st.plotly_chart(memory_usage_sr_fig, use_container_width=True)
+    st.plotly_chart(memory_usage_nv_fig, use_container_width=True)
+    st.plotly_chart(memory_usage_nc_fig, use_container_width=True)
