@@ -2,9 +2,11 @@ import pandas as pd
 import streamlit as st
 import streamlit_shadcn_ui as ui
 from components.compare_chart import create_comparison_chart
-from components.filter import generate_filtered_metadata
+from components.filter import display_filter_status, generate_filtered_metadata
 from packaging.version import parse
 from utils.file_utils import load_benchmark_data, load_metadata
+
+from website.utils.filters import filter_data
 
 metadata = load_metadata("results/metadata.yaml")
 
@@ -20,8 +22,10 @@ df = load_benchmark_data()
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
-    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
-    df = df[df["Benchmark"].isin(filtered_benchmarks)]
+    df = filter_data(df, filtered_metadata)
+
+# Filter status
+display_filter_status(df, filtered_metadata)
 
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:

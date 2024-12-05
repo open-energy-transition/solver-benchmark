@@ -2,8 +2,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from website.components.filter import generate_filtered_metadata
+from website.components.filter import display_filter_status, generate_filtered_metadata
 from website.utils.file_utils import load_benchmark_data, load_metadata
+from website.utils.filters import filter_data
 
 
 def create_subplots(data, y_metric):
@@ -71,7 +72,9 @@ metadata_df = pd.DataFrame(metadata).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Filter
+
 filtered_metadata = generate_filtered_metadata(metadata_df)
+
 
 if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
@@ -82,10 +85,20 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
     benchmark_metadata = metadata.get(benchmark)
     if benchmark_metadata:
         for size in benchmark_metadata["Sizes"]:
-            size_key = f"{size['Spatial resolution']}-{size['Temporal resolution']}h"
+            # Construct the size_key based on the presence of 'Temporal resolution'
+            if isinstance(
+                size["Temporal resolution"], (int, float)
+            ):  # Ensure Temporal resolution is not NA
+                size_key = (
+                    f"{size['Spatial resolution']}-{size['Temporal resolution']}h"
+                )
+            else:
+                size_key = f"{size['Spatial resolution']}-{size['Temporal resolution']}"
+
             matching_rows = raw_df[
                 (raw_df["Benchmark"] == benchmark) & (raw_df["Size"] == size_key)
             ]
+
             for _, row in matching_rows.iterrows():
                 all_enriched_data.append(
                     {
@@ -103,7 +116,10 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
                 )
 
 # Combine enriched data into a single DataFrame
-all_enriched_df = pd.DataFrame(all_enriched_data)
+all_enriched_df = filter_data(pd.DataFrame(all_enriched_data), filtered_metadata)
+
+# Filter status
+display_filter_status(all_enriched_df, metadata_df)
 
 if all_enriched_df.empty:
     st.warning("No data available after processing. Please adjust filters or data.")
