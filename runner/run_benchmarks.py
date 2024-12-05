@@ -15,7 +15,7 @@ import yaml
 def get_conda_package_versions(solvers, env_name=None):
     try:
         # Base command
-        cmd = ["conda", "list"]
+        cmd = ["/opt/conda/bin/conda", "list"]
 
         # Add environment name if provided
         if env_name:
@@ -366,8 +366,10 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "glpk", "scip"]  # For production
+    solvers = ["highs", "scip", "glpk"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion
     print("Benchmarking complete.")
+
+#  srun --job-name=benchmark-filter-jump-10min -N1 -n1 --partition=small --cpus-per-task=1 --mem=8G --time=50:00:00 --constraint=Gold6342 --mail-user=siddharth.krishna@openenergytransition.org --mail-type=ALL --unbuffered python runner/run_benchmarks.py benchmarks/benchmark_config.yaml 2024
