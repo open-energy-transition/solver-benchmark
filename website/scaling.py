@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from packaging.version import parse
 
 from website.components.filter import display_filter_status, generate_filtered_metadata
 from website.utils.file_utils import load_benchmark_data, load_metadata
@@ -66,6 +67,7 @@ st.title("OET/BE Solver Benchmark")
 # Load benchmark results
 raw_df = load_benchmark_data()
 
+
 # Load metadata
 metadata = load_metadata("results/metadata.yaml")
 metadata_df = pd.DataFrame(metadata).T.reset_index()
@@ -78,6 +80,13 @@ filtered_metadata = generate_filtered_metadata(metadata_df)
 
 if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
+df = raw_df
+# Ensure we plot the latest version of each solver if there are multiple versions.
+if "Solver Version" in df.columns:
+    df["Solver Version"] = df["Solver Version"].apply(parse)
+    df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
+    df = df.drop_duplicates(subset=["Solver", "Benchmark", "Size"], keep="first")
+
 # Aggregate data from all benchmarks
 all_enriched_data = []
 
@@ -95,8 +104,8 @@ for benchmark in filtered_metadata["Benchmark Name"].tolist():
             else:
                 size_key = f"{size['Spatial resolution']}-{size['Temporal resolution']}"
 
-            matching_rows = raw_df[
-                (raw_df["Benchmark"] == benchmark) & (raw_df["Size"] == size_key)
+            matching_rows = df[
+                (df["Benchmark"] == benchmark) & (df["Size"] == size_key)
             ]
 
             for _, row in matching_rows.iterrows():
