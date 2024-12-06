@@ -31,6 +31,12 @@ def generate_filtered_metadata(metadata_df):
             default=metadata_df["Sectors"].unique(),
         )
 
+        selected_problem_size = st.multiselect(
+            "Problem Size",
+            options=["XXS", "XS", "S", "M", "L"],
+            default=["XXS", "XS", "S", "M", "L"],
+        )
+
     # Apply the filters
     mask_model_name = (
         metadata_df["Model name"].isin(selected_model_name)
@@ -51,19 +57,27 @@ def generate_filtered_metadata(metadata_df):
         metadata_df["Sectors"].isin(selected_sectors) if selected_sectors else True
     )
 
-    # Apply filters and return the filtered metadata
+    # Apply filters
     filtered_metadata = metadata_df[
         mask_model_name & mask_technique & mask_problem_kind & mask_sectors
     ]
 
+    # Add selected problem size as a field in every item
+    filtered_metadata.loc[:, "Selected Problem Size"] = [selected_problem_size] * len(
+        filtered_metadata
+    )
+
+    return filtered_metadata
+
+
+def display_filter_status(df, metadata_df):
     total_benchmarks = len(metadata_df["Benchmark Name"].unique())
-    active_benchmarks = len(filtered_metadata["Benchmark Name"].unique())
+    active_benchmarks = len(df["Benchmark"].unique())
+
     with st.sidebar:
-        if total_benchmarks is not active_benchmarks:
+        if total_benchmarks != active_benchmarks:
             st.write(
                 f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
             )
         else:
             st.write("### Showing all benchmarks")
-
-    return filtered_metadata

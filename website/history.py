@@ -3,10 +3,11 @@ import plotly.graph_objects as go
 import streamlit as st
 
 # local
-from components.filter import generate_filtered_metadata
+from components.filter import display_filter_status, generate_filtered_metadata
 from utils.file_utils import load_benchmark_data, load_metadata
 
 from website.utils.calculations import calculate_sgm
+from website.utils.filters import filter_data
 
 # Convert metadata to a DataFrame for easier filtering
 metadata = load_metadata("results/metadata.yaml")
@@ -21,8 +22,10 @@ data = load_benchmark_data()
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
-    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
-    data = data[data["Benchmark"].isin(filtered_benchmarks)]
+    data = filter_data(data, filtered_metadata)
+
+# Filter status
+display_filter_status(data, filtered_metadata)
 
 # Use existing years from data
 data["Year"] = data["Solver Release Year"].astype(int)

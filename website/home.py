@@ -1,12 +1,13 @@
 import humanize
 import pandas as pd
 import streamlit as st
-from components.filter import generate_filtered_metadata
+from components.filter import display_filter_status, generate_filtered_metadata
 from components.home_chart import render_benchmark_scatter_plot
 from packaging.version import parse
 from utils.file_utils import load_benchmark_data, load_metadata
 
 from website.utils.calculations import calculate_sgm
+from website.utils.filters import filter_data
 
 metadata = load_metadata("results/metadata.yaml")
 
@@ -85,8 +86,10 @@ if "Solver Version" in df.columns:
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
-    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
-    df = df[df["Benchmark"].isin(filtered_benchmarks)]
+    df = filter_data(df, filtered_metadata)
+
+# Filter status
+display_filter_status(df, filtered_metadata)
 
 
 def combine_sgm_tables(df):
@@ -163,12 +166,13 @@ def combine_sgm_tables(df):
     return combined_df
 
 
-# Generate the Combined Table
-sgm_combined_df = combine_sgm_tables(df)
+if not df.empty:
+    # Generate the Combined Table
+    sgm_combined_df = combine_sgm_tables(df)
 
-# Display the Combined Table
-st.subheader("Results")
-st.table(sgm_combined_df)
+    # Display the Combined Table
+    st.subheader("Results")
+    st.table(sgm_combined_df)
 
 
 # Render scatter plot
