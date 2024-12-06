@@ -15,7 +15,7 @@ import yaml
 def get_conda_package_versions(solvers, env_name=None):
     try:
         # Base command
-        cmd = ["conda", "list"]
+        cmd = ["/home/siddharth_krishna_openenergytran/miniconda3/bin/conda", "list"]
 
         # Add environment name if provided
         if env_name:
