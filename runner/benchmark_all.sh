@@ -50,11 +50,13 @@ for year in "${years[@]}"; do
 
     # Run the benchmark script for the year
     echo "Running benchmarks for the year: $year"
+    conda activate "$env_name"
     if [ "$idx" -eq 0 ]; then
-        conda run -n "$env_name" python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year" "$overwrite_results"
+        python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year" "$overwrite_results"
     else
-        conda run -n "$env_name" python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year" false
+        python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year" false
     fi
+    conda deactivate
 
     echo "Completed benchmarks for the year: $year"
     idx=$((idx + 1))
