@@ -80,7 +80,7 @@ def process_yaml_file(file_path):
 
 
 # Process all [Mm]etadata*.yaml files recursively under benchmarks
-for file_path in benchmarks_dir.rglob("[Mm]etadata*.yaml"):
+for file_path in sorted(benchmarks_dir.rglob("[Mm]etadata*.yaml")):
     process_yaml_file(file_path)
 
 
