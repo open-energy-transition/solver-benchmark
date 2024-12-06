@@ -57,9 +57,10 @@ def create_comparison_chart(
             (merged_data["Status_1"] == status_1)
             & (merged_data["Status_2"] == status_2)
         ]
+
         # Create tooltips for hover information
         hover_text = subset.apply(
-            lambda row: f"{row['Benchmark']}<br>Size: {row['Size']}",
+            lambda row: (f"{row['Benchmark']}<br>Size: {row['Size']}"),
             axis=1,
         )
 
