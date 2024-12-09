@@ -32,4 +32,4 @@ jobs:
             --zenodo_token "${{ secrets.ZENODO_TOKEN }}" \
             --dep_id "${{ secrets.DEPOSITION_ID }}" \
             --metadata_file "${{ github.workspace }}/benchmarks/pypsa/.zenodo.json" \
-            --upload_dir "${{ github.workspace }}/"
+            --upload_dir "${{ github.workspace }}/benchmarks/pypsa/"
