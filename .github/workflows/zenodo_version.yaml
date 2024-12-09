@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*'  
+  pull_request:
+    branches: [main]
+
+jobs:
+
+  UploadToZenodo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+
+    - name: install req
+      run: pip install git+https://github.com/drifter089/zenodopy.git@basic_test#egg=zenodopy
+
+    - name: Update Zenodo Deposition
+      run: |
+          python benchmarks/pypsa/zenodo_update.py \
+            --version_tag "${{ github.ref_name }}" \
+            --zenodo_token "${{ secrets.ZENODO_TOKEN }}" \
+            --dep_id "${{ secrets.DEPOSITION_ID }}" \
+            --metadata_file "${{ github.workspace }}/benchmarks/pypsa/.zenodo.json" \
+            --upload_dir "${{ github.workspace }}/"
