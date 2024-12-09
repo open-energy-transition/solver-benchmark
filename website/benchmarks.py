@@ -102,20 +102,51 @@ if selected_benchmark in metadata:
         filtered_sizes_df = sizes_df[sizes_df["Size"].isin(matching_sizes)]
 
         if not filtered_sizes_df.empty:
-            display_sizes_df = filtered_sizes_df.drop(columns=["Size"])
+            display_sizes_df = filtered_sizes_df.rename(
+                columns={
+                    "N. of variables": "n_of_variables",
+                    "N. of constraints": "n_of_constraints",
+                },
+            )
 
             # Build grid options for the filtered sizes table
             gb_sizes = GridOptionsBuilder.from_dataframe(filtered_sizes_df)
             gb_sizes.configure_grid_options(domLayout="autoHeight")
             grid_options_sizes = gb_sizes.build()
 
+            column_config = [
+                {
+                    "field": "Size",
+                    "headerName": "Instance",
+                    "pinned": "left",
+                },
+                {
+                    "field": "Spatial resolution",
+                },
+                {
+                    "field": "Temporal resolution",
+                },
+                {
+                    "field": "n_of_variables",
+                    "headerName": "N. of variables",
+                },
+                {
+                    "field": "n_of_constraints",
+                    "headerName": "N. of constraints",
+                },
+            ]
+
+            grid_options = {
+                "columnDefs": column_config,
+            }
+
             # Display filtered sizes table using ag-Grid
             AgGrid(
-                filtered_sizes_df,
+                display_sizes_df,
                 editable=False,
                 sortable=True,
                 filter=True,
-                gridOptions=grid_options_sizes,
+                gridOptions=grid_options,
                 fit_columns_on_grid_load=True,
             )
         else:
@@ -156,7 +187,7 @@ if selected_benchmark in metadata:
         for solver in status_subset["Solver"].unique():
             subset = status_subset[status_subset["Solver"] == solver]
             tooltip_text = subset.apply(
-                lambda row: f"Solver: {row['Solver']}<br>Size: {row['Size']}",
+                lambda row: f"Solver: {row['Solver']}<br>Instance: {row['Size']}",
                 axis=1,
             )
 
