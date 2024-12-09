@@ -2,32 +2,6 @@
   sizes:
   - size: 2-24h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
-  - size: 3-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-3-24h.lp
-  - size: 4-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-4-24h.lp
-  - size: 2-12h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-12h.lp
-  - size: 5-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-24h.lp
-  - size: 6-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-6-24h.lp
-  - size: 7-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-7-24h.lp
-  - size: 8-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-8-24h.lp
-  - size: 3-12h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-3-12h.lp
-  - size: 9-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-9-24h.lp
-  - size: 10-24h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-10-24h.lp
-  - size: 4-12h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-4-12h.lp
-  - size: 5-12h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
-  - size: 2-3h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
 - name: pypsa-eur-elec-trex
   sizes:
   - size: 2-24h
