@@ -19,7 +19,7 @@ do
         exit 0
         ;;
     a)  echo "Append mode selected. The output results CSV file will NOT be overwritten."
-        overwrite="false"
+        overwrite_results="false"
         ;;
     y)  IFS=', ' read -r -a years <<< "$OPTARG"
         ;;
