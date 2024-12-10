@@ -53,7 +53,7 @@ def render_benchmark_scatter_plot(data: pd.DataFrame, metadata, key):
             status_symbols.get(status, "circle") for status in subset["Status"]
         ]
         hover_text = subset.apply(
-            lambda row: f"{row['Benchmark']}<br>Size: {row['Size']}",
+            lambda row: f"{row['Benchmark']}<br>Instance: {row['Size']}",
             axis=1,
         )
 

@@ -59,5 +59,8 @@ display_filter_status(df, filtered_metadata)
 # Round the DataFrame values
 df = df.round({"Objective Value": 2, "Runtime (s)": 1, "Memory Usage (MB)": 0})
 
+# Rename 'Size' to 'Instance'
+df = df.rename(columns={"Size": "Instance"})
+
 # Display the filtered table
 filtered_df = display_table(df)

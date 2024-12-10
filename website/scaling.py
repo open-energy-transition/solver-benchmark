@@ -9,6 +9,9 @@ from website.utils.filters import filter_data
 
 
 def create_subplots(data, y_metric):
+    # Rename 'Size' to 'Instance'
+    data = data.rename(columns={"Size": "Instance"})
+
     status_symbols = {
         "TO": "x",  # Timeout gets an "X"
         "ok": "circle",  # Normal execution gets a circle
@@ -22,7 +25,7 @@ def create_subplots(data, y_metric):
         color="Solver",
         symbol="Status",
         symbol_map=status_symbols,
-        hover_data=["Benchmark", "Size"],
+        hover_data=["Benchmark", "Instance"],
         title="Spatial Resolution",
     )
 
@@ -33,7 +36,7 @@ def create_subplots(data, y_metric):
         color="Solver",
         symbol="Status",
         symbol_map=status_symbols,
-        hover_data=["Benchmark", "Size"],
+        hover_data=["Benchmark", "Instance"],
         title="Num Variables",
     )
 
@@ -44,7 +47,7 @@ def create_subplots(data, y_metric):
         color="Solver",
         symbol="Status",
         symbol_map=status_symbols,
-        hover_data=["Benchmark", "Size"],
+        hover_data=["Benchmark", "Instance"],
         title="Num Constraints",
     )
 
