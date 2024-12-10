@@ -96,6 +96,13 @@ if selected_benchmark in metadata:
             + "h"
         )
 
+        sizes_df["Spatial resolution"] = sizes_df["Spatial resolution"].apply(
+            lambda x: f"{x} node" if int(x) == 1 else f"{x} nodes"
+        )
+        sizes_df["Temporal resolution"] = (
+            sizes_df["Temporal resolution"].astype(str) + "h"
+        )
+
         # Filter the sizes_df to include only sizes present in the results CSV for the selected benchmark
         filtered_results = df_result[df_result["Benchmark"] == selected_benchmark]
         matching_sizes = filtered_results["Size"].unique()
