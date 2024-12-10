@@ -3,7 +3,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29 (https://github.c
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -17,7 +17,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314 (https://github.
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -31,7 +31,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332 (https://github.
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -45,7 +45,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29 (https://github.c
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
@@ -59,7 +59,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314 (https://github.
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
@@ -73,7 +73,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332 (https://github.
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
@@ -87,7 +87,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29 (https://github.c
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -101,7 +101,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314 (https://github.
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -115,7 +115,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332 (https://github.
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -129,7 +129,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29 (https://github.com/jump-d
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -143,7 +143,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314 (https://github.com/jump-
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -157,7 +157,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332 (https://github.com/jump-
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -171,7 +171,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29 (https://github.com/jump-d
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
@@ -185,7 +185,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314 (https://github.com/jump-
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
@@ -199,7 +199,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332 (https://github.com/jump-
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (24 hours)
   Temporal resolution: 1 hourly
@@ -213,7 +213,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29 (https://github.com/jump-d
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -227,7 +227,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314 (https://github.com/jump-
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -241,7 +241,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332 (https://github.com/jump-
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -255,7 +255,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29 (https://github.com/jump
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -269,7 +269,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314 (https://github.com/jum
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -283,7 +283,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332 (https://github.com/jum
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -297,7 +297,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29 (https://github.com/jump
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon:
   Temporal resolution: 1 hourly
@@ -311,7 +311,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314 (https://github.com/jum
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon:
   Temporal resolution: 1 hourly
@@ -325,7 +325,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332 (https://github.com/jum
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon:
   Temporal resolution: 1 hourly
@@ -339,7 +339,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29 (https://github.com/jump
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -353,7 +353,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314 (https://github.com/jum
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -367,7 +367,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332 (https://github.com/jum
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -381,7 +381,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29 (https://github.com
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -395,7 +395,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314 (https://github.co
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -409,7 +409,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332 (https://github.co
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (12 hours)
   Temporal resolution: 1 hourly
@@ -423,7 +423,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29 (https://github.com
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon:
   Temporal resolution: 1 hourly
@@ -437,7 +437,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314 (https://github.co
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon:
   Temporal resolution: 1 hourly
@@ -451,7 +451,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332 (https://github.co
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon:
   Temporal resolution: 1 hourly
@@ -465,7 +465,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29 (https://github.com
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -479,7 +479,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314 (https://github.co
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
@@ -493,7 +493,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332 (https://github.co
   Model name: Sienna
   Version:
   Technique: MILP
-  Kind of problem: Infrastructure
+  Kind of problem: Operational
   Sectors: Power
   Time horizon: Single stage (48 hours)
   Temporal resolution: 1 hourly
