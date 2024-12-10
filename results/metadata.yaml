@@ -12,8 +12,8 @@ genx-1_three_zones:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 171878
+    N. of variables:
     N. of continuous variables: 171880
     N. of integer variables: 16635
     N. of binary variables: 3696
@@ -32,8 +32,8 @@ genx-2_three_zones_w_electrolyzer:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 232867
+    N. of variables:
     N. of continuous variables: 232869
     N. of integer variables: 16635
     N. of binary variables: 3696
@@ -53,8 +53,8 @@ genx-3_three_zones_w_co2_capture:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 171878
+    N. of variables:
     N. of continuous variables: 171880
     N. of integer variables: 16635
     N. of binary variables: 3696
@@ -86,8 +86,8 @@ genx-4_three_zones_w_policies_slack:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 184817
+    N. of variables:
     N. of continuous variables: 184819
     N. of integer variables: 16635
     N. of binary variables: 3696
@@ -112,8 +112,8 @@ genx-5_three_zones_w_piecewise_fuel:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 205142
+    N. of variables:
     N. of continuous variables: 205144
     N. of integer variables: 16635
     N. of binary variables: 3696
@@ -132,8 +132,8 @@ genx-6_three_zones_w_multistage:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 171944
+    N. of variables:
     N. of continuous variables: 171946
     N. of integer variables: 16638
     N. of binary variables: 3696
@@ -155,8 +155,8 @@ genx-7_three_zones_w_colocated_VRE_storage:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 24
-    N. of variables:
     N. of constraints: 4325
+    N. of variables:
     N. of continuous variables: 4327
     N. of integer variables: 219
     N. of binary variables: 48
@@ -178,8 +178,8 @@ genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 302449
+    N. of variables:
     N. of continuous variables: 302451
     N. of integer variables: 15123
     N. of binary variables: 3360
@@ -200,8 +200,8 @@ genx-9_three_zones_w_retrofit:
   Sizes:
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 438008
+    N. of variables:
     N. of continuous variables: 438010
     N. of integer variables: 83181
     N. of binary variables: 3696
@@ -219,64 +219,11 @@ genx-10_IEEE_9_bus_DC_OPF:
   Sizes:
   - Spatial resolution: 9
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 1235166
+    N. of variables:
     N. of continuous variables: 1235168
     N. of integer variables: 78843
     N. of binary variables: 0
-tulipa-1_EU_investment_simple:
-  Short description: European-level investment and operation model to consider integer
-    investments and unit commitment variables
-  Model name: Tulipa
-  Version:
-  Technique: MILP
-  Kind of problem: Infrastructure
-  Sectors: Power
-  Time horizon: Single period (1 year)
-  MILP features: Unit commitment
-  Sizes:
-  - Spatial resolution: 28
-    Temporal resolution: 24
-    N. of variables:
-    N. of constraints: 4746
-    N. of continuous variables: 6658
-    N. of integer variables: 251
-    N. of binary variables: 7
-  - Spatial resolution: 28
-    Temporal resolution: 168
-    N. of variables:
-    N. of constraints: 46592
-    N. of continuous variables: 46594
-    N. of integer variables: 251
-    N. of binary variables: 7
-  - Spatial resolution: 28
-    Temporal resolution: 672
-    N. of variables:
-    N. of constraints: 186368
-    N. of continuous variables: 186370
-    N. of integer variables: 251
-    N. of binary variables: 7
-  - Spatial resolution: 28
-    Temporal resolution: 2016
-    N. of variables:
-    N. of constraints: 559104
-    N. of continuous variables: 559106
-    N. of integer variables: 251
-    N. of binary variables: 7
-  - Spatial resolution: 28
-    Temporal resolution: 4032
-    N. of variables:
-    N. of constraints: 1118208
-    N. of continuous variables: 1118210
-    N. of integer variables: 251
-    N. of binary variables: 7
-  - Spatial resolution: 28
-    Temporal resolution: 8760
-    N. of variables:
-    N. of constraints: 2429440
-    N. of continuous variables: 2429442
-    N. of integer variables: 251
-    N. of binary variables: 7
 pglib_opf_case162_ieee_dtc:
   Short description: System stability study based on the IEEE 17-Generator Dynamic
     Test Case with 162 buses and 17 generators
@@ -290,8 +237,8 @@ pglib_opf_case162_ieee_dtc:
   Sizes:
   - Spatial resolution: 162
     Temporal resolution: NA
-    N. of variables:
     N. of constraints: 1867
+    N. of variables:
     N. of continuous variables: 1869
     N. of integer variables: 0
     N. of binary variables: 284
@@ -308,8 +255,8 @@ pglib_opf_case1803_snem:
   Sizes:
   - Spatial resolution: 1803
     Temporal resolution: NA
-    N. of variables:
     N. of constraints: 18574
+    N. of variables:
     N. of continuous variables: 18576
     N. of integer variables: 0
     N. of binary variables: 2795
@@ -325,8 +272,8 @@ pglib_opf_case1951_rte:
   Sizes:
   - Spatial resolution: 1951
     Temporal resolution: NA
-    N. of variables:
     N. of constraints: 17528
+    N. of variables:
     N. of continuous variables: 17530
     N. of integer variables: 0
     N. of binary variables: 2596
@@ -342,8 +289,8 @@ pglib_opf_case2848:
   Sizes:
   - Spatial resolution: 2848
     Temporal resolution: NA
-    N. of variables:
     N. of constraints: 25505
+    N. of variables:
     N. of continuous variables: 25507
     N. of integer variables: 0
     N. of binary variables: 3776
@@ -359,8 +306,8 @@ pglib_opf_case2868:
   Sizes:
   - Spatial resolution: 2868
     Temporal resolution: NA
-    N. of variables:
     N. of constraints: 25717
+    N. of variables:
     N. of continuous variables: 25719
     N. of integer variables: 0
     N. of binary variables: 3808
@@ -377,8 +324,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 6048
+    N. of variables:
     N. of continuous variables: 6050
     N. of integer variables: 0
 Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
@@ -394,8 +341,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 6048
+    N. of variables:
     N. of continuous variables: 6050
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -412,8 +359,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 6048
+    N. of variables:
     N. of continuous variables: 6050
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -430,8 +377,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 12096
+    N. of variables:
     N. of continuous variables: 12098
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -448,8 +395,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 12096
+    N. of variables:
     N. of continuous variables: 12098
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -466,8 +413,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 12096
+    N. of variables:
     N. of continuous variables: 12098
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -484,8 +431,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 24192
+    N. of variables:
     N. of continuous variables: 24194
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -502,8 +449,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 24192
+    N. of variables:
     N. of continuous variables: 24194
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -520,8 +467,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 24192
+    N. of variables:
     N. of continuous variables: 24194
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -537,8 +484,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 12540
+    N. of variables:
     N. of continuous variables: 12542
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -554,8 +501,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 12540
+    N. of variables:
     N. of continuous variables: 12542
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -571,8 +518,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 12540
+    N. of variables:
     N. of continuous variables: 12542
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -588,8 +535,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 25080
+    N. of variables:
     N. of continuous variables: 25082
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -605,8 +552,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 25080
+    N. of variables:
     N. of continuous variables: 25082
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -622,8 +569,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 25080
+    N. of variables:
     N. of continuous variables: 25082
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -639,8 +586,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 50160
+    N. of variables:
     N. of continuous variables: 50162
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -656,8 +603,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 50160
+    N. of variables:
     N. of continuous variables: 50162
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -673,8 +620,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 50160
+    N. of variables:
     N. of continuous variables: 50162
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -691,8 +638,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 10368
+    N. of variables:
     N. of continuous variables: 10370
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -709,8 +656,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 10368
+    N. of variables:
     N. of continuous variables: 10370
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -727,8 +674,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 10368
+    N. of variables:
     N. of continuous variables: 10370
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -745,8 +692,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 20736
+    N. of variables:
     N. of continuous variables: 20738
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -763,8 +710,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 20736
+    N. of variables:
     N. of continuous variables: 20738
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -781,8 +728,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 20736
+    N. of variables:
     N. of continuous variables: 20738
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -799,8 +746,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 41742
+    N. of variables:
     N. of continuous variables: 41744
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -817,8 +764,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 41742
+    N. of variables:
     N. of continuous variables: 41744
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -835,8 +782,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 41742
+    N. of variables:
     N. of continuous variables: 41744
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -852,8 +799,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 9792
+    N. of variables:
     N. of continuous variables: 9794
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -869,8 +816,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 9792
+    N. of variables:
     N. of continuous variables: 9794
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -886,8 +833,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 9792
+    N. of variables:
     N. of continuous variables: 9794
     N. of integer variables: 0
     N. of binary variables: 1944
@@ -903,8 +850,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 19584
+    N. of variables:
     N. of continuous variables: 19856
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -920,8 +867,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 19584
+    N. of variables:
     N. of continuous variables: 19856
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -937,8 +884,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 19584
+    N. of variables:
     N. of continuous variables: 19856
     N. of integer variables: 0
     N. of binary variables: 3888
@@ -954,8 +901,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 39168
+    N. of variables:
     N. of continuous variables: 39170
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -971,8 +918,8 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 39168
+    N. of variables:
     N. of continuous variables: 39170
     N. of integer variables: 0
     N. of binary variables: 7776
@@ -988,11 +935,64 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables:
     N. of constraints: 39168
+    N. of variables:
     N. of continuous variables: 39170
     N. of integer variables: 0
     N. of binary variables: 7776
+tulipa-1_EU_investment_simple:
+  Short description: European-level investment and operation model to consider integer
+    investments and unit commitment variables
+  Model name: Tulipa
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features: Unit commitment
+  Sizes:
+  - Spatial resolution: 28
+    Temporal resolution: 24
+    N. of constraints: 4746
+    N. of variables:
+    N. of continuous variables: 6658
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 52.1
+    N. of constraints: 46592
+    N. of variables:
+    N. of continuous variables: 46594
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 13
+    N. of constraints: 186368
+    N. of variables:
+    N. of continuous variables: 186370
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 4.3
+    N. of constraints: 559104
+    N. of variables:
+    N. of continuous variables: 559106
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 2.2
+    N. of constraints: 1118208
+    N. of variables:
+    N. of continuous variables: 1118210
+    N. of integer variables: 251
+    N. of binary variables: 7
+  - Spatial resolution: 28
+    Temporal resolution: 1
+    N. of constraints: 2429440
+    N. of variables:
+    N. of continuous variables: 2429442
+    N. of integer variables: 251
+    N. of binary variables: 7
 pypsa-eur-sec:
   Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
     2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
@@ -1006,148 +1006,148 @@ pypsa-eur-sec:
   Sizes:
   - Spatial resolution: 2
     Temporal resolution: 24
-    N. of variables: 63264
     N. of constraints: 132272
+    N. of variables: 63264
   - Spatial resolution: 3
     Temporal resolution: 24
-    N. of variables: 91790
     N. of constraints: 192200
+    N. of variables: 91790
   - Spatial resolution: 4
     Temporal resolution: 24
-    N. of variables: 121410
     N. of constraints: 255776
+    N. of variables: 121410
   - Spatial resolution: 2
     Temporal resolution: 12
-    N. of variables: 126405
     N. of constraints: 264402
+    N. of variables: 126405
   - Spatial resolution: 5
     Temporal resolution: 24
-    N. of variables: 150668
     N. of constraints: 318627
+    N. of variables: 150668
   - Spatial resolution: 6
     Temporal resolution: 24
-    N. of variables: 178831
     N. of constraints: 377463
+    N. of variables: 178831
   - Spatial resolution: 3
     Temporal resolution: 12
-    N. of variables: 183399
     N. of constraints: 384190
+    N. of variables: 183399
   - Spatial resolution: 7
     Temporal resolution: 24
-    N. of variables: 207357
     N. of constraints: 438851
+    N. of variables: 207357
   - Spatial resolution: 8
     Temporal resolution: 24
-    N. of variables: 235157
     N. of constraints: 494405
+    N. of variables: 235157
   - Spatial resolution: 4
     Temporal resolution: 12
-    N. of variables: 242582
     N. of constraints: 511276
+    N. of variables: 242582
   - Spatial resolution: 9
     Temporal resolution: 24
-    N. of variables: 262587
     N. of constraints: 552141
+    N. of variables: 262587
   - Spatial resolution: 10
     Temporal resolution: 24
-    N. of variables: 290747
     N. of constraints: 612796
+    N. of variables: 290747
   - Spatial resolution: 5
     Temporal resolution: 12
-    N. of variables: 301038
     N. of constraints: 636907
+    N. of variables: 301038
   - Spatial resolution: 6
     Temporal resolution: 12
-    N. of variables: 357304
     N. of constraints: 754508
+    N. of variables: 357304
   - Spatial resolution: 7
     Temporal resolution: 12
-    N. of variables: 414298
     N. of constraints: 877216
+    N. of variables: 414298
   - Spatial resolution: 8
     Temporal resolution: 12
-    N. of variables: 469836
     N. of constraints: 988250
+    N. of variables: 469836
   - Spatial resolution: 2
     Temporal resolution: 3
-    N. of variables: 505253
     N. of constraints: 1057182
+    N. of variables: 505253
   - Spatial resolution: 9
     Temporal resolution: 12
-    N. of variables: 524639
     N. of constraints: 1103656
+    N. of variables: 524639
   - Spatial resolution: 10
     Temporal resolution: 12
-    N. of variables: 580902
     N. of constraints: 1224901
+    N. of variables: 580902
   - Spatial resolution: 3
     Temporal resolution: 3
-    N. of variables: 733056
     N. of constraints: 1536130
+    N. of variables: 733056
   - Spatial resolution: 4
     Temporal resolution: 3
-    N. of variables: 969618
     N. of constraints: 2044276
+    N. of variables: 969618
   - Spatial resolution: 5
     Temporal resolution: 3
-    N. of variables: 1203263
     N. of constraints: 2546587
+    N. of variables: 1203263
   - Spatial resolution: 6
     Temporal resolution: 3
-    N. of variables: 1428148
     N. of constraints: 3016778
+    N. of variables: 1428148
   - Spatial resolution: 2
     Temporal resolution: 1
-    N. of variables: 1515511
     N. of constraints: 3171262
+    N. of variables: 1515511
   - Spatial resolution: 7
     Temporal resolution: 3
-    N. of variables: 1655951
     N. of constraints: 3507406
+    N. of variables: 1655951
   - Spatial resolution: 8
     Temporal resolution: 3
-    N. of variables: 1877918
     N. of constraints: 3951320
+    N. of variables: 1877918
   - Spatial resolution: 9
     Temporal resolution: 3
-    N. of variables: 2096960
     N. of constraints: 4412746
+    N. of variables: 2096960
   - Spatial resolution: 3
     Temporal resolution: 1
-    N. of variables: 2198803
     N. of constraints: 4607970
+    N. of variables: 2198803
   - Spatial resolution: 10
     Temporal resolution: 3
-    N. of variables: 2321842
     N. of constraints: 4897531
+    N. of variables: 2321842
   - Spatial resolution: 4
     Temporal resolution: 1
-    N. of variables: 2908374
     N. of constraints: 6132276
+    N. of variables: 2908374
   - Spatial resolution: 5
     Temporal resolution: 1
-    N. of variables: 3609188
     N. of constraints: 7639067
+    N. of variables: 3609188
   - Spatial resolution: 6
     Temporal resolution: 1
-    N. of variables: 4283722
     N. of constraints: 9049498
+    N. of variables: 4283722
   - Spatial resolution: 7
     Temporal resolution: 1
-    N. of variables: 4967014
     N. of constraints: 10521246
+    N. of variables: 4967014
   - Spatial resolution: 8
     Temporal resolution: 1
-    N. of variables: 5632790
     N. of constraints: 11852840
+    N. of variables: 5632790
   - Spatial resolution: 9
     Temporal resolution: 1
-    N. of variables: 6289801
     N. of constraints: 13236986
+    N. of variables: 6289801
   - Spatial resolution: 10
     Temporal resolution: 1
-    N. of variables: 6964332
     N. of constraints: 14691211
+    N. of variables: 6964332
 pypsa-eur-elec-trex:
   Short description: PyPSA-Eur power sector infrastructure run for Italy considering
     2050 as single planning horizon with transmission expansion (LP, lot of variables,
@@ -1162,92 +1162,92 @@ pypsa-eur-elec-trex:
   Sizes:
   - Spatial resolution: 2
     Temporal resolution: 24
-    N. of variables: 19007
     N. of constraints: 38732
+    N. of variables: 19007
   - Spatial resolution: 3
     Temporal resolution: 24
-    N. of variables: 28876
     N. of constraints: 59926
+    N. of variables: 28876
   - Spatial resolution: 2
     Temporal resolution: 12
-    N. of variables: 37983
     N. of constraints: 77422
+    N. of variables: 37983
   - Spatial resolution: 4
     Temporal resolution: 24
-    N. of variables: 39842
     N. of constraints: 84773
+    N. of variables: 39842
   - Spatial resolution: 5
     Temporal resolution: 24
-    N. of variables: 50442
     N. of constraints: 108888
+    N. of variables: 50442
   - Spatial resolution: 3
     Temporal resolution: 12
-    N. of variables: 57705
     N. of constraints: 119786
+    N. of variables: 57705
   - Spatial resolution: 6
     Temporal resolution: 24
-    N. of variables: 58852
     N. of constraints: 126798
+    N. of variables: 58852
   - Spatial resolution: 7
     Temporal resolution: 24
-    N. of variables: 68722
     N. of constraints: 149453
+    N. of variables: 68722
   - Spatial resolution: 8
     Temporal resolution: 24
-    N. of variables: 76399
     N. of constraints: 163342
+    N. of variables: 76399
   - Spatial resolution: 4
     Temporal resolution: 12
-    N. of variables: 79619
     N. of constraints: 169453
+    N. of variables: 79619
   - Spatial resolution: 9
     Temporal resolution: 24
-    N. of variables: 85172
     N. of constraints: 182343
+    N. of variables: 85172
   - Spatial resolution: 10
     Temporal resolution: 24
-    N. of variables: 93944
     N. of constraints: 202802
+    N. of variables: 93944
   - Spatial resolution: 5
     Temporal resolution: 12
-    N. of variables: 100802
     N. of constraints: 217658
+    N. of variables: 100802
   - Spatial resolution: 6
     Temporal resolution: 12
-    N. of variables: 117605
     N. of constraints: 253453
+    N. of variables: 117605
   - Spatial resolution: 7
     Temporal resolution: 12
-    N. of variables: 137328
     N. of constraints: 298738
+    N. of variables: 137328
   - Spatial resolution: 2
     Temporal resolution: 3
-    N. of variables: 151841
     N. of constraints: 309562
+    N. of variables: 151841
   - Spatial resolution: 8
     Temporal resolution: 12
-    N. of variables: 152668
     N. of constraints: 326497
+    N. of variables: 152668
   - Spatial resolution: 9
     Temporal resolution: 12
-    N. of variables: 170199
     N. of constraints: 364478
+    N. of variables: 170199
   - Spatial resolution: 10
     Temporal resolution: 12
-    N. of variables: 187729
     N. of constraints: 405377
+    N. of variables: 187729
   - Spatial resolution: 3
     Temporal resolution: 3
-    N. of variables: 230682
     N. of constraints: 478946
+    N. of variables: 230682
   - Spatial resolution: 4
     Temporal resolution: 3
-    N. of variables: 318285
     N. of constraints: 677533
+    N. of variables: 318285
   - Spatial resolution: 2
     Temporal resolution: 1
-    N. of variables: 455459
     N. of constraints: 928602
+    N. of variables: 455459
 pypsa-eur-elec-op:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single
     planning horizon (LP, lot of variables, poorly intermeshed constraints)
@@ -1261,92 +1261,92 @@ pypsa-eur-elec-op:
   Sizes:
   - Spatial resolution: 2
     Temporal resolution: 24
-    N. of variables: 19006
     N. of constraints: 38730
+    N. of variables: 19006
   - Spatial resolution: 3
     Temporal resolution: 24
-    N. of variables: 28873
     N. of constraints: 59920
+    N. of variables: 28873
   - Spatial resolution: 2
     Temporal resolution: 12
-    N. of variables: 37982
     N. of constraints: 77420
+    N. of variables: 37982
   - Spatial resolution: 4
     Temporal resolution: 24
-    N. of variables: 39835
     N. of constraints: 84759
+    N. of variables: 39835
   - Spatial resolution: 5
     Temporal resolution: 24
-    N. of variables: 50433
     N. of constraints: 108870
+    N. of variables: 50433
   - Spatial resolution: 3
     Temporal resolution: 12
-    N. of variables: 57702
     N. of constraints: 119780
+    N. of variables: 57702
   - Spatial resolution: 6
     Temporal resolution: 24
-    N. of variables: 58841
     N. of constraints: 126776
+    N. of variables: 58841
   - Spatial resolution: 7
     Temporal resolution: 24
-    N. of variables: 68709
     N. of constraints: 149427
+    N. of variables: 68709
   - Spatial resolution: 8
     Temporal resolution: 24
-    N. of variables: 76387
     N. of constraints: 163318
+    N. of variables: 76387
   - Spatial resolution: 4
     Temporal resolution: 12
-    N. of variables: 79612
     N. of constraints: 169439
+    N. of variables: 79612
   - Spatial resolution: 9
     Temporal resolution: 24
-    N. of variables: 85159
     N. of constraints: 182317
+    N. of variables: 85159
   - Spatial resolution: 10
     Temporal resolution: 24
-    N. of variables: 93929
     N. of constraints: 202772
+    N. of variables: 93929
   - Spatial resolution: 5
     Temporal resolution: 12
-    N. of variables: 100793
     N. of constraints: 217640
+    N. of variables: 100793
   - Spatial resolution: 6
     Temporal resolution: 12
-    N. of variables: 117594
     N. of constraints: 253431
+    N. of variables: 117594
   - Spatial resolution: 7
     Temporal resolution: 12
-    N. of variables: 137315
     N. of constraints: 298712
+    N. of variables: 137315
   - Spatial resolution: 2
     Temporal resolution: 3
-    N. of variables: 151840
     N. of constraints: 309560
+    N. of variables: 151840
   - Spatial resolution: 8
     Temporal resolution: 12
-    N. of variables: 152656
     N. of constraints: 326473
+    N. of variables: 152656
   - Spatial resolution: 9
     Temporal resolution: 12
-    N. of variables: 170186
     N. of constraints: 364452
+    N. of variables: 170186
   - Spatial resolution: 10
     Temporal resolution: 12
-    N. of variables: 187714
     N. of constraints: 405347
+    N. of variables: 187714
   - Spatial resolution: 3
     Temporal resolution: 3
-    N. of variables: 230679
     N. of constraints: 478940
+    N. of variables: 230679
   - Spatial resolution: 4
     Temporal resolution: 3
-    N. of variables: 318278
     N. of constraints: 677519
+    N. of variables: 318278
   - Spatial resolution: 2
     Temporal resolution: 1
-    N. of variables: 455458
     N. of constraints: 928600
+    N. of variables: 455458
 pypsa-eur-elec-op-ucconv:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single
     planning horizon and unit commitment for conventional fleet (MILP, lot of variables,
@@ -1361,84 +1361,84 @@ pypsa-eur-elec-op-ucconv:
   Sizes:
   - Spatial resolution: 2
     Temporal resolution: 24
-    N. of variables: 23386
     N. of constraints: 48218
+    N. of variables: 23386
   - Spatial resolution: 3
     Temporal resolution: 24
-    N. of variables: 34348
     N. of constraints: 71234
+    N. of variables: 34348
   - Spatial resolution: 2
     Temporal resolution: 12
-    N. of variables: 46742
     N. of constraints: 96398
+    N. of variables: 46742
   - Spatial resolution: 4
     Temporal resolution: 24
-    N. of variables: 47500
     N. of constraints: 100817
+    N. of variables: 47500
   - Spatial resolution: 5
     Temporal resolution: 24
-    N. of variables: 60288
     N. of constraints: 129672
+    N. of variables: 60288
   - Spatial resolution: 3
     Temporal resolution: 12
-    N. of variables: 68652
     N. of constraints: 142409
+    N. of variables: 68652
   - Spatial resolution: 6
     Temporal resolution: 24
-    N. of variables: 69791
     N. of constraints: 150496
+    N. of variables: 69791
   - Spatial resolution: 7
     Temporal resolution: 24
-    N. of variables: 80754
     N. of constraints: 176065
+    N. of variables: 80754
   - Spatial resolution: 8
     Temporal resolution: 24
-    N. of variables: 89527
     N. of constraints: 192874
+    N. of variables: 89527
   - Spatial resolution: 4
     Temporal resolution: 12
-    N. of variables: 94942
     N. of constraints: 201557
+    N. of variables: 94942
   - Spatial resolution: 9
     Temporal resolution: 24
-    N. of variables: 99394
     N. of constraints: 214791
+    N. of variables: 99394
   - Spatial resolution: 10
     Temporal resolution: 24
-    N. of variables: 109259
     N. of constraints: 238164
+    N. of variables: 109259
   - Spatial resolution: 5
     Temporal resolution: 12
-    N. of variables: 120503
     N. of constraints: 259247
+    N. of variables: 120503
   - Spatial resolution: 6
     Temporal resolution: 12
-    N. of variables: 139494
     N. of constraints: 300876
+    N. of variables: 139494
   - Spatial resolution: 7
     Temporal resolution: 12
-    N. of variables: 161405
     N. of constraints: 351995
+    N. of variables: 161405
   - Spatial resolution: 8
     Temporal resolution: 12
-    N. of variables: 178936
     N. of constraints: 385594
+    N. of variables: 178936
   - Spatial resolution: 2
     Temporal resolution: 3
-    N. of variables: 186880
     N. of constraints: 385478
+    N. of variables: 186880
   - Spatial resolution: 9
     Temporal resolution: 12
-    N. of variables: 198656
     N. of constraints: 429411
+    N. of variables: 198656
   - Spatial resolution: 3
     Temporal resolution: 3
-    N. of variables: 274479
     N. of constraints: 569459
+    N. of variables: 274479
   - Spatial resolution: 2
     Temporal resolution: 1
-    N. of variables: 560578
     N. of constraints: 1156358
+    N. of variables: 560578
 pypsa-gas+wind+sol+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
     infrastructure model
@@ -1452,8 +1452,8 @@ pypsa-gas+wind+sol+ely:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables: 61325
     N. of constraints: 140165
+    N. of variables: 61325
 pypsa-gas+wind+sol+ely-ucgas:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
     infrastructure model with unit commitment on the gas generator
@@ -1467,5 +1467,5 @@ pypsa-gas+wind+sol+ely-ucgas:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of variables: 87604
     N. of constraints: 157684
+    N. of variables: 87604

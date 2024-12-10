@@ -39,8 +39,8 @@ def process_yaml_file(file_path):
                     size_entry = {
                         "Spatial resolution": size.get("Spatial resolution"),
                         "Temporal resolution": size.get("Temporal resolution"),
-                        "N. of variables": size.get("N. of variables", None),
                         "N. of constraints": size.get("N. of constraints", None),
+                        "N. of variables": size.get("N. of variables", None),
                     }
 
                     # Add optional fields if they exist
@@ -80,7 +80,7 @@ def process_yaml_file(file_path):
 
 
 # Process all [Mm]etadata*.yaml files recursively under benchmarks
-for file_path in benchmarks_dir.rglob("[Mm]etadata*.yaml"):
+for file_path in sorted(benchmarks_dir.rglob("[Mm]etadata*.yaml")):
     process_yaml_file(file_path)
 
 
