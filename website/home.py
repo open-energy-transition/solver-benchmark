@@ -114,8 +114,16 @@ def combine_sgm_tables(df):
         sgm_runtime = calculate_sgm(runtime_values)
 
         # Calculate Min and Max Runtime
-        min_runtime = str(round(runtime_values.min(), 1))
-        max_runtime = str(round(runtime_values.max(), 1))
+        min_runtime = runtime_values.min()
+
+        # Exclude TO values for max_runtime based on runtime and status
+        runtime_status = group[["Runtime (s)", "Status"]]
+        valid_runtimes = runtime_status[runtime_status["Status"] == "ok"]["Runtime (s)"]
+        max_runtime = (
+            (valid_runtimes.max())
+            if not valid_runtimes.empty
+            else "No valid max runtime"
+        )
 
         # Calculate the number of benchmarks solved
         solved_benchmarks = len(group[group["Status"] == "ok"])
