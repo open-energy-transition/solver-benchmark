@@ -113,6 +113,10 @@ def combine_sgm_tables(df):
         runtime_values = group["Runtime (s)"]
         sgm_runtime = calculate_sgm(runtime_values)
 
+        # Calculate Min and Max Runtime
+        min_runtime = str(round(runtime_values.min(), 1))
+        max_runtime = str(round(runtime_values.max(), 1))
+
         # Calculate the number of benchmarks solved
         solved_benchmarks = len(group[group["Status"] == "ok"])
 
@@ -120,6 +124,8 @@ def combine_sgm_tables(df):
             {
                 "Solver": solver,
                 "Version": version,
+                "Min Runtime": min_runtime,
+                "Max Runtime": max_runtime,
                 "SGM Runtime": sgm_runtime,
                 "Solved Benchmarks": solved_benchmarks,
             }
@@ -157,7 +163,15 @@ def combine_sgm_tables(df):
 
     # Drop raw SGM values
     combined_df = combined_df[
-        ["Solver", "Version", "SGM Runtime", "SGM Memory", "Solved Benchmarks"]
+        [
+            "Solver",
+            "Version",
+            "Min Runtime",
+            "Max Runtime",
+            "SGM Runtime",
+            "SGM Memory",
+            "Solved Benchmarks",
+        ]
     ]
 
     # Sort by SGM Runtime
