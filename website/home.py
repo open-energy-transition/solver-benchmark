@@ -85,11 +85,7 @@ def combine_sgm_tables(df):
         # Exclude TO values for max_runtime based on runtime and status
         runtime_status = group[["Runtime (s)", "Status"]]
         valid_runtimes = runtime_status[runtime_status["Status"] == "ok"]["Runtime (s)"]
-        max_runtime = (
-            (valid_runtimes.max())
-            if not valid_runtimes.empty
-            else "No valid max runtime"
-        )
+        max_runtime = (valid_runtimes.max()) if not valid_runtimes.empty else "N/A"
 
         # Calculate the number of benchmarks solved
         solved_benchmarks = len(group[group["Status"] == "ok"])
