@@ -3,8 +3,10 @@ import streamlit as st
 
 # local
 from components.benchmark_table import display_table
-from components.filter import generate_filtered_metadata
+from components.filter import display_filter_status, generate_filtered_metadata
 from utils.file_utils import load_benchmark_data, load_metadata
+
+from website.utils.filters import filter_data
 
 metadata = load_metadata("results/metadata.yaml")
 
@@ -49,11 +51,16 @@ if "Solver Version" in df.columns:
 
 # Filter the benchmark data to match the filtered metadata
 if not filtered_metadata.empty:
-    filtered_benchmarks = filtered_metadata["Benchmark Name"].unique()
-    df = df[df["Benchmark"].isin(filtered_benchmarks)]
+    df = filter_data(df, filtered_metadata)
+
+# Filter status
+display_filter_status(df, filtered_metadata)
 
 # Round the DataFrame values
 df = df.round({"Objective Value": 2, "Runtime (s)": 1, "Memory Usage (MB)": 0})
+
+# Rename 'Size' to 'Instance'
+df = df.rename(columns={"Size": "Instance"})
 
 # Display the filtered table
 filtered_df = display_table(df)

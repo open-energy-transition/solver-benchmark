@@ -234,7 +234,7 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=10 * 60,
+    timeout=60,
     override=True,
 ):
     results = {}
