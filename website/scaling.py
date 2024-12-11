@@ -137,7 +137,7 @@ if all_enriched_df.empty:
     st.warning("No data available after processing. Please adjust filters or data.")
 else:
     # Display overall title
-    st.subheader("Scaling Data Across All Benchmarks")
+    st.subheader("Solver Performance Scaling with Benchmark Size")
     # Filter and prepare data for plotting
     combined_data = all_enriched_df[
         [
