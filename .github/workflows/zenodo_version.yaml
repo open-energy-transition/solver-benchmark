@@ -26,5 +26,5 @@ jobs:
             --version_tag "${{ github.ref_name }}" \
             --zenodo_token "${{ secrets.ZENODO_TOKEN }}" \
             --dep_id "${{ secrets.DEPOSITION_ID }}" \
-            --metadata_file "${{ github.workspace }}/benchmarks/pypsa/.zenodo.json" \
+            --metadata_file "${{ github.workspace }}/benchmarks/pypsa/zenodo_metadata.json" \
             --upload_dir "${{ github.workspace }}/benchmarks/pypsa/"
