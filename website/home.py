@@ -24,40 +24,6 @@ solvers = df["Solver"].unique()
 solvers_count = len(solvers)
 unique_solver_versions_count = len(df[["Solver", "Solver Version"]].drop_duplicates())
 
-benchmarks = df["Benchmark"].unique()
-benchmarks_count = len(benchmarks)
-
-# Calculate the unique benchmark-size combinations
-unique_benchmark_sizes = df[["Benchmark", "Size"]].drop_duplicates()
-sizes_count = len(unique_benchmark_sizes)
-
-# TODO: Retrieve this information (e.g., timeout, numCPUs, RAM, etc.) directly from the benchmark runner.
-# Calculate the timeout from TO benchmarks
-timeout_seconds = df[df["Status"] == "TO"]["Runtime (s)"].max()
-timeout_seconds = timeout_seconds if not pd.isna(timeout_seconds) else 60
-timeout_readable = humanize.precisedelta(timeout_seconds, minimum_unit="seconds")
-# Title of the app
-st.title("OET/BE Solver Benchmark")
-
-st.markdown(
-    f"""
-    This website is an open-source benchmark of LP/MILP solvers on representative problems from the energy planning domain.
-    The website aims to help energy system modelers decide the best solver for their application; solver developers improve their solvers using realistic and important examples; and funders accelerate the green transition by giving them reliable metrics to evaluate solver performance over time.
-    We accept community contributions for new benchmarks, new / updated solver versions, and feedback on the benchmarking methodology and metrics via our [GitHub repository](https://github.com/orgs/open-energy-transition/solver-benchmark).
-
-    This project was developed by [Open Energy Transition](https://openenergytransition.org/), with funding from [Breakthrough Energy](https://www.breakthroughenergy.org/).
-
-    | **Details** | |
-    | ------------- | ------------- |
-    | **Solvers** | {solvers_count} ({unique_solver_versions_count}, including versions) |
-    | **Benchmarks** | {benchmarks_count} ({sizes_count}, including sizes) |
-    | **Timeout** | {timeout_readable} |
-    | **vCPU** | 2 (1 core) |
-    | **Memory** | 8GB |
-    """
-)
-
-
 # Filter
 filtered_metadata = generate_filtered_metadata(metadata_df)
 
@@ -188,14 +154,49 @@ def combine_sgm_tables(df):
     return combined_df
 
 
+# Calculate the unique benchmark-size combinations
+benchmarks = df["Benchmark"].unique()
+benchmarks_count = len(benchmarks)
+
+sizes_count = len(df.drop_duplicates(subset=["Size", "Benchmark"], keep="first"))
+
+# TODO: Retrieve this information (e.g., timeout, numCPUs, RAM, etc.) directly from the benchmark runner.
+# Calculate the timeout from TO benchmarks
+timeout_seconds = df[df["Status"] == "TO"]["Runtime (s)"].max()
+timeout_seconds = timeout_seconds if not pd.isna(timeout_seconds) else 60
+timeout_readable = humanize.precisedelta(timeout_seconds, minimum_unit="seconds")
+# Title of the app
+st.title("OET/BE Solver Benchmark")
+
+st.markdown(
+    f"""
+    This website is an open-source benchmark of LP/MILP solvers on representative problems from the energy planning domain.
+    The website aims to help energy system modelers decide the best solver for their application; solver developers improve their solvers using realistic and important examples; and funders accelerate the green transition by giving them reliable metrics to evaluate solver performance over time.
+    We accept community contributions for new benchmarks, new / updated solver versions, and feedback on the benchmarking methodology and metrics via our [GitHub repository](https://github.com/orgs/open-energy-transition/solver-benchmark).
+
+    This project was developed by [Open Energy Transition](https://openenergytransition.org/), with funding from [Breakthrough Energy](https://www.breakthroughenergy.org/).
+
+    | **Details** | |
+    | ------------- | ------------- |
+    | **Solvers** | {solvers_count} ({unique_solver_versions_count}, including versions) |
+    | **Benchmarks** | {benchmarks_count} ({sizes_count}, including sizes) |
+    | **Timeout** | {timeout_readable} |
+    | **vCPU** | 2 (1 core) |
+    | **Memory** | 8GB |
+    """
+)
+
+
 if not df.empty:
     # Generate the Combined Table
     sgm_combined_df = combine_sgm_tables(df)
 
     # Display the Combined Table
-    st.subheader("Results")
+    st.subheader("Results:")
+    st.write(
+        f"Solved benchmarks is the number of benchmarks where the solver returns an ok status, out of {sizes_count} benchmarks"
+    )
     st.table(sgm_combined_df)
-
 
 # Render scatter plot
 render_benchmark_scatter_plot(df, metadata, key="home_scatter_plot")
