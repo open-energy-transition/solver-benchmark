@@ -74,10 +74,14 @@ def display_filter_status(df, metadata_df):
     total_benchmarks = len(metadata_df["Benchmark Name"].unique())
     active_benchmarks = len(df["Benchmark"].unique())
 
+    filters_active = total_benchmarks != active_benchmarks
+
     with st.sidebar:
-        if total_benchmarks != active_benchmarks:
+        if filters_active:
             st.write(
                 f"### Filters are active; showing {active_benchmarks}/{total_benchmarks} benchmarks."
             )
         else:
             st.write("### Showing all benchmarks")
+
+    return filters_active

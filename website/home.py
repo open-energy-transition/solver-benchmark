@@ -89,7 +89,7 @@ if not filtered_metadata.empty:
     df = filter_data(df, filtered_metadata)
 
 # Filter status
-display_filter_status(df, filtered_metadata)
+filters_active = display_filter_status(df, filtered_metadata)
 
 
 def combine_sgm_tables(df):
@@ -119,11 +119,7 @@ def combine_sgm_tables(df):
         # Exclude TO values for max_runtime based on runtime and status
         runtime_status = group[["Runtime (s)", "Status"]]
         valid_runtimes = runtime_status[runtime_status["Status"] == "ok"]["Runtime (s)"]
-        max_runtime = (
-            (valid_runtimes.max())
-            if not valid_runtimes.empty
-            else "No valid max runtime"
-        )
+        max_runtime = (valid_runtimes.max()) if not valid_runtimes.empty else "N/A"
 
         # Calculate the number of benchmarks solved
         solved_benchmarks = len(group[group["Status"] == "ok"])
@@ -191,13 +187,15 @@ def combine_sgm_tables(df):
 if not df.empty:
     # Generate the Combined Table
     sgm_combined_df = combine_sgm_tables(df)
-
     sizes_count = len(df[["Benchmark", "Size"]].drop_duplicates())
     # Display the Combined Table
-    st.subheader("Results:")
+    st.subheader("Results")
+
+    filter_label = "**filtered**" if filters_active else ""
     st.write(
-        f"Solved benchmarks is the number of benchmarks where the solver returns an ok status, out of {sizes_count} **filtered** benchmarks"
+        f"Solved benchmarks is the number of benchmarks where the solver returns an ok status, out of {sizes_count} {filter_label} benchmarks"
     )
+
     st.table(sgm_combined_df)
 
 # Render scatter plot
