@@ -89,7 +89,7 @@ if not filtered_metadata.empty:
     df = filter_data(df, filtered_metadata)
 
 # Filter status
-display_filter_status(df, filtered_metadata)
+filters_active = display_filter_status(df, filtered_metadata)
 
 
 def combine_sgm_tables(df):
@@ -187,11 +187,16 @@ def combine_sgm_tables(df):
 if not df.empty:
     # Generate the Combined Table
     sgm_combined_df = combine_sgm_tables(df)
-
+    sizes_count = len(df[["Benchmark", "Size"]].drop_duplicates())
     # Display the Combined Table
     st.subheader("Results")
-    st.table(sgm_combined_df)
 
+    filter_label = "**filtered**" if filters_active else ""
+    st.write(
+        f"Solved benchmarks is the number of benchmarks where the solver returns an ok status, out of {sizes_count} {filter_label} benchmarks"
+    )
+
+    st.table(sgm_combined_df)
 
 # Render scatter plot
 render_benchmark_scatter_plot(df, metadata, key="home_scatter_plot")
