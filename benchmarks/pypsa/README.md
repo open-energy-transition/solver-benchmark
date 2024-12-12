@@ -31,3 +31,29 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
      ```
 
 The benchmarks can be found in `/tmp/pypsa*.lp` inside the docker container.
+
+### Zenodo Integration
+
+To install the zenodopy package from the specific branch, use the following command:
+
+```sh
+pip install git+https://github.com/drifter089/zenodopy.git@basic_test#egg=zenodopy
+```
+update the Zenodo deposition by running the *benchmarks/pypsa/zenodo_update.py* script with the following arguments:
+
+- `--version_tag`: The version tag for the new release.
+- `--zenodo_token`: The Zenodo API token.
+- `--dep_id`: The Zenodo deposition ID.
+- `--metadata_file`: The metadata JSON file path.
+- `--upload_dir`: The directory containing files to upload.
+
+Example command:
+
+```sh
+python benchmarks/pypsa/zenodo_update.py \
+  --version_tag "<version_tag>" \
+  --zenodo_token "<zenodo_token>" \
+  --dep_id "<dep_id>" \
+  --metadata_file "<metadata_file_path>" \
+  --upload_dir "<upload_directory>"
+```
