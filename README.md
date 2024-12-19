@@ -26,7 +26,7 @@ This is how to activate one:
 And this is how to install the required dependencies once a `venv` is activated:
 - Website:
    ```shell
-   pip install -r website/requirements.txt
+   pip install -r pocs/streamlit/requirements.txt
    ```
 
 We also use the `conda` package manager to run benchmarks using different solver versions, so please make sure it is installed before running the benchmark runner.
@@ -88,7 +88,7 @@ python runner/run_benchmarks.py benchmarks/benchmark_config.yaml 2024
 
 Remember to activate the virtual environment containing the website's requirements, and then run:
 ```shell
-streamlit run website/app.py
+streamlit run pocs/streamlit/app.py
 ```
 The website will be running on: [http://localhost:8501](http://localhost:8501)
 

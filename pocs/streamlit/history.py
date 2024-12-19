@@ -1,13 +1,11 @@
 import pandas as pd
 import plotly.graph_objects as go
-import streamlit as st
-
-# local
 from components.filter import display_filter_status, generate_filtered_metadata
+from utils.calculations import calculate_sgm
 from utils.file_utils import load_benchmark_data, load_metadata
+from utils.filters import filter_data
 
-from website.utils.calculations import calculate_sgm
-from website.utils.filters import filter_data
+import streamlit as st
 
 # Convert metadata to a DataFrame for easier filtering
 metadata = load_metadata("results/metadata.yaml")

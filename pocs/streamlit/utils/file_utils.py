@@ -10,7 +10,7 @@ def load_metadata(file_path):
         return yaml.safe_load(file)
 
 
-def load_benchmark_data(file_path="results/benchmark_results.csv"):
+def load_benchmark_data(file_path="../results/benchmark_results.csv"):
     """
     Load benchmark data from the specified folder and file.
 
@@ -21,8 +21,7 @@ def load_benchmark_data(file_path="results/benchmark_results.csv"):
         pd.DataFrame: Loaded data as a pandas DataFrame.
     """
     # Construct the absolute file path
-    absolute_file_path = Path(__file__).parent.parent.parent / file_path
-
+    absolute_file_path = Path(__file__).resolve().parent.parent.parent / file_path
     try:
         # Load and return the data
         data = pd.read_csv(absolute_file_path)

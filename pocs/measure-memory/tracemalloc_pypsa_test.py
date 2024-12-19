@@ -5,8 +5,6 @@ import tracemalloc
 
 import linopy
 import pypsa
-
-# local
 from _benchmarks import memory_logger
 
 

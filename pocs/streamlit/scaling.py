@@ -1,11 +1,14 @@
 import pandas as pd
 import plotly.express as px
-import streamlit as st
+from components.filter import (
+    display_filter_status,
+    generate_filtered_metadata,
+)
 from packaging.version import parse
+from utils.file_utils import load_benchmark_data, load_metadata
+from utils.filters import filter_data
 
-from website.components.filter import display_filter_status, generate_filtered_metadata
-from website.utils.file_utils import load_benchmark_data, load_metadata
-from website.utils.filters import filter_data
+import streamlit as st
 
 
 def create_subplots(data, y_metric):

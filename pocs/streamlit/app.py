@@ -1,13 +1,7 @@
-import sys
-from pathlib import Path
-
 import pandas as pd
-import streamlit as st
+from utils.file_utils import load_benchmark_data, load_metadata
 
-# local
-# Adds the parent directory to sys.path to make imports work in both GitHub Actions CI and locally.
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from website.utils.file_utils import load_benchmark_data, load_metadata
+import streamlit as st
 
 st.markdown(
     """
