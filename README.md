@@ -84,8 +84,44 @@ python runner/run_benchmarks.py benchmarks/benchmark_config.yaml 2024
 
 ## Running the Website
 
+### Using Streamlit
+
 Remember to activate the virtual environment containing the website's requirements, and then run:
 ```shell
 streamlit run website/app.py
 ```
 The website will be running on: [http://localhost:8501](http://localhost:8501)
+
+### Using Docker
+
+#### Build the Docker Image
+
+```shell
+docker build -t benchmark-website-snapshot .
+```
+
+#### Run the Docker Container
+
+```shell
+docker run -p 8501:8501 benchmark-website-snapshot
+```
+
+#### Save the Image as a .tar File
+
+```shell
+docker save -o benchmark-website-snapshot.tar benchmark-website-snapshot
+```
+
+#### Load and Run the Docker Image
+
+- **Load the Image:**
+
+  ```shell
+  docker load < benchmark-website-snapshot.tar
+  ```
+
+- **Run the Docker Container:**
+
+  ```shell
+  docker run -p 8501:8501 benchmark-website-snapshot
+  ```

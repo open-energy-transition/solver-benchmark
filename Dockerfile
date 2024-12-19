@@ -1,4 +1,4 @@
-# Dockerfile for Streamlit Website with Gurobi Results
+# Dockerfile for Streamlit Website
 
 # Use a lightweight Python base image
 FROM python:3.12-slim
