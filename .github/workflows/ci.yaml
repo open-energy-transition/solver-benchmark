@@ -28,10 +28,10 @@ jobs:
           pip install --upgrade pip pre-commit
           pip install -r pocs/streamlit/requirements.txt
 
-      # - name: Check code formatting
-      #   run: |
-      #     pre-commit install
-      #     pre-commit run --all-files
+      - name: Check code formatting
+        run: |
+          pre-commit install
+          pre-commit run --all-files
 
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
