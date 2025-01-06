@@ -2,6 +2,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { CloseIcon, MenuIcon } from "../../assets/icons"
+import Link from "next/link"
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -15,9 +16,9 @@ const Header = () => {
         <div className="flex w-max">
           <a
             href="#"
-            className="-m-1.5 p-1.5 flex font-league font-bold text-white text-3xl 2xl:text-4xl w-max"
+            className="-m-1.5 p-1.5 flex gap-1 font-league font-bold text-white text-2xl sm:text-3xl 2xl:text-4xl w-max"
           >
-            <div>
+            <div className="w-8 h-8 lg:w-10 lg:h-10">
               <Image
                 src="/logo.png"
                 alt="Contribution image"
@@ -32,7 +33,7 @@ const Header = () => {
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 pt-0"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 pt-2 lg:pt-0"
           >
             <MenuIcon className="text-white h-6 w-6" />
           </button>
@@ -52,13 +53,13 @@ const Header = () => {
           </a>
         </div>
         <div className="hidden lg:flex w-max">
-          <a
-            href="#"
+          <Link
+            href="/admin/dashboard"
             className="rounded-lg px-4 2xl:px-7 py-3 text-base text-navy font-bold bg-white shadow-sm
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max"
           >
             BENCHMARK RESULTS
-          </a>
+          </Link>
         </div>
       </nav>
 
