@@ -6,6 +6,11 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "grid-cols-1",
+    "grid-cols-2",
+    "grid-cols-3",
+  ],
   theme: {
     extend: {
       colors: {
@@ -23,6 +28,9 @@ export default {
         "stroke": "#EBEFF2",
         "teal": "#1F7A8C",
         "white": "#ffffff",
+        "light-blue": "#F5F7FA",
+        "light-grey": "#E4E7E9",
+        "lime-green": "#E5EEEB"
       },
       fontFamily: {
         league: ["var(--font-league-spartan)", "sans-serif"],
@@ -30,5 +38,18 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
+      addUtilities({
+        ".box-decoration-clone": {
+          "-webkit-box-decoration-break": "clone",
+          "box-decoration-break": "clone",
+        },
+        ".box-decoration-slice": {
+          "-webkit-box-decoration-break": "slice",
+          "box-decoration-break": "slice",
+        },
+      });
+    },
+  ],
 } satisfies Config
