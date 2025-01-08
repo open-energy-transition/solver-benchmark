@@ -24,9 +24,9 @@
 }
 
 :root {
-  --font-lato: 'Lato', sans-serif; /* Fallback to sans-serif */
+  --font-lato: 'Lato', sans-serif;
 }
 
 body {
-  font-family: var(--font-lato); /* Use the custom CSS variable */
+  font-family: var(--font-lato);
 }
