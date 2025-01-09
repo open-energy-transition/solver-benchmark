@@ -47,11 +47,11 @@ const DetailSection = () => {
         {detailData.map((data, idx) => (
           <li key={idx} className="text-base flex items-center">
             {data.icon}
-            <span>
+            <span className="ml-1">
               {data.label}
-              {": "}
+              {":"}
             </span>
-            <span className="font-bold">{data.value}</span>
+            <span className="font-bold ml-1">{data.value}</span>
           </li>
         ))}
       </ul>

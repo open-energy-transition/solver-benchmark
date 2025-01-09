@@ -1,13 +1,12 @@
 import { useSelector } from "react-redux"
 // local
-import BenchmarksSection from "@/components/admin/BenchmarksSection"
 import DetailSection from "@/components/admin/DetailSection"
-import FilterSection from "@/components/admin/FilterSection"
-import ResultsSection from "@/components/admin/ResultsSections"
+import BenchMarkDetailSection from "@/components/admin/benchmark-detail/DetailSection"
 import { AdminHeader, Navbar } from "@/components/shared"
+import GraphSection from "@/components/admin/benchmark-detail/GraphSection"
 
 
-const LandingPage = () => {
+const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector((state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded)
 
   return (
@@ -17,12 +16,11 @@ const LandingPage = () => {
         <AdminHeader />
         {/* Content */}
         <DetailSection />
-        <FilterSection />
-        <ResultsSection />
-        <BenchmarksSection />
+        <BenchMarkDetailSection />
+        <GraphSection />
       </div>
     </div>
   )
 }
 
-export default LandingPage
+export default PageBenchmarkDetail

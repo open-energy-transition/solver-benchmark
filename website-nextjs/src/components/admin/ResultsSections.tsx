@@ -3,7 +3,7 @@ import { ArrowIcon } from "@/assets/icons"
 const ResultsSection = () => {
   return (
     <div>
-      <div className="pb-3">
+      <div className="pb-3 pl-3">
         <div className="text-navy font-bold text-xl">Results</div>
         <div className="text-dark-grey">
           We rank solvers by normalized shifted geometric mean (SGM) of runtime

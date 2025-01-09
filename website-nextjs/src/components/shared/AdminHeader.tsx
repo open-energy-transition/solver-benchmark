@@ -3,9 +3,9 @@ import { ForkIcon, GithubIcon, HomeIcon, PreviousIcon } from "@/assets/icons"
 const AdminHeader = () => {
   return (
     <nav>
-      <div className="flex flex-wrap items-center justify-between mx-auto p-4">
-        <div className="flex text-navy text-sm text-opacity-50 items-center space-x-2">
-          <a href="#" >
+      <div className="flex flex-wrap items-center justify-between mx-auto p-4 pl-0">
+        <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+          <a href="#" className="text-navy" >
             <PreviousIcon />
           </a>
           <a href="#" className="flex items-center gap-1">
