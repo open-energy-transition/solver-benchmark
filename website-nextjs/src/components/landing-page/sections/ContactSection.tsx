@@ -1,18 +1,18 @@
 const ContactSection = () => {
   return (
-    <div className="text-white bg-navy px-2 md:px-20 py-10">
-      <div className="mx-auto container px-6">
-        <div className="white text-xl uppercase font-bold font-league">
+    <div className="text-white bg-navy pt-[105px] pb-[73px]">
+      <div className="mx-auto container px-4 lg:px-6">
+        <div className="text-white text-xl leading-1.1 uppercase font-bold font-league mb-4">
           CONTACT
         </div>
         <div className="grid md:flex">
           <div className="w-full md:w-1/2">
-            <div className="text-5xl md:text-6xl font-bold font-league my-5">
+            <div className="text-6.5xl leading-1.2 font-bold font-league">
               GET IN TOUCH
             </div>
-            <h5 className="text-lavender font-league text-2xl my-2 w-full md:w-3/4">
+            <h5 className="text-lavender font-league text-2xl my-2 w-full font-light md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
-              issue for all feedback and suggestions! Otherwise, you can write
+              issue for all feedback and suggestions!<br/> Otherwise, you can write
               to us using this form.
             </h5>
           </div>
@@ -23,7 +23,7 @@ const ContactSection = () => {
             />
             <textarea
               className="rounded-lg px-8 py-5 text-navy"
-              rows={6}
+              rows={4}
               placeholder="Message"
             />
             <div className="flex justify-start md:justify-end mt-3">

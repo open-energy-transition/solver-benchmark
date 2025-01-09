@@ -35,7 +35,17 @@ export default {
       fontFamily: {
         league: ["var(--font-league-spartan)", "sans-serif"],
         lato: ["var(--font-lato)", "sans-serif"],
+        grotesk: ["var(--font-space-grotesk)", "sans-serif"],
       },
+      fontSize: {
+        "6.5xl": "4rem"
+      },
+      lineHeight: {
+        "1.1": "1.1",
+        "1.2": "1.2",
+        "1.3": "1.3",
+        "1.4": "1.4",
+      }
     },
   },
   plugins: [

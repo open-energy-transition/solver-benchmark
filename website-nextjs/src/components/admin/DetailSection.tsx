@@ -43,7 +43,6 @@ const DetailSection = () => {
   return (
     <div className="bg-white rounded-xl py-4 px-12">
       <ul className="flex justify-between text-dark-grey">
-        <li>Details:</li>
         {detailData.map((data, idx) => (
           <li key={idx} className="text-base flex items-center">
             {data.icon}

@@ -8,9 +8,9 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="fixed lg:absolute inset-x-0 top-0 z-50 bg-navy h-28 md:h-32 flex item-end">
+    <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between px-4 py-8 lg:px-8 mx-auto container"
+        className="flex items-center justify-between px-4 lg:px-8 pt-12 pb-8 mx-auto container"
         aria-label="Global"
       >
         <div className="flex w-max">
@@ -22,8 +22,8 @@ const Header = () => {
               <Image
                 src="/logo.png"
                 alt="Contribution image"
-                width={43}
-                height={43}
+                width={35}
+                height={35}
               />
             </div>
             SOLVER BENCHMARK

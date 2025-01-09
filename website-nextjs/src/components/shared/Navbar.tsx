@@ -59,26 +59,26 @@ const Navbar = () => {
         }`}
         aria-label="Sidenav"
       >
-        <div className="overflow-y-auto py-5 px-0 h-full text-white">
-          <div className="mb-4">
+        <div className="overflow-auto overflow-x-hidden py-5 px-0 h-full text-white">
+          <div className="pt-12 pb-11">
             <a
               href="#"
-              className={`-m-1.5 p-1.5 flex gap-1 font-league font-bold text-white text-base w-max
+              className={`-m-1.5 p-1.5 flex items-center gap-0.5 text-white w-max
                  ${isNavExpanded ? "px-16" : "px-4"}`}
             >
-              <div className={`${isNavExpanded ? "w-14 h-14" : "w-10 h-10"}`}>
+              <div className="size-10">
                 <Image
                   src="/logo.png"
                   alt="Contribution image"
-                  width={64}
-                  height={64}
+                  width={35}
+                  height={35}
                 />
               </div>
               {isNavExpanded && (
-                <div className="font-league">
-                  SOLVER
+                <div className="font-grotesk font-thin text-base leading-[21px]">
+                  Solver
                   <br />
-                  BENCHMARK
+                  Benchmark
                 </div>
               )}
             </a>
@@ -88,7 +88,7 @@ const Navbar = () => {
               <li key={idx}>
                 <Link
                   href={navData.route || "#"}
-                  className={`flex items-center py-4 text-xl text-lavender font-normal font-league
+                  className={`flex items-center h-[55px] text-lavender font-normal font-league
                      ${
                        currentRoute === navData.route
                          ? "bg-white bg-opacity-40"
@@ -96,25 +96,25 @@ const Navbar = () => {
                      }
                      ${
                        isNavExpanded
-                         ? "px-8 justify-start"
+                         ? "pl-8 pr-2 justify-start"
                          : "px-2 justify-center"
                      }
                     `}
                 >
                   {navData.icon}
                   {isNavExpanded && (
-                    <span className="ml-3">{navData.label}</span>
+                    <span className="ml-3.5 pl-[1px] text-xl mt-0.5">{navData.label}</span>
                   )}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-        <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex ">
+        <div className={`hidden absolute bottom-2 left-0 justify-center pb-24 space-x-4 w-full lg:flex ${isNavExpanded ? 'pl-2' : ''}`}>
           <a
             onClick={() => dispatch(navbarActions.toggleNav())}
             href="#"
-            className="inline-flex justify-center p-2 text-dark-grey text-lg rounded cursor-pointer font-league gap-2"
+            className="inline-flex justify-center items-center text-dark-grey text-lg rounded cursor-pointer font-league gap-2 leading-none"
           >
             {isNavExpanded && "Collapse"}
             <ArrowToRightIcon />
