@@ -8,7 +8,7 @@ import {
 
 const FilterSection = () => {
   return (
-    <div className="flex gap-4 my-6">
+    <div className="flex flex-wrap border-t border-b border-lavender py-4 gap-4 mb-7">
       {/* Sectors */}
       <div className="bg-white rounded-xl py-2 px-3">
         <div className="flex gap-4">

@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react"
 import * as d3 from "d3"
-import { CircleIcon } from "@/assets/icons"
 
 type SolverType = "GLPK" | "SCIP" | "HiGHS"
 

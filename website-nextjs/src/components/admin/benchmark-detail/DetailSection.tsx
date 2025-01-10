@@ -57,8 +57,8 @@ const DetailSection = () => {
   ]
 
   return (
-    <div className="bg-white rounded-xl py-4 px-12">
-      <ul className="grid grid-cols-3 justify-between text-dark-grey gap-2">
+    <div className="py-5">
+      <ul className="grid grid-cols-3 justify-between text-dark-grey gap-y-2.5 gap-x-3">
         {detailData.map((data, idx) => (
           <li
             key={idx}
@@ -66,7 +66,7 @@ const DetailSection = () => {
             b text-base"
           >
             <h5 className="font-lato text-navy font-bold">{data.label}</h5>
-            <p className="text-navy font-lato font-base">{data.description}</p>
+            <p className="text-navy font-lato font-base mb-6">{data.description}</p>
             <p className="flex justify-between items-center font-base font-league">
               <span className="text-xs">{data.footer.left}</span>
               <span className="">{data.footer.right}</span>

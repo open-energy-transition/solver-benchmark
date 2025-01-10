@@ -9,7 +9,7 @@ const SolverSelection = () => {
   ]
 
   return (
-      <div className="flex gap-4 my-6">
+      <div className="flex gap-4 mt-6 mb-4">
         <select name="solver1" className="w-1/4 px-6 py-4 bg-white border-r-[1.5rem] border-transparent outline outline-stroke outline-1 text-navy text-base rounded-lg focus:ring-white focus:border-white block">
           <option selected>Choose solver 1</option>
           {solvers.map((solver, idx) => (

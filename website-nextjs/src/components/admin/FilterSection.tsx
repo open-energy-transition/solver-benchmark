@@ -7,10 +7,10 @@ import {
 
 const FilterSection = () => {
   return (
-    <div className="bg-white rounded-xl my-4">
-      <div className="flex text-dark-grey">
+    <div className="bg-white rounded-xl my-2">
+      <div className="grid grid-cols-6 text-dark-grey">
         {/* Sectors */}
-        <div className="text-xs flex-1">
+        <div className="text-xs">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
             <BrightIcon className="w-5 h-5" />
             <span>Sectors</span>
@@ -48,7 +48,7 @@ const FilterSection = () => {
           </div>
         </div>
         {/* Kind of Problem */}
-        <div className="text-xs border-r border-stroke">
+        <div className="text-xs border-r border-stroke col-span-2">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
             <WrenchIcon className="w-5 h-5" />
             <span>Kind of Problem</span>
@@ -77,7 +77,7 @@ const FilterSection = () => {
           </div>
         </div>
         {/* Model */}
-        <div className="text-xs border-r border-stroke w-full">
+        <div className="text-xs border-r border-stroke col-span-2 w-full">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
             <PolygonIcon className="w-5 h-5" />
             <span>Model</span>
