@@ -15,14 +15,14 @@ const MissionStart = () => {
           participants in the green energy transition.
         </h5>
         <div className="grid gap-8 lg:flex justify-between text-stroke">
-          <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-30 w-full lg:w-96">
+          <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-30 w-full lg:w-96 flex flex-col">
             <div>
               <LayoutGroupIcon />
             </div>
             <h5 className="my-4 font-league font-bold text-2xl uppercase">
               Solver Developers
             </h5>
-            <div className="">
+            <div className="flex-1">
               <h6>
                 Improve your solver algorithms and performance using our
                 realistic and energy planning relevant benchmarks
@@ -35,14 +35,14 @@ const MissionStart = () => {
               <ArrowUpIcon className="text-white rotate-90 w-6 h-6" />
             </div>
           </div>
-          <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-20 w-full lg:w-96">
+          <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-20 w-full lg:w-96 flex flex-col">
             <div>
             <LampOnIcon />
             </div>
             <h5 className="my-4 font-league font-bold text-2xl uppercase">
               Energy Modellers
             </h5>
-            <div className=" flex items-end">
+            <div className="flex-1">
               <h6>
                 Use our performance data to pick the best solver for your
                 application domain, hardware constraints, and budget
@@ -53,14 +53,14 @@ const MissionStart = () => {
               <ArrowUpIcon className="text-white rotate-90 w-6 h-6" />
             </div>
           </div>
-          <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-20 w-full lg:w-96">
+          <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-20 w-full lg:w-96 flex flex-col">
             <div>
               <UsersAltIcon />
             </div>
             <h5 className="my-4 font-league font-bold text-2xl uppercase">
               Donors and Stakeholders
             </h5>
-            <div className="">
+            <div className="flex-1">
               <h6>
                 Track the evolution of solver performance over time, and
                 maximize the potential return on your investment

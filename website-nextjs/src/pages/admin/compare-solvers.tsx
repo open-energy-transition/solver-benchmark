@@ -4,6 +4,7 @@ import DetailSection from "@/components/admin/DetailSection"
 import { AdminHeader, Navbar } from "@/components/shared"
 import SolverSelection from "@/components/admin/compare-solvers/SolverSelection"
 import FilterSection from "@/components/admin/compare-solvers/FilterSection"
+import SolversGraphSection from "@/components/admin/compare-solvers/SolversGraphSection"
 
 
 const PageCompareSolvers = () => {
@@ -18,6 +19,7 @@ const PageCompareSolvers = () => {
         {/* Content */}
         <SolverSelection />
         <FilterSection />
+        <SolversGraphSection />
       </div>
     </div>
   )

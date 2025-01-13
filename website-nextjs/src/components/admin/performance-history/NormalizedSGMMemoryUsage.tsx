@@ -2,9 +2,9 @@ import D3LineChart from "@/components/shared/D3LineChart"
 
 const NormalizedSGMMemoryUsage = () => {
     return (
-        <div className="my-6">
-          <h5 className="text-navy">Normalized SGM Memory Usage</h5>
-          <D3LineChart />
+        <div>
+          <p className="text-navy font-bold leading-1.5 mb-3">Normalized SGM Memory Usage</p>
+          <D3LineChart title="Normalized SGM Memory Usage" />
         </div>
     )
   }

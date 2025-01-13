@@ -2,9 +2,9 @@ import D3LineChart from "@/components/shared/D3LineChart"
 
 const NormalizedSGMRuntime = () => {
     return (
-        <div className="my-6">
-          <h5 className="text-navy">Normalized SGM Runtime</h5>
-          <D3LineChart />
+        <div>
+          <p className="text-navy font-bold leading-1.5 mb-3">Normalized SGM Runtime</p>
+          <D3LineChart title="Normalized SGM Runtime" />
         </div>
     )
   }

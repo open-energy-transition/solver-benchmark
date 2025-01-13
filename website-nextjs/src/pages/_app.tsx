@@ -15,7 +15,7 @@ function App({ Component, pageProps }: AppProps) {
 
     return (
       <AdminLayout>
-        <main className={`${fontClasses} overflow-auto h-screen`}>
+        <main className={`${fontClasses} bg-light-blue overflow-auto h-screen`}>
           <Component {...props} />
         </main>
       </AdminLayout>

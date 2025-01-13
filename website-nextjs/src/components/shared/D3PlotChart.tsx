@@ -5,6 +5,7 @@ import { CircleIcon } from "@/assets/icons"
 type SolverType = "GLPK" | "SCIP" | "HiGHS"
 
 const D3Chart = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const svgRef = useRef(null)
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const D3Chart = () => {
     }
 
     // Dimensions
-    const width = 600
+    const width = containerRef.current?.clientWidth || 600
     const height = 400
     const margin = { top: 40, right: 20, bottom: 50, left: 70 }
 
@@ -37,7 +38,7 @@ const D3Chart = () => {
     // Create SVG
     const svg = d3
       .select(svgRef.current)
-      .attr("width", width)
+      .attr("width", "100%")
       .attr("height", height)
       .style("background", "white")
       .style("overflow", "visible")
@@ -180,23 +181,25 @@ const D3Chart = () => {
     <div className="bg-white py-4 px-10 rounded-xl">
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="font-bold text-dark-grey text-sm mr-1 flex items-end">
+        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
           Solver:
         </span>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-xs flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="w-3 h-3 text-[#00CC96]" />
+        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <CircleIcon className="size-2 text-[#00CC96]" />
           GLPK
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-xs flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="w-3 h-3 text-[#629BF8]" />
+        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <CircleIcon className="size-2 text-[#629BF8]" />
           SCIP
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-xs flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="w-3 h-3 text-[#B42318]" />
+        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <CircleIcon className="size-2 text-[#B42318]" />
           HIGHS
         </div>
       </div>
-      <svg ref={svgRef}></svg>
+      <div ref={containerRef}>
+        <svg ref={svgRef}></svg>
+      </div>
     </div>
   )
 }

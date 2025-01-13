@@ -2,10 +2,7 @@ import { useSelector } from "react-redux"
 // local
 import DetailSection from "@/components/admin/DetailSection"
 import { AdminHeader, Navbar } from "@/components/shared"
-import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved"
-import NormalizedSection from "@/components/admin/performance-history/NormalizedSection"
 import TableResult from "@/components/admin/raw-result/TableResult"
-import FilterSection from "@/components/admin/raw-result/FilterSection"
 
 const PagePerformanceHistory = () => {
   const isNavExpanded = useSelector(

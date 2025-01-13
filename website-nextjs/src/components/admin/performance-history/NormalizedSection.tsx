@@ -1,16 +1,12 @@
-import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage"
-import NormalizedSGMRuntime from "./NormalizedSGMRuntime"
+import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage";
+import NormalizedSGMRuntime from "./NormalizedSGMRuntime";
 
 const NormalizedSection = () => {
   return (
-    <div className="flex gap-4 w-full">
-      <div className="w-1/2">
-        <NormalizedSGMRuntime />
-      </div>
-      <div className="w-1/2">
-        <NormalizedSGMMemoryUsage />
-      </div>
+    <div className="grid grid-cols-2 gap-4 w-full mb-1.5">
+      <NormalizedSGMRuntime />
+      <NormalizedSGMMemoryUsage />
     </div>
-  )
-}
-export default NormalizedSection
+  );
+};
+export default NormalizedSection;

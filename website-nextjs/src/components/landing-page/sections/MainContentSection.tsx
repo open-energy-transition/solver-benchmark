@@ -4,7 +4,7 @@ const MainContent = () => {
   return (
     <div className="relative pt-4 bg-no-repeat bg-cover bg-navy bg-opacity-20 before:absolute">
       <Image
-        className="absolute -z-10"
+        className="absolute"
         src="/landing_page/main_bg.png"
         alt="Background"
         fill
@@ -12,7 +12,7 @@ const MainContent = () => {
         quality={100}
       />
 
-      <div className="pb-12 pt-24 md:pt-64 px-4 lg:px-6 mx-auto container">
+      <div className="pb-12 pt-24 md:pt-64 px-4 lg:px-6 mx-auto container relative">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
             <h1 className="inline leading-1.4 border border-white border-opacity-10 bg-white bg-opacity-40 text-navy text-4xl font-semibold tracking-tight sm:text-[3.5rem] box-decoration-clone">

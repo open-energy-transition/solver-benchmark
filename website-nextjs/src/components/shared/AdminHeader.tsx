@@ -3,7 +3,7 @@ import { ForkIcon, GithubIcon, HomeIcon, PreviousIcon } from "@/assets/icons"
 const AdminHeader = () => {
   return (
     <nav>
-      <div className="flex flex-wrap items-center justify-between mx-auto p-4 pl-0">
+      <div className="flex flex-wrap items-center justify-between mx-auto py-5 pr-8">
         <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
           <a href="#" className="text-navy" >
             <PreviousIcon />
@@ -58,7 +58,7 @@ const AdminHeader = () => {
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
           id="navbar-user"
         >
-          <ul className="flex flex-col font-medium text-sm p-4 md:p-0 pr-2 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white">
+          <ul className="flex flex-col font-medium text-sm p-4 md:p-0 pr-2 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:mt-0 md:border-0 gap-4">
             <li>
               <a
                 href="#"
