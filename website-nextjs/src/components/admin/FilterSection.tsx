@@ -4,8 +4,10 @@ import {
   ProcessorIcon,
   WrenchIcon,
 } from "@/assets/icons"
+import { useState } from "react"
 
 const FilterSection = () => {
+
   return (
     <div className="bg-white rounded-xl my-2">
       <div className="grid grid-cols-6 text-dark-grey">
@@ -18,7 +20,7 @@ const FilterSection = () => {
           <div className="text-xs">
             {/* Power */}
             <div className="flex items-center gap-1 p-3">
-              <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
+              <input className="w-4 h-4 accent-navy rouned"  type="checkbox" />
               <span className="w-max">Power</span>
             </div>
             {/* Sector coupled */}
