@@ -378,7 +378,7 @@ const Navbar = () => {
                       viewBox="0 0 512 512"
                     >
                       <g fill-rule="evenodd">
-                        <g stroke-width="1pt">
+                        <g strokeWidth="1pt">
                           <path
                             fill="#bd3d44"
                             d="M0 0h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0z"
@@ -442,7 +442,7 @@ const Navbar = () => {
                       id="flag-icon-css-it"
                       viewBox="0 0 512 512"
                     >
-                      <g fill-rule="evenodd" stroke-width="1pt">
+                      <g fill-rule="evenodd" strokeWidth="1pt">
                         <path fill="#fff" d="M0 0h512v512H0z" />
                         <path fill="#009246" d="M0 0h170.7v512H0z" />
                         <path fill="#ce2b37" d="M341.3 0H512v512H341.3z" />

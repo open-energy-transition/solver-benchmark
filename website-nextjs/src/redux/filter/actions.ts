@@ -1,11 +1,12 @@
 const actions = {
-    TOGGLE_NAV: "UPDATE_FILTER_SECTOR",
+  TOGGLE_FILTER: "TOGGLE_FILTER",
 
-    toggleNav: () => {
-      return {
-        type: actions.TOGGLE_NAV,
-      };
-    },
+  toggleFilter: (category: string, value: string) => {
+    return {
+      type: actions.TOGGLE_FILTER,
+      payload: { category, value },
+    }
+  },
 }
 
-export default actions;
+export default actions

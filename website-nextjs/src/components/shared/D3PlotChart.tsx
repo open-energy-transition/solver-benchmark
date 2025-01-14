@@ -1,30 +1,33 @@
 import { useEffect, useRef } from "react"
 import * as d3 from "d3"
 import { CircleIcon } from "@/assets/icons"
+import { SolverType } from "@/types/benchmarkResult"
+import { getSolverLabel } from "@/utils/solvers"
 
-type SolverType = "GLPK" | "SCIP" | "HiGHS"
 
-const D3Chart = () => {
+type ChartData = {
+  runtime: number
+  memoryUsage: number,
+  status: 'TO' | 'ok'
+  solver: SolverType
+}[]
+
+interface D3ChartProps {
+  chartData: ChartData
+}
+
+const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const svgRef = useRef(null)
 
   useEffect(() => {
-    // Sample Data
-    const data: { runtime: number; memory: number; solver: SolverType }[] = [
-      { runtime: 1, memory: 100, solver: "GLPK" },
-      { runtime: 2, memory: 200, solver: "GLPK" },
-      { runtime: 4, memory: 300, solver: "SCIP" },
-      { runtime: 6, memory: 400, solver: "HiGHS" },
-      { runtime: 8, memory: 500, solver: "SCIP" },
-      { runtime: 10, memory: 600, solver: "GLPK" },
-      { runtime: 10, memory: 550, solver: "HiGHS" },
-    ]
+    const data = chartData
 
     // Solvers with colors
     const solvers = {
-      GLPK: "#00CC96",
-      SCIP: "#629BF8",
-      HiGHS: "#B42318",
+      glpk: "#00CC96",
+      scip: "#629BF8",
+      highs: "#B42318",
     }
 
     // Dimensions
@@ -66,7 +69,7 @@ const D3Chart = () => {
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, (d3?.max(data, (d) => d.memory) ?? 0) + 50])
+      .domain([0, (d3?.max(data, (d) => d.memoryUsage) ?? 0) + 50])
       .range([height - margin.bottom, margin.top])
 
     // Axes
@@ -79,8 +82,8 @@ const D3Chart = () => {
       .attr("fill", "#022B3B")
       .call(xAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("stroke", "#A1A9BC");
-        g.selectAll("line").attr("stroke", "#A1A9BC");
+        g.selectAll(".domain").attr("stroke", "#A1A9BC")
+        g.selectAll("line").attr("stroke", "#A1A9BC")
         g.selectAll("text").attr("fill", "#A1A9BC")
       })
       .append("text")
@@ -95,8 +98,8 @@ const D3Chart = () => {
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("stroke", "#A1A9BC");
-        g.selectAll("line").attr("stroke", "#A1A9BC");
+        g.selectAll(".domain").attr("stroke", "#A1A9BC")
+        g.selectAll("line").attr("stroke", "#A1A9BC")
         g.selectAll("text").attr("fill", "#A1A9BC")
       })
       .append("text")
@@ -113,69 +116,93 @@ const D3Chart = () => {
       .selectAll(".dot")
       .data(data)
       .enter()
-      .append("circle")
-      .attr("cx", (d) => xScale(d.runtime))
-      .attr("cy", (d) => yScale(d.memory))
-      .attr("r", 6)
-      .attr("fill", (d) => solvers[d.solver])
-      .on("mouseover", (event, d) => {
-        tooltip
-          .style("opacity", 1)
-          .html(
-            `<strong>Solver:</strong> ${d.solver}<br>
-             <strong>Runtime:</strong> ${d.runtime}s<br>
-             <strong>Memory:</strong> ${d.memory}MB`
-          )
-          .style("left", `${event.pageX + 10}px`)
-          .style("top", `${event.pageY - 30}px`)
-      })
-      .on("mousemove", (event) => {
-        tooltip
-          .style("left", `${event.pageX + 10}px`)
-          .style("top", `${event.pageY - 30}px`)
-      })
-      .on("mouseout", () => {
-        tooltip.style("opacity", 0)
-      })
+      .append("g")
+      .each(function (d) {
+        const group = d3.select(this);
+
+        if (d.status === "TO") {
+          // Render an "X" for status 'TO'
+          group
+            .append("text")
+            .attr("x", xScale(d.runtime))
+            .attr("y", yScale(d.memoryUsage))
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .text("✕")
+            .style("fill", solvers[d.solver])
+            .style("font-size", "12px");
+        } else {
+          // Render a circle for other statuses
+          group
+            .append("circle")
+            .attr("cx", xScale(d.runtime))
+            .attr("cy", yScale(d.memoryUsage))
+            .attr("r", 4)
+            .attr("fill", solvers[d.solver]);
+        }
+
+        // Add tooltip event listeners
+        group
+          .on("mouseover", (event) => {
+            tooltip
+              .style("opacity", 1)
+              .html(
+                `<strong>Solver:</strong> ${getSolverLabel(d.solver)}<br>
+                 <strong>Runtime:</strong> ${d.runtime} s<br>
+                 <strong>Memory:</strong> ${d.memoryUsage} MB`
+              )
+              .style("left", `${event.pageX + 10}px`)
+              .style("top", `${event.pageY - 30}px`);
+          })
+          .on("mousemove", (event) => {
+            tooltip
+              .style("left", `${event.pageX + 10}px`)
+              .style("top", `${event.pageY - 30}px`);
+          })
+          .on("mouseout", () => {
+            tooltip.style("opacity", 0);
+          });
+      });
 
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
-      .attr("stroke", "currentColor")
-      .attr("stroke-opacity", 0.1)
-      .call((g) =>
-        g
-        .append("g")
-        .selectAll("line")
-        .data(xScale.ticks())
-        .join("line")
-        .attr("x1", (d) => 0.5 + xScale(d))
-        .attr("x2", (d) => 0.5 + xScale(d))
-        .attr("y1", margin.top)
-        .attr("y2", height - margin.bottom)
-        .attr("stroke-dasharray", "4,4")
-      )
-      .call((g) =>
-        g
-        .append("g")
-        .selectAll("line")
-        .data(yScale.ticks())
-        .join("line")
-        .attr("y1", (d) => 0.5 + yScale(d))
-        .attr("y2", (d) => 0.5 + yScale(d))
-        .attr("x1", margin.left)
-        .attr("x2", width - margin.right)
-        .attr("stroke-dasharray", "4,4")
-      )
-      .call((g) => { // Hide last grid line
-        g.selectAll("line:last-of-type").attr("display", "none");
-      })
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        .call((g) =>
+          g
+            .append("g")
+            .selectAll("line")
+            .data(xScale.ticks())
+            .join("line")
+            .attr("x1", (d) => 0.5 + xScale(d))
+            .attr("x2", (d) => 0.5 + xScale(d))
+            .attr("y1", margin.top)
+            .attr("y2", height - margin.bottom)
+            .attr("stroke-dasharray", "4,4")
+        )
+        .call((g) =>
+          g
+            .append("g")
+            .selectAll("line")
+            .data(yScale.ticks())
+            .join("line")
+            .attr("y1", (d) => 0.5 + yScale(d))
+            .attr("y2", (d) => 0.5 + yScale(d))
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("stroke-dasharray", "4,4")
+        )
+        .call((g) => {
+          // Hide last grid line
+          g.selectAll("line:last-of-type").attr("display", "none")
+        })
     svg.append("g").call(grid)
 
     return () => {
       // Cleanup tooltip on unmount
       tooltip.remove()
     }
-  }, [])
+  }, [chartData])
 
   return (
     <div className="bg-white py-4 px-10 rounded-xl">

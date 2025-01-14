@@ -12,7 +12,6 @@ const initialState = {
 const themeReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case TOGGLE_NAV:
-        console.log(state.isNavExpanded);
       return {
         ...state,
         isNavExpanded: !state.isNavExpanded,

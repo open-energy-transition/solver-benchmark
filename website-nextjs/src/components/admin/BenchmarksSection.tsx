@@ -1,7 +1,16 @@
+import { useSelector } from "react-redux"
+
 import { CircleIcon, CloseIcon } from "@/assets/icons"
 import D3Chart from "../shared/D3PlotChart"
+import { BenchmarkResult } from "@/types/benchmarkResult"
 
 const BenchmarksSection = () => {
+  const benchmarkResults = useSelector(
+    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
+      return state.results.benchmarkResults
+    }
+  )
+
   return (
     <div>
       <div className="pt-1.5 pb-3 pl-3">
@@ -13,7 +22,7 @@ const BenchmarksSection = () => {
           indicates a successful run.
         </p>
       </div>
-      <D3Chart />
+      <D3Chart chartData={benchmarkResults} />
     </div>
   )
 }
