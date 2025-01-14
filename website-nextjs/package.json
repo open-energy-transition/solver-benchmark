@@ -16,15 +16,18 @@
     "next": "15.1.0",
     "next-redux-wrapper": "^8.1.0",
     "npm": "^11.0.0",
+    "papaparse": "^5.5.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "yaml": "^2.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/d3": "^7.4.3",
     "@types/node": "^20",
+    "@types/papaparse": "^5.3.15",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
