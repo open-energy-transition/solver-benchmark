@@ -9,7 +9,7 @@ import { roundNumber } from "@/utils/number"
 type ChartData = {
   runtime: number
   memoryUsage: number,
-  status: 'TO' | 'ok'
+  status: 'TO' | 'ok' | 'warning'
   solver: SolverType
 }[]
 
@@ -121,7 +121,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .each(function (d) {
         const group = d3.select(this);
 
-        if (d.status === "TO") {
+        if (["TO", "warning"].includes(d.status) ) {
           // Render an "X" for status 'TO'
           group
             .append("text")
