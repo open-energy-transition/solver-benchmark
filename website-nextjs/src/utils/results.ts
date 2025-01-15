@@ -1,4 +1,4 @@
-import { BenchmarkResult, SolverStatusType, SolverType } from "@/types/benchmarkResult"
+import { BenchmarkResult, SolverStatusType, SolverType } from "@/types/benchmark"
 import Papa from "papaparse"
 
 /**

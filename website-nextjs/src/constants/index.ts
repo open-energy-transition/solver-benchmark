@@ -1,12 +1,10 @@
-// src/redux/enums.ts
-
 export enum Sector {
   Power = "Power",
-  SectorCoupled = "Sector coupled",
+  SectorCoupled = "Sector-coupled",
 }
 
 export enum Technique {
-  MLIP = "MLIP",
+  MILP = "MILP",
   LP = "LP",
 }
 
@@ -19,9 +17,13 @@ export enum KindOfProblem {
 
 export enum Model {
   PyPSA = "PyPSA",
-  PyPSAEur = "PyPSA - Eur",
-  PowerModel = "Power - Model",
+  PyPSAEur = "PyPSA-Eur",
   Tulipa = "Tulipa",
+  PowerModel = "PowerModels",
   Sienna = "Sienna",
-  GenX = "Gen X",
+  GenX = "GenX",
 }
+
+export const MaxRunTime = 600
+
+export const MaxMemoryUsage = 8192

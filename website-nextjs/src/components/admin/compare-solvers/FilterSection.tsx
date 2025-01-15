@@ -36,7 +36,7 @@ const FilterSection = () => {
             <CloseIcon className="w-4 h-4" />
           </button>
           <button className="flex items-center gap-2 w-max rounded-lg px-6 py-3 text-base text-white font-bold bg-green-pop bg-opacity-40 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
-            MLIP
+            MILP
             <CloseIcon className="w-4 h-4 rotate-45" />
           </button>
         </div>

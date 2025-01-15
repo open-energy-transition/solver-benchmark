@@ -1,5 +1,11 @@
-import { ArrowIcon } from "@/assets/icons";
-import { useState } from "react";
+import { useSelector } from "react-redux"
+import { ArrowIcon } from "@/assets/icons"
+import { BenchmarkResult } from "@/types/benchmark"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { getHighestVersion } from "@/utils/versions"
+import { calculateSgm } from "@/utils/calculations"
+import { roundNumber } from "@/utils/number"
+import { MaxMemoryUsage, MaxRunTime } from "@/constants"
 
 const ResultsSection = () => {
   const columns = [
@@ -48,36 +54,150 @@ const ResultsSection = () => {
       color: "text-navy font-semibold",
       hasDropdown: true,
     },
-  ];
-  // Define mock data
-  const mockData = [
-    {
-      rank: 1,
-      solver: "HiGHS",
-      version: "1.81",
-      memory: "3.4",
-      solvedBenchmarks: 28,
-      runtime: "1.0",
-    },
-    {
-      rank: 2,
-      solver: "GLPK",
-      version: "9.1.1",
-      memory: "1.0",
-      solvedBenchmarks: 18,
-      runtime: "2.1",
-    },
-    {
-      rank: 3,
-      solver: "SCIP",
-      version: "5.0",
-      memory: "5.6",
-      solvedBenchmarks: 8,
-      runtime: "3.4",
-    },
-  ];
+  ]
 
-  const [activedIndex, setActivedIndex] = useState(0);
+  const benchmarkResults = useSelector(
+    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
+      return state.results.benchmarkResults
+    }
+  )
+
+  const [tableData, setTableData] = useState<
+    {
+      rank: number
+      solver: string
+      version: string
+      memory: number
+      solvedBenchmarks: number
+      runtime: number
+    }[]
+  >([])
+
+  const solverList = useMemo(
+    () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
+    [benchmarkResults]
+  )
+
+  const solverVersions = useMemo(() => {
+    const versions: { [key: string]: string[] } = {
+      glpk: [],
+      highs: [],
+      scip: [],
+    }
+    benchmarkResults.forEach((benchmarkResult) => {
+      if (
+        !versions[benchmarkResult.solver].includes(
+          benchmarkResult.solverVersion
+        )
+      ) {
+        versions[benchmarkResult.solver].push(benchmarkResult.solverVersion)
+      }
+    })
+    return versions
+  }, [benchmarkResults])
+
+  const getRelevantResults = useCallback(
+    (solver: string, field: "memoryUsage" | "runtime") =>
+      benchmarkResults
+        .filter(
+          (result) =>
+            result.solverVersion === getHighestVersion(solverVersions[solver]) &&
+            result.solver === solver
+        )
+        .map((result) => {
+          if (result.status === "warning" && field === "runtime") return MaxRunTime;
+          if (["warning", "TO"].includes(result.status) && field === "memoryUsage")
+            return MaxMemoryUsage;
+          return result[field];
+        }),
+    [benchmarkResults, solverVersions]
+  );
+
+
+  const calculateSgmBySolver = useCallback(
+    (solver: string, field: "memoryUsage" | "runtime" = "memoryUsage") => {
+      const minSgm = Math.min(
+        ...solverList.map((solver) => calculateSgm(getRelevantResults(solver, field)))
+      );
+      return calculateSgm(getRelevantResults(solver, field)) / minSgm;
+    },
+    [getRelevantResults, solverList]
+  );
+
+  const getNumberSolvedBenchmark = useCallback(
+  (solver: string) =>
+    benchmarkResults.filter(
+      (result) =>
+        result.status === "ok" &&
+        result.solverVersion === getHighestVersion(solverVersions[solver]) &&
+        result.solver === solver
+    ).length,
+  [benchmarkResults, solverVersions]
+);
+
+
+  useEffect(() => {
+    benchmarkResults.forEach((benchmarkResult) => {
+      if (
+        !solverVersions[benchmarkResult.solver].includes(
+          benchmarkResult.solverVersion
+        )
+      ) {
+        solverVersions[benchmarkResult.solver].push(
+          benchmarkResult.solverVersion
+        )
+      }
+    })
+
+    setTableData([
+      {
+        rank: 1,
+        solver: "HiGHS",
+        version: getHighestVersion(solverVersions.highs),
+        memory: roundNumber(
+          calculateSgmBySolver("highs", "memoryUsage"),
+          2
+        ),
+        solvedBenchmarks: getNumberSolvedBenchmark("highs"),
+        runtime: roundNumber(
+          calculateSgmBySolver("highs", "runtime"),
+          2
+        ),
+      },
+      {
+        rank: 2,
+        solver: "GLPK",
+        version: getHighestVersion(solverVersions.glpk),
+        memory: roundNumber(
+          calculateSgmBySolver("glpk", "memoryUsage"),
+          2
+        ),
+        solvedBenchmarks: getNumberSolvedBenchmark("glpk"),
+        runtime: roundNumber(
+          calculateSgmBySolver("glpk", "runtime"),
+          2
+        ),
+      },
+      {
+        rank: 3,
+        solver: "SCIP",
+        version: getHighestVersion(solverVersions.scip),
+        memory: roundNumber(
+          calculateSgmBySolver("scip", "memoryUsage"),
+          2
+        ),
+        solvedBenchmarks: getNumberSolvedBenchmark("scip"),
+        runtime: roundNumber(
+          calculateSgmBySolver("scip", "runtime"),
+          2
+        ),
+      },
+    ])
+  }, [benchmarkResults])
+
+  const [activedIndex, setActivedIndex] = useState(0)
+
+  if (!benchmarkResults.length) return <></>
 
   return (
     <div>
@@ -101,7 +221,7 @@ const ResultsSection = () => {
               )}
             </div>
 
-            {mockData.map((item, index) => (
+            {tableData.map((item, index) => (
               <div
                 key={`${column.field}-${index}`}
                 className={`h-6 flex items-center pl-3 pr-6 ${
@@ -113,14 +233,14 @@ const ResultsSection = () => {
                 }`}
                 onClick={() => setActivedIndex(index)}
               >
-                {item[column.field as keyof (typeof mockData)[0]]}
+                {item[column.field as keyof (typeof tableData)[0]]}
               </div>
             ))}
           </div>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ResultsSection;
+export default ResultsSection

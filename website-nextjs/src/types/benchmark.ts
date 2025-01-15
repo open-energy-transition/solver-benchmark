@@ -1,5 +1,5 @@
 type SolverType = "glpk" | "scip" | "highs"
-type SolverStatusType = "TO" | "ok"
+type SolverStatusType = "TO" | "ok" | "warning"
 
 type BenchmarkResult = {
   benchmark: string

@@ -35,12 +35,12 @@ const Navbar = () => {
     },
     {
       label: "Performance history",
-      route: "performance-history",
+      route: "/admin/performance-history",
       icon: <ChartLineIcon />,
     },
     {
       label: "Raw result data",
-      route: "raw-result",
+      route: "/admin/raw-result",
       icon: <WindowIcon />,
     },
   ]

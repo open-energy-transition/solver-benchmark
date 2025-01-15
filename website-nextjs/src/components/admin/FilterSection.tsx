@@ -5,19 +5,46 @@ import {
   WrenchIcon,
 } from "@/assets/icons"
 import { useSelector, useDispatch } from "react-redux"
-import filterAction from "@/redux/filter/actions"
 import { Sector, Technique, KindOfProblem, Model } from "@/constants"
-import { FilterState } from "@/redux/filter/reducer"
+import filterAction from "@/redux/filters/actions"
+import { FilterState } from "@/redux/filters/reducer"
 
 const FilterSection = () => {
-  const dispatch = useDispatch()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dispatch = useDispatch<any>()
 
   const selectedFilters = useSelector(
     (state: { filters: FilterState }) => state.filters
   )
 
   const handleCheckboxChange = (category: string, value: string) => {
-    dispatch(filterAction.toggleFilter(category, value))
+    dispatch(filterAction.toggleFilterAndUpdateResults({ category, value }))
+  }
+
+  const getLabel = (type: string, value: string) => {
+    switch (type) {
+      case "sectors":
+        switch (value) {
+          case Sector.SectorCoupled:
+            return "Sector coupled"
+
+          default:
+            return value
+        }
+      case "model":
+        switch (value) {
+          case Model.GenX:
+            return "Gen X"
+          case Model.PowerModel:
+            return "Power Model"
+          case Model.PyPSAEur:
+            return "PyPSA - Eur"
+          default:
+            return value
+        }
+      default:
+        throw Error("Invalid value")
+    }
   }
 
   return (
@@ -35,10 +62,10 @@ const FilterSection = () => {
                 <input
                   className="w-4 h-4 accent-navy rounded"
                   type="checkbox"
-                  checked={selectedFilters?.sector?.includes(sector)}
-                  onChange={() => handleCheckboxChange("sector", sector)}
+                  checked={selectedFilters?.sectors?.includes(sector)}
+                  onChange={() => handleCheckboxChange("sectors", sector)}
                 />
-                <span className="w-max">{sector}</span>
+                <span className="w-max">{getLabel("sectors", sector)}</span>
               </div>
             ))}
           </div>
@@ -97,10 +124,10 @@ const FilterSection = () => {
                 <input
                   className="w-4 h-4 accent-navy rounded"
                   type="checkbox"
-                  checked={selectedFilters?.model?.includes(model)}
-                  onChange={() => handleCheckboxChange("model", model)}
+                  checked={selectedFilters?.modelName?.includes(model)}
+                  onChange={() => handleCheckboxChange("modelName", model)}
                 />
-                <span className="w-max">{model}</span>
+                <span className="w-max">{getLabel('model',model)}</span>
               </div>
             ))}
           </div>

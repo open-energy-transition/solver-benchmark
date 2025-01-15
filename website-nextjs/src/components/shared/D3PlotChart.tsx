@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react"
 import * as d3 from "d3"
 import { CircleIcon } from "@/assets/icons"
-import { SolverType } from "@/types/benchmarkResult"
+import { SolverType } from "@/types/benchmark"
 import { getSolverLabel } from "@/utils/solvers"
+import { roundNumber } from "@/utils/number"
 
 
 type ChartData = {
@@ -148,8 +149,8 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
               .style("opacity", 1)
               .html(
                 `<strong>Solver:</strong> ${getSolverLabel(d.solver)}<br>
-                 <strong>Runtime:</strong> ${d.runtime} s<br>
-                 <strong>Memory:</strong> ${d.memoryUsage} MB`
+                 <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
+                 <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`
               )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 30}px`);

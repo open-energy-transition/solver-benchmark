@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 
 import { CircleIcon, CloseIcon } from "@/assets/icons"
 import D3Chart from "../shared/D3PlotChart"
-import { BenchmarkResult } from "@/types/benchmarkResult"
+import { BenchmarkResult } from "@/types/benchmark"
 
 const BenchmarksSection = () => {
   const benchmarkResults = useSelector(
