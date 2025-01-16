@@ -1,4 +1,9 @@
-import { BenchmarkResult, SolverStatusType, SolverType } from "@/types/benchmark"
+import { MaxMemoryUsage, MaxRunTime } from "@/constants"
+import {
+  BenchmarkResult,
+  SolverStatusType,
+  SolverType,
+} from "@/types/benchmark"
 import Papa from "papaparse"
 
 /**
@@ -38,7 +43,7 @@ export const fetchCsvToJson = async (
 const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
   const res = await fetchCsvToJson("/results/benchmark_results.csv")
   return res.map((rawData) => {
-    const data = rawData as { [key: string]: string };
+    const data = rawData as { [key: string]: string }
     return {
       benchmark: data["Benchmark"],
       dualityGap: data["Duality Gap"] || null,
@@ -52,8 +57,23 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
-    };
-  });
+    }
+  })
 }
 
-export { getBenchmarkResults }
+const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
+  return benchmarkResult.map((benchmarkResult) => {
+    return {
+      ...benchmarkResult,
+      runtime:
+        benchmarkResult.status === "warning"
+          ? MaxRunTime
+          : benchmarkResult.runtime,
+      memoryUsage: ["warning", "TO"].includes(benchmarkResult.status)
+        ? MaxMemoryUsage
+        : benchmarkResult.memoryUsage,
+    }
+  })
+}
+
+export { getBenchmarkResults, processBenchmarkResults }

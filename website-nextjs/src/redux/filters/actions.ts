@@ -20,10 +20,9 @@ const actions = {
     (payload: {
       category: string
       value: string
-    }): ThunkAction<void, RootState, unknown, AnyAction>  =>
+    }): ThunkAction<void, RootState, unknown, AnyAction> =>
     (dispatch, getState) => {
       dispatch(toggleFilter(payload.category, payload.value))
-
       const { filters, results } = getState()
 
       const metaData = Object.fromEntries(
@@ -41,19 +40,21 @@ const actions = {
         })
       )
 
-      const benchmarkResults = results.rawBenchmarkResults.filter(
-        (benchmark: BenchmarkResult) =>
-          (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find((size) => {
-            const temporalResolution =
-              size.temporalResolution === "NA"
-                ? size.temporalResolution
-                : `${size.temporalResolution}h`
-            return (
-              `${size.spatialResolution}-${temporalResolution}` ===
-              benchmark.size
-            )
-          })
-      )
+      const benchmarkResults: BenchmarkResult[] =
+        results.rawBenchmarkResults.filter((benchmark: BenchmarkResult) =>
+          (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find(
+            (size) => {
+              const temporalResolution =
+                size.temporalResolution === "NA"
+                  ? size.temporalResolution
+                  : `${size.temporalResolution}h`
+              return (
+                `${size.spatialResolution}-${temporalResolution}` ===
+                benchmark.size
+              )
+            }
+          )
+        )
 
       dispatch(resultActions.setMetaData(metaData as MetaData))
 

@@ -57,6 +57,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("border-radius", "5px")
       .style("padding", "8px")
       .style("font-size", "12px")
+      .style("font-family", "'Lato', sans-serif")
       .style("color", "#333")
       .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
       .style("pointer-events", "none")
@@ -90,9 +91,10 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
-      .attr("fill", "#022B3B")
+      .attr("fill", "#8C8C8C")
       .text("Runtime (s)")
       .style("font-size", "12px")
+      .style("font-family", "'Lato', sans-serif")
 
     svg
       .append("g")
@@ -109,6 +111,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .attr("fill", "#8C8C8C")
       .text("Peak Memory Usage (MB)")
       .style("font-size", "12px")
+      .style("font-family", "'Lato', sans-serif")
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
 
@@ -131,7 +134,9 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             .attr("dominant-baseline", "middle")
             .text("✕")
             .style("fill", solvers[d.solver])
-            .style("font-size", "12px");
+            .style("font-size", "12px")
+            .style("font-family", "'Lato', sans-serif")
+
         } else {
           // Render a circle for other statuses
           group

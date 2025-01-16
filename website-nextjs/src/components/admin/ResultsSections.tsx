@@ -1,7 +1,7 @@
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
 import { ArrowIcon } from "@/assets/icons"
 import { BenchmarkResult } from "@/types/benchmark"
-import { useCallback, useEffect, useMemo, useState } from "react"
 import { getHighestVersion } from "@/utils/versions"
 import { calculateSgm } from "@/utils/calculations"
 import { roundNumber } from "@/utils/number"
@@ -72,6 +72,10 @@ const ResultsSection = () => {
       runtime: number
     }[]
   >([])
+  const [sortConfig, setSortConfig] = useState<{
+    field: string
+    direction: "asc" | "desc"
+  }>({ field: "solvedBenchmarks", direction: "asc" })
 
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
@@ -101,99 +105,96 @@ const ResultsSection = () => {
       benchmarkResults
         .filter(
           (result) =>
-            result.solverVersion === getHighestVersion(solverVersions[solver]) &&
+            result.solverVersion ===
+              getHighestVersion(solverVersions[solver]) &&
             result.solver === solver
         )
         .map((result) => {
-          if (result.status === "warning" && field === "runtime") return MaxRunTime;
-          if (["warning", "TO"].includes(result.status) && field === "memoryUsage")
-            return MaxMemoryUsage;
-          return result[field];
+          if (result.status === "warning" && field === "runtime")
+            return MaxRunTime
+          if (
+            ["warning", "TO"].includes(result.status) &&
+            field === "memoryUsage"
+          )
+            return MaxMemoryUsage
+          return result[field]
         }),
     [benchmarkResults, solverVersions]
-  );
-
+  )
 
   const calculateSgmBySolver = useCallback(
     (solver: string, field: "memoryUsage" | "runtime" = "memoryUsage") => {
       const minSgm = Math.min(
-        ...solverList.map((solver) => calculateSgm(getRelevantResults(solver, field)))
-      );
-      return calculateSgm(getRelevantResults(solver, field)) / minSgm;
+        ...solverList.map((solver) =>
+          calculateSgm(getRelevantResults(solver, field))
+        )
+      )
+      return calculateSgm(getRelevantResults(solver, field)) / minSgm
     },
     [getRelevantResults, solverList]
-  );
+  )
 
   const getNumberSolvedBenchmark = useCallback(
-  (solver: string) =>
-    benchmarkResults.filter(
-      (result) =>
-        result.status === "ok" &&
-        result.solverVersion === getHighestVersion(solverVersions[solver]) &&
-        result.solver === solver
-    ).length,
-  [benchmarkResults, solverVersions]
-);
-
+    (solver: string) =>
+      benchmarkResults.filter(
+        (result) =>
+          result.status === "ok" &&
+          result.solverVersion === getHighestVersion(solverVersions[solver]) &&
+          result.solver === solver
+      ).length,
+    [benchmarkResults, solverVersions]
+  )
 
   useEffect(() => {
-    benchmarkResults.forEach((benchmarkResult) => {
-      if (
-        !solverVersions[benchmarkResult.solver].includes(
-          benchmarkResult.solverVersion
-        )
-      ) {
-        solverVersions[benchmarkResult.solver].push(
-          benchmarkResult.solverVersion
-        )
-      }
-    })
-
     setTableData([
       {
         rank: 1,
         solver: "HiGHS",
         version: getHighestVersion(solverVersions.highs),
-        memory: roundNumber(
-          calculateSgmBySolver("highs", "memoryUsage"),
-          2
-        ),
+        memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
         solvedBenchmarks: getNumberSolvedBenchmark("highs"),
-        runtime: roundNumber(
-          calculateSgmBySolver("highs", "runtime"),
-          2
-        ),
+        runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
       },
       {
         rank: 2,
         solver: "GLPK",
         version: getHighestVersion(solverVersions.glpk),
-        memory: roundNumber(
-          calculateSgmBySolver("glpk", "memoryUsage"),
-          2
-        ),
+        memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
         solvedBenchmarks: getNumberSolvedBenchmark("glpk"),
-        runtime: roundNumber(
-          calculateSgmBySolver("glpk", "runtime"),
-          2
-        ),
+        runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
       },
       {
         rank: 3,
         solver: "SCIP",
         version: getHighestVersion(solverVersions.scip),
-        memory: roundNumber(
-          calculateSgmBySolver("scip", "memoryUsage"),
-          2
-        ),
+        memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
         solvedBenchmarks: getNumberSolvedBenchmark("scip"),
-        runtime: roundNumber(
-          calculateSgmBySolver("scip", "runtime"),
-          2
-        ),
+        runtime: roundNumber(calculateSgmBySolver("scip", "runtime"), 2),
       },
     ])
-  }, [benchmarkResults])
+  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark])
+
+  // Sorting logic
+  const sortedTableData = useMemo(() => {
+    if (!sortConfig.field) return tableData
+    return [...tableData].sort((a, b) => {
+      const aValue = a[sortConfig.field as keyof typeof a]
+      const bValue = b[sortConfig.field as keyof typeof b]
+      if (sortConfig.direction === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+      }
+    })
+  }, [tableData, sortConfig])
+
+  const handleSort = (field: string) => {
+    setSortConfig((prev) => ({
+      field,
+      direction:
+        prev.field === field && prev.direction === "asc" ? "desc" : "asc",
+    }))
+  }
 
   const [activedIndex, setActivedIndex] = useState(0)
 
@@ -214,14 +215,24 @@ const ResultsSection = () => {
             key={column.field}
             className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
           >
-            <div className="h-9 flex items-center gap-1 pl-3 pr-6">
+            <div
+              className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
+              onClick={() => column.hasDropdown && handleSort(column.field)}
+            >
               {column.name}
               {column.hasDropdown && (
-                <ArrowIcon fill="none" stroke="black" className="w-2 h-2" />
+                <ArrowIcon
+                  fill="none"
+                  stroke={sortConfig.field === column.field ? "black" : "gray"}
+                  className={`w-2 h-2 ${
+                    sortConfig.direction === "asc" ? "rotate-180" : ""
+                  }
+                    ${sortConfig.field === column.field ? "opacity-100" : "opacity-20"}`}
+                />
               )}
             </div>
 
-            {tableData.map((item, index) => (
+            {sortedTableData.map((item, index) => (
               <div
                 key={`${column.field}-${index}`}
                 className={`h-6 flex items-center pl-3 pr-6 ${

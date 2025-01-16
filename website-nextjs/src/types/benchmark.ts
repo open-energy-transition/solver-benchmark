@@ -16,4 +16,33 @@ type BenchmarkResult = {
   terminationCondition: string
 }
 
-export type { BenchmarkResult, SolverStatusType, SolverType }
+interface ISolverYearlyMetrics {
+  solver: string
+  data: {
+    year: number
+    sgm: {
+      runtime: number | null
+      memoryUsage?: number | null
+    }
+    benchmarkResults: {
+      runtime: number
+      memoryUsage: number
+      status: SolverStatusType
+    }[],
+    numSolvedBenchmark: number,
+  }[]
+}
+
+interface ISolverYearlyChartData {
+  solver: SolverType,
+  year: number,
+  value: number,
+}
+
+export type {
+  BenchmarkResult,
+  SolverStatusType,
+  SolverType,
+  ISolverYearlyMetrics,
+  ISolverYearlyChartData,
+}

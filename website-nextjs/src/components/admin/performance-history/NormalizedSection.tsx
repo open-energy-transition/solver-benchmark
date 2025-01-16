@@ -1,12 +1,21 @@
-import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage";
-import NormalizedSGMRuntime from "./NormalizedSGMRuntime";
+// internal
+import { ISolverYearlyChartData } from "@/types/benchmark"
+import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage"
+import NormalizedSGMRuntime from "./NormalizedSGMRuntime"
 
-const NormalizedSection = () => {
+interface INormalizedSection {
+  chartData: {
+    runtime: ISolverYearlyChartData[]
+    memoryUsage: ISolverYearlyChartData[]
+    numSolvedBenchMark: ISolverYearlyChartData[]
+  }
+}
+const NormalizedSection = ({ chartData }: INormalizedSection) => {
   return (
     <div className="grid grid-cols-2 gap-4 w-full mb-1.5">
-      <NormalizedSGMRuntime />
-      <NormalizedSGMMemoryUsage />
+      <NormalizedSGMRuntime chartData={chartData.runtime} />
+      <NormalizedSGMMemoryUsage chartData={chartData.memoryUsage} />
     </div>
-  );
-};
-export default NormalizedSection;
+  )
+}
+export default NormalizedSection

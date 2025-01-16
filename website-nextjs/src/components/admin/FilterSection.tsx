@@ -65,7 +65,12 @@ const FilterSection = () => {
                   checked={selectedFilters?.sectors?.includes(sector)}
                   onChange={() => handleCheckboxChange("sectors", sector)}
                 />
-                <span className="w-max">{getLabel("sectors", sector)}</span>
+                <span
+                  onClick={() => handleCheckboxChange("sectors", sector)}
+                  className="w-max cursor-pointer"
+                >
+                  {getLabel("sectors", sector)}
+                </span>
               </div>
             ))}
           </div>
@@ -85,7 +90,12 @@ const FilterSection = () => {
                   checked={selectedFilters?.technique?.includes(technique)}
                   onChange={() => handleCheckboxChange("technique", technique)}
                 />
-                <span className="w-max">{technique}</span>
+                <span
+                  onClick={() => handleCheckboxChange("technique", technique)}
+                  className="w-max cursor-pointer"
+                >
+                  {technique}
+                </span>
               </div>
             ))}
           </div>
@@ -107,7 +117,12 @@ const FilterSection = () => {
                     handleCheckboxChange("kindOfProblem", problem)
                   }
                 />
-                <span className="w-max">{problem}</span>
+                <span
+                  onClick={() => handleCheckboxChange("kindOfProblem", problem)}
+                  className="w-max cursor-pointer"
+                >
+                  {problem}
+                </span>
               </div>
             ))}
           </div>
@@ -127,7 +142,12 @@ const FilterSection = () => {
                   checked={selectedFilters?.modelName?.includes(model)}
                   onChange={() => handleCheckboxChange("modelName", model)}
                 />
-                <span className="w-max">{getLabel('model',model)}</span>
+                <span
+                  onClick={() => handleCheckboxChange("modelName", model)}
+                  className="w-max cursor-pointer"
+                >
+                  {getLabel("model", model)}
+                </span>
               </div>
             ))}
           </div>
