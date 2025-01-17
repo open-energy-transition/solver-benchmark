@@ -33,7 +33,7 @@ const D3ChartLineChart = ({
 
     // Dimensions
     const width = containerRef.current?.clientWidth || 600
-    const margin = { top: 20, right: 20, bottom: 40, left: 65 }
+    const margin = { top: 20, right: 20, bottom: 40, left: 85 }
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove()
@@ -65,7 +65,7 @@ const D3ChartLineChart = ({
     const xScale = d3
       .scalePoint()
       .domain(chartData.map((d) => d.year.toString()))
-      .range([margin.left, width - margin.right])
+      .range([margin.left + 20, width - margin.right])
     const yScale = d3
       .scaleLinear()
       .domain([0, (d3?.max(chartData, (d) => d.value) ?? 0) + 1])
@@ -81,7 +81,8 @@ const D3ChartLineChart = ({
       .attr("fill", "#022B3B")
       .call(xAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("stroke", "#A1A9BC")
+        g.selectAll(".domain").attr("display", "none");
+        g.selectAll(".tick line").attr("display", "none");
         g.selectAll("line").attr("stroke", "#A1A9BC")
         g.selectAll("text").attr("fill", "#A1A9BC")
       })
@@ -97,7 +98,8 @@ const D3ChartLineChart = ({
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("stroke", "#A1A9BC")
+        g.selectAll(".domain").attr("display", "none");
+        g.selectAll(".tick line").attr("display", "none");
         g.selectAll("line").attr("stroke", "#A1A9BC")
         g.selectAll("text").attr("fill", "#A1A9BC")
       })

@@ -1,6 +1,36 @@
 import FilterSection from "./FilterSection"
 
 const TableResult = () => {
+  const columns = [
+    {
+      name: "Solver",
+      field: "solver",
+      sort: true,
+    },
+    {
+      name: "Status",
+      field: "status",
+      sort: true,
+    },
+    {
+      name: "Terminational Condition",
+      field: "terminational-condition",
+      sort: true,
+      className: "w-[7.75rem] whitespace-nowrap overflow-hidden",
+    },
+    {
+      name: "Objective Value",
+      field: "objective-value",
+    },
+    {
+      name: "Runtime",
+      field: "runtime",
+    },
+    {
+      name: "Memory",
+      field: "memory",
+    },
+  ]
   return (
     <div>
       <div className="text-navy font-bold pb-6 pt-9">Raw results data</div>
@@ -9,18 +39,14 @@ const TableResult = () => {
           <table className="table-auto bg-white">
             <thead>
               <tr>
-                <th className="text-center text-navy py-4 px-6">Solver</th>
-                <th className="text-center text-navy py-4 px-6">Status</th>
-                <th className="text-center text-navy py-4 px-6 ">
-                  <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
-                    Terminational Condition
-                  </div>
-                </th>
-                <th className="text-center text-navy py-4 px-6">
-                  Objective Value
-                </th>
-                <th className="text-center text-navy py-4 px-6">Runtime</th>
-                <th className="text-center text-navy py-4 px-6">Memory</th>
+                {columns.map((col) => (
+                  <th
+                    key={col.field}
+                    className="text-center text-navy py-4 px-6"
+                  >
+                    <div className={col.className}>{col.name}</div>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>

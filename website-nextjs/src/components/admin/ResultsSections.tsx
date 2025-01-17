@@ -15,6 +15,7 @@ const ResultsSection = () => {
       width: "flex-1",
       bgColor: "bg-light-grey/50",
       color: "text-dark-grey",
+      sort: true,
     },
     {
       name: "Solver:",
@@ -36,7 +37,7 @@ const ResultsSection = () => {
       width: "w-1/5",
       bgColor: "bg-lavender/80",
       color: "text-navy font-semibold",
-      hasDropdown: true,
+      sort: true,
     },
     {
       name: "Solved Benchmarks",
@@ -44,7 +45,7 @@ const ResultsSection = () => {
       width: "w-1/5",
       bgColor: "bg-lavender",
       color: "text-navy font-semibold",
-      hasDropdown: true,
+      sort: true,
     },
     {
       name: "Runtime",
@@ -52,7 +53,7 @@ const ResultsSection = () => {
       width: "w-1/5",
       bgColor: "bg-lime-green",
       color: "text-navy font-semibold",
-      hasDropdown: true,
+      sort: true,
     },
   ]
 
@@ -75,7 +76,7 @@ const ResultsSection = () => {
   const [sortConfig, setSortConfig] = useState<{
     field: string
     direction: "asc" | "desc"
-  }>({ field: "solvedBenchmarks", direction: "asc" })
+  }>({ field: "rank", direction: "asc" })
 
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
@@ -145,10 +146,38 @@ const ResultsSection = () => {
     [benchmarkResults, solverVersions]
   )
 
+  const getSolverRanks = () => {
+    const combinedRankList = [
+      {
+        solver: "highs",
+        runtime: calculateSgmBySolver("highs", "runtime"),
+        memoryUsage: calculateSgmBySolver("highs", "memoryUsage"),
+        score: 0,
+      },
+      {
+        solver: "glpk",
+        runtime: calculateSgmBySolver("glpk", "runtime"),
+        memoryUsage: calculateSgmBySolver("glpk", "memoryUsage"),
+        score: 0,
+      },
+      {
+        solver: "scip",
+        runtime: calculateSgmBySolver("scip", "runtime"),
+        memoryUsage: calculateSgmBySolver("scip", "memoryUsage"),
+        score: 0,
+      },
+    ]
+
+    combinedRankList.forEach((solver) => {
+      solver.score = solver.runtime + solver.memoryUsage
+    })
+    return combinedRankList.sort((a, b) => a.score - b.score)
+  }
+
   useEffect(() => {
     setTableData([
       {
-        rank: 1,
+        rank: getSolverRanks().findIndex(solver => solver.solver === "highs") + 1,
         solver: "HiGHS",
         version: getHighestVersion(solverVersions.highs),
         memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
@@ -156,7 +185,7 @@ const ResultsSection = () => {
         runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
       },
       {
-        rank: 2,
+        rank: getSolverRanks().findIndex(solver => solver.solver === "glpk") + 1,
         solver: "GLPK",
         version: getHighestVersion(solverVersions.glpk),
         memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
@@ -164,7 +193,7 @@ const ResultsSection = () => {
         runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
       },
       {
-        rank: 3,
+        rank: getSolverRanks().findIndex(solver => solver.solver === "scip") + 1,
         solver: "SCIP",
         version: getHighestVersion(solverVersions.scip),
         memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
@@ -217,17 +246,21 @@ const ResultsSection = () => {
           >
             <div
               className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
-              onClick={() => column.hasDropdown && handleSort(column.field)}
+              onClick={() => column.sort && handleSort(column.field)}
             >
               {column.name}
-              {column.hasDropdown && (
+              {column.sort && (
                 <ArrowIcon
                   fill="none"
                   stroke={sortConfig.field === column.field ? "black" : "gray"}
                   className={`w-2 h-2 ${
                     sortConfig.direction === "asc" ? "rotate-180" : ""
                   }
-                    ${sortConfig.field === column.field ? "opacity-100" : "opacity-20"}`}
+                    ${
+                      sortConfig.field === column.field
+                        ? "opacity-100"
+                        : "opacity-20"
+                    }`}
                 />
               )}
             </div>
