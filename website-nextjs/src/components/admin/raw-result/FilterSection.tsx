@@ -1,80 +1,57 @@
+import { useSelector } from "react-redux"
+// internal
+import { ResultState } from "@/redux/results/reducer"
+
 const FilterSection = () => {
+  const availableBenchmarksAndSizes = useSelector((state: { results: ResultState }) => {
+    return state.results.availableBenchmarksAndSizes
+  })
+
+  const availableSolves = useSelector((state: { results: ResultState }) => {
+    return state.results.availableSolves
+  })
+
+  const availableStatuses = useSelector((state: { results: ResultState }) => {
+    return state.results.availableStatuses
+  })
+
   return (
-    <div className="rounded-xl bg-white p-6">
+    <div className="rounded-xl bg-white p-6 pt-0">
       <div className="text-navy py-4 flex justify-between border-b border-grey">
         <div>Filter</div>
         <div className="text-dark-grey">Clear all</div>
       </div>
       <div className="text-navy py-4 border-b border-grey">
         <div>Benchmarks</div>
-        <div className="grid gap-1 pt-2">
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">
-              PyPSA eur-sec-2-24h
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">
-              PyPSA-eur-elec-trex-3-24h
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">
-              PyPSA-eur-elec-op-3-24h
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">
-              PyPSA eur-elec-op-unconv-3-24h
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">
-              PyPSA eur-gas+sol+ely-1-1h
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">
-              PyPSA eur-gas+sol+ely-ucgas-1-1h
-            </span>
-          </div>
+        <div className="grid gap-1 pt-2 max-h-40 overflow-y-auto">
+          {availableBenchmarksAndSizes.map((benchmark) => (
+            <div key={benchmark} className="flex items-center gap-1">
+              <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
+              <span className="w-max text-dark-grey text-sm">{benchmark}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div className="text-navy py-4 border-b border-grey">
         <div>Solver</div>
         <div className="grid gap-1 pt-2">
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">Highs</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">SCIP</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">GLPK</span>
-          </div>
+          {availableSolves.map((solves) => (
+            <div key={solves} className="flex items-center gap-1">
+              <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
+              <span className="w-max text-dark-grey text-sm">{solves}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div className="text-navy py-4 border-b border-grey">
         <div>Status</div>
         <div className="grid gap-1 pt-2">
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">Time out</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
-            <span className="w-max text-dark-grey text-sm">OK</span>
-          </div>
+          {availableStatuses.map((status) => (
+            <div key={status} className="flex items-center gap-1">
+              <input className="w-4 h-4 accent-navy rouned" type="checkbox" />
+              <span className="w-max text-dark-grey text-sm">{status}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div className="text-navy py-4 border-b border-grey">

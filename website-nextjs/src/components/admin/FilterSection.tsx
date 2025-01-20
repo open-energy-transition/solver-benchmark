@@ -17,8 +17,18 @@ const FilterSection = () => {
     (state: { filters: FilterState }) => state.filters
   )
 
-  const handleCheckboxChange = (category: string, value: string) => {
-    dispatch(filterAction.toggleFilterAndUpdateResults({ category, value }))
+  const handleCheckboxChange = ({
+    category,
+    value,
+    only = false,
+  }: {
+    category: string
+    value: string
+    only?: boolean
+  }) => {
+    dispatch(
+      filterAction.toggleFilterAndUpdateResults({ category, value, only })
+    )
   }
 
   const getLabel = (type: string, value: string) => {
@@ -58,18 +68,44 @@ const FilterSection = () => {
           </div>
           <div className="text-xs">
             {Object.values(Sector).map((sector) => (
-              <div className="flex items-center gap-1 p-3" key={sector}>
+              <div
+                className="flex items-center gap-1 p-3 relative group"
+                key={sector}
+              >
                 <input
                   className="w-4 h-4 accent-navy rounded"
                   type="checkbox"
                   checked={selectedFilters?.sectors?.includes(sector)}
-                  onChange={() => handleCheckboxChange("sectors", sector)}
+                  onChange={() =>
+                    handleCheckboxChange({
+                      category: "sectors",
+                      value: sector,
+                    })
+                  }
                 />
                 <span
-                  onClick={() => handleCheckboxChange("sectors", sector)}
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "sectors",
+                      value: sector,
+                    })
+                  }
                   className="w-max cursor-pointer"
                 >
                   {getLabel("sectors", sector)}
+                </span>
+
+                <span
+                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "sectors",
+                      value: sector,
+                      only: true,
+                    })
+                  }
+                >
+                  only
                 </span>
               </div>
             ))}
@@ -83,18 +119,43 @@ const FilterSection = () => {
           </div>
           <div className="text-xs">
             {Object.values(Technique).map((technique) => (
-              <div className="flex items-center gap-1 p-3" key={technique}>
+              <div
+                className="flex items-center gap-1 p-3 relative group"
+                key={technique}
+              >
                 <input
                   className="w-4 h-4 accent-navy rounded"
                   type="checkbox"
                   checked={selectedFilters?.technique?.includes(technique)}
-                  onChange={() => handleCheckboxChange("technique", technique)}
+                  onChange={() =>
+                    handleCheckboxChange({
+                      category: "technique",
+                      value: technique,
+                    })
+                  }
                 />
                 <span
-                  onClick={() => handleCheckboxChange("technique", technique)}
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "technique",
+                      value: technique,
+                    })
+                  }
                   className="w-max cursor-pointer"
                 >
                   {technique}
+                </span>
+                <span
+                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "technique",
+                      value: technique,
+                      only: true,
+                    })
+                  }
+                >
+                  only
                 </span>
               </div>
             ))}
@@ -108,20 +169,43 @@ const FilterSection = () => {
           </div>
           <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs">
             {Object.values(KindOfProblem).map((problem) => (
-              <div className="flex items-center gap-1 p-3" key={problem}>
+              <div
+                className="flex items-center gap-1 p-3 relative group"
+                key={problem}
+              >
                 <input
                   className="w-4 h-4 accent-navy rounded"
                   type="checkbox"
                   checked={selectedFilters?.kindOfProblem?.includes(problem)}
                   onChange={() =>
-                    handleCheckboxChange("kindOfProblem", problem)
+                    handleCheckboxChange({
+                      category: "kindOfProblem",
+                      value: problem,
+                    })
                   }
                 />
                 <span
-                  onClick={() => handleCheckboxChange("kindOfProblem", problem)}
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "kindOfProblem",
+                      value: problem,
+                    })
+                  }
                   className="w-max cursor-pointer"
                 >
                   {problem}
+                </span>
+                <span
+                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "kindOfProblem",
+                      value: problem,
+                      only: true,
+                    })
+                  }
+                >
+                  only
                 </span>
               </div>
             ))}
@@ -135,18 +219,43 @@ const FilterSection = () => {
           </div>
           <div className="grid grid-cols-3 gap-x-2 text-xs">
             {Object.values(Model).map((model) => (
-              <div className="flex items-center gap-1 p-3" key={model}>
+              <div
+                className="flex items-center gap-1 p-3 relative group"
+                key={model}
+              >
                 <input
                   className="w-4 h-4 accent-navy rounded"
                   type="checkbox"
                   checked={selectedFilters?.modelName?.includes(model)}
-                  onChange={() => handleCheckboxChange("modelName", model)}
+                  onChange={() =>
+                    handleCheckboxChange({
+                      category: "modelName",
+                      value: model,
+                    })
+                  }
                 />
                 <span
-                  onClick={() => handleCheckboxChange("modelName", model)}
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "modelName",
+                      value: model,
+                    })
+                  }
                   className="w-max cursor-pointer"
                 >
                   {getLabel("model", model)}
+                </span>
+                <span
+                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "modelName",
+                      value: model,
+                      only: true,
+                    })
+                  }
+                >
+                  only
                 </span>
               </div>
             ))}

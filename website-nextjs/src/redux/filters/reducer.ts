@@ -1,16 +1,19 @@
-import { AnyAction } from "redux";
-import { Sector, Technique, KindOfProblem, Model } from "@/constants";
+import { AnyAction } from "redux"
+import { Sector, Technique, KindOfProblem, Model } from "@/constants"
 
-import actions from "./actions";
+import actions from "./actions"
 
-const { TOGGLE_FILTER } = actions;
+const { TOGGLE_FILTER } = actions
 
 export type FilterState = {
-  sectors: Sector[];
-  technique: Technique[];
-  kindOfProblem: KindOfProblem[];
-  modelName: Model[];
-};
+  sectors: Sector[]
+  technique: Technique[]
+  kindOfProblem: KindOfProblem[]
+  modelName: Model[]
+  benchmarks: string[]
+  solvers: string[]
+  statuses: string[]
+}
 
 const initialState: FilterState = {
   sectors: [Sector.Power, Sector.SectorCoupled],
@@ -29,7 +32,10 @@ const initialState: FilterState = {
     Model.Sienna,
     Model.GenX,
   ],
-};
+  benchmarks: [],
+  solvers: [],
+  statuses: [],
+}
 
 const filterReducer = (
   state: FilterState = initialState,
@@ -37,21 +43,31 @@ const filterReducer = (
 ): FilterState => {
   switch (action.type) {
     case TOGGLE_FILTER:
-      const { category, value } = action.payload as {
-        category: keyof FilterState;
-        value: Sector | Technique | KindOfProblem | Model;
-      };
+      const { category, value, only } = action.payload as {
+        category: keyof FilterState
+        value: Sector | Technique | KindOfProblem | Model
+        only: boolean
+      }
+
+      if (only) {
+        return {
+          ...state,
+          [category]: [value],
+        }
+      }
 
       return {
         ...state,
-        [category]: (state[category] as typeof value[]).includes(value)
-          ? (state[category] as typeof value[]).filter((item) => item !== value) // Remove if already selected
-          : [...(state[category] as typeof value[]), value], // Add if not selected
-      };
+        [category]: (state[category] as (typeof value)[]).includes(value)
+          ? (state[category] as (typeof value)[]).filter(
+              (item) => item !== value
+            ) // Remove if already selected
+          : [...(state[category] as (typeof value)[]), value], // Add if not selected
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default filterReducer;
+export default filterReducer

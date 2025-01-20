@@ -6,10 +6,10 @@ import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData, MetaDataEntry } from "@/types/meta-data"
 import { Sector } from "@/constants"
 
-const toggleFilter = (category: string, value: string) => {
+const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
     type: actions.TOGGLE_FILTER,
-    payload: { category, value },
+    payload: { category, value, only },
   }
 }
 const actions = {
@@ -20,9 +20,10 @@ const actions = {
     (payload: {
       category: string
       value: string
+      only: boolean
     }): ThunkAction<void, RootState, unknown, AnyAction> =>
     (dispatch, getState) => {
-      dispatch(toggleFilter(payload.category, payload.value))
+      dispatch(toggleFilter(payload.category, payload.value, payload.only))
       const { filters, results } = getState()
 
       const metaData = Object.fromEntries(

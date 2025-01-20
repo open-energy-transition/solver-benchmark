@@ -76,4 +76,8 @@ const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
   })
 }
 
-export { getBenchmarkResults, processBenchmarkResults }
+const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
+  return `${benchmarkResult.benchmark} ${benchmarkResult.size}`
+}
+
+export { getBenchmarkResults, processBenchmarkResults, formatBenchmarkName }

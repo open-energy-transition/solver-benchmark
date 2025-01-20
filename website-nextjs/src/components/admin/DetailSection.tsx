@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux"
+// internal
 import {
   AppIcon,
   DatabaseIcon,
@@ -5,12 +7,25 @@ import {
   LayoutGroupIcon,
   VectorSquareIcon,
 } from "@/assets/icons"
+import { ResultState } from "@/redux/results/reducer"
 
 const DetailSection = () => {
+
+  const availableBenchmarks = useSelector((state: { results: ResultState }) => {
+    return state.results.availableBenchmarks
+  })
+
+  const availableSolves = useSelector((state: { results: ResultState }) => {
+    return state.results.availableSolves
+  })
+
+  console.log(availableBenchmarks);
+
+
   const detailData = [
     {
       label: "Solvers",
-      value: "3",
+      value: availableSolves.length,
       icon: <VectorSquareIcon />,
     },
     {
@@ -20,7 +35,7 @@ const DetailSection = () => {
     },
     {
       label: "Benchmarks",
-      value: "32",
+      value: availableBenchmarks.length,
       icon: <GraphBarIcon />,
     },
     {

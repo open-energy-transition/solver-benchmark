@@ -258,8 +258,8 @@ const ResultsSection = () => {
                   }
                     ${
                       sortConfig.field === column.field
-                        ? "opacity-100"
-                        : "opacity-20"
+                        ? "block"
+                        : "hidden"
                     }`}
                 />
               )}

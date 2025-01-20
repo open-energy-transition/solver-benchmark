@@ -10,7 +10,9 @@ type ChartData = {
   runtime: number
   memoryUsage: number,
   status: 'TO' | 'ok' | 'warning'
-  solver: SolverType
+  solver: SolverType,
+  benchmark: string,
+  size: string,
 }[]
 
 interface D3ChartProps {
@@ -153,7 +155,9 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             tooltip
               .style("opacity", 1)
               .html(
-                `<strong>Solver:</strong> ${getSolverLabel(d.solver)}<br>
+                `<strong>Name:</strong> ${d.benchmark}<br>
+                <strong>Size:</strong> ${d.size}<br>
+                <strong>Solver:</strong> ${getSolverLabel(d.solver)}<br>
                  <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
                  <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`
               )
