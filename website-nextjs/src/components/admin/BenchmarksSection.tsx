@@ -10,6 +10,7 @@ const BenchmarksSection = () => {
       return state.results.benchmarkResults
     }
   )
+  console.log(benchmarkResults);
 
   return (
     <div>

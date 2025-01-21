@@ -20,27 +20,27 @@ const Navbar = () => {
   const navConfig = [
     {
       label: "Home",
-      route: "/admin/dashboard",
+      route: "/dashboard/home",
       icon: <AlignLeftJustifyIcon />,
     },
     {
       label: "Benchmark details",
-      route: "/admin/benchmark-detail",
+      route: "/dashboard/benchmark-detail",
       icon: <ChartBarIcon />,
     },
     {
       label: "Compare solvers",
-      route: "/admin/compare-solvers",
+      route: "/dashboard/compare-solvers",
       icon: <BalanceScaleIcon />,
     },
     {
       label: "Performance history",
-      route: "/admin/performance-history",
+      route: "/dashboard/performance-history",
       icon: <ChartLineIcon />,
     },
     {
       label: "Raw result data",
-      route: "/admin/raw-result",
+      route: "/dashboard/raw-result",
       icon: <WindowIcon />,
     },
   ]

@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 // internal
-import FilterSection from "./FilterSection";
 import { BenchmarkResult } from "@/types/benchmark";
 
 const TableResult = () => {
@@ -45,7 +44,7 @@ const TableResult = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
   const [sortConfig, setSortConfig] = useState({ field: "", direction: "" });
-  const [filterQuery, setFilterQuery] = useState("");
+  const [filterQuery, ] = useState("");
 
   // Filter results based on query
   const filteredResults = useMemo(() => {
@@ -60,9 +59,13 @@ const TableResult = () => {
   const sortedResults = useMemo(() => {
     if (sortConfig.field) {
       return [...filteredResults].sort((a, b) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         if (a[sortConfig.field] < b[sortConfig.field]) {
           return sortConfig.direction === "asc" ? -1 : 1;
         }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         if (a[sortConfig.field] > b[sortConfig.field]) {
           return sortConfig.direction === "asc" ? 1 : -1;
         }
@@ -164,7 +167,6 @@ const TableResult = () => {
           </div>
         </div>
         <div className="w-1/4">
-        <FilterSection />
         </div>
       </div>
     </div>

@@ -96,7 +96,7 @@ const FilterSection = () => {
                 </span>
 
                 <span
-                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "sectors",
@@ -146,7 +146,7 @@ const FilterSection = () => {
                   {technique}
                 </span>
                 <span
-                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "technique",
@@ -196,7 +196,7 @@ const FilterSection = () => {
                   {problem}
                 </span>
                 <span
-                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "kindOfProblem",
@@ -246,7 +246,7 @@ const FilterSection = () => {
                   {getLabel("model", model)}
                 </span>
                 <span
-                  className="text-navy text-sm hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "modelName",

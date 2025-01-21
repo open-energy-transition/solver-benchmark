@@ -127,6 +127,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
         const group = d3.select(this);
 
         if (["TO", "warning"].includes(d.status) ) {
+
           // Render an "X" for status 'TO'
           group
             .append("text")

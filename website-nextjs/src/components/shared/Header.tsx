@@ -54,7 +54,7 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex w-max">
           <Link
-            href="/admin/dashboard"
+            href="/dashboard/home"
             className="rounded-lg px-4 2xl:px-7 py-3 text-base text-navy font-bold bg-white shadow-sm
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max"
           >
