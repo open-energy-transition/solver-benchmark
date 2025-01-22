@@ -19,9 +19,6 @@ const DetailSection = () => {
     return state.results.availableSolves
   })
 
-  console.log(availableBenchmarks);
-
-
   const detailData = [
     {
       label: "Solvers",

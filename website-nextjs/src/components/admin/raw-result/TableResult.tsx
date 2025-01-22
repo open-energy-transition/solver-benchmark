@@ -1,176 +1,335 @@
-import { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
-// internal
-import { BenchmarkResult } from "@/types/benchmark";
+import React, { useMemo, useState } from "react"
+import { useSelector } from "react-redux"
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  getFacetedUniqueValues,
+  useReactTable,
+} from "@tanstack/react-table"
+import { BenchmarkResult } from "@/types/benchmark"
+
+function Filter({ column }: { column: Column<any, unknown> }) {
+  const { filterVariant } = column.columnDef.meta ?? {}
+
+  const columnFilterValue = column.getFilterValue()
+
+  const sortedUniqueValues = React.useMemo(
+    () =>
+      filterVariant === "range"
+        ? []
+        : Array.from(column.getFacetedUniqueValues().keys())
+            .sort()
+            .slice(0, 5000),
+    [column.getFacetedUniqueValues(), filterVariant]
+  )
+
+  return filterVariant === "range" ? (
+    <div>
+      <div className="flex space-x-2">
+        <DebouncedInput
+          type="number"
+          min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
+          max={Number(column.getFacetedMinMaxValues()?.[1] ?? "")}
+          value={(columnFilterValue as [number, number])?.[0] ?? ""}
+          onChange={(value) =>
+            column.setFilterValue((old: [number, number]) => [value, old?.[1]])
+          }
+          placeholder={`Min ${
+            column.getFacetedMinMaxValues()?.[0] !== undefined
+              ? `(${column.getFacetedMinMaxValues()?.[0]})`
+              : ""
+          }`}
+          className="w-24 border shadow rounded"
+        />
+        <DebouncedInput
+          type="number"
+          min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
+          max={Number(column.getFacetedMinMaxValues()?.[1] ?? "")}
+          value={(columnFilterValue as [number, number])?.[1] ?? ""}
+          onChange={(value) =>
+            column.setFilterValue((old: [number, number]) => [old?.[0], value])
+          }
+          placeholder={`Max ${
+            column.getFacetedMinMaxValues()?.[1]
+              ? `(${column.getFacetedMinMaxValues()?.[1]})`
+              : ""
+          }`}
+          className="w-24 border shadow rounded"
+        />
+      </div>
+      <div className="h-1" />
+    </div>
+  ) : filterVariant === "select" ? (
+    <select
+      onChange={(e) => column.setFilterValue(e.target.value)}
+      value={columnFilterValue?.toString()}
+    >
+      <option value="">All</option>
+      {sortedUniqueValues.map((value) => (
+        //dynamically generated select options from faceted values feature
+        <option value={value} key={value}>
+          {value}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <>
+      {/* Autocomplete suggestions from faceted values feature */}
+      <datalist id={column.id + "list"}>
+        {sortedUniqueValues.map((value: any) => (
+          <option value={value} key={value} />
+        ))}
+      </datalist>
+      <DebouncedInput
+        type="text"
+        value={(columnFilterValue ?? "") as string}
+        onChange={(value) => column.setFilterValue(value)}
+        placeholder={`Search... (${column.getFacetedUniqueValues().size})`}
+        className="w-36 border shadow rounded"
+        list={column.id + "list"}
+      />
+      <div className="h-1" />
+    </>
+  )
+}
+
+// A typical debounced input react component
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}: {
+  value: string | number
+  onChange: (value: string | number) => void
+  debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
+  const [value, setValue] = React.useState(initialValue)
+
+  React.useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      onChange(value)
+    }, debounce)
+
+    return () => clearTimeout(timeout)
+  }, [value])
+
+  return (
+    <input
+      {...props}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  )
+}
 
 const TableResult = () => {
-  const columns = [
-    {
-      name: "Solver",
-      field: "solver",
-      sort: true,
-    },
-    {
-      name: "Status",
-      field: "status",
-      sort: true,
-    },
-    {
-      name: "Terminational Condition",
-      field: "terminationCondition",
-      sort: true,
-      className: "w-[7.75rem] whitespace-nowrap overflow-hidden",
-    },
-    {
-      name: "Objective Value",
-      field: "objectiveValue",
-    },
-    {
-      name: "Runtime",
-      field: "runtime",
-    },
-    {
-      name: "Memory",
-      field: "memoryUsage",
-    },
-  ];
-
   const benchmarkResults = useSelector(
     (state: { results: { rawBenchmarkResults: BenchmarkResult[] } }) => {
-      return state.results.rawBenchmarkResults;
+      return state.results.rawBenchmarkResults
     }
-  );
+  )
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(10);
-  const [sortConfig, setSortConfig] = useState({ field: "", direction: "" });
-  const [filterQuery, ] = useState("");
+  const columns = useMemo<ColumnDef<BenchmarkResult>[]>(
+    () => [
+      {
+        header: "Benchmark",
+        accessorKey: "benchmark",
+        filterFn: "includesString",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Size",
+        accessorKey: "size",
+        filterFn: "includesString",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Solver",
+        accessorKey: "solver",
+        filterFn: "includesString",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Status",
+        accessorKey: "status",
+        filterFn: "equals",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Termination Condition",
+        accessorKey: "terminationCondition",
+        cell: (info) => (
+          <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
+            {info.getValue()}
+          </div>
+        ),
+      },
+      {
+        header: "Objective Value",
+        accessorKey: "objectiveValue",
+      },
+      {
+        header: "Runtime",
+        accessorKey: "runtime",
+        meta: {
+          filterVariant: "range",
+        },
+      },
+      {
+        header: "Memory",
+        accessorKey: "memoryUsage",
+        meta: {
+          filterVariant: "range",
+        },
+      },
+    ],
+    []
+  )
 
-  // Filter results based on query
-  const filteredResults = useMemo(() => {
-    return benchmarkResults.filter((benchmark) =>
-      Object.values(benchmark).some((value) =>
-        String(value).toLowerCase().includes(filterQuery.toLowerCase())
-      )
-    );
-  }, [benchmarkResults, filterQuery]);
+  const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState([])
 
-  // Sort results based on configuration
-  const sortedResults = useMemo(() => {
-    if (sortConfig.field) {
-      return [...filteredResults].sort((a, b) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        if (a[sortConfig.field] < b[sortConfig.field]) {
-          return sortConfig.direction === "asc" ? -1 : 1;
-        }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        if (a[sortConfig.field] > b[sortConfig.field]) {
-          return sortConfig.direction === "asc" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return filteredResults;
-  }, [filteredResults, sortConfig]);
-
-  // Paginate results
-  const paginatedResults = useMemo(() => {
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    return sortedResults.slice(startIndex, endIndex);
-  }, [sortedResults, currentPage, rowsPerPage]);
-
-  const handleSort = (field: string) => {
-    setSortConfig((prev) => {
-      if (prev.field === field) {
-        return {
-          field,
-          direction: prev.direction === "asc" ? "desc" : "asc",
-        };
-      }
-      return { field, direction: "asc" };
-    });
-  };
-
-  const totalPages = Math.ceil(filteredResults.length / rowsPerPage);
+  const table = useReactTable({
+    data: benchmarkResults,
+    columns,
+    state: {
+      sorting,
+      columnFilters,
+    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: false,
+  })
 
   return (
     <div>
       <div className="text-navy font-bold pb-6 pt-9">Raw results data</div>
-      <div className="flex gap-2">
-        <div className="w-3/4">
-          <div className="rounded-xl overflow-auto">
-            <table className="table-auto bg-white w-full">
-              <thead>
-                <tr>
-                  {columns.map((col) => (
-                    <th
-                      key={col.field}
-                      className="text-center text-navy py-4 px-6 cursor-pointer"
-                      onClick={() => col.sort && handleSort(col.field)}
-                    >
-                      <div className={col.className || ""}>
-                        {col.name}
-                        {sortConfig.field === col.field &&
-                          (sortConfig.direction === "asc" ? " ↑" : " ↓")}
+
+      <div className="rounded-xl overflow-auto">
+        <table className="table-auto bg-white w-full">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="text-center text-navy py-4 px-6 cursor-pointer"
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <div>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.getIsSorted() === "asc"
+                        ? " ↑"
+                        : header.column.getIsSorted() === "desc"
+                        ? " ↓"
+                        : ""}
+                    </div>
+                    {header.column.getCanFilter() ? (
+                      <div>
+                        <Filter column={header.column} />
                       </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedResults.map((benchmark, idx) => (
-                  <tr key={idx} className="odd:bg-grey">
-                    <td className="text-[#666666] text-start py-4 px-6">
-                      {benchmark.solver}
-                    </td>
-                    <td className="text-[#666666] text-start py-4 px-6">
-                      {benchmark.status}
-                    </td>
-                    <td className="text-[#666666] text-start py-4 px-6">
-                      {benchmark.terminationCondition}
-                    </td>
-                    <td className="text-[#666666] text-start py-4 px-6">
-                      {benchmark.objectiveValue}
-                    </td>
-                    <td className="text-[#666666] text-start py-4 px-6">
-                      {benchmark.runtime}
-                    </td>
-                    <td className="text-[#666666] text-start py-4 px-6">
-                      {benchmark.memoryUsage}
-                    </td>
-                  </tr>
+                    ) : null}
+                  </th>
                 ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-between items-center mt-4">
-            <button
-              className="px-4 py-2 bg-navy text-white rounded disabled:opacity-50"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            >
-              Previous
-            </button>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              className="px-4 py-2 bg-navy text-white rounded disabled:opacity-50"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-        <div className="w-1/4">
-        </div>
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="odd:bg-grey">
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="text-[#666666] text-start py-4 px-6"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex items-center gap-2">
+        <button
+          className="border rounded p-1"
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {"<<"}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {"<"}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {">"}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          {">>"}
+        </button>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              table.setPageIndex(page)
+            }}
+            className="border p-1 rounded w-16"
+          />
+        </span>
+        <select
+          value={table.getState().pagination.pageSize}
+          onChange={(e) => {
+            table.setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TableResult;
+export default TableResult
