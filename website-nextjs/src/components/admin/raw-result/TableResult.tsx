@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
 import {
   ColumnDef,
@@ -11,6 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { BenchmarkResult } from "@/types/benchmark"
+import FilterAutoComplete from "./FilterAutoComplete"
 
 function Filter({ column }: { column: Column<any, unknown> }) {
   const { filterVariant } = column.columnDef.meta ?? {}
@@ -78,21 +79,14 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     </select>
   ) : (
     <>
-      {/* Autocomplete suggestions from faceted values feature */}
-      <datalist id={column.id + "list"}>
-        {sortedUniqueValues.map((value: any) => (
-          <option value={value} key={value} />
-        ))}
-      </datalist>
-      <DebouncedInput
-        type="text"
-        value={(columnFilterValue ?? "") as string}
-        onChange={(value) => column.setFilterValue(value)}
-        placeholder={`Search... (${column.getFacetedUniqueValues().size})`}
-        className="w-36 border shadow rounded"
-        list={column.id + "list"}
+      <FilterAutoComplete
+        options={sortedUniqueValues.map((val) => ({
+          value: val,
+          label: val,
+        }))}
+        setFilterValue={column.setFilterValue}
+        columnFilterValue={columnFilterValue}
       />
-      <div className="h-1" />
     </>
   )
 }
@@ -228,9 +222,8 @@ const TableResult = () => {
                   <th
                     key={header.id}
                     className="text-center text-navy py-4 px-6 cursor-pointer"
-                    onClick={header.column.getToggleSortingHandler()}
                   >
-                    <div>
+                    <div onClick={header.column.getToggleSortingHandler()}>
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
