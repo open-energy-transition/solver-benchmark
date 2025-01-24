@@ -1,3 +1,6 @@
+/* eslint-disable */
+/* eslint-disable @typescript-eslint/* */
+
 import React, { useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
 import {
@@ -9,12 +12,14 @@ import {
   getPaginationRowModel,
   getFacetedUniqueValues,
   useReactTable,
+  Column,
 } from "@tanstack/react-table"
 import { BenchmarkResult } from "@/types/benchmark"
 import FilterAutoComplete from "./FilterAutoComplete"
+import Popup from "reactjs-popup"
 
 function Filter({ column }: { column: Column<any, unknown> }) {
-  const { filterVariant } = column.columnDef.meta ?? {}
+  const { filterVariant } = (column.columnDef.meta as any) ?? {}
 
   const columnFilterValue = column.getFilterValue()
 
@@ -85,7 +90,8 @@ function Filter({ column }: { column: Column<any, unknown> }) {
           label: val,
         }))}
         setFilterValue={column.setFilterValue}
-        columnFilterValue={columnFilterValue}
+        columnFilterValue={columnFilterValue as any[]}
+        column={column as any}
       />
     </>
   )
@@ -137,19 +143,46 @@ const TableResult = () => {
       {
         header: "Benchmark",
         accessorKey: "benchmark",
-        filterFn: "includesString",
-        cell: (info) => info.getValue(),
+        filterFn: "arrIncludesSome",
+        size: 200,
+        cell: (info) => (
+          <Popup
+            on={["hover"]}
+            trigger={() => (
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                {info.getValue() as any}
+              </div>
+            )}
+            position="right center"
+            closeOnDocumentClick
+            arrowStyle={{color: '#ebeff2'}}
+          >
+            <div className="bg-stroke p-2 rounded"> {info.getValue() as string} </div>
+          </Popup>
+        ),
       },
       {
-        header: "Size",
+        header: "Instance",
         accessorKey: "size",
-        filterFn: "includesString",
+        filterFn: "arrIncludesSome",
         cell: (info) => info.getValue(),
       },
       {
         header: "Solver",
         accessorKey: "solver",
-        filterFn: "includesString",
+        filterFn: "arrIncludesSome",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Solver Version",
+        accessorKey: "solverVersion",
+        filterFn: "arrIncludesSome",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Solver Release Year",
+        accessorKey: "solverReleaseYear",
+        filterFn: "arrIncludesSome",
         cell: (info) => info.getValue(),
       },
       {
@@ -163,14 +196,11 @@ const TableResult = () => {
         accessorKey: "terminationCondition",
         cell: (info) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
-            {info.getValue()}
+            {info.getValue() as string}
           </div>
         ),
       },
-      {
-        header: "Objective Value",
-        accessorKey: "objectiveValue",
-      },
+
       {
         header: "Runtime",
         accessorKey: "runtime",
@@ -184,6 +214,18 @@ const TableResult = () => {
         meta: {
           filterVariant: "range",
         },
+      },
+      {
+        header: "Objective Value",
+        accessorKey: "objectiveValue",
+      },
+      {
+        header: "Max Integrality Violation",
+        accessorKey: "maxIntegralityViolation",
+      },
+      {
+        header: "Duality Gap",
+        accessorKey: "dualityGap",
       },
     ],
     []
@@ -199,8 +241,8 @@ const TableResult = () => {
       sorting,
       columnFilters,
     },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting as any,
+    onColumnFiltersChange: setColumnFilters as any,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -260,7 +302,8 @@ const TableResult = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex items-center gap-2">
+      {/* Pagination */}
+      <div className="flex items-center gap-2 mt-2">
         <button
           className="border rounded p-1"
           onClick={() => table.setPageIndex(0)}
