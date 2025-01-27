@@ -39,7 +39,7 @@ const Navbar = () => {
       icon: <ChartLineIcon />,
     },
     {
-      label: "Raw result data",
+      label: "Full Results",
       route: "/dashboard/raw-result",
       icon: <WindowIcon />,
     },

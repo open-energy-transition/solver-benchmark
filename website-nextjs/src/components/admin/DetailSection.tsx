@@ -8,8 +8,15 @@ import {
   VectorSquareIcon,
 } from "@/assets/icons"
 import { ResultState } from "@/redux/results/reducer"
+import { useMemo } from "react"
+import { BenchmarkResult } from "@/types/benchmark"
 
 const DetailSection = () => {
+  const benchmarkResults = useSelector(
+    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
+      return state.results.benchmarkResults
+    }
+  )
 
   const availableBenchmarks = useSelector((state: { results: ResultState }) => {
     return state.results.availableBenchmarks
@@ -19,11 +26,31 @@ const DetailSection = () => {
     return state.results.availableSolves
   })
 
+  const avaliableVersion = useMemo(
+    () =>
+      Array.from(
+        new Set(benchmarkResults.map((result) => result.solverVersion))
+      ),
+    [availableSolves]
+  )
+
+  const avaliableInstance = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
+        )
+      ),
+    [availableSolves]
+  )
+
   const detailData = [
     {
       label: "Solvers",
       value: availableSolves.length,
       icon: <VectorSquareIcon />,
+      generateLabel: () =>
+        `Solvers: ${availableSolves.length} (${avaliableVersion.length} versions)`,
     },
     {
       label: "Iteration",
@@ -34,6 +61,8 @@ const DetailSection = () => {
       label: "Benchmarks",
       value: availableBenchmarks.length,
       icon: <GraphBarIcon />,
+      generateLabel: () =>
+        `Benchmarks: ${availableSolves.length} (${avaliableInstance.length} instances)`,
     },
     {
       label: "Memory",
@@ -58,11 +87,17 @@ const DetailSection = () => {
         {detailData.map((data, idx) => (
           <li key={idx} className="text-base flex items-center">
             {data.icon}
-            <span className="ml-1">
-              {data.label}
-              {":"}
-            </span>
-            <span className="font-bold ml-1">{data.value}</span>
+            {data.generateLabel ? (
+              <div className="ml-1">{data.generateLabel()}</div>
+            ) : (
+              <div className="ml-1">
+                <span className="ml-1">
+                  {data.label}
+                  {":"}
+                </span>
+                <span className="font-bold ml-1">{data.value}</span>
+              </div>
+            )}
           </li>
         ))}
       </ul>

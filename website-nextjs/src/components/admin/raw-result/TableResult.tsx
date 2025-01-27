@@ -253,7 +253,7 @@ const TableResult = () => {
 
   return (
     <div>
-      <div className="text-navy font-bold pb-6 pt-9">Raw results data</div>
+      <div className="text-navy font-bold pb-6 pt-9">Full Results</div>
 
       <div className="rounded-xl overflow-auto">
         <table className="table-auto bg-white w-full">

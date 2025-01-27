@@ -10,12 +10,11 @@ const BenchmarksSection = () => {
       return state.results.benchmarkResults
     }
   )
-  console.log(benchmarkResults);
 
   return (
-    <div>
+    <div className="py-4">
+      <D3Chart chartData={benchmarkResults} />
       <div className="pt-1.5 pb-3 pl-3">
-        <h6 className="text-navy font-bold text-xl">Benchmarks</h6>
         <p className="flex gap-1 items-center text-dark-grey text-sm">
           <CloseIcon className="size-3" />
           represents benchmarks that timed out, while
@@ -23,7 +22,6 @@ const BenchmarksSection = () => {
           indicates a successful run.
         </p>
       </div>
-      <D3Chart chartData={benchmarkResults} />
     </div>
   )
 }

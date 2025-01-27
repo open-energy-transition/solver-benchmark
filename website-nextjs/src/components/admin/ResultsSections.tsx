@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
-import { ArrowIcon } from "@/assets/icons"
-import { BenchmarkResult } from "@/types/benchmark"
+import { ArrowIcon, QuestionLine } from "@/assets/icons"
 import { getHighestVersion } from "@/utils/versions"
 import { calculateSgm } from "@/utils/calculations"
 import { roundNumber } from "@/utils/number"
 import { MaxMemoryUsage, MaxRunTime } from "@/constants"
+import { ResultState } from "@/redux/results/reducer"
+import Popup from "reactjs-popup"
 
 const ResultsSection = () => {
   const columns = [
@@ -46,6 +47,23 @@ const ResultsSection = () => {
       bgColor: "bg-lavender",
       color: "text-navy font-semibold",
       sort: true,
+      headerContent: (header: string) => (
+        <div className="flex gap-2">
+          {header}
+          <Popup
+            on={["hover"]}
+            trigger={() => <QuestionLine className="w-4 h-4" />}
+            position="right center"
+            closeOnDocumentClick
+            arrowStyle={{ color: "#ebeff2" }}
+          >
+            <div className="bg-stroke p-2 rounded">
+              Solved benchmarks is the number of benchmarks where the solver
+              returns an `ok` status
+            </div>
+          </Popup>
+        </div>
+      ),
     },
     {
       name: "Runtime",
@@ -57,11 +75,13 @@ const ResultsSection = () => {
     },
   ]
 
-  const benchmarkResults = useSelector(
-    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
-      return state.results.benchmarkResults
-    }
-  )
+  const benchmarkResults = useSelector((state: { results: ResultState }) => {
+    return state.results.benchmarkResults
+  })
+
+  const rawBenchmarkResults = useSelector((state: { results: ResultState }) => {
+    return state.results.rawBenchmarkResults
+  })
 
   const [tableData, setTableData] = useState<
     {
@@ -177,7 +197,8 @@ const ResultsSection = () => {
   useEffect(() => {
     setTableData([
       {
-        rank: getSolverRanks().findIndex(solver => solver.solver === "highs") + 1,
+        rank:
+          getSolverRanks().findIndex((solver) => solver.solver === "highs") + 1,
         solver: "HiGHS",
         version: getHighestVersion(solverVersions.highs),
         memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
@@ -185,7 +206,8 @@ const ResultsSection = () => {
         runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
       },
       {
-        rank: getSolverRanks().findIndex(solver => solver.solver === "glpk") + 1,
+        rank:
+          getSolverRanks().findIndex((solver) => solver.solver === "glpk") + 1,
         solver: "GLPK",
         version: getHighestVersion(solverVersions.glpk),
         memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
@@ -193,7 +215,8 @@ const ResultsSection = () => {
         runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
       },
       {
-        rank: getSolverRanks().findIndex(solver => solver.solver === "scip") + 1,
+        rank:
+          getSolverRanks().findIndex((solver) => solver.solver === "scip") + 1,
         solver: "SCIP",
         version: getHighestVersion(solverVersions.scip),
         memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
@@ -232,7 +255,15 @@ const ResultsSection = () => {
   return (
     <div>
       <div className="pb-3 pl-3">
-        <div className="text-navy font-bold text-xl">Results</div>
+        <div className="text-navy font-bold text-xl">
+          Results
+          {rawBenchmarkResults.length !== benchmarkResults.length && (
+            <span className="ml-1">
+              (filtered to {benchmarkResults.length}/
+              {rawBenchmarkResults.length} benchmarks)
+            </span>
+          )}
+        </div>
         <div className="text-dark-grey text-sm">
           We rank solvers by normalized shifted geometric mean (SGM) of runtime
           and memory consumption over all benchmarks
@@ -248,7 +279,9 @@ const ResultsSection = () => {
               className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
               onClick={() => column.sort && handleSort(column.field)}
             >
-              {column.name}
+              {column.headerContent
+                ? column.headerContent(column.name)
+                : column.name}
               {column.sort && (
                 <ArrowIcon
                   fill="none"
@@ -256,11 +289,7 @@ const ResultsSection = () => {
                   className={`w-2 h-2 ${
                     sortConfig.direction === "asc" ? "rotate-180" : ""
                   }
-                    ${
-                      sortConfig.field === column.field
-                        ? "block"
-                        : "hidden"
-                    }`}
+                    ${sortConfig.field === column.field ? "block" : "hidden"}`}
                 />
               )}
             </div>
