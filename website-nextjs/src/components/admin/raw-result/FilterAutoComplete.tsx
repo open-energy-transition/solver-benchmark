@@ -34,7 +34,7 @@ const Option = (props: OptionProps<any>) => {
         type="checkbox"
         checked={data.isSelected}
         readOnly
-        className="mr-2"
+        className="mr-2 accent-navy rounded"
       />
       <label>{data.label}</label>
     </div>
@@ -42,10 +42,7 @@ const Option = (props: OptionProps<any>) => {
 }
 
 const MultiValueContainer = (props: MultiValueGenericProps<any>) => {
-  return (
-    // <components.MultiValueContainer {...props} />
-    <div></div>
-  )
+  return <div />
 }
 
 interface FilterAutoCompleteProps {
@@ -62,7 +59,9 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
   column,
 }) => {
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false)
-  const [selectedValue, setSelectedValue] = useState<{ value: string; label: string; isSelected: boolean }[]>([])
+  const [selectedValue, setSelectedValue] = useState<
+    { value: string; label: string; isSelected: boolean }[]
+  >([])
 
   function onSelect(newValue: MultiValue<any>, action: ActionMeta<any>) {
     if (!action?.option) return
@@ -140,7 +139,9 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
     }
   }
 
-  const [optionsData, setOptionsData] = useState<{ value: string; label: string; isSelected: boolean }[]>([])
+  const [optionsData, setOptionsData] = useState<
+    { value: string; label: string; isSelected: boolean }[]
+  >([])
   useEffect(() => {
     setOptionsData([
       { value: "all", label: "All", isSelected: true },
@@ -178,15 +179,14 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
   return (
     <Popup
       onClose={() => toggleMenuIsOpen(true)}
+      onOpen={() => toggleMenuIsOpen()}
       trigger={
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 w-full items-center z-50 relative rounded-lg">
           <input
-            onClick={() => toggleMenuIsOpen()}
             className="rounded-lg bg-gray-100 h-8 text-center text-gray-600"
-            value={selectedValue.length}
             disabled
           />
-          <FilterIcon onClick={() => toggleMenuIsOpen()} className="size-5" />
+          <FilterIcon className="size-5" />
         </div>
       }
       position="bottom center"
@@ -200,7 +200,12 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
           isMulti
           hideSelectedOptions={false}
           options={optionsData}
-          onChange={onSelect as (newValue: unknown, actionMeta: ActionMeta<unknown>) => void}
+          onChange={
+            onSelect as (
+              newValue: unknown,
+              actionMeta: ActionMeta<unknown>
+            ) => void
+          }
           value={selectedValue}
         />
       </div>

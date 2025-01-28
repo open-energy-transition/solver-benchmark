@@ -17,6 +17,7 @@ import {
 import { BenchmarkResult } from "@/types/benchmark"
 import FilterAutoComplete from "./FilterAutoComplete"
 import Popup from "reactjs-popup"
+import { Color } from "@/constants/color"
 
 function Filter({ column }: { column: Column<any, unknown> }) {
   const { filterVariant } = (column.columnDef.meta as any) ?? {}
@@ -49,7 +50,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
               ? `(${column.getFacetedMinMaxValues()?.[0]})`
               : ""
           }`}
-          className="w-24 border shadow rounded"
+          className="w-24 border rounded px-2 h-8"
         />
         <DebouncedInput
           type="number"
@@ -64,7 +65,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
               ? `(${column.getFacetedMinMaxValues()?.[1]})`
               : ""
           }`}
-          className="w-24 border shadow rounded"
+          className="w-24 border rounded px-2 h-8"
         />
       </div>
       <div className="h-1" />
@@ -76,7 +77,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     >
       <option value="">All</option>
       {sortedUniqueValues.map((value) => (
-        //dynamically generated select options from faceted values feature
         <option value={value} key={value}>
           {value}
         </option>
@@ -97,7 +97,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
   )
 }
 
-// A typical debounced input react component
 function DebouncedInput({
   value: initialValue,
   onChange,
@@ -153,11 +152,14 @@ const TableResult = () => {
                 {info.getValue() as any}
               </div>
             )}
-            position="right center"
+            position="top center"
             closeOnDocumentClick
-            arrowStyle={{color: '#ebeff2'}}
+            arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded"> {info.getValue() as string} </div>
+            <div className="bg-stroke p-2 rounded">
+              {" "}
+              {info.getValue() as string}{" "}
+            </div>
           </Popup>
         ),
       },
@@ -288,11 +290,11 @@ const TableResult = () => {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-grey">
+              <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="text-[#666666] text-start py-4 px-6"
+                    className="text-navy text-start py-4 px-6"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
