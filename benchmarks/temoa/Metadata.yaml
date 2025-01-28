@@ -1,0 +1,104 @@
+## https://github.com/TemoaProject/temoa/blob/v2.0/data_files/temoa_utopia.sql
+temoa_utopia: Single-region test system model considering 4 future years and 6 time slices (day/night, intermediate/summer/winter).
+  Short description: 
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (4 years)
+  MILP features: None
+  Sizes:
+    Temporal resolution: 6 time slices (3 seasons, 2 times of day)
+    Spatial resolution: 1 node
+    N. of constraints: 
+    N. of continuous variables: 
+    N. of integer variables: 
+    N. of binary variables: 
+
+## Metadata for samples from https://github.com/TemoaProject/oeo
+US_9R_TS: US-based sector-coupled model with 9 regions and 8 future periods in absence of further constraints. 
+  Short description: 
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    Spatial resolution: 9 nodes
+    N. of constraints: 
+    N. of continuous variables: 
+    N. of integer variables: 
+    N. of binary variables: 
+    
+US_9R_TS_NDC: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes the policy commitments in the U.S. Nationally Determined Contributions (NDC).
+  Short description: 
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    Spatial resolution: 9 nodes
+    N. of constraints: 
+    N. of continuous variables: 
+    N. of integer variables: 
+    N. of binary variables:
+    
+US_9R_TS_NZ: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
+  Short description: 
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    Spatial resolution: 9 nodes
+    N. of constraints: 
+    N. of continuous variables: 
+    N. of integer variables: 
+    N. of binary variables:
+        
+US_9R_TS_SP: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes a collection of CO2 emission limits for US states from stated policies.
+  Short description: 
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    Spatial resolution: 9 nodes
+    N. of constraints: 
+    N. of continuous variables: 
+    N. of integer variables: 
+    N. of binary variables:
+    
+    
+US_9R_TS_NZ_trunc_4periods: US-based sector-coupled model with 9 regions and 5 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
+  Short description: 
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (5 years)
+  MILP features: None
+  Sizes:
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    Spatial resolution: 9 nodes
+    N. of constraints: 
+    N. of continuous variables: 
+    N. of integer variables: 
+    N. of binary variables:
