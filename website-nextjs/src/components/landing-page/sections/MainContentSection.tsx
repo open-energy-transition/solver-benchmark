@@ -9,7 +9,7 @@ const MainContent = () => {
         src="/landing_page/main_bg.png"
         alt="Background"
         fill
-        style={{ objectFit: 'cover' }}
+        style={{ objectFit: "cover" }}
         quality={100}
       />
 
@@ -23,11 +23,17 @@ const MainContent = () => {
           </div>
           <div className="mt-4 text-grey text-2xl font-light">
             <p>
-              A platform comparing solvers on diverse, representative, and
-              meaningful benchmarks.
-            </p>
-            <p>
-              Use our open data and intuitive graphs to make informed decisions.
+              Built by{" "}
+              <span className="font-bold">
+                <Link href="https://openenergytransition.org/">
+                  Open Energy Transition
+                </Link>
+                , with funding from{" "}
+                <Link href="https://www.breakthroughenergy.org/">
+                  Breakthrough Energy
+                </Link>
+              </span>
+              , and contributions from the community.
             </p>
           </div>
 
@@ -38,7 +44,8 @@ const MainContent = () => {
             >
               BENCHMARK RESULTS
             </Link>
-            <a id="benchmark-section"
+            <a
+              id="benchmark-section"
               href="#"
               className="rounded-md px-8 py-3 text-teal font-bold text-lg md:text-xl bg-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
             >

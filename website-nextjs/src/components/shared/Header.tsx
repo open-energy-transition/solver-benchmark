@@ -39,18 +39,18 @@ const Header = () => {
           </button>
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
-          <a href="#benchmark-section" className="text-sm/6 font-semibold">
+          <Link href="#benchmark-section" className="text-sm/6 font-semibold">
             BENCHMARKS
-          </a>
-          <a href="#contribution-section" className="text-sm/6 font-semibold">
+          </Link>
+          <Link href="#contribution-section" className="text-sm/6 font-semibold">
             CONTRIBUTIONS
-          </a>
-          <a href="#mission-section" className="text-sm/6 font-semibold">
+          </Link>
+          <Link href="#mission-section" className="text-sm/6 font-semibold">
             MISSION
-          </a>
-          <a href="#faq-section" className="text-sm/6 font-semibold">
+          </Link>
+          <Link href="#faq-section" className="text-sm/6 font-semibold">
             FAQs
-          </a>
+          </Link>
         </div>
         <div className="hidden lg:flex w-max">
           <Link
@@ -93,30 +93,30 @@ const Header = () => {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  <a
-                    href="#"
+                  <Link
+                    href="#benchmark-section"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white "
                   >
                     BENCHMARKS
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    href="#contribution-section"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     CONTRIBUTIONS
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    href="#mission-section"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     MISSION
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    href="#faq-section"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     FAQs
-                  </a>
+                  </Link>
                   <Link
                     href="https://openenergytransition.org/"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"

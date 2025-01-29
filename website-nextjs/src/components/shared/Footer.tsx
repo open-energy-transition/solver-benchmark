@@ -6,7 +6,7 @@ const Footer = () => {
     <footer>
       <div className="h-1 w-full border-b border-[#e5e7eb] mx-auto pt-10"></div>
       <div>
-        <div className="flex gap-1 py-6 justify-center items-center text-navy text-xs">
+        <div className="grid px-4 md:flex gap-1 py-6 justify-start md:justify-center items-center text-navy text-xs">
           <Image width={54} height={25} src="/logo/oet.png" alt="oet-logo" />
           <span>© 2025</span>
           <Link

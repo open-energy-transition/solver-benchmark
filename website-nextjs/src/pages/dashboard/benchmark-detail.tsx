@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 // local
 import DetailSection from "@/components/admin/DetailSection"
 import BenchMarkDetailSection from "@/components/admin/benchmark-detail/DetailSection"
-import { AdminHeader, Navbar } from "@/components/shared"
+import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import GraphSection from "@/components/admin/benchmark-detail/GraphSection"
 import Head from "next/head"
 
@@ -25,6 +25,7 @@ const PageBenchmarkDetail = () => {
           <BenchMarkDetailSection />
           <GraphSection />
         </div>
+        <Footer />
       </div>
     </>
   )

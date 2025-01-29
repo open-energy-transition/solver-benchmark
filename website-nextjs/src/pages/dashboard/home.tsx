@@ -4,7 +4,7 @@ import BenchmarksSection from "@/components/admin/BenchmarksSection"
 import DetailSection from "@/components/admin/DetailSection"
 import FilterSection from "@/components/admin/FilterSection"
 import ResultsSection from "@/components/admin/ResultsSections"
-import { AdminHeader, Navbar } from "@/components/shared"
+import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import Head from "next/head"
 
 const LandingPage = () => {
@@ -28,6 +28,7 @@ const LandingPage = () => {
           <BenchmarksSection />
         </div>
       </div>
+      <Footer />
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 // local
 import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Navbar } from "@/components/shared"
+import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import TableResult from "@/components/admin/raw-result/TableResult"
 import Head from "next/head"
 
@@ -23,6 +23,7 @@ const PagePerformanceHistory = () => {
           <DetailSection />
           <TableResult />
         </div>
+        <Footer />
       </div>
     </>
   )

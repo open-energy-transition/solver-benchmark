@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 // local
 import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Navbar } from "@/components/shared"
+import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import SolverSelection from "@/components/admin/compare-solvers/SolverSelection"
 import FilterSection from "@/components/admin/compare-solvers/FilterSection"
 import SolversGraphSection from "@/components/admin/compare-solvers/SolversGraphSection"
@@ -28,6 +28,7 @@ const PageCompareSolvers = () => {
           <SolversGraphSection />
         </div>
       </div>
+      <Footer />
     </>
   )
 }

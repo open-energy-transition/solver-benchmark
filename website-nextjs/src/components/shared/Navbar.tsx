@@ -60,8 +60,8 @@ const Navbar = () => {
       >
         <div className="overflow-auto overflow-x-hidden py-5 px-0 h-full text-white">
           <div className="pt-12 pb-11">
-            <a
-              href="#"
+            <Link
+              href="/"
               className={`-m-1.5 p-1.5 flex items-center gap-0.5 text-white w-max
                  ${isNavExpanded ? "px-16" : "px-4"}`}
             >
@@ -80,7 +80,7 @@ const Navbar = () => {
                   Benchmark
                 </div>
               )}
-            </a>
+            </Link>
           </div>
           <ul className="space-y-2">
             {navConfig.map((navData, idx) => (
@@ -102,14 +102,20 @@ const Navbar = () => {
                 >
                   {navData.icon}
                   {isNavExpanded && (
-                    <span className="ml-3.5 pl-[1px] text-xl mt-0.5">{navData.label}</span>
+                    <span className="ml-3.5 pl-[1px] text-xl mt-0.5">
+                      {navData.label}
+                    </span>
                   )}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-        <div className={`hidden absolute bottom-2 left-0 justify-center pb-24 space-x-4 w-full lg:flex ${isNavExpanded ? 'pl-2' : ''}`}>
+        <div
+          className={`hidden absolute bottom-2 left-0 justify-center pb-24 space-x-4 w-full lg:flex ${
+            isNavExpanded ? "pl-2" : ""
+          }`}
+        >
           <a
             onClick={() => dispatch(navbarActions.toggleNav())}
             href="#"

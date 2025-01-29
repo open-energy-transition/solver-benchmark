@@ -3,7 +3,7 @@ import { useMemo } from "react"
 
 // local
 import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Navbar } from "@/components/shared"
+import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved"
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection"
 import FilterSection from "@/components/admin/FilterSection"
@@ -167,6 +167,8 @@ const PagePerformanceHistory = () => {
           />
         </div>
       </div>
+      <br />
+      <Footer />
     </>
   )
 }
