@@ -1,4 +1,10 @@
-import { ArrowUpIcon, LampOnIcon, LayoutGroupIcon, UsersAltIcon } from "@/assets/icons"
+import {
+  ArrowUpIcon,
+  LampOnIcon,
+  LayoutGroupIcon,
+  UsersAltIcon,
+} from "@/assets/icons"
+import Link from "next/link"
 
 const MissionStart = () => {
   return (
@@ -28,16 +34,19 @@ const MissionStart = () => {
                 realistic and energy planning relevant benchmarks
               </h6>
             </div>
-            <div className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between">
+            <Link
+              href="/dashboard/benchmark-detail"
+              className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between"
+            >
               <div>
                 <h6 className="font-bold">Benchmark Details</h6>
               </div>
               <ArrowUpIcon className="text-white rotate-90 w-6 h-6" />
-            </div>
+            </Link>
           </div>
           <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-20 w-full lg:w-96 flex flex-col">
             <div>
-            <LampOnIcon />
+              <LampOnIcon />
             </div>
             <h5 className="my-4 font-league font-bold text-2xl uppercase">
               Energy Modellers
@@ -48,10 +57,13 @@ const MissionStart = () => {
                 application domain, hardware constraints, and budget
               </h6>
             </div>
-            <div className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between">
+            <Link
+              href="/dashboard/compare-solvers"
+              className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between"
+            >
               <h6 className="font-bold">Compare Solvers</h6>
               <ArrowUpIcon className="text-white rotate-90 w-6 h-6" />
-            </div>
+            </Link>
           </div>
           <div className="py-6 lg:py-3 px-6 rounded-lg bg-white bg-opacity-20 w-full lg:w-96 flex flex-col">
             <div>
@@ -66,10 +78,14 @@ const MissionStart = () => {
                 maximize the potential return on your investment
               </h6>
             </div>
-            <div className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between">
+            <Link
+              href="/dashboard/performance-history"
+              id="faq-section"
+              className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between"
+            >
               <h6 className="font-bold">Solver Performance History</h6>
               <ArrowUpIcon className="text-white rotate-90 w-6 h-6" />
-            </div>
+            </Link>
           </div>
         </div>
       </div>

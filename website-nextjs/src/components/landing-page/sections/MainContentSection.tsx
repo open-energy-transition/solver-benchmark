@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 const MainContent = () => {
   return (
@@ -31,13 +32,13 @@ const MainContent = () => {
           </div>
 
           <div className="mt-8 grid md:flex items-center justify-start gap-2 md:gap-6 text-center">
-            <a
-              href="#"
+            <Link
+              href="/dashboard/home"
               className="rounded-md px-8 py-3 text-white font-bold text-lg md:text-xl bg-teal shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               BENCHMARK RESULTS
-            </a>
-            <a
+            </Link>
+            <a id="benchmark-section"
               href="#"
               className="rounded-md px-8 py-3 text-teal font-bold text-lg md:text-xl bg-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
             >

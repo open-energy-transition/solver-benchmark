@@ -1,4 +1,4 @@
-import { ArrowUpIcon } from "@/assets/icons";
+import { ArrowUpIcon } from "@/assets/icons"
 
 const GetStarted = () => {
   return (
@@ -35,11 +35,13 @@ const GetStarted = () => {
           </div>
         </div>
         <div className="mt-9 py-1.5 px-2 relative border-b border-teal/50 flex justify-between items-center">
-          <h5 className="text-lavender leading-1.4">GET STARTED</h5>
+          <h5 id="contribution-section" className="text-lavender leading-1.4">
+            GET STARTED
+          </h5>
           <ArrowUpIcon className="text-white rotate-90 size-6" />
         </div>
       </div>
     </div>
-  );
-};
-export default GetStarted;
+  )
+}
+export default GetStarted

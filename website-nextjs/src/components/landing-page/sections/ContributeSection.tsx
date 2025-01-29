@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/image"
 import {
   ArrowUpIcon,
   CircleOutlineIcon,
@@ -6,7 +6,8 @@ import {
   GithubIcon,
   StarIcon,
   UserIcon,
-} from "@/assets/icons";
+} from "@/assets/icons"
+import Link from "next/link"
 
 const Contribute = () => {
   return (
@@ -70,15 +71,21 @@ const Contribute = () => {
           </div>
         </div>
 
-        <div className="mt-11 px-2 py-1.5 relative border-b border-teal border-opacity-50 flex justify-between">
-          <div className="flex items-center gap-1 font-bold text-navy text-opacity-70">
+        <Link
+          href="https://github.com/open-energy-transition/solver-benchmark"
+          className="mt-11 px-2 py-1.5 relative border-b border-teal border-opacity-50 flex justify-between"
+        >
+          <div
+            id="mission-section"
+            className="flex items-center gap-1 font-bold text-navy text-opacity-70"
+          >
             <GithubIcon />
             <h5>GITHUB REPOSITORY</h5>
           </div>
           <ArrowUpIcon className="text-black rotate-90 size-6 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
-        </div>
+        </Link>
       </div>
     </div>
-  );
-};
-export default Contribute;
+  )
+}
+export default Contribute

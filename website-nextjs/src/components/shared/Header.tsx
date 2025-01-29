@@ -39,16 +39,16 @@ const Header = () => {
           </button>
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
-          <a href="#" className="text-sm/6 font-semibold">
+          <a href="#benchmark-section" className="text-sm/6 font-semibold">
             BENCHMARKS
           </a>
-          <a href="#" className="text-sm/6 font-semibold">
+          <a href="#contribution-section" className="text-sm/6 font-semibold">
             CONTRIBUTIONS
           </a>
-          <a href="#" className="text-sm/6 font-semibold">
+          <a href="#mission-section" className="text-sm/6 font-semibold">
             MISSION
           </a>
-          <a href="#" className="text-sm/6 font-semibold">
+          <a href="#faq-section" className="text-sm/6 font-semibold">
             FAQs
           </a>
         </div>
