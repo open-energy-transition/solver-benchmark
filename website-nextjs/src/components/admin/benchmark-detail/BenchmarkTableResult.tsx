@@ -15,9 +15,10 @@ import {
   Column,
 } from "@tanstack/react-table"
 import { BenchmarkResult } from "@/types/benchmark"
-import FilterAutoComplete from "./FilterAutoComplete"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
+import FilterAutoComplete from "../raw-result/FilterAutoComplete"
+import { ResultState } from "@/redux/results/reducer"
 
 function Filter({ column }: { column: Column<any, unknown> }) {
   const { filterVariant } = (column.columnDef.meta as any) ?? {}
@@ -130,10 +131,10 @@ function DebouncedInput({
   )
 }
 
-const TableResult = () => {
+const BenchmarkTableResult = () => {
   const benchmarkResults = useSelector(
-    (state: { results: { rawBenchmarkResults: BenchmarkResult[] } }) => {
-      return state.results.rawBenchmarkResults
+    (state: { results: ResultState}) => {
+      return state.results.benchmarkResults
     }
   )
 
@@ -254,9 +255,7 @@ const TableResult = () => {
   })
 
   return (
-    <div>
-      <div className="text-navy font-bold pb-6 pt-9">Full Results</div>
-
+    <div className="py-2">
       <div className="rounded-xl overflow-auto">
         <table className="table-auto bg-white w-full">
           <thead>
@@ -370,4 +369,4 @@ const TableResult = () => {
   )
 }
 
-export default TableResult
+export default BenchmarkTableResult

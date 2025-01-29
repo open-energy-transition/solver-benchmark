@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux"
 // local
 import DetailSection from "@/components/admin/DetailSection"
-import BenchMarkDetailSection from "@/components/admin/benchmark-detail/DetailSection"
 import { AdminHeader, Footer, Navbar } from "@/components/shared"
-import GraphSection from "@/components/admin/benchmark-detail/GraphSection"
 import Head from "next/head"
+import FilterSection from "@/components/admin/FilterSection"
+import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -22,8 +22,15 @@ const PageBenchmarkDetail = () => {
           <AdminHeader />
           {/* Content */}
           <DetailSection />
-          <BenchMarkDetailSection />
-          <GraphSection />
+          <div className="py-2">
+            <div className="text-navy text-xl font-bold">Benchmarks</div>
+            <p className="text-[#5D5D5D]">
+              On this page you can see details of all the benchmarks on our
+              platform, including their source and download links.
+            </p>
+          </div>
+          <FilterSection />
+          <BenchmarkTableResult />
         </div>
         <Footer />
       </div>
