@@ -21,4 +21,4 @@ type MetaDataEntry = {
 
 type MetaData = Record<string, MetaDataEntry>
 
-export type { MetaData, MetaDataEntry }
+export type { MetaData, MetaDataEntry, Size }

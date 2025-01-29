@@ -17,133 +17,42 @@ import {
 import { BenchmarkResult } from "@/types/benchmark"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
-import FilterAutoComplete from "../raw-result/FilterAutoComplete"
 import { ResultState } from "@/redux/results/reducer"
-
-function Filter({ column }: { column: Column<any, unknown> }) {
-  const { filterVariant } = (column.columnDef.meta as any) ?? {}
-
-  const columnFilterValue = column.getFilterValue()
-
-  const sortedUniqueValues = useMemo(
-    () =>
-      filterVariant === "range"
-        ? []
-        : Array.from(column.getFacetedUniqueValues().keys())
-            .sort()
-            .slice(0, 5000),
-    [column.getFacetedUniqueValues(), filterVariant]
-  )
-
-  return filterVariant === "range" ? (
-    <div>
-      <div className="flex space-x-2">
-        <DebouncedInput
-          type="number"
-          min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
-          max={Number(column.getFacetedMinMaxValues()?.[1] ?? "")}
-          value={(columnFilterValue as [number, number])?.[0] ?? ""}
-          onChange={(value) =>
-            column.setFilterValue((old: [number, number]) => [value, old?.[1]])
-          }
-          placeholder={`Min ${
-            column.getFacetedMinMaxValues()?.[0] !== undefined
-              ? `(${column.getFacetedMinMaxValues()?.[0]})`
-              : ""
-          }`}
-          className="w-24 border rounded px-2 h-8"
-        />
-        <DebouncedInput
-          type="number"
-          min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
-          max={Number(column.getFacetedMinMaxValues()?.[1] ?? "")}
-          value={(columnFilterValue as [number, number])?.[1] ?? ""}
-          onChange={(value) =>
-            column.setFilterValue((old: [number, number]) => [old?.[0], value])
-          }
-          placeholder={`Max ${
-            column.getFacetedMinMaxValues()?.[1]
-              ? `(${column.getFacetedMinMaxValues()?.[1]})`
-              : ""
-          }`}
-          className="w-24 border rounded px-2 h-8"
-        />
-      </div>
-      <div className="h-1" />
-    </div>
-  ) : filterVariant === "select" ? (
-    <select
-      onChange={(e) => column.setFilterValue(e.target.value)}
-      value={columnFilterValue?.toString()}
-    >
-      <option value="">All</option>
-      {sortedUniqueValues.map((value) => (
-        <option value={value} key={value}>
-          {value}
-        </option>
-      ))}
-    </select>
-  ) : (
-    <>
-      <FilterAutoComplete
-        options={sortedUniqueValues.map((val) => ({
-          value: val,
-          label: val,
-        }))}
-        setFilterValue={column.setFilterValue}
-        columnFilterValue={columnFilterValue as any[]}
-        column={column as any}
-      />
-    </>
-  )
-}
-
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number
-  onChange: (value: string | number) => void
-  debounce?: number
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
-  const [value, setValue] = React.useState(initialValue)
-
-  useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value)
-    }, debounce)
-
-    return () => clearTimeout(timeout)
-  }, [value])
-
-  return (
-    <input
-      {...props}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  )
-}
+import { MetaData, Size } from "@/types/meta-data"
+import { KindOfProblem, Model, Sector, Technique } from "@/constants"
 
 const BenchmarkTableResult = () => {
-  const benchmarkResults = useSelector(
-    (state: { results: ResultState}) => {
-      return state.results.benchmarkResults
-    }
+  const metaData = useSelector((state: { results: ResultState }) => {
+    return state.results.metaData
+  })
+
+  const memoizedMetaData = useMemo(
+    () =>
+      Object.entries(metaData).map(([key, value]) => ({
+        ...value,
+        name: key,
+      })),
+    [metaData]
   )
 
-  const columns = useMemo<ColumnDef<BenchmarkResult>[]>(
+  const columns = useMemo<
+    ColumnDef<{
+      name: string
+      shortDescription: string
+      modelName: Model
+      version: string | null
+      technique: Technique
+      kindOfProblem: KindOfProblem
+      sectors: Sector
+      timeHorizon: string
+      milpFeatures: string | null
+      sizes: Size[]
+    }>[]
+  >(
     () => [
       {
-        header: "Benchmark",
-        accessorKey: "benchmark",
-        filterFn: "arrIncludesSome",
+        header: "BENCHMARK NAME",
+        accessorKey: "name",
         size: 200,
         cell: (info) => (
           <Popup
@@ -165,71 +74,30 @@ const BenchmarkTableResult = () => {
         ),
       },
       {
-        header: "Instance",
-        accessorKey: "size",
-        filterFn: "arrIncludesSome",
+        header: "MODEL NAME",
+        accessorKey: "modelName",
         cell: (info) => info.getValue(),
       },
       {
-        header: "Solver",
-        accessorKey: "solver",
-        filterFn: "arrIncludesSome",
+        header: "TECHNIQUE",
+        accessorKey: "technique",
         cell: (info) => info.getValue(),
       },
       {
-        header: "Solver Version",
-        accessorKey: "solverVersion",
-        filterFn: "arrIncludesSome",
+        header: "PROBLEM KIND",
+        accessorKey: "kindOfProblem",
         cell: (info) => info.getValue(),
       },
       {
-        header: "Solver Release Year",
-        accessorKey: "solverReleaseYear",
-        filterFn: "arrIncludesSome",
+        header: "SECTORS",
+        accessorKey: "sectors",
         cell: (info) => info.getValue(),
       },
-      {
-        header: "Status",
-        accessorKey: "status",
-        filterFn: "equals",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "Termination Condition",
-        accessorKey: "terminationCondition",
-        cell: (info) => (
-          <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
-            {info.getValue() as string}
-          </div>
-        ),
-      },
-
-      {
-        header: "Runtime",
-        accessorKey: "runtime",
-        meta: {
-          filterVariant: "range",
-        },
-      },
-      {
-        header: "Memory",
-        accessorKey: "memoryUsage",
-        meta: {
-          filterVariant: "range",
-        },
-      },
-      {
-        header: "Objective Value",
-        accessorKey: "objectiveValue",
-      },
-      {
-        header: "Max Integrality Violation",
-        accessorKey: "maxIntegralityViolation",
-      },
-      {
-        header: "Duality Gap",
-        accessorKey: "dualityGap",
-      },
+      // {
+      //   header: "DETAILS",
+      //   accessorKey: "details",
+      //   cell: (info) => <button>View Details</button>,
+      // },
     ],
     []
   )
@@ -238,7 +106,7 @@ const BenchmarkTableResult = () => {
   const [columnFilters, setColumnFilters] = useState([])
 
   const table = useReactTable({
-    data: benchmarkResults,
+    data: memoizedMetaData,
     columns,
     state: {
       sorting,
@@ -264,7 +132,7 @@ const BenchmarkTableResult = () => {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="text-center text-navy py-4 px-6 cursor-pointer"
+                    className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
                     <div onClick={header.column.getToggleSortingHandler()}>
                       {flexRender(
@@ -277,11 +145,6 @@ const BenchmarkTableResult = () => {
                         ? " ↓"
                         : ""}
                     </div>
-                    {header.column.getCanFilter() ? (
-                      <div>
-                        <Filter column={header.column} />
-                      </div>
-                    ) : null}
                   </th>
                 ))}
               </tr>
@@ -291,10 +154,7 @@ const BenchmarkTableResult = () => {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-navy text-start py-4 px-6"
-                  >
+                  <td key={cell.id} className="text-navy text-start py-4 px-6">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
