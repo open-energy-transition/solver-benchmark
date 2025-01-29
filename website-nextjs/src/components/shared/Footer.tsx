@@ -1,33 +1,40 @@
 import Image from "next/image"
+import Link from "next/link"
 
 const Footer = () => {
   return (
     <footer>
+      <div className="h-1 w-full border-b border-[#e5e7eb] mx-auto pt-10"></div>
       <div>
-        <div className="grid md:flex justify-center gap-6 md:gap-14 py-7 text-base text-center pb-3 pt-16">
-          <div className="md:hidden flex justify-center">
-            <Image
-              src="/logo.png"
-              alt="Contribution image"
-              width={43}
-              height={43}
-            />
-          </div>
-          <p className="p-2.5">About us</p>
-          <p className="p-2.5">Contact us</p>
-          <p className="p-2.5">Blog post</p>
-          <p className="p-2.5">FAQs</p>
-        </div>
-        <div className="h-1 w-full border-b border-[#8C8C8C] container mx-auto"></div>
-        <div className="grid md:flex justify-center items-center gap-10 md:gap-20 pt-[45px] pb-[51px]">
-          <p className="text-sm order-2 md:order-1">
-            © 2024 Benchmark Solutions. All rights reserved.
-          </p>
-          <div className="grid md:flex text-center order-1 md:order-2">
-            <p className="underline p-2.5 font-semibold text-xs">Privacy policy</p>
-            <p className="underline p-2.5 font-semibold text-xs">Terms of Use</p>
-            <p className="underline p-2.5 font-semibold text-xs">Cookie Policy</p>
-          </div>
+        <div className="flex gap-1 py-6 justify-center items-center text-navy text-xs">
+          <Image width={54} height={25} src="/logo/oet.png" alt="oet-logo" />
+          <span>© 2025</span>
+          <Link
+            href="https://openenergytransition.org"
+            className="text-red-600 font-semibold"
+          >
+            <span className="underline">Open Energy Transition</span>.
+          </Link>
+          <span className="">
+            Supported by{" "}
+            <Link
+              href="https://www.breakthroughenergy.org/"
+              className="font-bold underline"
+            >
+              Breakthrough Energy
+            </Link>
+            .
+          </span>
+          <span className="">
+            Powered by the{" "}
+            <Link
+              href="https://github.com/open-energy-transition/solver-benchmark"
+              className="underline"
+            >
+              open source community
+            </Link>
+            .
+          </span>
         </div>
       </div>
     </footer>

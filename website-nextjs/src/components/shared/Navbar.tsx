@@ -1,7 +1,6 @@
 import {
   AlignLeftJustifyIcon,
   ArrowToRightIcon,
-  BalanceScaleIcon,
   ChartBarIcon,
   ChartLineIcon,
   WindowIcon,
@@ -28,11 +27,11 @@ const Navbar = () => {
       route: "/dashboard/benchmark-detail",
       icon: <ChartBarIcon />,
     },
-    {
-      label: "Compare solvers",
-      route: "/dashboard/compare-solvers",
-      icon: <BalanceScaleIcon />,
-    },
+    // {
+    //   label: "Compare solvers",
+    //   route: "/dashboard/compare-solvers",
+    //   icon: <BalanceScaleIcon />,
+    // },
     {
       label: "Performance history",
       route: "/dashboard/performance-history",

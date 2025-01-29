@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import Image from "next/image"
-import { CloseIcon, MenuIcon } from "../../assets/icons"
+import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons"
 import Link from "next/link"
 
 const Header = () => {
@@ -54,11 +54,12 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex w-max">
           <Link
-            href="/dashboard/home"
-            className="rounded-lg px-4 2xl:px-7 py-3 text-base text-navy font-bold bg-white shadow-sm
+            href="https://openenergytransition.org/"
+            className="flex gap-1 rounded-lg px-4 2xl:px-7 py-3 text-base text-navy font-bold bg-white shadow-sm
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max"
           >
-            BENCHMARK RESULTS
+            OPEN ENERGY TRANSITION
+            <ArrowUpLeftIcon className="rotate-90" />
           </Link>
         </div>
       </nav>
@@ -116,12 +117,12 @@ const Header = () => {
                   >
                     FAQs
                   </a>
-                  <a
-                    href="#"
+                  <Link
+                    href="https://openenergytransition.org/"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
-                    BENCHMARK RESULTS
-                  </a>
+                    OPEN ENERGY TRANSITION
+                  </Link>
                 </div>
               </div>
             </div>
