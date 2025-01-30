@@ -34,4 +34,10 @@ const getMetaData = async () => {
   return toCamelCase(rawData)
 }
 
-export { getMetaData }
+const getInstance = (temporalResolution: string, spatialResolution: string) => {
+  const tempResolution =
+    temporalResolution === "NA" ? temporalResolution : `${temporalResolution}h`
+  return `${spatialResolution}-${tempResolution}`
+}
+
+export { getMetaData, getInstance }

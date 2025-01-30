@@ -1,7 +1,7 @@
 /* eslint-disable */
 /* eslint-disable @typescript-eslint/* */
 
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { useSelector } from "react-redux"
 import {
   ColumnDef,
@@ -12,108 +12,57 @@ import {
   getPaginationRowModel,
   getFacetedUniqueValues,
   useReactTable,
-  Column,
 } from "@tanstack/react-table"
-import { BenchmarkResult } from "@/types/benchmark"
-import Popup from "reactjs-popup"
-import { Color } from "@/constants/color"
 import { ResultState } from "@/redux/results/reducer"
-import { MetaData, Size } from "@/types/meta-data"
-import { KindOfProblem, Model, Sector, Technique } from "@/constants"
-import Link from "next/link"
-import { Path } from "@/constants/path"
-import { ArrowIcon, ArrowRightIcon } from "@/assets/icons"
+import { getInstance } from "@/utils/meta-data"
 
-const BenchmarkTableResult = () => {
+const InstancesTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
   const metaData = useSelector((state: { results: ResultState }) => {
     return state.results.metaData
   })
 
-  const memoizedMetaData = useMemo(
-    () =>
-      Object.entries(metaData).map(([key, value]) => ({
-        ...value,
-        name: key,
-      })),
+  const benchmarkDetail = useMemo(
+    () => metaData[benchmarkName as string],
     [metaData]
   )
 
+  if (!benchmarkDetail) return <div>Not found</div>
+
   const columns = useMemo<
     ColumnDef<{
-      name: string
-      shortDescription: string
-      modelName: Model
-      version: string | null
-      technique: Technique
-      kindOfProblem: KindOfProblem
-      sectors: Sector
-      timeHorizon: string
-      milpFeatures: string | null
-      sizes: Size[]
+      instance: string,
+      spatialResolution: number
+      temporalResolution: string | number
+      nOfVariables: number | null
+      nOfConstraints: number
     }>[]
   >(
     () => [
       {
-        header: "BENCHMARK NAME",
-        accessorKey: "name",
+        header: "INSTANCE",
+        accessorKey: "instance",
         size: 200,
-        cell: (info) => (
-          <Popup
-            on={["hover"]}
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as any}
-              </div>
-            )}
-            position="top center"
-            closeOnDocumentClick
-            arrowStyle={{ color: Color.Stroke }}
-          >
-            <div className="bg-stroke p-2 rounded">
-              {" "}
-              {info.getValue() as string}{" "}
-            </div>
-          </Popup>
-        ),
-      },
-      {
-        header: "MODEL NAME",
-        accessorKey: "modelName",
         cell: (info) => info.getValue(),
       },
       {
-        header: "TECHNIQUE",
-        accessorKey: "technique",
+        header: "SPATIAL RESOLUTION",
+        accessorKey: "spatialResolution",
         cell: (info) => info.getValue(),
       },
       {
-        header: "PROBLEM KIND",
-        accessorKey: "kindOfProblem",
+        header: "TEMPORAL RESOLUTION",
+        accessorKey: "temporalResolution",
         cell: (info) => info.getValue(),
       },
       {
-        header: "SECTORS",
-        accessorKey: "sectors",
+        header: "No. VARIABLES",
+        accessorKey: "nOfVariables",
         cell: (info) => info.getValue(),
       },
       {
-        header: "DETAILS",
-        accessorKey: "details",
-        cell: (info) => (
-          <Link
-            className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={Path.BenchmarkDetail.one.replace(
-              "{name}",
-              info.row.original.name
-            )}
-          >
-            View Details
-            <ArrowRightIcon
-              className="w-3 h-3 text-navy fill-none stroke-green-pop hover:stroke-white"
-              stroke-opacity="0.5"
-            />
-          </Link>
-        ),
+        header: "No. CONSTRAINS",
+        accessorKey: "nOfConstraints",
+        cell: (info) => info.getValue(),
       },
     ],
     []
@@ -123,7 +72,16 @@ const BenchmarkTableResult = () => {
   const [columnFilters, setColumnFilters] = useState([])
 
   const table = useReactTable({
-    data: memoizedMetaData,
+    data: benchmarkDetail.sizes.map((sizeData) => ({
+      spatialResolution: sizeData.spatialResolution,
+      temporalResolution: sizeData.temporalResolution,
+      nOfVariables: sizeData.nOfVariables,
+      nOfConstraints: sizeData.nOfConstraints,
+      instance: getInstance(
+        sizeData.temporalResolution.toString(),
+        sizeData.spatialResolution.toString()
+      ),
+    })),
     columns,
     state: {
       sorting,
@@ -141,6 +99,7 @@ const BenchmarkTableResult = () => {
 
   return (
     <div className="py-2">
+      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league">Instances</div>
       <div className="rounded-xl overflow-auto">
         <table className="table-auto bg-white w-full">
           <thead>
@@ -246,4 +205,4 @@ const BenchmarkTableResult = () => {
   )
 }
 
-export default BenchmarkTableResult
+export default InstancesTableResult
