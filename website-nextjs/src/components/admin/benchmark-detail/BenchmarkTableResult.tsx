@@ -22,7 +22,7 @@ import { MetaData, Size } from "@/types/meta-data"
 import { KindOfProblem, Model, Sector, Technique } from "@/constants"
 import Link from "next/link"
 import { Path } from "@/constants/path"
-import { ArrowIcon, ArrowRightIcon } from "@/assets/icons"
+import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
 
 const BenchmarkTableResult = () => {
   const metaData = useSelector((state: { results: ResultState }) => {
@@ -57,6 +57,7 @@ const BenchmarkTableResult = () => {
         header: "BENCHMARK NAME",
         accessorKey: "name",
         size: 200,
+        enableSorting: false,
         cell: (info) => (
           <Popup
             on={["hover"]}
@@ -139,6 +140,9 @@ const BenchmarkTableResult = () => {
     manualPagination: false,
   })
 
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+
   return (
     <div className="py-2">
       <div className="rounded-xl overflow-auto">
@@ -151,10 +155,24 @@ const BenchmarkTableResult = () => {
                     key={header.id}
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
-                    <div onClick={header.column.getToggleSortingHandler()}>
+                    <div
+                      className="flex gap-2 items-center"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
+                      )}
+                      {header.column.getCanSort() &&
+                      !header.column.getIsSorted() ? (
+                        <div>
+                          <SortVerticalIcon
+                            fill="none"
+                            className="stroke-dark-green"
+                          />
+                        </div>
+                      ) : (
+                        ""
                       )}
                       {header.column.getIsSorted() === "asc"
                         ? " ↑"
@@ -181,66 +199,68 @@ const BenchmarkTableResult = () => {
         </table>
       </div>
       {/* Pagination */}
-      <div className="flex items-center gap-2 mt-2">
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <span className="flex items-center gap-1">
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </strong>
-        </span>
-        <span className="flex items-center gap-1">
-          | Go to page:
-          <input
-            type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              table.setPageIndex(page)
-            }}
-            className="border p-1 rounded w-16"
-          />
-        </span>
-        <select
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value))
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+      <div className="flex text-xs items-center gap-2 mt-4 justify-between">
+        <div className="text-dark-grey">
+          Showing{" "}
+          <span className="font-bold">
+            {" "}
+            {currentPage === totalPages
+              ? memoizedMetaData.length
+              : table.getState().pagination.pageSize * currentPage}
+          </span>{" "}
+          of <span className="font-bold"> {memoizedMetaData.length} </span>
+        </div>
+        <div>
+          <div className="flex items-center gap-2">
+            <button
+              className={`flex gap-2 items-center rounded p-1 ${
+                !table.getCanPreviousPage() ? " text-dark-grey" : " text-navy"
+              }`}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ArrowRightIcon
+                className={`h-3 w-3 rotate-180 ${
+                  !table.getCanPreviousPage() ? "stroke-dark-grey" : ""
+                }`}
+                fill="none"
+              />
+              Previous
+            </button>
+            {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map(
+              (page) => (
+                <button
+                  key={page}
+                  className={`border border-stroke rounded py-1 px-2.5 ${
+                    page - 1 === table.getState().pagination.pageIndex
+                      ? "bg-navy text-white"
+                      : "text-dark-green"
+                  }`}
+                  onClick={() => table.setPageIndex(page - 1)}
+                  disabled={page - 1 === table.getState().pagination.pageIndex}
+                >
+                  {page}
+                </button>
+              )
+            )}
+            <button
+              className={`flex gap-2 items-center rounded p-1
+                ${!table.getCanNextPage() ? " text-dark-grey" : " text-navy"}
+                `}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+              <ArrowRightIcon
+                className={`h-3 w-3 rotate-145 ${
+                  !table.getCanNextPage() ? "stroke-dark-grey" : "stroke-navy"
+                }`}
+                fill="none"
+              />
+            </button>
+          </div>
+        </div>
+        <div></div>
       </div>
     </div>
   )

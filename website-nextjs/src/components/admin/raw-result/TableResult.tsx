@@ -18,6 +18,8 @@ import { BenchmarkResult } from "@/types/benchmark"
 import FilterAutoComplete from "./FilterAutoComplete"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
+import { ArrowRightIcon, ArrowToRightIcon } from "@/assets/icons"
+import Link from "next/link"
 
 function Filter({ column }: { column: Column<any, unknown> }) {
   const { filterVariant } = (column.columnDef.meta as any) ?? {}
@@ -253,9 +255,40 @@ const TableResult = () => {
     manualPagination: false,
   })
 
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+  const maxVisiblePages = 5
+  // Generate the pagination range
+  const getPaginationRange = () => {
+    const range = []
+    const startPage = Math.max(1, currentPage - 2)
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+
+    if (startPage > 1) range.push(1)
+    if (startPage > 2) range.push("...")
+
+    for (let i = startPage; i <= endPage; i++) {
+      range.push(i)
+    }
+
+    if (endPage < totalPages - 1) range.push("...")
+    if (endPage < totalPages) range.push(totalPages)
+
+    return range
+  }
+
   return (
     <div>
-      <div className="text-navy font-bold pb-6 pt-9">Full Results</div>
+      <div className="text-navy font-bold pb-6 pt-9 flex justify-between items-center">
+        Full Results
+        <Link
+          href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/benchmark_results.csv"
+          className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center"
+        >
+          Download
+          <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+        </Link>
+      </div>
 
       <div className="rounded-xl overflow-auto">
         <table className="table-auto bg-white w-full">
@@ -292,10 +325,7 @@ const TableResult = () => {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-navy text-start py-4 px-6"
-                  >
+                  <td key={cell.id} className="text-navy text-start py-4 px-6">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -305,66 +335,73 @@ const TableResult = () => {
         </table>
       </div>
       {/* Pagination */}
-      <div className="flex items-center gap-2 mt-2">
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <span className="flex items-center gap-1">
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </strong>
-        </span>
-        <span className="flex items-center gap-1">
-          | Go to page:
-          <input
-            type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              table.setPageIndex(page)
-            }}
-            className="border p-1 rounded w-16"
-          />
-        </span>
-        <select
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value))
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+      <div className="flex text-xs items-center gap-2 mt-4 justify-between">
+        <div className="text-dark-grey">
+          Showing{" "}
+          <span className="font-bold">
+            {" "}
+            {currentPage === totalPages
+              ? benchmarkResults.length
+              : table.getState().pagination.pageSize * currentPage}
+          </span>{" "}
+          of <span className="font-bold"> {benchmarkResults.length} </span>
+        </div>
+        <div>
+          <div className="flex items-center gap-2">
+            <button
+              className={`flex gap-2 items-center rounded p-1 ${
+                !table.getCanPreviousPage() ? " text-dark-grey" : " text-navy"
+              }`}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ArrowRightIcon
+                className={`h-3 w-3 rotate-180 ${
+                  !table.getCanPreviousPage() ? "stroke-dark-grey" : ""
+                }`}
+                fill="none"
+              />
+              Previous
+            </button>
+            {/* Page Numbers */}
+            {getPaginationRange().map((page, index) =>
+              typeof page === "number" ? (
+                <button
+                  key={index}
+                  className={`border border-stroke rounded py-1 px-2.5 ${
+                    page === currentPage
+                      ? "bg-navy text-white"
+                      : "text-dark-green"
+                  }`}
+                  onClick={() => table.setPageIndex(page - 1)}
+                  disabled={page === currentPage}
+                >
+                  {page}
+                </button>
+              ) : (
+                <span key={index} className="text-dark-grey">
+                  ...
+                </span>
+              )
+            )}
+            <button
+              className={`flex gap-2 items-center rounded p-1
+                ${!table.getCanNextPage() ? " text-dark-grey" : " text-navy"}
+                `}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+              <ArrowRightIcon
+                className={`h-3 w-3 rotate-145 ${
+                  !table.getCanNextPage() ? "stroke-dark-grey" : "stroke-navy"
+                }`}
+                fill="none"
+              />
+            </button>
+          </div>
+        </div>
+        <div></div>
       </div>
     </div>
   )

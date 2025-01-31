@@ -1,7 +1,7 @@
 /* eslint-disable */
 /* eslint-disable @typescript-eslint/* */
 
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
 import {
   ColumnDef,
@@ -15,22 +15,22 @@ import {
 } from "@tanstack/react-table"
 import { ResultState } from "@/redux/results/reducer"
 import { getInstance } from "@/utils/meta-data"
+import { MetaDataEntry } from "@/types/meta-data"
 
-const InstancesTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
+const InstancesTableResult = ({
+  benchmarkName,
+  benchmarkDetail,
+}: {
+  benchmarkName: string
+  benchmarkDetail: MetaDataEntry
+}) => {
   const metaData = useSelector((state: { results: ResultState }) => {
     return state.results.metaData
   })
 
-  const benchmarkDetail = useMemo(
-    () => metaData[benchmarkName as string],
-    [metaData]
-  )
-
-  if (!benchmarkDetail) return <div>Not found</div>
-
   const columns = useMemo<
     ColumnDef<{
-      instance: string,
+      instance: string
       spatialResolution: number
       temporalResolution: string | number
       nOfVariables: number | null
@@ -93,13 +93,18 @@ const InstancesTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
     manualPagination: false,
   })
 
+  useEffect(() => {
+    table.setPageSize(table.getPrePaginationRowModel().rows.length)
+  }, [table])
+
   return (
     <div className="py-2">
-      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league">Instances</div>
+      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league">
+        Instances
+      </div>
       <div className="rounded-xl overflow-auto">
         <table className="table-auto bg-white w-full">
           <thead>
@@ -138,68 +143,6 @@ const InstancesTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
             ))}
           </tbody>
         </table>
-      </div>
-      {/* Pagination */}
-      <div className="flex items-center gap-2 mt-2">
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <span className="flex items-center gap-1">
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </strong>
-        </span>
-        <span className="flex items-center gap-1">
-          | Go to page:
-          <input
-            type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              table.setPageIndex(page)
-            }}
-            className="border p-1 rounded w-16"
-          />
-        </span>
-        <select
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value))
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
       </div>
     </div>
   )

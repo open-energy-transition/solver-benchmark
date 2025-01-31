@@ -11,6 +11,7 @@ import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult"
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection"
+import Link from "next/link"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -99,10 +100,13 @@ const PageBenchmarkDetail = () => {
             <div className="flex justify-between pb-4">
               <div>{benchmarkDetail?.shortDescription}</div>
               <div className="mt-2">
-                <button className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center">
+                <Link
+                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/benchmark_config.yaml"
+                  className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center"
+                >
                   Download
                   <ArrowToRightIcon className="w-4 h-4 rotate-90" />
-                </button>
+                </Link>
               </div>
             </div>
             <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">
@@ -133,8 +137,15 @@ const PageBenchmarkDetail = () => {
               ))}
             </div>
           </div>
-          <InstancesTableResult benchmarkName={benchmarkName as string} />
-          <BenchmarksSection benchmarkName={benchmarkName as string} />
+          {benchmarkDetail && (
+            <>
+              <InstancesTableResult
+                benchmarkDetail={benchmarkDetail}
+                benchmarkName={benchmarkName as string}
+              />
+              <BenchmarksSection benchmarkName={benchmarkName as string} />
+            </>
+          )}
         </div>
         <Footer />
       </div>

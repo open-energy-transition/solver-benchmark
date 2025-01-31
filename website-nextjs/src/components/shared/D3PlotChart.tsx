@@ -4,15 +4,15 @@ import { CircleIcon } from "@/assets/icons"
 import { SolverType } from "@/types/benchmark"
 import { getSolverLabel } from "@/utils/solvers"
 import { roundNumber } from "@/utils/number"
-
+import { Path } from "@/constants/path"
 
 type ChartData = {
   runtime: number
-  memoryUsage: number,
-  status: 'TO' | 'ok' | 'warning'
-  solver: SolverType,
-  benchmark: string,
-  size: string,
+  memoryUsage: number
+  status: "TO" | "ok" | "warning"
+  solver: SolverType
+  benchmark: string
+  size: string
 }[]
 
 interface D3ChartProps {
@@ -79,7 +79,6 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     // Axes
     const xAxis = d3.axisBottom(xScale).ticks(6).tickSizeOuter(0)
     const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0)
-
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -124,10 +123,9 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .enter()
       .append("g")
       .each(function (d) {
-        const group = d3.select(this);
+        const group = d3.select(this)
 
-        if (["TO", "warning"].includes(d.status) ) {
-
+        if (["TO", "warning"].includes(d.status)) {
           // Render an "X" for status 'TO'
           group
             .append("text")
@@ -139,7 +137,6 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             .style("fill", solvers[d.solver])
             .style("font-size", "12px")
             .style("font-family", "'Lato', sans-serif")
-
         } else {
           // Render a circle for other statuses
           group
@@ -147,8 +144,14 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             .attr("cx", xScale(d.runtime))
             .attr("cy", yScale(d.memoryUsage))
             .attr("r", 4)
-            .attr("fill", solvers[d.solver]);
+            .attr("fill", solvers[d.solver])
         }
+
+        group
+          .on("click", () => {
+            window.location.href = Path.BenchmarkDetail.one.replace('{name}',d.benchmark)
+          })
+          .style("cursor", "pointer")
 
         // Add tooltip event listeners
         group
@@ -163,17 +166,17 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
                  <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`
               )
               .style("left", `${event.pageX + 10}px`)
-              .style("top", `${event.pageY - 30}px`);
+              .style("top", `${event.pageY - 30}px`)
           })
           .on("mousemove", (event) => {
             tooltip
               .style("left", `${event.pageX + 10}px`)
-              .style("top", `${event.pageY - 30}px`);
+              .style("top", `${event.pageY - 30}px`)
           })
           .on("mouseout", () => {
-            tooltip.style("opacity", 0);
-          });
-      });
+            tooltip.style("opacity", 0)
+          })
+      })
 
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
