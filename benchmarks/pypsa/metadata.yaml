@@ -479,7 +479,9 @@ pypsa-power+ely+battery-ucgas-1-1h:
   - Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
-    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
 pypsa-power+ely-co2-1-1h:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit
   Model name: PyPSA
@@ -507,4 +509,6 @@ pypsa-power+ely-ucgas-1-1h:
   - Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
-    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
