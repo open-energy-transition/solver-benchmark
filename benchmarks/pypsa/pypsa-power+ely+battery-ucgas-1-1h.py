@@ -80,12 +80,13 @@ carriers = [
     "solar",
     "OCGT",
     "hydrogen storage underground",
+    "battery storage",
 ]
 
 n.madd(
     "Carrier",
     carriers,
-    color=["dodgerblue", "aquamarine", "gold", "indianred", "magenta"],
+    color=["dodgerblue", "aquamarine", "gold", "indianred", "magenta", "yellowgreen"],
     co2_emissions=[costs.at[c, "CO2 intensity"] for c in carriers],
 )
 
@@ -122,6 +123,7 @@ n.add(
     marginal_cost=costs.at["OCGT", "marginal_cost"],
     efficiency=costs.at["OCGT", "efficiency"],
     p_nom_extendable=True,
+    committable=True,
 )
 
 for tech in ["solar"]:
@@ -158,7 +160,23 @@ n.add(
     cyclic_state_of_charge=True,
 )
 
+# Add a battery storage. We are going to assume a fixed energy-to-power ratio of 6 hours, i.e. if fully charged, the battery can discharge at full capacity for 6 hours. For the capital cost, we have to factor in both the capacity and energy cost of the storage. We are also going to enforce a cyclic state-of-charge condition, i.e. the state of charge at the beginning of the optimisation period must equal the final state of charge.
+
+n.add(
+    "StorageUnit",
+    "battery storage",
+    bus="electricity",
+    carrier="battery storage",
+    max_hours=6,
+    capital_cost=costs.at["battery inverter", "capital_cost"]
+    + 6 * costs.at["battery storage", "capital_cost"],
+    efficiency_store=costs.at["battery inverter", "efficiency"],
+    efficiency_dispatch=costs.at["battery inverter", "efficiency"],
+    p_nom_extendable=True,
+    cyclic_state_of_charge=True,
+)
+
 n.optimize(
     solver_name="highs",
-    only_generate_problem_file="/tmp/pypsa-gas+wind+sol+ely-1-1h.lp",
+    keep_files="/tmp/pypsa-power+ely+battery-ucgas-1-1h.lp",
 )
