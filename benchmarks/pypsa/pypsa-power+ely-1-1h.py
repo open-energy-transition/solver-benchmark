@@ -158,14 +158,6 @@ n.add(
     cyclic_state_of_charge=True,
 )
 
-n.add(
-    "GlobalConstraint",
-    "CO2Limit",
-    carrier_attribute="co2_emissions",
-    sense="<=",
-    constant=0,
-)
-
 n.optimize(
     solver_name="highs",
     keep_files="/tmp/pypsa-power+ely-1-1h.lp",
