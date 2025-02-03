@@ -11,7 +11,7 @@ import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult"
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection"
-import Link from "next/link"
+import DownloadButton from "@/components/shared/buttons/DownloadButton"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -75,7 +75,9 @@ const PageBenchmarkDetail = () => {
       </Head>
       <div className="bg-light-blue h-screen">
         <Navbar />
-        <div className={`px-6 ${isNavExpanded ? "ml-64" : "ml-20"}`}>
+        <div
+          className={`px-6 min-h-screen ${isNavExpanded ? "ml-64" : "ml-20"}`}
+        >
           <AdminHeader />
           {/* Content */}
           <DetailSection />
@@ -85,7 +87,7 @@ const PageBenchmarkDetail = () => {
             <Popup
               on={["hover"]}
               trigger={() => (
-                <div className="text-navy text-4xl font-bold text-ellipsis overflow-hidden">
+                <div className="text-navy text-4xl font-bold text-ellipsis overflow-hidden pl-1.5">
                   {benchmarkName}
                 </div>
               )}
@@ -98,15 +100,19 @@ const PageBenchmarkDetail = () => {
           </div>
           <div className="text-navy bg-white px-6 py-8 rounded-lg">
             <div className="flex justify-between pb-4">
-              <div>{benchmarkDetail?.shortDescription}</div>
+              <div className="pr-4 max-w-[60%]">
+                {benchmarkDetail?.shortDescription}
+              </div>
               <div className="mt-2">
-                <Link
-                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/benchmark_config.yaml"
-                  className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center"
+                <DownloadButton
+                  url="https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/refs/heads/main/benchmarks/benchmark_config.yaml"
+                  fileName="benchmark_config.yaml"
                 >
-                  Download
-                  <ArrowToRightIcon className="w-4 h-4 rotate-90" />
-                </Link>
+                  <button className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center">
+                    Download
+                    <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+                  </button>
+                </DownloadButton>
               </div>
             </div>
             <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">

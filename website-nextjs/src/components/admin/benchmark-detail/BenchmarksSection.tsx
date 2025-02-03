@@ -20,7 +20,7 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
 
   return (
     <div className="py-4">
-      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league">
+      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
         Results on this benchmark
       </div>
       <D3Chart chartData={chartData} />

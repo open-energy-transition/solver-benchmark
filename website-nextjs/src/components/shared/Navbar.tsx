@@ -122,7 +122,7 @@ const Navbar = () => {
             className="inline-flex justify-center items-center text-dark-grey text-lg rounded cursor-pointer font-league gap-2 leading-none"
           >
             {isNavExpanded && "Collapse"}
-            <ArrowToRightIcon />
+            <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />
           </a>
         </div>
       </div>

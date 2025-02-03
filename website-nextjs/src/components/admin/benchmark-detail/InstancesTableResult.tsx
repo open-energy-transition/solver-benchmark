@@ -102,7 +102,7 @@ const InstancesTableResult = ({
 
   return (
     <div className="py-2">
-      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league">
+      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
         Instances
       </div>
       <div className="rounded-xl overflow-auto">

@@ -31,7 +31,7 @@ const DetailSection = () => {
       Array.from(
         new Set(benchmarkResults.map((result) => result.solverVersion))
       ),
-    [availableSolves]
+    [benchmarkResults]
   )
 
   const avaliableInstance = useMemo(
@@ -41,7 +41,7 @@ const DetailSection = () => {
           benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
         )
       ),
-    [availableSolves]
+    [benchmarkResults]
   )
 
   const detailData = [

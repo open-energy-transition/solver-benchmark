@@ -48,15 +48,11 @@ const MultiValueContainer = (props: MultiValueGenericProps<any>) => {
 interface FilterAutoCompleteProps {
   options: { label: string; value: any }[]
   setFilterValue: (value: any[]) => void
-  columnFilterValue: any[]
-  column: any[]
 }
 
 const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
   options,
   setFilterValue,
-  columnFilterValue,
-  column,
 }) => {
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false)
   const [selectedValue, setSelectedValue] = useState<
@@ -181,12 +177,8 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
       onClose={() => toggleMenuIsOpen(true)}
       onOpen={() => toggleMenuIsOpen()}
       trigger={
-        <div className="flex gap-2 w-full items-center z-50 relative rounded-lg">
-          <input
-            className="rounded-lg bg-gray-100 h-8 text-center text-gray-600"
-            disabled
-          />
-          <FilterIcon className="size-5" />
+        <div className="flex gap-2 w-max items-center z-50 relative">
+          <FilterIcon className="size-4" />
         </div>
       }
       position="bottom center"
