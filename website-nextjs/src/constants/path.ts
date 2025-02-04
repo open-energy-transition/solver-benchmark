@@ -1,8 +1,8 @@
-const dashboardPath = "dashboard"
+const DASHBOARD_PATH = "dashboard"
 
-export const Path = {
-  BenchmarkDetail: {
-    list: `/${dashboardPath}/benchmark-detail`,
-    one: `/${dashboardPath}/benchmark-detail/{name}`,
+export const PATH = {
+  benchmarkDetail: {
+    list: `/${DASHBOARD_PATH}/benchmark-detail`,
+    one: `/${DASHBOARD_PATH}/benchmark-detail/{name}`,
   },
 }

@@ -4,7 +4,9 @@ import { ThunkAction } from "redux-thunk"
 import resultActions from "@/redux/results/actions"
 import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData, MetaDataEntry } from "@/types/meta-data"
-import { Sector } from "@/constants"
+import { ProblemSize, Sector } from "@/constants"
+import { getHighestVersion } from "@/utils/versions"
+import { getLatestBenchmarkResult, getProblemSize } from "@/utils/results"
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
@@ -41,6 +43,28 @@ const actions = {
         })
       )
 
+      const latestHighVersion = getHighestVersion(
+        Array.from(
+          new Set(
+            results.benchmarkResults
+              .filter((result) => result.solver === "highs")
+              .map((result) => result.solverVersion)
+          )
+        )
+      )
+
+      const problemSizeResult: { [key: string]: ProblemSize } = {}
+      results.benchmarkResults
+        .filter(
+          (result) =>
+            result.solver === "highs" &&
+            result.solverVersion === latestHighVersion
+        )
+        .forEach((result) => {
+          problemSizeResult[`${result.benchmark}'-'${result.size}`] =
+            getProblemSize(result.runtime)
+        })
+
       const benchmarkResults: BenchmarkResult[] =
         results.rawBenchmarkResults.filter((benchmark: BenchmarkResult) =>
           (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find(
@@ -51,7 +75,8 @@ const actions = {
                   : `${size.temporalResolution}h`
               return (
                 `${size.spatialResolution}-${temporalResolution}` ===
-                benchmark.size
+                  benchmark.size &&
+                filters.problemSize.includes(getProblemSize(benchmark.runtime))
               )
             }
           )
@@ -59,7 +84,11 @@ const actions = {
 
       dispatch(resultActions.setMetaData(metaData as MetaData))
 
-      dispatch(resultActions.setBenchmarkResults(benchmarkResults))
+      dispatch(
+        resultActions.setBenchmarkResults(
+          getLatestBenchmarkResult(benchmarkResults)
+        )
+      )
     },
 }
 

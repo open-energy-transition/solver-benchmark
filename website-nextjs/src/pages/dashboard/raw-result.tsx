@@ -18,7 +18,7 @@ const PagePerformanceHistory = () => {
       <div className="bg-light-blue h-screen">
         <Navbar />
         <div
-          className={`px-6 min-h-[calc(100vh-120px)] ${
+          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
             isNavExpanded ? "ml-64" : "ml-20"
           }`}
         >

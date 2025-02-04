@@ -7,7 +7,7 @@ type Size = {
   nOfVariables: number | null
 }
 
-type MetaDataEntry = {
+interface MetaDataEntry {
   shortDescription: string
   modelName: Model
   version: string | null

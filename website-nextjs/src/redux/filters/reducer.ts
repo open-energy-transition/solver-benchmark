@@ -1,5 +1,5 @@
 import { AnyAction } from "redux"
-import { Sector, Technique, KindOfProblem, Model } from "@/constants"
+import { Sector, Technique, KindOfProblem, Model, ProblemSize } from "@/constants"
 
 import actions from "./actions"
 
@@ -9,6 +9,7 @@ export type FilterState = {
   sectors: Sector[]
   technique: Technique[]
   kindOfProblem: KindOfProblem[]
+  problemSize: ProblemSize[]
   modelName: Model[]
   benchmarks: string[]
   solvers: string[]
@@ -32,6 +33,13 @@ const initialState: FilterState = {
     Model.Sienna,
     Model.GenX,
   ],
+  problemSize: [
+    ProblemSize.L,
+    ProblemSize.M,
+    ProblemSize.S,
+    ProblemSize.XS,
+    ProblemSize.XXS,
+  ],
   benchmarks: [],
   solvers: [],
   statuses: [],
@@ -45,7 +53,7 @@ const filterReducer = (
     case TOGGLE_FILTER:
       const { category, value, only } = action.payload as {
         category: keyof FilterState
-        value: Sector | Technique | KindOfProblem | Model
+        value: Sector | Technique | KindOfProblem | Model | ProblemSize
         only: boolean
       }
 

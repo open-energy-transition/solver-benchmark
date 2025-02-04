@@ -15,6 +15,14 @@ export enum KindOfProblem {
   SteadyStateOptimalPowerFlow = "Steady-state optimal power flow",
 }
 
+export enum ProblemSize {
+  XXS = "xxs",
+  XS = "xs",
+  M = "m",
+  L = "l",
+  S = "s",
+}
+
 export enum Model {
   PyPSA = "PyPSA",
   PyPSAEur = "PyPSA-Eur",

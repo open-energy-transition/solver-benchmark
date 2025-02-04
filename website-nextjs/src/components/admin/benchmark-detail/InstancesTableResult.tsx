@@ -24,9 +24,6 @@ const InstancesTableResult = ({
   benchmarkName: string
   benchmarkDetail: MetaDataEntry
 }) => {
-  const metaData = useSelector((state: { results: ResultState }) => {
-    return state.results.metaData
-  })
 
   const columns = useMemo<
     ColumnDef<{
@@ -60,7 +57,7 @@ const InstancesTableResult = ({
         cell: (info) => info.getValue(),
       },
       {
-        header: "No. CONSTRAINS",
+        header: "No. CONSTRAINTS",
         accessorKey: "nOfConstraints",
         cell: (info) => info.getValue(),
       },

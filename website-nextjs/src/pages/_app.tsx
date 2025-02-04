@@ -9,7 +9,7 @@ import { fontClasses } from "@/styles/fonts"
 import { wrapper } from "@/redux/store"
 import resultActions from "@/redux/results/actions"
 import AdminLayout from "@/pages/AdminLayout"
-import { getBenchmarkResults } from "@/utils/results"
+import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results"
 import { getMetaData } from "@/utils/meta-data"
 import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData } from "@/types/meta-data"
@@ -25,7 +25,7 @@ function App({ Component, pageProps }: AppProps) {
       const metaData = await getMetaData()
 
       dispatch(resultActions.setMetaData(metaData as MetaData))
-      dispatch(resultActions.setBenchmarkResults(results as BenchmarkResult[]))
+      dispatch(resultActions.setBenchmarkResults(getLatestBenchmarkResult(results as BenchmarkResult[])))
       dispatch(resultActions.setRawMetaData(metaData as MetaData))
       dispatch(
         resultActions.setRawBenchmarkResults(results as BenchmarkResult[])

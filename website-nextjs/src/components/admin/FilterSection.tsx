@@ -5,7 +5,13 @@ import {
   WrenchIcon,
 } from "@/assets/icons"
 import { useSelector, useDispatch } from "react-redux"
-import { Sector, Technique, KindOfProblem, Model } from "@/constants"
+import {
+  Sector,
+  Technique,
+  KindOfProblem,
+  Model,
+  ProblemSize,
+} from "@/constants"
 import filterAction from "@/redux/filters/actions"
 import { FilterState } from "@/redux/filters/reducer"
 
@@ -52,6 +58,13 @@ const FilterSection = () => {
           default:
             return value
         }
+      case "kindOfProblem":
+        switch (value) {
+          case KindOfProblem.SteadyStateOptimalPowerFlow:
+            return "Steady-state power flow "
+          default:
+            return value
+        }
       default:
         throw Error("Invalid value")
     }
@@ -59,9 +72,9 @@ const FilterSection = () => {
 
   return (
     <div className="bg-white rounded-xl my-2">
-      <div className="grid grid-cols-6 text-dark-grey">
+      <div className="flex text-dark-grey">
         {/* Sectors */}
-        <div className="text-xs">
+        <div className="text-xs border-r border-stroke">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
             <BrightIcon className="w-5 h-5" />
             <span>Sectors</span>
@@ -96,7 +109,7 @@ const FilterSection = () => {
                 </span>
 
                 <span
-                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "sectors",
@@ -146,7 +159,7 @@ const FilterSection = () => {
                   {technique}
                 </span>
                 <span
-                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "technique",
@@ -161,8 +174,9 @@ const FilterSection = () => {
             ))}
           </div>
         </div>
+
         {/* Kind of Problem */}
-        <div className="text-xs border-r border-stroke col-span-2">
+        <div className="text-xs border-r border-stroke">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
             <WrenchIcon className="w-5 h-5" />
             <span>Kind of Problem</span>
@@ -193,10 +207,10 @@ const FilterSection = () => {
                   }
                   className="w-max cursor-pointer"
                 >
-                  {problem}
+                  {getLabel("kindOfProblem", problem)}
                 </span>
                 <span
-                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "kindOfProblem",
@@ -211,8 +225,58 @@ const FilterSection = () => {
             ))}
           </div>
         </div>
+        {/* Problem Size */}
+        <div className="text-xs border-r border-stroke  w-[60%]">
+          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+            <WrenchIcon className="w-5 h-5" />
+            <span>Problem Size</span>
+          </div>
+          <div className="grid grid-cols-3 gap-x-1 text-xs">
+            {Object.values(ProblemSize).map((size) => (
+              <div
+                className="flex items-center gap-1 p-3 relative group"
+                key={size}
+              >
+                <input
+                  className="w-4 h-4 accent-navy rounded"
+                  type="checkbox"
+                  checked={selectedFilters?.problemSize?.includes(size)}
+                  onChange={() =>
+                    handleCheckboxChange({
+                      category: "problemSize",
+                      value: size,
+                    })
+                  }
+                />
+                <span
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "problemSize",
+                      value: size,
+                    })
+                  }
+                  className="w-max cursor-pointer uppercase"
+                >
+                  {size}
+                </span>
+                <span
+                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                  onClick={() =>
+                    handleCheckboxChange({
+                      category: "problemSize",
+                      value: size,
+                      only: true,
+                    })
+                  }
+                >
+                  only
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
         {/* Model */}
-        <div className="text-xs border-r border-stroke col-span-2 w-full">
+        <div className="text-xs border-r border-stroke w-full">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
             <PolygonIcon className="w-5 h-5" />
             <span>Model</span>
@@ -246,7 +310,7 @@ const FilterSection = () => {
                   {getLabel("model", model)}
                 </span>
                 <span
-                  className="text-navy hidden group-hover:inline-block ml-2 cursor-pointer"
+                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
                   onClick={() =>
                     handleCheckboxChange({
                       category: "modelName",

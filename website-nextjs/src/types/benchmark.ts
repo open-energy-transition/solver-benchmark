@@ -7,6 +7,7 @@ type BenchmarkResult = {
   maxIntegralityViolation: string | null
   memoryUsage: number
   objectiveValue: string | null
+  problemSize?: string
   runtime: number
   size: string
   solver: SolverType

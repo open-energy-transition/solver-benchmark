@@ -11,7 +11,7 @@ import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult"
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection"
-import DownloadButton from "@/components/shared/buttons/DownloadButton"
+import Link from "next/link"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -76,7 +76,9 @@ const PageBenchmarkDetail = () => {
       <div className="bg-light-blue h-screen">
         <Navbar />
         <div
-          className={`px-6 min-h-screen ${isNavExpanded ? "ml-64" : "ml-20"}`}
+          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
+            isNavExpanded ? "ml-64" : "ml-20"
+          }`}
         >
           <AdminHeader />
           {/* Content */}
@@ -104,15 +106,15 @@ const PageBenchmarkDetail = () => {
                 {benchmarkDetail?.shortDescription}
               </div>
               <div className="mt-2">
-                <DownloadButton
-                  url="https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/refs/heads/main/benchmarks/benchmark_config.yaml"
-                  fileName="benchmark_config.yaml"
+                <Link
+                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/benchmark_config.yaml"
+                  className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <button className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center">
-                    Download
-                    <ArrowToRightIcon className="w-4 h-4 rotate-90" />
-                  </button>
-                </DownloadButton>
+                  Download
+                  <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+                </Link>
               </div>
             </div>
             <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">

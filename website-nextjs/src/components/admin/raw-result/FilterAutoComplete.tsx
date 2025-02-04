@@ -1,25 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FilterIcon } from "@/assets/icons"
 import React, { useEffect, useRef, useState } from "react"
 import Select, {
   ActionMeta,
-  components,
-  IndicatorsContainerProps,
   MultiValue,
-  MultiValueGenericProps,
   OptionProps,
   SelectInstance,
 } from "react-select"
 import Popup from "reactjs-popup"
 
-const IndicatorsContainer = (props: IndicatorsContainerProps<any, true>) => {
-  return (
-    <div>
-      <components.IndicatorsContainer {...props} />
-    </div>
-  )
-}
 
 const Option = (props: OptionProps<any>) => {
   const { data, innerRef, innerProps } = props
@@ -41,7 +30,7 @@ const Option = (props: OptionProps<any>) => {
   )
 }
 
-const MultiValueContainer = (props: MultiValueGenericProps<any>) => {
+const MultiValueContainer = () => {
   return <div />
 }
 
@@ -171,7 +160,6 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
       else selectEl.focus()
     }
   }
-
   return (
     <Popup
       onClose={() => toggleMenuIsOpen(true)}
@@ -188,7 +176,7 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
           ref={ref}
           menuIsOpen={menuIsOpen}
           closeMenuOnSelect={false}
-          components={{ IndicatorsContainer, Option, MultiValueContainer }}
+          components={{ Option, MultiValueContainer }}
           isMulti
           hideSelectedOptions={false}
           options={optionsData}
@@ -198,6 +186,8 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
               actionMeta: ActionMeta<unknown>
             ) => void
           }
+          className="react-select-container"
+          classNamePrefix="react-select"
           value={selectedValue}
         />
       </div>

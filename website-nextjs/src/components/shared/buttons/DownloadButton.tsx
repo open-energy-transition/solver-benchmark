@@ -9,7 +9,6 @@ interface DownloadButtonProps {
 const DownloadButton: React.FC<DownloadButtonProps> = ({ children, url, fileName }) => {
   const handleDownload = async () => {
     const fileUrl = url
-    console.log(fileUrl);
 
     try {
       const response = await fetch(fileUrl)

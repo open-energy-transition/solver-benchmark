@@ -17,9 +17,13 @@ const LandingPage = () => {
       <Head>
         <title>Home</title>
       </Head>
-      <div className="bg-light-blue h-screen">
+      <div className="bg-light-blue">
         <Navbar />
-        <div className={`px-6 ${isNavExpanded ? "ml-64" : "ml-20"}`}>
+        <div
+          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
+            isNavExpanded ? "ml-64" : "ml-20"
+          }`}
+        >
           <AdminHeader />
           {/* Content */}
           <DetailSection />

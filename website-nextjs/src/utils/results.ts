@@ -1,10 +1,11 @@
-import { MaxMemoryUsage, MaxRunTime } from "@/constants"
+import { MaxMemoryUsage, MaxRunTime, ProblemSize } from "@/constants"
 import {
   BenchmarkResult,
   SolverStatusType,
   SolverType,
 } from "@/types/benchmark"
 import Papa from "papaparse"
+import { getHighestVersion } from "./versions"
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -28,8 +29,7 @@ export const fetchCsvToJson = async (
         complete: (results) => {
           resolve(results.data as object[])
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        error: (error: { message: any }) => {
+        error: (error: { message: unknown }) => {
           reject(error.message)
         },
       })
@@ -61,6 +61,20 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
   })
 }
 
+const getProblemSize = (runtime: number) => {
+  if (runtime <= 10) {
+    return ProblemSize.XXS
+  } else if (runtime <= 60) {
+    return ProblemSize.XS
+  } else if (runtime <= 600) {
+    return ProblemSize.S
+  } else if (runtime <= 3600) {
+    return ProblemSize.M
+  } else {
+    return ProblemSize.L
+  }
+}
+
 const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
   return benchmarkResult.map((benchmarkResult) => {
     return {
@@ -80,4 +94,53 @@ const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
   return `${benchmarkResult.benchmark} ${benchmarkResult.size}`
 }
 
-export { getBenchmarkResults, processBenchmarkResults, formatBenchmarkName }
+const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
+  const latestHighVersion = getHighestVersion(
+    Array.from(
+      new Set(
+        benchmarkResults
+          .filter((result) => result.solver === "highs")
+          .map((result) => result.solverVersion)
+      )
+    )
+  )
+
+  const latestGlpkVersion = getHighestVersion(
+    Array.from(
+      new Set(
+        benchmarkResults
+          .filter((result) => result.solver === "glpk")
+          .map((result) => result.solverVersion)
+      )
+    )
+  )
+  const latestScripVersion = getHighestVersion(
+    Array.from(
+      new Set(
+        benchmarkResults
+          .filter((result) => result.solver === "scip")
+          .map((result) => result.solverVersion)
+      )
+    )
+  )
+  return benchmarkResults.filter((result) => {
+    switch (result.solver) {
+      case "glpk":
+        return result.solverVersion === latestGlpkVersion
+      case "scip":
+        return result.solverVersion === latestScripVersion
+      case "highs":
+        return result.solverVersion === latestHighVersion
+      default:
+        throw new Error("Invalid Solver")
+    }
+  })
+}
+
+export {
+  getBenchmarkResults,
+  processBenchmarkResults,
+  formatBenchmarkName,
+  getProblemSize,
+  getLatestBenchmarkResult,
+}

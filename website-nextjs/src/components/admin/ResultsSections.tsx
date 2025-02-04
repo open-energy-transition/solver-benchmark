@@ -7,6 +7,7 @@ import { roundNumber } from "@/utils/number"
 import { MaxMemoryUsage, MaxRunTime } from "@/constants"
 import { ResultState } from "@/redux/results/reducer"
 import Popup from "reactjs-popup"
+import { getLatestBenchmarkResult } from "@/utils/results"
 
 const ResultsSection = () => {
   const columns = [
@@ -59,7 +60,7 @@ const ResultsSection = () => {
           >
             <div className="bg-stroke p-2 rounded">
               Solved benchmarks is the number of benchmarks where the solver
-              returns an `ok` status
+              returns an &apos;ok&apos; status
             </div>
           </Popup>
         </div>
@@ -82,6 +83,8 @@ const ResultsSection = () => {
   const rawBenchmarkResults = useSelector((state: { results: ResultState }) => {
     return state.results.rawBenchmarkResults
   })
+
+  const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults)
 
   const [tableData, setTableData] = useState<
     {
@@ -156,13 +159,14 @@ const ResultsSection = () => {
   )
 
   const getNumberSolvedBenchmark = useCallback(
-    (solver: string) =>
-      benchmarkResults.filter(
+    (solver: string) => {
+      return benchmarkResults.filter(
         (result) =>
           result.status === "ok" &&
           result.solverVersion === getHighestVersion(solverVersions[solver]) &&
           result.solver === solver
-      ).length,
+      ).length
+    },
     [benchmarkResults, solverVersions]
   )
 
@@ -257,10 +261,10 @@ const ResultsSection = () => {
       <div className="pb-3 pl-3">
         <div className="text-navy font-bold text-xl">
           Results
-          {rawBenchmarkResults.length !== benchmarkResults.length && (
+          {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
               (filtered to {benchmarkResults.length}/
-              {rawBenchmarkResults.length} benchmarks)
+              {latestBenchmarkResult.length} benchmarks)
             </span>
           )}
         </div>

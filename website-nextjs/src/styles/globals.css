@@ -33,9 +33,27 @@
 
 :root {
   --font-lato: 'Lato', sans-serif;
+  --footer-height: 120px;
 }
 
 body {
   font-family: var(--font-lato);
   overflow: hidden;
+}
+
+/* react-select */
+.react-select__menu {
+  margin-top: 0 !important;
+}
+
+.react-select__indicator.react-select__dropdown-indicator {
+  display: none;
+}
+
+.react-select__indicator-separator {
+  display: none;
+}
+
+.react-select__indicator.react-select__clear-indicator{
+  display: none;
 }

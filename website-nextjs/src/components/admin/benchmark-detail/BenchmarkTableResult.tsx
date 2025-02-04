@@ -18,11 +18,16 @@ import { BenchmarkResult } from "@/types/benchmark"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
 import { ResultState } from "@/redux/results/reducer"
-import { MetaData, Size } from "@/types/meta-data"
+import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
 import { KindOfProblem, Model, Sector, Technique } from "@/constants"
 import Link from "next/link"
-import { Path } from "@/constants/path"
+import { PATH } from "@/constants/path"
 import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
+import PaginationTable from "@/components/shared/tables/PaginationTable"
+
+interface IColumnTable extends MetaDataEntry {
+  name: string
+}
 
 const BenchmarkTableResult = () => {
   const metaData = useSelector((state: { results: ResultState }) => {
@@ -38,20 +43,7 @@ const BenchmarkTableResult = () => {
     [metaData]
   )
 
-  const columns = useMemo<
-    ColumnDef<{
-      name: string
-      shortDescription: string
-      modelName: Model
-      version: string | null
-      technique: Technique
-      kindOfProblem: KindOfProblem
-      sectors: Sector
-      timeHorizon: string
-      milpFeatures: string | null
-      sizes: Size[]
-    }>[]
-  >(
+  const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
       {
         header: "BENCHMARK NAME",
@@ -103,7 +95,7 @@ const BenchmarkTableResult = () => {
         cell: (info) => (
           <Link
             className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={Path.BenchmarkDetail.one.replace(
+            href={PATH.benchmarkDetail.one.replace(
               "{name}",
               info.row.original.name
             )}
@@ -198,6 +190,8 @@ const BenchmarkTableResult = () => {
           </tbody>
         </table>
       </div>
+      {/* Pagination */}
+      <PaginationTable<IColumnTable> table={table} />
     </div>
   )
 }
