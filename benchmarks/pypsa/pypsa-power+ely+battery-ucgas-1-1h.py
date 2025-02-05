@@ -122,7 +122,6 @@ n.add(
     capital_cost=costs.at["OCGT", "capital_cost"],
     marginal_cost=costs.at["OCGT", "marginal_cost"],
     efficiency=costs.at["OCGT", "efficiency"],
-    p_nom_extendable=True,
     committable=True,
 )
 
