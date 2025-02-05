@@ -2,9 +2,10 @@
 
 We encourage submission of benchmarks that help the project meet the following overall targets:
 
-1. A set of benchmarks that are diverse in terms of modelling frameworks that generated them, problem structure, and model features.
+1. A set of benchmarks that are diverse in terms of modelling frameworks that generated them, problem structure, and model features. By features, we mean e.g., models that consider innovative technologies (e.g., electrolyzers, CO2
+capture) or policy-driven constraints (e.g., on CO2 emissions).
 
-1. Benchmarks using model features that are implemented using MILP constraints, preferably other than unit commitment.
+1. Benchmarks using model features that are implemented using MILP constraints, especially features other than unit commitment.
 
 1. Benchmarks that help open-source solver developers improve their solvers: benchmarks that can be solved rapidly (< 5 minutes) by Gurobi but are slow (~1 hour or higher) or fail when solved by an open-source solver.
 
@@ -23,7 +24,9 @@ The Solver Benchmark project is open and encourages the community to submit benc
     - Medium: under 1 hour HiGHS solving time
     - Large / Real: under 10 hours Gurobi solving time
 
-    where all runtimes are measured with the latest solver versions on a machine with [TBD] 2 vCPUs and 8 GB memory (e.g. an `e2-standard-2` VM on Google Cloud). If possible, we prefer benchmark generation scripts that have a "size" parameter (e.g. number of nodes, number of clusters) that can be varied in order to obtain the same benchmarks in multiple sizes.
+    where HiGHS runtimes are measured with the latest solver versions on a machine with [TBD] 2 vCPUs and 8 GB memory (e.g. an `e2-standard-2` VM on Google Cloud) and Gurobi solving time is on a [TBD -- reasonable machine?].
+
+Whenever possible, we prefer benchmarks that can be generated in multiple "sizes" by varying the time scale (single-stage / multi-stage planning horizons), temporal resolution (hourly, daily, etc), or spatial resolution (number of regions / nodes).
 
 ## Instructions for submitting benchmarks
 
