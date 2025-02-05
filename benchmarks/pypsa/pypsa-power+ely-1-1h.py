@@ -160,5 +160,5 @@ n.add(
 
 n.optimize(
     solver_name="highs",
-    keep_files="/tmp/pypsa-power+ely-1-1h.lp",
+    only_generate_problem_file="/tmp/pypsa-power+ely-1-1h.lp",
 )
