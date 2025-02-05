@@ -1,4 +1,4 @@
-genx_15-zones_elec_trex:
+genx-15-zones_elec_trex:
   Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion.
   Model name: GenX
   Version:
@@ -15,7 +15,7 @@ genx_15-zones_elec_trex:
     N. of integer variables:
     N. of binary variables:
 
-genx_15-zones_elec_trex_co2:
+genx-15-zones_elec_trex_co2:
   Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
   Model name: GenX
   Version:
@@ -32,7 +32,7 @@ genx_15-zones_elec_trex_co2:
     N. of integer variables:
     N. of binary variables:
 
-genx_15-zones_elec_trex_co2_uc:
+genx-15-zones_elec_trex_co2_uc:
   Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
   Model name: GenX
   Version:
@@ -49,7 +49,7 @@ genx_15-zones_elec_trex_co2_uc:
     N. of integer variables: 3417368
     N. of binary variables: 120960
 
-genx_15-zones_elec_trex_uc:
+genx-15-zones_elec_trex_uc:
   Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
   Model name: GenX
   Version:
@@ -66,7 +66,7 @@ genx_15-zones_elec_trex_uc:
     N. of integer variables: 3417368
     N. of binary variables: 120960
 
-genx_15-zones_elec_co2:
+genx-15-zones_elec_co2:
   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
   Model name: GenX
   Version:
@@ -83,7 +83,7 @@ genx_15-zones_elec_co2:
     N. of integer variables:
     N. of binary variables:
 
-genx_15-zones_elec_co2_uc:
+genx-15-zones_elec_co2_uc:
   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
   Model name: GenX
   Version:
@@ -100,7 +100,7 @@ genx_15-zones_elec_co2_uc:
     N. of integer variables: 3417368
     N. of binary variables: 120960
 
-genx_15-zones_elec_uc:
+genx-15-zones_elec_uc:
   Short description: This is a one-year example which contains 15 zones. This example includes unit commitment for conventional generators.
   Model name: GenX
   Version:
