@@ -10,6 +10,11 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
   const currentPage = table.getState().pagination.pageIndex + 1
   const totalPages = table.getPageCount()
   const maxVisiblePages = 5
+  const pageSize = table.getState().pagination.pageSize
+  const totalItems = table.getFilteredRowModel().rows.length
+  const startItem = (currentPage - 1) * pageSize + 1
+  const endItem = Math.min(startItem + pageSize - 1, totalItems)
+
   // Generate the pagination range
   const getPaginationRange = () => {
     const range = []
@@ -32,12 +37,9 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
   return (
     <div className="flex text-xs items-center gap-2 mt-4 justify-between">
       <div className="text-dark-grey">
-        Showing{" "}
-        <span className="font-bold">{table.getRowModel().rows.length}</span> of
-        <span className="font-bold">
-          {" "}
-          {table.getFilteredRowModel().rows.length}{" "}
-        </span>
+        Showing <span className="font-bold">{startItem}</span> to{" "}
+        <span className="font-bold">{endItem}</span> of{" "}
+        <span className="font-bold">{totalItems}</span>
       </div>
       <div>
         <div className="flex items-center gap-2">
