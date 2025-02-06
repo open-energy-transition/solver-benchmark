@@ -54,8 +54,6 @@ Please include along with each benchmark submission, the following metadata. Fur
 | **Temporal resolution** | Hourly | 3 hourly | Daily | Yearly |
 | **Spatial resolution** | Single node / 2 nodes (indicate countries/regions) | Multi-nodal (10 $\div$ 20) (indicate countries/regions) |
 | **MILP features** | None | Unit commitment | Transmission expansion | Other (please indicate) |
-| **N. of constraints** | <100| 100-1'000| 1'000-10'000| 10'000-100'000| 100'000-1'000'000 | 1'000'000-10'000'000 |
-| **N. of variables** | <100| 100-1'000| 1'000-10'000| 10'000-100'000| 100'000-1'000'000 | 1'000'000-10'000'000 |
 
 For example, here is an entry in the `benchmarks/pypsa/metadata.yaml` file:
 
@@ -73,8 +71,6 @@ pypsa-eur-sec-2-lv1-3h:
   - URL: https://todo.todo/todo.lp
     Temporal resolution: 3
     Spatial resolution: 2
-    N. of constraints: 393568
-    N. of variables': 390692
 ```
 
 ## Target modelling frameworks
