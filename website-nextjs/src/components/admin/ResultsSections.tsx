@@ -77,7 +77,7 @@ const ResultsSection = () => {
   ]
 
   const benchmarkResults = useSelector((state: { results: ResultState }) => {
-    return state.results.benchmarkResults
+    return state.results.benchmarkLatestResults
   })
 
   const rawBenchmarkResults = useSelector((state: { results: ResultState }) => {

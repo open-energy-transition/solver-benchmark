@@ -54,13 +54,13 @@ const actions = {
       )
 
       const problemSizeResult: { [key: string]: ProblemSize } = {}
-      results.benchmarkResults
+      results.rawBenchmarkResults
         .filter(
-          (result) =>
+          (result: BenchmarkResult) =>
             result.solver === "highs" &&
             result.solverVersion === latestHighVersion
         )
-        .forEach((result) => {
+        .forEach((result: BenchmarkResult) => {
           problemSizeResult[`${result.benchmark}'-'${result.size}`] =
             getProblemSize(result.runtime)
         })
@@ -76,7 +76,10 @@ const actions = {
               return (
                 `${size.spatialResolution}-${temporalResolution}` ===
                   benchmark.size &&
-                filters.problemSize.includes(getProblemSize(benchmark.runtime))
+                // filters.problemSize.includes(getProblemSize(benchmark.runtime))
+                filters.problemSize.includes(
+                  problemSizeResult[`${benchmark.benchmark}'-'${benchmark.size}`]
+                )
               )
             }
           )
@@ -84,8 +87,9 @@ const actions = {
 
       dispatch(resultActions.setMetaData(metaData as MetaData))
 
+      dispatch(resultActions.setBenchmarkResults(benchmarkResults))
       dispatch(
-        resultActions.setBenchmarkResults(
+        resultActions.setBenchmarkLatestResults(
           getLatestBenchmarkResult(benchmarkResults)
         )
       )

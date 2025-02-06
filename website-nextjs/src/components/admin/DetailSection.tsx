@@ -9,11 +9,10 @@ import {
 } from "@/assets/icons"
 import { ResultState } from "@/redux/results/reducer"
 import { useMemo } from "react"
-import { BenchmarkResult } from "@/types/benchmark"
 
 const DetailSection = () => {
   const benchmarkResults = useSelector(
-    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
+    (state: { results: ResultState }) => {
       return state.results.benchmarkResults
     }
   )

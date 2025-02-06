@@ -23,9 +23,13 @@ function App({ Component, pageProps }: AppProps) {
     const initializeData = async () => {
       const results = await getBenchmarkResults()
       const metaData = await getMetaData()
-
       dispatch(resultActions.setMetaData(metaData as MetaData))
-      dispatch(resultActions.setBenchmarkResults(getLatestBenchmarkResult(results as BenchmarkResult[])))
+      dispatch(resultActions.setBenchmarkResults(results as BenchmarkResult[]))
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(results as BenchmarkResult[])
+        )
+      )
       dispatch(resultActions.setRawMetaData(metaData as MetaData))
       dispatch(
         resultActions.setRawBenchmarkResults(results as BenchmarkResult[])

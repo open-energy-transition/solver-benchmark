@@ -2,13 +2,13 @@ import { useMemo } from "react"
 import { useSelector } from "react-redux"
 
 import { CircleIcon, CloseIcon } from "@/assets/icons"
-import { BenchmarkResult } from "@/types/benchmark"
 import D3Chart from "@/components/shared/D3PlotChart"
+import { ResultState } from "@/redux/results/reducer"
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
   const benchmarkResults = useSelector(
-    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
-      return state.results.benchmarkResults
+    (state: { results: ResultState }) => {
+      return state.results.benchmarkLatestResults
     }
   )
 
