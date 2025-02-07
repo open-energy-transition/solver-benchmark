@@ -96,14 +96,15 @@ const SolverSelection = () => {
 
   return (
     <div>
-      <div className="flex gap-4 mt-6 mb-4">
-        <div className="w-1/2">
-          <div>Solver 1</div>
+      <div className="flex gap-0 mt-6 mb-4">
+        <div className="w-1/2 bg-[#F0F4F2] rounded-l-lg">
+          <div className="p-3 pl-3.5 font-bold font-lato text-lg">Solver 1</div>
           <select
             name="solver1"
             value={solver1}
             onChange={(event) => setSolver1(event.target.value)}
-            className="w-full px-6 py-4 bg-white border-r-[1.5rem] border-transparent outline outline-stroke outline-1 text-navy text-base rounded-lg focus:ring-white focus:border-white block"
+            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem]
+            border-transparent text-dark-grey text-base rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
@@ -113,13 +114,16 @@ const SolverSelection = () => {
             ))}
           </select>
         </div>
-        <div className="w-1/2">
-          <div>Solver 2</div>
+        <div className="w-1/2 bg-[#E1E5F2] rounded-r-lg">
+          <div className="p-3 pl-3.5 font-bold font-lato text-lg ">
+            Solver 2
+          </div>
           <select
             name="solver2"
             value={solver2}
             onChange={(event) => setSolver2(event.target.value)}
-            className="w-full px-6 py-4 bg-white border-r-[1.5rem] border-transparent outline outline-stroke outline-1 text-navy text-base rounded-lg focus:ring-white focus:border-white block"
+            className="w-full pl-3 font-bold bg-[#E1E5F2] px-6 py-4 border-r-[1.5rem]
+            border-transparent text-dark-grey text-base rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
@@ -129,6 +133,14 @@ const SolverSelection = () => {
             ))}
           </select>
         </div>
+      </div>
+      <div className="py-2">
+        <div className="text-navy text-xl font-bold">Graphs</div>
+        <p className="text-[#5D5D5D]">
+          The benchmarks on the upper triangle of each graph are those where
+          Solver 1 performs better, and those in the lower triangle are those
+          where Solver 2 performs better
+        </p>
       </div>
       <div className="flex gap-4">
         <div className="w-1/2">
@@ -145,7 +157,7 @@ const SolverSelection = () => {
               yaxis: solver2.replace("--", "(") + ") runtime(s)",
             }}
           />
-          <div className="w-full font-league text-dark-grey font-medium text-center mt-4">
+          <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
             Runtime graph
           </div>
         </div>
@@ -163,7 +175,7 @@ const SolverSelection = () => {
               yaxis: solver2.replace("--", "(") + ") Memory usage(MB)",
             }}
           />
-          <div className="w-full font-league text-dark-grey font-medium text-center mt-4">
+          <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
             Memory usage graph
           </div>
         </div>

@@ -171,7 +171,6 @@ const PagePerformanceHistory = () => {
           />
         </div>
       </div>
-      <br />
       <Footer />
     </>
   )

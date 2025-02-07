@@ -80,10 +80,10 @@ const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
     return {
       ...benchmarkResult,
       runtime:
-        benchmarkResult.status === "warning"
+        benchmarkResult.status !== "ok"
           ? MaxRunTime
           : benchmarkResult.runtime,
-      memoryUsage: ["warning", "TO"].includes(benchmarkResult.status)
+      memoryUsage: !["ok"].includes(benchmarkResult.status)
         ? MaxMemoryUsage
         : benchmarkResult.memoryUsage,
     }
