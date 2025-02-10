@@ -4,7 +4,7 @@ import { CircleIcon } from "@/assets/icons"
 import { SolverType } from "@/types/benchmark"
 import { getSolverLabel } from "@/utils/solvers"
 import { roundNumber } from "@/utils/number"
-import { PATH } from "@/constants/path"
+import { PATH_DASHBOARD } from "@/constants/path"
 
 type ChartData = {
   runtime: number
@@ -149,7 +149,10 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
 
         group
           .on("click", () => {
-            window.location.href = PATH.benchmarkDetail.one.replace('{name}',d.benchmark)
+            window.location.href = PATH_DASHBOARD.benchmarkDetail.one.replace(
+              "{name}",
+              d.benchmark
+            )
           })
           .style("cursor", "pointer")
 

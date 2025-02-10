@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import * as d3 from "d3"
 import { CircleIcon, XIcon } from "@/assets/icons"
-import { PATH } from "@/constants/path"
+import { PATH_DASHBOARD } from "@/constants/path"
 
 type ChartData = {
   xaxis: number
@@ -165,7 +165,7 @@ const ChartCompare = ({
 
         group
           .on("click", () => {
-            window.location.href = PATH.benchmarkDetail.one.replace(
+            window.location.href = PATH_DASHBOARD.benchmarkDetail.one.replace(
               "{name}",
               d.benchmark
             )

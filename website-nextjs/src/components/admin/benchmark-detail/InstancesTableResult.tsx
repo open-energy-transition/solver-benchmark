@@ -102,9 +102,9 @@ const InstancesTableResult = ({
       <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
         Instances
       </div>
-      <div className="rounded-xl overflow-auto">
+      <div className="rounded-xl max-h-[640px] overflow-auto">
         <table className="table-auto bg-white w-full">
-          <thead>
+          <thead className="sticky top-0 bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -132,7 +132,7 @@ const InstancesTableResult = ({
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-navy text-start py-4 px-6">
+                  <td key={cell.id} className="text-navy text-start py-2 px-6">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

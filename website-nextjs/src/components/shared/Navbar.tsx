@@ -12,6 +12,7 @@ import { useRouter } from "next/router"
 
 import navbarActions from "@/redux/theme/actions"
 import Link from "next/link"
+import { PATH_DASHBOARD } from "@/constants/path"
 
 const Navbar = () => {
   const router = useRouter()
@@ -25,7 +26,7 @@ const Navbar = () => {
     },
     {
       label: "Benchmark details",
-      route: "/dashboard/benchmark-detail",
+      route: PATH_DASHBOARD.benchmarkDetail.list,
       icon: <ChartBarIcon />,
     },
     {

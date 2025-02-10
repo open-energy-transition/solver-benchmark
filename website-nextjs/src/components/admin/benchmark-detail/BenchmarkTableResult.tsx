@@ -21,7 +21,7 @@ import { ResultState } from "@/redux/results/reducer"
 import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
 import { KindOfProblem, Model, Sector, Technique } from "@/constants"
 import Link from "next/link"
-import { PATH } from "@/constants/path"
+import { PATH, PATH_DASHBOARD } from "@/constants/path"
 import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
 
@@ -95,7 +95,7 @@ const BenchmarkTableResult = () => {
         cell: (info) => (
           <Link
             className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={PATH.benchmarkDetail.one.replace(
+            href={PATH_DASHBOARD.benchmarkDetail.one.replace(
               "{name}",
               info.row.original.name
             )}
@@ -181,7 +181,7 @@ const BenchmarkTableResult = () => {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-navy text-start py-4 px-6">
+                  <td key={cell.id} className="text-navy text-start py-2 px-6">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

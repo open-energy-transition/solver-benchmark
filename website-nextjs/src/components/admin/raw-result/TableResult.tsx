@@ -19,6 +19,7 @@ import { ArrowToRightIcon } from "@/assets/icons"
 import Link from "next/link"
 import FilterTable from "@/components/shared/tables/FilterTable"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
+import DownloadButton from "@/components/shared/buttons/DownloadButton"
 
 const TableResult = () => {
   const benchmarkResults = useSelector(
@@ -166,13 +167,15 @@ const TableResult = () => {
     <div>
       <div className="text-navy font-bold pb-6 pt-9 flex justify-between items-center">
         Full Results
-        <Link
-          href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/benchmark_results.csv"
-          className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center"
+        <DownloadButton
+          url="https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv"
+          fileName={"benchmark_results.csv"}
         >
-          Download
-          <ArrowToRightIcon className="w-4 h-4 rotate-90" />
-        </Link>
+          <div className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center cursor-pointer">
+            Download
+            <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+          </div>
+        </DownloadButton>
       </div>
 
       <div className="rounded-xl overflow-auto">

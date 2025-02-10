@@ -4,7 +4,7 @@ import DetailSection from "@/components/admin/DetailSection"
 import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { ArrowToRightIcon } from "@/assets/icons"
+import { ArrowToRightIcon, ArrowUpIcon } from "@/assets/icons"
 import { ResultState } from "@/redux/results/reducer"
 import { useMemo } from "react"
 import Popup from "reactjs-popup"
@@ -85,7 +85,10 @@ const PageBenchmarkDetail = () => {
           <DetailSection />
           <div className="border-b border-stroke pt-2" />
 
-          <div className="pb-2 pt-16">
+          <div className="pb-2 pt-16 flex items-center">
+            <Link href={'./'}>
+              <ArrowUpIcon className="-rotate-90 size-10 text-navy cursor-pointer" />
+            </Link>
             <Popup
               on={["hover"]}
               trigger={() => (

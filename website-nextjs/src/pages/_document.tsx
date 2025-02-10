@@ -1,3 +1,4 @@
+import TopBanner from "@/components/shared/TopBanner"
 import { Html, Head, Main, NextScript } from "next/document"
 
 export default function Document() {
@@ -7,6 +8,7 @@ export default function Document() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body className="antialiased">
+        <TopBanner />
         <Main />
         <NextScript />
       </body>

@@ -42,7 +42,7 @@ function App({ Component, pageProps }: AppProps) {
   const renderLayout = () => {
     return (
       <AdminLayout>
-        <main className={`${fontClasses} bg-light-blue overflow-auto h-screen`}>
+        <main className={`${fontClasses} bg-light-blue overflow-auto h-[calc(100vh-var(--banner-height))]`}>
           <Component {...props} />
         </main>
       </AdminLayout>

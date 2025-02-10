@@ -33,7 +33,8 @@
 
 :root {
   --font-lato: 'Lato', sans-serif;
-  --footer-height: 120px;
+  --footer-height: 160px;
+  --banner-height: 40px;
 }
 
 body {

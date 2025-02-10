@@ -15,7 +15,7 @@ const PagePerformanceHistory = () => {
       <Head>
         <title>Full Results</title>
       </Head>
-      <div className="bg-light-blue h-screen">
+      <div className="bg-light-blue">
         <Navbar />
         <div
           className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${

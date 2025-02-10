@@ -4,6 +4,7 @@ import {
   LayoutGroupIcon,
   UsersAltIcon,
 } from "@/assets/icons"
+import { PATH_DASHBOARD } from "@/constants/path"
 import Link from "next/link"
 
 const MissionStart = () => {
@@ -35,7 +36,7 @@ const MissionStart = () => {
               </h6>
             </div>
             <Link
-              href="/dashboard/benchmark-detail"
+              href={PATH_DASHBOARD.benchmarkDetail.list}
               className="mt-6 px-3 pt-7 lg:py-7 relative flex justify-between"
             >
               <div>
