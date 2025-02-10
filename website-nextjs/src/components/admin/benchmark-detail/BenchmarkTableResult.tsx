@@ -21,7 +21,7 @@ import { ResultState } from "@/redux/results/reducer"
 import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
 import { KindOfProblem, Model, Sector, Technique } from "@/constants"
 import Link from "next/link"
-import { PATH, PATH_DASHBOARD } from "@/constants/path"
+import { PATH_DASHBOARD } from "@/constants/path"
 import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
 
