@@ -4,7 +4,12 @@ import DetailSection from "@/components/admin/DetailSection"
 import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { ArrowToRightIcon, ArrowUpIcon } from "@/assets/icons"
+import {
+  ArrowIcon,
+  ArrowToRightIcon,
+  ArrowUpIcon,
+  HomeIcon,
+} from "@/assets/icons"
 import { ResultState } from "@/redux/results/reducer"
 import { useMemo } from "react"
 import Popup from "reactjs-popup"
@@ -12,6 +17,7 @@ import { Color } from "@/constants/color"
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult"
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection"
 import Link from "next/link"
+import { PATH_DASHBOARD } from "@/constants/path"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -80,13 +86,32 @@ const PageBenchmarkDetail = () => {
             isNavExpanded ? "ml-64" : "ml-20"
           }`}
         >
-          <AdminHeader />
+          <AdminHeader>
+            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+              <div className="flex items-center gap-1">
+                <Link href={PATH_DASHBOARD.root}>
+                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
+                </Link>
+                <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                <Link
+                  href={PATH_DASHBOARD.benchmarkDetail.list}
+                  className="self-center font-semibold whitespace-nowrap"
+                >
+                  Benchmark Details
+                </Link>
+                <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                <span className="self-center font-semibold whitespace-nowrap">
+                  {benchmarkName}
+                </span>
+              </div>
+            </div>
+          </AdminHeader>
           {/* Content */}
           <DetailSection />
           <div className="border-b border-stroke pt-2" />
 
           <div className="pb-2 pt-16 flex items-center">
-            <Link href={'./'}>
+            <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-10 text-navy cursor-pointer" />
             </Link>
             <Popup

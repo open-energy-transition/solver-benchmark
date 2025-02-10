@@ -1,22 +1,13 @@
-import { ForkIcon, GithubIcon, HomeIcon, PreviousIcon } from "@/assets/icons"
+import { ForkIcon, GithubIcon } from "@/assets/icons"
 
-const AdminHeader = () => {
+import { ReactNode } from "react";
+
+const AdminHeader = ({ children }: { children: ReactNode }) => {
   return (
     <nav>
       <div className="flex flex-wrap items-center justify-between mx-auto py-5 pr-8">
-        <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
-          <a href="#" className="text-navy" >
-            <PreviousIcon />
-          </a>
-          <a href="#" className="flex items-center gap-1">
-            <div>
-              <HomeIcon className="w-[1.125rem] h-[1.125rem" />
-            </div>
-            <span className="self-center font-semibold whitespace-nowrap">
-              Main page
-            </span>
-          </a>
-        </div>
+        {children}
+
         {/* Mobile UI */}
         <div className="flex lg:hidden items-center md:order-2 space-x-3 md:space-x-0">
           <button
