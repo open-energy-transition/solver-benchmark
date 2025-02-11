@@ -193,7 +193,7 @@ const ResultsSection = () => {
     ]
 
     combinedRankList.forEach((solver) => {
-      solver.score = solver.runtime + solver.memoryUsage
+      solver.score = solver.runtime
     })
     return combinedRankList.sort((a, b) => a.score - b.score)
   }
