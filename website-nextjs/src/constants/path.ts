@@ -1,7 +1,7 @@
 const BASE_PATH = "dashboard"
 
 export const PATH_DASHBOARD = {
-  root: '',
+  root: '/',
   home: `/${BASE_PATH}/home`,
   benchmarkDetail: {
     list: `/${BASE_PATH}/benchmark-details`,

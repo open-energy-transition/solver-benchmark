@@ -291,7 +291,7 @@ const ResultsSection = () => {
                   fill="none"
                   stroke={sortConfig.field === column.field ? "black" : "gray"}
                   className={`w-2 h-2 ${
-                    sortConfig.direction === "asc" ? "rotate-180" : ""
+                    sortConfig.direction === "asc" ? "rotate-90" : "-rotate-90"
                   }
                     ${sortConfig.field === column.field ? "block" : "hidden"}`}
                 />

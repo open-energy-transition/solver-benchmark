@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "move-results": "mkdir -p public/results && cp -r ../results/* public/results/",
+    "build": "npm run move-results && next build",
     "start": "next start",
     "lint": "next lint"
   },
