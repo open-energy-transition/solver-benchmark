@@ -12,7 +12,7 @@ import { getLatestBenchmarkResult } from "@/utils/results"
 const ResultsSection = () => {
   const columns = [
     {
-      name: "Rank:",
+      name: "Rank",
       field: "rank",
       width: "flex-1",
       bgColor: "bg-light-grey/50",
@@ -20,7 +20,7 @@ const ResultsSection = () => {
       sort: true,
     },
     {
-      name: "Solver:",
+      name: "Solver",
       field: "solver",
       width: "w-1/6",
       bgColor: "bg-light-grey",
@@ -233,7 +233,7 @@ const ResultsSection = () => {
   // Sorting logic
   const sortedTableData = useMemo(() => {
     if (!sortConfig.field) return tableData
-    return [...tableData].sort((a, b) => {
+    const sorted = [...tableData].sort((a, b) => {
       const aValue = a[sortConfig.field as keyof typeof a]
       const bValue = b[sortConfig.field as keyof typeof b]
       if (sortConfig.direction === "asc") {
@@ -242,6 +242,11 @@ const ResultsSection = () => {
         return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
       }
     })
+    // Reassign static ranks (1, 2, 3)
+    return sorted.map((item, index) => ({
+      ...item,
+      rank: index + 1,
+    }))
   }, [tableData, sortConfig])
 
   const handleSort = (field: string) => {

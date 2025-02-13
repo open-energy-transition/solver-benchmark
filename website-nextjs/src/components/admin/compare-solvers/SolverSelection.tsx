@@ -156,6 +156,12 @@ const SolverSelection = () => {
               xaxis: solver1.replace("--", "(") + ") runtime(s)",
               yaxis: solver2.replace("--", "(") + ") runtime(s)",
             }}
+            backgroundColor={{
+              upper: "#4C5C51",
+              upperOpacity: "0.2",
+              lower: "#850221",
+              lowerOpacity: "0.2",
+            }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
             Runtime graph
@@ -173,6 +179,10 @@ const SolverSelection = () => {
             title={{
               xaxis: solver1.replace("--", "(") + ") Memory usage(MB)",
               yaxis: solver2.replace("--", "(") + ") Memory usage(MB)",
+            }}
+            backgroundColor={{
+              upper: "#D9D9D9",
+              upperOpacity: "0.4",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">

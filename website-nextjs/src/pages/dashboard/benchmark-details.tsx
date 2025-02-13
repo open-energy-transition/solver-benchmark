@@ -41,6 +41,7 @@ const PageBenchmarkDetail = () => {
           </AdminHeader>
           {/* Content */}
           <DetailSection />
+          <FilterSection />
           <div className="py-2">
             <div className="text-navy text-xl font-bold">Benchmarks</div>
             <p className="text-[#5D5D5D]">
@@ -48,7 +49,6 @@ const PageBenchmarkDetail = () => {
               platform, including their source and download links.
             </p>
           </div>
-          <FilterSection />
           <BenchmarkTableResult />
         </div>
         <Footer />
