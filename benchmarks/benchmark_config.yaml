@@ -165,7 +165,7 @@
 - name: pypsa-power+ely+battery-1-1h
   sizes:
   - size: 1-1h
-    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-1-1h.lp
 - name: pypsa-power+ely+battery-ucgas-1-1h
   sizes:
   - size: 1-1h
@@ -182,6 +182,26 @@
   sizes:
   - size: 1-1h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-1-1h.lp
+- name: pypsa-power+ely+battery-mod-1-1h
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-mod-1-1h.lp
+- name: pypsa-power+ely+battery-ucgas-mod-1-1h
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-mod-1-1h.lp
+- name: pypsa-power+ely-mod-1-1h
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-mod-1-1h.lp
+- name: pypsa-power+ely-co2-mod-1-1h
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-mod-1-1h.lp
+- name: pypsa-power+ely-ucgas-mod-1-1h
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-mod-1-1h.lp
 - name: genx-1_three_zones
   sizes:
     - size: 3-1h
