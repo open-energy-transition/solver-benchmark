@@ -1,0 +1,121 @@
+times-etimeseu-elec+heat-co2-multi_stage-1-64:
+  Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050 and 64 .
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 1
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-co2-multi_stage-29-64:
+  Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 29
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-co2-single_stage-1-64.mps:
+  Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 1
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-co2-single_stage-29-64.mps:
+  Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
+  Model name: TIMES
+  Version:  
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 29
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-multi_stage-1-64.mps:
+  Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050.
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 1
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-multi_stage-29-64.mps:
+  Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 29
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-single_stage-1-64.mps:
+  Short description: eTIMES-EU power+ heating run for France (1 node) considering 5 years-long periods until 2050.
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 1
+    N. of constraints: 
+    N. of variables:
+times-etimeseu-elec+heat-single_stage-29-64.mps:
+  Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
+  Model name: TIMES
+  Version:
+  Contributor: Victor Guillot, École des Mines de Paris
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power + heating
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 64
+    Spatial resolution: 29
+    N. of constraints: 
+    N. of variables:
+

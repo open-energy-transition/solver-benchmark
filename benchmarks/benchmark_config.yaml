@@ -388,3 +388,36 @@
   sizes:
   - size: 1-1h
     url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-c5f9c340dae227b689ac284a47d285373a0cd023658a17e9e56bc68136fad3de.mps.gz
+- name: times-etimeseu-elec+heat-co2-multi_stage-1-64
+  sizes:
+  - size: 1-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
+- name: times-etimeseu-elec+heat-co2-multi_stage-29-64
+  sizes:
+  - size: 29-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
+- name: times-etimeseu-elec+heat-co2-single_stage-1-64
+  sizes:
+  - size: 1-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
+- name: times-etimeseu-elec+heat-co2-single_stage-29-64
+  sizes:
+  - size: 29-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
+- name: times-etimeseu-elec+heat-multi_stage-1-64
+  sizes:
+  - size: 1-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
+- name: times-etimeseu-elec+heat-multi_stage-29-64
+  sizes:
+  - size: 29-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
+- name: times-etimeseu-elec+heat-single_stage-1-64
+  sizes:
+  - size: 1-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
+- name: times-etimeseu-elec+heat-single_stage-29-64
+  sizes:
+  - size: 29-64
+    url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
+
