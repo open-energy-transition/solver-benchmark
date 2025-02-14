@@ -9,7 +9,7 @@ temoa-utopia:
   Time horizon: Multi-stage (4 years)
   MILP features: None
   Sizes:
-    Temporal resolution: 6 time slices (3 seasons, 2 times of day)
+  - Temporal resolution: 6 time slices (3 seasons, 2 times of day)
     Spatial resolution: 1 node
     N. of constraints:
     N. of continuous variables:
@@ -27,7 +27,7 @@ temoa-US_9R_TS:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
@@ -44,7 +44,7 @@ temoa-US_9R_TS_NDC:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
@@ -61,7 +61,7 @@ temoa-US_9R_TS_NZ:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
@@ -78,7 +78,7 @@ temoa-US_9R_TS_SP:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
@@ -96,7 +96,7 @@ temoa-US_9R_TS_NZ_trunc_4periods:
   Time horizon: Multi-stage (5 years)
   MILP features: None
   Sizes:
-    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
