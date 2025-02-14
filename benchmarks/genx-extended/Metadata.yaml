@@ -8,7 +8,7 @@ genx-15-zones_elec_trex:
   Time horizon: Single period (1 year)
   MILP features:
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 11832658
     N. of continuous variables: 13777226
@@ -25,7 +25,7 @@ genx-15-zones_elec_trex_co2:
   Time horizon: Single period (1 year)
   MILP features:
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 5051253
     N. of continuous variables: 4573584
@@ -42,7 +42,7 @@ genx-15-zones_elec_trex_co2_uc:
   Time horizon: Single period (1 year)
   MILP features: Unit commitment
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 20128499
     N. of continuous variables: 13897939
@@ -59,7 +59,7 @@ genx-15-zones_elec_trex_uc:
   Time horizon: Single period (1 year)
   MILP features: Unit commitment
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 20128499
     N. of continuous variables: 13897939
@@ -76,7 +76,7 @@ genx-15-zones_elec_co2:
   Time horizon: Single period (1 year)
   MILP features: Unit commitment
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 11832633
     N. of continuous variables: 13777201
@@ -93,7 +93,7 @@ genx-15-zones_elec_co2_uc:
   Time horizon: Single period (1 year)
   MILP features: Unit commitment
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 20128473
     N. of continuous variables: 13897913
@@ -110,7 +110,7 @@ genx-15-zones_elec_uc:
   Time horizon: Single period (1 year)
   MILP features: Unit commitment
   Sizes:
-    Temporal resolution: 168
+  - Temporal resolution: 168
     Spatial resolution: 15
     N. of constraints: 20128472
     N. of continuous variables: 13897912
