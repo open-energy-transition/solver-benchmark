@@ -7,12 +7,14 @@ dependencies:
 - python>=3.12
 - pip
 
-- linopy>=0.4.1
 - requests>=2.32
 
+- coin-or-cbc==2.10.11
 - scip==8.1.0
 - pyscipopt==4.4.0
 - gurobi==11.0.0
 
-# TODO highspy 1.6.0 wasn't released to PyPI! So installed with
-# pip install git+https://github.com//ERGO-Code/HiGHS@v1.6.0
+- pip:
+  - linopy>=0.5.0
+  # highspy 1.6.0 wasn't released to PyPI:
+  - git+https://github.com//ERGO-Code/HiGHS@v1.6.0
