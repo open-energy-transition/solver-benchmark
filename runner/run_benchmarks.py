@@ -14,12 +14,11 @@ import yaml
 
 def get_conda_package_versions(solvers, env_name=None):
     try:
-        # Base command
-        cmd = ["/opt/conda/bin/conda", "list"]
-
-        # Add environment name if provided
+        # List packages in the conda environment
+        cmd = "conda list"
         if env_name:
-            cmd.extend(["-n", env_name])
+            cmd += " -n " + env_name
+        cmd = ["bash", "-i", "-c", cmd]
 
         # Run the conda list command
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
