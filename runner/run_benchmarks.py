@@ -14,12 +14,11 @@ import yaml
 
 def get_conda_package_versions(solvers, env_name=None):
     try:
-        # Base command
-        cmd = ["conda", "list"]
-
-        # Add environment name if provided
+        # List packages in the conda environment
+        cmd = "conda list"
         if env_name:
-            cmd.extend(["-n", env_name])
+            cmd += " -n " + env_name
+        cmd = ["bash", "-i", "-c", cmd]
 
         # Run the conda list command
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
@@ -35,10 +34,11 @@ def get_conda_package_versions(solvers, env_name=None):
             if len(parts) >= 2:  # Ensure package name and version are present
                 installed_packages[parts[0]] = parts[1]
 
+        # Map solver names to their conda package names
+        name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            # HiGHS is called highspy, so map that accordingly
-            package = "highspy" if solver == "highs" else solver
+            package = name_to_pkg.get(solver, solver)
             solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
@@ -366,7 +366,7 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "glpk", "scip"]  # For production
+    solvers = ["cbc", "highs", "glpk", "scip"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion
