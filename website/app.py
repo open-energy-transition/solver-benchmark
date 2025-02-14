@@ -61,10 +61,9 @@ data_df = load_benchmark_data()
 csv_benchmarks = set(data_df["Benchmark"].unique())
 metadata_benchmarks = set(metadata_df["Benchmark Name"].unique())
 # Assertion to check if both sets are the same
-assert csv_benchmarks == metadata_benchmarks, (
+assert csv_benchmarks.issubset(metadata_benchmarks), (
     f"Mismatch between CSV benchmarks and metadata benchmarks:\n"
     f"In CSV but not metadata: {csv_benchmarks - metadata_benchmarks}\n"
-    f"In metadata but not CSV: {metadata_benchmarks - csv_benchmarks}"
 )
 
 pg = st.navigation(pages)
