@@ -116,7 +116,7 @@
 - name: genx-10_IEEE_9_bus_DC_OPF
   sizes:
     - name: 9-1h
-      size: L
+      size: R
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
 - name: pglib_opf_case162_ieee_dtc
   sizes:
@@ -158,10 +158,10 @@
       size: S
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
     - name: 28-2.2h
-      size: L
+      size: R
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
     - name: 28-1h
-      size: L
+      size: R
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
 - name: Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29
   sizes:
