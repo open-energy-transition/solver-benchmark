@@ -17,73 +17,63 @@ import { ResultState } from "@/redux/results/reducer"
 import { getInstance } from "@/utils/meta-data"
 import { MetaDataEntry } from "@/types/meta-data"
 
-const InstancesTableResult = ({
-  benchmarkName,
-  benchmarkDetail,
-}: {
-  benchmarkName: string
-  benchmarkDetail: MetaDataEntry
-}) => {
+const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
   const columns = useMemo<
     ColumnDef<{
-      instance: string
-      spatialResolution: number
-      temporalResolution: string | number
-      nOfVariables: number | null
-      nOfConstraints: number
+      solver: string
+      size: string
+      maxIntegrailty: string | null
+      dualityFap: string | null
     }>[]
   >(
     () => [
       {
-        header: "INSTANCE",
-        accessorKey: "instance",
+        header: "SOLVER",
+        accessorKey: "solver",
         size: 200,
         cell: (info) => info.getValue(),
       },
       {
-        header: "SPATIAL RESOLUTION",
-        accessorKey: "spatialResolution",
+        header: "SIZE",
+        accessorKey: "size",
         cell: (info) => info.getValue(),
       },
       {
-        header: "TEMPORAL RESOLUTION",
-        accessorKey: "temporalResolution",
+        header: "MAX INTEGRAILTY",
+        accessorKey: "maxIntegrailty",
         cell: (info) => info.getValue(),
       },
       {
-        header: "No. VARIABLES",
-        accessorKey: "nOfVariables",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "No. CONSTRAINTS",
-        accessorKey: "nOfConstraints",
+        header: "DUALITY GAP",
+        accessorKey: "dualityFap",
         cell: (info) => info.getValue(),
       },
     ],
     []
   )
 
+  const benchmarkResults = useSelector((state: { results: ResultState }) => {
+    return state.results.benchmarkLatestResults
+  })
+
+  const curBenchmarkResult = useMemo(
+    () =>
+      benchmarkResults
+        .filter((resulst) => resulst.benchmark === benchmarkName)
+        .map((benchmark) => ({
+          solver: benchmark.solver,
+          size: benchmark.size,
+          maxIntegrailty: benchmark.maxIntegralityViolation,
+          dualityFap: benchmark.dualityGap,
+        })),
+    [benchmarkResults.length]
+  )
+
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
 
-  const tableData = useMemo(
-    () =>
-      benchmarkDetail.sizes.map((sizeData) => ({
-        spatialResolution: sizeData.spatialResolution,
-        temporalResolution: sizeData.temporalResolution,
-        nOfVariables: sizeData.nOfVariables,
-        nOfConstraints: sizeData.nOfConstraints,
-        instance: getInstance(
-          sizeData.temporalResolution.toString(),
-          sizeData.spatialResolution.toString()
-        ),
-      })),
-    [benchmarkDetail.sizes.length]
-  )
-
   const table = useReactTable({
-    data: tableData,
+    data: curBenchmarkResult,
     columns,
     state: {
       sorting,
@@ -97,6 +87,7 @@ const InstancesTableResult = ({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: false,
   })
+  console.log(table.getPrePaginationRowModel().rows.length)
 
   useEffect(() => {
     table.setPageSize(table.getPrePaginationRowModel().rows.length)
@@ -105,7 +96,7 @@ const InstancesTableResult = ({
   return (
     <div className="py-2">
       <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
-        Instances
+        MILP Features
       </div>
       <div className="rounded-xl max-h-[280px] overflow-auto">
         <table className="table-auto bg-white w-full">
@@ -150,4 +141,4 @@ const InstancesTableResult = ({
   )
 }
 
-export default InstancesTableResult
+export default MilpTableResult

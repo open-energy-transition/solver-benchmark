@@ -1,6 +1,7 @@
 export enum Sector {
   Power = "Power",
   SectorCoupled = "Sector-coupled",
+  UpstreamElectricTransportCommercialResidentialIndustrial = "Upstream, Electric, Transport, Commercial, Residential, Industrial",
 }
 
 export enum Technique {
@@ -30,6 +31,7 @@ export enum Model {
   PowerModel = "PowerModels",
   Sienna = "Sienna",
   GenX = "GenX",
+  TEMOA = "TEMOA",
 }
 
 export const MaxRunTime = 600

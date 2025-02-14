@@ -34,7 +34,7 @@ const ResultsSection = () => {
       color: "text-navy font-semibold",
     },
     {
-      name: "Memory",
+      name: "SGM Memory",
       field: "memory",
       width: "w-1/5",
       bgColor: "bg-lavender/80",
@@ -67,7 +67,7 @@ const ResultsSection = () => {
       ),
     },
     {
-      name: "Runtime",
+      name: "SGM Runtime",
       field: "runtime",
       width: "w-1/5",
       bgColor: "bg-lime-green",
@@ -92,14 +92,14 @@ const ResultsSection = () => {
       solver: string
       version: string
       memory: number
-      solvedBenchmarks: number
+      solvedBenchmarks: string
       runtime: number
     }[]
   >([])
   const [sortConfig, setSortConfig] = useState<{
     field: string
     direction: "asc" | "desc"
-  }>({ field: "rank", direction: "asc" })
+  }>({ field: "runtime", direction: "asc" })
 
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
@@ -198,6 +198,14 @@ const ResultsSection = () => {
     return combinedRankList.sort((a, b) => a.score - b.score)
   }
 
+  const uniqueBenchmarkCount = new Set(
+    benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
+  ).size
+
+  const uniqueLatestBenchmarkCount = new Set(
+    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`)
+  ).size
+
   useEffect(() => {
     setTableData([
       {
@@ -206,7 +214,9 @@ const ResultsSection = () => {
         solver: "HiGHS",
         version: getHighestVersion(solverVersions.highs),
         memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
-        solvedBenchmarks: getNumberSolvedBenchmark("highs"),
+        solvedBenchmarks: `${getNumberSolvedBenchmark(
+          "highs"
+        )} / ${uniqueBenchmarkCount}`,
         runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
       },
       {
@@ -215,7 +225,9 @@ const ResultsSection = () => {
         solver: "GLPK",
         version: getHighestVersion(solverVersions.glpk),
         memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
-        solvedBenchmarks: getNumberSolvedBenchmark("glpk"),
+        solvedBenchmarks: `${getNumberSolvedBenchmark(
+          "glpk"
+        )} / ${uniqueBenchmarkCount}`,
         runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
       },
       {
@@ -224,7 +236,9 @@ const ResultsSection = () => {
         solver: "SCIP",
         version: getHighestVersion(solverVersions.scip),
         memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
-        solvedBenchmarks: getNumberSolvedBenchmark("scip"),
+        solvedBenchmarks: `${getNumberSolvedBenchmark(
+          "scip"
+        )} / ${uniqueBenchmarkCount}`,
         runtime: roundNumber(calculateSgmBySolver("scip", "runtime"), 2),
       },
     ])
@@ -268,14 +282,37 @@ const ResultsSection = () => {
           Results
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
-              (filtered to {benchmarkResults.length}/
-              {latestBenchmarkResult.length} benchmarks)
+              (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}
+              benchmarks)
             </span>
           )}
         </div>
-        <div className="text-dark-grey text-sm">
-          We rank solvers by normalized shifted geometric mean (SGM) of runtime
-          and memory consumption over all benchmarks
+        <div className="text-dark-grey text-sm flex items-center">
+          We rank solvers by normalized shifted geometric mean (SGM
+          <div className="flex gap-2">
+            <Popup
+              on={["hover"]}
+              trigger={() => <QuestionLine className="w-4 h-4" />}
+              position="right center"
+              closeOnDocumentClick
+              arrowStyle={{ color: "#ebeff2" }}
+            >
+              <div className="bg-stroke p-2 rounded">
+                The shifted geometric mean SGM of the n nonnegative numbers
+                v[1],...v[n] is
+                <br />
+                <span className="ml-4">
+                  SGM = exp(sum{"{i in 1..n}"} ln(max(1, v[i] + sh)) / n) - sh,
+                  sh nonnegative
+                </span>
+                <br />
+                In our benchmarks, where the v[i] are Wallclock seconds, we use
+                sh = 10. Then we scale the means by dividing them by the
+                smallest mean.
+              </div>
+            </Popup>
+          </div>
+          ) of runtime and memory consumption over all benchmarks
         </div>
       </div>
       <div className="flex text-xs leading-1.5">

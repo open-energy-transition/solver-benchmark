@@ -103,7 +103,7 @@ const FilterSection = () => {
                       value: sector,
                     })
                   }
-                  className="w-max cursor-pointer"
+                  className="w-max cursor-pointer max-w-[30px]"
                 >
                   {getLabel("sectors", sector)}
                 </span>

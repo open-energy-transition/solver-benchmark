@@ -21,14 +21,15 @@ import { ArrowToRightIcon } from "@/assets/icons"
 import FilterTable from "@/components/shared/tables/FilterTable"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
 import DownloadButton from "@/components/shared/buttons/DownloadButton"
+import { ResultState } from "@/redux/results/reducer"
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv"
 
 const TableResult = () => {
   const benchmarkResults = useSelector(
-    (state: { results: { rawBenchmarkResults: BenchmarkResult[] } }) => {
-      return state.results.rawBenchmarkResults
+    (state: { results: ResultState}) => {
+      return state.results.benchmarkResults
     }
   )
 
