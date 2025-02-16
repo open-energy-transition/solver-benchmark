@@ -71,7 +71,7 @@
 - name: genx-1_three_zones
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
 - name: genx-2_three_zones_w_electrolyzer
   sizes:
@@ -81,22 +81,22 @@
 - name: genx-3_three_zones_w_co2_capture
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_3_three_zones_w_co2_capture-3222908514bd19ae55895811eb847ad882270e280657123420407a885ccb34bc.mps.gz
 - name: genx-4_three_zones_w_policies_slack
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_4_three_zones_w_policies_slack-0be00acbe74d795dfc6aec53239998a93ac0310563b3e65fca00f2acebe2b6c1.mps.gz
 - name: genx-5_three_zones_w_piecewise_fuel
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_5_three_zones_w_piecewise_fuel-51ff0e52d559b549f9e45a13eb267156a2416566f126d1567e1846353a4e9936.mps.gz
 - name: genx-6_three_zones_w_multistage
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_6_three_zones_w_multistage-62d4538e93e8e775de4f754baf121d4996da332da11066a1a496e298f2319641.mps.gz
 - name: genx-7_three_zones_w_colocated_VRE_storage
   sizes:
@@ -106,12 +106,12 @@
 - name: genx-8_three_zones_w_colocated_VRE_storage_electrolyzers
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
 - name: genx-9_three_zones_w_retrofit
   sizes:
     - name: 3-1h
-      size: R
+      size: L
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
 - name: genx-10_IEEE_9_bus_DC_OPF
   sizes:
