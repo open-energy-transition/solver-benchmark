@@ -234,9 +234,10 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=60,
+    timeout=10 * 60,
     override=True,
 ):
+    size_categories = {"XS", "S"}
     results = {}
 
     # Load benchmarks from YAML file
@@ -262,27 +263,31 @@ def main(
     # Preprocess the sizes and make a list of individual benchmark files to run on
     processed_benchmarks = []
     for benchmark_info in benchmarks_info:
-        for size in benchmark_info["sizes"]:
+        for instance in benchmark_info["sizes"]:
+            # Filter to the desired size_categories
+            if size_categories is not None and instance["size"] not in size_categories:
+                continue
+
             # Determine the file path to use for the benchmark
-            if "path" in size:
-                benchmark_path = Path(size["path"])
+            if "path" in instance:
+                benchmark_path = Path(instance["path"])
                 if not benchmark_path.exists():
                     raise FileNotFoundError(
                         f"File specified in 'path' does not exist: {benchmark_path}"
                     )
-            elif "url" in size:
+            elif "url" in instance:
                 # TODO do something better like adding a yaml field for format
-                if size["url"].endswith(".mps"):
+                if instance["url"].endswith(".mps"):
                     format = "mps"
-                elif size["url"].endswith(".mps.gz"):
+                elif instance["url"].endswith(".mps.gz"):
                     format = "mps.gz"
                 else:
                     format = "lp"
                 benchmark_path = (
                     benchmarks_folder
-                    / f'{benchmark_info["name"]}-{size["size"]}.{format}'
+                    / f'{benchmark_info["name"]}-{instance["name"]}.{format}'
                 )
-                download_file_from_google_drive(size["url"], benchmark_path)
+                download_file_from_google_drive(instance["url"], benchmark_path)
 
                 # Gzip files are unzipped by the above function, so update path accordingly
                 if benchmark_path.suffix == ".gz":
@@ -292,10 +297,15 @@ def main(
             processed_benchmarks.append(
                 {
                     "name": benchmark_info["name"],
-                    "size": size["size"],
+                    "size": instance["name"],
                     "path": benchmark_path,
                 }
             )
+
+    print(
+        f"Found {len(processed_benchmarks)} benchmark instances"
+        + ("" if size_categories is None else f" matching {size_categories}")
+    )
 
     for benchmark in processed_benchmarks:
         for solver in solvers:
@@ -366,7 +376,7 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["cbc", "highs", "glpk", "scip"]  # For production
+    solvers = ["cbc"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion
