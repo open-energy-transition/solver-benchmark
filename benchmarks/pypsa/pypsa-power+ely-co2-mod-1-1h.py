@@ -111,6 +111,7 @@ for tech in ["onwind", "offwind"]:
         marginal_cost=costs.at[tech, "marginal_cost"],
         efficiency=costs.at[tech, "efficiency"],
         p_nom_extendable=True,
+        p_nom_mod=4,
     )
 
 n.add(
@@ -122,6 +123,7 @@ n.add(
     marginal_cost=costs.at["OCGT", "marginal_cost"],
     efficiency=costs.at["OCGT", "efficiency"],
     p_nom_extendable=True,
+    p_nom_mod=30,
 )
 
 for tech in ["solar"]:
@@ -135,6 +137,7 @@ for tech in ["solar"]:
         marginal_cost=costs.at[tech, "marginal_cost"],
         efficiency=costs.at[tech, "efficiency"],
         p_nom_extendable=True,
+        p_nom_mod=0.4,
     )
 
 # Second, the hydrogen storage. This one is composed of an electrolysis to convert electricity to hydrogen, a fuel cell to re-convert hydrogen to electricity and underground storage (e.g. in salt caverns). We assume an energy-to-power ratio of 168 hours, such that this type of storage can be used for weekly balancing.
@@ -158,7 +161,15 @@ n.add(
     cyclic_state_of_charge=True,
 )
 
+n.add(
+    "GlobalConstraint",
+    "CO2Limit",
+    carrier_attribute="co2_emissions",
+    sense="<=",
+    constant=0,
+)
+
 n.optimize(
     solver_name="highs",
-    only_generate_problem_file="/tmp/pypsa-gas+wind+sol+ely-1-1h.lp",
+    only_generate_problem_file="/tmp/pypsa-power+ely-co2-mod-1-1h.lp",
 )
