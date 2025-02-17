@@ -157,10 +157,8 @@ const SolverSelection = () => {
               yaxis: solver2.replace("--", " (") + ") runtime (s)",
             }}
             backgroundColor={{
-              upper: "#4C5C51",
-              upperOpacity: "0.2",
-              lower: "#850221",
-              lowerOpacity: "0.2",
+              upper: "#F0F4F2",
+              lower: "#E1E5F2",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
@@ -181,8 +179,8 @@ const SolverSelection = () => {
               yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
             }}
             backgroundColor={{
-              upper: "#D9D9D9",
-              upperOpacity: "0.4",
+              upper: "#F0F4F2",
+              lower: "#E1E5F2",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">

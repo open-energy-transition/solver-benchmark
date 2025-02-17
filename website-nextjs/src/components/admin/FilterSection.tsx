@@ -44,6 +44,9 @@ const FilterSection = () => {
           case Sector.SectorCoupled:
             return "Sector coupled"
 
+          case Sector.UpstreamElectricTransportCommercialResidentialIndustrial:
+            return "Upstream..."
+
           default:
             return value
         }

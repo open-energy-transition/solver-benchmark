@@ -206,6 +206,18 @@ const ResultsSection = () => {
     latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`)
   ).size
 
+  const getSolvedBenchmarksLabel = (
+    solver: string,
+    uniqueBenchmarkCount: number
+  ) => {
+    const numberSolvedBenchmark = getNumberSolvedBenchmark(solver)
+    const percentage = numberSolvedBenchmark / uniqueBenchmarkCount
+    return `${roundNumber(
+      percentage,
+      1
+    )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`
+  }
+
   useEffect(() => {
     setTableData([
       {
@@ -214,9 +226,10 @@ const ResultsSection = () => {
         solver: "HiGHS",
         version: getHighestVersion(solverVersions.highs),
         memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
-        solvedBenchmarks: `${getNumberSolvedBenchmark(
-          "highs"
-        )} / ${uniqueBenchmarkCount}`,
+        solvedBenchmarks: getSolvedBenchmarksLabel(
+          "highs",
+          uniqueBenchmarkCount
+        ),
         runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
       },
       {
@@ -225,9 +238,10 @@ const ResultsSection = () => {
         solver: "GLPK",
         version: getHighestVersion(solverVersions.glpk),
         memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
-        solvedBenchmarks: `${getNumberSolvedBenchmark(
-          "glpk"
-        )} / ${uniqueBenchmarkCount}`,
+        solvedBenchmarks: getSolvedBenchmarksLabel(
+          "glpk",
+          uniqueBenchmarkCount
+        ),
         runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
       },
       {
@@ -236,9 +250,10 @@ const ResultsSection = () => {
         solver: "SCIP",
         version: getHighestVersion(solverVersions.scip),
         memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
-        solvedBenchmarks: `${getNumberSolvedBenchmark(
-          "scip"
-        )} / ${uniqueBenchmarkCount}`,
+        solvedBenchmarks: getSolvedBenchmarksLabel(
+          "scip",
+          uniqueBenchmarkCount
+        ),
         runtime: roundNumber(calculateSgmBySolver("scip", "runtime"), 2),
       },
     ])
