@@ -274,7 +274,7 @@ genx-7_three_zones_w_colocated_VRE_storage:
     a cost of zero in this case so a cost would have to be added).
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -297,7 +297,7 @@ genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
     resource has a cost of zero in this case so a cost would have to be added).
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -319,7 +319,7 @@ genx-9_three_zones_w_retrofit:
     \ power plants and replacing the coal with blue ammonia with 85% efficiency.\_"
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -360,7 +360,7 @@ pglib_opf_case162_ieee_dtc:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 162
     Temporal resolution: NA
@@ -378,7 +378,7 @@ pglib_opf_case1803_snem:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 1803
     Temporal resolution: NA
@@ -395,7 +395,7 @@ pglib_opf_case1951_rte:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 1951
     Temporal resolution: NA
@@ -412,7 +412,7 @@ pglib_opf_case2848:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 2848
     Temporal resolution: NA
@@ -429,7 +429,7 @@ pglib_opf_case2868:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 2868
     Temporal resolution: NA
@@ -464,7 +464,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -482,7 +482,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -500,7 +500,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -518,7 +518,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -536,7 +536,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -554,7 +554,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -572,7 +572,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -590,7 +590,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -607,7 +607,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -624,7 +624,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -641,7 +641,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -658,7 +658,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -675,7 +675,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -692,7 +692,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -709,7 +709,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -726,7 +726,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -743,7 +743,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -761,7 +761,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -779,7 +779,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -797,7 +797,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -815,7 +815,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -833,7 +833,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -851,7 +851,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -869,7 +869,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -887,7 +887,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -905,7 +905,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -922,7 +922,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -939,7 +939,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -956,7 +956,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -973,7 +973,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -990,7 +990,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1007,7 +1007,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1024,7 +1024,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1041,7 +1041,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1058,7 +1058,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1605,7 +1605,7 @@ pypsa-power+ely+battery-ucgas:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1638,7 +1638,7 @@ pypsa-power+ely-ucgas:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1657,7 +1657,7 @@ pypsa-power+ely+battery-ucgas-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator + Modularity
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1675,7 +1675,7 @@ pypsa-power+ely-co2-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Modularity
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1693,7 +1693,7 @@ pypsa-power+ely-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Modularity
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1712,7 +1712,7 @@ pypsa-power+ely-ucgas-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator + Modularity
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1730,7 +1730,7 @@ pypsa-power+ely+battery-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Modularity
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
