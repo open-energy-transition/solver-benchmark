@@ -162,14 +162,46 @@
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-3-3h.lp
   - size: 2-1h
     url: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-1h.lp
-- name: pypsa-gas+wind+sol+ely
+- name: pypsa-power+ely+battery
   sizes:
   - size: 1-1h
-    url: https://drive.usercontent.google.com/download?id=1fEiHuIwIxbkeu-QLuOZV2yeTeH3O1zbm&export=download&authuser=0&confirm=t
-- name: pypsa-gas+wind+sol+ely-ucgas
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-1-1h.lp
+- name: pypsa-power+ely+battery-ucgas
   sizes:
   - size: 1-1h
-    url: https://drive.usercontent.google.com/download?id=11jEBh4ypLqRgnP5DsQ2NkZomU4FjnDRU&export=download&authuser=0&confirm=t
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
+- name: pypsa-power+ely
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-1-1h.lp
+- name: pypsa-power+ely-co2
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-1-1h.lp
+- name: pypsa-power+ely-ucgas
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-1-1h.lp
+- name: pypsa-power+ely+battery-mod
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-mod-1-1h.lp
+- name: pypsa-power+ely+battery-ucgas-mod
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-mod-1-1h.lp
+- name: pypsa-power+ely-mod
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-mod-1-1h.lp
+- name: pypsa-power+ely-co2-mod
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-mod-1-1h.lp
+- name: pypsa-power+ely-ucgas-mod
+  sizes:
+  - size: 1-1h
+    url: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-mod-1-1h.lp
 - name: genx-1_three_zones
   sizes:
     - size: 3-1h
