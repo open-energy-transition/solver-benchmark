@@ -1,6 +1,36 @@
+import { useSelector } from "react-redux"
+
 import { ArrowUpIcon } from "@/assets/icons"
+import { ResultState } from "@/redux/results/reducer"
+import { useMemo } from "react"
 
 const GetStarted = () => {
+  const rawMetaData = useSelector((state: { results: ResultState }) => {
+    return state.results.rawMetaData
+  })
+
+  const modelNames = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          Object.keys(rawMetaData).map((key) => {
+            return rawMetaData[key].modelName
+          })
+        )
+      ),
+    [rawMetaData]
+  )
+
+  const availableSolves = useSelector((state: { results: ResultState }) => {
+    return state.results.availableSolves
+  })
+
+  const availableBenchmarksAndSizes = useSelector(
+    (state: { results: ResultState }) => {
+      return state.results.availableBenchmarksAndSizes
+    }
+  )
+
   return (
     <div className="text-white bg-navy border-t-2 border-solid border-white">
       <div className="mx-auto container px-4 lg:px-6 pt-[67px] pb-16">
@@ -20,18 +50,26 @@ const GetStarted = () => {
         </h5>
         <div className="gird md:flex justify-between text-stroke">
           <div className="py-9 text-center flex-1">
-            <div className="text-9xl leading-1.2 font-league font-bold">04</div>
-            <h5 className="text-lavender leading-1.4">
-              MACHINE CONFIGURATIONS
+            <div className="text-9xl leading-1.2 font-league font-bold">
+              {modelNames.length}
+            </div>
+            <h5 className="text-lavender leading-1.4 uppercase">
+              Model Frameworks
             </h5>
           </div>
           <div className="py-9 text-center flex-1">
-            <div className="text-9xl leading-1.2 font-league font-bold">32</div>
-            <h5 className="text-lavender leading-1.4">BENCHMARKS</h5>
+            <div className="text-9xl leading-1.2 font-league font-bold">
+              {availableBenchmarksAndSizes.length}
+            </div>
+            <h5 className="text-lavender leading-1.4 uppercase">
+              Benchmark instances
+            </h5>
           </div>
           <div className="py-9 text-center flex-1">
-            <div className="text-9xl leading-1.2 font-league font-bold">06</div>
-            <h5 className="text-lavender leading-1.4">SOLVERS</h5>
+            <div className="text-9xl leading-1.2 font-league font-bold">
+              {availableSolves.length}
+            </div>
+            <h5 className="text-lavender leading-1.4 uppercase">Solvers </h5>
           </div>
         </div>
         <div className="mt-9 py-1.5 px-2 relative border-b border-teal/50 flex justify-between items-center">

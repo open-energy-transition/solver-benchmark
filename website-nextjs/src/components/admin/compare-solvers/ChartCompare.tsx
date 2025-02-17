@@ -17,11 +17,18 @@ interface D3ChartProps {
     xaxis: string
     yaxis: string
   }
+  backgroundColor?: {
+    upper?: string
+    lower?: string
+    upperOpacity?: string
+    lowerOpacity?: string
+  }
 }
 
 const ChartCompare = ({
   chartData = [],
   title = { xaxis: "", yaxis: "" },
+  backgroundColor,
 }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const svgRef = useRef(null)
@@ -62,6 +69,33 @@ const ChartCompare = ({
       .attr("height", height)
       .style("background", "white")
       .style("overflow", "visible")
+
+    // Add background split by x = y line
+    if (backgroundColor?.lower) {
+      svg
+        .append("polygon")
+        .attr(
+          "points",
+          `${margin.left},${height - margin.bottom} ${width - margin.right},${
+            height - margin.bottom
+          } ${width - margin.right},${margin.top}`
+        )
+        .attr("fill", backgroundColor.lower)
+        .attr("fill-opacity", backgroundColor?.lowerOpacity ?? '')
+    }
+    if (backgroundColor?.upper) {
+      svg
+        .append("polygon")
+        .attr(
+          "points",
+          `${margin.left},${height - margin.bottom} ${margin.left},${
+            margin.top
+          } ${width - margin.right},${margin.top}`
+        )
+        .attr("fill", backgroundColor.upper)
+        .attr("fill-opacity", 0.2)
+        .attr("fill-opacity", backgroundColor?.upperOpacity ?? '')
+    }
 
     // Tooltip container
     const tooltip = d3

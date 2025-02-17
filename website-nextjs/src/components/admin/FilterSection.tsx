@@ -44,6 +44,9 @@ const FilterSection = () => {
           case Sector.SectorCoupled:
             return "Sector coupled"
 
+          case Sector.UpstreamElectricTransportCommercialResidentialIndustrial:
+            return "Upstream..."
+
           default:
             return value
         }
@@ -103,7 +106,7 @@ const FilterSection = () => {
                       value: sector,
                     })
                   }
-                  className="w-max cursor-pointer"
+                  className="w-max cursor-pointer max-w-[30px]"
                 >
                   {getLabel("sectors", sector)}
                 </span>

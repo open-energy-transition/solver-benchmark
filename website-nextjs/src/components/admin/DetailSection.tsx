@@ -61,7 +61,7 @@ const DetailSection = () => {
       value: availableBenchmarks.length,
       icon: <GraphBarIcon />,
       generateLabel: () =>
-        `Benchmarks: ${availableSolves.length} (${avaliableInstance.length} instances)`,
+        `Benchmarks: ${availableBenchmarks.length} (${avaliableInstance.length} instances)`,
     },
     {
       label: "Memory",

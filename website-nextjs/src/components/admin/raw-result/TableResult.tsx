@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
+import Papa from "papaparse"
+
 import { useSelector } from "react-redux"
 import {
   ColumnDef,
@@ -12,18 +14,22 @@ import {
   ColumnSort,
   ColumnFilter,
 } from "@tanstack/react-table"
-import { BenchmarkResult } from "@/types/benchmark"
+import { BenchmarkResult, OriginBenchmarkResult } from "@/types/benchmark"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
 import { ArrowToRightIcon } from "@/assets/icons"
 import FilterTable from "@/components/shared/tables/FilterTable"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
 import DownloadButton from "@/components/shared/buttons/DownloadButton"
+import { ResultState } from "@/redux/results/reducer"
+
+const CSV_URL =
+  "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv"
 
 const TableResult = () => {
   const benchmarkResults = useSelector(
-    (state: { results: { rawBenchmarkResults: BenchmarkResult[] } }) => {
-      return state.results.rawBenchmarkResults
+    (state: { results: ResultState}) => {
+      return state.results.benchmarkResults
     }
   )
 
@@ -96,16 +102,10 @@ const TableResult = () => {
       {
         header: "Runtime",
         accessorKey: "runtime",
-        // meta: {
-        //   filterVariant: "range",
-        // },
       },
       {
         header: "Memory",
         accessorKey: "memoryUsage",
-        // meta: {
-        //   filterVariant: "range",
-        // },
       },
       {
         header: "Objective Value",
@@ -161,20 +161,81 @@ const TableResult = () => {
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: false,
   })
+  const [originalData, setOriginalData] = useState<OriginBenchmarkResult[]>([])
+
+  // Fetch CSV and parse using PapaParse
+  useEffect(() => {
+    const fetchCSV = async () => {
+      try {
+        const response = await fetch(CSV_URL)
+        const csvText = await response.text()
+        Papa.parse<OriginBenchmarkResult>(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          dynamicTyping: true,
+          complete: (result) => {
+            setOriginalData(result.data)
+          },
+          error: (error: unknown) => console.error("Error parsing CSV:", error),
+        })
+      } catch (error) {
+        console.error("Error fetching CSV:", error)
+      }
+    }
+
+    fetchCSV()
+  }, [])
+
+  // Convert filtered data to CSV and download
+  const downloadFilteredResults = () => {
+    const filteredRows = table
+      .getFilteredRowModel()
+      .rows.map((row) => row.original)
+    if (filteredRows.length === 0) {
+      alert("No data to download!")
+      return
+    }
+
+    const csvData = originalData.filter((data) =>
+      filteredRows.find(
+        (row) =>
+          row.benchmark === data["Benchmark"] &&
+          row.size === data["Size"] &&
+          row.solver === data["Solver"] &&
+          row.solverReleaseYear === data["Solver Release Year"]
+      )
+    )
+
+    const csv = Papa.unparse(csvData)
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "filtered_benchmark_results.csv"
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   return (
     <div>
       <div className="text-navy font-bold pb-6 pt-9 flex justify-between items-center">
         Full Results
-        <DownloadButton
-          url="https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv"
-          fileName={"benchmark_results.csv"}
-        >
-          <div className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center cursor-pointer">
-            Download
+        <div className="flex gap-2">
+          <button
+            onClick={downloadFilteredResults}
+            className="text-white bg-navy px-6 py-3 rounded-lg flex gap-1 items-center cursor-pointer"
+          >
+            Download Filtered
             <ArrowToRightIcon className="w-4 h-4 rotate-90" />
-          </div>
-        </DownloadButton>
+          </button>
+          <DownloadButton url={CSV_URL} fileName={"benchmark_results.csv"}>
+            <div className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center cursor-pointer">
+              Download
+              <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+            </div>
+          </DownloadButton>
+        </div>
       </div>
 
       <div className="rounded-xl overflow-auto">
