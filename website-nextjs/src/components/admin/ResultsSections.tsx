@@ -283,12 +283,12 @@ const ResultsSection = () => {
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
               (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}
-              benchmarks)
+              benchmark instances)
             </span>
           )}
         </div>
         <div className="text-dark-grey text-sm flex items-center">
-          We rank solvers by normalized shifted geometric mean (SGM
+          You can rank the latest version of each solver by number of solved benchmark instances, or by the normalized shifted geometric mean (SGM
           <div className="flex gap-2">
             <Popup
               on={["hover"]}
@@ -298,17 +298,14 @@ const ResultsSection = () => {
               arrowStyle={{ color: "#ebeff2" }}
             >
               <div className="bg-stroke p-2 rounded">
-                The shifted geometric mean SGM of the n nonnegative numbers
+                The shifted geometric mean SGM of n non-negative numbers
                 v[1],...v[n] is
                 <br />
                 <span className="ml-4">
-                  SGM = exp(sum{"{i in 1..n}"} ln(max(1, v[i] + sh)) / n) - sh,
-                  sh nonnegative
+                  SGM = exp(sum{"{i in 1..n}"} ln(max(1, v[i] + sh)) / n) - sh
                 </span>
                 <br />
-                In our benchmarks, where the v[i] are Wallclock seconds, we use
-                sh = 10. Then we scale the means by dividing them by the
-                smallest mean.
+                We use sh = 10, and then we normalize the means by dividing them by the smallest mean.
               </div>
             </Popup>
           </div>

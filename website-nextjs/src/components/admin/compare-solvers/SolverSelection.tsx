@@ -153,8 +153,8 @@ const SolverSelection = () => {
               benchmark: d.benchmark,
             }))}
             title={{
-              xaxis: solver1.replace("--", "(") + ") runtime(s)",
-              yaxis: solver2.replace("--", "(") + ") runtime(s)",
+              xaxis: solver1.replace("--", " (") + ") runtime (s)",
+              yaxis: solver2.replace("--", " (") + ") runtime (s)",
             }}
             backgroundColor={{
               upper: "#4C5C51",
@@ -177,8 +177,8 @@ const SolverSelection = () => {
               benchmark: d.benchmark,
             }))}
             title={{
-              xaxis: solver1.replace("--", "(") + ") Memory usage(MB)",
-              yaxis: solver2.replace("--", "(") + ") Memory usage(MB)",
+              xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
+              yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
             }}
             backgroundColor={{
               upper: "#D9D9D9",
