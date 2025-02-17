@@ -1739,3 +1739,115 @@ pypsa-power+ely+battery-mod:
     N. of continuous variables:
     N. of integer variables:
     N. of binary variables:
+temoa-utopia:
+  Short description: Single-region test system model considering 4 future years and
+    6 time slices (day/night, intermediate/summer/winter).
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (4 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 6 time slices (3 seasons, 2 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods
+    in absence of further constraints.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_NDC:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods.
+    This benchmark includes the policy commitments in the U.S. Nationally Determined
+    Contributions (NDC).
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_NZ:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods.
+    This benchmark assumes that the United States will reach net-zero CO2 emissions
+    by 2050.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_SP:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods.
+    This benchmark includes a collection of CO2 emission limits for US states from
+    stated policies.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_NZ_trunc_4periods:
+  Short description: US-based sector-coupled model with 9 regions and 5 future periods.
+    This benchmark assumes that the United States will reach net-zero CO2 emissions
+    by 2050.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (5 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:

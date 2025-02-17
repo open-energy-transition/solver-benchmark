@@ -448,3 +448,27 @@
   sizes:
   - size: 1-1h
     url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-c5f9c340dae227b689ac284a47d285373a0cd023658a17e9e56bc68136fad3de.mps.gz
+- name: temoa-US_9R_TS
+  sizes:
+  - size: 9-12
+    url: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
+- name: temoa-US_9R_TS_NDC
+  sizes:
+  - size: 9-12
+    url: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
+- name: temoa-US_9R_TS_NZ
+  sizes:
+  - size: 9-12
+    url: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
+- name: temoa-US_9R_TS_NZ_trunc_4periods
+  sizes:
+  - size: 9-12
+    url: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
+- name: temoa-US_9R_TS_SP
+  sizes:
+  - size: 9-12
+    url: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
+- name: temoa-utopia
+  sizes:
+  - size: 1-6
+    url: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
