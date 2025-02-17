@@ -153,8 +153,12 @@ const SolverSelection = () => {
               benchmark: d.benchmark,
             }))}
             title={{
-              xaxis: solver1.replace("--", "(") + ") runtime(s)",
-              yaxis: solver2.replace("--", "(") + ") runtime(s)",
+              xaxis: solver1.replace("--", " (") + ") runtime (s)",
+              yaxis: solver2.replace("--", " (") + ") runtime (s)",
+            }}
+            backgroundColor={{
+              upper: "#F0F4F2",
+              lower: "#E1E5F2",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
@@ -171,8 +175,12 @@ const SolverSelection = () => {
               benchmark: d.benchmark,
             }))}
             title={{
-              xaxis: solver1.replace("--", "(") + ") Memory usage(MB)",
-              yaxis: solver2.replace("--", "(") + ") Memory usage(MB)",
+              xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
+              yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
+            }}
+            backgroundColor={{
+              upper: "#F0F4F2",
+              lower: "#E1E5F2",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">

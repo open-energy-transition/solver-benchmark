@@ -29,15 +29,30 @@ interface ISolverYearlyMetrics {
       runtime: number
       memoryUsage: number
       status: SolverStatusType
-    }[],
-    numSolvedBenchmark: number,
+    }[]
+    numSolvedBenchmark: number
   }[]
 }
 
 interface ISolverYearlyChartData {
-  solver: SolverType,
-  year: number,
-  value: number,
+  solver: SolverType
+  year: number
+  value: number
+}
+
+interface OriginBenchmarkResult {
+  Benchmark: string
+  Size: string
+  Solver: string
+  "Solver Version": string
+  "Solver Release Year": number
+  Status: string
+  "Termination Condition": string
+  "Runtime (s)": number
+  "Memory Usage (MB)": number
+  "Objective Value": number | null
+  "Max Integrality Violation": number | null
+  "Duality Gap": number | null
 }
 
 export type {
@@ -46,4 +61,5 @@ export type {
   SolverType,
   ISolverYearlyMetrics,
   ISolverYearlyChartData,
+  OriginBenchmarkResult,
 }

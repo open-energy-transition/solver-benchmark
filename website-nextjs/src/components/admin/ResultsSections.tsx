@@ -12,7 +12,7 @@ import { getLatestBenchmarkResult } from "@/utils/results"
 const ResultsSection = () => {
   const columns = [
     {
-      name: "Rank:",
+      name: "Rank",
       field: "rank",
       width: "flex-1",
       bgColor: "bg-light-grey/50",
@@ -20,7 +20,7 @@ const ResultsSection = () => {
       sort: true,
     },
     {
-      name: "Solver:",
+      name: "Solver",
       field: "solver",
       width: "w-1/6",
       bgColor: "bg-light-grey",
@@ -34,7 +34,7 @@ const ResultsSection = () => {
       color: "text-navy font-semibold",
     },
     {
-      name: "Memory",
+      name: "SGM Memory",
       field: "memory",
       width: "w-1/5",
       bgColor: "bg-lavender/80",
@@ -67,7 +67,7 @@ const ResultsSection = () => {
       ),
     },
     {
-      name: "Runtime",
+      name: "SGM Runtime",
       field: "runtime",
       width: "w-1/5",
       bgColor: "bg-lime-green",
@@ -92,14 +92,14 @@ const ResultsSection = () => {
       solver: string
       version: string
       memory: number
-      solvedBenchmarks: number
+      solvedBenchmarks: string
       runtime: number
     }[]
   >([])
   const [sortConfig, setSortConfig] = useState<{
     field: string
     direction: "asc" | "desc"
-  }>({ field: "rank", direction: "asc" })
+  }>({ field: "runtime", direction: "asc" })
 
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
@@ -198,6 +198,26 @@ const ResultsSection = () => {
     return combinedRankList.sort((a, b) => a.score - b.score)
   }
 
+  const uniqueBenchmarkCount = new Set(
+    benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
+  ).size
+
+  const uniqueLatestBenchmarkCount = new Set(
+    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`)
+  ).size
+
+  const getSolvedBenchmarksLabel = (
+    solver: string,
+    uniqueBenchmarkCount: number
+  ) => {
+    const numberSolvedBenchmark = getNumberSolvedBenchmark(solver)
+    const percentage = numberSolvedBenchmark * 100 / uniqueBenchmarkCount
+    return `${roundNumber(
+      percentage,
+      1
+    )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`
+  }
+
   useEffect(() => {
     setTableData([
       {
@@ -206,7 +226,10 @@ const ResultsSection = () => {
         solver: "HiGHS",
         version: getHighestVersion(solverVersions.highs),
         memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
-        solvedBenchmarks: getNumberSolvedBenchmark("highs"),
+        solvedBenchmarks: getSolvedBenchmarksLabel(
+          "highs",
+          uniqueBenchmarkCount
+        ),
         runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
       },
       {
@@ -215,7 +238,10 @@ const ResultsSection = () => {
         solver: "GLPK",
         version: getHighestVersion(solverVersions.glpk),
         memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
-        solvedBenchmarks: getNumberSolvedBenchmark("glpk"),
+        solvedBenchmarks: getSolvedBenchmarksLabel(
+          "glpk",
+          uniqueBenchmarkCount
+        ),
         runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
       },
       {
@@ -224,7 +250,10 @@ const ResultsSection = () => {
         solver: "SCIP",
         version: getHighestVersion(solverVersions.scip),
         memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
-        solvedBenchmarks: getNumberSolvedBenchmark("scip"),
+        solvedBenchmarks: getSolvedBenchmarksLabel(
+          "scip",
+          uniqueBenchmarkCount
+        ),
         runtime: roundNumber(calculateSgmBySolver("scip", "runtime"), 2),
       },
     ])
@@ -233,7 +262,7 @@ const ResultsSection = () => {
   // Sorting logic
   const sortedTableData = useMemo(() => {
     if (!sortConfig.field) return tableData
-    return [...tableData].sort((a, b) => {
+    const sorted = [...tableData].sort((a, b) => {
       const aValue = a[sortConfig.field as keyof typeof a]
       const bValue = b[sortConfig.field as keyof typeof b]
       if (sortConfig.direction === "asc") {
@@ -242,6 +271,11 @@ const ResultsSection = () => {
         return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
       }
     })
+    // Reassign static ranks (1, 2, 3)
+    return sorted.map((item, index) => ({
+      ...item,
+      rank: index + 1,
+    }))
   }, [tableData, sortConfig])
 
   const handleSort = (field: string) => {
@@ -263,14 +297,34 @@ const ResultsSection = () => {
           Results
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
-              (filtered to {benchmarkResults.length}/
-              {latestBenchmarkResult.length} benchmarks)
+              (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}
+              benchmark instances)
             </span>
           )}
         </div>
-        <div className="text-dark-grey text-sm">
-          We rank solvers by normalized shifted geometric mean (SGM) of runtime
-          and memory consumption over all benchmarks
+        <div className="text-dark-grey text-sm flex items-center">
+          You can rank the latest version of each solver by number of solved benchmark instances, or by the normalized shifted geometric mean (SGM
+          <div className="flex gap-2">
+            <Popup
+              on={["hover"]}
+              trigger={() => <QuestionLine className="w-4 h-4" />}
+              position="right center"
+              closeOnDocumentClick
+              arrowStyle={{ color: "#ebeff2" }}
+            >
+              <div className="bg-stroke p-2 rounded">
+                The shifted geometric mean SGM of n non-negative numbers
+                v[1],...v[n] is
+                <br />
+                <span className="ml-4">
+                  SGM = exp(sum{"{i in 1..n}"} ln(max(1, v[i] + sh)) / n) - sh
+                </span>
+                <br />
+                We use sh = 10, and then we normalize the means by dividing them by the smallest mean.
+              </div>
+            </Popup>
+          </div>
+          ) of runtime and memory consumption over all benchmarks
         </div>
       </div>
       <div className="flex text-xs leading-1.5">

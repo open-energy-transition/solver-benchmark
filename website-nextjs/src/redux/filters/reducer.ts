@@ -32,6 +32,7 @@ const initialState: FilterState = {
     Model.Tulipa,
     Model.Sienna,
     Model.GenX,
+    Model.TEMOA,
   ],
   problemSize: [
     ProblemSize.L,

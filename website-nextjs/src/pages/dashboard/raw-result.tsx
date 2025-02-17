@@ -7,6 +7,7 @@ import Head from "next/head"
 import { ArrowIcon, HomeIcon } from "@/assets/icons"
 import { PATH_DASHBOARD } from "@/constants/path"
 import Link from "next/link"
+import FilterSection from "@/components/admin/FilterSection"
 
 const PagePerformanceHistory = () => {
   const isNavExpanded = useSelector(
@@ -40,6 +41,7 @@ const PagePerformanceHistory = () => {
           </AdminHeader>
           {/* Content */}
           <DetailSection />
+          <FilterSection />
           <TableResult />
         </div>
         <Footer />

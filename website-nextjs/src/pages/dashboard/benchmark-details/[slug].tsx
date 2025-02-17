@@ -18,6 +18,8 @@ import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesT
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection"
 import Link from "next/link"
 import { PATH_DASHBOARD } from "@/constants/path"
+import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult"
+import { Technique } from "@/constants"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -73,6 +75,7 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.milpFeatures,
     },
   ]
+  console.log(benchmarkDetail)
 
   return (
     <>
@@ -179,6 +182,9 @@ const PageBenchmarkDetail = () => {
                 benchmarkDetail={benchmarkDetail}
                 benchmarkName={benchmarkName as string}
               />
+              {benchmarkDetail.technique === Technique.MILP && (
+                <MilpTableResult benchmarkName={benchmarkName as string} />
+              )}
               <BenchmarksSection benchmarkName={benchmarkName as string} />
             </>
           )}
