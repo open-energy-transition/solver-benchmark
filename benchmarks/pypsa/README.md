@@ -26,8 +26,16 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
      ```
      To generate the plain pypsa benchmarks, run:
      ```sh
-     python ./solver-benchmarks/pypsa-gas+wind+sol+ely-1-1h.py
-     python ./solver-benchmarks/pypsa-gas+wind+sol+ely-ucgas-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely+battery-ucgas-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely+battery-ucgas-mod-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely-co2-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely-co2-mod-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely-mod-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely-ucgas-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely-ucgas-mod-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely+battery-1-1h.py
+     python ./solver-benchmarks/pypsa-power+ely+battery-mod-1-1h.py
      ```
 
 The benchmarks can be found in `/tmp/pypsa*.lp` inside the docker container.
