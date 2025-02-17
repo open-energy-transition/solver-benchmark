@@ -211,7 +211,7 @@ const ResultsSection = () => {
     uniqueBenchmarkCount: number
   ) => {
     const numberSolvedBenchmark = getNumberSolvedBenchmark(solver)
-    const percentage = numberSolvedBenchmark / uniqueBenchmarkCount
+    const percentage = numberSolvedBenchmark * 100 / uniqueBenchmarkCount
     return `${roundNumber(
       percentage,
       1
