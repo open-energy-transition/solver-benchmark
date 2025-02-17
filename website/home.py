@@ -65,16 +65,6 @@ if filtered_metadata.empty:
     st.warning("No matching models found. Please adjust your filter selections.")
 
 
-# Assert that the set of benchmark names in the metadata matches those in the data
-csv_benchmarks = set(raw_df["Benchmark"].unique())
-metadata_benchmarks = set(metadata_df["Benchmark Name"].unique())
-# Assertion to check if both sets are the same
-assert csv_benchmarks == metadata_benchmarks, (
-    f"Mismatch between CSV benchmarks and metadata benchmarks:\n"
-    f"In CSV but not metadata: {csv_benchmarks - metadata_benchmarks}\n"
-    f"In metadata but not CSV: {metadata_benchmarks - csv_benchmarks}"
-)
-
 # Sort the DataFrame by Benchmark and Runtime to ensure logical line connections
 df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 

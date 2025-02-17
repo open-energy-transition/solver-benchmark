@@ -1,3 +1,130 @@
+genx-15-zones_elec_trex:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes transmission expansion.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 11832658
+    N. of variables:
+    N. of continuous variables: 13777226
+    N. of integer variables:
+    N. of binary variables:
+genx-15-zones_elec_trex_co2:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes transmission expansion, a CO2 emissions constraint.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features:
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 5051253
+    N. of variables:
+    N. of continuous variables: 4573584
+    N. of integer variables:
+    N. of binary variables:
+genx-15-zones_elec_trex_co2_uc:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes transmission expansion, a CO2 emissions constraint and unit commitment
+    for conventional generators.
+  Model name: GenX
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features: Unit commitment
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 20128499
+    N. of variables:
+    N. of continuous variables: 13897939
+    N. of integer variables: 3417368
+    N. of binary variables: 120960
+genx-15-zones_elec_trex_uc:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes transmission expansion and unit commitment for conventional generators.
+  Model name: GenX
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features: Unit commitment
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 20128499
+    N. of variables:
+    N. of continuous variables: 13897939
+    N. of integer variables: 3417368
+    N. of binary variables: 120960
+genx-15-zones_elec_co2:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes a CO2 emissions constraint.
+  Model name: GenX
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features: Unit commitment
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 11832633
+    N. of variables:
+    N. of continuous variables: 13777201
+    N. of integer variables:
+    N. of binary variables:
+genx-15-zones_elec_co2_uc:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes a CO2 emissions constraint and unit commitment for conventional generators.
+  Model name: GenX
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features: Unit commitment
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 20128473
+    N. of variables:
+    N. of continuous variables: 13897913
+    N. of integer variables: 3417368
+    N. of binary variables: 120960
+genx-15-zones_elec_uc:
+  Short description: This is a one-year example which contains 15 zones. This example
+    includes unit commitment for conventional generators.
+  Model name: GenX
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: Single period (1 year)
+  MILP features: Unit commitment
+  Sizes:
+  - Spatial resolution: 15
+    Temporal resolution: 168
+    N. of constraints: 20128472
+    N. of variables:
+    N. of continuous variables: 13897912
+    N. of integer variables: 3417368
+    N. of binary variables: 120960
 genx-1_three_zones:
   Short description: Three Zones, a one-year example with hourly resolution, contains
     zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -147,7 +274,7 @@ genx-7_three_zones_w_colocated_VRE_storage:
     a cost of zero in this case so a cost would have to be added).
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -170,7 +297,7 @@ genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
     resource has a cost of zero in this case so a cost would have to be added).
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -192,7 +319,7 @@ genx-9_three_zones_w_retrofit:
     \ power plants and replacing the coal with blue ammonia with 85% efficiency.\_"
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -233,7 +360,7 @@ pglib_opf_case162_ieee_dtc:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 162
     Temporal resolution: NA
@@ -251,7 +378,7 @@ pglib_opf_case1803_snem:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 1803
     Temporal resolution: NA
@@ -268,7 +395,7 @@ pglib_opf_case1951_rte:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 1951
     Temporal resolution: NA
@@ -285,7 +412,7 @@ pglib_opf_case2848:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 2848
     Temporal resolution: NA
@@ -302,7 +429,7 @@ pglib_opf_case2868:
   Kind of problem: Steady-state optimal power flow
   Sectors: Power
   Time horizon: N/A
-  MILP features:
+  MILP features: Transmission switching
   Sizes:
   - Spatial resolution: 2868
     Temporal resolution: NA
@@ -337,7 +464,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -355,7 +482,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -373,7 +500,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -391,7 +518,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -409,7 +536,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -427,7 +554,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -445,7 +572,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -463,7 +590,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -480,7 +607,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -497,7 +624,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -514,7 +641,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -531,7 +658,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -548,7 +675,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -565,7 +692,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -582,7 +709,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -599,7 +726,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -616,7 +743,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -634,7 +761,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -652,7 +779,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -670,7 +797,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -688,7 +815,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -706,7 +833,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -724,7 +851,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -742,7 +869,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -760,7 +887,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -778,7 +905,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -795,7 +922,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -812,7 +939,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -829,7 +956,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (12 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -846,7 +973,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -863,7 +990,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -880,7 +1007,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (24 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -897,7 +1024,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -914,7 +1041,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -931,7 +1058,7 @@ Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single stage (48 hours)
-  MILP features:
+  MILP features: Unit commitment
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
@@ -1439,11 +1566,11 @@ pypsa-eur-elec-op-ucconv:
     Temporal resolution: 1
     N. of constraints: 1156358
     N. of variables: 560578
-pypsa-gas+wind+sol+ely:
+pypsa-power+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
     infrastructure model
   Model name: PyPSA
-  Version: 0.13.0
+  Version:
   Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
@@ -1452,20 +1579,275 @@ pypsa-gas+wind+sol+ely:
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of constraints: 140165
-    N. of variables: 61325
-pypsa-gas+wind+sol+ely-ucgas:
+    N. of constraints:
+    N. of variables:
+pypsa-power+ely+battery:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-    infrastructure model with unit commitment on the gas generator
+    + battery infrastructure model
   Model name: PyPSA
-  Version: 0.30.1
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+pypsa-power+ely+battery-ucgas:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    + battery infrastructure model with unit commitment on gas generator
+  Model name: PyPSA
+  Version:
   Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: Unit commitment on gas generator
+  MILP features: Unit commitment for gas generator
   Sizes:
   - Spatial resolution: 1
     Temporal resolution: 1
-    N. of constraints: 157684
-    N. of variables: 87604
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-co2:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    infrastructure model with CO2 emission limit
+  Model name: PyPSA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+pypsa-power+ely-ucgas:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    infrastructure model with unit commitment on gas generator
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Unit commitment for gas generator
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely+battery-ucgas-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    + battery infrastructure model with unit commitment on gas generator and integer
+    investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Unit commitment for gas generator + Modularity
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-co2-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    infrastructure model with CO2 emission limit with integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Modularity
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure
+    model with integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Modularity
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-ucgas-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    infrastructure model with unit commitment on gas generator and integer investment
+    capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Unit commitment for gas generator + Modularity
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely+battery-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
+    + battery infrastructure model with integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Modularity
+  Sizes:
+  - Spatial resolution: 1
+    Temporal resolution: 1
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-utopia:
+  Short description: Single-region test system model considering 4 future years and
+    6 time slices (day/night, intermediate/summer/winter).
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (4 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 1 node
+    Temporal resolution: 6 time slices (3 seasons, 2 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods
+    in absence of further constraints.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_NDC:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods.
+    This benchmark includes the policy commitments in the U.S. Nationally Determined
+    Contributions (NDC).
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_NZ:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods.
+    This benchmark assumes that the United States will reach net-zero CO2 emissions
+    by 2050.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_SP:
+  Short description: US-based sector-coupled model with 9 regions and 8 future periods.
+    This benchmark includes a collection of CO2 emission limits for US states from
+    stated policies.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (8 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+temoa-US_9R_TS_NZ_trunc_4periods:
+  Short description: US-based sector-coupled model with 9 regions and 5 future periods.
+    This benchmark assumes that the United States will reach net-zero CO2 emissions
+    by 2050.
+  Model name: TEMOA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+  Time horizon: Multi-stage (5 years)
+  MILP features: None
+  Sizes:
+  - Spatial resolution: 9 nodes
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+    N. of constraints:
+    N. of variables:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
