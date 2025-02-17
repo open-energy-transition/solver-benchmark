@@ -242,6 +242,34 @@
   sizes:
     - size: 9-1h
       url: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
+- name: genx-15-zones_elec_co2_uc
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_co2_uc.lp
+- name: genx-15-zones_elec_trex
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex.lp
+- name: genx-15-zones_elec_trex_co2
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_co2.lp
+- name: genx-15-zones_elec_trex_co2_uc
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_co2_uc.lp
+- name: genx-15-zones_elec_trex_uc
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_uc.lp
+- name: genx-15-zones_elec_uc
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_uc.lp
+- name: genx_15-zones_elec_co2
+  sizes:
+  - size: 15-168h
+    url: https://storage.googleapis.com/solver-benchmarks/genx_15-zones_elec_co2.lp
 - name: pglib_opf_case162_ieee_dtc
   sizes:
     - size: 162-NA
