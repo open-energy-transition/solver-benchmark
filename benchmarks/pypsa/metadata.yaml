@@ -474,7 +474,7 @@ pypsa-power+ely+battery-ucgas:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
@@ -504,7 +504,7 @@ pypsa-power+ely-ucgas:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
@@ -520,7 +520,7 @@ pypsa-power+ely+battery-ucgas-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator + Modularity
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
@@ -536,7 +536,7 @@ pypsa-power+ely-co2-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Modularity
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
@@ -552,7 +552,7 @@ pypsa-power+ely-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Modularity
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
@@ -568,7 +568,7 @@ pypsa-power+ely-ucgas-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Unit commitment for gas generator + Modularity
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
@@ -584,7 +584,7 @@ pypsa-power+ely+battery-mod:
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: None
+  MILP features: Modularity
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
