@@ -111,7 +111,7 @@ genx-7_three_zones_w_colocated_VRE_storage:
   Short description: This example system shows the functionalities of the colocated VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -129,7 +129,7 @@ genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
   Short description: This example system shows the functionalities of the colocated VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
@@ -147,7 +147,7 @@ genx-9_three_zones_w_retrofit:
   Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented resources include natural gas, solar PV, wind, lithium-ion battery, and coal power plants. This examples shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency. 
   Model name: GenX
   Version:
-  Technique: MILP
+  Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: Single period (1 year)
