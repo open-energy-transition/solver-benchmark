@@ -438,10 +438,10 @@ pypsa-eur-elec-op-ucconv:
     Spatial resolution: 2
     N. of constraints: 1156358
     N. of variables: 560578
-pypsa-gas+wind+sol+ely:
+pypsa-power+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model
   Model name: PyPSA
-  Version: 0.13.0
+  Version:
   Technique: LP
   Kind of problem: Infrastructure
   Sectors: Power
@@ -450,19 +450,145 @@ pypsa-gas+wind+sol+ely:
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
-    N. of constraints: 140165
-    N. of variables: 61325
-pypsa-gas+wind+sol+ely-ucgas:
-  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on the gas generator
+    N. of constraints:
+    N. of variables:
+pypsa-power+ely+battery:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model
   Model name: PyPSA
-  Version: 0.30.1
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of variables:
+pypsa-power+ely+battery-ucgas:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator
+  Model name: PyPSA
+  Version:
   Technique: MILP
   Kind of problem: Infrastructure
   Sectors: Power
   Time horizon: 1 year
-  MILP features: Unit commitment on gas generator
+  MILP features: Unit commitment for gas generator
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
-    N. of constraints: 157684
-    N. of variables: 87604
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-co2:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit
+  Model name: PyPSA
+  Version:
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: None
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of variables:
+pypsa-power+ely-ucgas:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Unit commitment for gas generator
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely+battery-ucgas-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Unit commitment for gas generator + Modularity
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-co2-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Modularity
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Modularity
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely-ucgas-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Unit commitment for gas generator + Modularity
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:
+pypsa-power+ely+battery-mod:
+  Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity
+  Model name: PyPSA
+  Version:
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 year
+  MILP features: Modularity
+  Sizes:
+  - Temporal resolution: 1
+    Spatial resolution: 1
+    N. of constraints:
+    N. of continuous variables:
+    N. of integer variables:
+    N. of binary variables:

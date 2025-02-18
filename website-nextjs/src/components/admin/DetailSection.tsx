@@ -7,21 +7,21 @@ import {
   LayoutGroupIcon,
   VectorSquareIcon,
 } from "@/assets/icons"
-import { ResultState } from "@/redux/results/reducer"
 import { useMemo } from "react"
+import { IResultState } from "@/types/state"
 
 const DetailSection = () => {
-  const benchmarkResults = useSelector(
-    (state: { results: ResultState }) => {
-      return state.results.benchmarkResults
-    }
-  )
-
-  const availableBenchmarks = useSelector((state: { results: ResultState }) => {
-    return state.results.availableBenchmarks
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
+    return state.results.rawBenchmarkResults
   })
 
-  const availableSolves = useSelector((state: { results: ResultState }) => {
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData
+  })
+
+  const availableBenchmarksCount = Object.keys(rawMetaData).length
+
+  const availableSolves = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolves
   })
 
@@ -48,8 +48,15 @@ const DetailSection = () => {
       label: "Solvers",
       value: availableSolves.length,
       icon: <VectorSquareIcon />,
-      generateLabel: () =>
-        `Solvers: ${availableSolves.length} (${avaliableVersion.length} versions)`,
+      generateLabel: () => (
+        <>
+          Solvers:{" "}
+          <span className="font-bold">
+            {availableSolves.length} {`(${avaliableVersion.length}`} versions
+            {")"}
+          </span>
+        </>
+      ),
     },
     {
       label: "Iteration",
@@ -58,10 +65,17 @@ const DetailSection = () => {
     },
     {
       label: "Benchmarks",
-      value: availableBenchmarks.length,
+      value: availableBenchmarksCount,
       icon: <GraphBarIcon />,
-      generateLabel: () =>
-        `Benchmarks: ${availableSolves.length} (${avaliableInstance.length} instances)`,
+      generateLabel: () => (
+        <>
+          Benchmarks:{" "}
+          <span className="font-bold">
+            {availableBenchmarksCount} {`(${avaliableInstance.length}`} instances
+            {")"}
+          </span>
+        </>
+      ),
     },
     {
       label: "Memory",
@@ -70,7 +84,7 @@ const DetailSection = () => {
     },
     {
       label: "Timeout",
-      value: "15 min",
+      value: "10 min",
       icon: <DatabaseIcon />,
     },
     {

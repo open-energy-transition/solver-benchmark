@@ -1,59 +1,35 @@
 import { AnyAction } from "redux"
-import { Sector, Technique, KindOfProblem, Model, ProblemSize } from "@/constants"
 
 import actions from "./actions"
+import { IFilterState } from "@/types/state"
 
-const { TOGGLE_FILTER } = actions
+const { TOGGLE_FILTER, SET_FILTER } = actions
 
-export type FilterState = {
-  sectors: Sector[]
-  technique: Technique[]
-  kindOfProblem: KindOfProblem[]
-  problemSize: ProblemSize[]
-  modelName: Model[]
-  benchmarks: string[]
-  solvers: string[]
-  statuses: string[]
-}
-
-const initialState: FilterState = {
-  sectors: [Sector.Power, Sector.SectorCoupled],
-  technique: [Technique.MILP, Technique.LP],
-  kindOfProblem: [
-    KindOfProblem.Infrastructure,
-    KindOfProblem.Operational,
-    KindOfProblem.DCOptimalPowerFlow,
-    KindOfProblem.SteadyStateOptimalPowerFlow,
-  ],
-  modelName: [
-    Model.PyPSA,
-    Model.PyPSAEur,
-    Model.PowerModel,
-    Model.Tulipa,
-    Model.Sienna,
-    Model.GenX,
-  ],
-  problemSize: [
-    ProblemSize.L,
-    ProblemSize.M,
-    ProblemSize.S,
-    ProblemSize.XS,
-    ProblemSize.XXS,
-  ],
+const initialState: IFilterState = {
   benchmarks: [],
+  kindOfProblem: [],
+  modelName: [],
+  problemSize: [],
+  sectors: [],
   solvers: [],
   statuses: [],
+  technique: [],
 }
 
 const filterReducer = (
-  state: FilterState = initialState,
+  state: IFilterState = initialState,
   action: AnyAction
-): FilterState => {
+): IFilterState => {
   switch (action.type) {
+    case SET_FILTER:
+      return {
+        ...state,
+        ...action.payload,
+      }
     case TOGGLE_FILTER:
       const { category, value, only } = action.payload as {
-        category: keyof FilterState
-        value: Sector | Technique | KindOfProblem | Model | ProblemSize
+        category: keyof IFilterState
+        value: string
         only: boolean
       }
 

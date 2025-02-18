@@ -17,20 +17,19 @@ import {
 import { BenchmarkResult } from "@/types/benchmark"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
-import { ResultState } from "@/redux/results/reducer"
-import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
-import { KindOfProblem, Model, Sector, Technique } from "@/constants"
+import { MetaDataEntry } from "@/types/meta-data"
 import Link from "next/link"
 import { PATH_DASHBOARD } from "@/constants/path"
 import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
+import { IResultState } from "@/types/state"
 
 interface IColumnTable extends MetaDataEntry {
   name: string
 }
 
 const BenchmarkTableResult = () => {
-  const metaData = useSelector((state: { results: ResultState }) => {
+  const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData
   })
 

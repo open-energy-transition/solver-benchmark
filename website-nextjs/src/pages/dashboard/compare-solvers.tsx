@@ -5,18 +5,18 @@ import { AdminHeader, Footer, Navbar } from "@/components/shared"
 import SolverSelection from "@/components/admin/compare-solvers/SolverSelection"
 import Head from "next/head"
 import FilterSection from "@/components/admin/FilterSection"
-import { ResultState } from "@/redux/results/reducer"
 import { NoSolverPage } from "@/components/admin/compare-solvers/NoSolverPage"
 import { ArrowIcon, HomeIcon } from "@/assets/icons"
 import Link from "next/link"
 import { PATH_DASHBOARD } from "@/constants/path"
+import { IResultState } from "@/types/state"
 
 const PageCompareSolvers = () => {
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
   )
 
-  const solversData = useSelector((state: { results: ResultState }) => {
+  const solversData = useSelector((state: { results: IResultState }) => {
     return state.results.solversData
   })
 

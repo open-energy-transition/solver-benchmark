@@ -28,7 +28,9 @@ const MainContent = () => {
                 <Link href="https://openenergytransition.org/">
                   Open Energy Transition
                 </Link>
+              </span>
                 , with funding from{" "}
+              <span className="font-bold">
                 <Link href="https://www.breakthroughenergy.org/">
                   Breakthrough Energy
                 </Link>

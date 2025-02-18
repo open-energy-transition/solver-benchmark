@@ -1,4 +1,4 @@
-import { ForkIcon, GithubIcon } from "@/assets/icons"
+import { GithubIcon } from "@/assets/icons"
 
 import { ReactNode } from "react";
 
@@ -52,16 +52,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
           <ul className="flex flex-col font-medium text-sm p-4 md:p-0 pr-2 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:mt-0 md:border-0 gap-4">
             <li>
               <a
-                href="#"
-                className="block py-2 px-3 text-black rounded md:bg-transparent md:p-0"
-                aria-current="page"
-              >
-                <ForkIcon />
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
+                href="https://github.com/open-energy-transition/"
                 className="block py-2 px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 dark:text-white "
               >
                 <GithubIcon />

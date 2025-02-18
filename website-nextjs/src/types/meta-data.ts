@@ -1,4 +1,3 @@
-import { KindOfProblem, Model, Sector, Technique } from "@/constants"
 
 type Size = {
   spatialResolution: number
@@ -9,11 +8,11 @@ type Size = {
 
 interface MetaDataEntry {
   shortDescription: string
-  modelName: Model
+  modelName: string
   version: string | null
-  technique: Technique
-  kindOfProblem: KindOfProblem
-  sectors: Sector
+  technique: string
+  kindOfProblem: string
+  sectors: string
   timeHorizon: string
   milpFeatures: string | null
   sizes: Size[]

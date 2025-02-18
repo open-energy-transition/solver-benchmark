@@ -1,14 +1,14 @@
-import { ResultState } from "@/redux/results/reducer"
 import { getSolverLabel } from "@/utils/solvers"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import ChartCompare from "./ChartCompare"
+import { IResultState } from "@/types/state"
 
 const SolverSelection = () => {
-  const solversData = useSelector((state: { results: ResultState }) => {
+  const solversData = useSelector((state: { results: IResultState }) => {
     return state.results.solversData
   })
-  const benchmarkResults = useSelector((state: { results: ResultState }) => {
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults
   })
 
@@ -153,8 +153,12 @@ const SolverSelection = () => {
               benchmark: d.benchmark,
             }))}
             title={{
-              xaxis: solver1.replace("--", "(") + ") runtime(s)",
-              yaxis: solver2.replace("--", "(") + ") runtime(s)",
+              xaxis: solver1.replace("--", " (") + ") runtime (s)",
+              yaxis: solver2.replace("--", " (") + ") runtime (s)",
+            }}
+            backgroundColor={{
+              upper: "#F0F4F2",
+              lower: "#E1E5F2",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
@@ -171,8 +175,12 @@ const SolverSelection = () => {
               benchmark: d.benchmark,
             }))}
             title={{
-              xaxis: solver1.replace("--", "(") + ") Memory usage(MB)",
-              yaxis: solver2.replace("--", "(") + ") Memory usage(MB)",
+              xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
+              yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
+            }}
+            backgroundColor={{
+              upper: "#F0F4F2",
+              lower: "#E1E5F2",
             }}
           />
           <div className="w-full font-league text-lg text-dark-grey font-medium text-center mt-4">
