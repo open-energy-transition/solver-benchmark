@@ -109,12 +109,13 @@ const ResultsSection = () => {
   )
 
   const solverVersions = useMemo(() => {
-    const versions: { [key: string]: string[] } = {
-      glpk: [],
-      highs: [],
-      scip: [],
-    }
+    const versions: { [key: string]: string[] } = {}
     benchmarkResults.forEach((benchmarkResult) => {
+      if (!versions[benchmarkResult.solver]) {
+        versions[benchmarkResult.solver] = []
+        console.log("here")
+      }
+
       if (
         !versions[benchmarkResult.solver].includes(
           benchmarkResult.solverVersion
@@ -173,26 +174,12 @@ const ResultsSection = () => {
   )
 
   const getSolverRanks = () => {
-    const combinedRankList = [
-      {
-        solver: "highs",
-        runtime: calculateSgmBySolver("highs", "runtime"),
-        memoryUsage: calculateSgmBySolver("highs", "memoryUsage"),
-        score: 0,
-      },
-      {
-        solver: "glpk",
-        runtime: calculateSgmBySolver("glpk", "runtime"),
-        memoryUsage: calculateSgmBySolver("glpk", "memoryUsage"),
-        score: 0,
-      },
-      {
-        solver: "scip",
-        runtime: calculateSgmBySolver("scip", "runtime"),
-        memoryUsage: calculateSgmBySolver("scip", "memoryUsage"),
-        score: 0,
-      },
-    ]
+    const combinedRankList = solverList.map((solver) => ({
+      solver: solver,
+      runtime: calculateSgmBySolver(solver, "runtime"),
+      memoryUsage: calculateSgmBySolver(solver, "memoryUsage"),
+      score: 0,
+    }))
 
     combinedRankList.forEach((solver) => {
       solver.score = solver.runtime
@@ -221,44 +208,20 @@ const ResultsSection = () => {
   }
 
   useEffect(() => {
-    setTableData([
-      {
+    setTableData(
+      solverList.map((solverData) => ({
         rank:
-          getSolverRanks().findIndex((solver) => solver.solver === "highs") + 1,
-        solver: "HiGHS",
-        version: getHighestVersion(solverVersions.highs),
-        memory: roundNumber(calculateSgmBySolver("highs", "memoryUsage"), 2),
+          getSolverRanks().findIndex((solver) => solver.solver === solverData) + 1,
+        solver: solverData,
+        version: getHighestVersion(solverVersions[solverData]),
+        memory: roundNumber(calculateSgmBySolver(solverData, "memoryUsage"), 2),
         solvedBenchmarks: getSolvedBenchmarksLabel(
-          "highs",
+          solverData,
           uniqueBenchmarkCount
         ),
-        runtime: roundNumber(calculateSgmBySolver("highs", "runtime"), 2),
-      },
-      {
-        rank:
-          getSolverRanks().findIndex((solver) => solver.solver === "glpk") + 1,
-        solver: "GLPK",
-        version: getHighestVersion(solverVersions.glpk),
-        memory: roundNumber(calculateSgmBySolver("glpk", "memoryUsage"), 2),
-        solvedBenchmarks: getSolvedBenchmarksLabel(
-          "glpk",
-          uniqueBenchmarkCount
-        ),
-        runtime: roundNumber(calculateSgmBySolver("glpk", "runtime"), 2),
-      },
-      {
-        rank:
-          getSolverRanks().findIndex((solver) => solver.solver === "scip") + 1,
-        solver: "SCIP",
-        version: getHighestVersion(solverVersions.scip),
-        memory: roundNumber(calculateSgmBySolver("scip", "memoryUsage"), 2),
-        solvedBenchmarks: getSolvedBenchmarksLabel(
-          "scip",
-          uniqueBenchmarkCount
-        ),
-        runtime: roundNumber(calculateSgmBySolver("scip", "runtime"), 2),
-      },
-    ])
+        runtime: roundNumber(calculateSgmBySolver(solverData, "runtime"), 2),
+      }))
+    )
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark])
 
   // Sorting logic
@@ -308,7 +271,11 @@ const ResultsSection = () => {
           <span className="inline-flex gap-2">
             <Popup
               on={["hover"]}
-              trigger={() => <span className="flex items-center"><QuestionLine className="w-4 h-4" />)</span>}
+              trigger={() => (
+                <span className="flex items-center">
+                  <QuestionLine className="w-4 h-4" />)
+                </span>
+              )}
               position="right center"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}

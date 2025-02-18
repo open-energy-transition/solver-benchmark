@@ -22,7 +22,7 @@ const initialState: IResultState = {
   availableModels: [],
   availableProblemSizes: [],
   availableSectors: [],
-  availableSolves: [],
+  availableSolvers: [],
   availableStatuses: [],
   availableTechniques: [],
   benchmarkLatestResults: [],
@@ -48,12 +48,12 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
         benchmarkLatestResults: processBenchmarkResults(action.payload.results),
       }
     case SET_RAW_BENCHMARK_RESULTS:
-      const availableSolves = Array.from(
+      const availableSolvers = Array.from(
         new Set(
           action.payload.results.map((result: BenchmarkResult) => result.solver)
         )
       )
-      const solversData = availableSolves.map((solver) => {
+      const solversData = availableSolvers.map((solver) => {
         const versions = Array.from(
           new Set(
             action.payload.results
@@ -84,7 +84,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
             )
           )
         ),
-        availableSolves,
+        availableSolvers,
         solversData,
         availableStatuses: Array.from(
           new Set(
