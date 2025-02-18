@@ -10,7 +10,6 @@ import {
   ArrowUpIcon,
   HomeIcon,
 } from "@/assets/icons"
-import { ResultState } from "@/redux/results/reducer"
 import { useMemo } from "react"
 import Popup from "reactjs-popup"
 import { Color } from "@/constants/color"
@@ -20,6 +19,7 @@ import Link from "next/link"
 import { PATH_DASHBOARD } from "@/constants/path"
 import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult"
 import { Technique } from "@/constants"
+import { IResultState } from "@/types/state"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -29,7 +29,7 @@ const PageBenchmarkDetail = () => {
 
   const benchmarkName = router.query.slug
 
-  const metaData = useSelector((state: { results: ResultState }) => {
+  const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData
   })
 
@@ -75,7 +75,6 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.milpFeatures,
     },
   ]
-  console.log(benchmarkDetail)
 
   return (
     <>
