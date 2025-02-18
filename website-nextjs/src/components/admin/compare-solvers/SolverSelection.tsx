@@ -1,14 +1,14 @@
-import { ResultState } from "@/redux/results/reducer"
 import { getSolverLabel } from "@/utils/solvers"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import ChartCompare from "./ChartCompare"
+import { IResultState } from "@/types/state"
 
 const SolverSelection = () => {
-  const solversData = useSelector((state: { results: ResultState }) => {
+  const solversData = useSelector((state: { results: IResultState }) => {
     return state.results.solversData
   })
-  const benchmarkResults = useSelector((state: { results: ResultState }) => {
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults
   })
 

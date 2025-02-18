@@ -5,22 +5,36 @@ import {
   WrenchIcon,
 } from "@/assets/icons"
 import { useSelector, useDispatch } from "react-redux"
-import {
-  Sector,
-  Technique,
-  KindOfProblem,
-  Model,
-  ProblemSize,
-} from "@/constants"
 import filterAction from "@/redux/filters/actions"
-import { FilterState } from "@/redux/filters/reducer"
+import Popup from "reactjs-popup"
+import { IFilterState, IResultState } from "@/types/state"
 
 const FilterSection = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>()
 
   const selectedFilters = useSelector(
-    (state: { filters: FilterState }) => state.filters
+    (state: { filters: IFilterState }) => state.filters
+  )
+
+  const availableSectors = useSelector(
+    (state: { results: IResultState }) => state.results.availableSectors
+  )
+
+  const availableTechniques = useSelector(
+    (state: { results: IResultState }) => state.results.availableTechniques
+  )
+
+  const availableKindOfProblems = useSelector(
+    (state: { results: IResultState }) => state.results.availableKindOfProblems
+  )
+
+  const availableModels = useSelector(
+    (state: { results: IResultState }) => state.results.availableModels
+  )
+
+  const availableProblemSizes = useSelector(
+    (state: { results: IResultState }) => state.results.availableProblemSizes
   )
 
   const handleCheckboxChange = ({
@@ -37,53 +51,17 @@ const FilterSection = () => {
     )
   }
 
-  const getLabel = (type: string, value: string) => {
-    switch (type) {
-      case "sectors":
-        switch (value) {
-          case Sector.SectorCoupled:
-            return "Sector coupled"
-
-          case Sector.UpstreamElectricTransportCommercialResidentialIndustrial:
-            return "Upstream..."
-
-          default:
-            return value
-        }
-      case "model":
-        switch (value) {
-          case Model.GenX:
-            return "Gen X"
-          case Model.PowerModel:
-            return "Power Model"
-          case Model.PyPSAEur:
-            return "PyPSA - Eur"
-          default:
-            return value
-        }
-      case "kindOfProblem":
-        switch (value) {
-          case KindOfProblem.SteadyStateOptimalPowerFlow:
-            return "Steady-state power flow "
-          default:
-            return value
-        }
-      default:
-        throw Error("Invalid value")
-    }
-  }
-
   return (
     <div className="bg-white rounded-xl my-2">
       <div className="flex text-dark-grey">
         {/* Sectors */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
+          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6 sticky">
             <BrightIcon className="w-5 h-5" />
             <span>Sectors</span>
           </div>
           <div className="text-xs">
-            {Object.values(Sector).map((sector) => (
+            {availableSectors.map((sector) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
                 key={sector}
@@ -106,9 +84,17 @@ const FilterSection = () => {
                       value: sector,
                     })
                   }
-                  className="w-max cursor-pointer max-w-[30px]"
+                  className="w-max cursor-pointer max-w-[50px] text-ellipsis whitespace-nowrap overflow-hidden"
                 >
-                  {getLabel("sectors", sector)}
+                  <Popup
+                    on={["hover"]}
+                    trigger={() => <span>{sector}</span>}
+                    position="top right"
+                    closeOnDocumentClick
+                    arrowStyle={{ color: "#ebeff2" }}
+                  >
+                    <div className="bg-stroke p-2 rounded">{sector}</div>
+                  </Popup>
                 </span>
 
                 <span
@@ -134,7 +120,7 @@ const FilterSection = () => {
             <span>Technique</span>
           </div>
           <div className="text-xs">
-            {Object.values(Technique).map((technique) => (
+            {availableTechniques.map((technique) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
                 key={technique}
@@ -159,7 +145,15 @@ const FilterSection = () => {
                   }
                   className="w-max cursor-pointer"
                 >
-                  {technique}
+                  <Popup
+                    on={["hover"]}
+                    trigger={() => <span>{technique}</span>}
+                    position="top right"
+                    closeOnDocumentClick
+                    arrowStyle={{ color: "#ebeff2" }}
+                  >
+                    <div className="bg-stroke p-2 rounded">{technique}</div>
+                  </Popup>
                 </span>
                 <span
                   className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
@@ -185,7 +179,7 @@ const FilterSection = () => {
             <span>Kind of Problem</span>
           </div>
           <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs">
-            {Object.values(KindOfProblem).map((problem) => (
+            {availableKindOfProblems.map((problem) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
                 key={problem}
@@ -210,7 +204,15 @@ const FilterSection = () => {
                   }
                   className="w-max cursor-pointer"
                 >
-                  {getLabel("kindOfProblem", problem)}
+                  <Popup
+                    on={["hover"]}
+                    trigger={() => <span>{problem}</span>}
+                    position="top right"
+                    closeOnDocumentClick
+                    arrowStyle={{ color: "#ebeff2" }}
+                  >
+                    <div className="bg-stroke p-2 rounded">{problem}</div>
+                  </Popup>
                 </span>
                 <span
                   className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
@@ -229,13 +231,13 @@ const FilterSection = () => {
           </div>
         </div>
         {/* Problem Size */}
-        <div className="text-xs border-r border-stroke  w-[60%]">
+        <div className="text-xs border-r border-stroke  w-[40%]">
           <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
             <WrenchIcon className="w-5 h-5" />
             <span>Problem Size</span>
           </div>
-          <div className="grid grid-cols-3 gap-x-1 text-xs">
-            {Object.values(ProblemSize).map((size) => (
+          <div className="grid grid-cols-2 gap-x-1 text-xs">
+            {availableProblemSizes.map((size) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
                 key={size}
@@ -285,7 +287,7 @@ const FilterSection = () => {
             <span>Model</span>
           </div>
           <div className="grid grid-cols-3 gap-x-2 text-xs">
-            {Object.values(Model).map((model) => (
+            {availableModels.map((model) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
                 key={model}
@@ -310,7 +312,15 @@ const FilterSection = () => {
                   }
                   className="w-max cursor-pointer"
                 >
-                  {getLabel("model", model)}
+                  <Popup
+                    on={["hover"]}
+                    trigger={() => <span>{model}</span>}
+                    position="top right"
+                    closeOnDocumentClick
+                    arrowStyle={{ color: "#ebeff2" }}
+                  >
+                    <div className="bg-stroke p-2 rounded">{model}</div>
+                  </Popup>
                 </span>
                 <span
                   className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"

@@ -9,11 +9,9 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  getPaginationRowModel,
   getFacetedUniqueValues,
   useReactTable,
 } from "@tanstack/react-table"
-import { ResultState } from "@/redux/results/reducer"
 import { getInstance } from "@/utils/meta-data"
 import { MetaDataEntry } from "@/types/meta-data"
 
