@@ -2,8 +2,7 @@
 
 We encourage submission of benchmarks that help the project meet the following overall targets:
 
-1. A set of benchmarks that are diverse in terms of modelling frameworks that generated them, problem structure, and model features. By features, we mean e.g., models that consider innovative technologies (e.g., electrolyzers, CO2
-capture) or policy-driven constraints (e.g., on CO2 emissions).
+1. A set of benchmarks that are diverse in terms of modelling frameworks that generated them, problem structure, and model features. For instance, we would like models that consider innovative technologies (e.g., electrolyzers, CO2 capture) or policy-driven constraints (e.g., on CO2 emissions). By "features" we mean the different kinds of energy planning problems that can be modeleld by the framework (e.g., capacity expansion, power system operations, resource adequacy).
 
 1. Benchmarks using model features that are implemented using MILP constraints, especially features other than unit commitment.
 
@@ -13,7 +12,7 @@ capture) or policy-driven constraints (e.g., on CO2 emissions).
 
 The Solver Benchmark project is open and encourages the community to submit benchmark problems. Please ensure that submissions adhere to the following criteria:
 
-1. Benchmarks must be in the `.lp` or `.mps` file formats, that are suitable for providing to the solver directly as input (i.e., no further pre-processing must be necessary).
+1. Benchmarks must be in the `.lp` or `.mps` file formats, that are suitable for providing to the solver directly as input (i.e., no further pre-processing must be necessary). An advantage of using these formats is that they preserve [confidentiality of the model's input data](https://www.gams.com/48/docs/S_CONVERT.html?search=confidential) as they contain only mathemetical equations and it is near impossible to reconstruct the underlying energy specification and technological data.
 
 1. Benchmarks must be Linear Programming (LP) or Mixed Integer Linear Programming (MILP) problems. We do not currently accept other kinds of problems such as non-linear, or multi-objective problems.
 
@@ -69,8 +68,8 @@ pypsa-eur-sec-2-lv1-3h:
   MILP features: None
   Sizes:
   - URL: https://todo.todo/todo.lp
-    Temporal resolution: 3
-    Spatial resolution: 2
+    Temporal resolution: 3 hourly
+    Spatial resolution: 2 nodes
 ```
 
 ## Target modelling frameworks
