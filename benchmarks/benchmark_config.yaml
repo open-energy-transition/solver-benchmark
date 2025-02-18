@@ -420,3 +420,11 @@
   sizes:
   - size: 29-64
     url: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
+- name: kea
+  sizes:
+  - size:
+    url: https://storage.googleapis.com/solver-benchmarks/kea.mps
+- name: tui
+  sizes:
+  - size:
+    url: https://storage.googleapis.com/solver-benchmarks/tui.mps
