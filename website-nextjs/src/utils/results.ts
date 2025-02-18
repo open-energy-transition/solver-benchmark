@@ -80,9 +80,7 @@ const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
     return {
       ...benchmarkResult,
       runtime:
-        benchmarkResult.status !== "ok"
-          ? MaxRunTime
-          : benchmarkResult.runtime,
+        benchmarkResult.status !== "ok" ? MaxRunTime : benchmarkResult.runtime,
       memoryUsage: !["ok"].includes(benchmarkResult.status)
         ? MaxMemoryUsage
         : benchmarkResult.memoryUsage,
@@ -95,45 +93,20 @@ const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
 }
 
 const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
-  const latestHighVersion = getHighestVersion(
-    Array.from(
-      new Set(
-        benchmarkResults
-          .filter((result) => result.solver === "highs")
-          .map((result) => result.solverVersion)
+  function getLatestVersion(solver: string) {
+    return getHighestVersion(
+      Array.from(
+        new Set(
+          benchmarkResults
+            .filter((result) => result.solver === solver)
+            .map((result) => result.solverVersion)
+        )
       )
     )
-  )
+  }
 
-  const latestGlpkVersion = getHighestVersion(
-    Array.from(
-      new Set(
-        benchmarkResults
-          .filter((result) => result.solver === "glpk")
-          .map((result) => result.solverVersion)
-      )
-    )
-  )
-  const latestScripVersion = getHighestVersion(
-    Array.from(
-      new Set(
-        benchmarkResults
-          .filter((result) => result.solver === "scip")
-          .map((result) => result.solverVersion)
-      )
-    )
-  )
   return benchmarkResults.filter((result) => {
-    switch (result.solver) {
-      case "glpk":
-        return result.solverVersion === latestGlpkVersion
-      case "scip":
-        return result.solverVersion === latestScripVersion
-      case "highs":
-        return result.solverVersion === latestHighVersion
-      default:
-        throw new Error("Invalid Solver")
-    }
+    return result.solverVersion === getLatestVersion(result.solver)
   })
 }
 
