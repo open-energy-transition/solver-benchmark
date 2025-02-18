@@ -1,7 +1,10 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
+import { useSelector } from "react-redux"
 import * as d3 from "d3"
 import { CircleIcon } from "@/assets/icons"
 import { SolverYearlyChartData } from "@/types/performance-history"
+import { getChartColor } from "@/utils/chart"
+import { IResultState } from "@/types/state"
 
 type SolverType = "glpk" | "scip" | "highs"
 
@@ -23,14 +26,19 @@ const D3ChartLineChart = ({
   const containerRef = useRef<HTMLDivElement | null>(null)
   const svgRef = useRef(null)
 
-  useEffect(() => {
-    // Solvers with colors
-    const solvers = {
-      glpk: "#00CC96",
-      scip: "#629BF8",
-      highs: "#B42318",
-    }
+  const availableSolvers = useSelector((state: { results: IResultState }) => {
+    return state.results.availableSolvers
+  })
 
+  const solverColors = useMemo<Record<string, string>>(() => {
+    return availableSolvers.reduce((acc, solver: string, index: number) => {
+      acc[solver] = getChartColor(index);
+      return acc;
+    }, {} as Record<string, string>);
+  }, [availableSolvers]);
+
+
+  useEffect(() => {
     // Dimensions
     const width = containerRef.current?.clientWidth || 600
     const margin = { top: 20, right: 20, bottom: 40, left: 85 }
@@ -81,8 +89,8 @@ const D3ChartLineChart = ({
       .attr("fill", "#022B3B")
       .call(xAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("display", "none");
-        g.selectAll(".tick line").attr("display", "none");
+        g.selectAll(".domain").attr("display", "none")
+        g.selectAll(".tick line").attr("display", "none")
         g.selectAll("line").attr("stroke", "#A1A9BC")
         g.selectAll("text").attr("fill", "#A1A9BC")
       })
@@ -98,8 +106,8 @@ const D3ChartLineChart = ({
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("display", "none");
-        g.selectAll(".tick line").attr("display", "none");
+        g.selectAll(".domain").attr("display", "none")
+        g.selectAll(".tick line").attr("display", "none")
         g.selectAll("line").attr("stroke", "#A1A9BC")
         g.selectAll("text").attr("fill", "#A1A9BC")
       })
@@ -127,7 +135,7 @@ const D3ChartLineChart = ({
         .append("path")
         .datum(values)
         .attr("fill", "none")
-        .attr("stroke", solvers[solver as SolverType]) // Use solver color
+        .attr("stroke", solverColors[solver as SolverType]) // Use solver color
         .attr("stroke-width", 2)
         .attr("d", line)
     })
@@ -141,7 +149,7 @@ const D3ChartLineChart = ({
       .attr("cx", (d) => xScale(d.year.toString()) ?? 0)
       .attr("cy", (d) => yScale(d.value))
       .attr("r", 6)
-      .attr("fill", (d) => solvers[d.solver]) // Use solver color for points
+      .attr("fill", (d) => solverColors[d.solver]) // Use solver color for points
       .on("mouseover", (event, d) => {
         tooltip
           .style("opacity", 1)
@@ -202,18 +210,18 @@ const D3ChartLineChart = ({
         <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
           Solver:
         </span>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#00CC96]" />
-          GLPK
-        </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#629BF8]" />
-          SCIP
-        </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#B42318]" />
-          HIGHS
-        </div>
+        {Object.keys(solverColors).map((solverKey) => (
+          <div
+            key={solverKey}
+            className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+          >
+            <CircleIcon
+              style={{ color: solverColors[solverKey] }}
+              className={"size-2"}
+            />
+            {solverKey}
+          </div>
+        ))}
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>

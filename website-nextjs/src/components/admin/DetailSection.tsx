@@ -21,8 +21,8 @@ const DetailSection = () => {
 
   const availableBenchmarksCount = Object.keys(rawMetaData).length
 
-  const availableSolves = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolves
+  const availableSolvers = useSelector((state: { results: IResultState }) => {
+    return state.results.availableSolvers
   })
 
   const avaliableVersion = useMemo(
@@ -46,13 +46,13 @@ const DetailSection = () => {
   const detailData = [
     {
       label: "Solvers",
-      value: availableSolves.length,
+      value: availableSolvers.length,
       icon: <VectorSquareIcon />,
       generateLabel: () => (
         <>
           Solvers:{" "}
           <span className="font-bold">
-            {availableSolves.length} {`(${avaliableVersion.length}`} versions
+            {availableSolvers.length} {`(${avaliableVersion.length}`} versions
             {")"}
           </span>
         </>

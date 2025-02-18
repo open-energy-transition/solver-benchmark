@@ -1,4 +1,3 @@
-import { getSolverLabel } from "@/utils/solvers"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import ChartCompare from "./ChartCompare"
@@ -30,7 +29,7 @@ const SolverSelection = () => {
 
   function getOptionLabel(solverWithVersion: string) {
     const [solver, version] = solverWithVersion.split("--")
-    return `${getSolverLabel(solver)} v${version}`
+    return `${solver} v${version}`
   }
 
   interface ChartData {
