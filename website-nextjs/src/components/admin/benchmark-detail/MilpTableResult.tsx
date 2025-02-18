@@ -13,9 +13,7 @@ import {
   getFacetedUniqueValues,
   useReactTable,
 } from "@tanstack/react-table"
-import { ResultState } from "@/redux/results/reducer"
-import { getInstance } from "@/utils/meta-data"
-import { MetaDataEntry } from "@/types/meta-data"
+import { IResultState } from "@/types/state"
 
 const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
   const columns = useMemo<
@@ -52,7 +50,7 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
     []
   )
 
-  const benchmarkResults = useSelector((state: { results: ResultState }) => {
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults
   })
 
@@ -87,7 +85,6 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: false,
   })
-  console.log(table.getPrePaginationRowModel().rows.length)
 
   useEffect(() => {
     table.setPageSize(table.getPrePaginationRowModel().rows.length)

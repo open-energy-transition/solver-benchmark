@@ -1,5 +1,6 @@
 import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData } from "@/types/meta-data"
+import { IAvailableFilterData } from "@/types/state"
 
 const actions = {
   SET_BENCHMARK_RESULTS: "SET_BENCHMARK_RESULTS",
@@ -7,6 +8,7 @@ const actions = {
   SET_META_DATA: "SET_META_DATA",
   SET_RAW_BENCHMARK_RESULTS: "SET_RAW_BENCHMARK_RESULTS",
   SET_RAW_META_DATA: "SET_RAW_META_DATA",
+  SET_AVAILABLE_FILTER_DATA: "SET_AVAILABLE_FILTER_DATA",
 
   setBenchmarkResults: (results: BenchmarkResult[]) => {
     return {
@@ -20,10 +22,10 @@ const actions = {
       payload: { results },
     }
   },
-  setMetaData: (results: MetaData) => {
+  setMetaData: (metaData: MetaData) => {
     return {
       type: actions.SET_META_DATA,
-      payload: { results },
+      payload: { metaData },
     }
   },
   setRawBenchmarkResults: (results: BenchmarkResult[]) => {
@@ -32,10 +34,16 @@ const actions = {
       payload: { results },
     }
   },
-  setRawMetaData: (results: MetaData) => {
+  setRawMetaData: (metaData: MetaData) => {
     return {
       type: actions.SET_RAW_META_DATA,
-      payload: { results },
+      payload: { metaData },
+    }
+  },
+  setAvailableFilterData: (availableFilterData: IAvailableFilterData) => {
+    return {
+      type: actions.SET_AVAILABLE_FILTER_DATA,
+      payload: { availableFilterData },
     }
   },
 }

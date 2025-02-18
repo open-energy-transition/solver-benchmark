@@ -5,9 +5,9 @@ import { getHighestVersion } from "@/utils/versions"
 import { calculateSgm } from "@/utils/calculations"
 import { roundNumber } from "@/utils/number"
 import { MaxMemoryUsage, MaxRunTime } from "@/constants"
-import { ResultState } from "@/redux/results/reducer"
 import Popup from "reactjs-popup"
 import { getLatestBenchmarkResult } from "@/utils/results"
+import { IResultState } from "@/types/state"
 
 const ResultsSection = () => {
   const columns = [
@@ -76,13 +76,15 @@ const ResultsSection = () => {
     },
   ]
 
-  const benchmarkResults = useSelector((state: { results: ResultState }) => {
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults
   })
 
-  const rawBenchmarkResults = useSelector((state: { results: ResultState }) => {
-    return state.results.rawBenchmarkResults
-  })
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.rawBenchmarkResults
+    }
+  )
 
   const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults)
 
@@ -211,7 +213,7 @@ const ResultsSection = () => {
     uniqueBenchmarkCount: number
   ) => {
     const numberSolvedBenchmark = getNumberSolvedBenchmark(solver)
-    const percentage = numberSolvedBenchmark / uniqueBenchmarkCount
+    const percentage = (numberSolvedBenchmark * 100) / uniqueBenchmarkCount
     return `${roundNumber(
       percentage,
       1
@@ -288,8 +290,6 @@ const ResultsSection = () => {
 
   const [activedIndex, setActivedIndex] = useState(0)
 
-  if (!benchmarkResults.length) return <></>
-
   return (
     <div>
       <div className="pb-3 pl-3">
@@ -302,12 +302,13 @@ const ResultsSection = () => {
             </span>
           )}
         </div>
-        <div className="text-dark-grey text-sm flex items-center">
-          You can rank the latest version of each solver by number of solved benchmark instances, or by the normalized shifted geometric mean (SGM
-          <div className="flex gap-2">
+        <div className="text-dark-grey text-sm flex flex-wrap items-center">
+          You can rank the latest version of each solver by number of solved
+          benchmark instances, or by the normalized shifted geometric mean (SGM{" "}
+          <span className="inline-flex gap-2">
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => <span className="flex items-center"><QuestionLine className="w-4 h-4" />)</span>}
               position="right center"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
@@ -320,11 +321,12 @@ const ResultsSection = () => {
                   SGM = exp(sum{"{i in 1..n}"} ln(max(1, v[i] + sh)) / n) - sh
                 </span>
                 <br />
-                We use sh = 10, and then we normalize the means by dividing them by the smallest mean.
+                We use sh = 10, and then we normalize the means by dividing them
+                by the smallest mean.
               </div>
             </Popup>
-          </div>
-          ) of runtime and memory consumption over all benchmarks
+          </span>
+          of runtime and memory consumption over all benchmarks
         </div>
       </div>
       <div className="flex text-xs leading-1.5">
@@ -364,7 +366,7 @@ const ResultsSection = () => {
                 }`}
                 onClick={() => setActivedIndex(index)}
               >
-                {item[column.field as keyof (typeof tableData)[0]]}
+                {item[column.field as keyof (typeof tableData)[0]] ?? '-'}
               </div>
             ))}
           </div>

@@ -2,8 +2,9 @@ import { AnyAction } from "redux"
 
 import actions from "./actions"
 import { BenchmarkResult } from "@/types/benchmark"
-import { MetaData } from "@/types/meta-data"
 import { formatBenchmarkName, processBenchmarkResults } from "@/utils/results"
+import { IResultState } from "@/types/state"
+import { sortStringArray } from "@/utils/string"
 
 const {
   SET_BENCHMARK_RESULTS,
@@ -11,39 +12,27 @@ const {
   SET_META_DATA,
   SET_RAW_BENCHMARK_RESULTS,
   SET_RAW_META_DATA,
+  SET_AVAILABLE_FILTER_DATA,
 } = actions
 
-export type ResultState = {
-  benchmarkResults: BenchmarkResult[]
-  benchmarkLatestResults: BenchmarkResult[]
-  metaData: MetaData
-  rawBenchmarkResults: BenchmarkResult[]
-  rawMetaData: MetaData
-  years: number[]
-  solvers: string[]
-  availableBenchmarksAndSizes: string[]
-  availableBenchmarks: string[]
-  availableSolves: string[]
-  solversData: {
-    solver: string
-    versions: string[]
-  }[]
-  availableStatuses: string[]
-}
-
-const initialState: ResultState = {
-  benchmarkResults: [],
+const initialState: IResultState = {
+  availableBenchmarks: [],
+  availableBenchmarksAndSizes: [],
+  availableKindOfProblems: [],
+  availableModels: [],
+  availableProblemSizes: [],
+  availableSectors: [],
+  availableSolves: [],
+  availableStatuses: [],
+  availableTechniques: [],
   benchmarkLatestResults: [],
+  benchmarkResults: [],
   metaData: {},
   rawBenchmarkResults: [],
   rawMetaData: {},
-  years: [],
   solvers: [],
-  availableBenchmarksAndSizes: [],
-  availableBenchmarks: [],
-  availableSolves: [],
   solversData: [],
-  availableStatuses: [],
+  years: [],
 }
 
 const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
@@ -108,12 +97,29 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
     case SET_META_DATA:
       return {
         ...state,
-        metaData: action.payload.results,
+        metaData: action.payload.metaData,
       }
     case SET_RAW_META_DATA:
       return {
         ...state,
-        rawMetaData: action.payload.results,
+        rawMetaData: action.payload.metaData,
+      }
+
+    case SET_AVAILABLE_FILTER_DATA:
+      const {
+        availableSectors,
+        availableTechniques,
+        availableKindOfProblems,
+        availableModels,
+        availableProblemSizes,
+      } = action.payload.availableFilterData
+      return {
+        ...state,
+        availableSectors: sortStringArray(availableSectors),
+        availableTechniques: sortStringArray(availableTechniques),
+        availableKindOfProblems: sortStringArray(availableKindOfProblems),
+        availableModels: sortStringArray(availableModels),
+        availableProblemSizes: sortStringArray(availableProblemSizes, "desc"),
       }
 
     default:

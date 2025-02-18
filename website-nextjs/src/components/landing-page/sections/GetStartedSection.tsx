@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux"
 
 import { ArrowUpIcon } from "@/assets/icons"
-import { ResultState } from "@/redux/results/reducer"
 import { useMemo } from "react"
+import { IResultState } from "@/types/state"
 
 const GetStarted = () => {
-  const rawMetaData = useSelector((state: { results: ResultState }) => {
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.rawMetaData
   })
 
@@ -21,12 +21,12 @@ const GetStarted = () => {
     [rawMetaData]
   )
 
-  const availableSolves = useSelector((state: { results: ResultState }) => {
+  const availableSolves = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolves
   })
 
   const availableBenchmarksAndSizes = useSelector(
-    (state: { results: ResultState }) => {
+    (state: { results: IResultState }) => {
       return state.results.availableBenchmarksAndSizes
     }
   )

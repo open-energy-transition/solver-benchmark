@@ -7,12 +7,15 @@ dependencies:
 - python>=3.9
 - pip
 
-- linopy>=0.4.1
 - requests>=2.32
 
+- coin-or-cbc==2.10.5
 # - scip==7.0.2 # TODO errors with AttributeError: 'pyscipopt.scip.Model' object has no attribute 'getDualSolVal'
 # - pyscipopt==3.1.0
 - glpk==5.0.0
 # - gurobi==9.1.1  # TODO needs py<39 but linopy needs py>39
 
 # HiGHS was released first in 2021 so it is omitted here
+
+- pip:
+  - linopy>=0.5.0
