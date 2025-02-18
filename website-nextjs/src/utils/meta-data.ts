@@ -1,5 +1,6 @@
 import yaml from "yaml"
 import camelCase from "lodash.camelcase"
+import { MetaData } from "@/types/meta-data"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function toCamelCase(obj: any, isTopLevel = true): unknown {
@@ -31,7 +32,7 @@ const fetchYamlData = async (filePath: string) => {
 
 const getMetaData = async () => {
   const rawData = await fetchYamlData("/results/metadata.yaml")
-  return toCamelCase(rawData)
+  return toCamelCase(rawData) as MetaData
 }
 
 const getInstance = (temporalResolution: string, spatialResolution: string) => {
@@ -40,4 +41,8 @@ const getInstance = (temporalResolution: string, spatialResolution: string) => {
   return `${spatialResolution}-${tempResolution}`
 }
 
-export { getMetaData, getInstance }
+const getUniqueValues = <T, K extends keyof T>(data: T[], key: K): T[K][] =>
+  Array.from(new Set(data.map(item => item[key])));
+
+
+export { getMetaData, getInstance, getUniqueValues }
