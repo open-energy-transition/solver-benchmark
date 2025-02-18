@@ -31,7 +31,7 @@ export interface IResultState extends IAvailableFilterData {
   solvers: string[]
   availableBenchmarksAndSizes: string[]
   availableBenchmarks: string[]
-  availableSolves: string[]
+  availableSolvers: string[]
 
   solversData: {
     solver: string

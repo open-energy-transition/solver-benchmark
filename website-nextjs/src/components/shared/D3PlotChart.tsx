@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
+import { useSelector } from "react-redux"
 import * as d3 from "d3"
 import { CircleIcon } from "@/assets/icons"
 import { SolverType } from "@/types/benchmark"
 import { getSolverLabel } from "@/utils/solvers"
 import { roundNumber } from "@/utils/number"
 import { PATH_DASHBOARD } from "@/constants/path"
+import { IResultState } from "@/types/state"
+import { getChartColor } from "@/utils/chart"
 
 type ChartData = {
   runtime: number
@@ -23,15 +26,20 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const svgRef = useRef(null)
 
+  const availableSolvers = useSelector((state: { results: IResultState }) => {
+    return state.results.availableSolvers
+  })
+
+  const solverColors = useMemo<Record<string, string>>(() => {
+    return availableSolvers.reduce((acc, solver: string, index: number) => {
+      acc[solver] = getChartColor(index);
+      return acc;
+    }, {} as Record<string, string>);
+  }, [availableSolvers]);
+
+
   useEffect(() => {
     const data = chartData
-
-    // Solvers with colors
-    const solvers = {
-      glpk: "#00CC96",
-      scip: "#629BF8",
-      highs: "#B42318",
-    }
 
     // Dimensions
     const width = containerRef.current?.clientWidth || 600
@@ -134,7 +142,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .text("✕")
-            .style("fill", solvers[d.solver])
+            .style("fill", solverColors[d.solver])
             .style("font-size", "12px")
             .style("font-family", "'Lato', sans-serif")
         } else {
@@ -144,7 +152,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             .attr("cx", xScale(d.runtime))
             .attr("cy", yScale(d.memoryUsage))
             .attr("r", 4)
-            .attr("fill", solvers[d.solver])
+            .attr("fill", solverColors[d.solver])
         }
 
         group
@@ -225,21 +233,22 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     <div className="bg-white py-4 px-10 rounded-xl">
       {/* Legend */}
       <div className="flex gap-2 ml-8">
+        {}
         <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
           Solver:
         </span>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#00CC96]" />
-          GLPK
-        </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#629BF8]" />
-          SCIP
-        </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#B42318]" />
-          HIGHS
-        </div>
+        {Object.keys(solverColors).map((solverKey) => (
+          <div
+            key={solverKey}
+            className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+          >
+            <CircleIcon
+              style={{ color: solverColors[solverKey] }}
+              className={"size-2"}
+            />
+            {solverKey}
+          </div>
+        ))}
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>

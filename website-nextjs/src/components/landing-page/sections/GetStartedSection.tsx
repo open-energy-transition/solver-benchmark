@@ -21,8 +21,8 @@ const GetStarted = () => {
     [rawMetaData]
   )
 
-  const availableSolves = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolves
+  const availableSolvers = useSelector((state: { results: IResultState }) => {
+    return state.results.availableSolvers
   })
 
   const availableBenchmarksAndSizes = useSelector(
@@ -67,7 +67,7 @@ const GetStarted = () => {
           </div>
           <div className="py-9 text-center flex-1">
             <div className="text-9xl leading-1.2 font-league font-bold">
-              {availableSolves.length}
+              {availableSolvers.length}
             </div>
             <h5 className="text-lavender leading-1.4 uppercase">Solvers </h5>
           </div>

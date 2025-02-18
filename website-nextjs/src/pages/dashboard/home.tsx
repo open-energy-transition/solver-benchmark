@@ -9,11 +9,16 @@ import Head from "next/head"
 import { ArrowIcon, HomeIcon } from "@/assets/icons"
 import { PATH_DASHBOARD } from "@/constants/path"
 import Link from "next/link"
+import { IResultState } from "@/types/state"
 
 const LandingPage = () => {
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
   )
+
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
+    return state.results.benchmarkLatestResults
+  })
 
   return (
     <>
@@ -43,7 +48,7 @@ const LandingPage = () => {
           {/* Content */}
           <DetailSection />
           <FilterSection />
-          <ResultsSection />
+          {benchmarkResults.length ? <ResultsSection /> : <></>}
           <BenchmarksSection />
         </div>
       </div>
