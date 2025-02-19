@@ -102,7 +102,7 @@ const BenchmarkTableResult = () => {
             View Details
             <ArrowRightIcon
               className="w-3 h-3 text-navy fill-none stroke-green-pop hover:stroke-white"
-              stroke-opacity="0.5"
+              strokeOpacity="0.5"
             />
           </Link>
         ),

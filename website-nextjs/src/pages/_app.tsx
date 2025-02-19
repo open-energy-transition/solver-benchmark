@@ -10,15 +10,9 @@ import { wrapper } from "@/redux/store"
 import resultActions from "@/redux/results/actions"
 import filterActions from "@/redux/filters/actions"
 import AdminLayout from "@/pages/AdminLayout"
-import {
-  getBenchmarkResults,
-  getLatestBenchmarkResult,
-  getProblemSize,
-} from "@/utils/results"
-import { getMetaData } from "@/utils/meta-data"
+import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results"
+import { getInstance, getMetaData } from "@/utils/meta-data"
 import { BenchmarkResult } from "@/types/benchmark"
-import { getHighestVersion } from "@/utils/versions"
-import { ProblemSize } from "@/constants"
 import { IFilterState } from "@/types/state"
 
 function App({ Component, pageProps }: AppProps) {
@@ -31,27 +25,17 @@ function App({ Component, pageProps }: AppProps) {
       const results = await getBenchmarkResults()
       const metaData = await getMetaData()
 
-      const latestHighVersion = getHighestVersion(
-        Array.from(
-          new Set(
-            results
-              .filter((result) => result.solver === "highs")
-              .map((result) => result.solverVersion)
-          )
-        )
-      )
-
-      const problemSizeResult: { [key: string]: ProblemSize } = {}
-      results
-        .filter(
-          (result: BenchmarkResult) =>
-            result.solver === "highs" &&
-            result.solverVersion === latestHighVersion
-        )
-        .forEach((result: BenchmarkResult) => {
-          problemSizeResult[`${result.benchmark}'-'${result.size}`] =
-            getProblemSize(result.runtime)
+      const problemSizeResult: { [key: string]: string } = {}
+      Object.keys(metaData).forEach((metaDataKey) => {
+        metaData[metaDataKey].sizes.forEach((s) => {
+          problemSizeResult[
+            `${metaDataKey}'-'${getInstance(
+              s.temporalResolution.toString(),
+              s.spatialResolution.toString()
+            )}`
+          ] = s.size
         })
+      })
 
       const uniqueValues = {
         sectors: new Set<string>(),
@@ -86,9 +70,7 @@ function App({ Component, pageProps }: AppProps) {
         )
       )
 
-      dispatch(
-        resultActions.setRawMetaData(metaData)
-      )
+      dispatch(resultActions.setRawMetaData(metaData))
       dispatch(
         resultActions.setAvailableFilterData({
           availableSectors,

@@ -4,10 +4,9 @@ import { ThunkAction } from "redux-thunk"
 import resultActions from "@/redux/results/actions"
 import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData, MetaDataEntry } from "@/types/meta-data"
-import { ProblemSize } from "@/constants"
-import { getHighestVersion } from "@/utils/versions"
-import { getLatestBenchmarkResult, getProblemSize } from "@/utils/results"
+import { getLatestBenchmarkResult } from "@/utils/results"
 import { IFilterState } from "@/types/state"
+import { getInstance } from "@/utils/meta-data"
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
@@ -49,27 +48,21 @@ const actions = {
         })
       )
 
-      const latestHighVersion = getHighestVersion(
-        Array.from(
-          new Set(
-            (results.rawBenchmarkResults as BenchmarkResult[])
-              .filter((result) => result.solver === "highs")
-              .map((result) => result.solverVersion)
-          )
-        )
-      )
-
-      const problemSizeResult: { [key: string]: ProblemSize } = {}
-      results.rawBenchmarkResults
-        .filter(
-          (result: BenchmarkResult) =>
-            result.solver === "highs" &&
-            result.solverVersion === latestHighVersion
-        )
-        .forEach((result: BenchmarkResult) => {
-          problemSizeResult[`${result.benchmark}'-'${result.size}`] =
-            getProblemSize(result.runtime)
+      const problemSizeResult: { [key: string]: string } = {}
+      Object.keys(metaData).forEach((metaDataKey) => {
+        if (!results.rawMetaData[metaDataKey]) {
+          console.error(`Missing: ${metaDataKey}`);
+          return
+        };
+        results.rawMetaData[metaDataKey].sizes.forEach((s) => {
+          problemSizeResult[
+            `${metaDataKey}'-'${getInstance(
+              s.temporalResolution.toString(),
+              s.spatialResolution.toString()
+            )}`
+          ] = s.size
         })
+      })
 
       const benchmarkResults: BenchmarkResult[] =
         results.rawBenchmarkResults.filter((benchmark: BenchmarkResult) =>
