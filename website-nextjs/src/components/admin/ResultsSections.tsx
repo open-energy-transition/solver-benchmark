@@ -113,7 +113,6 @@ const ResultsSection = () => {
     benchmarkResults.forEach((benchmarkResult) => {
       if (!versions[benchmarkResult.solver]) {
         versions[benchmarkResult.solver] = []
-        console.log("here")
       }
 
       if (
