@@ -1,4 +1,4 @@
-times-etimeseu-elec+heat-co2-multi_stage-1-64:
+times-etimeseu-elec+heat-co2-multi_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050 and 64 .
   Model name: eTIMES-EU
   Version:
@@ -13,7 +13,7 @@ times-etimeseu-elec+heat-co2-multi_stage-1-64:
     Spatial resolution: 1
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-co2-multi_stage-29-64:
+times-etimeseu-elec+heat-co2-multi_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
   Model name: eTIMES-EU
   Version:
@@ -28,7 +28,7 @@ times-etimeseu-elec+heat-co2-multi_stage-29-64:
     Spatial resolution: 29
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-co2-single_stage-1-64:
+times-etimeseu-elec+heat-co2-single_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
   Model name: eTIMES-EU
   Version:
@@ -43,7 +43,7 @@ times-etimeseu-elec+heat-co2-single_stage-1-64:
     Spatial resolution: 1
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-co2-single_stage-29-64:
+times-etimeseu-elec+heat-co2-single_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
   Model name: eTIMES-EU
   Version:  
@@ -58,7 +58,7 @@ times-etimeseu-elec+heat-co2-single_stage-29-64:
     Spatial resolution: 29
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-multi_stage-1-64:
+times-etimeseu-elec+heat-multi_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050.
   Model name: eTIMES-EU
   Version:
@@ -73,7 +73,7 @@ times-etimeseu-elec+heat-multi_stage-1-64:
     Spatial resolution: 1
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-multi_stage-29-64:
+times-etimeseu-elec+heat-multi_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
   Model name: eTIMES-EU
   Version:
@@ -88,7 +88,7 @@ times-etimeseu-elec+heat-multi_stage-29-64:
     Spatial resolution: 29
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-single_stage-1-64.mps:
+times-etimeseu-elec+heat-single_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node) considering 5 years-long periods until 2050.
   Model name: eTIMES-EU
   Version:
@@ -103,7 +103,7 @@ times-etimeseu-elec+heat-single_stage-1-64.mps:
     Spatial resolution: 1
     N. of constraints: 
     N. of variables:
-times-etimeseu-elec+heat-single_stage-29-64.mps:
+times-etimeseu-elec+heat-single_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
   Model name: eTIMES-EU
   Version:
@@ -118,7 +118,7 @@ times-etimeseu-elec+heat-single_stage-29-64.mps:
     Spatial resolution: 29
     N. of constraints: 
     N. of variables:
-times-ireland-1-1:
+times-ireland:
   Short description: TIMES-Ireland
   Model name: TIMES-Ireland
   Version:
@@ -133,7 +133,7 @@ times-ireland-1-1:
     Spatial resolution: 1
     N. of constraints: 
     N. of variables:
-times-ireland-1-40:
+times-ireland:
   Short description: TIMES-Ireland
   Model name: TIMES-Ireland
   Version:
@@ -148,7 +148,7 @@ times-ireland-1-40:
     Spatial resolution: 40
     N. of constraints: 
     N. of variables:
-times-ireland-x-1:
+times-ireland:
   Short description: TIMES-Ireland
   Model name: TIMES-Ireland
   Version:
@@ -163,7 +163,7 @@ times-ireland-x-1:
     Spatial resolution: TBD
     N. of constraints: 
     N. of variables:
-kea:
+times-NZ-kea:
   Short description: TIMES-NZ
   Model name: TIMES-NZ
   Version:
@@ -178,7 +178,7 @@ kea:
     Spatial resolution: TBD
     N. of constraints:
     N. of variables:
-tui:
+times-nz-tui:
   Short description: TIMES-NZ
   Model name: TIMES-NZ
   Version:
