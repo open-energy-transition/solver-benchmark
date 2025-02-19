@@ -4,6 +4,7 @@ import {
   AppIcon,
   DatabaseIcon,
   GraphBarIcon,
+  HistoryIcon,
   LayoutGroupIcon,
   VectorSquareIcon,
 } from "@/assets/icons"
@@ -45,25 +46,6 @@ const DetailSection = () => {
 
   const detailData = [
     {
-      label: "Solvers",
-      value: availableSolvers.length,
-      icon: <VectorSquareIcon />,
-      generateLabel: () => (
-        <>
-          Solvers:{" "}
-          <span className="font-bold">
-            {availableSolvers.length} {`(${avaliableVersion.length}`} versions
-            {")"}
-          </span>
-        </>
-      ),
-    },
-    {
-      label: "Iteration",
-      value: "1",
-      icon: <LayoutGroupIcon />,
-    },
-    {
       label: "Benchmarks",
       value: availableBenchmarksCount,
       icon: <GraphBarIcon />,
@@ -78,6 +60,30 @@ const DetailSection = () => {
       ),
     },
     {
+      label: "Solvers",
+      value: availableSolvers.length,
+      icon: <VectorSquareIcon />,
+      generateLabel: () => (
+        <>
+          Solvers:{" "}
+          <span className="font-bold">
+            {availableSolvers.length} {`(${avaliableVersion.length}`} versions
+            {")"}
+          </span>
+        </>
+      ),
+    },
+    {
+      label: "Iterations",
+      value: "1",
+      icon: <LayoutGroupIcon />,
+    },
+    {
+      label: "vCPUs",
+      value: "2 (1 core)",
+      icon: <AppIcon />,
+    },
+    {
       label: "Memory",
       value: "16 GB",
       icon: <DatabaseIcon />,
@@ -85,12 +91,7 @@ const DetailSection = () => {
     {
       label: "Timeout",
       value: "10 min",
-      icon: <DatabaseIcon />,
-    },
-    {
-      label: "vCPUs",
-      value: "2 (1 core)",
-      icon: <AppIcon />,
+      icon: <HistoryIcon />,
     },
   ]
 
