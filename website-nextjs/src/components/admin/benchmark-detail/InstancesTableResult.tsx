@@ -12,7 +12,6 @@ import {
   getFacetedUniqueValues,
   useReactTable,
 } from "@tanstack/react-table"
-import { getInstance } from "@/utils/meta-data"
 import { MetaDataEntry } from "@/types/meta-data"
 
 const InstancesTableResult = ({
@@ -72,10 +71,7 @@ const InstancesTableResult = ({
         temporalResolution: sizeData.temporalResolution,
         nOfVariables: sizeData.nOfVariables,
         nOfConstraints: sizeData.nOfConstraints,
-        instance: getInstance(
-          sizeData.temporalResolution.toString(),
-          sizeData.spatialResolution.toString()
-        ),
+        instance: sizeData.name,
       })),
     [benchmarkDetail.sizes.length]
   )

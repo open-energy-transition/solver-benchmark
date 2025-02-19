@@ -35,14 +35,8 @@ const getMetaData = async () => {
   return toCamelCase(rawData) as MetaData
 }
 
-const getInstance = (temporalResolution: string, spatialResolution: string) => {
-  const tempResolution =
-    temporalResolution === "NA" ? temporalResolution : `${temporalResolution}h`
-  return `${spatialResolution}-${tempResolution}`
-}
-
 const getUniqueValues = <T, K extends keyof T>(data: T[], key: K): T[K][] =>
   Array.from(new Set(data.map(item => item[key])));
 
 
-export { getMetaData, getInstance, getUniqueValues }
+export { getMetaData, getUniqueValues }

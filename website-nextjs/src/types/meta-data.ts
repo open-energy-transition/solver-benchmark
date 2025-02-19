@@ -1,5 +1,6 @@
 
 type Size = {
+  name: string
   spatialResolution: number
   temporalResolution: number | string
   nOfConstraints: number

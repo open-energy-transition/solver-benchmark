@@ -11,7 +11,7 @@ import resultActions from "@/redux/results/actions"
 import filterActions from "@/redux/filters/actions"
 import AdminLayout from "@/pages/AdminLayout"
 import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results"
-import { getInstance, getMetaData } from "@/utils/meta-data"
+import { getMetaData } from "@/utils/meta-data"
 import { BenchmarkResult } from "@/types/benchmark"
 import { IFilterState } from "@/types/state"
 
@@ -29,10 +29,7 @@ function App({ Component, pageProps }: AppProps) {
       Object.keys(metaData).forEach((metaDataKey) => {
         metaData[metaDataKey].sizes.forEach((s) => {
           problemSizeResult[
-            `${metaDataKey}'-'${getInstance(
-              s.temporalResolution.toString(),
-              s.spatialResolution.toString()
-            )}`
+            `${metaDataKey}'-'${s.name}`
           ] = s.size
         })
       })
