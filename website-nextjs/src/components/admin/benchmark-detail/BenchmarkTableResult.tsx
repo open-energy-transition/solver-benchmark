@@ -22,7 +22,7 @@ import Link from "next/link"
 import { PATH_DASHBOARD } from "@/constants/path"
 import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
 import PaginationTable from "@/components/shared/tables/PaginationTable"
-import { IResultState } from "@/types/state"
+import { IFilterState, IResultState } from "@/types/state"
 
 interface IColumnTable extends MetaDataEntry {
   name: string
@@ -33,12 +33,20 @@ const BenchmarkTableResult = () => {
     return state.results.metaData
   })
 
+  const availableProblemSizes = useSelector(
+    (state: { filters: IFilterState }) => state.filters.problemSize
+  )
+
   const memoizedMetaData = useMemo(
     () =>
-      Object.entries(metaData).map(([key, value]) => ({
-        ...value,
-        name: key,
-      })),
+      Object.entries(metaData)
+        .filter(([key, value]) => {
+          return value.sizes.some((v) => availableProblemSizes.includes(v.size))
+        })
+        .map(([key, value]) => ({
+          ...value,
+          name: key,
+        })),
     [metaData]
   )
 
@@ -102,7 +110,7 @@ const BenchmarkTableResult = () => {
             View Details
             <ArrowRightIcon
               className="w-3 h-3 text-navy fill-none stroke-green-pop hover:stroke-white"
-              stroke-opacity="0.5"
+              strokeOpacity="0.5"
             />
           </Link>
         ),

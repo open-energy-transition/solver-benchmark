@@ -6,8 +6,7 @@ const normalizeVersion = (version: string): string => {
 
 const getHighestVersion = (versions: string[]) => {
   if (!versions) {
-    console.log('versions', versions);
-
+    console.error('versions', versions);
   }
   const normalizedVersions = versions.map(normalizeVersion)
   const sortedVersions = normalizedVersions.sort(compareVersions)

@@ -237,7 +237,7 @@ def main(
     timeout=10 * 60,
     override=True,
 ):
-    size_categories = {"XS", "S"}
+    size_categories = {"XS", "S"}  # TODO add this to CLI args
     results = {}
 
     # Load benchmarks from YAML file
@@ -376,7 +376,7 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["cbc"]  # For production
+    solvers = ["highs", "scip", "cbc", "glpk"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion

@@ -188,7 +188,7 @@
   - name: 15-168h
     size: R
     url: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_uc.lp
-- name: genx_15-zones_elec_co2
+- name: genx-15-zones_elec_co2
   sizes:
   - name: 15-168h
     size: R

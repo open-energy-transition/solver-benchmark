@@ -4,6 +4,7 @@ type Size = {
   temporalResolution: number | string
   nOfConstraints: number
   nOfVariables: number | null
+  size: string
 }
 
 interface MetaDataEntry {
