@@ -3,7 +3,7 @@ import { RootState } from "@/redux/store"
 import { ThunkAction } from "redux-thunk"
 import resultActions from "@/redux/results/actions"
 import { BenchmarkResult } from "@/types/benchmark"
-import { MetaData, MetaDataEntry } from "@/types/meta-data"
+import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
 import { getLatestBenchmarkResult } from "@/utils/results"
 import { IFilterState } from "@/types/state"
 import { getInstance } from "@/utils/meta-data"
@@ -51,10 +51,10 @@ const actions = {
       const problemSizeResult: { [key: string]: string } = {}
       Object.keys(metaData).forEach((metaDataKey) => {
         if (!results.rawMetaData[metaDataKey]) {
-          console.error(`Missing: ${metaDataKey}`);
+          console.error(`Missing: ${metaDataKey}`)
           return
-        };
-        results.rawMetaData[metaDataKey].sizes.forEach((s) => {
+        }
+        results.rawMetaData[metaDataKey].sizes.forEach((s: Size) => {
           problemSizeResult[
             `${metaDataKey}'-'${getInstance(
               s.temporalResolution.toString(),
