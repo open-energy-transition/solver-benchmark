@@ -6,7 +6,6 @@ import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
 import { getLatestBenchmarkResult } from "@/utils/results"
 import { IFilterState } from "@/types/state"
-import { getInstance } from "@/utils/meta-data"
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
@@ -56,10 +55,7 @@ const actions = {
         }
         results.rawMetaData[metaDataKey].sizes.forEach((s: Size) => {
           problemSizeResult[
-            `${metaDataKey}'-'${getInstance(
-              s.temporalResolution.toString(),
-              s.spatialResolution.toString()
-            )}`
+            `${metaDataKey}'-'${s.name}`
           ] = s.size
         })
       })
@@ -68,12 +64,8 @@ const actions = {
         results.rawBenchmarkResults.filter((benchmark: BenchmarkResult) =>
           (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find(
             (size) => {
-              const temporalResolution =
-                size.temporalResolution === "NA"
-                  ? size.temporalResolution
-                  : `${size.temporalResolution}h`
               return (
-                `${size.spatialResolution}-${temporalResolution}` ===
+                size.name ===
                   benchmark.size &&
                 filters.problemSize.includes(
                   problemSizeResult[
