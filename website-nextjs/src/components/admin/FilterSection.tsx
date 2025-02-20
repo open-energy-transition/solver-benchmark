@@ -60,7 +60,7 @@ const FilterSection = () => {
             <BrightIcon className="w-5 h-5" />
             <span>Sectors</span>
           </div>
-          <div className="text-xs">
+          <div className="text-xs max-h-[95px] overflow-y-auto">
             {availableSectors.map((sector) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
@@ -84,7 +84,7 @@ const FilterSection = () => {
                       value: sector,
                     })
                   }
-                  className="w-max cursor-pointer max-w-[50px] text-ellipsis whitespace-nowrap overflow-hidden"
+                  className="w-max cursor-pointer max-w-[70px] text-ellipsis whitespace-nowrap overflow-hidden"
                 >
                   <Popup
                     on={["hover"]}
@@ -119,7 +119,7 @@ const FilterSection = () => {
             <ProcessorIcon className="w-5 h-5" />
             <span>Technique</span>
           </div>
-          <div className="text-xs">
+          <div className="text-xs max-h-[95px] overflow-y-auto">
             {availableTechniques.map((technique) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
@@ -178,7 +178,7 @@ const FilterSection = () => {
             <WrenchIcon className="w-5 h-5" />
             <span>Kind of Problem</span>
           </div>
-          <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs">
+          <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs max-h-[95px] overflow-y-auto">
             {availableKindOfProblems.map((problem) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
@@ -236,7 +236,7 @@ const FilterSection = () => {
             <WrenchIcon className="w-5 h-5" />
             <span>Problem Size</span>
           </div>
-          <div className="grid grid-cols-2 gap-x-1 text-xs">
+          <div className="grid grid-cols-2 gap-x-1 text-xs max-h-[95px] overflow-y-auto">
             {availableProblemSizes.map((size) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
@@ -286,7 +286,7 @@ const FilterSection = () => {
             <PolygonIcon className="w-5 h-5" />
             <span>Model</span>
           </div>
-          <div className="grid grid-cols-3 gap-x-2 text-xs">
+          <div className="grid grid-cols-3 gap-x-2 text-xs max-h-[95px] overflow-y-auto">
             {availableModels.map((model) => (
               <div
                 className="flex items-center gap-1 p-3 relative group"
