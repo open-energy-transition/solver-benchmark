@@ -6,8 +6,9 @@ import { calculateSgm } from "@/utils/calculations"
 import { roundNumber } from "@/utils/number"
 import { MaxMemoryUsage, MaxRunTime } from "@/constants"
 import Popup from "reactjs-popup"
-import { getLatestBenchmarkResult } from "@/utils/results"
-import { IResultState } from "@/types/state"
+import { IFilterState, IResultState } from "@/types/state"
+import ResultsSectionsTitle from "./home/ResultsTitle"
+import { SgmMode } from "@/constants/filter"
 
 const ResultsSection = () => {
   const columns = [
@@ -76,17 +77,33 @@ const ResultsSection = () => {
     },
   ]
 
-  const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.benchmarkLatestResults
-  })
-
-  const rawBenchmarkResults = useSelector(
+  const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.rawBenchmarkResults
+      return state.results.benchmarkLatestResults
     }
   )
 
-  const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults)
+  const sgmMode = useSelector((state: { filters: IFilterState }) => {
+    return state.filters.sgmMode
+  })
+  const xFactor = useSelector((state: { filters: IFilterState }) => {
+    return state.filters.xFactor
+  })
+
+  const benchmarkResults = useMemo(() => {
+    switch (sgmMode) {
+      case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
+        return benchmarkLatestResults.filter((result) => result.status === "ok")
+      case SgmMode.PENALIZING_TO_BY_FACTOR:
+        return benchmarkLatestResults.map((result) => ({
+          ...result,
+          runtime: MaxRunTime * xFactor,
+          memoryUsage: MaxMemoryUsage * xFactor,
+        }))
+      default:
+        return benchmarkLatestResults
+    }
+  }, [sgmMode, xFactor, benchmarkLatestResults])
 
   const [tableData, setTableData] = useState<
     {
@@ -190,10 +207,6 @@ const ResultsSection = () => {
     benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
   ).size
 
-  const uniqueLatestBenchmarkCount = new Set(
-    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`)
-  ).size
-
   const getSolvedBenchmarksLabel = (
     solver: string,
     uniqueBenchmarkCount: number
@@ -210,7 +223,8 @@ const ResultsSection = () => {
     setTableData(
       solverList.map((solverData) => ({
         rank:
-          getSolverRanks().findIndex((solver) => solver.solver === solverData) + 1,
+          getSolverRanks().findIndex((solver) => solver.solver === solverData) +
+          1,
         solver: solverData,
         version: getHighestVersion(solverVersions[solverData]),
         memory: roundNumber(calculateSgmBySolver(solverData, "memoryUsage"), 2),
@@ -255,15 +269,7 @@ const ResultsSection = () => {
   return (
     <div>
       <div className="pb-3 pl-3">
-        <div className="text-navy font-bold text-xl">
-          Results
-          {latestBenchmarkResult.length !== benchmarkResults.length && (
-            <span className="ml-1">
-              (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}
-              benchmark instances)
-            </span>
-          )}
-        </div>
+        <ResultsSectionsTitle />
         <div className="text-dark-grey text-sm flex flex-wrap items-center">
           You can rank the latest version of each solver by number of solved
           benchmark instances, or by the normalized shifted geometric mean (SGM{" "}
@@ -332,7 +338,7 @@ const ResultsSection = () => {
                 }`}
                 onClick={() => setActivedIndex(index)}
               >
-                {item[column.field as keyof (typeof tableData)[0]] ?? '-'}
+                {item[column.field as keyof (typeof tableData)[0]] ?? "-"}
               </div>
             ))}
           </div>
