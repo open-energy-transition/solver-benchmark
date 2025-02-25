@@ -74,6 +74,18 @@ const ResultsSection = () => {
       bgColor: "bg-lime-green",
       color: "text-navy font-semibold",
       sort: true,
+      headerContent: (header: string) => (
+        <div className="flex gap-2">
+          {header}
+          {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
+            <>
+              {" "}
+              on {benchmarkResults.length}{" "}
+              {benchmarkResults.length > 1 ? "benchmarks" : "benchmark"}
+            </>
+          )}
+        </div>
+      ),
     },
   ]
 
