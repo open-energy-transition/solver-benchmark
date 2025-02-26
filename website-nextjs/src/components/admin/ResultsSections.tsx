@@ -4,7 +4,7 @@ import { ArrowIcon, QuestionLine } from "@/assets/icons"
 import { getHighestVersion } from "@/utils/versions"
 import { calculateSgm } from "@/utils/calculations"
 import { roundNumber } from "@/utils/number"
-import { MaxMemoryUsage, MaxRunTime } from "@/constants"
+import { MaxMemoryUsage } from "@/constants"
 import Popup from "reactjs-popup"
 import { IFilterState, IResultState } from "@/types/state"
 import ResultsSectionsTitle from "./home/ResultsTitle"
@@ -109,7 +109,7 @@ const ResultsSection = () => {
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return benchmarkLatestResults.map((result) => ({
           ...result,
-          runtime: MaxRunTime * xFactor,
+          runtime: result.runtime * xFactor,
           memoryUsage: MaxMemoryUsage * xFactor,
         }))
       default:
@@ -165,8 +165,6 @@ const ResultsSection = () => {
             result.solver === solver
         )
         .map((result) => {
-          if (result.status === "warning" && field === "runtime")
-            return MaxRunTime
           if (
             ["warning", "TO"].includes(result.status) &&
             field === "memoryUsage"

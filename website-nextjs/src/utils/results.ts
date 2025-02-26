@@ -1,4 +1,4 @@
-import { MaxMemoryUsage, MaxRunTime, ProblemSize } from "@/constants"
+import { MaxMemoryUsage, ProblemSize } from "@/constants"
 import {
   BenchmarkResult,
   SolverStatusType,
@@ -79,8 +79,6 @@ const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
   return benchmarkResult.map((benchmarkResult) => {
     return {
       ...benchmarkResult,
-      runtime:
-        benchmarkResult.status !== "ok" ? MaxRunTime : benchmarkResult.runtime,
       memoryUsage: !["ok"].includes(benchmarkResult.status)
         ? MaxMemoryUsage
         : benchmarkResult.memoryUsage,
