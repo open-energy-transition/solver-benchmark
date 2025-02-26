@@ -44,46 +44,60 @@ variable "ssh_key_path" {
 }
 
 variable "instance_name" {
-    description = "Name of the instance"
+    description = "Base name of the instance"
     type = string
     default = "benchmark-instance"
 }
 
-# Test Instance
-resource "google_compute_instance" "c4_instance" {
-    name = var.instance_name
-    machine_type = "c4-standard-2"
-    zone = var.zone
 
-    boot_disk {
-        initialize_params {
-            image = "debian-cloud/debian-11"
-            size = 50 # Size in GB
-        }
+locals {
+  benchmark_files = fileset("${path.module}/benchmarks", "*.yaml*")
+  benchmarks = {
+    for file in local.benchmark_files :
+      replace(file, ".yaml", "") => {
+        filename = file
+        content = yamldecode(file("${path.module}/benchmarks/${file}"))
+      }
+  }
+}
+
+# Create an instance for each benchmark file
+resource "google_compute_instance" "benchmark_instances" {
+  for_each = local.benchmarks
+
+  name         = "${var.instance_name}-${each.key}"
+  machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
+  zone         = var.zone
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      size = 50 # Size in GB
     }
+  }
 
-    network_interface {
-        network = "default"
-        access_config {
-            // Ephemeral public IP
-        }
+  network_interface {
+    network = "default"
+    access_config {
+      // Ephemeral public IP
     }
+  }
 
-    # Only set SSH keys if variables are provided
-    metadata = {
-        ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
-    }
+  # Only set SSH keys if variables are provided
+  metadata = {
+    ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
+    benchmark_file = each.value.filename # Store the benchmark filename in the instance metadata
+  }
 
-    service_account {
-        scopes = ["cloud-platform"]
-    }
-
+  service_account {
+    scopes = ["cloud-platform"]
+  }
 }
 
 # Outputs
-output "instance_ip" {
-    value = google_compute_instance.c4_instance.network_interface[0].access_config[0].nat_ip
-}
-output "instance_id" {
-    value = google_compute_instance.c4_instance.id
+output "instance_ips" {
+  value = {
+    for name, instance in google_compute_instance.benchmark_instances :
+      name => instance.network_interface[0].access_config[0].nat_ip
+  }
 }
