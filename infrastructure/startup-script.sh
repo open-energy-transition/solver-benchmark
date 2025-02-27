@@ -24,6 +24,12 @@ runuser -l $(ls /home) -c 'rm ~/miniconda3/miniconda.sh'
 echo "Setting up conda environment..."
 runuser -l $(ls /home) -c 'echo "source ~/miniconda3/bin/activate" >> ~/.bashrc'
 runuser -l $(ls /home) -c '~/miniconda3/bin/conda init bash'
-runuser -l $(ls /home) -c 'cd ~/solver-benchmark/ && ~/miniconda3/bin/conda env create -f runner/envs/benchmark-2024-fixed.yaml'
+
+# Get benchmark year from instance metadata
+BENCHMARK_YEAR=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_year")
+echo "Using benchmark year: ${BENCHMARK_YEAR}"
+
+# Create conda environment with the appropriate year
+runuser -l $(ls /home) -c "cd ~/solver-benchmark/ && ~/miniconda3/bin/conda env create -f runner/envs/benchmark-${BENCHMARK_YEAR}-fixed.yaml"
 
 echo "Setup completed at $(date)"

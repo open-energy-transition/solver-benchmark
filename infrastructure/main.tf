@@ -91,7 +91,8 @@ resource "google_compute_instance" "benchmark_instances" {
   # Only set SSH keys if variables are provided
   metadata = {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
-    benchmark_file = each.value.filename # Store the benchmark filename in the instance metadata
+    benchmark_file = each.value.filename
+    benchmark_year = lookup(each.value.content, "year", "2024")
   }
 
   # Add the startup script from external file
