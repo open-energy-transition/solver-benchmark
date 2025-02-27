@@ -49,6 +49,11 @@ variable "instance_name" {
     default = "benchmark-instance"
 }
 
+variable "startup_script_path" {
+    description = "Path to startup script"
+    type = string
+    default = "startup-script.sh"
+}
 
 locals {
   benchmark_files = fileset("${path.module}/benchmarks", "*.yaml*")
@@ -88,6 +93,9 @@ resource "google_compute_instance" "benchmark_instances" {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
     benchmark_file = each.value.filename # Store the benchmark filename in the instance metadata
   }
+
+  # Add the startup script from external file
+  metadata_startup_script = file("${path.module}/${var.startup_script_path}")
 
   service_account {
     scopes = ["cloud-platform"]
