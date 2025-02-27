@@ -32,4 +32,18 @@ echo "Using benchmark year: ${BENCHMARK_YEAR}"
 cd /solver-benchmark/
 ~/miniconda3/bin/conda env create -f runner/envs/benchmark-${BENCHMARK_YEAR}-fixed.yaml
 
+# Activate the conda environment
+echo "Activating conda environment benchmark-${BENCHMARK_YEAR}..."
+source ~/miniconda3/bin/activate
+conda activate benchmark-${BENCHMARK_YEAR}
+
+# Add auto-activation to .bashrc
+echo -e "\n# Automatically activate benchmark environment" >> ~/.bashrc
+echo "conda activate benchmark-${BENCHMARK_YEAR}" >> ~/.bashrc
+
+# Verify environment is active
+echo "Current conda environment:"
+conda info --envs | grep "*"
+
 echo "Setup completed at $(date)"
+echo "Conda environment benchmark-${BENCHMARK_YEAR} is now active and will be activated on login"
