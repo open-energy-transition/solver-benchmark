@@ -121,16 +121,16 @@ const SolverSection = () => {
         {/* Solver select */}
         <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
           <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200">
-            Solver Selection
+            Select Solver
           </div>
           <select
-            name="solver1"
+            name="solver"
             value={selectedSolver}
             onChange={(event) => setSelectedSolver(event.target.value)}
             className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem]
             border-transparent text-dark-grey text-base rounded-b-lg block focus-visible:outline-none"
           >
-            <option disabled>Solver & version</option>
+            <option disabled>Solver</option>
             {solverOptions.map((solver, idx) => (
               <option key={idx} value={solver}>
                 {solver}
