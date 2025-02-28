@@ -3,13 +3,14 @@ import { useSelector } from "react-redux"
 import ResultsSectionsTitleDropdown from "./ResultsSgmModeDropdown"
 import { getLatestBenchmarkResult } from "@/utils/results"
 import { IResultState } from "@/types/state"
+import { BenchmarkResult } from "@/types/benchmark"
 
-const ResultsSectionsTitle = () => {
-
-  const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.benchmarkLatestResults
-  })
-
+interface ResultsSectionsTitleProps {
+  benchmarkResults: BenchmarkResult[]
+}
+const ResultsSectionsTitle = ({
+  benchmarkResults,
+}: ResultsSectionsTitleProps) => {
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.rawBenchmarkResults

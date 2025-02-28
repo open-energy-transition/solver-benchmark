@@ -80,8 +80,8 @@ const ResultsSection = () => {
           {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
             <>
               {" "}
-              on {benchmarkResults.length}{" "}
-              {benchmarkResults.length > 1 ? "benchmarks" : "benchmark"}
+              on {uniqueBenchmarkCount}{" "}
+              {uniqueBenchmarkCount > 1 ? "benchmarks" : "benchmark"}
             </>
           )}
         </div>
@@ -95,6 +95,10 @@ const ResultsSection = () => {
     }
   )
 
+  const availableSolvers = useSelector((state: { results: IResultState }) => {
+    return state.results.availableSolvers
+  })
+
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode
   })
@@ -105,7 +109,23 @@ const ResultsSection = () => {
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
-        return benchmarkLatestResults.filter((result) => result.status === "ok")
+        const benchmarkSuccessMap = new Map<string, number>();
+
+        // Count successful solves for each benchmark
+        benchmarkLatestResults
+          .filter(result => result.status === "ok")
+          .forEach(result => {
+            const key = `${result.benchmark}-${result.size}`;
+            benchmarkSuccessMap.set(key, (benchmarkSuccessMap.get(key) || 0) + 1);
+          });
+
+        // Filter results where all solvers succeeded
+        return benchmarkLatestResults.filter(result => {
+          const key = `${result.benchmark}-${result.size}`;
+          return result.status === "ok" &&
+                 benchmarkSuccessMap.get(key) === availableSolvers.length;
+        });
+
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return benchmarkLatestResults.map((result) => ({
           ...result,
@@ -115,7 +135,7 @@ const ResultsSection = () => {
       default:
         return benchmarkLatestResults
     }
-  }, [sgmMode, xFactor, benchmarkLatestResults])
+  }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers])
 
   const [tableData, setTableData] = useState<
     {
@@ -190,10 +210,7 @@ const ResultsSection = () => {
   const getNumberSolvedBenchmark = useCallback(
     (solver: string) => {
       return benchmarkResults.filter(
-        (result) =>
-          result.status === "ok" &&
-          result.solverVersion === getHighestVersion(solverVersions[solver]) &&
-          result.solver === solver
+        (result) => result.status === "ok" && result.solver === solver
       ).length
     },
     [benchmarkResults, solverVersions]
@@ -279,7 +296,7 @@ const ResultsSection = () => {
   return (
     <div>
       <div className="pb-3 pl-3">
-        <ResultsSectionsTitle />
+        <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
         <div className="text-dark-grey text-sm flex flex-wrap items-center">
           You can rank the latest version of each solver by number of solved
           benchmark instances, or by the normalized shifted geometric mean (SGM{" "}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import * as d3 from "d3"
 import { getChartColor } from "@/utils/chart"
+import { Color } from "@/constants/color"
 
 type PerformanceData = {
   benchmark: string
@@ -48,24 +49,13 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   useEffect(() => {
     const width = containerRef.current?.clientWidth || 800
 
-    // Calculate required height for x-axis labels
-    const tempSvg = d3.select("body").append("svg")
-    const longestLabel = d3.max(data, d => `${d.benchmark}-${d.size}`.length) || 0
-    const dummyText = tempSvg
-      .append("text")
-      .attr("font-size", "12px")
-      .text("X".repeat(longestLabel))
-    const textHeight = dummyText.node()?.getBBox().width || 0 // Use width since text will be rotated
-    tempSvg.remove()
-
-    // Calculate dynamic margins and height
     const margin = {
       top: 40,
       right: 100,
-      bottom: Math.max(100, textHeight + 40), // Minimum 100px, or more if needed
-      left: 60
+      bottom: 100,
+      left: 60,
     }
-    const height = 400 + (margin.bottom - 100) // Increase height to accommodate labels
+    const height = 400 + (margin.bottom - 100)
 
     d3.select(svgRef.current).selectAll("*").remove()
 
@@ -87,12 +77,19 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("font-size", "12px")
       .style("opacity", 0)
 
-    // Scale for x-axis (benchmarks)
     const xScale = d3
       .scaleBand()
       .domain(data.map((d) => `${d.benchmark}-${d.size}`))
       .range([margin.left, width - margin.right])
-      .padding(0.1)
+      .padding(0.5)
+
+    // Add sub-band scale for bars with more spacing
+    const xSubScale = d3
+      .scaleBand()
+      .domain(availableSolvers.filter((s) => s !== baseSolver))
+      .range([0, xScale.bandwidth()])
+      .padding(0.4) // Increased padding between bars within group
+    const barWidth = Math.min(xSubScale.bandwidth(), 15)
 
     // Scale for primary y-axis (ratio/factor)
     const yScaleRatio = d3
@@ -113,20 +110,15 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     const xAxis = d3.axisBottom(xScale)
     const yAxisRatio = d3
       .axisLeft(yScaleRatio)
-      .tickFormat((d) => (d === 0 ? "1×" : `${Math.pow(2, Number(d))}×`))
+      .tickFormat((d) => (d === 0 ? "1" : `${Math.pow(2, Number(d))}`))
     const yAxisRuntime = d3.axisRight(yScaleRuntime).tickFormat((d) => `${d}s`)
 
-    // Add x-axis
+    // Add x-axis without labels
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(xAxis)
-      .selectAll("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -5)
-      .attr("x", -10)
-      .style("text-anchor", "end")
-      .style("font-size", "12px")
+      .call((g) => g.selectAll(".tick text").remove()) // Remove tick labels but keep the axis line
 
     // Add primary y-axis (ratio)
     svg
@@ -153,7 +145,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("stroke", "#ccc")
       .style("stroke-dasharray", "4,4")
 
-    // Update bars to use ratio scale (excluding base solver and hidden solvers)
+    // Update bars positioning with adjusted width
     svg
       .selectAll(".bar")
       .data(
@@ -164,20 +156,29 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .enter()
       .append("rect")
       .attr("class", "bar")
-      .attr("x", (d) => xScale(`${d.benchmark}-${d.size}`) || 0)
+      .attr("x", (d) => {
+        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0
+        const barPosition = xSubScale(d.solver) || 0
+        // Center the bar within its allocated space if it's thinner than the space
+        const offset = (xSubScale.bandwidth() - barWidth) / 2
+        return groupPosition + barPosition + offset
+      })
+      .attr("width", barWidth)
       .attr("y", (d) => (d.factor > 0 ? yScaleRatio(d.factor) : yScaleRatio(0)))
-      .attr("width", xScale.bandwidth())
       .attr("height", (d) => Math.abs(yScaleRatio(d.factor) - yScaleRatio(0)))
       .attr("fill", (d) => solverColors[d.solver])
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
         tooltip.transition().duration(200).style("opacity", 0.9)
+        const ratio = Math.pow(2, d.factor)
+        const formattedRatio =
+          ratio < 0.01 ? ratio.toExponential(1) : ratio.toPrecision(2)
         tooltip
           .html(
-            `Benchmark:  ${d.benchmark}-${d.size} <br/>` +
+            `Benchmark: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
               `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
-              `Ratio: ${Math.pow(2, d.factor).toFixed(2)}×`
+              `Ratio: ${formattedRatio}`
           )
           .style("left", event.pageX + 10 + "px")
           .style("top", event.pageY - 28 + "px")
@@ -186,7 +187,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip.transition().duration(500).style("opacity", 0)
       })
 
-    // Update scatter points to use runtime scale (only if base solver is visible)
+    // Center scatter points in their group
     svg
       .selectAll(".scatter-point")
       .data(
@@ -197,14 +198,13 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .enter()
       .append("circle")
       .attr("class", "scatter-point")
-      .attr(
-        "cx",
-        (d) => xScale(`${d.benchmark}-${d.size}`)! + xScale.bandwidth() / 2
-      )
+      .attr("cx", (d) => {
+        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0
+        return groupPosition + xScale.bandwidth() / 2
+      })
       .attr("cy", (d) => yScaleRuntime(d.runtime))
-      .attr("r", 6)
-      .attr("fill", "white")
-      .attr("stroke", (d) => solverColors[d.solver])
+      .attr("r", 4)
+      .attr("fill", Color.Teal)
       .attr("stroke-width", 2)
       .on("mouseover", (event, d) => {
         tooltip.transition().duration(200).style("opacity", 0.9)
@@ -226,7 +226,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .text("")
+      .text(`Instances sorted by solving time of ${baseSolver}`)
 
     // Primary y-axis label
     svg
@@ -264,11 +264,11 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     return () => {
       tooltip.remove()
     }
-  }, [data, baseSolver, solverColors, visibleSolvers])
+  }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers])
 
   return (
     <div className="bg-white p-4 rounded-xl">
-      <div className="flex flex-wrap gap-4 mb-4 legend-container">
+      <div className="flex flex-wrap gap-4 mb-4 legend-container pb-4">
         {/* Selected solver legend (circle) */}
         <div
           className="flex items-center gap-2 cursor-pointer select-none"
@@ -276,11 +276,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         >
           <div className="flex items-center justify-center w-4 h-4">
             <div
-              className="w-3 h-3 rounded-full bg-white border-2"
-              style={{
-                borderColor: solverColors[baseSolver],
-                opacity: visibleSolvers.has(baseSolver) ? 1 : 0.3,
-              }}
+              className={`w-4 h-4 rounded-full bg-teal ${
+                visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
+              }`}
             />
           </div>
           <span className="text-sm text-gray-700">{baseSolver}</span>

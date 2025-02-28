@@ -2,33 +2,29 @@ import { useEffect, useState, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { IResultState } from "@/types/state"
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart"
-import { FaGlobe, FaGithub, FaBalanceScale } from 'react-icons/fa'
+import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa"
 
 const SOLVES_DATA = [
   {
     label: "HiGHS",
-    license: "https://github.com/ERGO-Code/HiGHS/blob/master/LICENSE.txt",
     name: "highs",
     sourceCode: "https://github.com/ERGO-Code/HiGHS",
     website: "https://highs.dev/",
   },
   {
     label: "SCIP",
-    license: "https://github.com/scipopt/scip/blob/master/LICENSE",
     name: "scip",
     sourceCode: "https://github.com/scipopt/scip",
     website: "https://www.scipopt.org/",
   },
   {
     label: "CBC",
-    license: "https://github.com/coin-or/Cbc/blob/master/LICENSE",
     name: "cbc",
     sourceCode: "https://github.com/coin-or/Cbc",
     website: "https://coin-or.github.io/Cbc/intro.html",
   },
   {
     label: "GLPK",
-    license: "https://www.gnu.org/licenses/gpl-3.0.html",
     name: "glpk",
     sourceCode: "https://github.com/firedrakeproject/glpk",
     website: "https://www.gnu.org/software/glpk/",
@@ -94,21 +90,30 @@ const SolverSection = () => {
         }
       })
 
+    const baseRuntimes = new Map(
+      baseData.map((d) => [`${d.benchmark}-${d.size}`, d.runtime])
+    )
+
     // Combine and sort all data
     return [...baseData, ...comparisonData].sort((a, b) => {
-      // First sort by benchmark
-      const benchmarkCompare = a.benchmark.localeCompare(b.benchmark)
-      if (benchmarkCompare !== 0) return benchmarkCompare
-      // Then put base solver first within each benchmark
+      const aBaseRuntime = baseRuntimes.get(`${a.benchmark}-${a.size}`) || 0
+      const bBaseRuntime = baseRuntimes.get(`${b.benchmark}-${b.size}`) || 0
+
+      // Sort by base solver runtime
+      if (aBaseRuntime !== bBaseRuntime) {
+        return aBaseRuntime - bBaseRuntime
+      }
+
+      // Put base solver first within each benchmark group
       return a.solver === selectedSolver ? -1 : 1
     })
   }, [selectedSolver, benchmarkLatestResults])
 
   const selectedSolverInfo = useMemo(() => {
-    if (!selectedSolver) return null;
-    const solverName = selectedSolver.split('--')[0].toLowerCase();
-    return SOLVES_DATA.find(s => s.name.toLowerCase() === solverName);
-  }, [selectedSolver]);
+    if (!selectedSolver) return null
+    const solverName = selectedSolver.split("--")[0].toLowerCase()
+    return SOLVES_DATA.find((s) => s.name.toLowerCase() === solverName)
+  }, [selectedSolver])
 
   return (
     <div>
@@ -149,7 +154,7 @@ const SolverSection = () => {
                   href={selectedSolverInfo.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-blue-600 hover:text-blue-800 transition-colors"
+                  className="flex items-center gap-3 transition-colors"
                 >
                   <FaGlobe className="w-5 h-5" />
                   <span className="hover:underline">Official Website</span>
@@ -158,20 +163,15 @@ const SolverSection = () => {
                   href={selectedSolverInfo.sourceCode}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-blue-600 hover:text-blue-800 transition-colors"
+                  className="flex items-center gap-3 transition-colors"
                 >
                   <FaGithub className="w-5 h-5" />
                   <span className="hover:underline">Source Code</span>
                 </a>
-                <a
-                  href={selectedSolverInfo.license}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-blue-600 hover:text-blue-800 transition-colors"
-                >
+                <div className="flex items-center gap-3 transition-colors">
                   <FaBalanceScale className="w-5 h-5" />
-                  <span className="hover:underline">License</span>
-                </a>
+                  <span>License: MIT</span>
+                </div>
               </div>
             </div>
           </div>
