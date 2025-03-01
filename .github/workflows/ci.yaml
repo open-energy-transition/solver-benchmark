@@ -48,7 +48,7 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" benchmarks/tests.yaml
+          ./runner/benchmark_all.sh -y "tests" tests/sample_benchmarks_metadata.yaml
           echo ""
           cat results/benchmark_results.csv
           if awk -F',' 'NR>1 {if ($6 != "ok") exit 1}' results/benchmark_results.csv; then
