@@ -8,42 +8,54 @@ tulipa-1_EU_investment_simple:
   Time horizon: Single period (1 year)
   MILP features: Unit commitment
   Sizes:
-  - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
+  - Name: 28-24h
+    Size: XS
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
     Temporal resolution: 24
     Spatial resolution: 28
     N. of constraints: 4746
     N. of continuous variables: 6658
     N. of integer variables: 251
     N. of binary variables: 7
-  - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_168h-a213cb9c037b9b9e0d0d38a1b7644a46407203a1f8e5f036c9e39870270c4a4f.mps.gz
+  - Name: 28-52.1h
+    Size: S
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_168h-a213cb9c037b9b9e0d0d38a1b7644a46407203a1f8e5f036c9e39870270c4a4f.mps.gz
     Temporal resolution: 52.1
     Spatial resolution: 28
     N. of constraints: 46592
     N. of continuous variables: 46594
     N. of integer variables: 251
     N. of binary variables: 7
-  - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_672h-336e9a77dd9deae1ef81069c4e3f0c4c39cbbe0bc24b4d4e3f666657cbc76ab6.mps.gz
+  - Name: 28-13h
+    Size: S
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_672h-336e9a77dd9deae1ef81069c4e3f0c4c39cbbe0bc24b4d4e3f666657cbc76ab6.mps.gz
     Temporal resolution: 13
     Spatial resolution: 28
     N. of constraints: 186368
     N. of continuous variables: 186370
     N. of integer variables: 251
     N. of binary variables: 7
-  - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
+  - Name: 28-4.3h
+    Size: S
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
     Temporal resolution: 4.3
     Spatial resolution: 28
     N. of constraints: 559104
     N. of continuous variables: 559106
     N. of integer variables: 251
     N. of binary variables: 7
-  - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
+  - Name: 28-2.2h
+    Size: R
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
     Temporal resolution: 2.2
     Spatial resolution: 28
     N. of constraints: 1118208
     N. of continuous variables: 1118210
     N. of integer variables: 251
     N. of binary variables: 7
-  - URL: https://github.com/jump-dev/open-energy-modeling-benchmarks/blob/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
+  - Name: 28-1h
+    Size: R
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
     Temporal resolution: 1
     Spatial resolution: 28
     N. of constraints: 2429440
