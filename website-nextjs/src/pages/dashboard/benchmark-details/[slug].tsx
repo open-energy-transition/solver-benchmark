@@ -20,6 +20,7 @@ import { PATH_DASHBOARD } from "@/constants/path"
 import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult"
 import { Technique } from "@/constants"
 import { IResultState } from "@/types/state"
+import BenchmarkSummaryTable from "@/components/admin/benchmarks/BenchmarkSummaryTable"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -185,6 +186,8 @@ const PageBenchmarkDetail = () => {
                 <MilpTableResult benchmarkName={benchmarkName as string} />
               )}
               <BenchmarksSection benchmarkName={benchmarkName as string} />
+
+              <BenchmarkSummaryTable benchmarkDetail={benchmarkDetail} />
             </>
           )}
         </div>
