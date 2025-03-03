@@ -1,3 +1,4 @@
+benchmarks:
 - name: sample_lp.lp
   sizes:
   - size: ""
