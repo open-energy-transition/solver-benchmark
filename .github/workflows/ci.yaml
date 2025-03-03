@@ -40,6 +40,7 @@ jobs:
             echo "ERROR: git diff non empty, metadata needs updating, please run `python benchmarks/merge_metadata.py`"
           else
             echo "git diff is empty, metadata must be up to date"
+          fi
 
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
