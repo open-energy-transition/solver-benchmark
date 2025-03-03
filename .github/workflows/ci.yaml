@@ -33,6 +33,14 @@ jobs:
           pre-commit install
           pre-commit run --all-files
 
+      - name: Check benchmark metadata
+        run: |
+          python benchmarks/merge_metadata.py
+          if git diff; then
+            echo "ERROR: git diff non empty, metadata needs updating, please run `python benchmarks/merge_metadata.py`"
+          else
+            echo "git diff is empty, metadata must be up to date"
+
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
