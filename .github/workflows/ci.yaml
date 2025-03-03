@@ -36,11 +36,12 @@ jobs:
       - name: Check benchmark metadata
         run: |
           python benchmarks/merge_metadata.py
-          if git diff; then
-            echo "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
-            exit 1
-          else
+          if git diff --quiet; then
             echo "git diff is empty, metadata must be up to date"
+          else
+            git diff
+            printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
+            exit 1
           fi
 
       - name: Run Streamlit App Action

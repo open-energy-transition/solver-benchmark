@@ -16,7 +16,7 @@ genx-15-zones_elec_trex:
     Temporal resolution: 168
     N. of constraints: 11832658
     N. of variables:
-    N. of continuous variables: 13777226
+    N. of continuous variables: 0
     N. of integer variables:
     N. of binary variables:
 genx-15-zones_elec_trex_co2:
