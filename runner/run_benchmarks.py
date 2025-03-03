@@ -13,12 +13,6 @@ import yaml
 
 
 def get_conda_package_versions(solvers, env_name=None):
-    return {
-        "highs": "0",
-        "cbc": "0",
-        "scip": "0",
-        "glpk": "0",
-    }
     try:
         # List packages in the conda environment
         cmd = "conda list"
@@ -183,7 +177,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
 
 def benchmark_solver(input_file, solver_name, timeout):
     command = [
-        "/usr/local/bin/gtime",
+        "/usr/bin/time",
         "--format",
         "MaxResidentSetSizeKB=%M",
         "timeout",
@@ -240,7 +234,7 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=1 * 10,
+    timeout=10 * 60,
     override=True,
 ):
     size_categories = {"XS", "S"}  # TODO add this to CLI args
@@ -381,7 +375,7 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "cbc", "glpk"]  # For production
+    solvers = ["highs", "scip", "cbc", "glpk"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion
