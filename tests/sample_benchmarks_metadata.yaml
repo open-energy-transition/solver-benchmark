@@ -1,0 +1,10 @@
+sample_lp:
+  Sizes:
+  - Name: ""
+    Size: XS
+    Path: tests/sample_benchmarks/sample_lp.lp
+sample_mip:
+  Sizes:
+  - Name: ""
+    Size: XS
+    Path: tests/sample_benchmarks/sample_mip.lp

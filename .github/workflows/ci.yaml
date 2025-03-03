@@ -33,6 +33,17 @@ jobs:
           pre-commit install
           pre-commit run --all-files
 
+      - name: Check benchmark metadata
+        run: |
+          python benchmarks/merge_metadata.py
+          if git diff --quiet; then
+            echo "git diff is empty, metadata must be up to date"
+          else
+            git diff
+            printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
+            exit 1
+          fi
+
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
@@ -48,7 +59,7 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" benchmarks/tests.yaml
+          ./runner/benchmark_all.sh -y "tests" tests/sample_benchmarks_metadata.yaml
           echo ""
           cat results/benchmark_results.csv
           if awk -F',' 'NR>1 {if ($6 != "ok") exit 1}' results/benchmark_results.csv; then

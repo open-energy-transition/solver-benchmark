@@ -32,7 +32,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 BENCHMARK_SCRIPT="./runner/run_benchmarks.py"
-BENCHMARK_CONFIG="$1"
+BENCHMARKS_FILE="$1"
 
 idx=0
 source "$(conda info --base)/etc/profile.d/conda.sh"  # Ensure conda is initialized
@@ -52,9 +52,9 @@ for year in "${years[@]}"; do
     echo "Running benchmarks for the year: $year"
     conda activate "$env_name"
     if [ "$idx" -eq 0 ]; then
-        python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year" "$overwrite_results"
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" "$overwrite_results"
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARK_CONFIG" "$year" false
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" false
     fi
     conda deactivate
 

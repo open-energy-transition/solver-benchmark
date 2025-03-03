@@ -8,22 +8,35 @@ pypsa-eur-sec:
   Time horizon: Single period (1 year)
   MILP features: None
   Sizes:
-  - Temporal resolution: 24
+  - Name: 2-24h
+    Size: XS
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
+    Temporal resolution: 24
     Spatial resolution: 2
     N. of constraints: 132272
     N. of variables: 63264
-  - Temporal resolution: 24
+  - Name: 6-24h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-6-24h.lp
+    Temporal resolution: 24
     Spatial resolution: 6
     N. of constraints: 377463
     N. of variables: 178831
-  - Temporal resolution: 12
+  - Name: 5-12h
+    Size: M
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
+    Temporal resolution: 12
     Spatial resolution: 5
     N. of constraints: 636907
     N. of variables: 301038
-  - Temporal resolution: 3
+  - Name: 2-3h
+    Size: L
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
+    Temporal resolution: 3
     Spatial resolution: 2
     N. of constraints: 1057182
     N. of variables: 505253
+  # TODO: No R size
 pypsa-eur-elec-trex:
   Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints)
   Model name: PyPSA-Eur
@@ -34,22 +47,35 @@ pypsa-eur-elec-trex:
   Time horizon: 1 year
   MILP features: None
   Sizes:
-  - Temporal resolution: 12
+  - Name: 3-12h
+    Size: XS
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-12h.lp
+    Temporal resolution: 12
     Spatial resolution: 3
     N. of constraints: 119786
     N. of variables: 57705
-  - Temporal resolution: 12
+  - Name: 6-12h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-6-12h.lp
+    Temporal resolution: 12
     Spatial resolution: 6
     N. of constraints: 253453
     N. of variables: 117605
-  - Temporal resolution: 3
+  - Name: 3-3h
+    Size: M
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-3h.lp
+    Temporal resolution: 3
     Spatial resolution: 3
     N. of constraints: 478946
     N. of variables: 230682
-  - Temporal resolution: 3
+  - Name: 4-3h
+    Size: L
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-4-3h.lp
+    Temporal resolution: 3
     Spatial resolution: 4
     N. of constraints: 677533
     N. of variables: 318285
+  # TODO: No R size
 pypsa-eur-elec-op:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints)
   Model name: PyPSA-Eur
@@ -60,23 +86,38 @@ pypsa-eur-elec-op:
   Time horizon: 1 year
   MILP features: None
   Sizes:
-  - Temporal resolution: 24
+  - Name: 6-24h
+    Size: XS
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-6-24h.lp
+    Temporal resolution: 24
     Spatial resolution: 6
     N. of constraints: 126776
     N. of variables: 58841
-  - Temporal resolution: 12
+  - Name: 8-12h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-8-12h.lp
+    Temporal resolution: 12
     Spatial resolution: 8
     N. of constraints: 326473
     N. of variables: 152656
-  - Temporal resolution: 3
+  - Name: 4-3h
+    Size: M
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
+    Temporal resolution: 3
     Spatial resolution: 4
     N. of constraints: 677519
     N. of variables: 318278
-  - Temporal resolution: 1
+  - Name: 2-1h
+    Size: L
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 2
     N. of constraints: 928600
     N. of variables: 455458
-  - Temporal resolution: 3
+  - Name: 10-3h
+    Size: R # TODO: Solved in 18 hours
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-10-3h.lp
+    Temporal resolution: 3
     Spatial resolution: 10
 pypsa-eur-elec-op-ucconv:
   Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints)
@@ -88,18 +129,29 @@ pypsa-eur-elec-op-ucconv:
   Time horizon: 1 year
   MILP features: Unit commitment for conventional fleet
   Sizes:
-  - Temporal resolution: 24
+  # TODO: No XS size
+  - Name: 5-24h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-5-24h.lp
+    Temporal resolution: 24
     Spatial resolution: 5
     N. of constraints: 129672
     N. of variables: 60288
-  - Temporal resolution: 3
+  - Name: 2-3h
+    Size: M
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
+    Temporal resolution: 3
     Spatial resolution: 2
     N. of constraints: 385478
     N. of variables: 186880
-  - Temporal resolution: 24
+  - Name: 10-24h
+    Size: L
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
+    Temporal resolution: 24
     Spatial resolution: 10
     N. of constraints: 238164
     N. of variables: 109259
+  # TODO: No R size
 pypsa-power+ely:
   Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model
   Model name: PyPSA
@@ -110,7 +162,10 @@ pypsa-power+ely:
   Time horizon: 1 year
   MILP features: None
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of variables:
@@ -124,7 +179,10 @@ pypsa-power+ely+battery:
   Time horizon: 1 year
   MILP features: None
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: XS
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of variables:
@@ -138,7 +196,10 @@ pypsa-power+ely+battery-ucgas:
   Time horizon: 1 year
   MILP features: Unit commitment for gas generator
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
@@ -154,7 +215,10 @@ pypsa-power+ely-co2:
   Time horizon: 1 year
   MILP features: None
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of variables:
@@ -168,7 +232,10 @@ pypsa-power+ely-ucgas:
   Time horizon: 1 year
   MILP features: Unit commitment for gas generator
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
@@ -184,7 +251,10 @@ pypsa-power+ely+battery-ucgas-mod:
   Time horizon: 1 year
   MILP features: Unit commitment for gas generator + Modularity
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-mod-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
@@ -200,7 +270,10 @@ pypsa-power+ely-co2-mod:
   Time horizon: 1 year
   MILP features: Modularity
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-mod-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
@@ -216,7 +289,10 @@ pypsa-power+ely-mod:
   Time horizon: 1 year
   MILP features: Modularity
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-mod-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
@@ -232,7 +308,10 @@ pypsa-power+ely-ucgas-mod:
   Time horizon: 1 year
   MILP features: Unit commitment for gas generator + Modularity
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-mod-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
@@ -248,7 +327,10 @@ pypsa-power+ely+battery-mod:
   Time horizon: 1 year
   MILP features: Modularity
   Sizes:
-  - Temporal resolution: 1
+  - Name: 1-1h
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-mod-1-1h.lp
+    Temporal resolution: 1
     Spatial resolution: 1
     N. of constraints:
     N. of continuous variables:
