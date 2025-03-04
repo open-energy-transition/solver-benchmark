@@ -2,8 +2,10 @@ benchmarks:
 - name: sample_lp.lp
   sizes:
   - size: ""
+    name: "test_sample_lp"
     path: runner/sample-problems/sample_lp.lp
 - name: sample_mip.lp
   sizes:
   - size: ""
+    name: "test_sample_mip"
     path: runner/sample-problems/sample_mip.lp
