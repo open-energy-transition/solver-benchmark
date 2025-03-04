@@ -237,7 +237,7 @@ def main(
     timeout=10 * 60,
     override=True,
 ):
-    size_categories = {"XS", "S"}  # TODO add this to CLI args
+    size_categories = None  # TODO add this to CLI args
     results = {}
 
     # Load benchmarks from YAML file

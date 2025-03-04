@@ -93,6 +93,7 @@ resource "google_compute_instance" "benchmark_instances" {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
     benchmark_file = each.value.filename
     benchmark_year = lookup(each.value.content, "year", "2024")
+    benchmark_content = file("${path.module}/benchmarks/${each.value.filename}")
   }
 
   # Add the startup script from external file

@@ -12,6 +12,12 @@ apt-get install -y tmux git time
 echo "Cloning repository..."
 git clone https://github.com/open-energy-transition/solver-benchmark.git
 
+# JUST FOR TESTING; REMOVE BEFORE MERGE
+cd solver-benchmark
+echo "Checking out open-tofu-infrastructure branch..."
+git checkout open-tofu-infrastructure
+cd ..
+
 # Install Miniconda
 echo "Installing Miniconda..."
 mkdir -p ~/miniconda3
@@ -47,3 +53,17 @@ conda info --envs | grep "*"
 
 echo "Setup completed at $(date)"
 echo "Conda environment benchmark-${BENCHMARK_YEAR} is now active and will be activated on login"
+
+# Get benchmark filename from instance metadata
+BENCHMARK_FILE=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_file")
+echo "Using benchmark file: ${BENCHMARK_FILE}"
+
+# Get benchmark content
+BENCHMARK_CONTENT=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_content")
+
+# Write the benchmark file - preserve the exact content
+echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
+
+# Run the benchmarks
+echo "Starting benchmarks..."
+python /solver-benchmark/runner/run_benchmarks.py /solver-benchmark/benchmarks/${BENCHMARK_FILE} ${BENCHMARK_YEAR}
