@@ -1,3 +1,4 @@
+benchmarks:
 - name: pypsa-eur-sec
   sizes:
   - name: 2-24h
