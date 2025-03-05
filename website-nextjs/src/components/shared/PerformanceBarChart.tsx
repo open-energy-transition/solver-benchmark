@@ -1,69 +1,72 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import * as d3 from "d3"
-import { getChartColor } from "@/utils/chart"
-import { Color } from "@/constants/color"
+import { useEffect, useMemo, useRef, useState } from "react";
+import * as d3 from "d3";
+import { getChartColor } from "@/utils/chart";
+import { Color } from "@/constants/color";
 
 type PerformanceData = {
-  benchmark: string
-  factor: number
-  solver: string
-  size: string
-  status: "TO" | "ok" | "warning"
-  runtime: number
-  baseSolverRuntime: number
-}
+  benchmark: string;
+  factor: number;
+  solver: string;
+  size: string;
+  status: "TO" | "ok" | "warning";
+  runtime: number;
+  baseSolverRuntime: number;
+};
 
 interface Props {
-  data: PerformanceData[]
-  baseSolver: string
-  availableSolvers: string[]
+  data: PerformanceData[];
+  baseSolver: string;
+  availableSolvers: string[];
 }
 
 const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const svgRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const svgRef = useRef(null);
   const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(
-    new Set([baseSolver, ...availableSolvers.filter((s) => s !== baseSolver)])
-  )
+    new Set([baseSolver, ...availableSolvers.filter((s) => s !== baseSolver)]),
+  );
 
   const solverColors = useMemo(() => {
-    return availableSolvers.reduce((acc, solver, index) => {
-      acc[solver] = getChartColor(index)
-      return acc
-    }, {} as Record<string, string>)
-  }, [availableSolvers])
+    return availableSolvers.reduce(
+      (acc, solver, index) => {
+        acc[solver] = getChartColor(index);
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+  }, [availableSolvers]);
 
   const toggleSolver = (solver: string) => {
     setVisibleSolvers((prev) => {
-      const next = new Set(prev)
-      if (solver === baseSolver) return next // Don't allow toggling base solver
+      const next = new Set(prev);
+      if (solver === baseSolver) return next; // Don't allow toggling base solver
       if (next.has(solver)) {
-        next.delete(solver)
+        next.delete(solver);
       } else {
-        next.add(solver)
+        next.add(solver);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
   useEffect(() => {
-    const width = containerRef.current?.clientWidth || 800
+    const width = containerRef.current?.clientWidth || 800;
 
     const margin = {
       top: 40,
       right: 100,
       bottom: 100,
       left: 60,
-    }
-    const height = 400 + (margin.bottom - 100)
+    };
+    const height = 400 + (margin.bottom - 100);
 
-    d3.select(svgRef.current).selectAll("*").remove()
+    d3.select(svgRef.current).selectAll("*").remove();
 
     const svg = d3
       .select(svgRef.current)
       .attr("width", width)
       .attr("height", height)
-      .style("overflow", "visible")
+      .style("overflow", "visible");
 
     // Tooltip setup
     const tooltip = d3
@@ -75,27 +78,27 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("border", "1px solid #ccc")
       .style("border-radius", "4px")
       .style("font-size", "12px")
-      .style("opacity", 0)
+      .style("opacity", 0);
 
     const xScale = d3
       .scaleBand()
       .domain(data.map((d) => `${d.benchmark}-${d.size}`))
       .range([margin.left, width - margin.right])
-      .padding(0.5)
+      .padding(0.5);
 
     // Add sub-band scale for bars with more spacing
     const xSubScale = d3
       .scaleBand()
       .domain(availableSolvers.filter((s) => s !== baseSolver))
       .range([0, xScale.bandwidth()])
-      .padding(0.4) // Increased padding between bars within group
-    const barWidth = Math.min(xSubScale.bandwidth(), 15)
+      .padding(0.4); // Increased padding between bars within group
+    const barWidth = Math.min(xSubScale.bandwidth(), 15);
 
     // Scale for primary y-axis (ratio/factor)
     const yScaleRatio = d3
       .scaleLinear()
       .domain([-4, 4])
-      .range([height - margin.bottom, margin.top])
+      .range([height - margin.bottom, margin.top]);
 
     // Scale for secondary y-axis (runtime)
     const yScaleRuntime = d3
@@ -104,27 +107,27 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.1,
         d3.max(data, (d) => Math.max(d.runtime, d.baseSolverRuntime)) || 100,
       ])
-      .range([height - margin.bottom, margin.top])
+      .range([height - margin.bottom, margin.top]);
 
     // Axes
-    const xAxis = d3.axisBottom(xScale)
+    const xAxis = d3.axisBottom(xScale);
     const yAxisRatio = d3
       .axisLeft(yScaleRatio)
-      .tickFormat((d) => (d === 0 ? "1" : `${Math.pow(2, Number(d))}`))
-    const yAxisRuntime = d3.axisRight(yScaleRuntime).tickFormat((d) => `${d}s`)
+      .tickFormat((d) => (d === 0 ? "1" : `${Math.pow(2, Number(d))}`));
+    const yAxisRuntime = d3.axisRight(yScaleRuntime).tickFormat((d) => `${d}s`);
 
     // Add x-axis without labels
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(xAxis)
-      .call((g) => g.selectAll(".tick text").remove()) // Remove tick labels but keep the axis line
+      .call((g) => g.selectAll(".tick text").remove()); // Remove tick labels but keep the axis line
 
     // Add primary y-axis (ratio)
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(yAxisRatio)
+      .call(yAxisRatio);
 
     // Add secondary y-axis (runtime)
     svg
@@ -133,7 +136,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .call(yAxisRuntime)
       .attr("class", "secondary-axis")
       .selectAll("text")
-      .style("fill", "#666")
+      .style("fill", "#666");
 
     // Add center line (ratio = 1)
     svg
@@ -143,25 +146,25 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y1", yScaleRatio(0))
       .attr("y2", yScaleRatio(0))
       .style("stroke", "#ccc")
-      .style("stroke-dasharray", "4,4")
+      .style("stroke-dasharray", "4,4");
 
     // Update bars positioning with adjusted width
     svg
       .selectAll(".bar")
       .data(
         data.filter(
-          (d) => d.solver !== baseSolver && visibleSolvers.has(d.solver)
-        )
+          (d) => d.solver !== baseSolver && visibleSolvers.has(d.solver),
+        ),
       )
       .enter()
       .append("rect")
       .attr("class", "bar")
       .attr("x", (d) => {
-        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0
-        const barPosition = xSubScale(d.solver) || 0
+        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0;
+        const barPosition = xSubScale(d.solver) || 0;
         // Center the bar within its allocated space if it's thinner than the space
-        const offset = (xSubScale.bandwidth() - barWidth) / 2
-        return groupPosition + barPosition + offset
+        const offset = (xSubScale.bandwidth() - barWidth) / 2;
+        return groupPosition + barPosition + offset;
       })
       .attr("width", barWidth)
       .attr("y", (d) => (d.factor > 0 ? yScaleRatio(d.factor) : yScaleRatio(0)))
@@ -169,56 +172,56 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("fill", (d) => solverColors[d.solver])
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 0.9)
-        const ratio = Math.pow(2, d.factor)
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        const ratio = Math.pow(2, d.factor);
         const formattedRatio =
-          ratio < 0.01 ? ratio.toExponential(1) : ratio.toPrecision(2)
+          ratio < 0.01 ? ratio.toExponential(1) : ratio.toPrecision(2);
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
               `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
-              `Ratio: ${formattedRatio}`
+              `Ratio: ${formattedRatio}`,
           )
           .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px")
+          .style("top", event.pageY - 28 + "px");
       })
       .on("mouseout", () => {
-        tooltip.transition().duration(500).style("opacity", 0)
-      })
+        tooltip.transition().duration(500).style("opacity", 0);
+      });
 
     // Center scatter points in their group
     svg
       .selectAll(".scatter-point")
       .data(
         data.filter(
-          (d) => d.solver === baseSolver && visibleSolvers.has(d.solver)
-        )
+          (d) => d.solver === baseSolver && visibleSolvers.has(d.solver),
+        ),
       )
       .enter()
       .append("circle")
       .attr("class", "scatter-point")
       .attr("cx", (d) => {
-        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0
-        return groupPosition + xScale.bandwidth() / 2
+        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0;
+        return groupPosition + xScale.bandwidth() / 2;
       })
       .attr("cy", (d) => yScaleRuntime(d.runtime))
       .attr("r", 4)
       .attr("fill", Color.Teal)
       .attr("stroke-width", 2)
       .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 0.9)
+        tooltip.transition().duration(200).style("opacity", 0.9);
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size} <br/>` +
-              `${baseSolver}: ${d.runtime.toFixed(2)}s`
+              `${baseSolver}: ${d.runtime.toFixed(2)}s`,
           )
           .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px")
+          .style("top", event.pageY - 28 + "px");
       })
       .on("mouseout", () => {
-        tooltip.transition().duration(500).style("opacity", 0)
-      })
+        tooltip.transition().duration(500).style("opacity", 0);
+      });
 
     // Update axis labels
     svg
@@ -226,7 +229,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .text(`Instances sorted by solving time of ${baseSolver}`)
+      .text(`Instances sorted by solving time of ${baseSolver}`);
 
     // Primary y-axis label
     svg
@@ -235,7 +238,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", -(height / 2))
       .attr("y", 10)
       .attr("text-anchor", "middle")
-      .text("Runtime Ratio (log scale")
+      .text("Runtime Ratio (log scale");
 
     // Secondary y-axis label
     svg
@@ -245,12 +248,12 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", width - margin.right + 45)
       .attr("text-anchor", "middle")
       .style("fill", "#666")
-      .text(`Runtime of ${baseSolver} (s)`)
+      .text(`Runtime of ${baseSolver} (s)`);
 
     // Add a legend entry for scatter points
     const legendContainer = d3
       .select(containerRef.current)
-      .select(".legend-container")
+      .select(".legend-container");
 
     legendContainer.append("div").attr("class", "flex items-center gap-2")
       .html(`
@@ -259,12 +262,12 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                style="border-color: ${solverColors[baseSolver]}"></div>
         </div>
         <span class="text-sm text-gray-700">${baseSolver}</span>
-      `)
+      `);
 
     return () => {
-      tooltip.remove()
-    }
-  }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers])
+      tooltip.remove();
+    };
+  }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers]);
 
   return (
     <div className="bg-white p-4 rounded-xl">
@@ -309,7 +312,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         <svg ref={svgRef}></svg>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PerformanceBarChart
+export default PerformanceBarChart;

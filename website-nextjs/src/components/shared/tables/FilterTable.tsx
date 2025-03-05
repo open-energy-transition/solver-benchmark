@@ -1,18 +1,18 @@
-import DebouncedInput from "@/components/admin/raw-result/DebouncedInput"
-import FilterAutoComplete from "@/components/admin/raw-result/FilterAutoComplete"
-import { BenchmarkResult } from "@/types/benchmark"
-import { Column } from "@tanstack/react-table"
-import { useMemo } from "react"
+import DebouncedInput from "@/components/admin/raw-result/DebouncedInput";
+import FilterAutoComplete from "@/components/admin/raw-result/FilterAutoComplete";
+import { BenchmarkResult } from "@/types/benchmark";
+import { Column } from "@tanstack/react-table";
+import { useMemo } from "react";
 
 export default function Filter({
   column,
 }: {
-  column: Column<BenchmarkResult, unknown>
+  column: Column<BenchmarkResult, unknown>;
 }) {
   const { filterVariant } =
-    (column.columnDef.meta as { filterVariant?: string }) ?? {}
+    (column.columnDef.meta as { filterVariant?: string }) ?? {};
 
-  const columnFilterValue = column.getFilterValue()
+  const columnFilterValue = column.getFilterValue();
 
   const sortedUniqueValues = useMemo(
     () =>
@@ -21,8 +21,8 @@ export default function Filter({
         : Array.from(column.getFacetedUniqueValues().keys())
             .sort()
             .slice(0, 5000),
-    [column.getFacetedUniqueValues(), filterVariant]
-  )
+    [column.getFacetedUniqueValues(), filterVariant],
+  );
 
   return filterVariant === "range" ? (
     <div>
@@ -82,5 +82,5 @@ export default function Filter({
         setFilterValue={column.setFilterValue}
       />
     </>
-  )
+  );
 }

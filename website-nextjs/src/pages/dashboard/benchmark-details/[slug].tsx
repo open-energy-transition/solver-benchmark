@@ -1,42 +1,37 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Footer, Navbar } from "@/components/shared"
-import Head from "next/head"
-import { useRouter } from "next/router"
-import {
-  ArrowIcon,
-  ArrowToRightIcon,
-  ArrowUpIcon,
-  HomeIcon,
-} from "@/assets/icons"
-import { useMemo } from "react"
-import Popup from "reactjs-popup"
-import { Color } from "@/constants/color"
-import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult"
-import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection"
-import Link from "next/link"
-import { PATH_DASHBOARD } from "@/constants/path"
-import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult"
-import { Technique } from "@/constants"
-import { IResultState } from "@/types/state"
+import DetailSection from "@/components/admin/DetailSection";
+import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
+import { useMemo } from "react";
+import Popup from "reactjs-popup";
+import { Color } from "@/constants/color";
+import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult";
+import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
+import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult";
+import { Technique } from "@/constants";
+import { IResultState } from "@/types/state";
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
-  )
-  const router = useRouter()
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
+  const router = useRouter();
 
-  const benchmarkName = router.query.slug
+  const benchmarkName = router.query.slug;
 
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData
-  })
+    return state.results.metaData;
+  });
 
   const benchmarkDetail = useMemo(
     () => metaData[benchmarkName as string],
-    [metaData]
-  )
+    [metaData],
+  );
 
   const columns = [
     {
@@ -74,7 +69,7 @@ const PageBenchmarkDetail = () => {
       label: "MILP feature",
       value: benchmarkDetail?.milpFeatures,
     },
-  ]
+  ];
 
   return (
     <>
@@ -135,17 +130,6 @@ const PageBenchmarkDetail = () => {
               <div className="pr-4 max-w-[60%]">
                 {benchmarkDetail?.shortDescription}
               </div>
-              <div className="mt-2">
-                <Link
-                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/benchmark_config.yaml"
-                  className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download
-                  <ArrowToRightIcon className="w-4 h-4 rotate-90" />
-                </Link>
-              </div>
             </div>
             <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">
               {columns.map((col) => (
@@ -177,10 +161,7 @@ const PageBenchmarkDetail = () => {
           </div>
           {benchmarkDetail && (
             <>
-              <InstancesTableResult
-                benchmarkDetail={benchmarkDetail}
-                benchmarkName={benchmarkName as string}
-              />
+              <InstancesTableResult benchmarkDetail={benchmarkDetail} />
               {benchmarkDetail.technique === Technique.MILP && (
                 <MilpTableResult benchmarkName={benchmarkName as string} />
               )}
@@ -191,7 +172,7 @@ const PageBenchmarkDetail = () => {
         <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PageBenchmarkDetail
+export default PageBenchmarkDetail;

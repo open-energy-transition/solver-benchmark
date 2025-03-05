@@ -4,7 +4,7 @@ import {
   PolygonIcon,
   ProcessorIcon,
   WrenchIcon,
-} from "@/assets/icons"
+} from "@/assets/icons";
 
 const FilterSection = () => {
   return (
@@ -74,6 +74,6 @@ const FilterSection = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default FilterSection
+  );
+};
+export default FilterSection;

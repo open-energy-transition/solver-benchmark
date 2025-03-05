@@ -1,9 +1,7 @@
 import { AnyAction } from "redux";
 import actions from "./actions";
 
-const {
-    TOGGLE_NAV,
-  } = actions;
+const { TOGGLE_NAV } = actions;
 
 const initialState = {
   isNavExpanded: true,
