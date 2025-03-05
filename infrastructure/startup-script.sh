@@ -12,12 +12,6 @@ apt-get install -y tmux git time
 echo "Cloning repository..."
 git clone https://github.com/open-energy-transition/solver-benchmark.git
 
-# JUST FOR TESTING; REMOVE BEFORE MERGE
-cd solver-benchmark
-echo "Checking out open-tofu-infrastructure branch..."
-git checkout open-tofu-infrastructure
-cd ..
-
 # Install Miniconda
 echo "Installing Miniconda..."
 mkdir -p ~/miniconda3
