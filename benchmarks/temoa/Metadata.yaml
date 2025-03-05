@@ -9,13 +9,15 @@ temoa-utopia:
   Time horizon: Multi-stage (4 years)
   MILP features: None
   Sizes:
-  - Temporal resolution: 6 time slices (3 seasons, 2 times of day)
+  - Name: 1-6
+    Size: S
+    URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
+    Temporal resolution: 6 time slices (3 seasons, 2 times of day)
     Spatial resolution: 1 node
     N. of constraints:
     N. of continuous variables:
     N. of integer variables:
     N. of binary variables:
-
 ## Metadata for samples from https://github.com/TemoaProject/oeo
 temoa-US_9R_TS:
   Short description: US-based sector-coupled model with 9 regions and 8 future periods in absence of further constraints.
@@ -27,13 +29,15 @@ temoa-US_9R_TS:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Name: 9-12
+    Size: R
+    URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
     N. of integer variables:
     N. of binary variables:
-
 temoa-US_9R_TS_NDC:
   Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes the policy commitments in the U.S. Nationally Determined Contributions (NDC).
   Model name: TEMOA
@@ -44,13 +48,15 @@ temoa-US_9R_TS_NDC:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Name: 9-12
+    Size: R
+    URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
     N. of integer variables:
     N. of binary variables:
-
 temoa-US_9R_TS_NZ:
   Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
   Model name: TEMOA
@@ -61,13 +67,15 @@ temoa-US_9R_TS_NZ:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Name: 9-12
+    Size: R
+    URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
     N. of integer variables:
     N. of binary variables:
-
 temoa-US_9R_TS_SP:
   Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes a collection of CO2 emission limits for US states from stated policies.
   Model name: TEMOA
@@ -78,14 +86,15 @@ temoa-US_9R_TS_SP:
   Time horizon: Multi-stage (8 years)
   MILP features: None
   Sizes:
-  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Name: 9-12
+    Size: R
+    URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:
     N. of integer variables:
     N. of binary variables:
-
-
 temoa-US_9R_TS_NZ_trunc_4periods:
   Short description: US-based sector-coupled model with 9 regions and 5 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
   Model name: TEMOA
@@ -96,7 +105,10 @@ temoa-US_9R_TS_NZ_trunc_4periods:
   Time horizon: Multi-stage (5 years)
   MILP features: None
   Sizes:
-  - Temporal resolution: 12 time slices (4 seasons, 3 times of day)
+  - Name: 9-12
+    Size: R
+    URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
+    Temporal resolution: 12 time slices (4 seasons, 3 times of day)
     Spatial resolution: 9 nodes
     N. of constraints:
     N. of continuous variables:

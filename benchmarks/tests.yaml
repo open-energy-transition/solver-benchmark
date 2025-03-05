@@ -1,8 +1,0 @@
-- name: sample_lp.lp
-  sizes:
-  - size: ""
-    path: runner/sample-problems/sample_lp.lp
-- name: sample_mip.lp
-  sizes:
-  - size: ""
-    path: runner/sample-problems/sample_mip.lp
