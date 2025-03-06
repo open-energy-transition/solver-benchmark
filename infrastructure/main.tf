@@ -111,7 +111,7 @@ resource "google_compute_instance" "benchmark_instances" {
         "compute-ro",
         "storage-ro",
         "logging-write",
-        "monitoring-read"
+        "monitoring-write"
     ]
   }
 }
