@@ -57,11 +57,18 @@ variable "startup_script_path" {
 
 locals {
   benchmark_files = fileset("${path.module}/benchmarks", "*.yaml*")
+
+  # Force validation of each YAML file individually with clear error messages
+  yaml_validations = {
+    for file in local.benchmark_files :
+      file => yamldecode(file("${path.module}/benchmarks/${file}"))
+  }
+
   benchmarks = {
     for file in local.benchmark_files :
       replace(file, ".yaml", "") => {
         filename = file
-        content = yamldecode(file("${path.module}/benchmarks/${file}"))
+        content = local.yaml_validations[file]
       }
   }
 }
