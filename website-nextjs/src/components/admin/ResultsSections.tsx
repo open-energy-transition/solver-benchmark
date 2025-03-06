@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { useSelector } from "react-redux"
-import { ArrowIcon, QuestionLine } from "@/assets/icons"
-import { getHighestVersion } from "@/utils/versions"
-import { calculateSgm } from "@/utils/calculations"
-import { roundNumber } from "@/utils/number"
-import { MaxMemoryUsage } from "@/constants"
-import Popup from "reactjs-popup"
-import { IFilterState, IResultState } from "@/types/state"
-import ResultsSectionsTitle from "./home/ResultsTitle"
-import { SgmMode } from "@/constants/filter"
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { ArrowIcon, QuestionLine } from "@/assets/icons";
+import { getHighestVersion } from "@/utils/versions";
+import { calculateSgm } from "@/utils/calculations";
+import { roundNumber } from "@/utils/number";
+import { MaxMemoryUsage } from "@/constants";
+import Popup from "reactjs-popup";
+import { IFilterState, IResultState } from "@/types/state";
+import ResultsSectionsTitle from "./home/ResultsTitle";
+import { SgmMode } from "@/constants/filter";
 
 const ResultsSection = () => {
   const columns = [
@@ -87,24 +87,24 @@ const ResultsSection = () => {
         </div>
       ),
     },
-  ]
+  ];
 
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults
-    }
-  )
+      return state.results.benchmarkLatestResults;
+    },
+  );
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers
-  })
+    return state.results.availableSolvers;
+  });
 
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
-    return state.filters.sgmMode
-  })
+    return state.filters.sgmMode;
+  });
   const xFactor = useSelector((state: { filters: IFilterState }) => {
-    return state.filters.xFactor
-  })
+    return state.filters.xFactor;
+  });
 
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
@@ -113,17 +113,22 @@ const ResultsSection = () => {
 
         // Count successful solves for each benchmark
         benchmarkLatestResults
-          .filter(result => result.status === "ok")
-          .forEach(result => {
+          .filter((result) => result.status === "ok")
+          .forEach((result) => {
             const key = `${result.benchmark}-${result.size}`;
-            benchmarkSuccessMap.set(key, (benchmarkSuccessMap.get(key) || 0) + 1);
+            benchmarkSuccessMap.set(
+              key,
+              (benchmarkSuccessMap.get(key) || 0) + 1,
+            );
           });
 
         // Filter results where all solvers succeeded
-        return benchmarkLatestResults.filter(result => {
+        return benchmarkLatestResults.filter((result) => {
           const key = `${result.benchmark}-${result.size}`;
-          return result.status === "ok" &&
-                 benchmarkSuccessMap.get(key) === availableSolvers.length;
+          return (
+            result.status === "ok" &&
+            benchmarkSuccessMap.get(key) === availableSolvers.length
+          );
         });
 
       case SgmMode.PENALIZING_TO_BY_FACTOR:
@@ -131,49 +136,49 @@ const ResultsSection = () => {
           ...result,
           runtime: result.runtime * xFactor,
           memoryUsage: MaxMemoryUsage * xFactor,
-        }))
+        }));
       default:
-        return benchmarkLatestResults
+        return benchmarkLatestResults;
     }
-  }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers])
+  }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers]);
 
   const [tableData, setTableData] = useState<
     {
-      rank: number
-      solver: string
-      version: string
-      memory: number
-      solvedBenchmarks: string
-      runtime: number
+      rank: number;
+      solver: string;
+      version: string;
+      memory: number;
+      solvedBenchmarks: string;
+      runtime: number;
     }[]
-  >([])
+  >([]);
   const [sortConfig, setSortConfig] = useState<{
-    field: string
-    direction: "asc" | "desc"
-  }>({ field: "runtime", direction: "asc" })
+    field: string;
+    direction: "asc" | "desc";
+  }>({ field: "runtime", direction: "asc" });
 
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
-    [benchmarkResults]
-  )
+    [benchmarkResults],
+  );
 
   const solverVersions = useMemo(() => {
-    const versions: { [key: string]: string[] } = {}
+    const versions: { [key: string]: string[] } = {};
     benchmarkResults.forEach((benchmarkResult) => {
       if (!versions[benchmarkResult.solver]) {
-        versions[benchmarkResult.solver] = []
+        versions[benchmarkResult.solver] = [];
       }
 
       if (
         !versions[benchmarkResult.solver].includes(
-          benchmarkResult.solverVersion
+          benchmarkResult.solverVersion,
         )
       ) {
-        versions[benchmarkResult.solver].push(benchmarkResult.solverVersion)
+        versions[benchmarkResult.solver].push(benchmarkResult.solverVersion);
       }
-    })
-    return versions
-  }, [benchmarkResults])
+    });
+    return versions;
+  }, [benchmarkResults]);
 
   const getRelevantResults = useCallback(
     (solver: string, field: "memoryUsage" | "runtime") =>
@@ -182,39 +187,39 @@ const ResultsSection = () => {
           (result) =>
             result.solverVersion ===
               getHighestVersion(solverVersions[solver]) &&
-            result.solver === solver
+            result.solver === solver,
         )
         .map((result) => {
           if (
             ["warning", "TO"].includes(result.status) &&
             field === "memoryUsage"
           )
-            return MaxMemoryUsage
-          return result[field]
+            return MaxMemoryUsage;
+          return result[field];
         }),
-    [benchmarkResults, solverVersions]
-  )
+    [benchmarkResults, solverVersions],
+  );
 
   const calculateSgmBySolver = useCallback(
     (solver: string, field: "memoryUsage" | "runtime" = "memoryUsage") => {
       const minSgm = Math.min(
         ...solverList.map((solver) =>
-          calculateSgm(getRelevantResults(solver, field))
-        )
-      )
-      return calculateSgm(getRelevantResults(solver, field)) / minSgm
+          calculateSgm(getRelevantResults(solver, field)),
+        ),
+      );
+      return calculateSgm(getRelevantResults(solver, field)) / minSgm;
     },
-    [getRelevantResults, solverList]
-  )
+    [getRelevantResults, solverList],
+  );
 
   const getNumberSolvedBenchmark = useCallback(
     (solver: string) => {
       return benchmarkResults.filter(
-        (result) => result.status === "ok" && result.solver === solver
-      ).length
+        (result) => result.status === "ok" && result.solver === solver,
+      ).length;
     },
-    [benchmarkResults, solverVersions]
-  )
+    [benchmarkResults, solverVersions],
+  );
 
   const getSolverRanks = () => {
     const combinedRankList = solverList.map((solver) => ({
@@ -222,29 +227,29 @@ const ResultsSection = () => {
       runtime: calculateSgmBySolver(solver, "runtime"),
       memoryUsage: calculateSgmBySolver(solver, "memoryUsage"),
       score: 0,
-    }))
+    }));
 
     combinedRankList.forEach((solver) => {
-      solver.score = solver.runtime
-    })
-    return combinedRankList.sort((a, b) => a.score - b.score)
-  }
+      solver.score = solver.runtime;
+    });
+    return combinedRankList.sort((a, b) => a.score - b.score);
+  };
 
   const uniqueBenchmarkCount = new Set(
-    benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
-  ).size
+    benchmarkResults.map((result) => `${result.benchmark}-${result.size}`),
+  ).size;
 
   const getSolvedBenchmarksLabel = (
     solver: string,
-    uniqueBenchmarkCount: number
+    uniqueBenchmarkCount: number,
   ) => {
-    const numberSolvedBenchmark = getNumberSolvedBenchmark(solver)
-    const percentage = (numberSolvedBenchmark * 100) / uniqueBenchmarkCount
+    const numberSolvedBenchmark = getNumberSolvedBenchmark(solver);
+    const percentage = (numberSolvedBenchmark * 100) / uniqueBenchmarkCount;
     return `${roundNumber(
       percentage,
-      1
-    )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`
-  }
+      1,
+    )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`;
+  };
 
   useEffect(() => {
     setTableData(
@@ -257,41 +262,41 @@ const ResultsSection = () => {
         memory: roundNumber(calculateSgmBySolver(solverData, "memoryUsage"), 2),
         solvedBenchmarks: getSolvedBenchmarksLabel(
           solverData,
-          uniqueBenchmarkCount
+          uniqueBenchmarkCount,
         ),
         runtime: roundNumber(calculateSgmBySolver(solverData, "runtime"), 2),
-      }))
-    )
-  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark])
+      })),
+    );
+  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
 
   // Sorting logic
   const sortedTableData = useMemo(() => {
-    if (!sortConfig.field) return tableData
+    if (!sortConfig.field) return tableData;
     const sorted = [...tableData].sort((a, b) => {
-      const aValue = a[sortConfig.field as keyof typeof a]
-      const bValue = b[sortConfig.field as keyof typeof b]
+      const aValue = a[sortConfig.field as keyof typeof a];
+      const bValue = b[sortConfig.field as keyof typeof b];
       if (sortConfig.direction === "asc") {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
       } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
       }
-    })
+    });
     // Reassign static ranks (1, 2, 3)
     return sorted.map((item, index) => ({
       ...item,
       rank: index + 1,
-    }))
-  }, [tableData, sortConfig])
+    }));
+  }, [tableData, sortConfig]);
 
   const handleSort = (field: string) => {
     setSortConfig((prev) => ({
       field,
       direction:
         prev.field === field && prev.direction === "asc" ? "desc" : "asc",
-    }))
-  }
+    }));
+  };
 
-  const [activedIndex, setActivedIndex] = useState(0)
+  const [activedIndex, setActivedIndex] = useState(0);
 
   return (
     <div>
@@ -372,7 +377,7 @@ const ResultsSection = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ResultsSection
+export default ResultsSection;

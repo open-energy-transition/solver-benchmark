@@ -16,5 +16,5 @@ export function NoSolverPage() {
         </div>
       </div>
     </section>
-  )
+  );
 }

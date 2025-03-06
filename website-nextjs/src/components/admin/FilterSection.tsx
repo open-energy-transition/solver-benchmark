@@ -1,64 +1,137 @@
+import { useEffect } from "react";
 import {
   BrightIcon,
   PolygonIcon,
   ProcessorIcon,
   WrenchIcon,
-} from "@/assets/icons"
-import { useSelector, useDispatch } from "react-redux"
-import filterAction from "@/redux/filters/actions"
-import Popup from "reactjs-popup"
-import { IFilterState, IResultState } from "@/types/state"
+} from "@/assets/icons";
+import { useSelector, useDispatch } from "react-redux";
+import filterAction from "@/redux/filters/actions";
+import Popup from "reactjs-popup";
+import { IFilterState, IResultState } from "@/types/state";
+import filterActions from "@/redux/filters/actions";
+import resultActions from "@/redux/results/actions";
+import { getLatestBenchmarkResult } from "@/utils/results";
 
 const FilterSection = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dispatch = useDispatch<any>()
+  const dispatch = useDispatch<any>();
+
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.rawBenchmarkResults;
+    },
+  );
 
   const selectedFilters = useSelector(
-    (state: { filters: IFilterState }) => state.filters
-  )
+    (state: { filters: IFilterState }) => state.filters,
+  );
 
   const availableSectors = useSelector(
-    (state: { results: IResultState }) => state.results.availableSectors
-  )
+    (state: { results: IResultState }) => state.results.availableSectors,
+  );
 
   const availableTechniques = useSelector(
-    (state: { results: IResultState }) => state.results.availableTechniques
-  )
+    (state: { results: IResultState }) => state.results.availableTechniques,
+  );
 
   const availableKindOfProblems = useSelector(
-    (state: { results: IResultState }) => state.results.availableKindOfProblems
-  )
+    (state: { results: IResultState }) => state.results.availableKindOfProblems,
+  );
 
   const availableModels = useSelector(
-    (state: { results: IResultState }) => state.results.availableModels
-  )
+    (state: { results: IResultState }) => state.results.availableModels,
+  );
 
   const availableProblemSizes = useSelector(
-    (state: { results: IResultState }) => state.results.availableProblemSizes
-  )
+    (state: { results: IResultState }) => state.results.availableProblemSizes,
+  );
 
   const handleCheckboxChange = ({
     category,
     value,
     only = false,
   }: {
-    category: string
-    value: string
-    only?: boolean
+    category: string;
+    value: string;
+    only?: boolean;
   }) => {
     dispatch(
-      filterAction.toggleFilterAndUpdateResults({ category, value, only })
-    )
-  }
+      filterAction.toggleFilterAndUpdateResults({ category, value, only }),
+    );
+  };
+
+  const handleSelectAll = ({ category }: { category: string }) => {
+    const availableItems = {
+      sectors: availableSectors,
+      technique: availableTechniques,
+      kindOfProblem: availableKindOfProblems,
+      modelName: availableModels,
+      problemSize: availableProblemSizes,
+    }[category] as string[];
+
+    const selectedItems = (selectedFilters[
+      category as keyof typeof selectedFilters
+    ] || []) as string[];
+
+    // Toggle all items based on current state
+    const shouldSelectAll = selectedItems.length !== availableItems.length;
+
+    // Get items to toggle
+    const itemsToToggle = shouldSelectAll
+      ? availableItems.filter((item) => !selectedItems.includes(item)) // Select missing items
+      : availableItems; // Deselect all items
+    // Apply changes
+    itemsToToggle.forEach((item) =>
+      handleCheckboxChange({
+        category,
+        value: item,
+      }),
+    );
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        filterActions.setFilter({
+          sectors: availableSectors,
+          technique: availableTechniques,
+          kindOfProblem: availableKindOfProblems,
+          modelName: availableModels,
+          problemSize: availableProblemSizes,
+        } as IFilterState),
+      );
+      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(rawBenchmarkResults),
+        ),
+      );
+    };
+  }, []);
 
   return (
     <div className="bg-white rounded-xl my-2">
       <div className="flex text-dark-grey">
         {/* Sectors */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6 sticky">
-            <BrightIcon className="w-5 h-5" />
-            <span>Sectors</span>
+          <div className="flex items-center justify-between px-3 border-b border-stroke">
+            <div className="flex items-center py-2 gap-1 pr-6 sticky">
+              <BrightIcon className="w-5 h-5" />
+              <span>Sectors</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableSectors.every(
+                (sector) => selectedFilters?.sectors?.includes(sector),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "sectors",
+                })
+              }
+            />
           </div>
           <div className="text-xs max-h-[95px] overflow-y-auto">
             {availableSectors.map((sector) => (
@@ -115,9 +188,23 @@ const FilterSection = () => {
         </div>
         {/* Technique */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
-            <ProcessorIcon className="w-5 h-5" />
-            <span>Technique</span>
+          <div className="flex items-center justify-between px-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
+              <ProcessorIcon className="w-5 h-5" />
+              <span>Technique</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableTechniques.every(
+                (technique) => selectedFilters?.technique?.includes(technique),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "technique",
+                })
+              }
+            />
           </div>
           <div className="text-xs max-h-[95px] overflow-y-auto">
             {availableTechniques.map((technique) => (
@@ -174,9 +261,24 @@ const FilterSection = () => {
 
         {/* Kind of Problem */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-            <WrenchIcon className="w-5 h-5" />
-            <span>Kind of Problem</span>
+          <div className="flex items-center justify-between px-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke py-2 gap-1">
+              <WrenchIcon className="w-5 h-5" />
+              <span>Kind of Problem</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableKindOfProblems.every(
+                (kindOfProblem) =>
+                  selectedFilters?.kindOfProblem?.includes(kindOfProblem),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "kindOfProblem",
+                })
+              }
+            />
           </div>
           <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs max-h-[95px] overflow-y-auto">
             {availableKindOfProblems.map((problem) => (
@@ -232,9 +334,24 @@ const FilterSection = () => {
         </div>
         {/* Problem Size */}
         <div className="text-xs border-r border-stroke  w-[40%]">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-            <WrenchIcon className="w-5 h-5" />
-            <span>Problem Size</span>
+          <div className="flex items-center justify-between pr-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+              <WrenchIcon className="w-5 h-5" />
+              <span>Problem Size</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableProblemSizes.every(
+                (problemSize) =>
+                  selectedFilters?.problemSize?.includes(problemSize),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "problemSize",
+                })
+              }
+            />
           </div>
           <div className="grid grid-cols-2 gap-x-1 text-xs max-h-[95px] overflow-y-auto">
             {availableProblemSizes.map((size) => (
@@ -282,10 +399,25 @@ const FilterSection = () => {
         </div>
         {/* Model */}
         <div className="text-xs border-r border-stroke w-full">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-            <PolygonIcon className="w-5 h-5" />
-            <span>Model</span>
+          <div className="flex items-center justify-between pr-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+              <PolygonIcon className="w-5 h-5" />
+              <span>Model</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableModels.every(
+                (modelName) => selectedFilters?.modelName?.includes(modelName),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "modelName",
+                })
+              }
+            />
           </div>
+
           <div className="grid grid-cols-3 gap-x-2 text-xs max-h-[95px] overflow-y-auto">
             {availableModels.map((model) => (
               <div
@@ -340,7 +472,7 @@ const FilterSection = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FilterSection
+export default FilterSection;

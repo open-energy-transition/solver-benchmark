@@ -1,10 +1,10 @@
 // internal
-import D3LineChart from "@/components/shared/D3LineChart"
-import { SolverYearlyChartData } from "@/types/performance-history"
-import { roundNumber } from "@/utils/number"
+import D3LineChart from "@/components/shared/D3LineChart";
+import { SolverYearlyChartData } from "@/types/performance-history";
+import { roundNumber } from "@/utils/number";
 
 interface INormalizedSGMRuntime {
-  chartData: SolverYearlyChartData[]
+  chartData: SolverYearlyChartData[];
 }
 
 const NormalizedSGMRuntime = ({ chartData }: INormalizedSGMRuntime) => {
@@ -21,6 +21,6 @@ const NormalizedSGMRuntime = ({ chartData }: INormalizedSGMRuntime) => {
         }
       />
     </div>
-  )
-}
-export default NormalizedSGMRuntime
+  );
+};
+export default NormalizedSGMRuntime;

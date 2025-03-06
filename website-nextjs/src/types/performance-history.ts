@@ -1,9 +1,9 @@
-import { SolverType } from "./benchmark"
+import { SolverType } from "./benchmark";
 
 interface SolverYearlyChartData {
-  year: number
-  value: number
-  solver: SolverType
+  year: number;
+  value: number;
+  solver: SolverType;
 }
 
-export type { SolverYearlyChartData }
+export type { SolverYearlyChartData };

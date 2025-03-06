@@ -1,9 +1,9 @@
-import D3LineChart from "@/components/shared/D3LineChart"
-import { SolverYearlyChartData } from "@/types/performance-history"
-import { roundNumber } from "@/utils/number"
+import D3LineChart from "@/components/shared/D3LineChart";
+import { SolverYearlyChartData } from "@/types/performance-history";
+import { roundNumber } from "@/utils/number";
 
 interface INormalizedSGMMemoryUsage {
-  chartData: SolverYearlyChartData[]
+  chartData: SolverYearlyChartData[];
 }
 
 const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
@@ -20,6 +20,6 @@ const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
         }
       />
     </div>
-  )
-}
-export default NormalizedSGMMemoryUsage
+  );
+};
+export default NormalizedSGMMemoryUsage;
