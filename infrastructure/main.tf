@@ -100,7 +100,12 @@ resource "google_compute_instance" "benchmark_instances" {
   metadata_startup_script = file("${path.module}/${var.startup_script_path}")
 
   service_account {
-    scopes = ["cloud-platform"]
+    scopes = [
+        "compute-ro",
+        "storage-ro",
+        "logging-write",
+        "monitoring-read"
+    ]
   }
 }
 
