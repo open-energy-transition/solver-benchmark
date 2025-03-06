@@ -61,7 +61,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("background", "white")
       .style("overflow", "visible");
 
-    // Replace reset button with zoom controls
+    // Create single zoom controls instance
     const zoomControls = d3
       .select(containerRef.current)
       .insert("div", ":first-child")
@@ -75,52 +75,118 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("border-radius", "4px")
       .style("box-shadow", "0 2px 4px rgba(0,0,0,0.1)");
 
-    zoomControls
-      .append("button")
-      .attr("class", "zoom-in")
-      .html(
-        '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3h-6zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3v6zM9 21l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6h6zM21 15l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6v-6z"/></svg>',
-      )
-      .style("cursor", "pointer")
-      .style("border", "none")
-      .style("background", "none")
-      .on("click", () => {
-        const newScale = Math.min(zoomLevel * 1.5, 20);
-        setZoomLevel(newScale);
-        svg
-          .transition()
-          .duration(750)
-          .call(
-            zoom.transform,
-            d3.zoomIdentity
-              .translate(width / 2, height / 2)
-              .scale(newScale)
-              .translate(-width / 2, -height / 2),
-          );
+    const handleZoom = (scale: number) => {
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      // Calculate new transform
+      const transform = d3.zoomIdentity
+        .translate(centerX - centerX * scale, centerY - centerY * scale)
+        .scale(scale);
+
+      svg.transition().duration(750).call(zoom.transform, transform);
+    };
+
+    // Modify zoom behavior
+    const zoom = d3
+      .zoom()
+      .scaleExtent([0.5, 5])
+      .on("zoom", (event) => {
+        const { transform } = event;
+        setZoomLevel(transform.k);
+
+        // Get new scaled axes
+        const newXScale = transform.rescaleX(xScale);
+        const newYScale = transform.rescaleY(yScale);
+
+        // Update axes with new scales
+        xAxisGroup.call(d3.axisBottom(newXScale).ticks(6).tickSizeOuter(0));
+        yAxisGroup.call(d3.axisLeft(newYScale).ticks(6).tickSizeOuter(0));
+
+        // Update all elements using the new scales
+        plotArea
+          .selectAll("circle")
+          .attr("cx", (d) => newXScale(d.runtime))
+          .attr("cy", (d) => newYScale(d.memoryUsage))
+          .attr("r", 4);
+
+        plotArea
+          .selectAll(".point-label")
+          .attr("x", (d) => newXScale(d.runtime))
+          .attr("y", (d) => newYScale(d.memoryUsage))
+          .style("font-size", "12px");
+
+        // Update grid with new scales
+        const xGridLines = plotArea
+          .selectAll(".grid-x")
+          .data(newXScale.ticks(6));
+        const yGridLines = plotArea
+          .selectAll(".grid-y")
+          .data(newYScale.ticks(6));
+
+        xGridLines
+          .join("line")
+          .attr("class", "grid-x grid-line")
+          .attr("x1", (d) => newXScale(d))
+          .attr("x2", (d) => newXScale(d))
+          .attr("y1", margin.top)
+          .attr("y2", height - margin.bottom)
+          .attr("stroke", "currentColor")
+          .attr("stroke-opacity", 0.1)
+          .attr("stroke-dasharray", "4,4");
+
+        yGridLines
+          .join("line")
+          .attr("class", "grid-y grid-line")
+          .attr("y1", (d) => newYScale(d))
+          .attr("y2", (d) => newYScale(d))
+          .attr("x1", margin.left)
+          .attr("x2", width - margin.right)
+          .attr("stroke", "currentColor")
+          .attr("stroke-opacity", 0.1)
+          .attr("stroke-dasharray", "4,4");
       });
 
+    // Replace zoom controls with updated behavior
+    zoomControls.selectAll("*").remove();
+
+    // Add zoom in button
     zoomControls
       .append("button")
-      .attr("class", "zoom-out")
-      .html(
-        '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3h-6zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3v6zM9 21l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6h6zM21 15l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6v-6z"/></svg>',
-      )
+      .attr("class", "zoom-button")
+      .html("➕")
       .style("cursor", "pointer")
       .style("border", "none")
       .style("background", "none")
+      .style("font-size", "16px")
       .on("click", () => {
-        const newScale = Math.max(zoomLevel / 1.5, 0.5);
-        setZoomLevel(newScale);
-        svg
-          .transition()
-          .duration(750)
-          .call(
-            zoom.transform,
-            d3.zoomIdentity
-              .translate(width / 2, height / 2)
-              .scale(newScale)
-              .translate(-width / 2, -height / 2),
-          );
+        svg.transition().duration(300).call(zoom.scaleBy, 1.5);
+      });
+
+    // Add zoom out button
+    zoomControls
+      .append("button")
+      .attr("class", "zoom-button")
+      .html("➖")
+      .style("cursor", "pointer")
+      .style("border", "none")
+      .style("background", "none")
+      .style("font-size", "16px")
+      .on("click", () => {
+        svg.transition().duration(300).call(zoom.scaleBy, 0.75);
+      });
+
+    // Add reset button
+    zoomControls
+      .append("button")
+      .attr("class", "zoom-button")
+      .html("↺")
+      .style("cursor", "pointer")
+      .style("border", "none")
+      .style("background", "none")
+      .style("font-size", "16px")
+      .on("click", () => {
+        svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
       });
 
     // Create clip path
@@ -218,34 +284,40 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle");
 
-    // Zoom behavior
-    const zoom = d3
-      .zoom()
-      .scaleExtent([0.5, 20])
-      .extent([
-        [margin.left, margin.top],
-        [width - margin.right, height - margin.bottom],
-      ])
-      .on("zoom", (event) => {
-        const { transform } = event;
-        setZoomLevel(transform.k);
+    // Add function to update grid
+    const updateGrid = (transform: d3.ZoomTransform) => {
+      const newXScale = transform.rescaleX(xScale);
+      const newYScale = transform.rescaleY(yScale);
 
-        // Update scales
-        const newXScale = transform.rescaleX(xScale);
-        const newYScale = transform.rescaleY(yScale);
+      plotArea.selectAll(".grid-line").remove();
 
-        // Update axes
-        xAxisGroup.call(d3.axisBottom(newXScale).ticks(6).tickSizeOuter(0));
-        yAxisGroup.call(d3.axisLeft(newYScale).ticks(6).tickSizeOuter(0));
+      // Recreate grid lines with new scales
+      plotArea
+        .selectAll(".grid-x")
+        .data(newXScale.ticks())
+        .join("line")
+        .attr("class", "grid-line")
+        .attr("x1", (d) => newXScale(d))
+        .attr("x2", (d) => newXScale(d))
+        .attr("y1", margin.top)
+        .attr("y2", height - margin.bottom)
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        .attr("stroke-dasharray", "4,4");
 
-        // Update plot elements
-        plotArea.attr("transform", transform);
-
-        // Keep point sizes consistent during zoom
-        plotArea.selectAll("circle").attr("r", 4 / transform.k);
-
-        plotArea.selectAll("text").style("font-size", `${12 / transform.k}px`);
-      });
+      plotArea
+        .selectAll(".grid-y")
+        .data(newYScale.ticks())
+        .join("line")
+        .attr("class", "grid-line")
+        .attr("y1", (d) => newYScale(d))
+        .attr("y2", (d) => newYScale(d))
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        .attr("stroke-dasharray", "4,4");
+    };
 
     // Apply zoom to SVG
     svg.call(zoom);
@@ -262,6 +334,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
         if (["TO", "warning"].includes(d.status)) {
           group
             .append("text")
+            .attr("class", "point-label")
             .attr("x", xScale(d.runtime))
             .attr("y", yScale(d.memoryUsage))
             .attr("text-anchor", "middle")
