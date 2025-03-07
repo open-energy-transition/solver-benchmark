@@ -8,6 +8,7 @@ import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkT
 import { ArrowIcon, HomeIcon } from "@/assets/icons"
 import { PATH_DASHBOARD } from "@/constants/path"
 import Link from "next/link"
+import BenchmarkSummaryTable from "@/components/admin/benchmarks/BenchmarkSummaryTable"
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
@@ -42,6 +43,8 @@ const PageBenchmarkDetail = () => {
           {/* Content */}
           <DetailSection />
           <FilterSection />
+          <BenchmarkSummaryTable />
+
           <div className="py-2">
             <div className="text-navy text-xl font-bold">Benchmarks</div>
             <p className="text-[#5D5D5D]">
