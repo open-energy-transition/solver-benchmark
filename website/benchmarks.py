@@ -29,7 +29,7 @@ df_result = df_result.drop_duplicates(
 
 # Load benchmark metadata
 metadata = load_metadata("results/metadata.yaml")
-
+benchmark_metadata = metadata["benchmarks"]
 # Title of the Benchmarks page
 st.title("Benchmarks")
 
@@ -38,7 +38,7 @@ benchmark_list = df_mean_stddev["Benchmark"].unique()
 selected_benchmark = st.selectbox("Select a Benchmark", benchmark_list)
 
 # Display metadata for the selected benchmark
-if selected_benchmark in metadata:
+if selected_benchmark in benchmark_metadata:
     #########
     # Metadata Table #
     #########
@@ -46,7 +46,7 @@ if selected_benchmark in metadata:
 
     # Convert metadata to DataFrame
     metadata_df = pd.DataFrame.from_dict(
-        metadata[selected_benchmark], orient="index", columns=["Value"]
+        benchmark_metadata[selected_benchmark], orient="index", columns=["Value"]
     ).reset_index()
     metadata_df.columns = ["Header", "Value"]
 
@@ -85,7 +85,7 @@ if selected_benchmark in metadata:
     ##############
     st.subheader(f"Sizes for {selected_benchmark}")
 
-    sizes = metadata[selected_benchmark].get("Sizes", [])
+    sizes = benchmark_metadata[selected_benchmark].get("Sizes", [])
     if sizes:
         # Convert sizes to a DataFrame
         sizes_df = pd.DataFrame(sizes)
@@ -235,7 +235,7 @@ if selected_benchmark in metadata:
     # MIP Table #
     ############
     # Display MIP-specific information only if Technique is MILP
-    if metadata[selected_benchmark].get("Technique") == "MILP":
+    if benchmark_metadata[selected_benchmark].get("Technique") == "MILP":
         mip_data = df_result[(df_result["Benchmark"] == selected_benchmark)]
         if not mip_data.empty:
             st.subheader(f"MIP Information for {selected_benchmark}")
