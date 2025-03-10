@@ -25,9 +25,15 @@ function App({ Component, pageProps }: AppProps) {
       const results = await getBenchmarkResults()
       const metaData = await getMetaData()
 
+      const benchmarksMetaData = metaData.benchmarks
+
       const problemSizeResult: { [key: string]: string } = {}
-      Object.keys(metaData).forEach((metaDataKey) => {
-        metaData[metaDataKey].sizes.forEach((s) => {
+      Object.keys(benchmarksMetaData).forEach((metaDataKey) => {
+        if (!benchmarksMetaData[metaDataKey].sizes) {
+          console.log(benchmarksMetaData[metaDataKey], metaDataKey);
+
+        }
+        benchmarksMetaData[metaDataKey].sizes.forEach((s) => {
           problemSizeResult[
             `${metaDataKey}'-'${s.name}`
           ] = s.size
@@ -41,8 +47,8 @@ function App({ Component, pageProps }: AppProps) {
         models: new Set<string>(),
       }
 
-      Object.keys(metaData).forEach((key) => {
-        const { sectors, technique, kindOfProblem, modelName } = metaData[key]
+      Object.keys(benchmarksMetaData).forEach((key) => {
+        const { sectors, technique, kindOfProblem, modelName } = benchmarksMetaData[key]
         uniqueValues.sectors.add(sectors)
         uniqueValues.techniques.add(technique)
         uniqueValues.kindOfProblems.add(kindOfProblem)
@@ -59,7 +65,7 @@ function App({ Component, pageProps }: AppProps) {
         )
       )
 
-      dispatch(resultActions.setMetaData(metaData))
+      dispatch(resultActions.setMetaData(benchmarksMetaData))
       dispatch(resultActions.setBenchmarkResults(results as BenchmarkResult[]))
       dispatch(
         resultActions.setBenchmarkLatestResults(
@@ -67,7 +73,7 @@ function App({ Component, pageProps }: AppProps) {
         )
       )
 
-      dispatch(resultActions.setRawMetaData(metaData))
+      dispatch(resultActions.setRawMetaData(benchmarksMetaData))
       dispatch(
         resultActions.setAvailableFilterData({
           availableSectors,

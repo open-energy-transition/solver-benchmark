@@ -28,10 +28,12 @@ def process_yaml_file(file_path):
 
     try:
         with open(file_path, "r") as file:
-            benchmark_data = yaml.safe_load(file)
-            if not benchmark_data:
+            yaml_data = yaml.safe_load(file)
+            if not yaml_data:
                 print(f"Skipping file with no content: {file_path}")
                 return
+
+            benchmark_data = yaml_data["benchmarks"]
 
             for model_name, model_info in benchmark_data.items():
                 sizes = []
@@ -95,10 +97,13 @@ class BlankNoneDumper(yaml.Dumper):
 
 yaml.add_representer(type(None), BlankNoneDumper.represent_none, Dumper=BlankNoneDumper)
 
+# Wrap the unified metadata in a "benchmarks" key
+final_output = {"benchmarks": unified_metadata}
+
 # Write the unified metadata to the results/metadata.yaml file
 with open(results_file, "w") as output_file:
     yaml.dump(
-        unified_metadata,
+        final_output,
         output_file,
         sort_keys=False,
         default_flow_style=False,

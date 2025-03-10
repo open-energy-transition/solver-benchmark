@@ -237,12 +237,13 @@ def main(
     timeout=10 * 60,
     override=True,
 ):
-    size_categories = {"XS", "S"}  # TODO add this to CLI args
+    size_categories = None  # TODO add this to CLI args
     results = {}
 
     # Load benchmarks from YAML file
     with open(benchmark_yaml_path, "r") as file:
-        benchmarks_info = yaml.safe_load(file)
+        yaml_content = yaml.safe_load(file)
+        benchmarks_info = yaml_content["benchmarks"]
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
