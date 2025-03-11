@@ -55,6 +55,18 @@ variable "startup_script_path" {
     default = "startup-script.sh"
 }
 
+variable "enable_gcs_upload" {
+  description = "Enable uploading benchmark results to GCS bucket"
+  type        = bool
+  default     = true
+}
+
+variable "gcs_bucket_name" {
+  description = "Name of the GCS bucket to upload benchmark results"
+  type        = string
+  default     = "solver-benchmarks"
+}
+
 locals {
   benchmark_files = fileset("${path.module}/benchmarks", "*.yaml*")
 
@@ -95,24 +107,24 @@ resource "google_compute_instance" "benchmark_instances" {
     }
   }
 
-  # Only set SSH keys if variables are provided
   metadata = {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
     benchmark_file = each.value.filename
     benchmark_year = lookup(each.value.content, "year", "2024")
     benchmark_content = file("${path.module}/benchmarks/${each.value.filename}")
+    enable_gcs_upload = tostring(var.enable_gcs_upload)
+    gcs_bucket_name = var.gcs_bucket_name
   }
 
   # Add the startup script from external file
   metadata_startup_script = file("${path.module}/${var.startup_script_path}")
 
   service_account {
-    scopes = [
+    scopes = concat([
         "compute-ro",
-        "storage-ro",
         "logging-write",
         "monitoring-write"
-    ]
+    ], var.enable_gcs_upload ? ["storage-rw"] : ["storage-ro"])
   }
 }
 
