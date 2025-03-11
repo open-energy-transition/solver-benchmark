@@ -1,5 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
 const MainContent = () => {
   return (
@@ -29,7 +29,7 @@ const MainContent = () => {
                   Open Energy Transition
                 </Link>
               </span>
-                , with funding from{" "}
+              , with funding from{" "}
               <span className="font-bold">
                 <Link href="https://www.breakthroughenergy.org/">
                   Breakthrough Energy
@@ -57,7 +57,7 @@ const MainContent = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainContent
+export default MainContent;

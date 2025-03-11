@@ -12,8 +12,8 @@ const ContactSection = () => {
             </div>
             <h5 className="text-lavender font-league text-2xl my-2 w-full font-light md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
-              issue for all feedback and suggestions!<br/> Otherwise, you can write
-              to us using this form.
+              issue for all feedback and suggestions!
+              <br /> Otherwise, you can write to us using this form.
             </h5>
           </div>
           <div className="w-full md:w-1/2 grid gap-4">
@@ -38,6 +38,6 @@ const ContactSection = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default ContactSection
+  );
+};
+export default ContactSection;

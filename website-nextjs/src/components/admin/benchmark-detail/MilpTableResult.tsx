@@ -1,8 +1,8 @@
 /* eslint-disable */
 /* eslint-disable @typescript-eslint/* */
 
-import React, { useEffect, useMemo, useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   ColumnDef,
   flexRender,
@@ -12,16 +12,16 @@ import {
   getPaginationRowModel,
   getFacetedUniqueValues,
   useReactTable,
-} from "@tanstack/react-table"
-import { IResultState } from "@/types/state"
+} from "@tanstack/react-table";
+import { IResultState } from "@/types/state";
 
 const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
   const columns = useMemo<
     ColumnDef<{
-      solver: string
-      size: string
-      maxIntegrailty: string | null
-      dualityFap: string | null
+      solver: string;
+      size: string;
+      maxIntegrailty: string | null;
+      dualityFap: string | null;
     }>[]
   >(
     () => [
@@ -47,12 +47,12 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
         cell: (info) => info.getValue(),
       },
     ],
-    []
-  )
+    [],
+  );
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.benchmarkLatestResults
-  })
+    return state.results.benchmarkLatestResults;
+  });
 
   const curBenchmarkResult = useMemo(
     () =>
@@ -64,11 +64,11 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
           maxIntegrailty: benchmark.maxIntegralityViolation,
           dualityFap: benchmark.dualityGap,
         })),
-    [benchmarkResults.length]
-  )
+    [benchmarkResults.length],
+  );
 
-  const [sorting, setSorting] = useState([])
-  const [columnFilters, setColumnFilters] = useState([])
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
 
   const table = useReactTable({
     data: curBenchmarkResult,
@@ -84,11 +84,11 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: false,
-  })
+  });
 
   useEffect(() => {
-    table.setPageSize(table.getPrePaginationRowModel().rows.length)
-  }, [table.getPrePaginationRowModel().rows.length])
+    table.setPageSize(table.getPrePaginationRowModel().rows.length);
+  }, [table.getPrePaginationRowModel().rows.length]);
 
   return (
     <div className="py-2">
@@ -108,13 +108,13 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
                     <div onClick={header.column.getToggleSortingHandler()}>
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                       {header.column.getIsSorted() === "asc"
                         ? " ↑"
                         : header.column.getIsSorted() === "desc"
-                        ? " ↓"
-                        : ""}
+                          ? " ↓"
+                          : ""}
                     </div>
                   </th>
                 ))}
@@ -135,7 +135,7 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MilpTableResult
+export default MilpTableResult;

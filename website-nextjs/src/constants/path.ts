@@ -1,7 +1,7 @@
-const BASE_PATH = "dashboard"
+const BASE_PATH = "dashboard";
 
 export const PATH_DASHBOARD = {
-  root: '/',
+  root: "/",
   home: `/${BASE_PATH}/home`,
   benchmarkDetail: {
     list: `/${BASE_PATH}/benchmark-details`,
@@ -11,4 +11,4 @@ export const PATH_DASHBOARD = {
   solvers: `/${BASE_PATH}/solvers`,
   performanceHistory: `/${BASE_PATH}/performance-history`,
   rawResult: `/${BASE_PATH}/raw-result`,
-}
+};

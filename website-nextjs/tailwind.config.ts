@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 export default {
   content: [
@@ -6,31 +6,27 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: [
-    "grid-cols-1",
-    "grid-cols-2",
-    "grid-cols-3",
-  ],
+  safelist: ["grid-cols-1", "grid-cols-2", "grid-cols-3"],
   theme: {
     extend: {
       colors: {
-        "black": "#000000",
+        black: "#000000",
         "columnbia-blue": "#BFDBF7",
         "dark-green": "#4C5C51",
         "dark-grey": "#8C8C8C",
         "green-pop": "#6B9080",
-        "grey": "#E4E2DF",
-        "gunmetal": "#022B3A",
-        "lavender": "#E1E5F2",
-        "navy": "#022B3B",
-        "neutral": "##BFD8C7",
-        "olive": "#7C9885",
-        "stroke": "#EBEFF2",
-        "teal": "#1F7A8C",
-        "white": "#ffffff",
+        grey: "#E4E2DF",
+        gunmetal: "#022B3A",
+        lavender: "#E1E5F2",
+        navy: "#022B3B",
+        neutral: "##BFD8C7",
+        olive: "#7C9885",
+        stroke: "#EBEFF2",
+        teal: "#1F7A8C",
+        white: "#ffffff",
         "light-blue": "#F5F7FA",
         "light-grey": "#E4E7E9",
-        "lime-green": "#E5EEEB"
+        "lime-green": "#E5EEEB",
       },
       fontFamily: {
         league: ["var(--font-league-spartan)", "sans-serif"],
@@ -38,7 +34,7 @@ export default {
         grotesk: ["var(--font-space-grotesk)", "sans-serif"],
       },
       fontSize: {
-        "6.5xl": "4rem"
+        "6.5xl": "4rem",
       },
       lineHeight: {
         "1.1": "1.1",
@@ -46,11 +42,15 @@ export default {
         "1.3": "1.3",
         "1.4": "1.4",
         "1.5": "1.5",
-      }
+      },
     },
   },
   plugins: [
-    function ({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
+    function ({
+      addUtilities,
+    }: {
+      addUtilities: (utilities: Record<string, any>) => void;
+    }) {
       addUtilities({
         ".box-decoration-clone": {
           "-webkit-box-decoration-break": "clone",
@@ -63,4 +63,4 @@ export default {
       });
     },
   ],
-} satisfies Config
+} satisfies Config;
