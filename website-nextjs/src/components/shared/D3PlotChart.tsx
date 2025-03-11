@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverType } from "@/types/benchmark";
 import { getSolverLabel } from "@/utils/solvers";
 import { roundNumber } from "@/utils/number";
-import { PATH_DASHBOARD } from "@/constants/path";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
-import { ZoomInIcon, ZoomOutIcon, ResetIcon } from "@/assets/icons"; // Add these icons to your project
 
 type ChartData = {
   runtime: number;
@@ -26,7 +24,6 @@ interface D3ChartProps {
 const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
-  const [zoomLevel, setZoomLevel] = useState(1);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -75,25 +72,20 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("border-radius", "4px")
       .style("box-shadow", "0 2px 4px rgba(0,0,0,0.1)");
 
-    const handleZoom = (scale: number) => {
-      const centerX = width / 2;
-      const centerY = height / 2;
-
-      // Calculate new transform
-      const transform = d3.zoomIdentity
-        .translate(centerX - centerX * scale, centerY - centerY * scale)
-        .scale(scale);
-
-      svg.transition().duration(750).call(zoom.transform, transform);
-    };
+    // Cast svg selection to the correct type for zoom transitions
+    const svgSelection = svg as unknown as d3.Selection<
+      SVGSVGElement,
+      unknown,
+      null,
+      undefined
+    >;
 
     // Modify zoom behavior
     const zoom = d3
-      .zoom()
+      .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.5, 5])
       .on("zoom", (event) => {
         const { transform } = event;
-        setZoomLevel(transform.k);
 
         // Get new scaled axes
         const newXScale = transform.rescaleX(xScale);
@@ -105,13 +97,13 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
 
         // Update all elements using the new scales
         plotArea
-          .selectAll("circle")
+          .selectAll<SVGCircleElement, ChartData[number]>("circle")
           .attr("cx", (d) => newXScale(d.runtime))
           .attr("cy", (d) => newYScale(d.memoryUsage))
           .attr("r", 4);
 
         plotArea
-          .selectAll(".point-label")
+          .selectAll<SVGTextElement, ChartData[number]>(".point-label")
           .attr("x", (d) => newXScale(d.runtime))
           .attr("y", (d) => newYScale(d.memoryUsage))
           .style("font-size", "12px");
@@ -160,7 +152,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("background", "none")
       .style("font-size", "16px")
       .on("click", () => {
-        svg.transition().duration(300).call(zoom.scaleBy, 1.5);
+        svgSelection.transition().duration(300).call(zoom.scaleBy, 1.5);
       });
 
     // Add zoom out button
@@ -173,7 +165,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("background", "none")
       .style("font-size", "16px")
       .on("click", () => {
-        svg.transition().duration(300).call(zoom.scaleBy, 0.75);
+        svgSelection.transition().duration(300).call(zoom.scaleBy, 0.75);
       });
 
     // Add reset button
@@ -186,7 +178,10 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .style("background", "none")
       .style("font-size", "16px")
       .on("click", () => {
-        svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+        svgSelection
+          .transition()
+          .duration(300)
+          .call(zoom.transform, d3.zoomIdentity);
       });
 
     // Create clip path
@@ -250,10 +245,6 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .domain([0, (d3?.max(data, (d) => d.memoryUsage) ?? 0) + 50])
       .range([height - margin.bottom, margin.top]);
 
-    // Store original scales for reset
-    const xScaleOriginal = xScale.copy();
-    const yScaleOriginal = yScale.copy();
-
     // Function to update axes
     const updateAxes = () => {
       xAxisGroup.call(d3.axisBottom(xScale).ticks(6).tickSizeOuter(0));
@@ -284,43 +275,8 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle");
 
-    // Add function to update grid
-    const updateGrid = (transform: d3.ZoomTransform) => {
-      const newXScale = transform.rescaleX(xScale);
-      const newYScale = transform.rescaleY(yScale);
-
-      plotArea.selectAll(".grid-line").remove();
-
-      // Recreate grid lines with new scales
-      plotArea
-        .selectAll(".grid-x")
-        .data(newXScale.ticks())
-        .join("line")
-        .attr("class", "grid-line")
-        .attr("x1", (d) => newXScale(d))
-        .attr("x2", (d) => newXScale(d))
-        .attr("y1", margin.top)
-        .attr("y2", height - margin.bottom)
-        .attr("stroke", "currentColor")
-        .attr("stroke-opacity", 0.1)
-        .attr("stroke-dasharray", "4,4");
-
-      plotArea
-        .selectAll(".grid-y")
-        .data(newYScale.ticks())
-        .join("line")
-        .attr("class", "grid-line")
-        .attr("y1", (d) => newYScale(d))
-        .attr("y2", (d) => newYScale(d))
-        .attr("x1", margin.left)
-        .attr("x2", width - margin.right)
-        .attr("stroke", "currentColor")
-        .attr("stroke-opacity", 0.1)
-        .attr("stroke-dasharray", "4,4");
-    };
-
     // Apply zoom to SVG
-    svg.call(zoom);
+    svgSelection.call(zoom);
 
     // Scatter points (now inside plotArea)
     plotArea
@@ -378,7 +334,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       });
 
     // Grid (now inside plotArea)
-    const grid = plotArea
+    plotArea
       .append("g")
       .attr("stroke", "currentColor")
       .attr("stroke-opacity", 0.1)
