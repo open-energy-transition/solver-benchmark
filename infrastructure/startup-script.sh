@@ -61,3 +61,47 @@ echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 # Run the benchmarks
 echo "Starting benchmarks..."
 python /solver-benchmark/runner/run_benchmarks.py /solver-benchmark/benchmarks/${BENCHMARK_FILE} ${BENCHMARK_YEAR}
+
+# ----- GCS UPLOAD CONFIGURATION -----
+# Check if GCS upload is enabled
+ENABLE_GCS_UPLOAD=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/enable_gcs_upload")
+if [ "${ENABLE_GCS_UPLOAD}" != "true" ]; then
+    echo "GCS upload is disabled. Skipping upload."
+    exit 0
+fi
+
+# Get the GCS bucket name
+GCS_BUCKET_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/gcs_bucket_name")
+echo "Using GCS bucket: ${GCS_BUCKET_NAME}"
+
+# Create timestamp for the file
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+echo "Using timestamp: ${TIMESTAMP}"
+
+# Create the properly named copy of results
+CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
+RESULTS_COPY="/tmp/${CLEAN_FILENAME}_${TIMESTAMP}.csv"
+echo "Creating copy of results as: ${RESULTS_COPY}"
+cp /solver-benchmark/results/benchmark_results.csv "${RESULTS_COPY}"
+
+# Ensure gsutil is available (should be on GCP instances by default)
+if ! command -v gsutil &> /dev/null; then
+    echo "Installing Google Cloud SDK..."
+    apt-get install -y apt-transport-https ca-certificates gnupg curl
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+    apt-get update && apt-get install -y google-cloud-sdk
+fi
+
+# Upload the results file to GCS bucket
+echo "Uploading results to GCS bucket..."
+gsutil cp "${RESULTS_COPY}" gs://${GCS_BUCKET_NAME}/
+
+# Verify the upload
+if [ $? -eq 0 ]; then
+    echo "Upload successfully completed at $(date)"
+    echo "File available at: gs://${GCS_BUCKET_NAME}/$(basename ${RESULTS_COPY})"
+else
+    echo "Upload failed at $(date)"
+    echo "Check VM service account permissions for the GCS bucket"
+fi
