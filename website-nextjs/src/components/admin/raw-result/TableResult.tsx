@@ -22,6 +22,7 @@ import FilterTable from "@/components/shared/tables/FilterTable";
 import PaginationTable from "@/components/shared/tables/PaginationTable";
 import DownloadButton from "@/components/shared/buttons/DownloadButton";
 import { IResultState } from "@/types/state";
+import SortIcon from "@/components/shared/tables/SortIcon";
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
@@ -249,7 +250,7 @@ const TableResult = () => {
                   >
                     <div
                       onClick={header.column.getToggleSortingHandler()}
-                      className="flex gap-1"
+                      className="flex gap-1 items-center"
                       style={{
                         width: header.getSize() + 10,
                       }}
@@ -265,11 +266,10 @@ const TableResult = () => {
                         <FilterTable column={header.column} />
                       ) : null}
                       {/* Sort */}
-                      {header.column.getIsSorted() === "asc"
-                        ? " ↑"
-                        : header.column.getIsSorted() === "desc"
-                          ? " ↓"
-                          : ""}
+                      <SortIcon
+                        sortDirection={header.column.getIsSorted()}
+                        canSort={header.column.getCanSort()}
+                      />
                     </div>
                   </th>
                 ))}
