@@ -13,6 +13,7 @@ import {
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { ArrowToRightIcon } from "@/assets/icons";
+import SortIcon from "@/components/shared/tables/SortIcon";
 
 const InstancesTableResult = ({
   benchmarkDetail,
@@ -58,6 +59,7 @@ const InstancesTableResult = ({
       {
         header: "LP/MPS FILE",
         accessorKey: "url",
+        enableSorting: false,
         cell: (info) => (
           <Link
             href={info.getValue() as string}
@@ -125,16 +127,19 @@ const InstancesTableResult = ({
                     key={header.id}
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
-                    <div onClick={header.column.getToggleSortingHandler()}>
+                    <div
+                      className="flex gap-2 items-center"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                      {header.column.getIsSorted() === "asc"
-                        ? " ↑"
-                        : header.column.getIsSorted() === "desc"
-                          ? " ↓"
-                          : ""}
+                      {/* Sort */}
+                      <SortIcon
+                        canSort={header.column.getCanSort()}
+                        sortDirection={header.column.getIsSorted()}
+                      />
                     </div>
                   </th>
                 ))}

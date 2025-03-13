@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 import navbarActions from "@/redux/theme/actions";
 import Link from "next/link";
@@ -18,6 +19,16 @@ import { PATH_DASHBOARD } from "@/constants/path";
 const Navbar = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
+
+  const handleNavigation = useCallback(
+    (route: string) => {
+      router.replace({
+        pathname: route,
+        query: {}, // Empty query object to clear parameters
+      });
+    },
+    [router],
+  );
 
   const navConfig = [
     {
@@ -93,8 +104,12 @@ const Navbar = () => {
           <ul className="space-y-2">
             {navConfig.map((navData, idx) => (
               <li key={idx}>
-                <Link
-                  href={navData.route || "#"}
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavigation(navData.route);
+                  }}
+                  href={navData.route}
                   className={`flex items-center h-[55px] text-lavender font-normal font-league
                      ${
                        currentRoute === navData.route
@@ -114,7 +129,7 @@ const Navbar = () => {
                       {navData.label}
                     </span>
                   )}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

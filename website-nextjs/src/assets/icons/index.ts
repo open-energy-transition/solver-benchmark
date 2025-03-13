@@ -40,5 +40,6 @@ export { default as QuestionLine } from "./question-line.svg";
 export { default as SearchPlusIcon } from "./search-plus.svg";
 export { default as SearchMinusIcon } from "./search-minus.svg";
 export { default as SortVerticalIcon } from "./sort-vertical.svg";
+export { default as SortVerticalAscIcon } from "./sort-vertical-asc.svg";
 export { default as ArrowsMoveIcon } from "./arrows-move.svg";
 export { default as XIcon } from "./x-icon.svg";
