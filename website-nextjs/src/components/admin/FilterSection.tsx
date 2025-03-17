@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   BrightIcon,
   PolygonIcon,
@@ -12,8 +13,10 @@ import { IFilterState, IResultState } from "@/types/state";
 import filterActions from "@/redux/filters/actions";
 import resultActions from "@/redux/results/actions";
 import { getLatestBenchmarkResult } from "@/utils/results";
+import { isArray } from "lodash";
 
 const FilterSection = () => {
+  const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>();
 
@@ -22,6 +25,10 @@ const FilterSection = () => {
       return state.results.rawBenchmarkResults;
     },
   );
+
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
 
   const selectedFilters = useSelector(
     (state: { filters: IFilterState }) => state.filters,
@@ -47,6 +54,8 @@ const FilterSection = () => {
     (state: { results: IResultState }) => state.results.availableProblemSizes,
   );
 
+  const [isInit, setIsInit] = useState(false);
+
   const handleCheckboxChange = ({
     category,
     value,
@@ -56,6 +65,7 @@ const FilterSection = () => {
     value: string;
     only?: boolean;
   }) => {
+    setIsInit(true);
     dispatch(
       filterAction.toggleFilterAndUpdateResults({ category, value, only }),
     );
@@ -90,6 +100,61 @@ const FilterSection = () => {
     );
   };
 
+  // Add these utility functions
+  const encodeValue = (value: string) => {
+    return encodeURIComponent(value);
+  };
+
+  const decodeValue = (value: string) => {
+    return decodeURIComponent(value);
+  };
+
+  useEffect(() => {
+    if (isInit) {
+      updateUrlParams(selectedFilters);
+    }
+  }, [selectedFilters]);
+
+  const updateUrlParams = (filters: IFilterState) => {
+    const queryParams = new URLSearchParams();
+    Object.entries(filters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        queryParams.set(key, values.map(encodeValue).join(";"));
+      }
+    });
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: Object.fromEntries(queryParams),
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const parseUrlParams = () => {
+    const filters: Partial<IFilterState> = {};
+
+    [
+      "sectors",
+      "technique",
+      "kindOfProblem",
+      "modelName",
+      "problemSize",
+    ].forEach((key) => {
+      const value = router.query[key];
+      if (typeof value === "string") {
+        // @ts-expect-error Type inference issues with dynamic keys
+        filters[key as keyof IFilterState] = value
+          ? (value.split(";").map(decodeValue) as string[])
+          : [];
+      }
+    });
+
+    return filters;
+  };
+
   useEffect(() => {
     return () => {
       dispatch(
@@ -107,8 +172,45 @@ const FilterSection = () => {
           getLatestBenchmarkResult(rawBenchmarkResults),
         ),
       );
+      dispatch(resultActions.setMetaData(rawMetaData));
     };
   }, []);
+
+  useEffect(() => {
+    if (isInit) return;
+    if (!router.isReady) return;
+
+    const urlFilters = parseUrlParams();
+    console.log(selectedFilters, urlFilters);
+    if (Object.keys(urlFilters).length > 0) {
+      Object.keys(selectedFilters).forEach((key) => {
+        if (
+          isArray(urlFilters[key as keyof IFilterState]) &&
+          (selectedFilters[key as keyof IFilterState] as string[]).length !==
+            (urlFilters[key as keyof IFilterState] as string[]).length
+        ) {
+          const selectedFilterValues =
+            selectedFilters[key as keyof IFilterState];
+          if (Array.isArray(selectedFilterValues)) {
+            selectedFilterValues
+              .filter((filterValue) => {
+                const filterArray = urlFilters[key as keyof IFilterState];
+                return (
+                  Array.isArray(filterArray) &&
+                  !filterArray.includes(filterValue)
+                );
+              })
+              .forEach((filterValue) => {
+                handleCheckboxChange({
+                  category: key,
+                  value: filterValue,
+                });
+              });
+          }
+        }
+      });
+    }
+  }, [router.query, selectedFilters]);
 
   return (
     <div className="bg-white rounded-xl my-2">
