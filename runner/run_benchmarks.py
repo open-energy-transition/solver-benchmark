@@ -285,7 +285,7 @@ def main(
                 else:
                     format = "lp"
                 benchmark_path = (
-                    benchmarks_folder / f'{benchmark_name}-{instance["Name"]}.{format}'
+                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}.{format}"
                 )
                 download_file_from_google_drive(instance["URL"], benchmark_path)
 
