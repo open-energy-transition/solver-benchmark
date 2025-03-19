@@ -19,6 +19,7 @@ const FilterSection = () => {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
@@ -214,9 +215,36 @@ const FilterSection = () => {
 
   return (
     <div className="bg-white rounded-xl my-2">
-      <div className="flex text-dark-grey">
+      {/* Mobile Menu Button */}
+      <button
+        className="md:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        <span>Filters</span>
+        <svg
+          className={`w-5 h-5 transition-transform ${
+            isMobileMenuOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      <div
+        className={`${
+          isMobileMenuOpen ? "block" : "hidden"
+        } md:block md:flex text-dark-grey`}
+      >
         {/* Sectors */}
-        <div className="text-xs border-r border-stroke">
+        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-auto">
           <div className="flex items-center justify-between px-3 border-b border-stroke">
             <div className="flex items-center py-2 gap-1 pr-6 sticky">
               <BrightIcon className="w-5 h-5" />
@@ -289,7 +317,7 @@ const FilterSection = () => {
           </div>
         </div>
         {/* Technique */}
-        <div className="text-xs border-r border-stroke">
+        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-auto">
           <div className="flex items-center justify-between px-3 border-b border-stroke">
             <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
               <ProcessorIcon className="w-5 h-5" />
@@ -362,7 +390,7 @@ const FilterSection = () => {
         </div>
 
         {/* Kind of Problem */}
-        <div className="text-xs border-r border-stroke">
+        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-auto">
           <div className="flex items-center justify-between px-3 border-b border-stroke">
             <div className="flex items-center border-b border-stroke py-2 gap-1">
               <WrenchIcon className="w-5 h-5" />
@@ -435,7 +463,7 @@ const FilterSection = () => {
           </div>
         </div>
         {/* Problem Size */}
-        <div className="text-xs border-r border-stroke  w-[40%]">
+        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-[40%]">
           <div className="flex items-center justify-between pr-3 border-b border-stroke">
             <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
               <WrenchIcon className="w-5 h-5" />
@@ -500,7 +528,7 @@ const FilterSection = () => {
           </div>
         </div>
         {/* Model */}
-        <div className="text-xs border-r border-stroke w-full">
+        <div className="text-xs w-full">
           <div className="flex items-center justify-between pr-3 border-b border-stroke">
             <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
               <PolygonIcon className="w-5 h-5" />

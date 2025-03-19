@@ -1,64 +1,90 @@
 import { GithubIcon } from "@/assets/icons";
-
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { useDispatch } from "react-redux";
+import navbarActions from "@/redux/theme/actions";
 
 const AdminHeader = ({ children }: { children: ReactNode }) => {
-  return (
-    <nav>
-      <div className="flex flex-wrap items-center justify-between mx-auto py-5 pr-8">
-        {children}
+  const dispatch = useDispatch();
 
-        {/* Mobile UI */}
-        <div className="flex lg:hidden items-center md:order-2 space-x-3 md:space-x-0">
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    dispatch(navbarActions.toggleNav());
+  };
+
+  return (
+    <nav className="bg-white shadow-sm">
+      <div className="flex items-center mx-auto py-5 px-4 md:px-8">
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <div className="flex items-center truncate">{children}</div>
+        </div>
+
+        <div className="flex items-center flex-none ml-4">
+          {/* Mobile menu button */}
           <button
+            onClick={toggleMobileMenu}
             type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            id="user-menu-button"
-            aria-expanded="false"
-            data-dropdown-toggle="user-dropdown"
-            data-dropdown-placement="bottom"
-          >
-            <span className="sr-only">Open user menu</span>
-          </button>
-          <button
-            data-collapse-toggle="navbar-user"
-            type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            aria-controls="navbar-user"
-            aria-expanded="false"
+            className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            aria-controls="mobile-menu"
+            aria-expanded={isMobileMenuOpen}
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
               fill="none"
-              viewBox="0 0 17 14"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
+              {isMobileMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
             </svg>
           </button>
+
+          {/* Desktop menu */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <a
+              href="https://github.com/open-energy-transition/"
+              className="text-gray-700 hover:text-gray-900"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubIcon />
+            </a>
+          </div>
         </div>
-        <div
-          className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-          id="navbar-user"
-        >
-          <ul className="flex flex-col font-medium text-sm p-4 md:p-0 pr-2 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:mt-0 md:border-0 gap-4">
-            <li>
-              <a
-                href="https://github.com/open-energy-transition/"
-                className="block py-2 px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 dark:text-white "
-              >
-                <GithubIcon />
-              </a>
-            </li>
-          </ul>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`${
+          isMobileMenuOpen ? "block" : "hidden"
+        } w-full lg:hidden mt-4`}
+        id="mobile-menu"
+      >
+        <div className="flex flex-col space-y-4 px-2 pt-2 pb-3">
+          <a
+            href="https://github.com/open-energy-transition/"
+            className="text-gray-700 hover:text-gray-900 flex items-center space-x-2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GithubIcon />
+            <span>GitHub</span>
+          </a>
         </div>
       </div>
     </nav>

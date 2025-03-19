@@ -6,7 +6,7 @@ import {
   MainContentSection,
   MissionStartSection,
 } from "@/components/landing-page/sections";
-import { Footer, Header } from "@/components/shared";
+import { FooterLandingPage, Header } from "@/components/shared";
 
 const LandingPage = () => {
   return (
@@ -27,7 +27,7 @@ const LandingPage = () => {
         {/* Contact Section */}
         <ContactSection />
         {/* Footer Section */}
-        <Footer />
+        <FooterLandingPage />
       </div>
     </>
   );

@@ -11,6 +11,16 @@ import ResultsSectionsTitle from "./home/ResultsTitle";
 import { SgmMode } from "@/constants/filter";
 
 const ResultsSection = () => {
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const columns = [
     {
       name: "Rank",
@@ -345,49 +355,92 @@ const ResultsSection = () => {
           of runtime and memory consumption over all benchmarks
         </div>
       </div>
-      <div className="flex text-xs leading-1.5">
-        {columns.map((column, i) => (
-          <div
-            key={column.field}
-            className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
-          >
-            <div
-              className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
-              onClick={() => column.sort && handleSort(column.field)}
-            >
-              {column.headerContent
-                ? column.headerContent(column.name)
-                : column.name}
-              {column.sort && (
-                <ArrowIcon
-                  fill="none"
-                  stroke={sortConfig.field === column.field ? "black" : "gray"}
-                  className={`w-2 h-2 ${
-                    sortConfig.direction === "asc" ? "rotate-90" : "-rotate-90"
-                  }
-                    ${sortConfig.field === column.field ? "block" : "hidden"}`}
-                />
-              )}
-            </div>
 
-            {sortedTableData.map((item, index) => (
-              <div
-                key={`${column.field}-${index}`}
-                className={`h-6 flex items-center pl-3 pr-6 ${
-                  activedIndex === index
-                    ? `border-b border-t border-[#CAD3D0] ${
-                        i === 0 ? "border-l" : ""
-                      } ${i === columns.length - 1 ? "border-r" : ""}`
-                    : ""
-                }`}
-                onClick={() => setActivedIndex(index)}
-              >
-                {item[column.field as keyof (typeof tableData)[0]] ?? "-"}
+      {windowWidth < 768 ? (
+        // Mobile view
+        <div className="flex flex-col gap-4 px-4">
+          {sortedTableData.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-sm p-4 border border-gray-100"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-dark-grey font-semibold">
+                  #{item.rank}
+                </span>
+                <span className="text-navy font-bold">{item.solver}</span>
               </div>
-            ))}
-          </div>
-        ))}
-      </div>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <div className="text-dark-grey">Version</div>
+                  <div className="font-medium">{item.version}</div>
+                </div>
+                <div>
+                  <div className="text-dark-grey">SGM Memory</div>
+                  <div className="font-medium">{item.memory}</div>
+                </div>
+                <div>
+                  <div className="text-dark-grey">Solved Benchmarks</div>
+                  <div className="font-medium">{item.solvedBenchmarks}</div>
+                </div>
+                <div>
+                  <div className="text-dark-grey">SGM Runtime</div>
+                  <div className="font-medium">{item.runtime}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        // Desktop view
+        <div className="flex text-xs leading-1.5">
+          {columns.map((column, i) => (
+            <div
+              key={column.field}
+              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+            >
+              <div
+                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
+                onClick={() => column.sort && handleSort(column.field)}
+              >
+                {column.headerContent
+                  ? column.headerContent(column.name)
+                  : column.name}
+                {column.sort && (
+                  <ArrowIcon
+                    fill="none"
+                    stroke={
+                      sortConfig.field === column.field ? "black" : "gray"
+                    }
+                    className={`w-2 h-2 ${
+                      sortConfig.direction === "asc"
+                        ? "rotate-90"
+                        : "-rotate-90"
+                    }
+                    ${sortConfig.field === column.field ? "block" : "hidden"}`}
+                  />
+                )}
+              </div>
+
+              {sortedTableData.map((item, index) => (
+                <div
+                  key={`${column.field}-${index}`}
+                  className={`h-6 flex items-center pl-3 pr-6 ${
+                    activedIndex === index
+                      ? `border-b border-t border-[#CAD3D0] ${
+                          i === 0 ? "border-l" : ""
+                        } ${i === columns.length - 1 ? "border-r" : ""}`
+                      : ""
+                  }`}
+                  onClick={() => setActivedIndex(index)}
+                >
+                  {item[column.field as keyof (typeof tableData)[0]] ?? "-"}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

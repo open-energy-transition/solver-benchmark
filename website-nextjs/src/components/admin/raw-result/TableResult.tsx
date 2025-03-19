@@ -217,19 +217,19 @@ const TableResult = () => {
   };
 
   return (
-    <div>
-      <div className="text-navy font-bold pb-6 pt-9 flex justify-between items-center">
-        Full Results
-        <div className="flex gap-2">
+    <div className="w-full max-w-full overflow-hidden">
+      <div className="text-navy font-bold pb-6 pt-9 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-xl">Full Results</h2>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={downloadFilteredResults}
-            className="text-white bg-navy px-6 py-3 rounded-lg flex gap-1 items-center cursor-pointer"
+            className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base"
           >
             Download Filtered
             <ArrowToRightIcon className="w-4 h-4 rotate-90" />
           </button>
           <DownloadButton url={CSV_URL} fileName={"benchmark_results.csv"}>
-            <div className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center cursor-pointer">
+            <div className="text-white bg-green-pop px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base">
               Download
               <ArrowToRightIcon className="w-4 h-4 rotate-90" />
             </div>
@@ -237,68 +237,80 @@ const TableResult = () => {
         </div>
       </div>
 
-      <div className="rounded-xl overflow-auto">
-        <table className="table-auto bg-white w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    className="text-center text-navy py-4 px-6 cursor-pointer"
+      <div className="rounded-xl overflow-auto -mx-4 sm:mx-0">
+        <div className="min-w-full inline-block align-middle">
+          <div className="overflow-x-auto">
+            <table className="table-auto bg-white w-full min-w-[800px]">
+              <thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className="text-center text-navy py-4 px-6 cursor-pointer"
+                      >
+                        <div
+                          onClick={header.column.getToggleSortingHandler()}
+                          className="flex gap-1 items-center"
+                          style={{
+                            width: header.getSize() + 10,
+                          }}
+                        >
+                          <div>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                          </div>
+                          {/* Filter */}
+                          {header.column.getCanFilter() ? (
+                            <FilterTable column={header.column} />
+                          ) : null}
+                          {/* Sort */}
+                          <SortIcon
+                            sortDirection={header.column.getIsSorted()}
+                            canSort={header.column.getCanSort()}
+                          />
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                   >
-                    <div
-                      onClick={header.column.getToggleSortingHandler()}
-                      className="flex gap-1 items-center"
-                      style={{
-                        width: header.getSize() + 10,
-                      }}
-                    >
-                      <div>
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        {...{
+                          style: {
+                            width: cell.column.getSize(),
+                          },
+                        }}
+                        className="text-navy text-start py-2 px-6"
+                      >
                         {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
                         )}
-                      </div>
-                      {/* Filter */}
-                      {header.column.getCanFilter() ? (
-                        <FilterTable column={header.column} />
-                      ) : null}
-                      {/* Sort */}
-                      <SortIcon
-                        sortDirection={header.column.getIsSorted()}
-                        canSort={header.column.getCanSort()}
-                      />
-                    </div>
-                  </th>
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    {...{
-                      style: {
-                        width: cell.column.getSize(),
-                      },
-                    }}
-                    className="text-navy text-start py-2 px-6"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       {/* Pagination */}
-      <PaginationTable<BenchmarkResult> table={table} />
+      <div className="mt-4">
+        <PaginationTable<BenchmarkResult> table={table} />
+      </div>
     </div>
   );
 };

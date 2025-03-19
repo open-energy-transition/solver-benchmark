@@ -24,19 +24,23 @@ const LandingPage = () => {
     <>
       <Head>
         <title>Home</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
         <div
-          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "ml-64" : "ml-20"
+          className={`px-2 sm:px-6 min-h-[calc(100vh-var(--footer-height))] transition-all ${
+            isNavExpanded ? "md:ml-64" : "md:ml-20"
           }`}
         >
           <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+            <div className="flex text-navy text-xs sm:text-sm text-opacity-50 items-center space-x-1">
               <div className="flex items-center gap-1">
                 <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
+                  <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                 </Link>
                 <ArrowIcon fill="none" className="size-3 stroke-navy" />
                 <span className="self-center font-semibold whitespace-nowrap">
@@ -45,11 +49,12 @@ const LandingPage = () => {
               </div>
             </div>
           </AdminHeader>
-          {/* Content */}
-          <DetailSection />
-          <FilterSection />
-          {benchmarkResults.length ? <ResultsSection /> : <></>}
-          <BenchmarksSection />
+          <div className="space-y-4 sm:space-y-6">
+            <DetailSection />
+            <FilterSection />
+            {benchmarkResults.length ? <ResultsSection /> : <></>}
+            <BenchmarksSection />
+          </div>
         </div>
       </div>
       <Footer />

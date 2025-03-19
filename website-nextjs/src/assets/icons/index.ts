@@ -21,6 +21,7 @@ export { default as HistoryIcon } from "./history.svg";
 export { default as HomeIcon } from "./home.svg";
 export { default as LampOnIcon } from "./lamp-on.svg";
 export { default as LayoutGroupIcon } from "./layout-group.svg";
+export { default as LongArrowIcon } from "./long-arrow.svg";
 export { default as MainIcon } from "./main.svg";
 export { default as OetLogo } from "./oet-logo.svg";
 export { default as MenuIcon } from "./menu.svg";

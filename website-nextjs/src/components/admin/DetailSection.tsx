@@ -100,11 +100,11 @@ const DetailSection = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl py-4 px-12">
-      <ul className="flex justify-between text-dark-grey">
+    <div className="bg-white rounded-xl py-4 px-4 md:px-12">
+      <ul className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-2 text-dark-grey">
         {detailData.map((data, idx) => (
-          <li key={idx} className="text-base flex items-center">
-            {data.icon}
+          <li key={idx} className="text-sm md:text-base flex items-center">
+            <span className="w-6 md:w-auto">{data.icon}</span>
             {data.generateLabel ? (
               <div className="ml-1">{data.generateLabel()}</div>
             ) : (
