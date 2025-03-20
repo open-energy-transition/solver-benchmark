@@ -77,7 +77,8 @@ const SolverSection = () => {
       .filter((result) => result.solver !== selectedSolver)
       .map((oData) => {
         const sData = baseData.find(
-          (sData) => sData.benchmark === oData.benchmark,
+          (sData) =>
+            sData.benchmark === oData.benchmark && sData.size === oData.size,
         );
         return {
           benchmark: oData.benchmark,
