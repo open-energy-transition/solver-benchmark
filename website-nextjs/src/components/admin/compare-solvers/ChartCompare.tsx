@@ -46,8 +46,11 @@ const ChartCompare = ({
 
     // Dimensions
     const width = containerRef.current?.clientWidth || 600;
-    const height = 400;
-    const margin = { top: 40, right: 20, bottom: 50, left: 70 };
+    const isMobile = width < 640; // Add mobile breakpoint check
+    const height = isMobile ? 300 : 400; // Adjust height for mobile
+    const margin = isMobile
+      ? { top: 30, right: 15, bottom: 40, left: 50 }
+      : { top: 40, right: 20, bottom: 50, left: 70 };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -279,31 +282,33 @@ const ChartCompare = ({
     };
   }, [chartData]);
   return (
-    <div className="bg-white py-4 px-10 rounded-xl">
+    <div className="bg-white py-4 px-4 sm:px-10 rounded-xl">
       {/* Legend */}
-      <div className="flex gap-2 ml-8">
+      <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
         <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
           Legend:
         </span>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <CircleIcon className="size-2 text-[#E31937]" />
           ok-ok
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon className="size-2 text-[#0F62FE]" />
           ok-TO
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon className="size-2 text-[#E75134]" />
           TO-ok
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon className="size-2 text-[#4C5C51]" />
           TO-TO
         </div>
       </div>
-      <div ref={containerRef}>
-        <svg ref={svgRef}></svg>
+      <div className="w-full overflow-x-auto" ref={containerRef}>
+        <div className="min-w-[300px]">
+          <svg ref={svgRef}></svg>
+        </div>
       </div>
     </div>
   );

@@ -43,9 +43,17 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     const data = chartData;
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
-    const height = 400;
-    const margin = { top: 40, right: 20, bottom: 50, left: 70 };
+    const width = Math.min(
+      containerRef.current?.clientWidth || 600,
+      window.innerWidth - 40,
+    );
+    const height = Math.min(400, window.innerHeight * 0.6);
+    const margin = {
+      top: 40,
+      right: window.innerWidth < 640 ? 10 : 20,
+      bottom: 50,
+      left: window.innerWidth < 640 ? 50 : 70,
+    };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -63,8 +71,8 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .select(containerRef.current)
       .insert("div", ":first-child")
       .style("position", "absolute")
-      .style("right", "20px")
-      .style("top", "20px")
+      .style("right", window.innerWidth < 640 ? "10px" : "20px")
+      .style("top", window.innerWidth < 640 ? "10px" : "20px")
       .style("display", "flex")
       .style("gap", "8px")
       .style("background", "white")
@@ -374,17 +382,16 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   }, [chartData]);
 
   return (
-    <div className="bg-white py-4 px-10 rounded-xl relative">
+    <div className="bg-white py-2 sm:py-4 px-4 sm:px-10 rounded-xl relative">
       {/* Legend */}
-      <div className="flex gap-2 ml-8">
-        {}
+      <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
         <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
           Solver:
         </span>
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
-            className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+            className="py-1 px-3 sm:px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
           >
             <CircleIcon
               style={{ color: solverColors[solverKey] }}
@@ -394,7 +401,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
           </div>
         ))}
       </div>
-      <div ref={containerRef} className="overflow-hidden">
+      <div ref={containerRef} className="overflow-hidden min-h-[300px]">
         <svg ref={svgRef}></svg>
       </div>
     </div>

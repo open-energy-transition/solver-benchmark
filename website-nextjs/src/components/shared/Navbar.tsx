@@ -70,13 +70,31 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => dispatch(navbarActions.toggleNav())}
+        className="block md:hidden fixed top-4 right-4 z-50 p-2 text-white"
+      >
+        <AlignLeftJustifyIcon />
+      </button>
+
+      {/* Mobile Menu Overlay */}
+      {isNavExpanded && (
+        <div
+          className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => dispatch(navbarActions.toggleNav())}
+        />
+      )}
+
       <div
-        className={`fixed top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0
-        bg-navy rounded-tr-3xl rounded-br-3xl ${
-          isNavExpanded ? "w-64" : "z-max"
-        }`}
+        className={`fixed
+          pt-[calc(var(--banner-height))] md:pt-0
+          top-0 left-0 z-40 h-screen transition-transform bg-navy rounded-tr-3xl rounded-br-3xl
+        ${isNavExpanded ? "w-64" : "w-0 md:w-20"}
+        sm:translate-x-0`}
         aria-label="Sidenav"
       >
+        {/* Close button for mobile */}
         <div className="overflow-auto overflow-x-hidden py-5 px-0 h-full text-white">
           <div className="pt-12 pb-11">
             <Link
