@@ -56,7 +56,7 @@ const Contribute = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Contribute
+export default Contribute;

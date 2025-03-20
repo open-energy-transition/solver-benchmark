@@ -7,5 +7,5 @@ export default function TopBanner() {
         and is subject to change.
       </p>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "next/image";
 import {
   ArrowUpIcon,
   CircleOutlineIcon,
@@ -6,8 +6,8 @@ import {
   GithubIcon,
   StarIcon,
   UserIcon,
-} from "@/assets/icons"
-import Link from "next/link"
+} from "@/assets/icons";
+import Link from "next/link";
 
 const Contribute = () => {
   return (
@@ -86,6 +86,6 @@ const Contribute = () => {
         </Link>
       </div>
     </div>
-  )
-}
-export default Contribute
+  );
+};
+export default Contribute;

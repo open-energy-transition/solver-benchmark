@@ -80,7 +80,7 @@ const MemoryUsageGraph: React.FC = () => {
           .axisBottom(xScale)
           .ticks(5)
           .tickSize(-chartHeight)
-          .tickFormat(() => "")
+          .tickFormat(() => ""),
       )
       .selectAll("line")
       .attr("stroke", "#d9d9d9")
@@ -100,7 +100,7 @@ const MemoryUsageGraph: React.FC = () => {
           .axisLeft(yScale)
           .ticks(5)
           .tickSize(-chartWidth)
-          .tickFormat(() => "")
+          .tickFormat(() => ""),
       )
       .selectAll("line")
       .attr("stroke", "#d9d9d9")
@@ -167,7 +167,9 @@ const MemoryUsageGraph: React.FC = () => {
 
   return (
     <div className="flex-1">
-      <p className="font-medium font-league text-lg mb-4 ml-6">Memory usage graph</p>
+      <p className="font-medium font-league text-lg mb-4 ml-6">
+        Memory usage graph
+      </p>
       <div className="bg-white rounded-3xl p-2 group">
         <div ref={containerRef} className="bg-[#F4F5F7] rounded-3xl">
           <svg ref={svgRef}></svg>

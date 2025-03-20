@@ -1,24 +1,24 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Footer, Navbar } from "@/components/shared"
-import SolverSelection from "@/components/admin/compare-solvers/SolverSelection"
-import Head from "next/head"
-import FilterSection from "@/components/admin/FilterSection"
-import { NoSolverPage } from "@/components/admin/compare-solvers/NoSolverPage"
-import { ArrowIcon, HomeIcon } from "@/assets/icons"
-import Link from "next/link"
-import { PATH_DASHBOARD } from "@/constants/path"
-import { IResultState } from "@/types/state"
+import DetailSection from "@/components/admin/DetailSection";
+import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import SolverSelection from "@/components/admin/compare-solvers/SolverSelection";
+import Head from "next/head";
+import FilterSection from "@/components/admin/FilterSection";
+import { NoSolverPage } from "@/components/admin/compare-solvers/NoSolverPage";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
+import { IResultState } from "@/types/state";
 
 const PageCompareSolvers = () => {
   const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
-  )
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
 
   const solversData = useSelector((state: { results: IResultState }) => {
-    return state.results.solversData
-  })
+    return state.results.solversData;
+  });
 
   return (
     <>
@@ -59,7 +59,7 @@ const PageCompareSolvers = () => {
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default PageCompareSolvers
+export default PageCompareSolvers;

@@ -1,8 +1,8 @@
-import { useEffect, useState, useMemo } from "react"
-import { useSelector } from "react-redux"
-import { IResultState } from "@/types/state"
-import PerformanceBarChart from "@/components/shared/PerformanceBarChart"
-import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa"
+import { useEffect, useState, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { IResultState } from "@/types/state";
+import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
+import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 
 const SOLVES_DATA = [
   {
@@ -29,35 +29,35 @@ const SOLVES_DATA = [
     sourceCode: "https://github.com/firedrakeproject/glpk",
     website: "https://www.gnu.org/software/glpk/",
   },
-]
+];
 
 const SolverSection = () => {
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers
-  })
+    return state.results.availableSolvers;
+  });
 
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults
-    }
-  )
+      return state.results.benchmarkLatestResults;
+    },
+  );
 
-  const [selectedSolver, setSelectedSolver] = useState("")
+  const [selectedSolver, setSelectedSolver] = useState("");
 
-  const [solverOptions, setSolverOptions] = useState<string[]>([])
+  const [solverOptions, setSolverOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!availableSolvers.length) return
-    setSelectedSolver(availableSolvers[0])
-    setSolverOptions(availableSolvers)
-  }, [availableSolvers])
+    if (!availableSolvers.length) return;
+    setSelectedSolver(availableSolvers[0]);
+    setSolverOptions(availableSolvers);
+  }, [availableSolvers]);
 
   function calculateFactor(baseTime: number, solverTime: number) {
-    return Math.log2((solverTime + 10) / (baseTime + 10))
+    return Math.log2((solverTime + 10) / (baseTime + 10));
   }
 
   const chartData = useMemo(() => {
-    if (!selectedSolver) return []
+    if (!selectedSolver) return [];
 
     // Get base solver data points (these will show as factor = 0)
     const baseData = benchmarkLatestResults
@@ -70,15 +70,16 @@ const SolverSection = () => {
         runtime: result.runtime || 0,
         baseSolverRuntime: result.runtime || 0,
         factor: 0, // log2(1) = 0
-      }))
+      }));
 
     // Get comparison data points
     const comparisonData = benchmarkLatestResults
       .filter((result) => result.solver !== selectedSolver)
       .map((oData) => {
         const sData = baseData.find(
-          (sData) => sData.benchmark === oData.benchmark && sData.size === oData.size
-        )
+          (sData) =>
+            sData.benchmark === oData.benchmark && sData.size === oData.size,
+        );
         return {
           benchmark: oData.benchmark,
           solver: oData.solver,
@@ -87,33 +88,33 @@ const SolverSection = () => {
           runtime: oData.runtime || 0,
           baseSolverRuntime: sData?.runtime || 0,
           factor: calculateFactor(sData?.runtime || 0, oData.runtime || 0),
-        }
-      })
+        };
+      });
 
     const baseRuntimes = new Map(
-      baseData.map((d) => [`${d.benchmark}-${d.size}`, d.runtime])
-    )
+      baseData.map((d) => [`${d.benchmark}-${d.size}`, d.runtime]),
+    );
 
     // Combine and sort all data
     return [...baseData, ...comparisonData].sort((a, b) => {
-      const aBaseRuntime = baseRuntimes.get(`${a.benchmark}-${a.size}`) || 0
-      const bBaseRuntime = baseRuntimes.get(`${b.benchmark}-${b.size}`) || 0
+      const aBaseRuntime = baseRuntimes.get(`${a.benchmark}-${a.size}`) || 0;
+      const bBaseRuntime = baseRuntimes.get(`${b.benchmark}-${b.size}`) || 0;
 
       // Sort by base solver runtime
       if (aBaseRuntime !== bBaseRuntime) {
-        return aBaseRuntime - bBaseRuntime
+        return aBaseRuntime - bBaseRuntime;
       }
 
       // Put base solver first within each benchmark group
-      return a.solver === selectedSolver ? -1 : 1
-    })
-  }, [selectedSolver, benchmarkLatestResults])
+      return a.solver === selectedSolver ? -1 : 1;
+    });
+  }, [selectedSolver, benchmarkLatestResults]);
 
   const selectedSolverInfo = useMemo(() => {
-    if (!selectedSolver) return null
-    const solverName = selectedSolver.split("--")[0].toLowerCase()
-    return SOLVES_DATA.find((s) => s.name.toLowerCase() === solverName)
-  }, [selectedSolver])
+    if (!selectedSolver) return null;
+    const solverName = selectedSolver.split("--")[0].toLowerCase();
+    return SOLVES_DATA.find((s) => s.name.toLowerCase() === solverName);
+  }, [selectedSolver]);
 
   return (
     <div>
@@ -186,6 +187,6 @@ const SolverSection = () => {
         />
       )}
     </div>
-  )
-}
-export default SolverSection
+  );
+};
+export default SolverSection;

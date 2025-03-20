@@ -1,4 +1,4 @@
-import { GithubIcon } from "@/assets/icons"
+import { GithubIcon } from "@/assets/icons";
 
 import { ReactNode } from "react";
 
@@ -62,7 +62,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default AdminHeader
+export default AdminHeader;

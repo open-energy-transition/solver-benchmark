@@ -1,11 +1,11 @@
 export function sortStringArray(
   data: string[],
-  direction: "asc" | "desc" = "asc"
+  direction: "asc" | "desc" = "asc",
 ): string[] {
-  const copy = [...data]
+  const copy = [...data];
   if (direction === "asc") {
-    return copy.sort((a, b) => a.localeCompare(b))
+    return copy.sort((a, b) => a.localeCompare(b));
   } else {
-    return copy.sort((a, b) => b.localeCompare(a))
+    return copy.sort((a, b) => b.localeCompare(a));
   }
 }

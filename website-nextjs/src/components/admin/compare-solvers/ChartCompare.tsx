@@ -1,28 +1,28 @@
-import { useEffect, useRef } from "react"
-import * as d3 from "d3"
-import { CircleIcon, XIcon } from "@/assets/icons"
-import { PATH_DASHBOARD } from "@/constants/path"
+import { useEffect, useRef } from "react";
+import * as d3 from "d3";
+import { CircleIcon, XIcon } from "@/assets/icons";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 type ChartData = {
-  xaxis: number
-  yaxis: number
-  status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok"
-  benchmark: string
-  size: string
-}[]
+  xaxis: number;
+  yaxis: number;
+  status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
+  benchmark: string;
+  size: string;
+}[];
 
 interface D3ChartProps {
-  chartData: ChartData
+  chartData: ChartData;
   title: {
-    xaxis: string
-    yaxis: string
-  }
+    xaxis: string;
+    yaxis: string;
+  };
   backgroundColor?: {
-    upper?: string
-    lower?: string
-    upperOpacity?: string
-    lowerOpacity?: string
-  }
+    upper?: string;
+    lower?: string;
+    upperOpacity?: string;
+    lowerOpacity?: string;
+  };
 }
 
 const ChartCompare = ({
@@ -30,11 +30,11 @@ const ChartCompare = ({
   title = { xaxis: "", yaxis: "" },
   backgroundColor,
 }: D3ChartProps) => {
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const svgRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const svgRef = useRef(null);
 
   useEffect(() => {
-    const data = chartData
+    const data = chartData;
 
     // Solvers with colors
     const statusColor = {
@@ -42,25 +42,25 @@ const ChartCompare = ({
       "ok-ok": "#E31937",
       "ok-TO": "#0F62FE",
       "TO-ok": "#E75134",
-    }
+    };
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600
-    const height = 400
-    const margin = { top: 40, right: 20, bottom: 50, left: 70 }
+    const width = containerRef.current?.clientWidth || 600;
+    const height = 400;
+    const margin = { top: 40, right: 20, bottom: 50, left: 70 };
 
     // Clear previous SVG
-    d3.select(svgRef.current).selectAll("*").remove()
+    d3.select(svgRef.current).selectAll("*").remove();
 
     // Find min and max values
-    const minX = d3.min(data, (d) => d.xaxis) ?? 0
-    const maxX = d3.max(data, (d) => d.xaxis) ?? 1
-    const minY = d3.min(data, (d) => d.yaxis) ?? 0
-    const maxY = d3.max(data, (d) => d.yaxis) ?? 1
+    const minX = d3.min(data, (d) => d.xaxis) ?? 0;
+    const maxX = d3.max(data, (d) => d.xaxis) ?? 1;
+    const minY = d3.min(data, (d) => d.yaxis) ?? 0;
+    const maxY = d3.max(data, (d) => d.yaxis) ?? 1;
 
     // Use a common min/max range to make x=y line work correctly
-    const minValue = Math.min(minX, minY)
-    const maxValue = Math.max(maxX, maxY)
+    const minValue = Math.min(minX, minY);
+    const maxValue = Math.max(maxX, maxY);
 
     // Create SVG
     const svg = d3
@@ -68,7 +68,7 @@ const ChartCompare = ({
       .attr("width", "100%")
       .attr("height", height)
       .style("background", "white")
-      .style("overflow", "visible")
+      .style("overflow", "visible");
 
     // Add background split by x = y line
     if (backgroundColor?.lower) {
@@ -78,10 +78,10 @@ const ChartCompare = ({
           "points",
           `${margin.left},${height - margin.bottom} ${width - margin.right},${
             height - margin.bottom
-          } ${width - margin.right},${margin.top}`
+          } ${width - margin.right},${margin.top}`,
         )
         .attr("fill", backgroundColor.lower)
-        .attr("fill-opacity", backgroundColor?.lowerOpacity ?? '')
+        .attr("fill-opacity", backgroundColor?.lowerOpacity ?? "");
     }
     if (backgroundColor?.upper) {
       svg
@@ -90,11 +90,11 @@ const ChartCompare = ({
           "points",
           `${margin.left},${height - margin.bottom} ${margin.left},${
             margin.top
-          } ${width - margin.right},${margin.top}`
+          } ${width - margin.right},${margin.top}`,
         )
         .attr("fill", backgroundColor.upper)
         .attr("fill-opacity", 0.2)
-        .attr("fill-opacity", backgroundColor?.upperOpacity ?? '')
+        .attr("fill-opacity", backgroundColor?.upperOpacity ?? "");
     }
 
     // Tooltip container
@@ -111,33 +111,33 @@ const ChartCompare = ({
       .style("color", "#333")
       .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
       .style("pointer-events", "none")
-      .style("opacity", 0)
+      .style("opacity", 0);
 
     // Scales
     const xScale = d3
       .scaleLinear()
       // .domain([0, (d3.max(data, (d) => d.xaxis) ?? 0) + 1])
       .domain([minValue, maxValue])
-      .range([margin.left, width - margin.right])
+      .range([margin.left, width - margin.right]);
 
     const yScale = d3
       .scaleLinear()
       // .domain([0, (d3?.max(data, (d) => d.yaxis) ?? 0) + 50])
       .domain([minValue, maxValue])
-      .range([height - margin.bottom, margin.top])
+      .range([height - margin.bottom, margin.top]);
 
     // Axes
-    const xAxis = d3.axisBottom(xScale).ticks(6).tickSizeOuter(0)
-    const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0)
+    const xAxis = d3.axisBottom(xScale).ticks(6).tickSizeOuter(0);
+    const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .attr("fill", "#022B3B")
       .call(xAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("stroke", "#A1A9BC")
-        g.selectAll("line").attr("stroke", "#A1A9BC")
-        g.selectAll("text").attr("fill", "#A1A9BC")
+        g.selectAll(".domain").attr("stroke", "#A1A9BC");
+        g.selectAll("line").attr("stroke", "#A1A9BC");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       })
       .append("text")
       .attr("x", width / 2)
@@ -145,16 +145,16 @@ const ChartCompare = ({
       .attr("fill", "#8C8C8C")
       .text(title.xaxis)
       .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
+      .style("font-family", "'Lato', sans-serif");
 
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxis)
       .call((g) => {
-        g.selectAll(".domain").attr("stroke", "#A1A9BC")
-        g.selectAll("line").attr("stroke", "#A1A9BC")
-        g.selectAll("text").attr("fill", "#A1A9BC")
+        g.selectAll(".domain").attr("stroke", "#A1A9BC");
+        g.selectAll("line").attr("stroke", "#A1A9BC");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       })
       .append("text")
       .attr("x", -height / 2)
@@ -164,7 +164,7 @@ const ChartCompare = ({
       .style("font-size", "12px")
       .style("font-family", "'Lato', sans-serif")
       .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle")
+      .attr("text-anchor", "middle");
 
     // Scatter points
     svg
@@ -173,7 +173,7 @@ const ChartCompare = ({
       .enter()
       .append("g")
       .each(function (d) {
-        const group = d3.select(this)
+        const group = d3.select(this);
 
         if (["TO-TO", "ok-TO", "TO-ok"].includes(d.status)) {
           // Render an "X" for status 'TO'
@@ -186,7 +186,7 @@ const ChartCompare = ({
             .text("✕")
             .style("fill", statusColor[d.status])
             .style("font-size", "12px")
-            .style("font-family", "'Lato', sans-serif")
+            .style("font-family", "'Lato', sans-serif");
         } else {
           // Render a circle for other statuses
           group
@@ -194,17 +194,17 @@ const ChartCompare = ({
             .attr("cx", xScale(d.xaxis))
             .attr("cy", yScale(d.yaxis))
             .attr("r", 4)
-            .attr("fill", statusColor[d.status])
+            .attr("fill", statusColor[d.status]);
         }
 
         group
           .on("click", () => {
             window.location.href = PATH_DASHBOARD.benchmarkDetail.one.replace(
               "{name}",
-              d.benchmark
-            )
+              d.benchmark,
+            );
           })
-          .style("cursor", "pointer")
+          .style("cursor", "pointer");
 
         // Add tooltip event listeners
         group
@@ -214,20 +214,20 @@ const ChartCompare = ({
               .html(
                 `<strong>Name:</strong> ${d.benchmark}<br>
                 <strong>Size:</strong> ${d.size}<br>
-                 `
+                 `,
               )
               .style("left", `${event.pageX + 10}px`)
-              .style("top", `${event.pageY - 30}px`)
+              .style("top", `${event.pageY - 30}px`);
           })
           .on("mousemove", (event) => {
             tooltip
               .style("left", `${event.pageX + 10}px`)
-              .style("top", `${event.pageY - 30}px`)
+              .style("top", `${event.pageY - 30}px`);
           })
           .on("mouseout", () => {
-            tooltip.style("opacity", 0)
-          })
-      })
+            tooltip.style("opacity", 0);
+          });
+      });
 
     // Draw x = y line
     svg
@@ -237,7 +237,7 @@ const ChartCompare = ({
       .attr("x2", xScale(maxValue))
       .attr("y2", yScale(maxValue))
       .attr("stroke", "#8B8B8B")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 2);
 
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
@@ -253,7 +253,7 @@ const ChartCompare = ({
             .attr("x2", (d) => 0.5 + xScale(d))
             .attr("y1", margin.top)
             .attr("y2", height - margin.bottom)
-            .attr("stroke-dasharray", "4,4")
+            .attr("stroke-dasharray", "4,4"),
         )
         .call((g) =>
           g
@@ -265,19 +265,19 @@ const ChartCompare = ({
             .attr("y2", (d) => 0.5 + yScale(d))
             .attr("x1", margin.left)
             .attr("x2", width - margin.right)
-            .attr("stroke-dasharray", "4,4")
+            .attr("stroke-dasharray", "4,4"),
         )
         .call((g) => {
           // Hide last grid line
-          g.selectAll("line:last-of-type").attr("display", "none")
-        })
-    svg.append("g").call(grid)
+          g.selectAll("line:last-of-type").attr("display", "none");
+        });
+    svg.append("g").call(grid);
 
     return () => {
       // Cleanup tooltip on unmount
-      tooltip.remove()
-    }
-  }, [chartData])
+      tooltip.remove();
+    };
+  }, [chartData]);
   return (
     <div className="bg-white py-4 px-10 rounded-xl">
       {/* Legend */}
@@ -306,7 +306,7 @@ const ChartCompare = ({
         <svg ref={svgRef}></svg>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChartCompare
+export default ChartCompare;

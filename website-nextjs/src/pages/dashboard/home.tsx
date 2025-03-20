@@ -1,24 +1,24 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // local
-import BenchmarksSection from "@/components/admin/BenchmarksSection"
-import DetailSection from "@/components/admin/DetailSection"
-import FilterSection from "@/components/admin/FilterSection"
-import ResultsSection from "@/components/admin/ResultsSections"
-import { AdminHeader, Footer, Navbar } from "@/components/shared"
-import Head from "next/head"
-import { ArrowIcon, HomeIcon } from "@/assets/icons"
-import { PATH_DASHBOARD } from "@/constants/path"
-import Link from "next/link"
-import { IResultState } from "@/types/state"
+import BenchmarksSection from "@/components/admin/BenchmarksSection";
+import DetailSection from "@/components/admin/DetailSection";
+import FilterSection from "@/components/admin/FilterSection";
+import ResultsSection from "@/components/admin/ResultsSections";
+import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import Head from "next/head";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
+import { PATH_DASHBOARD } from "@/constants/path";
+import Link from "next/link";
+import { IResultState } from "@/types/state";
 
 const LandingPage = () => {
   const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
-  )
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.benchmarkLatestResults
-  })
+    return state.results.benchmarkLatestResults;
+  });
 
   return (
     <>
@@ -54,7 +54,7 @@ const LandingPage = () => {
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;

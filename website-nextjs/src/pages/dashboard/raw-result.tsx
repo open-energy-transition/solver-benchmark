@@ -1,18 +1,18 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Footer, Navbar } from "@/components/shared"
-import TableResult from "@/components/admin/raw-result/TableResult"
-import Head from "next/head"
-import { ArrowIcon, HomeIcon } from "@/assets/icons"
-import { PATH_DASHBOARD } from "@/constants/path"
-import Link from "next/link"
-import FilterSection from "@/components/admin/FilterSection"
+import DetailSection from "@/components/admin/DetailSection";
+import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import TableResult from "@/components/admin/raw-result/TableResult";
+import Head from "next/head";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
+import { PATH_DASHBOARD } from "@/constants/path";
+import Link from "next/link";
+import FilterSection from "@/components/admin/FilterSection";
 
 const PagePerformanceHistory = () => {
   const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
-  )
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
 
   return (
     <>
@@ -47,7 +47,7 @@ const PagePerformanceHistory = () => {
         <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PagePerformanceHistory
+export default PagePerformanceHistory;
