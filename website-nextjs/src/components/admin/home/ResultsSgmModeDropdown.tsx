@@ -12,19 +12,19 @@ const sgmCalculationModes = [
     optionTitle: "Compute SGM using TO values",
     value: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
     optionTooltip:
-      'Using TO values" will assign to them the time-out or the maximum value of memory used when running the benchmark instance.',
+      'Uses the time-out value or the maximum value of memory for benchmark instances that time-out or error.',
   },
   {
     optionTitle: "Penalizing TO by a factor of",
     value: SgmMode.PENALIZING_TO_BY_FACTOR,
     optionTooltip:
-      'Penalizing TO by a factor of X" will take the TO/max value from the previous option and multiply it by a factor of X.',
+      'Uses the TO/max value of memory multiplied by a factor of X for TO/ER benchmark instances.',
   },
   {
     optionTitle: "Only on intersection of solved benchmarks",
     value: SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS,
     optionTooltip:
-      '"Intersection of solved benchmarks" will filter the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out values to consider.',
+      'Filters the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out instances to consider.',
   },
 ]
 
