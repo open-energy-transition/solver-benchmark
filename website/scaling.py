@@ -73,7 +73,7 @@ raw_df = load_benchmark_data()
 
 # Load metadata
 metadata = load_metadata("results/metadata.yaml")
-metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df = pd.DataFrame(metadata["benchmarks"]).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Filter
@@ -94,7 +94,7 @@ if "Solver Version" in df.columns:
 all_enriched_data = []
 
 for benchmark in filtered_metadata["Benchmark Name"].tolist():
-    benchmark_metadata = metadata.get(benchmark)
+    benchmark_metadata = metadata["benchmarks"].get(benchmark)
     if benchmark_metadata:
         for size in benchmark_metadata["Sizes"]:
             # Construct the size_key based on the presence of 'Temporal resolution'

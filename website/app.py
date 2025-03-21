@@ -49,9 +49,8 @@ pages = [
 ]
 
 metadata = load_metadata("results/metadata.yaml")
-
 # Convert metadata to a DataFrame for easier filtering
-metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df = pd.DataFrame(metadata["benchmarks"]).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 # Load the data from the CSV file
 data_df = load_benchmark_data()
