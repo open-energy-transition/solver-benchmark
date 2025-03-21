@@ -237,12 +237,13 @@ def main(
     timeout=10 * 60,
     override=True,
 ):
-    size_categories = {"XS", "S"}  # TODO add this to CLI args
+    size_categories = None  # TODO add this to CLI args
     results = {}
 
     # Load benchmarks from YAML file
     with open(benchmark_yaml_path, "r") as file:
-        benchmarks_info = yaml.safe_load(file)
+        yaml_content = yaml.safe_load(file)
+        benchmarks_info = yaml_content["benchmarks"]
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
@@ -262,42 +263,41 @@ def main(
 
     # Preprocess the sizes and make a list of individual benchmark files to run on
     processed_benchmarks = []
-    for benchmark_info in benchmarks_info:
-        for instance in benchmark_info["sizes"]:
+    for benchmark_name, benchmark_info in benchmarks_info.items():
+        for instance in benchmark_info["Sizes"]:
             # Filter to the desired size_categories
-            if size_categories is not None and instance["size"] not in size_categories:
+            if size_categories is not None and instance["Size"] not in size_categories:
                 continue
 
             # Determine the file path to use for the benchmark
-            if "path" in instance:
-                benchmark_path = Path(instance["path"])
+            if "Path" in instance:
+                benchmark_path = Path(instance["Path"])
                 if not benchmark_path.exists():
                     raise FileNotFoundError(
-                        f"File specified in 'path' does not exist: {benchmark_path}"
+                        f"File specified in 'Path' does not exist: {benchmark_path}"
                     )
-            elif "url" in instance:
+            elif "URL" in instance:
                 # TODO do something better like adding a yaml field for format
-                if instance["url"].endswith(".mps"):
+                if instance["URL"].endswith(".mps"):
                     format = "mps"
-                elif instance["url"].endswith(".mps.gz"):
+                elif instance["URL"].endswith(".mps.gz"):
                     format = "mps.gz"
                 else:
                     format = "lp"
                 benchmark_path = (
-                    benchmarks_folder
-                    / f'{benchmark_info["name"]}-{instance["name"]}.{format}'
+                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}.{format}"
                 )
-                download_file_from_google_drive(instance["url"], benchmark_path)
+                download_file_from_google_drive(instance["URL"], benchmark_path)
 
                 # Gzip files are unzipped by the above function, so update path accordingly
                 if benchmark_path.suffix == ".gz":
                     benchmark_path = benchmark_path.with_suffix("")
             else:
-                raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
+                raise ValueError("No valid 'Path' or 'URL' found for benchmark entry.")
             processed_benchmarks.append(
                 {
-                    "name": benchmark_info["name"],
-                    "size": instance["name"],
+                    "name": benchmark_name,
+                    "size": instance["Name"],
                     "path": benchmark_path,
                 }
             )

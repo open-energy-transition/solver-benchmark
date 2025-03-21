@@ -19,14 +19,6 @@ results_file.parent.mkdir(parents=True, exist_ok=True)
 # Dictionary to store unified metadata
 unified_metadata = {}
 
-# Size name, category, and URL from benchmark_config.yaml
-# TODO this info should be ported to the metadata files under benchmark/<framework>/
-with open(benchmarks_dir / "benchmark_config.yaml", "r") as file:
-    file_contents = yaml.safe_load(file)
-    size_data = {}
-    for benchmark_info in file_contents:
-        size_data[benchmark_info["name"]] = benchmark_info
-
 
 # Helper function to process a single YAML file
 def process_yaml_file(file_path):
@@ -36,33 +28,20 @@ def process_yaml_file(file_path):
 
     try:
         with open(file_path, "r") as file:
-            benchmark_data = yaml.safe_load(file)
-            if not benchmark_data:
+            yaml_data = yaml.safe_load(file)
+            if not yaml_data:
                 print(f"Skipping file with no content: {file_path}")
                 return
 
+            benchmark_data = yaml_data["benchmarks"]
+
             for model_name, model_info in benchmark_data.items():
                 sizes = []
-                other_data = {s["name"]: s for s in size_data[model_name]["sizes"]}
                 for size in model_info.get("Sizes", []):
-                    # Hack: get the corresponding entry from benchmark_config.yaml
-                    # Please remove this code and put the info into the metadata files
-                    sp_res = str(size["Spatial resolution"]).split()[0]
-                    tm_res = str(size["Temporal resolution"]).split()[0]
-                    name = f"{sp_res}-{tm_res}"
-                    other_data_entry = other_data.get(name)
-                    if other_data_entry is None:
-                        name += "h"
-                        other_data_entry = other_data.get(name)
-                    if other_data_entry is None:
-                        raise ValueError(
-                            f"Could not find this size of {model_name} in benchmark_config.yaml:\n{size}"
-                        )
-
                     size_entry = {
-                        "Name": other_data_entry["name"],
-                        "Size": other_data_entry["size"],
-                        "URL": other_data_entry["url"],
+                        "Name": size["Name"],
+                        "Size": size["Size"],
+                        "URL": size["URL"],
                         "Spatial resolution": size.get("Spatial resolution"),
                         "Temporal resolution": size.get("Temporal resolution"),
                         "N. of constraints": size.get("N. of constraints", None),
@@ -118,10 +97,13 @@ class BlankNoneDumper(yaml.Dumper):
 
 yaml.add_representer(type(None), BlankNoneDumper.represent_none, Dumper=BlankNoneDumper)
 
+# Wrap the unified metadata in a "benchmarks" key
+final_output = {"benchmarks": unified_metadata}
+
 # Write the unified metadata to the results/metadata.yaml file
 with open(results_file, "w") as output_file:
     yaml.dump(
-        unified_metadata,
+        final_output,
         output_file,
         sort_keys=False,
         default_flow_style=False,

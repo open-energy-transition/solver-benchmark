@@ -216,9 +216,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("width", barWidth)
       .attr("height", (d) => {
         // Use maximum height for timeout cases
-        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+        if (d.status === "TO") {
           // When both solvers timeout, set height to 0
-          if (d.status === "TO" && d.baseSolverRuntime >= MaxRunTime) {
+          if (d.status === "TO" && d.baseSolverRuntime == MaxRunTime) {
             return 0;
           }
           return TIMEOUT_BAR_HEIGHT;
