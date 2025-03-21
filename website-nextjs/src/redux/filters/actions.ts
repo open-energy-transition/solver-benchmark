@@ -6,6 +6,7 @@ import { BenchmarkResult } from "@/types/benchmark"
 import { MetaData, MetaDataEntry, Size } from "@/types/meta-data"
 import { getLatestBenchmarkResult } from "@/utils/results"
 import { IFilterState } from "@/types/state"
+import { SgmMode } from "@/constants/filter"
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
@@ -21,10 +22,28 @@ const setFilter = (filterState: IFilterState) => {
   }
 }
 
+const setSgmMode = (sgmMode: SgmMode) => {
+  return {
+    type: actions.SET_SGM_MODE,
+    payload: {sgmMode},
+  }
+}
+
+const setXFactor = (xFactor: number) => {
+  return {
+    type: actions.SET_X_FACTOR,
+    payload: {xFactor},
+  }
+}
+
 const actions = {
   TOGGLE_FILTER: "TOGGLE_FILTER",
   SET_FILTER: "SET_FILTER",
+  SET_SGM_MODE: "SET_SGM_MODE",
+  SET_X_FACTOR: "SET_X_FACTOR",
   setFilter,
+  setSgmMode,
+  setXFactor,
   toggleFilter,
   toggleFilterAndUpdateResults:
     (payload: {

@@ -1,3 +1,4 @@
+import { SgmMode } from "@/constants/filter"
 import { BenchmarkResult } from "./benchmark"
 import { MetaData } from "./meta-data"
 
@@ -10,8 +11,9 @@ export type IFilterState = {
     benchmarks: string[]
     solvers: string[]
     statuses: string[]
+    sgmMode: SgmMode,
+    xFactor: 5,
   }
-
 
 export interface IAvailableFilterData {
   availableSectors: string[]

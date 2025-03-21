@@ -53,7 +53,8 @@ const DetailSection = () => {
         <>
           Benchmarks:{" "}
           <span className="font-bold">
-            {availableBenchmarksCount} {`(${avaliableInstance.length}`} instances
+            {availableBenchmarksCount} {`(${avaliableInstance.length}`}{" "}
+            instances
             {")"}
           </span>
         </>
@@ -90,6 +91,7 @@ const DetailSection = () => {
     },
     {
       label: "Timeout",
+      // TODO: Replace hardcoded "10 min" timeout
       value: "10 min",
       icon: <HistoryIcon />,
     },
