@@ -4,6 +4,7 @@ import {
   BalanceScaleIcon,
   ChartBarIcon,
   ChartLineIcon,
+  VectorSquareIcon,
   WindowIcon,
 } from "@/assets/icons"
 import Image from "next/image"
@@ -28,6 +29,11 @@ const Navbar = () => {
       label: "Benchmark details",
       route: PATH_DASHBOARD.benchmarkDetail.list,
       icon: <ChartBarIcon />,
+    },
+    {
+      label: "Solvers",
+      route: "/dashboard/solvers",
+      icon: <VectorSquareIcon />,
     },
     {
       label: "Compare solvers",
