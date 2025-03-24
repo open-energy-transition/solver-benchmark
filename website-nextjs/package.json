@@ -18,7 +18,7 @@
     "i": "^0.3.7",
     "lodash": "^4.17.21",
     "lodash.camelcase": "^4.3.0",
-    "next": "15.1.0",
+    "next": "15.2.0",
     "next-redux-wrapper": "^8.1.0",
     "npm": "^11.0.0",
     "papaparse": "^5.5.1",
