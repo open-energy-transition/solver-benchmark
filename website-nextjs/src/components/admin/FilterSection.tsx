@@ -3,53 +3,53 @@ import {
   PolygonIcon,
   ProcessorIcon,
   WrenchIcon,
-} from "@/assets/icons"
-import { useSelector, useDispatch } from "react-redux"
-import filterAction from "@/redux/filters/actions"
-import Popup from "reactjs-popup"
-import { IFilterState, IResultState } from "@/types/state"
+} from "@/assets/icons";
+import { useSelector, useDispatch } from "react-redux";
+import filterAction from "@/redux/filters/actions";
+import Popup from "reactjs-popup";
+import { IFilterState, IResultState } from "@/types/state";
 
 const FilterSection = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dispatch = useDispatch<any>()
+  const dispatch = useDispatch<any>();
 
   const selectedFilters = useSelector(
-    (state: { filters: IFilterState }) => state.filters
-  )
+    (state: { filters: IFilterState }) => state.filters,
+  );
 
   const availableSectors = useSelector(
-    (state: { results: IResultState }) => state.results.availableSectors
-  )
+    (state: { results: IResultState }) => state.results.availableSectors,
+  );
 
   const availableTechniques = useSelector(
-    (state: { results: IResultState }) => state.results.availableTechniques
-  )
+    (state: { results: IResultState }) => state.results.availableTechniques,
+  );
 
   const availableKindOfProblems = useSelector(
-    (state: { results: IResultState }) => state.results.availableKindOfProblems
-  )
+    (state: { results: IResultState }) => state.results.availableKindOfProblems,
+  );
 
   const availableModels = useSelector(
-    (state: { results: IResultState }) => state.results.availableModels
-  )
+    (state: { results: IResultState }) => state.results.availableModels,
+  );
 
   const availableProblemSizes = useSelector(
-    (state: { results: IResultState }) => state.results.availableProblemSizes
-  )
+    (state: { results: IResultState }) => state.results.availableProblemSizes,
+  );
 
   const handleCheckboxChange = ({
     category,
     value,
     only = false,
   }: {
-    category: string
-    value: string
-    only?: boolean
+    category: string;
+    value: string;
+    only?: boolean;
   }) => {
     dispatch(
-      filterAction.toggleFilterAndUpdateResults({ category, value, only })
-    )
-  }
+      filterAction.toggleFilterAndUpdateResults({ category, value, only }),
+    );
+  };
 
   return (
     <div className="bg-white rounded-xl my-2">
@@ -340,7 +340,7 @@ const FilterSection = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FilterSection
+export default FilterSection;

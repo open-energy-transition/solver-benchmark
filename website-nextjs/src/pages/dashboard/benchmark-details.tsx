@@ -1,18 +1,18 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection"
-import { AdminHeader, Footer, Navbar } from "@/components/shared"
-import Head from "next/head"
-import FilterSection from "@/components/admin/FilterSection"
-import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult"
-import { ArrowIcon, HomeIcon } from "@/assets/icons"
-import { PATH_DASHBOARD } from "@/constants/path"
-import Link from "next/link"
+import DetailSection from "@/components/admin/DetailSection";
+import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import Head from "next/head";
+import FilterSection from "@/components/admin/FilterSection";
+import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
+import { PATH_DASHBOARD } from "@/constants/path";
+import Link from "next/link";
 
 const PageBenchmarkDetail = () => {
   const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
-  )
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
 
   return (
     <>
@@ -54,7 +54,7 @@ const PageBenchmarkDetail = () => {
         <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PageBenchmarkDetail
+export default PageBenchmarkDetail;

@@ -1,1 +1,1 @@
-export const FOOTER_HEIGHT = 120
+export const FOOTER_HEIGHT = 120;

@@ -1,80 +1,80 @@
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import ChartCompare from "./ChartCompare"
-import { IResultState } from "@/types/state"
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import ChartCompare from "./ChartCompare";
+import { IResultState } from "@/types/state";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
-    return state.results.solversData
-  })
+    return state.results.solversData;
+  });
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.benchmarkResults
-  })
+    return state.results.benchmarkResults;
+  });
 
-  const [solver1, setSolver1] = useState("")
-  const [solver2, setSolver2] = useState("")
+  const [solver1, setSolver1] = useState("");
+  const [solver2, setSolver2] = useState("");
 
-  const [solverOptions, setSolverOptions] = useState<string[]>([])
+  const [solverOptions, setSolverOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!solversData.length) return
-    setSolver1(`${solversData[0].solver}--${solversData[0].versions[0]}`)
-    setSolver2(`${solversData[1].solver}--${solversData[1].versions[0]}`)
+    if (!solversData.length) return;
+    setSolver1(`${solversData[0].solver}--${solversData[0].versions[0]}`);
+    setSolver2(`${solversData[1].solver}--${solversData[1].versions[0]}`);
     setSolverOptions(
       solversData.flatMap((s) =>
-        s.versions.map((version) => `${s.solver}--${version}`)
-      )
-    )
-  }, [solversData])
+        s.versions.map((version) => `${s.solver}--${version}`),
+      ),
+    );
+  }, [solversData]);
 
   function getOptionLabel(solverWithVersion: string) {
-    const [solver, version] = solverWithVersion.split("--")
-    return `${solver} v${version}`
+    const [solver, version] = solverWithVersion.split("--");
+    return `${solver} v${version}`;
   }
 
   interface ChartData {
     d1: {
-      runtime: number
-      memoryUsage: number
-    }
+      runtime: number;
+      memoryUsage: number;
+    };
     d2: {
-      runtime: number
-      memoryUsage: number
-    }
-    status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok"
-    benchmark: string
-    size: string
+      runtime: number;
+      memoryUsage: number;
+    };
+    status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
+    benchmark: string;
+    size: string;
   }
 
-  const [chartData, setChartData] = useState<ChartData[]>([])
+  const [chartData, setChartData] = useState<ChartData[]>([]);
 
   function formatStatus(status: string) {
     if (status !== "ok") {
-      return "TO"
+      return "TO";
     }
-    return status
+    return status;
   }
 
   useEffect(() => {
-    const [s1, v1] = solver1.split("--")
-    const [s2, v2] = solver2.split("--")
+    const [s1, v1] = solver1.split("--");
+    const [s2, v2] = solver2.split("--");
 
     const data1 = benchmarkResults.filter(
-      (result) => result.solver === s1 && result.solverVersion === v1
-    )
+      (result) => result.solver === s1 && result.solverVersion === v1,
+    );
     const data2 = benchmarkResults.filter(
-      (result) => result.solver === s2 && result.solverVersion === v2
-    )
+      (result) => result.solver === s2 && result.solverVersion === v2,
+    );
 
     setChartData(
       data1.map((d1) => {
         const d2 = data2.find(
-          (d2) => d2.benchmark === d1.benchmark && d2.size === d1.size
-        )
+          (d2) => d2.benchmark === d1.benchmark && d2.size === d1.size,
+        );
         if (!d2) {
           throw new Error(
-            `Result not found for Benchmark: ${d1.benchmark} Size: ${d1.size}`
-          )
+            `Result not found for Benchmark: ${d1.benchmark} Size: ${d1.size}`,
+          );
         }
         return {
           d1: {
@@ -88,10 +88,10 @@ const SolverSelection = () => {
           status: `${formatStatus(d1.status)}-${formatStatus(d2.status)}`,
           benchmark: d1.benchmark,
           size: d1.size,
-        }
-      })
-    )
-  }, [solver1, solver2, benchmarkResults])
+        };
+      }),
+    );
+  }, [solver1, solver2, benchmarkResults]);
 
   return (
     <div>
@@ -188,6 +188,6 @@ const SolverSelection = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default SolverSelection
+  );
+};
+export default SolverSelection;

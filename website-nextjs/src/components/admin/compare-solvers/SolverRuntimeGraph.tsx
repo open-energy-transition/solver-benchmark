@@ -79,7 +79,7 @@ const SolverRuntimeGraph: React.FC = () => {
           .axisBottom(xScale)
           .ticks(5)
           .tickSize(-chartHeight) // Extend gridlines across the chart
-          .tickFormat(() => "") // Remove tick labels
+          .tickFormat(() => ""), // Remove tick labels
       )
       .selectAll("line")
       .attr("stroke", "#d9d9d9") // Light gray gridlines
@@ -100,7 +100,7 @@ const SolverRuntimeGraph: React.FC = () => {
           .axisLeft(yScale)
           .ticks(5)
           .tickSize(-chartWidth) // Extend gridlines across the chart
-          .tickFormat(() => "") // Remove tick labels
+          .tickFormat(() => ""), // Remove tick labels
       )
       .selectAll("line")
       .attr("stroke", "#d9d9d9") // Light gray gridlines

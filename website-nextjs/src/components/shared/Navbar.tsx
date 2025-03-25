@@ -6,18 +6,18 @@ import {
   ChartLineIcon,
   VectorSquareIcon,
   WindowIcon,
-} from "@/assets/icons"
-import Image from "next/image"
-import { useDispatch, useSelector } from "react-redux"
-import { useRouter } from "next/router"
+} from "@/assets/icons";
+import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
-import navbarActions from "@/redux/theme/actions"
-import Link from "next/link"
-import { PATH_DASHBOARD } from "@/constants/path"
+import navbarActions from "@/redux/theme/actions";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const Navbar = () => {
-  const router = useRouter()
-  const currentRoute = router.pathname
+  const router = useRouter();
+  const currentRoute = router.pathname;
 
   const navConfig = [
     {
@@ -50,12 +50,12 @@ const Navbar = () => {
       route: "/dashboard/raw-result",
       icon: <WindowIcon />,
     },
-  ]
+  ];
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded
-  )
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
 
   return (
     <>
@@ -135,7 +135,7 @@ const Navbar = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
