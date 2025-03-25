@@ -1,61 +1,61 @@
-import { QuestionLine } from "@/assets/icons"
-import { SgmMode } from "@/constants/filter"
-import React, { useState, useRef, useEffect } from "react"
-import filterActions from "@/redux/filters/actions"
-import { useDispatch, useSelector } from "react-redux"
-import Popup from "reactjs-popup"
-import { IFilterState } from "@/types/state"
-import DebouncedInput from "../raw-result/DebouncedInput"
+import { QuestionLine } from "@/assets/icons";
+import { SgmMode } from "@/constants/filter";
+import React, { useState, useRef, useEffect } from "react";
+import filterActions from "@/redux/filters/actions";
+import { useDispatch, useSelector } from "react-redux";
+import Popup from "reactjs-popup";
+import { IFilterState } from "@/types/state";
+import DebouncedInput from "../raw-result/DebouncedInput";
 
 const sgmCalculationModes = [
   {
     optionTitle: "Compute SGM using TO values",
     value: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
     optionTooltip:
-      'Uses the time-out value or the maximum value of memory for benchmark instances that time-out or error.',
+      "Uses the time-out value or the maximum value of memory for benchmark instances that time-out or error.",
   },
   {
     optionTitle: "Penalizing TO by a factor of",
     value: SgmMode.PENALIZING_TO_BY_FACTOR,
     optionTooltip:
-      'Uses the TO/max value of memory multiplied by a factor of X for TO/ER benchmark instances.',
+      "Uses the TO/max value of memory multiplied by a factor of X for TO/ER benchmark instances.",
   },
   {
     optionTitle: "Only on intersection of solved benchmarks",
     value: SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS,
     optionTooltip:
-      'Filters the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out instances to consider.',
+      "Filters the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out instances to consider.",
   },
-]
+];
 
 const ResultsSgmModeDropdown = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
-    return state.filters.sgmMode
-  })
+    return state.filters.sgmMode;
+  });
   const xFactor = useSelector((state: { filters: IFilterState }) => {
-    return state.filters.xFactor
-  })
+    return state.filters.xFactor;
+  });
 
-  const [open, setOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [selectedMode, setSelectedMode] = useState(
-    sgmCalculationModes.find((mode) => mode.value === sgmMode)
-  )
+    sgmCalculationModes.find((mode) => mode.value === sgmMode),
+  );
 
   const handleChangeMode = (mode: SgmMode) => {
-    setOpen(false)
-    dispatch(filterActions.setSgmMode(mode))
-  }
+    setOpen(false);
+    dispatch(filterActions.setSgmMode(mode));
+  };
 
   useEffect(() => {
-    setSelectedMode(sgmCalculationModes.find((mode) => mode.value === sgmMode))
-  }, [sgmMode])
+    setSelectedMode(sgmCalculationModes.find((mode) => mode.value === sgmMode));
+  }, [sgmMode]);
 
   const onXFactorChange = (newValue: string | number) => {
-    dispatch(filterActions.setXFactor(Number(newValue)))
-  }
+    dispatch(filterActions.setXFactor(Number(newValue)));
+  };
 
   // Close dropdown if clicking outside
   useEffect(() => {
@@ -64,15 +64,15 @@ const ResultsSgmModeDropdown = () => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setOpen(false)
+        setOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  if (!selectedMode) return <div>Sgm Mode Not found</div>
+  if (!selectedMode) return <div>Sgm Mode Not found</div>;
 
   return (
     <div className="relative text-left flex gap-1" ref={dropdownRef}>
@@ -133,7 +133,7 @@ const ResultsSgmModeDropdown = () => {
               <button
                 key={mode.optionTitle}
                 onClick={() => {
-                  handleChangeMode(mode.value)
+                  handleChangeMode(mode.value);
                 }}
                 className="flex relative w-full flex-wrap text-left px-4 py-2 pr-4 text-sm text-gray-700 hover:bg-gray-100"
                 role="menuitem"
@@ -158,7 +158,7 @@ const ResultsSgmModeDropdown = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ResultsSgmModeDropdown
+export default ResultsSgmModeDropdown;

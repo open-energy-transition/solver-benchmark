@@ -1,22 +1,20 @@
-import { useMemo } from "react"
-import { useSelector } from "react-redux"
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 
-import { CircleIcon, CloseIcon } from "@/assets/icons"
-import D3Chart from "@/components/shared/D3PlotChart"
-import { IResultState } from "@/types/state"
+import { CircleIcon, CloseIcon } from "@/assets/icons";
+import D3Chart from "@/components/shared/D3PlotChart";
+import { IResultState } from "@/types/state";
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
-  const benchmarkResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults
-    }
-  )
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
+    return state.results.benchmarkLatestResults;
+  });
 
   const chartData = useMemo(
     () =>
       benchmarkResults.filter((result) => result.benchmark === benchmarkName),
-    [benchmarkResults]
-  )
+    [benchmarkResults],
+  );
 
   return (
     <div className="py-4">
@@ -33,7 +31,7 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BenchmarksSection
+export default BenchmarksSection;

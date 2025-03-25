@@ -1,38 +1,38 @@
-import React from "react"
-import { ArrowRightIcon } from "@/assets/icons"
-import { Table } from "@tanstack/react-table"
+import React from "react";
+import { ArrowRightIcon } from "@/assets/icons";
+import { Table } from "@tanstack/react-table";
 
 interface IPaginationTable<T> {
-  table: Table<T>
+  table: Table<T>;
 }
 
 const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
-  const currentPage = table.getState().pagination.pageIndex + 1
-  const totalPages = table.getPageCount()
-  const maxVisiblePages = 5
-  const pageSize = table.getState().pagination.pageSize
-  const totalItems = table.getFilteredRowModel().rows.length
-  const startItem = (currentPage - 1) * pageSize + 1
-  const endItem = Math.min(startItem + pageSize - 1, totalItems)
+  const currentPage = table.getState().pagination.pageIndex + 1;
+  const totalPages = table.getPageCount();
+  const maxVisiblePages = 5;
+  const pageSize = table.getState().pagination.pageSize;
+  const totalItems = table.getFilteredRowModel().rows.length;
+  const startItem = (currentPage - 1) * pageSize + 1;
+  const endItem = Math.min(startItem + pageSize - 1, totalItems);
 
   // Generate the pagination range
   const getPaginationRange = () => {
-    const range = []
-    const startPage = Math.max(1, currentPage - 2)
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+    const range = [];
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-    if (startPage > 1) range.push(1)
-    if (startPage > 2) range.push("...")
+    if (startPage > 1) range.push(1);
+    if (startPage > 2) range.push("...");
 
     for (let i = startPage; i <= endPage; i++) {
-      range.push(i)
+      range.push(i);
     }
 
-    if (endPage < totalPages - 1) range.push("...")
-    if (endPage < totalPages) range.push(totalPages)
+    if (endPage < totalPages - 1) range.push("...");
+    if (endPage < totalPages) range.push(totalPages);
 
-    return range
-  }
+    return range;
+  };
 
   return (
     <div className="flex text-xs items-center gap-2 mt-4 justify-between">
@@ -77,7 +77,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
               <span key={index} className="text-dark-grey">
                 ...
               </span>
-            )
+            ),
           )}
           <button
             className={`flex gap-2 items-center rounded p-1 ${
@@ -98,7 +98,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
       </div>
       <div />
     </div>
-  )
-}
+  );
+};
 
-export default PaginationTable
+export default PaginationTable;
