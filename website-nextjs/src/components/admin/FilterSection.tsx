@@ -181,7 +181,6 @@ const FilterSection = () => {
     if (!router.isReady) return;
 
     const urlFilters = parseUrlParams();
-    console.log(selectedFilters, urlFilters);
     if (Object.keys(urlFilters).length > 0) {
       Object.keys(selectedFilters).forEach((key) => {
         if (
