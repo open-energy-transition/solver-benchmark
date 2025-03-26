@@ -49,6 +49,18 @@ jobs:
         with:
             app-path: website/app.py
 
+      - name: Check Next.js build
+        run: |
+          echo "Checking Next.js build..."
+          if [ -d "website-nextjs" ] && [ -f "website-nextjs/package.json" ]; then
+            cd website-nextjs
+            npm install
+            npm run build
+            cd ..
+          else
+            echo "Next.js project not found at website-nextjs/package.json. Skipping build check."
+          fi
+
       - name: Setup Conda for benchmark runner
         uses: conda-incubator/setup-miniconda@v3
         with:
