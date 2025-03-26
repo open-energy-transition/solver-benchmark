@@ -1,8 +1,8 @@
 /* eslint-disable */
 /* eslint-disable @typescript-eslint/* */
 
-import React, { useEffect, useMemo, useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   ColumnDef,
   flexRender,
@@ -13,42 +13,44 @@ import {
   getFacetedUniqueValues,
   useReactTable,
   Column,
-} from "@tanstack/react-table"
-import { BenchmarkResult } from "@/types/benchmark"
-import Popup from "reactjs-popup"
-import { Color } from "@/constants/color"
-import { MetaDataEntry } from "@/types/meta-data"
-import Link from "next/link"
-import { PATH_DASHBOARD } from "@/constants/path"
-import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
-import PaginationTable from "@/components/shared/tables/PaginationTable"
-import { IFilterState, IResultState } from "@/types/state"
+} from "@tanstack/react-table";
+import { BenchmarkResult } from "@/types/benchmark";
+import Popup from "reactjs-popup";
+import { Color } from "@/constants/color";
+import { MetaDataEntry } from "@/types/meta-data";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
+import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons";
+import PaginationTable from "@/components/shared/tables/PaginationTable";
+import { IFilterState, IResultState } from "@/types/state";
 
 interface IColumnTable extends MetaDataEntry {
-  name: string
+  name: string;
 }
 
 const BenchmarkTableResult = () => {
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData
-  })
+    return state.results.metaData;
+  });
 
   const availableProblemSizes = useSelector(
-    (state: { filters: IFilterState }) => state.filters.problemSize
-  )
+    (state: { filters: IFilterState }) => state.filters.problemSize,
+  );
 
   const memoizedMetaData = useMemo(
     () =>
       Object.entries(metaData)
         .filter(([key, value]) => {
-          return value.sizes.some((v) => availableProblemSizes.includes(v.size))
+          return value.sizes.some((v) =>
+            availableProblemSizes.includes(v.size),
+          );
         })
         .map(([key, value]) => ({
           ...value,
           name: key,
         })),
-    [metaData]
-  )
+    [metaData],
+  );
 
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
@@ -104,7 +106,7 @@ const BenchmarkTableResult = () => {
             className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
             href={PATH_DASHBOARD.benchmarkDetail.one.replace(
               "{name}",
-              info.row.original.name
+              info.row.original.name,
             )}
           >
             View Details
@@ -116,11 +118,11 @@ const BenchmarkTableResult = () => {
         ),
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const [sorting, setSorting] = useState([])
-  const [columnFilters, setColumnFilters] = useState([])
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
 
   const table = useReactTable({
     data: memoizedMetaData,
@@ -137,10 +139,10 @@ const BenchmarkTableResult = () => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: false,
-  })
+  });
 
-  const currentPage = table.getState().pagination.pageIndex + 1
-  const totalPages = table.getPageCount()
+  const currentPage = table.getState().pagination.pageIndex + 1;
+  const totalPages = table.getPageCount();
 
   return (
     <div className="py-2">
@@ -160,7 +162,7 @@ const BenchmarkTableResult = () => {
                     >
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                       {header.column.getCanSort() &&
                       !header.column.getIsSorted() ? (
@@ -176,8 +178,8 @@ const BenchmarkTableResult = () => {
                       {header.column.getIsSorted() === "asc"
                         ? " ↑"
                         : header.column.getIsSorted() === "desc"
-                        ? " ↓"
-                        : ""}
+                          ? " ↓"
+                          : ""}
                     </div>
                   </th>
                 ))}
@@ -200,7 +202,7 @@ const BenchmarkTableResult = () => {
       {/* Pagination */}
       <PaginationTable<IColumnTable> table={table} />
     </div>
-  )
-}
+  );
+};
 
-export default BenchmarkTableResult
+export default BenchmarkTableResult;

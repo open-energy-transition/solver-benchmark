@@ -1,8 +1,8 @@
-import { createStore, applyMiddleware } from 'redux';
-import {thunk} from 'redux-thunk'
-import { composeWithDevTools } from '@redux-devtools/extension';
+import { createStore, applyMiddleware } from "redux";
+import { thunk } from "redux-thunk";
+import { composeWithDevTools } from "@redux-devtools/extension";
 import { createWrapper } from "next-redux-wrapper";
-import rootReducer from './rootReducers';
+import rootReducer from "./rootReducers";
 
 // initial states here
 const initalState = {};
@@ -11,9 +11,9 @@ const initalState = {};
 const middleware = [thunk];
 
 export const store = createStore(
-    rootReducer,
-    initalState,
-    composeWithDevTools(applyMiddleware(...middleware))
+  rootReducer,
+  initalState,
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 // assigning store to next wrapper

@@ -1,35 +1,35 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
-import { ArrowUpIcon } from "@/assets/icons"
-import { useMemo } from "react"
-import { IResultState } from "@/types/state"
+import { ArrowUpIcon } from "@/assets/icons";
+import { useMemo } from "react";
+import { IResultState } from "@/types/state";
 
 const GetStarted = () => {
   const rawMetaData = useSelector((state: { results: IResultState }) => {
-    return state.results.rawMetaData
-  })
+    return state.results.rawMetaData;
+  });
 
   const modelNames = useMemo(
     () =>
       Array.from(
         new Set(
           Object.keys(rawMetaData).map((key) => {
-            return rawMetaData[key].modelName
-          })
-        )
+            return rawMetaData[key].modelName;
+          }),
+        ),
       ),
-    [rawMetaData]
-  )
+    [rawMetaData],
+  );
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers
-  })
+    return state.results.availableSolvers;
+  });
 
   const availableBenchmarksAndSizes = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.availableBenchmarksAndSizes
-    }
-  )
+      return state.results.availableBenchmarksAndSizes;
+    },
+  );
 
   return (
     <div className="text-white bg-navy border-t-2 border-solid border-white">
@@ -80,6 +80,6 @@ const GetStarted = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default GetStarted
+  );
+};
+export default GetStarted;

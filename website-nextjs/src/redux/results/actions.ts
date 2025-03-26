@@ -1,6 +1,6 @@
-import { BenchmarkResult } from "@/types/benchmark"
-import { MetaData } from "@/types/meta-data"
-import { IAvailableFilterData } from "@/types/state"
+import { BenchmarkResult } from "@/types/benchmark";
+import { MetaData } from "@/types/meta-data";
+import { IAvailableFilterData } from "@/types/state";
 
 const actions = {
   SET_BENCHMARK_RESULTS: "SET_BENCHMARK_RESULTS",
@@ -14,38 +14,38 @@ const actions = {
     return {
       type: actions.SET_BENCHMARK_RESULTS,
       payload: { results },
-    }
+    };
   },
   setBenchmarkLatestResults: (results: BenchmarkResult[]) => {
     return {
       type: actions.SET_BENCHMARK_LATEST_RESULTS,
       payload: { results },
-    }
+    };
   },
   setMetaData: (metaData: MetaData) => {
     return {
       type: actions.SET_META_DATA,
       payload: { metaData },
-    }
+    };
   },
   setRawBenchmarkResults: (results: BenchmarkResult[]) => {
     return {
       type: actions.SET_RAW_BENCHMARK_RESULTS,
       payload: { results },
-    }
+    };
   },
   setRawMetaData: (metaData: MetaData) => {
     return {
       type: actions.SET_RAW_META_DATA,
       payload: { metaData },
-    }
+    };
   },
   setAvailableFilterData: (availableFilterData: IAvailableFilterData) => {
     return {
       type: actions.SET_AVAILABLE_FILTER_DATA,
       payload: { availableFilterData },
-    }
+    };
   },
-}
+};
 
-export default actions
+export default actions;

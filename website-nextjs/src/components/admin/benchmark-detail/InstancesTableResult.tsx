@@ -1,8 +1,8 @@
 /* eslint-disable */
 /* eslint-disable @typescript-eslint/* */
 
-import React, { useEffect, useMemo, useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   ColumnDef,
   flexRender,
@@ -11,23 +11,23 @@ import {
   getSortedRowModel,
   getFacetedUniqueValues,
   useReactTable,
-} from "@tanstack/react-table"
-import { MetaDataEntry } from "@/types/meta-data"
+} from "@tanstack/react-table";
+import { MetaDataEntry } from "@/types/meta-data";
 
 const InstancesTableResult = ({
   benchmarkName,
   benchmarkDetail,
 }: {
-  benchmarkName: string
-  benchmarkDetail: MetaDataEntry
+  benchmarkName: string;
+  benchmarkDetail: MetaDataEntry;
 }) => {
   const columns = useMemo<
     ColumnDef<{
-      instance: string
-      spatialResolution: number
-      temporalResolution: string | number
-      nOfVariables: number | null
-      nOfConstraints: number
+      instance: string;
+      spatialResolution: number;
+      temporalResolution: string | number;
+      nOfVariables: number | null;
+      nOfConstraints: number;
     }>[]
   >(
     () => [
@@ -58,11 +58,11 @@ const InstancesTableResult = ({
         cell: (info) => info.getValue(),
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const [sorting, setSorting] = useState([])
-  const [columnFilters, setColumnFilters] = useState([])
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
 
   const tableData = useMemo(
     () =>
@@ -73,8 +73,8 @@ const InstancesTableResult = ({
         nOfConstraints: sizeData.nOfConstraints,
         instance: sizeData.name,
       })),
-    [benchmarkDetail.sizes.length]
-  )
+    [benchmarkDetail.sizes.length],
+  );
 
   const table = useReactTable({
     data: tableData,
@@ -90,11 +90,11 @@ const InstancesTableResult = ({
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: false,
-  })
+  });
 
   useEffect(() => {
-    table.setPageSize(table.getPrePaginationRowModel().rows.length)
-  }, [table.getPrePaginationRowModel().rows.length])
+    table.setPageSize(table.getPrePaginationRowModel().rows.length);
+  }, [table.getPrePaginationRowModel().rows.length]);
 
   return (
     <div className="py-2">
@@ -114,13 +114,13 @@ const InstancesTableResult = ({
                     <div onClick={header.column.getToggleSortingHandler()}>
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                       {header.column.getIsSorted() === "asc"
                         ? " ↑"
                         : header.column.getIsSorted() === "desc"
-                        ? " ↓"
-                        : ""}
+                          ? " ↓"
+                          : ""}
                     </div>
                   </th>
                 ))}
@@ -141,7 +141,7 @@ const InstancesTableResult = ({
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InstancesTableResult
+export default InstancesTableResult;
