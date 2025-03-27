@@ -26,13 +26,9 @@ function App({ Component, pageProps }: AppProps) {
       const metaData = await getMetaData();
 
       const benchmarksMetaData = metaData.benchmarks;
-
       const problemSizeResult: { [key: string]: string } = {};
       Object.keys(benchmarksMetaData).forEach((metaDataKey) => {
-        if (!benchmarksMetaData[metaDataKey].sizes) {
-          console.log(benchmarksMetaData[metaDataKey], metaDataKey);
-        }
-        benchmarksMetaData[metaDataKey].sizes.forEach((s) => {
+        benchmarksMetaData[metaDataKey]?.sizes?.forEach((s) => {
           problemSizeResult[`${metaDataKey}'-'${s.name}`] = s.size;
         });
       });

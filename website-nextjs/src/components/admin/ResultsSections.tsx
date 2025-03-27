@@ -147,9 +147,9 @@ const ResultsSection = () => {
       rank: number;
       solver: string;
       version: string;
-      memory: number;
+      memory: string;
       solvedBenchmarks: string;
-      runtime: number;
+      runtime: string;
     }[]
   >([]);
   const [sortConfig, setSortConfig] = useState<{
@@ -247,7 +247,7 @@ const ResultsSection = () => {
     const percentage = (numberSolvedBenchmark * 100) / uniqueBenchmarkCount;
     return `${roundNumber(
       percentage,
-      1,
+      0,
     )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`;
   };
 
@@ -259,12 +259,24 @@ const ResultsSection = () => {
           1,
         solver: solverData,
         version: getHighestVersion(solverVersions[solverData]),
-        memory: roundNumber(calculateSgmBySolver(solverData, "memoryUsage"), 2),
+        memory: `${roundNumber(
+          calculateSgmBySolver(solverData, "memoryUsage"),
+          2,
+        )} (${roundNumber(
+          calculateSgm(getRelevantResults(solverData, "memoryUsage")),
+          2,
+        )})`,
         solvedBenchmarks: getSolvedBenchmarksLabel(
           solverData,
           uniqueBenchmarkCount,
         ),
-        runtime: roundNumber(calculateSgmBySolver(solverData, "runtime"), 2),
+        runtime: `${roundNumber(
+          calculateSgmBySolver(solverData, "runtime"),
+          2,
+        )} (${roundNumber(
+          calculateSgm(getRelevantResults(solverData, "runtime")),
+          2,
+        )})`,
       })),
     );
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);

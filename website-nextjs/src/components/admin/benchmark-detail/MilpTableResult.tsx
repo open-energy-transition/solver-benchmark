@@ -14,6 +14,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { IResultState } from "@/types/state";
+import { ArrowIcon, SortVerticalIcon } from "@/assets/icons";
 
 const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
   const columns = useMemo<
@@ -105,16 +106,31 @@ const MilpTableResult = ({ benchmarkName }: { benchmarkName: string }) => {
                     key={header.id}
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
-                    <div onClick={header.column.getToggleSortingHandler()}>
+                    <div
+                      className="flex gap-2 items-center"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                      {header.column.getIsSorted() === "asc"
-                        ? " ↑"
-                        : header.column.getIsSorted() === "desc"
-                          ? " ↓"
-                          : ""}
+                      {!header.column.getIsSorted() ? (
+                        <div>
+                          <SortVerticalIcon
+                            fill="none"
+                            className="stroke-navy"
+                          />
+                        </div>
+                      ) : (
+                        <ArrowIcon
+                          fill="none"
+                          className={`stroke-navy size-2 block ${
+                            header.column.getIsSorted() === "asc"
+                              ? "rotate-90"
+                              : "-rotate-90"
+                          }`}
+                        />
+                      )}
                     </div>
                   </th>
                 ))}

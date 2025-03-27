@@ -54,7 +54,6 @@ const filterReducer = (
             ) // Remove if already selected
           : [...(state[category] as (typeof value)[]), value], // Add if not selected
       };
-
     default:
       return state;
   }
