@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // internal
 import {
   AppIcon,
@@ -7,42 +7,44 @@ import {
   HistoryIcon,
   LayoutGroupIcon,
   VectorSquareIcon,
-} from "@/assets/icons"
-import { useMemo } from "react"
-import { IResultState } from "@/types/state"
+} from "@/assets/icons";
+import { useMemo } from "react";
+import { IResultState } from "@/types/state";
 
 const DetailSection = () => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.rawBenchmarkResults
-  })
+    return state.results.rawBenchmarkResults;
+  });
 
   const rawMetaData = useSelector((state: { results: IResultState }) => {
-    return state.results.rawMetaData
-  })
+    return state.results.rawMetaData;
+  });
 
-  const availableBenchmarksCount = Object.keys(rawMetaData).length
+  const availableBenchmarksCount = Object.keys(rawMetaData).length;
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers
-  })
+    return state.results.availableSolvers;
+  });
 
   const avaliableVersion = useMemo(
     () =>
       Array.from(
-        new Set(benchmarkResults.map((result) => result.solverVersion))
+        new Set(benchmarkResults.map((result) => result.solverVersion)),
       ),
-    [benchmarkResults]
-  )
+    [benchmarkResults],
+  );
 
   const avaliableInstance = useMemo(
     () =>
       Array.from(
         new Set(
-          benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
-        )
+          benchmarkResults.map(
+            (result) => `${result.benchmark}-${result.size}`,
+          ),
+        ),
       ),
-    [benchmarkResults]
-  )
+    [benchmarkResults],
+  );
 
   const detailData = [
     {
@@ -95,7 +97,7 @@ const DetailSection = () => {
       value: "10 min",
       icon: <HistoryIcon />,
     },
-  ]
+  ];
 
   return (
     <div className="bg-white rounded-xl py-4 px-12">
@@ -118,6 +120,6 @@ const DetailSection = () => {
         ))}
       </ul>
     </div>
-  )
-}
-export default DetailSection
+  );
+};
+export default DetailSection;

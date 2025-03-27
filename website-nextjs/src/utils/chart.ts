@@ -19,8 +19,8 @@ const presetColors = [
   "#ffd8b1", // apricot
   "#000080", // navy
   "#808080", // grey
-]
+];
 
 export function getChartColor(index: number): string {
-  return presetColors[index % presetColors.length]
+  return presetColors[index % presetColors.length];
 }

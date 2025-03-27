@@ -3,9 +3,9 @@ import {
   LampOnIcon,
   LayoutGroupIcon,
   UsersAltIcon,
-} from "@/assets/icons"
-import { PATH_DASHBOARD } from "@/constants/path"
-import Link from "next/link"
+} from "@/assets/icons";
+import { PATH_DASHBOARD } from "@/constants/path";
+import Link from "next/link";
 
 const MissionStart = () => {
   return (
@@ -91,6 +91,6 @@ const MissionStart = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default MissionStart
+  );
+};
+export default MissionStart;
