@@ -24,6 +24,7 @@ export { default as LayoutGroupIcon } from "./layout-group.svg";
 export { default as LongArrowIcon } from "./long-arrow.svg";
 export { default as MainIcon } from "./main.svg";
 export { default as OetLogo } from "./oet-logo.svg";
+export { default as OutIcon } from "./out-icon.svg";
 export { default as MenuIcon } from "./menu.svg";
 export { default as PlusIcon } from "./plus.svg";
 export { default as PolygonIcon } from "./polygon.svg";

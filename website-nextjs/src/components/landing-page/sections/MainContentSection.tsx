@@ -18,7 +18,7 @@ const MainContent = () => {
         }}
       ></div>
       <div className="px-4 pb-9 lg:px-6 mx-auto container relative flex">
-        <div className="text-start md:w-10/12 pb-28">
+        <div className="text-start md:w-10/12 lg:pb-28">
           <div className="max-w-[697px] pt-20">
             <h1 className="leading-[120%] text-white text-4xl font-normal tracking-tight sm:text-[52px] box-decoration-clone">
               <span className="font-bold">Open-source benchmark</span> of{" "}

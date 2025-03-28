@@ -55,9 +55,11 @@ const DetailSection = () => {
         <>
           Benchmarks:{" "}
           <span className="font-bold">
-            {availableBenchmarksCount} {`(${avaliableInstance.length}`}{" "}
-            instances
-            {")"}
+            {availableBenchmarksCount}{" "}
+            <span className="hidden xl:inline">
+              {`(${avaliableInstance.length}`} instances
+              {")"}
+            </span>
           </span>
         </>
       ),
@@ -70,8 +72,11 @@ const DetailSection = () => {
         <>
           Solvers:{" "}
           <span className="font-bold">
-            {availableSolvers.length} {`(${avaliableVersion.length}`} versions
-            {")"}
+            {availableSolvers.length}
+            <span className="hidden xl:inline">
+              {`(${avaliableVersion.length}`} versions
+              {")"}
+            </span>
           </span>
         </>
       ),
@@ -100,11 +105,11 @@ const DetailSection = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl py-4 px-4 md:px-12">
-      <ul className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-2 text-dark-grey">
+    <div className="bg-white rounded-xl py-4 px-4 xl:px-12">
+      <ul className="flex flex-col lg:flex-row lg:justify-between gap-4 lg:gap-2 text-dark-grey">
         {detailData.map((data, idx) => (
-          <li key={idx} className="text-sm md:text-base flex items-center">
-            <span className="w-6 md:w-auto">{data.icon}</span>
+          <li key={idx} className="text-sm lg:text-base flex items-center">
+            <span className="w-6 lg:w-auto">{data.icon}</span>
             {data.generateLabel ? (
               <div className="ml-1">{data.generateLabel()}</div>
             ) : (

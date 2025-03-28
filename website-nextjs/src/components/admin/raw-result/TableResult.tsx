@@ -13,6 +13,7 @@ import {
   useReactTable,
   ColumnSort,
   ColumnFilter,
+  VisibilityState,
 } from "@tanstack/react-table";
 import { BenchmarkResult, OriginBenchmarkResult } from "@/types/benchmark";
 import Popup from "reactjs-popup";
@@ -143,6 +144,8 @@ const TableResult = () => {
 
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [showColumnSelector, setShowColumnSelector] = useState(false);
 
   const table = useReactTable({
     data: benchmarkResults,
@@ -150,9 +153,11 @@ const TableResult = () => {
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -222,6 +227,12 @@ const TableResult = () => {
         <h2 className="text-xl">Full Results</h2>
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
+            onClick={() => setShowColumnSelector(!showColumnSelector)}
+            className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg cursor-pointer w-full sm:w-auto text-sm sm:text-base"
+          >
+            Select Columns
+          </button>
+          <button
             onClick={downloadFilteredResults}
             className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base"
           >
@@ -236,6 +247,29 @@ const TableResult = () => {
           </DownloadButton>
         </div>
       </div>
+
+      {showColumnSelector && (
+        <div className="mb-4 p-4 bg-white rounded-lg shadow">
+          <div className="font-bold mb-2">Select columns to display:</div>
+          <div className="flex flex-wrap gap-3">
+            {table.getAllColumns().map((column) => {
+              return (
+                <div key={column.id} className="flex items-center">
+                  <label className="inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={column.getIsVisible()}
+                      onChange={column.getToggleVisibilityHandler()}
+                      className="form-checkbox h-4 w-4 text-navy rounded"
+                    />
+                    <span className="ml-2 text-sm">{column.id}</span>
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="rounded-xl overflow-auto -mx-4 sm:mx-0">
         <div className="min-w-full inline-block align-middle">
@@ -252,26 +286,31 @@ const TableResult = () => {
                       >
                         <div
                           onClick={header.column.getToggleSortingHandler()}
-                          className="flex gap-1 items-center"
+                          className="flex gap-1 items-center justify-between w-full max-w-[200px] mx-auto truncate"
                           style={{
                             width: header.getSize() + 10,
+                            maxWidth: header.getSize()
+                              ? header.getSize() + 10
+                              : 200,
                           }}
                         >
-                          <div>
+                          <div className="truncate">
                             {flexRender(
                               header.column.columnDef.header,
                               header.getContext(),
                             )}
                           </div>
-                          {/* Filter */}
-                          {header.column.getCanFilter() ? (
-                            <FilterTable column={header.column} />
-                          ) : null}
-                          {/* Sort */}
-                          <SortIcon
-                            sortDirection={header.column.getIsSorted()}
-                            canSort={header.column.getCanSort()}
-                          />
+                          <div className="flex gap-1 shrink-0">
+                            {/* Filter */}
+                            {header.column.getCanFilter() ? (
+                              <FilterTable column={header.column} />
+                            ) : null}
+                            {/* Sort */}
+                            <SortIcon
+                              sortDirection={header.column.getIsSorted()}
+                              canSort={header.column.getCanSort()}
+                            />
+                          </div>
                         </div>
                       </th>
                     ))}
@@ -287,12 +326,13 @@ const TableResult = () => {
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        {...{
-                          style: {
-                            width: cell.column.getSize(),
-                          },
+                        style={{
+                          width: cell.column.getSize(),
+                          maxWidth: cell.column.getSize()
+                            ? cell.column.getSize()
+                            : 200,
                         }}
-                        className="text-navy text-start py-2 px-6"
+                        className="text-navy text-start py-2 px-6 truncate"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,

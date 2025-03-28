@@ -320,19 +320,24 @@ const ResultsSection = () => {
 
   const [activedIndex, setActivedIndex] = useState(0);
 
+  const isMobileView = windowWidth < 1024;
+
   return (
     <div>
-      <div className="pb-3 pl-3">
+      <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-dark-grey text-sm flex flex-wrap items-center">
-          You can rank the latest version of each solver by number of solved
-          benchmark instances, or by the normalized shifted geometric mean (SGM{" "}
+        <div className="text-dark-grey text-sm block items-center lg:max-w-[70%]">
+          <span>
+            You can rank the latest version of each solver by number of solved
+            benchmark instances, or by the normalized shifted geometric mean
+            (SGM
+          </span>
           <span className="inline-flex gap-2">
             <Popup
               on={["hover"]}
               trigger={() => (
-                <span className="flex items-center">
-                  <QuestionLine className="w-4 h-4" />)
+                <span className="flex items-baseline">
+                  <QuestionLine className="size-3.5" viewBox="0 0 24 20" />)
                 </span>
               )}
               position="right center"
@@ -352,11 +357,11 @@ const ResultsSection = () => {
               </div>
             </Popup>
           </span>
-          of runtime and memory consumption over all benchmarks
+          <span> of runtime and memory consumption over all benchmarks</span>
         </div>
       </div>
 
-      {windowWidth < 768 ? (
+      {isMobileView ? (
         // Mobile view
         <div className="flex flex-col gap-4 px-4">
           {sortedTableData.map((item, index) => (

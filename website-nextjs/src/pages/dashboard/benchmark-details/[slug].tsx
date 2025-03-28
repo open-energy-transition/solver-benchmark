@@ -107,7 +107,7 @@ const PageBenchmarkDetail = () => {
           <DetailSection />
           <div className="border-b border-stroke pt-2" />
 
-          <div className="pb-2 pt-8 md:pt-16 flex items-center">
+          <div className="pb-2 pt-8 md:py-4 flex items-center">
             <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>

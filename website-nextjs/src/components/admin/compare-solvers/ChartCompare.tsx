@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { getChartColor } from "@/utils/chart";
 
 type ChartData = {
   xaxis: number;
@@ -38,10 +39,10 @@ const ChartCompare = ({
 
     // Solvers with colors
     const statusColor = {
-      "TO-TO": "#4C5C51",
-      "ok-ok": "#E31937",
-      "ok-TO": "#0F62FE",
-      "TO-ok": "#E75134",
+      "ok-ok": "#4C5C51",
+      "TO-TO": getChartColor(2),
+      "ok-TO": getChartColor(3),
+      "TO-ok": getChartColor(0),
     };
 
     // Dimensions
@@ -289,19 +290,19 @@ const ChartCompare = ({
           Legend:
         </span>
         <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#E31937]" />
+          <CircleIcon className="size-2 text-[#4C5C51]" />
           ok-ok
         </div>
         <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon className="size-2 text-[#0F62FE]" />
+          <XIcon fill={getChartColor(3)} className="size-2" />
           ok-TO
         </div>
         <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon className="size-2 text-[#E75134]" />
+          <XIcon fill={getChartColor(0)} className="size-2" />
           TO-ok
         </div>
         <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon className="size-2 text-[#4C5C51]" />
+          <XIcon fill={getChartColor(2)} className="size-2" />
           TO-TO
         </div>
       </div>

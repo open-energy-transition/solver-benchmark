@@ -213,390 +213,403 @@ const FilterSection = () => {
   }, [router.query, selectedFilters]);
 
   return (
-    <div className="bg-white rounded-xl my-2">
-      {/* Mobile Menu Button */}
-      <button
-        className="md:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      >
-        <span>Filters</span>
-        <svg
-          className={`w-5 h-5 transition-transform ${
-            isMobileMenuOpen ? "rotate-180" : ""
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+    <div>
+      <div className="pb-3 pt-2">
+        <div className="text-navy font-bold text-xl">Filter</div>
+        <div className="text-dark-grey text-sm flex flex-wrap items-center">
+          Customize your parameters to refine the data view. Results will adjust
+          dynamically based on your selections.
+        </div>
+      </div>
+      <div className="bg-white rounded-xl my-2">
+        {/* Mobile Menu Button */}
+        <button
+          className="lg:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
+          <span>Filters</span>
+          <svg
+            className={`w-5 h-5 transition-transform ${
+              isMobileMenuOpen ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
 
-      <div
-        className={`${
-          isMobileMenuOpen ? "block" : "hidden"
-        } md:block md:flex text-dark-grey`}
-      >
-        {/* Sectors */}
-        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-auto">
-          <div className="flex items-center justify-between px-3 border-b border-stroke">
-            <div className="flex items-center py-2 gap-1 pr-6 sticky">
-              <BrightIcon className="w-5 h-5" />
-              <span>Sectors</span>
+        <div
+          className={`${
+            isMobileMenuOpen ? "block" : "hidden"
+          } lg:flex text-dark-grey`}
+        >
+          {/* Sectors */}
+          <div className="text-xs border-b lg:border-b-0 lg:border-r border-stroke w-full lg:w-auto">
+            <div className="flex items-center justify-between px-3 border-b border-stroke">
+              <div className="flex items-center py-2 gap-1 pr-6 sticky">
+                <BrightIcon className="w-5 h-5" />
+                <span>Sectors</span>
+              </div>
+              <input
+                className="w-4 h-4 accent-navy rounded"
+                type="checkbox"
+                checked={availableSectors.every(
+                  (sector) => selectedFilters?.sectors?.includes(sector),
+                )}
+                onChange={() =>
+                  handleSelectAll({
+                    category: "sectors",
+                  })
+                }
+              />
             </div>
-            <input
-              className="w-4 h-4 accent-navy rounded"
-              type="checkbox"
-              checked={availableSectors.every(
-                (sector) => selectedFilters?.sectors?.includes(sector),
-              )}
-              onChange={() =>
-                handleSelectAll({
-                  category: "sectors",
-                })
-              }
-            />
-          </div>
-          <div className="text-xs max-h-[95px] overflow-y-auto">
-            {availableSectors.map((sector) => (
-              <div
-                className="flex items-center gap-1 p-3 relative group"
-                key={sector}
-              >
-                <input
-                  className="w-4 h-4 accent-navy rounded"
-                  type="checkbox"
-                  checked={selectedFilters?.sectors?.includes(sector)}
-                  onChange={() =>
-                    handleCheckboxChange({
-                      category: "sectors",
-                      value: sector,
-                    })
-                  }
-                />
-                <span
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "sectors",
-                      value: sector,
-                    })
-                  }
-                  className="w-max cursor-pointer max-w-[70px] text-ellipsis whitespace-nowrap overflow-hidden"
+            <div className="text-xs max-h-[95px] overflow-y-auto">
+              {availableSectors.map((sector) => (
+                <div
+                  className="flex items-center gap-1 p-3 relative group"
+                  key={sector}
                 >
-                  <Popup
-                    on={["hover"]}
-                    trigger={() => <span>{sector}</span>}
-                    position="top right"
-                    closeOnDocumentClick
-                    arrowStyle={{ color: "#ebeff2" }}
+                  <input
+                    className="w-4 h-4 accent-navy rounded"
+                    type="checkbox"
+                    checked={selectedFilters?.sectors?.includes(sector)}
+                    onChange={() =>
+                      handleCheckboxChange({
+                        category: "sectors",
+                        value: sector,
+                      })
+                    }
+                  />
+                  <span
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "sectors",
+                        value: sector,
+                      })
+                    }
+                    className="w-max cursor-pointer max-w-[70px] text-ellipsis whitespace-nowrap overflow-hidden"
                   >
-                    <div className="bg-stroke p-2 rounded">{sector}</div>
-                  </Popup>
-                </span>
+                    <Popup
+                      on={["hover"]}
+                      trigger={() => <span>{sector}</span>}
+                      position="top right"
+                      closeOnDocumentClick
+                      arrowStyle={{ color: "#ebeff2" }}
+                    >
+                      <div className="bg-stroke p-2 rounded">{sector}</div>
+                    </Popup>
+                  </span>
 
-                <span
-                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "sectors",
-                      value: sector,
-                      only: true,
-                    })
-                  }
-                >
-                  only
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Technique */}
-        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-auto">
-          <div className="flex items-center justify-between px-3 border-b border-stroke">
-            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
-              <ProcessorIcon className="w-5 h-5" />
-              <span>Technique</span>
-            </div>
-            <input
-              className="w-4 h-4 accent-navy rounded"
-              type="checkbox"
-              checked={availableTechniques.every(
-                (technique) => selectedFilters?.technique?.includes(technique),
-              )}
-              onChange={() =>
-                handleSelectAll({
-                  category: "technique",
-                })
-              }
-            />
-          </div>
-          <div className="text-xs max-h-[95px] overflow-y-auto">
-            {availableTechniques.map((technique) => (
-              <div
-                className="flex items-center gap-1 p-3 relative group"
-                key={technique}
-              >
-                <input
-                  className="w-4 h-4 accent-navy rounded"
-                  type="checkbox"
-                  checked={selectedFilters?.technique?.includes(technique)}
-                  onChange={() =>
-                    handleCheckboxChange({
-                      category: "technique",
-                      value: technique,
-                    })
-                  }
-                />
-                <span
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "technique",
-                      value: technique,
-                    })
-                  }
-                  className="w-max cursor-pointer"
-                >
-                  <Popup
-                    on={["hover"]}
-                    trigger={() => <span>{technique}</span>}
-                    position="top right"
-                    closeOnDocumentClick
-                    arrowStyle={{ color: "#ebeff2" }}
+                  <span
+                    className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "sectors",
+                        value: sector,
+                        only: true,
+                      })
+                    }
                   >
-                    <div className="bg-stroke p-2 rounded">{technique}</div>
-                  </Popup>
-                </span>
-                <span
-                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "technique",
-                      value: technique,
-                      only: true,
-                    })
-                  }
-                >
-                  only
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Kind of Problem */}
-        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-auto">
-          <div className="flex items-center justify-between px-3 border-b border-stroke">
-            <div className="flex items-center border-b border-stroke py-2 gap-1">
-              <WrenchIcon className="w-5 h-5" />
-              <span>Kind of Problem</span>
+                    only
+                  </span>
+                </div>
+              ))}
             </div>
-            <input
-              className="w-4 h-4 accent-navy rounded"
-              type="checkbox"
-              checked={availableKindOfProblems.every(
-                (kindOfProblem) =>
-                  selectedFilters?.kindOfProblem?.includes(kindOfProblem),
-              )}
-              onChange={() =>
-                handleSelectAll({
-                  category: "kindOfProblem",
-                })
-              }
-            />
           </div>
-          <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs max-h-[95px] overflow-y-auto">
-            {availableKindOfProblems.map((problem) => (
-              <div
-                className="flex items-center gap-1 p-3 relative group"
-                key={problem}
-              >
-                <input
-                  className="w-4 h-4 accent-navy rounded"
-                  type="checkbox"
-                  checked={selectedFilters?.kindOfProblem?.includes(problem)}
-                  onChange={() =>
-                    handleCheckboxChange({
-                      category: "kindOfProblem",
-                      value: problem,
-                    })
-                  }
-                />
-                <span
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "kindOfProblem",
-                      value: problem,
-                    })
-                  }
-                  className="w-max cursor-pointer"
+          {/* Technique */}
+          <div className="text-xs border-b lg:border-b-0 lg:border-r border-stroke w-full lg:w-auto">
+            <div className="flex items-center justify-between px-3 border-b border-stroke">
+              <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
+                <ProcessorIcon className="w-5 h-5" />
+                <span>Technique</span>
+              </div>
+              <input
+                className="w-4 h-4 accent-navy rounded"
+                type="checkbox"
+                checked={availableTechniques.every(
+                  (technique) =>
+                    selectedFilters?.technique?.includes(technique),
+                )}
+                onChange={() =>
+                  handleSelectAll({
+                    category: "technique",
+                  })
+                }
+              />
+            </div>
+            <div className="text-xs max-h-[95px] overflow-y-auto">
+              {availableTechniques.map((technique) => (
+                <div
+                  className="flex items-center gap-1 p-3 relative group"
+                  key={technique}
                 >
-                  <Popup
-                    on={["hover"]}
-                    trigger={() => <span>{problem}</span>}
-                    position="top right"
-                    closeOnDocumentClick
-                    arrowStyle={{ color: "#ebeff2" }}
+                  <input
+                    className="w-4 h-4 accent-navy rounded"
+                    type="checkbox"
+                    checked={selectedFilters?.technique?.includes(technique)}
+                    onChange={() =>
+                      handleCheckboxChange({
+                        category: "technique",
+                        value: technique,
+                      })
+                    }
+                  />
+                  <span
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "technique",
+                        value: technique,
+                      })
+                    }
+                    className="w-max cursor-pointer"
                   >
-                    <div className="bg-stroke p-2 rounded">{problem}</div>
-                  </Popup>
-                </span>
-                <span
-                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "kindOfProblem",
-                      value: problem,
-                      only: true,
-                    })
-                  }
-                >
-                  only
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Problem Size */}
-        <div className="text-xs border-b md:border-b-0 md:border-r border-stroke w-full md:w-[40%]">
-          <div className="flex items-center justify-between pr-3 border-b border-stroke">
-            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-              <WrenchIcon className="w-5 h-5" />
-              <span>Problem Size</span>
+                    <Popup
+                      on={["hover"]}
+                      trigger={() => <span>{technique}</span>}
+                      position="top right"
+                      closeOnDocumentClick
+                      arrowStyle={{ color: "#ebeff2" }}
+                    >
+                      <div className="bg-stroke p-2 rounded">{technique}</div>
+                    </Popup>
+                  </span>
+                  <span
+                    className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "technique",
+                        value: technique,
+                        only: true,
+                      })
+                    }
+                  >
+                    only
+                  </span>
+                </div>
+              ))}
             </div>
-            <input
-              className="w-4 h-4 accent-navy rounded"
-              type="checkbox"
-              checked={availableProblemSizes.every(
-                (problemSize) =>
-                  selectedFilters?.problemSize?.includes(problemSize),
-              )}
-              onChange={() =>
-                handleSelectAll({
-                  category: "problemSize",
-                })
-              }
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-x-1 text-xs max-h-[95px] overflow-y-auto">
-            {availableProblemSizes.map((size) => (
-              <div
-                className="flex items-center gap-1 p-3 relative group"
-                key={size}
-              >
-                <input
-                  className="w-4 h-4 accent-navy rounded"
-                  type="checkbox"
-                  checked={selectedFilters?.problemSize?.includes(size)}
-                  onChange={() =>
-                    handleCheckboxChange({
-                      category: "problemSize",
-                      value: size,
-                    })
-                  }
-                />
-                <span
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "problemSize",
-                      value: size,
-                    })
-                  }
-                  className="w-max cursor-pointer uppercase"
-                >
-                  {size}
-                </span>
-                <span
-                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "problemSize",
-                      value: size,
-                      only: true,
-                    })
-                  }
-                >
-                  only
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Model */}
-        <div className="text-xs w-full">
-          <div className="flex items-center justify-between pr-3 border-b border-stroke">
-            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-              <PolygonIcon className="w-5 h-5" />
-              <span>Model</span>
-            </div>
-            <input
-              className="w-4 h-4 accent-navy rounded"
-              type="checkbox"
-              checked={availableModels.every(
-                (modelName) => selectedFilters?.modelName?.includes(modelName),
-              )}
-              onChange={() =>
-                handleSelectAll({
-                  category: "modelName",
-                })
-              }
-            />
           </div>
 
-          <div className="grid grid-cols-3 gap-x-2 text-xs max-h-[95px] overflow-y-auto">
-            {availableModels.map((model) => (
-              <div
-                className="flex items-center gap-1 p-3 relative group"
-                key={model}
-              >
-                <input
-                  className="w-4 h-4 accent-navy rounded"
-                  type="checkbox"
-                  checked={selectedFilters?.modelName?.includes(model)}
-                  onChange={() =>
-                    handleCheckboxChange({
-                      category: "modelName",
-                      value: model,
-                    })
-                  }
-                />
-                <span
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "modelName",
-                      value: model,
-                    })
-                  }
-                  className="w-max cursor-pointer"
+          {/* Kind of Problem */}
+          <div className="text-xs border-b lg:border-b-0 lg:border-r border-stroke w-full lg:w-auto">
+            <div className="flex items-center justify-between px-3 border-b border-stroke">
+              <div className="flex items-center border-b border-stroke py-2 gap-1">
+                <WrenchIcon className="w-5 h-5" />
+                <span>Kind of Problem</span>
+              </div>
+              <input
+                className="w-4 h-4 accent-navy rounded"
+                type="checkbox"
+                checked={availableKindOfProblems.every(
+                  (kindOfProblem) =>
+                    selectedFilters?.kindOfProblem?.includes(kindOfProblem),
+                )}
+                onChange={() =>
+                  handleSelectAll({
+                    category: "kindOfProblem",
+                  })
+                }
+              />
+            </div>
+            <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs max-h-[95px] overflow-y-auto">
+              {availableKindOfProblems.map((problem) => (
+                <div
+                  className="flex items-center gap-1 p-3 relative group"
+                  key={problem}
                 >
-                  <Popup
-                    on={["hover"]}
-                    trigger={() => <span>{model}</span>}
-                    position="top right"
-                    closeOnDocumentClick
-                    arrowStyle={{ color: "#ebeff2" }}
+                  <input
+                    className="w-4 h-4 accent-navy rounded"
+                    type="checkbox"
+                    checked={selectedFilters?.kindOfProblem?.includes(problem)}
+                    onChange={() =>
+                      handleCheckboxChange({
+                        category: "kindOfProblem",
+                        value: problem,
+                      })
+                    }
+                  />
+                  <span
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "kindOfProblem",
+                        value: problem,
+                      })
+                    }
+                    className="w-max cursor-pointer"
                   >
-                    <div className="bg-stroke p-2 rounded">{model}</div>
-                  </Popup>
-                </span>
-                <span
-                  className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
-                  onClick={() =>
-                    handleCheckboxChange({
-                      category: "modelName",
-                      value: model,
-                      only: true,
-                    })
-                  }
-                >
-                  only
+                    <Popup
+                      on={["hover"]}
+                      trigger={() => <span>{problem}</span>}
+                      position="top right"
+                      closeOnDocumentClick
+                      arrowStyle={{ color: "#ebeff2" }}
+                    >
+                      <div className="bg-stroke p-2 rounded">{problem}</div>
+                    </Popup>
+                  </span>
+                  <span
+                    className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "kindOfProblem",
+                        value: problem,
+                        only: true,
+                      })
+                    }
+                  >
+                    only
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Problem Size */}
+          <div className="text-xs border-b lg:border-b-0 lg:border-r border-stroke w-full lg:w-[40%]">
+            <div className="flex items-center justify-between pr-3 border-b border-stroke">
+              <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+                <WrenchIcon className="w-5 h-5" />
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                  Problem Size
                 </span>
               </div>
-            ))}
+              <input
+                className="w-4 h-4 accent-navy rounded"
+                type="checkbox"
+                checked={availableProblemSizes.every(
+                  (problemSize) =>
+                    selectedFilters?.problemSize?.includes(problemSize),
+                )}
+                onChange={() =>
+                  handleSelectAll({
+                    category: "problemSize",
+                  })
+                }
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-x-1 text-xs max-h-[95px] overflow-y-auto">
+              {availableProblemSizes.map((size) => (
+                <div
+                  className="flex items-center gap-1 p-3 relative group"
+                  key={size}
+                >
+                  <input
+                    className="w-4 h-4 accent-navy rounded"
+                    type="checkbox"
+                    checked={selectedFilters?.problemSize?.includes(size)}
+                    onChange={() =>
+                      handleCheckboxChange({
+                        category: "problemSize",
+                        value: size,
+                      })
+                    }
+                  />
+                  <span
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "problemSize",
+                        value: size,
+                      })
+                    }
+                    className="w-max cursor-pointer uppercase"
+                  >
+                    {size}
+                  </span>
+                  <span
+                    className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "problemSize",
+                        value: size,
+                        only: true,
+                      })
+                    }
+                  >
+                    only
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Model */}
+          <div className="text-xs w-full">
+            <div className="flex items-center justify-between pr-3 border-b border-stroke">
+              <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+                <PolygonIcon className="w-5 h-5" />
+                <span>Model</span>
+              </div>
+              <input
+                className="w-4 h-4 accent-navy rounded"
+                type="checkbox"
+                checked={availableModels.every(
+                  (modelName) =>
+                    selectedFilters?.modelName?.includes(modelName),
+                )}
+                onChange={() =>
+                  handleSelectAll({
+                    category: "modelName",
+                  })
+                }
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-x-2 text-xs max-h-[95px] overflow-y-auto">
+              {availableModels.map((model) => (
+                <div
+                  className="flex items-center gap-1 p-3 relative group"
+                  key={model}
+                >
+                  <input
+                    className="w-4 h-4 accent-navy rounded"
+                    type="checkbox"
+                    checked={selectedFilters?.modelName?.includes(model)}
+                    onChange={() =>
+                      handleCheckboxChange({
+                        category: "modelName",
+                        value: model,
+                      })
+                    }
+                  />
+                  <span
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "modelName",
+                        value: model,
+                      })
+                    }
+                    className="w-max cursor-pointer"
+                  >
+                    <Popup
+                      on={["hover"]}
+                      trigger={() => <span>{model}</span>}
+                      position="top right"
+                      closeOnDocumentClick
+                      arrowStyle={{ color: "#ebeff2" }}
+                    >
+                      <div className="bg-stroke p-2 rounded">{model}</div>
+                    </Popup>
+                  </span>
+                  <span
+                    className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                    onClick={() =>
+                      handleCheckboxChange({
+                        category: "modelName",
+                        value: model,
+                        only: true,
+                      })
+                    }
+                  >
+                    only
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

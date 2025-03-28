@@ -2,16 +2,18 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto">
-      <div className="px-8">
-        <div className="grid px-4 md:flex gap-1 py-6 justify-between items-center text-navy text-xs">
+    <footer className="container mx-auto pb-9">
+      <div className="lg:px-8">
+        <div className="px-4 md:flex gap-1 py-[1.375rem] justify-between text-navy text-xs">
           <div>
             <Image width={127} height={57} src="/logo/oet.png" alt="oet-logo" />
-            <div className="text-navy font-league leading-[110%] text-2xl tracking-normal font-semibold">
-              Keep up to date with us!
+            <div className="text-dark-grey font-league leading-[110%] text-sm tracking-normal font-normal w-[362px] my-6 lg:mb-12">
+              Open Energy Transition GmbH drives sustainable energy solutions
+              with innovative technology and data-driven insights, enabling
+              collaboration and efficiency in the energy sector.
             </div>
           </div>
-          <div className="flex gap-[64px] pl-[221px]">
+          <div className="flex gap-0 justify-between md:gap-4 lg:gap-[64px] pl-0 lg:pl-[221px] lg:mt-[5.188rem]">
             <div className="flex flex-col gap-2">
               <p className="font-lato font-bold text-lg text-black leading-[110%] tracking-normal">
                 Community
@@ -56,7 +58,18 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-center font-normal font-lato text-xs text-black leading-[110%] tracking-normal">
+        <div className="flex md:flex-row flex-col gap-2 items-center pt-1 pb-6 px-4 border-b border-stroke">
+          <div className="font-lato w-full md:w-max uppercase font-bold leading-[110%] text-sm tracking-normal">
+            This project is supported by
+          </div>
+          <Image
+            src="/landing_page/BE_logo.png"
+            alt="be-logo"
+            width={215}
+            height={29}
+          />
+        </div>
+        <div className="my-9 text-center font-normal font-lato text-xs text-black leading-[110%] tracking-normal">
           <p>
             © 2025 Solver Benchmark. Licensed under the{" "}
             <span className="underline">MIT License</span>. All rights reserved.

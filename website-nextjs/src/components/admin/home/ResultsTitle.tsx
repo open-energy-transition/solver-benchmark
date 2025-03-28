@@ -28,8 +28,8 @@ const ResultsSectionsTitle = ({
   ).size;
 
   return (
-    <div className="pb-3 pl-3">
-      <div className="text-navy font-bold text-xl flex justify-between items-center">
+    <div>
+      <div className="relative text-navy font-bold text-xl flex justify-between items-center">
         <div>
           Results
           {latestBenchmarkResult.length !== benchmarkResults.length && (
