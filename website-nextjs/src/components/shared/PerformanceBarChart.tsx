@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { getChartColor } from "@/utils/chart";
 import { Color } from "@/constants/color";
+import { MaxRunTime } from "@/constants";
+import { CircleIcon, CloseIcon } from "@/assets/icons";
 
 type PerformanceData = {
   benchmark: string;
@@ -78,7 +80,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("border", "1px solid #ccc")
       .style("border-radius", "4px")
       .style("font-size", "12px")
-      .style("opacity", 0);
+      .style("opacity", 0)
+      .style("pointer-events", "none") // Prevent tooltip from interfering with hover
+      .style("z-index", "100");
 
     const xScale = d3
       .scaleBand()
@@ -109,12 +113,28 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       ])
       .range([height - margin.bottom, margin.top]);
 
+    // Format runtime values to avoid overlap
+    const formatRuntime = (d: d3.NumberValue) => {
+      const value = d.valueOf();
+      if (value >= 100) return `${Math.round(value)}s`;
+      if (value >= 10) return `${value.toFixed(0)}s`;
+      if (value >= 1) return `${value.toFixed(1)}s`;
+      return `${value.toFixed(2)}s`;
+    };
+
     // Axes
     const xAxis = d3.axisBottom(xScale);
     const yAxisRatio = d3
       .axisLeft(yScaleRatio)
       .tickFormat((d) => (d === 0 ? "1" : `${Math.pow(2, Number(d))}`));
-    const yAxisRuntime = d3.axisRight(yScaleRuntime).tickFormat((d) => `${d}s`);
+    const yAxisRuntime = d3
+      .axisRight(yScaleRuntime)
+      .tickFormat(formatRuntime)
+      .ticks(5) // Reduce number of ticks even more
+      .tickValues(
+        // Explicitly set tick values to avoid overlap
+        [1, 10, 100, 600],
+      );
 
     // Add x-axis without labels
     svg
@@ -136,7 +156,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .call(yAxisRuntime)
       .attr("class", "secondary-axis")
       .selectAll("text")
-      .style("fill", "#666");
+      .style("fill", "#666")
+      .attr("dx", "10px")
+      .attr("dy", "0.3em");
 
     // Add center line (ratio = 1)
     svg
@@ -147,6 +169,30 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y2", yScaleRatio(0))
       .style("stroke", "#ccc")
       .style("stroke-dasharray", "4,4");
+
+    // Add maximum runtime line (600s)
+    svg
+      .append("line")
+      .attr("x1", margin.left)
+      .attr("x2", width - margin.right)
+      .attr("y1", yScaleRuntime(600))
+      .attr("y2", yScaleRuntime(600))
+      .style("stroke", "#ff6b6b")
+      .style("stroke-width", 1)
+      .style("stroke-dasharray", "4,4");
+
+    // Add maximum runtime label - moved to right side
+    svg
+      .append("text")
+      .attr("x", width - margin.right + 35) // Move to right side
+      .attr("y", yScaleRuntime(600))
+      .attr("dy", "0.32em")
+      .attr("text-anchor", "start")
+      .attr("font-size", "10px")
+      .style("fill", "#ff6b6b");
+
+    // Calculate the maximum bar height from the y-scale
+    const TIMEOUT_BAR_HEIGHT = Math.abs(yScaleRatio(4) - yScaleRatio(0));
 
     // Update bars positioning with adjusted width
     svg
@@ -159,6 +205,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .enter()
       .append("rect")
       .attr("class", "bar")
+      .style("cursor", "pointer")
       .attr("x", (d) => {
         const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0;
         const barPosition = xSubScale(d.solver) || 0;
@@ -167,28 +214,72 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         return groupPosition + barPosition + offset;
       })
       .attr("width", barWidth)
-      .attr("y", (d) => (d.factor > 0 ? yScaleRatio(d.factor) : yScaleRatio(0)))
-      .attr("height", (d) => Math.abs(yScaleRatio(d.factor) - yScaleRatio(0)))
+      .attr("height", (d) => {
+        // Use maximum height for timeout cases
+        if (d.status === "TO") {
+          // When both solvers timeout, set height to 0
+          if (d.status === "TO" && d.baseSolverRuntime == MaxRunTime) {
+            return 0;
+          }
+          return TIMEOUT_BAR_HEIGHT;
+        }
+        return Math.abs(yScaleRatio(d.factor) - yScaleRatio(0));
+      })
+      .attr("y", (d) => {
+        // When both solvers timeout, align to center line
+        if (d.status === "TO" && d.baseSolverRuntime >= MaxRunTime) {
+          return yScaleRatio(0);
+        }
+        // Align timeout bars to the top
+        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+          return yScaleRatio(4); // Top of the scale
+        }
+        return d.factor > 0 ? yScaleRatio(d.factor) : yScaleRatio(0);
+      })
       .attr("fill", (d) => solverColors[d.solver])
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
+        // Add hover effect
+        d3.select(event.currentTarget)
+          .transition()
+          .duration(100)
+          .attr("opacity", 1);
+
         tooltip.transition().duration(200).style("opacity", 0.9);
-        const ratio = Math.pow(2, d.factor);
-        const formattedRatio =
-          ratio < 0.01 ? ratio.toExponential(1) : ratio.toPrecision(2);
+
+        let ratioText;
+        if (d.status === "TO" && d.baseSolverRuntime < MaxRunTime) {
+          ratioText = `Ratio: N/A because ${d.solver} TO`;
+        } else if (d.status === "TO" && d.baseSolverRuntime >= MaxRunTime) {
+          ratioText = "Ratio: N/A (both TO)";
+        } else {
+          const ratio = Math.pow(2, d.factor);
+          ratioText = `Ratio: ${
+            ratio < 0.01 ? ratio.toExponential(1) : ratio.toPrecision(2)
+          }`;
+        }
+
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
               `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
-              `Ratio: ${formattedRatio}`,
+              ratioText,
           )
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px");
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY - 28}px`);
       })
-      .on("mouseout", () => {
+      .on("mouseout", (event) => {
+        // Remove hover effect
+        d3.select(event.currentTarget)
+          .transition()
+          .duration(100)
+          .attr("opacity", 0.8);
+
         tooltip.transition().duration(500).style("opacity", 0);
-      });
+      })
+      .append("title")
+      .text((d) => `${d.solver}: ${d.runtime.toFixed(2)}s`);
 
     // Center scatter points in their group
     svg
@@ -199,28 +290,62 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         ),
       )
       .enter()
-      .append("circle")
+      .append((d) => {
+        // Use path for X marks on timeout, circle for normal points
+        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+          return document.createElementNS("http://www.w3.org/2000/svg", "path");
+        }
+        return document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      })
       .attr("class", "scatter-point")
-      .attr("cx", (d) => {
-        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0;
-        return groupPosition + xScale.bandwidth() / 2;
-      })
-      .attr("cy", (d) => yScaleRuntime(d.runtime))
-      .attr("r", 4)
-      .attr("fill", Color.Teal)
-      .attr("stroke-width", 2)
-      .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 0.9);
-        tooltip
-          .html(
-            `Benchmark: ${d.benchmark}-${d.size} <br/>` +
-              `${baseSolver}: ${d.runtime.toFixed(2)}s`,
-          )
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px");
-      })
-      .on("mouseout", () => {
-        tooltip.transition().duration(500).style("opacity", 0);
+      .style("cursor", "pointer")
+      .each(function (d) {
+        const element = d3.select(this);
+        const x =
+          (xScale(`${d.benchmark}-${d.size}`) || 0) + xScale.bandwidth() / 2;
+        const y = yScaleRuntime(d.runtime);
+
+        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+          // Create X mark for timeout cases
+          const size = 4;
+          element
+            .attr(
+              "d",
+              `M${x - size},${y - size} L${x + size},${y + size} M${x - size},${
+                y + size
+              } L${x + size},${y - size}`,
+            )
+            .attr("stroke", Color.Teal)
+            .attr("fill", "none");
+        } else {
+          // Regular circle for normal cases
+          element
+            .attr("cx", x)
+            .attr("cy", y)
+            .attr("r", 4)
+            .attr("fill", Color.Teal);
+        }
+
+        // Add event listeners for tooltip
+        element
+          .on("mouseover", (event) => {
+            element.attr("opacity", 0.7);
+
+            tooltip.transition().duration(200).style("opacity", 0.9);
+            tooltip
+              .html(
+                `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+                  `${baseSolver}: ${d.runtime.toFixed(2)}s<br/>` +
+                  `Status: ${d.status === "ok" ? "OK" : "TO"}`,
+              )
+              .style("left", `${event.pageX + 10}px`)
+              .style("top", `${event.pageY - 28}px`);
+          })
+          .on("mouseout", () => {
+            // Remove hover effect
+            element.attr("opacity", 1);
+            tooltip.transition().duration(500).style("opacity", 0);
+          });
       });
 
     // Update axis labels
@@ -236,17 +361,19 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(height / 2))
-      .attr("y", 10)
+      .attr("y", 25)
       .attr("text-anchor", "middle")
-      .text("Runtime Ratio (log scale");
+      .attr("font-size", "12px")
+      .text("Runtime ratio (log scale)");
 
     // Secondary y-axis label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(height / 2))
-      .attr("y", width - margin.right + 45)
+      .attr("y", width - margin.right + 60)
       .attr("text-anchor", "middle")
+      .attr("font-size", "12px")
       .style("fill", "#666")
       .text(`Runtime of ${baseSolver} (s)`);
 
@@ -271,6 +398,20 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
   return (
     <div className="bg-white p-4 rounded-xl">
+      <h2 className="text-xl font-semibold mb-2">Relative performance plot</h2>
+      <p className="text-sm text-gray-600 mb-4 max-w-[755px]">
+        This plot (inspired by Matthias Miltenberger&apos;s{" "}
+        <a href="https://mattmilten.github.io/mittelmann-plots/">
+          Mittelmann plots
+        </a>
+        ) shows the runtime ratios (relative speedup factors) for each benchmark
+        instance with respect to the selected base solver&apos;s runtime. Ratios
+        above 1 (bars above the x-axis) are instances where the base solver
+        performs better, and ratios below 1 (bars below the x-axis) are those
+        where the other solver performs better. Instances are sorted by the
+        runtime of the base solver.
+      </p>
+
       <div className="flex flex-wrap gap-4 mb-4 legend-container pb-4">
         {/* Selected solver legend (circle) */}
         <div
@@ -310,6 +451,14 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
+      </div>
+      <div className="pt-1.5 pb-3 pl-3">
+        <p className="flex gap-1 items-center text-dark-grey text-sm">
+          <CloseIcon className="size-3" />
+          represents benchmarks that timed out, while
+          <CircleIcon className="size-3" />
+          indicates a successful run.
+        </p>
       </div>
     </div>
   );

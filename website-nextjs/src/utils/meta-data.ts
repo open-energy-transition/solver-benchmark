@@ -33,9 +33,15 @@ const fetchYamlData = async (filePath: string) => {
   }
 };
 
-const getMetaData = async () => {
+const getMetaData = async (): Promise<{ benchmarks: MetaData }> => {
   const rawData = await fetchYamlData("/results/metadata.yaml");
-  return toCamelCase(rawData) as MetaData;
+
+  const processedBenchmarks = toCamelCase(
+    (rawData as { benchmarks: MetaData }).benchmarks,
+  );
+  return {
+    benchmarks: processedBenchmarks as MetaData,
+  };
 };
 
 const getUniqueValues = <T, K extends keyof T>(data: T[], key: K): T[K][] =>

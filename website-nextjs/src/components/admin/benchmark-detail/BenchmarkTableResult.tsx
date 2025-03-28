@@ -17,10 +17,10 @@ import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
+import SortIcon from "@/components/shared/tables/SortIcon";
 import { ArrowRightIcon } from "@/assets/icons";
 import PaginationTable from "@/components/shared/tables/PaginationTable";
 import { IFilterState, IResultState } from "@/types/state";
-import SortIcon from "@/components/shared/tables/SortIcon";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;

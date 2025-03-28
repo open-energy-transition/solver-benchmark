@@ -11,7 +11,7 @@ from website.utils.filters import filter_data
 
 # Convert metadata to a DataFrame for easier filtering
 metadata = load_metadata("results/metadata.yaml")
-metadata_df = pd.DataFrame(metadata).T.reset_index()
+metadata_df = pd.DataFrame(metadata["benchmarks"]).T.reset_index()
 metadata_df.rename(columns={"index": "Benchmark Name"}, inplace=True)
 
 # Filter

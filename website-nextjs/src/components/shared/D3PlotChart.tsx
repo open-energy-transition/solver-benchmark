@@ -153,12 +153,11 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     // Add zoom in button
     zoomControls
       .append("button")
-      .attr("class", "zoom-button")
+      .attr(
+        "class",
+        "zoom-button text-base cursor-pointer border-0 bg-transparent hover:scale-110",
+      )
       .html("➕")
-      .style("cursor", "pointer")
-      .style("border", "none")
-      .style("background", "none")
-      .style("font-size", "16px")
       .on("click", () => {
         svgSelection.transition().duration(300).call(zoom.scaleBy, 1.5);
       });
@@ -166,12 +165,11 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     // Add zoom out button
     zoomControls
       .append("button")
-      .attr("class", "zoom-button")
+      .attr(
+        "class",
+        "zoom-button text-base cursor-pointer border-0 bg-transparent hover:scale-110",
+      )
       .html("➖")
-      .style("cursor", "pointer")
-      .style("border", "none")
-      .style("background", "none")
-      .style("font-size", "16px")
       .on("click", () => {
         svgSelection.transition().duration(300).call(zoom.scaleBy, 0.75);
       });
@@ -179,12 +177,11 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     // Add reset button
     zoomControls
       .append("button")
-      .attr("class", "zoom-button")
-      .html("↺")
-      .style("cursor", "pointer")
-      .style("border", "none")
-      .style("background", "none")
-      .style("font-size", "16px")
+      .attr(
+        "class",
+        "zoom-button flex font-bold leading-none text-lg cursor-pointer  border-0 bg-transparent hover:scale-110",
+      )
+      .html("⟲")
       .on("click", () => {
         svgSelection
           .transition()
@@ -245,12 +242,12 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     // Scales
     const xScale = d3
       .scaleLinear()
-      .domain([0, (d3.max(data, (d) => d.runtime) ?? 0) + 1])
+      .domain([0, (d3.max(data, (d) => d.runtime) ?? 0) + 5])
       .range([margin.left, width - margin.right]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, (d3?.max(data, (d) => d.memoryUsage) ?? 0) + 50])
+      .domain([0, (d3?.max(data, (d) => d.memoryUsage) ?? 0) + 200]) // increased padding from 50 to 100
       .range([height - margin.bottom, margin.top]);
 
     // Function to update axes
@@ -286,6 +283,13 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     // Apply zoom to SVG
     svgSelection.call(zoom);
 
+    // Initial zoom animation
+    svgSelection
+      .transition()
+      .transition()
+      .duration(100)
+      .call(zoom.transform, d3.zoomIdentity);
+
     // Scatter points (now inside plotArea)
     plotArea
       .selectAll(".dot")
@@ -319,7 +323,6 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
         // Update tooltip events to work with zoom
         group
           .on("mouseover", (event) => {
-            const [x, y] = d3.pointer(event, containerRef.current);
             tooltip
               .style("opacity", 1)
               .html(
@@ -329,12 +332,13 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
                 <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
                 <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`,
               )
-              .style("left", `${x + 10}px`)
-              .style("top", `${y - 30}px`);
+              .style("left", `${event.pageX + 10}px`)
+              .style("top", `${event.pageY - 10}px`);
           })
           .on("mousemove", (event) => {
-            const [x, y] = d3.pointer(event, containerRef.current);
-            tooltip.style("left", `${x + 10}px`).style("top", `${y - 30}px`);
+            tooltip
+              .style("left", `${event.pageX + 10}px`)
+              .style("top", `${event.pageY - 10}px`);
           })
           .on("mouseout", () => {
             tooltip.style("opacity", 0);
@@ -346,30 +350,6 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .append("g")
       .attr("stroke", "currentColor")
       .attr("stroke-opacity", 0.1)
-      .call((g) =>
-        g
-          .append("g")
-          .selectAll("line")
-          .data(xScale.ticks())
-          .join("line")
-          .attr("x1", (d) => 0.5 + xScale(d))
-          .attr("x2", (d) => 0.5 + xScale(d))
-          .attr("y1", margin.top)
-          .attr("y2", height - margin.bottom)
-          .attr("stroke-dasharray", "4,4"),
-      )
-      .call((g) =>
-        g
-          .append("g")
-          .selectAll("line")
-          .data(yScale.ticks())
-          .join("line")
-          .attr("y1", (d) => 0.5 + yScale(d))
-          .attr("y2", (d) => 0.5 + yScale(d))
-          .attr("x1", margin.left)
-          .attr("x2", width - margin.right)
-          .attr("stroke-dasharray", "4,4"),
-      )
       .call((g) => {
         // Hide last grid line
         g.selectAll("line:last-of-type").attr("display", "none");
