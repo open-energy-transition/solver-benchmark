@@ -8,8 +8,37 @@ import {
   UserIcon,
 } from "@/assets/icons";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { fetchGitHubStats } from "@/utils/githubApi";
 
 const Contribute = () => {
+  const [stats, setStats] = useState({
+    contributors: 3,
+    issues: 5,
+    stars: 2,
+    forks: 1,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getGitHubStats = async () => {
+      try {
+        setLoading(true);
+        const repoStats = await fetchGitHubStats(
+          "open-energy-transition",
+          "solver-benchmark",
+        );
+        setStats(repoStats);
+      } catch (error) {
+        console.error("Failed to fetch GitHub stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getGitHubStats();
+  }, []);
+
   return (
     <div className="text-navy bg-white pt-24 pb-8">
       <div className="mx-auto container px-4 lg:px-6">
@@ -33,28 +62,38 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="font-bold flex items-center">
                   <UserIcon className="mr-2" />
-                  <h5 className="font-bold">03</h5>
+                  <h5 className="font-bold">
+                    {loading
+                      ? "..."
+                      : stats.contributors.toString().padStart(2, "0")}
+                  </h5>
                 </div>
                 <p className="text-base text-left mt-2">Contributors</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="font-bold flex items-center">
                   <CircleOutlineIcon className="mr-2" />
-                  <h5 className="font-bold">05</h5>
+                  <h5 className="font-bold">
+                    {loading ? "..." : stats.issues.toString().padStart(2, "0")}
+                  </h5>
                 </div>
                 <p className="text-base text-left mt-2">Issues</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="font-bold flex items-center">
                   <StarIcon className="mr-2" />
-                  <h5 className="font-bold">02</h5>
+                  <h5 className="font-bold">
+                    {loading ? "..." : stats.stars.toString().padStart(2, "0")}
+                  </h5>
                 </div>
                 <p className="text-base text-left mt-2">Stars</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <ForkIcon className="mr-2" />
-                  <h5 className="font-bold">01</h5>
+                  <h5 className="font-bold">
+                    {loading ? "..." : stats.forks.toString().padStart(2, "0")}
+                  </h5>
                 </div>
                 <p className="text-base text-left mt-2">Fork</p>
               </div>

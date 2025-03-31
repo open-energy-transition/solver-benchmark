@@ -1,4 +1,33 @@
+import { useState, useCallback } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+
 const ContactSection = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [recaptchaVerified, setRecaptchaVerified] = useState(false);
+
+  const handleRecaptchaChange = useCallback((token: string | null) => {
+    setRecaptchaVerified(!!token);
+  }, []);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!recaptchaVerified) {
+        alert("Please verify that you're not a robot");
+        return;
+      }
+
+      // Form submission logic here
+      console.log("Form submitted", { email, message });
+      // Reset form
+      setEmail("");
+      setMessage("");
+      setRecaptchaVerified(false);
+    },
+    [email, message, recaptchaVerified],
+  );
+
   return (
     <div className="text-white bg-navy pt-[105px] pb-[73px]">
       <div className="mx-auto container px-4 lg:px-6">
@@ -17,27 +46,51 @@ const ContactSection = () => {
             </h5>
           </div>
           <div className="w-full md:w-1/2 grid gap-4">
-            <input
-              className="rounded-lg px-8 py-5 text-navy"
-              placeholder="Email"
-            />
-            <textarea
-              className="rounded-lg px-8 py-5 text-navy"
-              rows={4}
-              placeholder="Message"
-            />
-            <div className="flex justify-start md:justify-end mt-3">
-              <button
-                className="rounded-lg px-7 py-3 text-base text-white font-bold bg-teal
-                  shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max md:w-52"
-              >
-                SEND
-              </button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <input
+                className="rounded-lg px-8 py-5 text-navy w-full"
+                placeholder="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <textarea
+                className="rounded-lg px-8 py-5 text-navy w-full mt-4"
+                rows={4}
+                placeholder="Message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
+              <div className="mt-4">
+                <ReCAPTCHA
+                  sitekey={
+                    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+                    "YOUR_RECAPTCHA_SITE_KEY"
+                  }
+                  onChange={handleRecaptchaChange}
+                  theme="dark"
+                />
+              </div>
+              <div className="flex justify-start md:justify-end mt-3">
+                <button
+                  type="submit"
+                  className={`rounded-lg px-7 py-3 text-base text-white font-bold ${
+                    recaptchaVerified ? "bg-teal" : "bg-gray-500"
+                  }
+                    shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max md:w-52`}
+                  disabled={!recaptchaVerified}
+                >
+                  SEND
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default ContactSection;
