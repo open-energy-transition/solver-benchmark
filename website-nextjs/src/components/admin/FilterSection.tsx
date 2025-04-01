@@ -211,8 +211,79 @@ const FilterSection = () => {
     }
   }, [router.query, selectedFilters]);
 
+  // Reset all filters function
+  const handleResetAllFilters = () => {
+    if (isInit) {
+      // Reset all filters to include all available options
+      dispatch(
+        filterActions.setFilter({
+          sectors: availableSectors,
+          technique: availableTechniques,
+          kindOfProblem: availableKindOfProblems,
+          modelName: availableModels,
+          problemSize: availableProblemSizes,
+        } as IFilterState),
+      );
+
+      // Update results with new filters
+      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(rawBenchmarkResults),
+        ),
+      );
+
+      // Clear URL parameters
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {},
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  };
+
+  // Check if any filter is active
+  const isAnyFilterActive = () => {
+    const allAvailableFilters = {
+      sectors: availableSectors,
+      technique: availableTechniques,
+      kindOfProblem: availableKindOfProblems,
+      modelName: availableModels,
+      problemSize: availableProblemSizes,
+    };
+
+    // Check if any filter category has fewer selected items than available items
+    return Object.entries(allAvailableFilters).some(
+      ([key, availableValues]) => {
+        const selectedValues =
+          selectedFilters[key as keyof typeof selectedFilters] || [];
+        return (
+          Array.isArray(selectedValues) &&
+          selectedValues.length < availableValues.length
+        );
+      },
+    );
+  };
+
   return (
-    <div className="bg-white rounded-xl my-2">
+    <div
+      className={`bg-white rounded-xl my-2 relative ${
+        isAnyFilterActive() ? "mt-10" : ""
+      }`}
+    >
+      <div className="flex justify-end mb-2 absolute -top-8 left-0">
+        {isAnyFilterActive() && (
+          <button
+            onClick={handleResetAllFilters}
+            className="bg-navy text-white px-3 py-1 rounded text-xs hover:bg-opacity-80 transition-colors"
+          >
+            Reset All Filters
+          </button>
+        )}
+      </div>
       <div className="flex text-dark-grey">
         {/* Sectors */}
         <div className="text-xs border-r border-stroke">

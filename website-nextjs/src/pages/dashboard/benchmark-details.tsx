@@ -40,7 +40,7 @@ const PageBenchmarkDetail = () => {
             </div>
           </AdminHeader>
           {/* Content */}
-          <DetailSection />
+          <DetailSection useMetadataCount />
           <FilterSection />
           <div className="py-2">
             <div className="text-navy text-xl font-bold">Benchmarks</div>

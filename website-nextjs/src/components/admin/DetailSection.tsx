@@ -11,7 +11,11 @@ import {
 import { useMemo } from "react";
 import { IResultState } from "@/types/state";
 
-const DetailSection = () => {
+interface DetailSectionProps {
+  useMetadataCount?: boolean;
+}
+
+const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.rawBenchmarkResults;
   });
@@ -20,7 +24,14 @@ const DetailSection = () => {
     return state.results.rawMetaData;
   });
 
-  const availableBenchmarksCount = Object.keys(rawMetaData).length;
+  const availableBenchmarksCount = useMemo(() => {
+    if (useMetadataCount) {
+      return Object.keys(rawMetaData).length;
+    }
+    return Array.from(
+      new Set(benchmarkResults.map((result) => result.benchmark)),
+    ).length;
+  }, [rawMetaData, benchmarkResults, useMetadataCount]);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -34,17 +45,21 @@ const DetailSection = () => {
     [benchmarkResults],
   );
 
-  const avaliableInstance = useMemo(
-    () =>
-      Array.from(
+  const avaliableInstance = useMemo(() => {
+    if (useMetadataCount) {
+      return Object.keys(rawMetaData).reduce((acc, key) => {
+        return acc + (rawMetaData[key]?.sizes?.length || 0);
+      }, 0);
+    } else {
+      return Array.from(
         new Set(
           benchmarkResults.map(
             (result) => `${result.benchmark}-${result.size}`,
           ),
         ),
-      ),
-    [benchmarkResults],
-  );
+      ).length;
+    }
+  }, [benchmarkResults]);
 
   const detailData = [
     {
@@ -55,8 +70,7 @@ const DetailSection = () => {
         <>
           Benchmarks:{" "}
           <span className="font-bold">
-            {availableBenchmarksCount} {`(${avaliableInstance.length}`}{" "}
-            instances
+            {availableBenchmarksCount} {`(${avaliableInstance}`} instances
             {")"}
           </span>
         </>
