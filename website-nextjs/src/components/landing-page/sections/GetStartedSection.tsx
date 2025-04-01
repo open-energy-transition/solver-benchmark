@@ -32,7 +32,7 @@ const GetStarted = () => {
   );
 
   return (
-    <div className="text-white bg-navy border-t-2 border-solid border-white">
+    <div className="text-white bg-navy">
       <div className="mx-auto container px-4 lg:px-6 pt-[67px] pb-16">
         <div className="text-dark-grey text-xl uppercase font-bold font-league mb-4">
           BENCHMARKS

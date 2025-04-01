@@ -75,7 +75,7 @@ const ResultsSgmModeDropdown = () => {
   if (!selectedMode) return <div>Sgm Mode Not found</div>;
 
   return (
-    <div className="relative text-left flex gap-1" ref={dropdownRef}>
+    <div className="lg:absolute right-0 text-left flex gap-1" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
         type="button"
@@ -118,7 +118,7 @@ const ResultsSgmModeDropdown = () => {
           type="number"
           value={xFactor}
           onChange={(newValue) => onXFactorChange(newValue)}
-          className="w-20 text-center p-1 rounded-lg"
+          className="w-20 text-center p-1 rounded-lg text-base"
         />
       )}
       {open && (
