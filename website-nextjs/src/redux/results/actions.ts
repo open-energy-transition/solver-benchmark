@@ -9,6 +9,7 @@ const actions = {
   SET_RAW_BENCHMARK_RESULTS: "SET_RAW_BENCHMARK_RESULTS",
   SET_RAW_META_DATA: "SET_RAW_META_DATA",
   SET_AVAILABLE_FILTER_DATA: "SET_AVAILABLE_FILTER_DATA",
+  SET_FULL_META_DATA: "SET_FULL_META_DATA",
 
   setBenchmarkResults: (results: BenchmarkResult[]) => {
     return {
@@ -37,6 +38,12 @@ const actions = {
   setRawMetaData: (metaData: MetaData) => {
     return {
       type: actions.SET_RAW_META_DATA,
+      payload: { metaData },
+    };
+  },
+  setFullMetaData: (metaData: MetaData) => {
+    return {
+      type: actions.SET_FULL_META_DATA,
       payload: { metaData },
     };
   },

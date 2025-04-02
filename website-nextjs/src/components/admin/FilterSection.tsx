@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   BrightIcon,
   PolygonIcon,
@@ -8,10 +10,25 @@ import { useSelector, useDispatch } from "react-redux";
 import filterAction from "@/redux/filters/actions";
 import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
+import filterActions from "@/redux/filters/actions";
+import resultActions from "@/redux/results/actions";
+import { getLatestBenchmarkResult } from "@/utils/results";
+import { isArray } from "lodash";
 
 const FilterSection = () => {
+  const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>();
+
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.rawBenchmarkResults;
+    },
+  );
+
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
 
   const selectedFilters = useSelector(
     (state: { filters: IFilterState }) => state.filters,
@@ -37,6 +54,8 @@ const FilterSection = () => {
     (state: { results: IResultState }) => state.results.availableProblemSizes,
   );
 
+  const [isInit, setIsInit] = useState(false);
+
   const handleCheckboxChange = ({
     category,
     value,
@@ -46,19 +65,245 @@ const FilterSection = () => {
     value: string;
     only?: boolean;
   }) => {
+    setIsInit(true);
     dispatch(
       filterAction.toggleFilterAndUpdateResults({ category, value, only }),
     );
   };
 
+  const handleSelectAll = ({ category }: { category: string }) => {
+    const availableItems = {
+      sectors: availableSectors,
+      technique: availableTechniques,
+      kindOfProblem: availableKindOfProblems,
+      modelName: availableModels,
+      problemSize: availableProblemSizes,
+    }[category] as string[];
+
+    const selectedItems = (selectedFilters[
+      category as keyof typeof selectedFilters
+    ] || []) as string[];
+
+    // Toggle all items based on current state
+    const shouldSelectAll = selectedItems.length !== availableItems.length;
+
+    // Get items to toggle
+    const itemsToToggle = shouldSelectAll
+      ? availableItems.filter((item) => !selectedItems.includes(item)) // Select missing items
+      : availableItems; // Deselect all items
+    // Apply changes
+    itemsToToggle.forEach((item) =>
+      handleCheckboxChange({
+        category,
+        value: item,
+      }),
+    );
+  };
+
+  // Add these utility functions
+  const encodeValue = (value: string) => {
+    return encodeURIComponent(value);
+  };
+
+  const decodeValue = (value: string) => {
+    return decodeURIComponent(value);
+  };
+
+  useEffect(() => {
+    if (isInit) {
+      updateUrlParams(selectedFilters);
+    }
+  }, [selectedFilters]);
+
+  const updateUrlParams = (filters: IFilterState) => {
+    const queryParams = new URLSearchParams();
+    Object.entries(filters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        queryParams.set(key, values.map(encodeValue).join(";"));
+      }
+    });
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: Object.fromEntries(queryParams),
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const parseUrlParams = () => {
+    const filters: Partial<IFilterState> = {};
+
+    [
+      "sectors",
+      "technique",
+      "kindOfProblem",
+      "modelName",
+      "problemSize",
+    ].forEach((key) => {
+      const value = router.query[key];
+      if (typeof value === "string") {
+        // @ts-expect-error Type inference issues with dynamic keys
+        filters[key as keyof IFilterState] = value
+          ? (value.split(";").map(decodeValue) as string[])
+          : [];
+      }
+    });
+
+    return filters;
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        filterActions.setFilter({
+          sectors: availableSectors,
+          technique: availableTechniques,
+          kindOfProblem: availableKindOfProblems,
+          modelName: availableModels,
+          problemSize: availableProblemSizes,
+        } as IFilterState),
+      );
+      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(rawBenchmarkResults),
+        ),
+      );
+      dispatch(resultActions.setMetaData(rawMetaData));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isInit) return;
+    if (!router.isReady) return;
+
+    const urlFilters = parseUrlParams();
+    if (Object.keys(urlFilters).length > 0) {
+      Object.keys(selectedFilters).forEach((key) => {
+        if (
+          isArray(urlFilters[key as keyof IFilterState]) &&
+          (selectedFilters[key as keyof IFilterState] as string[]).length !==
+            (urlFilters[key as keyof IFilterState] as string[]).length
+        ) {
+          const selectedFilterValues =
+            selectedFilters[key as keyof IFilterState];
+          if (Array.isArray(selectedFilterValues)) {
+            selectedFilterValues
+              .filter((filterValue) => {
+                const filterArray = urlFilters[key as keyof IFilterState];
+                return (
+                  Array.isArray(filterArray) &&
+                  !filterArray.includes(filterValue)
+                );
+              })
+              .forEach((filterValue) => {
+                handleCheckboxChange({
+                  category: key,
+                  value: filterValue,
+                });
+              });
+          }
+        }
+      });
+    }
+  }, [router.query, selectedFilters]);
+
+  // Reset all filters function
+  const handleResetAllFilters = () => {
+    if (isInit) {
+      // Reset all filters to include all available options
+      dispatch(
+        filterActions.setFilter({
+          sectors: availableSectors,
+          technique: availableTechniques,
+          kindOfProblem: availableKindOfProblems,
+          modelName: availableModels,
+          problemSize: availableProblemSizes,
+        } as IFilterState),
+      );
+
+      // Update results with new filters
+      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(rawBenchmarkResults),
+        ),
+      );
+
+      // Clear URL parameters
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {},
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  };
+
+  // Check if any filter is active
+  const isAnyFilterActive = () => {
+    const allAvailableFilters = {
+      sectors: availableSectors,
+      technique: availableTechniques,
+      kindOfProblem: availableKindOfProblems,
+      modelName: availableModels,
+      problemSize: availableProblemSizes,
+    };
+
+    // Check if any filter category has fewer selected items than available items
+    return Object.entries(allAvailableFilters).some(
+      ([key, availableValues]) => {
+        const selectedValues =
+          selectedFilters[key as keyof typeof selectedFilters] || [];
+        return (
+          Array.isArray(selectedValues) &&
+          selectedValues.length < availableValues.length
+        );
+      },
+    );
+  };
+
   return (
-    <div className="bg-white rounded-xl my-2">
+    <div
+      className={`bg-white rounded-xl my-2 relative ${
+        isAnyFilterActive() ? "mt-10" : ""
+      }`}
+    >
+      <div className="flex justify-end mb-2 absolute -top-8 left-0">
+        {isAnyFilterActive() && (
+          <button
+            onClick={handleResetAllFilters}
+            className="bg-navy text-white px-3 py-1 rounded text-xs hover:bg-opacity-80 transition-colors"
+          >
+            Reset All Filters
+          </button>
+        )}
+      </div>
       <div className="flex text-dark-grey">
         {/* Sectors */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6 sticky">
-            <BrightIcon className="w-5 h-5" />
-            <span>Sectors</span>
+          <div className="flex items-center justify-between px-3 border-b border-stroke">
+            <div className="flex items-center py-2 gap-1 pr-6 sticky">
+              <BrightIcon className="w-5 h-5" />
+              <span>Sectors</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableSectors.every(
+                (sector) => selectedFilters?.sectors?.includes(sector),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "sectors",
+                })
+              }
+            />
           </div>
           <div className="text-xs max-h-[95px] overflow-y-auto">
             {availableSectors.map((sector) => (
@@ -115,9 +360,23 @@ const FilterSection = () => {
         </div>
         {/* Technique */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
-            <ProcessorIcon className="w-5 h-5" />
-            <span>Technique</span>
+          <div className="flex items-center justify-between px-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1 pr-6">
+              <ProcessorIcon className="w-5 h-5" />
+              <span>Technique</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableTechniques.every(
+                (technique) => selectedFilters?.technique?.includes(technique),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "technique",
+                })
+              }
+            />
           </div>
           <div className="text-xs max-h-[95px] overflow-y-auto">
             {availableTechniques.map((technique) => (
@@ -174,9 +433,24 @@ const FilterSection = () => {
 
         {/* Kind of Problem */}
         <div className="text-xs border-r border-stroke">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-            <WrenchIcon className="w-5 h-5" />
-            <span>Kind of Problem</span>
+          <div className="flex items-center justify-between px-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke py-2 gap-1">
+              <WrenchIcon className="w-5 h-5" />
+              <span>Kind of Problem</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableKindOfProblems.every(
+                (kindOfProblem) =>
+                  selectedFilters?.kindOfProblem?.includes(kindOfProblem),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "kindOfProblem",
+                })
+              }
+            />
           </div>
           <div className="grid grid-cols-[max-content_max-content] gap-x-1 text-xs max-h-[95px] overflow-y-auto">
             {availableKindOfProblems.map((problem) => (
@@ -232,9 +506,24 @@ const FilterSection = () => {
         </div>
         {/* Problem Size */}
         <div className="text-xs border-r border-stroke  w-[40%]">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-            <WrenchIcon className="w-5 h-5" />
-            <span>Problem Size</span>
+          <div className="flex items-center justify-between pr-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+              <WrenchIcon className="w-5 h-5" />
+              <span>Problem Size</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableProblemSizes.every(
+                (problemSize) =>
+                  selectedFilters?.problemSize?.includes(problemSize),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "problemSize",
+                })
+              }
+            />
           </div>
           <div className="grid grid-cols-2 gap-x-1 text-xs max-h-[95px] overflow-y-auto">
             {availableProblemSizes.map((size) => (
@@ -282,10 +571,25 @@ const FilterSection = () => {
         </div>
         {/* Model */}
         <div className="text-xs border-r border-stroke w-full">
-          <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
-            <PolygonIcon className="w-5 h-5" />
-            <span>Model</span>
+          <div className="flex items-center justify-between pr-3 border-b border-stroke">
+            <div className="flex items-center border-b border-stroke px-3 py-2 gap-1">
+              <PolygonIcon className="w-5 h-5" />
+              <span>Model</span>
+            </div>
+            <input
+              className="w-4 h-4 accent-navy rounded"
+              type="checkbox"
+              checked={availableModels.every(
+                (modelName) => selectedFilters?.modelName?.includes(modelName),
+              )}
+              onChange={() =>
+                handleSelectAll({
+                  category: "modelName",
+                })
+              }
+            />
           </div>
+
           <div className="grid grid-cols-3 gap-x-2 text-xs max-h-[95px] overflow-y-auto">
             {availableModels.map((model) => (
               <div

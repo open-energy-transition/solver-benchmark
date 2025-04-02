@@ -5,6 +5,7 @@ type Size = {
   nOfConstraints: number;
   nOfVariables: number | null;
   size: string;
+  url: string;
 };
 
 interface MetaDataEntry {

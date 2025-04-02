@@ -78,24 +78,22 @@ const actions = {
       });
 
       const benchmarkResults: BenchmarkResult[] =
-        results.rawBenchmarkResults.filter(
-          (benchmark: BenchmarkResult) =>
-            (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find(
-              (size) => {
-                return (
-                  size.name === benchmark.size &&
-                  filters.problemSize.includes(
-                    problemSizeResult[
-                      `${benchmark.benchmark}'-'${benchmark.size}`
-                    ],
-                  )
-                );
-              },
-            ),
-        );
+        results.rawBenchmarkResults.filter((benchmark: BenchmarkResult) => {
+          return (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find(
+            (size) => {
+              return (
+                size.name === benchmark.size &&
+                filters.problemSize.includes(
+                  problemSizeResult[
+                    `${benchmark.benchmark}'-'${benchmark.size}`
+                  ],
+                )
+              );
+            },
+          );
+        });
 
       dispatch(resultActions.setMetaData(metaData as MetaData));
-
       dispatch(resultActions.setBenchmarkResults(benchmarkResults));
       dispatch(
         resultActions.setBenchmarkLatestResults(

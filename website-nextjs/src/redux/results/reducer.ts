@@ -13,6 +13,7 @@ const {
   SET_RAW_BENCHMARK_RESULTS,
   SET_RAW_META_DATA,
   SET_AVAILABLE_FILTER_DATA,
+  SET_FULL_META_DATA,
 } = actions;
 
 const initialState: IResultState = {
@@ -27,6 +28,7 @@ const initialState: IResultState = {
   availableTechniques: [],
   benchmarkLatestResults: [],
   benchmarkResults: [],
+  fullMetaData: {},
   metaData: {},
   rawBenchmarkResults: [],
   rawMetaData: {},
@@ -124,6 +126,11 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
         availableProblemSizes: sortStringArray(availableProblemSizes, "desc"),
       };
 
+    case SET_FULL_META_DATA:
+      return {
+        ...state,
+        fullMetaData: action.payload.metaData,
+      };
     default:
       return state;
   }
