@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import {
   ColumnDef,
   flexRender,
@@ -20,33 +19,24 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import SortIcon from "@/components/shared/tables/SortIcon";
 import { ArrowRightIcon } from "@/assets/icons";
 import PaginationTable from "@/components/shared/tables/PaginationTable";
-import { IFilterState, IResultState } from "@/types/state";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
 }
 
-const BenchmarkTableResult = () => {
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
+interface BenchmarkTableResultProps {
+  metaData: Record<string, MetaDataEntry>;
+}
 
-  const availableProblemSizes = useSelector(
-    (state: { filters: IFilterState }) => state.filters.problemSize,
-  );
-
+const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
+  metaData,
+}) => {
   const memoizedMetaData = useMemo(
     () =>
-      Object.entries(metaData)
-        .filter(([, value]) => {
-          return value.sizes.some((v) =>
-            availableProblemSizes.includes(v.size),
-          );
-        })
-        .map(([key, value]) => ({
-          ...value,
-          name: key,
-        })),
+      Object.entries(metaData).map(([key, value]) => ({
+        ...value,
+        name: key,
+      })),
     [metaData],
   );
 
