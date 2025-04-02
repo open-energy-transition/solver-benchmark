@@ -20,17 +20,19 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import SortIcon from "@/components/shared/tables/SortIcon";
 import { ArrowRightIcon } from "@/assets/icons";
 import PaginationTable from "@/components/shared/tables/PaginationTable";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState } from "@/types/state";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
 }
 
-const BenchmarkTableResult = () => {
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
+interface BenchmarkTableResultProps {
+  metaData: Record<string, MetaDataEntry>;
+}
 
+const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
+  metaData,
+}) => {
   const availableProblemSizes = useSelector(
     (state: { filters: IFilterState }) => state.filters.problemSize,
   );
