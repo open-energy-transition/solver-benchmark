@@ -28,7 +28,7 @@ interface IColumnTable extends MetaDataEntry {
 
 const BenchmarkTableResult = () => {
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData;
+    return state.results.fullMetaData;
   });
 
   const availableProblemSizes = useSelector(

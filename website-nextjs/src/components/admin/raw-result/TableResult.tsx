@@ -252,7 +252,7 @@ const TableResult = () => {
                       onClick={header.column.getToggleSortingHandler()}
                       className="flex gap-1 items-center"
                       style={{
-                        width: header.getSize() + 10,
+                        width: header.getSize() + 30,
                       }}
                     >
                       <div>

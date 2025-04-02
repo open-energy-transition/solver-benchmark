@@ -24,14 +24,18 @@ const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
     return state.results.rawMetaData;
   });
 
+  const fullMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.fullMetaData;
+  });
+
   const availableBenchmarksCount = useMemo(() => {
     if (useMetadataCount) {
-      return Object.keys(rawMetaData).length;
+      return Object.keys(fullMetaData).length;
     }
     return Array.from(
       new Set(benchmarkResults.map((result) => result.benchmark)),
     ).length;
-  }, [rawMetaData, benchmarkResults, useMetadataCount]);
+  }, [rawMetaData, fullMetaData, benchmarkResults, useMetadataCount]);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -47,8 +51,8 @@ const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
 
   const avaliableInstance = useMemo(() => {
     if (useMetadataCount) {
-      return Object.keys(rawMetaData).reduce((acc, key) => {
-        return acc + (rawMetaData[key]?.sizes?.length || 0);
+      return Object.keys(fullMetaData).reduce((acc, key) => {
+        return acc + (fullMetaData[key]?.sizes?.length || 0);
       }, 0);
     } else {
       return Array.from(

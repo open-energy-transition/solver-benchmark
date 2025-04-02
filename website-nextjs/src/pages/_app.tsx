@@ -25,20 +25,25 @@ function App({ Component, pageProps }: AppProps) {
     const initializeData = async () => {
       const resultsRes = await getBenchmarkResults();
 
+      const fullmetaData = await getMetaData();
       const metaData = await getMetaData();
+
+      dispatch(resultActions.setFullMetaData(fullmetaData.benchmarks));
+
       const metaDataBenmarkKeys = Object.keys(metaData.benchmarks);
       // Filter sizes that exist in results
-      metaDataBenmarkKeys.forEach((key) => {
-        const benchmarkMetaData = metaData.benchmarks[key];
-        const test = benchmarkMetaData.sizes.filter((size) => {
-          const result = resultsRes.find(
-            (result) => result.benchmark === key && result.size === size.name,
-          );
-          return !!result;
-        });
+      metaDataBenmarkKeys.forEach((benchmarkKey) => {
+        const benchmark = metaData.benchmarks[benchmarkKey];
+        // Filter sizes that have matching results
+        const validSizes = benchmark.sizes.filter((size) =>
+          resultsRes.some(
+            (result) =>
+              result.benchmark === benchmarkKey && result.size === size.name,
+          ),
+        );
 
-        if (metaData.benchmarks[key].sizes.length !== test.length) {
-          metaData.benchmarks[key].sizes = test;
+        if (benchmark.sizes.length !== validSizes.length) {
+          benchmark.sizes = validSizes;
         }
       });
       const results = resultsRes.filter((result) => {
@@ -59,7 +64,6 @@ function App({ Component, pageProps }: AppProps) {
         {},
       ) as MetaData;
 
-      // const benchmarksMetaData = metaData.benchmarks
       const problemSizeResult: { [key: string]: string } = {};
       Object.keys(benchmarksMetaData).forEach((metaDataKey) => {
         benchmarksMetaData[metaDataKey]?.sizes?.forEach((s) => {
