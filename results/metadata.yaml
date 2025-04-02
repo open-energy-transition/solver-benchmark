@@ -1,5 +1,5 @@
 benchmarks:
-  genx-15-zones_elec_trex:
+  genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion.
     Model name: GenX
@@ -12,7 +12,7 @@ benchmarks:
     Sizes:
     - Name: 15-168h
       Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
       Spatial resolution: 15
       Temporal resolution: 168
       N. of constraints: 11832658
@@ -20,7 +20,7 @@ benchmarks:
       N. of continuous variables: 13777226
       N. of integer variables:
       N. of binary variables:
-  genx-15-zones_elec_trex_co2:
+  genx-elec_trex_co2:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
@@ -33,7 +33,7 @@ benchmarks:
     Sizes:
     - Name: 15-168h
       Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_co2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
       Spatial resolution: 15
       Temporal resolution: 168
       N. of constraints: 5051253
@@ -41,50 +41,28 @@ benchmarks:
       N. of continuous variables: 4573584
       N. of integer variables:
       N. of binary variables:
-  genx-15-zones_elec_trex_co2_uc:
-    Short description: This is a one-year example which contains 15 zones. This example
-      includes transmission expansion, a CO2 emissions constraint and unit commitment
-      for conventional generators.
-    Model name: GenX
-    Version:
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
-    MILP features: Unit commitment
-    Sizes:
-    - Name: 15-168h
-      Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_co2_uc.lp
-      Spatial resolution: 15
-      Temporal resolution: 168
-      N. of constraints: 20128499
-      N. of variables:
-      N. of continuous variables: 13897939
-      N. of integer variables: 3417368
-      N. of binary variables: 120960
-  genx-15-zones_elec_trex_uc:
-    Short description: This is a one-year example which contains 15 zones. This example
+  genx-elec_trex_uc:
+    Short description: This is 30 days example which contains 15 zones. This example
       includes transmission expansion and unit commitment for conventional generators.
     Model name: GenX
     Version:
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
-    Time horizon: Single period (1 year)
+    Time horizon: Single period (30 days)
     MILP features: Unit commitment
     Sizes:
-    - Name: 15-168h
+    - Name: 15-24h
       Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-24h.lp
       Spatial resolution: 15
-      Temporal resolution: 168
-      N. of constraints: 20128499
+      Temporal resolution: 24h
+      N. of constraints:
       N. of variables:
-      N. of continuous variables: 13897939
-      N. of integer variables: 3417368
-      N. of binary variables: 120960
-  genx-15-zones_elec_co2:
+      N. of continuous variables:
+      N. of integer variables:
+      N. of binary variables:
+  genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example
       includes a CO2 emissions constraint.
     Model name: GenX
@@ -97,56 +75,146 @@ benchmarks:
     Sizes:
     - Name: 15-168h
       Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx_15-zones_elec_co2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
       Spatial resolution: 15
       Temporal resolution: 168
-      N. of constraints: 11832633
+      N. of constraints:
       N. of variables:
-      N. of continuous variables: 13777201
+      N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
-  genx-15-zones_elec_co2_uc:
-    Short description: This is a one-year example which contains 15 zones. This example
-      includes a CO2 emissions constraint and unit commitment for conventional generators.
+  genx-1_three_zones-no_uc:
+    Short description: Three Zones, a one-year example with hourly resolution, contains
+      zones representing Massachusetts, Connecticut, and Maine. The ten represented
+      resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
-    Technique: MILP
+    Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment
+    MILP features: None
     Sizes:
-    - Name: 15-168h
-      Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_co2_uc.lp
-      Spatial resolution: 15
-      Temporal resolution: 168
-      N. of constraints: 20128473
+    - Name: 3-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
+      Spatial resolution: 3
+      Temporal resolution: 1
+      N. of constraints:
       N. of variables:
-      N. of continuous variables: 13897913
-      N. of integer variables: 3417368
-      N. of binary variables: 120960
-  genx-15-zones_elec_uc:
-    Short description: This is a one-year example which contains 15 zones. This example
-      includes unit commitment for conventional generators.
+  genx-2_three_zones_w_electrolyzer-no_uc:
+    Short description: This is a one-year example with hourly resolution which contains
+      three zones representing Massachusetts, Connecticut, and Maine. It is designed
+      to show the electrolyzer feature in GenX. The sixteen represented resources
+      include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
     Model name: GenX
     Version:
-    Technique: MILP
+    Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment
+    MILP features: None
     Sizes:
-    - Name: 15-168h
-      Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_uc.lp
-      Spatial resolution: 15
-      Temporal resolution: 168
-      N. of constraints: 20128472
+    - Name: 3-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
+      Spatial resolution: 3
+      Temporal resolution: 1
+      N. of constraints:
       N. of variables:
-      N. of continuous variables: 13897912
-      N. of integer variables: 3417368
-      N. of binary variables: 120960
+  genx-3_three_zones_w_co2_capture-no_uc:
+    Short description: This is a one-year example with hourly resolution which contains
+      zones representing Massachusetts, Connecticut, and Maine. The ten represented
+      resources include natural gas, solar PV, wind, and lithium-ion battery storage
+      and biomass with carbon capture and storage. This examples shows the usage of
+      CO2, biomass, and piecewise fuel usage related functions of GenX.
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 3-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
+      Spatial resolution: 3
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
+  genx-4_three_zones_w_policies_slack-no_uc:
+    Short description: "This is a one-year example with hourly resolution which contains\
+      \ zones representing Massachusetts, Connecticut, and Maine. It is designed to\
+      \ show how to use slack variables to meet a policy constraint if it cannot be\
+      \ met cost-effectively by normal means. The ten represented resources include\
+      \ natural gas, solar PV, wind, and lithium-ion battery storage. It additionally\
+      \ contains example input files (inside the\_policies\_folder) establishing slack\
+      \ variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap,\
+      \ etc.). These slack variables allow the relevant constraints to be violated\
+      \ at the cost of a specified objective function penalty, which can be used to\
+      \ either identify problematic constraints without causing infeasibilities in\
+      \ GenX, or to set price caps beyond which policies are no longer enforced. These\
+      \ slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv,\_\
+      CO2_cap_slack.csv,\_Energy_share_requirement_slack.csv, or the\_PriceCap\_column\
+      \ in\_Minimum_capacity_requirement.csv\_and\_Maximum_capacity_requirement.csv)\
+      \ are present. If any of these inputs are not present, GenX will instantiate\
+      \ the relevant policy as a hard constraint, which will throw an infeasibility\
+      \ error if violated."
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 3-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
+      Spatial resolution: 3
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
+  genx-6_three_zones_w_multistage-no_uc:
+    Short description: This is a toy multi-stage example with hourly resolution which
+      contains zones representing Massachusetts, Connecticut, and Maine. It is designed
+      to show how to run multi-stage investment planning models. The ten represented
+      resources include natural gas, solar PV, wind, and lithium-ion battery storage.
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Multi-period (3 years)
+    MILP features: None
+    Sizes:
+    - Name: 3-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
+      Spatial resolution: 3
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
+  genx-10_IEEE_9_bus_DC_OPF-no_uc:
+    Short description: This examples shows the usage of DC_OPF related functions of
+      GenX. The IEEE 9-bus system is a standard test case for power system optimization
+      problems. In this example, there are three thermal generators and three loads.
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: DC optimal power flow
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 9-1h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
+      Spatial resolution: 9
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
   genx-1_three_zones:
     Short description: Three Zones, a one-year example with hourly resolution, contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
