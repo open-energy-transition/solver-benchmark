@@ -39,7 +39,7 @@ benchmarks:
       N. of integer variables: 16635
       N. of binary variables: 3696
   genx-3_three_zones_w_co2_capture:
-    Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX.
+    Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and linearized piecewise fuel usage related functions of GenX.
     Model name: GenX
     Version:
     Technique: MILP
@@ -84,7 +84,7 @@ benchmarks:
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment and picewise fuel usage
+    MILP features: Unit commitment
     Sizes:
     - Name: 3-1h
       Size: L
