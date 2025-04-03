@@ -155,14 +155,14 @@ times-ireland-noco2:
   Sizes:
     - Name: 1-1h
       Size:
-      URL:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
       Temporal resolution: 1
       Spatial resolution: 1
       N. of constraints:
       N. of variables:
     - Name: 40-1h
       Size:
-      URL:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
       Temporal resolution: 1
       Spatial resolution: 40
       N. of constraints:
@@ -180,7 +180,7 @@ times-ireland-noco2-counties:
   Sizes:
     - Name: 26-1h
       Size:
-      URL:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Temporal resolution: 1
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
       N. of constraints:
@@ -198,7 +198,7 @@ times-nz-kea:
   Sizes:
     - Name: 2-24h
       Size:
-      URL:
+      URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Temporal resolution: 24
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
       N. of constraints:
@@ -216,7 +216,7 @@ times-nz-tui:
   Sizes:
     - Name: 2-24h
       Size:
-      URL:
+      URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
       Temporal resolution: 24
       Spatial resolution: 2
       N. of constraints:
