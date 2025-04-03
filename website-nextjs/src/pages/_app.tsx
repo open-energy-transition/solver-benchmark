@@ -14,6 +14,7 @@ import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results";
 import { getMetaData } from "@/utils/meta-data";
 import { BenchmarkResult } from "@/types/benchmark";
 import { IFilterState } from "@/types/state";
+import { MetaData } from "@/types/meta-data";
 
 function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
@@ -22,17 +23,50 @@ function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const initializeData = async () => {
-      const results = await getBenchmarkResults();
+      const resultsRes = await getBenchmarkResults();
+
+      const fullmetaData = await getMetaData();
       const metaData = await getMetaData();
 
-      const benchmarksMetaData = metaData.benchmarks;
+      dispatch(resultActions.setFullMetaData(fullmetaData.benchmarks));
+
+      const metaDataBenmarkKeys = Object.keys(metaData.benchmarks);
+      // Filter sizes that exist in results
+      metaDataBenmarkKeys.forEach((benchmarkKey) => {
+        const benchmark = metaData.benchmarks[benchmarkKey];
+        // Filter sizes that have matching results
+        const validSizes = benchmark.sizes.filter((size) =>
+          resultsRes.some(
+            (result) =>
+              result.benchmark === benchmarkKey && result.size === size.name,
+          ),
+        );
+
+        if (benchmark.sizes.length !== validSizes.length) {
+          benchmark.sizes = validSizes;
+        }
+      });
+      const results = resultsRes.filter((result) => {
+        return (
+          metaDataBenmarkKeys.includes(result.benchmark) &&
+          metaData.benchmarks[result.benchmark].sizes.some(
+            (size) => size.name === result.size,
+          )
+        );
+      });
+
+      // Create new benchmarksMetaData with only filtered keys
+      const benchmarksMetaData = metaDataBenmarkKeys.reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: metaData.benchmarks[key],
+        }),
+        {},
+      ) as MetaData;
 
       const problemSizeResult: { [key: string]: string } = {};
       Object.keys(benchmarksMetaData).forEach((metaDataKey) => {
-        if (!benchmarksMetaData[metaDataKey].sizes) {
-          console.log(benchmarksMetaData[metaDataKey], metaDataKey);
-        }
-        benchmarksMetaData[metaDataKey].sizes.forEach((s) => {
+        benchmarksMetaData[metaDataKey]?.sizes?.forEach((s) => {
           problemSizeResult[`${metaDataKey}'-'${s.name}`] = s.size;
         });
       });

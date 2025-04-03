@@ -46,7 +46,7 @@ benchmarks:
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment
+    MILP features: Piecewise fuel usage
     Sizes:
     - Name: 3-1h
       Size: L
@@ -84,7 +84,7 @@ benchmarks:
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment and picewise fuel usage
+    MILP features: Piecewise fuel usage
     Sizes:
     - Name: 3-1h
       Size: L
