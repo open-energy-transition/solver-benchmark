@@ -11,7 +11,7 @@ times-etimeseu-elec+heat-co2-multi_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 1
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-co2-multi_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
@@ -26,7 +26,7 @@ times-etimeseu-elec+heat-co2-multi_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 29
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-co2-single_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
@@ -41,12 +41,12 @@ times-etimeseu-elec+heat-co2-single_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 1
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-co2-single_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
   Model name: eTIMES-EU
-  Version:  
+  Version:
   Contributor: Victor Guillot, École des Mines de Paris
   Technique: LP
   Kind of problem: Infrastructure
@@ -56,7 +56,7 @@ times-etimeseu-elec+heat-co2-single_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 29
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-multi_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050.
@@ -71,7 +71,7 @@ times-etimeseu-elec+heat-multi_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 1
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-multi_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
@@ -86,7 +86,7 @@ times-etimeseu-elec+heat-multi_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 29
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-single_stage:
   Short description: eTIMES-EU power+ heating run for France (1 node) considering 5 years-long periods until 2050.
@@ -101,7 +101,7 @@ times-etimeseu-elec+heat-single_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 1
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-etimeseu-elec+heat-single_stage:
   Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
@@ -116,7 +116,7 @@ times-etimeseu-elec+heat-single_stage:
   Sizes:
   - Temporal resolution: 64
     Spatial resolution: 29
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-ireland-noco2:
   Short description: TIMES-Ireland
@@ -131,11 +131,11 @@ times-ireland-noco2:
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 1
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
   - Temporal resolution: 40
     Spatial resolution: 1
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-ireland-noco2-counties:
   Short description: TIMES-Ireland
@@ -150,7 +150,7 @@ times-ireland-noco2-counties:
   Sizes:
   - Temporal resolution: 1
     Spatial resolution: 26 (Transport) / 1 (all other sectors)
-    N. of constraints: 
+    N. of constraints:
     N. of variables:
 times-nz-kea:
   Short description: TIMES-NZ run with high carbon price and large investments in clean energy technologies.
