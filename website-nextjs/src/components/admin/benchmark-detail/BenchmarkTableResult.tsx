@@ -1,8 +1,4 @@
-/* eslint-disable */
-/* eslint-disable @typescript-eslint/* */
-
-import React, { useEffect, useMemo, useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useMemo, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -12,43 +8,37 @@ import {
   getPaginationRowModel,
   getFacetedUniqueValues,
   useReactTable,
-  Column,
-} from "@tanstack/react-table"
-import { BenchmarkResult } from "@/types/benchmark"
-import Popup from "reactjs-popup"
-import { Color } from "@/constants/color"
-import { MetaDataEntry } from "@/types/meta-data"
-import Link from "next/link"
-import { PATH_DASHBOARD } from "@/constants/path"
-import { ArrowIcon, ArrowRightIcon, SortVerticalIcon } from "@/assets/icons"
-import PaginationTable from "@/components/shared/tables/PaginationTable"
-import { IFilterState, IResultState } from "@/types/state"
+  SortingState,
+  ColumnFiltersState,
+} from "@tanstack/react-table";
+import Popup from "reactjs-popup";
+import { Color } from "@/constants/color";
+import { MetaDataEntry } from "@/types/meta-data";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
+import SortIcon from "@/components/shared/tables/SortIcon";
+import { ArrowRightIcon } from "@/assets/icons";
+import PaginationTable from "@/components/shared/tables/PaginationTable";
 
 interface IColumnTable extends MetaDataEntry {
-  name: string
+  name: string;
 }
 
-const BenchmarkTableResult = () => {
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData
-  })
+interface BenchmarkTableResultProps {
+  metaData: Record<string, MetaDataEntry>;
+}
 
-  const availableProblemSizes = useSelector(
-    (state: { filters: IFilterState }) => state.filters.problemSize
-  )
-
+const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
+  metaData,
+}) => {
   const memoizedMetaData = useMemo(
     () =>
-      Object.entries(metaData)
-        .filter(([key, value]) => {
-          return value.sizes.some((v) => availableProblemSizes.includes(v.size))
-        })
-        .map(([key, value]) => ({
-          ...value,
-          name: key,
-        })),
-    [metaData]
-  )
+      Object.entries(metaData).map(([key, value]) => ({
+        ...value,
+        name: key,
+      })),
+    [metaData],
+  );
 
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
@@ -56,13 +46,13 @@ const BenchmarkTableResult = () => {
         header: "BENCHMARK NAME",
         accessorKey: "name",
         size: 200,
-        enableSorting: false,
+        enableSorting: true,
         cell: (info) => (
           <Popup
             on={["hover"]}
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as any}
+                {info.getValue() as string}
               </div>
             )}
             position="top center"
@@ -99,12 +89,13 @@ const BenchmarkTableResult = () => {
       {
         header: "DETAILS",
         accessorKey: "details",
+        enableSorting: false,
         cell: (info) => (
           <Link
             className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
             href={PATH_DASHBOARD.benchmarkDetail.one.replace(
               "{name}",
-              info.row.original.name
+              info.row.original.name,
             )}
           >
             View Details
@@ -116,11 +107,11 @@ const BenchmarkTableResult = () => {
         ),
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const [sorting, setSorting] = useState([])
-  const [columnFilters, setColumnFilters] = useState([])
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data: memoizedMetaData,
@@ -129,18 +120,15 @@ const BenchmarkTableResult = () => {
       sorting,
       columnFilters,
     },
-    onSortingChange: setSorting as any,
-    onColumnFiltersChange: setColumnFilters as any,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: false,
-  })
-
-  const currentPage = table.getState().pagination.pageIndex + 1
-  const totalPages = table.getPageCount()
+  });
 
   return (
     <div className="py-2">
@@ -160,24 +148,13 @@ const BenchmarkTableResult = () => {
                     >
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
-                      {header.column.getCanSort() &&
-                      !header.column.getIsSorted() ? (
-                        <div>
-                          <SortVerticalIcon
-                            fill="none"
-                            className="stroke-dark-green"
-                          />
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                      {header.column.getIsSorted() === "asc"
-                        ? " ↑"
-                        : header.column.getIsSorted() === "desc"
-                        ? " ↓"
-                        : ""}
+                      {/* Sort */}
+                      <SortIcon
+                        canSort={header.column.getCanSort()}
+                        sortDirection={header.column.getIsSorted()}
+                      />
                     </div>
                   </th>
                 ))}
@@ -200,7 +177,7 @@ const BenchmarkTableResult = () => {
       {/* Pagination */}
       <PaginationTable<IColumnTable> table={table} />
     </div>
-  )
-}
+  );
+};
 
-export default BenchmarkTableResult
+export default BenchmarkTableResult;

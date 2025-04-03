@@ -99,7 +99,8 @@ instance_ips = {
 
 ### 8. Destroy Infrastructure When Done
 
-Once the benchmarks finish, destroy the infrastructure when benchmarks are complete:
+Once the benchmarks finish, by default the VM will auto delete its self. If you change `auto_destroy_vm`
+to `false` in the configuration option, you can delete the whole infrastructure with:
 
 ```bash
 tofu destroy
@@ -117,15 +118,18 @@ Each YAML file defines a benchmark with specific configuration:
 
 ### OpenTofu Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `project_id` | GCP Project ID | *Required* |
-| `gcp_service_key_path` | Path to GCP credentials | *Required* |
-| `zone` | GCP Zone | europe-west4-a |
-| `instance_name` | Base name for instances | benchmark-instance |
-| `startup_script_path` | Path to startup script | startup-script.sh |
-| `ssh_user` | SSH username | "" |
-| `ssh_key_path` | Path to SSH public key | "" |
+| Variable | Description                                                | Default            |
+|----------|------------------------------------------------------------|--------------------|
+| `project_id` | GCP Project ID                                             | *Required*         |
+| `gcp_service_key_path` | Path to GCP credentials                                    | *Required*         |
+| `zone` | GCP Zone                                                   | europe-west4-a     |
+| `instance_name` | Base name for instances                                    | benchmark-instance |
+| `startup_script_path` | Path to startup script                                     | startup-script.sh  |
+| `enable_gcs_upload` | Enable/disable results upload to GCS bucket                | true               |
+| `gcs_bucket_name` | Name of the GCS bucket to upload the results               | solver-benchmarks  |
+| `auto_destroy_vm` | Enable/disable auto deletion of VM on benchmark completion | true               |
+| `ssh_user` | SSH username                                               | ""                 |
+| `ssh_key_path` | Path to SSH public key                                     | ""                 |
 
 ## Troubleshooting
 Check logs with `tail -f /var/log/startup-script.log`

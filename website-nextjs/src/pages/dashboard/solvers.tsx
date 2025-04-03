@@ -2,28 +2,22 @@ import { useSelector } from "react-redux";
 // local
 import DetailSection from "@/components/admin/DetailSection";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
-import SolverSelection from "@/components/admin/compare-solvers/SolverSelection";
 import Head from "next/head";
 import FilterSection from "@/components/admin/FilterSection";
-import { NoSolverPage } from "@/components/admin/compare-solvers/NoSolverPage";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { IResultState } from "@/types/state";
+import SolverSection from "@/components/admin/solvers/SolverSection";
 
-const PageCompareSolvers = () => {
+const PageSolvers = () => {
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
 
-  const solversData = useSelector((state: { results: IResultState }) => {
-    return state.results.solversData;
-  });
-
   return (
     <>
       <Head>
-        <title>Compare Solvers</title>
+        <title>Solvers</title>
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -39,22 +33,17 @@ const PageCompareSolvers = () => {
                 </Link>
                 <ArrowIcon fill="none" className="size-3 stroke-navy" />
                 <span className="self-center font-semibold whitespace-nowrap">
-                  Compare Solvers
+                  Solvers
                 </span>
               </div>
             </div>
           </AdminHeader>
 
-          {/* Content */}
-          {solversData.length < 2 ? (
-            <NoSolverPage />
-          ) : (
-            <>
-              <DetailSection />
-              <FilterSection />
-              <SolverSelection />
-            </>
-          )}
+          <>
+            <DetailSection />
+            <FilterSection />
+            <SolverSection />
+          </>
         </div>
       </div>
       <Footer />
@@ -62,4 +51,4 @@ const PageCompareSolvers = () => {
   );
 };
 
-export default PageCompareSolvers;
+export default PageSolvers;

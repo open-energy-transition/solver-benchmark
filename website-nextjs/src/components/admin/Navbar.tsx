@@ -466,7 +466,7 @@ const Navbar = () => {
         </div>
       </aside>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

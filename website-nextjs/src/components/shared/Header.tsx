@@ -1,11 +1,11 @@
-"use client"
-import { useState } from "react"
-import Image from "next/image"
-import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons"
-import Link from "next/link"
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons";
+import Link from "next/link";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
@@ -42,7 +42,10 @@ const Header = () => {
           <Link href="#benchmark-section" className="text-sm/6 font-semibold">
             BENCHMARKS
           </Link>
-          <Link href="#contribution-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#contribution-section"
+            className="text-sm/6 font-semibold"
+          >
             CONTRIBUTIONS
           </Link>
           <Link href="#mission-section" className="text-sm/6 font-semibold">
@@ -130,6 +133,6 @@ const Header = () => {
         </div>
       )}
     </header>
-  )
-}
-export default Header
+  );
+};
+export default Header;

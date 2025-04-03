@@ -1,15 +1,30 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
-import { CircleIcon, CloseIcon } from "@/assets/icons"
-import D3Chart from "../shared/D3PlotChart"
-import { IResultState } from "@/types/state"
+import { CircleIcon, CloseIcon } from "@/assets/icons";
+import D3Chart from "../shared/D3PlotChart";
+import { IFilterState, IResultState } from "@/types/state";
+import { useMemo } from "react";
+import { SgmMode } from "@/constants/filter";
 
 const BenchmarksSection = () => {
-  const benchmarkResults = useSelector(
+  const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults
+      return state.results.benchmarkLatestResults;
+    },
+  );
+  const sgmMode = useSelector((state: { filters: IFilterState }) => {
+    return state.filters.sgmMode;
+  });
+  const benchmarkResults = useMemo(() => {
+    switch (sgmMode) {
+      case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
+        return benchmarkLatestResults.filter(
+          (result) => result.status === "ok",
+        );
+      default:
+        return benchmarkLatestResults;
     }
-  )
+  }, [sgmMode, benchmarkLatestResults]);
 
   return (
     <div className="py-4">
@@ -23,7 +38,7 @@ const BenchmarksSection = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BenchmarksSection
+export default BenchmarksSection;

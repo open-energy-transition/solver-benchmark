@@ -1,11 +1,11 @@
-import { MaxMemoryUsage, MaxRunTime, ProblemSize } from "@/constants"
+import { MaxMemoryUsage, ProblemSize } from "@/constants";
 import {
   BenchmarkResult,
   SolverStatusType,
   SolverType,
-} from "@/types/benchmark"
-import Papa from "papaparse"
-import { getHighestVersion } from "./versions"
+} from "@/types/benchmark";
+import Papa from "papaparse";
+import { getHighestVersion } from "./versions";
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -15,11 +15,11 @@ import { getHighestVersion } from "./versions"
  */
 export const fetchCsvToJson = async (
   url: string,
-  header = true
+  header = true,
 ): Promise<object[]> => {
   try {
-    const response = await fetch(url)
-    const csvText = await response.text()
+    const response = await fetch(url);
+    const csvText = await response.text();
 
     return new Promise((resolve, reject) => {
       Papa.parse(csvText, {
@@ -27,23 +27,23 @@ export const fetchCsvToJson = async (
         delimiter: ",",
         skipEmptyLines: true,
         complete: (results) => {
-          resolve(results.data as object[])
+          resolve(results.data as object[]);
         },
         error: (error: { message: unknown }) => {
-          reject(error.message)
+          reject(error.message);
         },
-      })
-    })
+      });
+    });
   } catch (error) {
-    console.error("Failed to fetch CSV:", error)
-    throw error
+    console.error("Failed to fetch CSV:", error);
+    throw error;
   }
-}
+};
 
 const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
-  const res = await fetchCsvToJson("/results/benchmark_results.csv")
+  const res = await fetchCsvToJson("/results/benchmark_results.csv");
   return res.map((rawData) => {
-    const data = rawData as { [key: string]: string }
+    const data = rawData as { [key: string]: string };
     return {
       benchmark: data["Benchmark"],
       dualityGap: data["Duality Gap"] || null,
@@ -57,40 +57,38 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
-    }
-  })
-}
+    };
+  });
+};
 
 const getProblemSize = (runtime: number) => {
   if (runtime <= 10) {
-    return ProblemSize.XXS
+    return ProblemSize.XXS;
   } else if (runtime <= 60) {
-    return ProblemSize.XS
+    return ProblemSize.XS;
   } else if (runtime <= 600) {
-    return ProblemSize.S
+    return ProblemSize.S;
   } else if (runtime <= 3600) {
-    return ProblemSize.M
+    return ProblemSize.M;
   } else {
-    return ProblemSize.L
+    return ProblemSize.L;
   }
-}
+};
 
 const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
   return benchmarkResult.map((benchmarkResult) => {
     return {
       ...benchmarkResult,
-      runtime:
-        benchmarkResult.status !== "ok" ? MaxRunTime : benchmarkResult.runtime,
       memoryUsage: !["ok"].includes(benchmarkResult.status)
         ? MaxMemoryUsage
         : benchmarkResult.memoryUsage,
-    }
-  })
-}
+    };
+  });
+};
 
 const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
-  return `${benchmarkResult.benchmark} ${benchmarkResult.size}`
-}
+  return `${benchmarkResult.benchmark} ${benchmarkResult.size}`;
+};
 
 const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
   function getLatestVersion(solver: string) {
@@ -99,16 +97,16 @@ const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
         new Set(
           benchmarkResults
             .filter((result) => result.solver === solver)
-            .map((result) => result.solverVersion)
-        )
-      )
-    )
+            .map((result) => result.solverVersion),
+        ),
+      ),
+    );
   }
 
   return benchmarkResults.filter((result) => {
-    return result.solverVersion === getLatestVersion(result.solver)
-  })
-}
+    return result.solverVersion === getLatestVersion(result.solver);
+  });
+};
 
 export {
   getBenchmarkResults,
@@ -116,4 +114,4 @@ export {
   formatBenchmarkName,
   getProblemSize,
   getLatestBenchmarkResult,
-}
+};

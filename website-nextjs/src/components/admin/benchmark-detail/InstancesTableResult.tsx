@@ -1,8 +1,4 @@
-/* eslint-disable */
-/* eslint-disable @typescript-eslint/* */
-
-import React, { useEffect, useMemo, useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -11,23 +7,26 @@ import {
   getSortedRowModel,
   getFacetedUniqueValues,
   useReactTable,
-} from "@tanstack/react-table"
-import { MetaDataEntry } from "@/types/meta-data"
+  SortingState,
+  ColumnFiltersState,
+} from "@tanstack/react-table";
+import { MetaDataEntry } from "@/types/meta-data";
+import Link from "next/link";
+import { ArrowToRightIcon } from "@/assets/icons";
+import SortIcon from "@/components/shared/tables/SortIcon";
 
 const InstancesTableResult = ({
-  benchmarkName,
   benchmarkDetail,
 }: {
-  benchmarkName: string
-  benchmarkDetail: MetaDataEntry
+  benchmarkDetail: MetaDataEntry;
 }) => {
   const columns = useMemo<
     ColumnDef<{
-      instance: string
-      spatialResolution: number
-      temporalResolution: string | number
-      nOfVariables: number | null
-      nOfConstraints: number
+      instance: string;
+      spatialResolution: number;
+      temporalResolution: string | number;
+      nOfVariables: number | null;
+      nOfConstraints: number;
     }>[]
   >(
     () => [
@@ -57,12 +56,28 @@ const InstancesTableResult = ({
         accessorKey: "nOfConstraints",
         cell: (info) => info.getValue(),
       },
+      {
+        header: "LP/MPS FILE",
+        accessorKey: "url",
+        enableSorting: false,
+        cell: (info) => (
+          <Link
+            href={info.getValue() as string}
+            className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center w-max"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download
+            <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+          </Link>
+        ),
+      },
     ],
-    []
-  )
+    [],
+  );
 
-  const [sorting, setSorting] = useState([])
-  const [columnFilters, setColumnFilters] = useState([])
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const tableData = useMemo(
     () =>
@@ -72,9 +87,10 @@ const InstancesTableResult = ({
         nOfVariables: sizeData.nOfVariables,
         nOfConstraints: sizeData.nOfConstraints,
         instance: sizeData.name,
+        url: sizeData.url,
       })),
-    [benchmarkDetail.sizes.length]
-  )
+    [benchmarkDetail.sizes.length],
+  );
 
   const table = useReactTable({
     data: tableData,
@@ -83,18 +99,18 @@ const InstancesTableResult = ({
       sorting,
       columnFilters,
     },
-    onSortingChange: setSorting as any,
-    onColumnFiltersChange: setColumnFilters as any,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: false,
-  })
+  });
 
   useEffect(() => {
-    table.setPageSize(table.getPrePaginationRowModel().rows.length)
-  }, [table.getPrePaginationRowModel().rows.length])
+    table.setPageSize(table.getPrePaginationRowModel().rows.length);
+  }, [table.getPrePaginationRowModel().rows.length]);
 
   return (
     <div className="py-2">
@@ -111,16 +127,19 @@ const InstancesTableResult = ({
                     key={header.id}
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
-                    <div onClick={header.column.getToggleSortingHandler()}>
+                    <div
+                      className="flex gap-2 items-center"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
-                      {header.column.getIsSorted() === "asc"
-                        ? " ↑"
-                        : header.column.getIsSorted() === "desc"
-                        ? " ↓"
-                        : ""}
+                      {/* Sort */}
+                      <SortIcon
+                        canSort={header.column.getCanSort()}
+                        sortDirection={header.column.getIsSorted()}
+                      />
                     </div>
                   </th>
                 ))}
@@ -141,7 +160,7 @@ const InstancesTableResult = ({
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InstancesTableResult
+export default InstancesTableResult;

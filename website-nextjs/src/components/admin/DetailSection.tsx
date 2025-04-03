@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 // internal
 import {
   AppIcon,
@@ -7,42 +7,63 @@ import {
   HistoryIcon,
   LayoutGroupIcon,
   VectorSquareIcon,
-} from "@/assets/icons"
-import { useMemo } from "react"
-import { IResultState } from "@/types/state"
+} from "@/assets/icons";
+import { useMemo } from "react";
+import { IResultState } from "@/types/state";
 
-const DetailSection = () => {
+interface DetailSectionProps {
+  useMetadataCount?: boolean;
+}
+
+const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.rawBenchmarkResults
-  })
+    return state.results.rawBenchmarkResults;
+  });
 
   const rawMetaData = useSelector((state: { results: IResultState }) => {
-    return state.results.rawMetaData
-  })
+    return state.results.rawMetaData;
+  });
 
-  const availableBenchmarksCount = Object.keys(rawMetaData).length
+  const fullMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.fullMetaData;
+  });
+
+  const availableBenchmarksCount = useMemo(() => {
+    if (useMetadataCount) {
+      return Object.keys(fullMetaData).length;
+    }
+    return Array.from(
+      new Set(benchmarkResults.map((result) => result.benchmark)),
+    ).length;
+  }, [rawMetaData, fullMetaData, benchmarkResults, useMetadataCount]);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers
-  })
+    return state.results.availableSolvers;
+  });
 
   const avaliableVersion = useMemo(
     () =>
       Array.from(
-        new Set(benchmarkResults.map((result) => result.solverVersion))
+        new Set(benchmarkResults.map((result) => result.solverVersion)),
       ),
-    [benchmarkResults]
-  )
+    [benchmarkResults],
+  );
 
-  const avaliableInstance = useMemo(
-    () =>
-      Array.from(
+  const avaliableInstance = useMemo(() => {
+    if (useMetadataCount) {
+      return Object.keys(fullMetaData).reduce((acc, key) => {
+        return acc + (fullMetaData[key]?.sizes?.length || 0);
+      }, 0);
+    } else {
+      return Array.from(
         new Set(
-          benchmarkResults.map((result) => `${result.benchmark}-${result.size}`)
-        )
-      ),
-    [benchmarkResults]
-  )
+          benchmarkResults.map(
+            (result) => `${result.benchmark}-${result.size}`,
+          ),
+        ),
+      ).length;
+    }
+  }, [benchmarkResults]);
 
   const detailData = [
     {
@@ -53,7 +74,7 @@ const DetailSection = () => {
         <>
           Benchmarks:{" "}
           <span className="font-bold">
-            {availableBenchmarksCount} {`(${avaliableInstance.length}`} instances
+            {availableBenchmarksCount} {`(${avaliableInstance}`} instances
             {")"}
           </span>
         </>
@@ -90,10 +111,11 @@ const DetailSection = () => {
     },
     {
       label: "Timeout",
+      // TODO: Replace hardcoded "10 min" timeout
       value: "10 min",
       icon: <HistoryIcon />,
     },
-  ]
+  ];
 
   return (
     <div className="bg-white rounded-xl py-4 px-12">
@@ -116,6 +138,6 @@ const DetailSection = () => {
         ))}
       </ul>
     </div>
-  )
-}
-export default DetailSection
+  );
+};
+export default DetailSection;

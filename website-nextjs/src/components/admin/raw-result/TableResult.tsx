@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react"
-import Papa from "papaparse"
+import React, { useEffect, useMemo, useState } from "react";
+import Papa from "papaparse";
 
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import {
   ColumnDef,
   flexRender,
@@ -13,25 +13,24 @@ import {
   useReactTable,
   ColumnSort,
   ColumnFilter,
-} from "@tanstack/react-table"
-import { BenchmarkResult, OriginBenchmarkResult } from "@/types/benchmark"
-import Popup from "reactjs-popup"
-import { Color } from "@/constants/color"
-import { ArrowToRightIcon } from "@/assets/icons"
-import FilterTable from "@/components/shared/tables/FilterTable"
-import PaginationTable from "@/components/shared/tables/PaginationTable"
-import DownloadButton from "@/components/shared/buttons/DownloadButton"
-import { IResultState } from "@/types/state"
+} from "@tanstack/react-table";
+import { BenchmarkResult, OriginBenchmarkResult } from "@/types/benchmark";
+import Popup from "reactjs-popup";
+import { Color } from "@/constants/color";
+import { ArrowToRightIcon } from "@/assets/icons";
+import FilterTable from "@/components/shared/tables/FilterTable";
+import PaginationTable from "@/components/shared/tables/PaginationTable";
+import DownloadButton from "@/components/shared/buttons/DownloadButton";
+import { IResultState } from "@/types/state";
+import SortIcon from "@/components/shared/tables/SortIcon";
 
 const CSV_URL =
-  "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv"
+  "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
 
 const TableResult = () => {
-  const benchmarkResults = useSelector(
-    (state: { results: IResultState}) => {
-      return state.results.benchmarkResults
-    }
-  )
+  const benchmarkResults = useSelector((state: { results: IResultState }) => {
+    return state.results.benchmarkResults;
+  });
 
   const columns = useMemo<ColumnDef<BenchmarkResult>[]>(
     () => [
@@ -139,11 +138,11 @@ const TableResult = () => {
         ),
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const [sorting, setSorting] = useState<ColumnSort[]>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([])
+  const [sorting, setSorting] = useState<ColumnSort[]>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
 
   const table = useReactTable({
     data: benchmarkResults,
@@ -160,40 +159,40 @@ const TableResult = () => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: false,
-  })
-  const [originalData, setOriginalData] = useState<OriginBenchmarkResult[]>([])
+  });
+  const [originalData, setOriginalData] = useState<OriginBenchmarkResult[]>([]);
 
   // Fetch CSV and parse using PapaParse
   useEffect(() => {
     const fetchCSV = async () => {
       try {
-        const response = await fetch(CSV_URL)
-        const csvText = await response.text()
+        const response = await fetch(CSV_URL);
+        const csvText = await response.text();
         Papa.parse<OriginBenchmarkResult>(csvText, {
           header: true,
           skipEmptyLines: true,
           dynamicTyping: true,
           complete: (result) => {
-            setOriginalData(result.data)
+            setOriginalData(result.data);
           },
           error: (error: unknown) => console.error("Error parsing CSV:", error),
-        })
+        });
       } catch (error) {
-        console.error("Error fetching CSV:", error)
+        console.error("Error fetching CSV:", error);
       }
-    }
+    };
 
-    fetchCSV()
-  }, [])
+    fetchCSV();
+  }, []);
 
   // Convert filtered data to CSV and download
   const downloadFilteredResults = () => {
     const filteredRows = table
       .getFilteredRowModel()
-      .rows.map((row) => row.original)
+      .rows.map((row) => row.original);
     if (filteredRows.length === 0) {
-      alert("No data to download!")
-      return
+      alert("No data to download!");
+      return;
     }
 
     const csvData = originalData.filter((data) =>
@@ -202,20 +201,20 @@ const TableResult = () => {
           row.benchmark === data["Benchmark"] &&
           row.size === data["Size"] &&
           row.solver === data["Solver"] &&
-          row.solverReleaseYear === data["Solver Release Year"]
-      )
-    )
+          row.solverReleaseYear === data["Solver Release Year"],
+      ),
+    );
 
-    const csv = Papa.unparse(csvData)
-    const blob = new Blob([csv], { type: "text/csv" })
-    const url = URL.createObjectURL(blob)
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
 
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "filtered_benchmark_results.csv"
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "filtered_benchmark_results.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div>
@@ -251,15 +250,15 @@ const TableResult = () => {
                   >
                     <div
                       onClick={header.column.getToggleSortingHandler()}
-                      className="flex gap-1"
+                      className="flex gap-1 items-center"
                       style={{
-                        width: header.getSize() + 10,
+                        width: header.getSize() + 30,
                       }}
                     >
                       <div>
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                       </div>
                       {/* Filter */}
@@ -267,11 +266,10 @@ const TableResult = () => {
                         <FilterTable column={header.column} />
                       ) : null}
                       {/* Sort */}
-                      {header.column.getIsSorted() === "asc"
-                        ? " ↑"
-                        : header.column.getIsSorted() === "desc"
-                        ? " ↓"
-                        : ""}
+                      <SortIcon
+                        sortDirection={header.column.getIsSorted()}
+                        canSort={header.column.getCanSort()}
+                      />
                     </div>
                   </th>
                 ))}
@@ -302,7 +300,7 @@ const TableResult = () => {
       {/* Pagination */}
       <PaginationTable<BenchmarkResult> table={table} />
     </div>
-  )
-}
+  );
+};
 
-export default TableResult
+export default TableResult;
