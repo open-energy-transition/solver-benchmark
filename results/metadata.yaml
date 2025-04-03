@@ -1805,3 +1805,228 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+  times-etimeseu-france-elec+heat-single_stage:
+    Short description: eTIMES-EU power + heating run for France (1 node - 64 time
+      slices) considering 1 optimization stage.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
+      Spatial resolution: 1
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-france-elec+heat-co2-single_stage:
+    Short description: eTIMES-EU power + heating run for France (1 node - 64 time
+      slices) considering 1 optimization stage with net-zero constraint on CO2 by
+      2050.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
+      Spatial resolution: 1
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-france-elec+heat-multi_stage:
+    Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices)
+      considering 5 years-long periods until 2050.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
+      Spatial resolution: 1
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-france-elec+heat-co2-multi_stage:
+    Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices)
+      considering 5 years-long periods until 2050 with net-zero constraint on CO2
+      by 2050.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
+      Spatial resolution: 1
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-europe-elec+heat-single_stage:
+    Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time
+      slices) considering 1 optimization stage.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 29-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
+      Spatial resolution: 29
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-europe-elec+heat-co2-single_stage:
+    Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time
+      slices) considering 1 optimization stage with net-zero constraint on CO2 by
+      2050.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 29-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
+      Spatial resolution: 29
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-europe-elec+heat-multi_stage:
+    Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time
+      slices) considering 5 years-long periods until 2050.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 29-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
+      Spatial resolution: 29
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-etimeseu-europe-elec+heat-co2-multi_stage:
+    Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time
+      slices) considering 5 years-long periods until 2050 with net-zero constraint
+      on CO2 by 2050.
+    Model name: eTIMES-EU
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power + heating
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 29-64ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
+      Spatial resolution: 29
+      Temporal resolution: 64
+      N. of constraints:
+      N. of variables:
+  times-ireland-noco2:
+    Short description: TIMES-Ireland
+    Model name: TIMES-Ireland
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Supply, power, industry, transport, residential, services, agriculture
+    Time horizon: Single-stage (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 1-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
+      Spatial resolution: 1
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
+    - Name: 40-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
+      Spatial resolution: 40
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
+  times-ireland-noco2-counties:
+    Short description: TIMES-Ireland
+    Model name: TIMES-Ireland
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Supply, power, industry, transport, residential, services, agriculture
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 26-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
+      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 1
+      N. of constraints:
+      N. of variables:
+  times-nz-kea:
+    Short description: TIMES-NZ run with high carbon price and large investments in
+      clean energy technologies.
+    Model name: TIMES-NZ
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Supply, power, industry, transport, other
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 2-24h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
+      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 24
+      N. of constraints:
+      N. of variables:
+  times-nz-tui:
+    Short description: TIMES-NZ run with low carbon prices and adoption of clean energy
+      technologies when they become cost-effective.
+    Model name: TIMES-NZ
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Supply, power, industry, transport, other
+    Time horizon: Single stage
+    MILP features: None
+    Sizes:
+    - Name: 2-24h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
+      Spatial resolution: 2
+      Temporal resolution: 24
+      N. of constraints:
+      N. of variables:
