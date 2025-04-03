@@ -54,7 +54,7 @@ benchmarks:
     Sizes:
     - Name: 15-24h
       Size: R
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-24h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
       Spatial resolution: 15
       Temporal resolution: 24h
       N. of constraints:
