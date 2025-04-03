@@ -1,0 +1,134 @@
+benchmarks:
+  genx-15-zones_elec_trex:
+    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion.
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features:
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 11832658
+      N. of continuous variables: 13777226
+      N. of integer variables:
+      N. of binary variables:
+  genx-15-zones_elec_trex_co2:
+    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features:
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_co2.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 5051253
+      N. of continuous variables: 4573584
+      N. of integer variables:
+      N. of binary variables:
+  genx-15-zones_elec_trex_co2_uc:
+    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
+    Model name: GenX
+    Version:
+    Technique: MILP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_co2_uc.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 20128499
+      N. of continuous variables: 13897939
+      N. of integer variables: 3417368
+      N. of binary variables: 120960
+  genx-15-zones_elec_trex_uc:
+    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
+    Model name: GenX
+    Version:
+    Technique: MILP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_trex_uc.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 20128499
+      N. of continuous variables: 13897939
+      N. of integer variables: 3417368
+      N. of binary variables: 120960
+  genx-15-zones_elec_co2:
+    Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
+    Model name: GenX
+    Version:
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx_15-zones_elec_co2.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 11832633
+      N. of continuous variables: 13777201
+      N. of integer variables:
+      N. of binary variables:
+  genx-15-zones_elec_co2_uc:
+    Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
+    Model name: GenX
+    Version:
+    Technique: MILP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_co2_uc.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 20128473
+      N. of continuous variables: 13897913
+      N. of integer variables: 3417368
+      N. of binary variables: 120960
+  genx-15-zones_elec_uc:
+    Short description: This is a one-year example which contains 15 zones. This example includes unit commitment for conventional generators.
+    Model name: GenX
+    Version:
+    Technique: MILP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: Single period (1 year)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 15-168h
+      Size: R
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-15-zones_elec_uc.lp
+      Temporal resolution: 168
+      Spatial resolution: 15
+      N. of constraints: 20128472
+      N. of continuous variables: 13897912
+      N. of integer variables: 3417368
+      N. of binary variables: 120960

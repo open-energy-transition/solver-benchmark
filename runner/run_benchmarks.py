@@ -14,12 +14,11 @@ import yaml
 
 def get_conda_package_versions(solvers, env_name=None):
     try:
-        # Base command
-        cmd = ["conda", "list"]
-
-        # Add environment name if provided
+        # List packages in the conda environment
+        cmd = "conda list"
         if env_name:
-            cmd.extend(["-n", env_name])
+            cmd += " -n " + env_name
+        cmd = ["bash", "-i", "-c", cmd]
 
         # Run the conda list command
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
@@ -35,10 +34,11 @@ def get_conda_package_versions(solvers, env_name=None):
             if len(parts) >= 2:  # Ensure package name and version are present
                 installed_packages[parts[0]] = parts[1]
 
+        # Map solver names to their conda package names
+        name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            # HiGHS is called highspy, so map that accordingly
-            package = "highspy" if solver == "highs" else solver
+            package = name_to_pkg.get(solver, solver)
             solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
@@ -234,14 +234,16 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=60,
+    timeout=10 * 60,
     override=True,
 ):
+    size_categories = None  # TODO add this to CLI args
     results = {}
 
     # Load benchmarks from YAML file
     with open(benchmark_yaml_path, "r") as file:
-        benchmarks_info = yaml.safe_load(file)
+        yaml_content = yaml.safe_load(file)
+        benchmarks_info = yaml_content["benchmarks"]
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
@@ -261,41 +263,49 @@ def main(
 
     # Preprocess the sizes and make a list of individual benchmark files to run on
     processed_benchmarks = []
-    for benchmark_info in benchmarks_info:
-        for size in benchmark_info["sizes"]:
+    for benchmark_name, benchmark_info in benchmarks_info.items():
+        for instance in benchmark_info["Sizes"]:
+            # Filter to the desired size_categories
+            if size_categories is not None and instance["Size"] not in size_categories:
+                continue
+
             # Determine the file path to use for the benchmark
-            if "path" in size:
-                benchmark_path = Path(size["path"])
+            if "Path" in instance:
+                benchmark_path = Path(instance["Path"])
                 if not benchmark_path.exists():
                     raise FileNotFoundError(
-                        f"File specified in 'path' does not exist: {benchmark_path}"
+                        f"File specified in 'Path' does not exist: {benchmark_path}"
                     )
-            elif "url" in size:
+            elif "URL" in instance:
                 # TODO do something better like adding a yaml field for format
-                if size["url"].endswith(".mps"):
+                if instance["URL"].endswith(".mps"):
                     format = "mps"
-                elif size["url"].endswith(".mps.gz"):
+                elif instance["URL"].endswith(".mps.gz"):
                     format = "mps.gz"
                 else:
                     format = "lp"
                 benchmark_path = (
-                    benchmarks_folder
-                    / f'{benchmark_info["name"]}-{size["size"]}.{format}'
+                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}.{format}"
                 )
-                download_file_from_google_drive(size["url"], benchmark_path)
+                download_file_from_google_drive(instance["URL"], benchmark_path)
 
                 # Gzip files are unzipped by the above function, so update path accordingly
                 if benchmark_path.suffix == ".gz":
                     benchmark_path = benchmark_path.with_suffix("")
             else:
-                raise ValueError("No valid 'path' or 'url' found for benchmark entry.")
+                raise ValueError("No valid 'Path' or 'URL' found for benchmark entry.")
             processed_benchmarks.append(
                 {
-                    "name": benchmark_info["name"],
-                    "size": size["size"],
+                    "name": benchmark_name,
+                    "size": instance["Name"],
                     "path": benchmark_path,
                 }
             )
+
+    print(
+        f"Found {len(processed_benchmarks)} benchmark instances"
+        + ("" if size_categories is None else f" matching {size_categories}")
+    )
 
     for benchmark in processed_benchmarks:
         for solver in solvers:
@@ -366,7 +376,7 @@ if __name__ == "__main__":
     override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
 
     # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "glpk", "scip"]  # For production
+    solvers = ["highs", "scip", "cbc", "glpk"]  # For production
 
     main(benchmark_yaml_path, solvers, year, override=override)
     # Print a message indicating completion

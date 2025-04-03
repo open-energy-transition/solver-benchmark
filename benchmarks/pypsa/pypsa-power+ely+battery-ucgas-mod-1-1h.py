@@ -80,12 +80,13 @@ carriers = [
     "solar",
     "OCGT",
     "hydrogen storage underground",
+    "battery storage",
 ]
 
 n.madd(
     "Carrier",
     carriers,
-    color=["dodgerblue", "aquamarine", "gold", "indianred", "magenta"],
+    color=["dodgerblue", "aquamarine", "gold", "indianred", "magenta", "yellowgreen"],
     co2_emissions=[costs.at[c, "CO2 intensity"] for c in carriers],
 )
 
@@ -111,6 +112,7 @@ for tech in ["onwind", "offwind"]:
         marginal_cost=costs.at[tech, "marginal_cost"],
         efficiency=costs.at[tech, "efficiency"],
         p_nom_extendable=True,
+        p_nom_mod=4,
     )
 
 n.add(
@@ -121,9 +123,8 @@ n.add(
     capital_cost=costs.at["OCGT", "capital_cost"],
     marginal_cost=costs.at["OCGT", "marginal_cost"],
     efficiency=costs.at["OCGT", "efficiency"],
-    p_nom_extendable=False,
     committable=True,
-    p_min_pu=0.3,
+    p_nom_mod=30,
 )
 
 for tech in ["solar"]:
@@ -137,6 +138,7 @@ for tech in ["solar"]:
         marginal_cost=costs.at[tech, "marginal_cost"],
         efficiency=costs.at[tech, "efficiency"],
         p_nom_extendable=True,
+        p_nom_mod=0.4,
     )
 
 # Second, the hydrogen storage. This one is composed of an electrolysis to convert electricity to hydrogen, a fuel cell to re-convert hydrogen to electricity and underground storage (e.g. in salt caverns). We assume an energy-to-power ratio of 168 hours, such that this type of storage can be used for weekly balancing.
@@ -160,7 +162,24 @@ n.add(
     cyclic_state_of_charge=True,
 )
 
+# Add a battery storage. We are going to assume a fixed energy-to-power ratio of 6 hours, i.e. if fully charged, the battery can discharge at full capacity for 6 hours. For the capital cost, we have to factor in both the capacity and energy cost of the storage. We are also going to enforce a cyclic state-of-charge condition, i.e. the state of charge at the beginning of the optimisation period must equal the final state of charge.
+
+n.add(
+    "StorageUnit",
+    "battery storage",
+    bus="electricity",
+    carrier="battery storage",
+    max_hours=6,
+    capital_cost=costs.at["battery inverter", "capital_cost"]
+    + 6 * costs.at["battery storage", "capital_cost"],
+    efficiency_store=costs.at["battery inverter", "efficiency"],
+    efficiency_dispatch=costs.at["battery inverter", "efficiency"],
+    p_nom_extendable=True,
+    cyclic_state_of_charge=True,
+    p_nom_mod=1,
+)
+
 n.optimize(
     solver_name="highs",
-    only_generate_problem_file="/tmp/pypsa-gas+wind+sol+ely-ucgas-1-1h.lp",
+    only_generate_problem_file="/tmp/pypsa-power+ely+battery-ucgas-mod-1-1h.lp",
 )

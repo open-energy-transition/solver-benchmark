@@ -33,10 +33,33 @@ jobs:
           pre-commit install
           pre-commit run --all-files
 
+      - name: Check benchmark metadata
+        run: |
+          python benchmarks/merge_metadata.py
+          if git diff --quiet; then
+            echo "git diff is empty, metadata must be up to date"
+          else
+            git diff
+            printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
+            exit 1
+          fi
+
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
             app-path: website/app.py
+
+      - name: Check Next.js build
+        run: |
+          echo "Checking Next.js build..."
+          if [ -d "website-nextjs" ] && [ -f "website-nextjs/package.json" ]; then
+            cd website-nextjs
+            npm install
+            npm run build
+            cd ..
+          else
+            echo "Next.js project not found at website-nextjs/package.json. Skipping build check."
+          fi
 
       - name: Setup Conda for benchmark runner
         uses: conda-incubator/setup-miniconda@v3
@@ -48,7 +71,7 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" benchmarks/tests.yaml
+          ./runner/benchmark_all.sh -y "tests" tests/sample_benchmarks_metadata.yaml
           echo ""
           cat results/benchmark_results.csv
           if awk -F',' 'NR>1 {if ($6 != "ok") exit 1}' results/benchmark_results.csv; then

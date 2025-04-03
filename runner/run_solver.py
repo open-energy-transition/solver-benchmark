@@ -23,6 +23,7 @@ def get_solver(solver_name):
         "scip": {
             "randomization/randomseedshift": 0,
         },
+        "cbc": {"randomCbcSeed": 1},  # 0 indicates time of day
     }
 
     if solver_name.lower() in seed_options:
@@ -44,8 +45,10 @@ def is_mip_problem(solver_model, solver_name):
     elif solver_name == "highs":
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
-    elif solver_name == "glpk":
-        # GLPK does not provide a solver model in the solver result, so MIP problem detection is not possible.
+    elif solver_name in {"glpk", "cbc"}:
+        # These solvers do not provide a solver model in the solver result,
+        # so MIP problem detection is not possible.
+        # TODO preprocess benchmarks and add this info to metadata
         return False
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
@@ -71,8 +74,8 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "highs" and solver_model:
         info = solver_model.getInfo()
         return info.mip_gap if hasattr(info, "mip_gap") else None
-    elif solver_name == "glpk" and solver_model:
-        # GLPK does not provide a solver model in solver_result, so we cannot calculate the mip_gap.
+    elif solver_name in {"glpk", "cbc"}:
+        # TODO is there another way to obtain duality gap when there's no solver_model?
         return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
