@@ -163,7 +163,7 @@ times-ireland-noco2-counties:
     Spatial resolution: 26 (Transport) / 1 (all other sectors)
     N. of constraints: 
     N. of variables:
-times-NZ-kea:
+times-nz-kea:
   Short description: TIMES-NZ run with high carbon price and large investments in clean energy technologies.
   Model name: TIMES-NZ
   Version:
