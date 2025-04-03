@@ -15,6 +15,7 @@ jobs:
 
     env:
       PY_VERSION: "3.12"
+      NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -54,6 +55,14 @@ jobs:
           echo "Checking Next.js build..."
           if [ -d "website-nextjs" ] && [ -f "website-nextjs/package.json" ]; then
             cd website-nextjs
+
+            # Check if reCAPTCHA key is set
+            if [ -z "$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" ]; then
+              echo "Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
+              exit 1
+            else
+              echo "✓ reCAPTCHA key is configured"
+            fi
             npm install
             npm run build
             cd ..

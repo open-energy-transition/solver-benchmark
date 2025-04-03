@@ -1,33 +1,134 @@
-import { useState, useCallback } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useState, useCallback, useEffect } from "react";
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
+import emailjs from "@emailjs/browser";
 
-const ContactSection = () => {
+const ContactForm = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [recaptchaVerified, setRecaptchaVerified] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const handleRecaptchaChange = useCallback((token: string | null) => {
-    setRecaptchaVerified(!!token);
-  }, []);
+  const isFormValid = email.trim() !== "" && message.trim() !== "";
+
+  useEffect(() => {
+    // Hide success message after 5 seconds
+    if (showSuccess) {
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess]);
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!recaptchaVerified) {
-        alert("Please verify that you're not a robot");
+      setErrorMessage("");
+
+      if (!isFormValid) {
         return;
       }
 
-      // Form submission logic here
-      console.log("Form submitted", { email, message });
-      // Reset form
-      setEmail("");
-      setMessage("");
-      setRecaptchaVerified(false);
+      if (!executeRecaptcha) {
+        setErrorMessage("reCAPTCHA not available. Please try again later.");
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      try {
+        const token = await executeRecaptcha("contactFormSubmit");
+
+        // Send email using EmailJS
+        const templateParams = {
+          email: email,
+          message: message,
+          "g-recaptcha-response": token,
+        };
+
+        const response = await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
+          templateParams,
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "",
+        );
+
+        if (response.status === 200) {
+          // Reset form after successful submission
+          setEmail("");
+          setMessage("");
+          setShowSuccess(true);
+        } else {
+          throw new Error("Failed to send email");
+        }
+      } catch (error) {
+        console.error("Contact form submission failed", error);
+        setErrorMessage("Failed to send your message. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
     },
-    [email, message, recaptchaVerified],
+    [email, message, executeRecaptcha, isFormValid],
   );
 
+  return (
+    <form onSubmit={handleSubmit}>
+      {showSuccess && (
+        <div className="mb-4 p-3 bg-teal text-white rounded-lg">
+          Thank you! Your message has been sent successfully.
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="mb-4 p-3 bg-red-500 text-white rounded-lg">
+          {errorMessage}
+        </div>
+      )}
+
+      <input
+        className="rounded-lg px-8 py-5 text-navy w-full"
+        placeholder="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <textarea
+        className="rounded-lg px-8 py-5 text-navy w-full mt-4"
+        rows={4}
+        placeholder="Message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        required
+      />
+      <div className="flex justify-start md:justify-end mt-6">
+        <button
+          type="submit"
+          className={`rounded-lg px-7 py-3 text-base text-white font-bold
+            ${
+              isSubmitting
+                ? "bg-gray-500"
+                : isFormValid
+                  ? "bg-teal"
+                  : "bg-gray-500"
+            }
+            shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max md:w-52
+            transition-colors duration-200`}
+          disabled={isSubmitting || !isFormValid}
+        >
+          {isSubmitting ? "SENDING..." : "SEND"}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+const ContactSection = () => {
   return (
     <div className="text-white bg-navy pt-[105px] pb-[73px]">
       <div className="mx-auto container px-4 lg:px-6">
@@ -46,46 +147,16 @@ const ContactSection = () => {
             </h5>
           </div>
           <div className="w-full md:w-1/2 grid gap-4">
-            <form onSubmit={handleSubmit}>
-              <input
-                className="rounded-lg px-8 py-5 text-navy w-full"
-                placeholder="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <textarea
-                className="rounded-lg px-8 py-5 text-navy w-full mt-4"
-                rows={4}
-                placeholder="Message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-              />
-              <div className="mt-4">
-                <ReCAPTCHA
-                  sitekey={
-                    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
-                    "YOUR_RECAPTCHA_SITE_KEY"
-                  }
-                  onChange={handleRecaptchaChange}
-                  theme="dark"
-                />
-              </div>
-              <div className="flex justify-start md:justify-end mt-3">
-                <button
-                  type="submit"
-                  className={`rounded-lg px-7 py-3 text-base text-white font-bold ${
-                    recaptchaVerified ? "bg-teal" : "bg-gray-500"
-                  }
-                    shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max md:w-52`}
-                  disabled={!recaptchaVerified}
-                >
-                  SEND
-                </button>
-              </div>
-            </form>
+            <GoogleReCaptchaProvider
+              reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+              scriptProps={{
+                async: true,
+                defer: true,
+                appendTo: "head",
+              }}
+            >
+              <ContactForm />
+            </GoogleReCaptchaProvider>
           </div>
         </div>
       </div>
