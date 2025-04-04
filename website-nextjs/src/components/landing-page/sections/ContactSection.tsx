@@ -4,6 +4,7 @@ import {
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
 import emailjs from "@emailjs/browser";
+import { env } from "@/config/environment";
 
 const ContactForm = () => {
   const [email, setEmail] = useState("");
@@ -52,10 +53,10 @@ const ContactForm = () => {
         };
 
         const response = await emailjs.send(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
+          env.emailJs.serviceId,
+          env.emailJs.templateId,
           templateParams,
-          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "",
+          env.emailJs.publicKey,
         );
 
         if (response.status === 200) {
@@ -148,7 +149,7 @@ const ContactSection = () => {
           </div>
           <div className="w-full md:w-1/2 grid gap-4">
             <GoogleReCaptchaProvider
-              reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+              reCaptchaKey={env.recaptcha.siteKey}
               scriptProps={{
                 async: true,
                 defer: true,
