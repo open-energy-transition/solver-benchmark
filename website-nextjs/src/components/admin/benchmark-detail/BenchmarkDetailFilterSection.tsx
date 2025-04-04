@@ -81,10 +81,6 @@ const BenchmarkDetailFilterSection = ({
     });
   };
 
-  useEffect(() => {
-    console.log("localFilters", localFilters);
-  }, [localFilters]);
-
   const handleSelectAll = ({ category }: { category: string }) => {
     const categoryKey = category as keyof IFilterBenchmarkDetails;
     const availableItems = {

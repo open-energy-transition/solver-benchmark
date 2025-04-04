@@ -18,7 +18,7 @@ const ResultsSection = () => {
       width: "flex-1",
       bgColor: "bg-light-grey/50",
       color: "text-dark-grey",
-      sort: true,
+      sort: false,
     },
     {
       name: "Solver",
@@ -285,8 +285,15 @@ const ResultsSection = () => {
   const sortedTableData = useMemo(() => {
     if (!sortConfig.field) return tableData;
     const sorted = [...tableData].sort((a, b) => {
-      const aValue = a[sortConfig.field as keyof typeof a];
-      const bValue = b[sortConfig.field as keyof typeof b];
+      const field = sortConfig.field as keyof typeof a;
+      // Extract numeric values from strings like "10.2 (5.4)"
+      const getValue = (value: string) => {
+        const numMatch = value.match(/^[\d.]+/);
+        return numMatch ? parseFloat(numMatch[0]) : 0;
+      };
+
+      const aValue = getValue(String(a[field]));
+      const bValue = getValue(String(b[field]));
       if (sortConfig.direction === "asc") {
         return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
       } else {
@@ -363,13 +370,12 @@ const ResultsSection = () => {
                   fill="none"
                   stroke={sortConfig.field === column.field ? "black" : "gray"}
                   className={`w-2 h-2 ${
-                    sortConfig.direction === "asc" ? "rotate-90" : "-rotate-90"
+                    sortConfig.direction === "asc" ? "-rotate-90" : "rotate-90"
                   }
                     ${sortConfig.field === column.field ? "block" : "hidden"}`}
                 />
               )}
             </div>
-
             {sortedTableData.map((item, index) => (
               <div
                 key={`${column.field}-${index}`}
