@@ -50,6 +50,12 @@ chmod +x ./runner/benchmark_all.sh
 echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR}"
 source ~/miniconda3/bin/activate
 ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" ./benchmarks/${BENCHMARK_FILE}
+BENCHMARK_EXIT_CODE=$?
+
+if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
+    echo "ERROR: Benchmark failed with exit code $BENCHMARK_EXIT_CODE at $(date)"
+    exit $BENCHMARK_EXIT_CODE
+fi
 
 echo "All benchmarks completed at $(date)"
 
@@ -61,9 +67,21 @@ echo "Using timestamp: ${TIMESTAMP}"
 CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
 RESULTS_COPY="/tmp/${CLEAN_FILENAME}_${TIMESTAMP}.csv"
 echo "Creating copy of results as: ${RESULTS_COPY}"
+
 cp /solver-benchmark/results/benchmark_results.csv "${RESULTS_COPY}"
+COPY_EXIT_CODE=$?
+
+if [ $COPY_EXIT_CODE -ne 0 ]; then
+    echo "ERROR: Failed to copy benchmark results at $(date). Exit code: $COPY_EXIT_CODE"
+    echo "Check if file exists: /solver-benchmark/results/benchmark_results.csv"
+    ls -la /solver-benchmark/results/
+    exit $COPY_EXIT_CODE
+fi
+
+echo "Benchmark results successfully copied at $(date)"
 
 # ----- GCS UPLOAD CONFIGURATION -----
+# Only proceed if the benchmark and copy operations were successful
 # Check if GCS upload is enabled
 ENABLE_GCS_UPLOAD=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/enable_gcs_upload")
 if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
