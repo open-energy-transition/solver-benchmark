@@ -1,8 +1,12 @@
+import { validateData } from "@/scripts/validateData";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   webpack(config) {
+    // Validate the benchmark data before proceeding with the build.
+    validateData();
+
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find(
       (rule: { test: { test: (arg0: string) => unknown } }) =>
