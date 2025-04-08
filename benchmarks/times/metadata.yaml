@@ -6,7 +6,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -24,7 +24,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -42,7 +42,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -60,7 +60,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -78,7 +78,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -96,7 +96,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -114,7 +114,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -132,7 +132,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:

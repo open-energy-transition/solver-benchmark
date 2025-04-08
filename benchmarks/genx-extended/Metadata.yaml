@@ -8,7 +8,7 @@ benchmarks:
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -28,7 +28,7 @@ benchmarks:
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -87,7 +87,7 @@ benchmarks:
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
