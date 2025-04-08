@@ -55,7 +55,16 @@ interface OriginBenchmarkResult {
   "Duality Gap": number | null;
 }
 
+type IFilterBenchmarkDetails = {
+  sectors: string[];
+  technique: string[];
+  kindOfProblem: string[];
+  problemSize: string[];
+  modelName: string[];
+};
+
 export type {
+  IFilterBenchmarkDetails,
   BenchmarkResult,
   SolverStatusType,
   SolverType,
