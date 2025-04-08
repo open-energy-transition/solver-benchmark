@@ -3,6 +3,7 @@ benchmarks:
     Short description: European-level investment and operation model to consider integer investments and unit commitment variables
     Model name: Tulipa
     Version:
+    Contributor: JuMP-dev platform
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
