@@ -91,8 +91,6 @@ export async function validateData(): Promise<void> {
         `${invalidResults.length} benchmark results failed validation`,
       );
     }
-
-    console.log(`Validation successful. Validated ${results.length} results.`);
   } catch (error) {
     console.error("Error validating data:", error);
     throw error;
