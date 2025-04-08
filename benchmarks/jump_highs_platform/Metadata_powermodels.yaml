@@ -4,7 +4,7 @@ benchmarks:
     Short description: System stability study based on the IEEE 17-Generator Dynamic Test Case with 162 buses and 17 generators
     Model name: PowerModels
     Version:
-    Contributor: JuMP-dev platform
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -24,7 +24,7 @@ benchmarks:
     Short description: Optimal Power Flow data for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork
     Model name: PowerModels
     Version:
-    Contributor: JuMP-dev platform
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -44,7 +44,7 @@ benchmarks:
     Short description:
     Model name: PowerModels
     Version:
-    Contributor: JuMP-dev platform
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -64,7 +64,7 @@ benchmarks:
     Short description:
     Model name: PowerModels
     Version:
-    Contributor: JuMP-dev platform
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -84,7 +84,7 @@ benchmarks:
     Short description:
     Model name: PowerModels
     Version:
-    Contributor: JuMP-dev platform
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
