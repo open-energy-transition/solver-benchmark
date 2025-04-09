@@ -24,7 +24,7 @@ Place your benchmark YAML files in the `benchmarks` directory. Example:
 
 ```yaml
 machine-type: c4-standard-2
-year: 2024
+years: [2023, 2024]
 benchmarks:
     Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
     Model name: PyPSA-Eur
