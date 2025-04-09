@@ -9,9 +9,12 @@ import statistics
 import subprocess
 import time
 from pathlib import Path
+from socket import gethostname
 
 import requests
 import yaml
+
+hostname = gethostname()
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -110,6 +113,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Timeout",
+                "Hostname",
             ]
         )
 
@@ -151,6 +156,8 @@ def write_csv_row(results_csv, benchmark_name, metrics):
                 metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["timeout"],
+                hostname,
             ]
         )
 
@@ -227,6 +234,7 @@ def benchmark_solver(input_file, solver_name, timeout):
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     metrics["memory"] = memory
+    metrics["timeout"] = timeout
 
     return metrics
 
@@ -500,8 +508,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--solvers",
         type=str,
-        nargs='+',
-        default=['highs', 'scip', 'cbc', 'glpk'],
+        nargs="+",
+        default=["highs", "scip", "cbc", "glpk"],
         help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
     )
     parser.add_argument(
@@ -517,8 +525,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    main(args.
-        benchmark_yaml_path,
+    main(
+        args.benchmark_yaml_path,
         args.solvers,
         args.year,
         reference_interval=args.ref_bench_interval,
