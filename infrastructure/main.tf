@@ -117,7 +117,7 @@ resource "google_compute_instance" "benchmark_instances" {
   metadata = {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
     benchmark_file = each.value.filename
-    benchmark_year = lookup(each.value.content, "year", "2024")
+    benchmark_years = jsonencode(lookup(each.value.content, "years", ["2024"]))
     benchmark_content = file("${path.module}/benchmarks/${each.value.filename}")
     enable_gcs_upload = tostring(var.enable_gcs_upload)
     gcs_bucket_name = var.gcs_bucket_name
