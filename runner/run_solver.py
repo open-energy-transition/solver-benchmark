@@ -3,7 +3,8 @@ import sys
 from pathlib import Path
 from time import time
 
-import numpy as np
+import highspy
+import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
 
@@ -54,15 +55,19 @@ def is_mip_problem(solver_model, solver_name):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def calculate_integrality_violation(primal_values) -> float:
+def calculate_integrality_violation(
+    integer_vars: pd.Series, primal_values: pd.Series
+) -> float:
     """Calculate the maximum integrality violation from primal values.
+
+    We only care about Integer vars, not SemiContinuous or SemiInteger, following the code in
+    https://github.com/ERGO-Code/HiGHS/blob/fd8665394edfd096c4f847c4a6fbc187364ef474/src/mip/HighsMipSolver.cpp#L888
+
     Note:
         We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers
     """
-    integrality_violations = [
-        abs(val - round(val)) for val in primal_values if val is not None
-    ]
-    return np.max(integrality_violations) if integrality_violations else None
+    p = primal_values.reset_index(drop=True)[integer_vars]
+    return max((p - p.round()).abs())
 
 
 def get_duality_gap(solver_model, solver_name: str):
@@ -88,20 +93,30 @@ def main(solver_name, input_file):
     solution_dir.mkdir(parents=True, exist_ok=True)
     solution_fn = solution_dir / f"{problem_file.stem}-{solver_name}.sol"
 
+    # Run the solver and measure runtime
     start_time = time()
     solver_result = solver.solve_problem(
         problem_fn=problem_file,
         solution_fn=solution_fn,
     )
     runtime = time() - start_time
-    solver_model = solver_result.solver_model
+
+    # Compute MIP metrics
     duality_gap = None
     max_integrality_violation = None
-
-    if is_mip_problem(solver_model, solver_name):
-        duality_gap = get_duality_gap(solver_model, solver_name)
+    # Use Highs to read the problem file and make a mask series of integer vars
+    h = highspy.Highs()
+    h.readModel(input_file)
+    integer_vars = pd.Series(
+        (
+            h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+            for i in range(h.numVariables)
+        )
+    )
+    if integer_vars.any():
+        duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
         max_integrality_violation = calculate_integrality_violation(
-            solver_result.solution.primal
+            integer_vars, solver_result.solution.primal
         )
 
     results = {
