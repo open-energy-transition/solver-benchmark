@@ -393,6 +393,10 @@ def main(
         + ("" if size_categories is None else f" matching {size_categories}")
     )
 
+    reference_solver_version = ""
+    if reference_interval > 0:
+        reference_solver_version = get_highs_binary_version()
+
     for benchmark in processed_benchmarks:
         for solver in solvers:
             solver_version = solvers_versions.get(solver)
@@ -464,7 +468,7 @@ def main(
                     # Add required fields to reference metrics
                     reference_metrics["size"] = "reference"
                     reference_metrics["solver"] = "highs-binary"
-                    reference_metrics["solver_version"] = get_highs_binary_version()
+                    reference_metrics["solver_version"] = reference_solver_version
                     reference_metrics["solver_release_year"] = "N/A"
 
                     # Record reference benchmark results
