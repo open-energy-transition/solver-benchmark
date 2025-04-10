@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
 import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult";
@@ -206,7 +205,6 @@ const PageBenchmarkDetail = () => {
             </div>
           </AdminHeader>
           {/* Content */}
-          <DetailSection useMetadataCount />
           <div className="py-2">
             <div className="text-navy text-xl font-bold">Benchmarks</div>
             <p className="text-[#5D5D5D]">
@@ -215,15 +213,6 @@ const PageBenchmarkDetail = () => {
             </p>
           </div>
 
-          <BenchmarkDetailFilterSection
-            localFilters={localFilters}
-            setLocalFilters={setLocalFilters}
-            availableSectors={availableSectors}
-            availableTechniques={availableTechniques}
-            availableKindOfProblems={availableKindOfProblems}
-            availableModels={availableModels}
-            availableProblemSizes={availableProblemSizes}
-          />
           <div className="py-2 flex justify-between items-center">
             <div className="text-navy text-lg font-bold">
               Summary of Benchmark Set
@@ -242,6 +231,15 @@ const PageBenchmarkDetail = () => {
               List of All Benchmarks
             </div>
           </div>
+          <BenchmarkDetailFilterSection
+            localFilters={localFilters}
+            setLocalFilters={setLocalFilters}
+            availableSectors={availableSectors}
+            availableTechniques={availableTechniques}
+            availableKindOfProblems={availableKindOfProblems}
+            availableModels={availableModels}
+            availableProblemSizes={availableProblemSizes}
+          />
           <BenchmarkTableResult metaData={filteredMetaData} />
         </div>
         <Footer />

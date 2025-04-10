@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import DetailSection from "@/components/admin/DetailSection";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
@@ -169,15 +168,25 @@ const PageBenchmarkDetail = () => {
                   <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                 </Link>
                 <ArrowIcon fill="none" className="size-3 stroke-navy" />
+
+                <Link href={PATH_DASHBOARD.benchmarkDetail.list}>
+                  <span className="self-center font-semibold whitespace-nowrap">
+                    Benchmark Details
+                  </span>
+                </Link>
+                <ArrowIcon fill="none" className="size-3 stroke-navy" />
                 <span className="self-center font-semibold whitespace-nowrap">
-                  Benchmark Details
+                  Feature Distribution
                 </span>
               </div>
             </div>
           </AdminHeader>
+          <div className="py-2 mb-2">
+            <div className="text-navy text-xl font-bold">
+              Distribution of Model Features in Benchmark Set
+            </div>
+          </div>
           {/* Content */}
-          <DetailSection useMetadataCount />
-          <br></br>
           <BenchmarkSummaryTable />
         </div>
         <Footer />
