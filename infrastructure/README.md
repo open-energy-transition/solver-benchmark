@@ -128,6 +128,7 @@ Each YAML file defines a benchmark with specific configuration:
 | `enable_gcs_upload` | Enable/disable results upload to GCS bucket                | true               |
 | `gcs_bucket_name` | Name of the GCS bucket to upload the results               | solver-benchmarks  |
 | `auto_destroy_vm` | Enable/disable auto deletion of VM on benchmark completion | true               |
+| `reference_benchmark_interval` | Time interval in seconds to run the reference benchmark    | 3600               |
 | `ssh_user` | SSH username                                               | ""                 |
 | `ssh_key_path` | Path to SSH public key                                     | ""                 |
 
