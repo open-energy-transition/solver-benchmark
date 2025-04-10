@@ -177,7 +177,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout):
+def benchmark_solver(input_file, solver_name, timeout, year=None):
     command = [
         "/usr/bin/time",
         "--format",
@@ -188,6 +188,7 @@ def benchmark_solver(input_file, solver_name, timeout):
         Path(__file__).parent / "run_solver.py",
         solver_name,
         input_file,
+        year,
     ]
     # Run the command and capture the output
     result = subprocess.run(
@@ -414,7 +415,7 @@ def main(
                     flush=True,
                 )
 
-                metrics = benchmark_solver(benchmark["path"], solver, timeout)
+                metrics = benchmark_solver(benchmark["path"], solver, timeout, year)
 
                 metrics["size"] = benchmark["size"]
                 metrics["solver"] = solver

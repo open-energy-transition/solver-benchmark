@@ -1,5 +1,6 @@
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from time import time
 
@@ -81,17 +82,26 @@ def get_duality_gap(solver_model, solver_name: str):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def main(solver_name, input_file):
+def main(solver_name, input_file, year=None):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
+
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
-    solution_fn = solution_dir / f"{problem_file.stem}-{solver_name}.sol"
+
+    logs_dir = Path(__file__).parent / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    year_str = f"-{year}" if year else ""
+    output_filename = f"{Path(input_file).stem}-{solver_name}{year_str}-{timestamp}"
+
+    solution_fn = solution_dir / f"{output_filename}.sol"
+    log_fn = logs_dir / f"{output_filename}.log"
 
     start_time = time()
     solver_result = solver.solve_problem(
-        problem_fn=problem_file,
-        solution_fn=solution_fn,
+        problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
     runtime = time() - start_time
     solver_model = solver_result.solver_model
@@ -116,10 +126,11 @@ def main(solver_name, input_file):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python run_solver.py <solver_name> <input_file>")
+    if len(sys.argv) != 4:
+        print("Usage: python run_solver.py <solver_name> <input_file> <year>")
         sys.exit(1)
 
     solver_name = sys.argv[1]
     input_file = sys.argv[2]
-    main(solver_name, input_file)
+    year = sys.argv[3]
+    main(solver_name, input_file, year)
