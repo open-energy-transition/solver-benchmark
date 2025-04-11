@@ -12,6 +12,17 @@ apt-get install -y tmux git time curl jq
 echo "Cloning repository..."
 git clone https://github.com/open-energy-transition/solver-benchmark.git
 
+# Install a global highs binary for reference runs
+echo "Installing Highs..."
+mkdir -p /opt/highs/bin
+curl -L "https://github.com/JuliaBinaryWrappers/HiGHSstatic_jll.jl/releases/download/HiGHSstatic-v1.10.0%2B0/HiGHSstatic.v1.10.0.x86_64-linux-gnu-cxx11.tar.gz" -o HiGHSstatic.tar.gz
+tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
+chmod +x /opt/highs/bin/highs
+/opt/highs/bin/highs --version
+
+# Downloading benchmark reference model
+curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.lp" -o benchmark-test-model.lp
+
 # Install Miniconda
 echo "Installing Miniconda..."
 mkdir -p ~/miniconda3
@@ -36,6 +47,10 @@ echo "Parsed benchmark years: ${BENCHMARK_YEARS_STR}"
 BENCHMARK_FILE=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_file")
 echo "Using benchmark file: ${BENCHMARK_FILE}"
 
+# Get reference benchmark interval from instance metadata
+REFERENCE_BENCHMARK_INTERVAL=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/reference_benchmark_interval")
+echo "Reference benchmark interval: ${REFERENCE_BENCHMARK_INTERVAL} seconds"
+
 # Get benchmark content
 BENCHMARK_CONTENT=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_content")
 
@@ -49,7 +64,7 @@ chmod +x ./runner/benchmark_all.sh
 # Run the benchmark_all.sh script with our years
 echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR}"
 source ~/miniconda3/bin/activate
-./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" ./benchmarks/${BENCHMARK_FILE}
+./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" ./benchmarks/"${BENCHMARK_FILE}"
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then

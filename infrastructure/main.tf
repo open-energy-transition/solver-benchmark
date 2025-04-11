@@ -73,6 +73,12 @@ variable "auto_destroy_vm" {
   default     = true
 }
 
+variable "reference_benchmark_interval" {
+  description = "Time interval in seconds for running reference benchmarks (0 disables reference benchmarks)"
+  type        = number
+  default     = 3600
+}
+
 locals {
   benchmark_files = fileset("${path.module}/benchmarks", "*.yaml*")
 
@@ -124,6 +130,7 @@ resource "google_compute_instance" "benchmark_instances" {
     auto_destroy_vm = tostring(var.auto_destroy_vm)
     project_id = var.project_id
     zone = var.zone
+    reference_benchmark_interval = tostring(var.reference_benchmark_interval)
   }
 
   # Add the startup script from external file
