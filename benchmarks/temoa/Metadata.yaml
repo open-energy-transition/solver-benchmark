@@ -1,9 +1,10 @@
-## https://github.com/TemoaProject/temoa/blob/v2.0/data_files/temoa_utopia.sql
+## https://github.com/https://github.com/TemoaProject/oeo/temoa/blob/v2.0/data_files/temoa_utopia.sql
 benchmarks:
   temoa-utopia:
     Short description: Single-region test system model considering 4 future years and 6 time slices (day/night, intermediate/summer/winter).
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -19,11 +20,12 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
-  ## Metadata for samples from https://github.com/TemoaProject/oeo
+  ## Metadata for samples from https://github.com/https://github.com/TemoaProject/oeo/oeo
   temoa-US_9R_TS:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods in absence of further constraints.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -43,6 +45,7 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes the policy commitments in the U.S. Nationally Determined Contributions (NDC).
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -62,6 +65,7 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -81,6 +85,7 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes a collection of CO2 emission limits for US states from stated policies.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -100,6 +105,7 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 5 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial

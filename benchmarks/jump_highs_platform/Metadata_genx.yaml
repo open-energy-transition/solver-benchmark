@@ -4,6 +4,7 @@ benchmarks:
     Short description: Three Zones, a one-year example with hourly resolution, contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -23,6 +24,7 @@ benchmarks:
     Short description: This is a one-year example with hourly resolution which contains three zones representing Massachusetts, Connecticut, and Maine. It is designed to show the electrolyzer feature in GenX. The sixteen represented resources include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -42,6 +44,7 @@ benchmarks:
     Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -61,6 +64,7 @@ benchmarks:
     Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. It additionally contains example input files (inside the\_policies\_folder) establishing slack variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap, etc.). These slack variables allow the relevant constraints to be violated at the cost of a specified objective function penalty, which can be used to either identify problematic constraints without causing infeasibilities in GenX, or to set price caps beyond which policies are no longer enforced. These slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv,\_CO2_cap_slack.csv,\_Energy_share_requirement_slack.csv, or the\_PriceCap\_column in\_Minimum_capacity_requirement.csv\_and\_Maximum_capacity_requirement.csv) are present. If any of these inputs are not present, GenX will instantiate the relevant policy as a hard constraint, which will throw an infeasibility error if violated."
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -80,6 +84,7 @@ benchmarks:
     Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. For natural gas ccs generator, we provide picewise fuel usage (PWFU) parameters to represent the fuel consumption at differernt load point. Please refer to the documentation for more details on PWFU parameters and corresponding data requirements. When settings[\"UCommit\"] >= 1 and PWFU parameters are provided in\_Thermal.csv, the standard heat rate (i.e., Heat_Rate_MMBTU_per_MWh) will not be used. Instead, the heat rate will be calculated based on the PWFU parameters."
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -99,6 +104,7 @@ benchmarks:
     Short description: This is a toy multi-stage example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to run multi-stage investment planning models. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -115,14 +121,15 @@ benchmarks:
       N. of integer variables: 16638
       N. of binary variables: 3696
   genx-7_three_zones_w_colocated_VRE_storage:
-    Short description: This example system shows the functionalities of the colocated VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).
+    Short description: This example system shows the functionalities of the colocated VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added). Unit commitment is linearized.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: None (unit commitment is linearized)
+    MILP features: None
     Sizes:
     - Name: 3-24h
       Size: XS
@@ -134,14 +141,15 @@ benchmarks:
       N. of integer variables: 219
       N. of binary variables: 48
   genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
-    Short description: This example system shows the functionalities of the colocated VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).
+    Short description: This example system shows the functionalities of the colocated VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added).  Unit commitment is linearized.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: None (unit commitment is linearized)
+    MILP features: None
     Sizes:
     - Name: 3-1h
       Size: L
@@ -153,14 +161,15 @@ benchmarks:
       N. of integer variables: 15123
       N. of binary variables: 3360
   genx-9_three_zones_w_retrofit:
-    Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented resources include natural gas, solar PV, wind, lithium-ion battery, and coal power plants. This examples shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency.\_"
+    Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented resources include natural gas, solar PV, wind, lithium-ion battery, and coal power plants. This examples shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency. Unit commitment is linearized.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: None (unit commitment is linearized)
+    MILP features: None
     Sizes:
     - Name: 3-1h
       Size: L
@@ -175,6 +184,7 @@ benchmarks:
     Short description: This examples shows the usage of DC_OPF related functions of GenX. The IEEE 9-bus system is a standard test case for power system optimization problems. In this example, there are three thermal generators and three loads.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: DC optimal power flow
     Sectors: Power
