@@ -73,6 +73,12 @@ variable "auto_destroy_vm" {
   default     = true
 }
 
+variable "reference_benchmark_interval" {
+  description = "Time interval in seconds for running reference benchmarks (0 disables reference benchmarks)"
+  type        = number
+  default     = 3600
+}
+
 locals {
   benchmark_files = fileset("${path.module}/benchmarks", "*.yaml*")
 
@@ -117,13 +123,14 @@ resource "google_compute_instance" "benchmark_instances" {
   metadata = {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
     benchmark_file = each.value.filename
-    benchmark_year = lookup(each.value.content, "year", "2024")
+    benchmark_years = jsonencode(lookup(each.value.content, "years", ["2024"]))
     benchmark_content = file("${path.module}/benchmarks/${each.value.filename}")
     enable_gcs_upload = tostring(var.enable_gcs_upload)
     gcs_bucket_name = var.gcs_bucket_name
     auto_destroy_vm = tostring(var.auto_destroy_vm)
     project_id = var.project_id
     zone = var.zone
+    reference_benchmark_interval = tostring(var.reference_benchmark_interval)
   }
 
   # Add the startup script from external file
