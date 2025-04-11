@@ -95,6 +95,7 @@ fi
 
 echo "Benchmark results successfully copied at $(date)"
 
+# TODO: Implement a run_id (unique run identifier) logic, to support storing files for multiple runs
 # ----- GCS UPLOAD CONFIGURATION -----
 # Only proceed if the benchmark and copy operations were successful
 # Check if GCS upload is enabled
@@ -103,6 +104,9 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     # Get the GCS bucket name
     GCS_BUCKET_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/gcs_bucket_name")
     echo "Using GCS bucket: ${GCS_BUCKET_NAME}"
+
+    # Get the instance name for file names
+    INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
 
     # Ensure gsutil is available (should be on GCP instances by default)
     if ! command -v gsutil &> /dev/null; then
@@ -120,18 +124,19 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
 
     # Upload the results file to GCS bucket
     echo "Uploading results CSV to GCS bucket..."
-    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results.csv"
+    RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
+    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RESULTS_FILENAME}"
 
     if [ $? -eq 0 ]; then
         echo "Results CSV upload successfully completed at $(date)"
-        echo "File available at: gs://${GCS_BUCKET_NAME}/results.csv"
+        echo "File available at: gs://${GCS_BUCKET_NAME}/results/${RESULTS_FILENAME}"
     else
         echo "Results CSV upload failed at $(date)"
         echo "Check VM service account permissions for the GCS bucket"
     fi
 
-    # Compress and upload log files
-    echo "Processing log files..."
+    # Compress and upload benchmarks log files
+    echo "Processing benchmarks log files..."
     find /solver-benchmark/runner/logs/ -type f -name "*.log" | while read log_file; do
         filename=$(basename "${log_file}")
         compressed_file="${COMPRESSED_DIR}/logs/${filename}.gz"
@@ -167,6 +172,28 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
             echo "Failed to upload ${filename}.gz"
         fi
     done
+
+    # Compress and upload the startup script log
+    echo "Processing startup script log..."
+    STARTUP_LOG_FILE="/var/log/startup-script.log"
+    if [ -f "${STARTUP_LOG_FILE}" ]; then
+        STARTUP_LOG_FILENAME="${INSTANCE_NAME}-startup-script.log.gz"
+        COMPRESSED_STARTUP_LOG="${COMPRESSED_DIR}/${STARTUP_LOG_FILENAME}"
+
+        echo "Compressing ${STARTUP_LOG_FILE} to ${COMPRESSED_STARTUP_LOG}..."
+        gzip -c "${STARTUP_LOG_FILE}" > "${COMPRESSED_STARTUP_LOG}"
+
+        echo "Uploading ${COMPRESSED_STARTUP_LOG} to GCS bucket..."
+        gsutil cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${STARTUP_LOG_FILENAME}"
+
+        if [ $? -eq 0 ]; then
+            echo "Successfully uploaded startup script log as ${STARTUP_LOG_FILENAME}"
+        else
+            echo "Failed to upload startup script log"
+        fi
+    else
+        echo "Warning: Startup script log file not found at ${STARTUP_LOG_FILE}"
+    fi
 
     # Clean up temporary compressed files
     rm -rf "${COMPRESSED_DIR}"
