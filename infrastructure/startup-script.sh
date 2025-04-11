@@ -113,18 +113,64 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         apt-get update && apt-get install -y google-cloud-sdk
     fi
 
-    # Upload the results file to GCS bucket
-    echo "Uploading results to GCS bucket..."
-    gsutil cp "${RESULTS_COPY}" gs://${GCS_BUCKET_NAME}/
+    # Create a temporary directory for compressed files
+    COMPRESSED_DIR="/tmp/compressed_benchmark_files"
+    mkdir -p "${COMPRESSED_DIR}/logs"
+    mkdir -p "${COMPRESSED_DIR}/solutions"
 
-    # Verify the upload
+    # Upload the results file to GCS bucket
+    echo "Uploading results CSV to GCS bucket..."
+    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results.csv"
+
     if [ $? -eq 0 ]; then
-        echo "Upload successfully completed at $(date)"
-        echo "File available at: gs://${GCS_BUCKET_NAME}/$(basename ${RESULTS_COPY})"
+        echo "Results CSV upload successfully completed at $(date)"
+        echo "File available at: gs://${GCS_BUCKET_NAME}/results.csv"
     else
-        echo "Upload failed at $(date)"
+        echo "Results CSV upload failed at $(date)"
         echo "Check VM service account permissions for the GCS bucket"
     fi
+
+    # Compress and upload log files
+    echo "Processing log files..."
+    find /solver-benchmark/runner/logs/ -type f -name "*.log" | while read log_file; do
+        filename=$(basename "${log_file}")
+        compressed_file="${COMPRESSED_DIR}/logs/${filename}.gz"
+
+        echo "Compressing ${log_file} to ${compressed_file}..."
+        gzip -c "${log_file}" > "${compressed_file}"
+
+        echo "Uploading ${compressed_file} to GCS bucket..."
+        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${filename}.gz"
+
+        if [ $? -eq 0 ]; then
+            echo "Successfully uploaded ${filename}.gz"
+        else
+            echo "Failed to upload ${filename}.gz"
+        fi
+    done
+
+    # Compress and upload solution files
+    echo "Processing solution files..."
+    find /solver-benchmark/runner/solutions/ -type f -name "*.sol" | while read sol_file; do
+        filename=$(basename "${sol_file}")
+        compressed_file="${COMPRESSED_DIR}/solutions/${filename}.gz"
+
+        echo "Compressing ${sol_file} to ${compressed_file}..."
+        gzip -c "${sol_file}" > "${compressed_file}"
+
+        echo "Uploading ${compressed_file} to GCS bucket..."
+        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${filename}.gz"
+
+        if [ $? -eq 0 ]; then
+            echo "Successfully uploaded ${filename}.gz"
+        else
+            echo "Failed to upload ${filename}.gz"
+        fi
+    done
+
+    # Clean up temporary compressed files
+    rm -rf "${COMPRESSED_DIR}"
+    echo "Compression and upload of all benchmark files completed"
 else
     echo "GCS upload is disabled. Skipping upload."
 fi
