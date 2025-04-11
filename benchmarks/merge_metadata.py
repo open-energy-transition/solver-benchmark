@@ -44,8 +44,8 @@ def process_yaml_file(file_path):
                         "URL": size["URL"],
                         "Spatial resolution": size.get("Spatial resolution"),
                         "Temporal resolution": size.get("Temporal resolution"),
-                        "N. of constraints": size.get("N. of constraints", None),
-                        "N. of variables": size.get("N. of variables", None),
+                        "N. of constraints": size.get("N. of constraints"),
+                        "N. of variables": size.get("N. of variables"),
                     }
 
                     # Add optional fields if they exist
@@ -67,14 +67,15 @@ def process_yaml_file(file_path):
 
                 # Create metadata entry
                 entry = {
-                    "Short description": model_info.get("Short description", None),
-                    "Model name": model_info.get("Model name", None),
-                    "Version": model_info.get("Version", None),
-                    "Technique": model_info.get("Technique", None),
-                    "Kind of problem": model_info.get("Kind of problem", None),
-                    "Sectors": model_info.get("Sectors", None),
-                    "Time horizon": model_info.get("Time horizon", None),
-                    "MILP features": model_info.get("MILP features", None),
+                    "Short description": model_info.get("Short description"),
+                    "Model name": model_info.get("Model name"),
+                    "Version": model_info.get("Version"),
+                    "Contributor(s)/Source": model_info.get("Contributor(s)/Source"),
+                    "Technique": model_info.get("Technique"),
+                    "Kind of problem": model_info.get("Kind of problem"),
+                    "Sectors": model_info.get("Sectors"),
+                    "Time horizon": model_info.get("Time horizon"),
+                    "MILP features": model_info.get("MILP features"),
                     "Sizes": sizes,
                 }
                 # Add entry to unified metadata

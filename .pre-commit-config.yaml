@@ -25,3 +25,4 @@ repos:
         types_or: [javascript, jsx, ts, tsx]
         additional_dependencies:
           - prettier@3.1.0
+        language_version: 18.18.0
