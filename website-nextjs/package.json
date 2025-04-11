@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@redux-devtools/extension": "^3.3.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-table": "^8.20.6",
@@ -23,8 +24,9 @@
     "next-redux-wrapper": "^8.1.0",
     "npm": "^11.0.0",
     "papaparse": "^5.5.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-google-recaptcha-v3": "^1.10.1",
     "react-icons": "^5.5.0",
     "react-select": "^5.9.0",
     "reactjs-popup": "^2.0.6",
