@@ -1,6 +1,5 @@
 import json
 import sys
-from datetime import datetime
 from pathlib import Path
 from time import time
 
@@ -92,9 +91,8 @@ def main(solver_name, input_file, year=None):
     logs_dir = Path(__file__).parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     year_str = f"-{year}" if year else ""
-    output_filename = f"{Path(input_file).stem}-{solver_name}{year_str}-{timestamp}"
+    output_filename = f"{Path(input_file).stem}-{solver_name}{year_str}"
 
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
