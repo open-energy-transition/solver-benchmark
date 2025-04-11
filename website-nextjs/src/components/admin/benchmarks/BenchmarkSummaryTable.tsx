@@ -124,7 +124,6 @@ const BenchmarkSummaryTable = () => {
   return (
     <div className="bg-white p-4 rounded-xl mb-6 space-y-8">
       <div>
-        <h2 className="text-lg font-bold mb-4">Model Distribution Matrix</h2>
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200">
             <thead>
