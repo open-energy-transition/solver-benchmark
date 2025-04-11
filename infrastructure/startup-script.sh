@@ -6,7 +6,7 @@ echo "Starting setup script at $(date)"
 # Update and install packages
 echo "Updating packages..."
 apt-get update
-apt-get install -y tmux git time curl jq
+apt-get install -y tmux git time curl jq build-essential
 
 # Clone the repository
 echo "Cloning repository..."
