@@ -4,11 +4,13 @@ benchmarks:
       includes transmission expansion.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
+      Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -25,11 +27,13 @@ benchmarks:
       includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
+      Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -46,6 +50,8 @@ benchmarks:
       includes transmission expansion and unit commitment for conventional generators.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
+      Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -67,11 +73,13 @@ benchmarks:
       includes a CO2 emissions constraint.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
+      Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -89,6 +97,8 @@ benchmarks:
       resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
+      Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -109,6 +119,8 @@ benchmarks:
       include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
+      Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -130,6 +142,8 @@ benchmarks:
       CO2, biomass, and piecewise fuel usage related functions of GenX.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;  Daniele
+      Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -163,6 +177,8 @@ benchmarks:
       \ error if violated."
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
+      Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -183,6 +199,8 @@ benchmarks:
       resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
+      Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -202,6 +220,8 @@ benchmarks:
       problems. In this example, there are three thermal generators and three loads.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
+      Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: DC optimal power flow
     Sectors: Power
@@ -221,6 +241,7 @@ benchmarks:
       resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -244,6 +265,7 @@ benchmarks:
       include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -268,6 +290,7 @@ benchmarks:
       CO2, biomass, and piecewise fuel usage related functions of GenX.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -304,6 +327,7 @@ benchmarks:
       \ error if violated."
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -333,6 +357,7 @@ benchmarks:
       \ be calculated based on the PWFU parameters."
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -356,6 +381,7 @@ benchmarks:
       resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -379,14 +405,16 @@ benchmarks:
       the model can choose to co-locate with either solar or wind. In this case, the
       storage resource is forced in via minimum and maximum capacity requirement constraints,
       but these constraints could be easily removed (although the storage resource
-      has a cost of zero in this case so a cost would have to be added).
+      has a cost of zero in this case so a cost would have to be added). Unit commitment
+      is linearized.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: None (unit commitment is linearized)
+    MILP features: None
     Sizes:
     - Name: 3-24h
       Size: XS
@@ -405,14 +433,16 @@ benchmarks:
       that the model can choose to co-locate with either solar or wind. In this case,
       the storage resource is forced in via minimum and maximum capacity requirement
       constraints, but these constraints could be easily removed (although the storage
-      resource has a cost of zero in this case so a cost would have to be added).
+      resource has a cost of zero in this case so a cost would have to be added).  Unit
+      commitment is linearized.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: None (unit commitment is linearized)
+    MILP features: None
     Sizes:
     - Name: 3-1h
       Size: L
@@ -425,19 +455,21 @@ benchmarks:
       N. of integer variables: 15123
       N. of binary variables: 3360
   genx-9_three_zones_w_retrofit:
-    Short description: "This is a one-year example with hourly resolution which contains\
-      \ zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented\
-      \ resources include natural gas, solar PV, wind, lithium-ion battery, and coal\
-      \ power plants. This examples shows the usage of the retrofit module of GenX,\
-      \ and the model will be allowed to retire as well as retrofit the existing coal\
-      \ power plants and replacing the coal with blue ammonia with 85% efficiency.\_"
+    Short description: This is a one-year example with hourly resolution which contains
+      zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented
+      resources include natural gas, solar PV, wind, lithium-ion battery, and coal
+      power plants. This examples shows the usage of the retrofit module of GenX,
+      and the model will be allowed to retire as well as retrofit the existing coal
+      power plants and replacing the coal with blue ammonia with 85% efficiency. Unit
+      commitment is linearized.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: None (unit commitment is linearized)
+    MILP features: None
     Sizes:
     - Name: 3-1h
       Size: L
@@ -455,6 +487,7 @@ benchmarks:
       problems. In this example, there are three thermal generators and three loads.
     Model name: GenX
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: DC optimal power flow
     Sectors: Power
@@ -476,6 +509,7 @@ benchmarks:
       Test Case with 162 buses and 17 generators
     Model name: PowerModels
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -497,6 +531,7 @@ benchmarks:
       Market (SNEM) Australia - Mainland subnetwork
     Model name: PowerModels
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -517,6 +552,7 @@ benchmarks:
     Short description:
     Model name: PowerModels
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -537,6 +573,7 @@ benchmarks:
     Short description:
     Model name: PowerModels
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -557,6 +594,7 @@ benchmarks:
     Short description:
     Model name: PowerModels
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
     Sectors: Power
@@ -578,6 +616,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -598,6 +637,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -619,6 +659,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -640,6 +681,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -661,6 +703,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -682,6 +725,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -703,6 +747,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -724,6 +769,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -745,6 +791,7 @@ benchmarks:
       entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -765,6 +812,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -785,6 +833,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -805,6 +854,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -825,6 +875,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -845,6 +896,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -865,6 +917,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -885,6 +938,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -905,6 +959,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -925,6 +980,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -946,6 +1002,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -967,6 +1024,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -988,6 +1046,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1009,6 +1068,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1030,6 +1090,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1051,6 +1112,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1072,6 +1134,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1093,6 +1156,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1114,6 +1178,7 @@ benchmarks:
       transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1134,6 +1199,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1154,6 +1220,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1174,6 +1241,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1194,6 +1262,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1214,6 +1283,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1234,6 +1304,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1254,6 +1325,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1274,6 +1346,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1294,6 +1367,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1315,6 +1389,7 @@ benchmarks:
       investments and unit commitment variables
     Model name: Tulipa
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1384,12 +1459,13 @@ benchmarks:
   pypsa-eur-sec:
     Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
       2050 as single planning horizon (LP, lot of variables, strongly intermeshed
-      constraints)
+      constraints).
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Sector-coupled (power + heating, biomass, industry, transport)
+    Sectors: Power, heating biomass, industry, transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -1424,9 +1500,10 @@ benchmarks:
   pypsa-eur-elec-trex:
     Short description: PyPSA-Eur power sector infrastructure run for Italy considering
       2050 as single planning horizon with transmission expansion (LP, lot of variables,
-      intermeshed constraints)
+      intermeshed constraints).
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1463,9 +1540,10 @@ benchmarks:
       N. of variables: 318285
   pypsa-eur-elec-op:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single
-      planning horizon (LP, lot of variables, poorly intermeshed constraints)
+      planning horizon (LP, lot of variables, poorly intermeshed constraints).
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Operational
     Sectors: Power
@@ -1510,14 +1588,15 @@ benchmarks:
   pypsa-eur-elec-op-ucconv:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single
       planning horizon and unit commitment for conventional fleet (MILP, lot of variables,
-      poorly intermeshed constraints)
+      poorly intermeshed constraints).
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Operational
     Sectors: Power
     Time horizon: 1 year
-    MILP features: Unit commitment for conventional fleet
+    MILP features: Unit commitment
     Sizes:
     - Name: 5-24h
       Size: S
@@ -1542,9 +1621,10 @@ benchmarks:
       N. of variables: 109259
   pypsa-power+ely:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model
+      infrastructure model.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1560,9 +1640,10 @@ benchmarks:
       N. of variables:
   pypsa-power+ely+battery:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      + battery infrastructure model
+      + battery infrastructure model.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1578,14 +1659,15 @@ benchmarks:
       N. of variables:
   pypsa-power+ely+battery-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      + battery infrastructure model with unit commitment on gas generator
+      + battery infrastructure model with unit commitment on gas generator.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: 1 year
-    MILP features: Unit commitment for gas generator
+    MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: S
@@ -1599,9 +1681,10 @@ benchmarks:
       N. of binary variables:
   pypsa-power+ely-co2:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model with CO2 emission limit
+      infrastructure model with CO2 emission limit.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1617,14 +1700,15 @@ benchmarks:
       N. of variables:
   pypsa-power+ely-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model with unit commitment on gas generator
+      infrastructure model with unit commitment on gas generator.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: 1 year
-    MILP features: Unit commitment for gas generator
+    MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: S
@@ -1639,14 +1723,15 @@ benchmarks:
   pypsa-power+ely+battery-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       + battery infrastructure model with unit commitment on gas generator and integer
-      investment capacity
+      investment capacity.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: 1 year
-    MILP features: Unit commitment for gas generator + Modularity
+    MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
       Size: S
@@ -1660,9 +1745,10 @@ benchmarks:
       N. of binary variables:
   pypsa-power+ely-co2-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model with CO2 emission limit with integer investment capacity
+      infrastructure model with CO2 emission limit with integer investment capacity.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1681,9 +1767,10 @@ benchmarks:
       N. of binary variables:
   pypsa-power+ely-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure
-      model with integer investment capacity
+      model with integer investment capacity.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1703,14 +1790,15 @@ benchmarks:
   pypsa-power+ely-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model with unit commitment on gas generator and integer investment
-      capacity
+      capacity.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: 1 year
-    MILP features: Unit commitment for gas generator + Modularity
+    MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
       Size: S
@@ -1724,9 +1812,10 @@ benchmarks:
       N. of binary variables:
   pypsa-power+ely+battery-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      + battery infrastructure model with integer investment capacity
+      + battery infrastructure model with integer investment capacity.
     Model name: PyPSA
     Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -1748,6 +1837,7 @@ benchmarks:
       and 6 time slices (day/night, intermediate/summer/winter).
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -1769,6 +1859,7 @@ benchmarks:
       in absence of further constraints.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -1791,6 +1882,7 @@ benchmarks:
       Contributions (NDC).
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -1813,6 +1905,7 @@ benchmarks:
       by 2050.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -1835,6 +1928,7 @@ benchmarks:
       stated policies.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -1857,6 +1951,7 @@ benchmarks:
       by 2050.
     Model name: TEMOA
     Version:
+    Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
@@ -1878,9 +1973,10 @@ benchmarks:
       slices) considering 1 optimization stage.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -1897,9 +1993,10 @@ benchmarks:
       2050.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -1915,9 +2012,10 @@ benchmarks:
       considering 5 years-long periods until 2050.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -1934,9 +2032,10 @@ benchmarks:
       by 2050.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -1952,9 +2051,10 @@ benchmarks:
       slices) considering 1 optimization stage.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -1971,9 +2071,10 @@ benchmarks:
       2050.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -1989,9 +2090,10 @@ benchmarks:
       slices) considering 5 years-long periods until 2050.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -2008,9 +2110,10 @@ benchmarks:
       on CO2 by 2050.
     Model name: eTIMES-EU
     Version:
+    Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power + heating
+    Sectors: Power, heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -2025,6 +2128,7 @@ benchmarks:
     Short description: TIMES-Ireland
     Model name: TIMES-Ireland
     Version:
+    Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Supply, power, industry, transport, residential, services, agriculture
@@ -2049,6 +2153,7 @@ benchmarks:
     Short description: TIMES-Ireland
     Model name: TIMES-Ireland
     Version:
+    Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Supply, power, industry, transport, residential, services, agriculture
@@ -2067,6 +2172,7 @@ benchmarks:
       clean energy technologies.
     Model name: TIMES-NZ
     Version:
+    Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Supply, power, industry, transport, other
@@ -2085,6 +2191,7 @@ benchmarks:
       technologies when they become cost-effective.
     Model name: TIMES-NZ
     Version:
+    Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Supply, power, industry, transport, other

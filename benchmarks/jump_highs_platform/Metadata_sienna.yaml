@@ -3,6 +3,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -22,6 +23,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -41,6 +43,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -60,6 +63,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -79,6 +83,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -100,6 +105,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -119,6 +125,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -138,6 +145,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -157,6 +165,7 @@ benchmarks:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -176,6 +185,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -195,6 +205,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -214,6 +225,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -233,6 +245,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -252,6 +265,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -271,6 +285,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -290,6 +305,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -309,6 +325,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -328,6 +345,7 @@ benchmarks:
     Short description: Direct Current Approximation
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -347,6 +365,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -366,6 +385,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -385,6 +405,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -404,6 +425,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -423,6 +445,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -442,6 +465,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -461,6 +485,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -480,6 +505,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -499,6 +525,7 @@ benchmarks:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -518,6 +545,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -537,6 +565,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -556,6 +585,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -575,6 +605,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -594,6 +625,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -613,6 +645,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -632,6 +665,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -651,6 +685,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -670,6 +705,7 @@ benchmarks:
     Short description: Transport problem
     Model name: Sienna
     Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power

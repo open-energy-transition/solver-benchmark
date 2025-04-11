@@ -12,6 +12,17 @@ apt-get install -y tmux git time curl jq
 echo "Cloning repository..."
 git clone https://github.com/open-energy-transition/solver-benchmark.git
 
+# Install a global highs binary for reference runs
+echo "Installing Highs..."
+mkdir -p /opt/highs/bin
+curl -L "https://github.com/JuliaBinaryWrappers/HiGHSstatic_jll.jl/releases/download/HiGHSstatic-v1.10.0%2B0/HiGHSstatic.v1.10.0.x86_64-linux-gnu-cxx11.tar.gz" -o HiGHSstatic.tar.gz
+tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
+chmod +x /opt/highs/bin/highs
+/opt/highs/bin/highs --version
+
+# Downloading benchmark reference model
+curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.lp" -o benchmark-test-model.lp
+
 # Install Miniconda
 echo "Installing Miniconda..."
 mkdir -p ~/miniconda3
@@ -24,33 +35,21 @@ echo "Setting up conda environment..."
 echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
 ~/miniconda3/bin/conda init bash
 
-# Get benchmark year from instance metadata
-BENCHMARK_YEAR=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_year")
-echo "Using benchmark year: ${BENCHMARK_YEAR}"
+# Get benchmark years from instance metadata
+BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
+echo "Retrieved benchmark years: ${BENCHMARK_YEARS_JSON}"
 
-# Create conda environment with the appropriate year
-cd /solver-benchmark/
-~/miniconda3/bin/conda env create -f runner/envs/benchmark-${BENCHMARK_YEAR}-fixed.yaml
-
-# Activate the conda environment
-echo "Activating conda environment benchmark-${BENCHMARK_YEAR}..."
-source ~/miniconda3/bin/activate
-conda activate benchmark-${BENCHMARK_YEAR}
-
-# Add auto-activation to .bashrc
-echo -e "\n# Automatically activate benchmark environment" >> ~/.bashrc
-echo "conda activate benchmark-${BENCHMARK_YEAR}" >> ~/.bashrc
-
-# Verify environment is active
-echo "Current conda environment:"
-conda info --envs | grep "*"
-
-echo "Setup completed at $(date)"
-echo "Conda environment benchmark-${BENCHMARK_YEAR} is now active and will be activated on login"
+# Parse the JSON array into a space-separated string for benchmark_all.sh
+BENCHMARK_YEARS_STR=$(echo "${BENCHMARK_YEARS_JSON}" | jq -r 'join(" ")')
+echo "Parsed benchmark years: ${BENCHMARK_YEARS_STR}"
 
 # Get benchmark filename from instance metadata
 BENCHMARK_FILE=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_file")
 echo "Using benchmark file: ${BENCHMARK_FILE}"
+
+# Get reference benchmark interval from instance metadata
+REFERENCE_BENCHMARK_INTERVAL=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/reference_benchmark_interval")
+echo "Reference benchmark interval: ${REFERENCE_BENCHMARK_INTERVAL} seconds"
 
 # Get benchmark content
 BENCHMARK_CONTENT=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_content")
@@ -58,27 +57,52 @@ BENCHMARK_CONTENT=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.in
 # Write the benchmark file - preserve the exact content
 echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 
-# Run the benchmarks
-echo "Starting benchmarks..."
-python /solver-benchmark/runner/run_benchmarks.py /solver-benchmark/benchmarks/${BENCHMARK_FILE} ${BENCHMARK_YEAR}
+# Make benchmark_all.sh executable
+cd /solver-benchmark/
+chmod +x ./runner/benchmark_all.sh
+
+# Run the benchmark_all.sh script with our years
+echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR}"
+source ~/miniconda3/bin/activate
+./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" ./benchmarks/"${BENCHMARK_FILE}"
+BENCHMARK_EXIT_CODE=$?
+
+if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
+    echo "ERROR: Benchmark failed with exit code $BENCHMARK_EXIT_CODE at $(date)"
+    exit $BENCHMARK_EXIT_CODE
+fi
+
+echo "All benchmarks completed at $(date)"
+
+# Create timestamp for the results
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+echo "Using timestamp: ${TIMESTAMP}"
+
+# Create a copy of results with timestamp
+CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
+RESULTS_COPY="/tmp/${CLEAN_FILENAME}_${TIMESTAMP}.csv"
+echo "Creating copy of results as: ${RESULTS_COPY}"
+
+cp /solver-benchmark/results/benchmark_results.csv "${RESULTS_COPY}"
+COPY_EXIT_CODE=$?
+
+if [ $COPY_EXIT_CODE -ne 0 ]; then
+    echo "ERROR: Failed to copy benchmark results at $(date). Exit code: $COPY_EXIT_CODE"
+    echo "Check if file exists: /solver-benchmark/results/benchmark_results.csv"
+    ls -la /solver-benchmark/results/
+    exit $COPY_EXIT_CODE
+fi
+
+echo "Benchmark results successfully copied at $(date)"
 
 # ----- GCS UPLOAD CONFIGURATION -----
+# Only proceed if the benchmark and copy operations were successful
 # Check if GCS upload is enabled
 ENABLE_GCS_UPLOAD=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/enable_gcs_upload")
 if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     # Get the GCS bucket name
     GCS_BUCKET_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/gcs_bucket_name")
     echo "Using GCS bucket: ${GCS_BUCKET_NAME}"
-
-    # Create timestamp for the file
-    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-    echo "Using timestamp: ${TIMESTAMP}"
-
-    # Create the properly named copy of results
-    CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
-    RESULTS_COPY="/tmp/${CLEAN_FILENAME}_${TIMESTAMP}.csv"
-    echo "Creating copy of results as: ${RESULTS_COPY}"
-    cp /solver-benchmark/results/benchmark_results.csv "${RESULTS_COPY}"
 
     # Ensure gsutil is available (should be on GCP instances by default)
     if ! command -v gsutil &> /dev/null; then
