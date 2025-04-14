@@ -502,7 +502,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "year",
-        type=int,
+        type=str,
         help="Denote the benchmarks as having been run on solvers from given year.",
     )
     parser.add_argument(
