@@ -3,11 +3,12 @@ benchmarks:
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -22,11 +23,12 @@ benchmarks:
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
@@ -60,6 +62,7 @@ benchmarks:
     Short description: This is 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
     Sectors: Power
@@ -79,11 +82,12 @@ benchmarks:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
     Model name: GenX
     Version:
+    Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Power
     Time horizon: Single period (1 year)
-    MILP features: Unit commitment
+    MILP features: None
     Sizes:
     - Name: 15-168h
       Size: R
