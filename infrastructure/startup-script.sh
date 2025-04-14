@@ -145,7 +145,14 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         gzip -c "${log_file}" > "${compressed_file}"
 
         echo "Uploading ${compressed_file} to GCS bucket..."
-        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${filename}.gz"
+
+        # Check if file contains "gurobi" in the name
+        if [[ "${filename}" == *"gurobi"* ]]; then
+            echo "File contains 'gurobi' in name, storing in restricted folder..."
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${filename}.gz"
+        else
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${filename}.gz"
+        fi
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded ${filename}.gz"
@@ -164,7 +171,14 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         gzip -c "${sol_file}" > "${compressed_file}"
 
         echo "Uploading ${compressed_file} to GCS bucket..."
-        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${filename}.gz"
+
+        # Check if file contains "gurobi" in the name
+        if [[ "${filename}" == *"gurobi"* ]]; then
+            echo "File contains 'gurobi' in name, storing in restricted folder..."
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/solutions/${filename}.gz"
+        else
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${filename}.gz"
+        fi
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded ${filename}.gz"
