@@ -86,18 +86,25 @@ def get_duality_gap(solver_model, solver_name: str):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def main(solver_name, input_file):
+def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
+
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
-    solution_fn = solution_dir / f"{problem_file.stem}-{solver_name}.sol"
+
+    logs_dir = Path(__file__).parent / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+
+    output_filename = f"{Path(input_file).stem}-{solver_name}-{solver_version}"
+
+    solution_fn = solution_dir / f"{output_filename}.sol"
+    log_fn = logs_dir / f"{output_filename}.log"
 
     # Run the solver and measure runtime
     start_time = time()
     solver_result = solver.solve_problem(
-        problem_fn=problem_file,
-        solution_fn=solution_fn,
+        problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
     runtime = time() - start_time
 
@@ -130,10 +137,11 @@ def main(solver_name, input_file):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python run_solver.py <solver_name> <input_file>")
+    if len(sys.argv) != 4:
+        print("Usage: python run_solver.py <solver_name> <input_file> <solver_version>")
         sys.exit(1)
 
     solver_name = sys.argv[1]
     input_file = sys.argv[2]
-    main(solver_name, input_file)
+    solver_version = sys.argv[3]
+    main(solver_name, input_file, solver_version)

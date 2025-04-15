@@ -6,7 +6,7 @@ echo "Starting setup script at $(date)"
 # Update and install packages
 echo "Updating packages..."
 apt-get update
-apt-get install -y tmux git time curl jq
+apt-get install -y tmux git time curl jq build-essential
 
 # Clone the repository
 echo "Cloning repository..."
@@ -95,6 +95,7 @@ fi
 
 echo "Benchmark results successfully copied at $(date)"
 
+# TODO: Implement a run_id (unique run identifier) logic, to support storing files for multiple runs
 # ----- GCS UPLOAD CONFIGURATION -----
 # Only proceed if the benchmark and copy operations were successful
 # Check if GCS upload is enabled
@@ -103,6 +104,9 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     # Get the GCS bucket name
     GCS_BUCKET_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/gcs_bucket_name")
     echo "Using GCS bucket: ${GCS_BUCKET_NAME}"
+
+    # Get the instance name for file names
+    INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
 
     # Ensure gsutil is available (should be on GCP instances by default)
     if ! command -v gsutil &> /dev/null; then
@@ -113,18 +117,95 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         apt-get update && apt-get install -y google-cloud-sdk
     fi
 
-    # Upload the results file to GCS bucket
-    echo "Uploading results to GCS bucket..."
-    gsutil cp "${RESULTS_COPY}" gs://${GCS_BUCKET_NAME}/
+    # Create a temporary directory for compressed files
+    COMPRESSED_DIR="/tmp/compressed_benchmark_files"
+    mkdir -p "${COMPRESSED_DIR}/logs"
+    mkdir -p "${COMPRESSED_DIR}/solutions"
 
-    # Verify the upload
+    # Upload the results file to GCS bucket
+    echo "Uploading results CSV to GCS bucket..."
+    RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
+    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RESULTS_FILENAME}"
+
     if [ $? -eq 0 ]; then
-        echo "Upload successfully completed at $(date)"
-        echo "File available at: gs://${GCS_BUCKET_NAME}/$(basename ${RESULTS_COPY})"
+        echo "Results CSV upload successfully completed at $(date)"
+        echo "File available at: gs://${GCS_BUCKET_NAME}/results/${RESULTS_FILENAME}"
     else
-        echo "Upload failed at $(date)"
+        echo "Results CSV upload failed at $(date)"
         echo "Check VM service account permissions for the GCS bucket"
     fi
+
+    # Compress and upload benchmarks log files
+    echo "Processing benchmarks log files..."
+    find /solver-benchmark/runner/logs/ -type f -name "*.log" | while read log_file; do
+        filename=$(basename "${log_file}")
+        compressed_file="${COMPRESSED_DIR}/logs/${filename}.gz"
+
+        echo "Compressing ${log_file} to ${compressed_file}..."
+        gzip -c "${log_file}" > "${compressed_file}"
+
+        echo "Uploading ${compressed_file} to GCS bucket..."
+
+        # Check if file contains "gurobi" in the name
+        if [[ "${filename}" == *"gurobi"* ]]; then
+            echo "File contains 'gurobi' in name, storing in restricted folder..."
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${filename}.gz"
+        else
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${filename}.gz"
+        fi
+
+        if [ $? -eq 0 ]; then
+            echo "Successfully uploaded ${filename}.gz"
+        else
+            echo "Failed to upload ${filename}.gz"
+        fi
+    done
+
+    # Compress and upload solution files
+    echo "Processing solution files..."
+    find /solver-benchmark/runner/solutions/ -type f -name "*.sol" | while read sol_file; do
+        filename=$(basename "${sol_file}")
+        compressed_file="${COMPRESSED_DIR}/solutions/${filename}.gz"
+
+        echo "Compressing ${sol_file} to ${compressed_file}..."
+        gzip -c "${sol_file}" > "${compressed_file}"
+
+        echo "Uploading ${compressed_file} to GCS bucket..."
+
+        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${filename}.gz"
+
+        if [ $? -eq 0 ]; then
+            echo "Successfully uploaded ${filename}.gz"
+        else
+            echo "Failed to upload ${filename}.gz"
+        fi
+    done
+
+    # Compress and upload the startup script log
+    echo "Processing startup script log..."
+    STARTUP_LOG_FILE="/var/log/startup-script.log"
+    if [ -f "${STARTUP_LOG_FILE}" ]; then
+        STARTUP_LOG_FILENAME="${INSTANCE_NAME}-startup-script.log.gz"
+        COMPRESSED_STARTUP_LOG="${COMPRESSED_DIR}/${STARTUP_LOG_FILENAME}"
+
+        echo "Compressing ${STARTUP_LOG_FILE} to ${COMPRESSED_STARTUP_LOG}..."
+        gzip -c "${STARTUP_LOG_FILE}" > "${COMPRESSED_STARTUP_LOG}"
+
+        echo "Uploading ${COMPRESSED_STARTUP_LOG} to GCS bucket..."
+        gsutil cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${STARTUP_LOG_FILENAME}"
+
+        if [ $? -eq 0 ]; then
+            echo "Successfully uploaded startup script log as ${STARTUP_LOG_FILENAME}"
+        else
+            echo "Failed to upload startup script log"
+        fi
+    else
+        echo "Warning: Startup script log file not found at ${STARTUP_LOG_FILE}"
+    fi
+
+    # Clean up temporary compressed files
+    rm -rf "${COMPRESSED_DIR}"
+    echo "Compression and upload of all benchmark files completed"
 else
     echo "GCS upload is disabled. Skipping upload."
 fi
