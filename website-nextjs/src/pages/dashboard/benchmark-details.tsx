@@ -11,7 +11,7 @@ import { IFilterState, IResultState } from "@/types/state";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
-import RowChart from "@/components/admin/benchmarks/RowChart";
+import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -225,7 +225,13 @@ const PageBenchmarkDetail = () => {
               <ArrowUpIcon className="rotate-90" />
             </Link>
           </div>
-          <RowChart />
+          <BenchmarkStatisticsCharts
+            availableSectors={availableSectors}
+            availableTechniques={availableTechniques}
+            availableKindOfProblems={availableKindOfProblems}
+            availableModels={availableModels}
+            availableProblemSizes={availableProblemSizes}
+          />
           <div className="py-2">
             <div className="text-navy text-lg font-bold">
               List of All Benchmarks
