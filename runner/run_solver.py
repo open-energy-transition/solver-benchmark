@@ -66,7 +66,7 @@ def calculate_integrality_violation(
     Note:
         We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers
     """
-    p = primal_values.reset_index(drop=True)[integer_vars]
+    p = primal_values.loc[primal_values.index.intersection(integer_vars)]
     return max((p - p.round()).abs())
 
 
@@ -80,7 +80,7 @@ def get_duality_gap(solver_model, solver_name: str):
         info = solver_model.getInfo()
         return info.mip_gap if hasattr(info, "mip_gap") else None
     elif solver_name in {"glpk", "cbc"}:
-        # TODO is there another way to obtain duality gap when there's no solver_model?
+        # These solvers do not have a way to retrieve the duality gap from python
         return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
@@ -107,13 +107,12 @@ def main(solver_name, input_file):
     # Use Highs to read the problem file and make a mask series of integer vars
     h = highspy.Highs()
     h.readModel(input_file)
-    integer_vars = pd.Series(
-        (
-            h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-            for i in range(h.numVariables)
-        )
-    )
-    if integer_vars.any():
+    integer_vars = {
+        h.variableName(i)
+        for i in range(h.numVariables)
+        if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+    }
+    if integer_vars:
         duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
         max_integrality_violation = calculate_integrality_violation(
             integer_vars, solver_result.solution.primal
