@@ -6,11 +6,12 @@ import {
   ChartLineIcon,
   VectorSquareIcon,
   WindowIcon,
+  QuestionLineIcon,
 } from "@/assets/icons";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useState } from "react";
 
 import navbarActions from "@/redux/theme/actions";
 import Link from "next/link";
@@ -19,49 +20,82 @@ import { PATH_DASHBOARD } from "@/constants/path";
 const Navbar = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
-
-  const handleNavigation = useCallback(
-    (route: string) => {
-      router.replace({
-        pathname: route,
-        query: {}, // Empty query object to clear parameters
-      });
-    },
-    [router],
-  );
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   const navConfig = [
     {
       label: "Home",
       route: "/dashboard/home",
       icon: <AlignLeftJustifyIcon />,
+      helperText:
+        "Dashboard home provides an overview of the solver benchmark system.",
     },
     {
       label: "Benchmark details",
       route: PATH_DASHBOARD.benchmarkDetail.list,
       icon: <ChartBarIcon />,
+      helperText:
+        "Benchmark details page shows information about various benchmarks in the system.",
     },
     {
       label: "Solvers",
       route: "/dashboard/solvers",
       icon: <VectorSquareIcon />,
+      helperText:
+        "The Solvers page displays all available solvers and their basic information.",
     },
     {
       label: "Compare solvers",
       route: "/dashboard/compare-solvers",
       icon: <BalanceScaleIcon />,
+      helperText:
+        "Compare solvers allows you to see performance differences between multiple solvers.",
     },
     {
       label: "Performance history",
       route: "/dashboard/performance-history",
       icon: <ChartLineIcon />,
+      helperText:
+        "Performance history shows how solver performance has changed over time.",
     },
     {
       label: "Full Results",
       route: "/dashboard/raw-result",
       icon: <WindowIcon />,
+      helperText:
+        "Full Results page provides detailed raw data from solver executions.",
     },
   ];
+
+  // Help content based on current route
+  const getHelpContent = () => {
+    const currentNavItem = navConfig.find(
+      (item) => item.route === currentRoute,
+    );
+    return (
+      currentNavItem?.helperText || "Select a section to see more information."
+    );
+  };
+
+  // Help modal component
+  const HelpModal = () => {
+    if (!showHelpModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
+          <h3 className="text-xl font-bold text-navy mb-4">Page Help</h3>
+          <p className="text-gray-700 mb-6">{getHelpContent()}</p>
+          <button
+            className="bg-navy text-white px-4 py-2 rounded hover:bg-opacity-90"
+            onClick={() => setShowHelpModal(false)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   const dispatch = useDispatch();
   const isNavExpanded = useSelector(
@@ -73,7 +107,7 @@ const Navbar = () => {
       <div
         className={`fixed top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0
         bg-navy rounded-tr-3xl rounded-br-3xl ${
-          isNavExpanded ? "w-64" : "z-max"
+          isNavExpanded ? "w-[17rem]" : "z-max"
         }`}
         aria-label="Sidenav"
       >
@@ -103,19 +137,16 @@ const Navbar = () => {
           </div>
           <ul className="space-y-2">
             {navConfig.map((navData, idx) => (
-              <li key={idx}>
-                <a
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavigation(navData.route);
-                  }}
-                  href={navData.route}
+              <li
+                key={idx}
+                className={`flex ${
+                  currentRoute === navData.route ? "bg-white bg-opacity-40" : ""
+                }`}
+              >
+                <Link
+                  href={navData.route || "#"}
                   className={`flex items-center h-[55px] text-lavender font-normal font-league
-                     ${
-                       currentRoute === navData.route
-                         ? "bg-white bg-opacity-40"
-                         : ""
-                     }
+
                      ${
                        isNavExpanded
                          ? "pl-8 pr-2 justify-start"
@@ -129,7 +160,14 @@ const Navbar = () => {
                       {navData.label}
                     </span>
                   )}
-                </a>
+                </Link>
+                {/* Help button */}
+                <div
+                  onClick={() => setShowHelpModal(true)}
+                  className="inline-flex justify-center items-center text-lavender hover:text-white rounded cursor-pointer font-league gap-2 leading-none"
+                >
+                  <QuestionLineIcon className="size-4" />
+                </div>
               </li>
             ))}
           </ul>
@@ -149,6 +187,9 @@ const Navbar = () => {
           </a>
         </div>
       </div>
+
+      {/* Render help modal */}
+      <HelpModal />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ArrowIcon, QuestionLine } from "@/assets/icons";
+import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
@@ -54,7 +54,7 @@ const ResultsSection = () => {
           {header}
           <Popup
             on={["hover"]}
-            trigger={() => <QuestionLine className="w-4 h-4" />}
+            trigger={() => <QuestionLineIcon className="w-4 h-4" />}
             position="right center"
             closeOnDocumentClick
             arrowStyle={{ color: "#ebeff2" }}
@@ -322,7 +322,7 @@ const ResultsSection = () => {
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-center">
-                  <QuestionLine className="w-4 h-4" />)
+                  <QuestionLineIcon className="w-4 h-4" />)
                 </span>
               )}
               position="right center"

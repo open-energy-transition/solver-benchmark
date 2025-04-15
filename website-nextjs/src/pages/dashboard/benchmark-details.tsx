@@ -188,7 +188,7 @@ const PageBenchmarkDetail = () => {
         <Navbar />
         <div
           className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "md:ml-64" : "md:ml-20"
+            isNavExpanded ? "md:ml-[17rem]" : "md:ml-20"
           }`}
         >
           <AdminHeader>

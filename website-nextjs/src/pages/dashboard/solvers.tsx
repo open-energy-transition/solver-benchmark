@@ -23,7 +23,7 @@ const PageSolvers = () => {
         <Navbar />
         <div
           className={`px-6 min-h-[calc(100vh-var(--footer-height))]
-           ${isNavExpanded ? "ml-64" : "ml-20"}`}
+           ${isNavExpanded ? "ml-[17rem]" : "ml-20"}`}
         >
           <AdminHeader>
             <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
