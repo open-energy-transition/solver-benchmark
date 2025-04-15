@@ -81,7 +81,7 @@ def get_duality_gap(solver_model, solver_name: str):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def main(solver_name, input_file, year=None):
+def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
 
@@ -91,8 +91,7 @@ def main(solver_name, input_file, year=None):
     logs_dir = Path(__file__).parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    year_str = f"-{year}" if year else ""
-    output_filename = f"{Path(input_file).stem}-{solver_name}{year_str}"
+    output_filename = f"{Path(input_file).stem}-{solver_name}-{solver_version}"
 
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
@@ -125,10 +124,10 @@ def main(solver_name, input_file, year=None):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: python run_solver.py <solver_name> <input_file> <year>")
+        print("Usage: python run_solver.py <solver_name> <input_file> <solver_version>")
         sys.exit(1)
 
     solver_name = sys.argv[1]
     input_file = sys.argv[2]
-    year = sys.argv[3]
-    main(solver_name, input_file, year)
+    solver_version = sys.argv[3]
+    main(solver_name, input_file, solver_version)
