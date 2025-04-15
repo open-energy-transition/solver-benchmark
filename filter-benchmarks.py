@@ -31,7 +31,7 @@ for r in resolutions:
         download_file_from_google_drive(gcp_url, lp_path)
         print(f"Solving {lp_file}..", flush=True)
 
-        m = benchmark_solver(lp_path, "highs", timeout, None, None)
+        m = benchmark_solver(lp_path, "highs", timeout, None)
         print(m, flush=True)
         with open(results_csv, mode="a", newline="") as file:
             writer = csv.writer(file)
