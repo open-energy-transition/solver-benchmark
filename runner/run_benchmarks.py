@@ -1,3 +1,4 @@
+import argparse
 import csv
 import gzip
 import json
@@ -6,12 +7,14 @@ import re
 import shutil
 import statistics
 import subprocess
-import sys
 import time
 from pathlib import Path
+from socket import gethostname
 
 import requests
 import yaml
+
+hostname = gethostname()
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -110,6 +113,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Timeout",
+                "Hostname",
             ]
         )
 
@@ -151,6 +156,8 @@ def write_csv_row(results_csv, benchmark_name, metrics):
                 metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["timeout"],
+                hostname,
             ]
         )
 
@@ -177,7 +184,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout):
+def benchmark_solver(input_file, solver_name, timeout, solver_version):
     command = [
         "/usr/bin/time",
         "--format",
@@ -188,6 +195,7 @@ def benchmark_solver(input_file, solver_name, timeout):
         Path(__file__).parent / "run_solver.py",
         solver_name,
         input_file,
+        solver_version,
     ]
     # Run the command and capture the output
     result = subprocess.run(
@@ -227,6 +235,7 @@ def benchmark_solver(input_file, solver_name, timeout):
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     metrics["memory"] = memory
+    metrics["timeout"] = timeout
 
     return metrics
 
@@ -318,7 +327,7 @@ def main(
     iterations=1,
     timeout=10 * 60,
     reference_interval=0,  # Default: disabled
-    override=True,
+    append=False,
 ):
     size_categories = None  # TODO add this to CLI args
     results = {}
@@ -339,7 +348,7 @@ def main(
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
 
     # Write headers if overriding or file doesn't exist
-    if override or not results_csv.exists() or not mean_stddev_csv.exists():
+    if not append or not results_csv.exists() or not mean_stddev_csv.exists():
         write_csv_headers(results_csv, mean_stddev_csv)
     # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
@@ -414,7 +423,9 @@ def main(
                     flush=True,
                 )
 
-                metrics = benchmark_solver(benchmark["path"], solver, timeout)
+                metrics = benchmark_solver(
+                    benchmark["path"], solver, timeout, solver_version
+                )
 
                 metrics["size"] = benchmark["size"]
                 metrics["solver"] = solver
@@ -486,29 +497,43 @@ def main(
 
 
 if __name__ == "__main__":
-    # Check for benchmark file argument and optional year, override, and reference interval arguments
-    if len(sys.argv) < 3:
-        raise ValueError(
-            "Usage: python run_benchmarks.py <path_to_benchmarks.yaml> [<year>] [<override>] [<reference_interval>]"
-        )
-        sys.exit(1)
-
-    benchmark_yaml_path = sys.argv[1]
-    year = sys.argv[2] if len(sys.argv) > 2 else None
-    override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
-    reference_interval = (
-        int(sys.argv[4]) if len(sys.argv) > 4 else 0
-    )  # Default: disabled
-
-    # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "scip", "cbc", "glpk"]  # For production
+    parser = argparse.ArgumentParser(
+        description="Run the benchmarks specified in the given file."
+    )
+    parser.add_argument(
+        "benchmark_yaml_path", type=str, help="Path to the benchmarks YAML file."
+    )
+    parser.add_argument(
+        "year",
+        type=str,
+        help="Denote the benchmarks as having been run on solvers from given year.",
+    )
+    parser.add_argument(
+        "--solvers",
+        type=str,
+        nargs="+",
+        default=["highs", "scip", "cbc", "glpk"],
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
+    )
+    parser.add_argument(
+        "--append",
+        action="store_true",
+        help="Append to the results file instead of overwriting it.",
+    )
+    parser.add_argument(
+        "--ref_bench_interval",
+        type=int,
+        default=0,
+        help="Run a reference benchmark in between benchmark instances, at most once every given number of seconds.",
+    )
+    args = parser.parse_args()
 
     main(
-        benchmark_yaml_path,
-        solvers,
-        year,
-        reference_interval=reference_interval,
-        override=override,
+        args.benchmark_yaml_path,
+        args.solvers,
+        args.year,
+        reference_interval=args.ref_bench_interval,
+        append=args.append,
     )
     # Print a message indicating completion
     print("Benchmarking complete.")
