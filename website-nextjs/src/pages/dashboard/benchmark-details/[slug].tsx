@@ -25,7 +25,7 @@ const PageBenchmarkDetail = () => {
   const benchmarkName = router.query.slug;
 
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData;
+    return state.results.fullMetaData;
   });
 
   const benchmarkDetail = useMemo(
