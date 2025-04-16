@@ -25,7 +25,7 @@ const PageBenchmarkDetail = () => {
   const benchmarkName = router.query.slug;
 
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData;
+    return state.results.fullMetaData;
   });
 
   const benchmarkDetail = useMemo(
@@ -130,6 +130,16 @@ const PageBenchmarkDetail = () => {
               <div className="pr-4 max-w-[60%]">
                 {benchmarkDetail?.shortDescription}
               </div>
+            </div>
+            <div className="pr-4 pb-4 text-sm text-navy/70">
+              <span className="font-semibold">Contributor(s)/Source:</span>{" "}
+              {benchmarkDetail?.contributorSSource ? (
+                <span className="hover:text-navy">
+                  {benchmarkDetail.contributorSSource}
+                </span>
+              ) : (
+                "-"
+              )}
             </div>
             <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">
               {columns.map((col) => (

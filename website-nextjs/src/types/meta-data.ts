@@ -17,6 +17,7 @@ interface MetaDataEntry {
   sectors: string;
   timeHorizon: string;
   milpFeatures: string | null;
+  contributorSSource: string | null;
   sizes: Size[];
 }
 

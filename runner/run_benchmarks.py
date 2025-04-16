@@ -1,15 +1,20 @@
+import argparse
 import csv
 import gzip
 import json
 import os
+import re
 import shutil
 import statistics
 import subprocess
-import sys
+import time
 from pathlib import Path
+from socket import gethostname
 
 import requests
 import yaml
+
+hostname = gethostname()
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -108,6 +113,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Timeout",
+                "Hostname",
             ]
         )
 
@@ -149,6 +156,8 @@ def write_csv_row(results_csv, benchmark_name, metrics):
                 metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["timeout"],
+                hostname,
             ]
         )
 
@@ -175,7 +184,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout):
+def benchmark_solver(input_file, solver_name, timeout, solver_version):
     command = [
         "/usr/bin/time",
         "--format",
@@ -186,6 +195,7 @@ def benchmark_solver(input_file, solver_name, timeout):
         Path(__file__).parent / "run_solver.py",
         solver_name,
         input_file,
+        solver_version,
     ]
     # Run the command and capture the output
     result = subprocess.run(
@@ -225,6 +235,87 @@ def benchmark_solver(input_file, solver_name, timeout):
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     metrics["memory"] = memory
+    metrics["timeout"] = timeout
+
+    return metrics
+
+
+def get_highs_binary_version():
+    """Get the version of the HiGHS binary from the --version command"""
+    highs_binary = "/opt/highs/bin/highs"
+
+    try:
+        result = subprocess.run(
+            [highs_binary, "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        )
+
+        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
+        if version_match:
+            return version_match.group(1)
+
+        return "unknown"
+    except Exception as e:
+        print(f"Error getting HiGHS binary version: {str(e)}")
+        return "unknown"
+
+
+def benchmark_highs_binary():
+    """
+    Run a reference benchmark using the pre-installed HiGHS binary
+    """
+    reference_model = "/benchmark-test-model.lp"
+    highs_binary = "/opt/highs/bin/highs"
+
+    command = [
+        highs_binary,
+        reference_model,
+    ]
+
+    # Run the command and capture the output
+    start_time = time.time()
+    result = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=False,
+        encoding="utf-8",
+    )
+    runtime = time.time() - start_time
+    if result.returncode != 0:
+        print(
+            f"ERROR running reference benchmark. Captured output:\n{result.stdout}\n{result.stderr}"
+        )
+        metrics = {
+            "status": "ER",
+            "condition": "Error",
+            "objective": None,
+            "runtime": runtime,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
+    else:
+        # Parse HiGHS output to extract objective value
+        objective = None
+        for line in result.stdout.splitlines():
+            if "Objective value" in line:
+                try:
+                    objective = float(line.split(":")[-1].strip())
+                except (ValueError, IndexError):
+                    pass
+
+        metrics = {
+            "status": "OK",
+            "condition": "Optimal",
+            "objective": objective,
+            "runtime": runtime,
+            "memory": "N/A",
+            "duality_gap": None,  # Not available from command line output
+            "max_integrality_violation": None,  # Not available from command line output
+        }
 
     return metrics
 
@@ -235,10 +326,14 @@ def main(
     year=None,
     iterations=1,
     timeout=10 * 60,
-    override=True,
+    reference_interval=0,  # Default: disabled
+    append=False,
 ):
     size_categories = None  # TODO add this to CLI args
     results = {}
+
+    # Track the last time we ran the reference benchmark
+    last_reference_run = 0
 
     # Load benchmarks from YAML file
     with open(benchmark_yaml_path, "r") as file:
@@ -253,7 +348,7 @@ def main(
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
 
     # Write headers if overriding or file doesn't exist
-    if override or not results_csv.exists() or not mean_stddev_csv.exists():
+    if not append or not results_csv.exists() or not mean_stddev_csv.exists():
         write_csv_headers(results_csv, mean_stddev_csv)
     # TODO put the benchmarks in a better place; for now storing in `runner/benchmarks/``
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
@@ -307,6 +402,10 @@ def main(
         + ("" if size_categories is None else f" matching {size_categories}")
     )
 
+    reference_solver_version = ""
+    if reference_interval > 0:
+        reference_solver_version = get_highs_binary_version()
+
     for benchmark in processed_benchmarks:
         for solver in solvers:
             solver_version = solvers_versions.get(solver)
@@ -324,7 +423,9 @@ def main(
                     flush=True,
                 )
 
-                metrics = benchmark_solver(benchmark["path"], solver, timeout)
+                metrics = benchmark_solver(
+                    benchmark["path"], solver, timeout, solver_version
+                )
 
                 metrics["size"] = benchmark["size"]
                 metrics["solver"] = solver
@@ -360,24 +461,79 @@ def main(
             results[(benchmark["name"], benchmark["size"], solver, solver_version)] = (
                 metrics
             )
+
+            # Check if we should run the reference benchmark based on the interval
+            if reference_interval > 0:
+                current_time = time.time()
+                time_since_last_run = current_time - last_reference_run
+
+                if last_reference_run == 0 or time_since_last_run >= int(
+                    reference_interval
+                ):
+                    print(
+                        f"Running reference benchmark with HiGHS binary (interval: {reference_interval}s)...",
+                        flush=True,
+                    )
+                    reference_metrics = benchmark_highs_binary()
+
+                    # Add required fields to reference metrics
+                    reference_metrics["size"] = "reference"
+                    reference_metrics["solver"] = "highs-binary"
+                    reference_metrics["solver_version"] = reference_solver_version
+                    reference_metrics["solver_release_year"] = "N/A"
+
+                    # Record reference benchmark results
+                    write_csv_row(results_csv, "reference-benchmark", reference_metrics)
+
+                    # Update the last reference run time
+                    last_reference_run = current_time
+                else:
+                    print(
+                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)",
+                        flush=True,
+                    )
+
     return results
 
 
 if __name__ == "__main__":
-    # Check for benchmark file argument and optional year and override arguments
-    if len(sys.argv) < 3:
-        raise ValueError(
-            "Usage: python run_benchmarks.py <path_to_benchmarks.yaml> [<year>] [<override>]"
-        )
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Run the benchmarks specified in the given file."
+    )
+    parser.add_argument(
+        "benchmark_yaml_path", type=str, help="Path to the benchmarks YAML file."
+    )
+    parser.add_argument(
+        "year",
+        type=str,
+        help="Denote the benchmarks as having been run on solvers from given year.",
+    )
+    parser.add_argument(
+        "--solvers",
+        type=str,
+        nargs="+",
+        default=["highs", "scip", "cbc", "glpk"],
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
+    )
+    parser.add_argument(
+        "--append",
+        action="store_true",
+        help="Append to the results file instead of overwriting it.",
+    )
+    parser.add_argument(
+        "--ref_bench_interval",
+        type=int,
+        default=0,
+        help="Run a reference benchmark in between benchmark instances, at most once every given number of seconds.",
+    )
+    args = parser.parse_args()
 
-    benchmark_yaml_path = sys.argv[1]
-    year = sys.argv[2] if len(sys.argv) > 2 else None
-    override = sys.argv[3].lower() == "true" if len(sys.argv) > 3 else True
-
-    # solvers = ["highs", "glpk"]  # For dev and testing
-    solvers = ["highs", "scip", "cbc", "glpk"]  # For production
-
-    main(benchmark_yaml_path, solvers, year, override=override)
+    main(
+        args.benchmark_yaml_path,
+        args.solvers,
+        args.year,
+        reference_interval=args.ref_bench_interval,
+        append=args.append,
+    )
     # Print a message indicating completion
     print("Benchmarking complete.")

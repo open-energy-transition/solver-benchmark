@@ -1,27 +1,20 @@
 import { useSelector } from "react-redux";
-// local
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
-import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult";
-import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
 import { IFilterState, IResultState } from "@/types/state";
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
-import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
+import BenchmarkSummaryTable from "@/components/admin/benchmarks/BenchmarkSummaryTable";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
-
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
 
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
@@ -156,29 +149,6 @@ const PageBenchmarkDetail = () => {
     );
   }, [localFilters, isInit]);
 
-  const filteredMetaData = useMemo(() => {
-    const filteredEntries = Object.entries(metaData).filter(([, value]) => {
-      const { sectors, technique, kindOfProblem, modelName } = localFilters;
-
-      const isSectorsMatch =
-        sectors.length === 0 || sectors.includes(value.sectors);
-      const isTechniqueMatch =
-        technique.length === 0 || technique.includes(value.technique);
-      const isKindOfProblemMatch =
-        kindOfProblem.length === 0 ||
-        kindOfProblem.includes(value.kindOfProblem);
-      const isModelNameMatch =
-        modelName.length === 0 || modelName.includes(value.modelName);
-      return (
-        isSectorsMatch &&
-        isTechniqueMatch &&
-        isKindOfProblemMatch &&
-        isModelNameMatch
-      );
-    });
-
-    return Object.fromEntries(filteredEntries);
-  }, [localFilters, fullMetaData]);
   return (
     <>
       <Head>
@@ -198,55 +168,26 @@ const PageBenchmarkDetail = () => {
                   <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                 </Link>
                 <ArrowIcon fill="none" className="size-3 stroke-navy" />
+
+                <Link href={PATH_DASHBOARD.benchmarkDetail.list}>
+                  <span className="self-center font-semibold whitespace-nowrap">
+                    Benchmark Details
+                  </span>
+                </Link>
+                <ArrowIcon fill="none" className="size-3 stroke-navy" />
                 <span className="self-center font-semibold whitespace-nowrap">
-                  Benchmark Details
+                  Feature Distribution
                 </span>
               </div>
             </div>
           </AdminHeader>
+          <div className="py-2 mb-2">
+            <div className="text-navy text-xl font-bold">
+              Distribution of Model Features in Benchmark Set
+            </div>
+          </div>
           {/* Content */}
-          <div className="py-2">
-            <div className="text-navy text-xl font-bold">Benchmarks</div>
-            <p className="text-[#5D5D5D]">
-              On this page you can see details of all the benchmarks on our
-              platform, including their source and download links.
-            </p>
-          </div>
-
-          <div className="py-2 flex justify-between items-center">
-            <div className="text-navy text-lg font-bold">
-              Summary of Benchmark Set
-            </div>
-            <Link
-              className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
-              href={PATH_DASHBOARD.benchmarkSummary}
-            >
-              See more details
-              <ArrowUpIcon className="rotate-90" />
-            </Link>
-          </div>
-          <BenchmarkStatisticsCharts
-            availableSectors={availableSectors}
-            availableTechniques={availableTechniques}
-            availableKindOfProblems={availableKindOfProblems}
-            availableModels={availableModels}
-            availableProblemSizes={availableProblemSizes}
-          />
-          <div className="py-2">
-            <div className="text-navy text-lg font-bold">
-              List of All Benchmarks
-            </div>
-          </div>
-          <BenchmarkDetailFilterSection
-            localFilters={localFilters}
-            setLocalFilters={setLocalFilters}
-            availableSectors={availableSectors}
-            availableTechniques={availableTechniques}
-            availableKindOfProblems={availableKindOfProblems}
-            availableModels={availableModels}
-            availableProblemSizes={availableProblemSizes}
-          />
-          <BenchmarkTableResult metaData={filteredMetaData} />
+          <BenchmarkSummaryTable />
         </div>
         <Footer />
       </div>
