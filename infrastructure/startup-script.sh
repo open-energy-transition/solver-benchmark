@@ -3,6 +3,12 @@
 exec > >(tee /var/log/startup-script.log) 2>&1
 echo "Starting setup script at $(date)"
 
+# Generate a unique run ID using timestamp and instance ID
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
+RUN_ID="${TIMESTAMP}_${INSTANCE_NAME}"
+echo "Generated unique run ID: ${RUN_ID}"
+
 # Update and install packages
 echo "Updating packages..."
 apt-get update
@@ -61,10 +67,10 @@ echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 cd /solver-benchmark/
 chmod +x ./runner/benchmark_all.sh
 
-# Run the benchmark_all.sh script with our years
-echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR}"
+# Run the benchmark_all.sh script with our years and the run_id
+echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"
 source ~/miniconda3/bin/activate
-./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" ./benchmarks/"${BENCHMARK_FILE}"
+./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
@@ -74,13 +80,9 @@ fi
 
 echo "All benchmarks completed at $(date)"
 
-# Create timestamp for the results
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-echo "Using timestamp: ${TIMESTAMP}"
-
-# Create a copy of results with timestamp
+# Create a copy of results
 CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
-RESULTS_COPY="/tmp/${CLEAN_FILENAME}_${TIMESTAMP}.csv"
+RESULTS_COPY="/tmp/${CLEAN_FILENAME}.csv"
 echo "Creating copy of results as: ${RESULTS_COPY}"
 
 cp /solver-benchmark/results/benchmark_results.csv "${RESULTS_COPY}"
@@ -95,7 +97,6 @@ fi
 
 echo "Benchmark results successfully copied at $(date)"
 
-# TODO: Implement a run_id (unique run identifier) logic, to support storing files for multiple runs
 # ----- GCS UPLOAD CONFIGURATION -----
 # Only proceed if the benchmark and copy operations were successful
 # Check if GCS upload is enabled
@@ -125,11 +126,11 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     # Upload the results file to GCS bucket
     echo "Uploading results CSV to GCS bucket..."
     RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
-    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RESULTS_FILENAME}"
+    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
 
     if [ $? -eq 0 ]; then
         echo "Results CSV upload successfully completed at $(date)"
-        echo "File available at: gs://${GCS_BUCKET_NAME}/results/${RESULTS_FILENAME}"
+        echo "File available at: gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
     else
         echo "Results CSV upload failed at $(date)"
         echo "Check VM service account permissions for the GCS bucket"
@@ -149,9 +150,9 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         # Check if file contains "gurobi" in the name
         if [[ "${filename}" == *"gurobi"* ]]; then
             echo "File contains 'gurobi' in name, storing in restricted folder..."
-            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${filename}.gz"
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
         else
-            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${filename}.gz"
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
         fi
 
         if [ $? -eq 0 ]; then
@@ -172,7 +173,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
 
         echo "Uploading ${compressed_file} to GCS bucket..."
 
-        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${filename}.gz"
+        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}/${filename}.gz"
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded ${filename}.gz"
@@ -192,7 +193,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         gzip -c "${STARTUP_LOG_FILE}" > "${COMPRESSED_STARTUP_LOG}"
 
         echo "Uploading ${COMPRESSED_STARTUP_LOG} to GCS bucket..."
-        gsutil cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${STARTUP_LOG_FILENAME}"
+        gsutil cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${STARTUP_LOG_FILENAME}"
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded startup script log as ${STARTUP_LOG_FILENAME}"
