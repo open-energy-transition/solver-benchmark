@@ -285,7 +285,7 @@ def benchmark_highs_binary():
     ]
 
     # Run the command and capture the output
-    start_time = time.time()
+    start_time = time.perf_counter()
     result = subprocess.run(
         command,
         capture_output=True,
@@ -293,7 +293,7 @@ def benchmark_highs_binary():
         check=False,
         encoding="utf-8",
     )
-    runtime = time.time() - start_time
+    runtime = time.perf_counter() - start_time
     if result.returncode != 0:
         print(
             f"ERROR running reference benchmark. Captured output:\n{result.stdout}\n{result.stderr}"

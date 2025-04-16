@@ -1,7 +1,7 @@
 import json
 import sys
 from pathlib import Path
-from time import time
+from time import perf_counter
 
 import pandas as pd
 from linopy import solvers
@@ -127,12 +127,13 @@ def main(solver_name, input_file, solver_version):
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    # Run the solver and measure runtime
-    start_time = time()
+    # We measure runtime here and not of this entire script because lines like
+    # `import linopy` take a long (and varying) amount of time
+    start_time = perf_counter()
     solver_result = solver.solve_problem(
         problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
-    runtime = time() - start_time
+    runtime = perf_counter() - start_time
 
     duality_gap, max_integrality_violation = get_milp_metrics(input_file, solver_result)
 
