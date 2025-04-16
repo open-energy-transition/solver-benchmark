@@ -21,6 +21,7 @@ const Navbar = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [selectedHelpRoute, setSelectedHelpRoute] = useState("");
 
   const navConfig = [
     {
@@ -67,10 +68,10 @@ const Navbar = () => {
     },
   ];
 
-  // Help content based on current route
+  // Help content based on selected route
   const getHelpContent = () => {
     const currentNavItem = navConfig.find(
-      (item) => item.route === currentRoute,
+      (item) => item.route === selectedHelpRoute,
     );
     return (
       currentNavItem?.helperText || "Select a section to see more information."
@@ -84,14 +85,16 @@ const Navbar = () => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
-          <h3 className="text-xl font-bold text-navy mb-4">Page Help</h3>
+          <h3 className="text-xl font-bold text-navy mb-4">Navigation Guide</h3>
           <p className="text-gray-700 mb-6">{getHelpContent()}</p>
-          <button
-            className="bg-navy text-white px-4 py-2 rounded hover:bg-opacity-90"
-            onClick={() => setShowHelpModal(false)}
-          >
-            Close
-          </button>
+          <div className="w-full text-end">
+            <button
+              className="bg-navy text-white px-4 py-2 rounded hover:bg-opacity-90"
+              onClick={() => setShowHelpModal(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -163,7 +166,10 @@ const Navbar = () => {
                 </Link>
                 {/* Help button */}
                 <div
-                  onClick={() => setShowHelpModal(true)}
+                  onClick={() => {
+                    setSelectedHelpRoute(navData.route);
+                    setShowHelpModal(true);
+                  }}
                   className="inline-flex justify-center items-center text-lavender hover:text-white rounded cursor-pointer font-league gap-2 leading-none"
                 >
                   <QuestionLineIcon className="size-4" />
