@@ -3,10 +3,15 @@ import sys
 from pathlib import Path
 from time import time
 
-import highspy
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
+
+# HiGHS is not available in the 2020 environment that we use to run GLPK
+try:
+    import highspy
+except ModuleNotFoundError:
+    highspy = None
 
 
 def get_solver(solver_name):
@@ -86,6 +91,27 @@ def get_duality_gap(solver_model, solver_name: str):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
+def get_milp_metrics(input_file, solver_result):
+    """Uses HiGHS to read the problem file and compute max integrality violation and
+    duality gap.
+    """
+    if highspy is not None:
+        h = highspy.Highs()
+        h.readModel(input_file)
+        integer_vars = {
+            h.variableName(i)
+            for i in range(h.numVariables)
+            if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+        }
+        if integer_vars:
+            duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
+            max_integrality_violation = calculate_integrality_violation(
+                integer_vars, solver_result.solution.primal
+            )
+            return duality_gap, max_integrality_violation
+    return None, None
+
+
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
@@ -108,22 +134,7 @@ def main(solver_name, input_file, solver_version):
     )
     runtime = time() - start_time
 
-    # Compute MIP metrics
-    duality_gap = None
-    max_integrality_violation = None
-    # Use Highs to read the problem file and make a mask series of integer vars
-    h = highspy.Highs()
-    h.readModel(input_file)
-    integer_vars = {
-        h.variableName(i)
-        for i in range(h.numVariables)
-        if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-    }
-    if integer_vars:
-        duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
-        max_integrality_violation = calculate_integrality_violation(
-            integer_vars, solver_result.solution.primal
-        )
+    duality_gap, max_integrality_violation = get_milp_metrics(input_file, solver_result)
 
     results = {
         "runtime": runtime,
