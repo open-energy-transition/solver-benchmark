@@ -1,5 +1,6 @@
 import argparse
 import csv
+import datetime
 import gzip
 import json
 import os
@@ -116,6 +117,7 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Timeout",
                 "Hostname",
                 "Run ID",
+                "Timestamp",
             ]
         )
 
@@ -136,11 +138,12 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Memory StdDev (MB)",
                 "Objective Value",
                 "Run ID",
+                "Timestamp",
             ]
         )
 
 
-def write_csv_row(results_csv, benchmark_name, metrics, run_id):
+def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -161,11 +164,12 @@ def write_csv_row(results_csv, benchmark_name, metrics, run_id):
                 metrics["timeout"],
                 hostname,
                 run_id,
+                timestamp,
             ]
         )
 
 
-def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id):
+def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, timestamp):
     # NOTE: ensure the order is the same as the headers above
     with open(mean_stddev_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -184,6 +188,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id):
                 metrics["memory_stddev"],
                 metrics["objective"],
                 run_id,
+                timestamp,
             ]
         )
 
@@ -435,6 +440,9 @@ def main(
                     flush=True,
                 )
 
+                # Record timestamp before running the solver
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+
                 metrics = benchmark_solver(
                     benchmark["path"], solver, timeout, solver_version
                 )
@@ -448,7 +456,9 @@ def main(
                 memory_usages.append(metrics["memory"])
 
                 # Write each benchmark result immediately after the measurement
-                write_csv_row(results_csv, benchmark["name"], metrics, run_id)
+                write_csv_row(
+                    results_csv, benchmark["name"], metrics, run_id, timestamp
+                )
 
                 # If solver errors or times out, don't run further iterations
                 if metrics["status"] in {"ER", "TO"}:
@@ -468,7 +478,9 @@ def main(
 
             # Write mean and standard deviation to CSV
             # NOTE: this uses the last iteration's values for status, condition, etc
-            write_csv_summary_row(mean_stddev_csv, benchmark["name"], metrics, run_id)
+            write_csv_summary_row(
+                mean_stddev_csv, benchmark["name"], metrics, run_id, timestamp
+            )
 
             results[(benchmark["name"], benchmark["size"], solver, solver_version)] = (
                 metrics
@@ -495,8 +507,15 @@ def main(
                     reference_metrics["solver_release_year"] = "N/A"
 
                     # Record reference benchmark results
+                    reference_timestamp = datetime.datetime.now().strftime(
+                        "%Y-%m-%d %H:%M:%S.%f"
+                    )
                     write_csv_row(
-                        results_csv, "reference-benchmark", reference_metrics, run_id
+                        results_csv,
+                        "reference-benchmark",
+                        reference_metrics,
+                        run_id,
+                        reference_timestamp,
                     )
 
                     # Update the last reference run time
