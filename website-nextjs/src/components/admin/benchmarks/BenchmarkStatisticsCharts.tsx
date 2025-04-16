@@ -5,29 +5,21 @@ import { getChartColor } from "@/utils/chart";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-const RowChart = () => {
+const BenchmarkStatisticsCharts = ({
+  availableSectors,
+  availableTechniques,
+  availableKindOfProblems,
+  availableModels,
+  availableProblemSizes,
+}: {
+  availableSectors: string[];
+  availableTechniques: string[];
+  availableKindOfProblems: string[];
+  availableModels: string[];
+  availableProblemSizes: string[];
+}) => {
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData;
-  });
-
-  const availableModels = useSelector((state: { results: IResultState }) => {
-    return state.results.availableModels;
-  });
-
-  const availableTechniques = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.availableTechniques;
-    },
-  );
-
-  const availableKindOfProblems = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.availableKindOfProblems;
-    },
-  );
-
-  const availableSectors = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSectors;
+    return state.results.fullMetaData;
   });
 
   const availableMilpFeatures = useMemo(() => {
@@ -120,9 +112,6 @@ const RowChart = () => {
     single: data.timeHorizons.get("single") || 0,
     multi: data.timeHorizons.get("multi") || 0,
   }));
-  const availableProblemSizes = useSelector(
-    (state: { results: IResultState }) => state.results.availableProblemSizes,
-  );
   const sizeData = useMemo(() => {
     const sizeData = availableProblemSizes.map((size) => {
       return {
@@ -196,4 +185,4 @@ const RowChart = () => {
   );
 };
 
-export default RowChart;
+export default BenchmarkStatisticsCharts;
