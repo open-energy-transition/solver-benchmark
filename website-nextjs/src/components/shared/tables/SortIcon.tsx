@@ -9,11 +9,7 @@ const SortIcon = ({ sortDirection, canSort }: SortIconProps) => {
   if (!canSort) return null;
 
   if (!sortDirection) {
-    return (
-      <div>
-        <SortVerticalIcon fill="none" className="stroke-dark-green" />
-      </div>
-    );
+    return <SortVerticalIcon fill="none" className="stroke-dark-green" />;
   }
 
   if (sortDirection === "asc") {

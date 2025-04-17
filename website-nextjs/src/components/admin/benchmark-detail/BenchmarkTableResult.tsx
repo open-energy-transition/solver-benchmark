@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import {
   ColumnDef,
   flexRender,
@@ -20,33 +19,24 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import SortIcon from "@/components/shared/tables/SortIcon";
 import { ArrowRightIcon } from "@/assets/icons";
 import PaginationTable from "@/components/shared/tables/PaginationTable";
-import { IFilterState, IResultState } from "@/types/state";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
 }
 
-const BenchmarkTableResult = () => {
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData;
-  });
+interface BenchmarkTableResultProps {
+  metaData: Record<string, MetaDataEntry>;
+}
 
-  const availableProblemSizes = useSelector(
-    (state: { filters: IFilterState }) => state.filters.problemSize,
-  );
-
+const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
+  metaData,
+}) => {
   const memoizedMetaData = useMemo(
     () =>
-      Object.entries(metaData)
-        .filter(([, value]) => {
-          return value.sizes.some((v) =>
-            availableProblemSizes.includes(v.size),
-          );
-        })
-        .map(([key, value]) => ({
-          ...value,
-          name: key,
-        })),
+      Object.entries(metaData).map(([key, value]) => ({
+        ...value,
+        name: key,
+      })),
     [metaData],
   );
 
@@ -153,7 +143,7 @@ const BenchmarkTableResult = () => {
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
                     <div
-                      className="flex gap-2 items-center"
+                      className="flex gap-2 items-center 4xl:text-xl"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {flexRender(
@@ -175,7 +165,10 @@ const BenchmarkTableResult = () => {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-navy text-start py-2 px-6">
+                  <td
+                    key={cell.id}
+                    className="text-navy text-start py-2 px-6 4xl:text-xl"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

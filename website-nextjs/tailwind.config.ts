@@ -9,6 +9,10 @@ export default {
   safelist: ["grid-cols-1", "grid-cols-2", "grid-cols-3"],
   theme: {
     extend: {
+      screens: {
+        "3xl": "1920px",
+        "4xl": "2560px",
+      },
       colors: {
         black: "#000000",
         "columnbia-blue": "#BFDBF7",

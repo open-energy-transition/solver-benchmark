@@ -11,7 +11,11 @@ import {
 import { useMemo } from "react";
 import { IResultState } from "@/types/state";
 
-const DetailSection = () => {
+interface DetailSectionProps {
+  useMetadataCount?: boolean;
+}
+
+const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.rawBenchmarkResults;
   });
@@ -20,7 +24,18 @@ const DetailSection = () => {
     return state.results.rawMetaData;
   });
 
-  const availableBenchmarksCount = Object.keys(rawMetaData).length;
+  const fullMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.fullMetaData;
+  });
+
+  const availableBenchmarksCount = useMemo(() => {
+    if (useMetadataCount) {
+      return Object.keys(fullMetaData).length;
+    }
+    return Array.from(
+      new Set(benchmarkResults.map((result) => result.benchmark)),
+    ).length;
+  }, [rawMetaData, fullMetaData, benchmarkResults, useMetadataCount]);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -34,17 +49,21 @@ const DetailSection = () => {
     [benchmarkResults],
   );
 
-  const avaliableInstance = useMemo(
-    () =>
-      Array.from(
+  const avaliableInstance = useMemo(() => {
+    if (useMetadataCount) {
+      return Object.keys(fullMetaData).reduce((acc, key) => {
+        return acc + (fullMetaData[key]?.sizes?.length || 0);
+      }, 0);
+    } else {
+      return Array.from(
         new Set(
           benchmarkResults.map(
             (result) => `${result.benchmark}-${result.size}`,
           ),
         ),
-      ),
-    [benchmarkResults],
-  );
+      ).length;
+    }
+  }, [benchmarkResults]);
 
   const detailData = [
     {
@@ -55,11 +74,8 @@ const DetailSection = () => {
         <>
           Benchmarks:{" "}
           <span className="font-bold">
-            {availableBenchmarksCount}{" "}
-            <span className="hidden xl:inline">
-              {`(${avaliableInstance.length}`} instances
-              {")"}
-            </span>
+            {availableBenchmarksCount} {`(${avaliableInstance}`} instances
+            {")"}
           </span>
         </>
       ),
@@ -105,20 +121,27 @@ const DetailSection = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl py-4 px-4 xl:px-12">
-      <ul className="flex flex-col lg:flex-row lg:justify-between gap-4 lg:gap-2 text-dark-grey">
+    <div className="bg-white rounded-xl py-4 px-4 xl:px-8 2xl:px-4 4xl:px-4 4xl:px-20">
+      <ul className="grid grid-cols-3 2xl:flex 2xl:flex-row 2xl:justify-between gap-4 2xl:gap-4 text-dark-grey">
         {detailData.map((data, idx) => (
-          <li key={idx} className="text-sm lg:text-base flex items-center">
-            <span className="w-6 lg:w-auto">{data.icon}</span>
+          <li
+            key={idx}
+            className="text-sm xl:text-base 2xl:text-lg 4xl:text-xl flex items-center"
+          >
+            <span className="w-6 xl:w-auto 4xl:w-8">{data.icon}</span>
             {data.generateLabel ? (
-              <div className="ml-1">{data.generateLabel()}</div>
+              <div className="ml-1 2xl:ml-2 4xl:ml-3">
+                {data.generateLabel()}
+              </div>
             ) : (
-              <div className="ml-1">
-                <span className="ml-1">
+              <div className="ml-1 2xl:ml-2 4xl:ml-3">
+                <span className="ml-1 2xl:ml-2 4xl:ml-3">
                   {data.label}
                   {":"}
                 </span>
-                <span className="font-bold ml-1">{data.value}</span>
+                <span className="font-bold ml-1 2xl:ml-2 4xl:ml-3">
+                  {data.value}
+                </span>
               </div>
             )}
           </li>

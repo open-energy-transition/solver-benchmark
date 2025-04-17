@@ -94,14 +94,16 @@ const D3ChartLineChart = ({
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text").attr("fill", "#A1A9BC");
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "text-xs 4xl:text-base");
       })
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
       .attr("fill", "#8C8C8C")
       .text("Year")
-      .style("font-size", "12px");
+      .attr("class", "text-xs 4xl:text-base");
 
     svg
       .append("g")
@@ -111,16 +113,17 @@ const D3ChartLineChart = ({
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text").attr("fill", "#A1A9BC");
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "text-xs 4xl:text-base");
       })
       .append("text")
       .attr("x", -height / 2)
       .attr("y", -50)
       .attr("fill", "#8C8C8C")
       .text(title)
-      .style("font-size", "12px")
-      .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle");
+      .attr("text-anchor", "middle")
+      .attr("class", "text-xs 4xl:text-base -rotate-90");
 
     // Group data by solver
     const groupedData = d3.group(chartData, (d) => d.solver);
@@ -209,13 +212,13 @@ const D3ChartLineChart = ({
     <div className={`bg-white p-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
+        <span className="font-semibold text-[#8C8C8C] text-xs 4xl:text-base mr-1 flex items-end">
           Solver:
         </span>
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
-            className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+            className="py-1 px-5 uppercase bg-stroke 4xl:text-sm text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
           >
             <CircleIcon
               style={{ color: solverColors[solverKey] }}

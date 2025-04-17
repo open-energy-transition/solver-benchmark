@@ -10,95 +10,27 @@ import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { SgmMode } from "@/constants/filter";
 
+type ColumnType = {
+  name: string;
+  field: string;
+  width: string;
+  bgColor: string;
+  color: string;
+  sort?: boolean;
+  headerContent?: (header: string) => React.ReactNode;
+  sortFunc?: (a: TableRowType, b: TableRowType) => number;
+};
+
+type TableRowType = {
+  rank: number;
+  solver: string;
+  version: string;
+  memory: string;
+  solvedBenchmarks: string;
+  runtime: string;
+};
+
 const ResultsSection = () => {
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 0,
-  );
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const columns = [
-    {
-      name: "Rank",
-      field: "rank",
-      width: "flex-1",
-      bgColor: "bg-light-grey/50",
-      color: "text-dark-grey",
-      sort: true,
-    },
-    {
-      name: "Solver",
-      field: "solver",
-      width: "w-1/6",
-      bgColor: "bg-light-grey",
-      color: "text-dark-grey",
-    },
-    {
-      name: "Version",
-      field: "version",
-      width: "w-1/6",
-      bgColor: "bg-lavender/50",
-      color: "text-navy font-semibold",
-    },
-    {
-      name: "SGM Memory",
-      field: "memory",
-      width: "w-1/5",
-      bgColor: "bg-lavender/80",
-      color: "text-navy font-semibold",
-      sort: true,
-    },
-    {
-      name: "Solved Benchmarks",
-      field: "solvedBenchmarks",
-      width: "w-1/5",
-      bgColor: "bg-lavender",
-      color: "text-navy font-semibold",
-      sort: true,
-      headerContent: (header: string) => (
-        <div className="flex gap-2">
-          {header}
-          <Popup
-            on={["hover"]}
-            trigger={() => <QuestionLine className="w-4 h-4" />}
-            position="right center"
-            closeOnDocumentClick
-            arrowStyle={{ color: "#ebeff2" }}
-          >
-            <div className="bg-stroke p-2 rounded">
-              Solved benchmarks is the number of benchmarks where the solver
-              returns an &apos;ok&apos; status
-            </div>
-          </Popup>
-        </div>
-      ),
-    },
-    {
-      name: "SGM Runtime",
-      field: "runtime",
-      width: "w-1/5",
-      bgColor: "bg-lime-green",
-      color: "text-navy font-semibold",
-      sort: true,
-      headerContent: (header: string) => (
-        <div className="flex gap-2">
-          {header}
-          {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
-            <>
-              {" "}
-              on {uniqueBenchmarkCount}{" "}
-              {uniqueBenchmarkCount > 1 ? "benchmarks" : "benchmark"}
-            </>
-          )}
-        </div>
-      ),
-    },
-  ];
-
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
@@ -152,16 +84,7 @@ const ResultsSection = () => {
     }
   }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers]);
 
-  const [tableData, setTableData] = useState<
-    {
-      rank: number;
-      solver: string;
-      version: string;
-      memory: string;
-      solvedBenchmarks: string;
-      runtime: string;
-    }[]
-  >([]);
+  const [tableData, setTableData] = useState<TableRowType[]>([]);
   const [sortConfig, setSortConfig] = useState<{
     field: string;
     direction: "asc" | "desc";
@@ -261,6 +184,112 @@ const ResultsSection = () => {
     )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`;
   };
 
+  const columns: ColumnType[] = useMemo(
+    () => [
+      {
+        name: "Rank",
+        field: "rank",
+        width: "flex-1",
+        bgColor: "bg-light-grey/50",
+        color: "text-dark-grey",
+        sort: false,
+      },
+      {
+        name: "Solver",
+        field: "solver",
+        width: "w-1/6",
+        bgColor: "bg-light-grey",
+        color: "text-dark-grey",
+        sortFunc: (a, b) => a.solver.localeCompare(b.solver),
+      },
+      {
+        name: "Version",
+        field: "version",
+        width: "w-1/6",
+        bgColor: "bg-lavender/50",
+        color: "text-navy font-semibold",
+        sortFunc: (a, b) => a.version.localeCompare(b.version),
+      },
+      {
+        name: "SGM Memory",
+        field: "memory",
+        width: "w-1/5",
+        bgColor: "bg-lavender/80",
+        color: "text-navy font-semibold",
+        sort: true,
+        sortFunc: (a, b) => {
+          const extractValue = (str: string) => {
+            const numMatch = str.match(/^[\d.]+/);
+            return numMatch ? parseFloat(numMatch[0]) : 0;
+          };
+          return extractValue(a.memory) - extractValue(b.memory);
+        },
+      },
+      {
+        name: "Solved Benchmarks",
+        field: "solvedBenchmarks",
+        width: "w-1/5",
+        bgColor: "bg-lavender",
+        color: "text-navy font-semibold",
+        sort: true,
+        sortFunc: (a, b) => {
+          const extractValue = (str: string) => {
+            const numMatch = str.match(/^[\d.]+/);
+            return numMatch ? parseFloat(numMatch[0]) : 0;
+          };
+          return (
+            extractValue(a.solvedBenchmarks) - extractValue(b.solvedBenchmarks)
+          );
+        },
+        headerContent: (header: string) => (
+          <div className="flex gap-2">
+            {header}
+            <Popup
+              on={["hover"]}
+              trigger={() => <QuestionLine className="w-4 h-4" />}
+              position="right center"
+              closeOnDocumentClick
+              arrowStyle={{ color: "#ebeff2" }}
+            >
+              <div className="bg-stroke p-2 rounded">
+                Solved benchmarks is the number of benchmarks where the solver
+                returns an &apos;ok&apos; status
+              </div>
+            </Popup>
+          </div>
+        ),
+      },
+      {
+        name: "SGM Runtime",
+        field: "runtime",
+        width: "w-1/5",
+        bgColor: "bg-lime-green",
+        color: "text-navy font-semibold",
+        sort: true,
+        sortFunc: (a, b) => {
+          const extractValue = (str: string) => {
+            const numMatch = str.match(/^[\d.]+/);
+            return numMatch ? parseFloat(numMatch[0]) : 0;
+          };
+          return extractValue(a.runtime) - extractValue(b.runtime);
+        },
+        headerContent: (header: string) => (
+          <div className="flex gap-2">
+            {header}
+            {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
+              <>
+                {" "}
+                on {uniqueBenchmarkCount}{" "}
+                {uniqueBenchmarkCount > 1 ? "benchmarks" : "benchmark"}
+              </>
+            )}
+          </div>
+        ),
+      },
+    ],
+    [sgmMode, uniqueBenchmarkCount],
+  );
+
   useEffect(() => {
     setTableData(
       solverList.map((solverData) => ({
@@ -294,9 +323,22 @@ const ResultsSection = () => {
   // Sorting logic
   const sortedTableData = useMemo(() => {
     if (!sortConfig.field) return tableData;
+
+    const column = columns.find((col) => col.field === sortConfig.field);
+    if (!column) return tableData;
+
     const sorted = [...tableData].sort((a, b) => {
-      const aValue = a[sortConfig.field as keyof typeof a];
-      const bValue = b[sortConfig.field as keyof typeof b];
+      // Custom sort function
+      if (column.sortFunc) {
+        return sortConfig.direction === "asc"
+          ? column.sortFunc(a, b)
+          : column.sortFunc(b, a);
+      }
+      // Default sort
+      const field = sortConfig.field as keyof typeof a;
+      const aValue = a[field];
+      const bValue = b[field];
+
       if (sortConfig.direction === "asc") {
         return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
       } else {
@@ -308,7 +350,7 @@ const ResultsSection = () => {
       ...item,
       rank: index + 1,
     }));
-  }, [tableData, sortConfig]);
+  }, [tableData, sortConfig, columns]);
 
   const handleSort = (field: string) => {
     setSortConfig((prev) => ({
@@ -320,13 +362,21 @@ const ResultsSection = () => {
 
   const [activedIndex, setActivedIndex] = useState(0);
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const isMobileView = windowWidth < 1024;
 
   return (
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-dark-grey text-sm block items-center lg:max-w-[70%]">
+        <div className="text-dark-grey text-sm block items-center lg:max-w-[70%] 4xl:text-xl">
           <span>
             You can rank the latest version of each solver by number of solved
             benchmark instances, or by the normalized shifted geometric mean
@@ -337,7 +387,11 @@ const ResultsSection = () => {
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-baseline">
-                  <QuestionLine className="size-3.5" viewBox="0 0 24 20" />)
+                  <QuestionLine
+                    className="size-3.5 4xl:size-5"
+                    viewBox="0 0 24 20"
+                  />
+                  )
                 </span>
               )}
               position="right center"
@@ -405,7 +459,7 @@ const ResultsSection = () => {
               className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
+                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer 4xl:text-xl"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -430,7 +484,7 @@ const ResultsSection = () => {
               {sortedTableData.map((item, index) => (
                 <div
                   key={`${column.field}-${index}`}
-                  className={`h-6 flex items-center pl-3 pr-6 ${
+                  className={`h-6 flex items-center pl-3 pr-6 4xl:text-xl 4xl:py-4 ${
                     activedIndex === index
                       ? `border-b border-t border-[#CAD3D0] ${
                           i === 0 ? "border-l" : ""

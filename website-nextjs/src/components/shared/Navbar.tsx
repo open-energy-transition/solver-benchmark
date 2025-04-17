@@ -90,7 +90,7 @@ const Navbar = () => {
       <div
         className={`fixed
           pt-[calc(var(--banner-height))] md:pt-0
-          top-0 left-0 z-40 h-screen transition-transform bg-navy rounded-tr-3xl rounded-br-3xl
+          top-0 left-0 z-40 h-screen transition-transform bg-navy rounded-tr-4xl rounded-br-4xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
         sm:translate-x-0`}
         aria-label="Sidenav"
@@ -109,10 +109,11 @@ const Navbar = () => {
                   alt="Contribution image"
                   width={35}
                   height={35}
+                  className="4xl:size-11"
                 />
               </div>
               {isNavExpanded && (
-                <div className="font-grotesk font-thin text-base leading-[21px]">
+                <div className="font-grotesk font-thin text-base leading-[21px] 4xl:text-lg 4xl:ml-2">
                   Solver
                   <br />
                   Benchmark
@@ -140,14 +141,14 @@ const Navbar = () => {
                      }
                      ${
                        isNavExpanded
-                         ? "pl-8 pr-2 justify-start"
+                         ? "pl-8 pr-2 justify-start 4xl:pl-4"
                          : "px-2 justify-center"
                      }
                     `}
                 >
                   {navData.icon}
                   {isNavExpanded && (
-                    <span className="ml-3.5 pl-[1px] text-xl mt-0.5">
+                    <span className="ml-3.5 pl-[1px] text-xl mt-0.5 4xl:text-2xl 4xl:ml-1">
                       {navData.label}
                     </span>
                   )}
@@ -164,7 +165,7 @@ const Navbar = () => {
           <a
             onClick={() => dispatch(navbarActions.toggleNav())}
             href="#"
-            className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none"
+            className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none 4xl:text-xl"
           >
             {isNavExpanded && "Collapse"}
             <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />

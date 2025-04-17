@@ -133,6 +133,7 @@ const ChartCompare = ({
     // Axes
     const xAxis = d3.axisBottom(xScale).ticks(6).tickSizeOuter(0);
     const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
+
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -141,16 +142,10 @@ const ChartCompare = ({
       .call((g) => {
         g.selectAll(".domain").attr("stroke", "#A1A9BC");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text").attr("fill", "#A1A9BC");
-      })
-      .append("text")
-      .attr("x", width / 2)
-      .attr("y", 40)
-      .attr("fill", "#8C8C8C")
-      .text(title.xaxis)
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif");
-
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "font-lato text-xs 4xl:text-lg");
+      });
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
@@ -158,18 +153,10 @@ const ChartCompare = ({
       .call((g) => {
         g.selectAll(".domain").attr("stroke", "#A1A9BC");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text").attr("fill", "#A1A9BC");
-      })
-      .append("text")
-      .attr("x", -height / 2)
-      .attr("y", -50)
-      .attr("fill", "#8C8C8C")
-      .text(title.yaxis)
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
-      .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle");
-
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "font-lato text-xs 4xl:text-lg");
+      });
     // Scatter points
     svg
       .selectAll(".dot")
@@ -189,8 +176,7 @@ const ChartCompare = ({
             .attr("dominant-baseline", "middle")
             .text("✕")
             .style("fill", statusColor[d.status])
-            .style("font-size", "12px")
-            .style("font-family", "'Lato', sans-serif");
+            .style("font-size", "12px");
         } else {
           // Render a circle for other statuses
           group
@@ -216,9 +202,10 @@ const ChartCompare = ({
             tooltip
               .style("opacity", 1)
               .html(
-                `<strong>Name:</strong> ${d.benchmark}<br>
-                <strong>Size:</strong> ${d.size}<br>
-                 `,
+                `<div class="text-sm 4xl:text-lg">
+                  <strong>Name:</strong> ${d.benchmark}<br>
+                  <strong>Size:</strong> ${d.size}<br>
+                 </div>`,
               )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 30}px`);
@@ -283,7 +270,24 @@ const ChartCompare = ({
     };
   }, [chartData]);
   return (
-    <div className="bg-white py-4 px-4 sm:px-10 rounded-xl">
+    <div className="bg-white py-4 px-4 sm:px-10 rounded-xl relative">
+      {/* yaxis Title */}
+      <div
+        className="
+          -rotate-90
+          -translate-y-1/2
+          4xl:text-lg
+          absolute
+          font-lato
+          left-6
+          origin-[0]
+          text-[#8c8c8c]
+          text-xs
+          top-3/4
+          "
+      >
+        {title.yaxis}
+      </div>
       {/* Legend */}
       <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
         <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
@@ -310,6 +314,22 @@ const ChartCompare = ({
         <div className="min-w-[300px]">
           <svg ref={svgRef}></svg>
         </div>
+      </div>
+      {/* xaxis Title */}
+      <div
+        className="
+          -translate-y-1/2
+          -translate-x-1/2
+          4xl:text-lg
+          absolute
+          font-lato
+          left-1/2
+          text-[#8c8c8c]
+          text-xs
+          bottom-0
+          "
+      >
+        {title.xaxis}
       </div>
     </div>
   );

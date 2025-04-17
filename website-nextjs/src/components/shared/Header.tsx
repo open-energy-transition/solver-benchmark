@@ -39,19 +39,28 @@ const Header = () => {
           </button>
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
-          <Link href="#benchmark-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#benchmark-section"
+            className="text-sm/6 font-semibold 4xl:text-base"
+          >
             BENCHMARKS
           </Link>
           <Link
             href="#contribution-section"
-            className="text-sm/6 font-semibold"
+            className="text-sm/6 font-semibold 4xl:text-base"
           >
             CONTRIBUTIONS
           </Link>
-          <Link href="#mission-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#mission-section"
+            className="text-sm/6 font-semibold 4xl:text-base"
+          >
             MISSION
           </Link>
-          <Link href="#faq-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#faq-section"
+            className="text-sm/6 font-semibold 4xl:text-base"
+          >
             FAQs
           </Link>
         </div>

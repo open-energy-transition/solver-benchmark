@@ -43,7 +43,7 @@ const TableResult = () => {
           <Popup
             on={["hover"]}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
                 {info.getValue() as string}
               </div>
             )}
@@ -123,7 +123,7 @@ const TableResult = () => {
           <Popup
             on={["hover"]}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
                 {info.getValue() as string}
               </div>
             )}
@@ -223,24 +223,24 @@ const TableResult = () => {
 
   return (
     <div className="w-full max-w-full overflow-hidden">
-      <div className="text-navy font-bold pb-6 pt-9 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-xl">Full Results</h2>
-        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+      <div className="text-navy font-bold pb-6 pt-9 flex flex-col md:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-xl 4xl:text-2xl">Full Results</h2>
+        <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
           <button
             onClick={() => setShowColumnSelector(!showColumnSelector)}
-            className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg cursor-pointer w-full sm:w-auto text-sm sm:text-base"
+            className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg cursor-pointer w-full sm:w-auto text-sm sm:text-base 4xl:text-lg"
           >
             Select Columns
           </button>
           <button
             onClick={downloadFilteredResults}
-            className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base"
+            className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base 4xl:text-lg"
           >
             Download Filtered
             <ArrowToRightIcon className="w-4 h-4 rotate-90" />
           </button>
           <DownloadButton url={CSV_URL} fileName={"benchmark_results.csv"}>
-            <div className="text-white bg-green-pop px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base">
+            <div className="text-white bg-green-pop px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base 4xl:text-lg">
               Download
               <ArrowToRightIcon className="w-4 h-4 rotate-90" />
             </div>
@@ -260,7 +260,7 @@ const TableResult = () => {
                       type="checkbox"
                       checked={column.getIsVisible()}
                       onChange={column.getToggleVisibilityHandler()}
-                      className="form-checkbox h-4 w-4 text-navy rounded"
+                      className="form-checkbox w-4 h-4 accent-navy rounded"
                     />
                     <span className="ml-2 text-sm">{column.id}</span>
                   </label>
@@ -286,7 +286,7 @@ const TableResult = () => {
                       >
                         <div
                           onClick={header.column.getToggleSortingHandler()}
-                          className="flex gap-1 items-center justify-between w-full max-w-[200px] mx-auto truncate"
+                          className="flex gap-1 items-center justify-between w-full max-w-[200px] mx-auto truncate 4xl:text-lg"
                           style={{
                             width: header.getSize() + 10,
                             maxWidth: header.getSize()

@@ -84,12 +84,12 @@ const ResultsSgmModeDropdown = () => {
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center 4xl:text-lg">
           {selectedMode.optionTitle}
           <span className="right-2 top-2.5">
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => <QuestionLine className="size-4 4xl:size-5" />}
               position="top right"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}

@@ -36,13 +36,13 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
 
   return (
     <div className="flex text-xs items-center gap-2 mt-4 justify-between">
-      <div className="text-dark-grey">
+      <div className="text-dark-grey 4xl:text-lg">
         Showing <span className="font-bold">{startItem}</span> to{" "}
         <span className="font-bold">{endItem}</span> of{" "}
         <span className="font-bold">{totalItems}</span>
       </div>
       <div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 4xl:text-lg">
           <button
             className={`flex gap-2 items-center rounded p-1 ${
               !table.getCanPreviousPage() ? " text-dark-grey" : " text-navy"
@@ -51,7 +51,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
             disabled={!table.getCanPreviousPage()}
           >
             <ArrowRightIcon
-              className={`h-3 w-3 rotate-180 ${
+              className={`size-3 4xl:size-4 rotate-180 ${
                 !table.getCanPreviousPage() ? "stroke-dark-grey" : ""
               }`}
               fill="none"
@@ -88,7 +88,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
           >
             Next
             <ArrowRightIcon
-              className={`h-3 w-3 rotate-145 ${
+              className={`size-3 4xl:size-4 rotate-145 ${
                 !table.getCanNextPage() ? "stroke-dark-grey" : "stroke-navy"
               }`}
               fill="none"

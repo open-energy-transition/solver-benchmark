@@ -29,7 +29,7 @@ const ResultsSectionsTitle = ({
 
   return (
     <div>
-      <div className="relative text-navy font-bold text-xl flex justify-between items-center">
+      <div className="relative text-navy font-bold text-xl flex justify-between items-center 4xl:text-2xl">
         <div>
           Results
           {latestBenchmarkResult.length !== benchmarkResults.length && (

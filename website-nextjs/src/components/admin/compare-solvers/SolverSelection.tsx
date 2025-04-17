@@ -97,7 +97,7 @@ const SolverSelection = () => {
     <div>
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 mt-6 mb-4">
         <div className="w-full sm:w-1/2 bg-[#F0F4F2] rounded-lg sm:rounded-l-lg sm:rounded-r-none">
-          <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg">
+          <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg 4xl:xl">
             Solver 1
           </div>
           <select
@@ -105,7 +105,7 @@ const SolverSelection = () => {
             value={solver1}
             onChange={(event) => setSolver1(event.target.value)}
             className="w-full font-bold pl-3 bg-[#F0F4F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
-            border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none"
+            border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none 4xl:text-lg"
           >
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
@@ -116,7 +116,7 @@ const SolverSelection = () => {
           </select>
         </div>
         <div className="w-full sm:w-1/2 bg-[#E1E5F2] rounded-lg sm:rounded-r-lg sm:rounded-l-none">
-          <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg">
+          <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg 4xl:xl">
             Solver 2
           </div>
           <select
@@ -124,7 +124,7 @@ const SolverSelection = () => {
             value={solver2}
             onChange={(event) => setSolver2(event.target.value)}
             className="w-full pl-3 font-bold bg-[#E1E5F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
-            border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none"
+            border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none 4xl:text-lg"
           >
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
@@ -136,15 +136,17 @@ const SolverSelection = () => {
         </div>
       </div>
       <div className="py-2">
-        <div className="text-navy text-lg sm:text-xl font-bold">Graphs</div>
-        <p className="text-[#5D5D5D] text-sm sm:text-base">
+        <div className="text-navy text-lg sm:text-xl font-bold 4xl:text-xl">
+          Graphs
+        </div>
+        <p className="text-[#5D5D5D] text-sm sm:text-base 4xl:text-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
           where Solver 2 performs better
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="w-full sm:w-1/2">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full lg:w-1/2">
           <ChartCompare
             chartData={chartData.map((d) => ({
               xaxis: d.d1.runtime,
@@ -162,11 +164,11 @@ const SolverSelection = () => {
               lower: "#E1E5F2",
             }}
           />
-          <div className="w-full font-league text-base sm:text-lg text-dark-grey font-medium text-center mt-4">
+          <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
             Runtime graph
           </div>
         </div>
-        <div className="w-full sm:w-1/2">
+        <div className="w-full lg:w-1/2">
           <ChartCompare
             chartData={chartData.map((d) => ({
               xaxis: d.d1.memoryUsage,
@@ -184,7 +186,7 @@ const SolverSelection = () => {
               lower: "#E1E5F2",
             }}
           />
-          <div className="w-full font-league text-base sm:text-lg text-dark-grey font-medium text-center mt-4">
+          <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
             Memory usage graph
           </div>
         </div>
