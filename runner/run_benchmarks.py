@@ -545,7 +545,7 @@ if __name__ == "__main__":
         "--solvers",
         type=str,
         nargs="+",
-        default=["highs", "scip", "cbc", "glpk"],
+        default=["highs", "scip", "cbc", "gurobi", "glpk"],
         help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
     )
     parser.add_argument(

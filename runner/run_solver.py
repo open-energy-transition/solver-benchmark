@@ -3,9 +3,15 @@ import sys
 from pathlib import Path
 from time import time
 
-import numpy as np
+import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
+
+# HiGHS is not available in the 2020 environment that we use to run GLPK
+try:
+    import highspy
+except ModuleNotFoundError:
+    highspy = None
 
 
 def get_solver(solver_name):
@@ -54,15 +60,19 @@ def is_mip_problem(solver_model, solver_name):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def calculate_integrality_violation(primal_values) -> float:
+def calculate_integrality_violation(
+    integer_vars: pd.Series, primal_values: pd.Series
+) -> float:
     """Calculate the maximum integrality violation from primal values.
+
+    We only care about Integer vars, not SemiContinuous or SemiInteger, following the code in
+    https://github.com/ERGO-Code/HiGHS/blob/fd8665394edfd096c4f847c4a6fbc187364ef474/src/mip/HighsMipSolver.cpp#L888
+
     Note:
         We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers
     """
-    integrality_violations = [
-        abs(val - round(val)) for val in primal_values if val is not None
-    ]
-    return np.max(integrality_violations) if integrality_violations else None
+    p = primal_values.loc[primal_values.index.intersection(integer_vars)]
+    return max((p - p.round()).abs())
 
 
 def get_duality_gap(solver_model, solver_name: str):
@@ -75,10 +85,31 @@ def get_duality_gap(solver_model, solver_name: str):
         info = solver_model.getInfo()
         return info.mip_gap if hasattr(info, "mip_gap") else None
     elif solver_name in {"glpk", "cbc"}:
-        # TODO is there another way to obtain duality gap when there's no solver_model?
+        # These solvers do not have a way to retrieve the duality gap from python
         return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
+
+
+def get_milp_metrics(input_file, solver_result):
+    """Uses HiGHS to read the problem file and compute max integrality violation and
+    duality gap.
+    """
+    if highspy is not None:
+        h = highspy.Highs()
+        h.readModel(input_file)
+        integer_vars = {
+            h.variableName(i)
+            for i in range(h.numVariables)
+            if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+        }
+        if integer_vars:
+            duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
+            max_integrality_violation = calculate_integrality_violation(
+                integer_vars, solver_result.solution.primal
+            )
+            return duality_gap, max_integrality_violation
+    return None, None
 
 
 def main(solver_name, input_file, solver_version):
@@ -96,20 +127,14 @@ def main(solver_name, input_file, solver_version):
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
+    # Run the solver and measure runtime
     start_time = time()
     solver_result = solver.solve_problem(
         problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
     runtime = time() - start_time
-    solver_model = solver_result.solver_model
-    duality_gap = None
-    max_integrality_violation = None
 
-    if is_mip_problem(solver_model, solver_name):
-        duality_gap = get_duality_gap(solver_model, solver_name)
-        max_integrality_violation = calculate_integrality_violation(
-            solver_result.solution.primal
-        )
+    duality_gap, max_integrality_violation = get_milp_metrics(input_file, solver_result)
 
     results = {
         "runtime": runtime,
