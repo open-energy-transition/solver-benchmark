@@ -1,7 +1,12 @@
 import { useSelector } from "react-redux";
 // local
 import DetailSection from "@/components/admin/DetailSection";
-import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import {
+  AdminHeader,
+  ContentWrapper,
+  Footer,
+  Navbar,
+} from "@/components/shared";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
@@ -17,9 +22,6 @@ import { Technique } from "@/constants";
 import { IResultState } from "@/types/state";
 
 const PageBenchmarkDetail = () => {
-  const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
-  );
   const router = useRouter();
 
   const benchmarkName = router.query.slug;
@@ -78,26 +80,25 @@ const PageBenchmarkDetail = () => {
       </Head>
       <div className="bg-light-blue h-screen">
         <Navbar />
-        <div
-          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "ml-64" : "ml-20"
-          }`}
-        >
+        <ContentWrapper>
           <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
-              <div className="flex items-center gap-1">
+            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+              <div className="flex flex-wrap items-center gap-1">
                 <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
+                  <HomeIcon className="w-[1.125rem] h-[1.125rem] 4xl:size-5" />
                 </Link>
-                <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                <ArrowIcon
+                  fill="none"
+                  className="size-3 4xl:size-4 stroke-navy"
+                />
                 <Link
                   href={PATH_DASHBOARD.benchmarkDetail.list}
-                  className="self-center font-semibold whitespace-nowrap"
+                  className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                 >
                   Benchmark Details
                 </Link>
                 <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                <span className="self-center font-semibold whitespace-nowrap">
+                <span className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
                   {benchmarkName}
                 </span>
               </div>
@@ -107,14 +108,14 @@ const PageBenchmarkDetail = () => {
           <DetailSection />
           <div className="border-b border-stroke pt-2" />
 
-          <div className="pb-2 pt-16 flex items-center">
+          <div className="pb-2 pt-8 md:py-4 flex items-center">
             <Link href={"./"}>
-              <ArrowUpIcon className="-rotate-90 size-10 text-navy cursor-pointer" />
+              <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>
             <Popup
               on={["hover"]}
               trigger={() => (
-                <div className="text-navy text-4xl font-bold text-ellipsis overflow-hidden pl-1.5">
+                <div className="text-navy text-2xl md:text-4xl font-bold text-ellipsis overflow-hidden pl-1.5">
                   {benchmarkName}
                 </div>
               )}
@@ -125,9 +126,9 @@ const PageBenchmarkDetail = () => {
               <div className="bg-stroke p-2 rounded">{benchmarkName}</div>
             </Popup>
           </div>
-          <div className="text-navy bg-white px-6 py-8 rounded-lg">
+          <div className="text-navy bg-white px-3 md:px-6 py-4 md:py-8 rounded-lg">
             <div className="flex justify-between pb-4">
-              <div className="pr-4 max-w-[60%]">
+              <div className="pr-4 max-w-full md:max-w-[60%] text-sm md:text-base">
                 {benchmarkDetail?.shortDescription}
               </div>
             </div>
@@ -145,12 +146,12 @@ const PageBenchmarkDetail = () => {
               {columns.map((col) => (
                 <div
                   key={col.name}
-                  className="border-r last:border-r-0 border-grey font-league w-[14%] p-2 last:pl-6 my-auto"
+                  className="border-b md:border-b-0 md:border-r last:border-none border-grey font-league w-full md:w-[14%] p-2 last:pl-2 md:last:pl-6 my-auto"
                 >
                   <Popup
                     on={["hover"]}
                     trigger={() => (
-                      <div className="font-bold overflow-hidden text-ellipsis whitespace-nowrap">
+                      <div className="font-bold text-sm md:text-base overflow-hidden text-ellipsis whitespace-nowrap">
                         {col.value ?? "-"}
                       </div>
                     )}
@@ -178,7 +179,7 @@ const PageBenchmarkDetail = () => {
               <BenchmarksSection benchmarkName={benchmarkName as string} />
             </>
           )}
-        </div>
+        </ContentWrapper>
         <Footer />
       </div>
     </>

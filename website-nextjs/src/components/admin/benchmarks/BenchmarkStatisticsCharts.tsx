@@ -113,6 +113,8 @@ const BenchmarkStatisticsCharts = ({
     multi: data.timeHorizons.get("multi") || 0,
   }));
   const sizeData = useMemo(() => {
+    console.log(availableProblemSizes);
+
     const sizeData = availableProblemSizes.map((size) => {
       return {
         size,
@@ -133,8 +135,8 @@ const BenchmarkStatisticsCharts = ({
   }, [metaData, availableProblemSizes]);
 
   return (
-    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative">
-      <div className="-rotate-90 absolute left-[-85px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2">
+    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative 4xl:py-16">
+      <div className="-rotate-90 absolute left-[-85px] 4xl:left-[-130px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2 4xl:text-lg">
         Number of benchmark instances
       </div>
       <div className="xl:flex xl:flex-row justify-between">

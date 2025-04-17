@@ -1,5 +1,10 @@
 import { useSelector } from "react-redux";
-import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import {
+  AdminHeader,
+  ContentWrapper,
+  Footer,
+  Navbar,
+} from "@/components/shared";
 import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
@@ -12,10 +17,6 @@ import BenchmarkSummaryTable from "@/components/admin/benchmarks/BenchmarkSummar
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
-  const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
-  );
-
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -156,18 +157,17 @@ const PageBenchmarkDetail = () => {
       </Head>
       <div className="bg-light-blue">
         <Navbar />
-        <div
-          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "md:ml-64" : "md:ml-20"
-          }`}
-        >
+        <ContentWrapper>
           <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
               <div className="flex items-center gap-1">
                 <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
+                  <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
                 </Link>
-                <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                <ArrowIcon
+                  fill="none"
+                  className="size-3 stroke-navy 4xl:size-4"
+                />
 
                 <Link href={PATH_DASHBOARD.benchmarkDetail.list}>
                   <span className="self-center font-semibold whitespace-nowrap">
@@ -188,7 +188,7 @@ const PageBenchmarkDetail = () => {
           </div>
           {/* Content */}
           <BenchmarkSummaryTable />
-        </div>
+        </ContentWrapper>
         <Footer />
       </div>
     </>

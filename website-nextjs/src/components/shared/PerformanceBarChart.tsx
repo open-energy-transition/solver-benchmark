@@ -146,6 +146,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     // Add primary y-axis (ratio)
     svg
       .append("g")
+      .attr("class", "4xl:text-sm")
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxisRatio);
 
@@ -154,7 +155,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .append("g")
       .attr("transform", `translate(${width - margin.right},0)`)
       .call(yAxisRuntime)
-      .attr("class", "secondary-axis")
+      .attr("class", "secondcary-axis 4xl:text-sm")
       .selectAll("text")
       .style("fill", "#666")
       .attr("dx", "10px")
@@ -354,28 +355,31 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .text(`Instances sorted by solving time of ${baseSolver}`);
+      .text(`Instances sorted by solving time of ${baseSolver}`)
+      .attr("class", "4xl:text-lg");
 
     // Primary y-axis label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -(height / 2))
-      .attr("y", 25)
+      .attr("x", -(height / 2) + 50)
+      .attr("y", 15)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
-      .text("Runtime ratio (log scale)");
+      .text("Runtime ratio (log scale)")
+      .attr("class", "4xl:text-lg");
 
     // Secondary y-axis label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(height / 2))
-      .attr("y", width - margin.right + 60)
+      .attr("y", width - margin.right + 70)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "#666")
-      .text(`Runtime of ${baseSolver} (s)`);
+      .text(`Runtime of ${baseSolver} (s)`)
+      .attr("class", "4xl:text-lg");
 
     // Add a legend entry for scatter points
     const legendContainer = d3
@@ -388,7 +392,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           <div class="w-3 h-3 rounded-full bg-white border-2"
                style="border-color: ${solverColors[baseSolver]}"></div>
         </div>
-        <span class="text-sm text-gray-700">${baseSolver}</span>
+        <span class="text-sm text-gray-700 4xl:text-base">${baseSolver}</span>
       `);
 
     return () => {
@@ -398,8 +402,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
   return (
     <div className="bg-white p-4 rounded-xl">
-      <h2 className="text-xl font-semibold mb-2">Relative performance plot</h2>
-      <p className="text-sm text-gray-600 mb-4 max-w-[755px]">
+      <h2 className="text-xl font-semibold mb-2 4xl:text-2xl">
+        Relative performance plot
+      </h2>
+      <p className="text-sm text-gray-600 mb-4 max-w-[755px] 4xl:text-base">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots
@@ -425,7 +431,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
               }`}
             />
           </div>
-          <span className="text-sm text-gray-700">{baseSolver}</span>
+          <span className="text-sm text-gray-700 4xl:text-bae">
+            {baseSolver}
+          </span>
         </div>
 
         {/* Other solvers legend (squares) */}
@@ -444,7 +452,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                   opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
                 }}
               />
-              <span className="text-sm text-gray-700">{solver}</span>
+              <span className="text-sm text-gray-700 4xl:text-bae">
+                {solver}
+              </span>
             </div>
           ))}
       </div>
@@ -453,7 +463,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         <svg ref={svgRef}></svg>
       </div>
       <div className="pt-1.5 pb-3 pl-3">
-        <p className="flex gap-1 items-center text-dark-grey text-sm">
+        <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-base">
           <CloseIcon className="size-3" />
           represents benchmarks that timed out, while
           <CircleIcon className="size-3" />

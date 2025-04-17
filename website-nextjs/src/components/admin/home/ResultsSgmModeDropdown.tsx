@@ -75,7 +75,7 @@ const ResultsSgmModeDropdown = () => {
   if (!selectedMode) return <div>Sgm Mode Not found</div>;
 
   return (
-    <div className="relative text-left flex gap-1" ref={dropdownRef}>
+    <div className="lg:absolute right-0 text-left flex gap-1" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
         type="button"
@@ -84,12 +84,12 @@ const ResultsSgmModeDropdown = () => {
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center 4xl:text-lg">
           {selectedMode.optionTitle}
           <span className="right-2 top-2.5">
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => <QuestionLine className="size-4 4xl:size-5" />}
               position="top right"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
@@ -118,7 +118,7 @@ const ResultsSgmModeDropdown = () => {
           type="number"
           value={xFactor}
           onChange={(newValue) => onXFactorChange(newValue)}
-          className="w-20 text-center p-1 rounded-lg"
+          className="w-20 text-center p-1 rounded-lg text-base"
         />
       )}
       {open && (

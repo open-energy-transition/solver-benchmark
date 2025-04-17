@@ -117,7 +117,8 @@ const D3StackedBarChart = ({
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
           .style("text-anchor", rotateXAxisLabels ? "end" : "middle")
-          .attr("transform", rotateXAxisLabels ? "rotate(-45)" : "rotate(0)");
+          .attr("transform", rotateXAxisLabels ? "rotate(-45)" : "rotate(0)")
+          .attr("class", "4xl:text-base");
       });
 
     // Y-axis
@@ -128,7 +129,9 @@ const D3StackedBarChart = ({
       .call((g) => {
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
-        g.selectAll("text").attr("fill", "#A1A9BC");
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "4xl:text-base");
       });
     if (showXaxisLabel) {
       // Update axis labels
@@ -168,14 +171,14 @@ const D3StackedBarChart = ({
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey">
+      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey 4xl:text-base">
         {title}
       </div>
       <div className="flex gap-2 ml-4">
         {Object.keys(colors).map((solverKey) => (
           <div
             key={solverKey}
-            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
           >
             <CircleIcon
               style={{ color: colors[solverKey] }}
