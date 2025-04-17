@@ -19,6 +19,7 @@ benchmarks:
       N. of continuous variables: 6050
       N. of integer variables: 0
       N. of integer binary: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -39,6 +40,7 @@ benchmarks:
       N. of continuous variables: 6050
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -59,6 +61,7 @@ benchmarks:
       N. of continuous variables: 6050
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -79,6 +82,7 @@ benchmarks:
       N. of continuous variables: 12098
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -101,6 +105,7 @@ benchmarks:
       N. of continuous variables: 12098
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -121,6 +126,7 @@ benchmarks:
       N. of continuous variables: 12098
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -141,6 +147,7 @@ benchmarks:
       N. of continuous variables: 24194
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -161,6 +168,7 @@ benchmarks:
       N. of continuous variables: 24194
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Model name: Sienna
@@ -181,6 +189,7 @@ benchmarks:
       N. of continuous variables: 24194
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -201,6 +210,7 @@ benchmarks:
       N. of continuous variables: 12542
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -221,6 +231,7 @@ benchmarks:
       N. of continuous variables: 12542
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -241,6 +252,7 @@ benchmarks:
       N. of continuous variables: 12542
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -261,6 +273,7 @@ benchmarks:
       N. of continuous variables: 25082
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -281,6 +294,7 @@ benchmarks:
       N. of continuous variables: 25082
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -301,6 +315,7 @@ benchmarks:
       N. of continuous variables: 25082
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -321,6 +336,7 @@ benchmarks:
       N. of continuous variables: 50162
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -341,6 +357,7 @@ benchmarks:
       N. of continuous variables: 50162
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -361,6 +378,7 @@ benchmarks:
       N. of continuous variables: 50162
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -381,6 +399,7 @@ benchmarks:
       N. of continuous variables: 10370
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -401,6 +420,7 @@ benchmarks:
       N. of continuous variables: 10370
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -421,6 +441,7 @@ benchmarks:
       N. of continuous variables: 10370
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -441,6 +462,7 @@ benchmarks:
       N. of continuous variables: 20738
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -461,6 +483,7 @@ benchmarks:
       N. of continuous variables: 20738
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -481,6 +504,7 @@ benchmarks:
       N. of continuous variables: 20738
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -501,6 +525,7 @@ benchmarks:
       N. of continuous variables: 41744
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -521,6 +546,7 @@ benchmarks:
       N. of continuous variables: 41744
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Model name: Sienna
@@ -541,6 +567,7 @@ benchmarks:
       N. of continuous variables: 41744
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
     Short description: Transport problem
     Model name: Sienna
@@ -561,6 +588,7 @@ benchmarks:
       N. of continuous variables: 9794
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
     Short description: Transport problem
     Model name: Sienna
@@ -581,6 +609,7 @@ benchmarks:
       N. of continuous variables: 9794
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
     Short description: Transport problem
     Model name: Sienna
@@ -601,6 +630,7 @@ benchmarks:
       N. of continuous variables: 9794
       N. of integer variables: 0
       N. of binary variables: 1944
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
     Short description: Transport problem
     Model name: Sienna
@@ -621,6 +651,7 @@ benchmarks:
       N. of continuous variables: 19856
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
     Short description: Transport problem
     Model name: Sienna
@@ -641,6 +672,7 @@ benchmarks:
       N. of continuous variables: 19856
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
     Short description: Transport problem
     Model name: Sienna
@@ -661,6 +693,7 @@ benchmarks:
       N. of continuous variables: 19856
       N. of integer variables: 0
       N. of binary variables: 3888
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
     Short description: Transport problem
     Model name: Sienna
@@ -681,6 +714,7 @@ benchmarks:
       N. of continuous variables: 39170
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
     Short description: Transport problem
     Model name: Sienna
@@ -701,6 +735,7 @@ benchmarks:
       N. of continuous variables: 39170
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
     Short description: Transport problem
     Model name: Sienna
@@ -721,3 +756,4 @@ benchmarks:
       N. of continuous variables: 39170
       N. of integer variables: 0
       N. of binary variables: 7776
+      Realistic: false

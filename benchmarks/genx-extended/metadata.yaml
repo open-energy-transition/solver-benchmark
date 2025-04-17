@@ -19,6 +19,7 @@ benchmarks:
       N. of continuous variables: 13777226
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
   genx-elec_trex_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
@@ -39,6 +40,7 @@ benchmarks:
       N. of continuous variables: 4573584
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
 #  genx-elec_trex_co2_uc:
 #    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
 #    Model name: GenX
@@ -78,6 +80,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
     Model name: GenX
@@ -98,6 +101,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
 # genx-15-zones_elec_co2_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
 #   Model name: GenX

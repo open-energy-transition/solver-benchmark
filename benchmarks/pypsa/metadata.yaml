@@ -17,6 +17,7 @@ benchmarks:
       Spatial resolution: 2
       N. of constraints: 132272
       N. of variables: 63264
+      Realistic: false
     - Name: 6-24h
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-6-24h.lp
@@ -24,6 +25,7 @@ benchmarks:
       Spatial resolution: 6
       N. of constraints: 377463
       N. of variables: 178831
+      Realistic: false
     - Name: 5-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
@@ -31,6 +33,7 @@ benchmarks:
       Spatial resolution: 5
       N. of constraints: 636907
       N. of variables: 301038
+      Realistic: false
     - Name: 2-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
@@ -38,6 +41,7 @@ benchmarks:
       Spatial resolution: 2
       N. of constraints: 1057182
       N. of variables: 505253
+      Realistic: false
     # TODO: No R size
   pypsa-eur-elec-trex:
     Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints).
@@ -57,6 +61,7 @@ benchmarks:
       Spatial resolution: 3
       N. of constraints: 119786
       N. of variables: 57705
+      Realistic: false
     - Name: 6-12h
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-6-12h.lp
@@ -64,6 +69,7 @@ benchmarks:
       Spatial resolution: 6
       N. of constraints: 253453
       N. of variables: 117605
+      Realistic: false
     - Name: 3-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-3h.lp
@@ -71,6 +77,7 @@ benchmarks:
       Spatial resolution: 3
       N. of constraints: 478946
       N. of variables: 230682
+      Realistic: false
     - Name: 4-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-4-3h.lp
@@ -78,6 +85,7 @@ benchmarks:
       Spatial resolution: 4
       N. of constraints: 677533
       N. of variables: 318285
+      Realistic: false
     # TODO: No R size
   pypsa-eur-elec-op:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints).
@@ -97,6 +105,7 @@ benchmarks:
       Spatial resolution: 6
       N. of constraints: 126776
       N. of variables: 58841
+      Realistic: false
     - Name: 8-12h
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-8-12h.lp
@@ -104,6 +113,7 @@ benchmarks:
       Spatial resolution: 8
       N. of constraints: 326473
       N. of variables: 152656
+      Realistic: false
     - Name: 4-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
@@ -111,6 +121,7 @@ benchmarks:
       Spatial resolution: 4
       N. of constraints: 677519
       N. of variables: 318278
+      Realistic: false
     - Name: 2-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
@@ -118,11 +129,13 @@ benchmarks:
       Spatial resolution: 2
       N. of constraints: 928600
       N. of variables: 455458
+      Realistic: false
     - Name: 10-3h
       Size: R # TODO: Solved in 18 hours
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-10-3h.lp
       Temporal resolution: 3
       Spatial resolution: 10
+      Realistic: true
   pypsa-eur-elec-op-ucconv:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints).
     Model name: PyPSA-Eur
@@ -142,6 +155,7 @@ benchmarks:
       Spatial resolution: 5
       N. of constraints: 129672
       N. of variables: 60288
+      Realistic: false
     - Name: 2-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
@@ -149,6 +163,7 @@ benchmarks:
       Spatial resolution: 2
       N. of constraints: 385478
       N. of variables: 186880
+      Realistic: false
     - Name: 10-24h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
@@ -156,7 +171,7 @@ benchmarks:
       Spatial resolution: 10
       N. of constraints: 238164
       N. of variables: 109259
-    # TODO: No R size
+      Realistic: false
   pypsa-power+ely:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model.
     Model name: PyPSA
@@ -175,6 +190,7 @@ benchmarks:
       Spatial resolution: 1
       N. of constraints:
       N. of variables:
+      Realistic: false
   pypsa-power+ely+battery:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model.
     Model name: PyPSA
@@ -193,6 +209,7 @@ benchmarks:
       Spatial resolution: 1
       N. of constraints:
       N. of variables:
+      Realistic: false
   pypsa-power+ely+battery-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator.
     Model name: PyPSA
@@ -213,6 +230,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   pypsa-power+ely-co2:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit.
     Model name: PyPSA
@@ -231,6 +249,7 @@ benchmarks:
       Spatial resolution: 1
       N. of constraints:
       N. of variables:
+      Realistic: false
   pypsa-power+ely-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator.
     Model name: PyPSA
@@ -251,6 +270,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   pypsa-power+ely+battery-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity.
     Model name: PyPSA
@@ -271,6 +291,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   pypsa-power+ely-co2-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity.
     Model name: PyPSA
@@ -291,6 +312,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   pypsa-power+ely-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity.
     Model name: PyPSA
@@ -311,6 +333,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   pypsa-power+ely-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity.
     Model name: PyPSA
@@ -331,6 +354,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   pypsa-power+ely+battery-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity.
     Model name: PyPSA
@@ -351,3 +375,4 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false

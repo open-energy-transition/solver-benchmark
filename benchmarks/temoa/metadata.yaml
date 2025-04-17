@@ -20,6 +20,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: false
   ## Metadata for samples from https://github.com/https://github.com/TemoaProject/oeo/oeo
   temoa-US_9R_TS:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods in absence of further constraints.
@@ -41,6 +42,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
   temoa-US_9R_TS_NDC:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes the policy commitments in the U.S. Nationally Determined Contributions (NDC).
     Model name: TEMOA
@@ -61,6 +63,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
   temoa-US_9R_TS_NZ:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
     Model name: TEMOA
@@ -81,6 +84,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
   temoa-US_9R_TS_SP:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods. This benchmark includes a collection of CO2 emission limits for US states from stated policies.
     Model name: TEMOA
@@ -101,6 +105,7 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true
   temoa-US_9R_TS_NZ_trunc_4periods:
     Short description: US-based sector-coupled model with 9 regions and 5 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
     Model name: TEMOA
@@ -121,3 +126,4 @@ benchmarks:
       N. of continuous variables:
       N. of integer variables:
       N. of binary variables:
+      Realistic: true

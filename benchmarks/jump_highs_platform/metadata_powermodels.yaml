@@ -20,6 +20,7 @@ benchmarks:
       N. of continuous variables: 1869
       N. of integer variables: 0
       N. of binary variables: 284
+      Realistic: false
   pglib_opf_case1803_snem:
     Short description: Optimal Power Flow data for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork
     Model name: PowerModels
@@ -40,6 +41,7 @@ benchmarks:
       N. of continuous variables: 18576
       N. of integer variables: 0
       N. of binary variables: 2795
+      Realistic: false
   pglib_opf_case1951_rte:
     Short description:
     Model name: PowerModels
@@ -60,6 +62,7 @@ benchmarks:
       N. of continuous variables: 17530
       N. of integer variables: 0
       N. of binary variables: 2596
+      Realistic: false
   pglib_opf_case2848:
     Short description:
     Model name: PowerModels
@@ -80,6 +83,7 @@ benchmarks:
       N. of continuous variables: 25507
       N. of integer variables: 0
       N. of binary variables: 3776
+      Realistic: false
   pglib_opf_case2868:
     Short description:
     Model name: PowerModels
@@ -100,3 +104,4 @@ benchmarks:
       N. of continuous variables: 25719
       N. of integer variables: 0
       N. of binary variables: 3808
+      Realistic: false
