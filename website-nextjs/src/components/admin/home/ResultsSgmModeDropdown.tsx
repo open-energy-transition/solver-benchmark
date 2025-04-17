@@ -1,4 +1,4 @@
-import { QuestionLine } from "@/assets/icons";
+import { QuestionLineIcon } from "@/assets/icons";
 import { SgmMode } from "@/constants/filter";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
@@ -89,7 +89,7 @@ const ResultsSgmModeDropdown = () => {
           <span className="right-2 top-2.5">
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => <QuestionLineIcon className="w-4 h-4" />}
               position="top right"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
@@ -142,7 +142,7 @@ const ResultsSgmModeDropdown = () => {
                 <span className="absolute right-2 top-2.5">
                   <Popup
                     on={["hover"]}
-                    trigger={() => <QuestionLine className="w-4 h-4" />}
+                    trigger={() => <QuestionLineIcon className="w-4 h-4" />}
                     position="top right"
                     closeOnDocumentClick
                     arrowStyle={{ color: "#ebeff2" }}

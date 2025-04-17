@@ -23,7 +23,7 @@ const PagePerformanceHistory = () => {
         <Navbar />
         <div
           className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "ml-64" : "ml-20"
+            isNavExpanded ? "ml-[17rem]" : "ml-20"
           }`}
         >
           <AdminHeader>
