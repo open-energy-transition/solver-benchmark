@@ -1,5 +1,6 @@
 import argparse
 import csv
+import datetime
 import gzip
 import json
 import os
@@ -115,6 +116,8 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Duality Gap",
                 "Timeout",
                 "Hostname",
+                "Run ID",
+                "Timestamp",
             ]
         )
 
@@ -134,11 +137,13 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Memory Mean (MB)",
                 "Memory StdDev (MB)",
                 "Objective Value",
+                "Run ID",
+                "Timestamp",
             ]
         )
 
 
-def write_csv_row(results_csv, benchmark_name, metrics):
+def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -158,11 +163,13 @@ def write_csv_row(results_csv, benchmark_name, metrics):
                 metrics["duality_gap"],
                 metrics["timeout"],
                 hostname,
+                run_id,
+                timestamp,
             ]
         )
 
 
-def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
+def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, timestamp):
     # NOTE: ensure the order is the same as the headers above
     with open(mean_stddev_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -180,6 +187,8 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
                 metrics["memory_mean"],
                 metrics["memory_stddev"],
                 metrics["objective"],
+                run_id,
+                timestamp,
             ]
         )
 
@@ -328,7 +337,15 @@ def main(
     timeout=10 * 60,
     reference_interval=0,  # Default: disabled
     append=False,
+    run_id=None,
 ):
+    # If no run_id is provided, generate one
+    if run_id is None:
+        run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
+        print(f"Generated run_id: {run_id}")
+    else:
+        print(f"Using provided run_id: {run_id}")
+
     size_categories = None  # TODO add this to CLI args
     results = {}
 
@@ -423,6 +440,9 @@ def main(
                     flush=True,
                 )
 
+                # Record timestamp before running the solver
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+
                 metrics = benchmark_solver(
                     benchmark["path"], solver, timeout, solver_version
                 )
@@ -436,7 +456,9 @@ def main(
                 memory_usages.append(metrics["memory"])
 
                 # Write each benchmark result immediately after the measurement
-                write_csv_row(results_csv, benchmark["name"], metrics)
+                write_csv_row(
+                    results_csv, benchmark["name"], metrics, run_id, timestamp
+                )
 
                 # If solver errors or times out, don't run further iterations
                 if metrics["status"] in {"ER", "TO"}:
@@ -456,7 +478,9 @@ def main(
 
             # Write mean and standard deviation to CSV
             # NOTE: this uses the last iteration's values for status, condition, etc
-            write_csv_summary_row(mean_stddev_csv, benchmark["name"], metrics)
+            write_csv_summary_row(
+                mean_stddev_csv, benchmark["name"], metrics, run_id, timestamp
+            )
 
             results[(benchmark["name"], benchmark["size"], solver, solver_version)] = (
                 metrics
@@ -483,7 +507,16 @@ def main(
                     reference_metrics["solver_release_year"] = "N/A"
 
                     # Record reference benchmark results
-                    write_csv_row(results_csv, "reference-benchmark", reference_metrics)
+                    reference_timestamp = datetime.datetime.now().strftime(
+                        "%Y-%m-%d %H:%M:%S.%f"
+                    )
+                    write_csv_row(
+                        results_csv,
+                        "reference-benchmark",
+                        reference_metrics,
+                        run_id,
+                        reference_timestamp,
+                    )
 
                     # Update the last reference run time
                     last_reference_run = current_time
@@ -526,6 +559,12 @@ if __name__ == "__main__":
         default=0,
         help="Run a reference benchmark in between benchmark instances, at most once every given number of seconds.",
     )
+    parser.add_argument(
+        "--run_id",
+        type=str,
+        default=None,
+        help="Unique identifier for this benchmark run.",
+    )
     args = parser.parse_args()
 
     main(
@@ -534,6 +573,7 @@ if __name__ == "__main__":
         args.year,
         reference_interval=args.ref_bench_interval,
         append=args.append,
+        run_id=args.run_id,
     )
     # Print a message indicating completion
     print("Benchmarking complete.")
