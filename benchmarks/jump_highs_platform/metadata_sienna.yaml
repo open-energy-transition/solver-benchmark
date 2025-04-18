@@ -53,7 +53,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332-3bf569a3c3108f4dde780873e6eabe9461cb9432af281c716efacfbad4837ba1.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -74,7 +74,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29-fc330569fd9116b60a77ce31693e7b88ae4137cb463d769b9e21adf49c1eb6f1.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -97,7 +97,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -118,7 +118,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-35f61df3d7e00db245b09ef67b21ea954c6bbff05511cb1702cd419bd7fd2711.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -139,7 +139,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29-bc96d26484b652f0ec372e43ddf2b30aa8af03386a3a5d7ee65200d1dc97e4b0.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -160,7 +160,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314-2b77a5de6b6f96cfa72c7ec7940a1f701ee898ee8014816b7dc644baff15a89c.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -181,7 +181,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332-1a6c28ae9bd6ab741441e47b9ec4ceddbbeb31eea0e243dddcea414d84171583.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -202,7 +202,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29-0b223b43ed886810bf678ef53e6242e07e1528daff59505cb15567625fb866f2.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -244,7 +244,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332-1079c962fa915ebe34bf2be8be82c6aed03bccea348410a8dc5f5d83a4a3dff1.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -265,7 +265,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29-12a9e8c3e475aa02d68692347b1fbed9f4769d3b89c3d5f803ebcf8e06d05197.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -286,7 +286,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314-a50a463915826563a3430374d34d27cf5cc7e7e8d4fce55b2371e6c12b261455.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -307,7 +307,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -328,7 +328,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29-dbf0e850812c48d60a10754b5a57f6ccc4fea126abd3fba4e32d68277501ca80.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -349,7 +349,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314-534efa06a79fce256e898897b9f5fbeaab4294bdbf86b2650961ed940effb1a2.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -370,7 +370,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332-a4c0a55a6159313ab87daae5e03fb8a9faca21d44bc6bd4ed085d46357eec3a7.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -475,7 +475,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314-11aaca595a3ad6a8619f2e510a9fbcf9169b22449c76dd46776df829ab9aba64.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -496,7 +496,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332-15df931033d1a5a3f0133bd141798d3b02c4211befb6f25c19e8218797a05447.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -517,7 +517,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29-8cabe382d8293ca2c795321015d05603b54f9dbf2dbcfff3e9116c367bd42eac.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -538,7 +538,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314-7fa7bf7b284cfc8f93c2541d159617c4964c40daf64cff299f083ba81c25b5ad.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -559,7 +559,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332-864c7b757abad07ecb724ec46ef134aedc73ae5d286ce16129a9c913dd9a0975.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -622,7 +622,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332-9329d35ea14edb840379be5519aa15021d5cfdbedec342326b9165ca6f0abc05.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -643,7 +643,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-66258a0e8497e1e17a702b769ebc9c4dcb1ef285993d4f1f41d9dda59878c5cc.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -664,7 +664,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: M
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -685,7 +685,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332-b8b4fb5c2c4b0a5f18333028c8d9a7de9d11a5607bb8b660b73cd8a2f617d26a.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -706,7 +706,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29-baddda2ca9ed73b7a9935f88b30a217e31cfa48670e659a44d07142f65039029.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -727,7 +727,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314-ec745b9b237a474e1ed2a2ef455cba4c7cc926d59742ae1fd4930415cc1a46d4.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
@@ -748,7 +748,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-c5f9c340dae227b689ac284a47d285373a0cd023658a17e9e56bc68136fad3de.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1

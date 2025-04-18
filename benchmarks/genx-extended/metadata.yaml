@@ -11,7 +11,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
       Temporal resolution: 168
       Spatial resolution: 15
@@ -32,7 +32,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
       Temporal resolution: 168
       Spatial resolution: 15
@@ -72,7 +72,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 15-24h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
       Temporal resolution: 24h
       Spatial resolution: 15
@@ -93,7 +93,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
       Temporal resolution: 168
       Spatial resolution: 15

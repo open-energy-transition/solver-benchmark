@@ -34,7 +34,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
@@ -55,7 +55,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
@@ -76,7 +76,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
@@ -97,7 +97,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
@@ -118,7 +118,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes

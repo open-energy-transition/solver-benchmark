@@ -12,7 +12,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
       Temporal resolution: 1
       Spatial resolution: 3
@@ -50,7 +50,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
       Temporal resolution: 1
       Spatial resolution: 3
@@ -58,7 +58,7 @@ benchmarks:
       N. of variables:
       Realistic: false
   genx-4_three_zones_w_policies_slack-no_uc:
-    Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. It additionally contains example input files (inside the\_policies\_folder) establishing slack variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap, etc.). These slack variables allow the relevant constraints to be violated at the cost of a specified objective function penalty, which can be used to either identify problematic constraints without causing infeasibilities in GenX, or to set price caps beyond which policies are no longer enforced. These slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv,\_CO2_cap_slack.csv,\_Energy_share_requirement_slack.csv, or the\_PriceCap\_column in\_Minimum_capacity_requirement.csv\_and\_Maximum_capacity_requirement.csv) are present. If any of these inputs are not present, GenX will instantiate the relevant policy as a hard constraint, which will throw an infeasibility error if violated."
+    Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. It additionally contains example input files (inside the policies folder) establishing slack variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap, etc.). These slack variables allow the relevant constraints to be violated at the cost of a specified objective function penalty, which can be used to either identify problematic constraints without causing infeasibilities in GenX, or to set price caps beyond which policies are no longer enforced. These slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv, CO2_cap_slack.csv, Energy_share_requirement_slack.csv, or the PriceCap column in Minimum_capacity_requirement.csv and Maximum_capacity_requirement.csv) are present. If any of these inputs are not present, GenX will instantiate the relevant policy as a hard constraint, which will throw an infeasibility error if violated."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
@@ -69,7 +69,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
       Temporal resolution: 1
       Spatial resolution: 3
@@ -88,7 +88,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
       Temporal resolution: 1
       Spatial resolution: 3
@@ -107,7 +107,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-1h
-      Size: R
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
       Temporal resolution: 1
       Spatial resolution: 9

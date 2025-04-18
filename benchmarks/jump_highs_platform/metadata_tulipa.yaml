@@ -11,7 +11,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 28-24h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
       Temporal resolution: 24
       Spatial resolution: 28
@@ -51,7 +51,7 @@ benchmarks:
       N. of binary variables: 7
       Realistic: false
     - Name: 28-2.2h
-      Size: R
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
       Temporal resolution: 2.2
       Spatial resolution: 28
@@ -61,7 +61,7 @@ benchmarks:
       N. of binary variables: 7
       Realistic: true
     - Name: 28-1h
-      Size: R
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
       Temporal resolution: 1
       Spatial resolution: 28
