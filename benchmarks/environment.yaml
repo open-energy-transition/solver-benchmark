@@ -1,0 +1,14 @@
+name: benchmark-tools
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pyyaml
+  - ruamel.yaml
+  - requests
+  - pip
+  - pip:
+    - argparse
+    - highspy==1.9.0
+    - linopy>=0.5.0
