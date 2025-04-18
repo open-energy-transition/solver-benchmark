@@ -1,4 +1,40 @@
 benchmarks:
+  TIMES-GEO-global-base:
+    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario without decarbonization constraints.
+    Model name: TIMES-GEO
+    Version:
+    Contributor(s)/Source: E4SMA
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Time horizon: Multi-stage (13 periods)
+    MILP features: None
+    Sizes:
+      - Name: 31-20ts
+        Size:
+        URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
+        Temporal resolution: 20
+        Spatial resolution: 31
+        N. of constraints:
+        N. of variables:
+  TIMES-GEO-global-netzero:
+    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario with a net-zero decarbonization constraints.
+    Model name: TIMES-GEO
+    Version:
+    Contributor(s)/Source: E4SMA
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Time horizon: Multi-stage (13 periods)
+    MILP features: None
+    Sizes:
+      - Name: 31-20ts
+        Size:
+        URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
+        Temporal resolution: 20
+        Spatial resolution: 31
+        N. of constraints:
+        N. of variables:
   times-etimeseu-france-elec+heat-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage.
     Model name: eTIMES-EU
