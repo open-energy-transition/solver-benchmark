@@ -8,12 +8,12 @@ usage() {
     echo "Runs the solvers from the specified years (default all) on the benchmarks in the given file"
     echo "Options:"
     echo "    -a    Append to the results CSV file instead of overwriting. Default: overwrite"
-    echo "    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024"
+    echo "    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024 2025"
     echo "    -r    Reference benchmark interval in seconds. Default: 0 (disabled)"
     echo "    -u    Unique run ID to identify this benchmark run. Default: auto-generated"
 }
 append_results=""
-years=(2020 2021 2022 2023 2024)
+years=(2020 2021 2022 2023 2024 2025)
 reference_interval=0  # Default: disabled
 run_id=$(date +%Y%m%d_%H%M%S)_$(hostname)  # Default run_id if not provided
 
