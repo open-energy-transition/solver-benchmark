@@ -16,11 +16,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
       Temporal resolution: NA
       Spatial resolution: 162
-      N. of constraints: 1867
-      N. of continuous variables: 1869
-      N. of integer variables: 0
-      N. of binary variables: 284
       Realistic: false
+      Num. constraints: 1867
+      Num. variables: 742
+      Num. continuous variables: 458
+      Num. integer variables: 284
   pglib_opf_case1803_snem:
     Short description: Optimal Power Flow data for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork
     Model name: PowerModels
@@ -37,11 +37,9 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
       Temporal resolution: NA
       Spatial resolution: 1803
-      N. of constraints: 18574
-      N. of continuous variables: 18576
-      N. of integer variables: 0
-      N. of binary variables: 2795
       Realistic: false
+      Num. constraints: 18574
+      Num. variables: 7623
   pglib_opf_case1951_rte:
     Short description:
     Model name: PowerModels
@@ -58,11 +56,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
       Temporal resolution: NA
       Spatial resolution: 1951
-      N. of constraints: 17528
-      N. of continuous variables: 17530
-      N. of integer variables: 0
-      N. of binary variables: 2596
       Realistic: false
+      Num. constraints: 17528
+      Num. variables: 7509
+      Num. continuous variables: 4913
+      Num. integer variables: 2596
   pglib_opf_case2848:
     Short description:
     Model name: PowerModels
@@ -75,15 +73,15 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 2848-NA
-      Size: S
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
       Temporal resolution: NA
       Spatial resolution: 2848
-      N. of constraints: 25505
-      N. of continuous variables: 25507
-      N. of integer variables: 0
-      N. of binary variables: 3776
       Realistic: false
+      Num. constraints: 25505
+      Num. variables: 10911
+      Num. continuous variables: 7135
+      Num. integer variables: 3776
   pglib_opf_case2868:
     Short description:
     Model name: PowerModels
@@ -96,12 +94,12 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 2868-NA
-      Size: S
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
       Temporal resolution: NA
       Spatial resolution: 2868
-      N. of constraints: 25717
-      N. of continuous variables: 25719
-      N. of integer variables: 0
-      N. of binary variables: 3808
       Realistic: false
+      Num. constraints: 25717
+      Num. variables: 11045
+      Num. continuous variables: 7237
+      Num. integer variables: 3808
