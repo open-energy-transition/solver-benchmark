@@ -8,6 +8,10 @@ export default {
   ],
   safelist: ["grid-cols-1", "grid-cols-2", "grid-cols-3"],
   theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+    },
     extend: {
       screens: {
         "3xl": "1920px",
@@ -38,6 +42,7 @@ export default {
         grotesk: ["var(--font-space-grotesk)", "sans-serif"],
       },
       fontSize: {
+        "4.5xl": "2.5rem",
         "6.5xl": "4rem",
       },
       lineHeight: {
@@ -46,6 +51,12 @@ export default {
         "1.3": "1.3",
         "1.4": "1.4",
         "1.5": "1.5",
+      },
+      maxWidth: {
+        "8xl": "1440px",
+      },
+      padding: {
+        "4.5": "1.125rem",
       },
     },
   },

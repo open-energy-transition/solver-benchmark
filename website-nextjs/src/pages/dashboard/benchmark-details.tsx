@@ -54,7 +54,6 @@ const PageBenchmarkDetail = () => {
   const availableTechniques = Array.from(uniqueValues.techniques);
   const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
   const availableModels = Array.from(uniqueValues.models);
-  console.log(problemSizeResult);
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),

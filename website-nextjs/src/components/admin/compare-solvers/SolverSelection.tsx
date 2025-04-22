@@ -95,7 +95,7 @@ const SolverSelection = () => {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 mt-6 mb-4">
+      <div className="flex flex-row gap-2 sm:gap-0 mt-6 mb-4">
         <div className="w-full sm:w-1/2 bg-[#F0F4F2] rounded-lg sm:rounded-l-lg sm:rounded-r-none">
           <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg 4xl:xl">
             Solver 1

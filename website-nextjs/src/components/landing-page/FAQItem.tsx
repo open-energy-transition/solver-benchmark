@@ -12,8 +12,8 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
   return (
     <button
       className={`${
-        isOpen ? "bg-[#E6EFE3] " : "bg-[#F7F7F7] "
-      } w-full py-4 lg:py-[34px] px-8 font-lato rounded-3xl`}
+        isOpen ? "bg-[#E6EFE3] " : "bg-white "
+      } w-full py-4 lg:py-[34px] px-8 font-lato rounded-3xl shadow`}
       onClick={() => setIsOpen(!isOpen)}
     >
       <div className="flex justify-between items-center">

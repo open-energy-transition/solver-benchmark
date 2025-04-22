@@ -21,8 +21,11 @@ const ContentWrapper = ({ children }: ContentWrapperProps) => {
         `}
     >
       <div
-        className="3xl:mx-auto
-        max-w-screen-2xl"
+        className="
+          px-4
+          pd:mx-0
+          3xl:mx-auto
+          max-w-screen-2xl"
       >
         {children}
       </div>

@@ -113,8 +113,6 @@ const BenchmarkStatisticsCharts = ({
     multi: data.timeHorizons.get("multi") || 0,
   }));
   const sizeData = useMemo(() => {
-    console.log(availableProblemSizes);
-
     const sizeData = availableProblemSizes.map((size) => {
       return {
         size,
