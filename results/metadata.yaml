@@ -13,15 +13,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
       Spatial resolution: 15
       Temporal resolution: 168
-      N. of constraints: 11832658
-      N. of variables:
-      N. of continuous variables: 13777226
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 11832658
+      Num. variables: 13777226
   genx-elec_trex_co2:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion, a CO2 emissions constraint.
@@ -36,15 +34,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
       Spatial resolution: 15
       Temporal resolution: 168
-      N. of constraints: 5051253
-      N. of variables:
-      N. of continuous variables: 4573584
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 11832689
+      Num. variables: 13777227
   genx-elec_trex_uc:
     Short description: This is 30 days example which contains 15 zones. This example
       includes transmission expansion and unit commitment for conventional generators.
@@ -59,15 +55,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 15-24h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
       Spatial resolution: 15
       Temporal resolution: 24h
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 3123898
+      Num. variables: 2551346
+      Num. continuous variables: 2062938
+      Num. integer variables: 488408
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example
       includes a CO2 emissions constraint.
@@ -82,15 +78,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
       Spatial resolution: 15
       Temporal resolution: 168
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 11832633
+      Num. variables: 13777201
   genx-1_three_zones-no_uc:
     Short description: Three Zones, a one-year example with hourly resolution, contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -106,12 +100,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 114590
+      Num. variables: 103506
   genx-2_three_zones_w_electrolyzer-no_uc:
     Short description: This is a one-year example with hourly resolution which contains
       three zones representing Massachusetts, Connecticut, and Maine. It is designed
@@ -132,8 +127,9 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 175579
+      Num. variables: 153413
   genx-3_three_zones_w_co2_capture-no_uc:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -151,12 +147,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 114590
+      Num. variables: 103506
   genx-4_three_zones_w_policies_slack-no_uc:
     Short description: "This is a one-year example with hourly resolution which contains\
       \ zones representing Massachusetts, Connecticut, and Maine. It is designed to\
@@ -186,12 +183,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 127529
+      Num. variables: 121992
   genx-6_three_zones_w_multistage-no_uc:
     Short description: This is a toy multi-stage example with hourly resolution which
       contains zones representing Massachusetts, Connecticut, and Maine. It is designed
@@ -208,12 +206,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 114708
+      Num. variables: 103612
   genx-10_IEEE_9_bus_DC_OPF-no_uc:
     Short description: This examples shows the usage of DC_OPF related functions of
       GenX. The IEEE 9-bus system is a standard test case for power system optimization
@@ -229,12 +228,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-1h
-      Size: R
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
       Spatial resolution: 9
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 114708
+      Num. variables: 103612
   genx-1_three_zones:
     Short description: Three Zones, a one-year example with hourly resolution, contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -249,15 +249,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 171878
-      N. of variables:
-      N. of continuous variables: 171880
-      N. of integer variables: 16635
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 171878
+      Num. variables: 127530
+      Num. continuous variables: 107199
+      Num. integer variables: 20331
   genx-2_three_zones_w_electrolyzer:
     Short description: This is a one-year example with hourly resolution which contains
       three zones representing Massachusetts, Connecticut, and Maine. It is designed
@@ -277,11 +277,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 232867
-      N. of variables:
-      N. of continuous variables: 232869
-      N. of integer variables: 16635
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 232867
+      Num. variables: 177437
+      Num. continuous variables: 157106
+      Num. integer variables: 20331
   genx-3_three_zones_w_co2_capture:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -298,15 +298,15 @@ benchmarks:
     MILP features: Piecewise fuel usage
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_3_three_zones_w_co2_capture-3222908514bd19ae55895811eb847ad882270e280657123420407a885ccb34bc.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 171878
-      N. of variables:
-      N. of continuous variables: 171880
-      N. of integer variables: 16635
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 171878
+      Num. variables: 127530
+      Num. continuous variables: 107199
+      Num. integer variables: 20331
   genx-4_three_zones_w_policies_slack:
     Short description: "This is a one-year example with hourly resolution which contains\
       \ zones representing Massachusetts, Connecticut, and Maine. It is designed to\
@@ -335,15 +335,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_4_three_zones_w_policies_slack-0be00acbe74d795dfc6aec53239998a93ac0310563b3e65fca00f2acebe2b6c1.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 184817
-      N. of variables:
-      N. of continuous variables: 184819
-      N. of integer variables: 16635
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 184817
+      Num. variables: 146016
+      Num. continuous variables: 125685
+      Num. integer variables: 20331
   genx-5_three_zones_w_piecewise_fuel:
     Short description: "This is a one-year example with hourly resolution which contains\
       \ zones representing Massachusetts, Connecticut, and Maine. The ten represented\
@@ -365,15 +365,15 @@ benchmarks:
     MILP features: Piecewise fuel usage
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_5_three_zones_w_piecewise_fuel-51ff0e52d559b549f9e45a13eb267156a2416566f126d1567e1846353a4e9936.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 205142
-      N. of variables:
-      N. of continuous variables: 205144
-      N. of integer variables: 16635
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 205142
+      Num. variables: 140466
+      Num. continuous variables: 120135
+      Num. integer variables: 20331
   genx-6_three_zones_w_multistage:
     Short description: This is a toy multi-stage example with hourly resolution which
       contains zones representing Massachusetts, Connecticut, and Maine. It is designed
@@ -389,15 +389,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_6_three_zones_w_multistage-62d4538e93e8e775de4f754baf121d4996da332da11066a1a496e298f2319641.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 171944
-      N. of variables:
-      N. of continuous variables: 171946
-      N. of integer variables: 16638
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 171944
+      Num. variables: 127636
+      Num. continuous variables: 107302
+      Num. integer variables: 20334
   genx-7_three_zones_w_colocated_VRE_storage:
     Short description: This example system shows the functionalities of the colocated
       VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model,
@@ -417,15 +417,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-24h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_7_three_zones_w_colocated_VRE_storage-053eaf1f441d6cb6da75f0dfdaab95f8011afb3be0a34e3b0ae02dbd1043ee74.mps.gz
       Spatial resolution: 3
       Temporal resolution: 24
-      N. of constraints: 4325
-      N. of variables:
-      N. of continuous variables: 4327
-      N. of integer variables: 219
-      N. of binary variables: 48
+      Realistic: false
+      Num. constraints: 4325
+      Num. variables: 4260
   genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
     Short description: This example system shows the functionalities of the colocated
       VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental
@@ -445,15 +443,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 302449
-      N. of variables:
-      N. of continuous variables: 302451
-      N. of integer variables: 15123
-      N. of binary variables: 3360
+      Realistic: false
+      Num. constraints: 302449
+      Num. variables: 257129
   genx-9_three_zones_w_retrofit:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented
@@ -472,15 +468,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
       Spatial resolution: 3
       Temporal resolution: 1
-      N. of constraints: 438008
-      N. of variables:
-      N. of continuous variables: 438010
-      N. of integer variables: 83181
-      N. of binary variables: 3696
+      Realistic: false
+      Num. constraints: 438008
+      Num. variables: 260604
   genx-10_IEEE_9_bus_DC_OPF:
     Short description: This examples shows the usage of DC_OPF related functions of
       GenX. The IEEE 9-bus system is a standard test case for power system optimization
@@ -495,15 +489,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 9-1h
-      Size: R
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
       Spatial resolution: 9
       Temporal resolution: 1
-      N. of constraints: 1235166
-      N. of variables:
-      N. of continuous variables: 1235168
-      N. of integer variables: 78843
-      N. of binary variables: 0
+      Realistic: true
+      Num. constraints: 1235166
+      Num. variables: 639483
+      Num. continuous variables: 560640
+      Num. integer variables: 78843
   pglib_opf_case162_ieee_dtc:
     Short description: System stability study based on the IEEE 17-Generator Dynamic
       Test Case with 162 buses and 17 generators
@@ -517,15 +511,15 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 162-NA
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
       Spatial resolution: 162
       Temporal resolution: NA
-      N. of constraints: 1867
-      N. of variables:
-      N. of continuous variables: 1869
-      N. of integer variables: 0
-      N. of binary variables: 284
+      Realistic: false
+      Num. constraints: 1867
+      Num. variables: 742
+      Num. continuous variables: 458
+      Num. integer variables: 284
   pglib_opf_case1803_snem:
     Short description: Optimal Power Flow data for the Synthetic National Electricity
       Market (SNEM) Australia - Mainland subnetwork
@@ -539,15 +533,13 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 1803-NA
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
       Spatial resolution: 1803
       Temporal resolution: NA
-      N. of constraints: 18574
-      N. of variables:
-      N. of continuous variables: 18576
-      N. of integer variables: 0
-      N. of binary variables: 2795
+      Realistic: false
+      Num. constraints: 18574
+      Num. variables: 7623
   pglib_opf_case1951_rte:
     Short description:
     Model name: PowerModels
@@ -560,15 +552,15 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 1951-NA
-      Size: L
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
       Spatial resolution: 1951
       Temporal resolution: NA
-      N. of constraints: 17528
-      N. of variables:
-      N. of continuous variables: 17530
-      N. of integer variables: 0
-      N. of binary variables: 2596
+      Realistic: false
+      Num. constraints: 17528
+      Num. variables: 7509
+      Num. continuous variables: 4913
+      Num. integer variables: 2596
   pglib_opf_case2848:
     Short description:
     Model name: PowerModels
@@ -581,15 +573,15 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 2848-NA
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
       Spatial resolution: 2848
       Temporal resolution: NA
-      N. of constraints: 25505
-      N. of variables:
-      N. of continuous variables: 25507
-      N. of integer variables: 0
-      N. of binary variables: 3776
+      Realistic: false
+      Num. constraints: 25505
+      Num. variables: 10911
+      Num. continuous variables: 7135
+      Num. integer variables: 3776
   pglib_opf_case2868:
     Short description:
     Model name: PowerModels
@@ -602,15 +594,15 @@ benchmarks:
     MILP features: Transmission switching
     Sizes:
     - Name: 2868-NA
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
       Spatial resolution: 2868
       Temporal resolution: NA
-      N. of constraints: 25717
-      N. of variables:
-      N. of continuous variables: 25719
-      N. of integer variables: 0
-      N. of binary variables: 3808
+      Realistic: false
+      Num. constraints: 25717
+      Num. variables: 11045
+      Num. continuous variables: 7237
+      Num. integer variables: 3808
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -628,10 +620,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29-082507660a1ec655fed92d2b6d49a1d606f029e30cb0dfcd4915f8b8ce896f2e.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 6048
-      N. of variables:
-      N. of continuous variables: 6050
-      N. of integer variables: 0
+      Realistic: false
+      Num. constraints: 6048
+      Num. variables: 7380
+      Num. continuous variables: 5436
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -649,11 +642,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314-16130d073126ae057331ac06d84b99ec39ec673d90e6905b97d4a63326b48708.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 6048
-      N. of variables:
-      N. of continuous variables: 6050
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 6048
+      Num. variables: 7380
+      Num. continuous variables: 5436
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -667,15 +660,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332-3bf569a3c3108f4dde780873e6eabe9461cb9432af281c716efacfbad4837ba1.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 6048
-      N. of variables:
-      N. of continuous variables: 6050
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 6048
+      Num. variables: 7380
+      Num. continuous variables: 5436
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -693,11 +686,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29-fc330569fd9116b60a77ce31693e7b88ae4137cb463d769b9e21adf49c1eb6f1.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 12096
-      N. of variables:
-      N. of continuous variables: 12098
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 12096
+      Num. variables: 14760
+      Num. continuous variables: 10872
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -715,11 +708,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 12096
-      N. of variables:
-      N. of continuous variables: 12098
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 12096
+      Num. variables: 14760
+      Num. continuous variables: 10872
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -733,15 +726,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-35f61df3d7e00db245b09ef67b21ea954c6bbff05511cb1702cd419bd7fd2711.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 12096
-      N. of variables:
-      N. of continuous variables: 12098
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 12096
+      Num. variables: 14760
+      Num. continuous variables: 10872
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -755,15 +748,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29-bc96d26484b652f0ec372e43ddf2b30aa8af03386a3a5d7ee65200d1dc97e4b0.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 24192
-      N. of variables:
-      N. of continuous variables: 24194
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 24192
+      Num. variables: 29520
+      Num. continuous variables: 21744
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -777,15 +770,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314-2b77a5de6b6f96cfa72c7ec7940a1f701ee898ee8014816b7dc644baff15a89c.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 24192
-      N. of variables:
-      N. of continuous variables: 24194
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 24192
+      Num. variables: 29520
+      Num. continuous variables: 21744
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
@@ -799,15 +792,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332-1a6c28ae9bd6ab741441e47b9ec4ceddbbeb31eea0e243dddcea414d84171583.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 24192
-      N. of variables:
-      N. of continuous variables: 24194
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 24192
+      Num. variables: 29520
+      Num. continuous variables: 21744
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -820,15 +813,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29-0b223b43ed886810bf678ef53e6242e07e1528daff59505cb15567625fb866f2.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 12540
-      N. of variables:
-      N. of continuous variables: 12542
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 12540
+      Num. variables: 9696
+      Num. continuous variables: 7752
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -845,11 +838,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314-11b79112e8b2da7a756189e831d00d40b9bf05069c6b59183e7d88fa28da392a.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 12540
-      N. of variables:
-      N. of continuous variables: 12542
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 12540
+      Num. variables: 9696
+      Num. continuous variables: 7752
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -862,15 +855,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332-1079c962fa915ebe34bf2be8be82c6aed03bccea348410a8dc5f5d83a4a3dff1.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 12540
-      N. of variables:
-      N. of continuous variables: 12542
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 12540
+      Num. variables: 9696
+      Num. continuous variables: 7752
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -887,11 +880,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29-12a9e8c3e475aa02d68692347b1fbed9f4769d3b89c3d5f803ebcf8e06d05197.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 25080
-      N. of variables:
-      N. of continuous variables: 25082
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 25080
+      Num. variables: 19392
+      Num. continuous variables: 15504
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -908,11 +901,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314-a50a463915826563a3430374d34d27cf5cc7e7e8d4fce55b2371e6c12b261455.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 25080
-      N. of variables:
-      N. of continuous variables: 25082
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 25080
+      Num. variables: 19392
+      Num. continuous variables: 15504
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -929,11 +922,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 25080
-      N. of variables:
-      N. of continuous variables: 25082
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 25080
+      Num. variables: 19392
+      Num. continuous variables: 15504
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -946,15 +939,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29-dbf0e850812c48d60a10754b5a57f6ccc4fea126abd3fba4e32d68277501ca80.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 50160
-      N. of variables:
-      N. of continuous variables: 50162
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 50160
+      Num. variables: 38784
+      Num. continuous variables: 31008
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -967,15 +960,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314-534efa06a79fce256e898897b9f5fbeaab4294bdbf86b2650961ed940effb1a2.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 50160
-      N. of variables:
-      N. of continuous variables: 50162
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 50160
+      Num. variables: 38784
+      Num. continuous variables: 31008
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
     Short description: Direct Current Approximation
     Model name: Sienna
@@ -988,15 +981,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332-a4c0a55a6159313ab87daae5e03fb8a9faca21d44bc6bd4ed085d46357eec3a7.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 50160
-      N. of variables:
-      N. of continuous variables: 50162
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 50160
+      Num. variables: 38784
+      Num. continuous variables: 31008
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1014,11 +1007,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-584e340fc9e79c75e07daa790d8b956d159a81187e25c077b3d5666039d25e75.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 10368
-      N. of variables:
-      N. of continuous variables: 10370
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 10368
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1036,11 +1029,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314-4ea0f31269b786b7a96c59cf7ae7a7a6b782a96461ba9a05ca24091afa77b303.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 10368
-      N. of variables:
-      N. of continuous variables: 10370
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 10368
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1058,11 +1051,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332-94334977dd58464a000d3aa3515f45dce7afc672326d685df3a58b702508af0a.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 10368
-      N. of variables:
-      N. of continuous variables: 10370
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 10368
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1076,15 +1069,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29-273c75c90ebdad62f763619da32a0e44b6456f076aeff7345e8603659a19b3ee.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 20736
-      N. of variables:
-      N. of continuous variables: 20738
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 20736
+      Num. variables: 17640
+      Num. continuous variables: 13752
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1102,11 +1095,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314-11aaca595a3ad6a8619f2e510a9fbcf9169b22449c76dd46776df829ab9aba64.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 20736
-      N. of variables:
-      N. of continuous variables: 20738
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 20736
+      Num. variables: 17640
+      Num. continuous variables: 13752
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1120,15 +1113,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332-15df931033d1a5a3f0133bd141798d3b02c4211befb6f25c19e8218797a05447.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 20736
-      N. of variables:
-      N. of continuous variables: 20738
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 20736
+      Num. variables: 17640
+      Num. continuous variables: 13752
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1142,15 +1135,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29-8cabe382d8293ca2c795321015d05603b54f9dbf2dbcfff3e9116c367bd42eac.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 41742
-      N. of variables:
-      N. of continuous variables: 41744
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 41472
+      Num. variables: 35280
+      Num. continuous variables: 27504
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1164,15 +1157,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314-7fa7bf7b284cfc8f93c2541d159617c4964c40daf64cff299f083ba81c25b5ad.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 41742
-      N. of variables:
-      N. of continuous variables: 41744
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 41472
+      Num. variables: 35280
+      Num. continuous variables: 27504
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -1186,15 +1179,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332-864c7b757abad07ecb724ec46ef134aedc73ae5d286ce16129a9c913dd9a0975.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 41742
-      N. of variables:
-      N. of continuous variables: 41744
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 41472
+      Num. variables: 35280
+      Num. continuous variables: 27504
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
     Short description: Transport problem
     Model name: Sienna
@@ -1211,11 +1204,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29-4c0d0a8855ccd93b4831a532eedc3d0dc9f33df77c1e98cf81e9834713337b60.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 9792
-      N. of variables:
-      N. of continuous variables: 9794
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 9792
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
     Short description: Transport problem
     Model name: Sienna
@@ -1232,11 +1225,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314-0bb1986753999d5831bc4345e6ce53f547ea0849b129fd761809e36d4a9906b4.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 9792
-      N. of variables:
-      N. of continuous variables: 9794
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 9792
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
     Short description: Transport problem
     Model name: Sienna
@@ -1249,15 +1242,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332-9329d35ea14edb840379be5519aa15021d5cfdbedec342326b9165ca6f0abc05.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 9792
-      N. of variables:
-      N. of continuous variables: 9794
-      N. of integer variables: 0
-      N. of binary variables: 1944
+      Realistic: false
+      Num. constraints: 9792
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
     Short description: Transport problem
     Model name: Sienna
@@ -1274,11 +1267,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-66258a0e8497e1e17a702b769ebc9c4dcb1ef285993d4f1f41d9dda59878c5cc.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 19584
-      N. of variables:
-      N. of continuous variables: 19856
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 19584
+      Num. variables: 17640
+      Num. continuous variables: 13752
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
     Short description: Transport problem
     Model name: Sienna
@@ -1295,11 +1288,11 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 19584
-      N. of variables:
-      N. of continuous variables: 19856
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 19584
+      Num. variables: 17640
+      Num. continuous variables: 13752
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
     Short description: Transport problem
     Model name: Sienna
@@ -1312,15 +1305,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332-b8b4fb5c2c4b0a5f18333028c8d9a7de9d11a5607bb8b660b73cd8a2f617d26a.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 19584
-      N. of variables:
-      N. of continuous variables: 19856
-      N. of integer variables: 0
-      N. of binary variables: 3888
+      Realistic: false
+      Num. constraints: 19584
+      Num. variables: 17640
+      Num. continuous variables: 13752
+      Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
     Short description: Transport problem
     Model name: Sienna
@@ -1333,15 +1326,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29-baddda2ca9ed73b7a9935f88b30a217e31cfa48670e659a44d07142f65039029.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 39168
-      N. of variables:
-      N. of continuous variables: 39170
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 39168
+      Num. variables: 35280
+      Num. continuous variables: 27504
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
     Short description: Transport problem
     Model name: Sienna
@@ -1354,15 +1347,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314-ec745b9b237a474e1ed2a2ef455cba4c7cc926d59742ae1fd4930415cc1a46d4.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 39168
-      N. of variables:
-      N. of continuous variables: 39170
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 39168
+      Num. variables: 35280
+      Num. continuous variables: 27504
+      Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
     Short description: Transport problem
     Model name: Sienna
@@ -1375,15 +1368,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: L
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-c5f9c340dae227b689ac284a47d285373a0cd023658a17e9e56bc68136fad3de.mps.gz
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints: 39168
-      N. of variables:
-      N. of continuous variables: 39170
-      N. of integer variables: 0
-      N. of binary variables: 7776
+      Realistic: false
+      Num. constraints: 39168
+      Num. variables: 35280
+      Num. continuous variables: 27504
+      Num. integer variables: 7776
   tulipa-1_EU_investment_simple:
     Short description: European-level investment and operation model to consider integer
       investments and unit commitment variables
@@ -1397,65 +1390,65 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 28-24h
-      Size: XS
+      Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
       Spatial resolution: 28
       Temporal resolution: 24
-      N. of constraints: 4746
-      N. of variables:
-      N. of continuous variables: 6658
-      N. of integer variables: 251
-      N. of binary variables: 7
+      Realistic: false
+      Num. constraints: 6656
+      Num. variables: 4747
+      Num. continuous variables: 4495
+      Num. integer variables: 252
     - Name: 28-52.1h
-      Size: S
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_168h-a213cb9c037b9b9e0d0d38a1b7644a46407203a1f8e5f036c9e39870270c4a4f.mps.gz
       Spatial resolution: 28
       Temporal resolution: 52.1
-      N. of constraints: 46592
-      N. of variables:
-      N. of continuous variables: 46594
-      N. of integer variables: 251
-      N. of binary variables: 7
+      Realistic: false
+      Num. constraints: 46592
+      Num. variables: 31363
+      Num. continuous variables: 31111
+      Num. integer variables: 252
     - Name: 28-13h
-      Size: S
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_672h-336e9a77dd9deae1ef81069c4e3f0c4c39cbbe0bc24b4d4e3f666657cbc76ab6.mps.gz
       Spatial resolution: 28
       Temporal resolution: 13
-      N. of constraints: 186368
-      N. of variables:
-      N. of continuous variables: 186370
-      N. of integer variables: 251
-      N. of binary variables: 7
+      Realistic: false
+      Num. constraints: 186368
+      Num. variables: 124519
+      Num. continuous variables: 124267
+      Num. integer variables: 252
     - Name: 28-4.3h
-      Size: S
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
       Spatial resolution: 28
       Temporal resolution: 4.3
-      N. of constraints: 559104
-      N. of variables:
-      N. of continuous variables: 559106
-      N. of integer variables: 251
-      N. of binary variables: 7
+      Realistic: false
+      Num. constraints: 559104
+      Num. variables: 372935
+      Num. continuous variables: 372683
+      Num. integer variables: 252
     - Name: 28-2.2h
-      Size: R
+      Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
       Spatial resolution: 28
       Temporal resolution: 2.2
-      N. of constraints: 1118208
-      N. of variables:
-      N. of continuous variables: 1118210
-      N. of integer variables: 251
-      N. of binary variables: 7
+      Realistic: true
+      Num. constraints: 1118208
+      Num. variables: 745559
+      Num. continuous variables: 745307
+      Num. integer variables: 252
     - Name: 28-1h
-      Size: R
+      Size: L
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
       Spatial resolution: 28
       Temporal resolution: 1
-      N. of constraints: 2429440
-      N. of variables:
-      N. of continuous variables: 2429442
-      N. of integer variables: 251
-      N. of binary variables: 7
+      Realistic: true
+      Num. constraints: 2429440
+      Num. variables: 1619451
+      Num. continuous variables: 1619199
+      Num. integer variables: 252
   pypsa-eur-sec:
     Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
       2050 as single planning horizon (LP, lot of variables, strongly intermeshed
@@ -1470,33 +1463,37 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 2-24h
-      Size: XS
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
       Spatial resolution: 2
       Temporal resolution: 24
-      N. of constraints: 132272
-      N. of variables: 63264
+      Realistic: false
+      Num. constraints: 132272
+      Num. variables: 63264
     - Name: 6-24h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-6-24h.lp
       Spatial resolution: 6
       Temporal resolution: 24
-      N. of constraints: 377463
-      N. of variables: 178831
+      Realistic: false
+      Num. constraints: 377463
+      Num. variables: 178831
     - Name: 5-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
       Spatial resolution: 5
       Temporal resolution: 12
-      N. of constraints: 636907
-      N. of variables: 301038
+      Realistic: false
+      Num. constraints: 636907
+      Num. variables: 301038
     - Name: 2-3h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
       Spatial resolution: 2
       Temporal resolution: 3
-      N. of constraints: 1057182
-      N. of variables: 505253
+      Realistic: false
+      Num. constraints: 1057182
+      Num. variables: 505253
   pypsa-eur-elec-trex:
     Short description: PyPSA-Eur power sector infrastructure run for Italy considering
       2050 as single planning horizon with transmission expansion (LP, lot of variables,
@@ -1511,33 +1508,37 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-12h
-      Size: XS
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-12h.lp
       Spatial resolution: 3
       Temporal resolution: 12
-      N. of constraints: 119786
-      N. of variables: 57705
+      Realistic: false
+      Num. constraints: 119786
+      Num. variables: 57705
     - Name: 6-12h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-6-12h.lp
       Spatial resolution: 6
       Temporal resolution: 12
-      N. of constraints: 253453
-      N. of variables: 117605
+      Realistic: false
+      Num. constraints: 253453
+      Num. variables: 117605
     - Name: 3-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-3h.lp
       Spatial resolution: 3
       Temporal resolution: 3
-      N. of constraints: 478946
-      N. of variables: 230682
+      Realistic: false
+      Num. constraints: 478946
+      Num. variables: 230682
     - Name: 4-3h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-4-3h.lp
       Spatial resolution: 4
       Temporal resolution: 3
-      N. of constraints: 677533
-      N. of variables: 318285
+      Realistic: false
+      Num. constraints: 677533
+      Num. variables: 318285
   pypsa-eur-elec-op:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single
       planning horizon (LP, lot of variables, poorly intermeshed constraints).
@@ -1551,40 +1552,45 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 6-24h
-      Size: XS
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-6-24h.lp
       Spatial resolution: 6
       Temporal resolution: 24
-      N. of constraints: 126776
-      N. of variables: 58841
+      Realistic: false
+      Num. constraints: 126776
+      Num. variables: 58841
     - Name: 8-12h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-8-12h.lp
       Spatial resolution: 8
       Temporal resolution: 12
-      N. of constraints: 326473
-      N. of variables: 152656
+      Realistic: false
+      Num. constraints: 326473
+      Num. variables: 152656
     - Name: 4-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
       Spatial resolution: 4
       Temporal resolution: 3
-      N. of constraints: 677519
-      N. of variables: 318278
+      Realistic: false
+      Num. constraints: 677519
+      Num. variables: 318278
     - Name: 2-1h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
       Spatial resolution: 2
       Temporal resolution: 1
-      N. of constraints: 928600
-      N. of variables: 455458
+      Realistic: false
+      Num. constraints: 928600
+      Num. variables: 455458
     - Name: 10-3h
-      Size: R
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-10-3h.lp
       Spatial resolution: 10
       Temporal resolution: 3
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 1620797
+      Num. variables: 750434
   pypsa-eur-elec-op-ucconv:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single
       planning horizon and unit commitment for conventional fleet (MILP, lot of variables,
@@ -1599,26 +1605,35 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 5-24h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-5-24h.lp
       Spatial resolution: 5
       Temporal resolution: 24
-      N. of constraints: 129672
-      N. of variables: 60288
+      Realistic: false
+      Num. constraints: 129672
+      Num. variables: 60288
+      Num. continuous variables: 50433
+      Num. integer variables: 9855
     - Name: 2-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
       Spatial resolution: 2
       Temporal resolution: 3
-      N. of constraints: 385478
-      N. of variables: 186880
+      Realistic: false
+      Num. constraints: 385478
+      Num. variables: 186880
+      Num. continuous variables: 151840
+      Num. integer variables: 35040
     - Name: 10-24h
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
       Spatial resolution: 10
       Temporal resolution: 24
-      N. of constraints: 238164
-      N. of variables: 109259
+      Realistic: false
+      Num. constraints: 238164
+      Num. variables: 109259
+      Num. continuous variables: 93929
+      Num. integer variables: 15330
   pypsa-power+ely:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model.
@@ -1632,12 +1647,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 140165
+      Num. variables: 61325
   pypsa-power+ely+battery:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       + battery infrastructure model.
@@ -1651,12 +1667,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-1h
-      Size: XS
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 201486
+      Num. variables: 87606
   pypsa-power+ely+battery-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       + battery infrastructure model with unit commitment on gas generator.
@@ -1670,15 +1687,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 219005
+      Num. variables: 113885
+      Num. continuous variables: 87605
+      Num. integer variables: 26280
   pypsa-power+ely-co2:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model with CO2 emission limit.
@@ -1692,12 +1709,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: false
+      Num. constraints: 140166
+      Num. variables: 61325
   pypsa-power+ely-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model with unit commitment on gas generator.
@@ -1711,15 +1729,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 157684
+      Num. variables: 87604
+      Num. continuous variables: 61324
+      Num. integer variables: 26280
   pypsa-power+ely+battery-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       + battery infrastructure model with unit commitment on gas generator and integer
@@ -1734,15 +1752,15 @@ benchmarks:
     MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-mod-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 219009
+      Num. variables: 113889
+      Num. continuous variables: 87605
+      Num. integer variables: 26284
   pypsa-power+ely-co2-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model with CO2 emission limit with integer investment capacity.
@@ -1756,15 +1774,15 @@ benchmarks:
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-mod-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 140170
+      Num. variables: 61329
+      Num. continuous variables: 61325
+      Num. integer variables: 4
   pypsa-power+ely-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure
       model with integer investment capacity.
@@ -1778,15 +1796,15 @@ benchmarks:
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-mod-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 140170
+      Num. variables: 61330
+      Num. continuous variables: 61325
+      Num. integer variables: 5
   pypsa-power+ely-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model with unit commitment on gas generator and integer investment
@@ -1801,15 +1819,15 @@ benchmarks:
     MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-mod-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 157687
+      Num. variables: 87607
+      Num. continuous variables: 61324
+      Num. integer variables: 26283
   pypsa-power+ely+battery-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       + battery infrastructure model with integer investment capacity.
@@ -1823,15 +1841,15 @@ benchmarks:
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-mod-1-1h.lp
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 201491
+      Num. variables: 87611
+      Num. continuous variables: 87606
+      Num. integer variables: 5
   temoa-utopia:
     Short description: Single-region test system model considering 4 future years
       and 6 time slices (day/night, intermediate/summer/winter).
@@ -1849,11 +1867,9 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
       Spatial resolution: 1 node
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: false
+      Num. constraints: 1505
+      Num. variables: 990
   temoa-US_9R_TS:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods
       in absence of further constraints.
@@ -1867,15 +1883,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
       Spatial resolution: 9 nodes
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 1594079
+      Num. variables: 1801794
   temoa-US_9R_TS_NDC:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods.
       This benchmark includes the policy commitments in the U.S. Nationally Determined
@@ -1890,15 +1904,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
       Spatial resolution: 9 nodes
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 1594091
+      Num. variables: 1801794
   temoa-US_9R_TS_NZ:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods.
       This benchmark assumes that the United States will reach net-zero CO2 emissions
@@ -1913,15 +1925,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
       Spatial resolution: 9 nodes
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 1594085
+      Num. variables: 1801794
   temoa-US_9R_TS_SP:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods.
       This benchmark includes a collection of CO2 emission limits for US states from
@@ -1936,15 +1946,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
       Spatial resolution: 9 nodes
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 1594116
+      Num. variables: 1801794
   temoa-US_9R_TS_NZ_trunc_4periods:
     Short description: US-based sector-coupled model with 9 regions and 5 future periods.
       This benchmark assumes that the United States will reach net-zero CO2 emissions
@@ -1959,15 +1967,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12
-      Size: R
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
       Spatial resolution: 9 nodes
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      N. of constraints:
-      N. of variables:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 665474
+      Num. variables: 708899
   times-etimeseu-france-elec+heat-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time
       slices) considering 1 optimization stage.
@@ -1981,12 +1987,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-64ts
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
       Spatial resolution: 1
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 15447
+      Num. variables: 15400
   times-etimeseu-france-elec+heat-co2-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time
       slices) considering 1 optimization stage with net-zero constraint on CO2 by
@@ -2001,12 +2008,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-64ts
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
       Spatial resolution: 1
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 15451
+      Num. variables: 15404
   times-etimeseu-france-elec+heat-multi_stage:
     Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices)
       considering 5 years-long periods until 2050.
@@ -2020,12 +2028,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-64ts
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
       Spatial resolution: 1
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 91288
+      Num. variables: 92084
   times-etimeseu-france-elec+heat-co2-multi_stage:
     Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices)
       considering 5 years-long periods until 2050 with net-zero constraint on CO2
@@ -2040,12 +2049,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-64ts
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
       Spatial resolution: 1
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 91306
+      Num. variables: 92102
   times-etimeseu-europe-elec+heat-single_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time
       slices) considering 1 optimization stage.
@@ -2059,12 +2069,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 29-64ts
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
       Spatial resolution: 29
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 456603
+      Num. variables: 452854
   times-etimeseu-europe-elec+heat-co2-single_stage:
     Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time
       slices) considering 1 optimization stage with net-zero constraint on CO2 by
@@ -2079,12 +2090,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 29-64ts
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
       Spatial resolution: 29
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 456663
+      Num. variables: 452914
   times-etimeseu-europe-elec+heat-multi_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time
       slices) considering 5 years-long periods until 2050.
@@ -2098,12 +2110,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 29-64ts
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
       Spatial resolution: 29
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 2720516
+      Num. variables: 2729679
   times-etimeseu-europe-elec+heat-co2-multi_stage:
     Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time
       slices) considering 5 years-long periods until 2050 with net-zero constraint
@@ -2118,12 +2131,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 29-64ts
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
       Spatial resolution: 29
       Temporal resolution: 64
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 2720786
+      Num. variables: 2729949
   times-ireland-noco2:
     Short description: TIMES-Ireland
     Model name: TIMES-Ireland
@@ -2136,19 +2150,21 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-1h
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
       Spatial resolution: 1
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 415261
+      Num. variables: 544694
     - Name: 40-1h
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
       Spatial resolution: 40
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 4809283
+      Num. variables: 4534121
   times-ireland-noco2-counties:
     Short description: TIMES-Ireland
     Model name: TIMES-Ireland
@@ -2161,12 +2177,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 26-1h
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
       Temporal resolution: 1
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 873805
+      Num. variables: 1235884
   times-nz-kea:
     Short description: TIMES-NZ run with high carbon price and large investments in
       clean energy technologies.
@@ -2180,12 +2197,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 2-24h
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
       Temporal resolution: 24
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 300078
+      Num. variables: 202797
   times-nz-tui:
     Short description: TIMES-NZ run with low carbon prices and adoption of clean energy
       technologies when they become cost-effective.
@@ -2199,9 +2217,10 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 2-24h
-      Size:
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
       Spatial resolution: 2
       Temporal resolution: 24
-      N. of constraints:
-      N. of variables:
+      Realistic: true
+      Num. constraints: 298730
+      Num. variables: 201443
