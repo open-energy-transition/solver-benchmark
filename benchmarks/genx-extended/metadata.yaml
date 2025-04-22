@@ -11,14 +11,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
       Temporal resolution: 168
       Spatial resolution: 15
-      N. of constraints: 11832658
-      N. of continuous variables: 13777226
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 11832658
+      Num. variables: 13777226
   genx-elec_trex_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
@@ -31,14 +30,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
       Temporal resolution: 168
       Spatial resolution: 15
-      N. of constraints: 5051253
-      N. of continuous variables: 4573584
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 11832689
+      Num. variables: 13777227
 #  genx-elec_trex_co2_uc:
 #    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
 #    Model name: GenX
@@ -70,14 +68,15 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 15-24h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
       Temporal resolution: 24h
       Spatial resolution: 15
-      N. of constraints:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 3123898
+      Num. variables: 2551346
+      Num. continuous variables: 2062938
+      Num. integer variables: 488408
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
     Model name: GenX
@@ -90,14 +89,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: R
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
       Temporal resolution: 168
       Spatial resolution: 15
-      N. of constraints:
-      N. of continuous variables:
-      N. of integer variables:
-      N. of binary variables:
+      Realistic: true
+      Num. constraints: 11832633
+      Num. variables: 13777201
 # genx-15-zones_elec_co2_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
 #   Model name: GenX

@@ -44,24 +44,19 @@ def process_yaml_file(file_path):
                         "URL": size["URL"],
                         "Spatial resolution": size.get("Spatial resolution"),
                         "Temporal resolution": size.get("Temporal resolution"),
-                        "N. of constraints": size.get("N. of constraints"),
-                        "N. of variables": size.get("N. of variables"),
+                        "Realistic": size.get("Realistic"),
+                        "Num. constraints": size.get("Num. constraints"),
+                        "Num. variables": size.get("Num. variables"),
                     }
 
                     # Add optional fields if they exist
-                    # if "N. of variables" in size:
-                    #     size_entry["N. of variables"] = size["N. of variables"]
-                    if "N. of continuous variables" in size:
-                        size_entry["N. of continuous variables"] = size[
-                            "N. of continuous variables"
+                    if "Num. continuous variables" in size:
+                        size_entry["Num. continuous variables"] = size[
+                            "Num. continuous variables"
                         ]
-                    if "N. of integer variables" in size:
-                        size_entry["N. of integer variables"] = size[
-                            "N. of integer variables"
-                        ]
-                    if "N. of binary variables" in size:
-                        size_entry["N. of binary variables"] = size[
-                            "N. of binary variables"
+                    if "Num. integer variables" in size:
+                        size_entry["Num. integer variables"] = size[
+                            "Num. integer variables"
                         ]
                     sizes.append(size_entry)
 
