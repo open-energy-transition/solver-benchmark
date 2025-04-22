@@ -15,7 +15,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
       Temporal resolution: 64
       Spatial resolution: 1
-      Realistic: false
+      Realistic: true
       Num. constraints: 15447
       Num. variables: 15400
   times-etimeseu-france-elec+heat-co2-single_stage:
@@ -34,7 +34,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
       Temporal resolution: 64
       Spatial resolution: 1
-      Realistic: false
+      Realistic: true
       Num. constraints: 15451
       Num. variables: 15404
   times-etimeseu-france-elec+heat-multi_stage:
@@ -53,7 +53,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
       Temporal resolution: 64
       Spatial resolution: 1
-      Realistic: false
+      Realistic: true
       Num. constraints: 91288
       Num. variables: 92084
   times-etimeseu-france-elec+heat-co2-multi_stage:
@@ -72,7 +72,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
       Temporal resolution: 64
       Spatial resolution: 1
-      Realistic: false
+      Realistic: true
       Num. constraints: 91306
       Num. variables: 92102
   times-etimeseu-europe-elec+heat-single_stage:
@@ -91,7 +91,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
       Temporal resolution: 64
       Spatial resolution: 29
-      Realistic: false
+      Realistic: true
       Num. constraints: 456603
       Num. variables: 452854
   times-etimeseu-europe-elec+heat-co2-single_stage:
@@ -110,7 +110,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
       Temporal resolution: 64
       Spatial resolution: 29
-      Realistic: false
+      Realistic: true
       Num. constraints: 456663
       Num. variables: 452914
   times-etimeseu-europe-elec+heat-multi_stage:
@@ -129,7 +129,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
       Temporal resolution: 64
       Spatial resolution: 29
-      Realistic: false
+      Realistic: true
       Num. constraints: 2720516
       Num. variables: 2729679
   times-etimeseu-europe-elec+heat-co2-multi_stage:
@@ -148,7 +148,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
       Temporal resolution: 64
       Spatial resolution: 29
-      Realistic: false
+      Realistic: true
       Num. constraints: 2720786
       Num. variables: 2729949
   times-ireland-noco2:
@@ -167,7 +167,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
       Temporal resolution: 1
       Spatial resolution: 1
-      Realistic: false
+      Realistic: true
       Num. constraints: 415261
       Num. variables: 544694
     - Name: 40-1h
@@ -175,7 +175,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
       Temporal resolution: 1
       Spatial resolution: 40
-      Realistic: false
+      Realistic: true
       Num. constraints: 4809283
       Num. variables: 4534121
   times-ireland-noco2-counties:
@@ -194,7 +194,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Temporal resolution: 1
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
-      Realistic: false
+      Realistic: true
       Num. constraints: 873805
       Num. variables: 1235884
   times-nz-kea:
@@ -213,7 +213,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Temporal resolution: 24
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
-      Realistic: false
+      Realistic: true
       Num. constraints: 300078
       Num. variables: 202797
   times-nz-tui:
@@ -232,6 +232,6 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
       Temporal resolution: 24
       Spatial resolution: 2
-      Realistic: false
+      Realistic: true
       Num. constraints: 298730
       Num. variables: 201443
