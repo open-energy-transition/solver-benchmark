@@ -114,6 +114,7 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Reported Runtime (s)",
                 "Timeout",
                 "Hostname",
                 "Run ID",
@@ -161,6 +162,7 @@ def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
                 metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["reported_runtime"],
                 metrics["timeout"],
                 hostname,
                 run_id,
@@ -505,6 +507,7 @@ def main(
                     reference_metrics["solver"] = "highs-binary"
                     reference_metrics["solver_version"] = reference_solver_version
                     reference_metrics["solver_release_year"] = "N/A"
+                    reference_metrics["reported_runtime"] = None
 
                     # Record reference benchmark results
                     reference_timestamp = datetime.datetime.now().strftime(

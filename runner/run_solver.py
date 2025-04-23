@@ -2,6 +2,7 @@ import json
 import sys
 from pathlib import Path
 from time import perf_counter
+from traceback import format_exc
 
 import pandas as pd
 from linopy import solvers
@@ -95,21 +96,39 @@ def get_milp_metrics(input_file, solver_result):
     """Uses HiGHS to read the problem file and compute max integrality violation and
     duality gap.
     """
-    if highspy is not None:
-        h = highspy.Highs()
-        h.readModel(input_file)
-        integer_vars = {
-            h.variableName(i)
-            for i in range(h.numVariables)
-            if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-        }
-        if integer_vars:
-            duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
-            max_integrality_violation = calculate_integrality_violation(
-                integer_vars, solver_result.solution.primal
-            )
-            return duality_gap, max_integrality_violation
+    try:
+        if highspy is not None:
+            h = highspy.Highs()
+            h.readModel(input_file)
+            integer_vars = {
+                h.variableName(i)
+                for i in range(h.numVariables)
+                if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+            }
+            if integer_vars:
+                duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
+                max_integrality_violation = calculate_integrality_violation(
+                    integer_vars, solver_result.solution.primal
+                )
+                return duality_gap, max_integrality_violation
+    except Exception:
+        print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
     return None, None
+
+
+def get_reported_runtime(solver_name, solver_model) -> float | None:
+    """Get the solving runtime as reported by the solver from the solver's Python object."""
+    try:
+        match solver_name:
+            case "highs":
+                return solver_model.getRunTime()
+            case "scip":
+                return solver_model.getSolvingTime()
+            case "gurobi":
+                return solver_model.Runtime
+    except Exception:
+        print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
+    return None
 
 
 def main(solver_name, input_file, solver_version):
@@ -139,6 +158,9 @@ def main(solver_name, input_file, solver_version):
 
     results = {
         "runtime": runtime,
+        "reported_runtime": get_reported_runtime(
+            solver_name, solver_result.solver_model
+        ),
         "status": solver_result.status.status.value,
         "condition": solver_result.status.termination_condition.value,
         "objective": solver_result.solution.objective,
