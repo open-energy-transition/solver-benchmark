@@ -225,6 +225,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "condition": "Timeout",
             "objective": None,
             "runtime": timeout,
+            "reported_runtime": timeout,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
@@ -239,6 +240,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "condition": "Error",
             "objective": None,
             "runtime": timeout,
+            "reported_runtime": timeout,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
