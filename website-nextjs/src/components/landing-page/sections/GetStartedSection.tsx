@@ -31,7 +31,7 @@ const GetStarted = () => {
   );
 
   return (
-    <div className="text-navy bg-white">
+    <div className="text-navy bg-[#F5F4F4]">
       <div
         className="
           xl:flex
@@ -45,7 +45,7 @@ const GetStarted = () => {
           justify-between
         "
       >
-        <div className="w-1/4">
+        <div className="w-full xl:w-1/4">
           <div
             className="
               text-lg/1.1
@@ -70,7 +70,7 @@ const GetStarted = () => {
             WHAT DO WE HAVE?
           </div>
         </div>
-        <div className="w-[67.42%]">
+        <div className="w-full xl:w-[67.42%]">
           <h5
             className="
               text-lg/1.4
@@ -78,7 +78,7 @@ const GetStarted = () => {
               max-w-4xl
               mb-2.5
               font-lato
-              pl-4.5
+              xl:pl-4.5
               tracking-normal
             "
           >
@@ -89,7 +89,7 @@ const GetStarted = () => {
             insights on how performance varies with benchmark size,
             computational resources, and solver evolution.
           </h5>
-          <div className="gird md:flex justify-between">
+          <div className="flex justify-between">
             <StatsBox value={modelNames.length} label="Model Frameworks" />
             <StatsBox
               value={availableBenchmarksAndSizes.length}

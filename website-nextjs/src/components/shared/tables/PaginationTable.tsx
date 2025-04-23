@@ -35,7 +35,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
   };
 
   return (
-    <div className="flex text-xs items-center gap-2 mt-4 justify-between">
+    <div className="grid md:flex text-xs items-center gap-2 mt-4 justify-between">
       <div className="text-dark-grey 4xl:text-lg">
         Showing <span className="font-bold">{startItem}</span> to{" "}
         <span className="font-bold">{endItem}</span> of{" "}

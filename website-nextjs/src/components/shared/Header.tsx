@@ -67,11 +67,33 @@ const Header = () => {
         <div className="hidden lg:flex w-max">
           <Link
             href="https://openenergytransition.org/"
-            className="flex gap-1 rounded-lg px-4 2xl:px-7 py-3 text-base text-navy font-bold bg-white shadow-sm
-                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max"
+            className="
+              2xl:px-7
+              border
+              border-[#EBEFF24D]
+              border-opacity-30
+              rounded-2xl
+              flex
+              focus-visible:outline
+              focus-visible:outline-2
+              focus-visible:outline-offset-2
+              font-bold
+              gap-1
+              px-6
+              py-3
+              shadow-sm
+              text-base
+              w-max
+            "
           >
-            OPEN ENERGY TRANSITION
-            <ArrowUpLeftIcon className="rotate-90" />
+            <Image
+              src="/logo/logo-light.svg"
+              alt="Open Energy Transition Logo"
+              width={47}
+              height={22}
+              className="hidden lg:block"
+            />
+            <ArrowUpLeftIcon className="rotate-90 text-white" />
           </Link>
         </div>
       </nav>
@@ -81,7 +103,7 @@ const Header = () => {
         <div className="lg:hidden" role="dialog" aria-modal="true">
           {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
           <div className="fixed inset-0 z-50"></div>
-          <div className="fixed inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed mt-12 inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between font-league font-bold text-white text-3xl md:text-4xl">
               <a href="#" className="-m-1.5 p-1.5">
                 <div className="flex">

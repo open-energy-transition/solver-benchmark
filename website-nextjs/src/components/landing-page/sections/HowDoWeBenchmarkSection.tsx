@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 const HowDoWeBenchmarkSection = () => {
   return (
-    <div className="text-navy bg-white py-5">
+    <div className="text-navy bg-[#F5F4F4] py-5">
       <div
         className="
           xl:flex
@@ -14,7 +16,7 @@ const HowDoWeBenchmarkSection = () => {
           justify-between
         "
       >
-        <div className="w-1/4">
+        <div className="w-full xl:w-1/4">
           <div
             className="
               text-lg/1.1
@@ -39,7 +41,7 @@ const HowDoWeBenchmarkSection = () => {
             HOW DO WE BENCHMARK?
           </div>
         </div>
-        <div className="w-[67.42%] pr-32">
+        <div className="w-full xl:w-[67.42%] xl:pr-32">
           <h5
             className="
               text-lg/1.5
@@ -47,7 +49,7 @@ const HowDoWeBenchmarkSection = () => {
               max-w-4xl
               mb-2.5
               font-roboto
-              pl-4.5
+              xl:pl-4.5
               tracking-normal
               mt-10
             "
@@ -59,11 +61,14 @@ const HowDoWeBenchmarkSection = () => {
             transparent, and fully reproducible -- meaning you can also use it
             to run your own benchmarks!
           </h5>
-          <div className="mt-6 ml-4">
+          <div className="mt-6 xl:ml-4">
             <strong>Read more</strong> about our methodology, caveats, and known{" "}
-            <span className="underline font-bold cursor-pointer">
+            <Link
+              href="https://github.com/open-energy-transition/solver-benchmark/issues"
+              className="underline font-bold cursor-pointer"
+            >
               issues here →
-            </span>
+            </Link>
           </div>
         </div>
       </div>

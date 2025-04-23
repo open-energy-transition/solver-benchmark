@@ -1,6 +1,5 @@
 import Image from "next/image";
 import {
-  ArrowUpIcon,
   CircleOutlineIcon,
   ForkIcon,
   GithubIcon,
@@ -55,7 +54,7 @@ const Contribute = () => {
           justify-between
         "
       >
-        <div className="w-1/4">
+        <div className="w-full xl:w-1/4">
           <div
             className="
                 text-lg/1.1
@@ -80,15 +79,15 @@ const Contribute = () => {
             CHECK OUT OUR CODE, JOIN THE EFFORT!
           </div>
         </div>
-        <div className="w-[67.42%] pl-4.5 relative">
-          <div className="font-lato text-xl/1.4 w-[541px]">
+        <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative">
+          <div className="font-lato text-xl/1.4 max-w-[541px]">
             <div className=" font-medium">
               We accept community contributions for new benchmarks, new /
               updated solver versions, and feedback on the benchmarking
               methodology and metrics via our
             </div>
             <span className="font-bold">GitHub repository.</span>
-            <div className="grid justify-center md:flex md:justify-between max-w-lg pt-1">
+            <div className="justify-center flex md:justify-between max-w-lg pt-1">
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <UserIcon className="mr-2" />

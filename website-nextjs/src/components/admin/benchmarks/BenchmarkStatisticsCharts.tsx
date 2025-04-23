@@ -151,7 +151,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full xl:w-1/3">
+        <div className="flex-1 w-full mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="px-0"
             data={timeHorizonsChartData}
@@ -164,7 +164,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full xl:w-1/3">
+        <div className="flex-1 w-full mt-4 lg:mt-0  xl:w-1/3">
           <D3BarChart
             className="px-0"
             data={sizeData}

@@ -61,12 +61,14 @@ const Navbar = () => {
   return (
     <>
       {/* Mobile Menu Button */}
-      <button
-        onClick={() => dispatch(navbarActions.toggleNav())}
-        className="block md:hidden fixed top-[100px] right-[15%] z-50 p-2 text-white"
-      >
-        <CloseIcon className="size-6" />
-      </button>
+      {isNavExpanded && (
+        <button
+          onClick={() => dispatch(navbarActions.toggleNav())}
+          className="block md:hidden fixed top-[100px] right-[15%] z-50 p-2 text-white"
+        >
+          <CloseIcon className="size-6" />
+        </button>
+      )}
 
       {/* Mobile Menu Overlay */}
       {isNavExpanded && (

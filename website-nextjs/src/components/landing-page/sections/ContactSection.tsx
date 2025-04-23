@@ -94,22 +94,23 @@ const ContactForm = () => {
       <div className="relative font-league font-medium text-lg text-dark-grey">
         <span className="absolute top-1/2 -translate-y-1/2 left-8">Email:</span>
         <input
-          className="rounded-lg px-8 pl-20 py-5  w-full"
-          // placeholder="Email"
+          className="rounded-[18px] px-8 pl-[5.5rem] py-5 w-full"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
-      <textarea
-        className="rounded-lg px-8 py-5 text-navy w-full mt-4"
-        rows={4}
-        placeholder="Message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        required
-      />
+      <div className="relative text-dark-grey font-league text-base">
+        <span className="absolute font-semibold top-6 left-8">Message</span>
+        <textarea
+          className="rounded-[18px] font-normal leading-[110%] px-8 py-8 pt-10 w-full mt-4"
+          rows={3}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        />
+      </div>
       <div className="flex justify-start mt-6">
         <button
           type="submit"
@@ -130,7 +131,7 @@ const ContactForm = () => {
 const ContactSection = () => {
   return (
     <div className="text-white bg-navy pt-[105px] pb-[73px]">
-      <div className="mx-auto container px-4 lg:px-6">
+      <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
         <div className="grid md:flex">
           <div className="w-full md:w-1/2">
             <div
@@ -155,7 +156,7 @@ const ContactSection = () => {
             >
               GET IN TOUCH
             </div>
-            <h5 className="text-lavender font-lato text-base/1.5 w-full font-light md:w-3/4">
+            <h5 className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
               issue for all feedback and suggestions!
               <br /> Otherwise, you can write to us using this form.

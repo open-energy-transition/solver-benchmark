@@ -215,7 +215,7 @@ const PageBenchmarkDetail = () => {
             </p>
           </div>
 
-          <div className="py-2 flex justify-between items-center">
+          <div className="py-2 grid sm:flex justify-between items-center">
             <div className="text-navy text-lg font-bold 4xl:text-xl">
               Summary of Benchmark Set
             </div>

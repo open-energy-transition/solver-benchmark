@@ -45,7 +45,7 @@ const MainContent = () => {
             </p>
           </div>
 
-          <div className="mt-8 grid md:flex items-center justify-start gap-2 md:gap-6 text-center">
+          <div className="mt-8 grid sm:flex items-center justify-start gap-2 md:gap-6 text-center">
             <a
               id="benchmark-section"
               href="#"

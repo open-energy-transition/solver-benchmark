@@ -122,7 +122,7 @@ const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
 
   return (
     <div className="bg-white rounded-xl py-4 px-4 xl:px-8 2xl:px-4 4xl:px-4 4xl:px-20">
-      <ul className="grid grid-cols-3 2xl:flex 2xl:flex-row 2xl:justify-between gap-4 2xl:gap-4 text-dark-grey">
+      <ul className="grid grid-cols-1 md:grid-cols-3 2xl:flex 2xl:flex-row 2xl:justify-between gap-4 2xl:gap-4 text-dark-grey">
         {detailData.map((data, idx) => (
           <li
             key={idx}

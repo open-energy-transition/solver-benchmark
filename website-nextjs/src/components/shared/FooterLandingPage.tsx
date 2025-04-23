@@ -2,9 +2,9 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto pb-9">
-      <div className="lg:px-8">
-        <div className="px-4 md:flex gap-1 py-[1.375rem] justify-between text-navy text-xs">
+    <footer className="max-w-8xl px-4 lg:px-[70px] mx-auto pb-9">
+      <div>
+        <div className="md:flex gap-1 py-[1.375rem] justify-between text-navy text-xs">
           <div>
             <Image width={127} height={57} src="/logo/oet.png" alt="oet-logo" />
             <div className="text-dark-grey font-league text-sm/1.1 tracking-normal font-normal w-[362px] my-6 mb-4">
@@ -25,7 +25,7 @@ const Footer = () => {
               />
             </div>
           </div>
-          <div className="flex gap-0 justify-between md:gap-4 lg:gap-[64px] pl-0 lg:pl-[221px] lg:mt-14">
+          <div className="flex gap-0 justify-between md:gap-4 lg:gap-[64px] pl-0 xl:pl-[221px] mt-4 lg:mt-8">
             <div className="flex flex-col gap-2">
               <p className="font-lato font-bold text-lg text-black leading-[110%] tracking-normal">
                 Community
@@ -71,12 +71,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="py-9 mx-20 text-center border-t border-stroke font-normal font-lato text-xs text-black leading-[110%] tracking-normal">
+        <div className="py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs text-black leading-[110%] tracking-normal">
           <p>
             © 2025 Solver Benchmark. Licensed under the{" "}
             <span className="underline">MIT License</span>. All rights reserved.
           </p>
-          <p>
+          <p className="mt-4 sm:mt-0">
             <span className="underline">Documentation</span> |{" "}
             <span className="underline">GitHub</span> |{" "}
             <span className="underline">Community Forum</span> |{" "}

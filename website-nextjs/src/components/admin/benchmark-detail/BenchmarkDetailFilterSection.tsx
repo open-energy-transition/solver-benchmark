@@ -32,6 +32,7 @@ const BenchmarkDetailFilterSection = ({
   availableProblemSizes: string[];
 }) => {
   const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
@@ -270,7 +271,35 @@ const BenchmarkDetailFilterSection = ({
           </button>
         )}
       </div>
-      <div className="flex text-dark-grey">
+
+      {/* Mobile Menu Button */}
+      <button
+        className="xl:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        <span>Filters</span>
+        <svg
+          className={`w-5 h-5 transition-transform ${
+            isMobileMenuOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      <div
+        className={`${
+          isMobileMenuOpen ? "block" : "hidden"
+        } xl:flex text-dark-grey`}
+      >
         {/* Sectors */}
         <FilterGroup
           title="Sectors"
@@ -284,7 +313,7 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "sectors", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "sectors" })}
-          className="xl:w-auto 4xl:w-1/3"
+          className="xl:w-auto 4xl:w-1/3 w-full"
           itemClassName="xl:max-w-[70px] 4xl:max-w-full"
           gridClassName="grid-cols-2"
           uppercase={false}
@@ -302,7 +331,7 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "technique", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "technique" })}
-          className="xl:w-auto 4xl:w-[10%]"
+          className="xl:w-auto 4xl:w-[10%] w-full"
           gridClassName="grid-cols-2"
           uppercase={false}
         />
@@ -323,7 +352,7 @@ const BenchmarkDetailFilterSection = ({
             })
           }
           onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
-          className="xl:w-auto"
+          className="xl:w-auto w-full"
           gridClassName="grid-cols-2 xl:grid-cols-[max-content_max-content]"
           uppercase={false}
         />
@@ -340,7 +369,7 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "modelName", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "modelName" })}
-          className="xl:w-[40%] !border-r-0"
+          className="xl:w-[40%] !border-r-0 w-full"
           gridClassName="grid-cols-1 2xl:grid-cols-3 grid-cols-2"
           uppercase={false}
         />
