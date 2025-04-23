@@ -1,0 +1,116 @@
+## https://github.com/lprieto1409/DC-OPF-Carolinas
+benchmarks:
+  DCOPF-Carolinas_1W:
+    Short description: High-resolution model for North and South Carolina
+    Model name: DCOPF
+    Version:
+    Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Power
+    Time horizon: 1 week
+    MILP features: None
+    Sizes:
+    - Name: 168-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
+      Temporal resolution: 168 (24 hours x 7 days)
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Num. constraints: 199255
+      Num. variables: 122017
+  DCOPF-Carolinas_uc_1W:
+  Short description: High-resolution model for North and South Carolina
+  Model name: DCOPF
+  Version:
+  Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 1 week
+  MILP features: Unit commitment
+  Sizes:
+    - Name: 168-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
+      Temporal resolution: 168 (24 hours x 7 days)
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Num. constraints: 220143
+      Num. variables: 131278  
+  DCOPF-Carolinas_2M:
+  Short description: High-resolution model for North and South Carolina
+  Model name: DCOPF
+  Version:
+  Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+  Technique: LP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 2 months
+  MILP features: None
+  Sizes:
+    - Name: 1536-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
+      Temporal resolution: 1536 (24 hours x 64 days)
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Num. constraints: 199255
+      Num. variables: 122017
+  DCOPF-Carolinas_uc_2M:
+  Short description: High-resolution model for North and South Carolina
+  Model name: DCOPF
+  Version:
+  Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+  Technique: MILP
+  Kind of problem: Infrastructure
+  Sectors: Power
+  Time horizon: 2 months
+  MILP features: Unit commitment
+  Sizes:
+    - Name: 1536-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
+      Temporal resolution: 1536 (24 hours x 64 days)
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Num. constraints: 220143
+      Num. variables: 131278
+  #DCOPF-Carolinas_1Y:
+  #Short description: High-resolution model for North and South Carolina
+  #Model name: DCOPF
+  #Version:
+  #Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+  #Technique: LP
+  #Kind of problem: Infrastructure
+  #Sectors: Power
+  #Time horizon: 1 year
+  #MILP features: None
+  #Sizes:
+  #  - Name: 8736-997
+  #    Size: M
+  #    URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L.lp
+  #    Temporal resolution: 8736 (24 hours x 364 days)
+  #    Spatial resolution: 997 nodes
+  #    Realistic: true
+  #    Num. constraints: 199255
+  #    Num. variables: 122017
+  #DCOPF-Carolinas_uc_1Y:
+  #Short description: High-resolution model for North and South Carolina
+  #Model name: DCOPF
+  #Version:
+  #Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+  #Technique: MILP
+  #Kind of problem: Infrastructure
+  #Sectors: Power
+  #Time horizon: 1 year
+  #MILP features: Unit commitment
+  #Sizes:
+  #  - Name: 8736-997
+  #    Size: M
+  #    URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L.lp
+  #    Temporal resolution: 8736 (24 hours x 364 days)
+  #    Spatial resolution: 997 nodes
+  #    Realistic: true
+  #    Num. constraints: 220143
+  #    Num. variables: 131278
