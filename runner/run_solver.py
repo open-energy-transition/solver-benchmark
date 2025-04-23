@@ -16,25 +16,28 @@ except ModuleNotFoundError:
 
 
 def get_solver(solver_name):
+    solver_name = solver_name.lower()
     try:
-        solver_enum = SolverName(solver_name.lower())
+        solver_enum = SolverName(solver_name)
     except ValueError:
         raise ValueError(f"Solver '{solver_name}' is not recognized")
 
     solver_class = getattr(solvers, solver_enum.name)
 
+    mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
     seed_options = {
-        "highs": {"random_seed": 0},
-        "glpk": {"seed": 0},
-        "gurobi": {"seed": 0},
-        "scip": {
-            "randomization/randomseedshift": 0,
+        "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
+        "glpk": {"seed": 0, "mipgap": mip_gap},
+        "gurobi": {"seed": 0, "MIPGap": mip_gap},
+        "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
+        "cbc": {
+            "randomCbcSeed": 1,  # 0 indicates time of day
+            "ratioGap": mip_gap,
         },
-        "cbc": {"randomCbcSeed": 1},  # 0 indicates time of day
     }
 
-    if solver_name.lower() in seed_options:
-        return solver_class(**seed_options[solver_name.lower()])
+    if solver_name in seed_options:
+        return solver_class(**seed_options[solver_name])
     else:
         return solver_class()
 
