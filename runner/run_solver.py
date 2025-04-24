@@ -111,8 +111,8 @@ def get_milp_metrics(input_file, solver_result):
                     integer_vars, solver_result.solution.primal
                 )
                 return duality_gap, max_integrality_violation
-    except Exception:
-        print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
+    except Exception as e:
+        print(f"ERROR obtaining milp metrics for {input_file}: {e}", file=sys.stderr)
     return None, None
 
 
