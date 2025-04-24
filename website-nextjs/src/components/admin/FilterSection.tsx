@@ -315,7 +315,7 @@ const FilterSection = () => {
         <div
           className={`${
             isMobileMenuOpen ? "block" : "hidden"
-          } xl:flex xl:flex-wrap 2xl:flex-nowrap text-dark-grey gap-4 p-4`}
+          } xl:flex xl:flex-wrap 2xl:flex-nowrap text-dark-grey 2xl:gap-4 p-4`}
         >
           {/* Sectors */}
           <FilterGroup

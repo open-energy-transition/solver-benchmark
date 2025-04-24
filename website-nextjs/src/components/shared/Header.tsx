@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between px-4 lg:px-8 pt-12 pb-8 mx-auto container"
+        className="flex items-center justify-between pt-12 pb-8 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
         aria-label="Global"
       >
         <div className="flex w-max">

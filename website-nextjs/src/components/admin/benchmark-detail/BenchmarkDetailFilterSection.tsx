@@ -313,8 +313,8 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "sectors", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "sectors" })}
-          className="xl:w-auto 4xl:w-1/3 w-full"
-          itemClassName="xl:max-w-[70px] 4xl:max-w-full"
+          className="w-full xl:w-1/4 4xl:w-1/3"
+          itemClassName="xl:max-w-[100p] 4xl:max-w-full"
           gridClassName="grid-cols-2"
           uppercase={false}
         />
