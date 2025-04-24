@@ -11,12 +11,16 @@ echo "Generated unique run ID: ${RUN_ID}"
 
 # Update and install packages
 echo "Updating packages..."
-apt-get update
-apt-get install -y tmux git time curl jq build-essential
+apt-get -qq update
+apt-get -qq install -y tmux git time curl jq build-essential
+
+# Set up Gurobi license
+mkdir -p /opt/gurobi
+gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
 # Clone the repository
 echo "Cloning repository..."
-git clone https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b run-v1 https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing Highs..."
@@ -32,7 +36,7 @@ curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.l
 # Install Miniconda
 echo "Installing Miniconda..."
 mkdir -p ~/miniconda3
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 rm ~/miniconda3/miniconda.sh
 
