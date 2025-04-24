@@ -126,6 +126,9 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.getSolvingTime()
             case "gurobi":
                 return solver_model.Runtime
+            case _:
+                print(f"WARNING: cannot obtain reported runtime for {solver_name}")
+                return None
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
     return None
