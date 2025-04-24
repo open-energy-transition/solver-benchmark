@@ -22,21 +22,7 @@ benchmarks:
   DCOPF-Carolinas_uc_1W:
     Short description: High-resolution model for North and South Carolina
     Model name: DCOPF
-    Vers80  err_wrapper.990046  MTS_LP.py                 out_setup.975946     out_wrapper.2056    out_wrapper.987282  submit_job.csh
-err_wrapper.1865   err_wrapper.976494  Inputs              MTS_MILP_future_final.py  out_setup.987298     out_wrapper.235246  out_wrapper.988075  wrapper_2021_TE.py
-[lprieto@login01 RA_DCOPF_OET]$ vi wrapper_2021_TE.py 
-[lprieto@login01 RA_DCOPF_OET]$ vi wrapper_2021_TE.py 
-[lprieto@login01 RA_DCOPF_OET]$ vi wrapper_2021_TE.py 
-[lprieto@login01 RA_DCOPF_OET]$ bsub < submit_job.csh 
-Job <421414> is submitted to default queue <debug>.
-[lprieto@login01 RA_DCOPF_OET]$ bjobs
-JOBID   USER    STAT  QUEUE      FROM_HOST   EXEC_HOST   JOB_NAME   SUBMIT_TIME
-407680  lprieto RUN   ise        c052n04     8*sr1       *021_TE.py Apr 23 12:44
-421414  lprieto PEND  debug      login01                 *eactivate Apr 24 04:43
-[lprieto@login01 RA_DCOPF_OET]$ bjobs
-JOBID   USER    STAT  QUEUE      FROM_HOST   EXEC_HOST   JOB_NAME   SUBMIT_TIME
-407680  lprieto RUN   ise        c052n04     8*sr1       *021_TE.py Apr 23 12:44
-421414  lprieto PEND  debug      login01    ion:
+    Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: MILP
     Kind of problem: Infrastructure
