@@ -247,6 +247,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
 
+    if metrics["status"] not in {"ok", "TO", "ER"}:
+        print(
+            f"WARNING: unknown solver status. Captured output:\n{result.stdout}\n{result.stderr}"
+        )
+
     metrics["memory"] = memory
     metrics["timeout"] = timeout
 

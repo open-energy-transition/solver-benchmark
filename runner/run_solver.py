@@ -83,13 +83,14 @@ def get_duality_gap(solver_model, solver_name: str):
     """Retrieve the duality gap for the given solver model, if available."""
     if solver_name == "scip":
         return solver_model.getGap()
-    elif solver_name == "gurobi" and solver_model.IsMIP:
+    elif solver_name == "gurobi":
         return solver_model.MIPGap
-    elif solver_name == "highs" and solver_model:
-        info = solver_model.getInfo()
-        return info.mip_gap if hasattr(info, "mip_gap") else None
-    elif solver_name in {"glpk", "cbc"}:
-        # These solvers do not have a way to retrieve the duality gap from python
+    elif solver_name == "highs":
+        return getattr(solver_model.getInfo(), "mip_gap", None)
+    elif solver_name == "cbc":
+        return getattr(solver_model, "mip_gap", None)
+    elif solver_name == "glpk":
+        # GLPK does not have a way to retrieve the duality gap from python
         return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
@@ -115,7 +116,7 @@ def get_milp_metrics(input_file, solver_result):
                 )
                 return duality_gap, max_integrality_violation
     except Exception:
-        print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
+        print(f"ERROR obtaining MILP metrics: {format_exc()}", file=sys.stderr)
     return None, None
 
 
@@ -127,6 +128,8 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.getRunTime()
             case "scip":
                 return solver_model.getSolvingTime()
+            case "cbc":
+                return solver_model.runtime
             case "gurobi":
                 return solver_model.Runtime
     except Exception:
