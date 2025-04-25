@@ -23,7 +23,7 @@ const Navbar = () => {
       </button>
 
       <aside
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className="fixed top-0 left-0 z-40 w-[17rem] h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidenav"
       >
         <div className="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
