@@ -116,7 +116,10 @@ def get_milp_metrics(input_file, solver_result):
                 )
                 return duality_gap, max_integrality_violation
     except Exception:
-        print(f"ERROR obtaining MILP metrics: {format_exc()}", file=sys.stderr)
+        print(
+            f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
+            file=sys.stderr,
+        )
     return None, None
 
 
@@ -132,6 +135,9 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.runtime
             case "gurobi":
                 return solver_model.Runtime
+            case _:
+                print(f"WARNING: cannot obtain reported runtime for {solver_name}")
+                return None
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
     return None
