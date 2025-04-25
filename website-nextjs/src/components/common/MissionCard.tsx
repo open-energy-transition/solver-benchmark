@@ -22,7 +22,7 @@ const MissionCard = ({
 }: MissionCardProps) => {
   return (
     <div
-      className={`p-11 rounded-[48px] border-white border bg-white bg-opacity-30 w-full flex flex-col ${wrapperClass}`}
+      className={`p-11 rounded-[48px] border-white border bg-white bg-opacity-30 w-full flex flex-col hover:border-opacity-30 border-opacity-60 ${wrapperClass}`}
     >
       <div>
         <Icon />

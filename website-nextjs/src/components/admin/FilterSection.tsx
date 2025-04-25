@@ -273,10 +273,6 @@ const FilterSection = () => {
     <div>
       <div className="pb-3 pt-2">
         <div className="text-navy font-bold text-xl 4xl:text-2xl">Filter</div>
-        <div className="text-dark-grey text-sm flex flex-wrap items-center 4xl:text-xl">
-          Customize your parameters to refine the data view. Results will adjust
-          dynamically based on your selections.
-        </div>
       </div>
       <div className="flex justify-start mb-2">
         {isAnyFilterActive() && (
@@ -315,7 +311,7 @@ const FilterSection = () => {
         <div
           className={`${
             isMobileMenuOpen ? "block" : "hidden"
-          } xl:flex xl:flex-wrap 2xl:flex-nowrap text-dark-grey 2xl:gap-4 p-4`}
+          } xl:flex xl:flex-wrap 2xl:flex-nowrap text-dark-grey 2xl:gap-0 p-2`}
         >
           {/* Sectors */}
           <FilterGroup

@@ -13,10 +13,10 @@ import { fetchGitHubStats } from "@/utils/githubApi";
 
 const Contribute = () => {
   const [stats, setStats] = useState({
-    contributors: 3,
-    issues: 5,
-    stars: 2,
-    forks: 1,
+    contributors: 0,
+    issues: 0,
+    stars: 0,
+    forks: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -81,7 +81,7 @@ const Contribute = () => {
         </div>
         <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative">
           <div className="font-lato text-xl/1.4 max-w-[541px]">
-            <div className=" font-medium">
+            <div className="font-medium">
               We accept community contributions for new benchmarks, new /
               updated solver versions, and feedback on the benchmarking
               methodology and metrics via our

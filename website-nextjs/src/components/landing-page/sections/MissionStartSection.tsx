@@ -27,7 +27,6 @@ const MissionStart = () => {
             description="Improve your solver algorithms and performance using our realistic and energy planning relevant benchmarks"
             linkText="Benchmark Details"
             linkHref={PATH_DASHBOARD.benchmarkDetail.list}
-            wrapperClass="border-opacity-60"
           />
           <MissionCard
             Icon={BoldAltIcon}
@@ -36,7 +35,6 @@ const MissionStart = () => {
             linkText="Compare Solvers"
             linkHref="/dashboard/compare-solvers"
             linkClass="mb-4"
-            wrapperClass="border-opacity-10"
           />
           <MissionCard
             Icon={DollarSignIcon}
@@ -44,7 +42,6 @@ const MissionStart = () => {
             description="Track the evolution of solver performance over time, and maximize the potential return on your investment"
             linkText="Solver Performance History"
             linkHref="/dashboard/performance-history"
-            wrapperClass="border-opacity-60"
           />
         </div>
       </div>

@@ -64,7 +64,7 @@ const MainContent = () => {
                 text-teal
               "
             >
-              Getting started
+              GETTING STARTED
             </a>
             <Link
               href="/dashboard/home"

@@ -62,12 +62,12 @@ const HowDoWeBenchmarkSection = () => {
             to run your own benchmarks!
           </h5>
           <div className="mt-6 xl:ml-4">
-            <strong>Read more</strong> about our methodology, caveats, and known{" "}
+            Read more about our methodology, caveats, and known issues{" "}
             <Link
-              href="https://github.com/open-energy-transition/solver-benchmark/issues"
+              href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
               className="underline font-bold cursor-pointer"
             >
-              issues here →
+              here →
             </Link>
           </div>
         </div>

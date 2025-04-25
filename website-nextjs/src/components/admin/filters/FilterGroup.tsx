@@ -30,7 +30,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
 }) => {
   return (
     <div
-      className={`text-xs border-b xl:border-b-0 xl:border-r border-stroke w-full ${className}`}
+      className={`text-xs border-b xl:border-b-0 xl:border-r last:border-r-0 border-stroke w-full ${className}`}
     >
       <div className="flex items-center justify-between pr-3 border-b border-stroke">
         <div className="flex items-center border-b-0 border-stroke px-3 py-2 gap-1 4xl:text-lg">
