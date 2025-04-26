@@ -2,6 +2,7 @@
 # Log all output to a file
 exec > >(tee /var/log/startup-script.log) 2>&1
 echo "Starting setup script at $(date)"
+start_time=$(date +%s)
 
 # Generate a unique run ID using timestamp and instance ID
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -44,6 +45,7 @@ rm ~/miniconda3/miniconda.sh
 echo "Setting up conda environment..."
 echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
 ~/miniconda3/bin/conda init bash
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # Get benchmark years from instance metadata
 BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
@@ -83,6 +85,7 @@ if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "All benchmarks completed at $(date)"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # Create a copy of results
 CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
@@ -100,6 +103,7 @@ if [ $COPY_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Benchmark results successfully copied at $(date)"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # ----- GCS UPLOAD CONFIGURATION -----
 # Only proceed if the benchmark and copy operations were successful
