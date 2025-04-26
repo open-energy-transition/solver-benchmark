@@ -58,7 +58,9 @@ for year in "${years[@]}"; do
         echo "Conda env $env_name already exists; using this env for $year's benchmarks"
     else
         echo "Creating conda env $env_name..."
-        time conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+        # TODO temporarily using non-fixed env in order to use latest linopy. Revert on next release!
+        # time conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+        time conda env create -q -f ./runner/envs/benchmark-$year.yaml -y
     fi
 
     # Run the benchmark script for the year
