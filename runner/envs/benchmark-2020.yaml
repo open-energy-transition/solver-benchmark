@@ -8,7 +8,7 @@ dependencies:
 - pip
 
 - requests>=2.32
-- linopy>=0.5.3
+# - linopy>=0.5.3
 
 # Disabled due to CBC bug https://github.com/coin-or/Cbc/issues/708
 # - coin-or-cbc==2.10.5
@@ -21,3 +21,7 @@ dependencies:
 # - gurobi==9.1.1  # TODO needs py<39 but linopy needs py>39
 
 # HiGHS was released first in 2021 so it is omitted here
+
+- pip:
+  # TODO use conda linopy after release
+  - git+https://github.com/PyPSA/linopy@master

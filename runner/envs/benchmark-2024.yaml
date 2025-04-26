@@ -8,7 +8,7 @@ dependencies:
 - pip
 
 - requests>=2.32
-- linopy>=0.5.3
+# - linopy>=0.5.3
 
 - coin-or-cbc==2.10.12
 
@@ -20,3 +20,5 @@ dependencies:
 
 - pip:
   - highspy==1.9.0
+  # TODO use conda linopy after release
+  - git+https://github.com/PyPSA/linopy@master
