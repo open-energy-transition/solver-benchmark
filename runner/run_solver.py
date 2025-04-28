@@ -1,7 +1,8 @@
 import json
 import sys
 from pathlib import Path
-from time import time
+from time import perf_counter
+from traceback import format_exc
 
 import pandas as pd
 from linopy import solvers
@@ -115,6 +116,24 @@ def get_milp_metrics(input_file, solver_result):
     return None, None
 
 
+def get_reported_runtime(solver_name, solver_model) -> float | None:
+    """Get the solving runtime as reported by the solver from the solver's Python object."""
+    try:
+        match solver_name:
+            case "highs":
+                return solver_model.getRunTime()
+            case "scip":
+                return solver_model.getSolvingTime()
+            case "gurobi":
+                return solver_model.Runtime
+            case _:
+                print(f"WARNING: cannot obtain reported runtime for {solver_name}")
+                return None
+    except Exception:
+        print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
+    return None
+
+
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     solver = get_solver(solver_name)
@@ -130,17 +149,21 @@ def main(solver_name, input_file, solver_version):
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    # Run the solver and measure runtime
-    start_time = time()
+    # We measure runtime here and not of this entire script because lines like
+    # `import linopy` take a long (and varying) amount of time
+    start_time = perf_counter()
     solver_result = solver.solve_problem(
         problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
-    runtime = time() - start_time
+    runtime = perf_counter() - start_time
 
     duality_gap, max_integrality_violation = get_milp_metrics(input_file, solver_result)
 
     results = {
         "runtime": runtime,
+        "reported_runtime": get_reported_runtime(
+            solver_name, solver_result.solver_model
+        ),
         "status": solver_result.status.status.value,
         "condition": solver_result.status.termination_condition.value,
         "objective": solver_result.solution.objective,
