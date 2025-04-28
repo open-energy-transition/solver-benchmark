@@ -528,6 +528,7 @@ def main(
                     reference_metrics["solver_version"] = reference_solver_version
                     reference_metrics["solver_release_year"] = "N/A"
                     reference_metrics["reported_runtime"] = None
+                    reference_metrics["timeout"] = None
 
                     # Record reference benchmark results
                     reference_timestamp = datetime.datetime.now().strftime(
