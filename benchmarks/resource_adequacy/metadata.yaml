@@ -38,6 +38,8 @@ benchmarks:
       Realistic: true
       Num. constraints: 220143
       Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
   DCOPF-Carolinas_2M:
     Short description: High-resolution model for North and South Carolina
     Model name: DCOPF
@@ -76,6 +78,8 @@ benchmarks:
       Realistic: true
       Num. constraints: 220143
       Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
   DCOPF-Carolinas_6M:
     Short description: High-resolution model for North and South Carolina
     Model name: DCOPF
@@ -114,3 +118,5 @@ benchmarks:
       Realistic: true
       Num. constraints: 220143
       Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
