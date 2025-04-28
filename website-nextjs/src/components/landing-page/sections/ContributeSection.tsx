@@ -1,9 +1,9 @@
 import Image from "next/image";
 import {
-  ArrowUpIcon,
   CircleOutlineIcon,
   ForkIcon,
   GithubIcon,
+  LinkOutlineIcon,
   StarIcon,
   UserIcon,
 } from "@/assets/icons";
@@ -13,10 +13,10 @@ import { fetchGitHubStats } from "@/utils/githubApi";
 
 const Contribute = () => {
   const [stats, setStats] = useState({
-    contributors: 3,
-    issues: 5,
-    stars: 2,
-    forks: 1,
+    contributors: 0,
+    issues: 0,
+    stars: 0,
+    forks: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -40,89 +40,117 @@ const Contribute = () => {
   }, []);
 
   return (
-    <div className="text-navy bg-white pt-24 pb-8">
-      <div className="mx-auto container px-4 lg:px-6">
-        <div className="grid md:flex">
-          <div className="w-full md:w-7/12">
-            <div className="text-dark-grey text-xl leading-1.1 uppercase font-bold font-league mt-2.5 mb-4">
-              contributions
-            </div>
-            <div className="text-[4rem] leading-1.1 font-league mb-2">
-              <div className="font-bold">CHECK OUT OUR CODE,</div>
-              <div className="font-bold">JOIN THE EFFORT!</div>
-            </div>
-            <h5 className="text-dark-grey max-w-lg">
+    <div className="py-5 text-[#F0ECE4] bg-navy">
+      <div
+        className="
+          xl:flex
+          mx-auto
+          max-w-8xl
+          px-4
+          lg:px-[70px]
+          lg:pr-[44px]
+          pt-[67px]
+          pb-16
+          justify-between
+        "
+      >
+        <div className="w-full xl:w-1/4">
+          <div
+            className="
+                text-lg/1.1
+                uppercase
+                font-medium
+                tracking-normal
+                font-league
+                mb-4
+              "
+          >
+            contributions
+          </div>
+          <div
+            className="
+                text-[2.5rem]/1.4
+                tracking-normal
+                font-extrabold
+                font-lato
+                mb-2
+              "
+          >
+            CHECK OUT OUR CODE, JOIN THE EFFORT!
+          </div>
+        </div>
+        <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative">
+          <div className="font-lato text-xl/1.4 max-w-[541px]">
+            <div className="font-medium">
               We accept community contributions for new benchmarks, new /
               updated solver versions, and feedback on the benchmarking
               methodology and metrics via our
-              <span className="font-bold ml-1">GitHub repository</span>
-              <span className="text-green-pop font-bold">.</span>
-            </h5>
-            <div className="grid justify-center md:flex md:justify-between text-black max-w-lg pt-1">
+            </div>
+            <span className="font-bold">GitHub repository.</span>
+            <div className="justify-center flex md:justify-between max-w-lg pt-1">
               <div className="py-9 text-center flex-1">
-                <div className="font-bold flex items-center">
+                <div className="flex items-center">
                   <UserIcon className="mr-2" />
-                  <h5 className="font-bold">
+                  <div className="font-bold text-2xl/1.4 font-lato">
                     {loading
                       ? "..."
                       : stats.contributors.toString().padStart(2, "0")}
-                  </h5>
+                  </div>
                 </div>
-                <p className="text-base text-left mt-2">Contributors</p>
+                <p className="text-base/1.5 font-lato text-left mt-2">
+                  Contributors
+                </p>
               </div>
               <div className="py-9 text-center flex-1">
-                <div className="font-bold flex items-center">
+                <div className="flex items-center">
                   <CircleOutlineIcon className="mr-2" />
-                  <h5 className="font-bold">
+                  <div className="font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.issues.toString().padStart(2, "0")}
-                  </h5>
+                  </div>
                 </div>
-                <p className="text-base text-left mt-2">Issues</p>
+                <p className="text-base/1.5 font-lato text-left mt-2">Issues</p>
               </div>
               <div className="py-9 text-center flex-1">
-                <div className="font-bold flex items-center">
+                <div className="flex items-center">
                   <StarIcon className="mr-2" />
-                  <h5 className="font-bold">
+                  <div className="font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.stars.toString().padStart(2, "0")}
-                  </h5>
+                  </div>
                 </div>
-                <p className="text-base text-left mt-2">Stars</p>
+                <p className="text-base/1.5 font-lato text-left mt-2">Stars</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <ForkIcon className="mr-2" />
-                  <h5 className="font-bold">
+                  <h5 className="font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </h5>
                 </div>
-                <p className="text-base text-left mt-2">Fork</p>
+                <p className="text-base/1.5 font-lato text-left mt-2">Fork</p>
               </div>
             </div>
+            <Link
+              href="https://github.com/open-energy-transition/solver-benchmark"
+              className="w-max bg-[#F0ECE4] items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
+            >
+              <div
+                id="mission-section"
+                className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase"
+              >
+                <GithubIcon className="mr-2" />
+                <div>Contribute now</div>
+              </div>
+              <LinkOutlineIcon className="text-navy size-5 ml-3 mr-4" />
+            </Link>
           </div>
-          <div className="hidden md:block w-5/12">
-            <Image
-              className="w-full h-auto"
-              src="/landing_page/contribution.png"
-              alt="Contribution image"
-              width={517}
-              height={494}
-            />
-          </div>
+          <Image
+            className="absolute hidden lg:block  w-[341px] h-[361px] top-0 right-0 lg:-right-8 rounded-[48px]"
+            src="/landing_page/contribution.png"
+            alt="Contribution image"
+            width={341}
+            height={361}
+          />
         </div>
-
-        <Link
-          href="https://github.com/open-energy-transition/solver-benchmark"
-          className="mt-11 px-2 py-1.5 relative border-b border-teal border-opacity-50 flex justify-between"
-        >
-          <div
-            id="mission-section"
-            className="flex items-center gap-1 font-bold text-navy text-opacity-70"
-          >
-            <GithubIcon />
-            <h5>GITHUB REPOSITORY</h5>
-          </div>
-          <ArrowUpIcon className="text-black rotate-90 size-6 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
-        </Link>
       </div>
     </div>
   );

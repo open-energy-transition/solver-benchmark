@@ -27,16 +27,22 @@ const BenchmarksSection = () => {
   }, [sgmMode, benchmarkLatestResults]);
 
   return (
-    <div className="py-4">
-      <D3Chart chartData={benchmarkResults} />
-      <div className="pt-1.5 pb-3 pl-3">
-        <p className="flex gap-1 items-center text-dark-grey text-sm">
-          <CloseIcon className="size-3" />
-          represents benchmarks that timed out, while
-          <CircleIcon className="size-3" />
-          indicates a successful run.
-        </p>
+    <div>
+      <div>
+        <div className="pt-1.5 pb-3">
+          <div className="text-navy font-bold text-xl 4xl:text-2xl">
+            Benchmarks
+          </div>
+
+          <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
+            <CloseIcon className="size-3" />
+            represents benchmarks that timed out, while
+            <CircleIcon className="size-3" />
+            indicates a successful run.
+          </p>
+        </div>
       </div>
+      <D3Chart chartData={benchmarkResults} />
     </div>
   );
 };

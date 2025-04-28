@@ -30,16 +30,15 @@ export async function fetchGitHubStats(
 
     // Fetch open issues count
     const issuesResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=1`,
+      `https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue`,
     );
     if (!issuesResponse.ok) throw new Error("Failed to fetch issues data");
-    const linkHeaderIssues = issuesResponse.headers.get("Link") || "";
-    const matchIssues = linkHeaderIssues.match(/page=(\d+)>; rel="last"/);
-    const issuesCount = matchIssues ? parseInt(matchIssues[1], 10) : 0;
+    const issuesData = await issuesResponse.json();
+    const totalIssues = issuesData.total_count;
 
     return {
       contributors: contributorsCount,
-      issues: issuesCount,
+      issues: totalIssues,
       stars: repoData.stargazers_count,
       forks: repoData.forks_count,
     };

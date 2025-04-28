@@ -9,7 +9,7 @@ interface INormalizedSGMMemoryUsage {
 const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
   return (
     <div>
-      <p className="text-navy font-bold leading-1.5 mb-3">
+      <p className="text-navy font-bold leading-1.5 mb-3 4xl:text-xl">
         Normalized SGM Memory Usage
       </p>
       <D3LineChart

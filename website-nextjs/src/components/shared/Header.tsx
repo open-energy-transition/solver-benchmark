@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between px-4 lg:px-8 pt-12 pb-8 mx-auto container"
+        className="flex items-center justify-between pt-12 pb-8 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
         aria-label="Global"
       >
         <div className="flex w-max">
@@ -39,30 +39,61 @@ const Header = () => {
           </button>
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
-          <Link href="#benchmark-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#benchmark-section"
+            className="text-sm/6 font-semibold 4xl:text-base"
+          >
             BENCHMARKS
           </Link>
           <Link
             href="#contribution-section"
-            className="text-sm/6 font-semibold"
+            className="text-sm/6 font-semibold 4xl:text-base"
           >
             CONTRIBUTIONS
           </Link>
-          <Link href="#mission-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#mission-section"
+            className="text-sm/6 font-semibold 4xl:text-base"
+          >
             MISSION
           </Link>
-          <Link href="#faq-section" className="text-sm/6 font-semibold">
+          <Link
+            href="#faq-section"
+            className="text-sm/6 font-semibold 4xl:text-base"
+          >
             FAQs
           </Link>
         </div>
         <div className="hidden lg:flex w-max">
           <Link
             href="https://openenergytransition.org/"
-            className="flex gap-1 rounded-lg px-4 2xl:px-7 py-3 text-base text-navy font-bold bg-white shadow-sm
-                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max"
+            className="
+              2xl:px-7
+              border
+              border-[#EBEFF24D]
+              border-opacity-30
+              rounded-2xl
+              flex
+              focus-visible:outline
+              focus-visible:outline-2
+              focus-visible:outline-offset-2
+              font-bold
+              gap-1
+              px-6
+              py-3
+              shadow-sm
+              text-base
+              w-max
+            "
           >
-            OPEN ENERGY TRANSITION
-            <ArrowUpLeftIcon className="rotate-90" />
+            <Image
+              src="/logo/logo-light.svg"
+              alt="Open Energy Transition Logo"
+              width={47}
+              height={22}
+              className="hidden lg:block"
+            />
+            <ArrowUpLeftIcon className="rotate-90 text-white" />
           </Link>
         </div>
       </nav>
@@ -72,7 +103,7 @@ const Header = () => {
         <div className="lg:hidden" role="dialog" aria-modal="true">
           {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
           <div className="fixed inset-0 z-50"></div>
-          <div className="fixed inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed mt-12 inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between font-league font-bold text-white text-3xl md:text-4xl">
               <a href="#" className="-m-1.5 p-1.5">
                 <div className="flex">

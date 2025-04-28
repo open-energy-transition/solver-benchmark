@@ -52,7 +52,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       top: 40,
       right: window.innerWidth < 640 ? 10 : 20,
       bottom: 50,
-      left: window.innerWidth < 640 ? 50 : 70,
+      left: window.innerWidth < 640 ? 50 : 80,
     };
 
     // Clear previous SVG
@@ -252,8 +252,14 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
 
     // Function to update axes
     const updateAxes = () => {
-      xAxisGroup.call(d3.axisBottom(xScale).ticks(6).tickSizeOuter(0));
-      yAxisGroup.call(d3.axisLeft(yScale).ticks(6).tickSizeOuter(0));
+      xAxisGroup
+        .call(d3.axisBottom(xScale).ticks(6).tickSizeOuter(0))
+        .selectAll(".tick text")
+        .attr("class", "4xl:text-base");
+      yAxisGroup
+        .call(d3.axisLeft(yScale).ticks(6).tickSizeOuter(0))
+        .selectAll(".tick text")
+        .attr("class", "4xl:text-base");
     };
 
     // Initial axes render
@@ -266,19 +272,17 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .attr("y", 40)
       .attr("fill", "#8C8C8C")
       .text("Runtime (s)")
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif");
+      .attr("class", "text-xs font-lato 4xl:text-lg");
 
     yAxisGroup
       .append("text")
       .attr("x", -height / 2)
-      .attr("y", -50)
+      .attr("y", window.innerWidth >= 1920 ? -60 : 50)
       .attr("fill", "#8C8C8C")
       .text("Peak Memory Usage (MB)")
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
       .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle");
+      .attr("text-anchor", "middle")
+      .attr("class", "text-xs font-lato 4xl:text-lg");
 
     // Apply zoom to SVG
     svgSelection.call(zoom);
@@ -365,13 +369,13 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     <div className="bg-white py-2 sm:py-4 px-4 sm:px-10 rounded-xl relative">
       {/* Legend */}
       <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
-        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
+        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end 4xl:text-base">
           Solver:
         </span>
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
-            className="py-1 px-3 sm:px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+            className="py-1 px-3 sm:px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
           >
             <CircleIcon
               style={{ color: solverColors[solverKey] }}

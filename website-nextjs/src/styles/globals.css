@@ -37,6 +37,12 @@
   --banner-height: 40px;
 }
 
+@media (max-width: 768px) {
+  :root {
+    --banner-height: 60px;
+  }
+}
+
 body {
   font-family: var(--font-lato);
   overflow: hidden;

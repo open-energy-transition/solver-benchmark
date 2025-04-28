@@ -1,6 +1,11 @@
 import { useSelector } from "react-redux";
 // local
-import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import {
+  AdminHeader,
+  ContentWrapper,
+  Footer,
+  Navbar,
+} from "@/components/shared";
 import Head from "next/head";
 import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult";
 import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
@@ -15,10 +20,6 @@ import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkSt
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
-  const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
-  );
-
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -186,18 +187,17 @@ const PageBenchmarkDetail = () => {
       </Head>
       <div className="bg-light-blue">
         <Navbar />
-        <div
-          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "md:ml-64" : "md:ml-20"
-          }`}
-        >
+        <ContentWrapper>
           <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
               <div className="flex items-center gap-1">
                 <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
+                  <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
                 </Link>
-                <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                <ArrowIcon
+                  fill="none"
+                  className="size-3 4xl:size-4 stroke-navy"
+                />
                 <span className="self-center font-semibold whitespace-nowrap">
                   Benchmark Details
                 </span>
@@ -206,19 +206,21 @@ const PageBenchmarkDetail = () => {
           </AdminHeader>
           {/* Content */}
           <div className="py-2">
-            <div className="text-navy text-xl font-bold">Benchmarks</div>
-            <p className="text-[#5D5D5D]">
+            <div className="text-navy text-xl font-bold 4xl:text-2xl">
+              Benchmarks
+            </div>
+            <p className="text-[#5D5D5D] 4xl:text-xl">
               On this page you can see details of all the benchmarks on our
               platform, including their source and download links.
             </p>
           </div>
 
-          <div className="py-2 flex justify-between items-center">
-            <div className="text-navy text-lg font-bold">
+          <div className="py-2 grid sm:flex justify-between items-center">
+            <div className="text-navy text-lg font-bold 4xl:text-xl">
               Summary of Benchmark Set
             </div>
             <Link
-              className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
+              className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
               href={PATH_DASHBOARD.benchmarkSummary}
             >
               See more details
@@ -233,7 +235,7 @@ const PageBenchmarkDetail = () => {
             availableProblemSizes={availableProblemSizes}
           />
           <div className="py-2">
-            <div className="text-navy text-lg font-bold">
+            <div className="text-navy text-lg font-bold 4xl:text-xl">
               List of All Benchmarks
             </div>
           </div>
@@ -247,7 +249,7 @@ const PageBenchmarkDetail = () => {
             availableProblemSizes={availableProblemSizes}
           />
           <BenchmarkTableResult metaData={filteredMetaData} />
-        </div>
+        </ContentWrapper>
         <Footer />
       </div>
     </>
