@@ -343,7 +343,6 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=10 * 60,
     reference_interval=0,  # Default: disabled
     append=False,
     run_id=None,
@@ -419,6 +418,7 @@ def main(
                 {
                     "name": benchmark_name,
                     "size": instance["Name"],
+                    "size_category": instance["Size"],
                     "path": benchmark_path,
                 }
             )
@@ -433,6 +433,9 @@ def main(
         reference_solver_version = get_highs_binary_version()
 
     for benchmark in processed_benchmarks:
+        # Set timeout of 1h for S & M, 10h for L
+        timeout = 10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
+
         for solver in solvers:
             solver_version = solvers_versions.get(solver)
             if not solver_version:
