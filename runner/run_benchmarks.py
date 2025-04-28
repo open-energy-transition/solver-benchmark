@@ -442,6 +442,16 @@ def main(
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
 
+            # TODO: a hack to not run 2024's HiGHS on L benchmarks
+            # because we only want to run the latest version of each solver on L benchmarks
+            if (
+                benchmark["size_category"] == "L"
+                and solver == "highs"
+                and solver_version == "1.9.0"
+            ):
+                print(f"WARNING: skipping {solver} v{solver_version}")
+                continue
+
             metrics = {}
             runtimes = []
             memory_usages = []
