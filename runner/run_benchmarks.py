@@ -230,9 +230,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
-        print(
-            f"ERROR running solver. Captured output:\n{result.stdout}\n{result.stderr}"
-        )
+        print(f"ERROR running solver. Return code:\n{result.returncode}")
         # Errors are also said to have run for `timeout`s, so that they appear
         # along with timeouts in charts
         metrics = {
@@ -246,6 +244,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
+
+    if metrics["status"] not in {"ok", "TO", "ER"}:
+        print(f"WARNING: unknown solver status: {metrics['status']}")
 
     metrics["memory"] = memory
     metrics["timeout"] = timeout
@@ -299,9 +300,7 @@ def benchmark_highs_binary():
     )
     runtime = time.perf_counter() - start_time
     if result.returncode != 0:
-        print(
-            f"ERROR running reference benchmark. Captured output:\n{result.stdout}\n{result.stderr}"
-        )
+        print(f"ERROR running solver. Return code:\n{result.returncode}")
         metrics = {
             "status": "ER",
             "condition": "Error",
