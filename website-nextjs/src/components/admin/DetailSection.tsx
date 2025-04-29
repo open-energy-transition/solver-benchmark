@@ -88,8 +88,11 @@ const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
         <>
           Solvers:{" "}
           <span className="font-bold">
-            {availableSolvers.length} {`(${avaliableVersion.length}`} versions
-            {")"}
+            {availableSolvers.length}
+            <span className="hidden xl:inline">
+              {`(${avaliableVersion.length}`} versions
+              {")"}
+            </span>
           </span>
         </>
       ),
@@ -118,20 +121,27 @@ const DetailSection = ({ useMetadataCount = false }: DetailSectionProps) => {
   ];
 
   return (
-    <div className="bg-white rounded-xl py-4 px-12">
-      <ul className="flex justify-between text-dark-grey">
+    <div className="bg-white rounded-xl py-4 px-4 xl:px-8 2xl:px-4 4xl:px-4 4xl:px-20">
+      <ul className="grid grid-cols-1 md:grid-cols-3 2xl:flex 2xl:flex-row 2xl:justify-between gap-4 2xl:gap-4 text-dark-grey">
         {detailData.map((data, idx) => (
-          <li key={idx} className="text-base flex items-center">
-            {data.icon}
+          <li
+            key={idx}
+            className="text-sm xl:text-base 2xl:text-lg 4xl:text-xl flex items-center"
+          >
+            <span className="w-6 xl:w-auto 4xl:w-8">{data.icon}</span>
             {data.generateLabel ? (
-              <div className="ml-1">{data.generateLabel()}</div>
+              <div className="ml-1 2xl:ml-2 4xl:ml-3">
+                {data.generateLabel()}
+              </div>
             ) : (
-              <div className="ml-1">
-                <span className="ml-1">
+              <div className="ml-1 2xl:ml-2 4xl:ml-3">
+                <span className="ml-1 2xl:ml-2 4xl:ml-3">
                   {data.label}
                   {":"}
                 </span>
-                <span className="font-bold ml-1">{data.value}</span>
+                <span className="font-bold ml-1 2xl:ml-2 4xl:ml-3">
+                  {data.value}
+                </span>
               </div>
             )}
           </li>

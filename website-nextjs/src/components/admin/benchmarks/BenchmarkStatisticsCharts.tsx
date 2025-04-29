@@ -133,8 +133,8 @@ const BenchmarkStatisticsCharts = ({
   }, [metaData, availableProblemSizes]);
 
   return (
-    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative">
-      <div className="-rotate-90 absolute left-[-85px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2">
+    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative 4xl:py-16">
+      <div className="-rotate-90 absolute left-[-85px] 4xl:left-[-130px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2 4xl:text-lg">
         Number of benchmark instances
       </div>
       <div className="xl:flex xl:flex-row justify-between">
@@ -151,7 +151,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full xl:w-1/3">
+        <div className="flex-1 w-full mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="px-0"
             data={timeHorizonsChartData}
@@ -164,7 +164,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full xl:w-1/3">
+        <div className="flex-1 w-full mt-4 lg:mt-0  xl:w-1/3">
           <D3BarChart
             className="px-0"
             data={sizeData}

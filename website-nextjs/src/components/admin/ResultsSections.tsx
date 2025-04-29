@@ -362,19 +362,36 @@ const ResultsSection = () => {
 
   const [activedIndex, setActivedIndex] = useState(0);
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobileView = windowWidth < 1024;
+
   return (
     <div>
-      <div className="pb-3 pl-3">
+      <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-dark-grey text-sm flex flex-wrap items-center">
-          You can rank the latest version of each solver by number of solved
-          benchmark instances, or by the normalized shifted geometric mean (SGM{" "}
+        <div className="text-dark-grey text-sm block items-center lg:max-w-[70%] 4xl:text-xl">
+          <span>
+            You can rank the latest version of each solver by number of solved
+            benchmark instances, or by the normalized shifted geometric mean
+            (SGM
+          </span>
           <span className="inline-flex gap-2">
             <Popup
               on={["hover"]}
               trigger={() => (
-                <span className="flex items-center">
-                  <QuestionLine className="w-4 h-4" />)
+                <span className="flex items-baseline">
+                  <QuestionLine
+                    className="size-3.5 4xl:size-5"
+                    viewBox="0 0 24 20"
+                  />
+                  )
                 </span>
               )}
               position="right center"
@@ -394,51 +411,95 @@ const ResultsSection = () => {
               </div>
             </Popup>
           </span>
-          of runtime and memory consumption over all benchmarks
+          <span> of runtime and memory consumption over all benchmarks</span>
         </div>
       </div>
-      <div className="flex text-xs leading-1.5">
-        {columns.map((column, i) => (
-          <div
-            key={column.field}
-            className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
-          >
+
+      {isMobileView ? (
+        // Mobile view
+        <div className="flex flex-col gap-4 px-4">
+          {sortedTableData.map((item, index) => (
             <div
-              className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer"
-              onClick={() => column.sort && handleSort(column.field)}
+              key={index}
+              className="bg-white rounded-xl shadow-sm p-4 border border-gray-100"
             >
-              {column.headerContent
-                ? column.headerContent(column.name)
-                : column.name}
-              {column.sort && (
-                <ArrowIcon
-                  fill="none"
-                  stroke={sortConfig.field === column.field ? "black" : "gray"}
-                  className={`w-2 h-2 ${
-                    sortConfig.direction === "asc" ? "-rotate-90" : "rotate-90"
-                  }
-                    ${sortConfig.field === column.field ? "block" : "hidden"}`}
-                />
-              )}
-            </div>
-            {sortedTableData.map((item, index) => (
-              <div
-                key={`${column.field}-${index}`}
-                className={`h-6 flex items-center pl-3 pr-6 ${
-                  activedIndex === index
-                    ? `border-b border-t border-[#CAD3D0] ${
-                        i === 0 ? "border-l" : ""
-                      } ${i === columns.length - 1 ? "border-r" : ""}`
-                    : ""
-                }`}
-                onClick={() => setActivedIndex(index)}
-              >
-                {item[column.field as keyof TableRowType] ?? "-"}
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-dark-grey font-semibold">
+                  #{item.rank}
+                </span>
+                <span className="text-navy font-bold">{item.solver}</span>
               </div>
-            ))}
-          </div>
-        ))}
-      </div>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <div className="text-dark-grey">Version</div>
+                  <div className="font-medium">{item.version}</div>
+                </div>
+                <div>
+                  <div className="text-dark-grey">SGM Memory</div>
+                  <div className="font-medium">{item.memory}</div>
+                </div>
+                <div>
+                  <div className="text-dark-grey">Solved Benchmarks</div>
+                  <div className="font-medium">{item.solvedBenchmarks}</div>
+                </div>
+                <div>
+                  <div className="text-dark-grey">SGM Runtime</div>
+                  <div className="font-medium">{item.runtime}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        // Desktop view
+        <div className="flex text-xs leading-1.5">
+          {columns.map((column, i) => (
+            <div
+              key={column.field}
+              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+            >
+              <div
+                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer 4xl:text-xl"
+                onClick={() => column.sort && handleSort(column.field)}
+              >
+                {column.headerContent
+                  ? column.headerContent(column.name)
+                  : column.name}
+                {column.sort && (
+                  <ArrowIcon
+                    fill="none"
+                    stroke={
+                      sortConfig.field === column.field ? "black" : "gray"
+                    }
+                    className={`w-2 h-2 ${
+                      sortConfig.direction === "asc"
+                        ? "rotate-90"
+                        : "-rotate-90"
+                    }
+                    ${sortConfig.field === column.field ? "block" : "hidden"}`}
+                  />
+                )}
+              </div>
+
+              {sortedTableData.map((item, index) => (
+                <div
+                  key={`${column.field}-${index}`}
+                  className={`h-6 flex items-center pl-3 pr-6 4xl:text-xl 4xl:py-4 ${
+                    activedIndex === index
+                      ? `border-b border-t border-[#CAD3D0] ${
+                          i === 0 ? "border-l" : ""
+                        } ${i === columns.length - 1 ? "border-r" : ""}`
+                      : ""
+                  }`}
+                  onClick={() => setActivedIndex(index)}
+                >
+                  {item[column.field as keyof (typeof tableData)[0]] ?? "-"}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

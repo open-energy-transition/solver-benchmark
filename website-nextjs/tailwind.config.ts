@@ -8,12 +8,20 @@ export default {
   ],
   safelist: ["grid-cols-1", "grid-cols-2", "grid-cols-3"],
   theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+    },
     extend: {
+      screens: {
+        "3xl": "1920px",
+        "4xl": "2560px",
+      },
       colors: {
         black: "#000000",
         "columnbia-blue": "#BFDBF7",
         "dark-green": "#4C5C51",
-        "dark-grey": "#8C8C8C",
+        "dark-grey": "#4F4E4E",
         "green-pop": "#6B9080",
         grey: "#E4E2DF",
         gunmetal: "#022B3A",
@@ -34,6 +42,7 @@ export default {
         grotesk: ["var(--font-space-grotesk)", "sans-serif"],
       },
       fontSize: {
+        "4.5xl": "2.5rem",
         "6.5xl": "4rem",
       },
       lineHeight: {
@@ -42,6 +51,12 @@ export default {
         "1.3": "1.3",
         "1.4": "1.4",
         "1.5": "1.5",
+      },
+      maxWidth: {
+        "8xl": "1440px",
+      },
+      padding: {
+        "4.5": "1.125rem",
       },
     },
   },

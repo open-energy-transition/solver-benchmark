@@ -6,7 +6,8 @@ import {
   MainContentSection,
   MissionStartSection,
 } from "@/components/landing-page/sections";
-import { Footer, Header } from "@/components/shared";
+import HowDoWeBenchmarkSection from "@/components/landing-page/sections/HowDoWeBenchmarkSection";
+import { FooterLandingPage, Header } from "@/components/shared";
 
 const LandingPage = () => {
   return (
@@ -18,16 +19,18 @@ const LandingPage = () => {
         <MainContentSection />
         {/* Get Started Section */}
         <GetStartedSection />
-        {/* Contribute Section */}
-        <ContributeSection />
         {/* Mission Start Section*/}
         <MissionStartSection />
+        {/* HowDoWeBenchmarkSection */}
+        <HowDoWeBenchmarkSection />
+        {/* Contribute Section */}
+        <ContributeSection />
         {/* FAQs Section */}
         <FaqsSection />
         {/* Contact Section */}
         <ContactSection />
         {/* Footer Section */}
-        <Footer />
+        <FooterLandingPage />
       </div>
     </>
   );
