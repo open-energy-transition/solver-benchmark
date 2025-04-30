@@ -271,20 +271,26 @@ const FilterSection = () => {
 
   return (
     <div>
-      <div className="pb-3 pt-2">
-        <div className="text-navy font-bold text-xl 4xl:text-2xl">Filter</div>
+      <div className="pt-5 pl-1 pb-0 flex items-center gap-1">
+        <div className="flex gap-1 items-center">
+          <div className="text-navy font-bold text-xl 4xl:text-2xl pl-2">
+            Filter
+          </div>
+        </div>
+
+        <div className="flex justify-start ml-2">
+          {isAnyFilterActive() && (
+            <button
+              onClick={handleResetAllFilters}
+              className="bg-navy text-white px-3 py-1 rounded text-xs 4xl:text-xl hover:bg-opacity-80 transition-colors"
+            >
+              Reset All Filters
+            </button>
+          )}
+        </div>
       </div>
-      <div className="flex justify-start mb-2">
-        {isAnyFilterActive() && (
-          <button
-            onClick={handleResetAllFilters}
-            className="bg-navy text-white px-3 py-1 rounded text-xs 4xl:text-xl hover:bg-opacity-80 transition-colors"
-          >
-            Reset All Filters
-          </button>
-        )}
-      </div>
-      <div className="bg-white rounded-xl my-2 relative">
+
+      <div className="bg-white rounded-xl relative">
         {/* Mobile Menu Button */}
         <button
           className="xl:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between 4xl:text-xl"
@@ -292,7 +298,7 @@ const FilterSection = () => {
         >
           <span>Filters</span>
           <svg
-            className={`w-5 h-5 transition-transform ${
+            className={`w-5 h-5 transition-transform duration-300 ${
               isMobileMenuOpen ? "rotate-180" : ""
             }`}
             fill="none"
@@ -309,9 +315,11 @@ const FilterSection = () => {
         </button>
 
         <div
-          className={`${
-            isMobileMenuOpen ? "block" : "hidden"
-          } xl:flex xl:flex-wrap 2xl:flex-nowrap text-dark-grey 2xl:gap-0 p-2`}
+          className={`text-dark-grey p-2 xl:h-[calc(100vh-5rem-var(--banner-height))] overflow-y-auto transition-all duration-300 ${
+            isMobileMenuOpen
+              ? "max-h-[80vh] opacity-100"
+              : "max-h-0 xl:max-h-none opacity-0 xl:opacity-100 overflow-hidden"
+          }`}
         >
           {/* Sectors */}
           <FilterGroup
@@ -326,9 +334,9 @@ const FilterSection = () => {
               handleCheckboxChange({ category: "sectors", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "sectors" })}
-            className="xl:w-1/3 2xl:w-1/5"
-            itemClassName="xl:max-w-none 4xl:text-xl"
-            gridClassName="grid-cols-2 xl:grid-cols-1"
+            className="w-full"
+            itemClassName="4xl:text-xl"
+            gridClassName="grid-cols-1"
             uppercase={false}
           />
           {/* Technique */}
@@ -344,8 +352,8 @@ const FilterSection = () => {
               handleCheckboxChange({ category: "technique", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "technique" })}
-            className="xl:w-1/3 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-1"
+            className="w-full"
+            gridClassName="grid-cols-1"
             uppercase={false}
           />
           {/* Kind of Problem */}
@@ -365,8 +373,8 @@ const FilterSection = () => {
               })
             }
             onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
-            className="xl:w-1/3 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-1"
+            className="w-full"
+            gridClassName="grid-cols-1"
             uppercase={false}
           />
           {/* Problem Size */}
@@ -386,8 +394,8 @@ const FilterSection = () => {
               })
             }
             onSelectAll={() => handleSelectAll({ category: "problemSize" })}
-            className="xl:w-1/2 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-2"
+            className="w-full"
+            gridClassName="grid-cols-1"
             uppercase={true}
           />
           {/* Model */}
@@ -403,8 +411,8 @@ const FilterSection = () => {
               handleCheckboxChange({ category: "modelName", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "modelName" })}
-            className="xl:w-1/2 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-2"
+            className="w-full"
+            gridClassName="grid-cols-1"
             uppercase={false}
           />
         </div>

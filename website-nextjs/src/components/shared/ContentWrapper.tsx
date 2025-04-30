@@ -1,11 +1,18 @@
 import { useSelector } from "react-redux";
 import { ReactNode } from "react";
+import FilterSection from "../admin/FilterSection";
 
 interface ContentWrapperProps {
   children: ReactNode;
+  header: ReactNode;
+  showFilter?: boolean;
 }
 
-const ContentWrapper = ({ children }: ContentWrapperProps) => {
+const ContentWrapper = ({
+  children,
+  header,
+  showFilter = true,
+}: ContentWrapperProps) => {
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
@@ -20,14 +27,24 @@ const ContentWrapper = ({ children }: ContentWrapperProps) => {
         ${isNavExpanded ? "md:ml-64" : "md:ml-20"}
         `}
     >
-      <div
-        className="
-          px-4
-          pd:mx-0
-          3xl:mx-auto
-          max-w-screen-2xl"
-      >
-        {children}
+      <div className="max-w-8xl mx-auto">
+        <div>{header}</div>
+        <div className="sm:flex">
+          {showFilter && (
+            <div className="m-4 sm:x-0 sm:w-1/5 overflow-hidden bg-white rounded-xl h-max">
+              <FilterSection />
+            </div>
+          )}
+          <div
+            className={`
+              pd:mx-0
+              3xl:mx-auto
+              ${showFilter ? "sm:w-4/5 px-4" : "w-full"}
+              `}
+          >
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );

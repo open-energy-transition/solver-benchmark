@@ -64,3 +64,22 @@ body {
 .react-select__indicator.react-select__clear-indicator{
   display: none;
 }
+
+/* Custom styles for checkboxes */
+[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+[type=checkbox]:checked {
+  print-color-adjust: exact;
+  background-color: #022B3B;
+  border-color: #022B3B;
+  background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 12'%3e %3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M1 5.917 5.724 10.5 15 1.5'/%3e %3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 7px;
+}

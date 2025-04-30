@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 // local
 import BenchmarksSection from "@/components/admin/BenchmarksSection";
 import DetailSection from "@/components/admin/DetailSection";
-import FilterSection from "@/components/admin/FilterSection";
 import ResultsSection from "@/components/admin/ResultsSections";
 import {
   AdminHeader,
@@ -15,6 +14,7 @@ import { HomeIcon, PreviousIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IResultState } from "@/types/state";
+import ConfigurationSection from "@/components/admin/ConfigurationSection";
 
 const LandingPage = () => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
@@ -32,23 +32,25 @@ const LandingPage = () => {
       </Head>
       <div className="bg-light-blue">
         <Navbar />
-        <ContentWrapper>
-          <AdminHeader>
-            <div className="flex text-navy text-xs sm:text-sm text-opacity-50 items-center space-x-1">
-              <div className="flex items-center gap-1 ml-[-0.45rem] 4xl:text-xl">
-                <PreviousIcon width={20} className="fill-navy" />
-                <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
-                </Link>
-                <span className="self-center font-semibold whitespace-nowrap">
-                  Main page
-                </span>
+        <ContentWrapper
+          header={
+            <AdminHeader>
+              <div className="flex text-navy text-xs sm:text-sm text-opacity-50 items-center space-x-1">
+                <div className="flex items-center gap-1 ml-[-0.45rem] 4xl:text-xl">
+                  <PreviousIcon width={20} className="fill-navy" />
+                  <Link href={PATH_DASHBOARD.root}>
+                    <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
+                  </Link>
+                  <span className="self-center font-semibold whitespace-nowrap">
+                    Main page
+                  </span>
+                </div>
               </div>
-            </div>
-          </AdminHeader>
+            </AdminHeader>
+          }
+        >
           <div className="space-y-4 sm:space-y-6">
-            <DetailSection />
-            <FilterSection />
+            <ConfigurationSection />
             {benchmarkResults.length ? <ResultsSection /> : <></>}
             <BenchmarksSection />
           </div>

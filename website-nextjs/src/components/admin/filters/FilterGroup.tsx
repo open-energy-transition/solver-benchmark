@@ -1,4 +1,5 @@
-import React from "react";
+import { ArrowIcon } from "@/assets/icons";
+import React, { useState } from "react";
 import Popup from "reactjs-popup";
 
 interface FilterGroupProps {
@@ -24,67 +25,92 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   onItemOnly,
   onSelectAll,
   className = "xl:w-auto",
-  gridClassName = "grid-cols-2 xl:grid-cols-2",
+  gridClassName = "grid-cols-1",
   itemClassName = "",
   uppercase = false,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   return (
     <div
-      className={`text-xs border-b xl:border-b-0 xl:border-r last:border-r-0 border-stroke w-full ${className}`}
+      className={`text-xs border-b xl:border-b-0 border-stroke w-full ${className}`}
     >
       <div className="flex items-center justify-between pr-3 border-b border-stroke">
-        <div className="flex items-center border-b-0 border-stroke px-3 py-2 gap-1 4xl:text-lg">
+        <div className="flex items-center border-b-0 border-stroke px-1 py-2 gap-1 4xl:text-lg">
           {icon}
           <span className="overflow-hidden whitespace-nowrap text-ellipsis">
             {title}
+            {selectedItems.length > 0 && (
+              <span className="ml-1 text-navy">
+                ({selectedItems.length} / {items.length})
+              </span>
+            )}
           </span>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="ml-2 text-navy hover:text-navy-dark"
+          >
+            {isExpanded ? (
+              <ArrowIcon
+                fill="none"
+                className="stroke-navy size-2 block -rotate-90"
+              />
+            ) : (
+              <ArrowIcon
+                fill="none"
+                className="stroke-navy size-2 block rotate-90"
+              />
+            )}
+          </button>
         </div>
         <input
-          className="w-4 h-4 accent-navy rounded"
+          className="size-3 accent-navy rounded checked:before:text-xs "
           type="checkbox"
           checked={items.every((item) => selectedItems.includes(item))}
           onChange={onSelectAll}
         />
       </div>
-      <div
-        className={`grid ${gridClassName} gap-x-1 text-xs max-h-[95px] overflow-y-auto`}
-      >
-        {items.map((item) => (
-          <div
-            className="flex items-center gap-1 p-3 relative group"
-            key={item}
-          >
-            <input
-              className="w-4 h-4 accent-navy rounded"
-              type="checkbox"
-              checked={selectedItems.includes(item)}
-              onChange={() => onItemChange(item)}
-            />
-            <span
-              onClick={() => onItemChange(item)}
-              className={`w-max cursor-pointer text-ellipsis whitespace-nowrap overflow-hidden 4xl:text-lg ${itemClassName} ${
-                uppercase ? "uppercase" : ""
-              }`}
+      {isExpanded && (
+        <div className={`grid ${gridClassName} gap-x-1 text-xs`}>
+          {items.map((item) => (
+            <div
+              className="flex items-center gap-1 p-3 px-1 relative group"
+              key={item}
             >
-              <Popup
-                on={["hover"]}
-                trigger={() => <span>{item}</span>}
-                position="top right"
-                closeOnDocumentClick
-                arrowStyle={{ color: "#ebeff2" }}
+              <input
+                className="size-3 accent-navy rounded checked:before:text-xs "
+                type="checkbox"
+                checked={selectedItems.includes(item)}
+                onChange={() => onItemChange(item)}
+              />
+              <span
+                onClick={() => onItemChange(item)}
+                className={`w-max cursor-pointer text-ellipsis max-w-[90%] whitespace-nowrap overflow-hidden 4xl:text-lg ${itemClassName} ${
+                  uppercase ? "uppercase" : ""
+                }`}
               >
-                <div className="bg-stroke p-2 rounded 4xl:text-lg">{item}</div>
-              </Popup>
-            </span>
-            <span
-              className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
-              onClick={() => onItemOnly(item)}
-            >
-              only
-            </span>
-          </div>
-        ))}
-      </div>
+                <Popup
+                  on={["hover"]}
+                  trigger={() => <span>{item}</span>}
+                  position="top right"
+                  closeOnDocumentClick
+                  arrowStyle={{ color: "#ebeff2" }}
+                >
+                  <div className="bg-stroke p-2 rounded 4xl:text-lg">
+                    {item}
+                  </div>
+                </Popup>
+              </span>
+              <span
+                className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                onClick={() => onItemOnly(item)}
+              >
+                only
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
