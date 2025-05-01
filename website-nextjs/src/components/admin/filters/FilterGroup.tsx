@@ -36,16 +36,13 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
       className={`text-xs border-b xl:border-b-0 border-stroke w-full ${className}`}
     >
       <div className="flex items-center justify-between pr-3 border-b border-stroke">
-        <div className="flex items-center border-b-0 border-stroke px-1 py-2 gap-1 4xl:text-lg">
+        <div className="flex items-center border-b-0 border-stroke p-2 gap-2 4xl:text-lg">
           {icon}
           <span className="overflow-hidden whitespace-nowrap text-ellipsis">
             {title}
-            {selectedItems.length > 0 && (
-              <span className="ml-1 text-navy">
-                ({selectedItems.length} / {items.length})
-              </span>
-            )}
           </span>
+        </div>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="ml-2 text-navy hover:text-navy-dark"
@@ -62,19 +59,19 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               />
             )}
           </button>
+          <input
+            className="size-3 accent-navy rounded checked:before:text-xs "
+            type="checkbox"
+            checked={items.every((item) => selectedItems.includes(item))}
+            onChange={onSelectAll}
+          />
         </div>
-        <input
-          className="size-3 accent-navy rounded checked:before:text-xs "
-          type="checkbox"
-          checked={items.every((item) => selectedItems.includes(item))}
-          onChange={onSelectAll}
-        />
       </div>
       {isExpanded && (
         <div className={`grid ${gridClassName} gap-x-1 text-xs`}>
           {items.map((item) => (
             <div
-              className="flex items-center gap-1 p-3 px-1 relative group"
+              className="flex items-center gap-1 p-3 px-2.5 relative group"
               key={item}
             >
               <input
@@ -85,7 +82,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               />
               <span
                 onClick={() => onItemChange(item)}
-                className={`w-max cursor-pointer text-ellipsis max-w-[90%] whitespace-nowrap overflow-hidden 4xl:text-lg ${itemClassName} ${
+                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[70%] whitespace-nowrap overflow-hidden 4xl:text-lg ${itemClassName} ${
                   uppercase ? "uppercase" : ""
                 }`}
               >

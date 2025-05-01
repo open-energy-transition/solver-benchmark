@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {
   BrightIcon,
   PolygonIcon,
+  ProblemSizeIcon,
   ProcessorIcon,
   WrenchIcon,
 } from "@/assets/icons";
@@ -271,26 +272,24 @@ const FilterSection = () => {
 
   return (
     <div>
-      <div className="pt-5 pl-1 pb-0 flex items-center gap-1">
+      <div className="pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
         <div className="flex gap-1 items-center">
-          <div className="text-navy font-bold text-xl 4xl:text-2xl pl-2">
-            Filter
-          </div>
+          <div className="text-navy font-bold text-base pl-2">Filter</div>
         </div>
 
-        <div className="flex justify-start ml-2">
+        <div className="flex justify-end ml-2">
           {isAnyFilterActive() && (
             <button
               onClick={handleResetAllFilters}
-              className="bg-navy text-white px-3 py-1 rounded text-xs 4xl:text-xl hover:bg-opacity-80 transition-colors"
+              className="text-[9px]/1.4 text-[#444444] font-normal font-lato px-3 py-1 rounded hover:bg-opacity-80 transition-colors"
             >
-              Reset All Filters
+              select all
             </button>
           )}
         </div>
       </div>
 
-      <div className="bg-white rounded-xl relative">
+      <div className="relative">
         {/* Mobile Menu Button */}
         <button
           className="xl:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between 4xl:text-xl"
@@ -315,11 +314,22 @@ const FilterSection = () => {
         </button>
 
         <div
-          className={`text-dark-grey p-2 xl:h-[calc(100vh-5rem-var(--banner-height))] overflow-y-auto transition-all duration-300 ${
-            isMobileMenuOpen
-              ? "max-h-[80vh] opacity-100"
-              : "max-h-0 xl:max-h-none opacity-0 xl:opacity-100 overflow-hidden"
-          }`}
+          className={`
+            duration-300
+            flex
+            flex-col
+            gap-2
+            overflow-y-auto
+            p-2
+            px-4
+            text-dark-grey
+            transition-all
+            xl:h-[calc(100vh-5rem-var(--banner-height))]
+            ${
+              isMobileMenuOpen
+                ? "max-h-[80vh] opacity-100"
+                : "max-h-0 xl:max-h-none opacity-0 xl:opacity-100 overflow-hidden"
+            }`}
         >
           {/* Sectors */}
           <FilterGroup
@@ -380,7 +390,7 @@ const FilterSection = () => {
           {/* Problem Size */}
           <FilterGroup
             title="Problem Size"
-            icon={<WrenchIcon className="w-5 h-5" />}
+            icon={<ProblemSizeIcon className="w-5 h-5" />}
             items={availableProblemSizes}
             selectedItems={selectedFilters?.problemSize}
             onItemChange={(value) =>

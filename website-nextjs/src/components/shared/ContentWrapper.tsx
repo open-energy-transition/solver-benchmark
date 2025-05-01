@@ -4,7 +4,7 @@ import FilterSection from "../admin/FilterSection";
 
 interface ContentWrapperProps {
   children: ReactNode;
-  header: ReactNode;
+  header?: ReactNode;
   showFilter?: boolean;
 }
 
@@ -28,7 +28,7 @@ const ContentWrapper = ({
         `}
     >
       <div className="max-w-8xl mx-auto">
-        <div>{header}</div>
+        {header && <div>{header}</div>}
         <div className="sm:flex">
           {showFilter && (
             <div className="m-4 sm:x-0 sm:w-1/5 overflow-hidden bg-white rounded-xl h-max">
@@ -39,7 +39,7 @@ const ContentWrapper = ({
             className={`
               pd:mx-0
               3xl:mx-auto
-              ${showFilter ? "sm:w-4/5 px-4" : "w-full"}
+              ${showFilter ? "sm:w-4/5 px-4 pt-4" : "w-full"}
               `}
           >
             {children}

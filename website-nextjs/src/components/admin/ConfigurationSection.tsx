@@ -31,7 +31,7 @@ const ConfigurationSection = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl border-stroke border border-x-0 py-4 px-4 xl:px-8 2xl:px-4 4xl:px-4 text-navy flex items-center justify-between">
+    <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-4 px-4 xl:px-8 2xl:px-4 4xl:px-4 text-navy flex items-center justify-between">
       <div className="font-lato font-semibold  text-base/1.5 tracking-normal">
         Configuration
       </div>

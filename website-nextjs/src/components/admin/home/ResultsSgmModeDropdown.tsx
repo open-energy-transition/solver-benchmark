@@ -1,7 +1,6 @@
 import {
   ArrowUpTriangleFillIcon,
   FilterBarIcon,
-  FilterIcon,
   QuestionLine,
 } from "@/assets/icons";
 import { SgmMode } from "@/constants/filter";
@@ -132,10 +131,12 @@ const ResultsSgmModeDropdown = () => {
       </button>
       {selectedMode.optionTitle === "Penalizing TO by a factor of" && (
         <DebouncedInput
+          autoWidth
           type="number"
           value={xFactor}
           onChange={(newValue) => onXFactorChange(newValue)}
-          className="w-12 text-center p-1 rounded-2xl text-base/1.5 font-semibold font-inter"
+          className="text-start p-1 rounded-2xl text-base/1.5 font-semibold font-lato"
+          wrapperClassName="bg-white rounded-2xl px-3 border border-[#CAD9EF80]"
         />
       )}
       {open && (

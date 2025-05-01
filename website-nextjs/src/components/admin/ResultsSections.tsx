@@ -190,23 +190,23 @@ const ResultsSection = () => {
         name: "Rank",
         field: "rank",
         width: "flex-1",
-        bgColor: "bg-light-grey/50",
-        color: "text-dark-grey",
+        bgColor: "bg-[#F4F6FA]",
+        color: "text-navy font-semibold",
         sort: false,
       },
       {
         name: "Solver",
         field: "solver",
         width: "w-1/6",
-        bgColor: "bg-light-grey",
-        color: "text-dark-grey",
+        bgColor: "bg-[#F4F6FA]",
+        color: "text-navy font-semibold",
         sortFunc: (a, b) => a.solver.localeCompare(b.solver),
       },
       {
         name: "Version",
         field: "version",
         width: "w-1/6",
-        bgColor: "bg-lavender/50",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sortFunc: (a, b) => a.version.localeCompare(b.version),
       },
@@ -214,7 +214,7 @@ const ResultsSection = () => {
         name: "SGM Memory",
         field: "memory",
         width: "w-1/5",
-        bgColor: "bg-lavender/80",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
@@ -229,7 +229,7 @@ const ResultsSection = () => {
         name: "Solved Benchmarks",
         field: "solvedBenchmarks",
         width: "w-1/5",
-        bgColor: "bg-lavender",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
@@ -263,7 +263,7 @@ const ResultsSection = () => {
         name: "SGM Runtime",
         field: "runtime",
         width: "w-1/5",
-        bgColor: "bg-lime-green",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
@@ -361,6 +361,7 @@ const ResultsSection = () => {
   };
 
   const [activedIndex, setActivedIndex] = useState(0);
+  console.log(activedIndex);
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -376,7 +377,7 @@ const ResultsSection = () => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-dark-grey text-sm block items-center lg:max-w-[70%] 4xl:text-xl">
+        <div className="text-navy text-sm block items-center lg:max-w-[70%] 4xl:text-xl">
           <span>
             You can rank the latest version of each solver by number of solved
             benchmark instances, or by the normalized shifted geometric mean
@@ -417,33 +418,31 @@ const ResultsSection = () => {
 
       {isMobileView ? (
         // Mobile view
-        <div className="flex flex-col gap-4 px-4">
+        <div className="flex flex-col gap-4 px-4 text-navy">
           {sortedTableData.map((item, index) => (
             <div
               key={index}
               className="bg-white rounded-xl shadow-sm p-4 border border-gray-100"
             >
               <div className="flex justify-between items-center mb-2">
-                <span className="text-dark-grey font-semibold">
-                  #{item.rank}
-                </span>
+                <span className="font-semibold">#{item.rank}</span>
                 <span className="text-navy font-bold">{item.solver}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <div className="text-dark-grey">Version</div>
+                  <div>Version</div>
                   <div className="font-medium">{item.version}</div>
                 </div>
                 <div>
-                  <div className="text-dark-grey">SGM Memory</div>
+                  <div>SGM Memory</div>
                   <div className="font-medium">{item.memory}</div>
                 </div>
                 <div>
-                  <div className="text-dark-grey">Solved Benchmarks</div>
+                  <div>Solved Benchmarks</div>
                   <div className="font-medium">{item.solvedBenchmarks}</div>
                 </div>
                 <div>
-                  <div className="text-dark-grey">SGM Runtime</div>
+                  <div>SGM Runtime</div>
                   <div className="font-medium">{item.runtime}</div>
                 </div>
               </div>
@@ -452,14 +451,14 @@ const ResultsSection = () => {
         </div>
       ) : (
         // Desktop view
-        <div className="flex text-xs leading-1.5">
-          {columns.map((column, i) => (
+        <div className="flex text-sm leading-1.5 text-navy">
+          {columns.map((column) => (
             <div
               key={column.field}
-              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer 4xl:text-xl"
+                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer justify-center 4xl:text-xl"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -484,13 +483,7 @@ const ResultsSection = () => {
               {sortedTableData.map((item, index) => (
                 <div
                   key={`${column.field}-${index}`}
-                  className={`h-6 flex items-center pl-3 pr-6 4xl:text-xl 4xl:py-4 ${
-                    activedIndex === index
-                      ? `border-b border-t border-[#CAD3D0] ${
-                          i === 0 ? "border-l" : ""
-                        } ${i === columns.length - 1 ? "border-r" : ""}`
-                      : ""
-                  }`}
+                  className={`h-6 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
                   onClick={() => setActivedIndex(index)}
                 >
                   {item[column.field as keyof (typeof tableData)[0]] ?? "-"}

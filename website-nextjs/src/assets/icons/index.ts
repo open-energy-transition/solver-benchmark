@@ -37,6 +37,7 @@ export { default as PlusIcon } from "./plus.svg";
 export { default as PolygonIcon } from "./polygon.svg";
 export { default as ProcessorIcon } from "./processor.svg";
 export { default as PreviousIcon } from "./previous.svg";
+export { default as ProblemSizeIcon } from "./problem-size.svg";
 export { default as TimeoutIcon } from "./timeout.svg";
 export { default as StarIcon } from "./star.svg";
 export { default as UserIcon } from "./user.svg";
