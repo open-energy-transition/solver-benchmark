@@ -6,6 +6,7 @@ channels:
 dependencies:
 - python>=3.12
 - pip
+- psutil>=5.9
 
 - requests>=2.32
 - linopy>=0.5.3
