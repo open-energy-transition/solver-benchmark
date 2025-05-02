@@ -14,6 +14,7 @@ import { useState } from "react";
 
 const LandingPage = () => {
   const [activeTab, setActiveTab] = useState("short");
+  const timeout = activeTab === "short" ? 3600 : 36000;
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults;
   });
@@ -93,7 +94,7 @@ const LandingPage = () => {
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-8">
               <div className="pt-6 pb-8">
-                <ConfigurationSection />
+                <ConfigurationSection timeout={timeout} />
               </div>
               <div className="sm:flex justify-between">
                 <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
@@ -107,7 +108,11 @@ const LandingPage = () => {
                   `}
                 >
                   <div className="space-y-4 sm:space-y-6">
-                    {benchmarkResults.length ? <ResultsSection /> : <></>}
+                    {benchmarkResults.length ? (
+                      <ResultsSection timeout={timeout} />
+                    ) : (
+                      <></>
+                    )}
                     <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="text-xl/1.4 font-bold">Note 🔔 ️</div>
                       <div className="pt-2 text-xs/1.4 font-normal">
@@ -119,7 +124,7 @@ const LandingPage = () => {
                         below.
                       </div>
                     </div>
-                    <BenchmarksSection />
+                    <BenchmarksSection timeout={timeout} />
                     <div className="px-5">
                       <div className="pt-1.5 pb-3">
                         <div className="text-navy font-bold text-xl 4xl:text-2xl">

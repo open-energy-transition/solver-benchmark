@@ -332,7 +332,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
               .html(
                 `<strong>Name:</strong> ${d.benchmark}<br>
                 <strong>Size:</strong> ${d.size}<br>
-                <strong>Solver:</strong> ${getSolverLabel(d.solver)}<br>
+                <strong>Solver:</strong> ${d.solver}<br>
                 <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
                 <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`,
               )

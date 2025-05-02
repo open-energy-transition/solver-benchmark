@@ -6,12 +6,17 @@ import { IFilterState, IResultState } from "@/types/state";
 import { useMemo } from "react";
 import { SgmMode } from "@/constants/filter";
 
-const BenchmarksSection = () => {
+interface BenchmarksSectionProps {
+  timeout: number;
+}
+
+const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  );
+  ).filter((result) => result.timeout === timeout);
+
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
   });

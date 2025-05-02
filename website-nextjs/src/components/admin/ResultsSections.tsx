@@ -30,12 +30,16 @@ type TableRowType = {
   runtime: string;
 };
 
-const ResultsSection = () => {
+interface ResultsSectionProps {
+  timeout: number;
+}
+
+const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  );
+  ).filter((result) => result.timeout === timeout);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -82,7 +86,7 @@ const ResultsSection = () => {
       default:
         return benchmarkLatestResults;
     }
-  }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers]);
+  }, [sgmMode, xFactor, availableSolvers, timeout]);
 
   const [tableData, setTableData] = useState<TableRowType[]>([]);
   const [sortConfig, setSortConfig] = useState<{
@@ -381,9 +385,6 @@ const ResultsSection = () => {
     }));
   };
 
-  const [activedIndex, setActivedIndex] = useState(0);
-  console.log(activedIndex);
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -504,7 +505,6 @@ const ResultsSection = () => {
                 <div
                   key={`${column.field}-${index}`}
                   className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
-                  onClick={() => setActivedIndex(index)}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",

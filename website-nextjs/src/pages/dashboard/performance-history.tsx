@@ -134,13 +134,19 @@ const PagePerformanceHistory = () => {
     );
 
     return {
-      runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime),
+      runtime: getNormalizedData(
+        solverYearlyMetrics,
+        "runtime",
+        minRuntime,
+      ).sort((a, b) => a.year - b.year),
       memoryUsage: getNormalizedData(
         solverYearlyMetrics,
         "memoryUsage",
         minMemoryUsage,
+      ).sort((a, b) => a.year - b.year),
+      numSolvedBenchMark: getNumSolvedBenchMark().sort(
+        (a, b) => a.year - b.year,
       ),
-      numSolvedBenchMark: getNumSolvedBenchMark(),
     };
   }, [solverYearlyMetrics]);
 

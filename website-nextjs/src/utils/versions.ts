@@ -8,11 +8,16 @@ const getHighestVersion = (versions: string[]) => {
   if (!versions) {
     console.error("versions", versions);
   }
-  const normalizedVersions = versions.map(normalizeVersion);
-  const sortedVersions = normalizedVersions.sort(compareVersions);
-  return versions[
-    normalizedVersions.indexOf(sortedVersions[sortedVersions.length - 1])
-  ];
+  const versionsData = versions.map((version) => ({
+    normalized: normalizeVersion(version),
+    original: version,
+  }));
+
+  const sortedVersions = versionsData.sort((a, b) =>
+    compareVersions(a.normalized, b.normalized),
+  );
+
+  return sortedVersions.at(-1)?.original;
 };
 
 export { getHighestVersion };

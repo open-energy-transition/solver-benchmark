@@ -20,7 +20,6 @@ const FilterSection = () => {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
@@ -290,31 +289,8 @@ const FilterSection = () => {
       </div>
 
       <div className="relative">
-        {/* Mobile Menu Button */}
-        <button
-          className="xl:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between 4xl:text-xl"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <span>Filters</span>
-          <svg
-            className={`w-5 h-5 transition-transform duration-300 ${
-              isMobileMenuOpen ? "rotate-180" : ""
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
-
         <div
-          className={`
+          className="
             duration-300
             flex
             flex-col
@@ -324,11 +300,8 @@ const FilterSection = () => {
             px-2
             text-navy
             transition-all
-            ${
-              isMobileMenuOpen
-                ? "max-h-[80vh] opacity-100"
-                : "max-h-0 xl:max-h-none opacity-0 xl:opacity-100 overflow-hidden"
-            }`}
+            max-h-[80vh] opacity-100
+          "
         >
           {/* Sectors */}
           <FilterGroup

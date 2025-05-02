@@ -5,7 +5,13 @@ import {
   TimeoutIcon,
 } from "@/assets/icons";
 
-const ConfigurationSection = () => {
+interface ConfigurationSectionProps {
+  timeout: number;
+}
+
+const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
+  const timeoutInHours = timeout / 3600; // Convert seconds to hours
+
   const detailData = [
     {
       label: "Instance",
@@ -24,8 +30,7 @@ const ConfigurationSection = () => {
     },
     {
       label: "Timeout",
-      // TODO: Replace hardcoded timeout
-      value: "1h",
+      value: `${timeoutInHours}h`,
       icon: <TimeoutIcon className="size-4 fill-navy" />,
     },
   ];
