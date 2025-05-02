@@ -146,7 +146,7 @@ const BenchmarkStatisticsCharts = ({
             yAxisLabel=""
             categoryKey="modelName"
             colors={{ LP: getChartColor(0), MILP: getChartColor(1) }}
-            title="By Technique"
+            title="By Model Framework"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
           />
