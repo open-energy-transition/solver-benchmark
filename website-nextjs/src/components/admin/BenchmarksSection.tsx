@@ -28,7 +28,7 @@ const BenchmarksSection = () => {
 
   return (
     <div>
-      <div>
+      <div className="px-5">
         <div className="pt-1.5 pb-3">
           <div className="text-navy font-bold text-xl 4xl:text-2xl">
             Runtime vs Memory

@@ -273,8 +273,8 @@ const FilterSection = () => {
   return (
     <div>
       <div className="pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
-        <div className="flex gap-1 items-center">
-          <div className="text-navy font-bold text-base pl-2">Filter</div>
+        <div className="flex gap-2 items-center">
+          <div className="text-navy font-bold text-base">Filter</div>
         </div>
 
         <div className="flex justify-end ml-2">
@@ -283,7 +283,7 @@ const FilterSection = () => {
               onClick={handleResetAllFilters}
               className="text-[9px]/1.4 text-[#444444] font-normal font-lato px-3 py-1 rounded hover:bg-opacity-80 transition-colors"
             >
-              select all
+              Reset Filters
             </button>
           )}
         </div>
@@ -321,10 +321,9 @@ const FilterSection = () => {
             gap-2
             overflow-y-auto
             p-2
-            px-4
-            text-dark-grey
+            px-2
+            text-navy
             transition-all
-            xl:h-[calc(100vh-5rem-var(--banner-height))]
             ${
               isMobileMenuOpen
                 ? "max-h-[80vh] opacity-100"
@@ -346,7 +345,7 @@ const FilterSection = () => {
             onSelectAll={() => handleSelectAll({ category: "sectors" })}
             className="w-full"
             itemClassName="4xl:text-xl"
-            gridClassName="grid-cols-1"
+            gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
           {/* Technique */}
@@ -363,7 +362,7 @@ const FilterSection = () => {
             }
             onSelectAll={() => handleSelectAll({ category: "technique" })}
             className="w-full"
-            gridClassName="grid-cols-1"
+            gridClassName="!flex flex-wrap"
             uppercase={false}
           />
           {/* Kind of Problem */}
@@ -405,7 +404,7 @@ const FilterSection = () => {
             }
             onSelectAll={() => handleSelectAll({ category: "problemSize" })}
             className="w-full"
-            gridClassName="grid-cols-1"
+            gridClassName="grid-cols-3"
             uppercase={true}
           />
           {/* Model */}
@@ -422,7 +421,7 @@ const FilterSection = () => {
             }
             onSelectAll={() => handleSelectAll({ category: "modelName" })}
             className="w-full"
-            gridClassName="grid-cols-1"
+            gridClassName="grid-cols-2"
             uppercase={false}
           />
         </div>

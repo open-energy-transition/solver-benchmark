@@ -10,8 +10,10 @@ import Link from "next/link";
 import { IResultState } from "@/types/state";
 import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
+import { useState } from "react";
 
 const LandingPage = () => {
+  const [activeTab, setActiveTab] = useState("short");
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults;
   });
@@ -68,15 +70,29 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="flex mt-6">
-              <div className="w-1/3 bg-[#E6ECF5] font-lato font-semibold text-lg/1.5 cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px]">
+              <div
+                onClick={() => setActiveTab("short")}
+                className={`w-1/3 font-lato text-lg/1.5 cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
+                  activeTab === "short"
+                    ? "bg-[#E6ECF5] font-semibold"
+                    : "bg-white font-normal"
+                }`}
+              >
                 Short
               </div>
-              <div className="w-1/3 bg-white font-lato font-normal text-lg/1.5 text-center cursor-pointer border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px]">
+              <div
+                onClick={() => setActiveTab("long")}
+                className={`w-1/3 font-lato text-lg/1.5 cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
+                  activeTab === "long"
+                    ? "bg-[#E6ECF5] font-semibold"
+                    : "bg-white font-normal"
+                }`}
+              >
                 Long
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 py-6 px-8">
-              <div className="pt-6 pb-4">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-8">
+              <div className="pt-6 pb-8">
                 <ConfigurationSection />
               </div>
               <div className="sm:flex justify-between">
@@ -92,7 +108,7 @@ const LandingPage = () => {
                 >
                   <div className="space-y-4 sm:space-y-6">
                     {benchmarkResults.length ? <ResultsSection /> : <></>}
-                    <div className="px-3 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
+                    <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="text-xl/1.4 font-bold">Note 🔔 ️</div>
                       <div className="pt-2 text-xs/1.4 font-normal">
                         As with all benchmarks, our results provide only an
@@ -104,6 +120,21 @@ const LandingPage = () => {
                       </div>
                     </div>
                     <BenchmarksSection />
+                    <div className="px-5">
+                      <div className="pt-1.5 pb-3">
+                        <div className="text-navy font-bold text-xl 4xl:text-2xl">
+                          Caveats
+                        </div>
+                        <div className="text-navy text-sm block items-center mt-2">
+                          <span>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Ut enim ad minim veniam, quis
+                            nostrud
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

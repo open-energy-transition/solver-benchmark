@@ -291,32 +291,53 @@ const ResultsSection = () => {
   );
 
   useEffect(() => {
+    // Find best values
+    const minRuntime = Math.min(
+      ...solverList.map((solver) => calculateSgmBySolver(solver, "runtime")),
+    );
+    const minMemory = Math.min(
+      ...solverList.map((solver) =>
+        calculateSgmBySolver(solver, "memoryUsage"),
+      ),
+    );
+    const maxSolved = Math.max(
+      ...solverList.map((solver) => getNumberSolvedBenchmark(solver)),
+    );
+
     setTableData(
-      solverList.map((solverData) => ({
-        rank:
-          getSolverRanks().findIndex((solver) => solver.solver === solverData) +
-          1,
-        solver: solverData,
-        version: getHighestVersion(solverVersions[solverData]),
-        memory: `${roundNumber(
-          calculateSgmBySolver(solverData, "memoryUsage"),
-          2,
-        )} (${roundNumber(
-          calculateSgm(getRelevantResults(solverData, "memoryUsage")),
-          2,
-        )})`,
-        solvedBenchmarks: getSolvedBenchmarksLabel(
-          solverData,
-          uniqueBenchmarkCount,
-        ),
-        runtime: `${roundNumber(
-          calculateSgmBySolver(solverData, "runtime"),
-          2,
-        )} (${roundNumber(
-          calculateSgm(getRelevantResults(solverData, "runtime")),
-          2,
-        )})`,
-      })),
+      solverList.map((solverData) => {
+        const runtimeSgm = calculateSgmBySolver(solverData, "runtime");
+        const memorySgm = calculateSgmBySolver(solverData, "memoryUsage");
+        const solvedCount = getNumberSolvedBenchmark(solverData);
+
+        return {
+          rank:
+            getSolverRanks().findIndex(
+              (solver) => solver.solver === solverData,
+            ) + 1,
+          solver: solverData,
+          version: getHighestVersion(solverVersions[solverData]),
+          memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
+            memorySgm,
+            2,
+          )} (${roundNumber(
+            calculateSgm(getRelevantResults(solverData, "memoryUsage")),
+            2,
+          )})${memorySgm === minMemory ? "</b>" : ""}`,
+          solvedBenchmarks: `${
+            solvedCount === maxSolved ? "<b>" : ""
+          }${getSolvedBenchmarksLabel(solverData, uniqueBenchmarkCount)}${
+            solvedCount === maxSolved ? "</b>" : ""
+          }`,
+          runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${roundNumber(
+            runtimeSgm,
+            2,
+          )} (${roundNumber(
+            calculateSgm(getRelevantResults(solverData, "runtime")),
+            2,
+          )})${runtimeSgm === minRuntime ? "</b>" : ""}`,
+        };
+      }),
     );
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
 
@@ -377,7 +398,7 @@ const ResultsSection = () => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-navy text-sm block items-center lg:max-w-[70%] 4xl:text-xl">
+        <div className="text-navy px-5 text-sm block items-center mt-2">
           <span>
             You can rank the latest version of each solver by number of solved
             benchmark instances, or by the normalized shifted geometric mean
@@ -429,22 +450,21 @@ const ResultsSection = () => {
                 <span className="text-navy font-bold">{item.solver}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <div>Version</div>
-                  <div className="font-medium">{item.version}</div>
-                </div>
-                <div>
-                  <div>SGM Memory</div>
-                  <div className="font-medium">{item.memory}</div>
-                </div>
-                <div>
-                  <div>Solved Benchmarks</div>
-                  <div className="font-medium">{item.solvedBenchmarks}</div>
-                </div>
-                <div>
-                  <div>SGM Runtime</div>
-                  <div className="font-medium">{item.runtime}</div>
-                </div>
+                {Object.keys(item).map(
+                  (key) =>
+                    key !== "rank" &&
+                    key !== "solver" && (
+                      <div key={key}>
+                        <div>{key.charAt(0).toUpperCase() + key.slice(1)}</div>
+                        <div
+                          className="font-medium"
+                          dangerouslySetInnerHTML={{
+                            __html: item[key as keyof typeof item] ?? "-",
+                          }}
+                        />
+                      </div>
+                    ),
+                )}
               </div>
             </div>
           ))}
@@ -458,7 +478,7 @@ const ResultsSection = () => {
               className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer justify-center 4xl:text-xl"
+                className="py-2.5 flex items-center gap-1 pl-3 pr-6 cursor-pointer justify-center 4xl:text-xl"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -483,11 +503,13 @@ const ResultsSection = () => {
               {sortedTableData.map((item, index) => (
                 <div
                   key={`${column.field}-${index}`}
-                  className={`h-6 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
+                  className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
                   onClick={() => setActivedIndex(index)}
-                >
-                  {item[column.field as keyof (typeof tableData)[0]] ?? "-"}
-                </div>
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      item[column.field as keyof (typeof tableData)[0]] ?? "-",
+                  }}
+                />
               ))}
             </div>
           ))}

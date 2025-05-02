@@ -31,11 +31,11 @@ const ConfigurationSection = () => {
   ];
 
   return (
-    <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-4 px-4 xl:px-8 2xl:px-4 4xl:px-4 text-navy flex items-center justify-between">
+    <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-3 px-2 pl-8 pr-4 text-navy flex items-center justify-between">
       <div className="font-lato font-semibold  text-base/1.5 tracking-normal">
         Configuration
       </div>
-      <ul className="flex gap-3.5 font-inter">
+      <ul className="flex gap-6 font-inter">
         {detailData.map((data, idx) => (
           <li
             key={idx}

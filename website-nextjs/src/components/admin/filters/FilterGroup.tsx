@@ -35,12 +35,23 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
     <div
       className={`text-xs border-b xl:border-b-0 border-stroke w-full ${className}`}
     >
-      <div className="flex items-center justify-between pr-3 border-b border-stroke">
+      <div className="flex items-center justify-between pr-3 border-y border-stroke bg-white">
         <div className="flex items-center border-b-0 border-stroke p-2 gap-2 4xl:text-lg">
+          <input
+            className="size-3 accent-navy rounded checked:before:text-xs "
+            type="checkbox"
+            checked={items.every((item) => selectedItems.includes(item))}
+            onChange={onSelectAll}
+          />
           {icon}
           <span className="overflow-hidden whitespace-nowrap text-ellipsis">
             {title}
           </span>
+          {selectedItems.length > 0 && selectedItems.length < items.length && (
+            <span className="bg-navy text-white rounded-full text-xs px-1.5 py-0.5 min-w-[18px] text-center">
+              {selectedItems.length}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -59,19 +70,13 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               />
             )}
           </button>
-          <input
-            className="size-3 accent-navy rounded checked:before:text-xs "
-            type="checkbox"
-            checked={items.every((item) => selectedItems.includes(item))}
-            onChange={onSelectAll}
-          />
         </div>
       </div>
       {isExpanded && (
-        <div className={`grid ${gridClassName} gap-x-1 text-xs`}>
+        <div className={`grid ${gridClassName} text-xs`}>
           {items.map((item) => (
             <div
-              className="flex items-center gap-1 p-3 px-2.5 relative group"
+              className="flex items-center gap-1 p-3 px-2.5 relative group min-w-[72px]"
               key={item}
             >
               <input
@@ -99,7 +104,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 </Popup>
               </span>
               <span
-                className="text-navy hidden group-hover:inline-block ml-0.5 cursor-pointer"
+                className="text-navy font-bold text-[9px] hidden group-hover:inline-block cursor-pointer"
                 onClick={() => onItemOnly(item)}
               >
                 only

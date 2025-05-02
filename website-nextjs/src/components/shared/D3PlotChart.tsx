@@ -368,7 +368,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   return (
     <div className="relative">
       {/* Legend */}
-      <div className="flex text-navy flex-wrap gap-2 mb-4">
+      <div className="flex px-5 text-navy flex-wrap gap-2 mb-4">
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
