@@ -28,10 +28,10 @@ const BenchmarksSection = () => {
 
   return (
     <div>
-      <div>
+      <div className="px-5">
         <div className="pt-1.5 pb-3">
           <div className="text-navy font-bold text-xl 4xl:text-2xl">
-            Benchmarks
+            Runtime vs Memory
           </div>
 
           <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-xl">

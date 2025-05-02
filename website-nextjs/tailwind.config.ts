@@ -40,6 +40,7 @@ export default {
         league: ["var(--font-league-spartan)", "sans-serif"],
         lato: ["var(--font-lato)", "sans-serif"],
         grotesk: ["var(--font-space-grotesk)", "sans-serif"],
+        inter: ["var(--font-inter)", "sans-serif"],
       },
       fontSize: {
         "4.5xl": "2.5rem",
