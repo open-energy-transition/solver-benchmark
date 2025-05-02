@@ -9,7 +9,6 @@ import {
 } from "@/components/shared";
 import SolverSelection from "@/components/admin/compare-solvers/SolverSelection";
 import Head from "next/head";
-import FilterSection from "@/components/admin/FilterSection";
 import { NoSolverPage } from "@/components/admin/compare-solvers/NoSolverPage";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import Link from "next/link";
@@ -28,31 +27,32 @@ const PageCompareSolvers = () => {
       </Head>
       <div className="bg-light-blue">
         <Navbar />
-        <ContentWrapper>
-          <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
-              <div className="flex items-center gap-1">
-                <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
-                </Link>
-                <ArrowIcon
-                  fill="none"
-                  className="size-3 stroke-navy 4xl:size-4"
-                />
-                <span className="self-center font-semibold whitespace-nowrap">
-                  Compare Solvers
-                </span>
+        <ContentWrapper
+          header={
+            <AdminHeader>
+              <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                <div className="flex items-center gap-1">
+                  <Link href={PATH_DASHBOARD.root}>
+                    <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                  </Link>
+                  <ArrowIcon
+                    fill="none"
+                    className="size-3 stroke-navy 4xl:size-4"
+                  />
+                  <span className="self-center font-semibold whitespace-nowrap">
+                    Compare Solvers
+                  </span>
+                </div>
               </div>
-            </div>
-          </AdminHeader>
-
+            </AdminHeader>
+          }
+        >
           {/* Content */}
           {solversData.length < 2 ? (
             <NoSolverPage />
           ) : (
             <>
               <DetailSection />
-              <FilterSection />
               <SolverSelection />
             </>
           )}

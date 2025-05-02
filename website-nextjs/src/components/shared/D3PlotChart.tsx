@@ -72,7 +72,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .insert("div", ":first-child")
       .style("position", "absolute")
       .style("right", window.innerWidth < 640 ? "10px" : "20px")
-      .style("top", window.innerWidth < 640 ? "10px" : "20px")
+      .style("top", window.innerWidth < 640 ? "10px" : "55px")
       .style("display", "flex")
       .style("gap", "8px")
       .style("background", "white")
@@ -366,16 +366,13 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   }, [chartData]);
 
   return (
-    <div className="bg-white py-2 sm:py-4 px-4 sm:px-10 rounded-xl relative">
+    <div className="relative">
       {/* Legend */}
-      <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
-        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end 4xl:text-base">
-          Solver:
-        </span>
+      <div className="flex px-5 text-navy flex-wrap gap-2 mb-4">
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
-            className="py-1 px-3 sm:px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
+            className="border-[#CAD9EF] border py-1 px-3 sm:px-5 uppercase bg-white text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
           >
             <CircleIcon
               style={{ color: solverColors[solverKey] }}
@@ -385,8 +382,12 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
           </div>
         ))}
       </div>
-      <div ref={containerRef} className="overflow-hidden min-h-[300px]">
-        <svg ref={svgRef}></svg>
+      <div className="bg-[#F4F6FA] rounded-2xl p-2">
+        <div className="bg-white rounded-2xl p-1">
+          <div ref={containerRef} className="overflow-hidden min-h-[300px]">
+            <svg ref={svgRef}></svg>
+          </div>
+        </div>
       </div>
     </div>
   );
