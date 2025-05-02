@@ -17,7 +17,7 @@ const getHighestVersion = (versions: string[]) => {
     compareVersions(a.normalized, b.normalized),
   );
 
-  return sortedVersions.at(-1)?.original;
+  return sortedVersions.at(-1)?.original ?? "";
 };
 
 export { getHighestVersion };

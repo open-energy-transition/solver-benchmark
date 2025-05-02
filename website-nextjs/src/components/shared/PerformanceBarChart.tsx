@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { getChartColor } from "@/utils/chart";
 import { Color } from "@/constants/color";
-import { MaxRunTime } from "@/constants";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 
 type PerformanceData = {
@@ -19,9 +18,16 @@ interface Props {
   data: PerformanceData[];
   baseSolver: string;
   availableSolvers: string[];
+  timeout?: number;
 }
 
-const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
+const PerformanceBarChart = ({
+  data,
+  baseSolver,
+  availableSolvers,
+  timeout = 36000,
+}: Props) => {
+  const MaxRunTime = timeout;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(
@@ -101,7 +107,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     // Scale for primary y-axis (ratio/factor)
     const yScaleRatio = d3
       .scaleLinear()
-      .domain([-4, 4])
+      .domain([-15, 15])
       .range([height - margin.bottom, margin.top]);
 
     // Scale for secondary y-axis (runtime)
@@ -249,9 +255,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip.transition().duration(200).style("opacity", 0.9);
 
         let ratioText;
-        if (d.status === "TO" && d.baseSolverRuntime < MaxRunTime) {
+        if (d.status !== "ok" && d.baseSolverRuntime < MaxRunTime) {
           ratioText = `Ratio: N/A because ${d.solver} TO`;
-        } else if (d.status === "TO" && d.baseSolverRuntime >= MaxRunTime) {
+        } else if (d.status !== "ok" && d.baseSolverRuntime >= MaxRunTime) {
           ratioText = "Ratio: N/A (both TO)";
         } else {
           const ratio = Math.pow(2, d.factor);
@@ -293,7 +299,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .enter()
       .append((d) => {
         // Use path for X marks on timeout, circle for normal points
-        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+        if (d.status !== "ok" || d.runtime >= MaxRunTime) {
           return document.createElementNS("http://www.w3.org/2000/svg", "path");
         }
         return document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -306,7 +312,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           (xScale(`${d.benchmark}-${d.size}`) || 0) + xScale.bandwidth() / 2;
         const y = yScaleRuntime(d.runtime);
 
-        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+        if (d.status !== "ok" || d.runtime >= MaxRunTime) {
           // Create X mark for timeout cases
           const size = 4;
           element
@@ -355,8 +361,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .text(`Instances sorted by solving time of ${baseSolver}`)
-      .attr("class", "4xl:text-lg");
+      .text(`Instances sorted by solving time of ${baseSolver}`);
 
     // Primary y-axis label
     svg
@@ -366,8 +371,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", 15)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
-      .text("Runtime ratio (log scale)")
-      .attr("class", "4xl:text-lg");
+      .text("Runtime ratio (log scale)");
 
     // Secondary y-axis label
     svg
@@ -378,8 +382,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "#666")
-      .text(`Runtime of ${baseSolver} (s)`)
-      .attr("class", "4xl:text-lg");
+      .text(`Runtime of ${baseSolver} (s)`);
 
     // Add a legend entry for scatter points
     const legendContainer = d3

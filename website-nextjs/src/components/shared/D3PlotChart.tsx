@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverType } from "@/types/benchmark";
-import { getSolverLabel } from "@/utils/solvers";
 import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
