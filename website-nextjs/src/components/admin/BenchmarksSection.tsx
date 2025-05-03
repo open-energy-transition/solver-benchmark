@@ -1,16 +1,24 @@
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import D3Chart from "../shared/D3PlotChart";
 import { IFilterState, IResultState } from "@/types/state";
 import { useMemo } from "react";
 import { SgmMode } from "@/constants/filter";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 interface BenchmarksSectionProps {
   timeout: number;
 }
 
 const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
+  const router = useRouter();
+
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
+
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
@@ -31,6 +39,16 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
     }
   }, [sgmMode, benchmarkLatestResults]);
 
+  const chartData = benchmarkResults.map((result) => {
+    const metaData = rawMetaData[result.benchmark];
+
+    return {
+      ...result,
+      problemSize: metaData?.sizes.find((size) => size.name === result.size)
+        ?.size,
+    };
+  });
+
   return (
     <div>
       <div className="px-5">
@@ -47,7 +65,17 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
           </p>
         </div>
       </div>
-      <D3Chart chartData={benchmarkResults} />
+      <D3Chart
+        chartData={chartData}
+        onPointClick={(result) => {
+          router.push(
+            PATH_DASHBOARD.benchmarkDetail.one.replace(
+              "{name}",
+              result.benchmark,
+            ),
+          );
+        }}
+      />
     </div>
   );
 };

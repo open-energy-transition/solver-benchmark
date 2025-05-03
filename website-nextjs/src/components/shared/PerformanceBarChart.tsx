@@ -66,7 +66,7 @@ const PerformanceBarChart = ({
       bottom: 100,
       left: 60,
     };
-    const height = 400 + (margin.bottom - 100);
+    const height = 600 + (margin.bottom - 100);
 
     d3.select(svgRef.current).selectAll("*").remove();
 
@@ -105,16 +105,21 @@ const PerformanceBarChart = ({
     const barWidth = Math.min(xSubScale.bandwidth(), 15);
 
     // Scale for primary y-axis (ratio/factor)
+    const maxFactor = d3.max(data, (d) => d.factor) || 0;
+    const minFactor = d3.min(data, (d) => d.factor) || 0;
     const yScaleRatio = d3
       .scaleLinear()
-      .domain([-15, 15])
+      .domain([Math.min(minFactor, -2), Math.max(maxFactor, 2)])
       .range([height - margin.bottom, margin.top]);
 
     // Scale for secondary y-axis (runtime)
     const yScaleRuntime = d3
       .scaleLog()
       .domain([
-        d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.1,
+        Math.min(
+          0.01,
+          d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.01,
+        ),
         d3.max(data, (d) => Math.max(d.runtime, d.baseSolverRuntime)) || 100,
       ])
       .range([height - margin.bottom, margin.top]);

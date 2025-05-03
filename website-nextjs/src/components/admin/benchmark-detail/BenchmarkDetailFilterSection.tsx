@@ -313,8 +313,8 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "sectors", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "sectors" })}
-          className="w-full xl:w-1/4 4xl:w-1/3"
-          itemClassName="xl:max-w-[100p] 4xl:max-w-full"
+          className="w-full rounded-tl-xl xl:w-1/4 4xl:w-1/3 border-r border-stroke max-h-[140px] overflow-y-auto"
+          itemClassName="!w-[90%]"
           gridClassName="grid-cols-2"
           uppercase={false}
         />
@@ -331,7 +331,7 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "technique", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "technique" })}
-          className="xl:w-auto 4xl:w-[10%] w-full"
+          className="xl:w-auto 4xl:w-[10%] w-full border-r border-stroke max-h-[140px] overflow-y-auto"
           gridClassName="grid-cols-2"
           uppercase={false}
         />
@@ -352,7 +352,7 @@ const BenchmarkDetailFilterSection = ({
             })
           }
           onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
-          className="xl:w-auto w-full"
+          className="xl:w-auto w-full border-r border-stroke max-h-[140px] overflow-y-auto"
           gridClassName="grid-cols-2 xl:grid-cols-[max-content_max-content]"
           uppercase={false}
         />
@@ -369,8 +369,8 @@ const BenchmarkDetailFilterSection = ({
             handleCheckboxChange({ category: "modelName", value, only: true })
           }
           onSelectAll={() => handleSelectAll({ category: "modelName" })}
-          className="xl:w-[40%] !border-r-0 w-full"
-          gridClassName="grid-cols-1 2xl:grid-cols-3 grid-cols-2"
+          className="rounded-tr-xl xl:w-[40%] !border-r-0 w-full max-h-[140px] overflow-y-auto"
+          gridClassName="grid-cols-3"
           uppercase={false}
         />
       </div>

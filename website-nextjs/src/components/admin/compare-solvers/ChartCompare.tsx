@@ -289,23 +289,20 @@ const ChartCompare = ({
         {title.yaxis}
       </div>
       {/* Legend */}
-      <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
-        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
-          Legend:
-        </span>
-        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+      <div className="flex flex-wrap gap-2">
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <CircleIcon className="size-2 text-[#4C5C51]" />
           ok-ok
         </div>
-        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(3)} className="size-2" />
           ok-TO
         </div>
-        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(0)} className="size-2" />
           TO-ok
         </div>
-        <div className="py-1 px-3 sm:px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(2)} className="size-2" />
           TO-TO
         </div>

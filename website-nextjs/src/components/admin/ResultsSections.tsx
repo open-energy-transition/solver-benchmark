@@ -45,6 +45,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     return state.results.availableSolvers;
   });
 
+  const selectedFilters = useSelector(
+    (state: { filters: IFilterState }) => state.filters,
+  );
+
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
   });
@@ -80,14 +84,17 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return benchmarkLatestResults.map((result) => ({
           ...result,
-          runtime: result.runtime * xFactor,
-          memoryUsage: MaxMemoryUsage * xFactor,
+          runtime:
+            result.status !== "ok" ? result.runtime * xFactor : result.runtime,
+          memoryUsage:
+            result.status !== "ok"
+              ? MaxMemoryUsage * xFactor
+              : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
     }
-  }, [sgmMode, xFactor, availableSolvers, timeout]);
-
+  }, [sgmMode, xFactor, availableSolvers, timeout, selectedFilters]);
   const [tableData, setTableData] = useState<TableRowType[]>([]);
   const [sortConfig, setSortConfig] = useState<{
     field: string;
@@ -250,12 +257,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             {header}
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => <QuestionLine className="w-4 h-4 z-50" />}
               position="right center"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-stroke p-2 rounded z-50">
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
@@ -479,7 +486,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="py-2.5 flex items-center gap-1 pl-3 pr-6 cursor-pointer justify-center 4xl:text-xl"
+                className="py-2.5 flex items-center gap-1 px-3 cursor-pointer justify-center 4xl:text-xl"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent

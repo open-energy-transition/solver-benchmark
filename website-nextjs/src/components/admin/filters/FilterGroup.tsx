@@ -87,7 +87,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               />
               <span
                 onClick={() => onItemChange(item)}
-                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[70%] whitespace-nowrap overflow-hidden 4xl:text-lg ${itemClassName} ${
+                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[70%] whitespace-nowrap overflow-hidden ${itemClassName} ${
                   uppercase ? "uppercase" : ""
                 }`}
               >
