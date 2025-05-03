@@ -109,4 +109,5 @@ dependencies:
       - ply==3.11
       - pybind11==2.13.6
       - pyomo==6.9.2
+      - psutil==5.9.8
 prefix: /scratch/htc/skrishna/conda/envs/benchmark-2022

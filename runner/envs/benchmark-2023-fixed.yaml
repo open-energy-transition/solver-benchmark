@@ -113,4 +113,5 @@ dependencies:
   - zstandard=0.23.0=py312h66e93f0_1
   - pip:
       - git+https://github.com//ERGO-Code/HiGHS@v1.6.0
+      - psutil==5.9.8
 prefix: /scratch/htc/skrishna/conda/envs/benchmark-2023
