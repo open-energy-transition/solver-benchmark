@@ -66,16 +66,16 @@ const SolverSelection = () => {
       (result) => result.solver === s2 && result.solverVersion === v2,
     );
 
+    // Find common benchmark-size pairs
+    const commonInstances = data1.filter((d1) =>
+      data2.some((d2) => d2.benchmark === d1.benchmark && d2.size === d1.size),
+    );
+
     setChartData(
-      data1.map((d1) => {
+      commonInstances.map((d1) => {
         const d2 = data2.find(
           (d2) => d2.benchmark === d1.benchmark && d2.size === d1.size,
-        );
-        if (!d2) {
-          throw new Error(
-            `Result not found for Benchmark: ${d1.benchmark} Size: ${d1.size}`,
-          );
-        }
+        )!;
         return {
           d1: {
             runtime: d1.runtime,

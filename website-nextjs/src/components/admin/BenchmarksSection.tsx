@@ -53,9 +53,7 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
     <div>
       <div className="px-5">
         <div className="pt-1.5 pb-3">
-          <div className="text-navy font-bold text-xl 4xl:text-2xl">
-            Runtime vs Memory
-          </div>
+          <div className="text-navy font-bold text-xl">Runtime vs Memory</div>
 
           <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
             <CloseIcon className="size-3" />

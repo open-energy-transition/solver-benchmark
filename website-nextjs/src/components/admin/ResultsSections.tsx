@@ -9,6 +9,7 @@ import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { SgmMode } from "@/constants/filter";
+import { extractNumberFromFormattedString } from "@/utils/string";
 
 type ColumnType = {
   name: string;
@@ -229,11 +230,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
-          return extractValue(a.memory) - extractValue(b.memory);
+          return (
+            extractNumberFromFormattedString(a.memory) -
+            extractNumberFromFormattedString(b.memory)
+          );
         },
       },
       {
@@ -244,25 +244,26 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
           return (
-            extractValue(a.solvedBenchmarks) - extractValue(b.solvedBenchmarks)
+            extractNumberFromFormattedString(a.solvedBenchmarks) -
+            extractNumberFromFormattedString(b.solvedBenchmarks)
           );
         },
         headerContent: (header: string) => (
-          <div className="flex gap-2">
+          <div className="flex items-center w-max">
             {header}
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4 z-50" />}
+              trigger={() => (
+                <div>
+                  <QuestionLine className="w-4 h-4" />
+                </div>
+              )}
               position="right center"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
             >
-              <div className="bg-stroke p-2 rounded z-50">
+              <div className="bg-stroke p-2 rounded">
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
@@ -273,19 +274,21 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
       {
         name: "SGM Runtime",
         field: "runtime",
-        width: "w-1/5",
+        width:
+          sgmMode !== SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS
+            ? "w-1/5"
+            : "w-2/6",
         bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
-          return extractValue(a.runtime) - extractValue(b.runtime);
+          return (
+            extractNumberFromFormattedString(a.runtime) -
+            extractNumberFromFormattedString(b.runtime)
+          );
         },
         headerContent: (header: string) => (
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-max">
             {header}
             {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
               <>
