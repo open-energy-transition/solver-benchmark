@@ -411,9 +411,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
         <div className="text-navy px-5 text-sm block items-center mt-2">
           <span>
-            You can rank the latest version of each solver by number of solved
-            benchmark instances, or by the normalized shifted geometric mean
-            (SGM
+            This table summarizes all the benchmark results of the latest
+            version of each solver on the selected configuration. You can rank
+            the solvers by the normalized shifted geometric mean (SGM
           </span>
           <span className="inline-flex gap-2">
             <Popup
@@ -444,7 +444,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               </div>
             </Popup>
           </span>
-          <span> of runtime and memory consumption over all benchmarks</span>
+          <span>
+            of runtime or memory consumption over all benchmarks, or by the
+            number of solved benchmark instances. Click on any column header to
+            sort the results by that column.
+          </span>
         </div>
       </div>
 

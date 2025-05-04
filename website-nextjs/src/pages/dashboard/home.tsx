@@ -63,11 +63,14 @@ const LandingPage = () => {
                 Main Results
               </div>
               <div className="font-lato font-normal/1.4 text-xs max-w-screen-lg">
-                We run our benchmarks using 2 different configurations: Small
-                benchmarks are run with a smaller timeout on a smaller machine,
-                and Large benchmarks are run with a larger timeout on a larger
-                machine. Select the appropriate tab below to view the results
-                for each configuration.
+                We run our benchmarks on 2 different configurations: The{" "}
+                <b>Short</b> tab below contains results of the smaller
+                benchmarks (less than a million variables), run with a 1 hour
+                timeout on a smaller machine (c4-standard-2). The <b>Long</b>{" "}
+                tab contains larger benchmarks (more than a million variables),
+                run with a 10 hour timeout on a larger machine (c4-highmem-8).
+                Select the desired tab to view a summary of the results on that
+                configuration.
               </div>
             </div>
             <div className="flex mt-6">
