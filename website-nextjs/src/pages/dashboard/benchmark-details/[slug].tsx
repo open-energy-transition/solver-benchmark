@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection";
 import {
   AdminHeader,
   ContentWrapper,
@@ -109,7 +108,6 @@ const PageBenchmarkDetail = () => {
           showFilter={false}
         >
           {/* Content */}
-          <DetailSection />
           <div className="border-b border-stroke pt-2" />
 
           <div className="pb-2 pt-8 md:py-4 flex items-center">

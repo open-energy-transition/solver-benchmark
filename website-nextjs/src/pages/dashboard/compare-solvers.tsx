@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 // local
-import DetailSection from "@/components/admin/DetailSection";
 import {
   AdminHeader,
   ContentWrapper,
@@ -52,7 +51,6 @@ const PageCompareSolvers = () => {
             <NoSolverPage />
           ) : (
             <>
-              <DetailSection />
               <SolverSelection />
             </>
           )}
