@@ -1,11 +1,6 @@
 import { useSelector } from "react-redux";
 // local
-import {
-  AdminHeader,
-  ContentWrapper,
-  Footer,
-  Navbar,
-} from "@/components/shared";
+import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
 import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult";
 import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
@@ -17,7 +12,6 @@ import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
 import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
-import FilterSection from "@/components/admin/FilterSection";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();

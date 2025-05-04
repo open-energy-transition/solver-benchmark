@@ -6,6 +6,7 @@ type Size = {
   nOfVariables: number | null;
   size: string;
   url: string;
+  realistic: boolean;
 };
 
 interface MetaDataEntry {
