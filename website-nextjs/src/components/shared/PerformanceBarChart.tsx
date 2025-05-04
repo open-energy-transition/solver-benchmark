@@ -144,7 +144,7 @@ const PerformanceBarChart = ({
       .ticks(5) // Reduce number of ticks even more
       .tickValues(
         // Explicitly set tick values to avoid overlap
-        [1, 10, 100, 600],
+        [1, 10, 100, 1000, 3600, 36000],
       );
 
     // Add x-axis without labels
@@ -182,26 +182,27 @@ const PerformanceBarChart = ({
       .style("stroke", "#ccc")
       .style("stroke-dasharray", "4,4");
 
-    // Add maximum runtime line (600s)
+    // Add 1h timeout line (3600s)
     svg
       .append("line")
       .attr("x1", margin.left)
       .attr("x2", width - margin.right)
-      .attr("y1", yScaleRuntime(600))
-      .attr("y2", yScaleRuntime(600))
+      .attr("y1", yScaleRuntime(3600))
+      .attr("y2", yScaleRuntime(3600))
       .style("stroke", "#ff6b6b")
       .style("stroke-width", 1)
       .style("stroke-dasharray", "4,4");
 
-    // Add maximum runtime label - moved to right side
+    // Add 10h timeout line (36000s)
     svg
-      .append("text")
-      .attr("x", width - margin.right + 35) // Move to right side
-      .attr("y", yScaleRuntime(600))
-      .attr("dy", "0.32em")
-      .attr("text-anchor", "start")
-      .attr("font-size", "10px")
-      .style("fill", "#ff6b6b");
+      .append("line")
+      .attr("x1", margin.left)
+      .attr("x2", width - margin.right)
+      .attr("y1", yScaleRuntime(36000))
+      .attr("y2", yScaleRuntime(36000))
+      .style("stroke", "#ff6b6b")
+      .style("stroke-width", 1)
+      .style("stroke-dasharray", "4,4");
 
     // Calculate the maximum bar height from the y-scale
     const TIMEOUT_BAR_HEIGHT = Math.abs(yScaleRatio(4) - yScaleRatio(0));
