@@ -141,7 +141,7 @@ const LandingPage = () => {
                           <span>
                             Here are some key points to keep in mind when
                             interpreting these results:
-                            <ul>
+                            <ul className="list-disc pl-5">
                               <li>
                                 We run benchmarks on commercial cloud virtual
                                 machines (VMs) for efficiency and cost reasons.

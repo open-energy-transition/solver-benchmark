@@ -222,13 +222,13 @@ const PageBenchmarkDetail = () => {
                 <div className="text-navy text-xl font-bold 4xl:text-2xl">
                   Benchmark Set
                 </div>
-                <p className="text-[#5D5D5D] 4xl:text-xl">
+                <p className="text-navy 4xl:text-xl">
                   On this page you can see details of all the benchmarks on our
                   platform, including their source and download links.
                 </p>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 rounded-[32px]">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
               <div className="sm:flex justify-between">
                 <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
                   <BenchmarkDetailFilterSection

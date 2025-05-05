@@ -55,12 +55,21 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
         <div className="pt-1.5 pb-3">
           <div className="text-navy font-bold text-xl">Runtime vs Memory</div>
 
-          <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
-            Click on any point in this graph to see details of the benchmark
-            instance. <CloseIcon className="size-3" />
-            represents benchmark instances that timed out or errored, while
-            <CircleIcon className="size-3" />
-            indicates a successful run.
+          <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
+            <span>
+              Click on any point in this graph to see details of the benchmark
+              instance.
+            </span>
+            <span className="flex items-center gap-1">
+              <CloseIcon className="size-3" />
+              <span>
+                represents benchmark instances that timed out or errored,
+              </span>
+            </span>
+            <span className="flex items-center gap-1">
+              <CircleIcon className="size-3" />
+              <span>indicates a successful run.</span>
+            </span>
           </p>
         </div>
       </div>
