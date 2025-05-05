@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 
 // local
-import DetailSection from "@/components/admin/DetailSection";
 import {
   AdminHeader,
   ContentWrapper,
@@ -134,13 +133,19 @@ const PagePerformanceHistory = () => {
     );
 
     return {
-      runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime),
+      runtime: getNormalizedData(
+        solverYearlyMetrics,
+        "runtime",
+        minRuntime,
+      ).sort((a, b) => a.year - b.year),
       memoryUsage: getNormalizedData(
         solverYearlyMetrics,
         "memoryUsage",
         minMemoryUsage,
+      ).sort((a, b) => a.year - b.year),
+      numSolvedBenchMark: getNumSolvedBenchMark().sort(
+        (a, b) => a.year - b.year,
       ),
-      numSolvedBenchMark: getNumSolvedBenchMark(),
     };
   }, [solverYearlyMetrics]);
 
@@ -172,17 +177,6 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
-          <DetailSection />
-          <div className="mt-8 mb-5">
-            <div className="text-navy text-xl leading-1.4 font-semibold 4xl:text-2xl">
-              Solver Performance History
-            </div>
-            <div className="text-sm leading-1.4 text-[#5D5D5D] 4xl:text-lg">
-              We use the Shifted Geometric Mean (SGM) of runtime and memory
-              consumption overall the benchmarks, and normalize according to the
-              best performing solver version.
-            </div>
-          </div>
           <NormalizedSection chartData={chartData} />
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}

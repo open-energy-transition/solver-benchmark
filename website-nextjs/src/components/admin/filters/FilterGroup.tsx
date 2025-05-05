@@ -74,7 +74,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
       </div>
       {isExpanded && (
         <div className={`grid ${gridClassName} text-xs`}>
-          {items.map((item) => (
+          {[...items].sort().map((item) => (
             <div
               className="flex items-center gap-1 p-3 px-2.5 relative group min-w-[72px]"
               key={item}
@@ -87,7 +87,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               />
               <span
                 onClick={() => onItemChange(item)}
-                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[70%] whitespace-nowrap overflow-hidden 4xl:text-lg ${itemClassName} ${
+                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[70%] whitespace-nowrap overflow-hidden ${itemClassName} ${
                   uppercase ? "uppercase" : ""
                 }`}
               >

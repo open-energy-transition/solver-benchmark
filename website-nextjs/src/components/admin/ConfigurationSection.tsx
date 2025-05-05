@@ -5,27 +5,58 @@ import {
   TimeoutIcon,
 } from "@/assets/icons";
 
-const ConfigurationSection = () => {
+interface ConfigurationSectionProps {
+  timeout: number;
+}
+
+const TIMEOUT = {
+  STANDARD: 3600,
+  EXTENDED: 36000,
+} as const;
+
+type MachineConfig = {
+  instance: string;
+  vcpus: string;
+  memory: string;
+};
+
+const MACHINE_CONFIGS: Record<number, MachineConfig> = {
+  [TIMEOUT.STANDARD]: {
+    instance: "c4-standard-2",
+    vcpus: "2",
+    memory: "7 GiB",
+  },
+  [TIMEOUT.EXTENDED]: {
+    instance: "c4-highmem-8",
+    vcpus: "8",
+    memory: "62 GiB",
+  },
+};
+
+const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
+  const timeoutInHours = timeout / 3600; // Convert seconds to hours
+
+  const config = MACHINE_CONFIGS[timeout];
+
   const detailData = [
     {
       label: "Instance",
-      value: "c4-standard-2",
+      value: config.instance,
       icon: <InstanceIcon className="size-4 fill-navy" />,
     },
     {
       label: "vCPUs",
-      value: "2 (1 core)",
+      value: config.vcpus,
       icon: <ProcessorIcon className="size-4 fill-navy" />,
     },
     {
       label: "Memory",
-      value: "8 GB RAM",
+      value: config.memory,
       icon: <DatabaseIcon className="size-4 fill-navy" />,
     },
     {
       label: "Timeout",
-      // TODO: Replace hardcoded timeout
-      value: "1h",
+      value: `${timeoutInHours}h`,
       icon: <TimeoutIcon className="size-4 fill-navy" />,
     },
   ];

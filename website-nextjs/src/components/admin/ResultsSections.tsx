@@ -9,6 +9,7 @@ import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { SgmMode } from "@/constants/filter";
+import { extractNumberFromFormattedString } from "@/utils/string";
 
 type ColumnType = {
   name: string;
@@ -30,16 +31,24 @@ type TableRowType = {
   runtime: string;
 };
 
-const ResultsSection = () => {
+interface ResultsSectionProps {
+  timeout: number;
+}
+
+const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  );
+  ).filter((result) => result.timeout === timeout);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+
+  const selectedFilters = useSelector(
+    (state: { filters: IFilterState }) => state.filters,
+  );
 
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
@@ -76,13 +85,24 @@ const ResultsSection = () => {
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return benchmarkLatestResults.map((result) => ({
           ...result,
-          runtime: result.runtime * xFactor,
-          memoryUsage: MaxMemoryUsage * xFactor,
+          runtime:
+            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+          memoryUsage:
+            result.status !== "ok"
+              ? MaxMemoryUsage * xFactor
+              : result.memoryUsage,
+        }));
+      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
+        return benchmarkLatestResults.map((result) => ({
+          ...result,
+          runtime: result.status !== "ok" ? result.timeout : result.runtime,
+          memoryUsage:
+            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
     }
-  }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers]);
+  }, [sgmMode, xFactor, availableSolvers, timeout, selectedFilters]);
 
   const [tableData, setTableData] = useState<TableRowType[]>([]);
   const [sortConfig, setSortConfig] = useState<{
@@ -123,11 +143,6 @@ const ResultsSection = () => {
             result.solver === solver,
         )
         .map((result) => {
-          if (
-            ["warning", "TO"].includes(result.status) &&
-            field === "memoryUsage"
-          )
-            return MaxMemoryUsage;
           return result[field];
         }),
     [benchmarkResults, solverVersions],
@@ -218,11 +233,10 @@ const ResultsSection = () => {
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
-          return extractValue(a.memory) - extractValue(b.memory);
+          return (
+            extractNumberFromFormattedString(a.memory) -
+            extractNumberFromFormattedString(b.memory)
+          );
         },
       },
       {
@@ -233,20 +247,21 @@ const ResultsSection = () => {
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
           return (
-            extractValue(a.solvedBenchmarks) - extractValue(b.solvedBenchmarks)
+            extractNumberFromFormattedString(a.solvedBenchmarks) -
+            extractNumberFromFormattedString(b.solvedBenchmarks)
           );
         },
         headerContent: (header: string) => (
-          <div className="flex gap-2">
+          <div className="flex items-center w-max">
             {header}
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => (
+                <div>
+                  <QuestionLine className="w-4 h-4" />
+                </div>
+              )}
               position="right center"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
@@ -262,19 +277,21 @@ const ResultsSection = () => {
       {
         name: "SGM Runtime",
         field: "runtime",
-        width: "w-1/5",
+        width:
+          sgmMode !== SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS
+            ? "w-1/5"
+            : "w-2/6",
         bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
-          return extractValue(a.runtime) - extractValue(b.runtime);
+          return (
+            extractNumberFromFormattedString(a.runtime) -
+            extractNumberFromFormattedString(b.runtime)
+          );
         },
         headerContent: (header: string) => (
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-max">
             {header}
             {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
               <>
@@ -381,9 +398,6 @@ const ResultsSection = () => {
     }));
   };
 
-  const [activedIndex, setActivedIndex] = useState(0);
-  console.log(activedIndex);
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -478,7 +492,7 @@ const ResultsSection = () => {
               className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="py-2.5 flex items-center gap-1 pl-3 pr-6 cursor-pointer justify-center 4xl:text-xl"
+                className="py-2.5 flex items-center gap-1 px-3 cursor-pointer justify-center 4xl:text-xl"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -504,7 +518,6 @@ const ResultsSection = () => {
                 <div
                   key={`${column.field}-${index}`}
                   className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
-                  onClick={() => setActivedIndex(index)}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",

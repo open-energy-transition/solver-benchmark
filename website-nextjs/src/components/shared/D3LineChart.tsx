@@ -212,21 +212,23 @@ const D3ChartLineChart = ({
     <div className={`bg-white p-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="font-semibold text-[#8C8C8C] text-xs 4xl:text-base mr-1 flex items-end">
+        <span className="items-start font-semibold text-[#8C8C8C] text-xs 4xl:text-base mr-1 flex">
           Solver:
         </span>
-        {Object.keys(solverColors).map((solverKey) => (
-          <div
-            key={solverKey}
-            className="py-1 px-5 uppercase bg-stroke 4xl:text-sm text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
-          >
-            <CircleIcon
-              style={{ color: solverColors[solverKey] }}
-              className={"size-2"}
-            />
-            {solverKey}
-          </div>
-        ))}
+        <div className="flex gap-2 flex-wrap">
+          {Object.keys(solverColors).map((solverKey) => (
+            <div
+              key={solverKey}
+              className="py-1 px-5 uppercase bg-stroke 4xl:text-sm text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+            >
+              <CircleIcon
+                style={{ color: solverColors[solverKey] }}
+                className={"size-2"}
+              />
+              {solverKey}
+            </div>
+          ))}
+        </div>
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
