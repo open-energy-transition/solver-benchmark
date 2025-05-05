@@ -92,7 +92,7 @@ const Navbar = () => {
             <Link
               href="/"
               className={`-m-1.5 p-1.5 flex items-center gap-0.5 text-white w-max
-                 ${isNavExpanded ? "px-16" : "px-4"}`}
+                 ${isNavExpanded ? "px-16" : "px-4 pl-6"}`}
             >
               <div className="size-10">
                 <Image

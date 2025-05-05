@@ -3,8 +3,8 @@ const presetColors = [
   "#43BF94", // green
   "#F9CD5A", // yellow
   "#3B82F6", // blue
+  "#7C3AED", // purple
   "#f58231", // orange
-  "#911eb4", // purple
   "#46f0f0", // cyan
   "#f032e6", // magenta
   "#d2f53c", // lime
