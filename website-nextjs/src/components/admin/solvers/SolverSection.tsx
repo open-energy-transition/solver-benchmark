@@ -118,7 +118,7 @@ const SolverSection = () => {
 
   return (
     <div>
-      <div className="flex gap-4 mt-6 mb-4">
+      <div className="flex gap-4 mb-4">
         {/* Solver select */}
         <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
           <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">

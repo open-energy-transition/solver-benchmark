@@ -1,5 +1,4 @@
 // local
-import DetailSection from "@/components/admin/DetailSection";
 import {
   AdminHeader,
   ContentWrapper,
@@ -41,7 +40,6 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
-          <DetailSection />
           <TableResult />
         </ContentWrapper>
         <Footer />

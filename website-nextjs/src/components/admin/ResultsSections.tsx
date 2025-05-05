@@ -86,11 +86,18 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         return benchmarkLatestResults.map((result) => ({
           ...result,
           runtime:
-            result.status !== "ok" ? result.runtime * xFactor : result.runtime,
+            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
               ? MaxMemoryUsage * xFactor
               : result.memoryUsage,
+        }));
+      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
+        return benchmarkLatestResults.map((result) => ({
+          ...result,
+          runtime: result.status !== "ok" ? result.timeout : result.runtime,
+          memoryUsage:
+            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
@@ -135,11 +142,6 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             result.solver === solver,
         )
         .map((result) => {
-          if (
-            ["warning", "TO"].includes(result.status) &&
-            field === "memoryUsage"
-          )
-            return MaxMemoryUsage;
           return result[field];
         }),
     [benchmarkResults, solverVersions],

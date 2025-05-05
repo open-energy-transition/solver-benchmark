@@ -32,7 +32,6 @@ const BenchmarkDetailFilterSection = ({
   availableProblemSizes: string[];
 }) => {
   const router = useRouter();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
@@ -256,123 +255,113 @@ const BenchmarkDetailFilterSection = ({
   };
 
   return (
-    <div
-      className={`bg-white rounded-xl my-2 relative ${
-        isAnyFilterActive() ? "mt-10" : ""
-      }`}
-    >
-      <div className="flex justify-end mb-2 absolute -top-8 left-0">
-        {isAnyFilterActive() && (
-          <button
-            onClick={handleResetAllFilters}
-            className="bg-navy text-white px-3 py-1 rounded text-xs hover:bg-opacity-80 transition-colors"
-          >
-            Reset All Filters
-          </button>
-        )}
+    <div>
+      <div className="pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
+        <div className="flex gap-2 items-center">
+          <div className="text-navy font-bold text-base">Filter</div>
+        </div>
+
+        <div className="flex justify-end ml-2">
+          {isAnyFilterActive() && (
+            <button
+              onClick={handleResetAllFilters}
+              className="text-[9px]/1.4 text-[#444444] font-normal font-lato px-3 py-1 rounded hover:bg-opacity-80 transition-colors"
+            >
+              Reset Filters
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Mobile Menu Button */}
-      <button
-        className="xl:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      >
-        <span>Filters</span>
-        <svg
-          className={`w-5 h-5 transition-transform ${
-            isMobileMenuOpen ? "rotate-180" : ""
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div className="relative">
+        <div
+          className="
+            duration-300
+            flex
+            flex-col
+            gap-2
+            overflow-y-auto
+            p-2
+            px-2
+            text-navy
+            transition-all
+            max-h-[80vh] opacity-100
+          "
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
+          {/* Sectors */}
+          <FilterGroup
+            title="Sectors"
+            icon={<BrightIcon className="w-5 h-5" />}
+            items={availableSectors}
+            selectedItems={localFilters?.sectors}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "sectors", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({ category: "sectors", value, only: true })
+            }
+            onSelectAll={() => handleSelectAll({ category: "sectors" })}
+            className="w-full"
+            itemClassName="4xl:text-xl"
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
           />
-        </svg>
-      </button>
-
-      <div
-        className={`${
-          isMobileMenuOpen ? "block" : "hidden"
-        } xl:flex text-dark-grey`}
-      >
-        {/* Sectors */}
-        <FilterGroup
-          title="Sectors"
-          icon={<BrightIcon className="w-5 h-5" />}
-          items={availableSectors}
-          selectedItems={localFilters?.sectors}
-          onItemChange={(value) =>
-            handleCheckboxChange({ category: "sectors", value })
-          }
-          onItemOnly={(value) =>
-            handleCheckboxChange({ category: "sectors", value, only: true })
-          }
-          onSelectAll={() => handleSelectAll({ category: "sectors" })}
-          className="w-full rounded-tl-xl xl:w-1/4 4xl:w-1/3 border-r border-stroke max-h-[140px] overflow-y-auto"
-          itemClassName="!w-[90%]"
-          gridClassName="grid-cols-2"
-          uppercase={false}
-        />
-        {/* Technique */}
-        <FilterGroup
-          title="Technique"
-          icon={<ProcessorIcon className="w-5 h-5" />}
-          items={availableTechniques}
-          selectedItems={localFilters?.technique}
-          onItemChange={(value) =>
-            handleCheckboxChange({ category: "technique", value })
-          }
-          onItemOnly={(value) =>
-            handleCheckboxChange({ category: "technique", value, only: true })
-          }
-          onSelectAll={() => handleSelectAll({ category: "technique" })}
-          className="xl:w-auto 4xl:w-[10%] w-full border-r border-stroke max-h-[140px] overflow-y-auto"
-          gridClassName="grid-cols-2"
-          uppercase={false}
-        />
-        {/* Kind of Problem */}
-        <FilterGroup
-          title="Kind of Problem"
-          icon={<WrenchIcon className="w-5 h-5" />}
-          items={availableKindOfProblems}
-          selectedItems={localFilters?.kindOfProblem}
-          onItemChange={(value) =>
-            handleCheckboxChange({ category: "kindOfProblem", value })
-          }
-          onItemOnly={(value) =>
-            handleCheckboxChange({
-              category: "kindOfProblem",
-              value,
-              only: true,
-            })
-          }
-          onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
-          className="xl:w-auto w-full border-r border-stroke max-h-[140px] overflow-y-auto"
-          gridClassName="grid-cols-2 xl:grid-cols-[max-content_max-content]"
-          uppercase={false}
-        />
-        {/* Model */}
-        <FilterGroup
-          title="Model"
-          icon={<PolygonIcon className="w-5 h-5" />}
-          items={availableModels}
-          selectedItems={localFilters?.modelName}
-          onItemChange={(value) =>
-            handleCheckboxChange({ category: "modelName", value })
-          }
-          onItemOnly={(value) =>
-            handleCheckboxChange({ category: "modelName", value, only: true })
-          }
-          onSelectAll={() => handleSelectAll({ category: "modelName" })}
-          className="rounded-tr-xl xl:w-[40%] !border-r-0 w-full max-h-[140px] overflow-y-auto"
-          gridClassName="grid-cols-3"
-          uppercase={false}
-        />
+          {/* Technique */}
+          <FilterGroup
+            title="Technique"
+            icon={<ProcessorIcon className="w-5 h-5" />}
+            items={availableTechniques}
+            selectedItems={localFilters?.technique}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "technique", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({ category: "technique", value, only: true })
+            }
+            onSelectAll={() => handleSelectAll({ category: "technique" })}
+            className="w-full"
+            gridClassName="!flex flex-wrap"
+            uppercase={false}
+          />
+          {/* Kind of Problem */}
+          <FilterGroup
+            title="Kind of Problem"
+            icon={<WrenchIcon className="w-5 h-5" />}
+            items={availableKindOfProblems}
+            selectedItems={localFilters?.kindOfProblem}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "kindOfProblem", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "kindOfProblem",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
+            className="w-full"
+            gridClassName="grid-cols-1"
+            uppercase={false}
+          />
+          {/* Model */}
+          <FilterGroup
+            title="Model"
+            icon={<PolygonIcon className="w-5 h-5" />}
+            items={availableModels}
+            selectedItems={localFilters?.modelName}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "modelName", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({ category: "modelName", value, only: true })
+            }
+            onSelectAll={() => handleSelectAll({ category: "modelName" })}
+            className="w-full"
+            gridClassName="grid-cols-2"
+            uppercase={false}
+          />
+        </div>
       </div>
     </div>
   );
