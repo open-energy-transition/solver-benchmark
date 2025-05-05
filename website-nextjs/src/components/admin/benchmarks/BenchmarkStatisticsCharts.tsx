@@ -118,7 +118,7 @@ const BenchmarkStatisticsCharts = ({
         size,
         total: 0,
         realistic: 0,
-        "non-realistic": 0,
+        other: 0,
       };
     });
     Object.keys(metaData).forEach((key) => {
@@ -134,7 +134,7 @@ const BenchmarkStatisticsCharts = ({
     });
     return sizeData.map((data) => {
       return {
-        "non-realistic": data.total - data.realistic,
+        other: data.total - data.realistic,
         realistic: data.realistic,
         size: data.size,
       };
@@ -182,7 +182,7 @@ const BenchmarkStatisticsCharts = ({
             categoryKey="size"
             colors={{
               realistic: getChartColor(0),
-              "non-realistic": getChartColor(1),
+              other: getChartColor(1),
             }}
             rotateXAxisLabels={false}
             title="By Size"
