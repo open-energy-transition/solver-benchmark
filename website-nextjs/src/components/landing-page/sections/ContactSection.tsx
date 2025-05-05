@@ -130,7 +130,10 @@ const ContactForm = () => {
 
 const ContactSection = () => {
   return (
-    <div className="text-white bg-navy pt-[105px] pb-[73px]">
+    <div
+      id="contact"
+      className="text-white bg-navy pt-[105px] pb-[73px] scroll-mt-16 lg:scroll-mt-28"
+    >
       <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
         <div className="grid md:flex">
           <div className="w-full md:w-1/2">
