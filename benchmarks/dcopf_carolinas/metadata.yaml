@@ -13,7 +13,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
-      Temporal resolution: 1 hour
+      Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 199255
@@ -32,7 +32,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
-      Temporal resolution: 1 hour
+      Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 220143
@@ -53,7 +53,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
-      Temporal resolution: 1 hour
+      Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 199255
@@ -72,7 +72,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
-      Temporal resolution: 1 hour
+      Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 220143
@@ -93,7 +93,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
-      Temporal resolution: 1 hour
+      Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 199255
@@ -112,7 +112,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
-      Temporal resolution: 1 hour
+      Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 220143
