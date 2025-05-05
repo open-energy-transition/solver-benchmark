@@ -1,8 +1,7 @@
 ## https://github.com/lprieto1409/DC-OPF-Carolinas
 benchmarks:
   DCOPF-Carolinas_1W:
-    Short description: High-resolution model for North and South Carolina
-    Model name: DCOPF
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: LP
@@ -11,16 +10,16 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 168-997
+    - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
-      Temporal resolution: 168 (24 hours x 7 days)
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_1W:
-    Short description: High-resolution model for North and South Carolina
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
@@ -30,16 +29,16 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 168-997
+    - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
-      Temporal resolution: 168 (24 hours x 7 days)
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 220143
       Num. variables: 131278  
   DCOPF-Carolinas_2M:
-    Short description: High-resolution model for North and South Carolina
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a two-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
@@ -49,16 +48,16 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1536-997
+    - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
-      Temporal resolution: 1536 (24 hours x 64 days)
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_2M:
-    Short description: High-resolution model for North and South Carolina
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a two-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
@@ -68,16 +67,16 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1536-997
+    - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
-      Temporal resolution: 1536 (24 hours x 64 days)
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 220143
       Num. variables: 131278
   DCOPF-Carolinas_6M:
-    Short description: High-resolution model for North and South Carolina
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a six-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
@@ -87,16 +86,16 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
-    - Name: 4296-997
+    - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
-      Temporal resolution: 4296 (24 hours x 179 days)
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_6M:
-    Short description: High-resolution model for North and South Carolina
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a six-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
@@ -106,10 +105,10 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
-    - Name: 4296-997
+    - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
-      Temporal resolution: 4296 (24 hours x 179 days)
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Num. constraints: 220143
