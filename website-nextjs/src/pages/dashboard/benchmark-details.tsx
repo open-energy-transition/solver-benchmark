@@ -213,22 +213,22 @@ const PageBenchmarkDetail = () => {
                       className="size-3 4xl:size-4 stroke-navy"
                     />
                     <span className="self-center font-semibold whitespace-nowrap">
-                      Benchmark Details
+                      Benchmark Set
                     </span>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="py-2">
-                <div className="text-navy text-xl font-bold 4xl:text-2xl">
-                  Benchmarks
+              <div className="text-navy">
+                <div className="font-lato font-bold text-2xl/1.4">
+                  Benchmark Set
                 </div>
-                <p className="text-[#5D5D5D] 4xl:text-xl">
+                <p className="font-lato font-normal/1.4 text-l max-w-screen-lg">
                   On this page you can see details of all the benchmarks on our
                   platform, including their source and download links.
                 </p>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 rounded-[32px]">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
               <div className="sm:flex justify-between">
                 <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
