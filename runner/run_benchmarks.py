@@ -114,6 +114,7 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Reported Runtime (s)",
                 "Timeout",
                 "Hostname",
                 "Run ID",
@@ -161,6 +162,7 @@ def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
                 metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["reported_runtime"],
                 metrics["timeout"],
                 hostname,
                 run_id,
@@ -223,13 +225,12 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "condition": "Timeout",
             "objective": None,
             "runtime": timeout,
+            "reported_runtime": timeout,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
-        print(
-            f"ERROR running solver. Captured output:\n{result.stdout}\n{result.stderr}"
-        )
+        print(f"ERROR running solver. Return code:\n{result.returncode}")
         # Errors are also said to have run for `timeout`s, so that they appear
         # along with timeouts in charts
         metrics = {
@@ -237,11 +238,15 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "condition": "Error",
             "objective": None,
             "runtime": timeout,
+            "reported_runtime": timeout,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
+
+    if metrics["status"] not in {"ok", "TO", "ER"}:
+        print(f"WARNING: unknown solver status: {metrics['status']}")
 
     metrics["memory"] = memory
     metrics["timeout"] = timeout
@@ -285,7 +290,7 @@ def benchmark_highs_binary():
     ]
 
     # Run the command and capture the output
-    start_time = time.time()
+    start_time = time.perf_counter()
     result = subprocess.run(
         command,
         capture_output=True,
@@ -293,11 +298,9 @@ def benchmark_highs_binary():
         check=False,
         encoding="utf-8",
     )
-    runtime = time.time() - start_time
+    runtime = time.perf_counter() - start_time
     if result.returncode != 0:
-        print(
-            f"ERROR running reference benchmark. Captured output:\n{result.stdout}\n{result.stderr}"
-        )
+        print(f"ERROR running solver. Return code:\n{result.returncode}")
         metrics = {
             "status": "ER",
             "condition": "Error",
@@ -505,6 +508,7 @@ def main(
                     reference_metrics["solver"] = "highs-binary"
                     reference_metrics["solver_version"] = reference_solver_version
                     reference_metrics["solver_release_year"] = "N/A"
+                    reference_metrics["reported_runtime"] = None
 
                     # Record reference benchmark results
                     reference_timestamp = datetime.datetime.now().strftime(

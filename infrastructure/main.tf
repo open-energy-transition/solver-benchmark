@@ -103,7 +103,7 @@ resource "google_compute_instance" "benchmark_instances" {
 
   name         = "${var.instance_name}-${each.key}"
   machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
-  zone         = var.zone
+  zone         = lookup(each.value.content, "zone", var.zone)
 
   boot_disk {
     initialize_params {
@@ -129,7 +129,7 @@ resource "google_compute_instance" "benchmark_instances" {
     gcs_bucket_name = var.gcs_bucket_name
     auto_destroy_vm = tostring(var.auto_destroy_vm)
     project_id = var.project_id
-    zone = var.zone
+    zone = lookup(each.value.content, "zone", var.zone)
     reference_benchmark_interval = tostring(var.reference_benchmark_interval)
   }
 

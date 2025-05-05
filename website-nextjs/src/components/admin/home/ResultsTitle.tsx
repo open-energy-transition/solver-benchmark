@@ -28,10 +28,10 @@ const ResultsSectionsTitle = ({
   ).size;
 
   return (
-    <div className="pb-3 pl-3">
-      <div className="text-navy font-bold text-xl flex justify-between items-center">
+    <div>
+      <div className="relative text-navy font-bold text-xl px-5 flex justify-between items-end">
         <div>
-          Results
+          Summary
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
               (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}

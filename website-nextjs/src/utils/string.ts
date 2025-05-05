@@ -9,3 +9,9 @@ export function sortStringArray(
     return copy.sort((a, b) => b.localeCompare(a));
   }
 }
+
+export const extractNumberFromFormattedString = (str: string): number => {
+  const cleanStr = str.replace(/<\/?b>/g, "");
+  const numMatch = cleanStr.match(/^[\d.]+/);
+  return numMatch ? parseFloat(numMatch[0]) : 0;
+};
