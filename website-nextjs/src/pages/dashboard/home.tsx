@@ -26,7 +26,7 @@ const LandingPage = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Main Results</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -54,7 +54,7 @@ const LandingPage = () => {
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
                     <span className="self-center font-semibold whitespace-nowrap">
-                      Main page
+                      Main Results
                     </span>
                   </div>
                 </div>
@@ -62,7 +62,7 @@ const LandingPage = () => {
               <div className="font-lato font-bold text-2xl/1.4">
                 Main Results
               </div>
-              <div className="font-lato font-normal/1.4 text-xs max-w-screen-lg">
+              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
                 benchmarks (less than a million variables), run with a 1 hour
@@ -117,14 +117,18 @@ const LandingPage = () => {
                       <></>
                     )}
                     <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
-                      <div className="text-xl/1.4 font-bold">Note 🔔 ️</div>
                       <div className="pt-2 text-xs/1.4 font-normal">
-                        As with all benchmarks, our results provide only an
-                        indication of which solvers might be good for your
-                        problems. We recommend using our scripts to benchmark on
-                        your own problems before picking a solver See also the
-                        section on <span className="underline">Caveats</span>{" "}
-                        below.
+                        <b>🔔 Note:</b> As with all benchmarks, our results
+                        provide only an indication of which solvers might be
+                        good for your problems. We recommend using{" "}
+                        <span className="underline">
+                          <a href="https://github.com/open-energy-transition/solver-benchmark/">
+                            our scripts
+                          </a>
+                        </span>{" "}
+                        to benchmark on your own problems before picking a
+                        solver See also the section on{" "}
+                        <span className="underline">Caveats</span> below.
                       </div>
                     </div>
                     <BenchmarksSection timeout={timeout} />
@@ -135,10 +139,37 @@ const LandingPage = () => {
                         </div>
                         <div className="text-navy text-sm block items-center mt-2">
                           <span>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud
+                            Here are some key points to keep in mind when
+                            interpreting these results:
+                            <ul>
+                              <li>
+                                We run benchmarks on commercial cloud virtual
+                                machines (VMs) for efficiency and cost reasons.
+                                The shared nature of cloud resources means there
+                                is some error in our runtime measurements, which
+                                we estimate as a coefficient of variation of no
+                                larger than 4%. More details on this{" "}
+                                <span className="underline">here</span>.
+                              </li>
+                              <li>
+                                All solvers are run with their default options.
+                              </li>
+                              <li>
+                                Mixed Integer benchmarks (MILPs) are run with a
+                                duality gap tolerance of 0.0004.
+                              </li>
+                              <li>
+                                All results on this website use the runtime
+                                measured by our benchmarking script. This may
+                                not be the same as the runtime of the solving
+                                algorithm as reported by the solver, and it may
+                                include things like time for input file parsing
+                                and license checks. See more details and join
+                                the discussion on whether to use reported or
+                                measured runtime{" "}
+                                <span className="underline">here</span>.
+                              </li>
+                            </ul>
                           </span>
                         </div>
                       </div>

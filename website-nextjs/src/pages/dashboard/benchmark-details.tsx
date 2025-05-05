@@ -213,14 +213,14 @@ const PageBenchmarkDetail = () => {
                       className="size-3 4xl:size-4 stroke-navy"
                     />
                     <span className="self-center font-semibold whitespace-nowrap">
-                      Benchmark Details
+                      Benchmark Set
                     </span>
                   </div>
                 </div>
               </AdminHeader>
               <div className="py-2">
                 <div className="text-navy text-xl font-bold 4xl:text-2xl">
-                  Benchmarks
+                  Benchmark Set
                 </div>
                 <p className="text-[#5D5D5D] 4xl:text-xl">
                   On this page you can see details of all the benchmarks on our

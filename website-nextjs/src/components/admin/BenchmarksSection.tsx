@@ -56,8 +56,9 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
           <div className="text-navy font-bold text-xl">Runtime vs Memory</div>
 
           <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
-            <CloseIcon className="size-3" />
-            represents benchmarks that timed out, while
+            Click on any point in this graph to see details of the benchmark
+            instance. <CloseIcon className="size-3" />
+            represents benchmark instances that timed out or errored, while
             <CircleIcon className="size-3" />
             indicates a successful run.
           </p>

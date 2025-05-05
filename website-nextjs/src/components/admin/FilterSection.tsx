@@ -273,7 +273,7 @@ const FilterSection = () => {
     <div>
       <div className="pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
         <div className="flex gap-2 items-center">
-          <div className="text-navy font-bold text-base">Filter</div>
+          <div className="text-navy font-bold text-base">Filters</div>
         </div>
 
         <div className="flex justify-end ml-2">

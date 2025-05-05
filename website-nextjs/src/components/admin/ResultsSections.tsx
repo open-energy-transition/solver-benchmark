@@ -411,7 +411,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-navy px-5 text-sm block items-center mt-2">
+        <div className="text-navy px-5 text-l block items-center mt-2">
           <span>
             This table summarizes all the benchmark results of the latest
             version of each solver on the selected configuration. You can rank
@@ -447,9 +447,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             </Popup>
           </span>
           <span>
-            of runtime or memory consumption over all benchmarks, or by the
-            number of solved benchmark instances. Click on any column header to
-            sort the results by that column.
+            &nbsp; of runtime or memory consumption over all benchmarks, or by
+            the number of solved benchmark instances. Click on any column header
+            to sort the results by that column.
           </span>
         </div>
       </div>
