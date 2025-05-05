@@ -142,7 +142,8 @@ const SolverSelection = () => {
         <p className="text-[#5D5D5D] text-sm sm:text-base 4xl:text-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
-          where Solver 2 performs better
+          where Solver 2 performs better. Click on any point in this graph to
+          see details of that benchmark instance.{" "}
         </p>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">

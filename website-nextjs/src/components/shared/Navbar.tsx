@@ -22,12 +22,12 @@ const Navbar = () => {
 
   const navConfig = [
     {
-      label: "Home",
+      label: "Main Results",
       route: "/dashboard/home",
       icon: <AlignLeftJustifyIcon />,
     },
     {
-      label: "Benchmark details",
+      label: "Benchmark Set",
       route: PATH_DASHBOARD.benchmarkDetail.list,
       icon: <ChartBarIcon />,
     },
@@ -37,12 +37,12 @@ const Navbar = () => {
       icon: <VectorSquareIcon />,
     },
     {
-      label: "Compare solvers",
+      label: "Compare Solvers",
       route: "/dashboard/compare-solvers",
       icon: <BalanceScaleIcon />,
     },
     {
-      label: "Performance history",
+      label: "Performance History",
       route: "/dashboard/performance-history",
       icon: <ChartLineIcon />,
     },

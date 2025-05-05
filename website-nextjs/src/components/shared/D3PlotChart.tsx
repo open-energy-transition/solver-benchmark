@@ -378,7 +378,7 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
-            className="border-[#CAD9EF] border py-1 px-3 sm:px-5 uppercase bg-white text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
+            className="border-[#CAD9EF] border py-1 px-2 sm:px-5 uppercase bg-white text-[9px] flex items-center gap-1 rounded-md h-max w-max"
           >
             <CircleIcon
               style={{ color: solverColors[solverKey] }}
