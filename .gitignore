@@ -172,6 +172,9 @@ cython_debug/
 /runner/solutions/*
 /runner/logs/*
 
+# Ignore results downloaded from GCP
+/results/gcp-results/
+
 # NextJs
 node_modules
 .next
