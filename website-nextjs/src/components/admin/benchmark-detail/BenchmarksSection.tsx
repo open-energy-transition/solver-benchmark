@@ -10,9 +10,23 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
     return state.results.benchmarkLatestResults;
   });
 
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
+
   const chartData = useMemo(
     () =>
-      benchmarkResults.filter((result) => result.benchmark === benchmarkName),
+      benchmarkResults
+        .filter((result) => result.benchmark === benchmarkName)
+        .map((result) => {
+          const metaData = rawMetaData[result.benchmark];
+          return {
+            ...result,
+            problemSize: metaData?.sizes.find(
+              (size) => size.name === result.size,
+            )?.size,
+          };
+        }),
     [benchmarkResults],
   );
 

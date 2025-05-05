@@ -1,0 +1,23 @@
+name: benchmark-2025
+channels:
+- conda-forge
+- https://conda.anaconda.org/gurobi
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+
+- requests>=2.32
+- linopy>=0.5.3
+
+# No new release in 2025 yet
+# - coin-or-cbc==2.10.12
+
+- scip==9.2.2
+- pyscipopt==5.4.1
+
+# No major or minor releases in 2025 yet
+# - gurobi==12.0.0
+
+- pip:
+  - highspy==1.10.0

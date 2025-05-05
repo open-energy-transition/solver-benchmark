@@ -172,9 +172,9 @@ def get_extension(url_path: str) -> str:
     """Returns the file extension (e.g. `mps.gz`) from a URL's path."""
     known_extensions = {
         ".lp": "lp",
-        ".lp.gz": ".lp.gz",
+        ".lp.gz": "lp.gz",
         ".mps": "mps",
-        ".mps.gz": ".mps.gz",
+        ".mps.gz": "mps.gz",
     }
     for ext, res in known_extensions.items():
         if url_path.endswith(ext):

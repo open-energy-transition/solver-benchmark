@@ -11,12 +11,16 @@ echo "Generated unique run ID: ${RUN_ID}"
 
 # Update and install packages
 echo "Updating packages..."
-apt-get update
-apt-get install -y tmux git time curl jq build-essential
+apt-get -qq update
+apt-get -qq install -y tmux git time curl jq build-essential
+
+# Set up Gurobi license
+mkdir -p /opt/gurobi
+gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
 # Clone the repository
 echo "Cloning repository..."
-git clone https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b run-v1 https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing Highs..."
@@ -32,7 +36,7 @@ curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.l
 # Install Miniconda
 echo "Installing Miniconda..."
 mkdir -p ~/miniconda3
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 rm ~/miniconda3/miniconda.sh
 
@@ -75,7 +79,6 @@ BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
     echo "ERROR: Benchmark failed with exit code $BENCHMARK_EXIT_CODE at $(date)"
-    exit $BENCHMARK_EXIT_CODE
 fi
 
 echo "All benchmarks completed at $(date)"
@@ -92,13 +95,11 @@ if [ $COPY_EXIT_CODE -ne 0 ]; then
     echo "ERROR: Failed to copy benchmark results at $(date). Exit code: $COPY_EXIT_CODE"
     echo "Check if file exists: /solver-benchmark/results/benchmark_results.csv"
     ls -la /solver-benchmark/results/
-    exit $COPY_EXIT_CODE
 fi
 
 echo "Benchmark results successfully copied at $(date)"
 
 # ----- GCS UPLOAD CONFIGURATION -----
-# Only proceed if the benchmark and copy operations were successful
 # Check if GCS upload is enabled
 ENABLE_GCS_UPLOAD=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/enable_gcs_upload")
 if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
@@ -123,17 +124,22 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     mkdir -p "${COMPRESSED_DIR}/logs"
     mkdir -p "${COMPRESSED_DIR}/solutions"
 
-    # Upload the results file to GCS bucket
-    echo "Uploading results CSV to GCS bucket..."
-    RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
-    gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
+    # Only upload the results file if benchmark was successful
+    if [ $BENCHMARK_EXIT_CODE -eq 0 ]; then
+        # Upload the results file to GCS bucket
+        echo "Uploading results CSV to GCS bucket..."
+        RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
+        gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
 
-    if [ $? -eq 0 ]; then
-        echo "Results CSV upload successfully completed at $(date)"
-        echo "File available at: gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
+        if [ $? -eq 0 ]; then
+            echo "Results CSV upload successfully completed at $(date)"
+            echo "File available at: gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
+        else
+            echo "Results CSV upload failed at $(date)"
+            echo "Check VM service account permissions for the GCS bucket"
+        fi
     else
-        echo "Results CSV upload failed at $(date)"
-        echo "Check VM service account permissions for the GCS bucket"
+        echo "Skipping results CSV upload because benchmark failed with exit code $BENCHMARK_EXIT_CODE"
     fi
 
     # Compress and upload benchmarks log files

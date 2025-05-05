@@ -10,7 +10,7 @@ interface INormalizedSGMRuntime {
 const NormalizedSGMRuntime = ({ chartData }: INormalizedSGMRuntime) => {
   return (
     <div>
-      <p className="text-navy font-bold leading-1.5 mb-3">
+      <p className="text-navy font-bold leading-1.5 mb-3 4xl:text-xl">
         Normalized SGM Runtime
       </p>
       <D3LineChart

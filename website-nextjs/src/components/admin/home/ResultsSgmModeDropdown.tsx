@@ -1,4 +1,8 @@
-import { QuestionLine } from "@/assets/icons";
+import {
+  ArrowUpTriangleFillIcon,
+  FilterBarIcon,
+  QuestionLine,
+} from "@/assets/icons";
 import { SgmMode } from "@/constants/filter";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
@@ -75,21 +79,48 @@ const ResultsSgmModeDropdown = () => {
   if (!selectedMode) return <div>Sgm Mode Not found</div>;
 
   return (
-    <div className="relative text-left flex gap-1" ref={dropdownRef}>
+    <div className="lg:absolute right-0 text-left flex gap-1" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
         type="button"
-        className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+        className="
+          bg-white
+          border
+          border-[#CAD9EF80]
+          border-opacity-50
+          font-normal
+          font-inter
+          gap-x-2
+          inline-flex
+          items-center
+          justify-center
+          p-1
+          pr-3
+          rounded-2xl
+          shadow-xs
+          text-navy
+          text-xs
+          w-max
+        "
         id="menu-button"
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center 4xl:text-lg">
+          <span className="rounded-full p-1 bg-[#F7F7F7]">
+            {" "}
+            <FilterBarIcon className="size-4 fill-navy stroke-navy" />
+          </span>
+
           {selectedMode.optionTitle}
           <span className="right-2 top-2.5">
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => (
+                <div>
+                  <QuestionLine className="size-4 4xl:size-5" />
+                </div>
+              )}
               position="top right"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
@@ -100,25 +131,16 @@ const ResultsSgmModeDropdown = () => {
             </Popup>
           </span>
         </div>
-        <svg
-          className="-mr-1 h-5 w-5 text-gray-400"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <ArrowUpTriangleFillIcon />
       </button>
       {selectedMode.optionTitle === "Penalizing TO by a factor of" && (
         <DebouncedInput
+          autoWidth
           type="number"
           value={xFactor}
           onChange={(newValue) => onXFactorChange(newValue)}
-          className="w-20 text-center p-1 rounded-lg"
+          className="text-start p-1 rounded-2xl text-base/1.5 font-semibold font-lato"
+          wrapperClassName="bg-white rounded-2xl px-3 border border-[#CAD9EF80]"
         />
       )}
       {open && (

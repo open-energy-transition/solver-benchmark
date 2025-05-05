@@ -6,12 +6,13 @@ type Size = {
   nOfVariables: number | null;
   size: string;
   url: string;
+  realistic: boolean;
 };
 
 interface MetaDataEntry {
   shortDescription: string;
   modelName: string;
-  version: string | null;
+  version: string;
   technique: string;
   kindOfProblem: string;
   sectors: string;

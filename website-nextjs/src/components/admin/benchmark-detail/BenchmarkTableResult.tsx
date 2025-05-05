@@ -143,7 +143,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
                     <div
-                      className="flex gap-2 items-center"
+                      className="flex gap-2 items-center 4xl:text-xl"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {flexRender(
@@ -165,7 +165,10 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-navy text-start py-2 px-6">
+                  <td
+                    key={cell.id}
+                    className="text-navy text-start py-2 px-6 4xl:text-xl"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

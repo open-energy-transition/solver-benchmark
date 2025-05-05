@@ -1,17 +1,30 @@
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import D3Chart from "../shared/D3PlotChart";
 import { IFilterState, IResultState } from "@/types/state";
 import { useMemo } from "react";
 import { SgmMode } from "@/constants/filter";
+import { PATH_DASHBOARD } from "@/constants/path";
 
-const BenchmarksSection = () => {
+interface BenchmarksSectionProps {
+  timeout: number;
+}
+
+const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
+  const router = useRouter();
+
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
+
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  );
+  ).filter((result) => result.timeout === timeout);
+
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
   });
@@ -26,17 +39,41 @@ const BenchmarksSection = () => {
     }
   }, [sgmMode, benchmarkLatestResults]);
 
+  const chartData = benchmarkResults.map((result) => {
+    const metaData = rawMetaData[result.benchmark];
+
+    return {
+      ...result,
+      problemSize: metaData?.sizes.find((size) => size.name === result.size)
+        ?.size,
+    };
+  });
+
   return (
-    <div className="py-4">
-      <D3Chart chartData={benchmarkResults} />
-      <div className="pt-1.5 pb-3 pl-3">
-        <p className="flex gap-1 items-center text-dark-grey text-sm">
-          <CloseIcon className="size-3" />
-          represents benchmarks that timed out, while
-          <CircleIcon className="size-3" />
-          indicates a successful run.
-        </p>
+    <div>
+      <div className="px-5">
+        <div className="pt-1.5 pb-3">
+          <div className="text-navy font-bold text-xl">Runtime vs Memory</div>
+
+          <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
+            <CloseIcon className="size-3" />
+            represents benchmarks that timed out, while
+            <CircleIcon className="size-3" />
+            indicates a successful run.
+          </p>
+        </div>
       </div>
+      <D3Chart
+        chartData={chartData}
+        onPointClick={(result) => {
+          router.push(
+            PATH_DASHBOARD.benchmarkDetail.one.replace(
+              "{name}",
+              result.benchmark,
+            ),
+          );
+        }}
+      />
     </div>
   );
 };

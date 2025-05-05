@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { useEffect } from "react";
+import Head from "next/head";
 
 import type { AppProps } from "next/app";
 import { Provider, useDispatch } from "react-redux";
@@ -146,6 +147,12 @@ function App({ Component, pageProps }: AppProps) {
   };
   return (
     <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+        />
+      </Head>
       <Provider store={store}>{renderLayout()}</Provider>
     </>
   );
