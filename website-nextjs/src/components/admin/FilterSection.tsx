@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {
   BrightIcon,
   PolygonIcon,
+  ProblemSizeIcon,
   ProcessorIcon,
   WrenchIcon,
 } from "@/assets/icons";
@@ -19,7 +20,6 @@ const FilterSection = () => {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
@@ -271,47 +271,37 @@ const FilterSection = () => {
 
   return (
     <div>
-      <div className="pb-3 pt-2">
-        <div className="text-navy font-bold text-xl 4xl:text-2xl">Filter</div>
-      </div>
-      <div className="flex justify-start mb-2">
-        {isAnyFilterActive() && (
-          <button
-            onClick={handleResetAllFilters}
-            className="bg-navy text-white px-3 py-1 rounded text-xs 4xl:text-xl hover:bg-opacity-80 transition-colors"
-          >
-            Reset All Filters
-          </button>
-        )}
-      </div>
-      <div className="bg-white rounded-xl my-2 relative">
-        {/* Mobile Menu Button */}
-        <button
-          className="xl:hidden w-full p-3 text-left text-dark-grey flex items-center justify-between 4xl:text-xl"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <span>Filters</span>
-          <svg
-            className={`w-5 h-5 transition-transform ${
-              isMobileMenuOpen ? "rotate-180" : ""
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
+      <div className="pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
+        <div className="flex gap-2 items-center">
+          <div className="text-navy font-bold text-base">Filters</div>
+        </div>
 
+        <div className="flex justify-end ml-2">
+          {isAnyFilterActive() && (
+            <button
+              onClick={handleResetAllFilters}
+              className="text-[9px]/1.4 text-[#444444] font-normal font-lato px-3 py-1 rounded hover:bg-opacity-80 transition-colors"
+            >
+              Reset Filters
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="relative">
         <div
-          className={`${
-            isMobileMenuOpen ? "block" : "hidden"
-          } xl:flex xl:flex-wrap 2xl:flex-nowrap text-dark-grey 2xl:gap-0 p-2`}
+          className="
+            duration-300
+            flex
+            flex-col
+            gap-2
+            overflow-y-auto
+            p-2
+            px-2
+            text-navy
+            transition-all
+            max-h-[80vh] opacity-100
+          "
         >
           {/* Sectors */}
           <FilterGroup
@@ -326,9 +316,9 @@ const FilterSection = () => {
               handleCheckboxChange({ category: "sectors", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "sectors" })}
-            className="xl:w-1/3 2xl:w-1/5"
-            itemClassName="xl:max-w-none 4xl:text-xl"
-            gridClassName="grid-cols-2 xl:grid-cols-1"
+            className="w-full"
+            itemClassName="4xl:text-xl"
+            gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
           {/* Technique */}
@@ -344,8 +334,8 @@ const FilterSection = () => {
               handleCheckboxChange({ category: "technique", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "technique" })}
-            className="xl:w-1/3 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-1"
+            className="w-full"
+            gridClassName="!flex flex-wrap"
             uppercase={false}
           />
           {/* Kind of Problem */}
@@ -365,14 +355,14 @@ const FilterSection = () => {
               })
             }
             onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
-            className="xl:w-1/3 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-1"
+            className="w-full"
+            gridClassName="grid-cols-1"
             uppercase={false}
           />
           {/* Problem Size */}
           <FilterGroup
             title="Problem Size"
-            icon={<WrenchIcon className="w-5 h-5" />}
+            icon={<ProblemSizeIcon className="w-5 h-5" />}
             items={availableProblemSizes}
             selectedItems={selectedFilters?.problemSize}
             onItemChange={(value) =>
@@ -386,8 +376,8 @@ const FilterSection = () => {
               })
             }
             onSelectAll={() => handleSelectAll({ category: "problemSize" })}
-            className="xl:w-1/2 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-2"
+            className="w-full"
+            gridClassName="grid-cols-3"
             uppercase={true}
           />
           {/* Model */}
@@ -403,8 +393,8 @@ const FilterSection = () => {
               handleCheckboxChange({ category: "modelName", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "modelName" })}
-            className="xl:w-1/2 2xl:w-1/5"
-            gridClassName="grid-cols-2 xl:grid-cols-2"
+            className="w-full"
+            gridClassName="grid-cols-2"
             uppercase={false}
           />
         </div>

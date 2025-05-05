@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverType } from "@/types/benchmark";
-import { getSolverLabel } from "@/utils/solvers";
 import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
@@ -15,13 +14,15 @@ type ChartData = {
   solver: SolverType;
   benchmark: string;
   size: string;
+  problemSize?: string;
 }[];
 
 interface D3ChartProps {
   chartData: ChartData;
+  onPointClick?: (benchmark: ChartData[0]) => void;
 }
 
-const D3Chart = ({ chartData = [] }: D3ChartProps) => {
+const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
@@ -72,7 +73,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .insert("div", ":first-child")
       .style("position", "absolute")
       .style("right", window.innerWidth < 640 ? "10px" : "20px")
-      .style("top", window.innerWidth < 640 ? "10px" : "20px")
+      .style("top", window.innerWidth < 640 ? "10px" : "55px")
       .style("display", "flex")
       .style("gap", "8px")
       .style("background", "white")
@@ -277,7 +278,7 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
     yAxisGroup
       .append("text")
       .attr("x", -height / 2)
-      .attr("y", window.innerWidth >= 1920 ? -60 : 50)
+      .attr("y", -50)
       .attr("fill", "#8C8C8C")
       .text("Peak Memory Usage (MB)")
       .attr("transform", "rotate(-90)")
@@ -303,6 +304,11 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
       .each(function (d) {
         const group = d3.select(this);
 
+        // Add cursor style and click handler to the group
+        group.style("cursor", "pointer").on("click", () => {
+          onPointClick?.(d);
+        });
+
         if (["TO", "warning"].includes(d.status)) {
           group
             .append("text")
@@ -323,7 +329,6 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
             .attr("r", 4)
             .attr("fill", solverColors[d.solver]);
         }
-
         // Update tooltip events to work with zoom
         group
           .on("mouseover", (event) => {
@@ -331,8 +336,9 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
               .style("opacity", 1)
               .html(
                 `<strong>Name:</strong> ${d.benchmark}<br>
-                <strong>Size:</strong> ${d.size}<br>
-                <strong>Solver:</strong> ${getSolverLabel(d.solver)}<br>
+                <strong>Size:</strong> ${d.size} (${d.problemSize})<br>
+                <strong>Solver:</strong> ${d.solver}<br>
+                <strong>Status:</strong> ${d.status}<br>
                 <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
                 <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`,
               )
@@ -366,16 +372,13 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
   }, [chartData]);
 
   return (
-    <div className="bg-white py-2 sm:py-4 px-4 sm:px-10 rounded-xl relative">
+    <div className="relative">
       {/* Legend */}
-      <div className="flex flex-wrap gap-2 ml-2 sm:ml-8 mb-4">
-        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end 4xl:text-base">
-          Solver:
-        </span>
+      <div className="flex px-5 text-navy flex-wrap gap-2 mb-4">
         {Object.keys(solverColors).map((solverKey) => (
           <div
             key={solverKey}
-            className="py-1 px-3 sm:px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
+            className="border-[#CAD9EF] border py-1 px-2 sm:px-5 uppercase bg-white text-[9px] flex items-center gap-1 rounded-md h-max w-max"
           >
             <CircleIcon
               style={{ color: solverColors[solverKey] }}
@@ -385,8 +388,12 @@ const D3Chart = ({ chartData = [] }: D3ChartProps) => {
           </div>
         ))}
       </div>
-      <div ref={containerRef} className="overflow-hidden min-h-[300px]">
-        <svg ref={svgRef}></svg>
+      <div className="bg-[#F4F6FA] rounded-2xl p-2">
+        <div className="bg-white rounded-2xl p-1">
+          <div ref={containerRef} className="overflow-hidden min-h-[300px]">
+            <svg ref={svgRef}></svg>
+          </div>
+        </div>
       </div>
     </div>
   );

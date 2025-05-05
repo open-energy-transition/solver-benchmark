@@ -6,7 +6,7 @@ export enum ProblemSize {
   S = "s",
 }
 
-export const MaxRunTime = 600;
+export const MaxRunTime = 36000;
 
 export const MaxMemoryUsage = 8192;
 

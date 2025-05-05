@@ -9,6 +9,7 @@ import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { SgmMode } from "@/constants/filter";
+import { extractNumberFromFormattedString } from "@/utils/string";
 
 type ColumnType = {
   name: string;
@@ -30,16 +31,24 @@ type TableRowType = {
   runtime: string;
 };
 
-const ResultsSection = () => {
+interface ResultsSectionProps {
+  timeout: number;
+}
+
+const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  );
+  ).filter((result) => result.timeout === timeout);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+
+  const selectedFilters = useSelector(
+    (state: { filters: IFilterState }) => state.filters,
+  );
 
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
@@ -76,14 +85,24 @@ const ResultsSection = () => {
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return benchmarkLatestResults.map((result) => ({
           ...result,
-          runtime: result.runtime * xFactor,
-          memoryUsage: MaxMemoryUsage * xFactor,
+          runtime:
+            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+          memoryUsage:
+            result.status !== "ok"
+              ? MaxMemoryUsage * xFactor
+              : result.memoryUsage,
+        }));
+      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
+        return benchmarkLatestResults.map((result) => ({
+          ...result,
+          runtime: result.status !== "ok" ? result.timeout : result.runtime,
+          memoryUsage:
+            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
     }
-  }, [sgmMode, xFactor, benchmarkLatestResults, availableSolvers]);
-
+  }, [sgmMode, xFactor, availableSolvers, timeout, selectedFilters]);
   const [tableData, setTableData] = useState<TableRowType[]>([]);
   const [sortConfig, setSortConfig] = useState<{
     field: string;
@@ -123,11 +142,6 @@ const ResultsSection = () => {
             result.solver === solver,
         )
         .map((result) => {
-          if (
-            ["warning", "TO"].includes(result.status) &&
-            field === "memoryUsage"
-          )
-            return MaxMemoryUsage;
           return result[field];
         }),
     [benchmarkResults, solverVersions],
@@ -190,23 +204,23 @@ const ResultsSection = () => {
         name: "Rank",
         field: "rank",
         width: "flex-1",
-        bgColor: "bg-light-grey/50",
-        color: "text-dark-grey",
+        bgColor: "bg-[#F4F6FA]",
+        color: "text-navy font-semibold",
         sort: false,
       },
       {
         name: "Solver",
         field: "solver",
         width: "w-1/6",
-        bgColor: "bg-light-grey",
-        color: "text-dark-grey",
+        bgColor: "bg-[#F4F6FA]",
+        color: "text-navy font-semibold",
         sortFunc: (a, b) => a.solver.localeCompare(b.solver),
       },
       {
         name: "Version",
         field: "version",
         width: "w-1/6",
-        bgColor: "bg-lavender/50",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sortFunc: (a, b) => a.version.localeCompare(b.version),
       },
@@ -214,39 +228,39 @@ const ResultsSection = () => {
         name: "SGM Memory",
         field: "memory",
         width: "w-1/5",
-        bgColor: "bg-lavender/80",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
-          return extractValue(a.memory) - extractValue(b.memory);
+          return (
+            extractNumberFromFormattedString(a.memory) -
+            extractNumberFromFormattedString(b.memory)
+          );
         },
       },
       {
         name: "Solved Benchmarks",
         field: "solvedBenchmarks",
         width: "w-1/5",
-        bgColor: "bg-lavender",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
           return (
-            extractValue(a.solvedBenchmarks) - extractValue(b.solvedBenchmarks)
+            extractNumberFromFormattedString(a.solvedBenchmarks) -
+            extractNumberFromFormattedString(b.solvedBenchmarks)
           );
         },
         headerContent: (header: string) => (
-          <div className="flex gap-2">
+          <div className="flex items-center w-max">
             {header}
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="w-4 h-4" />}
+              trigger={() => (
+                <div>
+                  <QuestionLine className="w-4 h-4" />
+                </div>
+              )}
               position="right center"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}
@@ -262,19 +276,21 @@ const ResultsSection = () => {
       {
         name: "SGM Runtime",
         field: "runtime",
-        width: "w-1/5",
-        bgColor: "bg-lime-green",
+        width:
+          sgmMode !== SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS
+            ? "w-1/5"
+            : "w-2/6",
+        bgColor: "bg-[#F4F6FA]",
         color: "text-navy font-semibold",
         sort: true,
         sortFunc: (a, b) => {
-          const extractValue = (str: string) => {
-            const numMatch = str.match(/^[\d.]+/);
-            return numMatch ? parseFloat(numMatch[0]) : 0;
-          };
-          return extractValue(a.runtime) - extractValue(b.runtime);
+          return (
+            extractNumberFromFormattedString(a.runtime) -
+            extractNumberFromFormattedString(b.runtime)
+          );
         },
         headerContent: (header: string) => (
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-max">
             {header}
             {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
               <>
@@ -291,32 +307,53 @@ const ResultsSection = () => {
   );
 
   useEffect(() => {
+    // Find best values
+    const minRuntime = Math.min(
+      ...solverList.map((solver) => calculateSgmBySolver(solver, "runtime")),
+    );
+    const minMemory = Math.min(
+      ...solverList.map((solver) =>
+        calculateSgmBySolver(solver, "memoryUsage"),
+      ),
+    );
+    const maxSolved = Math.max(
+      ...solverList.map((solver) => getNumberSolvedBenchmark(solver)),
+    );
+
     setTableData(
-      solverList.map((solverData) => ({
-        rank:
-          getSolverRanks().findIndex((solver) => solver.solver === solverData) +
-          1,
-        solver: solverData,
-        version: getHighestVersion(solverVersions[solverData]),
-        memory: `${roundNumber(
-          calculateSgmBySolver(solverData, "memoryUsage"),
-          2,
-        )} (${roundNumber(
-          calculateSgm(getRelevantResults(solverData, "memoryUsage")),
-          2,
-        )})`,
-        solvedBenchmarks: getSolvedBenchmarksLabel(
-          solverData,
-          uniqueBenchmarkCount,
-        ),
-        runtime: `${roundNumber(
-          calculateSgmBySolver(solverData, "runtime"),
-          2,
-        )} (${roundNumber(
-          calculateSgm(getRelevantResults(solverData, "runtime")),
-          2,
-        )})`,
-      })),
+      solverList.map((solverData) => {
+        const runtimeSgm = calculateSgmBySolver(solverData, "runtime");
+        const memorySgm = calculateSgmBySolver(solverData, "memoryUsage");
+        const solvedCount = getNumberSolvedBenchmark(solverData);
+
+        return {
+          rank:
+            getSolverRanks().findIndex(
+              (solver) => solver.solver === solverData,
+            ) + 1,
+          solver: solverData,
+          version: getHighestVersion(solverVersions[solverData]),
+          memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
+            memorySgm,
+            2,
+          )} (${roundNumber(
+            calculateSgm(getRelevantResults(solverData, "memoryUsage")),
+            2,
+          )})${memorySgm === minMemory ? "</b>" : ""}`,
+          solvedBenchmarks: `${
+            solvedCount === maxSolved ? "<b>" : ""
+          }${getSolvedBenchmarksLabel(solverData, uniqueBenchmarkCount)}${
+            solvedCount === maxSolved ? "</b>" : ""
+          }`,
+          runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${roundNumber(
+            runtimeSgm,
+            2,
+          )} (${roundNumber(
+            calculateSgm(getRelevantResults(solverData, "runtime")),
+            2,
+          )})${runtimeSgm === minRuntime ? "</b>" : ""}`,
+        };
+      }),
     );
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
 
@@ -360,8 +397,6 @@ const ResultsSection = () => {
     }));
   };
 
-  const [activedIndex, setActivedIndex] = useState(0);
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -376,11 +411,11 @@ const ResultsSection = () => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-dark-grey text-sm block items-center lg:max-w-[70%] 4xl:text-xl">
+        <div className="text-navy px-5 text-l block items-center mt-2">
           <span>
-            You can rank the latest version of each solver by number of solved
-            benchmark instances, or by the normalized shifted geometric mean
-            (SGM
+            This table summarizes all the benchmark results of the latest
+            version of each solver on the selected configuration. You can rank
+            the solvers by the normalized shifted geometric mean (SGM
           </span>
           <span className="inline-flex gap-2">
             <Popup
@@ -411,55 +446,56 @@ const ResultsSection = () => {
               </div>
             </Popup>
           </span>
-          <span> of runtime and memory consumption over all benchmarks</span>
+          <span>
+            &nbsp; of runtime or memory consumption over all benchmarks, or by
+            the number of solved benchmark instances. Click on any column header
+            to sort the results by that column.
+          </span>
         </div>
       </div>
 
       {isMobileView ? (
         // Mobile view
-        <div className="flex flex-col gap-4 px-4">
+        <div className="flex flex-col gap-4 px-4 text-navy">
           {sortedTableData.map((item, index) => (
             <div
               key={index}
               className="bg-white rounded-xl shadow-sm p-4 border border-gray-100"
             >
               <div className="flex justify-between items-center mb-2">
-                <span className="text-dark-grey font-semibold">
-                  #{item.rank}
-                </span>
+                <span className="font-semibold">#{item.rank}</span>
                 <span className="text-navy font-bold">{item.solver}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <div className="text-dark-grey">Version</div>
-                  <div className="font-medium">{item.version}</div>
-                </div>
-                <div>
-                  <div className="text-dark-grey">SGM Memory</div>
-                  <div className="font-medium">{item.memory}</div>
-                </div>
-                <div>
-                  <div className="text-dark-grey">Solved Benchmarks</div>
-                  <div className="font-medium">{item.solvedBenchmarks}</div>
-                </div>
-                <div>
-                  <div className="text-dark-grey">SGM Runtime</div>
-                  <div className="font-medium">{item.runtime}</div>
-                </div>
+                {Object.keys(item).map(
+                  (key) =>
+                    key !== "rank" &&
+                    key !== "solver" && (
+                      <div key={key}>
+                        <div>{key.charAt(0).toUpperCase() + key.slice(1)}</div>
+                        <div
+                          className="font-medium"
+                          dangerouslySetInnerHTML={{
+                            __html: item[key as keyof typeof item] ?? "-",
+                          }}
+                        />
+                      </div>
+                    ),
+                )}
               </div>
             </div>
           ))}
         </div>
       ) : (
         // Desktop view
-        <div className="flex text-xs leading-1.5">
-          {columns.map((column, i) => (
+        <div className="flex text-sm leading-1.5 text-navy">
+          {columns.map((column) => (
             <div
               key={column.field}
-              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="h-9 flex items-center gap-1 pl-3 pr-6 cursor-pointer 4xl:text-xl"
+                className="py-2.5 flex items-center gap-1 px-3 cursor-pointer justify-center 4xl:text-xl"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -484,17 +520,12 @@ const ResultsSection = () => {
               {sortedTableData.map((item, index) => (
                 <div
                   key={`${column.field}-${index}`}
-                  className={`h-6 flex items-center pl-3 pr-6 4xl:text-xl 4xl:py-4 ${
-                    activedIndex === index
-                      ? `border-b border-t border-[#CAD3D0] ${
-                          i === 0 ? "border-l" : ""
-                        } ${i === columns.length - 1 ? "border-r" : ""}`
-                      : ""
-                  }`}
-                  onClick={() => setActivedIndex(index)}
-                >
-                  {item[column.field as keyof (typeof tableData)[0]] ?? "-"}
-                </div>
+                  className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      item[column.field as keyof (typeof tableData)[0]] ?? "-",
+                  }}
+                />
               ))}
             </div>
           ))}

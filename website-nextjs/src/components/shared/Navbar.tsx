@@ -22,12 +22,12 @@ const Navbar = () => {
 
   const navConfig = [
     {
-      label: "Home",
+      label: "Main Results",
       route: "/dashboard/home",
       icon: <AlignLeftJustifyIcon />,
     },
     {
-      label: "Benchmark details",
+      label: "Benchmark Set",
       route: PATH_DASHBOARD.benchmarkDetail.list,
       icon: <ChartBarIcon />,
     },
@@ -37,12 +37,12 @@ const Navbar = () => {
       icon: <VectorSquareIcon />,
     },
     {
-      label: "Compare solvers",
+      label: "Compare Solvers",
       route: "/dashboard/compare-solvers",
       icon: <BalanceScaleIcon />,
     },
     {
-      label: "Performance history",
+      label: "Performance History",
       route: "/dashboard/performance-history",
       icon: <ChartLineIcon />,
     },
@@ -92,7 +92,7 @@ const Navbar = () => {
             <Link
               href="/"
               className={`-m-1.5 p-1.5 flex items-center gap-0.5 text-white w-max
-                 ${isNavExpanded ? "px-16" : "px-4"}`}
+                 ${isNavExpanded ? "px-16" : "px-4 pl-6"}`}
             >
               <div className="size-10">
                 <Image
