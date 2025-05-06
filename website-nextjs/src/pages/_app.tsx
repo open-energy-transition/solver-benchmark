@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Head from "next/head";
 
 import type { AppProps } from "next/app";
@@ -14,15 +14,19 @@ import AdminLayout from "@/pages/AdminLayout";
 import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results";
 import { getMetaData } from "@/utils/meta-data";
 import { BenchmarkResult } from "@/types/benchmark";
-import { IFilterState } from "@/types/state";
+import { IFilterState, RealisticOption } from "@/types/state";
 import { MetaData } from "@/types/meta-data";
 
 function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
+  const initialized = useRef(false);
 
   const { store, props } = wrapper.useWrappedStore(pageProps);
 
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     const initializeData = async () => {
       const resultsRes = await getBenchmarkResults();
 
@@ -114,11 +118,13 @@ function App({ Component, pageProps }: AppProps) {
           availableKindOfProblems,
           availableModels,
           availableProblemSizes,
+          realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
         }),
       );
       dispatch(
         resultActions.setRawBenchmarkResults(results as BenchmarkResult[]),
       );
+      console.log(123123);
 
       dispatch(
         filterActions.setFilter({
@@ -127,6 +133,8 @@ function App({ Component, pageProps }: AppProps) {
           kindOfProblem: availableKindOfProblems,
           modelName: availableModels,
           problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
+          isReady: true,
         } as IFilterState),
       );
     };

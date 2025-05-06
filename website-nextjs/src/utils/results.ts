@@ -6,6 +6,8 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
+import { Size } from "@/types/meta-data";
+import { IFilterState, RealisticOption } from "@/types/state";
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -121,10 +123,27 @@ const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
   });
 };
 
+// Helper function to for filtering benchmarks based on realistic options
+const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
+  // If both options are selected (length == 2), no filtering needed
+  if (filters.realistic.length === 2) {
+    return true;
+  }
+
+  // If "Realistic" is selected, return only realistic benchmarks
+  if (filters.realistic.includes(RealisticOption.Realistic)) {
+    return size.realistic;
+  }
+
+  // If "Other" is selected, return only non-realistic benchmarks
+  return !size.realistic;
+};
+
 export {
   getBenchmarkResults,
   processBenchmarkResults,
   formatBenchmarkName,
   getProblemSize,
   getLatestBenchmarkResult,
+  checkRealisticFilter,
 };

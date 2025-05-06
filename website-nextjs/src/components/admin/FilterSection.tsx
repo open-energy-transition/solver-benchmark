@@ -9,12 +9,13 @@ import {
 } from "@/assets/icons";
 import { useSelector, useDispatch } from "react-redux";
 import filterAction from "@/redux/filters/actions";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import filterActions from "@/redux/filters/actions";
 import resultActions from "@/redux/results/actions";
 import { getLatestBenchmarkResult } from "@/utils/results";
 import { isArray } from "lodash";
 import FilterGroup from "./filters/FilterGroup";
+import { decodeValue, encodeValue } from "@/utils/urls";
 
 const FilterSection = () => {
   const router = useRouter();
@@ -55,6 +56,10 @@ const FilterSection = () => {
     (state: { results: IResultState }) => state.results.availableProblemSizes,
   );
 
+  const realisticOptions = useSelector(
+    (state: { results: IResultState }) => state.results.realisticOptions,
+  );
+
   const [isInit, setIsInit] = useState(false);
 
   const handleCheckboxChange = ({
@@ -66,7 +71,6 @@ const FilterSection = () => {
     value: string;
     only?: boolean;
   }) => {
-    setIsInit(true);
     dispatch(
       filterAction.toggleFilterAndUpdateResults({ category, value, only }),
     );
@@ -79,6 +83,7 @@ const FilterSection = () => {
       kindOfProblem: availableKindOfProblems,
       modelName: availableModels,
       problemSize: availableProblemSizes,
+      realistic: realisticOptions,
     }[category] as string[];
 
     const selectedItems = (selectedFilters[
@@ -101,16 +106,9 @@ const FilterSection = () => {
     );
   };
 
-  // Add these utility functions
-  const encodeValue = (value: string) => {
-    return encodeURIComponent(value);
-  };
-
-  const decodeValue = (value: string) => {
-    return decodeURIComponent(value);
-  };
-
   useEffect(() => {
+    console.log(selectedFilters);
+
     if (isInit) {
       updateUrlParams(selectedFilters);
     }
@@ -143,6 +141,7 @@ const FilterSection = () => {
       "kindOfProblem",
       "modelName",
       "problemSize",
+      "realistic",
     ].forEach((key) => {
       const value = router.query[key];
       if (typeof value === "string") {
@@ -165,6 +164,7 @@ const FilterSection = () => {
           kindOfProblem: availableKindOfProblems,
           modelName: availableModels,
           problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
       );
       dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
@@ -178,10 +178,11 @@ const FilterSection = () => {
   }, []);
 
   useEffect(() => {
-    if (isInit) return;
+    if (isInit || !selectedFilters.isReady) return;
     if (!router.isReady) return;
 
     const urlFilters = parseUrlParams();
+
     if (Object.keys(urlFilters).length > 0) {
       Object.keys(selectedFilters).forEach((key) => {
         if (
@@ -189,18 +190,24 @@ const FilterSection = () => {
           (selectedFilters[key as keyof IFilterState] as string[]).length !==
             (urlFilters[key as keyof IFilterState] as string[]).length
         ) {
+          // If the selected filter values are not in the URL, remove them
           const selectedFilterValues =
             selectedFilters[key as keyof IFilterState];
+
           if (Array.isArray(selectedFilterValues)) {
             selectedFilterValues
               .filter((filterValue) => {
+                // Check if the filter value is not in the URL
                 const filterArray = urlFilters[key as keyof IFilterState];
                 return (
                   Array.isArray(filterArray) &&
-                  !filterArray.includes(filterValue)
+                  !(filterArray as RealisticOption[]).includes(
+                    filterValue as RealisticOption,
+                  )
                 );
               })
               .forEach((filterValue) => {
+                // Remove the filter value
                 handleCheckboxChange({
                   category: key,
                   value: filterValue,
@@ -210,7 +217,8 @@ const FilterSection = () => {
         }
       });
     }
-  }, [router.query, selectedFilters]);
+    setIsInit(true);
+  }, [router.isReady, selectedFilters.isReady]);
 
   // Reset all filters function
   const handleResetAllFilters = () => {
@@ -223,6 +231,7 @@ const FilterSection = () => {
           kindOfProblem: availableKindOfProblems,
           modelName: availableModels,
           problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
       );
 
@@ -379,6 +388,26 @@ const FilterSection = () => {
             className="w-full"
             gridClassName="grid-cols-3"
             uppercase={true}
+          />
+          {/* Realistic */}
+          <FilterGroup
+            title="Realistic"
+            icon={<ProblemSizeIcon className="w-5 h-5" />}
+            items={realisticOptions}
+            selectedItems={selectedFilters?.realistic}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "realistic", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "realistic",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "realistic" })}
+            className="w-full"
+            gridClassName="grid-cols-2"
           />
           {/* Model */}
           <FilterGroup
