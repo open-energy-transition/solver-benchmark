@@ -57,6 +57,21 @@ const InstancesTableResult = ({
         cell: (info) => info.getValue(),
       },
       {
+        header: "Realistic",
+        accessorKey: "realistic",
+        cell: (info) => (
+          <span
+            className={`px-3 py-2 rounded-full text-sm ${
+              info.getValue()
+                ? "bg-navy text-white"
+                : "bg-gray-100 text-gray-800"
+            }`}
+          >
+            {info.getValue() ? "Realistic" : "Other"}
+          </span>
+        ),
+      },
+      {
         header: "LP/MPS FILE",
         accessorKey: "url",
         enableSorting: false,
@@ -88,6 +103,7 @@ const InstancesTableResult = ({
         nOfConstraints: sizeData.nOfConstraints,
         instance: sizeData.name,
         url: sizeData.url,
+        realistic: sizeData.realistic,
       })),
     [benchmarkDetail.sizes.length],
   );

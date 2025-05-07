@@ -107,8 +107,6 @@ const FilterSection = () => {
   };
 
   useEffect(() => {
-    console.log(selectedFilters);
-
     if (isInit) {
       updateUrlParams(selectedFilters);
     }
@@ -263,6 +261,7 @@ const FilterSection = () => {
       kindOfProblem: availableKindOfProblems,
       modelName: availableModels,
       problemSize: availableProblemSizes,
+      realistic: [RealisticOption.Realistic, RealisticOption.Other],
     };
 
     // Check if any filter category has fewer selected items than available items

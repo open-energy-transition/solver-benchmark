@@ -124,7 +124,6 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(
         resultActions.setRawBenchmarkResults(results as BenchmarkResult[]),
       );
-      console.log(123123);
 
       dispatch(
         filterActions.setFilter({
