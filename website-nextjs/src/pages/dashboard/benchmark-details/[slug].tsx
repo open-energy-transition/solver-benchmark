@@ -13,6 +13,7 @@ import { useMemo } from "react";
 import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult";
+import LogsAndSolutionsSection from "@/components/admin/benchmark-detail/LogsAndSolutionsSection";
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
@@ -179,6 +180,10 @@ const PageBenchmarkDetail = () => {
                 <MilpTableResult benchmarkName={benchmarkName as string} />
               )}
               <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <LogsAndSolutionsSection
+                benchmarkDetail={benchmarkDetail}
+                benchmarkName={benchmarkName as string}
+              />
             </>
           )}
         </ContentWrapper>

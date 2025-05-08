@@ -59,6 +59,7 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
+      runId: data["Run ID"],
       timeout: Number(data["Timeout"]),
     };
   });

@@ -15,9 +15,6 @@ import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkSt
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
 
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
@@ -157,7 +154,7 @@ const PageBenchmarkDetail = () => {
   }, [localFilters, isInit]);
 
   const filteredMetaData = useMemo(() => {
-    const filteredEntries = Object.entries(metaData).filter(([, value]) => {
+    const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
       const { sectors, technique, kindOfProblem, modelName } = localFilters;
 
       const isSectorsMatch =
