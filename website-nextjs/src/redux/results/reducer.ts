@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 import actions from "./actions";
 import { BenchmarkResult } from "@/types/benchmark";
 import { formatBenchmarkName, processBenchmarkResults } from "@/utils/results";
-import { IResultState } from "@/types/state";
+import { IResultState, RealisticOption } from "@/types/state";
 import { sortStringArray } from "@/utils/string";
 
 const {
@@ -32,6 +32,7 @@ const initialState: IResultState = {
   metaData: {},
   rawBenchmarkResults: [],
   rawMetaData: {},
+  realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
   solvers: [],
   solversData: [],
   years: [],
