@@ -20,11 +20,11 @@ const Option = (props: OptionProps<any>) => {
     >
       <input
         type="checkbox"
-        checked={data.isSelected}
+        checked={data?.isSelected ?? false}
         readOnly
-        className="mr-2 accent-navy rounded"
+        className="mr-2 size-5 accent-navy rounded"
       />
-      <label>{data.label}</label>
+      <label className="truncate max-w-[90%]">{data.label}</label>
     </div>
   );
 };
