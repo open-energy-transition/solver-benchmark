@@ -57,7 +57,7 @@ const InstancesTableResult = ({
         cell: (info) => info.getValue(),
       },
       {
-        header: "Realistic",
+        header: "REALISTIC",
         accessorKey: "realistic",
         cell: (info) => (
           <span

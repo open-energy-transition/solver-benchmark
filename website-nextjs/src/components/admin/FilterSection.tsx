@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   BrightIcon,
+  GlobeSearchIcon,
   PolygonIcon,
   ProblemSizeIcon,
   ProcessorIcon,
@@ -391,7 +392,7 @@ const FilterSection = () => {
           {/* Realistic */}
           <FilterGroup
             title="Realistic"
-            icon={<ProblemSizeIcon className="w-5 h-5" />}
+            icon={<GlobeSearchIcon className="w-5 h-5" />}
             items={realisticOptions}
             selectedItems={selectedFilters?.realistic}
             onItemChange={(value) =>

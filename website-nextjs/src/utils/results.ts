@@ -125,18 +125,10 @@ const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
 
 // Helper function to for filtering benchmarks based on realistic options
 const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
-  // If both options are selected (length == 2), no filtering needed
-  if (filters.realistic.length === 2) {
-    return true;
-  }
-
-  // If "Realistic" is selected, return only realistic benchmarks
-  if (filters.realistic.includes(RealisticOption.Realistic)) {
-    return size.realistic;
-  }
-
-  // If "Other" is selected, return only non-realistic benchmarks
-  return !size.realistic;
+  return (
+    (filters.realistic.includes(RealisticOption.Realistic) && size.realistic) ||
+    (filters.realistic.includes(RealisticOption.Other) && !size.realistic)
+  );
 };
 
 export {
