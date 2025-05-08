@@ -15,6 +15,7 @@ type BenchmarkResult = {
   solverVersion: string;
   status: SolverStatusType;
   terminationCondition: string;
+  runId: string | null;
   timeout: number;
 };
 
