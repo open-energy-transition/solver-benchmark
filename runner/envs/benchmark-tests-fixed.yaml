@@ -107,4 +107,3 @@ dependencies:
       - tzdata==2025.1
       - xarray==2025.1.2
       - psutil==5.9.8
-prefix: /scratch/htc/skrishna/conda/envs/benchmark-tests
