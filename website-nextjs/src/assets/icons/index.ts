@@ -20,6 +20,7 @@ export { default as DollarSignIcon } from "./dollar-sign.svg";
 export { default as FilterBarIcon } from "./filter-bar.svg";
 export { default as FilterIcon } from "./filter.svg";
 export { default as ForkIcon } from "./fork-icon.svg";
+export { default as GlobeSearchIcon } from "./globe-search.svg";
 export { default as GraphBarIcon } from "./graph-bar.svg";
 export { default as GithubIcon } from "./github.svg";
 export { default as HistoryIcon } from "./history.svg";

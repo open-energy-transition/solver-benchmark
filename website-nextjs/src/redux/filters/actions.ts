@@ -4,7 +4,10 @@ import { ThunkAction } from "redux-thunk";
 import resultActions from "@/redux/results/actions";
 import { BenchmarkResult } from "@/types/benchmark";
 import { MetaData, MetaDataEntry, Size } from "@/types/meta-data";
-import { getLatestBenchmarkResult } from "@/utils/results";
+import {
+  checkRealisticFilter,
+  getLatestBenchmarkResult,
+} from "@/utils/results";
 import { IFilterState } from "@/types/state";
 import { SgmMode } from "@/constants/filter";
 
@@ -87,7 +90,8 @@ const actions = {
                   problemSizeResult[
                     `${benchmark.benchmark}'-'${benchmark.size}`
                   ],
-                )
+                ) &&
+                checkRealisticFilter(size, filters)
               );
             },
           );

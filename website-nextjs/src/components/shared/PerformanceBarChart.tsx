@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { getChartColor } from "@/utils/chart";
 import { Color } from "@/constants/color";
-import { MaxRunTime } from "@/constants";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 
 type PerformanceData = {
@@ -19,9 +18,16 @@ interface Props {
   data: PerformanceData[];
   baseSolver: string;
   availableSolvers: string[];
+  timeout?: number;
 }
 
-const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
+const PerformanceBarChart = ({
+  data,
+  baseSolver,
+  availableSolvers,
+  timeout = 36000,
+}: Props) => {
+  const MaxRunTime = timeout;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(
@@ -60,7 +66,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       bottom: 100,
       left: 60,
     };
-    const height = 400 + (margin.bottom - 100);
+    const height = 600 + (margin.bottom - 100);
 
     d3.select(svgRef.current).selectAll("*").remove();
 
@@ -99,16 +105,21 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     const barWidth = Math.min(xSubScale.bandwidth(), 15);
 
     // Scale for primary y-axis (ratio/factor)
+    const maxFactor = d3.max(data, (d) => d.factor) || 0;
+    const minFactor = d3.min(data, (d) => d.factor) || 0;
     const yScaleRatio = d3
       .scaleLinear()
-      .domain([-4, 4])
+      .domain([Math.min(minFactor, -2), Math.max(maxFactor, 2)])
       .range([height - margin.bottom, margin.top]);
 
     // Scale for secondary y-axis (runtime)
     const yScaleRuntime = d3
       .scaleLog()
       .domain([
-        d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.1,
+        Math.min(
+          0.01,
+          d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.01,
+        ),
         d3.max(data, (d) => Math.max(d.runtime, d.baseSolverRuntime)) || 100,
       ])
       .range([height - margin.bottom, margin.top]);
@@ -133,7 +144,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .ticks(5) // Reduce number of ticks even more
       .tickValues(
         // Explicitly set tick values to avoid overlap
-        [1, 10, 100, 600],
+        [1, 10, 100, 1000, 3600, 36000],
       );
 
     // Add x-axis without labels
@@ -171,26 +182,27 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("stroke", "#ccc")
       .style("stroke-dasharray", "4,4");
 
-    // Add maximum runtime line (600s)
+    // Add 1h timeout line (3600s)
     svg
       .append("line")
       .attr("x1", margin.left)
       .attr("x2", width - margin.right)
-      .attr("y1", yScaleRuntime(600))
-      .attr("y2", yScaleRuntime(600))
+      .attr("y1", yScaleRuntime(3600))
+      .attr("y2", yScaleRuntime(3600))
       .style("stroke", "#ff6b6b")
       .style("stroke-width", 1)
       .style("stroke-dasharray", "4,4");
 
-    // Add maximum runtime label - moved to right side
+    // Add 10h timeout line (36000s)
     svg
-      .append("text")
-      .attr("x", width - margin.right + 35) // Move to right side
-      .attr("y", yScaleRuntime(600))
-      .attr("dy", "0.32em")
-      .attr("text-anchor", "start")
-      .attr("font-size", "10px")
-      .style("fill", "#ff6b6b");
+      .append("line")
+      .attr("x1", margin.left)
+      .attr("x2", width - margin.right)
+      .attr("y1", yScaleRuntime(36000))
+      .attr("y2", yScaleRuntime(36000))
+      .style("stroke", "#ff6b6b")
+      .style("stroke-width", 1)
+      .style("stroke-dasharray", "4,4");
 
     // Calculate the maximum bar height from the y-scale
     const TIMEOUT_BAR_HEIGHT = Math.abs(yScaleRatio(4) - yScaleRatio(0));
@@ -249,9 +261,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip.transition().duration(200).style("opacity", 0.9);
 
         let ratioText;
-        if (d.status === "TO" && d.baseSolverRuntime < MaxRunTime) {
+        if (d.status !== "ok" && d.baseSolverRuntime < MaxRunTime) {
           ratioText = `Ratio: N/A because ${d.solver} TO`;
-        } else if (d.status === "TO" && d.baseSolverRuntime >= MaxRunTime) {
+        } else if (d.status !== "ok" && d.baseSolverRuntime >= MaxRunTime) {
           ratioText = "Ratio: N/A (both TO)";
         } else {
           const ratio = Math.pow(2, d.factor);
@@ -293,7 +305,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .enter()
       .append((d) => {
         // Use path for X marks on timeout, circle for normal points
-        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+        if (d.status !== "ok" || d.runtime >= MaxRunTime) {
           return document.createElementNS("http://www.w3.org/2000/svg", "path");
         }
         return document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -306,7 +318,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           (xScale(`${d.benchmark}-${d.size}`) || 0) + xScale.bandwidth() / 2;
         const y = yScaleRuntime(d.runtime);
 
-        if (d.status === "TO" || d.runtime >= MaxRunTime) {
+        if (d.status !== "ok" || d.runtime >= MaxRunTime) {
           // Create X mark for timeout cases
           const size = 4;
           element
@@ -355,8 +367,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .text(`Instances sorted by solving time of ${baseSolver}`)
-      .attr("class", "4xl:text-lg");
+      .text(`Instances sorted by solving time of ${baseSolver}`);
 
     // Primary y-axis label
     svg
@@ -366,8 +377,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", 15)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
-      .text("Runtime ratio (log scale)")
-      .attr("class", "4xl:text-lg");
+      .text("Runtime ratio (log scale)");
 
     // Secondary y-axis label
     svg
@@ -378,8 +388,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "#666")
-      .text(`Runtime of ${baseSolver} (s)`)
-      .attr("class", "4xl:text-lg");
+      .text(`Runtime of ${baseSolver} (s)`);
 
     // Add a legend entry for scatter points
     const legendContainer = d3

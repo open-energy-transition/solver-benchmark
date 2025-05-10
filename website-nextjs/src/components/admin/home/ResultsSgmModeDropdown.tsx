@@ -116,7 +116,11 @@ const ResultsSgmModeDropdown = () => {
           <span className="right-2 top-2.5">
             <Popup
               on={["hover"]}
-              trigger={() => <QuestionLine className="size-4 4xl:size-5" />}
+              trigger={() => (
+                <div>
+                  <QuestionLine className="size-4 4xl:size-5" />
+                </div>
+              )}
               position="top right"
               closeOnDocumentClick
               arrowStyle={{ color: "#ebeff2" }}

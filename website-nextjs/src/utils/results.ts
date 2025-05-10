@@ -6,6 +6,8 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
+import { Size } from "@/types/meta-data";
+import { IFilterState, RealisticOption } from "@/types/state";
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -57,6 +59,7 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
+      timeout: Number(data["Timeout"]),
     };
   });
 };
@@ -91,21 +94,41 @@ const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
 };
 
 const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
-  function getLatestVersion(solver: string) {
-    return getHighestVersion(
-      Array.from(
-        new Set(
-          benchmarkResults
-            .filter((result) => result.solver === solver)
-            .map((result) => result.solverVersion),
-        ),
+  const solvers = Array.from(
+    new Set(benchmarkResults.map((result) => result.solver)),
+  );
+  if (solvers.length === 0) {
+    return [];
+  }
+  const latestVersions = solvers.map((solver) => {
+    const versions = Array.from(
+      new Set(
+        benchmarkResults
+          .filter((result) => result.solver === solver)
+          .map((result) => result.solverVersion),
       ),
     );
-  }
+
+    return {
+      solver,
+      version: getHighestVersion(versions),
+    };
+  });
 
   return benchmarkResults.filter((result) => {
-    return result.solverVersion === getLatestVersion(result.solver);
+    const latestVersion = latestVersions.find(
+      (v) => v.solver === result.solver,
+    );
+    return latestVersion && result.solverVersion === latestVersion.version;
   });
+};
+
+// Helper function to for filtering benchmarks based on realistic options
+const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
+  return (
+    (filters.realistic.includes(RealisticOption.Realistic) && size.realistic) ||
+    (filters.realistic.includes(RealisticOption.Other) && !size.realistic)
+  );
 };
 
 export {
@@ -114,4 +137,5 @@ export {
   formatBenchmarkName,
   getProblemSize,
   getLatestBenchmarkResult,
+  checkRealisticFilter,
 };
