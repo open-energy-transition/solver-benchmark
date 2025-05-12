@@ -32,6 +32,7 @@ interface ISolverYearlyMetrics {
       status: SolverStatusType;
     }[];
     numSolvedBenchmark: number;
+    version: string;
   }[];
 }
 
@@ -39,6 +40,7 @@ interface ISolverYearlyChartData {
   solver: SolverType;
   year: number;
   value: number;
+  version: string;
 }
 
 interface OriginBenchmarkResult {

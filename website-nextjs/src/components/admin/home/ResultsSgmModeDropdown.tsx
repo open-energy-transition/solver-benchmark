@@ -80,12 +80,12 @@ const ResultsSgmModeDropdown = () => {
 
   return (
     <div className="lg:absolute right-0 text-left flex gap-1" ref={dropdownRef}>
-      <div className="text-navy text-sm">SGM Mode:</div>
+      <div className="text-navy text-sm my-auto">SGM Mode:</div>
       <span className="inline-flex gap-2">
         <Popup
           on={["hover"]}
           trigger={() => (
-            <span className="flex items-baseline">
+            <span className="flex items-baseline my-auto cursor-pointer">
               <QuestionLine
                 className="size-3.5 4xl:size-5"
                 viewBox="0 0 24 20"
@@ -94,9 +94,9 @@ const ResultsSgmModeDropdown = () => {
           )}
           position="right center"
           closeOnDocumentClick
-          arrowStyle={{ color: "#ebeff2" }}
+          arrow={false}
         >
-          <div className="bg-stroke p-2 rounded">
+          <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg">
             Note that data points where the solver does not successfully solve
             the benchmark instance (i.e. errors, times out, or runs out of
             memory) are given the time out value for runtime and maximum memory
@@ -152,9 +152,10 @@ const ResultsSgmModeDropdown = () => {
               )}
               position="top right"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
+              arrowStyle={{ color: "#ffffff" }}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border border-stroke px-4 py-2 m-2 rounded-lg">
                 {selectedMode.optionTooltip}
               </div>
             </Popup>

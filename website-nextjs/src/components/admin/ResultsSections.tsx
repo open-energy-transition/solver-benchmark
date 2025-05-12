@@ -263,9 +263,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               )}
               position="right center"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
@@ -435,9 +435,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               )}
               position="right center"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
                 The shifted geometric mean SGM of n non-negative numbers
                 v[1],...v[n] is
                 <br />

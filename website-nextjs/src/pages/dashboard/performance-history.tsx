@@ -45,6 +45,11 @@ const PagePerformanceHistory = () => {
           memoryUsage: null,
         },
         numSolvedBenchmark: 0,
+        version:
+          benchmarkResults.find(
+            (result) =>
+              result.solver === solver && result.solverReleaseYear === year,
+          )?.solverVersion ?? "-",
       })),
     };
   });
@@ -94,6 +99,7 @@ const PagePerformanceHistory = () => {
             solver: solverYearlyMetric.solver as SolverType,
             year: solverData.year,
             value: value / minValue,
+            version: solverData.version,
           });
         }
       });
@@ -110,6 +116,7 @@ const PagePerformanceHistory = () => {
             solver: solverYearlyMetric.solver as SolverType,
             year: solverData.year,
             value: solverData.numSolvedBenchmark,
+            version: solverData.version,
           });
         }
       });
@@ -188,8 +195,8 @@ const PagePerformanceHistory = () => {
               </div>
               <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
                 We run the latest version of each solver released on conda in
-                that year. 2025's versions were selected if the solver had a
-                major or minor release in 2025 as of April 20, 2025. The 2025
+                that year. 2025&apos;s versions were selected if the solver had
+                a major or minor release in 2025 as of April 20, 2025. The 2025
                 results will be updated with the last version released in 2025
                 at the end of this year. Some solver versions are not available
                 on coda or have compatibility issues with our benchmarking
