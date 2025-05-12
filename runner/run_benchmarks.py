@@ -12,6 +12,7 @@ import time
 from pathlib import Path
 from socket import gethostname
 
+import psutil
 import requests
 import yaml
 
@@ -196,18 +197,34 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
 
 
 def benchmark_solver(input_file, solver_name, timeout, solver_version):
-    command = [
-        "/usr/bin/time",
-        "--format",
-        "MaxResidentSetSizeKB=%M",
-        "timeout",
-        f"{timeout}s",
-        "python",
-        Path(__file__).parent / "run_solver.py",
-        solver_name,
-        input_file,
-        solver_version,
-    ]
+    available_memory_bytes = psutil.virtual_memory().available
+    memory_limit_bytes = int(available_memory_bytes * 0.95)
+    memory_limit_mb = memory_limit_bytes / (1024 * 1024)
+    print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
+
+    command = ["systemd-run"]
+
+    if "XDG_RUNTIME_DIR" in os.environ:
+        command.append("--user")
+
+    command.extend(
+        [
+            "--scope",
+            f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
+            "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
+            "/usr/bin/time",
+            "--format",
+            "MaxResidentSetSizeKB=%M",
+            "timeout",
+            f"{timeout}s",
+            "python",
+            f"{Path(__file__).parent / 'run_solver.py'}",
+            solver_name,
+            input_file,
+            solver_version,
+        ]
+    )
+
     # Run the command and capture the output
     result = subprocess.run(
         command,
@@ -229,6 +246,17 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "duality_gap": None,
             "max_integrality_violation": None,
         }
+    elif result.returncode == 137:
+        print("OUT OF MEMORY")
+        metrics = {
+            "status": "OOM",
+            "condition": "Out of Memory",
+            "objective": None,
+            "runtime": "N/A",
+            "reported_runtime": None,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
     elif result.returncode != 0:
         print(f"ERROR running solver. Return code:\n{result.returncode}")
         # Errors are also said to have run for `timeout`s, so that they appear
@@ -245,7 +273,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
 
-    if metrics["status"] not in {"ok", "TO", "ER"}:
+    if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
         print(f"WARNING: unknown solver status: {metrics['status']}")
 
     metrics["memory"] = memory
