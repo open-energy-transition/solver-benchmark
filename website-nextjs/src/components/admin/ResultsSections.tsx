@@ -414,8 +414,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         <div className="text-navy px-5 text-l block items-center mt-2">
           <span>
             This table summarizes all the benchmark results of the latest
-            version of each solver on the selected configuration. You can rank
-            the solvers by the normalized shifted geometric mean (SGM
+            (minor) version as of April 2025 of each solver on the selected
+            configuration.
+            <br />
+            <br />
+            You can rank the solvers by the normalized shifted geometric mean
+            (SGM
           </span>
           <span className="inline-flex gap-2">
             <Popup

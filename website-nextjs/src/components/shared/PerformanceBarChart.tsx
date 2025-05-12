@@ -474,7 +474,7 @@ const PerformanceBarChart = ({
       <div className="pt-1.5 pb-3 pl-3">
         <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-base">
           <CloseIcon className="size-3" />
-          represents benchmarks that timed out, while
+          represents benchmarks that timed out or errored, while
           <CircleIcon className="size-3" />
           indicates a successful run.
         </p>

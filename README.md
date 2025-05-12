@@ -1,6 +1,6 @@
 # Solver Benchmark Website
 
-This repository contains code for benchmarking LP/MILP solvers, and an interactive website for analyzing the results.
+This repository contains code for benchmarking solvers on LP/MILP problems from the energy planning domain, and an interactive website for analyzing the results.
 
 ## Initial Setup
 

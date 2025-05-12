@@ -149,14 +149,21 @@ const LandingPage = () => {
                                 is some error in our runtime measurements, which
                                 we estimate as a coefficient of variation of no
                                 larger than 4%. More details on this{" "}
-                                <span className="underline">here</span>.
+                                <a
+                                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
+                                  className="underline"
+                                >
+                                  here
+                                </a>
+                                .
                               </li>
                               <li>
-                                All solvers are run with their default options.
-                              </li>
-                              <li>
-                                Mixed Integer benchmarks (MILPs) are run with a
-                                duality gap tolerance of 0.0004.
+                                All solvers are run with their default options,
+                                except for the duality gap tolerance for mixed
+                                integer benchmarks (MILPs), which we set to
+                                0.0001. You can check the duality gaps for each
+                                solver in the benchmark details page
+                                corresponding to each benchmark instance.
                               </li>
                               <li>
                                 All results on this website use the runtime
@@ -167,7 +174,13 @@ const LandingPage = () => {
                                 and license checks. See more details and join
                                 the discussion on whether to use reported or
                                 measured runtime{" "}
-                                <span className="underline">here</span>.
+                                <a
+                                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
+                                  className="underline"
+                                >
+                                  here
+                                </a>
+                                .
                               </li>
                             </ul>
                           </span>
