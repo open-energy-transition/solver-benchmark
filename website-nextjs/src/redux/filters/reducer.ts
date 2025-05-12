@@ -17,6 +17,8 @@ const initialState: IFilterState = {
   technique: [],
   sgmMode: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
   xFactor: 5,
+  realistic: [],
+  isReady: false,
 };
 
 const filterReducer = (

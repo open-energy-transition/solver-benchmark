@@ -66,16 +66,16 @@ const SolverSelection = () => {
       (result) => result.solver === s2 && result.solverVersion === v2,
     );
 
+    // Find common benchmark-size pairs
+    const commonInstances = data1.filter((d1) =>
+      data2.some((d2) => d2.benchmark === d1.benchmark && d2.size === d1.size),
+    );
+
     setChartData(
-      data1.map((d1) => {
+      commonInstances.map((d1) => {
         const d2 = data2.find(
           (d2) => d2.benchmark === d1.benchmark && d2.size === d1.size,
-        );
-        if (!d2) {
-          throw new Error(
-            `Result not found for Benchmark: ${d1.benchmark} Size: ${d1.size}`,
-          );
-        }
+        )!;
         return {
           d1: {
             runtime: d1.runtime,
@@ -95,7 +95,7 @@ const SolverSelection = () => {
 
   return (
     <div>
-      <div className="flex flex-row gap-2 sm:gap-0 mt-6 mb-4">
+      <div className="flex flex-row gap-2 sm:gap-0 mb-4">
         <div className="w-full sm:w-1/2 bg-[#F0F4F2] rounded-lg sm:rounded-l-lg sm:rounded-r-none">
           <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg 4xl:xl">
             Solver 1
@@ -142,7 +142,8 @@ const SolverSelection = () => {
         <p className="text-[#5D5D5D] text-sm sm:text-base 4xl:text-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
-          where Solver 2 performs better
+          where Solver 2 performs better. Click on any point in this graph to
+          see details of that benchmark instance.{" "}
         </p>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">

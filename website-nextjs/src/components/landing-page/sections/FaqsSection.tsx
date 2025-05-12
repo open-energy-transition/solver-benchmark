@@ -2,7 +2,10 @@ import FAQItem from "../FAQItem";
 
 const Contribute = () => {
   return (
-    <div className="py-5 text-navy bg-[#F5F4F4]">
+    <div
+      id="faq"
+      className="py-5 text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+    >
       <div
         className="
           mx-auto
