@@ -24,12 +24,12 @@ const MACHINE_CONFIGS: Record<number, MachineConfig> = {
   [TIMEOUT.STANDARD]: {
     instance: "c4-standard-2",
     vcpus: "2",
-    memory: "7 GiB",
+    memory: "7 GB",
   },
   [TIMEOUT.EXTENDED]: {
     instance: "c4-highmem-8",
     vcpus: "8",
-    memory: "62 GiB",
+    memory: "62 GB",
   },
 };
 

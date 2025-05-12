@@ -11,10 +11,12 @@ import { IResultState } from "@/types/state";
 import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
 import { useState } from "react";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 const LandingPage = () => {
   const [activeTab, setActiveTab] = useState("short");
-  const timeout = activeTab === "short" ? 3600 : 36000;
+  const timeout =
+    activeTab === "short" ? TIMEOUT_VALUES.SHORT : TIMEOUT_VALUES.LONG;
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults;
   });

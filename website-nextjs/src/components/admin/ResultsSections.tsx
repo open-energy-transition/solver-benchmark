@@ -4,11 +4,10 @@ import { ArrowIcon, QuestionLine } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
-import { MaxMemoryUsage } from "@/constants";
 import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
-import { SgmMode } from "@/constants/filter";
+import { SgmMode, TIMEOUT_VALUES } from "@/constants/filter";
 import { extractNumberFromFormattedString } from "@/utils/string";
 
 type ColumnType = {
@@ -58,6 +57,8 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   });
 
   const benchmarkResults = useMemo(() => {
+    const maxMemoryUsage =
+      timeout === TIMEOUT_VALUES.SHORT ? 7 * 1024 : 62 * 1024;
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
         const benchmarkSuccessMap = new Map<string, number>();
@@ -89,7 +90,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             result.status !== "ok" ? result.timeout * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? MaxMemoryUsage * xFactor
+              ? maxMemoryUsage * xFactor
               : result.memoryUsage,
         }));
       case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
@@ -97,7 +98,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           ...result,
           runtime: result.status !== "ok" ? result.timeout : result.runtime,
           memoryUsage:
-            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
+            result.status !== "ok" ? maxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
