@@ -1,5 +1,6 @@
 import argparse
 import csv
+import datetime
 import gzip
 import json
 import os
@@ -11,6 +12,7 @@ import time
 from pathlib import Path
 from socket import gethostname
 
+import psutil
 import requests
 import yaml
 
@@ -113,8 +115,11 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Objective Value",
                 "Max Integrality Violation",
                 "Duality Gap",
+                "Reported Runtime (s)",
                 "Timeout",
                 "Hostname",
+                "Run ID",
+                "Timestamp",
             ]
         )
 
@@ -134,11 +139,13 @@ def write_csv_headers(results_csv, mean_stddev_csv):
                 "Memory Mean (MB)",
                 "Memory StdDev (MB)",
                 "Objective Value",
+                "Run ID",
+                "Timestamp",
             ]
         )
 
 
-def write_csv_row(results_csv, benchmark_name, metrics):
+def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -156,13 +163,16 @@ def write_csv_row(results_csv, benchmark_name, metrics):
                 metrics["objective"],
                 metrics["max_integrality_violation"],
                 metrics["duality_gap"],
+                metrics["reported_runtime"],
                 metrics["timeout"],
                 hostname,
+                run_id,
+                timestamp,
             ]
         )
 
 
-def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
+def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, timestamp):
     # NOTE: ensure the order is the same as the headers above
     with open(mean_stddev_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -180,23 +190,41 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics):
                 metrics["memory_mean"],
                 metrics["memory_stddev"],
                 metrics["objective"],
+                run_id,
+                timestamp,
             ]
         )
 
 
 def benchmark_solver(input_file, solver_name, timeout, solver_version):
-    command = [
-        "/usr/bin/time",
-        "--format",
-        "MaxResidentSetSizeKB=%M",
-        "timeout",
-        f"{timeout}s",
-        "python",
-        Path(__file__).parent / "run_solver.py",
-        solver_name,
-        input_file,
-        solver_version,
-    ]
+    available_memory_bytes = psutil.virtual_memory().available
+    memory_limit_bytes = int(available_memory_bytes * 0.95)
+    memory_limit_mb = memory_limit_bytes / (1024 * 1024)
+    print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
+
+    command = ["systemd-run"]
+
+    if "XDG_RUNTIME_DIR" in os.environ:
+        command.append("--user")
+
+    command.extend(
+        [
+            "--scope",
+            f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
+            "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
+            "/usr/bin/time",
+            "--format",
+            "MaxResidentSetSizeKB=%M",
+            "timeout",
+            f"{timeout}s",
+            "python",
+            f"{Path(__file__).parent / 'run_solver.py'}",
+            solver_name,
+            input_file,
+            solver_version,
+        ]
+    )
+
     # Run the command and capture the output
     result = subprocess.run(
         command,
@@ -214,13 +242,23 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "condition": "Timeout",
             "objective": None,
             "runtime": timeout,
+            "reported_runtime": timeout,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
+    elif result.returncode == 137:
+        print("OUT OF MEMORY")
+        metrics = {
+            "status": "OOM",
+            "condition": "Out of Memory",
+            "objective": None,
+            "runtime": "N/A",
+            "reported_runtime": None,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
-        print(
-            f"ERROR running solver. Captured output:\n{result.stdout}\n{result.stderr}"
-        )
+        print(f"ERROR running solver. Return code:\n{result.returncode}")
         # Errors are also said to have run for `timeout`s, so that they appear
         # along with timeouts in charts
         metrics = {
@@ -228,11 +266,15 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "condition": "Error",
             "objective": None,
             "runtime": timeout,
+            "reported_runtime": timeout,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
     else:
         metrics = json.loads(result.stdout.splitlines()[-1])
+
+    if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
+        print(f"WARNING: unknown solver status: {metrics['status']}")
 
     metrics["memory"] = memory
     metrics["timeout"] = timeout
@@ -276,7 +318,7 @@ def benchmark_highs_binary():
     ]
 
     # Run the command and capture the output
-    start_time = time.time()
+    start_time = time.perf_counter()
     result = subprocess.run(
         command,
         capture_output=True,
@@ -284,11 +326,9 @@ def benchmark_highs_binary():
         check=False,
         encoding="utf-8",
     )
-    runtime = time.time() - start_time
+    runtime = time.perf_counter() - start_time
     if result.returncode != 0:
-        print(
-            f"ERROR running reference benchmark. Captured output:\n{result.stdout}\n{result.stderr}"
-        )
+        print(f"ERROR running solver. Return code:\n{result.returncode}")
         metrics = {
             "status": "ER",
             "condition": "Error",
@@ -328,7 +368,15 @@ def main(
     timeout=10 * 60,
     reference_interval=0,  # Default: disabled
     append=False,
+    run_id=None,
 ):
+    # If no run_id is provided, generate one
+    if run_id is None:
+        run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
+        print(f"Generated run_id: {run_id}")
+    else:
+        print(f"Using provided run_id: {run_id}")
+
     size_categories = None  # TODO add this to CLI args
     results = {}
 
@@ -423,6 +471,9 @@ def main(
                     flush=True,
                 )
 
+                # Record timestamp before running the solver
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+
                 metrics = benchmark_solver(
                     benchmark["path"], solver, timeout, solver_version
                 )
@@ -436,7 +487,9 @@ def main(
                 memory_usages.append(metrics["memory"])
 
                 # Write each benchmark result immediately after the measurement
-                write_csv_row(results_csv, benchmark["name"], metrics)
+                write_csv_row(
+                    results_csv, benchmark["name"], metrics, run_id, timestamp
+                )
 
                 # If solver errors or times out, don't run further iterations
                 if metrics["status"] in {"ER", "TO"}:
@@ -456,7 +509,9 @@ def main(
 
             # Write mean and standard deviation to CSV
             # NOTE: this uses the last iteration's values for status, condition, etc
-            write_csv_summary_row(mean_stddev_csv, benchmark["name"], metrics)
+            write_csv_summary_row(
+                mean_stddev_csv, benchmark["name"], metrics, run_id, timestamp
+            )
 
             results[(benchmark["name"], benchmark["size"], solver, solver_version)] = (
                 metrics
@@ -481,9 +536,19 @@ def main(
                     reference_metrics["solver"] = "highs-binary"
                     reference_metrics["solver_version"] = reference_solver_version
                     reference_metrics["solver_release_year"] = "N/A"
+                    reference_metrics["reported_runtime"] = None
 
                     # Record reference benchmark results
-                    write_csv_row(results_csv, "reference-benchmark", reference_metrics)
+                    reference_timestamp = datetime.datetime.now().strftime(
+                        "%Y-%m-%d %H:%M:%S.%f"
+                    )
+                    write_csv_row(
+                        results_csv,
+                        "reference-benchmark",
+                        reference_metrics,
+                        run_id,
+                        reference_timestamp,
+                    )
 
                     # Update the last reference run time
                     last_reference_run = current_time
@@ -512,7 +577,7 @@ if __name__ == "__main__":
         "--solvers",
         type=str,
         nargs="+",
-        default=["highs", "scip", "cbc", "glpk"],
+        default=["highs", "scip", "cbc", "gurobi", "glpk"],
         help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
     )
     parser.add_argument(
@@ -526,6 +591,12 @@ if __name__ == "__main__":
         default=0,
         help="Run a reference benchmark in between benchmark instances, at most once every given number of seconds.",
     )
+    parser.add_argument(
+        "--run_id",
+        type=str,
+        default=None,
+        help="Unique identifier for this benchmark run.",
+    )
     args = parser.parse_args()
 
     main(
@@ -534,6 +605,7 @@ if __name__ == "__main__":
         args.year,
         reference_interval=args.ref_bench_interval,
         append=args.append,
+        run_id=args.run_id,
     )
     # Print a message indicating completion
     print("Benchmarking complete.")

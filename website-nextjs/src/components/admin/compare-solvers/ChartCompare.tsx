@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { getChartColor } from "@/utils/chart";
 
 type ChartData = {
   xaxis: number;
@@ -38,16 +39,19 @@ const ChartCompare = ({
 
     // Solvers with colors
     const statusColor = {
-      "TO-TO": "#4C5C51",
-      "ok-ok": "#E31937",
-      "ok-TO": "#0F62FE",
-      "TO-ok": "#E75134",
+      "ok-ok": "#4C5C51",
+      "TO-TO": getChartColor(2),
+      "ok-TO": getChartColor(3),
+      "TO-ok": getChartColor(0),
     };
 
     // Dimensions
     const width = containerRef.current?.clientWidth || 600;
-    const height = 400;
-    const margin = { top: 40, right: 20, bottom: 50, left: 70 };
+    const isMobile = width < 640; // Add mobile breakpoint check
+    const height = isMobile ? 300 : 400; // Adjust height for mobile
+    const margin = isMobile
+      ? { top: 30, right: 15, bottom: 40, left: 50 }
+      : { top: 40, right: 20, bottom: 50, left: 70 };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -129,6 +133,7 @@ const ChartCompare = ({
     // Axes
     const xAxis = d3.axisBottom(xScale).ticks(6).tickSizeOuter(0);
     const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
+
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -137,16 +142,10 @@ const ChartCompare = ({
       .call((g) => {
         g.selectAll(".domain").attr("stroke", "#A1A9BC");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text").attr("fill", "#A1A9BC");
-      })
-      .append("text")
-      .attr("x", width / 2)
-      .attr("y", 40)
-      .attr("fill", "#8C8C8C")
-      .text(title.xaxis)
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif");
-
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "font-lato text-xs 4xl:text-lg");
+      });
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
@@ -154,18 +153,10 @@ const ChartCompare = ({
       .call((g) => {
         g.selectAll(".domain").attr("stroke", "#A1A9BC");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text").attr("fill", "#A1A9BC");
-      })
-      .append("text")
-      .attr("x", -height / 2)
-      .attr("y", -50)
-      .attr("fill", "#8C8C8C")
-      .text(title.yaxis)
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
-      .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle");
-
+        g.selectAll("text")
+          .attr("fill", "#A1A9BC")
+          .attr("class", "font-lato text-xs 4xl:text-lg");
+      });
     // Scatter points
     svg
       .selectAll(".dot")
@@ -185,8 +176,7 @@ const ChartCompare = ({
             .attr("dominant-baseline", "middle")
             .text("✕")
             .style("fill", statusColor[d.status])
-            .style("font-size", "12px")
-            .style("font-family", "'Lato', sans-serif");
+            .style("font-size", "12px");
         } else {
           // Render a circle for other statuses
           group
@@ -212,9 +202,10 @@ const ChartCompare = ({
             tooltip
               .style("opacity", 1)
               .html(
-                `<strong>Name:</strong> ${d.benchmark}<br>
-                <strong>Size:</strong> ${d.size}<br>
-                 `,
+                `<div class="text-sm 4xl:text-lg">
+                  <strong>Name:</strong> ${d.benchmark}<br>
+                  <strong>Size:</strong> ${d.size}<br>
+                 </div>`,
               )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 30}px`);
@@ -279,31 +270,63 @@ const ChartCompare = ({
     };
   }, [chartData]);
   return (
-    <div className="bg-white py-4 px-10 rounded-xl">
+    <div className="bg-white py-4 px-4 sm:px-10 rounded-xl relative">
+      {/* yaxis Title */}
+      <div
+        className="
+          -rotate-90
+          -translate-y-1/2
+          4xl:text-lg
+          absolute
+          font-lato
+          left-6
+          origin-[0]
+          text-[#8c8c8c]
+          text-xs
+          top-3/4
+          "
+      >
+        {title.yaxis}
+      </div>
       {/* Legend */}
-      <div className="flex gap-2 ml-8">
-        <span className="font-semibold text-dark-grey text-xs mr-1 flex items-end">
-          Legend:
-        </span>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <CircleIcon className="size-2 text-[#E31937]" />
+      <div className="flex flex-wrap gap-2">
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <CircleIcon className="size-2 text-[#4C5C51]" />
           ok-ok
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon className="size-2 text-[#0F62FE]" />
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <XIcon fill={getChartColor(3)} className="size-2" />
           ok-TO
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon className="size-2 text-[#E75134]" />
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <XIcon fill={getChartColor(0)} className="size-2" />
           TO-ok
         </div>
-        <div className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon className="size-2 text-[#4C5C51]" />
+        <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
+          <XIcon fill={getChartColor(2)} className="size-2" />
           TO-TO
         </div>
       </div>
-      <div ref={containerRef}>
-        <svg ref={svgRef}></svg>
+      <div className="w-full overflow-x-auto" ref={containerRef}>
+        <div className="min-w-[300px]">
+          <svg ref={svgRef}></svg>
+        </div>
+      </div>
+      {/* xaxis Title */}
+      <div
+        className="
+          -translate-y-1/2
+          -translate-x-1/2
+          4xl:text-lg
+          absolute
+          font-lato
+          left-1/2
+          text-[#8c8c8c]
+          text-xs
+          bottom-0
+          "
+      >
+        {title.xaxis}
       </div>
     </div>
   );

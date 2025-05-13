@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
-
-import { ArrowUpIcon } from "@/assets/icons";
 import { useMemo } from "react";
 import { IResultState } from "@/types/state";
+import StatsBox from "@/components/common/StatsBox";
 
 const GetStarted = () => {
   const rawMetaData = useSelector((state: { results: IResultState }) => {
@@ -32,54 +31,79 @@ const GetStarted = () => {
   );
 
   return (
-    <div className="text-white bg-navy border-t-2 border-solid border-white">
-      <div className="mx-auto container px-4 lg:px-6 pt-[67px] pb-16">
-        <div className="text-dark-grey text-xl uppercase font-bold font-league mb-4">
-          BENCHMARKS
-        </div>
-        <div className="text-[4rem] leading-1.1 font-bold font-league mb-2">
-          WHAT DO WE HAVE?
-        </div>
-        <h5 className="text-lavender leading-1.4 max-w-4xl mb-2.5">
-          Our platform consists of open-source, community-contributed benchmarks
-          from leading open energy modelling systems. Our open benchmarking
-          infrastructure runs them on multiple versions of leading solvers on
-          multiple hardware configurations, to gather insights on how
-          performance varies with benchmark size, computational resources, and
-          solver evolution.
-        </h5>
-        <div className="gird md:flex justify-between text-stroke">
-          <div className="py-9 text-center flex-1">
-            <div className="text-9xl leading-1.2 font-league font-bold">
-              {modelNames.length}
-            </div>
-            <h5 className="text-lavender leading-1.4 uppercase">
-              Model Frameworks
-            </h5>
+    <div
+      id="benchmarks"
+      className="text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+    >
+      <div
+        className="
+          xl:flex
+          mx-auto
+          max-w-8xl
+          px-4
+          lg:px-[70px]
+          lg:pr-[44px]
+          pt-[67px]
+          pb-16
+          justify-between
+        "
+      >
+        <div className="w-full xl:w-1/4">
+          <div
+            className="
+              text-lg/1.1
+              uppercase
+              font-medium
+              tracking-normal
+              font-league
+              mb-4
+            "
+          >
+            BENCHMARKS
           </div>
-          <div className="py-9 text-center flex-1">
-            <div className="text-9xl leading-1.2 font-league font-bold">
-              {availableBenchmarksAndSizes.length}
-            </div>
-            <h5 className="text-lavender leading-1.4 uppercase">
-              Benchmark instances
-            </h5>
-          </div>
-          <div className="py-9 text-center flex-1">
-            <div className="text-9xl leading-1.2 font-league font-bold">
-              {availableSolvers.length}
-            </div>
-            <h5 className="text-lavender leading-1.4 uppercase">Solvers </h5>
+          <div
+            className="
+              text-[2.5rem]/1.4
+              tracking-normal
+              font-extrabold
+              font-lato
+              mb-2
+            "
+          >
+            WHAT DO WE HAVE?
           </div>
         </div>
-        <div className="mt-9 py-1.5 px-2 relative border-b border-teal/50 flex justify-between items-center">
-          <h5 id="contribution-section" className="text-lavender leading-1.4">
-            GET STARTED
+        <div className="w-full xl:w-[67.42%]">
+          <h5
+            className="
+              text-lg/1.4
+              font-medium
+              max-w-4xl
+              mb-2.5
+              font-lato
+              xl:pl-4.5
+              tracking-normal
+            "
+          >
+            Our platform consists of open-source, community-contributed
+            benchmarks from leading open energy modelling systems. Our open
+            benchmarking infrastructure runs them on multiple versions of
+            leading solvers on multiple hardware configurations, to gather
+            insights on how performance varies with benchmark size,
+            computational resources, and solver evolution.
           </h5>
-          <ArrowUpIcon className="text-white rotate-90 size-6" />
+          <div className="flex justify-between">
+            <StatsBox value={modelNames.length} label="Model Frameworks" />
+            <StatsBox
+              value={availableBenchmarksAndSizes.length}
+              label="Benchmarks"
+            />
+            <StatsBox value={availableSolvers.length} label="Solvers" />
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default GetStarted;

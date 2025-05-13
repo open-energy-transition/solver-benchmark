@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import Head from "next/head";
 
 import type { AppProps } from "next/app";
 import { Provider, useDispatch } from "react-redux";
@@ -13,15 +14,19 @@ import AdminLayout from "@/pages/AdminLayout";
 import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results";
 import { getMetaData } from "@/utils/meta-data";
 import { BenchmarkResult } from "@/types/benchmark";
-import { IFilterState } from "@/types/state";
+import { IFilterState, RealisticOption } from "@/types/state";
 import { MetaData } from "@/types/meta-data";
 
 function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
+  const initialized = useRef(false);
 
   const { store, props } = wrapper.useWrappedStore(pageProps);
 
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     const initializeData = async () => {
       const resultsRes = await getBenchmarkResults();
 
@@ -113,6 +118,7 @@ function App({ Component, pageProps }: AppProps) {
           availableKindOfProblems,
           availableModels,
           availableProblemSizes,
+          realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
         }),
       );
       dispatch(
@@ -126,6 +132,8 @@ function App({ Component, pageProps }: AppProps) {
           kindOfProblem: availableKindOfProblems,
           modelName: availableModels,
           problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
+          isReady: true,
         } as IFilterState),
       );
     };
@@ -146,6 +154,12 @@ function App({ Component, pageProps }: AppProps) {
   };
   return (
     <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+        />
+      </Head>
       <Provider store={store}>{renderLayout()}</Provider>
     </>
   );

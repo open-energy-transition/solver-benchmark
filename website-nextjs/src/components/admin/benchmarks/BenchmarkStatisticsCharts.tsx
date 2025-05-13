@@ -1,33 +1,24 @@
-import D3BarChart from "@/components/shared/D3BarChart";
 import D3StackedBarChart from "@/components/shared/D3StackedBarChart";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-const RowChart = () => {
+const BenchmarkStatisticsCharts = ({
+  availableSectors,
+  availableTechniques,
+  availableKindOfProblems,
+  availableModels,
+  availableProblemSizes,
+}: {
+  availableSectors: string[];
+  availableTechniques: string[];
+  availableKindOfProblems: string[];
+  availableModels: string[];
+  availableProblemSizes: string[];
+}) => {
   const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.metaData;
-  });
-
-  const availableModels = useSelector((state: { results: IResultState }) => {
-    return state.results.availableModels;
-  });
-
-  const availableTechniques = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.availableTechniques;
-    },
-  );
-
-  const availableKindOfProblems = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.availableKindOfProblems;
-    },
-  );
-
-  const availableSectors = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSectors;
+    return state.results.fullMetaData;
   });
 
   const availableMilpFeatures = useMemo(() => {
@@ -120,32 +111,39 @@ const RowChart = () => {
     single: data.timeHorizons.get("single") || 0,
     multi: data.timeHorizons.get("multi") || 0,
   }));
-  const availableProblemSizes = useSelector(
-    (state: { results: IResultState }) => state.results.availableProblemSizes,
-  );
-  const sizeData = useMemo(() => {
+
+  const sizeChartData = useMemo(() => {
     const sizeData = availableProblemSizes.map((size) => {
       return {
         size,
-        value: 0,
-        category: size,
-        group: size,
+        total: 0,
+        realistic: 0,
+        other: 0,
       };
     });
     Object.keys(metaData).forEach((key) => {
       metaData[key].sizes.forEach((s) => {
         const data = sizeData.find((sd) => sd.size === s.size);
         if (data) {
-          data.value += 1;
+          data.total += 1;
+          if (s.realistic) {
+            data.realistic += 1;
+          }
         }
       });
     });
-    return sizeData;
+    return sizeData.map((data) => {
+      return {
+        other: data.total - data.realistic,
+        realistic: data.realistic,
+        size: data.size,
+      };
+    });
   }, [metaData, availableProblemSizes]);
 
   return (
-    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative">
-      <div className="-rotate-90 absolute left-[-85px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2">
+    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative 4xl:py-16">
+      <div className="-rotate-90 absolute left-[-85px] 4xl:left-[-130px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2 4xl:text-lg">
         Number of benchmark instances
       </div>
       <div className="xl:flex xl:flex-row justify-between">
@@ -157,12 +155,12 @@ const RowChart = () => {
             yAxisLabel=""
             categoryKey="modelName"
             colors={{ LP: getChartColor(0), MILP: getChartColor(1) }}
-            title="By Technique"
+            title="By Model Framework"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full xl:w-1/3">
+        <div className="flex-1 w-full mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="px-0"
             data={timeHorizonsChartData}
@@ -175,20 +173,20 @@ const RowChart = () => {
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full xl:w-1/3">
-          <D3BarChart
+        <div className="flex-1 w-full mt-4 lg:mt-0  xl:w-1/3">
+          <D3StackedBarChart
             className="px-0"
-            data={sizeData}
-            colors={sizeData.reduce(
-              (acc, d, idx) => {
-                acc[d.size] = getChartColor(idx);
-                return acc;
-              },
-              {} as Record<string, string>,
-            )}
-            tooltipFormat={(d) => `${d.group}: ${d.value}`}
+            data={sizeChartData}
+            xAxisLabel="Size"
             yAxisLabel=""
+            categoryKey="size"
+            colors={{
+              realistic: getChartColor(0),
+              other: getChartColor(1),
+            }}
+            rotateXAxisLabels={false}
             title="By Size"
+            showXaxisLabel={false}
           />
         </div>
       </div>
@@ -196,4 +194,4 @@ const RowChart = () => {
   );
 };
 
-export default RowChart;
+export default BenchmarkStatisticsCharts;

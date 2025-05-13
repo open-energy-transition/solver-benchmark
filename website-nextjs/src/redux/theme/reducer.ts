@@ -4,7 +4,7 @@ import actions from "./actions";
 const { TOGGLE_NAV } = actions;
 
 const initialState = {
-  isNavExpanded: true,
+  isNavExpanded: false,
 };
 
 const themeReducer = (state = initialState, action: AnyAction) => {

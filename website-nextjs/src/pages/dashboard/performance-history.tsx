@@ -2,11 +2,14 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 
 // local
-import DetailSection from "@/components/admin/DetailSection";
-import { AdminHeader, Footer, Navbar } from "@/components/shared";
+import {
+  AdminHeader,
+  ContentWrapper,
+  Footer,
+  Navbar,
+} from "@/components/shared";
 import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
-import FilterSection from "@/components/admin/FilterSection";
 
 import {
   BenchmarkResult,
@@ -21,10 +24,6 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 
 const PagePerformanceHistory = () => {
-  const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
-  );
-
   const benchmarkResults = useSelector(
     (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
       return state.results.benchmarkResults;
@@ -134,13 +133,19 @@ const PagePerformanceHistory = () => {
     );
 
     return {
-      runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime),
+      runtime: getNormalizedData(
+        solverYearlyMetrics,
+        "runtime",
+        minRuntime,
+      ).sort((a, b) => a.year - b.year),
       memoryUsage: getNormalizedData(
         solverYearlyMetrics,
         "memoryUsage",
         minMemoryUsage,
+      ).sort((a, b) => a.year - b.year),
+      numSolvedBenchMark: getNumSolvedBenchMark().sort(
+        (a, b) => a.year - b.year,
       ),
-      numSolvedBenchMark: getNumSolvedBenchMark(),
     };
   }, [solverYearlyMetrics]);
 
@@ -151,42 +156,45 @@ const PagePerformanceHistory = () => {
       </Head>
       <div className="bg-light-blue">
         <Navbar />
-        <div
-          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "ml-[17rem]" : "ml-20"
-          }`}
-        >
-          <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
-              <div className="flex items-center gap-1">
-                <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
-                </Link>
-                <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                <span className="self-center font-semibold whitespace-nowrap">
-                  Performance History
-                </span>
+        <ContentWrapper
+          header={
+            <div className="max-w-8xl mx-auto">
+              <AdminHeader>
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                  <div className="flex items-center gap-1">
+                    <Link href={PATH_DASHBOARD.root}>
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                    </Link>
+                    <ArrowIcon
+                      fill="none"
+                      className="size-3 4xl:size-4 stroke-navy"
+                    />
+                    <span className="self-center font-semibold whitespace-nowrap">
+                      Performance History
+                    </span>
+                  </div>
+                </div>
+              </AdminHeader>
+              <div className="font-lato font-bold text-2xl/1.4">
+                Performance History
+              </div>
+              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+                This page tracks the performance of different solvers over time.
+                This can be used to see which solvers are improving, and on what
+                kinds of benchmarks. Once again, you can filter the benchmark
+                set to your problems of interest and the graphs will
+                automatically re-generate to show you the performance history on
+                your chosen subset.
               </div>
             </div>
-          </AdminHeader>
+          }
+        >
           {/* Content */}
-          <DetailSection />
-          <FilterSection />
-          <div className="mt-8 mb-5">
-            <div className="text-navy text-xl leading-1.4 font-semibold">
-              Solver Performance History
-            </div>
-            <div className="text-sm leading-1.4 text-[#5D5D5D]">
-              We use the Shifted Geometric Mean (SGM) of runtime and memory
-              consumption overall the benchmarks, and normalize according to the
-              best performing solver version.
-            </div>
-          </div>
           <NormalizedSection chartData={chartData} />
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
           />
-        </div>
+        </ContentWrapper>
       </div>
       <Footer />
     </>

@@ -11,14 +11,10 @@ import { IFilterState, IResultState } from "@/types/state";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
-import RowChart from "@/components/admin/benchmarks/RowChart";
+import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
-  const isNavExpanded = useSelector(
-    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
-  );
-
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -26,6 +22,10 @@ const PageBenchmarkDetail = () => {
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
+
+  const isNavExpanded = useSelector(
+    (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
 
   const problemSizeResult: { [key: string]: string } = {};
   Object.keys(fullMetaData).forEach((metaDataKey) => {
@@ -183,67 +183,105 @@ const PageBenchmarkDetail = () => {
     <>
       <Head>
         <title>Benchmark Detail</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
         <div
-          className={`px-6 min-h-[calc(100vh-var(--footer-height))] ${
-            isNavExpanded ? "md:ml-[17rem]" : "md:ml-20"
-          }`}
+          className={`
+        min-h-[calc(100vh-var(--footer-height))]
+        px-2
+        sm:px-6
+        transition-all
+        text-navy
+        ${isNavExpanded ? "md:ml-64" : "md:ml-20"}
+        `}
         >
-          <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
-              <div className="flex items-center gap-1">
-                <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem" />
-                </Link>
-                <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                <span className="self-center font-semibold whitespace-nowrap">
-                  Benchmark Details
-                </span>
+          <div className="max-w-8xl mx-auto">
+            <div>
+              <AdminHeader>
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                  <div className="flex items-center gap-1">
+                    <Link href={PATH_DASHBOARD.root}>
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                    </Link>
+                    <ArrowIcon
+                      fill="none"
+                      className="size-3 4xl:size-4 stroke-navy"
+                    />
+                    <span className="self-center font-semibold whitespace-nowrap">
+                      Benchmark Set
+                    </span>
+                  </div>
+                </div>
+              </AdminHeader>
+              <div className="text-navy">
+                <div className="font-lato font-bold text-2xl/1.4">
+                  Benchmark Set
+                </div>
+                <p className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+                  On this page you can see details of all the benchmarks on our
+                  platform, including their source and download links.
+                </p>
               </div>
             </div>
-          </AdminHeader>
-          {/* Content */}
-          <div className="py-2">
-            <div className="text-navy text-xl font-bold">Benchmarks</div>
-            <p className="text-[#5D5D5D]">
-              On this page you can see details of all the benchmarks on our
-              platform, including their source and download links.
-            </p>
-          </div>
-
-          <div className="py-2 flex justify-between items-center">
-            <div className="text-navy text-lg font-bold">
-              Summary of Benchmark Set
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
+              <div className="sm:flex justify-between">
+                <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
+                  <BenchmarkDetailFilterSection
+                    localFilters={localFilters}
+                    setLocalFilters={setLocalFilters}
+                    availableSectors={availableSectors}
+                    availableTechniques={availableTechniques}
+                    availableKindOfProblems={availableKindOfProblems}
+                    availableModels={availableModels}
+                    availableProblemSizes={availableProblemSizes}
+                  />
+                </div>
+                <div
+                  className={`
+                pd:mx-0
+                3xl:mx-auto
+                sm:w-4/5 px-4
+                `}
+                >
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="py-2 grid sm:flex justify-between items-center">
+                      <div className="text-navy text-lg font-bold 4xl:text-xl">
+                        Summary of Benchmark Set
+                      </div>
+                      <Link
+                        className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
+                        href={PATH_DASHBOARD.benchmarkSummary}
+                      >
+                        See more details
+                        <ArrowUpIcon className="rotate-90" />
+                      </Link>
+                    </div>
+                    <BenchmarkStatisticsCharts
+                      availableSectors={availableSectors}
+                      availableTechniques={availableTechniques}
+                      availableKindOfProblems={availableKindOfProblems}
+                      availableModels={availableModels}
+                      availableProblemSizes={availableProblemSizes}
+                    />
+                    <div className="py-2">
+                      <div className="text-navy text-lg font-bold 4xl:text-xl">
+                        List of All Benchmarks
+                      </div>
+                    </div>
+                    <BenchmarkTableResult metaData={filteredMetaData} />
+                  </div>
+                </div>
+              </div>
             </div>
-            <Link
-              className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
-              href={PATH_DASHBOARD.benchmarkSummary}
-            >
-              See more details
-              <ArrowUpIcon className="rotate-90" />
-            </Link>
           </div>
-          <RowChart />
-          <div className="py-2">
-            <div className="text-navy text-lg font-bold">
-              List of All Benchmarks
-            </div>
-          </div>
-          <BenchmarkDetailFilterSection
-            localFilters={localFilters}
-            setLocalFilters={setLocalFilters}
-            availableSectors={availableSectors}
-            availableTechniques={availableTechniques}
-            availableKindOfProblems={availableKindOfProblems}
-            availableModels={availableModels}
-            availableProblemSizes={availableProblemSizes}
-          />
-          <BenchmarkTableResult metaData={filteredMetaData} />
         </div>
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 };

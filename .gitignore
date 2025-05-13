@@ -130,6 +130,12 @@ ENV/
 env.bak/
 venv.bak/
 
+# environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -165,6 +171,9 @@ cython_debug/
 /runner/benchmarks/*
 /runner/solutions/*
 /runner/logs/*
+
+# Ignore results downloaded from GCP
+/results/gcp-results/
 
 # NextJs
 node_modules

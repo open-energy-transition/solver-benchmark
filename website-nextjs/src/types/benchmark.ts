@@ -15,6 +15,7 @@ type BenchmarkResult = {
   solverVersion: string;
   status: SolverStatusType;
   terminationCondition: string;
+  timeout: number;
 };
 
 interface ISolverYearlyMetrics {

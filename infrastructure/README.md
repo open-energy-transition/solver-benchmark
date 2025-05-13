@@ -24,6 +24,7 @@ Place your benchmark YAML files in the `benchmarks` directory. Example:
 
 ```yaml
 machine-type: c4-standard-2
+zone: "europe-west4-b"
 years: [2023, 2024]
 benchmarks:
     Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
@@ -58,7 +59,7 @@ Create a `terraform.tfvars` file with your GCP configuration:
 
 ```hcl
 project_id           = "your-gcp-project-id"
-zone                 = "europe-west4-a"
+zone                 = "europe-west4-a" # This will be overriden if a value is specified in the input metadata file
 gcp_service_key_path = "/path/to/your-gcp-credentials.json"
 ssh_user             = "your-username"  # Optional
 ssh_key_path         = "~/.ssh/id_rsa.pub"  # Optional
@@ -118,19 +119,19 @@ Each YAML file defines a benchmark with specific configuration:
 
 ### OpenTofu Variables
 
-| Variable | Description                                                | Default            |
-|----------|------------------------------------------------------------|--------------------|
-| `project_id` | GCP Project ID                                             | *Required*         |
-| `gcp_service_key_path` | Path to GCP credentials                                    | *Required*         |
-| `zone` | GCP Zone                                                   | europe-west4-a     |
-| `instance_name` | Base name for instances                                    | benchmark-instance |
-| `startup_script_path` | Path to startup script                                     | startup-script.sh  |
-| `enable_gcs_upload` | Enable/disable results upload to GCS bucket                | true               |
-| `gcs_bucket_name` | Name of the GCS bucket to upload the results               | solver-benchmarks  |
-| `auto_destroy_vm` | Enable/disable auto deletion of VM on benchmark completion | true               |
-| `reference_benchmark_interval` | Time interval in seconds to run the reference benchmark    | 3600               |
-| `ssh_user` | SSH username                                               | ""                 |
-| `ssh_key_path` | Path to SSH public key                                     | ""                 |
+| Variable | Description                                                                     | Default            |
+|----------|---------------------------------------------------------------------------------|--------------------|
+| `project_id` | GCP Project ID                                                                  | *Required*         |
+| `gcp_service_key_path` | Path to GCP credentials                                                         | *Required*         |
+| `zone` | GCP Zone (Will be overriden if a value is specified in the input metadata file) | europe-west4-a     |
+| `instance_name` | Base name for instances                                                         | benchmark-instance |
+| `startup_script_path` | Path to startup script                                                          | startup-script.sh  |
+| `enable_gcs_upload` | Enable/disable results upload to GCS bucket                                     | true               |
+| `gcs_bucket_name` | Name of the GCS bucket to upload the results                                    | solver-benchmarks  |
+| `auto_destroy_vm` | Enable/disable auto deletion of VM on benchmark completion                      | true               |
+| `reference_benchmark_interval` | Time interval in seconds to run the reference benchmark                         | 3600               |
+| `ssh_user` | SSH username                                                                    | ""                 |
+| `ssh_key_path` | Path to SSH public key                                                          | ""                 |
 
 ## Troubleshooting
 Check logs with `tail -f /var/log/startup-script.log`
