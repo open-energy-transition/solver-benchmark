@@ -11,12 +11,13 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
       Temporal resolution: 1
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_1W:
@@ -30,12 +31,13 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
       Temporal resolution: 1
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
@@ -51,12 +53,13 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
       Temporal resolution: 1
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_2M:
@@ -70,12 +73,13 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
       Temporal resolution: 1
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
@@ -91,12 +95,13 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
       Temporal resolution: 1
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_6M:
@@ -110,12 +115,13 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
       Temporal resolution: 1
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
