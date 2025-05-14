@@ -1865,10 +1865,10 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Temporal resolution: 1
       Realistic: true
       Num. constraints: 199255
@@ -1888,10 +1888,10 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Temporal resolution: 1
       Realistic: true
       Num. constraints: 220143
@@ -1913,10 +1913,10 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Temporal resolution: 1
       Realistic: true
       Num. constraints: 199255
@@ -1936,10 +1936,10 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Temporal resolution: 1
       Realistic: true
       Num. constraints: 220143
@@ -1961,10 +1961,10 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Temporal resolution: 1
       Realistic: true
       Num. constraints: 199255
@@ -1984,10 +1984,10 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
-      Spatial resolution: 997 nodes
+      Spatial resolution: 997
       Temporal resolution: 1
       Realistic: true
       Num. constraints: 220143
