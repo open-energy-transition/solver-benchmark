@@ -232,7 +232,7 @@ benchmarks:
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
-    - Name: 1-1h
+    - Name: 1-1ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
       Temporal resolution: 1 time slice
@@ -240,7 +240,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
-    - Name: 40-1h
+    - Name: 40-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
       Temporal resolution: 1 time slice
@@ -261,7 +261,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1h
+    - Name: 26-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
       Temporal resolution: 1 time slice
@@ -282,7 +282,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
       Temporal resolution: 24 time slices
@@ -304,7 +304,7 @@ benchmarks:
     Time horizon: Single stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
       Temporal resolution: 24 time slices
