@@ -132,7 +132,9 @@ const Navbar = () => {
               <li key={idx}>
                 <Popup
                   on={["hover"]}
-                  disabled={isMobile}
+                  disabled={isMobile || isNavExpanded}
+                  arrow
+                  arrowStyle={{ color: "#ffffff" }}
                   trigger={() => (
                     <div>
                       <Link
@@ -145,19 +147,19 @@ const Navbar = () => {
                         replace
                         href={navData.route}
                         className={`
-                    flex items-center h-[55px] text-lavender font-normal font-league
-                    hover:bg-white hover:bg-opacity-10
-                    ${
-                      currentRoute === navData.route
-                        ? "bg-white bg-opacity-40"
-                        : ""
-                    }
-                     ${
-                       isNavExpanded
-                         ? "pl-8 pr-2 justify-start 4xl:pl-4"
-                         : "px-2 justify-center"
-                     }
-                    `}
+                          flex items-center h-[55px] text-lavender font-normal font-league
+                          hover:bg-white hover:bg-opacity-10
+                          ${
+                            currentRoute === navData.route
+                              ? "bg-white bg-opacity-40"
+                              : ""
+                          }
+                          ${
+                            isNavExpanded
+                              ? "pl-8 pr-2 justify-start 4xl:pl-4"
+                              : "px-2 justify-center"
+                          }
+                        `}
                       >
                         {navData.icon}
                         {isNavExpanded && (
@@ -170,11 +172,8 @@ const Navbar = () => {
                   )}
                   position="right center"
                   closeOnDocumentClick
-                  arrow={false}
                 >
-                  <div className="bg-white border border-stroke m-2 p-2 rounded">
-                    {navData.helperText}
-                  </div>
+                  <div className="bg-white p-2 rounded">{navData.label}</div>
                 </Popup>
               </li>
             ))}
