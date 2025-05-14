@@ -86,7 +86,7 @@ const ResultsSgmModeDropdown = () => {
           on={["hover"]}
           trigger={() => (
             <span className="flex items-baseline my-auto cursor-pointer">
-              <QuestionLine
+              <QuestionLineIcon
                 className="size-3.5 4xl:size-5"
                 viewBox="0 0 24 20"
               />
