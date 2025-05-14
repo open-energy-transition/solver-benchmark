@@ -22,68 +22,181 @@ import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
+import ResultsSgmModeDropdown from "@/components/admin/home/ResultsSgmModeDropdown";
+import { IFilterState, IResultState } from "@/types/state";
+import { SgmMode } from "@/constants/filter";
+import { MaxMemoryUsage } from "@/constants";
 
 const PagePerformanceHistory = () => {
-  const benchmarkResults = useSelector(
+  const initBenchmarkResults = useSelector(
     (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
       return state.results.benchmarkResults;
     },
   );
+
+  const availableSolvers = useSelector((state: { results: IResultState }) => {
+    return state.results.availableSolvers;
+  });
+
+  const selectedFilters = useSelector(
+    (state: { filters: IFilterState }) => state.filters,
+  );
+
+  const sgmMode = useSelector((state: { filters: IFilterState }) => {
+    return state.filters.sgmMode;
+  });
+  const xFactor = useSelector((state: { filters: IFilterState }) => {
+    return state.filters.xFactor;
+  });
+
+  // Get common benchmark instances across all solver versions
+  const benchmarksByInstance = initBenchmarkResults.reduce(
+    (acc, result) => {
+      const key = `${result.benchmark}-${result.size}`;
+      acc[key] = acc[key] || new Set();
+      acc[key].add(`${result.solver}-${result.solverVersion}`);
+      return acc;
+    },
+    {} as Record<string, Set<string>>,
+  );
+
+  const availableSolverVersions = new Set(
+    initBenchmarkResults.map(
+      (result) => `${result.solver}-${result.solverVersion}`,
+    ),
+  );
+
+  const commonInstances: string[] = Object.entries(benchmarksByInstance)
+    .filter(([, results]) => {
+      return results.size === availableSolverVersions.size;
+    })
+    .map(([name]) => name);
+
+  // Filter benchmark results to only include common instances
+  const filteredBenchmarkResults = initBenchmarkResults.filter((result) =>
+    commonInstances.includes(`${result.benchmark}-${result.size}`),
+  );
+
+  const benchmarkResults = useMemo(() => {
+    switch (sgmMode) {
+      case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
+        const benchmarkSuccessMap = new Map<string, number>();
+        const yearsWithSolver = new Map<number, Set<string>>();
+
+        // Count successful solves for each benchmark
+        filteredBenchmarkResults.forEach((result) => {
+          const year = result.solverReleaseYear;
+          yearsWithSolver.set(
+            year,
+            (yearsWithSolver.get(year) || new Set()).add(result.solver),
+          );
+          if (result.status === "ok") {
+            const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
+            benchmarkSuccessMap.set(
+              key,
+              (benchmarkSuccessMap.get(key) || 0) + 1,
+            );
+          }
+        });
+
+        // Filter results where all solvers succeeded
+        return filteredBenchmarkResults.filter((result) => {
+          const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
+          return (
+            result.status === "ok" &&
+            benchmarkSuccessMap.get(key) ===
+              yearsWithSolver.get(result.solverReleaseYear)?.size
+          );
+        });
+
+      case SgmMode.PENALIZING_TO_BY_FACTOR:
+        return filteredBenchmarkResults.map((result) => ({
+          ...result,
+          runtime:
+            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+          memoryUsage:
+            result.status !== "ok"
+              ? MaxMemoryUsage * xFactor
+              : result.memoryUsage,
+        }));
+      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
+        return filteredBenchmarkResults.map((result) => ({
+          ...result,
+          runtime: result.status !== "ok" ? result.timeout : result.runtime,
+          memoryUsage:
+            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
+        }));
+      default:
+        return filteredBenchmarkResults;
+    }
+  }, [
+    sgmMode,
+    xFactor,
+    availableSolvers,
+    selectedFilters,
+    filteredBenchmarkResults,
+  ]);
+
   const years = [
     ...new Set(benchmarkResults.map((result) => result.solverReleaseYear)),
   ];
   const solvers = [...new Set(benchmarkResults.map((result) => result.solver))];
 
-  const solverYearlyMetrics: ISolverYearlyMetrics[] = solvers.map((solver) => {
-    return {
-      solver,
-      data: years.map((year) => ({
-        year,
-        benchmarkResults: [],
-        sgm: {
-          runtime: null,
-          memoryUsage: null,
-        },
-        numSolvedBenchmark: 0,
-        version:
-          benchmarkResults.find(
-            (result) =>
-              result.solver === solver && result.solverReleaseYear === year,
-          )?.solverVersion ?? "-",
-      })),
-    };
-  });
-
-  benchmarkResults.forEach((result) => {
-    const resultGroupedBySolver = solverYearlyMetrics.find(
-      (resultGroupedBySolver) => resultGroupedBySolver.solver === result.solver,
-    );
-    resultGroupedBySolver?.data
-      .find((d) => d.year === result.solverReleaseYear)
-      ?.benchmarkResults.push({
-        runtime: result.runtime,
-        memoryUsage: result.memoryUsage,
-        status: result.status,
-      });
-  });
-
-  solverYearlyMetrics.forEach((solverYearlyMetric) => {
-    solverYearlyMetric.data.forEach((d) => {
-      d.sgm.runtime = calculateSgm(
-        d.benchmarkResults.map((res) => res.runtime),
-      );
-      d.sgm.memoryUsage = calculateSgm(
-        d.benchmarkResults.map((res) => res.memoryUsage),
-      );
-      d.numSolvedBenchmark = d.benchmarkResults.filter(
-        (res) => res.status === "ok",
-      ).length;
+  const solverYearlyMetrics = useMemo(() => {
+    const metrics: ISolverYearlyMetrics[] = solvers.map((solver) => {
+      return {
+        solver,
+        data: years.map((year) => ({
+          year,
+          benchmarkResults: [],
+          sgm: {
+            runtime: null,
+            memoryUsage: null,
+          },
+          numSolvedBenchmark: 0,
+          version:
+            benchmarkResults.find(
+              (result) =>
+                result.solver === solver && result.solverReleaseYear === year,
+            )?.solverVersion ?? "-",
+        })),
+      };
     });
-  });
 
-  solverYearlyMetrics.map((solverYearlyMetric) =>
-    solverYearlyMetric.data.map((d) => d.benchmarkResults),
-  );
+    benchmarkResults.forEach((result) => {
+      const resultGroupedBySolver = metrics.find(
+        (resultGroupedBySolver) =>
+          resultGroupedBySolver.solver === result.solver,
+      );
+      resultGroupedBySolver?.data
+        .find((d) => d.year === result.solverReleaseYear)
+        ?.benchmarkResults.push({
+          runtime: result.runtime,
+          memoryUsage: result.memoryUsage,
+          status: result.status,
+        });
+    });
+
+    metrics.forEach((solverYearlyMetric) => {
+      solverYearlyMetric.data.forEach((d) => {
+        d.sgm.runtime = calculateSgm(
+          d.benchmarkResults.map((res) => res.runtime),
+        );
+        d.sgm.memoryUsage = calculateSgm(
+          d.benchmarkResults.map((res) => res.memoryUsage),
+        );
+        d.numSolvedBenchmark = d.benchmarkResults.filter(
+          (res) => res.status === "ok",
+        ).length;
+      });
+    });
+
+    metrics.map((solverYearlyMetric) =>
+      solverYearlyMetric.data.map((d) => d.benchmarkResults),
+    );
+    return metrics;
+  }, [benchmarkResults]);
+  console.log(solverYearlyMetrics);
 
   const getNormalizedData = (
     solverYearlyMetrics: ISolverYearlyMetrics[],
@@ -213,9 +326,13 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
+          <div className="relative h-12">
+            <ResultsSgmModeDropdown />
+          </div>
           <NormalizedSection chartData={chartData} />
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
+            totalBenchmarks={commonInstances.length}
           />
         </ContentWrapper>
       </div>
