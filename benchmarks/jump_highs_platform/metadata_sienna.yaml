@@ -1,6 +1,6 @@
 benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -21,7 +21,7 @@ benchmarks:
       Num. continuous variables: 5436
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -42,7 +42,7 @@ benchmarks:
       Num. continuous variables: 5436
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -63,7 +63,7 @@ benchmarks:
       Num. continuous variables: 5436
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (24 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -84,7 +84,7 @@ benchmarks:
       Num. continuous variables: 10872
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (24 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -107,7 +107,7 @@ benchmarks:
       Num. continuous variables: 10872
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (24 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -128,7 +128,7 @@ benchmarks:
       Num. continuous variables: 10872
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (48 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -149,7 +149,7 @@ benchmarks:
       Num. continuous variables: 21744
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (48 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -170,7 +170,7 @@ benchmarks:
       Num. continuous variables: 21744
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (48 hours). Unit commitment is applied.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -380,7 +380,7 @@ benchmarks:
       Num. continuous variables: 31008
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). Unit commitment is applied. This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -401,7 +401,7 @@ benchmarks:
       Num. continuous variables: 6876
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -422,7 +422,7 @@ benchmarks:
       Num. continuous variables: 6876
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -443,7 +443,7 @@ benchmarks:
       Num. continuous variables: 6876
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (24 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -464,7 +464,7 @@ benchmarks:
       Num. continuous variables: 13752
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (24 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -485,7 +485,7 @@ benchmarks:
       Num. continuous variables: 13752
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (24 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -506,7 +506,7 @@ benchmarks:
       Num. continuous variables: 13752
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -527,7 +527,7 @@ benchmarks:
       Num. continuous variables: 27504
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -548,7 +548,7 @@ benchmarks:
       Num. continuous variables: 27504
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
-    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Short description:  Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). This example uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches.
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks

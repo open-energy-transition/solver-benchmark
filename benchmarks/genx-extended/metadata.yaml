@@ -16,10 +16,11 @@ benchmarks:
       Temporal resolution: 168
       Spatial resolution: 15
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832658
       Num. variables: 13777226
   genx-elec_trex_co2:
-    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
+    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion and a CO2 emissions constraint.
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
@@ -35,6 +36,7 @@ benchmarks:
       Temporal resolution: 168
       Spatial resolution: 15
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832689
       Num. variables: 13777227
 #  genx-elec_trex_co2_uc:
@@ -57,7 +59,7 @@ benchmarks:
 #      N. of integer variables:
 #      N. of binary variables:
   genx-elec_trex_uc:
-    Short description: This is 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
+    Short description: This is a 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
@@ -73,6 +75,7 @@ benchmarks:
       Temporal resolution: 24h
       Spatial resolution: 15
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3123898
       Num. variables: 2551346
       Num. continuous variables: 2062938
@@ -94,6 +97,7 @@ benchmarks:
       Temporal resolution: 168
       Spatial resolution: 15
       Realistic: true
+      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832633
       Num. variables: 13777201
 # genx-15-zones_elec_co2_uc:
