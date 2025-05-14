@@ -4,11 +4,10 @@ import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
-import { MaxMemoryUsage } from "@/constants";
 import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
-import { SgmMode } from "@/constants/filter";
+import { SgmMode, TIMEOUT_VALUES } from "@/constants/filter";
 import { extractNumberFromFormattedString } from "@/utils/string";
 
 type ColumnType = {
@@ -58,6 +57,8 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   });
 
   const benchmarkResults = useMemo(() => {
+    const maxMemoryUsage =
+      timeout === TIMEOUT_VALUES.SHORT ? 7 * 1024 : 62 * 1024;
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
         const benchmarkSuccessMap = new Map<string, number>();
@@ -89,7 +90,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             result.status !== "ok" ? result.timeout * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? MaxMemoryUsage * xFactor
+              ? maxMemoryUsage * xFactor
               : result.memoryUsage,
         }));
       case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
@@ -97,7 +98,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           ...result,
           runtime: result.status !== "ok" ? result.timeout : result.runtime,
           memoryUsage:
-            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
+            result.status !== "ok" ? maxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
@@ -263,9 +264,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               )}
               position="right center"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
@@ -414,8 +415,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         <div className="text-navy px-5 text-l block items-center mt-2">
           <span>
             This table summarizes all the benchmark results of the latest
-            version of each solver on the selected configuration. You can rank
-            the solvers by the normalized shifted geometric mean (SGM
+            (minor) version as of April 2025 of each solver on the selected
+            configuration.
+            <br />
+            <br />
+            You can rank the solvers by the normalized shifted geometric mean
+            (SGM
           </span>
           <span className="inline-flex gap-2">
             <Popup
@@ -431,9 +436,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               )}
               position="right center"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
                 The shifted geometric mean SGM of n non-negative numbers
                 v[1],...v[n] is
                 <br />

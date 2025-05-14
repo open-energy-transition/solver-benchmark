@@ -227,6 +227,25 @@ const PageBenchmarkDetail = () => {
                   platform, including their source and download links.
                 </p>
               </div>
+              <div className="py-2 grid sm:flex justify-between items-center">
+                <div className="text-navy text-lg font-bold 4xl:text-xl">
+                  Summary of Benchmark Set
+                </div>
+                <Link
+                  className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
+                  href={PATH_DASHBOARD.benchmarkSummary}
+                >
+                  See more details
+                  <ArrowUpIcon className="rotate-90" />
+                </Link>
+              </div>
+              <BenchmarkStatisticsCharts
+                availableSectors={availableSectors}
+                availableTechniques={availableTechniques}
+                availableKindOfProblems={availableKindOfProblems}
+                availableModels={availableModels}
+                availableProblemSizes={availableProblemSizes}
+              />
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
               <div className="sm:flex justify-between">
@@ -249,25 +268,6 @@ const PageBenchmarkDetail = () => {
                 `}
                 >
                   <div className="space-y-4 sm:space-y-6">
-                    <div className="py-2 grid sm:flex justify-between items-center">
-                      <div className="text-navy text-lg font-bold 4xl:text-xl">
-                        Summary of Benchmark Set
-                      </div>
-                      <Link
-                        className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
-                        href={PATH_DASHBOARD.benchmarkSummary}
-                      >
-                        See more details
-                        <ArrowUpIcon className="rotate-90" />
-                      </Link>
-                    </div>
-                    <BenchmarkStatisticsCharts
-                      availableSectors={availableSectors}
-                      availableTechniques={availableTechniques}
-                      availableKindOfProblems={availableKindOfProblems}
-                      availableModels={availableModels}
-                      availableProblemSizes={availableProblemSizes}
-                    />
                     <div className="py-2">
                       <div className="text-navy text-lg font-bold 4xl:text-xl">
                         List of All Benchmarks

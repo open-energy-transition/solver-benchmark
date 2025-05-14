@@ -13,16 +13,16 @@ import DebouncedInput from "../raw-result/DebouncedInput";
 
 const sgmCalculationModes = [
   {
-    optionTitle: "Compute SGM using TO values",
+    optionTitle: "Compute SGM using max values",
     value: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
     optionTooltip:
-      "Uses the time-out value or the maximum value of memory for benchmark instances that time-out or error.",
+      "Uses the time-out value for runtime or the maximum value of memory for benchmark instances that time-out or error.",
   },
   {
-    optionTitle: "Penalizing TO by a factor of",
+    optionTitle: "Penalizing TO/OOM/ER by a factor of",
     value: SgmMode.PENALIZING_TO_BY_FACTOR,
     optionTooltip:
-      "Uses the TO/max value of memory multiplied by a factor of X for TO/ER benchmark instances.",
+      "Uses the time-out value for runtime or the maximum value of memory, multiplied by a factor of X, for benchmark instances that time-out or error.",
   },
   {
     optionTitle: "Only on intersection of solved benchmarks",
@@ -80,6 +80,35 @@ const ResultsSgmModeDropdown = () => {
 
   return (
     <div className="lg:absolute right-0 text-left flex gap-1" ref={dropdownRef}>
+      <div className="text-navy text-sm my-auto">SGM Mode:</div>
+      <span className="inline-flex gap-2">
+        <Popup
+          on={["hover"]}
+          trigger={() => (
+            <span className="flex items-baseline my-auto cursor-pointer">
+              <QuestionLine
+                className="size-3.5 4xl:size-5"
+                viewBox="0 0 24 20"
+              />
+            </span>
+          )}
+          position="right center"
+          closeOnDocumentClick
+          arrow={false}
+        >
+          <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg">
+            Note that data points where the solver does not successfully solve
+            the benchmark instance (i.e. errors, times out, or runs out of
+            memory) are given the time out value for runtime and maximum memory
+            limit value for memory usage when calculating SGM. This may produce
+            skewed results when one solver solves a lot more benchmarks than
+            another one. In this case, you can also choose to penalize TO/OOM/ER
+            instances by a factor, or to filter to the subset of instances that
+            are solved by all solvers, by using the dropdown menu to the right.
+          </div>
+        </Popup>
+      </span>
+
       <button
         onClick={() => setOpen(!open)}
         type="button"
@@ -123,9 +152,10 @@ const ResultsSgmModeDropdown = () => {
               )}
               position="top right"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
+              arrowStyle={{ color: "#ffffff" }}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border border-stroke px-4 py-2 m-2 rounded-lg">
                 {selectedMode.optionTooltip}
               </div>
             </Popup>
