@@ -23,7 +23,7 @@ const MainContent = () => {
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
             <h1 className="inline leading-1.4 text-white text-4xl font-semibold tracking-tight sm:text-[3.5rem] box-decoration-clone">
-              An open-source benchmark of optimization solvers on realistic
+              An open-source benchmark of optimization solvers on representative
               problems from the energy planning domain.
             </h1>
           </div>
