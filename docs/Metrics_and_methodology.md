@@ -54,7 +54,7 @@ Here are the key details of our benchmarking methodology, along with the reasoni
 
 1. We run benchmarks on publically available cloud virtual machines (VMs). Why?
     - It allows us to run different benchmarks in **parallel**, reducing the total runtime (running all benchmarks and solvers as of May 2025 would take 35 days), and allowing us to scale to a large number of benchmarks and solver versions in the future.
-    - It is more **cost efficient** compared to buying and maintaining a physical machine, or to renting a bare metal cloud server (which require minimum monthly committments, and usually have a lot more CPUs than are used by most solvers).
+    - It is more **cost-efficient** compared to buying and maintaining a physical machine, or to renting a bare metal cloud server (which require minimum monthly committments, and usually have a lot more CPUs than are used by most solvers).
     - It is also more **automatable**, as we can use infrastructure-as-code to set up as many VMs as we need with minimal manual effort.
     - It is more **transparent**, as anyone can **reproduce** our benchmark results on similar machines using their own cloud accounts.
     - What about **errors** in runtime measurements due to the shared nature of cloud computing?
