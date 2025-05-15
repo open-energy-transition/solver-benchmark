@@ -11,7 +11,17 @@ import Popup from "reactjs-popup";
 import { IFilterState } from "@/types/state";
 import DebouncedInput from "../raw-result/DebouncedInput";
 
-const sgmCalculationModes = [
+interface SgmCalculationMode {
+  optionTitle: string;
+  value: SgmMode;
+  optionTooltip: string;
+}
+
+interface ResultsSgmModeDropdownProps {
+  sgmCalculationModes?: SgmCalculationMode[];
+}
+
+const DEFAULT_SGM_CALCULATION_MODES = [
   {
     optionTitle: "Compute SGM using max values",
     value: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
@@ -32,7 +42,9 @@ const sgmCalculationModes = [
   },
 ];
 
-const ResultsSgmModeDropdown = () => {
+const ResultsSgmModeDropdown = ({
+  sgmCalculationModes = DEFAULT_SGM_CALCULATION_MODES,
+}: ResultsSgmModeDropdownProps) => {
   const dispatch = useDispatch();
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
@@ -73,7 +85,11 @@ const ResultsSgmModeDropdown = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      dispatch(filterActions.setSgmMode(SgmMode.COMPUTE_SGM_USING_TO_VALUES));
+      dispatch(filterActions.setXFactor(Number(5)));
+    };
   }, []);
 
   if (!selectedMode) return <div>Sgm Mode Not found</div>;
@@ -163,7 +179,7 @@ const ResultsSgmModeDropdown = () => {
         </div>
         <ArrowUpTriangleFillIcon />
       </button>
-      {selectedMode.optionTitle === "Penalizing TO by a factor of" && (
+      {selectedMode.value === SgmMode.PENALIZING_TO_BY_FACTOR && (
         <DebouncedInput
           autoWidth
           type="number"

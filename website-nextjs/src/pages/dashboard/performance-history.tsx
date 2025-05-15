@@ -22,17 +22,20 @@ import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import ResultsSgmModeDropdown from "@/components/admin/home/ResultsSgmModeDropdown";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/filter";
-import { MaxMemoryUsage } from "@/constants";
+import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
 
 const PagePerformanceHistory = () => {
-  const initBenchmarkResults = useSelector(
-    (state: { results: { benchmarkResults: BenchmarkResult[] } }) => {
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
       return state.results.benchmarkResults;
     },
   );
+
+  const rawMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -50,7 +53,7 @@ const PagePerformanceHistory = () => {
   });
 
   // Get common benchmark instances across all solver versions
-  const benchmarksByInstance = initBenchmarkResults.reduce(
+  const benchmarksByInstance = rawBenchmarkResults.reduce(
     (acc, result) => {
       const key = `${result.benchmark}-${result.size}`;
       acc[key] = acc[key] || new Set();
@@ -61,7 +64,7 @@ const PagePerformanceHistory = () => {
   );
 
   const availableSolverVersions = new Set(
-    initBenchmarkResults.map(
+    rawBenchmarkResults.map(
       (result) => `${result.solver}-${result.solverVersion}`,
     ),
   );
@@ -73,42 +76,23 @@ const PagePerformanceHistory = () => {
     .map(([name]) => name);
 
   // Filter benchmark results to only include common instances
-  const filteredBenchmarkResults = initBenchmarkResults.filter((result) =>
+  const filteredBenchmarkResults = rawBenchmarkResults.filter((result) =>
     commonInstances.includes(`${result.benchmark}-${result.size}`),
   );
 
+  const getMaxMemoryUsage = (benchmarkResult: BenchmarkResult): number => {
+    const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
+    const benchmarkSize = benchmarkMetadata.sizes.find(
+      (size) => size.name === benchmarkResult.size,
+    );
+    if (benchmarkSize?.size === "L") {
+      return 62 * 1024;
+    }
+    return 7 * 1024;
+  };
+
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
-      case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
-        const benchmarkSuccessMap = new Map<string, number>();
-        const yearsWithSolver = new Map<number, Set<string>>();
-
-        // Count successful solves for each benchmark
-        filteredBenchmarkResults.forEach((result) => {
-          const year = result.solverReleaseYear;
-          yearsWithSolver.set(
-            year,
-            (yearsWithSolver.get(year) || new Set()).add(result.solver),
-          );
-          if (result.status === "ok") {
-            const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
-            benchmarkSuccessMap.set(
-              key,
-              (benchmarkSuccessMap.get(key) || 0) + 1,
-            );
-          }
-        });
-
-        // Filter results where all solvers succeeded
-        return filteredBenchmarkResults.filter((result) => {
-          const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
-          return (
-            result.status === "ok" &&
-            benchmarkSuccessMap.get(key) ===
-              yearsWithSolver.get(result.solverReleaseYear)?.size
-          );
-        });
-
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return filteredBenchmarkResults.map((result) => ({
           ...result,
@@ -116,7 +100,7 @@ const PagePerformanceHistory = () => {
             result.status !== "ok" ? result.timeout * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? MaxMemoryUsage * xFactor
+              ? getMaxMemoryUsage(result) * xFactor
               : result.memoryUsage,
         }));
       case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
@@ -124,7 +108,9 @@ const PagePerformanceHistory = () => {
           ...result,
           runtime: result.status !== "ok" ? result.timeout : result.runtime,
           memoryUsage:
-            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
+            result.status !== "ok"
+              ? getMaxMemoryUsage(result)
+              : result.memoryUsage,
         }));
       default:
         return filteredBenchmarkResults;
@@ -196,7 +182,6 @@ const PagePerformanceHistory = () => {
     );
     return metrics;
   }, [benchmarkResults]);
-  console.log(solverYearlyMetrics);
 
   const getNormalizedData = (
     solverYearlyMetrics: ISolverYearlyMetrics[],
@@ -326,9 +311,7 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
-          <div className="relative h-12">
-            <ResultsSgmModeDropdown />
-          </div>
+          <SgmModeSection />
           <NormalizedSection chartData={chartData} />
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
