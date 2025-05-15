@@ -66,7 +66,7 @@ Here are the key details of our benchmarking methodology, along with the reasoni
 1. We use the Python solver interface [linopy](https://github.com/PyPSA/linopy) to interface with different solvers and the measured runtime is the runtime of the call to `linopy.Model.solve()`. Why?
     - It reduces the need for us to write a Python interface for each solver and version (already 13 as of May 2025, and counting), which would largely be a duplicate of the code in `linopy`.
     - Measuring the runtime of linopy is a consistent definition of runtime, as the reported runtimes by different solvers may be defined differently (e.g., some may include the time taken to parse input files or check solver licenses, while others exclude it).
-    - It also does not require trusting that solvers do not (un)intentionally report inaccurate solving runtimes. (This can be mitigated to some extent as we comparing reported runtimes to measured runtimes while [analyzing](TODO) benchmark results.)
+    - It also does not require trusting that solvers do not (un)intentionally report inaccurate solving runtimes (This can be mitigated to some extent as we comparing reported runtimes to measured runtimes while [analyzing](TODO) benchmark results).
     - It reflects the experience of most energy modellers, who use solver interfaces like linopy or JuMP, and for whom the time taken to parse input files or check licenses matters.
 
 1. We run all solvers using their default options, with the exception that we set a uniform duality gap tolerance of `1e-4`.
