@@ -13,7 +13,7 @@ We record the following metrics for each benchmark and solver combination:
 We also record the following metrics in order to verify the solution quality of MILP benchmarks:
 
 1. **Maximum integrality violation**: the maximum absolute difference between the solution of each integer variable and its integer value
-1. **Duality gap**: the gap between the two objective bounds for MILPs, which should be below the requested tolerance (`1e-4`). (Precisely, if `p` is the primal objective bound (i.e., the incumbent objective value, which is the upper bound for minimization problems), and `d` is the dual objective bound (i.e., the lower bound for minimization problems), then the relative duality gap is defined as `|p - d| / |p|`.)
+1. **Duality gap**: the gap between the two objective bounds for MILPs, which should be below the requested tolerance (`1e-4`). Precisely, if `p` is the primal objective bound (i.e., the incumbent objective value, which is the upper bound for minimization problems), and `d` is the dual objective bound (i.e., the lower bound for minimization problems), then the relative duality gap is defined as `|p - d| / |p|`.
 
 After running benchmarks, we manually check any runs where the above 2 metrics are above `1e-4` for errors.
 
