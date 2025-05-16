@@ -82,6 +82,36 @@ const PagePerformanceHistory = () => {
 
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
+      case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
+        const benchmarkSuccessMap = new Map<string, number>();
+        const yearsWithSolver = new Map<number, Set<string>>();
+
+        // Count successful solves for each benchmark
+        filteredBenchmarkResults.forEach((result) => {
+          const year = result.solverReleaseYear;
+          yearsWithSolver.set(
+            year,
+            (yearsWithSolver.get(year) || new Set()).add(result.solver),
+          );
+          if (result.status === "ok") {
+            const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
+            benchmarkSuccessMap.set(
+              key,
+              (benchmarkSuccessMap.get(key) || 0) + 1,
+            );
+          }
+        });
+
+        // Filter results where all solvers succeeded
+        return filteredBenchmarkResults.filter((result) => {
+          const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
+          return (
+            result.status === "ok" &&
+            benchmarkSuccessMap.get(key) ===
+              yearsWithSolver.get(result.solverReleaseYear)?.size
+          );
+        });
+
       case SgmMode.PENALIZING_TO_BY_FACTOR:
         return filteredBenchmarkResults.map((result) => ({
           ...result,

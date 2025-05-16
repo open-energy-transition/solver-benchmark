@@ -42,6 +42,20 @@ export const fetchCsvToJson = async (
   }
 };
 
+const getMaxMemoryUsage = (
+  benchmarkResult: BenchmarkResult,
+  rawMetaData: MetaData,
+): number => {
+  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
+  const benchmarkSize = benchmarkMetadata.sizes.find(
+    (size) => size.name === benchmarkResult.size,
+  );
+  if (benchmarkSize?.size === "L") {
+    return 62 * 1024;
+  }
+  return 7 * 1024;
+};
+
 const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
   const res = await fetchCsvToJson("/results/benchmark_results.csv");
   return res.map((rawData) => {
@@ -76,6 +90,20 @@ const getProblemSize = (runtime: number) => {
   } else {
     return ProblemSize.L;
   }
+};
+
+const processBenchmarkResults = (
+  benchmarkResult: BenchmarkResult[] = [],
+  rawMetaData: MetaData,
+) => {
+  return benchmarkResult.map((benchmarkResult) => {
+    return {
+      ...benchmarkResult,
+      memoryUsage: !["ok"].includes(benchmarkResult.status)
+        ? getMaxMemoryUsage(benchmarkResult, rawMetaData)
+        : benchmarkResult.memoryUsage,
+    };
+  });
 };
 
 const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
@@ -120,22 +148,9 @@ const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
   );
 };
 
-const getMaxMemoryUsage = (
-  benchmarkResult: BenchmarkResult,
-  rawMetaData: MetaData,
-): number => {
-  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
-  const benchmarkSize = benchmarkMetadata.sizes.find(
-    (size) => size.name === benchmarkResult.size,
-  );
-  if (benchmarkSize?.size === "L") {
-    return 62 * 1024;
-  }
-  return 7 * 1024;
-};
-
 export {
   getBenchmarkResults,
+  processBenchmarkResults,
   formatBenchmarkName,
   getProblemSize,
   getLatestBenchmarkResult,

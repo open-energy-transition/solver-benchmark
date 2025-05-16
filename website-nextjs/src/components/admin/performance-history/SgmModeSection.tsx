@@ -14,6 +14,12 @@ const SGM_CALCULATION_MODES = [
     optionTooltip:
       "Uses the time-out value for runtime or the maximum value of memory, multiplied by a factor of X, for benchmark instances that time-out or error.",
   },
+  {
+    optionTitle: "Only on intersection of solved benchmarks",
+    value: SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS,
+    optionTooltip:
+      "Filters the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out instances to consider.",
+  },
 ];
 const SgmModeSection = () => {
   return (

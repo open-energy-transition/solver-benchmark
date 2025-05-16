@@ -9,7 +9,6 @@ import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { SgmMode } from "@/constants/filter";
 import { extractNumberFromFormattedString } from "@/utils/string";
-import { getMaxMemoryUsage } from "@/utils/results";
 
 type ColumnType = {
   name: string;
@@ -41,10 +40,6 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
       return state.results.benchmarkLatestResults;
     },
   ).filter((result) => result.timeout === timeout);
-
-  const rawMetaData = useSelector((state: { results: IResultState }) => {
-    return state.results.rawMetaData;
-  });
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -93,7 +88,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             result.status !== "ok" ? result.timeout * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? getMaxMemoryUsage(result, rawMetaData) * xFactor
+              ? result.memoryUsage * xFactor
               : result.memoryUsage,
         }));
       case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
@@ -101,9 +96,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           ...result,
           runtime: result.status !== "ok" ? result.timeout : result.runtime,
           memoryUsage:
-            result.status !== "ok"
-              ? getMaxMemoryUsage(result, rawMetaData)
-              : result.memoryUsage,
+            result.status !== "ok" ? result.memoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
