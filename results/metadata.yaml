@@ -8,7 +8,7 @@ benchmarks:
       Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -29,7 +29,7 @@ benchmarks:
       Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -50,7 +50,7 @@ benchmarks:
       Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (30 days)
     MILP features: Unit commitment
     Sizes:
@@ -73,7 +73,7 @@ benchmarks:
       Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -244,7 +244,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:
@@ -268,7 +268,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:
@@ -293,7 +293,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
     Sizes:
@@ -330,7 +330,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:
@@ -360,7 +360,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
     Sizes:
@@ -384,7 +384,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Multi-period (3 years)
     MILP features: Unit commitment
     Sizes:
@@ -412,7 +412,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -438,7 +438,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -463,7 +463,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -484,7 +484,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: DC optimal power flow
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:
@@ -506,7 +506,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -528,7 +528,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: LP
     Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -547,7 +547,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -568,7 +568,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -589,7 +589,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -611,7 +611,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features:
     Sizes:
@@ -633,7 +633,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -655,7 +655,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -677,7 +677,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -699,7 +699,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -721,7 +721,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -743,7 +743,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -765,7 +765,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -787,7 +787,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -808,7 +808,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -829,7 +829,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -850,7 +850,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -871,7 +871,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -892,7 +892,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -913,7 +913,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -934,7 +934,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -955,7 +955,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -976,7 +976,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -998,7 +998,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1020,7 +1020,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1042,7 +1042,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1064,7 +1064,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1086,7 +1086,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1108,7 +1108,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1130,7 +1130,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1152,7 +1152,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1174,7 +1174,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1195,7 +1195,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1216,7 +1216,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1237,7 +1237,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1258,7 +1258,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1279,7 +1279,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1300,7 +1300,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1321,7 +1321,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1342,7 +1342,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1363,7 +1363,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -1385,7 +1385,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:
@@ -1458,7 +1458,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating biomass, industry, transport
+    Sectors: Power, heating, biomass, industry, transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -1503,7 +1503,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -1547,7 +1547,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Operational
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -1600,7 +1600,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Operational
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -1642,7 +1642,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -1662,7 +1662,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -1682,7 +1682,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -1704,7 +1704,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -1724,7 +1724,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -1747,7 +1747,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
@@ -1769,7 +1769,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
@@ -1791,7 +1791,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
@@ -1814,7 +1814,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
@@ -1836,7 +1836,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
@@ -1861,7 +1861,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 week
     MILP features: None
     Sizes:
@@ -1884,7 +1884,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
@@ -1909,7 +1909,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 2 months
     MILP features: None
     Sizes:
@@ -1932,7 +1932,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
@@ -1957,7 +1957,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
@@ -1980,7 +1980,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Technique: MILP
     Kind of problem: Infrastructure
-    Sectors: Power
+    Sectors:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
@@ -1997,12 +1997,12 @@ benchmarks:
   temoa-utopia:
     Short description: Single-region test system model considering 4 future years
       and 6 time slices (day/night, intermediate/summer/winter).
-    Model name: TEMOA
+    Model name: TEMOA-Utopia
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
     MILP features: None
     Sizes:
@@ -2017,12 +2017,12 @@ benchmarks:
   temoa-US_9R_TS:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods
       in absence of further constraints.
-    Model name: TEMOA
+    Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -2038,12 +2038,12 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods.
       This benchmark includes the policy commitments in the U.S. Nationally Determined
       Contributions (NDC).
-    Model name: TEMOA
+    Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -2059,12 +2059,12 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods.
       This benchmark assumes that the United States will reach net-zero CO2 emissions
       by 2050.
-    Model name: TEMOA
+    Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -2080,12 +2080,12 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 8 future periods.
       This benchmark includes a collection of CO2 emission limits for US states from
       stated policies.
-    Model name: TEMOA
+    Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -2101,12 +2101,12 @@ benchmarks:
     Short description: US-based sector-coupled model with 9 regions and 5 future periods.
       This benchmark assumes that the United States will reach net-zero CO2 emissions
       by 2050.
-    Model name: TEMOA
+    Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
     MILP features: None
     Sizes:
@@ -2126,7 +2126,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
     MILP features: None
     Sizes:
@@ -2146,7 +2146,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Upstream, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
     MILP features: None
     Sizes:
@@ -2166,7 +2166,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -2187,7 +2187,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -2207,7 +2207,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -2228,7 +2228,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -2248,7 +2248,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -2269,7 +2269,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -2289,7 +2289,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -2310,7 +2310,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Power, heating
+    Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
@@ -2329,7 +2329,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Supply, power, industry, transport, residential, services, agriculture
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
@@ -2356,7 +2356,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Supply, power, industry, transport, residential, services, agriculture
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -2376,7 +2376,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Supply, power, industry, transport, other
+    Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -2396,7 +2396,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
-    Sectors: Supply, power, industry, transport, other
+    Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage
     MILP features: None
     Sizes:
