@@ -1,14 +1,9 @@
 import DebouncedInput from "@/components/admin/raw-result/DebouncedInput";
 import FilterAutoComplete from "@/components/admin/raw-result/FilterAutoComplete";
-import { BenchmarkResult } from "@/types/benchmark";
 import { Column } from "@tanstack/react-table";
 import { useMemo } from "react";
 
-export default function Filter({
-  column,
-}: {
-  column: Column<BenchmarkResult, unknown>;
-}) {
+export default function Filter<T>({ column }: { column: Column<T, unknown> }) {
   const { filterVariant } =
     (column.columnDef.meta as { filterVariant?: string }) ?? {};
 
