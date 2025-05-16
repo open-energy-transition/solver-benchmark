@@ -6,8 +6,8 @@ benchmarks:
     Model name: TEMOA-Utopia
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
@@ -28,8 +28,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -49,8 +49,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -70,8 +70,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -91,8 +91,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -112,8 +112,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)

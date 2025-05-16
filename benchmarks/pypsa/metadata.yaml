@@ -5,8 +5,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, heating, biomass, industry, transport
     Time horizon: Single period (1 year)
@@ -51,8 +51,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: None
@@ -96,8 +96,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Operational
+    Problem class: LP
+    Application: Operational
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: None
@@ -148,8 +148,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Operational
+    Problem class: MILP
+    Application: Operational
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Unit commitment
@@ -191,8 +191,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: None
@@ -211,8 +211,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: None
@@ -231,8 +231,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Unit commitment
@@ -253,8 +253,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: None
@@ -273,8 +273,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Unit commitment
@@ -295,8 +295,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
@@ -317,8 +317,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Modularity
@@ -339,8 +339,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Modularity
@@ -361,8 +361,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
@@ -383,8 +383,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 year
     MILP features: Modularity

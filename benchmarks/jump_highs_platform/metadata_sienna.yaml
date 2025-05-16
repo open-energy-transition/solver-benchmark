@@ -5,8 +5,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     Sizes:
@@ -27,8 +27,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -49,8 +49,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -71,8 +71,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -93,8 +93,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     Temporal resolution: 1
@@ -117,8 +117,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -139,8 +139,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -161,8 +161,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -183,8 +183,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -205,8 +205,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -227,8 +227,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -249,8 +249,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -271,8 +271,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -293,8 +293,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -315,8 +315,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -337,8 +337,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -359,8 +359,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -381,8 +381,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -403,8 +403,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -425,8 +425,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -447,8 +447,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -469,8 +469,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -491,8 +491,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -513,8 +513,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -535,8 +535,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -557,8 +557,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -579,8 +579,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -601,8 +601,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -623,8 +623,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -645,8 +645,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -667,8 +667,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -689,8 +689,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -711,8 +711,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -733,8 +733,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -755,8 +755,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -777,8 +777,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment

@@ -5,8 +5,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -25,8 +25,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -44,8 +44,8 @@ benchmarks:
 #    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
 #    Model name: GenX
 #    Version:
-#    Technique: MILP
-#    Kind of problem: Infrastructure
+#    Problem class: MILP
+#    Problem class: Infrastructure
 #    Sectoral focus: Power-only
 #    Time horizon: Single period (1 year)
 #    MILP features: Unit commitment
@@ -65,8 +65,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (30 days)
     MILP features: Unit commitment
@@ -87,8 +87,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -106,8 +106,8 @@ benchmarks:
 #   Modelling framework: GenX
 #   Model name: GenX
 #   Version:
-#   Technique: MILP
-#   Kind of problem: Infrastructure
+#   Problem class: MILP
+#   Problem class: Infrastructure
 #   Sectoral focus: Power-only
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment
@@ -126,8 +126,8 @@ benchmarks:
 #   Modelling framework: GenX
 #   Model name: GenX
 #   Version:
-#   Technique: MILP
-#   Kind of problem: Infrastructure
+#   Problem class: MILP
+#   Problem class: Infrastructure
 #   Sectoral focus: Power-only
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment

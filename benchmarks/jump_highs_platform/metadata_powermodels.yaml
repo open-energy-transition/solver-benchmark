@@ -6,8 +6,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Problem class: MILP
+    Problem class: Steady-state optimal power flow
     Sectoral focus: Power-only
     Time horizon: N/A
     MILP features: Transmission switching
@@ -28,8 +28,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Steady-state optimal power flow
+    Problem class: LP
+    Problem class: Steady-state optimal power flow
     Sectoral focus: Power-only
     Time horizon: N/A
     MILP features: Transmission switching
@@ -48,8 +48,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Problem class: MILP
+    Problem class: Steady-state optimal power flow
     Modelling framework: PowerModels
     Sectoral focus: Power-only
     Time horizon: N/A
@@ -71,8 +71,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Problem class: MILP
+    Problem class: Steady-state optimal power flow
     Sectoral focus: Power-only
     Time horizon: N/A
     MILP features: Transmission switching
@@ -93,8 +93,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Problem class: MILP
+    Problem class: Steady-state optimal power flow
     Sectoral focus: Power-only
     Time horizon: N/A
     MILP features: Transmission switching

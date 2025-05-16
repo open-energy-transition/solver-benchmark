@@ -6,8 +6,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -28,8 +28,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -50,8 +50,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
@@ -72,8 +72,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -94,8 +94,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
@@ -116,8 +116,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Multi-period (3 years)
     MILP features: Unit commitment
@@ -138,8 +138,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -158,8 +158,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -178,8 +178,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -198,8 +198,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: DC optimal power flow
+    Problem class: MILP
+    Problem class: DC optimal power flow
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment

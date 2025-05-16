@@ -5,8 +5,8 @@ benchmarks:
     Model name: Tulipa
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment

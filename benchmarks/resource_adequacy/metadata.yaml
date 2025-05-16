@@ -6,8 +6,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 week
     MILP features: None
@@ -26,8 +26,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 week
     MILP features: Unit commitment
@@ -48,8 +48,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 2 months
     MILP features: None
@@ -68,8 +68,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 2 months
     MILP features: Unit commitment
@@ -90,8 +90,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 179 days (~6 months)
     MILP features: None
@@ -110,8 +110,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Problem class: MILP
+    Problem class: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment

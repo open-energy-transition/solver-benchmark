@@ -5,8 +5,8 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -26,8 +26,8 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -47,8 +47,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -68,8 +68,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -89,8 +89,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -110,8 +110,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -130,8 +130,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -151,8 +151,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -172,8 +172,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -193,8 +193,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -214,8 +214,8 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -243,8 +243,8 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -264,8 +264,8 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -285,8 +285,8 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    Technique: LP
-    Kind of problem: Infrastructure
+    Problem class: LP
+    Problem class: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage
