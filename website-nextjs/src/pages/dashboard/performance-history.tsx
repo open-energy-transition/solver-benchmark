@@ -12,7 +12,6 @@ import NumberBenchmarksSolved from "@/components/admin/performance-history/Numbe
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
 
 import {
-  BenchmarkResult,
   ISolverYearlyChartData,
   ISolverYearlyMetrics,
   SolverType,
@@ -25,6 +24,7 @@ import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/filter";
 import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
+import { getMaxMemoryUsage } from "@/utils/results";
 
 const PagePerformanceHistory = () => {
   const rawBenchmarkResults = useSelector(
@@ -80,17 +80,6 @@ const PagePerformanceHistory = () => {
     commonInstances.includes(`${result.benchmark}-${result.size}`),
   );
 
-  const getMaxMemoryUsage = (benchmarkResult: BenchmarkResult): number => {
-    const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
-    const benchmarkSize = benchmarkMetadata.sizes.find(
-      (size) => size.name === benchmarkResult.size,
-    );
-    if (benchmarkSize?.size === "L") {
-      return 62 * 1024;
-    }
-    return 7 * 1024;
-  };
-
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
       case SgmMode.PENALIZING_TO_BY_FACTOR:
@@ -100,7 +89,7 @@ const PagePerformanceHistory = () => {
             result.status !== "ok" ? result.timeout * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? getMaxMemoryUsage(result) * xFactor
+              ? getMaxMemoryUsage(result, rawMetaData) * xFactor
               : result.memoryUsage,
         }));
       case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
@@ -109,7 +98,7 @@ const PagePerformanceHistory = () => {
           runtime: result.status !== "ok" ? result.timeout : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? getMaxMemoryUsage(result)
+              ? getMaxMemoryUsage(result, rawMetaData)
               : result.memoryUsage,
         }));
       default:

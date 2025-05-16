@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import actions from "./actions";
 import { BenchmarkResult } from "@/types/benchmark";
-import { formatBenchmarkName, processBenchmarkResults } from "@/utils/results";
+import { formatBenchmarkName } from "@/utils/results";
 import { IResultState, RealisticOption } from "@/types/state";
 import { sortStringArray } from "@/utils/string";
 
@@ -43,12 +43,12 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
     case SET_BENCHMARK_RESULTS:
       return {
         ...state,
-        benchmarkResults: processBenchmarkResults(action.payload.results),
+        benchmarkResults: action.payload.results,
       };
     case SET_BENCHMARK_LATEST_RESULTS:
       return {
         ...state,
-        benchmarkLatestResults: processBenchmarkResults(action.payload.results),
+        benchmarkLatestResults: action.payload.results,
       };
     case SET_RAW_BENCHMARK_RESULTS:
       const availableSolvers = Array.from(

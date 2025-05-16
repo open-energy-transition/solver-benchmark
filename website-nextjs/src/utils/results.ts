@@ -1,4 +1,4 @@
-import { MaxMemoryUsage, ProblemSize } from "@/constants";
+import { ProblemSize } from "@/constants";
 import {
   BenchmarkResult,
   SolverStatusType,
@@ -6,7 +6,7 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
-import { Size } from "@/types/meta-data";
+import { MetaData, Size } from "@/types/meta-data";
 import { IFilterState, RealisticOption } from "@/types/state";
 
 /**
@@ -78,17 +78,6 @@ const getProblemSize = (runtime: number) => {
   }
 };
 
-const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
-  return benchmarkResult.map((benchmarkResult) => {
-    return {
-      ...benchmarkResult,
-      memoryUsage: !["ok"].includes(benchmarkResult.status)
-        ? MaxMemoryUsage
-        : benchmarkResult.memoryUsage,
-    };
-  });
-};
-
 const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
   return `${benchmarkResult.benchmark} ${benchmarkResult.size}`;
 };
@@ -131,11 +120,25 @@ const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
   );
 };
 
+const getMaxMemoryUsage = (
+  benchmarkResult: BenchmarkResult,
+  rawMetaData: MetaData,
+): number => {
+  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
+  const benchmarkSize = benchmarkMetadata.sizes.find(
+    (size) => size.name === benchmarkResult.size,
+  );
+  if (benchmarkSize?.size === "L") {
+    return 62 * 1024;
+  }
+  return 7 * 1024;
+};
+
 export {
   getBenchmarkResults,
-  processBenchmarkResults,
   formatBenchmarkName,
   getProblemSize,
   getLatestBenchmarkResult,
   checkRealisticFilter,
+  getMaxMemoryUsage,
 };
