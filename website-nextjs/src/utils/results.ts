@@ -1,4 +1,4 @@
-import { MaxMemoryUsage, ProblemSize } from "@/constants";
+import { ProblemSize } from "@/constants";
 import {
   BenchmarkResult,
   SolverStatusType,
@@ -6,7 +6,7 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
-import { Size } from "@/types/meta-data";
+import { MetaData, Size } from "@/types/meta-data";
 import { IFilterState, RealisticOption } from "@/types/state";
 
 /**
@@ -40,6 +40,20 @@ export const fetchCsvToJson = async (
     console.error("Failed to fetch CSV:", error);
     throw error;
   }
+};
+
+const getMaxMemoryUsage = (
+  benchmarkResult: BenchmarkResult,
+  rawMetaData: MetaData,
+): number => {
+  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
+  const benchmarkSize = benchmarkMetadata.sizes.find(
+    (size) => size.name === benchmarkResult.size,
+  );
+  if (benchmarkSize?.size === "L") {
+    return 62 * 1024;
+  }
+  return 7 * 1024;
 };
 
 const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
@@ -78,12 +92,15 @@ const getProblemSize = (runtime: number) => {
   }
 };
 
-const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
+const processBenchmarkResults = (
+  benchmarkResult: BenchmarkResult[] = [],
+  rawMetaData: MetaData,
+) => {
   return benchmarkResult.map((benchmarkResult) => {
     return {
       ...benchmarkResult,
       memoryUsage: !["ok"].includes(benchmarkResult.status)
-        ? MaxMemoryUsage
+        ? getMaxMemoryUsage(benchmarkResult, rawMetaData)
         : benchmarkResult.memoryUsage,
     };
   });
@@ -138,4 +155,5 @@ export {
   getProblemSize,
   getLatestBenchmarkResult,
   checkRealisticFilter,
+  getMaxMemoryUsage,
 };
