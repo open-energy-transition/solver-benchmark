@@ -7,12 +7,15 @@ import { IResultState } from "@/types/state";
 import { CellContext } from "@tanstack/react-table";
 import { Technique } from "@/constants";
 import Link from "next/link";
+import { roundNumber } from "@/utils/number";
+import { isNullorUndefined } from "@/utils/calculations";
 
 type DataTableProps = {
   benchmarkName: string;
 };
 
 type TableData = {
+  instance: string;
   size?: string;
   solver: string;
   solverVersion: string;
@@ -20,9 +23,9 @@ type TableData = {
   terminationCondition: string;
   runtime: number;
   memoryUsage: number;
-  objectiveValue: string | null;
-  maxIntegralityViolation: string | null;
-  dualityGap: string | null;
+  objectiveValue: number | string;
+  maxIntegralityViolation: number | string;
+  dualityGap: number | string;
   log: string | null;
   solution: string | null;
 };
@@ -56,15 +59,22 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       benchmarkResults.filter((result) => result.benchmark === benchmarkName),
     [benchmarkName],
   ).map((result) => ({
+    instance: result.size,
     solver: result.solver,
     solverVersion: result.solverVersion,
     status: result.status,
     terminationCondition: result.terminationCondition,
-    runtime: result.runtime,
-    memoryUsage: result.memoryUsage,
-    objectiveValue: result.objectiveValue,
-    maxIntegralityViolation: result.maxIntegralityViolation,
-    dualityGap: result.dualityGap,
+    runtime: roundNumber(result.runtime, 2),
+    memoryUsage: roundNumber(result.memoryUsage, 2),
+    objectiveValue: isNullorUndefined(result.objectiveValue)
+      ? ""
+      : roundNumber(result.objectiveValue || 0, 2),
+    maxIntegralityViolation: isNullorUndefined(result.maxIntegralityViolation)
+      ? ""
+      : roundNumber(result.maxIntegralityViolation || 0, 2),
+    dualityGap: isNullorUndefined(result.dualityGap)
+      ? ""
+      : roundNumber(result.dualityGap || 0, 2),
     log: getLogDownloadUrl(result),
     solution: getSolutionDownloadUrl(result),
     size: rawMetaData[benchmarkName as string].sizes.find(
@@ -74,6 +84,11 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
 
   const columns = useMemo(
     () => [
+      {
+        header: "Instance",
+        accessorKey: "instance",
+        size: 100,
+      },
       {
         header: "Size",
         accessorKey: "size",
@@ -185,7 +200,6 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
     const csv = Papa.unparse(csvData);
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-    console.log(csv, csvData);
 
     const a = document.createElement("a");
     a.href = url;

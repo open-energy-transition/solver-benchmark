@@ -6,6 +6,7 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
+import { parseNumberOrNull } from "./number";
 import { Size } from "@/types/meta-data";
 import { IFilterState, RealisticOption } from "@/types/state";
 
@@ -48,10 +49,12 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
     const data = rawData as { [key: string]: string };
     return {
       benchmark: data["Benchmark"],
-      dualityGap: data["Duality Gap"] || null,
-      maxIntegralityViolation: data["Max Integrality Violation"] || null,
+      dualityGap: parseNumberOrNull(data["Duality Gap"]),
+      maxIntegralityViolation: parseNumberOrNull(
+        data["Max Integrality Violation"],
+      ),
       memoryUsage: Number(data["Memory Usage (MB)"]),
-      objectiveValue: data["Objective Value"] || null,
+      objectiveValue: parseNumberOrNull(data["Objective Value"]),
       runtime: Number(data["Runtime (s)"]),
       size: data["Size"],
       solver: data["Solver"] as SolverType,

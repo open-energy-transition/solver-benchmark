@@ -108,7 +108,7 @@ const TableResult = () => {
             on={["hover"]}
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
-                {String(info.getValue())}
+                {String(info.getValue() || "")}
               </div>
             )}
             position="top center"
