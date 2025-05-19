@@ -6,18 +6,18 @@ We record the following metrics for each benchmark and solver combination:
 
 1. **Runtime**: of the `linopy.Model.solve()` call to the solver (we also record the solving runtime reported by the solver when available)
 1. **Peak memory consumption**: of the script `runner/run_solver.py` that uses linopy to call the solver, as reported by `/usr/bin/time -f %M`
-1. **Status**: OK, TO (timeout), OOM (out of memory), ER (error)
+1. **Status**: OK, warning, TO (timeout), OOM (out of memory), ER (error). Statuses OK and warning are as returned by linopy, TO indicates that we terminated the solver when the time limit was reached, OOM indicates cases where the solver ran out of memory (we set a bound of 95% of available system memory using `systemd-run`), and ER denotes cases where the solver returned a non-zero exit code.
 1. **Termination condition**: as returned by the solver, for example optimal, infeasible, unbounded, …
 1. **Objective value**: (a floating point value) the optimal objective value
 
 We also record the following metrics in order to verify the solution quality of MILP benchmarks:
 
 1. **Maximum integrality violation**: the maximum absolute difference between the solution of each integer variable and its integer value
-1. **Duality gap**: the gap between the two objective bounds for MILPs, which should be below the requested tolerance (`1e-4`). Precisely, if `p` is the primal objective bound (i.e., the incumbent objective value, which is the upper bound for minimization problems), and `d` is the dual objective bound (i.e., the lower bound for minimization problems), then the relative duality gap is defined as `|p - d| / |p|`.
+1. **Duality gap**: the gap between the two objective bounds for MILPs, which should be below the requested tolerance (`1e-4`). The duality gap can be used to judge how close the returned solution is to the optimal solution, and we set a tolerance in order to allow solvers to terminate in a reasonable time period when they have found a close-to-optimal solution. Precisely, if `p` is the primal objective bound (i.e., the incumbent objective value, which is the upper bound for minimization problems), and `d` is the dual objective bound (i.e., the lower bound for minimization problems), then the relative duality gap is defined as `|p - d| / |p|`.
 
-After running benchmarks, we manually check any runs where the above 2 metrics are above `1e-4` for errors.
+After running benchmarks, we manually check any runs where the above 2 metrics are above `1e-4` for errors. In our results so far, no solver had a max integrality violation of above `1e-5`.
 
-## Ranking Solvers: SGM
+## Ranking Solvers: Shifted Geometric Mean (SGM)
 
 Ranking the overall performance of solvers on a (sub)set of benchmark instances is a difficult problem. We offer the following methods for ranking on our main dashboard:
 
@@ -31,7 +31,8 @@ The SGM differs from the geometric mean becauses it uses a *shift* $s$ and also 
 - (S)GM commutes with normalization
 - (S)GM is influenced less by large outliers compared to AM
 - SGM is influenced less by a small number of outliers compared to GM
-- Max with 1 ignores differences on tiny benchmarks
+- Max with 1 ignores differences in runtimes of less than 1s
+- The shift is used to reduce the impact of a few benchmarks having very low runtimes on the overall SGM, reducing the risk of ranking highly a solver that is really good on only a small handfull of benchmarks
 
 We use a shift of $s = 10$, which is also the shift used by the [Mittlemann benchmark](https://plato.asu.edu/ftp/shgeom.html).
 
@@ -70,7 +71,7 @@ Here are the key details of our benchmarking methodology, along with the reasoni
     - It reflects the experience of most energy modellers, who use solver interfaces like linopy or JuMP, and for whom the time taken to parse input files or check licenses matters.
 
 1. We run all solvers using their default options, with two exceptions: the first is that we set a duality gap tolerance of `1e-4` for all MILP instances.
-    - This reflects the experience of most energy modellers, who are not experts on solvers and will use them out of the box.
+    - This reflects the experience of a modeller who is not an expert on solvers and will use them out of the box.
     - We expect solver developers to tune their default options to be the most performant configuration of their solver for the average problem.
     - Solver developers have told us that they prefer users to use default options, because often users do a small benchmark to test various options/algorithms and then never update this, and end up using outdated options going forward.
     - Depending on feedback and capacity, we can consider having a few preset option configurations for solvers as submitted by the solver developers if there is strong interest in this.
@@ -99,7 +100,7 @@ As a reminder, we classify benchmarks into size categories based on the number o
 
 Given a time out `T` (seconds) and a number of iterations `N`, the benchmark runner `runner/run_benchmarks.py` operates as follows:
 
-- The benchmark LP/NC files are downloaded from a Google Cloud bucket
+- The benchmark LP/MPS files are downloaded from a Google Cloud bucket
 - For each benchmark and solver combination, the runner calls `runner/run_solver.py`, which imports the input file into linopy and calls `linopy.Model.solve()` with the chosen solver
 - `run_solver.py` reports the time taken for the `solve()` call, along with the status, termination condition, and objective value returned by the solver
 - The runner uses `/usr/bin/time` to measure the peak memory usage of the `run_solver.py` script
