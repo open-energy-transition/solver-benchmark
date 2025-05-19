@@ -3,13 +3,17 @@ import {
   FilterBarIcon,
   QuestionLine,
 } from "@/assets/icons";
-import { SgmMode } from "@/constants/filter";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Popup from "reactjs-popup";
 import { IFilterState } from "@/types/state";
 import DebouncedInput from "../raw-result/DebouncedInput";
+import {
+  DEFAULT_SGM_CALCULATION_MODES,
+  DEFAULT_X_FACTOR,
+  SgmMode,
+} from "@/constants/sgm";
 
 interface SgmCalculationMode {
   optionTitle: string;
@@ -20,27 +24,6 @@ interface SgmCalculationMode {
 interface ResultsSgmModeDropdownProps {
   sgmCalculationModes?: SgmCalculationMode[];
 }
-
-const DEFAULT_SGM_CALCULATION_MODES = [
-  {
-    optionTitle: "Compute SGM using max values",
-    value: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
-    optionTooltip:
-      "Uses the time-out value for runtime or the maximum value of memory for benchmark instances that time-out or error.",
-  },
-  {
-    optionTitle: "Penalizing TO/OOM/ER by a factor of",
-    value: SgmMode.PENALIZING_TO_BY_FACTOR,
-    optionTooltip:
-      "Uses the time-out value for runtime or the maximum value of memory, multiplied by a factor of X, for benchmark instances that time-out or error.",
-  },
-  {
-    optionTitle: "Only on intersection of solved benchmarks",
-    value: SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS,
-    optionTooltip:
-      "Filters the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out instances to consider.",
-  },
-];
 
 const ResultsSgmModeDropdown = ({
   sgmCalculationModes = DEFAULT_SGM_CALCULATION_MODES,
@@ -88,7 +71,7 @@ const ResultsSgmModeDropdown = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       dispatch(filterActions.setSgmMode(SgmMode.COMPUTE_SGM_USING_TO_VALUES));
-      dispatch(filterActions.setXFactor(Number(5)));
+      dispatch(filterActions.setXFactor(DEFAULT_X_FACTOR));
     };
   }, []);
 

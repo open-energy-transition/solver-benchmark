@@ -22,9 +22,8 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
-import { SgmMode } from "@/constants/filter";
 import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
-import { getMaxMemoryUsage } from "@/utils/results";
+import { SgmMode } from "@/constants/sgm";
 
 const PagePerformanceHistory = () => {
   const rawBenchmarkResults = useSelector(
@@ -32,10 +31,6 @@ const PagePerformanceHistory = () => {
       return state.results.benchmarkResults;
     },
   );
-
-  const rawMetaData = useSelector((state: { results: IResultState }) => {
-    return state.results.rawMetaData;
-  });
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -116,19 +111,10 @@ const PagePerformanceHistory = () => {
         return filteredBenchmarkResults.map((result) => ({
           ...result,
           runtime:
-            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+            result.status !== "ok" ? result.runtime * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? getMaxMemoryUsage(result, rawMetaData) * xFactor
-              : result.memoryUsage,
-        }));
-      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
-        return filteredBenchmarkResults.map((result) => ({
-          ...result,
-          runtime: result.status !== "ok" ? result.timeout : result.runtime,
-          memoryUsage:
-            result.status !== "ok"
-              ? getMaxMemoryUsage(result, rawMetaData)
+              ? result.memoryUsage * xFactor
               : result.memoryUsage,
         }));
       default:

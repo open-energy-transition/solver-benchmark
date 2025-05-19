@@ -7,8 +7,8 @@ import { roundNumber } from "@/utils/number";
 import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
-import { SgmMode } from "@/constants/filter";
 import { extractNumberFromFormattedString } from "@/utils/string";
+import { SgmMode } from "@/constants/sgm";
 
 type ColumnType = {
   name: string;
@@ -85,18 +85,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         return benchmarkLatestResults.map((result) => ({
           ...result,
           runtime:
-            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+            result.status !== "ok" ? result.runtime * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
               ? result.memoryUsage * xFactor
               : result.memoryUsage,
-        }));
-      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
-        return benchmarkLatestResults.map((result) => ({
-          ...result,
-          runtime: result.status !== "ok" ? result.timeout : result.runtime,
-          memoryUsage:
-            result.status !== "ok" ? result.memoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;

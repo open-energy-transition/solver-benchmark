@@ -7,6 +7,7 @@ import {
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
 import { MetaData, Size } from "@/types/meta-data";
+import { parseNumberOrNull } from "./number";
 import { IFilterState, RealisticOption } from "@/types/state";
 
 /**
@@ -62,10 +63,12 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
     const data = rawData as { [key: string]: string };
     return {
       benchmark: data["Benchmark"],
-      dualityGap: data["Duality Gap"] || null,
-      maxIntegralityViolation: data["Max Integrality Violation"] || null,
+      dualityGap: parseNumberOrNull(data["Duality Gap"]),
+      maxIntegralityViolation: parseNumberOrNull(
+        data["Max Integrality Violation"],
+      ),
       memoryUsage: Number(data["Memory Usage (MB)"]),
-      objectiveValue: data["Objective Value"] || null,
+      objectiveValue: parseNumberOrNull(data["Objective Value"]),
       runtime: Number(data["Runtime (s)"]),
       size: data["Size"],
       solver: data["Solver"] as SolverType,
@@ -73,6 +76,7 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
+      runId: data["Run ID"],
       timeout: Number(data["Timeout"]),
     };
   });
@@ -99,9 +103,14 @@ const processBenchmarkResults = (
   return benchmarkResult.map((benchmarkResult) => {
     return {
       ...benchmarkResult,
-      memoryUsage: !["ok"].includes(benchmarkResult.status)
-        ? getMaxMemoryUsage(benchmarkResult, rawMetaData)
-        : benchmarkResult.memoryUsage,
+      runtime:
+        benchmarkResult.status === "ok"
+          ? benchmarkResult.runtime
+          : benchmarkResult.timeout,
+      memoryUsage:
+        benchmarkResult.status === "ok"
+          ? benchmarkResult.memoryUsage
+          : getMaxMemoryUsage(benchmarkResult, rawMetaData),
     };
   });
 };
