@@ -3,10 +3,10 @@ type SolverStatusType = "TO" | "ok" | "warning";
 
 type BenchmarkResult = {
   benchmark: string;
-  dualityGap: string | null;
-  maxIntegralityViolation: string | null;
+  dualityGap: number | null;
+  maxIntegralityViolation: number | null;
   memoryUsage: number;
-  objectiveValue: string | null;
+  objectiveValue: number | null;
   problemSize?: string;
   runtime: number;
   size: string;
@@ -15,6 +15,7 @@ type BenchmarkResult = {
   solverVersion: string;
   status: SolverStatusType;
   terminationCondition: string;
+  runId: string | null;
   timeout: number;
 };
 
