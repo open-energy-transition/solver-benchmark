@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import actions from "./actions";
 import { IFilterState } from "@/types/state";
-import { SgmMode } from "@/constants/filter";
+import { SgmMode } from "@/constants/sgm";
 
 const { TOGGLE_FILTER, SET_FILTER, SET_SGM_MODE, SET_X_FACTOR } = actions;
 

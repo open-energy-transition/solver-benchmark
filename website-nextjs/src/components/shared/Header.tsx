@@ -66,7 +66,7 @@ const Header = () => {
                 <path
                   d="M30.3287 35.9668L42.9042 43.2273V57.7483L30.3287 65.0089L17.7531 57.7483V43.2273L30.3287 35.9668Z"
                   fill="white"
-                  fill-opacity="0.4"
+                  fillOpacity="0.4"
                 />
               </svg>
             </div>

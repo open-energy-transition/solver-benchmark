@@ -9,7 +9,7 @@ import {
   getLatestBenchmarkResult,
 } from "@/utils/results";
 import { IFilterState } from "@/types/state";
-import { SgmMode } from "@/constants/filter";
+import { SgmMode } from "@/constants/sgm";
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
