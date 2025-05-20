@@ -28,43 +28,31 @@ const Navbar = () => {
       label: "Main Results",
       route: "/dashboard/home",
       icon: <AlignLeftJustifyIcon />,
-      helperText:
-        "Dashboard home provides an overview of the solver benchmark system.",
     },
     {
       label: "Benchmark Set",
       route: PATH_DASHBOARD.benchmarkDetail.list,
       icon: <ChartBarIcon />,
-      helperText:
-        "Benchmark details page shows information about various benchmarks in the system.",
     },
     {
       label: "Solvers",
       route: "/dashboard/solvers",
       icon: <VectorSquareIcon />,
-      helperText:
-        "The Solvers page displays all available solvers and their basic information.",
     },
     {
       label: "Compare Solvers",
       route: "/dashboard/compare-solvers",
       icon: <BalanceScaleIcon />,
-      helperText:
-        "Compare solvers allows you to see performance differences between multiple solvers.",
     },
     {
       label: "Performance History",
       route: "/dashboard/performance-history",
       icon: <ChartLineIcon />,
-      helperText:
-        "Performance history shows how solver performance has changed over time.",
     },
     {
       label: "Full Results",
       route: "/dashboard/raw-result",
       icon: <WindowIcon />,
-      helperText:
-        "Full Results page provides detailed raw data from solver executions.",
     },
   ];
 
