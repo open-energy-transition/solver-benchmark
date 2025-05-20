@@ -20,6 +20,10 @@ const InstancesTableResult = ({
 }: {
   benchmarkDetail: MetaDataEntry;
 }) => {
+  const isMILP = useMemo(() => {
+    return benchmarkDetail.technique === "MILP";
+  }, [benchmarkDetail]);
+
   const columns = useMemo<
     ColumnDef<{
       instance: string;
@@ -27,9 +31,13 @@ const InstancesTableResult = ({
       temporalResolution: string | number;
       nOfVariables: number | null;
       nOfConstraints: number;
+      nOfContinuousVariables: number | null;
+      nOfIntegerVariables: number | null;
+      realistic: boolean;
+      url: string;
     }>[]
-  >(
-    () => [
+  >(() => {
+    const baseColumns = [
       {
         header: "INSTANCE",
         accessorKey: "instance",
@@ -56,6 +64,24 @@ const InstancesTableResult = ({
         accessorKey: "nOfConstraints",
         cell: (info) => info.getValue(),
       },
+    ];
+
+    if (isMILP) {
+      baseColumns.push(
+        {
+          header: "No. CONTINUOUS VARIABLES",
+          accessorKey: "nOfContinuousVariables",
+          cell: (info) => info.getValue() || "-",
+        },
+        {
+          header: "No. INTEGER VARIABLES",
+          accessorKey: "nOfIntegerVariables",
+          cell: (info) => info.getValue() || "-",
+        },
+      );
+    }
+
+    baseColumns.push(
       {
         header: "REALISTIC",
         accessorKey: "realistic",
@@ -87,9 +113,10 @@ const InstancesTableResult = ({
           </Link>
         ),
       },
-    ],
-    [],
-  );
+    );
+
+    return baseColumns;
+  }, [isMILP]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -101,6 +128,8 @@ const InstancesTableResult = ({
         temporalResolution: sizeData.temporalResolution,
         nOfVariables: sizeData.numVariables,
         nOfConstraints: sizeData.numConstraints,
+        nOfContinuousVariables: sizeData.numContinuousVariables,
+        nOfIntegerVariables: sizeData.numIntegerVariables,
         instance: sizeData.name,
         url: sizeData.url,
         realistic: sizeData.realistic,

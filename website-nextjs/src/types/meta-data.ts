@@ -4,6 +4,8 @@ type Size = {
   temporalResolution: number | string;
   numConstraints: number;
   numVariables: number | null;
+  numContinuousVariables: number | null;
+  numIntegerVariables: number | null;
   size: string;
   url: string;
   realistic: boolean;
