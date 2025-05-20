@@ -16,9 +16,8 @@ import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesT
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult";
-import { Technique } from "@/constants";
 import { IResultState } from "@/types/state";
+import DataTable from "@/components/admin/benchmark-detail/DataTable";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -175,10 +174,8 @@ const PageBenchmarkDetail = () => {
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              {benchmarkDetail.technique === Technique.MILP && (
-                <MilpTableResult benchmarkName={benchmarkName as string} />
-              )}
               <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <DataTable benchmarkName={benchmarkName as string} />
             </>
           )}
         </ContentWrapper>
