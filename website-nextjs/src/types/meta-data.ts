@@ -2,8 +2,8 @@ type Size = {
   name: string;
   spatialResolution: number;
   temporalResolution: number | string;
-  nOfConstraints: number;
-  nOfVariables: number | null;
+  numConstraints: number;
+  numVariables: number | null;
   size: string;
   url: string;
   realistic: boolean;

@@ -99,8 +99,8 @@ const InstancesTableResult = ({
       benchmarkDetail.sizes.map((sizeData) => ({
         spatialResolution: sizeData.spatialResolution,
         temporalResolution: sizeData.temporalResolution,
-        nOfVariables: sizeData.nOfVariables,
-        nOfConstraints: sizeData.nOfConstraints,
+        nOfVariables: sizeData.numVariables,
+        nOfConstraints: sizeData.numConstraints,
         instance: sizeData.name,
         url: sizeData.url,
         realistic: sizeData.realistic,
