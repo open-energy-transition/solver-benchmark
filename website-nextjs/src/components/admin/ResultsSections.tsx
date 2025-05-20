@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ArrowIcon, QuestionLine } from "@/assets/icons";
+import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
@@ -250,7 +250,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <div>
-                  <QuestionLine className="w-4 h-4" />
+                  <QuestionLineIcon className="w-4 h-4" />
                 </div>
               )}
               position="right center"
@@ -418,7 +418,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-baseline">
-                  <QuestionLine
+                  <QuestionLineIcon
                     className="size-3.5 4xl:size-5"
                     viewBox="0 0 24 20"
                   />

@@ -1,7 +1,7 @@
 import {
   ArrowUpTriangleFillIcon,
   FilterBarIcon,
-  QuestionLine,
+  QuestionLineIcon,
 } from "@/assets/icons";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
@@ -85,7 +85,7 @@ const ResultsSgmModeDropdown = ({
           on={["hover"]}
           trigger={() => (
             <span className="flex items-baseline my-auto cursor-pointer">
-              <QuestionLine
+              <QuestionLineIcon
                 className="size-3.5 4xl:size-5"
                 viewBox="0 0 24 20"
               />
@@ -146,7 +146,7 @@ const ResultsSgmModeDropdown = ({
               on={["hover"]}
               trigger={() => (
                 <div>
-                  <QuestionLine className="size-4 4xl:size-5" />
+                  <QuestionLineIcon className="size-4 4xl:size-5" />
                 </div>
               )}
               position="top right"
@@ -193,7 +193,7 @@ const ResultsSgmModeDropdown = ({
                 <span className="absolute right-2 top-2.5">
                   <Popup
                     on={["hover"]}
-                    trigger={() => <QuestionLine className="w-4 h-4" />}
+                    trigger={() => <QuestionLineIcon className="w-4 h-4" />}
                     position="top right"
                     closeOnDocumentClick
                     arrowStyle={{ color: "#ebeff2" }}
