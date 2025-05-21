@@ -155,7 +155,8 @@ const PageBenchmarkDetail = () => {
 
   const filteredMetaData = useMemo(() => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
-      const { sectors, technique, kindOfProblem, modelName } = localFilters;
+      const { sectors, technique, kindOfProblem, modelName, problemSize } =
+        localFilters;
 
       const isSectorsMatch =
         sectors.length === 0 || sectors.includes(value.sectors);
@@ -166,11 +167,18 @@ const PageBenchmarkDetail = () => {
         kindOfProblem.includes(value.kindOfProblem);
       const isModelNameMatch =
         modelName.length === 0 || modelName.includes(value.modelName);
+
+      const isProblemSizeMatch =
+        problemSize.length === 0 ||
+        (value.sizes &&
+          value.sizes.some((size) => problemSize.includes(size.size)));
+
       return (
         isSectorsMatch &&
         isTechniqueMatch &&
         isKindOfProblemMatch &&
-        isModelNameMatch
+        isModelNameMatch &&
+        isProblemSizeMatch
       );
     });
 

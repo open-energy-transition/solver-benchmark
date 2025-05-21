@@ -6,6 +6,7 @@ import {
   PolygonIcon,
   ProcessorIcon,
   WrenchIcon,
+  ProblemSizeIcon,
 } from "@/assets/icons";
 import { useSelector } from "react-redux";
 import { IResultState } from "@/types/state";
@@ -343,6 +344,27 @@ const BenchmarkDetailFilterSection = ({
             className="w-full"
             gridClassName="grid-cols-1"
             uppercase={false}
+          />
+          {/* Problem Size */}
+          <FilterGroup
+            title="Problem Size"
+            icon={<ProblemSizeIcon className="w-5 h-5" />}
+            items={availableProblemSizes}
+            selectedItems={localFilters?.problemSize}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "problemSize", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "problemSize",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "problemSize" })}
+            className="w-full"
+            gridClassName="grid-cols-3"
+            uppercase={true}
           />
           {/* Model */}
           <FilterGroup
