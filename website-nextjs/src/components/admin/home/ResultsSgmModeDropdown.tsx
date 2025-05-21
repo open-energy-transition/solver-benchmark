@@ -1,38 +1,33 @@
 import {
   ArrowUpTriangleFillIcon,
   FilterBarIcon,
-  QuestionLine,
+  QuestionLineIcon,
 } from "@/assets/icons";
-import { SgmMode } from "@/constants/filter";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Popup from "reactjs-popup";
 import { IFilterState } from "@/types/state";
 import DebouncedInput from "../raw-result/DebouncedInput";
+import {
+  DEFAULT_SGM_CALCULATION_MODES,
+  DEFAULT_X_FACTOR,
+  SgmMode,
+} from "@/constants/sgm";
 
-const sgmCalculationModes = [
-  {
-    optionTitle: "Compute SGM using max values",
-    value: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
-    optionTooltip:
-      "Uses the time-out value for runtime or the maximum value of memory for benchmark instances that time-out or error.",
-  },
-  {
-    optionTitle: "Penalizing TO/OOM/ER by a factor of",
-    value: SgmMode.PENALIZING_TO_BY_FACTOR,
-    optionTooltip:
-      "Uses the time-out value for runtime or the maximum value of memory, multiplied by a factor of X, for benchmark instances that time-out or error.",
-  },
-  {
-    optionTitle: "Only on intersection of solved benchmarks",
-    value: SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS,
-    optionTooltip:
-      "Filters the benchmark instances to those that are solved by all solvers before computing SGM, so that there are no error or time-out instances to consider.",
-  },
-];
+interface SgmCalculationMode {
+  optionTitle: string;
+  value: SgmMode;
+  optionTooltip: string;
+}
 
-const ResultsSgmModeDropdown = () => {
+interface ResultsSgmModeDropdownProps {
+  sgmCalculationModes?: SgmCalculationMode[];
+}
+
+const ResultsSgmModeDropdown = ({
+  sgmCalculationModes = DEFAULT_SGM_CALCULATION_MODES,
+}: ResultsSgmModeDropdownProps) => {
   const dispatch = useDispatch();
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
@@ -73,7 +68,11 @@ const ResultsSgmModeDropdown = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      dispatch(filterActions.setSgmMode(SgmMode.COMPUTE_SGM_USING_TO_VALUES));
+      dispatch(filterActions.setXFactor(DEFAULT_X_FACTOR));
+    };
   }, []);
 
   if (!selectedMode) return <div>Sgm Mode Not found</div>;
@@ -86,7 +85,7 @@ const ResultsSgmModeDropdown = () => {
           on={["hover"]}
           trigger={() => (
             <span className="flex items-baseline my-auto cursor-pointer">
-              <QuestionLine
+              <QuestionLineIcon
                 className="size-3.5 4xl:size-5"
                 viewBox="0 0 24 20"
               />
@@ -147,7 +146,7 @@ const ResultsSgmModeDropdown = () => {
               on={["hover"]}
               trigger={() => (
                 <div>
-                  <QuestionLine className="size-4 4xl:size-5" />
+                  <QuestionLineIcon className="size-4 4xl:size-5" />
                 </div>
               )}
               position="top right"
@@ -163,7 +162,7 @@ const ResultsSgmModeDropdown = () => {
         </div>
         <ArrowUpTriangleFillIcon />
       </button>
-      {selectedMode.optionTitle === "Penalizing TO by a factor of" && (
+      {selectedMode.value === SgmMode.PENALIZING_TO_BY_FACTOR && (
         <DebouncedInput
           autoWidth
           type="number"
@@ -194,7 +193,7 @@ const ResultsSgmModeDropdown = () => {
                 <span className="absolute right-2 top-2.5">
                   <Popup
                     on={["hover"]}
-                    trigger={() => <QuestionLine className="w-4 h-4" />}
+                    trigger={() => <QuestionLineIcon className="w-4 h-4" />}
                     position="top right"
                     closeOnDocumentClick
                     arrowStyle={{ color: "#ebeff2" }}

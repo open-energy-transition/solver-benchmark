@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ArrowIcon, QuestionLine } from "@/assets/icons";
+import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
 import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
-import { SgmMode, TIMEOUT_VALUES } from "@/constants/filter";
 import { extractNumberFromFormattedString } from "@/utils/string";
+import { SgmMode } from "@/constants/sgm";
 
 type ColumnType = {
   name: string;
@@ -57,8 +57,6 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   });
 
   const benchmarkResults = useMemo(() => {
-    const maxMemoryUsage =
-      timeout === TIMEOUT_VALUES.SHORT ? 7 * 1024 : 62 * 1024;
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
         const benchmarkSuccessMap = new Map<string, number>();
@@ -87,18 +85,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         return benchmarkLatestResults.map((result) => ({
           ...result,
           runtime:
-            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+            result.status !== "ok" ? result.runtime * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? maxMemoryUsage * xFactor
+              ? result.memoryUsage * xFactor
               : result.memoryUsage,
-        }));
-      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
-        return benchmarkLatestResults.map((result) => ({
-          ...result,
-          runtime: result.status !== "ok" ? result.timeout : result.runtime,
-          memoryUsage:
-            result.status !== "ok" ? maxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
@@ -259,7 +250,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <div>
-                  <QuestionLine className="w-4 h-4" />
+                  <QuestionLineIcon className="w-4 h-4" />
                 </div>
               )}
               position="right center"
@@ -427,7 +418,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-baseline">
-                  <QuestionLine
+                  <QuestionLineIcon
                     className="size-3.5 4xl:size-5"
                     viewBox="0 0 24 20"
                   />

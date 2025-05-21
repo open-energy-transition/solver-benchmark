@@ -5,8 +5,8 @@ import { CircleIcon, CloseIcon } from "@/assets/icons";
 import D3Chart from "../shared/D3PlotChart";
 import { IFilterState, IResultState } from "@/types/state";
 import { useMemo } from "react";
-import { SgmMode } from "@/constants/filter";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { SgmMode } from "@/constants/sgm";
 
 interface BenchmarksSectionProps {
   timeout: number;

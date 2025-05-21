@@ -43,12 +43,18 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
     case SET_BENCHMARK_RESULTS:
       return {
         ...state,
-        benchmarkResults: processBenchmarkResults(action.payload.results),
+        benchmarkResults: processBenchmarkResults(
+          action.payload.results,
+          state.fullMetaData,
+        ),
       };
     case SET_BENCHMARK_LATEST_RESULTS:
       return {
         ...state,
-        benchmarkLatestResults: processBenchmarkResults(action.payload.results),
+        benchmarkLatestResults: processBenchmarkResults(
+          action.payload.results,
+          state.fullMetaData,
+        ),
       };
     case SET_RAW_BENCHMARK_RESULTS:
       const availableSolvers = Array.from(
