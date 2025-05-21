@@ -16,7 +16,10 @@ const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
         chartData={chartData}
         title="Normalized SGM Memory Usage"
         xAxisTooltipFormat={(value) =>
-          `<strong>Memory Usage:</strong> ${roundNumber(Number(value), 2)}`
+          `<strong>(Norm.) SGM Memory Usage:</strong> ${roundNumber(
+            Number(value),
+            2,
+          )}`
         }
       />
     </div>
