@@ -51,7 +51,7 @@ const LandingPage = () => {
               <li>
                 All solvers are run with their default options, except for the
                 duality gap tolerance for mixed integer benchmarks (MILPs),
-                which we set to 0.0001. You can check the duality gaps for each
+                which we set to 1e-4. You can check the duality gaps for each
                 solver in the benchmark details page corresponding to each
                 benchmark instance.
               </li>
