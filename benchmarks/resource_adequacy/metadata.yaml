@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 week
     MILP features: None
@@ -27,7 +27,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 1 week
     MILP features: Unit commitment
@@ -49,7 +49,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 2 months
     MILP features: None
@@ -69,7 +69,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 2 months
     MILP features: Unit commitment
@@ -91,7 +91,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 179 days (~6 months)
     MILP features: None
@@ -111,7 +111,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment

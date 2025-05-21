@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -29,7 +29,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -51,7 +51,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
@@ -73,7 +73,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -95,7 +95,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
@@ -117,7 +117,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Multi-period (3 years)
     MILP features: Unit commitment
@@ -139,7 +139,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -159,7 +159,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -179,7 +179,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -199,7 +199,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Problem class: DC optimal power flow
+    Application: DC optimal power flow
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: Unit commitment

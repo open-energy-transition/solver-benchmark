@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
@@ -29,7 +29,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -50,7 +50,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -71,7 +71,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -92,7 +92,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -113,7 +113,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)

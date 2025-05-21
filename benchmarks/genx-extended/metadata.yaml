@@ -6,7 +6,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -26,7 +26,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -45,7 +45,7 @@ benchmarks:
 #    Model name: GenX
 #    Version:
 #    Problem class: MILP
-#    Problem class: Infrastructure
+#    Application: Infrastructure
 #    Sectoral focus: Power-only
 #    Time horizon: Single period (1 year)
 #    MILP features: Unit commitment
@@ -66,7 +66,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (30 days)
     MILP features: Unit commitment
@@ -88,7 +88,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Power-only
     Time horizon: Single period (1 year)
     MILP features: None
@@ -107,7 +107,7 @@ benchmarks:
 #   Model name: GenX
 #   Version:
 #   Problem class: MILP
-#   Problem class: Infrastructure
+#   Application: Infrastructure
 #   Sectoral focus: Power-only
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment
@@ -127,7 +127,7 @@ benchmarks:
 #   Model name: GenX
 #   Version:
 #   Problem class: MILP
-#   Problem class: Infrastructure
+#   Application: Infrastructure
 #   Sectoral focus: Power-only
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment

@@ -6,8 +6,8 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
@@ -27,8 +27,8 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
@@ -48,8 +48,8 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (30 days)
     MILP features: Unit commitment
@@ -71,8 +71,8 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
@@ -242,8 +242,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -266,8 +266,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -291,8 +291,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
@@ -328,8 +328,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -358,8 +358,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Piecewise fuel usage
@@ -382,8 +382,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Multi-period (3 years)
     MILP features: Unit commitment
@@ -410,8 +410,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
@@ -436,8 +436,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
@@ -461,8 +461,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: None
@@ -482,8 +482,8 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: DC optimal power flow
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -504,8 +504,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
@@ -526,8 +526,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Steady-state optimal power flow
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
@@ -545,8 +545,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
@@ -566,8 +566,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
@@ -587,8 +587,8 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: N/A
     MILP features: Transmission switching
@@ -609,8 +609,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features:
@@ -631,8 +631,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -653,8 +653,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -675,8 +675,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -697,8 +697,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -719,8 +719,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -741,8 +741,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -763,8 +763,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -785,8 +785,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -806,8 +806,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -827,8 +827,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -848,8 +848,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -869,8 +869,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -890,8 +890,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -911,8 +911,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -932,8 +932,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -953,8 +953,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -974,8 +974,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -996,8 +996,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -1018,8 +1018,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -1040,8 +1040,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -1062,8 +1062,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -1084,8 +1084,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -1106,8 +1106,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -1128,8 +1128,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -1150,8 +1150,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -1172,8 +1172,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -1193,8 +1193,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -1214,8 +1214,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -1235,8 +1235,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
@@ -1256,8 +1256,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -1277,8 +1277,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -1298,8 +1298,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
@@ -1319,8 +1319,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -1340,8 +1340,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -1361,8 +1361,8 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
@@ -1383,8 +1383,8 @@ benchmarks:
     Model name: Tulipa
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
@@ -1456,8 +1456,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, heating, biomass, industry, transport
     Time horizon: Single period (1 year)
     MILP features: None
@@ -1501,8 +1501,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: None
@@ -1545,8 +1545,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Operational
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: None
@@ -1598,8 +1598,8 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Operational
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment
@@ -1640,8 +1640,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: None
@@ -1660,8 +1660,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: None
@@ -1680,8 +1680,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment
@@ -1702,8 +1702,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: None
@@ -1722,8 +1722,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment
@@ -1745,8 +1745,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
@@ -1767,8 +1767,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Modularity
@@ -1789,8 +1789,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Modularity
@@ -1812,8 +1812,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
@@ -1834,8 +1834,8 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 year
     MILP features: Modularity
@@ -1859,8 +1859,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 week
     MILP features: None
@@ -1882,8 +1882,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 1 week
     MILP features: Unit commitment
@@ -1907,8 +1907,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 2 months
     MILP features: None
@@ -1930,8 +1930,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 2 months
     MILP features: Unit commitment
@@ -1955,8 +1955,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 179 days (~6 months)
     MILP features: None
@@ -1978,8 +1978,8 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    Technique: MILP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
@@ -2000,8 +2000,8 @@ benchmarks:
     Model name: TEMOA-Utopia
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
     MILP features: None
@@ -2020,8 +2020,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
@@ -2041,8 +2041,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
@@ -2062,8 +2062,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
@@ -2083,8 +2083,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
@@ -2104,8 +2104,8 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
     MILP features: None
@@ -2124,8 +2124,8 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
     MILP features: None
@@ -2144,8 +2144,8 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
     MILP features: None
@@ -2164,8 +2164,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
@@ -2185,8 +2185,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
@@ -2205,8 +2205,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
@@ -2226,8 +2226,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
@@ -2246,8 +2246,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
@@ -2267,8 +2267,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Single-stage
     MILP features: None
@@ -2287,8 +2287,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
@@ -2308,8 +2308,8 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Power, Heating
     Time horizon: Multi-stage
     MILP features: None
@@ -2327,8 +2327,8 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
     MILP features: None
@@ -2354,8 +2354,8 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
     MILP features: None
@@ -2374,8 +2374,8 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
     MILP features: None
@@ -2394,8 +2394,8 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    Technique: LP
-    Kind of problem: Infrastructure
+    Technique:
+    Kind of problem:
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage
     MILP features: None
