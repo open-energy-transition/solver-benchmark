@@ -7,9 +7,10 @@ import {
   ProcessorIcon,
   WrenchIcon,
   ProblemSizeIcon,
+  GlobeSearchIcon,
 } from "@/assets/icons";
 import { useSelector } from "react-redux";
-import { IResultState } from "@/types/state";
+import { IResultState, RealisticOption } from "@/types/state";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
 import FilterGroup from "../filters/FilterGroup";
 
@@ -90,6 +91,7 @@ const BenchmarkDetailFilterSection = ({
       kindOfProblem: availableKindOfProblems,
       modelName: availableModels,
       problemSize: availableProblemSizes,
+      realistic: [RealisticOption.Realistic, RealisticOption.Other],
     }[category] as string[];
 
     const selectedItems = (localFilters[categoryKey] as string[]) || [];
@@ -146,6 +148,7 @@ const BenchmarkDetailFilterSection = ({
       "kindOfProblem",
       "modelName",
       "problemSize",
+      "realistic",
     ].forEach((key) => {
       const value = router.query[key];
       if (typeof value === "string") {
@@ -210,6 +213,7 @@ const BenchmarkDetailFilterSection = ({
         kindOfProblem: availableKindOfProblems,
         modelName: availableModels,
         problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
       };
 
       setLocalFilters(resetFilters);
@@ -241,6 +245,7 @@ const BenchmarkDetailFilterSection = ({
       kindOfProblem: availableKindOfProblems,
       modelName: availableModels,
       problemSize: availableProblemSizes,
+      realistic: [RealisticOption.Realistic, RealisticOption.Other],
     };
 
     return Object.entries(allAvailableFilters).some(
@@ -365,6 +370,27 @@ const BenchmarkDetailFilterSection = ({
             className="w-full"
             gridClassName="grid-cols-3"
             uppercase={true}
+          />
+          {/* Realistic */}
+          <FilterGroup
+            title="Realistic"
+            icon={<GlobeSearchIcon className="w-5 h-5" />}
+            items={[RealisticOption.Realistic, RealisticOption.Other]}
+            selectedItems={localFilters?.realistic}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "realistic", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "realistic",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "realistic" })}
+            className="w-full"
+            gridClassName="grid-cols-2"
+            uppercase={false}
           />
           {/* Model */}
           <FilterGroup

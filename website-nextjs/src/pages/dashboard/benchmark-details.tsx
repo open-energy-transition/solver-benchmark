@@ -7,7 +7,7 @@ import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
@@ -73,6 +73,7 @@ const PageBenchmarkDetail = () => {
       "kindOfProblem",
       "modelName",
       "problemSize",
+      "realistic",
     ].forEach((key) => {
       const value = router.query[key];
       if (typeof value === "string") {
@@ -93,6 +94,7 @@ const PageBenchmarkDetail = () => {
     kindOfProblem: availableKindOfProblems,
     modelName: availableModels,
     problemSize: availableProblemSizes,
+    realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
 
   useEffect(() => {
@@ -112,6 +114,7 @@ const PageBenchmarkDetail = () => {
         kindOfProblem: availableKindOfProblems,
         modelName: availableModels,
         problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
       });
     }
     setIsInit(true);
@@ -137,7 +140,9 @@ const PageBenchmarkDetail = () => {
                   ? availableModels.length
                   : key === "problemSize"
                     ? availableProblemSizes.length
-                    : 0)
+                    : key === "realistic"
+                      ? 2
+                      : 0)
       ) {
         queryParams.set(key, values.map(encodeValue).join(";"));
       }
@@ -155,8 +160,14 @@ const PageBenchmarkDetail = () => {
 
   const filteredMetaData = useMemo(() => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
-      const { sectors, technique, kindOfProblem, modelName, problemSize } =
-        localFilters;
+      const {
+        sectors,
+        technique,
+        kindOfProblem,
+        modelName,
+        problemSize,
+        realistic,
+      } = localFilters;
 
       const isSectorsMatch =
         sectors.length === 0 || sectors.includes(value.sectors);
@@ -167,18 +178,37 @@ const PageBenchmarkDetail = () => {
         kindOfProblem.includes(value.kindOfProblem);
       const isModelNameMatch =
         modelName.length === 0 || modelName.includes(value.modelName);
-
       const isProblemSizeMatch =
         problemSize.length === 0 ||
         (value.sizes &&
           value.sizes.some((size) => problemSize.includes(size.size)));
+
+      const isRealisticMatch =
+        realistic.length === 0 ||
+        (value.sizes &&
+          value.sizes.some((size) => {
+            if (
+              size.realistic === true &&
+              realistic.includes(RealisticOption.Realistic)
+            ) {
+              return true;
+            }
+            if (
+              (size.realistic === false || size.realistic === undefined) &&
+              realistic.includes(RealisticOption.Other)
+            ) {
+              return true;
+            }
+            return false;
+          }));
 
       return (
         isSectorsMatch &&
         isTechniqueMatch &&
         isKindOfProblemMatch &&
         isModelNameMatch &&
-        isProblemSizeMatch
+        isProblemSizeMatch &&
+        isRealisticMatch
       );
     });
 
