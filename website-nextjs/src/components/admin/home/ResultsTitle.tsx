@@ -31,7 +31,7 @@ const ResultsSectionsTitle = ({
     <div>
       <div className="relative text-navy font-bold text-xl px-5 flex justify-between items-end">
         <div>
-          Summary
+          Ranking
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
               (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}

@@ -318,10 +318,30 @@ const PagePerformanceHistory = () => {
           {/* Content */}
           <SgmModeSection />
           <NormalizedSection chartData={chartData} />
+          <br /> {/* TODO replace with a less hacky way of padding */}
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
           />
+          <div className="pt-1.5 pb-3 px-5">
+            <div className="text-navy font-bold text-xl 4xl:text-2xl">
+              Caveats
+            </div>
+            <div className="text-navy text-sm block items-center mt-2">
+              <span>
+                {" "}
+                Some solvers returned errors when running on some benchmark
+                instances. For more details, please see the{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
+                  className="underline"
+                >
+                  tracking issue
+                </a>
+                .
+              </span>
+            </div>
+          </div>
         </ContentWrapper>
       </div>
       <Footer />

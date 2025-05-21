@@ -2353,7 +2353,7 @@ benchmarks:
     Short description: TIMES-Ireland
     Model name: TIMES-Ireland
     Version:
-    Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
+    Contributor(s)/Source: Olexandr Balyk
     Technique: LP
     Kind of problem: Infrastructure
     Sectors: Supply, power, industry, transport, residential, services, agriculture
