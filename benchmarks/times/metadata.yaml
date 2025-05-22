@@ -6,7 +6,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -27,7 +27,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -48,7 +48,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -69,7 +69,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -90,7 +90,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -111,7 +111,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -131,7 +131,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -152,7 +152,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -173,7 +173,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -194,7 +194,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -215,7 +215,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -244,7 +244,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -265,7 +265,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -286,7 +286,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Problem class: Infrastructure
+    Application: Infrastructure
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage
