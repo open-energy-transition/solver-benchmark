@@ -4,7 +4,7 @@ from pathlib import Path
 import yaml
 
 # Define the directory paths
-base_dir = Path.cwd()
+base_dir = Path(__file__).parent.parent
 benchmarks_dir = base_dir / "benchmarks"
 results_file = base_dir / "results" / "metadata.yaml"
 
@@ -33,48 +33,16 @@ def process_yaml_file(file_path):
                 print(f"Skipping file with no content: {file_path}")
                 return
 
+            # Check if 'benchmarks' section exists
+            if "benchmarks" not in yaml_data:
+                print(f"No 'benchmarks' section found in: {file_path}")
+                return
+
             benchmark_data = yaml_data["benchmarks"]
 
+            # Simply add all benchmark entries to unified metadata
             for model_name, model_info in benchmark_data.items():
-                sizes = []
-                for size in model_info.get("Sizes", []):
-                    size_entry = {
-                        "Name": size["Name"],
-                        "Size": size["Size"],
-                        "URL": size["URL"],
-                        "Spatial resolution": size.get("Spatial resolution"),
-                        "Temporal resolution": size.get("Temporal resolution"),
-                        "Realistic": size.get("Realistic"),
-                        "Num. constraints": size.get("Num. constraints"),
-                        "Num. variables": size.get("Num. variables"),
-                    }
-
-                    # Add optional fields if they exist
-                    if "Num. continuous variables" in size:
-                        size_entry["Num. continuous variables"] = size[
-                            "Num. continuous variables"
-                        ]
-                    if "Num. integer variables" in size:
-                        size_entry["Num. integer variables"] = size[
-                            "Num. integer variables"
-                        ]
-                    sizes.append(size_entry)
-
-                # Create metadata entry
-                entry = {
-                    "Short description": model_info.get("Short description"),
-                    "Model name": model_info.get("Model name"),
-                    "Version": model_info.get("Version"),
-                    "Contributor(s)/Source": model_info.get("Contributor(s)/Source"),
-                    "Technique": model_info.get("Technique"),
-                    "Kind of problem": model_info.get("Kind of problem"),
-                    "Sectors": model_info.get("Sectors"),
-                    "Time horizon": model_info.get("Time horizon"),
-                    "MILP features": model_info.get("MILP features"),
-                    "Sizes": sizes,
-                }
-                # Add entry to unified metadata
-                unified_metadata[model_name] = entry
+                unified_metadata[model_name] = model_info
 
     except yaml.YAMLError as e:
         print(f"Error parsing YAML file {file_path}: {e}")
