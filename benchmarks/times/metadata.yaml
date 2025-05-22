@@ -127,6 +127,7 @@ benchmarks:
       Num. variables: 92102
   times-etimeseu-europe-elec+heat-single_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage.
+    Modelling framework: TIMES
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris

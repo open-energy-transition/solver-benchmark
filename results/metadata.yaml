@@ -665,6 +665,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single stage (12 hours)
+    MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: S
@@ -2433,6 +2434,7 @@ benchmarks:
   times-etimeseu-europe-elec+heat-single_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time
       slices) considering 1 optimization stage.
+    Modelling framework: TIMES
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"

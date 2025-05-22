@@ -10,6 +10,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single stage (12 hours)
+    MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: S
