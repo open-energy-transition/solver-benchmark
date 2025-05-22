@@ -672,7 +672,6 @@ benchmarks:
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29-082507660a1ec655fed92d2b6d49a1d606f029e30cb0dfcd4915f8b8ce896f2e.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
-      MILP features: Unit commitment
       Realistic: false
       Num. constraints: 6048
       Num. variables: 7380
