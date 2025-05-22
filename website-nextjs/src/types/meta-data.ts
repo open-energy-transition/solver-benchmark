@@ -16,7 +16,7 @@ interface MetaDataEntry {
   modelName: string;
   version: string;
   problemClass: string;
-  kindOfProblem: string;
+  application: string;
   sectors: string;
   timeHorizon: string;
   milpFeatures: string | null;

@@ -62,7 +62,7 @@ interface OriginBenchmarkResult {
 type IFilterBenchmarkDetails = {
   sectors: string[];
   problemClass: string[];
-  kindOfProblem: string[];
+  application: string[];
   problemSize: string[];
   modelName: string[];
   realistic: string[];

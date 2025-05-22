@@ -7,13 +7,13 @@ import { useSelector } from "react-redux";
 const BenchmarkStatisticsCharts = ({
   availableSectors,
   availableProblemClasses,
-  availableKindOfProblems,
+  availableApplications,
   availableModels,
   availableProblemSizes,
 }: {
   availableSectors: string[];
   availableProblemClasses: string[];
-  availableKindOfProblems: string[];
+  availableApplications: string[];
   availableModels: string[];
   availableProblemSizes: string[];
 }) => {
@@ -30,7 +30,7 @@ const BenchmarkStatisticsCharts = ({
   const availabletimeHorizons = ["single", "multi"];
   const summary = availableModels.map((model) => {
     const problemClassesMap = new Map<string, number>();
-    const kindOfProblemsMap = new Map<string, number>();
+    const applicationsMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -53,9 +53,9 @@ const BenchmarkStatisticsCharts = ({
             updateData(problemClassesMap, problemClass);
           }
         });
-        availableKindOfProblems.forEach((kindOfProblem) => {
-          if (metaData[key].kindOfProblem === kindOfProblem) {
-            updateData(kindOfProblemsMap, kindOfProblem);
+        availableApplications.forEach((application) => {
+          if (metaData[key].application === application) {
+            updateData(applicationsMap, application);
           }
         });
         availableSectors.forEach((sector) => {
@@ -91,7 +91,7 @@ const BenchmarkStatisticsCharts = ({
     return {
       modelName: model,
       problemClasses: problemClassesMap,
-      kindOfProblems: kindOfProblemsMap,
+      applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
       sectors: sectorsMap,

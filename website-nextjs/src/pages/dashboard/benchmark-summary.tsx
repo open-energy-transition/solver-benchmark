@@ -31,22 +31,21 @@ const PageBenchmarkDetail = () => {
   const uniqueValues = {
     sectors: new Set<string>(),
     problemClasses: new Set<string>(),
-    kindOfProblems: new Set<string>(),
+    applications: new Set<string>(),
     models: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, problemClass, kindOfProblem, modelName } =
-      fullMetaData[key];
+    const { sectors, problemClass, application, modelName } = fullMetaData[key];
     uniqueValues.sectors.add(sectors);
     uniqueValues.problemClasses.add(problemClass);
-    uniqueValues.kindOfProblems.add(kindOfProblem);
+    uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
   });
 
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
-  const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+  const availableApplications = Array.from(uniqueValues.applications);
   const availableModels = Array.from(uniqueValues.models);
   const availableProblemSizes = Array.from(
     new Set(
@@ -68,7 +67,7 @@ const PageBenchmarkDetail = () => {
     [
       "sectors",
       "problemClass",
-      "kindOfProblem",
+      "application",
       "modelName",
       "problemSize",
     ].forEach((key) => {
@@ -88,7 +87,7 @@ const PageBenchmarkDetail = () => {
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectors: availableSectors,
     problemClass: availableProblemClasses,
-    kindOfProblem: availableKindOfProblems,
+    application: availableApplications,
     modelName: availableModels,
     problemSize: availableProblemSizes,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -108,7 +107,7 @@ const PageBenchmarkDetail = () => {
       setLocalFilters({
         sectors: availableSectors,
         problemClass: availableProblemClasses,
-        kindOfProblem: availableKindOfProblems,
+        application: availableApplications,
         modelName: availableModels,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -131,8 +130,8 @@ const PageBenchmarkDetail = () => {
             ? availableSectors.length
             : key === "problemClass"
               ? availableProblemClasses.length
-              : key === "kindOfProblem"
-                ? availableKindOfProblems.length
+              : key === "application"
+                ? availableApplications.length
                 : key === "modelName"
                   ? availableModels.length
                   : key === "problemSize"

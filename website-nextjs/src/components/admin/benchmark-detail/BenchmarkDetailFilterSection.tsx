@@ -19,7 +19,7 @@ const BenchmarkDetailFilterSection = ({
   localFilters,
   availableSectors,
   availableProblemClasses,
-  availableKindOfProblems,
+  availableApplications,
   availableModels,
   availableProblemSizes,
 }: {
@@ -29,7 +29,7 @@ const BenchmarkDetailFilterSection = ({
   localFilters: IFilterBenchmarkDetails;
   availableSectors: string[];
   availableProblemClasses: string[];
-  availableKindOfProblems: string[];
+  availableApplications: string[];
   availableModels: string[];
   availableProblemSizes: string[];
 }) => {
@@ -88,7 +88,7 @@ const BenchmarkDetailFilterSection = ({
     const availableItems = {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
-      kindOfProblem: availableKindOfProblems,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -145,7 +145,7 @@ const BenchmarkDetailFilterSection = ({
     [
       "sectors",
       "problemClass",
-      "kindOfProblem",
+      "application",
       "modelName",
       "problemSize",
       "realistic",
@@ -210,7 +210,7 @@ const BenchmarkDetailFilterSection = ({
       const resetFilters = {
         sectors: availableSectors,
         problemClass: availableProblemClasses,
-        kindOfProblem: availableKindOfProblems,
+        application: availableApplications,
         modelName: availableModels,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -242,7 +242,7 @@ const BenchmarkDetailFilterSection = ({
     const allAvailableFilters = {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
-      kindOfProblem: availableKindOfProblems,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -333,23 +333,23 @@ const BenchmarkDetailFilterSection = ({
             gridClassName="!flex flex-wrap"
             uppercase={false}
           />
-          {/* Kind of Problem */}
+          {/* Application */}
           <FilterGroup
-            title="Kind of Problem"
+            title="Application"
             icon={<WrenchIcon className="w-5 h-5" />}
-            items={availableKindOfProblems}
-            selectedItems={localFilters?.kindOfProblem}
+            items={availableApplications}
+            selectedItems={localFilters?.application}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "kindOfProblem", value })
+              handleCheckboxChange({ category: "application", value })
             }
             onItemOnly={(value) =>
               handleCheckboxChange({
-                category: "kindOfProblem",
+                category: "application",
                 value,
                 only: true,
               })
             }
-            onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
+            onSelectAll={() => handleSelectAll({ category: "application" })}
             className="w-full"
             gridClassName="grid-cols-1"
             uppercase={false}

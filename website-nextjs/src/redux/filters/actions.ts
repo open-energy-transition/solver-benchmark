@@ -61,7 +61,7 @@ const actions = {
         Object.entries(results.rawMetaData).filter(([, _metaData]) => {
           const metaData = _metaData as MetaDataEntry;
           return (
-            filters.kindOfProblem.includes(metaData.kindOfProblem) &&
+            filters.application.includes(metaData.application) &&
             filters.problemClass.includes(metaData.problemClass) &&
             filters.sectors.includes(metaData.sectors) &&
             filters.modelName.includes(metaData.modelName)

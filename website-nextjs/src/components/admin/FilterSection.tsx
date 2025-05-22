@@ -45,8 +45,8 @@ const FilterSection = () => {
     (state: { results: IResultState }) => state.results.availableProblemClasses,
   );
 
-  const availableKindOfProblems = useSelector(
-    (state: { results: IResultState }) => state.results.availableKindOfProblems,
+  const availableApplications = useSelector(
+    (state: { results: IResultState }) => state.results.availableApplications,
   );
 
   const availableModels = useSelector(
@@ -81,7 +81,7 @@ const FilterSection = () => {
     const availableItems = {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
-      kindOfProblem: availableKindOfProblems,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: realisticOptions,
@@ -137,7 +137,7 @@ const FilterSection = () => {
     [
       "sectors",
       "problemClass",
-      "kindOfProblem",
+      "application",
       "modelName",
       "problemSize",
       "realistic",
@@ -160,7 +160,7 @@ const FilterSection = () => {
         filterActions.setFilter({
           sectors: availableSectors,
           problemClass: availableProblemClasses,
-          kindOfProblem: availableKindOfProblems,
+          application: availableApplications,
           modelName: availableModels,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -227,7 +227,7 @@ const FilterSection = () => {
         filterActions.setFilter({
           sectors: availableSectors,
           problemClass: availableProblemClasses,
-          kindOfProblem: availableKindOfProblems,
+          application: availableApplications,
           modelName: availableModels,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -259,7 +259,7 @@ const FilterSection = () => {
     const allAvailableFilters = {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
-      kindOfProblem: availableKindOfProblems,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -351,23 +351,23 @@ const FilterSection = () => {
             gridClassName="!flex flex-wrap"
             uppercase={false}
           />
-          {/* Kind of Problem */}
+          {/* Application */}
           <FilterGroup
-            title="Kind of Problem"
+            title="Application"
             icon={<WrenchIcon className="w-5 h-5" />}
-            items={availableKindOfProblems}
-            selectedItems={selectedFilters?.kindOfProblem}
+            items={availableApplications}
+            selectedItems={selectedFilters?.application}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "kindOfProblem", value })
+              handleCheckboxChange({ category: "application", value })
             }
             onItemOnly={(value) =>
               handleCheckboxChange({
-                category: "kindOfProblem",
+                category: "application",
                 value,
                 only: true,
               })
             }
-            onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
+            onSelectAll={() => handleSelectAll({ category: "application" })}
             className="w-full"
             gridClassName="grid-cols-1"
             uppercase={false}

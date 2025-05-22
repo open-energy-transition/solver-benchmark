@@ -21,9 +21,9 @@ const BenchmarkSummaryTable = () => {
     },
   );
 
-  const availableKindOfProblems = useSelector(
+  const availableApplications = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.availableKindOfProblems;
+      return state.results.availableApplications;
     },
   );
 
@@ -51,7 +51,7 @@ const BenchmarkSummaryTable = () => {
 
   const summary = availableModels.map((model) => {
     const problemClassesMap = new Map<string, number>();
-    const kindOfProblemsMap = new Map<string, number>();
+    const applicationsMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -74,9 +74,9 @@ const BenchmarkSummaryTable = () => {
             updateData(problemClassesMap, problemClass);
           }
         });
-        availableKindOfProblems.forEach((kindOfProblem) => {
-          if (metaData[key].kindOfProblem === kindOfProblem) {
-            updateData(kindOfProblemsMap, kindOfProblem);
+        availableApplications.forEach((application) => {
+          if (metaData[key].application === application) {
+            updateData(applicationsMap, application);
           }
         });
         availableSectors.forEach((sector) => {
@@ -112,7 +112,7 @@ const BenchmarkSummaryTable = () => {
     return {
       modelName: model,
       problemClasses: problemClassesMap,
-      kindOfProblems: kindOfProblemsMap,
+      applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
       sectors: sectorsMap,
@@ -221,42 +221,40 @@ const BenchmarkSummaryTable = () => {
                   </td>
                 </tr>
               ))}
-              {/* Kind of Problem */}
-              {availableKindOfProblems.map(
-                (kindOfProblem, kindOfProblemIdx) => (
-                  <tr
-                    key={kindOfProblemIdx}
-                    className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                  >
-                    {kindOfProblemIdx === 0 && (
-                      <td
-                        className="border p-2 text-left font-medium"
-                        rowSpan={availableKindOfProblems.length}
-                      >
-                        Kind Of Problem
-                      </td>
+              {/* Application */}
+              {availableApplications.map((application, applicationIdx) => (
+                <tr
+                  key={applicationIdx}
+                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                >
+                  {applicationIdx === 0 && (
+                    <td
+                      className="border p-2 text-left font-medium"
+                      rowSpan={availableApplications.length}
+                    >
+                      Application
+                    </td>
+                  )}
+                  <td className="border p-2 text-left font-medium">
+                    {application}
+                  </td>
+                  {summary.map((s, sIdx) => (
+                    <td
+                      key={sIdx}
+                      className="border p-2 text-right font-medium"
+                    >
+                      {s.applications.get(application) || 0}
+                    </td>
+                  ))}
+                  <td className="border p-2 text-left font-medium">
+                    {summary.reduce(
+                      (acc, curr) =>
+                        acc + (curr.applications.get(application) || 0),
+                      0,
                     )}
-                    <td className="border p-2 text-left font-medium">
-                      {kindOfProblem}
-                    </td>
-                    {summary.map((s, sIdx) => (
-                      <td
-                        key={sIdx}
-                        className="border p-2 text-right font-medium"
-                      >
-                        {s.kindOfProblems.get(kindOfProblem) || 0}
-                      </td>
-                    ))}
-                    <td className="border p-2 text-left font-medium">
-                      {summary.reduce(
-                        (acc, curr) =>
-                          acc + (curr.kindOfProblems.get(kindOfProblem) || 0),
-                        0,
-                      )}
-                    </td>
-                  </tr>
-                ),
-              )}
+                  </td>
+                </tr>
+              ))}
               {/* Time Horizon */}
               {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
                 <tr

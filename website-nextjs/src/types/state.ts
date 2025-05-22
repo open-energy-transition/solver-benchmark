@@ -9,7 +9,7 @@ export enum RealisticOption {
 
 export type IFilterState = {
   benchmarks: string[];
-  kindOfProblem: string[];
+  application: string[];
   modelName: string[];
   problemSize: string[];
   realistic: RealisticOption[];
@@ -25,7 +25,7 @@ export type IFilterState = {
 export interface IAvailableFilterData {
   availableSectors: string[];
   availableProblemClasses: string[];
-  availableKindOfProblems: string[];
+  availableApplications: string[];
   availableProblemSizes: string[];
   availableModels: string[];
   realisticOptions: RealisticOption[];

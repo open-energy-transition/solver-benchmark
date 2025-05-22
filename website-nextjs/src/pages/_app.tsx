@@ -79,22 +79,22 @@ function App({ Component, pageProps }: AppProps) {
       const uniqueValues = {
         sectors: new Set<string>(),
         problemClasses: new Set<string>(),
-        kindOfProblems: new Set<string>(),
+        applications: new Set<string>(),
         models: new Set<string>(),
       };
 
       Object.keys(benchmarksMetaData).forEach((key) => {
-        const { sectors, problemClass, kindOfProblem, modelName } =
+        const { sectors, problemClass, application, modelName } =
           benchmarksMetaData[key];
         uniqueValues.sectors.add(sectors);
         uniqueValues.problemClasses.add(problemClass);
-        uniqueValues.kindOfProblems.add(kindOfProblem);
+        uniqueValues.applications.add(application);
         uniqueValues.models.add(modelName);
       });
 
       const availableSectors = Array.from(uniqueValues.sectors);
       const availableProblemClasses = Array.from(uniqueValues.problemClasses);
-      const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+      const availableApplications = Array.from(uniqueValues.applications);
       const availableModels = Array.from(uniqueValues.models);
       const availableProblemSizes = Array.from(
         new Set(
@@ -115,7 +115,7 @@ function App({ Component, pageProps }: AppProps) {
         resultActions.setAvailableFilterData({
           availableSectors,
           availableProblemClasses,
-          availableKindOfProblems,
+          availableApplications,
           availableModels,
           availableProblemSizes,
           realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
@@ -129,7 +129,7 @@ function App({ Component, pageProps }: AppProps) {
         filterActions.setFilter({
           sectors: availableSectors,
           problemClass: availableProblemClasses,
-          kindOfProblem: availableKindOfProblems,
+          application: availableApplications,
           modelName: availableModels,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
