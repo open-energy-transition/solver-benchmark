@@ -520,50 +520,51 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         where the other solver performs better. Instances are sorted by the
         runtime of the base solver.
       </p>
-
-      <div className="flex flex-wrap gap-4 legend-container pb-4">
-        {/* Selected solver legend (circle) */}
-        <div
-          className="flex items-center gap-2 cursor-pointer select-none"
-          onClick={() => toggleSolver(baseSolver)}
-        >
-          <div className="flex items-center justify-center w-4 h-4">
-            <div
-              className={`w-4 h-4 rounded-full bg-teal ${
-                visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
-              }`}
-            />
-          </div>
-          <span className="text-sm text-gray-700 4xl:text-bae">
-            {baseSolver}
-          </span>
-        </div>
-
-        {/* Other solvers legend (squares) */}
-        {availableSolvers
-          .filter((solver) => solver !== baseSolver)
-          .map((solver) => (
-            <div
-              key={solver}
-              className="flex items-center gap-2 cursor-pointer select-none"
-              onClick={() => toggleSolver(solver)}
-            >
+      <div>
+        <div className="flex flex-wrap gap-4 legend-container pb-4">
+          {/* Selected solver legend (circle) */}
+          <div
+            className="flex items-center gap-2 cursor-pointer select-none"
+            onClick={() => toggleSolver(baseSolver)}
+          >
+            <div className="flex items-center justify-center w-4 h-4">
               <div
-                className="w-4 h-4 rounded-sm transition-opacity"
-                style={{
-                  backgroundColor: solverColors[solver],
-                  opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
-                }}
+                className={`w-4 h-4 rounded-full bg-teal ${
+                  visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
+                }`}
               />
-              <span className="text-sm text-gray-700 4xl:text-bae">
-                {solver}
-              </span>
             </div>
-          ))}
-      </div>
-      <div className="text-sm mb-4">
-        <p>🔻/🔺: base / other solver failed to solve in time limit</p>
-        <p>❌ : both solvers failed to solve in time limit</p>
+            <span className="text-sm text-gray-700 4xl:text-bae">
+              {baseSolver}
+            </span>
+          </div>
+
+          {/* Other solvers legend (squares) */}
+          {availableSolvers
+            .filter((solver) => solver !== baseSolver)
+            .map((solver) => (
+              <div
+                key={solver}
+                className="flex items-center gap-2 cursor-pointer select-none"
+                onClick={() => toggleSolver(solver)}
+              >
+                <div
+                  className="w-4 h-4 rounded-sm transition-opacity"
+                  style={{
+                    backgroundColor: solverColors[solver],
+                    opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
+                  }}
+                />
+                <span className="text-sm text-gray-700 4xl:text-bae">
+                  {solver}
+                </span>
+              </div>
+            ))}
+        </div>
+        <div className="text-sm mb-4">
+          <p>🔻/🔺: base / other solver failed to solve in time limit</p>
+          <p>❌ : both solvers failed to solve in time limit</p>
+        </div>
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
