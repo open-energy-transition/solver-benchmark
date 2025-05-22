@@ -9,7 +9,7 @@ import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
@@ -90,6 +90,7 @@ const PageBenchmarkDetail = () => {
     kindOfProblem: availableKindOfProblems,
     modelName: availableModels,
     problemSize: availableProblemSizes,
+    realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
 
   useEffect(() => {
@@ -109,6 +110,7 @@ const PageBenchmarkDetail = () => {
         kindOfProblem: availableKindOfProblems,
         modelName: availableModels,
         problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
       });
     }
     setIsInit(true);
