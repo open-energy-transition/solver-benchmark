@@ -1,7 +1,7 @@
 ## Metadata for samples from https://github.com/jump-dev/open-energy-modeling-benchmarks/tree/main/GenX/cases
 benchmarks:
   genx-1_three_zones:
-    Short description: Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators.
+    Short description: "Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -22,7 +22,7 @@ benchmarks:
       Num. continuous variables: 107199
       Num. integer variables: 20331
   genx-2_three_zones_w_electrolyzer:
-    Short description: Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators, and including electrolyzers in the technological portfolio.
+    Short description: "Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators, and including electrolyzers in the technological portfolio."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -43,7 +43,7 @@ benchmarks:
       Num. continuous variables: 157106
       Num. integer variables: 20331
   genx-3_three_zones_w_co2_capture:
-    Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX.
+    Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -64,7 +64,7 @@ benchmarks:
       Num. continuous variables: 107199
       Num. integer variables: 20331
   genx-4_three_zones_w_policies_slack:
-    Short description: Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means.
+    Short description: "Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -85,7 +85,7 @@ benchmarks:
       Num. continuous variables: 125685
       Num. integer variables: 20331
   genx-5_three_zones_w_piecewise_fuel:
-    Short description: Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators. For natural gas ccs-equipped ge parameters to represent the fuel consumption at different load points.
+    Short description: "Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators. For natural gas ccs-equipped ge parameters to represent the fuel consumption at different load points."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -106,7 +106,7 @@ benchmarks:
       Num. continuous variables: 120135
       Num. integer variables: 20331
   genx-6_three_zones_w_multistage:
-    Short description: Three zones (Massachusetts, Connecticut, and Maine) GenX multi-stage infrastructure run with hourly resolution and unit commitment for conventional generators.
+    Short description: "Three zones (Massachusetts, Connecticut, and Maine) GenX multi-stage infrastructure run with hourly resolution and unit commitment for conventional generators."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -127,7 +127,7 @@ benchmarks:
       Num. continuous variables: 107302
       Num. integer variables: 20334
   genx-7_three_zones_w_colocated_VRE_storage:
-    Short description: Three zones (Continental US) GenX infrastructure run considering one year with 24 hours resolution. This example system shows the functionalities of the colocated VRE+storage module of GenX (the model can choose to co-locate a long duration-energy storage resource with either solar or wind). Unit commitment is linearized and a carbon constraint is applied.
+    Short description: "Three zones (Continental US) GenX infrastructure run considering one year with 24 hours resolution. This example system shows the functionalities of the colocated VRE+storage module of GenX (the model can choose to co-locate a long duration-energy storage resource with either solar or wind). Unit commitment is linearized and a carbon constraint is applied."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -146,7 +146,7 @@ benchmarks:
       Num. constraints: 4325
       Num. variables: 4260
   genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
-    Short description: Three zones (Continental US) GenX infrastructure run considering a time horizon of 1680 hours with 168 hours resolution. This example system shows the functionalities of the colocated VRE+storage+electrolyzer module of GenX (the model can choose to co-locate a long duration-energy storage resource with either solar or wind). Unit commitment is linearized and a carbon constraint is applied.
+    Short description: "Three zones (Continental US) GenX infrastructure run considering a time horizon of 1680 hours with 168 hours resolution. This example system shows the functionalities of the colocated VRE+storage+electrolyzer module of GenX (the model can choose to co-locate a long duration-energy storage resource with either solar or wind). Unit commitment is linearized and a carbon constraint is applied."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -165,7 +165,7 @@ benchmarks:
       Num. constraints: 302449
       Num. variables: 257129
   genx-9_three_zones_w_retrofit:
-    Short description: Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators. This example shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency. Unit commitment is linearized.
+    Short description: "Three zones (Massachusetts, Connecticut, and Maine) GenX infrastructure run considering one year with hourly resolution and unit commitment for conventional generators. This example shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency. Unit commitment is linearized."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -184,7 +184,7 @@ benchmarks:
       Num. constraints: 438008
       Num. variables: 260604
   genx-10_IEEE_9_bus_DC_OPF:
-    Short description: 9 nodes DC optimal power flow run considering one year with hourly resolution and unit commitment for conventional generators. This examples shows the usage of DC_OPF related functions of GenX.
+    Short description: "9 nodes DC optimal power flow run considering one year with hourly resolution and unit commitment for conventional generators. This examples shows the usage of DC_OPF related functions of GenX."
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks

@@ -1,6 +1,6 @@
 benchmarks:
   tulipa-1_EU_investment_simple:
-    Short description: European-level infrastructure model over a single year-time horizon considering integer investments and unit commitment variables.
+    Short description: "European-level infrastructure model over a single year-time horizon considering integer investments and unit commitment variables."
     Model name: Tulipa
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks

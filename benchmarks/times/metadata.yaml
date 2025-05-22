@@ -1,6 +1,6 @@
 benchmarks:
   TIMES-GEO-global-base:
-    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario without decarbonization constraints.
+    Short description: "Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario without decarbonization constraints."
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
@@ -20,7 +20,7 @@ benchmarks:
       Num. constraints: 6027253
       Num. variables: 6449851
   TIMES-GEO-global-netzero:
-    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario with a net-zero decarbonization constraints.
+    Short description: "Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario with a net-zero decarbonization constraints."
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
@@ -40,7 +40,7 @@ benchmarks:
       Num. constraints: 5063755
       Num. variables: 5422595
   times-etimeseu-france-elec+heat-single_stage:
-    Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage.
+    Short description: "eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -60,7 +60,7 @@ benchmarks:
       Num. constraints: 15447
       Num. variables: 15400
   times-etimeseu-france-elec+heat-co2-single_stage:
-    Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050.
+    Short description: "eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -80,7 +80,7 @@ benchmarks:
       Num. constraints: 15451
       Num. variables: 15404
   times-etimeseu-france-elec+heat-multi_stage:
-    Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050.
+    Short description: "eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -100,7 +100,7 @@ benchmarks:
       Num. constraints: 91288
       Num. variables: 92084
   times-etimeseu-france-elec+heat-co2-multi_stage:
-    Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
+    Short description: "eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -120,7 +120,7 @@ benchmarks:
       Num. constraints: 91306
       Num. variables: 92102
   times-etimeseu-europe-elec+heat-single_stage:
-    Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage.
+    Short description: "eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -140,7 +140,7 @@ benchmarks:
       Num. constraints: 456603
       Num. variables: 452854
   times-etimeseu-europe-elec+heat-co2-single_stage:
-    Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050.
+    Short description: "eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -160,7 +160,7 @@ benchmarks:
       Num. constraints: 456663
       Num. variables: 452914
   times-etimeseu-europe-elec+heat-multi_stage:
-    Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
+    Short description: "eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -180,7 +180,7 @@ benchmarks:
       Num. constraints: 2720516
       Num. variables: 2729679
   times-etimeseu-europe-elec+heat-co2-multi_stage:
-    Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
+    Short description: "eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050."
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
@@ -200,7 +200,7 @@ benchmarks:
       Num. constraints: 2720786
       Num. variables: 2729949
   times-ireland-noco2:
-    Short description: TIMES-Ireland run considering 1 time slice.
+    Short description: "TIMES-Ireland run considering 1 time slice."
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
@@ -227,7 +227,7 @@ benchmarks:
       Num. constraints: 4809283
       Num. variables: 4534121
   times-ireland-noco2-counties:
-    Short description: TIMES-Ireland run considering 26 nodes (counties) for transport, 1 node for all other sectors and 1 time slice.
+    Short description: "TIMES-Ireland run considering 26 nodes (counties) for transport, 1 node for all other sectors and 1 time slice."
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
@@ -246,7 +246,7 @@ benchmarks:
       Num. constraints: 873805
       Num. variables: 1235884
   times-nz-kea:
-    Short description: TIMES-NZ run with high carbon price and large investments in clean energy technologies.
+    Short description: "TIMES-NZ run with high carbon price and large investments in clean energy technologies."
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
@@ -266,7 +266,7 @@ benchmarks:
       Num. constraints: 300078
       Num. variables: 202797
   times-nz-tui:
-    Short description: TIMES-NZ run with low carbon prices and adoption of clean energy technologies when they become cost-effective.
+    Short description: "TIMES-NZ run with low carbon prices and adoption of clean energy technologies when they become cost-effective."
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
