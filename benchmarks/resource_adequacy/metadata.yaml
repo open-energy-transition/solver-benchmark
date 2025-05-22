@@ -9,6 +9,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 week
     MILP features: None
     Sizes:
@@ -29,6 +30,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
@@ -51,6 +53,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 2 months
     MILP features: None
     Sizes:
@@ -71,6 +74,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
@@ -93,6 +97,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
@@ -113,6 +118,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:

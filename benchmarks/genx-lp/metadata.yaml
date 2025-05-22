@@ -9,6 +9,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -29,6 +30,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -49,6 +51,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -69,6 +72,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -89,6 +93,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Multi-period (3 years)
     MILP features: None
     Sizes:
@@ -109,6 +114,7 @@ benchmarks:
     Problem class: LP
     Application: DC optimal power flow
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:

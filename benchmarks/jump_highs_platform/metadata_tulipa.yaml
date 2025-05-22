@@ -8,6 +8,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:

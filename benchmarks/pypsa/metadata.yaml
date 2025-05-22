@@ -54,6 +54,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -99,6 +100,7 @@ benchmarks:
     Problem class: LP
     Application: Operational
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -151,6 +153,7 @@ benchmarks:
     Problem class: MILP
     Application: Operational
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -194,6 +197,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -214,6 +218,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -234,6 +239,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -256,6 +262,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -276,6 +283,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -298,6 +306,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
@@ -320,6 +329,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
@@ -342,6 +352,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
@@ -364,6 +375,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
@@ -386,6 +398,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:

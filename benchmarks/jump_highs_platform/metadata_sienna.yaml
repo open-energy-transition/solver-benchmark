@@ -8,6 +8,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     Sizes:
     - Name: 1-1h
@@ -30,6 +31,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -52,6 +54,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -74,6 +77,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -96,6 +100,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     Temporal resolution: 1
     Spatial resolution: 1
@@ -120,6 +125,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -142,6 +148,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -164,6 +171,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -186,6 +194,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -208,6 +217,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -230,6 +240,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -252,6 +263,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -274,6 +286,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -296,6 +309,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -318,6 +332,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -340,6 +355,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -362,6 +378,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -384,6 +401,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -406,6 +424,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -428,6 +447,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -450,6 +470,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -472,6 +493,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -494,6 +516,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -516,6 +539,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -538,6 +562,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -560,6 +585,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -582,6 +608,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -604,6 +631,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -626,6 +654,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -648,6 +677,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -670,6 +700,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -692,6 +723,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -714,6 +746,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -736,6 +769,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -758,6 +792,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -780,6 +815,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:

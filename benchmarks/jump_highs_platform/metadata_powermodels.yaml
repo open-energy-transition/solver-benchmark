@@ -9,6 +9,7 @@ benchmarks:
     Problem class: MILP
     Application: Steady-state optimal power flow
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -31,6 +32,7 @@ benchmarks:
     Problem class: LP
     Application: Steady-state optimal power flow
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -51,6 +53,7 @@ benchmarks:
     Problem class: MILP
     Application: Steady-state optimal power flow
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -73,6 +76,7 @@ benchmarks:
     Problem class: MILP
     Application: Steady-state optimal power flow
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -95,6 +99,7 @@ benchmarks:
     Problem class: MILP
     Application: Steady-state optimal power flow
     Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
