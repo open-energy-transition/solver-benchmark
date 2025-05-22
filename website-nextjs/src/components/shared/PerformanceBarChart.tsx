@@ -521,7 +521,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         runtime of the base solver.
       </p>
 
-      <div className="flex flex-wrap gap-4 mb-4 legend-container pb-4">
+      <div className="flex flex-wrap gap-4 legend-container pb-4">
         {/* Selected solver legend (circle) */}
         <div
           className="flex items-center gap-2 cursor-pointer select-none"
@@ -561,7 +561,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             </div>
           ))}
       </div>
-
+      <div className="text-sm mb-4">
+        <p>🔻/🔺: base / other solver failed to solve in time limit</p>
+        <p>❌ : both solvers failed to solve in time limit</p>
+      </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
       </div>
