@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
-import { SolverType } from "@/types/benchmark";
+import { SolverStatusType, SolverType } from "@/types/benchmark";
 import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
@@ -10,7 +10,7 @@ import { getChartColor } from "@/utils/chart";
 type ChartData = {
   runtime: number;
   memoryUsage: number;
-  status: "TO" | "ok" | "warning";
+  status: SolverStatusType;
   solver: SolverType;
   benchmark: string;
   size: string;
