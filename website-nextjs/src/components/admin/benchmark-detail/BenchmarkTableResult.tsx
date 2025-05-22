@@ -72,8 +72,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         cell: (info) => info.getValue(),
       },
       {
-        header: "TECHNIQUE",
-        accessorKey: "technique",
+        header: "PROBLEM CLASS",
+        accessorKey: "problemClass",
         cell: (info) => info.getValue(),
       },
       {

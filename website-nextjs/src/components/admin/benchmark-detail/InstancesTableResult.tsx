@@ -34,7 +34,7 @@ const InstancesTableResult = ({
   benchmarkDetail: MetaDataEntry;
 }) => {
   const isMILP = useMemo(() => {
-    return benchmarkDetail.technique === "MILP";
+    return benchmarkDetail.problemClass === "MILP";
   }, [benchmarkDetail]);
 
   const columns = useMemo<ColumnDef<RowData>[]>(() => {

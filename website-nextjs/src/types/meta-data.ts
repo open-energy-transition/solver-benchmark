@@ -15,7 +15,7 @@ interface MetaDataEntry {
   shortDescription: string;
   modelName: string;
   version: string;
-  technique: string;
+  problemClass: string;
   kindOfProblem: string;
   sectors: string;
   timeHorizon: string;

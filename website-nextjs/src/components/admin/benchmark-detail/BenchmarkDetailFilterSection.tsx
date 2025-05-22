@@ -18,7 +18,7 @@ const BenchmarkDetailFilterSection = ({
   setLocalFilters,
   localFilters,
   availableSectors,
-  availableTechniques,
+  availableProblemClasses,
   availableKindOfProblems,
   availableModels,
   availableProblemSizes,
@@ -28,7 +28,7 @@ const BenchmarkDetailFilterSection = ({
   >;
   localFilters: IFilterBenchmarkDetails;
   availableSectors: string[];
-  availableTechniques: string[];
+  availableProblemClasses: string[];
   availableKindOfProblems: string[];
   availableModels: string[];
   availableProblemSizes: string[];
@@ -87,7 +87,7 @@ const BenchmarkDetailFilterSection = ({
     const categoryKey = category as keyof IFilterBenchmarkDetails;
     const availableItems = {
       sectors: availableSectors,
-      technique: availableTechniques,
+      problemClass: availableProblemClasses,
       kindOfProblem: availableKindOfProblems,
       modelName: availableModels,
       problemSize: availableProblemSizes,
@@ -144,7 +144,7 @@ const BenchmarkDetailFilterSection = ({
 
     [
       "sectors",
-      "technique",
+      "problemClass",
       "kindOfProblem",
       "modelName",
       "problemSize",
@@ -209,7 +209,7 @@ const BenchmarkDetailFilterSection = ({
     if (isInit) {
       const resetFilters = {
         sectors: availableSectors,
-        technique: availableTechniques,
+        problemClass: availableProblemClasses,
         kindOfProblem: availableKindOfProblems,
         modelName: availableModels,
         problemSize: availableProblemSizes,
@@ -241,7 +241,7 @@ const BenchmarkDetailFilterSection = ({
   const isAnyFilterActive = () => {
     const allAvailableFilters = {
       sectors: availableSectors,
-      technique: availableTechniques,
+      problemClass: availableProblemClasses,
       kindOfProblem: availableKindOfProblems,
       modelName: availableModels,
       problemSize: availableProblemSizes,
@@ -312,19 +312,23 @@ const BenchmarkDetailFilterSection = ({
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
-          {/* Technique */}
+          {/* Problem Class */}
           <FilterGroup
-            title="Technique"
+            title="Problem Class"
             icon={<ProcessorIcon className="w-5 h-5" />}
-            items={availableTechniques}
-            selectedItems={localFilters?.technique}
+            items={availableProblemClasses}
+            selectedItems={localFilters?.problemClass}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "technique", value })
+              handleCheckboxChange({ category: "problemClass", value })
             }
             onItemOnly={(value) =>
-              handleCheckboxChange({ category: "technique", value, only: true })
+              handleCheckboxChange({
+                category: "problemClass",
+                value,
+                only: true,
+              })
             }
-            onSelectAll={() => handleSelectAll({ category: "technique" })}
+            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
             className="w-full"
             gridClassName="!flex flex-wrap"
             uppercase={false}

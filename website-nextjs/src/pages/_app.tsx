@@ -78,22 +78,22 @@ function App({ Component, pageProps }: AppProps) {
 
       const uniqueValues = {
         sectors: new Set<string>(),
-        techniques: new Set<string>(),
+        problemClasses: new Set<string>(),
         kindOfProblems: new Set<string>(),
         models: new Set<string>(),
       };
 
       Object.keys(benchmarksMetaData).forEach((key) => {
-        const { sectors, technique, kindOfProblem, modelName } =
+        const { sectors, problemClass, kindOfProblem, modelName } =
           benchmarksMetaData[key];
         uniqueValues.sectors.add(sectors);
-        uniqueValues.techniques.add(technique);
+        uniqueValues.problemClasses.add(problemClass);
         uniqueValues.kindOfProblems.add(kindOfProblem);
         uniqueValues.models.add(modelName);
       });
 
       const availableSectors = Array.from(uniqueValues.sectors);
-      const availableTechniques = Array.from(uniqueValues.techniques);
+      const availableProblemClasses = Array.from(uniqueValues.problemClasses);
       const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
       const availableModels = Array.from(uniqueValues.models);
       const availableProblemSizes = Array.from(
@@ -114,7 +114,7 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(
         resultActions.setAvailableFilterData({
           availableSectors,
-          availableTechniques,
+          availableProblemClasses,
           availableKindOfProblems,
           availableModels,
           availableProblemSizes,
@@ -128,7 +128,7 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(
         filterActions.setFilter({
           sectors: availableSectors,
-          technique: availableTechniques,
+          problemClass: availableProblemClasses,
           kindOfProblem: availableKindOfProblems,
           modelName: availableModels,
           problemSize: availableProblemSizes,

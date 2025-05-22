@@ -25,7 +25,7 @@ const initialState: IResultState = {
   availableSectors: [],
   availableSolvers: [],
   availableStatuses: [],
-  availableTechniques: [],
+  availableProblemClasses: [],
   benchmarkLatestResults: [],
   benchmarkResults: [],
   fullMetaData: {},
@@ -119,7 +119,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
     case SET_AVAILABLE_FILTER_DATA:
       const {
         availableSectors,
-        availableTechniques,
+        availableProblemClasses,
         availableKindOfProblems,
         availableModels,
         availableProblemSizes,
@@ -127,7 +127,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         availableSectors: sortStringArray(availableSectors),
-        availableTechniques: sortStringArray(availableTechniques),
+        availableProblemClasses: sortStringArray(availableProblemClasses),
         availableKindOfProblems: sortStringArray(availableKindOfProblems),
         availableModels: sortStringArray(availableModels),
         availableProblemSizes: sortStringArray(availableProblemSizes, "desc"),

@@ -45,9 +45,9 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.version,
     },
     {
-      name: "technique",
-      label: "technique",
-      value: benchmarkDetail?.technique,
+      name: "problemClass",
+      label: "problemClass",
+      value: benchmarkDetail?.problemClass,
     },
     {
       name: "problemKind",

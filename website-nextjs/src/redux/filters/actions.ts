@@ -62,7 +62,7 @@ const actions = {
           const metaData = _metaData as MetaDataEntry;
           return (
             filters.kindOfProblem.includes(metaData.kindOfProblem) &&
-            filters.technique.includes(metaData.technique) &&
+            filters.problemClass.includes(metaData.problemClass) &&
             filters.sectors.includes(metaData.sectors) &&
             filters.modelName.includes(metaData.modelName)
           );

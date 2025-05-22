@@ -14,7 +14,7 @@ const initialState: IFilterState = {
   sectors: [],
   solvers: [],
   statuses: [],
-  technique: [],
+  problemClass: [],
   sgmMode: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
   xFactor: 5,
   realistic: [],

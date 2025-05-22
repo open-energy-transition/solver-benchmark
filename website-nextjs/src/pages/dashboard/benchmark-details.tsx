@@ -33,21 +33,22 @@ const PageBenchmarkDetail = () => {
 
   const uniqueValues = {
     sectors: new Set<string>(),
-    techniques: new Set<string>(),
+    problemClasses: new Set<string>(),
     kindOfProblems: new Set<string>(),
     models: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, technique, kindOfProblem, modelName } = fullMetaData[key];
+    const { sectors, problemClass, kindOfProblem, modelName } =
+      fullMetaData[key];
     uniqueValues.sectors.add(sectors);
-    uniqueValues.techniques.add(technique);
+    uniqueValues.problemClasses.add(problemClass);
     uniqueValues.kindOfProblems.add(kindOfProblem);
     uniqueValues.models.add(modelName);
   });
 
   const availableSectors = Array.from(uniqueValues.sectors);
-  const availableTechniques = Array.from(uniqueValues.techniques);
+  const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
   const availableModels = Array.from(uniqueValues.models);
   const availableProblemSizes = Array.from(
@@ -69,7 +70,7 @@ const PageBenchmarkDetail = () => {
 
     [
       "sectors",
-      "technique",
+      "problemClass",
       "kindOfProblem",
       "modelName",
       "problemSize",
@@ -90,7 +91,7 @@ const PageBenchmarkDetail = () => {
   const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectors: availableSectors,
-    technique: availableTechniques,
+    problemClass: availableProblemClasses,
     kindOfProblem: availableKindOfProblems,
     modelName: availableModels,
     problemSize: availableProblemSizes,
@@ -110,7 +111,7 @@ const PageBenchmarkDetail = () => {
     } else {
       setLocalFilters({
         sectors: availableSectors,
-        technique: availableTechniques,
+        problemClass: availableProblemClasses,
         kindOfProblem: availableKindOfProblems,
         modelName: availableModels,
         problemSize: availableProblemSizes,
@@ -132,8 +133,8 @@ const PageBenchmarkDetail = () => {
         values.length <
           (key === "sectors"
             ? availableSectors.length
-            : key === "technique"
-              ? availableTechniques.length
+            : key === "problemClass"
+              ? availableProblemClasses.length
               : key === "kindOfProblem"
                 ? availableKindOfProblems.length
                 : key === "modelName"
@@ -162,7 +163,7 @@ const PageBenchmarkDetail = () => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
       const {
         sectors,
-        technique,
+        problemClass,
         kindOfProblem,
         modelName,
         problemSize,
@@ -171,8 +172,8 @@ const PageBenchmarkDetail = () => {
 
       const isSectorsMatch =
         sectors.length === 0 || sectors.includes(value.sectors);
-      const isTechniqueMatch =
-        technique.length === 0 || technique.includes(value.technique);
+      const isProblemClassMatch =
+        problemClass.length === 0 || problemClass.includes(value.problemClass);
       const isKindOfProblemMatch =
         kindOfProblem.length === 0 ||
         kindOfProblem.includes(value.kindOfProblem);
@@ -204,7 +205,7 @@ const PageBenchmarkDetail = () => {
 
       return (
         isSectorsMatch &&
-        isTechniqueMatch &&
+        isProblemClassMatch &&
         isKindOfProblemMatch &&
         isModelNameMatch &&
         isProblemSizeMatch &&
@@ -276,7 +277,7 @@ const PageBenchmarkDetail = () => {
               </div>
               <BenchmarkStatisticsCharts
                 availableSectors={availableSectors}
-                availableTechniques={availableTechniques}
+                availableProblemClasses={availableProblemClasses}
                 availableKindOfProblems={availableKindOfProblems}
                 availableModels={availableModels}
                 availableProblemSizes={availableProblemSizes}
@@ -289,7 +290,7 @@ const PageBenchmarkDetail = () => {
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
                     availableSectors={availableSectors}
-                    availableTechniques={availableTechniques}
+                    availableProblemClasses={availableProblemClasses}
                     availableKindOfProblems={availableKindOfProblems}
                     availableModels={availableModels}
                     availableProblemSizes={availableProblemSizes}

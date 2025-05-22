@@ -17,14 +17,14 @@ export type IFilterState = {
   sgmMode: SgmMode;
   solvers: string[];
   statuses: string[];
-  technique: string[];
+  problemClass: string[];
   xFactor: 5;
   isReady: boolean;
 };
 
 export interface IAvailableFilterData {
   availableSectors: string[];
-  availableTechniques: string[];
+  availableProblemClasses: string[];
   availableKindOfProblems: string[];
   availableProblemSizes: string[];
   availableModels: string[];
