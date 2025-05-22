@@ -9,57 +9,84 @@ import {
   useReactTable,
   SortingState,
   ColumnFiltersState,
+  CellContext,
 } from "@tanstack/react-table";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { ArrowToRightIcon } from "@/assets/icons";
 import SortIcon from "@/components/shared/tables/SortIcon";
 
+type RowData = {
+  instance: string;
+  spatialResolution: number;
+  temporalResolution: string | number;
+  nOfVariables: number | null;
+  nOfConstraints: number;
+  nOfContinuousVariables: number | null;
+  nOfIntegerVariables: number | null;
+  realistic: boolean;
+  url: string;
+};
+
 const InstancesTableResult = ({
   benchmarkDetail,
 }: {
   benchmarkDetail: MetaDataEntry;
 }) => {
-  const columns = useMemo<
-    ColumnDef<{
-      instance: string;
-      spatialResolution: number;
-      temporalResolution: string | number;
-      nOfVariables: number | null;
-      nOfConstraints: number;
-    }>[]
-  >(
-    () => [
+  const isMILP = useMemo(() => {
+    return benchmarkDetail.technique === "MILP";
+  }, [benchmarkDetail]);
+
+  const columns = useMemo<ColumnDef<RowData>[]>(() => {
+    const baseColumns: ColumnDef<RowData>[] = [
       {
         header: "INSTANCE",
         accessorKey: "instance",
         size: 200,
-        cell: (info) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
       },
       {
         header: "SPATIAL RESOLUTION",
         accessorKey: "spatialResolution",
-        cell: (info) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
       },
       {
         header: "TEMPORAL RESOLUTION",
         accessorKey: "temporalResolution",
-        cell: (info) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
       },
       {
         header: "No. VARIABLES",
         accessorKey: "nOfVariables",
-        cell: (info) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
       },
       {
         header: "No. CONSTRAINTS",
         accessorKey: "nOfConstraints",
-        cell: (info) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
       },
+    ];
+
+    if (isMILP) {
+      baseColumns.push(
+        {
+          header: "No. CONTINUOUS VARIABLES",
+          accessorKey: "nOfContinuousVariables",
+          cell: (info: CellContext<RowData, unknown>) => info.getValue(),
+        },
+        {
+          header: "No. INTEGER VARIABLES",
+          accessorKey: "nOfIntegerVariables",
+          cell: (info: CellContext<RowData, unknown>) => info.getValue(),
+        },
+      );
+    }
+
+    baseColumns.push(
       {
         header: "REALISTIC",
         accessorKey: "realistic",
-        cell: (info) => (
+        cell: (info: CellContext<RowData, unknown>) => (
           <span
             className={`px-3 py-2 rounded-full text-sm ${
               info.getValue()
@@ -75,7 +102,7 @@ const InstancesTableResult = ({
         header: "LP/MPS FILE",
         accessorKey: "url",
         enableSorting: false,
-        cell: (info) => (
+        cell: (info: CellContext<RowData, unknown>) => (
           <Link
             href={info.getValue() as string}
             className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center w-max"
@@ -87,9 +114,10 @@ const InstancesTableResult = ({
           </Link>
         ),
       },
-    ],
-    [],
-  );
+    );
+
+    return baseColumns;
+  }, [isMILP]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -99,8 +127,10 @@ const InstancesTableResult = ({
       benchmarkDetail.sizes.map((sizeData) => ({
         spatialResolution: sizeData.spatialResolution,
         temporalResolution: sizeData.temporalResolution,
-        nOfVariables: sizeData.nOfVariables,
-        nOfConstraints: sizeData.nOfConstraints,
+        nOfVariables: sizeData.numVariables,
+        nOfConstraints: sizeData.numConstraints,
+        nOfContinuousVariables: sizeData.numContinuousVariables,
+        nOfIntegerVariables: sizeData.numIntegerVariables,
         instance: sizeData.name,
         url: sizeData.url,
         realistic: sizeData.realistic,

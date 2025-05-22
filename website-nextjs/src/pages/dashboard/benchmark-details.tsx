@@ -7,7 +7,7 @@ import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
@@ -15,9 +15,6 @@ import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkSt
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
 
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
@@ -76,6 +73,7 @@ const PageBenchmarkDetail = () => {
       "kindOfProblem",
       "modelName",
       "problemSize",
+      "realistic",
     ].forEach((key) => {
       const value = router.query[key];
       if (typeof value === "string") {
@@ -96,6 +94,7 @@ const PageBenchmarkDetail = () => {
     kindOfProblem: availableKindOfProblems,
     modelName: availableModels,
     problemSize: availableProblemSizes,
+    realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
 
   useEffect(() => {
@@ -115,6 +114,7 @@ const PageBenchmarkDetail = () => {
         kindOfProblem: availableKindOfProblems,
         modelName: availableModels,
         problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
       });
     }
     setIsInit(true);
@@ -140,7 +140,9 @@ const PageBenchmarkDetail = () => {
                   ? availableModels.length
                   : key === "problemSize"
                     ? availableProblemSizes.length
-                    : 0)
+                    : key === "realistic"
+                      ? 2
+                      : 0)
       ) {
         queryParams.set(key, values.map(encodeValue).join(";"));
       }
@@ -157,8 +159,15 @@ const PageBenchmarkDetail = () => {
   }, [localFilters, isInit]);
 
   const filteredMetaData = useMemo(() => {
-    const filteredEntries = Object.entries(metaData).filter(([, value]) => {
-      const { sectors, technique, kindOfProblem, modelName } = localFilters;
+    const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
+      const {
+        sectors,
+        technique,
+        kindOfProblem,
+        modelName,
+        problemSize,
+        realistic,
+      } = localFilters;
 
       const isSectorsMatch =
         sectors.length === 0 || sectors.includes(value.sectors);
@@ -169,11 +178,37 @@ const PageBenchmarkDetail = () => {
         kindOfProblem.includes(value.kindOfProblem);
       const isModelNameMatch =
         modelName.length === 0 || modelName.includes(value.modelName);
+      const isProblemSizeMatch =
+        problemSize.length === 0 ||
+        (value.sizes &&
+          value.sizes.some((size) => problemSize.includes(size.size)));
+
+      const isRealisticMatch =
+        realistic.length === 0 ||
+        (value.sizes &&
+          value.sizes.some((size) => {
+            if (
+              size.realistic === true &&
+              realistic.includes(RealisticOption.Realistic)
+            ) {
+              return true;
+            }
+            if (
+              (size.realistic === false || size.realistic === undefined) &&
+              realistic.includes(RealisticOption.Other)
+            ) {
+              return true;
+            }
+            return false;
+          }));
+
       return (
         isSectorsMatch &&
         isTechniqueMatch &&
         isKindOfProblemMatch &&
-        isModelNameMatch
+        isModelNameMatch &&
+        isProblemSizeMatch &&
+        isRealisticMatch
       );
     });
 
@@ -227,6 +262,25 @@ const PageBenchmarkDetail = () => {
                   platform, including their source and download links.
                 </p>
               </div>
+              <div className="py-2 grid sm:flex justify-between items-center">
+                <div className="text-navy text-lg font-bold 4xl:text-xl">
+                  Summary of Benchmark Set
+                </div>
+                <Link
+                  className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
+                  href={PATH_DASHBOARD.benchmarkSummary}
+                >
+                  See more details
+                  <ArrowUpIcon className="rotate-90" />
+                </Link>
+              </div>
+              <BenchmarkStatisticsCharts
+                availableSectors={availableSectors}
+                availableTechniques={availableTechniques}
+                availableKindOfProblems={availableKindOfProblems}
+                availableModels={availableModels}
+                availableProblemSizes={availableProblemSizes}
+              />
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
               <div className="sm:flex justify-between">
@@ -249,25 +303,6 @@ const PageBenchmarkDetail = () => {
                 `}
                 >
                   <div className="space-y-4 sm:space-y-6">
-                    <div className="py-2 grid sm:flex justify-between items-center">
-                      <div className="text-navy text-lg font-bold 4xl:text-xl">
-                        Summary of Benchmark Set
-                      </div>
-                      <Link
-                        className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
-                        href={PATH_DASHBOARD.benchmarkSummary}
-                      >
-                        See more details
-                        <ArrowUpIcon className="rotate-90" />
-                      </Link>
-                    </div>
-                    <BenchmarkStatisticsCharts
-                      availableSectors={availableSectors}
-                      availableTechniques={availableTechniques}
-                      availableKindOfProblems={availableKindOfProblems}
-                      availableModels={availableModels}
-                      availableProblemSizes={availableProblemSizes}
-                    />
                     <div className="py-2">
                       <div className="text-navy text-lg font-bold 4xl:text-xl">
                         List of All Benchmarks

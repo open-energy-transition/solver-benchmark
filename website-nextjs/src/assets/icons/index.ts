@@ -48,7 +48,7 @@ export { default as WindowIcon } from "./window.svg";
 export { default as WrenchIcon } from "./wrench.svg";
 export { default as CameraIcon } from "./camera.svg";
 export { default as DownloadAltIcon } from "./download-alt.svg";
-export { default as QuestionLine } from "./question-line.svg";
+export { default as QuestionLineIcon } from "./question-line.svg";
 export { default as SearchPlusIcon } from "./search-plus.svg";
 export { default as SendIcon } from "./send-icon.svg";
 export { default as SoftwareDevIcon } from "./software-dev.svg";

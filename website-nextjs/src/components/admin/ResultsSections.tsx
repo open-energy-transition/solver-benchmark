@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ArrowIcon, QuestionLine } from "@/assets/icons";
+import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
-import { MaxMemoryUsage } from "@/constants";
 import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
-import { SgmMode } from "@/constants/filter";
 import { extractNumberFromFormattedString } from "@/utils/string";
+import { SgmMode } from "@/constants/sgm";
 
 type ColumnType = {
   name: string;
@@ -86,18 +85,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         return benchmarkLatestResults.map((result) => ({
           ...result,
           runtime:
-            result.status !== "ok" ? result.timeout * xFactor : result.runtime,
+            result.status !== "ok" ? result.runtime * xFactor : result.runtime,
           memoryUsage:
             result.status !== "ok"
-              ? MaxMemoryUsage * xFactor
+              ? result.memoryUsage * xFactor
               : result.memoryUsage,
-        }));
-      case SgmMode.COMPUTE_SGM_USING_TO_VALUES:
-        return benchmarkLatestResults.map((result) => ({
-          ...result,
-          runtime: result.status !== "ok" ? result.timeout : result.runtime,
-          memoryUsage:
-            result.status !== "ok" ? MaxMemoryUsage : result.memoryUsage,
         }));
       default:
         return benchmarkLatestResults;
@@ -258,14 +250,14 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <div>
-                  <QuestionLine className="w-4 h-4" />
+                  <QuestionLineIcon className="w-4 h-4" />
                 </div>
               )}
               position="right center"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
@@ -414,15 +406,19 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         <div className="text-navy px-5 text-l block items-center mt-2">
           <span>
             This table summarizes all the benchmark results of the latest
-            version of each solver on the selected configuration. You can rank
-            the solvers by the normalized shifted geometric mean (SGM
+            (minor) version as of April 2025 of each solver on the selected
+            configuration.
+            <br />
+            <br />
+            You can rank the solvers by the normalized shifted geometric mean
+            (SGM
           </span>
           <span className="inline-flex gap-2">
             <Popup
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-baseline">
-                  <QuestionLine
+                  <QuestionLineIcon
                     className="size-3.5 4xl:size-5"
                     viewBox="0 0 24 20"
                   />
@@ -431,9 +427,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               )}
               position="right center"
               closeOnDocumentClick
-              arrowStyle={{ color: "#ebeff2" }}
+              arrow={false}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
                 The shifted geometric mean SGM of n non-negative numbers
                 v[1],...v[n] is
                 <br />

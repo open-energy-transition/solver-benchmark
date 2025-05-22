@@ -17,7 +17,10 @@ const NormalizedSGMRuntime = ({ chartData }: INormalizedSGMRuntime) => {
         title="Normalized SGM Runtime"
         chartData={chartData}
         xAxisTooltipFormat={(value) =>
-          `<strong>Runtime:</strong> ${roundNumber(Number(value), 2)}`
+          `<strong>(Norm.) SGM Runtime:</strong> ${roundNumber(
+            Number(value),
+            2,
+          )}`
         }
       />
     </div>

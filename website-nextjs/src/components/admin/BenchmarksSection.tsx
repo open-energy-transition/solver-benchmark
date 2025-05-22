@@ -5,8 +5,8 @@ import { CircleIcon, CloseIcon } from "@/assets/icons";
 import D3Chart from "../shared/D3PlotChart";
 import { IFilterState, IResultState } from "@/types/state";
 import { useMemo } from "react";
-import { SgmMode } from "@/constants/filter";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { SgmMode } from "@/constants/sgm";
 
 interface BenchmarksSectionProps {
   timeout: number;
@@ -55,6 +55,16 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
         <div className="pt-1.5 pb-3">
           <div className="text-navy font-bold text-xl">Runtime vs Memory</div>
 
+          <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
+            A graph showing all the benchmark results (potentially filtered)
+            that are summarized by the table above. Every data point in this
+            graph is the result of running one solver on one benchmark problem
+            instance. The more (circular) data points you see for a particular
+            solver, the more benchmark instances it was able to solve
+            successfully. A point that is lower than another one uses less
+            memory, and a point that is to the left of another means it ran
+            faster.
+          </p>
           <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
             <span>
               Click on any point in this graph to see details of the benchmark
