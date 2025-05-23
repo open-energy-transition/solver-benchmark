@@ -33,22 +33,22 @@ const PageBenchmarkDetail = () => {
 
   const uniqueValues = {
     sectors: new Set<string>(),
-    techniques: new Set<string>(),
-    kindOfProblems: new Set<string>(),
+    problemClasses: new Set<string>(),
+    applications: new Set<string>(),
     models: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, technique, kindOfProblem, modelName } = fullMetaData[key];
+    const { sectors, problemClass, application, modelName } = fullMetaData[key];
     uniqueValues.sectors.add(sectors);
-    uniqueValues.techniques.add(technique);
-    uniqueValues.kindOfProblems.add(kindOfProblem);
+    uniqueValues.problemClasses.add(problemClass);
+    uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
   });
 
   const availableSectors = Array.from(uniqueValues.sectors);
-  const availableTechniques = Array.from(uniqueValues.techniques);
-  const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+  const availableProblemClasses = Array.from(uniqueValues.problemClasses);
+  const availableApplications = Array.from(uniqueValues.applications);
   const availableModels = Array.from(uniqueValues.models);
   const availableProblemSizes = Array.from(
     new Set(
@@ -69,8 +69,8 @@ const PageBenchmarkDetail = () => {
 
     [
       "sectors",
-      "technique",
-      "kindOfProblem",
+      "problemClass",
+      "application",
       "modelName",
       "problemSize",
       "realistic",
@@ -90,8 +90,8 @@ const PageBenchmarkDetail = () => {
   const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectors: availableSectors,
-    technique: availableTechniques,
-    kindOfProblem: availableKindOfProblems,
+    problemClass: availableProblemClasses,
+    application: availableApplications,
     modelName: availableModels,
     problemSize: availableProblemSizes,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -110,8 +110,8 @@ const PageBenchmarkDetail = () => {
     } else {
       setLocalFilters({
         sectors: availableSectors,
-        technique: availableTechniques,
-        kindOfProblem: availableKindOfProblems,
+        problemClass: availableProblemClasses,
+        application: availableApplications,
         modelName: availableModels,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -132,10 +132,10 @@ const PageBenchmarkDetail = () => {
         values.length <
           (key === "sectors"
             ? availableSectors.length
-            : key === "technique"
-              ? availableTechniques.length
-              : key === "kindOfProblem"
-                ? availableKindOfProblems.length
+            : key === "problemClass"
+              ? availableProblemClasses.length
+              : key === "application"
+                ? availableApplications.length
                 : key === "modelName"
                   ? availableModels.length
                   : key === "problemSize"
@@ -162,8 +162,8 @@ const PageBenchmarkDetail = () => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
       const {
         sectors,
-        technique,
-        kindOfProblem,
+        problemClass,
+        application,
         modelName,
         problemSize,
         realistic,
@@ -171,11 +171,10 @@ const PageBenchmarkDetail = () => {
 
       const isSectorsMatch =
         sectors.length === 0 || sectors.includes(value.sectors);
-      const isTechniqueMatch =
-        technique.length === 0 || technique.includes(value.technique);
-      const isKindOfProblemMatch =
-        kindOfProblem.length === 0 ||
-        kindOfProblem.includes(value.kindOfProblem);
+      const isProblemClassMatch =
+        problemClass.length === 0 || problemClass.includes(value.problemClass);
+      const isApplicationMatch =
+        application.length === 0 || application.includes(value.application);
       const isModelNameMatch =
         modelName.length === 0 || modelName.includes(value.modelName);
       const isProblemSizeMatch =
@@ -204,8 +203,8 @@ const PageBenchmarkDetail = () => {
 
       return (
         isSectorsMatch &&
-        isTechniqueMatch &&
-        isKindOfProblemMatch &&
+        isProblemClassMatch &&
+        isApplicationMatch &&
         isModelNameMatch &&
         isProblemSizeMatch &&
         isRealisticMatch
@@ -276,8 +275,8 @@ const PageBenchmarkDetail = () => {
               </div>
               <BenchmarkStatisticsCharts
                 availableSectors={availableSectors}
-                availableTechniques={availableTechniques}
-                availableKindOfProblems={availableKindOfProblems}
+                availableProblemClasses={availableProblemClasses}
+                availableApplications={availableApplications}
                 availableModels={availableModels}
                 availableProblemSizes={availableProblemSizes}
               />
@@ -289,8 +288,8 @@ const PageBenchmarkDetail = () => {
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
                     availableSectors={availableSectors}
-                    availableTechniques={availableTechniques}
-                    availableKindOfProblems={availableKindOfProblems}
+                    availableProblemClasses={availableProblemClasses}
+                    availableApplications={availableApplications}
                     availableModels={availableModels}
                     availableProblemSizes={availableProblemSizes}
                   />

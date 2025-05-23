@@ -5,7 +5,7 @@ import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { BenchmarkResult } from "@/types/benchmark";
 import { IResultState } from "@/types/state";
 import { CellContext } from "@tanstack/react-table";
-import { Technique } from "@/constants";
+import { ProblemClass } from "@/constants";
 import Link from "next/link";
 import { roundNumber } from "@/utils/number";
 import { isNullorUndefined } from "@/utils/calculations";
@@ -41,7 +41,9 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
   });
   const isMilp = useMemo(() => {
     const benchmarkDetail = rawMetaData[benchmarkName as string];
-    return benchmarkDetail && benchmarkDetail.technique === Technique.MILP;
+    return (
+      benchmarkDetail && benchmarkDetail.problemClass === ProblemClass.MILP
+    );
   }, [benchmarkName]);
 
   const getLogDownloadUrl = (row: BenchmarkResult) => {

@@ -8,13 +8,13 @@ const { TOGGLE_FILTER, SET_FILTER, SET_SGM_MODE, SET_X_FACTOR } = actions;
 
 const initialState: IFilterState = {
   benchmarks: [],
-  kindOfProblem: [],
+  application: [],
   modelName: [],
   problemSize: [],
   sectors: [],
   solvers: [],
   statuses: [],
-  technique: [],
+  problemClass: [],
   sgmMode: SgmMode.COMPUTE_SGM_USING_TO_VALUES,
   xFactor: 5,
   realistic: [],

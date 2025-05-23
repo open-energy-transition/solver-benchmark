@@ -18,8 +18,8 @@ const BenchmarkDetailFilterSection = ({
   setLocalFilters,
   localFilters,
   availableSectors,
-  availableTechniques,
-  availableKindOfProblems,
+  availableProblemClasses,
+  availableApplications,
   availableModels,
   availableProblemSizes,
 }: {
@@ -28,8 +28,8 @@ const BenchmarkDetailFilterSection = ({
   >;
   localFilters: IFilterBenchmarkDetails;
   availableSectors: string[];
-  availableTechniques: string[];
-  availableKindOfProblems: string[];
+  availableProblemClasses: string[];
+  availableApplications: string[];
   availableModels: string[];
   availableProblemSizes: string[];
 }) => {
@@ -87,8 +87,8 @@ const BenchmarkDetailFilterSection = ({
     const categoryKey = category as keyof IFilterBenchmarkDetails;
     const availableItems = {
       sectors: availableSectors,
-      technique: availableTechniques,
-      kindOfProblem: availableKindOfProblems,
+      problemClass: availableProblemClasses,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -144,8 +144,8 @@ const BenchmarkDetailFilterSection = ({
 
     [
       "sectors",
-      "technique",
-      "kindOfProblem",
+      "problemClass",
+      "application",
       "modelName",
       "problemSize",
       "realistic",
@@ -209,8 +209,8 @@ const BenchmarkDetailFilterSection = ({
     if (isInit) {
       const resetFilters = {
         sectors: availableSectors,
-        technique: availableTechniques,
-        kindOfProblem: availableKindOfProblems,
+        problemClass: availableProblemClasses,
+        application: availableApplications,
         modelName: availableModels,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -241,8 +241,8 @@ const BenchmarkDetailFilterSection = ({
   const isAnyFilterActive = () => {
     const allAvailableFilters = {
       sectors: availableSectors,
-      technique: availableTechniques,
-      kindOfProblem: availableKindOfProblems,
+      problemClass: availableProblemClasses,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -312,40 +312,44 @@ const BenchmarkDetailFilterSection = ({
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
-          {/* Technique */}
+          {/* Problem Class */}
           <FilterGroup
-            title="Technique"
+            title="Problem Class"
             icon={<ProcessorIcon className="w-5 h-5" />}
-            items={availableTechniques}
-            selectedItems={localFilters?.technique}
+            items={availableProblemClasses}
+            selectedItems={localFilters?.problemClass}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "technique", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({ category: "technique", value, only: true })
-            }
-            onSelectAll={() => handleSelectAll({ category: "technique" })}
-            className="w-full"
-            gridClassName="!flex flex-wrap"
-            uppercase={false}
-          />
-          {/* Kind of Problem */}
-          <FilterGroup
-            title="Kind of Problem"
-            icon={<WrenchIcon className="w-5 h-5" />}
-            items={availableKindOfProblems}
-            selectedItems={localFilters?.kindOfProblem}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "kindOfProblem", value })
+              handleCheckboxChange({ category: "problemClass", value })
             }
             onItemOnly={(value) =>
               handleCheckboxChange({
-                category: "kindOfProblem",
+                category: "problemClass",
                 value,
                 only: true,
               })
             }
-            onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
+            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
+            className="w-full"
+            gridClassName="!flex flex-wrap"
+            uppercase={false}
+          />
+          {/* Application */}
+          <FilterGroup
+            title="Application"
+            icon={<WrenchIcon className="w-5 h-5" />}
+            items={availableApplications}
+            selectedItems={localFilters?.application}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "application", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "application",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "application" })}
             className="w-full"
             gridClassName="grid-cols-1"
             uppercase={false}
