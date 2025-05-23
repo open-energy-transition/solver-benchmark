@@ -309,7 +309,7 @@ const FilterSection = () => {
             px-2
             text-navy
             transition-all
-            max-h-[80vh] opacity-100
+            opacity-100
           "
         >
           {/* Sectors */}
