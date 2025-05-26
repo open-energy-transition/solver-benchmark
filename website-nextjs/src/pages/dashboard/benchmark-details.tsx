@@ -43,7 +43,9 @@ const PageBenchmarkDetail = () => {
     const { sectoralFocus, sectors, problemClass, application, modelName } =
       fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
-    uniqueValues.sectors.add(sectors);
+    sectors.split(",").forEach((sector) => {
+      uniqueValues.sectors.add(sector.trim());
+    });
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
@@ -183,7 +185,12 @@ const PageBenchmarkDetail = () => {
         sectoralFocus.length === 0 ||
         sectoralFocus.includes(value.sectoralFocus);
       const isSectorsMatch =
-        sectors.length === 0 || sectors.includes(value.sectors);
+        sectors.length === 0 ||
+        (value.sectors &&
+          sectors.some((selectedSector) => {
+            const valueSectors = value.sectors.split(",").map((s) => s.trim());
+            return valueSectors.includes(selectedSector);
+          }));
       const isProblemClassMatch =
         problemClass.length === 0 || problemClass.includes(value.problemClass);
       const isApplicationMatch =

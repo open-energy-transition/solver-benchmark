@@ -88,7 +88,9 @@ function App({ Component, pageProps }: AppProps) {
         const { sectoralFocus, sectors, problemClass, application, modelName } =
           benchmarksMetaData[key];
         uniqueValues.sectoralFocus.add(sectoralFocus);
-        uniqueValues.sectors.add(sectors);
+        sectors.split(",").forEach((sector) => {
+          uniqueValues.sectors.add(sector.trim());
+        });
         uniqueValues.problemClasses.add(problemClass);
         uniqueValues.applications.add(application);
         uniqueValues.models.add(modelName);

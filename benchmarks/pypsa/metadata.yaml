@@ -8,7 +8,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Sector-coupled
-    Sectors: Power, heating, biomass, industry, transport
+    Sectors: Power, Heating, Biomass, Industry, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
