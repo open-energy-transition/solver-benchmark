@@ -1,24 +1,13 @@
-import React, { useMemo, useState } from "react";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  getFacetedUniqueValues,
-  useReactTable,
-  SortingState,
-  ColumnFiltersState,
-} from "@tanstack/react-table";
+import React, { useMemo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import SortIcon from "@/components/shared/tables/SortIcon";
 import { ArrowRightIcon } from "@/assets/icons";
-import PaginationTable from "@/components/shared/tables/PaginationTable";
+import { filterSelect } from "@/utils/table";
+import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -47,6 +36,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "name",
         size: 200,
         enableSorting: true,
+        filterFn: filterSelect,
         cell: (info) => (
           <Popup
             on={["hover"]}
@@ -69,26 +59,34 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       {
         header: "MODEL NAME",
         accessorKey: "modelName",
+        filterFn: filterSelect,
         cell: (info) => info.getValue(),
+        size: 130,
       },
       {
         header: "PROBLEM CLASS",
         accessorKey: "problemClass",
+        filterFn: filterSelect,
+        size: 120,
         cell: (info) => info.getValue(),
       },
       {
         header: "APPLICATION",
         accessorKey: "application",
+        filterFn: filterSelect,
         cell: (info) => info.getValue(),
       },
       {
         header: "SECTORS",
         accessorKey: "sectors",
+        size: 100,
+        filterFn: filterSelect,
         cell: (info) => info.getValue(),
       },
       {
         header: "DETAILS",
         accessorKey: "details",
+        enableColumnFilter: false,
         enableSorting: false,
         cell: (info) => (
           <Link
@@ -110,75 +108,9 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     [],
   );
 
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const table = useReactTable({
-    data: memoizedMetaData,
-    columns,
-    state: {
-      sorting,
-      columnFilters,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: false,
-  });
-
   return (
     <div className="py-2">
-      <div className="rounded-xl overflow-auto">
-        <table className="table-auto bg-white w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="text-start text-navy py-4 px-6 cursor-pointer"
-                  >
-                    <div
-                      className="flex gap-2 items-center 4xl:text-xl"
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                      {/* Sort */}
-                      <SortIcon
-                        canSort={header.column.getCanSort()}
-                        sortDirection={header.column.getIsSorted()}
-                      />
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-navy text-start py-2 px-6 4xl:text-xl"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {/* Pagination */}
-      <PaginationTable<IColumnTable> table={table} />
+      <TanStackTable data={memoizedMetaData} columns={columns} />
     </div>
   );
 };
