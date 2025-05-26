@@ -8,6 +8,7 @@ import { Color } from "@/constants/color";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { IResultState } from "@/types/state";
+import { filterNumber, filterSelect } from "@/utils/table";
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
@@ -22,7 +23,7 @@ const TableResult = () => {
       {
         header: "Benchmark",
         accessorKey: "benchmark",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterSelect,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
           <Popup
             on={["hover"]}
@@ -45,36 +46,37 @@ const TableResult = () => {
       {
         header: "Instance",
         accessorKey: "size",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterSelect,
         size: 100,
       },
       {
         header: "Solver",
         accessorKey: "solver",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterSelect,
         size: 80,
       },
       {
         header: "Solver Version",
         accessorKey: "solverVersion",
         size: 130,
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterSelect,
       },
       {
         header: "Solver Release Year",
         accessorKey: "solverReleaseYear",
         size: 170,
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterSelect,
       },
       {
         header: "Status",
         accessorKey: "status",
-        filterFn: "equals" as const,
+        filterFn: filterSelect,
         size: 80,
       },
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
+        filterFn: filterSelect,
         size: 200,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
@@ -86,23 +88,43 @@ const TableResult = () => {
       {
         header: "Runtime",
         accessorKey: "runtime",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
       },
       {
         header: "Memory",
         accessorKey: "memoryUsage",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
       },
       {
         header: "Objective Value",
         accessorKey: "objectiveValue",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
       },
       {
         header: "Max Integrality Violation",
         accessorKey: "maxIntegralityViolation",
         size: 210,
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
       },
       {
         header: "Duality Gap",
         accessorKey: "dualityGap",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
           <Popup
             on={["hover"]}
