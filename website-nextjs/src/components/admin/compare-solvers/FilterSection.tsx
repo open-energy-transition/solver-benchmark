@@ -1,6 +1,7 @@
 import {
   BrightIcon,
   CloseIcon,
+  ForkIcon,
   PolygonIcon,
   ProcessorIcon,
   WrenchIcon,
@@ -12,7 +13,7 @@ const FilterSection = () => {
       {/* Sectoral Focus */}
       <div className="bg-white rounded-xl py-2 px-3">
         <div className="flex gap-4">
-          Sectoral Focus <BrightIcon />
+          Sectoral Focus <ForkIcon />
         </div>
         <div className="flex gap-2 my-2">
           <button className="flex items-center gap-2 w-max rounded-lg px-6 py-3 text-base text-green-pop font-bold bg-green-pop bg-opacity-20 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">

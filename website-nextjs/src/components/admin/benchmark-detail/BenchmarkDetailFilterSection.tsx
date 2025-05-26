@@ -8,6 +8,7 @@ import {
   WrenchIcon,
   ProblemSizeIcon,
   GlobeSearchIcon,
+  ForkIcon,
 } from "@/assets/icons";
 import { useSelector } from "react-redux";
 import { IResultState, RealisticOption } from "@/types/state";
@@ -303,7 +304,7 @@ const BenchmarkDetailFilterSection = ({
           {/* Sectoral Focus */}
           <FilterGroup
             title="Sectoral Focus"
-            icon={<BrightIcon className="w-5 h-5" />}
+            icon={<ForkIcon className="w-5 h-5" />}
             items={availableSectoralFocus}
             selectedItems={localFilters?.sectoralFocus}
             onItemChange={(value) =>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   BrightIcon,
+  ForkIcon,
   GlobeSearchIcon,
   PolygonIcon,
   ProblemSizeIcon,
@@ -324,7 +325,7 @@ const FilterSection = () => {
           {/* Sectoral Focus */}
           <FilterGroup
             title="Sectoral Focus"
-            icon={<BrightIcon className="w-5 h-5" />}
+            icon={<ForkIcon className="w-5 h-5" />}
             items={availableSectoralFocus}
             selectedItems={selectedFilters?.sectoralFocus}
             onItemChange={(value) =>
