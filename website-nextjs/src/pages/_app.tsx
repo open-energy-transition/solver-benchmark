@@ -77,6 +77,7 @@ function App({ Component, pageProps }: AppProps) {
       });
 
       const uniqueValues = {
+        sectoralFocus: new Set<string>(),
         sectors: new Set<string>(),
         problemClasses: new Set<string>(),
         applications: new Set<string>(),
@@ -84,14 +85,16 @@ function App({ Component, pageProps }: AppProps) {
       };
 
       Object.keys(benchmarksMetaData).forEach((key) => {
-        const { sectors, problemClass, application, modelName } =
+        const { sectoralFocus, sectors, problemClass, application, modelName } =
           benchmarksMetaData[key];
+        uniqueValues.sectoralFocus.add(sectoralFocus);
         uniqueValues.sectors.add(sectors);
         uniqueValues.problemClasses.add(problemClass);
         uniqueValues.applications.add(application);
         uniqueValues.models.add(modelName);
       });
 
+      const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
       const availableSectors = Array.from(uniqueValues.sectors);
       const availableProblemClasses = Array.from(uniqueValues.problemClasses);
       const availableApplications = Array.from(uniqueValues.applications);
@@ -113,6 +116,7 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(resultActions.setRawMetaData(benchmarksMetaData));
       dispatch(
         resultActions.setAvailableFilterData({
+          availableSectoralFocus,
           availableSectors,
           availableProblemClasses,
           availableApplications,
@@ -127,6 +131,7 @@ function App({ Component, pageProps }: AppProps) {
 
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,

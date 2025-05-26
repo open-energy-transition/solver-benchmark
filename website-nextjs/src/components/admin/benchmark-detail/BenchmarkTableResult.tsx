@@ -77,6 +77,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         cell: (info) => info.getValue(),
       },
       {
+        header: "SECTORAL FOCUS",
+        accessorKey: "sectoralFocus",
+        size: 100,
+        filterFn: filterSelect,
+        cell: (info) => info.getValue(),
+      },
+      {
         header: "SECTORS",
         accessorKey: "sectors",
         size: 100,

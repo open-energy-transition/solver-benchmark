@@ -27,6 +27,12 @@ const BenchmarkSummaryTable = () => {
     },
   );
 
+  const availableSectoralFocus = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableSectoralFocus;
+    },
+  );
+
   const availableSectors = useSelector((state: { results: IResultState }) => {
     return state.results.availableSectors;
   });
@@ -52,6 +58,7 @@ const BenchmarkSummaryTable = () => {
   const summary = availableModels.map((model) => {
     const problemClassesMap = new Map<string, number>();
     const applicationsMap = new Map<string, number>();
+    const sectoralFocusMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -77,6 +84,11 @@ const BenchmarkSummaryTable = () => {
         availableApplications.forEach((application) => {
           if (metaData[key].application === application) {
             updateData(applicationsMap, application);
+          }
+        });
+        availableSectoralFocus.forEach((focus) => {
+          if (metaData[key].sectoralFocus === focus) {
+            updateData(sectoralFocusMap, focus);
           }
         });
         availableSectors.forEach((sector) => {
@@ -115,6 +127,7 @@ const BenchmarkSummaryTable = () => {
       applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
+      sectoralFocus: sectoralFocusMap,
       sectors: sectorsMap,
       realSizes: realSizesMap,
       nOfProblems: nOfProblemsMap,

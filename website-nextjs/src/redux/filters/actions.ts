@@ -63,6 +63,7 @@ const actions = {
           return (
             filters.application.includes(metaData.application) &&
             filters.problemClass.includes(metaData.problemClass) &&
+            filters.sectoralFocus.includes(metaData.sectoralFocus) &&
             filters.sectors.includes(metaData.sectors) &&
             filters.modelName.includes(metaData.modelName)
           );

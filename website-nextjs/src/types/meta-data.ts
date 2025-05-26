@@ -17,6 +17,7 @@ interface MetaDataEntry {
   version: string;
   problemClass: string;
   application: string;
+  sectoralFocus: string;
   sectors: string;
   timeHorizon: string;
   milpFeatures: string | null;

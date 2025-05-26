@@ -22,6 +22,7 @@ const initialState: IResultState = {
   availableApplications: [],
   availableModels: [],
   availableProblemSizes: [],
+  availableSectoralFocus: [],
   availableSectors: [],
   availableSolvers: [],
   availableStatuses: [],
@@ -118,6 +119,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
 
     case SET_AVAILABLE_FILTER_DATA:
       const {
+        availableSectoralFocus,
         availableSectors,
         availableProblemClasses,
         availableApplications,
@@ -126,6 +128,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
       } = action.payload.availableFilterData;
       return {
         ...state,
+        availableSectoralFocus: sortStringArray(availableSectoralFocus),
         availableSectors: sortStringArray(availableSectors),
         availableProblemClasses: sortStringArray(availableProblemClasses),
         availableApplications: sortStringArray(availableApplications),

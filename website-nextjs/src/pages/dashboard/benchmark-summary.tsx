@@ -29,6 +29,7 @@ const PageBenchmarkDetail = () => {
   });
 
   const uniqueValues = {
+    sectoralFocus: new Set<string>(),
     sectors: new Set<string>(),
     problemClasses: new Set<string>(),
     applications: new Set<string>(),
@@ -36,13 +37,16 @@ const PageBenchmarkDetail = () => {
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, problemClass, application, modelName } = fullMetaData[key];
+    const { sectoralFocus, sectors, problemClass, application, modelName } =
+      fullMetaData[key];
+    uniqueValues.sectoralFocus.add(sectoralFocus);
     uniqueValues.sectors.add(sectors);
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
   });
 
+  const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
@@ -65,6 +69,7 @@ const PageBenchmarkDetail = () => {
     const filters: Partial<IFilterState> = {};
 
     [
+      "sectoralFocus",
       "sectors",
       "problemClass",
       "application",
@@ -85,6 +90,7 @@ const PageBenchmarkDetail = () => {
 
   const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
+    sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
     problemClass: availableProblemClasses,
     application: availableApplications,
@@ -105,6 +111,7 @@ const PageBenchmarkDetail = () => {
       }));
     } else {
       setLocalFilters({
+        sectoralFocus: availableSectoralFocus,
         sectors: availableSectors,
         problemClass: availableProblemClasses,
         application: availableApplications,

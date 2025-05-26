@@ -5,12 +5,14 @@ import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 const BenchmarkStatisticsCharts = ({
+  availableSectoralFocus,
   availableSectors,
   availableProblemClasses,
   availableApplications,
   availableModels,
   availableProblemSizes,
 }: {
+  availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
   availableApplications: string[];
@@ -31,6 +33,7 @@ const BenchmarkStatisticsCharts = ({
   const summary = availableModels.map((model) => {
     const problemClassesMap = new Map<string, number>();
     const applicationsMap = new Map<string, number>();
+    const sectoralFocusMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -56,6 +59,11 @@ const BenchmarkStatisticsCharts = ({
         availableApplications.forEach((application) => {
           if (metaData[key].application === application) {
             updateData(applicationsMap, application);
+          }
+        });
+        availableSectoralFocus.forEach((focus) => {
+          if (metaData[key].sectoralFocus === focus) {
+            updateData(sectoralFocusMap, focus);
           }
         });
         availableSectors.forEach((sector) => {
@@ -94,6 +102,7 @@ const BenchmarkStatisticsCharts = ({
       applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
+      sectoralFocus: sectoralFocusMap,
       sectors: sectorsMap,
       realSizes: realSizesMap,
       nOfProblems: nOfProblemsMap,

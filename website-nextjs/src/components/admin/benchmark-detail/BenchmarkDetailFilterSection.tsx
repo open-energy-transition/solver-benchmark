@@ -17,6 +17,7 @@ import FilterGroup from "../filters/FilterGroup";
 const BenchmarkDetailFilterSection = ({
   setLocalFilters,
   localFilters,
+  availableSectoralFocus,
   availableSectors,
   availableProblemClasses,
   availableApplications,
@@ -27,6 +28,7 @@ const BenchmarkDetailFilterSection = ({
     React.SetStateAction<IFilterBenchmarkDetails>
   >;
   localFilters: IFilterBenchmarkDetails;
+  availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
   availableApplications: string[];
@@ -86,6 +88,7 @@ const BenchmarkDetailFilterSection = ({
   const handleSelectAll = ({ category }: { category: string }) => {
     const categoryKey = category as keyof IFilterBenchmarkDetails;
     const availableItems = {
+      sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
@@ -143,6 +146,7 @@ const BenchmarkDetailFilterSection = ({
     const filters: Partial<IFilterBenchmarkDetails> = {};
 
     [
+      "sectoralFocus",
       "sectors",
       "problemClass",
       "application",
@@ -208,6 +212,7 @@ const BenchmarkDetailFilterSection = ({
   const handleResetAllFilters = () => {
     if (isInit) {
       const resetFilters = {
+        sectoralFocus: availableSectoralFocus,
         sectors: availableSectors,
         problemClass: availableProblemClasses,
         application: availableApplications,
@@ -240,6 +245,7 @@ const BenchmarkDetailFilterSection = ({
 
   const isAnyFilterActive = () => {
     const allAvailableFilters = {
+      sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
@@ -294,6 +300,28 @@ const BenchmarkDetailFilterSection = ({
             max-h-[80vh] opacity-100
           "
         >
+          {/* Sectoral Focus */}
+          <FilterGroup
+            title="Sectoral Focus"
+            icon={<BrightIcon className="w-5 h-5" />}
+            items={availableSectoralFocus}
+            selectedItems={localFilters?.sectoralFocus}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "sectoralFocus", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "sectoralFocus",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
+            className="w-full"
+            itemClassName="4xl:text-xl"
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
+          />
           {/* Sectors */}
           <FilterGroup
             title="Sectors"

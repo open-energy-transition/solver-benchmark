@@ -37,6 +37,10 @@ const FilterSection = () => {
     (state: { filters: IFilterState }) => state.filters,
   );
 
+  const availableSectoralFocus = useSelector(
+    (state: { results: IResultState }) => state.results.availableSectoralFocus,
+  );
+
   const availableSectors = useSelector(
     (state: { results: IResultState }) => state.results.availableSectors,
   );
@@ -79,6 +83,7 @@ const FilterSection = () => {
 
   const handleSelectAll = ({ category }: { category: string }) => {
     const availableItems = {
+      sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
@@ -135,6 +140,7 @@ const FilterSection = () => {
     const filters: Partial<IFilterState> = {};
 
     [
+      "sectoralFocus",
       "sectors",
       "problemClass",
       "application",
@@ -158,6 +164,7 @@ const FilterSection = () => {
     return () => {
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
@@ -225,6 +232,7 @@ const FilterSection = () => {
       // Reset all filters to include all available options
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
@@ -257,6 +265,7 @@ const FilterSection = () => {
   // Check if any filter is active
   const isAnyFilterActive = () => {
     const allAvailableFilters = {
+      sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
@@ -312,6 +321,28 @@ const FilterSection = () => {
             opacity-100
           "
         >
+          {/* Sectoral Focus */}
+          <FilterGroup
+            title="Sectoral Focus"
+            icon={<BrightIcon className="w-5 h-5" />}
+            items={availableSectoralFocus}
+            selectedItems={selectedFilters?.sectoralFocus}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "sectoralFocus", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "sectoralFocus",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
+            className="w-full"
+            itemClassName="4xl:text-xl"
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
+          />
           {/* Sectors */}
           <FilterGroup
             title="Sectors"

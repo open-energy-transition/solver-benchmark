@@ -55,6 +55,11 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.application,
     },
     {
+      name: "sectoralFocus",
+      label: "Sectoral focus",
+      value: benchmarkDetail?.sectoralFocus,
+    },
+    {
       name: "sectors",
       label: "sectors",
       value: benchmarkDetail?.sectors,

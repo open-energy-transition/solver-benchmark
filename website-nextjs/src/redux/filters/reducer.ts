@@ -11,6 +11,7 @@ const initialState: IFilterState = {
   application: [],
   modelName: [],
   problemSize: [],
+  sectoralFocus: [],
   sectors: [],
   solvers: [],
   statuses: [],

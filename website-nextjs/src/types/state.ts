@@ -13,6 +13,7 @@ export type IFilterState = {
   modelName: string[];
   problemSize: string[];
   realistic: RealisticOption[];
+  sectoralFocus: string[];
   sectors: string[];
   sgmMode: SgmMode;
   solvers: string[];
@@ -23,6 +24,7 @@ export type IFilterState = {
 };
 
 export interface IAvailableFilterData {
+  availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
   availableApplications: string[];

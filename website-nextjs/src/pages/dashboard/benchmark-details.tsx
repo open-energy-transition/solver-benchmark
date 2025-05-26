@@ -32,6 +32,7 @@ const PageBenchmarkDetail = () => {
   });
 
   const uniqueValues = {
+    sectoralFocus: new Set<string>(),
     sectors: new Set<string>(),
     problemClasses: new Set<string>(),
     applications: new Set<string>(),
@@ -39,13 +40,16 @@ const PageBenchmarkDetail = () => {
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, problemClass, application, modelName } = fullMetaData[key];
+    const { sectoralFocus, sectors, problemClass, application, modelName } =
+      fullMetaData[key];
+    uniqueValues.sectoralFocus.add(sectoralFocus);
     uniqueValues.sectors.add(sectors);
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
   });
 
+  const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
@@ -68,6 +72,7 @@ const PageBenchmarkDetail = () => {
     const filters: Partial<IFilterState> = {};
 
     [
+      "sectoralFocus",
       "sectors",
       "problemClass",
       "application",
@@ -89,6 +94,7 @@ const PageBenchmarkDetail = () => {
 
   const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
+    sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
     problemClass: availableProblemClasses,
     application: availableApplications,
@@ -109,6 +115,7 @@ const PageBenchmarkDetail = () => {
       }));
     } else {
       setLocalFilters({
+        sectoralFocus: availableSectoralFocus,
         sectors: availableSectors,
         problemClass: availableProblemClasses,
         application: availableApplications,
@@ -130,19 +137,21 @@ const PageBenchmarkDetail = () => {
         Array.isArray(values) &&
         values.length > 0 &&
         values.length <
-          (key === "sectors"
-            ? availableSectors.length
-            : key === "problemClass"
-              ? availableProblemClasses.length
-              : key === "application"
-                ? availableApplications.length
-                : key === "modelName"
-                  ? availableModels.length
-                  : key === "problemSize"
-                    ? availableProblemSizes.length
-                    : key === "realistic"
-                      ? 2
-                      : 0)
+          (key === "sectoralFocus"
+            ? availableSectoralFocus.length
+            : key === "sectors"
+              ? availableSectors.length
+              : key === "problemClass"
+                ? availableProblemClasses.length
+                : key === "application"
+                  ? availableApplications.length
+                  : key === "modelName"
+                    ? availableModels.length
+                    : key === "problemSize"
+                      ? availableProblemSizes.length
+                      : key === "realistic"
+                        ? 2
+                        : 0)
       ) {
         queryParams.set(key, values.map(encodeValue).join(";"));
       }
@@ -161,6 +170,7 @@ const PageBenchmarkDetail = () => {
   const filteredMetaData = useMemo(() => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
       const {
+        sectoralFocus,
         sectors,
         problemClass,
         application,
@@ -169,6 +179,9 @@ const PageBenchmarkDetail = () => {
         realistic,
       } = localFilters;
 
+      const isSectoralFocusMatch =
+        sectoralFocus.length === 0 ||
+        sectoralFocus.includes(value.sectoralFocus);
       const isSectorsMatch =
         sectors.length === 0 || sectors.includes(value.sectors);
       const isProblemClassMatch =
@@ -202,6 +215,7 @@ const PageBenchmarkDetail = () => {
           }));
 
       return (
+        isSectoralFocusMatch &&
         isSectorsMatch &&
         isProblemClassMatch &&
         isApplicationMatch &&
@@ -274,6 +288,7 @@ const PageBenchmarkDetail = () => {
                 </Link>
               </div>
               <BenchmarkStatisticsCharts
+                availableSectoralFocus={availableSectoralFocus}
                 availableSectors={availableSectors}
                 availableProblemClasses={availableProblemClasses}
                 availableApplications={availableApplications}
@@ -287,6 +302,7 @@ const PageBenchmarkDetail = () => {
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
+                    availableSectoralFocus={availableSectoralFocus}
                     availableSectors={availableSectors}
                     availableProblemClasses={availableProblemClasses}
                     availableApplications={availableApplications}

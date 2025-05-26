@@ -9,6 +9,22 @@ import {
 const FilterSection = () => {
   return (
     <div className="flex flex-wrap border-t border-b border-lavender py-4 gap-4 mb-7">
+      {/* Sectoral Focus */}
+      <div className="bg-white rounded-xl py-2 px-3">
+        <div className="flex gap-4">
+          Sectoral Focus <BrightIcon />
+        </div>
+        <div className="flex gap-2 my-2">
+          <button className="flex items-center gap-2 w-max rounded-lg px-6 py-3 text-base text-green-pop font-bold bg-green-pop bg-opacity-20 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            Sector coupled
+            <CloseIcon className="w-4 h-4" />
+          </button>
+          <button className="flex items-center gap-2 w-max rounded-lg px-6 py-3 text-base text-white font-bold bg-green-pop bg-opacity-40 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            Power-only
+            <CloseIcon className="w-4 h-4 rotate-45" />
+          </button>
+        </div>
+      </div>
       {/* Sectors */}
       <div className="bg-white rounded-xl py-2 px-3">
         <div className="flex gap-4">
