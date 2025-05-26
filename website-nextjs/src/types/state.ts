@@ -1,4 +1,4 @@
-import { SgmMode } from "@/constants/filter";
+import { SgmMode } from "@/constants/sgm";
 import { BenchmarkResult } from "./benchmark";
 import { MetaData } from "./meta-data";
 

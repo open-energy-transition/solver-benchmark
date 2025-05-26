@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
+import { formatSolverWithVersion } from "@/utils/solvers";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -26,11 +27,6 @@ const SolverSelection = () => {
       ),
     );
   }, [solversData]);
-
-  function getOptionLabel(solverWithVersion: string) {
-    const [solver, version] = solverWithVersion.split("--");
-    return `${solver} v${version}`;
-  }
 
   interface ChartData {
     d1: {
@@ -110,7 +106,7 @@ const SolverSelection = () => {
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
               <option key={idx} value={solver}>
-                {getOptionLabel(solver)}
+                {formatSolverWithVersion(solver)}
               </option>
             ))}
           </select>
@@ -129,7 +125,7 @@ const SolverSelection = () => {
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
               <option key={idx} value={solver}>
-                {getOptionLabel(solver)}
+                {formatSolverWithVersion(solver)}
               </option>
             ))}
           </select>

@@ -11,10 +11,12 @@ import { IResultState } from "@/types/state";
 import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
 import { useState } from "react";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 const LandingPage = () => {
   const [activeTab, setActiveTab] = useState("short");
-  const timeout = activeTab === "short" ? 3600 : 36000;
+  const timeout =
+    activeTab === "short" ? TIMEOUT_VALUES.SHORT : TIMEOUT_VALUES.LONG;
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults;
   });
@@ -22,6 +24,69 @@ const LandingPage = () => {
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
+
+  const Caveats = () => {
+    return (
+      <div className="pt-1.5 pb-3 px-5">
+        <div className="text-navy font-bold text-xl 4xl:text-2xl">Caveats</div>
+        <div className="text-navy text-sm block items-center mt-2">
+          <span>
+            Here are some key points to keep in mind when interpreting these
+            results:
+            <ul className="list-disc pl-5">
+              <li>
+                We run benchmarks on commercial cloud virtual machines (VMs) for
+                efficiency and cost reasons. The shared nature of cloud
+                resources means there is some error in our runtime measurements,
+                which we estimate as a coefficient of variation of no larger
+                than 4%. More details on this{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
+                  className="underline"
+                >
+                  here
+                </a>
+                .
+              </li>
+              <li>
+                All solvers are run with their default options, except for the
+                duality gap tolerance for mixed integer benchmarks (MILPs),
+                which we set to 1e-4. You can check the duality gaps for each
+                solver in the benchmark details page corresponding to each
+                benchmark instance.
+              </li>
+              <li>
+                All results on this website use the runtime measured by our
+                benchmarking script. This may not be the same as the runtime of
+                the solving algorithm as reported by the solver, and it may
+                include things like time for input file parsing and license
+                checks. See more details and join the discussion on whether to
+                use reported or measured runtime{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
+                  className="underline"
+                >
+                  here
+                </a>
+                .
+              </li>
+              <li>
+                Some solvers returned errors when running on some benchmark
+                instances. For more details, please see the{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
+                  className="underline"
+                >
+                  tracking issue
+                </a>
+                .
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -132,48 +197,7 @@ const LandingPage = () => {
                       </div>
                     </div>
                     <BenchmarksSection timeout={timeout} />
-                    <div className="px-5">
-                      <div className="pt-1.5 pb-3">
-                        <div className="text-navy font-bold text-xl 4xl:text-2xl">
-                          Caveats
-                        </div>
-                        <div className="text-navy text-sm block items-center mt-2">
-                          <span>
-                            Here are some key points to keep in mind when
-                            interpreting these results:
-                            <ul className="list-disc pl-5">
-                              <li>
-                                We run benchmarks on commercial cloud virtual
-                                machines (VMs) for efficiency and cost reasons.
-                                The shared nature of cloud resources means there
-                                is some error in our runtime measurements, which
-                                we estimate as a coefficient of variation of no
-                                larger than 4%. More details on this{" "}
-                                <span className="underline">here</span>.
-                              </li>
-                              <li>
-                                All solvers are run with their default options.
-                              </li>
-                              <li>
-                                Mixed Integer benchmarks (MILPs) are run with a
-                                duality gap tolerance of 0.0004.
-                              </li>
-                              <li>
-                                All results on this website use the runtime
-                                measured by our benchmarking script. This may
-                                not be the same as the runtime of the solving
-                                algorithm as reported by the solver, and it may
-                                include things like time for input file parsing
-                                and license checks. See more details and join
-                                the discussion on whether to use reported or
-                                measured runtime{" "}
-                                <span className="underline">here</span>.
-                              </li>
-                            </ul>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    <Caveats />
                   </div>
                 </div>
               </div>
