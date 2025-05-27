@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverStatusType, SolverType } from "@/types/benchmark";
-import { getMinMaxValues, roundNumber } from "@/utils/number";
+import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
+import { isNullorUndefined } from "@/utils/calculations";
 
 type ChartData = {
   runtime: number;
@@ -19,23 +20,25 @@ type ChartData = {
   [key: string]: string | number | undefined | null;
 }[];
 
-interface D3ChartProps {
+interface D3PlotChartProps {
   chartData: ChartData;
   onPointClick?: (benchmark: ChartData[0]) => void;
   xAxis?: keyof ChartData[0];
   xAxisLabel?: string;
   customTooltip?: (d: ChartData[0]) => string;
   domainPadding?: number;
+  startFrom?: number;
 }
 
-const D3Chart = ({
+const D3PlotChart = ({
   chartData = [],
   onPointClick,
   xAxis = "runtime",
   xAxisLabel = "Runtime (s)",
   customTooltip,
   domainPadding = 5,
-}: D3ChartProps) => {
+  startFrom = undefined,
+}: D3PlotChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
@@ -265,9 +268,10 @@ const D3Chart = ({
     // Scales
     const xScale = d3
       .scaleLinear()
-      // .domain([minMaxValues.min - domainPadding, minMaxValues.max + domainPadding])
       .domain([
-        (d3.min(data, (d) => d[xAxis] as number) ?? 0) - domainPadding,
+        isNullorUndefined(startFrom)
+          ? (d3.min(data, (d) => d[xAxis] as number) ?? 0) - domainPadding
+          : Number(startFrom),
         (d3.max(data, (d) => d[xAxis] as number) ?? 0) + domainPadding,
       ])
       .range([margin.left, width - margin.right]);
@@ -418,4 +422,4 @@ const D3Chart = ({
   );
 };
 
-export default D3Chart;
+export default D3PlotChart;

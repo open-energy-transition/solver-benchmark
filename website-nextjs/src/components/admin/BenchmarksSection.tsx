@@ -71,7 +71,7 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
     <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB<br>
     <strong>Log runtime:</strong> ${d.logScale}<br>
   `;
-  console.log(chartData);
+
   return (
     <div>
       <div className="px-5">

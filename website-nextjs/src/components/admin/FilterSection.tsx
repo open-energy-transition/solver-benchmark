@@ -162,31 +162,7 @@ const FilterSection = () => {
   };
 
   useEffect(() => {
-    return () => {
-      dispatch(
-        filterActions.setFilter({
-          sectoralFocus: availableSectoralFocus,
-          sectors: availableSectors,
-          problemClass: availableProblemClasses,
-          application: availableApplications,
-          modelName: availableModels,
-          problemSize: availableProblemSizes,
-          realistic: [RealisticOption.Realistic, RealisticOption.Other],
-        } as IFilterState),
-      );
-      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
-      dispatch(
-        resultActions.setBenchmarkLatestResults(
-          getLatestBenchmarkResult(rawBenchmarkResults),
-        ),
-      );
-      dispatch(resultActions.setMetaData(rawMetaData));
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isInit || !selectedFilters.isReady) return;
-    if (!router.isReady) return;
+    if (isInit || !selectedFilters.isReady || !router.isReady) return;
 
     const urlFilters = parseUrlParams();
 
@@ -223,6 +199,27 @@ const FilterSection = () => {
           }
         }
       });
+    } else {
+      return () => {
+        dispatch(
+          filterActions.setFilter({
+            sectoralFocus: availableSectoralFocus,
+            sectors: availableSectors,
+            problemClass: availableProblemClasses,
+            application: availableApplications,
+            modelName: availableModels,
+            problemSize: availableProblemSizes,
+            realistic: [RealisticOption.Realistic, RealisticOption.Other],
+          } as IFilterState),
+        );
+        dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+        dispatch(
+          resultActions.setBenchmarkLatestResults(
+            getLatestBenchmarkResult(rawBenchmarkResults),
+          ),
+        );
+        dispatch(resultActions.setMetaData(rawMetaData));
+      };
     }
     setIsInit(true);
   }, [router.isReady, selectedFilters.isReady]);
