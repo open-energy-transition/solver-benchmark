@@ -11,9 +11,11 @@ const BenchmarkSummaryTable = () => {
     "Total number of benchmark problems",
     "Total number of benchmark size instances",
   ];
-  const availableModels = useSelector((state: { results: IResultState }) => {
-    return state.results.availableModels;
-  });
+  const availableModellingFrameworks = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableModellingFrameworks;
+    },
+  );
 
   const availableProblemClasses = useSelector(
     (state: { results: IResultState }) => {
@@ -55,7 +57,7 @@ const BenchmarkSummaryTable = () => {
     }
   }
 
-  const summary = availableModels.map((model) => {
+  const summary = availableModellingFrameworks.map((framework) => {
     const problemClassesMap = new Map<string, number>();
     const applicationsMap = new Map<string, number>();
     const sectoralFocusMap = new Map<string, number>();
@@ -69,7 +71,7 @@ const BenchmarkSummaryTable = () => {
       data.set(key, (data.get(key) || 0) + 1);
     }
     Object.keys(metaData).forEach((key) => {
-      if (metaData[key].modelName === model) {
+      if (metaData[key].modellingFramework === framework) {
         // Number of problems
         updateData(nOfProblemsMap, "totalNOfDiffProblems");
         metaData[key].sizes.forEach(() => {
@@ -122,7 +124,7 @@ const BenchmarkSummaryTable = () => {
       timeHorizonsMap.set("multi", -1);
     }
     return {
-      modelName: model,
+      modellingFramework: framework,
       problemClasses: problemClassesMap,
       applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
@@ -143,13 +145,13 @@ const BenchmarkSummaryTable = () => {
               <tr className="bg-gray-50">
                 <th className="border p-2 text-center"></th>
                 <th className="border p-2 text-center"></th>
-                {availableModels.map((model, modelIdx) => (
+                {availableModellingFrameworks.map((framework, frameworkIdx) => (
                   <th
-                    key={modelIdx}
+                    key={frameworkIdx}
                     className="border p-2 text-center"
                     colSpan={1}
                   >
-                    {model}
+                    {framework}
                   </th>
                 ))}
                 <th className="border p-2 text-center">Total</th>
