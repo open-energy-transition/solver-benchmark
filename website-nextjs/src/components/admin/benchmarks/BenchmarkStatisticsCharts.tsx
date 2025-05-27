@@ -9,14 +9,14 @@ const BenchmarkStatisticsCharts = ({
   availableSectors,
   availableProblemClasses,
   availableApplications,
-  availableModels,
+  availableModellingFrameworks,
   availableProblemSizes,
 }: {
   availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
   availableApplications: string[];
-  availableModels: string[];
+  availableModellingFrameworks: string[];
   availableProblemSizes: string[];
 }) => {
   const metaData = useSelector((state: { results: IResultState }) => {
@@ -30,7 +30,7 @@ const BenchmarkStatisticsCharts = ({
   }, [metaData]);
 
   const availabletimeHorizons = ["single", "multi"];
-  const summary = availableModels.map((model) => {
+  const summary = availableModellingFrameworks.map((framework) => {
     const problemClassesMap = new Map<string, number>();
     const applicationsMap = new Map<string, number>();
     const sectoralFocusMap = new Map<string, number>();
@@ -43,8 +43,9 @@ const BenchmarkStatisticsCharts = ({
     function updateData(data: Map<string, number>, key: string) {
       data.set(key, (data.get(key) || 0) + 1);
     }
+
     Object.keys(metaData).forEach((key) => {
-      if (metaData[key].modelName === model) {
+      if (metaData[key].modellingFramework === framework) {
         // Number of problems
         updateData(nOfProblemsMap, "totalNOfDiffProblems");
         metaData[key].sizes.forEach(() => {
@@ -97,7 +98,7 @@ const BenchmarkStatisticsCharts = ({
       timeHorizonsMap.set("multi", -1);
     }
     return {
-      modelName: model,
+      modellingFramework: framework,
       problemClasses: problemClassesMap,
       applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
@@ -109,17 +110,27 @@ const BenchmarkStatisticsCharts = ({
     };
   });
 
-  const problemClassesChartData = summary.map((data) => ({
-    modelName: data.modelName,
-    LP: data.problemClasses.get("LP") || 0,
-    MILP: data.problemClasses.get("MILP") || 0,
-  }));
+  const problemClassesChartData = summary
+    .filter(
+      (data) =>
+        data.modellingFramework && data.modellingFramework.trim() !== "",
+    )
+    .map((data) => ({
+      modellingFramework: data.modellingFramework,
+      LP: data.problemClasses.get("LP") || 0,
+      MILP: data.problemClasses.get("MILP") || 0,
+    }));
 
-  const timeHorizonsChartData = summary.map((data) => ({
-    modelName: data.modelName,
-    single: data.timeHorizons.get("single") || 0,
-    multi: data.timeHorizons.get("multi") || 0,
-  }));
+  const timeHorizonsChartData = summary
+    .filter(
+      (data) =>
+        data.modellingFramework && data.modellingFramework.trim() !== "",
+    )
+    .map((data) => ({
+      modellingFramework: data.modellingFramework,
+      single: data.timeHorizons.get("single") || 0,
+      multi: data.timeHorizons.get("multi") || 0,
+    }));
 
   const sizeChartData = useMemo(() => {
     const sizeData = availableProblemSizes.map((size) => {
@@ -160,11 +171,11 @@ const BenchmarkStatisticsCharts = ({
           <D3StackedBarChart
             className="px-0"
             data={problemClassesChartData}
-            xAxisLabel="Model Name"
+            xAxisLabel="Modelling Framework"
             yAxisLabel=""
-            categoryKey="modelName"
+            categoryKey="modellingFramework"
             colors={{ LP: getChartColor(0), MILP: getChartColor(1) }}
-            title="By Model Framework"
+            title="By Modelling Framework"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
           />
@@ -173,9 +184,9 @@ const BenchmarkStatisticsCharts = ({
           <D3StackedBarChart
             className="px-0"
             data={timeHorizonsChartData}
-            xAxisLabel="Model Name"
+            xAxisLabel="Modelling Framework"
             yAxisLabel=""
-            categoryKey="modelName"
+            categoryKey="modellingFramework"
             colors={{ single: getChartColor(0), multi: getChartColor(1) }}
             rotateXAxisLabels={true}
             title="By Time Horizon"
