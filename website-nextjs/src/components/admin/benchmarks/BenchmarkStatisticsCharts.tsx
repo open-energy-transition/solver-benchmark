@@ -5,15 +5,17 @@ import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 const BenchmarkStatisticsCharts = ({
+  availableSectoralFocus,
   availableSectors,
-  availableTechniques,
-  availableKindOfProblems,
+  availableProblemClasses,
+  availableApplications,
   availableModels,
   availableProblemSizes,
 }: {
+  availableSectoralFocus: string[];
   availableSectors: string[];
-  availableTechniques: string[];
-  availableKindOfProblems: string[];
+  availableProblemClasses: string[];
+  availableApplications: string[];
   availableModels: string[];
   availableProblemSizes: string[];
 }) => {
@@ -29,8 +31,9 @@ const BenchmarkStatisticsCharts = ({
 
   const availabletimeHorizons = ["single", "multi"];
   const summary = availableModels.map((model) => {
-    const techniquesMap = new Map<string, number>();
-    const kindOfProblemsMap = new Map<string, number>();
+    const problemClassesMap = new Map<string, number>();
+    const applicationsMap = new Map<string, number>();
+    const sectoralFocusMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -48,14 +51,19 @@ const BenchmarkStatisticsCharts = ({
           updateData(nOfProblemsMap, "multipleSizes");
         });
 
-        availableTechniques.forEach((technique) => {
-          if (metaData[key].technique === technique) {
-            updateData(techniquesMap, technique);
+        availableProblemClasses.forEach((problemClass) => {
+          if (metaData[key].problemClass === problemClass) {
+            updateData(problemClassesMap, problemClass);
           }
         });
-        availableKindOfProblems.forEach((kindOfProblem) => {
-          if (metaData[key].kindOfProblem === kindOfProblem) {
-            updateData(kindOfProblemsMap, kindOfProblem);
+        availableApplications.forEach((application) => {
+          if (metaData[key].application === application) {
+            updateData(applicationsMap, application);
+          }
+        });
+        availableSectoralFocus.forEach((focus) => {
+          if (metaData[key].sectoralFocus === focus) {
+            updateData(sectoralFocusMap, focus);
           }
         });
         availableSectors.forEach((sector) => {
@@ -74,7 +82,7 @@ const BenchmarkStatisticsCharts = ({
           }
         });
         if (metaData[key].sizes.some((instance) => instance.size === "R")) {
-          if (metaData[key].technique === "MILP") {
+          if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
           updateData(realSizesMap, "real" as string);
@@ -90,20 +98,21 @@ const BenchmarkStatisticsCharts = ({
     }
     return {
       modelName: model,
-      techniques: techniquesMap,
-      kindOfProblems: kindOfProblemsMap,
+      problemClasses: problemClassesMap,
+      applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
+      sectoralFocus: sectoralFocusMap,
       sectors: sectorsMap,
       realSizes: realSizesMap,
       nOfProblems: nOfProblemsMap,
     };
   });
 
-  const techniquesChartData = summary.map((data) => ({
+  const problemClassesChartData = summary.map((data) => ({
     modelName: data.modelName,
-    LP: data.techniques.get("LP") || 0,
-    MILP: data.techniques.get("MILP") || 0,
+    LP: data.problemClasses.get("LP") || 0,
+    MILP: data.problemClasses.get("MILP") || 0,
   }));
 
   const timeHorizonsChartData = summary.map((data) => ({
@@ -150,7 +159,7 @@ const BenchmarkStatisticsCharts = ({
         <div className="flex-1 w-full xl:w-1/3">
           <D3StackedBarChart
             className="px-0"
-            data={techniquesChartData}
+            data={problemClassesChartData}
             xAxisLabel="Model Name"
             yAxisLabel=""
             categoryKey="modelName"

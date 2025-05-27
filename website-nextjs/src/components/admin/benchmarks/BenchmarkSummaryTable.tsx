@@ -15,15 +15,21 @@ const BenchmarkSummaryTable = () => {
     return state.results.availableModels;
   });
 
-  const availableTechniques = useSelector(
+  const availableProblemClasses = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.availableTechniques;
+      return state.results.availableProblemClasses;
     },
   );
 
-  const availableKindOfProblems = useSelector(
+  const availableApplications = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.availableKindOfProblems;
+      return state.results.availableApplications;
+    },
+  );
+
+  const availableSectoralFocus = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableSectoralFocus;
     },
   );
 
@@ -50,8 +56,9 @@ const BenchmarkSummaryTable = () => {
   }
 
   const summary = availableModels.map((model) => {
-    const techniquesMap = new Map<string, number>();
-    const kindOfProblemsMap = new Map<string, number>();
+    const problemClassesMap = new Map<string, number>();
+    const applicationsMap = new Map<string, number>();
+    const sectoralFocusMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -69,14 +76,19 @@ const BenchmarkSummaryTable = () => {
           updateData(nOfProblemsMap, "multipleSizes");
         });
 
-        availableTechniques.forEach((technique) => {
-          if (metaData[key].technique === technique) {
-            updateData(techniquesMap, technique);
+        availableProblemClasses.forEach((problemClass) => {
+          if (metaData[key].problemClass === problemClass) {
+            updateData(problemClassesMap, problemClass);
           }
         });
-        availableKindOfProblems.forEach((kindOfProblem) => {
-          if (metaData[key].kindOfProblem === kindOfProblem) {
-            updateData(kindOfProblemsMap, kindOfProblem);
+        availableApplications.forEach((application) => {
+          if (metaData[key].application === application) {
+            updateData(applicationsMap, application);
+          }
+        });
+        availableSectoralFocus.forEach((focus) => {
+          if (metaData[key].sectoralFocus === focus) {
+            updateData(sectoralFocusMap, focus);
           }
         });
         availableSectors.forEach((sector) => {
@@ -95,7 +107,7 @@ const BenchmarkSummaryTable = () => {
           }
         });
         if (metaData[key].sizes.some((instance) => instance.size === "R")) {
-          if (metaData[key].technique === "MILP") {
+          if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
           updateData(realSizesMap, "real" as string);
@@ -111,10 +123,11 @@ const BenchmarkSummaryTable = () => {
     }
     return {
       modelName: model,
-      techniques: techniquesMap,
-      kindOfProblems: kindOfProblemsMap,
+      problemClasses: problemClassesMap,
+      applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
+      sectoralFocus: sectoralFocusMap,
       sectors: sectorsMap,
       realSizes: realSizesMap,
       nOfProblems: nOfProblemsMap,
@@ -187,76 +200,74 @@ const BenchmarkSummaryTable = () => {
                   </td>
                 </tr>
               ))}
-              {/* Technique */}
-              {availableTechniques.map((technique, techniqueIdx) => (
+              {/* Problem Class */}
+              {availableProblemClasses.map((problemClass, problemClassIdx) => (
                 <tr
-                  key={techniqueIdx}
+                  key={problemClassIdx}
                   className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
-                  {techniqueIdx === 0 && (
+                  {problemClassIdx === 0 && (
                     <td
                       className="border p-2 text-left font-medium"
-                      rowSpan={availableTechniques.length}
+                      rowSpan={availableProblemClasses.length}
                     >
-                      Technique
+                      Problem Class
                     </td>
                   )}
                   <td className="border p-2 text-left font-medium">
-                    {technique}
+                    {problemClass}
                   </td>
                   {summary.map((s, sIdx) => (
                     <td
                       key={sIdx}
                       className="border p-2 text-right font-medium"
                     >
-                      {s.techniques.get(technique) || 0}
+                      {s.problemClasses.get(problemClass) || 0}
                     </td>
                   ))}
                   <td className="border p-2 text-left font-medium">
                     {summary.reduce(
                       (acc, curr) =>
-                        acc + (curr.techniques.get(technique) || 0),
+                        acc + (curr.problemClasses.get(problemClass) || 0),
                       0,
                     )}
                   </td>
                 </tr>
               ))}
-              {/* Kind of Problem */}
-              {availableKindOfProblems.map(
-                (kindOfProblem, kindOfProblemIdx) => (
-                  <tr
-                    key={kindOfProblemIdx}
-                    className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                  >
-                    {kindOfProblemIdx === 0 && (
-                      <td
-                        className="border p-2 text-left font-medium"
-                        rowSpan={availableKindOfProblems.length}
-                      >
-                        Kind Of Problem
-                      </td>
+              {/* Application */}
+              {availableApplications.map((application, applicationIdx) => (
+                <tr
+                  key={applicationIdx}
+                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                >
+                  {applicationIdx === 0 && (
+                    <td
+                      className="border p-2 text-left font-medium"
+                      rowSpan={availableApplications.length}
+                    >
+                      Application
+                    </td>
+                  )}
+                  <td className="border p-2 text-left font-medium">
+                    {application}
+                  </td>
+                  {summary.map((s, sIdx) => (
+                    <td
+                      key={sIdx}
+                      className="border p-2 text-right font-medium"
+                    >
+                      {s.applications.get(application) || 0}
+                    </td>
+                  ))}
+                  <td className="border p-2 text-left font-medium">
+                    {summary.reduce(
+                      (acc, curr) =>
+                        acc + (curr.applications.get(application) || 0),
+                      0,
                     )}
-                    <td className="border p-2 text-left font-medium">
-                      {kindOfProblem}
-                    </td>
-                    {summary.map((s, sIdx) => (
-                      <td
-                        key={sIdx}
-                        className="border p-2 text-right font-medium"
-                      >
-                        {s.kindOfProblems.get(kindOfProblem) || 0}
-                      </td>
-                    ))}
-                    <td className="border p-2 text-left font-medium">
-                      {summary.reduce(
-                        (acc, curr) =>
-                          acc + (curr.kindOfProblems.get(kindOfProblem) || 0),
-                        0,
-                      )}
-                    </td>
-                  </tr>
-                ),
-              )}
+                  </td>
+                </tr>
+              ))}
               {/* Time Horizon */}
               {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
                 <tr

@@ -77,24 +77,29 @@ function App({ Component, pageProps }: AppProps) {
       });
 
       const uniqueValues = {
+        sectoralFocus: new Set<string>(),
         sectors: new Set<string>(),
-        techniques: new Set<string>(),
-        kindOfProblems: new Set<string>(),
+        problemClasses: new Set<string>(),
+        applications: new Set<string>(),
         models: new Set<string>(),
       };
 
       Object.keys(benchmarksMetaData).forEach((key) => {
-        const { sectors, technique, kindOfProblem, modelName } =
+        const { sectoralFocus, sectors, problemClass, application, modelName } =
           benchmarksMetaData[key];
-        uniqueValues.sectors.add(sectors);
-        uniqueValues.techniques.add(technique);
-        uniqueValues.kindOfProblems.add(kindOfProblem);
+        uniqueValues.sectoralFocus.add(sectoralFocus);
+        sectors.split(",").forEach((sector) => {
+          uniqueValues.sectors.add(sector.trim());
+        });
+        uniqueValues.problemClasses.add(problemClass);
+        uniqueValues.applications.add(application);
         uniqueValues.models.add(modelName);
       });
 
+      const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
       const availableSectors = Array.from(uniqueValues.sectors);
-      const availableTechniques = Array.from(uniqueValues.techniques);
-      const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+      const availableProblemClasses = Array.from(uniqueValues.problemClasses);
+      const availableApplications = Array.from(uniqueValues.applications);
       const availableModels = Array.from(uniqueValues.models);
       const availableProblemSizes = Array.from(
         new Set(
@@ -113,9 +118,10 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(resultActions.setRawMetaData(benchmarksMetaData));
       dispatch(
         resultActions.setAvailableFilterData({
+          availableSectoralFocus,
           availableSectors,
-          availableTechniques,
-          availableKindOfProblems,
+          availableProblemClasses,
+          availableApplications,
           availableModels,
           availableProblemSizes,
           realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
@@ -127,9 +133,10 @@ function App({ Component, pageProps }: AppProps) {
 
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
-          technique: availableTechniques,
-          kindOfProblem: availableKindOfProblems,
+          problemClass: availableProblemClasses,
+          application: availableApplications,
           modelName: availableModels,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],

@@ -1,20 +1,22 @@
 benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
+    MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29-082507660a1ec655fed92d2b6d49a1d606f029e30cb0dfcd4915f8b8ce896f2e.mps.gz
       Temporal resolution: 1
       Spatial resolution: 1
-      MILP features: Unit commitment
       Realistic: false
       Num. constraints: 6048
       Num. variables: 7380
@@ -22,12 +24,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -43,12 +47,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -64,12 +70,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -85,12 +93,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     Temporal resolution: 1
     Spatial resolution: 1
@@ -108,12 +118,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -129,12 +141,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -150,12 +164,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -171,12 +187,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -192,12 +210,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -213,12 +233,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -234,12 +256,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -255,12 +279,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -276,12 +302,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -297,12 +325,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -318,12 +348,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -339,12 +371,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -360,12 +394,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
     Short description: Direct Current Approximation
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -381,12 +417,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -402,12 +440,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -423,12 +463,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -444,12 +486,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -465,12 +509,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -486,12 +532,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -507,12 +555,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -528,12 +578,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -549,12 +601,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -570,12 +624,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -591,12 +647,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -612,12 +670,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (12 hours)
     MILP features: Unit commitment
     Sizes:
@@ -633,12 +693,14 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -654,12 +716,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -675,12 +739,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (24 hours)
     MILP features: Unit commitment
     Sizes:
@@ -696,12 +762,14 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -717,12 +785,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
@@ -738,12 +808,14 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
     Short description: Transport problem
+    Modelling framework: PowerModels
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single stage (48 hours)
     MILP features: Unit commitment
     Sizes:
