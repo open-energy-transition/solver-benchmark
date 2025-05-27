@@ -32,8 +32,10 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
 
   return (
     <div className="py-4">
-      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
-        Results on this benchmark
+      <div className="text-navy px-5 text-l block items-center mt-2">
+        This plot shows the runtime and memory consumption of the latest version
+        (available on our platform) of each solver on the size instances of this
+        benchmark.
       </div>
       <D3Chart chartData={chartData} />
       <div className="pt-1.5 pb-3 pl-3">

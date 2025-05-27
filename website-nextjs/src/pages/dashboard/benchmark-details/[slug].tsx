@@ -179,8 +179,12 @@ const PageBenchmarkDetail = () => {
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
+                Results on this benchmark
+              </div>
+              {/* TODO Jacek can you please help me reduce the space between the header and the DataTable? */}
               <DataTable benchmarkName={benchmarkName as string} />
+              <BenchmarksSection benchmarkName={benchmarkName as string} />
             </>
           )}
         </ContentWrapper>

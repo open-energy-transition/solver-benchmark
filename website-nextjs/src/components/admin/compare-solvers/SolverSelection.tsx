@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
 import { formatSolverWithVersion } from "@/utils/solvers";
+import { CircleIcon, CloseIcon } from "@/assets/icons";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -133,13 +134,21 @@ const SolverSelection = () => {
       </div>
       <div className="py-2">
         <div className="text-navy text-lg sm:text-xl font-bold 4xl:text-xl">
-          Graphs
+          Comparison
         </div>
         <p className="text-[#5D5D5D] text-sm sm:text-base 4xl:text-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
           where Solver 2 performs better. Click on any point in this graph to
-          see details of that benchmark instance.{" "}
+          see details of that benchmark instance.
+          <p className="flex gap-1 items-center text-dark-grey text-sm">
+            <CloseIcon className="size-3" />
+            {/* {" "} */}
+            represents benchmark instances where at least one of the solvers
+            failed to solve within the time limit, while
+            <CircleIcon className="size-3" />
+            indicates that both solvers ran successfully.
+          </p>
         </p>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">
@@ -162,7 +171,7 @@ const SolverSelection = () => {
             }}
           />
           <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
-            Runtime graph
+            Runtime Comparison
           </div>
         </div>
         <div className="w-full lg:w-1/2">
@@ -184,7 +193,7 @@ const SolverSelection = () => {
             }}
           />
           <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
-            Memory usage graph
+            Memory Usage Comparison
           </div>
         </div>
       </div>
