@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   BrightIcon,
+  ForkIcon,
   GlobeSearchIcon,
   PolygonIcon,
   ProblemSizeIcon,
@@ -37,16 +38,20 @@ const FilterSection = () => {
     (state: { filters: IFilterState }) => state.filters,
   );
 
+  const availableSectoralFocus = useSelector(
+    (state: { results: IResultState }) => state.results.availableSectoralFocus,
+  );
+
   const availableSectors = useSelector(
     (state: { results: IResultState }) => state.results.availableSectors,
   );
 
-  const availableTechniques = useSelector(
-    (state: { results: IResultState }) => state.results.availableTechniques,
+  const availableProblemClasses = useSelector(
+    (state: { results: IResultState }) => state.results.availableProblemClasses,
   );
 
-  const availableKindOfProblems = useSelector(
-    (state: { results: IResultState }) => state.results.availableKindOfProblems,
+  const availableApplications = useSelector(
+    (state: { results: IResultState }) => state.results.availableApplications,
   );
 
   const availableModels = useSelector(
@@ -79,9 +84,10 @@ const FilterSection = () => {
 
   const handleSelectAll = ({ category }: { category: string }) => {
     const availableItems = {
+      sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
-      technique: availableTechniques,
-      kindOfProblem: availableKindOfProblems,
+      problemClass: availableProblemClasses,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: realisticOptions,
@@ -135,9 +141,10 @@ const FilterSection = () => {
     const filters: Partial<IFilterState> = {};
 
     [
+      "sectoralFocus",
       "sectors",
-      "technique",
-      "kindOfProblem",
+      "problemClass",
+      "application",
       "modelName",
       "problemSize",
       "realistic",
@@ -158,9 +165,10 @@ const FilterSection = () => {
     return () => {
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
-          technique: availableTechniques,
-          kindOfProblem: availableKindOfProblems,
+          problemClass: availableProblemClasses,
+          application: availableApplications,
           modelName: availableModels,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -225,9 +233,10 @@ const FilterSection = () => {
       // Reset all filters to include all available options
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
-          technique: availableTechniques,
-          kindOfProblem: availableKindOfProblems,
+          problemClass: availableProblemClasses,
+          application: availableApplications,
           modelName: availableModels,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -257,9 +266,10 @@ const FilterSection = () => {
   // Check if any filter is active
   const isAnyFilterActive = () => {
     const allAvailableFilters = {
+      sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
-      technique: availableTechniques,
-      kindOfProblem: availableKindOfProblems,
+      problemClass: availableProblemClasses,
+      application: availableApplications,
       modelName: availableModels,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
@@ -312,6 +322,28 @@ const FilterSection = () => {
             opacity-100
           "
         >
+          {/* Sectoral Focus */}
+          <FilterGroup
+            title="Sectoral Focus"
+            icon={<ForkIcon className="w-5 h-5" />}
+            items={availableSectoralFocus}
+            selectedItems={selectedFilters?.sectoralFocus}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "sectoralFocus", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "sectoralFocus",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
+            className="w-full"
+            itemClassName="4xl:text-xl"
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
+          />
           {/* Sectors */}
           <FilterGroup
             title="Sectors"
@@ -330,40 +362,44 @@ const FilterSection = () => {
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
-          {/* Technique */}
+          {/* Problem Class */}
           <FilterGroup
-            title="Technique"
+            title="Problem Class"
             icon={<ProcessorIcon className="w-5 h-5" />}
-            items={availableTechniques}
-            selectedItems={selectedFilters?.technique}
+            items={availableProblemClasses}
+            selectedItems={selectedFilters?.problemClass}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "technique", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({ category: "technique", value, only: true })
-            }
-            onSelectAll={() => handleSelectAll({ category: "technique" })}
-            className="w-full"
-            gridClassName="!flex flex-wrap"
-            uppercase={false}
-          />
-          {/* Kind of Problem */}
-          <FilterGroup
-            title="Kind of Problem"
-            icon={<WrenchIcon className="w-5 h-5" />}
-            items={availableKindOfProblems}
-            selectedItems={selectedFilters?.kindOfProblem}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "kindOfProblem", value })
+              handleCheckboxChange({ category: "problemClass", value })
             }
             onItemOnly={(value) =>
               handleCheckboxChange({
-                category: "kindOfProblem",
+                category: "problemClass",
                 value,
                 only: true,
               })
             }
-            onSelectAll={() => handleSelectAll({ category: "kindOfProblem" })}
+            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
+            className="w-full"
+            gridClassName="!flex flex-wrap"
+            uppercase={false}
+          />
+          {/* Application */}
+          <FilterGroup
+            title="Application"
+            icon={<WrenchIcon className="w-5 h-5" />}
+            items={availableApplications}
+            selectedItems={selectedFilters?.application}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "application", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "application",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "application" })}
             className="w-full"
             gridClassName="grid-cols-1"
             uppercase={false}

@@ -1,12 +1,14 @@
 benchmarks:
   genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -19,13 +21,15 @@ benchmarks:
       Num. constraints: 11832658
       Num. variables: 13777226
   genx-elec_trex_co2:
+    Modelling framework: GenX
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -38,12 +42,14 @@ benchmarks:
       Num. constraints: 11832689
       Num. variables: 13777227
 #  genx-elec_trex_co2_uc:
+#    Modelling framework: GenX
 #    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
 #    Model name: GenX
 #    Version:
-#    Technique: MILP
-#    Kind of problem: Infrastructure
-#    Sectors: Power
+#    Problem class: MILP
+#    Application: Infrastructure
+#    Sectoral focus: Power-only
+#    Sectors: Electric
 #    Time horizon: Single period (1 year)
 #    MILP features: Unit commitment
 #    Sizes:
@@ -58,12 +64,14 @@ benchmarks:
 #      N. of binary variables:
   genx-elec_trex_uc:
     Short description: This is 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (30 days)
     MILP features: Unit commitment
     Sizes:
@@ -79,12 +87,14 @@ benchmarks:
       Num. integer variables: 488408
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -98,11 +108,13 @@ benchmarks:
       Num. variables: 13777201
 # genx-15-zones_elec_co2_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
+#   Modelling framework: GenX
 #   Model name: GenX
 #   Version:
-#   Technique: MILP
-#   Kind of problem: Infrastructure
-#   Sectors: Power
+#   Problem class: MILP
+#   Application: Infrastructure
+#   Sectoral focus: Power-only
+#   Sectors: Electric
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment
 #   Sizes:
@@ -117,11 +129,13 @@ benchmarks:
 #     N. of binary variables:
 # genx-15-zones_elec_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes unit commitment for conventional generators.
+#   Modelling framework: GenX
 #   Model name: GenX
 #   Version:
-#   Technique: MILP
-#   Kind of problem: Infrastructure
-#   Sectors: Power
+#   Problem class: MILP
+#   Application: Infrastructure
+#   Sectoral focus: Power-only
+#   Sectors: Electric
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment
 #   Sizes:

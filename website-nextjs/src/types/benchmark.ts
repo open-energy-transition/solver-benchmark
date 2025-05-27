@@ -60,9 +60,10 @@ interface OriginBenchmarkResult {
 }
 
 type IFilterBenchmarkDetails = {
+  sectoralFocus: string[];
   sectors: string[];
-  technique: string[];
-  kindOfProblem: string[];
+  problemClass: string[];
+  application: string[];
   problemSize: string[];
   modelName: string[];
   realistic: string[];

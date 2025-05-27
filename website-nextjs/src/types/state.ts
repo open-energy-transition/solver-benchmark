@@ -9,23 +9,25 @@ export enum RealisticOption {
 
 export type IFilterState = {
   benchmarks: string[];
-  kindOfProblem: string[];
+  application: string[];
   modelName: string[];
   problemSize: string[];
   realistic: RealisticOption[];
+  sectoralFocus: string[];
   sectors: string[];
   sgmMode: SgmMode;
   solvers: string[];
   statuses: string[];
-  technique: string[];
+  problemClass: string[];
   xFactor: 5;
   isReady: boolean;
 };
 
 export interface IAvailableFilterData {
+  availableSectoralFocus: string[];
   availableSectors: string[];
-  availableTechniques: string[];
-  availableKindOfProblems: string[];
+  availableProblemClasses: string[];
+  availableApplications: string[];
   availableProblemSizes: string[];
   availableModels: string[];
   realisticOptions: RealisticOption[];

@@ -2,12 +2,14 @@
 benchmarks:
   pglib_opf_case162_ieee_dtc:
     Short description: System stability study based on the IEEE 17-Generator Dynamic Test Case with 162 buses and 17 generators
+    Modelling framework: PowerModels
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Problem class: MILP
+    Application: Steady-state optimal power flow
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -23,12 +25,14 @@ benchmarks:
       Num. integer variables: 284
   pglib_opf_case1803_snem:
     Short description: Optimal Power Flow data for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork
+    Modelling framework: PowerModels
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: LP
-    Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Problem class: LP
+    Application: Steady-state optimal power flow
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -42,12 +46,14 @@ benchmarks:
       Num. variables: 7623
   pglib_opf_case1951_rte:
     Short description:
+    Modelling framework: PowerModels
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Problem class: MILP
+    Application: Steady-state optimal power flow
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -63,12 +69,14 @@ benchmarks:
       Num. integer variables: 2596
   pglib_opf_case2848:
     Short description:
+    Modelling framework: PowerModels
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Problem class: MILP
+    Application: Steady-state optimal power flow
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
@@ -84,12 +92,14 @@ benchmarks:
       Num. integer variables: 3776
   pglib_opf_case2868:
     Short description:
+    Modelling framework: PowerModels
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Steady-state optimal power flow
-    Sectors: Power
+    Problem class: MILP
+    Application: Steady-state optimal power flow
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: N/A
     MILP features: Transmission switching
     Sizes:
