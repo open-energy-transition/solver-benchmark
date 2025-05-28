@@ -53,7 +53,6 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
   });
 
   const getTooltip = (d: {
-    [key: string]: string | number | null | undefined;
     runtime: number;
     memoryUsage: number;
     status: string;

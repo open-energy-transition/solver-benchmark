@@ -50,7 +50,7 @@ const defaultTooltipTemplate = (
     <strong>Runtime of ${solver2.replace("--", " (")}):</strong> ${roundNumber(
       d.d2.runtime,
       2,
-    )}s (${d.d1.status})<br>
+    )}s (${d.d2.status})<br>
     <strong>Log Runtime (s) of ${solver1.replace(
       "--",
       " (",
@@ -336,15 +336,15 @@ const ChartCompare = ({
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(3)} className="size-2" />
-          {formatLegend("ok-TO")}
+          {formatLegend("ok-fail")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(0)} className="size-2" />
-          {formatLegend("TO-ok")}
+          {formatLegend("fail-ok")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(2)} className="size-2" />
-          {formatLegend("TO-TO")}
+          {formatLegend("fail-fail")}
         </div>
       </div>
       <div className="w-full overflow-x-auto" ref={containerRef}>
