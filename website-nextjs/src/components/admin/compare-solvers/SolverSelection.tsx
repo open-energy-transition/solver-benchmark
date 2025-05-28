@@ -98,7 +98,6 @@ const SolverSelection = () => {
   <div class="text-sm 4xl:text-lg">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
-    <strong>Status:</strong> ${d.status}<br>
     <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
       d.d1.memoryUsage,
       2,
