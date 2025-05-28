@@ -53,8 +53,8 @@ const PageCompareSolvers = () => {
                 on any subset of the benchmarks. This can be used to find
                 benchmarks where one solver performs better than another. It is
                 also useful for solver developers who want to compare two
-                versions of their solver to see which benchmarks the performance
-                improved or degraded on.
+                versions of their solver to see on which benchmarks the
+                performance improved or degraded.
               </div>
             </div>
           }

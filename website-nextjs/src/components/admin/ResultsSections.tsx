@@ -9,6 +9,7 @@ import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { extractNumberFromFormattedString } from "@/utils/string";
 import { SgmMode } from "@/constants/sgm";
+import { SgmExplanation, SolverVersions } from "@/components/shared";
 
 type ColumnType = {
   name: string;
@@ -405,9 +406,31 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
         <div className="text-navy px-5 text-l block items-center mt-2">
           <span>
-            This table summarizes all the benchmark results of the latest
-            (minor) version as of April 2025 of each solver on the selected
-            configuration.
+            This table summarizes the benchmark results of the latest version
+          </span>
+          <span className="inline-flex gap-2">
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <span className="flex items-baseline">
+                  <QuestionLineIcon
+                    className="size-3.5 4xl:size-5"
+                    viewBox="0 0 24 20"
+                  />
+                </span>
+              )}
+              position="right center"
+              closeOnDocumentClick
+              arrow={false}
+            >
+              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <SolverVersions />
+              </div>
+            </Popup>
+          </span>
+          <span>
+            {" "}
+            of each solver on the selected configuration.
             <br />
             <br />
             You can rank the solvers by the normalized shifted geometric mean
@@ -430,15 +453,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               arrow={false}
             >
               <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                The shifted geometric mean SGM of n non-negative numbers
-                v[1],...v[n] is
-                <br />
-                <span className="ml-4">
-                  SGM = exp(sum{"{i in 1..n}"} ln(max(1, v[i] + sh)) / n) - sh
-                </span>
-                <br />
-                We use sh = 10, and then we normalize the means by dividing them
-                by the smallest mean.
+                <SgmExplanation />
               </div>
             </Popup>
           </span>

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 import { CircleIcon, CloseIcon } from "@/assets/icons";
-import D3PlotChart from "@/components/shared/D3PlotChart";
+import D3Chart from "@/components/shared/D3PlotChart";
 import { IResultState } from "@/types/state";
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
@@ -32,10 +32,12 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
 
   return (
     <div className="py-4">
-      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
-        Results on this benchmark
+      <div className="text-navy px-5 text-l block items-center mt-2">
+        This plot shows the runtime and memory consumption of the latest version
+        (available on our platform) of each solver on the size instances of this
+        benchmark.
       </div>
-      <D3PlotChart startFrom={0} chartData={chartData} domainPadding={100} />
+      <D3Chart chartData={chartData} />
       <div className="pt-1.5 pb-3 pl-3">
         <p className="flex gap-1 items-center text-dark-grey text-sm">
           <CloseIcon className="size-3" />

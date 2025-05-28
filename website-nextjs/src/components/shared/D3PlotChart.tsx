@@ -6,7 +6,6 @@ import { SolverStatusType, SolverType } from "@/types/benchmark";
 import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
-import { isNullorUndefined } from "@/utils/calculations";
 
 type ChartData = {
   runtime: number;
@@ -16,29 +15,14 @@ type ChartData = {
   benchmark: string;
   size: string;
   problemSize?: string;
-  logScale?: number;
-  [key: string]: string | number | undefined | null;
 }[];
 
-interface D3PlotChartProps {
+interface D3ChartProps {
   chartData: ChartData;
   onPointClick?: (benchmark: ChartData[0]) => void;
-  xAxis?: keyof ChartData[0];
-  xAxisLabel?: string;
-  customTooltip?: (d: ChartData[0]) => string;
-  domainPadding?: number;
-  startFrom?: number;
 }
 
-const D3PlotChart = ({
-  chartData = [],
-  onPointClick,
-  xAxis = "runtime",
-  xAxisLabel = "Runtime (s)",
-  customTooltip,
-  domainPadding = 5,
-  startFrom = undefined,
-}: D3PlotChartProps) => {
+const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
@@ -55,15 +39,6 @@ const D3PlotChart = ({
       {} as Record<string, string>,
     );
   }, [availableSolvers]);
-
-  const getDefaultTooltip = (d: ChartData[0]) => `
-    <strong>Name:</strong> ${d.benchmark}<br>
-    <strong>Size:</strong> ${d.size} (${d.problemSize})<br>
-    <strong>Solver:</strong> ${d.solver}<br>
-    <strong>Status:</strong> ${d.status}<br>
-    <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
-    <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB
-  `;
 
   useEffect(() => {
     const data = chartData;
@@ -132,13 +107,13 @@ const D3PlotChart = ({
         // Update all elements using the new scales
         plotArea
           .selectAll<SVGCircleElement, ChartData[number]>("circle")
-          .attr("cx", (d) => newXScale(d[xAxis] as number))
+          .attr("cx", (d) => newXScale(d.runtime))
           .attr("cy", (d) => newYScale(d.memoryUsage))
           .attr("r", 4);
 
         plotArea
           .selectAll<SVGTextElement, ChartData[number]>(".point-label")
-          .attr("x", (d) => newXScale(d[xAxis] as number))
+          .attr("x", (d) => newXScale(d.runtime))
           .attr("y", (d) => newYScale(d.memoryUsage))
           .style("font-size", "12px");
 
@@ -268,12 +243,7 @@ const D3PlotChart = ({
     // Scales
     const xScale = d3
       .scaleLinear()
-      .domain([
-        isNullorUndefined(startFrom)
-          ? (d3.min(data, (d) => d[xAxis] as number) ?? 0) - domainPadding
-          : Number(startFrom),
-        (d3.max(data, (d) => d[xAxis] as number) ?? 0) + domainPadding,
-      ])
+      .domain([0, (d3.max(data, (d) => d.runtime) ?? 0) + 5])
       .range([margin.left, width - margin.right]);
 
     const yScale = d3
@@ -302,7 +272,7 @@ const D3PlotChart = ({
       .attr("x", width / 2)
       .attr("y", 40)
       .attr("fill", "#8C8C8C")
-      .text(xAxisLabel)
+      .text("Runtime (s)")
       .attr("class", "text-xs font-lato 4xl:text-lg");
 
     yAxisGroup
@@ -343,7 +313,7 @@ const D3PlotChart = ({
           group
             .append("text")
             .attr("class", "point-label")
-            .attr("x", xScale(d[xAxis] as number))
+            .attr("x", xScale(d.runtime))
             .attr("y", yScale(d.memoryUsage))
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
@@ -354,7 +324,7 @@ const D3PlotChart = ({
         } else {
           group
             .append("circle")
-            .attr("cx", xScale(d[xAxis] as number))
+            .attr("cx", xScale(d.runtime))
             .attr("cy", yScale(d.memoryUsage))
             .attr("r", 4)
             .attr("fill", solverColors[d.solver]);
@@ -364,7 +334,14 @@ const D3PlotChart = ({
           .on("mouseover", (event) => {
             tooltip
               .style("opacity", 1)
-              .html(customTooltip ? customTooltip(d) : getDefaultTooltip(d))
+              .html(
+                `<strong>Name:</strong> ${d.benchmark}<br>
+                <strong>Size:</strong> ${d.size} (${d.problemSize})<br>
+                <strong>Solver:</strong> ${d.solver}<br>
+                <strong>Status:</strong> ${d.status}<br>
+                <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
+                <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`,
+              )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 10}px`);
           })
@@ -392,7 +369,7 @@ const D3PlotChart = ({
       tooltip.remove();
       zoomControls.remove();
     };
-  }, [chartData, xAxis, customTooltip]); // Add customTooltip to dependencies
+  }, [chartData]);
 
   return (
     <div className="relative">
@@ -422,4 +399,4 @@ const D3PlotChart = ({
   );
 };
 
-export default D3PlotChart;
+export default D3Chart;

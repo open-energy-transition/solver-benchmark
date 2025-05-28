@@ -160,8 +160,15 @@ const InstancesTableResult = ({
 
   return (
     <div className="py-2">
-      <div className="text-back text-2xl font-medium mb-7 mt-2 font-league pl-1.5">
+      <div className="text-back text-2xl font-medium mb-2 mt-2 font-league pl-1.5">
         Instances
+      </div>
+      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+        {/* TODO Jacek: why is the space between the above header and this paragraph so high? Please can you help? */}
+        A benchmark may have multiple size instances, obtained by varying
+        parameters such as the spatial or temporal resolution, but which utilize
+        the same model features and are presumed to have the same optimization
+        problem structure.
       </div>
       <div className="rounded-xl max-h-[280px] overflow-auto">
         <table className="table-auto bg-white w-full">

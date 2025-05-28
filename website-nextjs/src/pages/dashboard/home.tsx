@@ -131,11 +131,11 @@ const LandingPage = () => {
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
                 benchmarks (less than a million variables), run with a 1 hour
-                timeout on a smaller machine (c4-standard-2). The <b>Long</b>{" "}
-                tab contains larger benchmarks (more than a million variables),
-                run with a 10 hour timeout on a larger machine (c4-highmem-8).
-                Select the desired tab to view a summary of the results on that
-                configuration.
+                timeout on a less powerful machine. The <b>Long</b> tab contains
+                larger benchmarks (more than a million variables), run with a 10
+                hour timeout on a more powerful machine. Select the desired tab
+                to view a summary of the results on that configuration, along
+                with the technical specifications of the machine used.
               </div>
             </div>
             <div className="flex mt-6">
