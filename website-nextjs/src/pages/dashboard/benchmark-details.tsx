@@ -37,11 +37,18 @@ const PageBenchmarkDetail = () => {
     problemClasses: new Set<string>(),
     applications: new Set<string>(),
     models: new Set<string>(),
+    modellingFrameworks: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectoralFocus, sectors, problemClass, application, modelName } =
-      fullMetaData[key];
+    const {
+      sectoralFocus,
+      sectors,
+      problemClass,
+      application,
+      modelName,
+      modellingFramework,
+    } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
     sectors.split(",").forEach((sector) => {
       uniqueValues.sectors.add(sector.trim());
@@ -49,6 +56,7 @@ const PageBenchmarkDetail = () => {
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
+    uniqueValues.modellingFrameworks.add(modellingFramework);
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -56,6 +64,9 @@ const PageBenchmarkDetail = () => {
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
   const availableModels = Array.from(uniqueValues.models);
+  const availableModellingFrameworks = Array.from(
+    uniqueValues.modellingFrameworks,
+  );
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
@@ -299,7 +310,7 @@ const PageBenchmarkDetail = () => {
                 availableSectors={availableSectors}
                 availableProblemClasses={availableProblemClasses}
                 availableApplications={availableApplications}
-                availableModels={availableModels}
+                availableModellingFrameworks={availableModellingFrameworks}
                 availableProblemSizes={availableProblemSizes}
               />
             </div>

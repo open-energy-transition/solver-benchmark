@@ -82,11 +82,18 @@ function App({ Component, pageProps }: AppProps) {
         problemClasses: new Set<string>(),
         applications: new Set<string>(),
         models: new Set<string>(),
+        modellingFrameworks: new Set<string>(),
       };
 
       Object.keys(benchmarksMetaData).forEach((key) => {
-        const { sectoralFocus, sectors, problemClass, application, modelName } =
-          benchmarksMetaData[key];
+        const {
+          sectoralFocus,
+          sectors,
+          problemClass,
+          application,
+          modelName,
+          modellingFramework,
+        } = benchmarksMetaData[key];
         uniqueValues.sectoralFocus.add(sectoralFocus);
         sectors.split(",").forEach((sector) => {
           uniqueValues.sectors.add(sector.trim());
@@ -94,6 +101,7 @@ function App({ Component, pageProps }: AppProps) {
         uniqueValues.problemClasses.add(problemClass);
         uniqueValues.applications.add(application);
         uniqueValues.models.add(modelName);
+        uniqueValues.modellingFrameworks.add(modellingFramework);
       });
 
       const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -101,6 +109,9 @@ function App({ Component, pageProps }: AppProps) {
       const availableProblemClasses = Array.from(uniqueValues.problemClasses);
       const availableApplications = Array.from(uniqueValues.applications);
       const availableModels = Array.from(uniqueValues.models);
+      const availableModellingFrameworks = Array.from(
+        uniqueValues.modellingFrameworks,
+      );
       const availableProblemSizes = Array.from(
         new Set(
           Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
@@ -123,6 +134,7 @@ function App({ Component, pageProps }: AppProps) {
           availableProblemClasses,
           availableApplications,
           availableModels,
+          availableModellingFrameworks,
           availableProblemSizes,
           realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
         }),
