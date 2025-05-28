@@ -3,6 +3,9 @@ import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
 import { formatSolverWithVersion } from "@/utils/solvers";
+import { getLogScale } from "@/utils/logscale";
+import { SolverMetrics } from "@/types/compare-solver";
+import { roundNumber } from "@/utils/number";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -29,14 +32,8 @@ const SolverSelection = () => {
   }, [solversData]);
 
   interface ChartData {
-    d1: {
-      runtime: number;
-      memoryUsage: number;
-    };
-    d2: {
-      runtime: number;
-      memoryUsage: number;
-    };
+    d1: SolverMetrics;
+    d2: SolverMetrics;
     status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
     benchmark: string;
     size: string;
@@ -75,11 +72,15 @@ const SolverSelection = () => {
         return {
           d1: {
             runtime: d1.runtime,
+            logRuntime: getLogScale(d1.runtime),
             memoryUsage: d1.memoryUsage,
+            status: d1.status,
           },
           d2: {
             runtime: d2.runtime,
+            logRuntime: getLogScale(d2.runtime),
             memoryUsage: d2.memoryUsage,
+            status: d2.status,
           },
           status: `${formatStatus(d1.status)}-${formatStatus(d2.status)}`,
           benchmark: d1.benchmark,
@@ -88,6 +89,25 @@ const SolverSelection = () => {
       }),
     );
   }, [solver1, solver2, benchmarkResults]);
+
+  const memoryUsageTooltipTemplate = (
+    d: ChartData,
+    solver1: string,
+    solver2: string,
+  ) => `
+  <div class="text-sm 4xl:text-lg">
+    <strong>Name:</strong> ${d.benchmark}<br>
+    <strong>Size:</strong> ${d.size}<br>
+    <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
+      d.d1.memoryUsage,
+      2,
+    )} MB (${d.d1.status})<br>
+    <strong>${solver2.replace("--", " (")}):</strong> ${roundNumber(
+      d.d2.memoryUsage,
+      2,
+    )} MB (${d.d2.status})<br>
+  </div>
+`;
 
   return (
     <div>
@@ -146,20 +166,24 @@ const SolverSelection = () => {
         <div className="w-full lg:w-1/2">
           <ChartCompare
             chartData={chartData.map((d) => ({
-              xaxis: d.d1.runtime,
-              yaxis: d.d2.runtime,
+              xaxis: d.d1.logRuntime,
+              yaxis: d.d2.logRuntime,
               status: d.status,
               size: d.size,
               benchmark: d.benchmark,
+              d1: d.d1,
+              d2: d.d2,
             }))}
             title={{
-              xaxis: solver1.replace("--", " (") + ") runtime (s)",
-              yaxis: solver2.replace("--", " (") + ") runtime (s)",
+              xaxis: `Log runtime (s) of ${solver1.replace("--", " (")})`,
+              yaxis: `Log runtime (s) of ${solver2.replace("--", " (")})`,
             }}
             backgroundColor={{
               upper: "#F0F4F2",
               lower: "#E1E5F2",
             }}
+            solver1={solver1}
+            solver2={solver2}
           />
           <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
             Runtime graph
@@ -173,6 +197,8 @@ const SolverSelection = () => {
               status: d.status,
               size: d.size,
               benchmark: d.benchmark,
+              d1: d.d1,
+              d2: d.d2,
             }))}
             title={{
               xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
@@ -182,6 +208,9 @@ const SolverSelection = () => {
               upper: "#F0F4F2",
               lower: "#E1E5F2",
             }}
+            solver1={solver1}
+            solver2={solver2}
+            tooltipTemplate={memoryUsageTooltipTemplate}
           />
           <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
             Memory usage graph

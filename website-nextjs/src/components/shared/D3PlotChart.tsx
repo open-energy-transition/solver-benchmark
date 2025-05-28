@@ -6,6 +6,7 @@ import { SolverStatusType, SolverType } from "@/types/benchmark";
 import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { getChartColor } from "@/utils/chart";
+import { isNullorUndefined } from "@/utils/calculations";
 
 type ChartData = {
   runtime: number;
@@ -15,14 +16,28 @@ type ChartData = {
   benchmark: string;
   size: string;
   problemSize?: string;
-}[];
+  logRuntime?: number;
+};
 
-interface D3ChartProps {
-  chartData: ChartData;
-  onPointClick?: (benchmark: ChartData[0]) => void;
+interface D3PlotChartProps {
+  chartData: ChartData[];
+  onPointClick?: (benchmark: ChartData) => void;
+  xAxis?: keyof ChartData;
+  xAxisLabel?: string;
+  customTooltip?: (d: ChartData) => string;
+  domainPadding?: number;
+  startFrom?: number;
 }
 
-const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
+const D3PlotChart = ({
+  chartData = [],
+  onPointClick,
+  xAxis = "runtime",
+  xAxisLabel = "Runtime (s)",
+  customTooltip,
+  domainPadding = 5,
+  startFrom = undefined,
+}: D3PlotChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
@@ -39,6 +54,15 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
       {} as Record<string, string>,
     );
   }, [availableSolvers]);
+
+  const getDefaultTooltip = (d: ChartData) => `
+    <strong>Name:</strong> ${d.benchmark}<br>
+    <strong>Size:</strong> ${d.size} (${d.problemSize})<br>
+    <strong>Solver:</strong> ${d.solver}<br>
+    <strong>Status:</strong> ${d.status}<br>
+    <strong>Runtime:</strong> ${roundNumber(d.runtime, 2)} s<br>
+    <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB
+  `;
 
   useEffect(() => {
     const data = chartData;
@@ -106,14 +130,14 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
 
         // Update all elements using the new scales
         plotArea
-          .selectAll<SVGCircleElement, ChartData[number]>("circle")
-          .attr("cx", (d) => newXScale(d.runtime))
+          .selectAll<SVGCircleElement, ChartData>("circle")
+          .attr("cx", (d) => newXScale(d[xAxis]))
           .attr("cy", (d) => newYScale(d.memoryUsage))
           .attr("r", 4);
 
         plotArea
-          .selectAll<SVGTextElement, ChartData[number]>(".point-label")
-          .attr("x", (d) => newXScale(d.runtime))
+          .selectAll<SVGTextElement, ChartData>(".point-label")
+          .attr("x", (d) => newXScale(d[xAxis]))
           .attr("y", (d) => newYScale(d.memoryUsage))
           .style("font-size", "12px");
 
@@ -243,7 +267,12 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
     // Scales
     const xScale = d3
       .scaleLinear()
-      .domain([0, (d3.max(data, (d) => d.runtime) ?? 0) + 5])
+      .domain([
+        isNullorUndefined(startFrom)
+          ? (d3.min(data, (d) => d[xAxis] as number) ?? 0) - domainPadding
+          : Number(startFrom),
+        (d3.max(data, (d) => d[xAxis] as number) ?? 0) + domainPadding,
+      ])
       .range([margin.left, width - margin.right]);
 
     const yScale = d3
@@ -272,7 +301,7 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
       .attr("x", width / 2)
       .attr("y", 40)
       .attr("fill", "#8C8C8C")
-      .text("Runtime (s)")
+      .text(xAxisLabel)
       .attr("class", "text-xs font-lato 4xl:text-lg");
 
     yAxisGroup
@@ -313,7 +342,7 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
           group
             .append("text")
             .attr("class", "point-label")
-            .attr("x", xScale(d.runtime))
+            .attr("x", xScale(d[xAxis] as number))
             .attr("y", yScale(d.memoryUsage))
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
@@ -324,7 +353,7 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
         } else {
           group
             .append("circle")
-            .attr("cx", xScale(d.runtime))
+            .attr("cx", xScale(d[xAxis] as number))
             .attr("cy", yScale(d.memoryUsage))
             .attr("r", 4)
             .attr("fill", solverColors[d.solver]);
@@ -334,14 +363,7 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
           .on("mouseover", (event) => {
             tooltip
               .style("opacity", 1)
-              .html(
-                `<strong>Name:</strong> ${d.benchmark}<br>
-                <strong>Size:</strong> ${d.size} (${d.problemSize})<br>
-                <strong>Solver:</strong> ${d.solver}<br>
-                <strong>Status:</strong> ${d.status}<br>
-                <strong>Runtime:</strong> ${roundNumber(d.runtime, 1)} s<br>
-                <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB`,
-              )
+              .html(customTooltip ? customTooltip(d) : getDefaultTooltip(d))
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 10}px`);
           })
@@ -369,7 +391,7 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
       tooltip.remove();
       zoomControls.remove();
     };
-  }, [chartData]);
+  }, [chartData, xAxis, customTooltip]);
 
   return (
     <div className="relative">
@@ -399,4 +421,4 @@ const D3Chart = ({ chartData = [], onPointClick }: D3ChartProps) => {
   );
 };
 
-export default D3Chart;
+export default D3PlotChart;
