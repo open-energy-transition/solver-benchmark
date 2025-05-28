@@ -82,7 +82,7 @@ const BenchmarkStatisticsCharts = ({
             updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
-        if (metaData[key].sizes.some((instance) => instance.size === "R")) {
+        if (metaData[key].sizes.some((instance) => instance.realistic)) {
           if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
