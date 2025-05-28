@@ -106,7 +106,7 @@ const SolverSelection = () => {
     <strong>${solver2.replace("--", " (")}):</strong> ${roundNumber(
       d.d2.memoryUsage,
       2,
-    )} MB (${d.d1.status})<br>
+    )} MB (${d.d2.status})<br>
   </div>
 `;
 
