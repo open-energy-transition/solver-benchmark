@@ -2,10 +2,7 @@ import Link from "next/link";
 
 const HowDoWeBenchmarkSection = () => {
   return (
-    <div
-      id="methodology"
-      className="text-navy bg-[#F5F4F4] py-5 scroll-mt-[6rem]"
-    >
+    <div className="text-navy bg-[#F5F4F4] py-5">
       <div
         className="
           xl:flex

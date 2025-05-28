@@ -16,7 +16,6 @@ const Header = () => {
         <div className="flex w-max">
           <a
             href="#"
-            // scale-[50%]  sm:scale-[70%]
             className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max"
           >
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[71px]">
@@ -91,27 +90,20 @@ const Header = () => {
           >
             BENCHMARKS
           </Link>
-          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
-            MISSION
-          </Link>
-          {/* TODO Jacek: why doesn't the #methodology bookmark work? */}
-          <Link
-            href="#methodology"
-            className="text-sm/6 font-medium 4xl:text-base"
-          >
-            METHODOLOY
-          </Link>
           <Link
             href="#contribution"
             className="text-sm/6 font-medium 4xl:text-base"
           >
             CONTRIBUTIONS
           </Link>
-          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
-            FAQs
+          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
+            MISSION
           </Link>
           <Link href="#contact" className="text-sm/6 font-medium 4xl:text-base">
             CONTACT
+          </Link>
+          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
+            FAQs
           </Link>
         </div>
         <div className="hidden lg:flex w-max">
@@ -185,20 +177,6 @@ const Header = () => {
                     BENCHMARKS
                   </Link>
                   <Link
-                    href="#mission"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    MISSION
-                  </Link>
-                  <Link
-                    href="#methodology"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    METHODOLOGY
-                  </Link>
-                  <Link
                     href="#contribution"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
@@ -206,11 +184,11 @@ const Header = () => {
                     CONTRIBUTIONS
                   </Link>
                   <Link
-                    href="#faq"
+                    href="#mission"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
-                    FAQs
+                    MISSION
                   </Link>
                   <Link
                     href="#contact"
@@ -218,6 +196,13 @@ const Header = () => {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     CONTACT
+                  </Link>
+                  <Link
+                    href="#faq"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
+                  >
+                    FAQs
                   </Link>
                   <Link
                     onClick={() => setIsMenuOpen(false)}
