@@ -40,6 +40,11 @@ const PageBenchmarkDetail = () => {
       value: benchmarkName,
     },
     {
+      name: "modellingFramework",
+      label: "Modelling Framework",
+      value: benchmarkDetail?.modellingFramework,
+    },
+    {
       name: "version",
       label: "version",
       value: benchmarkDetail?.version,
