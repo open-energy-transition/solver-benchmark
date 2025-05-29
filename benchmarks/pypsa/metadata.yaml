@@ -142,7 +142,7 @@ benchmarks:
       Temporal resolution: 3
       Spatial resolution: 10
       Realistic: true
-      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1620797
       Num. variables: 750434
   pypsa-eur-elec-op-ucconv:

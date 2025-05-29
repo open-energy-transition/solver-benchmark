@@ -41,7 +41,7 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594079
       Num. variables: 1801794
   temoa-US_9R_TS_NDC:
@@ -63,7 +63,7 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594091
       Num. variables: 1801794
   temoa-US_9R_TS_NZ:
@@ -85,7 +85,7 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594085
       Num. variables: 1801794
   temoa-US_9R_TS_SP:
@@ -107,7 +107,7 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594116
       Num. variables: 1801794
   temoa-US_9R_TS_NZ_trunc_4periods:
@@ -129,6 +129,6 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 665474
       Num. variables: 708899

@@ -58,7 +58,7 @@ benchmarks:
       Temporal resolution: 2.2
       Spatial resolution: 28
       Realistic: true
-      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1118208
       Num. variables: 745559
       Num. continuous variables: 745307
@@ -69,7 +69,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 28
       Realistic: true
-      Realistic - Motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 2429440
       Num. variables: 1619451
       Num. continuous variables: 1619199

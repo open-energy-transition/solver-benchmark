@@ -18,7 +18,7 @@ benchmarks:
       Temporal resolution: 20
       Spatial resolution: 31
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
+      Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 6027253
       Num. variables: 6449851
   TIMES-GEO-global-netzero:
@@ -40,7 +40,7 @@ benchmarks:
       Temporal resolution: 20
       Spatial resolution: 31
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
+      Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 5063755
       Num. variables: 5422595
   times-etimeseu-france-elec+heat-single_stage:
@@ -62,7 +62,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
-      Realistic - Motivation:  Designed for comprehensive French scenario analyses.
+      Realistic motivation:  Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
       Num. variables: 15400
   times-etimeseu-france-elec+heat-co2-single_stage:
@@ -84,7 +84,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive French scenario analyses.
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15451
       Num. variables: 15404
   times-etimeseu-france-elec+heat-multi_stage:
@@ -106,7 +106,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive French scenario analyses.
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91288
       Num. variables: 92084
   times-etimeseu-france-elec+heat-co2-multi_stage:
@@ -128,7 +128,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive French scenario analyses.
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91306
       Num. variables: 92102
   times-etimeseu-europe-elec+heat-single_stage:
@@ -150,7 +150,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive European scenario analyses.
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456603
       Num. variables: 452854
   times-etimeseu-europe-elec+heat-co2-single_stage:
@@ -172,7 +172,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive European scenario analyses.
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456663
       Num. variables: 452914
   times-etimeseu-europe-elec+heat-multi_stage:
@@ -194,7 +194,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive European scenario analyses.
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720516
       Num. variables: 2729679
   times-etimeseu-europe-elec+heat-co2-multi_stage:
@@ -216,7 +216,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive European scenario analyses.
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720786
       Num. variables: 2729949
   times-ireland-noco2:
@@ -288,7 +288,7 @@ benchmarks:
       Temporal resolution: 24
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive New Zealand scenario analyses.
+      Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
       Num. variables: 202797
   times-nz-tui:
@@ -310,6 +310,6 @@ benchmarks:
       Temporal resolution: 24
       Spatial resolution: 2
       Realistic: true
-      Realistic - Motivation: Designed for comprehensive New Zealand scenario analyses.
+      Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
