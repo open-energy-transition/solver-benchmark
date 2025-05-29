@@ -117,8 +117,6 @@ const PageBenchmarkDetail = () => {
           showFilter={false}
         >
           {/* Content */}
-          <div className="border-b border-stroke pt-2" />
-
           <div className="pb-2 pt-8 md:py-4 flex items-center">
             <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
@@ -184,8 +182,11 @@ const PageBenchmarkDetail = () => {
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <div className="text-back text-2xl font-medium mb-2 mt-2 font-league pl-1.5">
+                Results on this benchmark
+              </div>
               <DataTable benchmarkName={benchmarkName as string} />
+              <BenchmarksSection benchmarkName={benchmarkName as string} />
             </>
           )}
         </ContentWrapper>

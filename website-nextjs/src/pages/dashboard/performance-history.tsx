@@ -7,6 +7,7 @@ import {
   ContentWrapper,
   Footer,
   Navbar,
+  SolverVersions,
 } from "@/components/shared";
 import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
@@ -296,29 +297,13 @@ const PagePerformanceHistory = () => {
                 automatically re-generate to show you the performance history on
                 your chosen subset.
               </div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
-                We run the latest version of each solver released on conda in
-                that year. 2025&apos;s versions were selected if the solver had
-                a major or minor release in 2025 as of April 20, 2025. The 2025
-                results will be updated with the last version released in 2025
-                at the end of this year. Some solver versions are not available
-                on coda or have compatibility issues with our benchmarking
-                infrastructure, see{" "}
-                <a
-                  className="underline"
-                  href="https://github.com/open-energy-transition/solver-benchmark?tab=readme-ov-file#solver-versions"
-                >
-                  here
-                </a>{" "}
-                for more details.
-              </div>
+              <SolverVersions />
             </div>
           }
         >
           {/* Content */}
           <SgmModeSection />
           <NormalizedSection chartData={chartData} />
-          <br /> {/* TODO replace with a less hacky way of padding */}
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}

@@ -90,20 +90,26 @@ const Header = () => {
           >
             BENCHMARKS
           </Link>
+          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
+            MISSION
+          </Link>
+          <Link
+            href="#methodology"
+            className="text-sm/6 font-medium 4xl:text-base"
+          >
+            METHODOLOY
+          </Link>
           <Link
             href="#contribution"
             className="text-sm/6 font-medium 4xl:text-base"
           >
             CONTRIBUTIONS
           </Link>
-          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
-            MISSION
+          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
+            FAQs
           </Link>
           <Link href="#contact" className="text-sm/6 font-medium 4xl:text-base">
             CONTACT
-          </Link>
-          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
-            FAQs
           </Link>
         </div>
         <div className="hidden lg:flex w-max">
@@ -177,13 +183,6 @@ const Header = () => {
                     BENCHMARKS
                   </Link>
                   <Link
-                    href="#contribution"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    CONTRIBUTIONS
-                  </Link>
-                  <Link
                     href="#mission"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
@@ -191,11 +190,18 @@ const Header = () => {
                     MISSION
                   </Link>
                   <Link
-                    href="#contact"
+                    href="#methodology"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
-                    CONTACT
+                    METHODOLOGY
+                  </Link>
+                  <Link
+                    href="#contribution"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
+                  >
+                    CONTRIBUTIONS
                   </Link>
                   <Link
                     href="#faq"
@@ -203,6 +209,13 @@ const Header = () => {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     FAQs
+                  </Link>
+                  <Link
+                    href="#contact"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
+                  >
+                    CONTACT
                   </Link>
                   <Link
                     onClick={() => setIsMenuOpen(false)}
