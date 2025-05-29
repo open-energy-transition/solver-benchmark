@@ -132,6 +132,21 @@ def validate_benchmark_entry(model_name, model_info, file_path):
             )
             return False
 
+        # Validate Realistic motivation when Realistic is true
+        realistic = size_entry.get("Realistic", False)
+        if realistic is True:  # Explicitly check for boolean True
+            realistic_motivation = size_entry.get("Realistic motivation", "")
+            if (
+                not realistic_motivation
+                or not isinstance(realistic_motivation, str)
+                or realistic_motivation.strip() == ""
+            ):
+                size_name = size_entry.get("Name", f"entry {i}")
+                print(
+                    f"ERROR in {file_path}: Benchmark '{model_name}' - Size '{size_name}' has Realistic=true but missing, empty, or placeholder 'Realistic motivation'"
+                )
+                return False
+
     return True
 
 
