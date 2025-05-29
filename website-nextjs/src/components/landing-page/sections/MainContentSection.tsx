@@ -1,6 +1,7 @@
 import { ArrowUpIcon } from "@/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
+import Popup from "reactjs-popup";
 
 const MainContent = () => {
   return (
@@ -23,8 +24,8 @@ const MainContent = () => {
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
             <h1 className="inline leading-1.4 text-white text-4xl font-semibold tracking-tight sm:text-[3.5rem] box-decoration-clone">
-              An open-source benchmark of LP/MILP solvers on realistic problems
-              from the energy planning domain.
+              An open-source benchmark of optimization solvers on representative
+              problems from the energy planning domain.
             </h1>
           </div>
           <div className="mt-4 text-grey text-2xl font-light">
@@ -46,25 +47,41 @@ const MainContent = () => {
           </div>
 
           <div className="mt-8 grid sm:flex items-center justify-start gap-2 md:gap-6 text-center">
-            <a
-              href="#"
-              className="
-                bg-white
-                focus-visible:outline
-                focus-visible:outline-2
-                focus-visible:outline-offset-2
-                font-bold
-                md:text-xl
-                px-8
-                py-4
-                rounded-2xl
-                shadow-sm
-                text-lg
-                text-teal
-              "
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <div
+                  className="
+                  bg-white
+                  cursor-pointer
+                  duration-200
+                  focus-visible:outline
+                  focus-visible:outline-2
+                  focus-visible:outline-offset-2
+                  font-bold
+                  md:text-xl
+                  px-8
+                  py-4
+                  rounded-2xl
+                  shadow-sm
+                  text-lg
+                  text-teal
+                  transition-all
+                  hover:bg-gray-300
+                "
+                >
+                  GETTING STARTED
+                </div>
+              )}
+              position="top center"
+              closeOnDocumentClick
+              arrow={true}
             >
-              GETTING STARTED
-            </a>
+              <div className="bg-white px-4 py-2 rounded-lg">
+                Work in progress: coming soon!
+              </div>
+            </Popup>
+
             <Link
               href="/dashboard/home"
               className="

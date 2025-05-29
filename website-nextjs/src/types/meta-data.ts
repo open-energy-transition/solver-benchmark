@@ -2,8 +2,10 @@ type Size = {
   name: string;
   spatialResolution: number;
   temporalResolution: number | string;
-  nOfConstraints: number;
-  nOfVariables: number | null;
+  numConstraints: number;
+  numVariables: number | null;
+  numContinuousVariables: number | null;
+  numIntegerVariables: number | null;
   size: string;
   url: string;
   realistic: boolean;
@@ -12,9 +14,11 @@ type Size = {
 interface MetaDataEntry {
   shortDescription: string;
   modelName: string;
+  modellingFramework: string;
   version: string;
-  technique: string;
-  kindOfProblem: string;
+  problemClass: string;
+  application: string;
+  sectoralFocus: string;
   sectors: string;
   timeHorizon: string;
   milpFeatures: string | null;

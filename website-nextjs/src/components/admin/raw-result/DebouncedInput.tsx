@@ -59,7 +59,7 @@ export default function DebouncedInput({
         )}
       </div>
       {props.type === "number" && (
-        <div className="flex flex-col cursor-pointer">
+        <div className="flex flex-col cursor-pointer ml-1">
           <ArrowUpTriangleFillIcon
             className="rotate-180 size-2 hover:text-blue-500"
             onClick={() => {

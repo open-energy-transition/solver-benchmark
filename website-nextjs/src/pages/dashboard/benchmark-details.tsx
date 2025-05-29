@@ -7,7 +7,7 @@ import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
@@ -15,9 +15,6 @@ import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkSt
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
 
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
@@ -35,24 +32,41 @@ const PageBenchmarkDetail = () => {
   });
 
   const uniqueValues = {
+    sectoralFocus: new Set<string>(),
     sectors: new Set<string>(),
-    techniques: new Set<string>(),
-    kindOfProblems: new Set<string>(),
+    problemClasses: new Set<string>(),
+    applications: new Set<string>(),
     models: new Set<string>(),
+    modellingFrameworks: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, technique, kindOfProblem, modelName } = fullMetaData[key];
-    uniqueValues.sectors.add(sectors);
-    uniqueValues.techniques.add(technique);
-    uniqueValues.kindOfProblems.add(kindOfProblem);
+    const {
+      sectoralFocus,
+      sectors,
+      problemClass,
+      application,
+      modelName,
+      modellingFramework,
+    } = fullMetaData[key];
+    uniqueValues.sectoralFocus.add(sectoralFocus);
+    sectors.split(",").forEach((sector) => {
+      uniqueValues.sectors.add(sector.trim());
+    });
+    uniqueValues.problemClasses.add(problemClass);
+    uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
+    uniqueValues.modellingFrameworks.add(modellingFramework);
   });
 
+  const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
   const availableSectors = Array.from(uniqueValues.sectors);
-  const availableTechniques = Array.from(uniqueValues.techniques);
-  const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+  const availableProblemClasses = Array.from(uniqueValues.problemClasses);
+  const availableApplications = Array.from(uniqueValues.applications);
   const availableModels = Array.from(uniqueValues.models);
+  const availableModellingFrameworks = Array.from(
+    uniqueValues.modellingFrameworks,
+  );
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
@@ -71,11 +85,13 @@ const PageBenchmarkDetail = () => {
     const filters: Partial<IFilterState> = {};
 
     [
+      "sectoralFocus",
       "sectors",
-      "technique",
-      "kindOfProblem",
+      "problemClass",
+      "application",
       "modelName",
       "problemSize",
+      "realistic",
     ].forEach((key) => {
       const value = router.query[key];
       if (typeof value === "string") {
@@ -91,11 +107,13 @@ const PageBenchmarkDetail = () => {
 
   const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
+    sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
-    technique: availableTechniques,
-    kindOfProblem: availableKindOfProblems,
+    problemClass: availableProblemClasses,
+    application: availableApplications,
     modelName: availableModels,
     problemSize: availableProblemSizes,
+    realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
 
   useEffect(() => {
@@ -110,11 +128,13 @@ const PageBenchmarkDetail = () => {
       }));
     } else {
       setLocalFilters({
+        sectoralFocus: availableSectoralFocus,
         sectors: availableSectors,
-        technique: availableTechniques,
-        kindOfProblem: availableKindOfProblems,
+        problemClass: availableProblemClasses,
+        application: availableApplications,
         modelName: availableModels,
         problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
       });
     }
     setIsInit(true);
@@ -130,17 +150,21 @@ const PageBenchmarkDetail = () => {
         Array.isArray(values) &&
         values.length > 0 &&
         values.length <
-          (key === "sectors"
-            ? availableSectors.length
-            : key === "technique"
-              ? availableTechniques.length
-              : key === "kindOfProblem"
-                ? availableKindOfProblems.length
-                : key === "modelName"
-                  ? availableModels.length
-                  : key === "problemSize"
-                    ? availableProblemSizes.length
-                    : 0)
+          (key === "sectoralFocus"
+            ? availableSectoralFocus.length
+            : key === "sectors"
+              ? availableSectors.length
+              : key === "problemClass"
+                ? availableProblemClasses.length
+                : key === "application"
+                  ? availableApplications.length
+                  : key === "modelName"
+                    ? availableModels.length
+                    : key === "problemSize"
+                      ? availableProblemSizes.length
+                      : key === "realistic"
+                        ? 2
+                        : 0)
       ) {
         queryParams.set(key, values.map(encodeValue).join(";"));
       }
@@ -157,23 +181,65 @@ const PageBenchmarkDetail = () => {
   }, [localFilters, isInit]);
 
   const filteredMetaData = useMemo(() => {
-    const filteredEntries = Object.entries(metaData).filter(([, value]) => {
-      const { sectors, technique, kindOfProblem, modelName } = localFilters;
+    const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
+      const {
+        sectoralFocus,
+        sectors,
+        problemClass,
+        application,
+        modelName,
+        problemSize,
+        realistic,
+      } = localFilters;
 
+      const isSectoralFocusMatch =
+        sectoralFocus.length === 0 ||
+        sectoralFocus.includes(value.sectoralFocus);
       const isSectorsMatch =
-        sectors.length === 0 || sectors.includes(value.sectors);
-      const isTechniqueMatch =
-        technique.length === 0 || technique.includes(value.technique);
-      const isKindOfProblemMatch =
-        kindOfProblem.length === 0 ||
-        kindOfProblem.includes(value.kindOfProblem);
+        sectors.length === 0 ||
+        (value.sectors &&
+          sectors.some((selectedSector) => {
+            const valueSectors = value.sectors.split(",").map((s) => s.trim());
+            return valueSectors.includes(selectedSector);
+          }));
+      const isProblemClassMatch =
+        problemClass.length === 0 || problemClass.includes(value.problemClass);
+      const isApplicationMatch =
+        application.length === 0 || application.includes(value.application);
       const isModelNameMatch =
         modelName.length === 0 || modelName.includes(value.modelName);
+      const isProblemSizeMatch =
+        problemSize.length === 0 ||
+        (value.sizes &&
+          value.sizes.some((size) => problemSize.includes(size.size)));
+
+      const isRealisticMatch =
+        realistic.length === 0 ||
+        (value.sizes &&
+          value.sizes.some((size) => {
+            if (
+              size.realistic === true &&
+              realistic.includes(RealisticOption.Realistic)
+            ) {
+              return true;
+            }
+            if (
+              (size.realistic === false || size.realistic === undefined) &&
+              realistic.includes(RealisticOption.Other)
+            ) {
+              return true;
+            }
+            return false;
+          }));
+
       return (
+        isSectoralFocusMatch &&
         isSectorsMatch &&
-        isTechniqueMatch &&
-        isKindOfProblemMatch &&
-        isModelNameMatch
+        isProblemClassMatch &&
+        isApplicationMatch &&
+        isModelNameMatch &&
+        isProblemSizeMatch &&
+        isRealisticMatch
       );
     });
 
@@ -227,6 +293,26 @@ const PageBenchmarkDetail = () => {
                   platform, including their source and download links.
                 </p>
               </div>
+              <div className="py-2 grid sm:flex justify-between items-center">
+                <div className="text-navy text-lg font-bold 4xl:text-xl">
+                  Summary of Benchmark Set
+                </div>
+                <Link
+                  className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
+                  href={PATH_DASHBOARD.benchmarkSummary}
+                >
+                  See more details
+                  <ArrowUpIcon className="rotate-90" />
+                </Link>
+              </div>
+              <BenchmarkStatisticsCharts
+                availableSectoralFocus={availableSectoralFocus}
+                availableSectors={availableSectors}
+                availableProblemClasses={availableProblemClasses}
+                availableApplications={availableApplications}
+                availableModellingFrameworks={availableModellingFrameworks}
+                availableProblemSizes={availableProblemSizes}
+              />
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
               <div className="sm:flex justify-between">
@@ -234,9 +320,10 @@ const PageBenchmarkDetail = () => {
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
+                    availableSectoralFocus={availableSectoralFocus}
                     availableSectors={availableSectors}
-                    availableTechniques={availableTechniques}
-                    availableKindOfProblems={availableKindOfProblems}
+                    availableProblemClasses={availableProblemClasses}
+                    availableApplications={availableApplications}
                     availableModels={availableModels}
                     availableProblemSizes={availableProblemSizes}
                   />
@@ -249,25 +336,6 @@ const PageBenchmarkDetail = () => {
                 `}
                 >
                   <div className="space-y-4 sm:space-y-6">
-                    <div className="py-2 grid sm:flex justify-between items-center">
-                      <div className="text-navy text-lg font-bold 4xl:text-xl">
-                        Summary of Benchmark Set
-                      </div>
-                      <Link
-                        className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
-                        href={PATH_DASHBOARD.benchmarkSummary}
-                      >
-                        See more details
-                        <ArrowUpIcon className="rotate-90" />
-                      </Link>
-                    </div>
-                    <BenchmarkStatisticsCharts
-                      availableSectors={availableSectors}
-                      availableTechniques={availableTechniques}
-                      availableKindOfProblems={availableKindOfProblems}
-                      availableModels={availableModels}
-                      availableProblemSizes={availableProblemSizes}
-                    />
                     <div className="py-2">
                       <div className="text-navy text-lg font-bold 4xl:text-xl">
                         List of All Benchmarks

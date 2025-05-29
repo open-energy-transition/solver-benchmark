@@ -16,9 +16,8 @@ import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesT
 import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult";
-import { Technique } from "@/constants";
 import { IResultState } from "@/types/state";
+import DataTable from "@/components/admin/benchmark-detail/DataTable";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -41,19 +40,29 @@ const PageBenchmarkDetail = () => {
       value: benchmarkName,
     },
     {
+      name: "modellingFramework",
+      label: "Modelling Framework",
+      value: benchmarkDetail?.modellingFramework,
+    },
+    {
       name: "version",
       label: "version",
       value: benchmarkDetail?.version,
     },
     {
-      name: "technique",
-      label: "technique",
-      value: benchmarkDetail?.technique,
+      name: "problemClass",
+      label: "problem class",
+      value: benchmarkDetail?.problemClass,
     },
     {
-      name: "problemKind",
-      label: "problem kind",
-      value: benchmarkDetail?.kindOfProblem,
+      name: "application",
+      label: "application",
+      value: benchmarkDetail?.application,
+    },
+    {
+      name: "sectoralFocus",
+      label: "Sectoral focus",
+      value: benchmarkDetail?.sectoralFocus,
     },
     {
       name: "sectors",
@@ -108,8 +117,6 @@ const PageBenchmarkDetail = () => {
           showFilter={false}
         >
           {/* Content */}
-          <div className="border-b border-stroke pt-2" />
-
           <div className="pb-2 pt-8 md:py-4 flex items-center">
             <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
@@ -175,9 +182,10 @@ const PageBenchmarkDetail = () => {
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              {benchmarkDetail.technique === Technique.MILP && (
-                <MilpTableResult benchmarkName={benchmarkName as string} />
-              )}
+              <div className="text-back text-2xl font-medium mb-2 mt-2 font-league pl-1.5">
+                Results on this benchmark
+              </div>
+              <DataTable benchmarkName={benchmarkName as string} />
               <BenchmarksSection benchmarkName={benchmarkName as string} />
             </>
           )}

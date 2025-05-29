@@ -16,7 +16,6 @@ const Header = () => {
         <div className="flex w-max">
           <a
             href="#"
-            // scale-[50%]  sm:scale-[70%]
             className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max"
           >
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[71px]">
@@ -66,7 +65,7 @@ const Header = () => {
                 <path
                   d="M30.3287 35.9668L42.9042 43.2273V57.7483L30.3287 65.0089L17.7531 57.7483V43.2273L30.3287 35.9668Z"
                   fill="white"
-                  fill-opacity="0.4"
+                  fillOpacity="0.4"
                 />
               </svg>
             </div>
@@ -91,20 +90,26 @@ const Header = () => {
           >
             BENCHMARKS
           </Link>
+          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
+            MISSION
+          </Link>
+          <Link
+            href="#methodology"
+            className="text-sm/6 font-medium 4xl:text-base"
+          >
+            METHODOLOY
+          </Link>
           <Link
             href="#contribution"
             className="text-sm/6 font-medium 4xl:text-base"
           >
             CONTRIBUTIONS
           </Link>
-          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
-            MISSION
+          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
+            FAQs
           </Link>
           <Link href="#contact" className="text-sm/6 font-medium 4xl:text-base">
             CONTACT
-          </Link>
-          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
-            FAQs
           </Link>
         </div>
         <div className="hidden lg:flex w-max">
@@ -178,13 +183,6 @@ const Header = () => {
                     BENCHMARKS
                   </Link>
                   <Link
-                    href="#contribution"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    CONTRIBUTIONS
-                  </Link>
-                  <Link
                     href="#mission"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
@@ -192,11 +190,18 @@ const Header = () => {
                     MISSION
                   </Link>
                   <Link
-                    href="#contact"
+                    href="#methodology"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
-                    CONTACT
+                    METHODOLOGY
+                  </Link>
+                  <Link
+                    href="#contribution"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
+                  >
+                    CONTRIBUTIONS
                   </Link>
                   <Link
                     href="#faq"
@@ -204,6 +209,13 @@ const Header = () => {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     FAQs
+                  </Link>
+                  <Link
+                    href="#contact"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
+                  >
+                    CONTACT
                   </Link>
                   <Link
                     onClick={() => setIsMenuOpen(false)}

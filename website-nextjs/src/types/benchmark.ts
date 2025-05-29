@@ -1,12 +1,12 @@
 type SolverType = "glpk" | "scip" | "highs";
-type SolverStatusType = "TO" | "ok" | "warning";
+type SolverStatusType = "TO" | "ok" | "warning" | "ER";
 
 type BenchmarkResult = {
   benchmark: string;
-  dualityGap: string | null;
-  maxIntegralityViolation: string | null;
+  dualityGap: number | null;
+  maxIntegralityViolation: number | null;
   memoryUsage: number;
-  objectiveValue: string | null;
+  objectiveValue: number | null;
   problemSize?: string;
   runtime: number;
   size: string;
@@ -15,6 +15,7 @@ type BenchmarkResult = {
   solverVersion: string;
   status: SolverStatusType;
   terminationCondition: string;
+  runId: string | null;
   timeout: number;
 };
 
@@ -32,6 +33,7 @@ interface ISolverYearlyMetrics {
       status: SolverStatusType;
     }[];
     numSolvedBenchmark: number;
+    version: string;
   }[];
 }
 
@@ -39,6 +41,7 @@ interface ISolverYearlyChartData {
   solver: SolverType;
   year: number;
   value: number;
+  version: string;
 }
 
 interface OriginBenchmarkResult {
@@ -57,11 +60,13 @@ interface OriginBenchmarkResult {
 }
 
 type IFilterBenchmarkDetails = {
+  sectoralFocus: string[];
   sectors: string[];
-  technique: string[];
-  kindOfProblem: string[];
+  problemClass: string[];
+  application: string[];
   problemSize: string[];
   modelName: string[];
+  realistic: string[];
 };
 
 export type {

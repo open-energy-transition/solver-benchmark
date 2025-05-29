@@ -1,12 +1,14 @@
 benchmarks:
   pypsa-eur-sec:
-    Short description: "Sector-coupled (power, heating, biomass, industry, transport) PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon."
+    Short description: Sector-coupled (power, heating, biomass, industry, transport) PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power, heating, biomass, industry, transport
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Biomass, Industry, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -44,14 +46,16 @@ benchmarks:
       Num. constraints: 1057182
       Num. variables: 505253
   pypsa-eur-elec-trex:
-    Short description: "PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion."
+    Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 3-12h
@@ -88,14 +92,16 @@ benchmarks:
       Num. constraints: 677533
       Num. variables: 318285
   pypsa-eur-elec-op:
-    Short description: "PyPSA-Eur operational run for Italy considering 2050 as single planning horizon."
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Operational
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: LP
+    Application: Operational
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 6-24h
@@ -140,14 +146,16 @@ benchmarks:
       Num. constraints: 1620797
       Num. variables: 750434
   pypsa-eur-elec-op-ucconv:
-    Short description: "PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet."
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Operational
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Operational
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
     # TODO: No XS size
@@ -182,14 +190,16 @@ benchmarks:
       Num. continuous variables: 93929
       Num. integer variables: 15330
   pypsa-power+ely:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 1-1h
@@ -201,14 +211,16 @@ benchmarks:
       Num. constraints: 140165
       Num. variables: 61325
   pypsa-power+ely+battery:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 1-1h
@@ -220,14 +232,16 @@ benchmarks:
       Num. constraints: 201486
       Num. variables: 87606
   pypsa-power+ely+battery-ucgas:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
@@ -241,14 +255,16 @@ benchmarks:
       Num. continuous variables: 87605
       Num. integer variables: 26280
   pypsa-power+ely-co2:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 1-1h
@@ -260,14 +276,16 @@ benchmarks:
       Num. constraints: 140166
       Num. variables: 61325
   pypsa-power+ely-ucgas:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
@@ -281,14 +299,16 @@ benchmarks:
       Num. continuous variables: 61324
       Num. integer variables: 26280
   pypsa-power+ely+battery-ucgas-mod:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
@@ -302,14 +322,16 @@ benchmarks:
       Num. continuous variables: 87605
       Num. integer variables: 26284
   pypsa-power+ely-co2-mod:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
@@ -323,14 +345,16 @@ benchmarks:
       Num. continuous variables: 61325
       Num. integer variables: 4
   pypsa-power+ely-mod:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
@@ -344,14 +368,16 @@ benchmarks:
       Num. continuous variables: 61325
       Num. integer variables: 5
   pypsa-power+ely-ucgas-mod:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
@@ -365,14 +391,16 @@ benchmarks:
       Num. continuous variables: 61324
       Num. integer variables: 26283
   pypsa-power+ely+battery-mod:
-    Short description: "Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity for a single year-time horizon."
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
-    Time horizon: Single period (1 year)
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
     MILP features: Modularity
     Sizes:
     - Name: 1-1h

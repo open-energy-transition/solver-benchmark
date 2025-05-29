@@ -8,9 +8,7 @@ export enum ProblemSize {
 
 export const MaxRunTime = 36000;
 
-export const MaxMemoryUsage = 8192;
-
-export enum Technique {
+export enum ProblemClass {
   MILP = "MILP",
   LP = "LP",
 }

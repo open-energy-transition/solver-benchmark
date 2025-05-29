@@ -19,13 +19,15 @@ const {
 const initialState: IResultState = {
   availableBenchmarks: [],
   availableBenchmarksAndSizes: [],
-  availableKindOfProblems: [],
+  availableApplications: [],
   availableModels: [],
+  availableModellingFrameworks: [],
   availableProblemSizes: [],
+  availableSectoralFocus: [],
   availableSectors: [],
   availableSolvers: [],
   availableStatuses: [],
-  availableTechniques: [],
+  availableProblemClasses: [],
   benchmarkLatestResults: [],
   benchmarkResults: [],
   fullMetaData: {},
@@ -43,12 +45,18 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
     case SET_BENCHMARK_RESULTS:
       return {
         ...state,
-        benchmarkResults: processBenchmarkResults(action.payload.results),
+        benchmarkResults: processBenchmarkResults(
+          action.payload.results,
+          state.fullMetaData,
+        ),
       };
     case SET_BENCHMARK_LATEST_RESULTS:
       return {
         ...state,
-        benchmarkLatestResults: processBenchmarkResults(action.payload.results),
+        benchmarkLatestResults: processBenchmarkResults(
+          action.payload.results,
+          state.fullMetaData,
+        ),
       };
     case SET_RAW_BENCHMARK_RESULTS:
       const availableSolvers = Array.from(
@@ -112,18 +120,24 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
 
     case SET_AVAILABLE_FILTER_DATA:
       const {
+        availableSectoralFocus,
         availableSectors,
-        availableTechniques,
-        availableKindOfProblems,
+        availableProblemClasses,
+        availableApplications,
         availableModels,
+        availableModellingFrameworks,
         availableProblemSizes,
       } = action.payload.availableFilterData;
       return {
         ...state,
+        availableSectoralFocus: sortStringArray(availableSectoralFocus),
         availableSectors: sortStringArray(availableSectors),
-        availableTechniques: sortStringArray(availableTechniques),
-        availableKindOfProblems: sortStringArray(availableKindOfProblems),
+        availableProblemClasses: sortStringArray(availableProblemClasses),
+        availableApplications: sortStringArray(availableApplications),
         availableModels: sortStringArray(availableModels),
+        availableModellingFrameworks: sortStringArray(
+          availableModellingFrameworks,
+        ),
         availableProblemSizes: sortStringArray(availableProblemSizes, "desc"),
       };
 

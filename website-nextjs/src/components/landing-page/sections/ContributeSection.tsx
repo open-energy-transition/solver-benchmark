@@ -129,7 +129,7 @@ const Contribute = () => {
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </h5>
                 </div>
-                <p className="text-base/1.5 font-lato text-left mt-2">Fork</p>
+                <p className="text-base/1.5 font-lato text-left mt-2">Forks</p>
               </div>
             </div>
             <Link

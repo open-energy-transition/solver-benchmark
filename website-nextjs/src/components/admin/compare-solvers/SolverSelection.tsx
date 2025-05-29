@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
+import { formatSolverWithVersion } from "@/utils/solvers";
+import { CircleIcon, CloseIcon } from "@/assets/icons";
+import { getLogScale } from "@/utils/logscale";
+import { SolverMetrics } from "@/types/compare-solver";
+import { roundNumber } from "@/utils/number";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -27,20 +32,9 @@ const SolverSelection = () => {
     );
   }, [solversData]);
 
-  function getOptionLabel(solverWithVersion: string) {
-    const [solver, version] = solverWithVersion.split("--");
-    return `${solver} v${version}`;
-  }
-
   interface ChartData {
-    d1: {
-      runtime: number;
-      memoryUsage: number;
-    };
-    d2: {
-      runtime: number;
-      memoryUsage: number;
-    };
+    d1: SolverMetrics;
+    d2: SolverMetrics;
     status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
     benchmark: string;
     size: string;
@@ -79,11 +73,15 @@ const SolverSelection = () => {
         return {
           d1: {
             runtime: d1.runtime,
+            logRuntime: getLogScale(d1.runtime),
             memoryUsage: d1.memoryUsage,
+            status: d1.status,
           },
           d2: {
             runtime: d2.runtime,
+            logRuntime: getLogScale(d2.runtime),
             memoryUsage: d2.memoryUsage,
+            status: d2.status,
           },
           status: `${formatStatus(d1.status)}-${formatStatus(d2.status)}`,
           benchmark: d1.benchmark,
@@ -92,6 +90,25 @@ const SolverSelection = () => {
       }),
     );
   }, [solver1, solver2, benchmarkResults]);
+
+  const memoryUsageTooltipTemplate = (
+    d: ChartData,
+    solver1: string,
+    solver2: string,
+  ) => `
+  <div class="text-sm 4xl:text-lg">
+    <strong>Name:</strong> ${d.benchmark}<br>
+    <strong>Size:</strong> ${d.size}<br>
+    <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
+      d.d1.memoryUsage,
+      2,
+    )} MB (${d.d1.status})<br>
+    <strong>${solver2.replace("--", " (")}):</strong> ${roundNumber(
+      d.d2.memoryUsage,
+      2,
+    )} MB (${d.d2.status})<br>
+  </div>
+`;
 
   return (
     <div>
@@ -110,7 +127,7 @@ const SolverSelection = () => {
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
               <option key={idx} value={solver}>
-                {getOptionLabel(solver)}
+                {formatSolverWithVersion(solver)}
               </option>
             ))}
           </select>
@@ -129,7 +146,7 @@ const SolverSelection = () => {
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
               <option key={idx} value={solver}>
-                {getOptionLabel(solver)}
+                {formatSolverWithVersion(solver)}
               </option>
             ))}
           </select>
@@ -137,36 +154,48 @@ const SolverSelection = () => {
       </div>
       <div className="py-2">
         <div className="text-navy text-lg sm:text-xl font-bold 4xl:text-xl">
-          Graphs
+          Comparison
         </div>
         <p className="text-[#5D5D5D] text-sm sm:text-base 4xl:text-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
           where Solver 2 performs better. Click on any point in this graph to
-          see details of that benchmark instance.{" "}
+          see details of that benchmark instance.
+          <p className="flex gap-1 items-center text-dark-grey text-sm">
+            <CloseIcon className="size-3" />
+            {/* {" "} */}
+            represents benchmark instances where at least one of the solvers
+            failed to solve within the time limit, while
+            <CircleIcon className="size-3" />
+            indicates that both solvers ran successfully.
+          </p>
         </p>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full lg:w-1/2">
           <ChartCompare
             chartData={chartData.map((d) => ({
-              xaxis: d.d1.runtime,
-              yaxis: d.d2.runtime,
+              xaxis: d.d1.logRuntime,
+              yaxis: d.d2.logRuntime,
               status: d.status,
               size: d.size,
               benchmark: d.benchmark,
+              d1: d.d1,
+              d2: d.d2,
             }))}
             title={{
-              xaxis: solver1.replace("--", " (") + ") runtime (s)",
-              yaxis: solver2.replace("--", " (") + ") runtime (s)",
+              xaxis: `Log runtime (s) of ${solver1.replace("--", " (")})`,
+              yaxis: `Log runtime (s) of ${solver2.replace("--", " (")})`,
             }}
             backgroundColor={{
               upper: "#F0F4F2",
               lower: "#E1E5F2",
             }}
+            solver1={solver1}
+            solver2={solver2}
           />
           <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
-            Runtime graph
+            Runtime Comparison
           </div>
         </div>
         <div className="w-full lg:w-1/2">
@@ -177,6 +206,8 @@ const SolverSelection = () => {
               status: d.status,
               size: d.size,
               benchmark: d.benchmark,
+              d1: d.d1,
+              d2: d.d2,
             }))}
             title={{
               xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
@@ -186,9 +217,12 @@ const SolverSelection = () => {
               upper: "#F0F4F2",
               lower: "#E1E5F2",
             }}
+            solver1={solver1}
+            solver2={solver2}
+            tooltipTemplate={memoryUsageTooltipTemplate}
           />
           <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
-            Memory usage graph
+            Memory Usage Comparison
           </div>
         </div>
       </div>
