@@ -51,7 +51,8 @@ const SgmExplanation = ({}) => {
           </ul>
         </p>
         <p>
-          We use a shift of s = 10, which is also the shift used by the{" "}
+          We use a shift of <MathJax inline>s = 10</MathJax>, which is also the
+          shift used by the{" "}
           <a className="underline" href="https://plato.asu.edu/ftp/shgeom.html">
             Mittlemann benchmark
           </a>

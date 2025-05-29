@@ -93,7 +93,6 @@ const Header = () => {
           <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
             MISSION
           </Link>
-          {/* TODO Jacek: why doesn't the #methodology bookmark work? */}
           <Link
             href="#methodology"
             className="text-sm/6 font-medium 4xl:text-base"

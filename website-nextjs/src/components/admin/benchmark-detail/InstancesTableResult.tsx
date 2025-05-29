@@ -164,7 +164,6 @@ const InstancesTableResult = ({
         Instances
       </div>
       <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
-        {/* TODO Jacek: why is the space between the above header and this paragraph so high? Please can you help? */}
         A benchmark may have multiple size instances, obtained by varying
         parameters such as the spatial or temporal resolution, but which utilize
         the same model features and are presumed to have the same optimization
