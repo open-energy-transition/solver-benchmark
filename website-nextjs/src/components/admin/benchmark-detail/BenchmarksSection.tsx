@@ -1,9 +1,11 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-import { CircleIcon, CloseIcon } from "@/assets/icons";
+import { CircleIcon, CloseIcon, QuestionLineIcon } from "@/assets/icons";
 import D3PlotChart from "@/components/shared/D3PlotChart";
 import { IResultState } from "@/types/state";
+import Popup from "reactjs-popup";
+import { SgmExplanation } from "@/components/shared";
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
@@ -33,9 +35,35 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
   return (
     <div className="py-4">
       <div className="text-navy px-5 text-l block items-center mt-2">
-        This plot shows the runtime and memory consumption of the latest version
-        (available on our platform) of each solver on the size instances of this
-        benchmark.
+        <span>
+          This plot shows the runtime and memory consumption of the latest
+          version
+        </span>
+        <span className="inline-flex gap-2">
+          <Popup
+            on={["hover"]}
+            trigger={() => (
+              <span className="flex items-baseline">
+                <QuestionLineIcon
+                  className="size-3.5 4xl:size-5"
+                  viewBox="0 0 24 20"
+                />
+                )
+              </span>
+            )}
+            position="right center"
+            closeOnDocumentClick
+            arrow={false}
+          >
+            <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+              <SgmExplanation />
+            </div>
+          </Popup>
+        </span>
+        <span>
+          (available on our platform) of each solver on the size instances of
+          this benchmark.
+        </span>
       </div>
       <D3PlotChart startFrom={0} chartData={chartData} domainPadding={100} />
       <div className="pt-1.5 pb-3 pl-3">
