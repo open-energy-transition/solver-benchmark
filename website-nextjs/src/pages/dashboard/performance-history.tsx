@@ -304,7 +304,6 @@ const PagePerformanceHistory = () => {
           {/* Content */}
           <SgmModeSection />
           <NormalizedSection chartData={chartData} />
-          <br /> {/* TODO replace with a less hacky way of padding */}
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}

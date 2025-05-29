@@ -30,6 +30,7 @@ export interface IAvailableFilterData {
   availableApplications: string[];
   availableProblemSizes: string[];
   availableModels: string[];
+  availableModellingFrameworks: string[];
   realisticOptions: RealisticOption[];
 }
 

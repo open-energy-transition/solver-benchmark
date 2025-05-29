@@ -14,6 +14,7 @@ type Size = {
 interface MetaDataEntry {
   shortDescription: string;
   modelName: string;
+  modellingFramework: string;
   version: string;
   problemClass: string;
   application: string;

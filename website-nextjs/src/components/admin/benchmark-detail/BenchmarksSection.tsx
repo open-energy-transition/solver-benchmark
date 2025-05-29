@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 import { CircleIcon, CloseIcon } from "@/assets/icons";
-import D3Chart from "@/components/shared/D3PlotChart";
+import D3PlotChart from "@/components/shared/D3PlotChart";
 import { IResultState } from "@/types/state";
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
@@ -37,7 +37,7 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
         (available on our platform) of each solver on the size instances of this
         benchmark.
       </div>
-      <D3Chart chartData={chartData} />
+      <D3PlotChart startFrom={0} chartData={chartData} domainPadding={100} />
       <div className="pt-1.5 pb-3 pl-3">
         <p className="flex gap-1 items-center text-dark-grey text-sm">
           <CloseIcon className="size-3" />

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
+import { getLogScale } from "@/utils/logscale";
 
 const SOLVES_DATA = [
   {
@@ -84,7 +85,8 @@ const SolverSection = () => {
         runtime: result.runtime || 0,
         baseSolverRuntime: result.runtime || 0,
         baseSolverStatus: result.status,
-        factor: 0, // log2(1) = 0
+        factor: 0, // log2(1) = 0,
+        logRuntime: getLogScale(result.runtime || 0),
       }));
 
     // Get comparison data points
@@ -107,6 +109,7 @@ const SolverSection = () => {
           baseSolverRuntime: sData?.runtime || 0,
           baseSolverStatus: sData?.status,
           factor: calculateFactor(sData?.runtime || 0, oData.runtime || 0),
+          logRuntime: getLogScale(oData.runtime || 0),
         };
       });
 

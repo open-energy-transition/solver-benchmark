@@ -77,7 +77,7 @@ export function TanStackTable<T>({
       {(title || enableDownload || enableColumnSelector) && (
         <div
           className={`
-          text-navy font-bold pb-6 pt-9 flex flex-col md:flex-row items-start sm:items-center gap-4
+          text-navy font-bold pb-4 pt-2 flex flex-col md:flex-row items-start sm:items-center gap-4
             ${title ? "justify-between" : "justify-end"}
           `}
         >

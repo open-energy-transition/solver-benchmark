@@ -21,6 +21,7 @@ const initialState: IResultState = {
   availableBenchmarksAndSizes: [],
   availableApplications: [],
   availableModels: [],
+  availableModellingFrameworks: [],
   availableProblemSizes: [],
   availableSectoralFocus: [],
   availableSectors: [],
@@ -124,6 +125,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
         availableProblemClasses,
         availableApplications,
         availableModels,
+        availableModellingFrameworks,
         availableProblemSizes,
       } = action.payload.availableFilterData;
       return {
@@ -133,6 +135,9 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
         availableProblemClasses: sortStringArray(availableProblemClasses),
         availableApplications: sortStringArray(availableApplications),
         availableModels: sortStringArray(availableModels),
+        availableModellingFrameworks: sortStringArray(
+          availableModellingFrameworks,
+        ),
         availableProblemSizes: sortStringArray(availableProblemSizes, "desc"),
       };
 
