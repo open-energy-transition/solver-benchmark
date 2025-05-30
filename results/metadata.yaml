@@ -485,7 +485,7 @@ benchmarks:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
-    - Name: 3-168h
+    - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
       Temporal resolution: 168
@@ -2582,7 +2582,7 @@ benchmarks:
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
-    - Name: 1-1ts
+    - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
       Temporal resolution: 1
@@ -2590,7 +2590,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
-    - Name: 40-1ts
+    - Name: 40-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
       Temporal resolution: 1
@@ -2611,7 +2611,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1ts
+    - Name: 26-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Temporal resolution: 1
@@ -2633,7 +2633,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24ts
+    - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Temporal resolution: 24
@@ -2656,7 +2656,7 @@ benchmarks:
     Time horizon: Single stage
     MILP features: None
     Sizes:
-    - Name: 2-24ts
+    - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
       Temporal resolution: 24

@@ -172,7 +172,7 @@ benchmarks:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
-    - Name: 3-168h
+    - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
       Temporal resolution: 168
