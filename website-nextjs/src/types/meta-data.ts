@@ -9,6 +9,7 @@ type Size = {
   size: string;
   url: string;
   realistic: boolean;
+  realisticMotivation?: string | undefined;
 };
 
 interface MetaDataEntry {

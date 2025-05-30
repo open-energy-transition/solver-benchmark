@@ -25,7 +25,92 @@ type RowData = {
   nOfContinuousVariables: number | null;
   nOfIntegerVariables: number | null;
   realistic: boolean;
+  realisticMotivation?: string | undefined;
   url: string;
+};
+
+const RealisticTooltip = ({
+  isRealistic,
+  motivation,
+}: {
+  isRealistic: boolean;
+  motivation?: string;
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties>({});
+  const triggerRef = React.useRef<HTMLSpanElement>(null);
+
+  const handleMouseEnter = () => {
+    if (isRealistic && motivation && triggerRef.current) {
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+
+      const tooltipWidth = Math.min(320, viewportWidth - 32);
+      const tooltipHeight = 100;
+
+      let left = triggerRect.left + triggerRect.width / 2 - tooltipWidth / 2;
+
+      if (left < 16) left = 16;
+      if (left + tooltipWidth > viewportWidth - 16)
+        left = viewportWidth - tooltipWidth - 16;
+
+      const spaceAbove = triggerRect.top;
+      const spaceBelow = viewportHeight - triggerRect.bottom;
+
+      let top: number;
+
+      if (spaceAbove >= tooltipHeight + 10 || spaceAbove > spaceBelow) {
+        top = triggerRect.top - tooltipHeight - 10;
+      } else {
+        top = triggerRect.bottom + 10;
+      }
+
+      setTooltipStyle({
+        position: "fixed",
+        left: `${left}px`,
+        top: `${top}px`,
+        maxWidth: `${tooltipWidth}px`,
+        zIndex: 9999,
+      });
+
+      setShowTooltip(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
+
+  return (
+    <>
+      <span
+        ref={triggerRef}
+        className={`px-3 py-2 rounded-full text-sm cursor-default ${
+          isRealistic ? "bg-navy text-white" : "bg-gray-100 text-gray-800"
+        }`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {isRealistic ? "Realistic" : "Other"}
+      </span>
+
+      {showTooltip && isRealistic && motivation && (
+        <div
+          style={tooltipStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="bg-gray-900 text-white text-sm rounded-lg py-3 px-4 whitespace-normal shadow-xl border border-gray-700">
+            <div className="font-semibold mb-2 text-gray-200">
+              Realistic Motivation:
+            </div>
+            <div className="leading-relaxed">{motivation}</div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 const InstancesTableResult = ({
@@ -86,17 +171,15 @@ const InstancesTableResult = ({
       {
         header: "REALISTIC",
         accessorKey: "realistic",
-        cell: (info: CellContext<RowData, unknown>) => (
-          <span
-            className={`px-3 py-2 rounded-full text-sm ${
-              info.getValue()
-                ? "bg-navy text-white"
-                : "bg-gray-100 text-gray-800"
-            }`}
-          >
-            {info.getValue() ? "Realistic" : "Other"}
-          </span>
-        ),
+        cell: (info: CellContext<RowData, unknown>) => {
+          const rowData = info.row.original;
+          return (
+            <RealisticTooltip
+              isRealistic={rowData.realistic}
+              motivation={rowData.realisticMotivation}
+            />
+          );
+        },
       },
       {
         header: "LP/MPS FILE",
@@ -134,6 +217,7 @@ const InstancesTableResult = ({
         instance: sizeData.name,
         url: sizeData.url,
         realistic: sizeData.realistic,
+        realisticMotivation: sizeData.realisticMotivation,
       })),
     [benchmarkDetail.sizes.length],
   );
