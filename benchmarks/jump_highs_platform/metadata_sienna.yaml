@@ -1,6 +1,6 @@
 benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
-    Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity approximation of network flow to represent entire system with a single node over a single stage (12 hours). Unit commitment is applied.
     Modelling framework: Sienna
     Model name: Sienna
     Version:

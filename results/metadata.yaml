@@ -20,6 +20,8 @@ benchmarks:
       Temporal resolution: 168
       Spatial resolution: 15
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832658
       Num. variables: 13777226
   genx-elec_trex_co2:
@@ -43,6 +45,8 @@ benchmarks:
       Temporal resolution: 168
       Spatial resolution: 15
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832689
       Num. variables: 13777227
   genx-elec_trex_uc:
@@ -66,6 +70,8 @@ benchmarks:
       Temporal resolution: 24h
       Spatial resolution: 15
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3123898
       Num. variables: 2551346
       Num. continuous variables: 2062938
@@ -91,6 +97,8 @@ benchmarks:
       Temporal resolution: 168
       Spatial resolution: 15
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832633
       Num. variables: 13777201
   genx-1_three_zones-no_uc:
@@ -253,6 +261,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 9
       Realistic: true
+      Realistic motivation: TODO
       Num. constraints: 114708
       Num. variables: 103612
   genx-1_three_zones:
@@ -379,10 +388,10 @@ benchmarks:
       \ and biomass with carbon capture and storage. For natural gas ccs generator,\
       \ we provide picewise fuel usage (PWFU) parameters to represent the fuel consumption\
       \ at differernt load point. Please refer to the documentation for more details\
-      \ on PWFU parameters and corresponding data requirements. When settings[\"UCommit\"\
-      ] >= 1 and PWFU parameters are provided in\_Thermal.csv, the standard heat rate\
-      \ (i.e., Heat_Rate_MMBTU_per_MWh) will not be used. Instead, the heat rate will\
-      \ be calculated based on the PWFU parameters."
+      \ on PWFU parameters and corresponding data requirements. When settings[\\\"\
+      UCommit\\\"] >= 1 and PWFU parameters are provided in\_Thermal.csv, the standard\
+      \ heat rate (i.e., Heat_Rate_MMBTU_per_MWh) will not be used. Instead, the heat\
+      \ rate will be calculated based on the PWFU parameters."
     Modelling framework: GenX
     Model name: GenX
     Version:
@@ -459,14 +468,12 @@ benchmarks:
       Num. constraints: 4325
       Num. variables: 4260
   genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
-    Short description: This example system shows the functionalities of the colocated
-      VRE+storage+Electrolyzer module of GenX. It runs a three-zone, 1,680-hour continental
-      US model, with a carbon constraint and with a long duration energy storage resource
-      that the model can choose to co-locate with either solar or wind. In this case,
-      the storage resource is forced in via minimum and maximum capacity requirement
-      constraints, but these constraints could be easily removed (although the storage
-      resource has a cost of zero in this case so a cost would have to be added).  Unit
-      commitment is linearized.
+    Short description: Three zones (Continental US) GenX infrastructure run considering
+      a time horizon of 1680 hours with 168 hours resolution. This example system
+      shows the functionalities of the colocated VRE+storage+electrolyzer module of
+      GenX (the model can choose to co-locate a long duration-energy storage resource
+      with either solar or wind). Unit commitment is linearized and a carbon constraint
+      is applied.
     Modelling framework: GenX
     Model name: GenX
     Version:
@@ -481,7 +488,7 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
-      Temporal resolution: 1
+      Temporal resolution: 168
       Spatial resolution: 3
       Realistic: false
       Num. constraints: 302449
@@ -534,13 +541,16 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 9
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1235166
       Num. variables: 639483
       Num. continuous variables: 560640
       Num. integer variables: 78843
   pglib_opf_case162_ieee_dtc:
-    Short description: System stability study based on the IEEE 17-Generator Dynamic
-      Test Case with 162 buses and 17 generators
+    Short description: Steady-state optimal power flow stability study based on the
+      IEEE 17-Generator Dynamic Test Case with 162 buses and 17 generators adopting
+      transmission switching.
     Modelling framework: PowerModels
     Model name: PowerModels
     Version:
@@ -563,8 +573,9 @@ benchmarks:
       Num. continuous variables: 458
       Num. integer variables: 284
   pglib_opf_case1803_snem:
-    Short description: Optimal Power Flow data for the Synthetic National Electricity
-      Market (SNEM) Australia - Mainland subnetwork
+    Short description: Steady-state optimal power flow run for the Synthetic National
+      Electricity Market (SNEM) Australia - Mainland subnetwork adopting transmission
+      switching.
     Modelling framework: PowerModels
     Model name: PowerModels
     Version:
@@ -585,7 +596,8 @@ benchmarks:
       Num. constraints: 18574
       Num. variables: 7623
   pglib_opf_case1951_rte:
-    Short description:
+    Short description: Steady-state optimal power flow run with 1951 nodes adopting
+      transmission switching.
     Modelling framework: PowerModels
     Model name: PowerModels
     Version:
@@ -608,7 +620,8 @@ benchmarks:
       Num. continuous variables: 4913
       Num. integer variables: 2596
   pglib_opf_case2848:
-    Short description:
+    Short description: Steady-state optimal power flow run with 2848 nodes adopting
+      transmission switching.
     Modelling framework: PowerModels
     Model name: PowerModels
     Version:
@@ -631,7 +644,8 @@ benchmarks:
       Num. continuous variables: 7135
       Num. integer variables: 3776
   pglib_opf_case2868:
-    Short description:
+    Short description: Steady-state optimal power flow run with 2868 nodes adopting
+      transmission switching.
     Modelling framework: PowerModels
     Model name: PowerModels
     Version:
@@ -654,8 +668,9 @@ benchmarks:
       Num. continuous variables: 7237
       Num. integer variables: 3808
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29:
-    Short description: Infinite capacity approximation of network flow to represent
-      entire system with a single node.
+    Short description: Sienna infrastructure run considering an infinite capacity
+      approximation of network flow to represent entire system with a single node
+      over a single stage (12 hours). Unit commitment is applied.
     Modelling framework: Sienna
     Model name: Sienna
     Version:
@@ -1502,8 +1517,8 @@ benchmarks:
       Num. continuous variables: 27504
       Num. integer variables: 7776
   tulipa-1_EU_investment_simple:
-    Short description: European-level investment and operation model to consider integer
-      investments and unit commitment variables
+    Short description: European-level infrastructure model over a single year-time
+      horizon considering integer investments and unit commitment variables.
     Modelling framework: Tulipa
     Model name: Tulipa
     Version:
@@ -1561,6 +1576,8 @@ benchmarks:
       Temporal resolution: 2.2
       Spatial resolution: 28
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1118208
       Num. variables: 745559
       Num. continuous variables: 745307
@@ -1571,14 +1588,15 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 28
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 2429440
       Num. variables: 1619451
       Num. continuous variables: 1619199
       Num. integer variables: 252
   pypsa-eur-sec:
-    Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering
-      2050 as single planning horizon (LP, lot of variables, strongly intermeshed
-      constraints).
+    Short description: Sector-coupled (power, heating, biomass, industry, transport)
+      PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -1624,8 +1642,7 @@ benchmarks:
       Num. variables: 505253
   pypsa-eur-elec-trex:
     Short description: PyPSA-Eur power sector infrastructure run for Italy considering
-      2050 as single planning horizon with transmission expansion (LP, lot of variables,
-      intermeshed constraints).
+      2050 as single planning horizon with transmission expansion.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -1671,7 +1688,7 @@ benchmarks:
       Num. variables: 318285
   pypsa-eur-elec-op:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single
-      planning horizon (LP, lot of variables, poorly intermeshed constraints).
+      planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -1721,12 +1738,13 @@ benchmarks:
       Temporal resolution: 3
       Spatial resolution: 10
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1620797
       Num. variables: 750434
   pypsa-eur-elec-op-ucconv:
     Short description: PyPSA-Eur operational run for Italy considering 2050 as single
-      planning horizon and unit commitment for conventional fleet (MILP, lot of variables,
-      poorly intermeshed constraints).
+      planning horizon and unit commitment for conventional fleet.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -1770,7 +1788,7 @@ benchmarks:
       Num. integer variables: 15330
   pypsa-power+ely:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model.
+      infrastructure model for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1792,7 +1810,7 @@ benchmarks:
       Num. variables: 61325
   pypsa-power+ely+battery:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      + battery infrastructure model.
+      + battery infrastructure model for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1814,7 +1832,8 @@ benchmarks:
       Num. variables: 87606
   pypsa-power+ely+battery-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      + battery infrastructure model with unit commitment on gas generator.
+      + battery infrastructure model with unit commitment on gas generator for a single
+      year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1838,7 +1857,7 @@ benchmarks:
       Num. integer variables: 26280
   pypsa-power+ely-co2:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model with CO2 emission limit.
+      infrastructure model with CO2 emission limit for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1860,7 +1879,8 @@ benchmarks:
       Num. variables: 61325
   pypsa-power+ely-ucgas:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model with unit commitment on gas generator.
+      infrastructure model with unit commitment on gas generator for a single year-time
+      horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1885,7 +1905,7 @@ benchmarks:
   pypsa-power+ely+battery-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       + battery infrastructure model with unit commitment on gas generator and integer
-      investment capacity.
+      investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1909,7 +1929,8 @@ benchmarks:
       Num. integer variables: 26284
   pypsa-power+ely-co2-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      infrastructure model with CO2 emission limit with integer investment capacity.
+      infrastructure model with CO2 emission limit with integer investment capacity
+      for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1933,7 +1954,7 @@ benchmarks:
       Num. integer variables: 4
   pypsa-power+ely-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure
-      model with integer investment capacity.
+      model with integer investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1958,7 +1979,7 @@ benchmarks:
   pypsa-power+ely-ucgas-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model with unit commitment on gas generator and integer investment
-      capacity.
+      capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -1982,7 +2003,8 @@ benchmarks:
       Num. integer variables: 26283
   pypsa-power+ely+battery-mod:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
-      + battery infrastructure model with integer investment capacity.
+      + battery infrastructure model with integer investment capacity for a single
+      year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -2027,6 +2049,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_1W:
@@ -2052,6 +2076,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
@@ -2079,6 +2105,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_2M:
@@ -2104,6 +2132,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
@@ -2131,6 +2161,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_6M:
@@ -2156,13 +2188,15 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
       Num. integer variables: 9261
   temoa-utopia:
-    Short description: Single-region test system model considering 4 future years
-      and 6 time slices (day/night, intermediate/summer/winter).
+    Short description: Single-region test system infrastructure model considering
+      4 future years and 6 time slices (day/night, intermediate/summer/winter).
     Modelling framework: TEMOA
     Model name: TEMOA-Utopia
     Version:
@@ -2183,8 +2217,8 @@ benchmarks:
       Num. constraints: 1505
       Num. variables: 990
   temoa-US_9R_TS:
-    Short description: US-based sector-coupled model with 9 regions and 8 future periods
-      in absence of further constraints.
+    Short description: US-based sector-coupled infrastructure model run with 9 regions
+      and 8 future periods in absence of further constraints.
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
@@ -2202,12 +2236,13 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594079
       Num. variables: 1801794
   temoa-US_9R_TS_NDC:
-    Short description: US-based sector-coupled model with 9 regions and 8 future periods.
-      This benchmark includes the policy commitments in the U.S. Nationally Determined
-      Contributions (NDC).
+    Short description: US-based sector-coupled infrastructure model run with 9 regions
+      and 8 future periods. This benchmark includes the policy commitments in the
+      U.S. Nationally Determined Contributions (NDC).
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
@@ -2225,12 +2260,13 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594091
       Num. variables: 1801794
   temoa-US_9R_TS_NZ:
-    Short description: US-based sector-coupled model with 9 regions and 8 future periods.
-      This benchmark assumes that the United States will reach net-zero CO2 emissions
-      by 2050.
+    Short description: US-based sector-coupled infrastructure model run with 9 regions
+      and 8 future periods. This benchmark assumes that the United States will reach
+      net-zero CO2 emissions by 2050.
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
@@ -2248,12 +2284,13 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594085
       Num. variables: 1801794
   temoa-US_9R_TS_SP:
-    Short description: US-based sector-coupled model with 9 regions and 8 future periods.
-      This benchmark includes a collection of CO2 emission limits for US states from
-      stated policies.
+    Short description: US-based sector-coupled infrastructure model run with 9 regions
+      and 8 future periods. This benchmark includes a collection of CO2 emission limits
+      for US states from stated policies.
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
@@ -2271,12 +2308,13 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594116
       Num. variables: 1801794
   temoa-US_9R_TS_NZ_trunc_4periods:
-    Short description: US-based sector-coupled model with 9 regions and 5 future periods.
-      This benchmark assumes that the United States will reach net-zero CO2 emissions
-      by 2050.
+    Short description: US-based sector-coupled infrastructure model run with 9 regions
+      and 5 future periods. This benchmark assumes that the United States will reach
+      net-zero CO2 emissions by 2050.
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
@@ -2294,6 +2332,7 @@ benchmarks:
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 nodes
       Realistic: true
+      Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 665474
       Num. variables: 708899
   TIMES-GEO-global-base:
@@ -2316,6 +2355,7 @@ benchmarks:
       Temporal resolution: 20
       Spatial resolution: 31
       Realistic: true
+      Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 6027253
       Num. variables: 6449851
   TIMES-GEO-global-netzero:
@@ -2338,6 +2378,7 @@ benchmarks:
       Temporal resolution: 20
       Spatial resolution: 31
       Realistic: true
+      Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 5063755
       Num. variables: 5422595
   times-etimeseu-france-elec+heat-single_stage:
@@ -2360,6 +2401,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
       Num. variables: 15400
   times-etimeseu-france-elec+heat-co2-single_stage:
@@ -2383,6 +2425,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15451
       Num. variables: 15404
   times-etimeseu-france-elec+heat-multi_stage:
@@ -2405,6 +2448,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91288
       Num. variables: 92084
   times-etimeseu-france-elec+heat-co2-multi_stage:
@@ -2428,6 +2472,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 1
       Realistic: true
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91306
       Num. variables: 92102
   times-etimeseu-europe-elec+heat-single_stage:
@@ -2450,6 +2495,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456603
       Num. variables: 452854
   times-etimeseu-europe-elec+heat-co2-single_stage:
@@ -2473,6 +2519,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456663
       Num. variables: 452914
   times-etimeseu-europe-elec+heat-multi_stage:
@@ -2495,6 +2542,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720516
       Num. variables: 2729679
   times-etimeseu-europe-elec+heat-co2-multi_stage:
@@ -2518,6 +2566,7 @@ benchmarks:
       Temporal resolution: 64
       Spatial resolution: 29
       Realistic: true
+      Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720786
       Num. variables: 2729949
   times-ireland-noco2:
@@ -2538,7 +2587,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
       Temporal resolution: 1
       Spatial resolution: 1
-      Realistic: true
+      Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
     - Name: 40-1h
@@ -2546,7 +2595,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
       Temporal resolution: 1
       Spatial resolution: 40
-      Realistic: true
+      Realistic: false
       Num. constraints: 4809283
       Num. variables: 4534121
   times-ireland-noco2-counties:
@@ -2567,7 +2616,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Temporal resolution: 1
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
-      Realistic: true
+      Realistic: false
       Num. constraints: 873805
       Num. variables: 1235884
   times-nz-kea:
@@ -2590,6 +2639,7 @@ benchmarks:
       Temporal resolution: 24
       Spatial resolution: 26 (Transport) / 1 (all other sectors)
       Realistic: true
+      Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
       Num. variables: 202797
   times-nz-tui:
@@ -2612,5 +2662,6 @@ benchmarks:
       Temporal resolution: 24
       Spatial resolution: 2
       Realistic: true
+      Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443

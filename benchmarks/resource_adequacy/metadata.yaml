@@ -19,6 +19,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_1W:
@@ -40,6 +41,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
@@ -63,6 +65,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_2M:
@@ -84,6 +87,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017
@@ -107,6 +111,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_6M:
@@ -128,6 +133,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 997 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 220143
       Num. variables: 131278
       Num. continuous variables: 122017

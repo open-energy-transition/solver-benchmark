@@ -1,6 +1,6 @@
 benchmarks:
   pypsa-eur-sec:
-    Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints).
+    Short description: Sector-coupled (power, heating, biomass, industry, transport) PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -46,7 +46,7 @@ benchmarks:
       Num. constraints: 1057182
       Num. variables: 505253
   pypsa-eur-elec-trex:
-    Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints).
+    Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -92,7 +92,7 @@ benchmarks:
       Num. constraints: 677533
       Num. variables: 318285
   pypsa-eur-elec-op:
-    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints).
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -142,10 +142,11 @@ benchmarks:
       Temporal resolution: 3
       Spatial resolution: 10
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1620797
       Num. variables: 750434
   pypsa-eur-elec-op-ucconv:
-    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints).
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
@@ -189,7 +190,7 @@ benchmarks:
       Num. continuous variables: 93929
       Num. integer variables: 15330
   pypsa-power+ely:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -210,7 +211,7 @@ benchmarks:
       Num. constraints: 140165
       Num. variables: 61325
   pypsa-power+ely+battery:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -231,7 +232,7 @@ benchmarks:
       Num. constraints: 201486
       Num. variables: 87606
   pypsa-power+ely+battery-ucgas:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -254,7 +255,7 @@ benchmarks:
       Num. continuous variables: 87605
       Num. integer variables: 26280
   pypsa-power+ely-co2:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -275,7 +276,7 @@ benchmarks:
       Num. constraints: 140166
       Num. variables: 61325
   pypsa-power+ely-ucgas:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -298,7 +299,7 @@ benchmarks:
       Num. continuous variables: 61324
       Num. integer variables: 26280
   pypsa-power+ely+battery-ucgas-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -321,7 +322,7 @@ benchmarks:
       Num. continuous variables: 87605
       Num. integer variables: 26284
   pypsa-power+ely-co2-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -344,7 +345,7 @@ benchmarks:
       Num. continuous variables: 61325
       Num. integer variables: 4
   pypsa-power+ely-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -367,7 +368,7 @@ benchmarks:
       Num. continuous variables: 61325
       Num. integer variables: 5
   pypsa-power+ely-ucgas-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
@@ -390,7 +391,7 @@ benchmarks:
       Num. continuous variables: 61324
       Num. integer variables: 26283
   pypsa-power+ely+battery-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity for a single year-time horizon.
     Modelling framework: PyPSA
     Model name: PyPSA
     Version:
