@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 // local
-import BenchmarksSection from "@/components/admin/BenchmarksSection";
 import ResultsSection from "@/components/admin/ResultsSections";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
@@ -10,10 +10,12 @@ import Link from "next/link";
 import { IResultState } from "@/types/state";
 import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
-import { useState } from "react";
 import { TIMEOUT_VALUES } from "@/constants/filter";
+import BenchmarkSet from "@/components/admin/home/BenchmarkSet";
 
 const LandingPage = () => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
   const [activeTab, setActiveTab] = useState("short");
   const timeout =
     activeTab === "short" ? TIMEOUT_VALUES.SHORT : TIMEOUT_VALUES.LONG;
@@ -88,6 +90,20 @@ const LandingPage = () => {
     );
   };
 
+  useEffect(() => {
+    const updateHeight = () => {
+      if (contentRef.current) {
+        setContentHeight(contentRef.current.offsetHeight - 40);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(updateHeight);
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [benchmarkResults, timeout]);
+
   return (
     <>
       <Head>
@@ -124,10 +140,10 @@ const LandingPage = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">
+              <div className="font-lato font-bold text-2xl/1.4 leading-none">
                 Main Results
               </div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+              <div className="mb-6 mt-4 font-lato font-normal/1.4 text-l max-w-screen-lg">
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
                 benchmarks (less than a million variables), run with a 1 hour
@@ -138,7 +154,7 @@ const LandingPage = () => {
                 with the technical specifications of the machine used.
               </div>
             </div>
-            <div className="flex mt-6">
+            <div className="flex">
               <div
                 onClick={() => setActiveTab("short")}
                 className={`w-1/3 font-lato text-lg/1.5 cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
@@ -160,20 +176,18 @@ const LandingPage = () => {
                 Long
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-8">
-              <div className="pt-6 pb-8">
+            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 pl-4 pr-2 rounded-r-lg">
+              <div className="pt-6">
                 <ConfigurationSection timeout={timeout} />
               </div>
               <div className="sm:flex justify-between">
-                <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
-                  <FilterSection />
+                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl">
+                  <FilterSection height={`${contentHeight}px`} />
                 </div>
                 <div
-                  className={`
-                  pd:mx-0
-                  3xl:mx-auto
-                  sm:w-4/5 px-4
-                  `}
+                  id="benchmark-results"
+                  className="3xl:mx-auto sm:w-4/5 pl-4 h-max"
+                  ref={contentRef}
                 >
                   <div className="space-y-4 sm:space-y-6">
                     {benchmarkResults.length ? (
@@ -196,11 +210,11 @@ const LandingPage = () => {
                         <span className="underline">Caveats</span> below.
                       </div>
                     </div>
-                    <BenchmarksSection timeout={timeout} />
-                    <Caveats />
                   </div>
                 </div>
               </div>
+              <BenchmarkSet />
+              <Caveats />
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import ResultsSectionsTitle from "./home/ResultsTitle";
 import { extractNumberFromFormattedString } from "@/utils/string";
 import { SgmMode } from "@/constants/sgm";
 import { SgmExplanation, SolverVersions } from "@/components/shared";
+import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
 
 type ColumnType = {
   name: string;
@@ -404,7 +405,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-navy px-5 text-l block items-center mt-2">
+        <div className="text-navy pl-6 text-l block items-center mt-2">
           <span>
             This table summarizes the benchmark results of the latest version
           </span>
@@ -431,7 +432,6 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           <span>
             {" "}
             of each solver on the selected configuration.
-            <br />
             <br />
             You can rank the solvers by the normalized shifted geometric mean
             (SGM
@@ -463,6 +463,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             to sort the results by that column.
           </span>
         </div>
+      </div>
+      <div className="flex justify-end items-center gap-2 mb-2">
+        <ResultsSgmModeDropdown />
       </div>
 
       {isMobileView ? (
