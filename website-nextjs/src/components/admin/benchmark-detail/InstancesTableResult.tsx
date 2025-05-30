@@ -253,6 +253,13 @@ const InstancesTableResult = ({
         the same model features and are presumed to have the same optimization
         problem structure.
       </div>
+      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+        We categorize a benchmark instance as realistic if it comes from a model
+        that was used, or is similar to a model used in an actual energy
+        modelling study. Hover over the &ldquo;Realistic&rdquo; button in any
+        row to see the justification for why the instance was classified as
+        realistic.
+      </div>
       <div className="rounded-xl max-h-[280px] overflow-auto">
         <table className="table-auto bg-white w-full">
           <thead className="sticky top-0 bg-white">
