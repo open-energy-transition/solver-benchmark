@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
 import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkTableResult";
-import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
@@ -11,7 +11,6 @@ import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
-import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -64,9 +63,6 @@ const PageBenchmarkDetail = () => {
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
   const availableModels = Array.from(uniqueValues.models);
-  const availableModellingFrameworks = Array.from(
-    uniqueValues.modellingFrameworks,
-  );
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
@@ -293,30 +289,10 @@ const PageBenchmarkDetail = () => {
                   platform, including their source and download links.
                 </p>
               </div>
-              <div className="py-2 grid sm:flex justify-between items-center">
-                <div className="text-navy text-lg font-bold 4xl:text-xl">
-                  Summary of Benchmark Set
-                </div>
-                <Link
-                  className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
-                  href={PATH_DASHBOARD.benchmarkSummary}
-                >
-                  See more details
-                  <ArrowUpIcon className="rotate-90" />
-                </Link>
-              </div>
-              <BenchmarkStatisticsCharts
-                availableSectoralFocus={availableSectoralFocus}
-                availableSectors={availableSectors}
-                availableProblemClasses={availableProblemClasses}
-                availableApplications={availableApplications}
-                availableModellingFrameworks={availableModellingFrameworks}
-                availableProblemSizes={availableProblemSizes}
-              />
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 mt-6 rounded-[32px]">
-              <div className="sm:flex justify-between">
-                <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 pl-4 pr-2 mt-6 rounded-[32px]">
+              <div className="sm:flex sm:gap-6 justify-between">
+                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
@@ -330,9 +306,8 @@ const PageBenchmarkDetail = () => {
                 </div>
                 <div
                   className={`
-                pd:mx-0
                 3xl:mx-auto
-                sm:w-4/5 px-4
+                sm:w-4/5
                 `}
                 >
                   <div className="space-y-4 sm:space-y-6">

@@ -19,7 +19,11 @@ import { isArray } from "lodash";
 import FilterGroup from "./filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
 
-const FilterSection = () => {
+interface FilterSectionProps {
+  height?: string;
+}
+
+const FilterSection = ({ height }: FilterSectionProps) => {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch = useDispatch<any>();
@@ -287,8 +291,8 @@ const FilterSection = () => {
   };
 
   return (
-    <div>
-      <div className="pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
+    <>
+      <div className="sm:w-[248px] pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
         <div className="flex gap-2 items-center">
           <div className="text-navy font-bold text-base">Filters</div>
         </div>
@@ -312,13 +316,16 @@ const FilterSection = () => {
             flex
             flex-col
             gap-2
-            overflow-y-auto
             p-2
             px-2
             text-navy
             transition-all
             opacity-100
+            overflow-y-auto
           "
+          style={{
+            height: height || "",
+          }}
         >
           {/* Sectoral Focus */}
           <FilterGroup
@@ -462,7 +469,7 @@ const FilterSection = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
