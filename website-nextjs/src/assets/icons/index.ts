@@ -2,6 +2,7 @@ export { default as AlignLeftJustifyIcon } from "./align-left-justify.svg";
 export { default as AppIcon } from "./app.svg";
 export { default as ArrowLongIcon } from "./arrow-long.svg";
 export { default as ArrowIcon } from "./arrow.svg";
+export { default as ArrowWhiteIcon } from "./arrow-white.svg";
 export { default as ArrowUpIcon } from "./arrow-up.svg";
 export { default as ArrowUpLeftIcon } from "./arrow-up-left.svg";
 export { default as ArrowUpTriangleFillIcon } from "./arrow-up-triangle-fill.svg";

@@ -1,6 +1,5 @@
 import D3StackedBarChart from "@/components/shared/D3StackedBarChart";
 import { IResultState } from "@/types/state";
-import { getChartColor } from "@/utils/chart";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
@@ -162,19 +161,16 @@ const BenchmarkStatisticsCharts = ({
   }, [metaData, availableProblemSizes]);
 
   return (
-    <div className="bg-white p-4 pl-8 rounded-xl mb-6 space-y-8 relative 4xl:py-16">
-      <div className="-rotate-90 absolute left-[-85px] 4xl:left-[-130px] text-xs text-center ml-5 font-bold text-dark-grey top-1/2 -translate-y-1/2 4xl:text-lg">
-        Number of benchmark instances
-      </div>
-      <div className="xl:flex xl:flex-row justify-between">
+    <div className="p-1 rounded-xl space-y-8 relative 4xl:py-16">
+      <div className="xl:flex xl:flex-row justify-between gap-2 ">
         <div className="flex-1 w-full xl:w-1/3">
           <D3StackedBarChart
-            className="px-0"
+            className="p-3"
             data={problemClassesChartData}
             xAxisLabel="Modelling Framework"
             yAxisLabel=""
             categoryKey="modellingFramework"
-            colors={{ LP: getChartColor(0), MILP: getChartColor(1) }}
+            colors={{ LP: "#004B69", MILP: "#6B9080" }}
             title="By Modelling Framework"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
@@ -182,12 +178,12 @@ const BenchmarkStatisticsCharts = ({
         </div>
         <div className="flex-1 w-full mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
-            className="px-0"
+            className="p-3"
             data={timeHorizonsChartData}
             xAxisLabel="Modelling Framework"
             yAxisLabel=""
             categoryKey="modellingFramework"
-            colors={{ single: getChartColor(0), multi: getChartColor(1) }}
+            colors={{ single: "#004B69", multi: "#6B9080" }}
             rotateXAxisLabels={true}
             title="By Time Horizon"
             showXaxisLabel={false}
@@ -195,14 +191,14 @@ const BenchmarkStatisticsCharts = ({
         </div>
         <div className="flex-1 w-full mt-4 lg:mt-0  xl:w-1/3">
           <D3StackedBarChart
-            className="px-0"
+            className="p-3"
             data={sizeChartData}
             xAxisLabel="Size"
             yAxisLabel=""
             categoryKey="size"
             colors={{
-              realistic: getChartColor(0),
-              other: getChartColor(1),
+              realistic: "#004B69",
+              other: "#6B9080",
             }}
             rotateXAxisLabels={false}
             title="By Size"
