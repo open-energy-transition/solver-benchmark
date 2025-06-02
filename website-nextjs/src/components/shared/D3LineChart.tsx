@@ -161,6 +161,7 @@ const D3ChartLineChart = ({
           .html(
             `<strong>Solver:</strong> ${d.solver}<br>
              <strong>Year:</strong> ${d.year}<br>
+             <strong>Version:</strong> ${d.version}<br>
              ${
                xAxisTooltipFormat
                  ? xAxisTooltipFormat(d.value)

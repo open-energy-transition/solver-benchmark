@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 // local
-import BenchmarksSection from "@/components/admin/BenchmarksSection";
 import ResultsSection from "@/components/admin/ResultsSections";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
@@ -10,11 +10,15 @@ import Link from "next/link";
 import { IResultState } from "@/types/state";
 import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
-import { useState } from "react";
+import { TIMEOUT_VALUES } from "@/constants/filter";
+import BenchmarkSet from "@/components/admin/home/BenchmarkSet";
 
 const LandingPage = () => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
   const [activeTab, setActiveTab] = useState("short");
-  const timeout = activeTab === "short" ? 3600 : 36000;
+  const timeout =
+    activeTab === "short" ? TIMEOUT_VALUES.SHORT : TIMEOUT_VALUES.LONG;
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults;
   });
@@ -23,10 +27,87 @@ const LandingPage = () => {
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
 
+  const Caveats = () => {
+    return (
+      <div className="pt-1.5 pb-3 px-5">
+        <div className="text-navy font-bold text-xl 4xl:text-2xl">Caveats</div>
+        <div className="text-navy text-sm block items-center mt-2">
+          <span>
+            Here are some key points to keep in mind when interpreting these
+            results:
+            <ul className="list-disc pl-5">
+              <li>
+                We run benchmarks on commercial cloud virtual machines (VMs) for
+                efficiency and cost reasons. The shared nature of cloud
+                resources means there is some error in our runtime measurements,
+                which we estimate as a coefficient of variation of no larger
+                than 4%. More details on this{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
+                  className="underline"
+                >
+                  here
+                </a>
+                .
+              </li>
+              <li>
+                All solvers are run with their default options, except for the
+                duality gap tolerance for mixed integer benchmarks (MILPs),
+                which we set to 1e-4. You can check the duality gaps for each
+                solver in the benchmark details page corresponding to each
+                benchmark instance.
+              </li>
+              <li>
+                All results on this website use the runtime measured by our
+                benchmarking script. This may not be the same as the runtime of
+                the solving algorithm as reported by the solver, and it may
+                include things like time for input file parsing and license
+                checks. See more details and join the discussion on whether to
+                use reported or measured runtime{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
+                  className="underline"
+                >
+                  here
+                </a>
+                .
+              </li>
+              <li>
+                Some solvers returned errors when running on some benchmark
+                instances. For more details, please see the{" "}
+                <a
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
+                  className="underline"
+                >
+                  tracking issue
+                </a>
+                .
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (contentRef.current) {
+        setContentHeight(contentRef.current.offsetHeight - 40);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(updateHeight);
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [benchmarkResults, timeout]);
+
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Main Results</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -54,23 +135,26 @@ const LandingPage = () => {
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
                     <span className="self-center font-semibold whitespace-nowrap">
-                      Main page
+                      Main Results
                     </span>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">
+              <div className="font-lato font-bold text-2xl/1.4 leading-none">
                 Main Results
               </div>
-              <div className="font-lato font-normal/1.4 text-xs max-w-screen-lg">
-                We run our benchmarks using 2 different configurations: Small
-                benchmarks are run with a smaller timeout on a smaller machine,
-                and Large benchmarks are run with a larger timeout on a larger
-                machine. Select the appropriate tab below to view the results
-                for each configuration.
+              <div className="mb-6 mt-4 font-lato font-normal/1.4 text-l max-w-screen-lg">
+                We run our benchmarks on 2 different configurations: The{" "}
+                <b>Short</b> tab below contains results of the smaller
+                benchmarks (less than a million variables), run with a 1 hour
+                timeout on a less powerful machine. The <b>Long</b> tab contains
+                larger benchmarks (more than a million variables), run with a 10
+                hour timeout on a more powerful machine. Select the desired tab
+                to view a summary of the results on that configuration, along
+                with the technical specifications of the machine used.
               </div>
             </div>
-            <div className="flex mt-6">
+            <div className="flex">
               <div
                 onClick={() => setActiveTab("short")}
                 className={`w-1/3 font-lato text-lg/1.5 cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
@@ -92,20 +176,18 @@ const LandingPage = () => {
                 Long
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-8">
-              <div className="pt-6 pb-8">
+            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 pl-4 pr-2 rounded-r-lg">
+              <div className="pt-6">
                 <ConfigurationSection timeout={timeout} />
               </div>
               <div className="sm:flex justify-between">
-                <div className="sm:x-0 sm:w-[224px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
-                  <FilterSection />
+                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl">
+                  <FilterSection height={`${contentHeight}px`} />
                 </div>
                 <div
-                  className={`
-                  pd:mx-0
-                  3xl:mx-auto
-                  sm:w-4/5 px-4
-                  `}
+                  id="benchmark-results"
+                  className="3xl:mx-auto sm:w-4/5 pl-4 h-max"
+                  ref={contentRef}
                 >
                   <div className="space-y-4 sm:space-y-6">
                     {benchmarkResults.length ? (
@@ -114,35 +196,25 @@ const LandingPage = () => {
                       <></>
                     )}
                     <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
-                      <div className="text-xl/1.4 font-bold">Note 🔔 ️</div>
                       <div className="pt-2 text-xs/1.4 font-normal">
-                        As with all benchmarks, our results provide only an
-                        indication of which solvers might be good for your
-                        problems. We recommend using our scripts to benchmark on
-                        your own problems before picking a solver See also the
-                        section on <span className="underline">Caveats</span>{" "}
-                        below.
-                      </div>
-                    </div>
-                    <BenchmarksSection timeout={timeout} />
-                    <div className="px-5">
-                      <div className="pt-1.5 pb-3">
-                        <div className="text-navy font-bold text-xl 4xl:text-2xl">
-                          Caveats
-                        </div>
-                        <div className="text-navy text-sm block items-center mt-2">
-                          <span>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud
-                          </span>
-                        </div>
+                        <b>🔔 Note:</b> As with all benchmarks, our results
+                        provide only an indication of which solvers might be
+                        good for your problems. We recommend using{" "}
+                        <span className="underline">
+                          <a href="https://github.com/open-energy-transition/solver-benchmark/">
+                            our scripts
+                          </a>
+                        </span>{" "}
+                        to benchmark on your own problems before picking a
+                        solver See also the section on{" "}
+                        <span className="underline">Caveats</span> below.
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <BenchmarkSet />
+              <Caveats />
             </div>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import ResultsSectionsTitleDropdown from "./ResultsSgmModeDropdown";
 import { getLatestBenchmarkResult } from "@/utils/results";
 import { IResultState } from "@/types/state";
 import { BenchmarkResult } from "@/types/benchmark";
@@ -29,9 +28,9 @@ const ResultsSectionsTitle = ({
 
   return (
     <div>
-      <div className="relative text-navy font-bold text-xl px-5 flex justify-between items-end">
+      <div className="relative text-navy font-bold text-xl pl-6 flex justify-between items-end">
         <div>
-          Summary
+          Ranking
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
               (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}
@@ -39,7 +38,6 @@ const ResultsSectionsTitle = ({
             </span>
           )}
         </div>
-        <ResultsSectionsTitleDropdown />
       </div>
     </div>
   );

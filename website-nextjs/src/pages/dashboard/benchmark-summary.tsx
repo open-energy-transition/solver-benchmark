@@ -9,7 +9,7 @@ import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import { IFilterState, IResultState } from "@/types/state";
+import { IFilterState, IResultState, RealisticOption } from "@/types/state";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
@@ -29,23 +29,29 @@ const PageBenchmarkDetail = () => {
   });
 
   const uniqueValues = {
+    sectoralFocus: new Set<string>(),
     sectors: new Set<string>(),
-    techniques: new Set<string>(),
-    kindOfProblems: new Set<string>(),
+    problemClasses: new Set<string>(),
+    applications: new Set<string>(),
     models: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
-    const { sectors, technique, kindOfProblem, modelName } = fullMetaData[key];
-    uniqueValues.sectors.add(sectors);
-    uniqueValues.techniques.add(technique);
-    uniqueValues.kindOfProblems.add(kindOfProblem);
+    const { sectoralFocus, sectors, problemClass, application, modelName } =
+      fullMetaData[key];
+    uniqueValues.sectoralFocus.add(sectoralFocus);
+    sectors.split(",").forEach((sector) => {
+      uniqueValues.sectors.add(sector.trim());
+    });
+    uniqueValues.problemClasses.add(problemClass);
+    uniqueValues.applications.add(application);
     uniqueValues.models.add(modelName);
   });
 
+  const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
   const availableSectors = Array.from(uniqueValues.sectors);
-  const availableTechniques = Array.from(uniqueValues.techniques);
-  const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+  const availableProblemClasses = Array.from(uniqueValues.problemClasses);
+  const availableApplications = Array.from(uniqueValues.applications);
   const availableModels = Array.from(uniqueValues.models);
   const availableProblemSizes = Array.from(
     new Set(
@@ -65,9 +71,10 @@ const PageBenchmarkDetail = () => {
     const filters: Partial<IFilterState> = {};
 
     [
+      "sectoralFocus",
       "sectors",
-      "technique",
-      "kindOfProblem",
+      "problemClass",
+      "application",
       "modelName",
       "problemSize",
     ].forEach((key) => {
@@ -85,11 +92,13 @@ const PageBenchmarkDetail = () => {
 
   const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
+    sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
-    technique: availableTechniques,
-    kindOfProblem: availableKindOfProblems,
+    problemClass: availableProblemClasses,
+    application: availableApplications,
     modelName: availableModels,
     problemSize: availableProblemSizes,
+    realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
 
   useEffect(() => {
@@ -104,11 +113,13 @@ const PageBenchmarkDetail = () => {
       }));
     } else {
       setLocalFilters({
+        sectoralFocus: availableSectoralFocus,
         sectors: availableSectors,
-        technique: availableTechniques,
-        kindOfProblem: availableKindOfProblems,
+        problemClass: availableProblemClasses,
+        application: availableApplications,
         modelName: availableModels,
         problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
       });
     }
     setIsInit(true);
@@ -126,10 +137,10 @@ const PageBenchmarkDetail = () => {
         values.length <
           (key === "sectors"
             ? availableSectors.length
-            : key === "technique"
-              ? availableTechniques.length
-              : key === "kindOfProblem"
-                ? availableKindOfProblems.length
+            : key === "problemClass"
+              ? availableProblemClasses.length
+              : key === "application"
+                ? availableApplications.length
                 : key === "modelName"
                   ? availableModels.length
                   : key === "problemSize"

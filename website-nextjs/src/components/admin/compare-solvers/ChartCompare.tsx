@@ -3,17 +3,22 @@ import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import { getChartColor } from "@/utils/chart";
+import { parseSolverInfo } from "@/utils/string";
+import { SolverMetrics } from "@/types/compare-solver";
+import { roundNumber } from "@/utils/number";
 
 type ChartData = {
+  d1: SolverMetrics;
+  d2: SolverMetrics;
   xaxis: number;
   yaxis: number;
   status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
   benchmark: string;
   size: string;
-}[];
+};
 
 interface D3ChartProps {
-  chartData: ChartData;
+  chartData: ChartData[];
   title: {
     xaxis: string;
     yaxis: string;
@@ -24,12 +29,45 @@ interface D3ChartProps {
     upperOpacity?: string;
     lowerOpacity?: string;
   };
+  solver1: string;
+  solver2: string;
+  tooltipTemplate?: (d: ChartData, solver1: string, solver2: string) => string;
 }
+
+const defaultTooltipTemplate = (
+  d: ChartData,
+  solver1: string,
+  solver2: string,
+) => `
+  <div class="text-sm 4xl:text-lg">
+    <strong>Name:</strong> ${d.benchmark}<br>
+    <strong>Size:</strong> ${d.size}<br>
+    <strong>Runtime of ${solver1.replace("--", " (")}):</strong> ${roundNumber(
+      d.d1.runtime,
+      2,
+    )}s (${d.d1.status})<br>
+    <strong>Runtime of ${solver2.replace("--", " (")}):</strong> ${roundNumber(
+      d.d2.runtime,
+      2,
+    )}s (${d.d2.status})<br>
+    <strong>Log Runtime (s) of ${solver1.replace(
+      "--",
+      " (",
+    )}):</strong> ${roundNumber(d.d1.logRuntime, 1)} (${d.d1.status})<br>
+    <strong>Log Runtime (s) of ${solver2.replace(
+      "--",
+      " (",
+    )}):</strong> ${roundNumber(d.d2.logRuntime, 1)} (${d.d2.status})<br>
+  </div>
+`;
 
 const ChartCompare = ({
   chartData = [],
   title = { xaxis: "", yaxis: "" },
   backgroundColor,
+  solver1 = "",
+  solver2 = "",
+  tooltipTemplate = defaultTooltipTemplate,
 }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -120,13 +158,11 @@ const ChartCompare = ({
     // Scales
     const xScale = d3
       .scaleLinear()
-      // .domain([0, (d3.max(data, (d) => d.xaxis) ?? 0) + 1])
       .domain([minValue, maxValue])
       .range([margin.left, width - margin.right]);
 
     const yScale = d3
       .scaleLinear()
-      // .domain([0, (d3?.max(data, (d) => d.yaxis) ?? 0) + 50])
       .domain([minValue, maxValue])
       .range([height - margin.bottom, margin.top]);
 
@@ -201,12 +237,7 @@ const ChartCompare = ({
           .on("mouseover", (event) => {
             tooltip
               .style("opacity", 1)
-              .html(
-                `<div class="text-sm 4xl:text-lg">
-                  <strong>Name:</strong> ${d.benchmark}<br>
-                  <strong>Size:</strong> ${d.size}<br>
-                 </div>`,
-              )
+              .html(tooltipTemplate(d, solver1, solver2))
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 30}px`);
           })
@@ -269,6 +300,14 @@ const ChartCompare = ({
       tooltip.remove();
     };
   }, [chartData]);
+
+  const formatLegend = (status: string): string => {
+    const [status1, status2] = status.split("-");
+    const solver1Info = parseSolverInfo(solver1);
+    const solver2Info = parseSolverInfo(solver2);
+
+    return `${solver1Info.name} ${status1} - ${solver2Info.name} ${status2}`;
+  };
   return (
     <div className="bg-white py-4 px-4 sm:px-10 rounded-xl relative">
       {/* yaxis Title */}
@@ -292,19 +331,19 @@ const ChartCompare = ({
       <div className="flex flex-wrap gap-2">
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <CircleIcon className="size-2 text-[#4C5C51]" />
-          ok-ok
+          {formatLegend("ok-ok")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(3)} className="size-2" />
-          ok-TO
+          {formatLegend("ok-fail")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(0)} className="size-2" />
-          TO-ok
+          {formatLegend("fail-ok")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
           <XIcon fill={getChartColor(2)} className="size-2" />
-          TO-TO
+          {formatLegend("fail-fail")}
         </div>
       </div>
       <div className="w-full overflow-x-auto" ref={containerRef}>

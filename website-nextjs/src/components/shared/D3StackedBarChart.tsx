@@ -23,7 +23,7 @@ const D3StackedBarChart = ({
     if (!data.length) return;
 
     const width = containerRef.current?.clientWidth || 400;
-    const margin = { top: 20, right: 10, bottom: 40, left: 40 };
+    const margin = { top: 20, right: 10, bottom: 60, left: 20 };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -171,22 +171,24 @@ const D3StackedBarChart = ({
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey 4xl:text-base">
-        {title}
-      </div>
-      <div className="flex gap-2 ml-4">
-        {Object.keys(colors).map((solverKey) => (
-          <div
-            key={solverKey}
-            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
-          >
-            <CircleIcon
-              style={{ color: colors[solverKey] }}
-              className={"size-2"}
-            />
-            {solverKey}
-          </div>
-        ))}
+      <div className="flex justify-between items-center">
+        <div className="text-xs text-center text-dark-grey 4xl:text-base">
+          {title}
+        </div>
+        <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
+          {Object.keys(colors).map((solverKey) => (
+            <div
+              key={solverKey}
+              className="capitalize text-navy text-xs flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
+            >
+              <CircleIcon
+                style={{ color: colors[solverKey] }}
+                className={"size-2"}
+              />
+              {solverKey}
+            </div>
+          ))}
+        </div>
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>

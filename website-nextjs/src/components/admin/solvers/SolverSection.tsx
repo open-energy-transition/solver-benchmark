@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
+import { getLogScale } from "@/utils/logscale";
 
 const SOLVES_DATA = [
   {
@@ -36,11 +37,25 @@ const SolverSection = () => {
     return state.results.availableSolvers;
   });
 
-  const benchmarkLatestResults = useSelector(
+  const rawBenchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
   );
+
+  const benchmarkSuccessMap = new Map<string, number>();
+
+  // Count successful solves for each benchmark
+  rawBenchmarkLatestResults.forEach((result) => {
+    const key = `${result.benchmark}-${result.size}`;
+    benchmarkSuccessMap.set(key, (benchmarkSuccessMap.get(key) || 0) + 1);
+  });
+
+  // Filter results where all solvers succeeded
+  const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
+    const key = `${result.benchmark}-${result.size}`;
+    return benchmarkSuccessMap.get(key) === availableSolvers.length;
+  });
 
   const [selectedSolver, setSelectedSolver] = useState("");
 
@@ -69,7 +84,9 @@ const SolverSection = () => {
         status: result.status,
         runtime: result.runtime || 0,
         baseSolverRuntime: result.runtime || 0,
-        factor: 0, // log2(1) = 0
+        baseSolverStatus: result.status,
+        factor: 0, // log2(1) = 0,
+        logRuntime: getLogScale(result.runtime || 0),
       }));
 
     // Get comparison data points
@@ -80,6 +97,9 @@ const SolverSection = () => {
           (sData) =>
             sData.benchmark === oData.benchmark && sData.size === oData.size,
         );
+        if (!sData) {
+          throw new Error("Base data not found for comparison");
+        }
         return {
           benchmark: oData.benchmark,
           solver: oData.solver,
@@ -87,7 +107,9 @@ const SolverSection = () => {
           size: oData.size,
           runtime: oData.runtime || 0,
           baseSolverRuntime: sData?.runtime || 0,
+          baseSolverStatus: sData?.status,
           factor: calculateFactor(sData?.runtime || 0, oData.runtime || 0),
+          logRuntime: getLogScale(oData.runtime || 0),
         };
       });
 
@@ -185,6 +207,7 @@ const SolverSection = () => {
 
       {chartData.length > 0 && (
         <PerformanceBarChart
+          key={solverOptions.join("-")}
           data={chartData}
           baseSolver={selectedSolver.split("--")[0]}
           availableSolvers={availableSolvers}

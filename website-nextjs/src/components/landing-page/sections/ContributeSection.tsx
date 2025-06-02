@@ -40,7 +40,10 @@ const Contribute = () => {
   }, []);
 
   return (
-    <div className="py-5 text-[#F0ECE4] bg-navy">
+    <div
+      id="contribution"
+      className="py-5 text-[#F0ECE4] bg-navy scroll-mt-16 lg:scroll-mt-28"
+    >
       <div
         className="
           xl:flex
@@ -126,17 +129,14 @@ const Contribute = () => {
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </h5>
                 </div>
-                <p className="text-base/1.5 font-lato text-left mt-2">Fork</p>
+                <p className="text-base/1.5 font-lato text-left mt-2">Forks</p>
               </div>
             </div>
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
               className="w-max bg-[#F0ECE4] items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
             >
-              <div
-                id="mission-section"
-                className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase"
-              >
+              <div className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase">
                 <GithubIcon className="mr-2" />
                 <div>Contribute now</div>
               </div>

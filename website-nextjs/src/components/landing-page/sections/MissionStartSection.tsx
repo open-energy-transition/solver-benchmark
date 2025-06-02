@@ -4,7 +4,10 @@ import MissionCard from "@/components/common/MissionCard";
 
 const MissionStart = () => {
   return (
-    <div className="text-white bg-navy pt-24 pb-16">
+    <div
+      id="mission"
+      className="text-white bg-navy pt-24 pb-16 scroll-mt-16 lg:scroll-mt-28"
+    >
       <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
         <div className="grid sm:flex">
           <div className="w-full sm:w-1/2 lg:w-1/3">

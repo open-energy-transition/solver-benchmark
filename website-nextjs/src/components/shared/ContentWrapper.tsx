@@ -27,11 +27,11 @@ const ContentWrapper = ({
         ${isNavExpanded ? "md:ml-64" : "md:ml-20"}
         `}
     >
-      <div className="max-w-8xl mx-auto">
+      <div className="max-w-8xl mx-auto text-navy">
         {header && <div>{header}</div>}
-        <div className="sm:flex">
+        <div className="sm:flex bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-4 pr-2 mt-6 rounded-[32px]">
           {showFilter && (
-            <div className="m-4 sm:x-0 sm:w-1/5 overflow-hidden bg-white rounded-xl h-max">
+            <div className="my-4 sm:x-0 sm:w-1/5 overflow-hidden bg-white rounded-xl h-max">
               <FilterSection />
             </div>
           )}
@@ -39,7 +39,7 @@ const ContentWrapper = ({
             className={`
               pd:mx-0
               3xl:mx-auto
-              ${showFilter ? "sm:w-4/5 px-4 pt-4" : "w-full"}
+              ${showFilter ? "sm:w-4/5 pl-4 pr-0 pt-4" : "w-full"}
               `}
           >
             {children}

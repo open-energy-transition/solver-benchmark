@@ -1,12 +1,14 @@
 benchmarks:
   tulipa-1_EU_investment_simple:
-    Short description: European-level investment and operation model to consider integer investments and unit commitment variables
+    Short description: European-level infrastructure model over a single year-time horizon considering integer investments and unit commitment variables.
+    Modelling framework: Tulipa
     Model name: Tulipa
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: Unit commitment
     Sizes:
@@ -56,6 +58,7 @@ benchmarks:
       Temporal resolution: 2.2
       Spatial resolution: 28
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1118208
       Num. variables: 745559
       Num. continuous variables: 745307
@@ -66,6 +69,7 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 28
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 2429440
       Num. variables: 1619451
       Num. continuous variables: 1619199

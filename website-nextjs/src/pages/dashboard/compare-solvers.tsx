@@ -28,22 +28,35 @@ const PageCompareSolvers = () => {
         <Navbar />
         <ContentWrapper
           header={
-            <AdminHeader>
-              <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
-                <div className="flex items-center gap-1">
-                  <Link href={PATH_DASHBOARD.root}>
-                    <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
-                  </Link>
-                  <ArrowIcon
-                    fill="none"
-                    className="size-3 stroke-navy 4xl:size-4"
-                  />
-                  <span className="self-center font-semibold whitespace-nowrap">
-                    Compare Solvers
-                  </span>
+            <div className="max-w-8xl mx-auto">
+              <AdminHeader>
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                  <div className="flex items-center gap-1">
+                    <Link href={PATH_DASHBOARD.root}>
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                    </Link>
+                    <ArrowIcon
+                      fill="none"
+                      className="size-3 stroke-navy 4xl:size-4"
+                    />
+                    <span className="self-center font-semibold whitespace-nowrap">
+                      Compare Solvers
+                    </span>
+                  </div>
                 </div>
+              </AdminHeader>
+              <div className="font-lato font-bold text-2xl/1.4">
+                Compare Solvers
               </div>
-            </AdminHeader>
+              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+                This page lets you compare any two solvers (including versions)
+                on any subset of the benchmarks. This can be used to find
+                benchmarks where one solver performs better than another. It is
+                also useful for solver developers who want to compare two
+                versions of their solver to see on which benchmarks the
+                performance improved or degraded.
+              </div>
+            </div>
           }
         >
           {/* Content */}

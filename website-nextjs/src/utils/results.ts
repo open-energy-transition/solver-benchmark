@@ -1,4 +1,4 @@
-import { MaxMemoryUsage, ProblemSize } from "@/constants";
+import { ProblemSize } from "@/constants";
 import {
   BenchmarkResult,
   SolverStatusType,
@@ -6,6 +6,9 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
+import { MetaData, Size } from "@/types/meta-data";
+import { parseNumberOrNull } from "./number";
+import { IFilterState, RealisticOption } from "@/types/state";
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -40,16 +43,32 @@ export const fetchCsvToJson = async (
   }
 };
 
+const getMaxMemoryUsage = (
+  benchmarkResult: BenchmarkResult,
+  rawMetaData: MetaData,
+): number => {
+  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
+  const benchmarkSize = benchmarkMetadata.sizes.find(
+    (size) => size.name === benchmarkResult.size,
+  );
+  if (benchmarkSize?.size === "L") {
+    return 62 * 1024;
+  }
+  return 7 * 1024;
+};
+
 const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
   const res = await fetchCsvToJson("/results/benchmark_results.csv");
   return res.map((rawData) => {
     const data = rawData as { [key: string]: string };
     return {
       benchmark: data["Benchmark"],
-      dualityGap: data["Duality Gap"] || null,
-      maxIntegralityViolation: data["Max Integrality Violation"] || null,
+      dualityGap: parseNumberOrNull(data["Duality Gap"]),
+      maxIntegralityViolation: parseNumberOrNull(
+        data["Max Integrality Violation"],
+      ),
       memoryUsage: Number(data["Memory Usage (MB)"]),
-      objectiveValue: data["Objective Value"] || null,
+      objectiveValue: parseNumberOrNull(data["Objective Value"]),
       runtime: Number(data["Runtime (s)"]),
       size: data["Size"],
       solver: data["Solver"] as SolverType,
@@ -57,6 +76,7 @@ const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
+      runId: data["Run ID"],
       timeout: Number(data["Timeout"]),
     };
   });
@@ -76,13 +96,21 @@ const getProblemSize = (runtime: number) => {
   }
 };
 
-const processBenchmarkResults = (benchmarkResult: BenchmarkResult[] = []) => {
+const processBenchmarkResults = (
+  benchmarkResult: BenchmarkResult[] = [],
+  rawMetaData: MetaData,
+) => {
   return benchmarkResult.map((benchmarkResult) => {
     return {
       ...benchmarkResult,
-      memoryUsage: !["ok"].includes(benchmarkResult.status)
-        ? MaxMemoryUsage
-        : benchmarkResult.memoryUsage,
+      runtime:
+        benchmarkResult.status === "ok"
+          ? benchmarkResult.runtime
+          : benchmarkResult.timeout,
+      memoryUsage:
+        benchmarkResult.status === "ok"
+          ? benchmarkResult.memoryUsage
+          : getMaxMemoryUsage(benchmarkResult, rawMetaData),
     };
   });
 };
@@ -121,10 +149,20 @@ const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
   });
 };
 
+// Helper function to for filtering benchmarks based on realistic options
+const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
+  return (
+    (filters.realistic.includes(RealisticOption.Realistic) && size.realistic) ||
+    (filters.realistic.includes(RealisticOption.Other) && !size.realistic)
+  );
+};
+
 export {
   getBenchmarkResults,
   processBenchmarkResults,
   formatBenchmarkName,
   getProblemSize,
   getLatestBenchmarkResult,
+  checkRealisticFilter,
+  getMaxMemoryUsage,
 };

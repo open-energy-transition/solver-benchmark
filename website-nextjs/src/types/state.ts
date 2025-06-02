@@ -1,26 +1,37 @@
-import { SgmMode } from "@/constants/filter";
+import { SgmMode } from "@/constants/sgm";
 import { BenchmarkResult } from "./benchmark";
 import { MetaData } from "./meta-data";
 
+export enum RealisticOption {
+  Realistic = "Realistic",
+  Other = "Other",
+}
+
 export type IFilterState = {
-  sectors: string[];
-  technique: string[];
-  kindOfProblem: string[];
-  problemSize: string[];
-  modelName: string[];
   benchmarks: string[];
+  application: string[];
+  modelName: string[];
+  problemSize: string[];
+  realistic: RealisticOption[];
+  sectoralFocus: string[];
+  sectors: string[];
+  sgmMode: SgmMode;
   solvers: string[];
   statuses: string[];
-  sgmMode: SgmMode;
+  problemClass: string[];
   xFactor: 5;
+  isReady: boolean;
 };
 
 export interface IAvailableFilterData {
+  availableSectoralFocus: string[];
   availableSectors: string[];
-  availableTechniques: string[];
-  availableKindOfProblems: string[];
+  availableProblemClasses: string[];
+  availableApplications: string[];
   availableProblemSizes: string[];
   availableModels: string[];
+  availableModellingFrameworks: string[];
+  realisticOptions: RealisticOption[];
 }
 
 export interface IResultState extends IAvailableFilterData {
