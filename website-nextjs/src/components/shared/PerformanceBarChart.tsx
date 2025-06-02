@@ -561,21 +561,25 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
               </div>
             ))}
         </div>
-        <div className="text-sm mb-4">
-          <p>🔻/🔺: base / other solver failed to solve in time limit</p>
-          <p>❌ : both solvers failed to solve in time limit</p>
+        <div className="flex justify-between items-start text-sm mb-4">
+          <div>
+            <p>🔻/🔺: base / other solver failed to solve in time limit</p>
+            <p>❌ : both solvers failed to solve in time limit</p>
+          </div>
+          <div className="mr-24">
+            <p className="flex gap-1 items-center">
+              <CircleIcon className="size-3" />
+              base solver solved successfully
+            </p>
+            <p className="flex gap-1 items-center">
+              <CloseIcon className="size-3" />
+              base solver failed to solve in time limit
+            </p>
+          </div>
         </div>
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
-      </div>
-      <div className="pt-1.5 pb-3 pl-3">
-        <p className="flex gap-1 items-center text-dark-grey text-sm 4xl:text-base">
-          <CloseIcon className="size-3" />
-          represents benchmarks that timed out or errored, while
-          <CircleIcon className="size-3" />
-          indicates a successful run.
-        </p>
       </div>
     </div>
   );
