@@ -81,12 +81,12 @@ export function TanStackTable<T>({
             ${title ? "justify-between" : "justify-end"}
           `}
         >
-          {title && <h2 className="text-xl 4xl:text-2xl">{title}</h2>}
+          {title && <h6>{title}</h6>}
           <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             {enableColumnSelector && (
               <button
                 onClick={() => setShowColumnSelector(!showColumnSelector)}
-                className="text-white bg-green-pop px-4 sm:px-6 py-2 sm:py-3 rounded-lg cursor-pointer w-full sm:w-auto text-sm sm:text-base 4xl:text-lg"
+                className="text-white bg-green-pop px-4 py-2 rounded-lg cursor-pointer w-full sm:w-auto tag-line-xs"
               >
                 Select Columns
               </button>
@@ -94,7 +94,7 @@ export function TanStackTable<T>({
             {enableDownload && onDownload && (
               <button
                 onClick={handleDownload}
-                className="text-white bg-navy px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto text-sm sm:text-base 4xl:text-lg"
+                className="text-white bg-navy px-4 py-2 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto tag-line-xs"
               >
                 {downloadTitle || "Download"}
                 <ArrowToRightIcon className="w-4 h-4 rotate-90" />
@@ -145,7 +145,7 @@ export function TanStackTable<T>({
                       >
                         <div
                           onClick={header.column.getToggleSortingHandler()}
-                          className="flex gap-1 items-center justify-between w-full max-w-[200px] mx-auto truncate 4xl:text-lg"
+                          className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full max-w-[200px] mx-auto truncate"
                           style={{
                             width: header.getSize() + 10,
                             maxWidth: header.getSize()
@@ -189,7 +189,7 @@ export function TanStackTable<T>({
                             ? cell.column.getSize()
                             : 200,
                         }}
-                        className="text-navy text-start py-2 px-6 truncate"
+                        className="tag-line-sm leading-1.4 text-navy text-start py-2 px-6 truncate"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,

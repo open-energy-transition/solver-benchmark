@@ -461,6 +461,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
+      .style("fill", "rgb(79 78 78)")
       .text(`Instances sorted by solving time of ${baseSolver}`);
 
     // Primary y-axis label
@@ -471,6 +472,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", 15)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
+      .style("fill", "rgb(79 78 78)")
       .text("Runtime ratio (log scale)");
 
     // Secondary y-axis label
@@ -481,7 +483,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", width - margin.right + 70)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
-      .style("fill", "#666")
+      .style("fill", "rgb(79 78 78)")
       .text(`Runtime of ${baseSolver} (s)`);
 
     // Add a legend entry for scatter points
@@ -505,10 +507,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
   return (
     <div className="bg-white p-4 rounded-xl">
-      <h2 className="text-xl font-semibold mb-2 4xl:text-2xl">
-        Relative performance plot
-      </h2>
-      <p className="text-sm text-gray-600 mb-4 max-w-[755px] 4xl:text-base">
+      <h6 className="mb-2">Relative performance plot</h6>
+      <p className="text-gray-600 mb-4 max-w-[755px]">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots

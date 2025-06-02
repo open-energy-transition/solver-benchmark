@@ -4,22 +4,40 @@
 
 @layer base {
   h1 {
-    @apply text-6xl;
+    @apply text-[56px] font-lato font-bold leading-1.2 tracking-normal;
   }
   h2 {
-    @apply text-5xl;
+    @apply text-5xl font-lato font-bold leading-1.2 tracking-normal;
   }
   h3 {
-    @apply text-4xl;
+    @apply text-[40px] font-lato font-extrabold leading-1.2 tracking-normal;
   }
   h4 {
-    @apply text-3xl;
+    @apply text-[32px] font-lato font-bold leading-1.3 tracking-normal;
   }
   h5 {
-    @apply text-2xl;
+    @apply text-2xl font-lato font-bold leading-1.4 tracking-normal;
   }
   h6 {
-    @apply text-xl;
+    @apply text-xl font-lato font-bold leading-1.4 tracking-normal;
+  }
+  p {
+    @apply text-sm font-lato font-normal leading-1.5 tracking-normal;
+  }
+  .tag-line {
+    @apply text-base font-lato font-normal leading-1.5 tracking-normal;
+  }
+  .tag-line-xs {
+    @apply text-xs font-lato font-normal leading-none tracking-normal;
+  }
+  .tag-line-sm {
+    @apply text-sm font-lato font-normal leading-none tracking-normal;
+  }
+  .tag-line-xxs {
+    @apply text-[10px] font-lato font-normal leading-none tracking-normal;
+  }
+  .text-medium-normal {
+    @apply text-lg/1.5 font-medium tracking-normal;
   }
 }
 

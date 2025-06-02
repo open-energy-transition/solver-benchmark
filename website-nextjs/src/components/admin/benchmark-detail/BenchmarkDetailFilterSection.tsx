@@ -14,17 +14,9 @@ import { useSelector } from "react-redux";
 import { IResultState, RealisticOption } from "@/types/state";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
 import FilterGroup from "../filters/FilterGroup";
+import { decodeValue, encodeValue } from "@/utils/urls";
 
-const BenchmarkDetailFilterSection = ({
-  setLocalFilters,
-  localFilters,
-  availableSectoralFocus,
-  availableSectors,
-  availableProblemClasses,
-  availableApplications,
-  availableModels,
-  availableProblemSizes,
-}: {
+interface IBenchmarkDetailFilterSectionProps {
   setLocalFilters: React.Dispatch<
     React.SetStateAction<IFilterBenchmarkDetails>
   >;
@@ -35,7 +27,18 @@ const BenchmarkDetailFilterSection = ({
   availableApplications: string[];
   availableModels: string[];
   availableProblemSizes: string[];
-}) => {
+}
+
+const BenchmarkDetailFilterSection = ({
+  setLocalFilters,
+  localFilters,
+  availableSectoralFocus,
+  availableSectors,
+  availableProblemClasses,
+  availableApplications,
+  availableModels,
+  availableProblemSizes,
+}: IBenchmarkDetailFilterSectionProps) => {
   const router = useRouter();
 
   const rawBenchmarkResults = useSelector(
@@ -108,20 +111,29 @@ const BenchmarkDetailFilterSection = ({
     }));
   };
 
-  const encodeValue = (value: string) => {
-    return encodeURIComponent(value);
-  };
-
-  const decodeValue = (value: string) => {
-    return decodeURIComponent(value);
+  const initialFilters = {
+    sectoralFocus: availableSectoralFocus.length,
+    sectors: availableSectors.length,
+    problemClass: availableProblemClasses.length,
+    application: availableApplications.length,
+    modelName: availableModels.length,
+    problemSize: availableProblemSizes.length,
+    realistic: [RealisticOption.Realistic, RealisticOption.Other].length,
   };
 
   useEffect(() => {
-    if (isInit) {
+    const areFiltersEqualToInitial = Object.entries(initialFilters).every(
+      ([key, value]) => {
+        const currentValue = localFilters[key as keyof typeof localFilters];
+        return Array.isArray(currentValue) && currentValue.length === value;
+      },
+    );
+
+    if (isInit && !areFiltersEqualToInitial) {
       updateUrlParams(localFilters);
       applyFiltersToResults();
     }
-  }, [localFilters, isInit]);
+  }, [localFilters]);
 
   const applyFiltersToResults = () => {};
 
@@ -167,8 +179,7 @@ const BenchmarkDetailFilterSection = ({
   };
 
   useEffect(() => {
-    if (isInit) return;
-    if (!router.isReady) return;
+    if (isInit || !router.isReady || isInit) return;
 
     const urlFilters = parseUrlParams();
     if (Object.keys(urlFilters).length > 0) {
@@ -176,8 +187,19 @@ const BenchmarkDetailFilterSection = ({
         ...prevFilters,
         ...urlFilters,
       }));
-      setIsInit(true);
+    } else {
+      // If no filters in URL, set to default values
+      setLocalFilters({
+        sectoralFocus: availableSectoralFocus,
+        sectors: availableSectors,
+        problemClass: availableProblemClasses,
+        application: availableApplications,
+        modelName: availableModels,
+        problemSize: availableProblemSizes,
+        realistic: [RealisticOption.Realistic, RealisticOption.Other],
+      });
     }
+    setIsInit(true);
   }, [router.query, router.isReady]);
 
   useEffect(() => {

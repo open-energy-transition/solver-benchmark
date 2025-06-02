@@ -24,12 +24,10 @@ const MissionCard = ({
     <div
       className={`p-11 rounded-[48px] border-white border bg-white bg-opacity-30 w-full flex flex-col hover:border-opacity-30 border-opacity-60 ${wrapperClass}`}
     >
-      <div>
+      <div className="min-h-[49px]">
         <Icon />
       </div>
-      <div className="my-4 font-league font-bold text-2xl/1.4 uppercase">
-        {title}
-      </div>
+      <h5 className="my-4 uppercase">{title}</h5>
       <div className="flex-1">
         <div className="font-lato font-medium text-lg/1.5">{description}</div>
       </div>

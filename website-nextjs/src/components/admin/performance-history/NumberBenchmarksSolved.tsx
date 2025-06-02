@@ -12,9 +12,9 @@ const NumberBenchmarksSolved = ({
 }: INumberBenchmarksSolved) => {
   return (
     <div className="pb-4">
-      <p className="text-navy font-bold leading-1.5 mb-3 4xl:text-xl">
+      <div className="tag-line font-bold mb-2">
         Number of Benchmarks Solved (Out of {totalBenchmarks})
-      </p>
+      </div>
       <D3LineChart
         className="px-10"
         title="Number of Benchmarks Solved"

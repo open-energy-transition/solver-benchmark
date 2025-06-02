@@ -280,23 +280,21 @@ const PagePerformanceHistory = () => {
                       fill="none"
                       className="size-3 4xl:size-4 stroke-navy"
                     />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <p className="self-center font-semibold whitespace-nowrap">
                       Performance History
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">
-                Performance History
-              </div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+              <h5>Performance History</h5>
+              <p className="mt-4 max-w-screen-lg">
                 This page tracks the performance of different solvers over time.
                 This can be used to see which solvers are improving, and on what
                 kinds of benchmarks. Once again, you can filter the benchmark
                 set to your problems of interest and the graphs will
                 automatically re-generate to show you the performance history on
                 your chosen subset.
-              </div>
+              </p>
               <SolverVersions />
             </div>
           }
@@ -309,10 +307,8 @@ const PagePerformanceHistory = () => {
             totalBenchmarks={commonInstances.length}
           />
           <div className="pt-1.5 pb-3 px-5">
-            <div className="text-navy font-bold text-xl 4xl:text-2xl">
-              Caveats
-            </div>
-            <div className="text-navy text-sm block items-center mt-2">
+            <h6>Caveats</h6>
+            <p className="text-navy block items-center mt-2">
               <span>
                 {" "}
                 Some solvers returned errors when running on some benchmark
@@ -325,7 +321,7 @@ const PagePerformanceHistory = () => {
                 </a>
                 .
               </span>
-            </div>
+            </p>
           </div>
         </ContentWrapper>
       </div>

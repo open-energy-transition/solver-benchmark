@@ -143,15 +143,13 @@ const SolverSection = () => {
       <div className="flex gap-4 mb-4">
         {/* Solver select */}
         <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
-          <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">
-            Select Solver
-          </div>
+          <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
           <select
             name="solver"
             value={selectedSolver}
             onChange={(event) => setSelectedSolver(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] 4xl:text-xl
-            border-transparent text-dark-grey text-base rounded-b-lg block focus-visible:outline-none"
+            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] text-lg
+            border-transparent text-navy rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver</option>
             {solverOptions.map((solver, idx) => (
@@ -165,13 +163,11 @@ const SolverSection = () => {
         {/* Enhanced solver info section */}
         {selectedSolverInfo && (
           <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
-            <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">
+            <h6 className="p-3 pl-3.5 border-b border-gray-200">
               Solver Information
-            </div>
+            </h6>
             <div className="p-4">
-              <h3 className="text-xl 4xl:text-2xl font-bold mb-4 text-gray-800">
-                {selectedSolverInfo.label}
-              </h3>
+              <h6 className="mb-4 text-navy">{selectedSolverInfo.label}</h6>
               <div className="space-y-3">
                 <a
                   href={selectedSolverInfo.website}

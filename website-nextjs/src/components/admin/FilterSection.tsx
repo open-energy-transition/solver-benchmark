@@ -166,8 +166,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   };
 
   useEffect(() => {
-    if (isInit || !selectedFilters.isReady || !router.isReady) return;
-
+    if (isInit || !router.isReady || !selectedFilters.isReady) return;
     const urlFilters = parseUrlParams();
 
     if (Object.keys(urlFilters).length > 0) {
@@ -204,27 +203,24 @@ const FilterSection = ({ height }: FilterSectionProps) => {
         }
       });
     } else {
-      return () => {
-        // Fix filters not being selected when no URL parameters are present in the production environment
-        dispatch(
-          filterActions.setFilter({
-            sectoralFocus: availableSectoralFocus,
-            sectors: availableSectors,
-            problemClass: availableProblemClasses,
-            application: availableApplications,
-            modelName: availableModels,
-            problemSize: availableProblemSizes,
-            realistic: [RealisticOption.Realistic, RealisticOption.Other],
-          } as IFilterState),
-        );
-        dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
-        dispatch(
-          resultActions.setBenchmarkLatestResults(
-            getLatestBenchmarkResult(rawBenchmarkResults),
-          ),
-        );
-        dispatch(resultActions.setMetaData(rawMetaData));
-      };
+      dispatch(
+        filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
+          sectors: availableSectors,
+          problemClass: availableProblemClasses,
+          application: availableApplications,
+          modelName: availableModels,
+          problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
+        } as IFilterState),
+      );
+      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(rawBenchmarkResults),
+        ),
+      );
+      dispatch(resultActions.setMetaData(rawMetaData));
     }
     setIsInit(true);
   }, [router.isReady, selectedFilters.isReady]);

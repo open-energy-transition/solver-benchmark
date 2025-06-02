@@ -16,7 +16,7 @@ interface INormalizedSection {
 const NormalizedSection = ({ chartData }: INormalizedSection) => {
   return (
     <>
-      <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+      <p className="max-w-screen-lg">
         <span>The below graphs show the shifted geometric mean (SGM</span>
         <span className="inline-flex gap-2">
           <Popup
@@ -45,7 +45,7 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
         least-memory-consuming solver (across all versions), i.e. if a solver
         version has (normalized) SGM runtime of 1.25 it indicates that it is on
         average 25% slower than the best version of the best solver.
-      </div>
+      </p>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full mt-2 mb-4">
         <NormalizedSGMRuntime chartData={chartData.runtime} />
         <NormalizedSGMMemoryUsage chartData={chartData.memoryUsage} />

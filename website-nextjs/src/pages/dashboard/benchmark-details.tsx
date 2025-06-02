@@ -7,14 +7,11 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
-import { IFilterState, IResultState, RealisticOption } from "@/types/state";
-import { useMemo, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { IResultState, RealisticOption } from "@/types/state";
+import { useMemo, useState } from "react";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
 
 const PageBenchmarkDetail = () => {
-  const router = useRouter();
-
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -69,39 +66,6 @@ const PageBenchmarkDetail = () => {
     ),
   );
 
-  const encodeValue = (value: string) => {
-    return encodeURIComponent(value);
-  };
-
-  const decodeValue = (value: string) => {
-    return decodeURIComponent(value);
-  };
-
-  const parseUrlParams = () => {
-    const filters: Partial<IFilterState> = {};
-
-    [
-      "sectoralFocus",
-      "sectors",
-      "problemClass",
-      "application",
-      "modelName",
-      "problemSize",
-      "realistic",
-    ].forEach((key) => {
-      const value = router.query[key];
-      if (typeof value === "string") {
-        // @ts-expect-error Type inference issues with dynamic keys
-        filters[key as keyof IFilterState] = value
-          ? value.split(";").map(decodeValue)
-          : [];
-      }
-    });
-
-    return filters;
-  };
-
-  const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
@@ -111,70 +75,6 @@ const PageBenchmarkDetail = () => {
     problemSize: availableProblemSizes,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const urlFilters = parseUrlParams();
-
-    if (Object.keys(urlFilters).length > 0) {
-      setLocalFilters((prevFilters) => ({
-        ...prevFilters,
-        ...urlFilters,
-      }));
-    } else {
-      setLocalFilters({
-        sectoralFocus: availableSectoralFocus,
-        sectors: availableSectors,
-        problemClass: availableProblemClasses,
-        application: availableApplications,
-        modelName: availableModels,
-        problemSize: availableProblemSizes,
-        realistic: [RealisticOption.Realistic, RealisticOption.Other],
-      });
-    }
-    setIsInit(true);
-  }, [router.isReady, fullMetaData]);
-
-  // Update URL when filters change
-  useEffect(() => {
-    if (!isInit) return;
-
-    const queryParams = new URLSearchParams();
-    Object.entries(localFilters).forEach(([key, values]) => {
-      if (
-        Array.isArray(values) &&
-        values.length > 0 &&
-        values.length <
-          (key === "sectoralFocus"
-            ? availableSectoralFocus.length
-            : key === "sectors"
-              ? availableSectors.length
-              : key === "problemClass"
-                ? availableProblemClasses.length
-                : key === "application"
-                  ? availableApplications.length
-                  : key === "modelName"
-                    ? availableModels.length
-                    : key === "problemSize"
-                      ? availableProblemSizes.length
-                      : key === "realistic"
-                        ? 2
-                        : 0)
-      ) {
-        queryParams.set(key, values.map(encodeValue).join(";"));
-      }
-    });
-
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: Object.fromEntries(queryParams),
-      },
-      undefined,
-      { shallow: true },
-    );
-  }, [localFilters, isInit]);
 
   const filteredMetaData = useMemo(() => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
@@ -274,25 +174,24 @@ const PageBenchmarkDetail = () => {
                       fill="none"
                       className="size-3 4xl:size-4 stroke-navy"
                     />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <p className="self-center font-semibold whitespace-nowrap">
                       Benchmark Set
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
               <div className="text-navy">
-                <div className="font-lato font-bold text-2xl/1.4">
-                  Benchmark Set
-                </div>
-                <p className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+                <h6>Benchmark Set</h6>
+                <p className="mb-6 mt-4 max-w-screen-lg">
                   On this page you can see details of all the benchmarks on our
                   platform, including their source and download links.
                 </p>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 pl-4 pr-2 mt-6 rounded-[32px]">
-              <div className="sm:flex sm:gap-6 justify-between">
-                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pl-4 pr-2 mt-6 rounded-[32px]">
+              <h5 className="text-navy py-4 pl-3.5">List of All Benchmarks</h5>
+              <div className="flex overflow-hidden rounded-xl">
+                <div className="sm:w-[248px] min-w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
@@ -304,18 +203,8 @@ const PageBenchmarkDetail = () => {
                     availableProblemSizes={availableProblemSizes}
                   />
                 </div>
-                <div
-                  className={`
-                3xl:mx-auto
-                sm:w-4/5
-                `}
-                >
+                <div className="3xl:mx-auto sm:w-4/5 ml-4">
                   <div className="space-y-4 sm:space-y-6">
-                    <div className="py-2">
-                      <div className="text-navy text-lg font-bold 4xl:text-xl">
-                        List of All Benchmarks
-                      </div>
-                    </div>
                     <BenchmarkTableResult metaData={filteredMetaData} />
                   </div>
                 </div>

@@ -29,7 +29,7 @@ const ResultsSectionsTitle = ({
   return (
     <div>
       <div className="relative text-navy font-bold text-xl pl-6 flex justify-between items-end">
-        <div>
+        <h6 className="flex">
           Ranking
           {latestBenchmarkResult.length !== benchmarkResults.length && (
             <span className="ml-1">
@@ -37,7 +37,7 @@ const ResultsSectionsTitle = ({
               benchmark instances)
             </span>
           )}
-        </div>
+        </h6>
       </div>
     </div>
   );

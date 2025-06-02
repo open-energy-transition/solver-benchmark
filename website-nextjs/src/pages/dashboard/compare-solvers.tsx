@@ -39,23 +39,21 @@ const PageCompareSolvers = () => {
                       fill="none"
                       className="size-3 stroke-navy 4xl:size-4"
                     />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <p className="self-center whitespace-nowrap">
                       Compare Solvers
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">
-                Compare Solvers
-              </div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+              <h5>Compare Solvers</h5>
+              <p className="mb-6 mt-4 max-w-screen-lg">
                 This page lets you compare any two solvers (including versions)
                 on any subset of the benchmarks. This can be used to find
                 benchmarks where one solver performs better than another. It is
                 also useful for solver developers who want to compare two
                 versions of their solver to see on which benchmarks the
                 performance improved or degraded.
-              </div>
+              </p>
             </div>
           }
         >

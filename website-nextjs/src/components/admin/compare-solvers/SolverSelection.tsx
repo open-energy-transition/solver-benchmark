@@ -114,14 +114,12 @@ const SolverSelection = () => {
     <div>
       <div className="flex flex-row gap-2 sm:gap-0 mb-4">
         <div className="w-full sm:w-1/2 bg-[#F0F4F2] rounded-lg sm:rounded-l-lg sm:rounded-r-none">
-          <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg 4xl:xl">
-            Solver 1
-          </div>
+          <h6 className="p-2 sm:p-3 pl-3.5">Solver 1</h6>
           <select
             name="solver1"
             value={solver1}
             onChange={(event) => setSolver1(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
+            className="w-full text-lg font-bold pl-3 bg-[#F0F4F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
             border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none 4xl:text-lg"
           >
             <option disabled>Solver & version</option>
@@ -133,14 +131,12 @@ const SolverSelection = () => {
           </select>
         </div>
         <div className="w-full sm:w-1/2 bg-[#E1E5F2] rounded-lg sm:rounded-r-lg sm:rounded-l-none">
-          <div className="p-2 sm:p-3 pl-3.5 font-bold font-lato text-base sm:text-lg 4xl:xl">
-            Solver 2
-          </div>
+          <h6 className="p-2 sm:p-3 pl-3.5">Solver 2</h6>
           <select
             name="solver2"
             value={solver2}
             onChange={(event) => setSolver2(event.target.value)}
-            className="w-full pl-3 font-bold bg-[#E1E5F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
+            className="w-full text-lg pl-3 font-bold bg-[#E1E5F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
             border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none 4xl:text-lg"
           >
             <option disabled>Solver & version</option>
@@ -153,17 +149,14 @@ const SolverSelection = () => {
         </div>
       </div>
       <div className="py-2">
-        <div className="text-navy text-lg sm:text-xl font-bold 4xl:text-xl">
-          Comparison
-        </div>
-        <p className="text-[#5D5D5D] text-sm sm:text-base 4xl:text-lg">
+        <h6 className="text-navy">Comparison</h6>
+        <p className="mb-6 mt-4 max-w-screen-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
           where Solver 2 performs better. Click on any point in this graph to
           see details of that benchmark instance.
           <p className="flex gap-1 items-center text-dark-grey text-sm">
             <CloseIcon className="size-3" />
-            {/* {" "} */}
             represents benchmark instances where at least one of the solvers
             failed to solve within the time limit, while
             <CircleIcon className="size-3" />
@@ -194,7 +187,7 @@ const SolverSelection = () => {
             solver1={solver1}
             solver2={solver2}
           />
-          <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
+          <div className="w-full font-league text-[#8C8C8C] text-center mt-4 text-medium-normal">
             Runtime Comparison
           </div>
         </div>
@@ -221,7 +214,7 @@ const SolverSelection = () => {
             solver2={solver2}
             tooltipTemplate={memoryUsageTooltipTemplate}
           />
-          <div className="w-full font-league text-base sm:text-lg text-[#8C8C8C] font-medium text-center mt-4 4xl:text-xl">
+          <div className="w-full font-league text-medium-normal text-[#8C8C8C] text-center mt-4">
             Memory Usage Comparison
           </div>
         </div>

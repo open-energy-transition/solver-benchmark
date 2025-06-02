@@ -32,20 +32,18 @@ const PagePerformanceHistory = () => {
                       fill="none"
                       className="size-3 4xl:size-4 stroke-navy"
                     />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <p className="self-center font-semibold whitespace-nowrap">
                       Full Results
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">
-                Full Results
-              </div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+              <h5>Full Results</h5>
+              <p className="mb-6 mt-4 max-w-screen-lg">
                 This page contains the full and raw set of benchmark results
                 from our platform. You can, as usual, filter the results to your
                 area of interest and download the filtered data as a CSV file.
-              </div>
+              </p>
             </div>
           }
         >

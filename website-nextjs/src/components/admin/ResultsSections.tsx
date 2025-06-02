@@ -405,7 +405,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-navy pl-6 text-l block items-center mt-2">
+        <p className="text-navy pl-6 text-l block items-center mt-2">
           <span>
             This table summarizes the benchmark results of the latest version
           </span>
@@ -462,7 +462,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             the number of solved benchmark instances. Click on any column header
             to sort the results by that column.
           </span>
-        </div>
+        </p>
       </div>
       <div className="flex justify-end items-center gap-2 mb-2">
         <ResultsSgmModeDropdown />
@@ -509,7 +509,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
             >
               <div
-                className="py-2.5 flex items-center gap-1 px-3 cursor-pointer justify-center 4xl:text-xl"
+                className="py-2.5 tag-line-xs leading-1.5 font-bold flex items-center gap-1 px-3 cursor-pointer justify-center"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -532,9 +532,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               </div>
 
               {sortedTableData.map((item, index) => (
-                <div
+                <p
                   key={`${column.field}-${index}`}
-                  className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
+                  className={`py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",

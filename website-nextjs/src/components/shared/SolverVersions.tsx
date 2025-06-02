@@ -1,6 +1,6 @@
 const SolverVersions = ({}) => {
   return (
-    <div>
+    <p>
       Our platform includes the highest version of each solver released on conda
       each year since 2020. For 2025, we include a solver version if the solver
       had a major or minor release in 2025 as of April 20, 2025. The 2025
@@ -14,7 +14,7 @@ const SolverVersions = ({}) => {
         here
       </a>{" "}
       for more details. (GLPK has not had a release since 2020.)
-    </div>
+    </p>
   );
 };
 

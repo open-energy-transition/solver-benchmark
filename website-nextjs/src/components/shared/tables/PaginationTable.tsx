@@ -36,16 +36,18 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
 
   return (
     <div className="grid md:flex text-xs items-center gap-2 mt-4 justify-between">
-      <div className="text-dark-grey 4xl:text-lg">
+      <div className="text-dark-grey tag-line-xxs">
         Showing <span className="font-bold">{startItem}</span> to{" "}
         <span className="font-bold">{endItem}</span> of{" "}
         <span className="font-bold">{totalItems}</span>
       </div>
       <div>
-        <div className="flex items-center gap-2 4xl:text-lg">
+        <div className="flex items-center gap-2 tag-line-xxs">
           <button
             className={`flex gap-2 items-center rounded p-1 ${
-              !table.getCanPreviousPage() ? " text-dark-grey" : " text-navy"
+              !table.getCanPreviousPage()
+                ? " text-dark-grey"
+                : " text-dark-green"
             }`}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
@@ -81,7 +83,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
           )}
           <button
             className={`flex gap-2 items-center rounded p-1 ${
-              !table.getCanNextPage() ? " text-dark-grey" : " text-navy"
+              !table.getCanNextPage() ? " text-dark-grey" : " text-dark-green"
             }`}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
@@ -89,7 +91,9 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
             Next
             <ArrowRightIcon
               className={`size-3 4xl:size-4 rotate-145 ${
-                !table.getCanNextPage() ? "stroke-dark-grey" : "stroke-navy"
+                !table.getCanNextPage()
+                  ? "stroke-dark-grey"
+                  : "stroke-dark-green"
               }`}
               fill="none"
             />
