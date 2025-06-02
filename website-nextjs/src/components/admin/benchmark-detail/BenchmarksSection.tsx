@@ -69,7 +69,8 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
       <div className="pt-1.5 pb-3 pl-3">
         <p className="flex gap-1 items-center text-dark-grey text-sm">
           <CloseIcon className="size-3" />
-          represents benchmarks that timed out, while
+          represents benchmarks where the solver failed to solve within the time
+          limit, while
           <CircleIcon className="size-3" />
           indicates a successful run.
         </p>

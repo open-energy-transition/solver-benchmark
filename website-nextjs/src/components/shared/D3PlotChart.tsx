@@ -338,7 +338,7 @@ const D3PlotChart = ({
           onPointClick?.(d);
         });
 
-        if (["TO", "warning"].includes(d.status)) {
+        if (["TO", "ER", "warning"].includes(d.status)) {
           group
             .append("text")
             .attr("class", "point-label")
