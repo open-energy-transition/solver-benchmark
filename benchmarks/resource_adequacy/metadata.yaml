@@ -1,5 +1,55 @@
 ## https://github.com/lprieto1409/DC-OPF-Carolinas
 benchmarks:
+# TEST
+
+  DCOPF-Carolinas_240days:
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Modelling framework: DCOPF
+    Model name: DCOPF
+    Version:
+    Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 240 days
+    MILP features: None
+    Sizes:
+    - Name: 1-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_CY_2021_LP_240_days.lp
+      Temporal resolution: 1
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 199255
+      Num. variables: 122017
+
+  DCOPF-Carolinas_240days_uc:
+    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Modelling framework: DCOPF
+    Model name: DCOPF
+    Version:
+    Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    Problem class: LP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 240 days
+    MILP features: None
+    Sizes:
+    - Name: 1-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_CY_2021_MILP_240_days.lp
+      Temporal resolution: 1
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 199255
+      Num. variables: 122017
+  
+# TEST ENDS
+  
   DCOPF-Carolinas_1W:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Modelling framework: DCOPF
