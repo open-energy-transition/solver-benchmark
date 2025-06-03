@@ -207,11 +207,10 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     if "XDG_RUNTIME_DIR" in os.environ:
         command.append("--user")
 
-    # I modify this part
     command.extend(
         [
             "--scope",
-            f"--property=MemoryMax={memory_limit_bytes}",
+            f"--property=MemoryMax={memory_limit_bytes}", # Set resident memory limit
             "--property=MemorySwapMax=0",
             "/usr/bin/time",
             "--format",
@@ -236,8 +235,6 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             solver_version,
         ]
     )
-    # End of modification
-
     # Run the command and capture the output
     result = subprocess.run(
         command,
