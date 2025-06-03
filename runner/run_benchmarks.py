@@ -210,7 +210,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     command.extend(
         [
             "--scope",
-            f"--property=MemoryMax={memory_limit_bytes}", # Set resident memory limit
+            f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
             "--property=MemorySwapMax=0",
             "/usr/bin/time",
             "--format",
