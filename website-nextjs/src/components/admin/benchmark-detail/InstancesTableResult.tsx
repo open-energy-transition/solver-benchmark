@@ -244,9 +244,9 @@ const InstancesTableResult = ({
 
   return (
     <div className="py-2">
-      <div className="text-back text-2xl font-medium mb-2 mt-2 font-league pl-1.5">
+      <h5 className="text-navy font-medium mb-2 mt-2 font-league pl-1.5">
         Instances
-      </div>
+      </h5>
       <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
         A benchmark may have multiple size instances, obtained by varying
         parameters such as the spatial or temporal resolution, but which utilize

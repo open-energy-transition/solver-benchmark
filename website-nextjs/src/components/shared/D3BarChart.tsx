@@ -83,9 +83,7 @@ const D3BarChart = ({
       .call((g) => {
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       });
 
     svg
@@ -95,9 +93,7 @@ const D3BarChart = ({
       .call((g) => {
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       });
 
     // Group data by group
@@ -186,7 +182,7 @@ const D3BarChart = ({
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey 4xl:text-lg">
+      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey">
         {title}
       </div>
       {/* Legend */}
@@ -194,7 +190,7 @@ const D3BarChart = ({
         {Array.from(new Set(data.map((d) => d.group))).map((group) => (
           <div
             key={group}
-            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
+            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
           >
             <span
               className="w-2 h-2 rounded-full"

@@ -82,10 +82,7 @@ const ResultsSgmModeDropdown = ({
             on={["hover"]}
             trigger={() => (
               <span className="flex items-baseline my-auto cursor-pointer">
-                <QuestionLineIcon
-                  className="size-3.5 4xl:size-5"
-                  viewBox="0 0 24 20"
-                />
+                <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
               </span>
             )}
             position="right center"
@@ -132,7 +129,7 @@ const ResultsSgmModeDropdown = ({
           aria-expanded={open}
           aria-haspopup="true"
         >
-          <div className="flex gap-1 items-center 4xl:text-lg pl-1">
+          <div className="flex gap-1 items-center pl-1">
             <div className="tag-line-xxs">{selectedMode.optionTitle}</div>
             <span className="right-2 top-2.5">
               <Popup
@@ -179,7 +176,7 @@ const ResultsSgmModeDropdown = ({
                   onClick={() => {
                     handleChangeMode(mode.value);
                   }}
-                  className="flex relative w-full flex-wrap text-left px-4 py-2 pr-4 text-sm text-gray-700 hover:bg-gray-100"
+                  className="flex relative w-full flex-wrap text-left px-4 py-2 pr-4 text-sm navy hover:bg-gray-100"
                   role="menuitem"
                 >
                   {mode.optionTitle}

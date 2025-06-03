@@ -20,10 +20,8 @@ const Contribute = () => {
         <div className="">
           <div
             className="
-                text-lg/1.1
+                tag-line-lg
                 uppercase
-                font-medium
-                tracking-normal
                 font-league
                 text-dark-grey
                 mb-4
@@ -31,17 +29,7 @@ const Contribute = () => {
           >
             Questions
           </div>
-          <div
-            className="
-                text-[2.5rem]/1.4
-                tracking-normal
-                font-extrabold
-                font-lato
-                mb-8
-              "
-          >
-            FAQ
-          </div>
+          <h3 className="mb-8 leading-1.4">FAQ</h3>
         </div>
         <div>
           <div className="mt-4 flex flex-col gap-6">

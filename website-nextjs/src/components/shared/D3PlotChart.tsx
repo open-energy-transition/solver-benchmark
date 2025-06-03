@@ -284,12 +284,10 @@ const D3PlotChart = ({
     const updateAxes = () => {
       xAxisGroup
         .call(d3.axisBottom(xScale).ticks(6).tickSizeOuter(0))
-        .selectAll(".tick text")
-        .attr("class", "4xl:text-base");
+        .selectAll(".tick text");
       yAxisGroup
         .call(d3.axisLeft(yScale).ticks(6).tickSizeOuter(0))
-        .selectAll(".tick text")
-        .attr("class", "4xl:text-base");
+        .selectAll(".tick text");
     };
 
     // Initial axes render
@@ -302,7 +300,7 @@ const D3PlotChart = ({
       .attr("y", 40)
       .attr("fill", "#8C8C8C")
       .text(xAxisLabel)
-      .attr("class", "text-xs font-lato 4xl:text-lg");
+      .attr("class", "text-xs font-lato");
 
     yAxisGroup
       .append("text")
@@ -312,7 +310,7 @@ const D3PlotChart = ({
       .text("Peak Memory Usage (MB)")
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
-      .attr("class", "text-xs font-lato 4xl:text-lg");
+      .attr("class", "text-xs font-lato");
 
     // Apply zoom to SVG
     svgSelection.call(zoom);

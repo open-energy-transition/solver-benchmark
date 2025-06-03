@@ -165,15 +165,12 @@ const PageBenchmarkDetail = () => {
           <div className="max-w-8xl mx-auto">
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
-                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
-                    <ArrowIcon
-                      fill="none"
-                      className="size-3 4xl:size-4 stroke-navy"
-                    />
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap">
                       Benchmark Set
                     </p>
@@ -181,7 +178,7 @@ const PageBenchmarkDetail = () => {
                 </div>
               </AdminHeader>
               <div className="text-navy">
-                <h6>Benchmark Set</h6>
+                <h5>Benchmark Set</h5>
                 <p className="mb-6 mt-4 max-w-screen-lg">
                   On this page you can see details of all the benchmarks on our
                   platform, including their source and download links.
@@ -189,7 +186,7 @@ const PageBenchmarkDetail = () => {
               </div>
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 pl-4 pr-2 mt-6 rounded-[32px]">
-              <h5 className="text-navy py-4 pl-3.5">List of All Benchmarks</h5>
+              <h6 className="text-navy py-4 pl-3.5">List of All Benchmarks</h6>
               <div className="flex overflow-hidden rounded-xl">
                 <div className="sm:w-[248px] min-w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
                   <BenchmarkDetailFilterSection

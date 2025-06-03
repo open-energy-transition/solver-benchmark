@@ -341,7 +341,7 @@ const BenchmarkDetailFilterSection = ({
             }
             onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
             className="w-full"
-            itemClassName="4xl:text-xl"
+            itemClassName=""
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
@@ -359,7 +359,7 @@ const BenchmarkDetailFilterSection = ({
             }
             onSelectAll={() => handleSelectAll({ category: "sectors" })}
             className="w-full"
-            itemClassName="4xl:text-xl"
+            itemClassName=""
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />

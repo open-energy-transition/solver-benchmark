@@ -71,12 +71,12 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
             className="text-xs font-inter flex items-center border border-[#cad9ef] rounded-2xl p-1 pr-4"
           >
             <span className="rounded-full p-1 bg-[#F7F7F7]">{data.icon}</span>
-            <div className="ml-1 2xl:ml-2 4xl:ml-3 text-dark-grey">
-              <span className="ml-1 2xl:ml-2 4xl:ml-3 tag-line-xs">
+            <div className="ml-1 2xl:ml-2 text-dark-grey">
+              <span className="ml-1 2xl:ml-2 tag-line-xs">
                 {data.label}
                 {":"}
               </span>
-              <span className="font-bold ml-1 2xl:ml-2 4xl:ml-3 tag-line-xs">
+              <span className="font-bold ml-1 2xl:ml-2 tag-line-xs">
                 {data.value}
               </span>
             </div>

@@ -53,7 +53,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
             disabled={!table.getCanPreviousPage()}
           >
             <ArrowRightIcon
-              className={`size-3 4xl:size-4 rotate-180 ${
+              className={`size-3 rotate-180 ${
                 !table.getCanPreviousPage() ? "stroke-dark-grey" : ""
               }`}
               fill="none"
@@ -90,7 +90,7 @@ const PaginationTable = <T,>({ table }: IPaginationTable<T>) => {
           >
             Next
             <ArrowRightIcon
-              className={`size-3 4xl:size-4 rotate-145 ${
+              className={`size-3 rotate-145 ${
                 !table.getCanNextPage()
                   ? "stroke-dark-grey"
                   : "stroke-dark-green"

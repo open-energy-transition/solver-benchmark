@@ -84,31 +84,22 @@ const Header = () => {
           </button>
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
-          <Link
-            href="#benchmarks"
-            className="text-sm/6 font-medium 4xl:text-base"
-          >
+          <Link href="#benchmarks" className="text-sm/6 font-medium">
             BENCHMARKS
           </Link>
-          <Link href="#mission" className="text-sm/6 font-medium 4xl:text-base">
+          <Link href="#mission" className="text-sm/6 font-medium">
             MISSION
           </Link>
-          <Link
-            href="#methodology"
-            className="text-sm/6 font-medium 4xl:text-base"
-          >
+          <Link href="#methodology" className="text-sm/6 font-medium">
             METHODOLOY
           </Link>
-          <Link
-            href="#contribution"
-            className="text-sm/6 font-medium 4xl:text-base"
-          >
+          <Link href="#contribution" className="text-sm/6 font-medium">
             CONTRIBUTIONS
           </Link>
-          <Link href="#faq" className="text-sm/6 font-medium 4xl:text-base">
+          <Link href="#faq" className="text-sm/6 font-medium">
             FAQs
           </Link>
-          <Link href="#contact" className="text-sm/6 font-medium 4xl:text-base">
+          <Link href="#contact" className="text-sm/6 font-medium">
             CONTACT
           </Link>
         </div>

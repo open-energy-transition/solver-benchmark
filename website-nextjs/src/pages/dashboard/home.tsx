@@ -129,7 +129,7 @@ const LandingPage = () => {
             <div>
               <AdminHeader>
                 <div className="flex text-navy text-opacity-50 items-center space-x-1">
-                  <div className="flex items-center gap-1 ml-[-0.45rem] 4xl:text-xl">
+                  <div className="flex items-center gap-1 ml-[-0.45rem]">
                     <PreviousIcon width={20} className="fill-navy" />
                     <Link href={PATH_DASHBOARD.root}>
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />

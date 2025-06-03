@@ -3,26 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-  h1 {
+  h1,
+  .h1 {
     @apply text-[56px] font-lato font-bold leading-1.2 tracking-normal;
   }
-  h2 {
+  h2,
+  .h2 {
     @apply text-5xl font-lato font-bold leading-1.2 tracking-normal;
   }
-  h3 {
+  h3,
+  .h3 {
     @apply text-[40px] font-lato font-extrabold leading-1.2 tracking-normal;
   }
-  h4 {
+  h4,
+  .h4 {
     @apply text-[32px] font-lato font-bold leading-1.3 tracking-normal;
   }
-  h5 {
+  h5,
+  .h5 {
     @apply text-2xl font-lato font-bold leading-1.4 tracking-normal;
   }
-  h6 {
+  h6,
+  .h6 {
     @apply text-xl font-lato font-bold leading-1.4 tracking-normal;
   }
   p {
     @apply text-sm font-lato font-normal leading-1.5 tracking-normal;
+  }
+  .tag-line-lg {
+    @apply text-lg font-lato font-medium leading-1.1 tracking-normal;
   }
   .tag-line {
     @apply text-base font-lato font-normal leading-1.5 tracking-normal;

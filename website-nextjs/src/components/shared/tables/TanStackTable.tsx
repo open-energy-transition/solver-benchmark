@@ -133,7 +133,7 @@ export function TanStackTable<T>({
         {/* Table implementation */}
         <div className="min-w-full inline-block align-middle">
           <div className="overflow-x-auto">
-            <table className="table-auto bg-white w-full min-w-[800px]">
+            <table className="table-auto bg-[#F4F6FA] w-full min-w-[800px]">
               <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>

@@ -193,7 +193,6 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     // Add primary y-axis (ratio)
     svg
       .append("g")
-      .attr("class", "4xl:text-sm")
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxisRatio);
 
@@ -202,7 +201,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .append("g")
       .attr("transform", `translate(${width - margin.right},0)`)
       .call(yAxisRuntime)
-      .attr("class", "secondcary-axis 4xl:text-sm")
+      .attr("class", "secondcary-axis")
       .selectAll("text")
       .style("fill", "#666")
       .attr("dx", "10px")
@@ -497,7 +496,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           <div class="w-3 h-3 rounded-full bg-white border-2"
                style="border-color: ${solverColors[baseSolver]}"></div>
         </div>
-        <span class="text-sm text-gray-700 4xl:text-base">${baseSolver}</span>
+        <span class="text-sm text-dark-grey">${baseSolver}</span>
       `);
 
     return () => {
@@ -506,9 +505,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers]);
 
   return (
-    <div className="bg-white p-4 rounded-xl">
+    <div className="bg-[#F4F6FA] p-4 rounded-xl">
       <h6 className="mb-2">Relative performance plot</h6>
-      <p className="text-gray-600 mb-4 max-w-[755px]">
+      <p className="text-navy mb-4 max-w-[755px]">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots
@@ -534,9 +533,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 }`}
               />
             </div>
-            <span className="text-sm text-gray-700 4xl:text-bae">
-              {baseSolver}
-            </span>
+            <span className="text-sm text-navy">{baseSolver}</span>
           </div>
 
           {/* Other solvers legend (squares) */}
@@ -555,9 +552,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                     opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
                   }}
                 />
-                <span className="text-sm text-gray-700 4xl:text-bae">
-                  {solver}
-                </span>
+                <span className="text-sm text-navy">{solver}</span>
               </div>
             ))}
         </div>

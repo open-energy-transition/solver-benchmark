@@ -148,7 +148,7 @@ const SolverSection = () => {
             name="solver"
             value={selectedSolver}
             onChange={(event) => setSelectedSolver(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] text-lg
+            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] tag-line-lg
             border-transparent text-navy rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver</option>
@@ -167,7 +167,9 @@ const SolverSection = () => {
               Solver Information
             </h6>
             <div className="p-4">
-              <h6 className="mb-4 text-navy">{selectedSolverInfo.label}</h6>
+              <div className="mb-4 text-navy tag-line-lg font-bold">
+                {selectedSolverInfo.label}
+              </div>
               <div className="space-y-3">
                 <a
                   href={selectedSolverInfo.website}
@@ -176,7 +178,7 @@ const SolverSection = () => {
                   className="flex items-center gap-3 transition-colors"
                 >
                   <FaGlobe className="w-5 h-5" />
-                  <span className="hover:underline 4xl:text-lg">
+                  <span className="hover:underline underline-offset-4">
                     Official Website
                   </span>
                 </a>
@@ -187,11 +189,11 @@ const SolverSection = () => {
                   className="flex items-center gap-3 transition-colors"
                 >
                   <FaGithub className="w-5 h-5" />
-                  <span className="hover:underline 4xl:text-lg">
+                  <span className="hover:underlineunderline-offset-4">
                     Source Code
                   </span>
                 </a>
-                <div className="flex items-center gap-3 transition-colors 4xl:text-lg">
+                <div className="flex items-center gap-3 transition-colors">
                   <FaBalanceScale className="w-5 h-5" />
                   <span>License: MIT</span>
                 </div>

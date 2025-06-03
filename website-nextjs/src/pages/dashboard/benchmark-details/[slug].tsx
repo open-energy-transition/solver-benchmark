@@ -91,15 +91,12 @@ const PageBenchmarkDetail = () => {
         <ContentWrapper
           header={
             <AdminHeader>
-              <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+              <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                 <div className="flex flex-wrap items-center gap-1">
                   <Link href={PATH_DASHBOARD.root}>
-                    <HomeIcon className="w-[1.125rem] h-[1.125rem] 4xl:size-5" />
+                    <HomeIcon className="w-[1.125rem] h-[1.125rem]" />
                   </Link>
-                  <ArrowIcon
-                    fill="none"
-                    className="size-3 4xl:size-4 stroke-navy"
-                  />
+                  <ArrowIcon fill="none" className="size-3 stroke-navy" />
                   <Link
                     href={PATH_DASHBOARD.benchmarkDetail.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
@@ -107,9 +104,9 @@ const PageBenchmarkDetail = () => {
                     Benchmark Details
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                  <span className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
+                  <p className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
                     {benchmarkName}
-                  </span>
+                  </p>
                 </div>
               </div>
             </AdminHeader>
@@ -117,16 +114,16 @@ const PageBenchmarkDetail = () => {
           showFilter={false}
         >
           {/* Content */}
-          <div className="pb-2 pt-8 md:py-4 flex items-center">
+          <div className="pb-2 md:py-4 md:pt-2 flex items-center">
             <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>
             <Popup
               on={["hover"]}
               trigger={() => (
-                <div className="text-navy text-2xl md:text-4xl font-bold text-ellipsis overflow-hidden pl-1.5">
+                <h5 className="text-navy text-ellipsis overflow-hidden pl-1.5">
                   {benchmarkName}
-                </div>
+                </h5>
               )}
               position="top center"
               closeOnDocumentClick
@@ -182,9 +179,9 @@ const PageBenchmarkDetail = () => {
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              <div className="text-back text-2xl font-medium mb-2 mt-2 font-league pl-1.5">
+              <h5 className="text-navy font-medium mb-2 mt-2 font-league pl-1.5">
                 Results on this benchmark
-              </div>
+              </h5>
               <DataTable benchmarkName={benchmarkName as string} />
               <BenchmarksSection benchmarkName={benchmarkName as string} />
             </>

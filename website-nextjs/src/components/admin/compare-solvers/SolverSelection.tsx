@@ -96,7 +96,7 @@ const SolverSelection = () => {
     solver1: string,
     solver2: string,
   ) => `
-  <div class="text-sm 4xl:text-lg">
+  <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
     <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
@@ -120,7 +120,7 @@ const SolverSelection = () => {
             value={solver1}
             onChange={(event) => setSolver1(event.target.value)}
             className="w-full text-lg font-bold pl-3 bg-[#F0F4F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
-            border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none 4xl:text-lg"
+            border-transparent text-navy sm:text-base rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
@@ -137,7 +137,7 @@ const SolverSelection = () => {
             value={solver2}
             onChange={(event) => setSolver2(event.target.value)}
             className="w-full text-lg pl-3 font-bold bg-[#E1E5F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
-            border-transparent text-dark-grey text-sm sm:text-base rounded-b-lg block focus-visible:outline-none 4xl:text-lg"
+            border-transparent navy sm:text-base rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver & version</option>
             {solverOptions.map((solver, idx) => (
@@ -155,7 +155,7 @@ const SolverSelection = () => {
           Solver 1 performs better, and those in the lower triangle are those
           where Solver 2 performs better. Click on any point in this graph to
           see details of that benchmark instance.
-          <p className="flex gap-1 items-center text-dark-grey text-sm">
+          <p className="flex gap-1 items-center text-navy text-sm">
             <CloseIcon className="size-3" />
             represents benchmark instances where at least one of the solvers
             failed to solve within the time limit, while
@@ -187,7 +187,7 @@ const SolverSelection = () => {
             solver1={solver1}
             solver2={solver2}
           />
-          <div className="w-full font-league text-[#8C8C8C] text-center mt-4 text-medium-normal">
+          <div className="w-full font-league text-navy text-center mt-4 text-medium-normal">
             Runtime Comparison
           </div>
         </div>
@@ -214,7 +214,7 @@ const SolverSelection = () => {
             solver2={solver2}
             tooltipTemplate={memoryUsageTooltipTemplate}
           />
-          <div className="w-full font-league text-medium-normal text-[#8C8C8C] text-center mt-4">
+          <div className="w-full font-league text-medium-normal text-navy text-center mt-4">
             Memory Usage Comparison
           </div>
         </div>

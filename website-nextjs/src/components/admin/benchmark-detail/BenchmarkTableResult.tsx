@@ -103,7 +103,9 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               info.row.original.name,
             )}
           >
-            <div className="border-b border-green-pop">View Details</div>
+            <div className="hover:underline underline-offset-4">
+              View Details
+            </div>
             <ArrowRightIcon className="size-2 ml-1 fill-none stroke-green-pop hover:stroke-white" />
           </Link>
         ),

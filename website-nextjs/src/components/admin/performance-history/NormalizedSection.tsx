@@ -23,11 +23,7 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
             on={["hover"]}
             trigger={() => (
               <span className="flex items-baseline">
-                <QuestionLineIcon
-                  className="size-3.5 4xl:size-5"
-                  viewBox="0 0 24 20"
-                />
-                )
+                <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />)
               </span>
             )}
             position="right center"

@@ -414,10 +414,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-baseline">
-                  <QuestionLineIcon
-                    className="size-3.5 4xl:size-5"
-                    viewBox="0 0 24 20"
-                  />
+                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
                 </span>
               )}
               position="right center"
@@ -441,11 +438,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               on={["hover"]}
               trigger={() => (
                 <span className="flex items-baseline">
-                  <QuestionLineIcon
-                    className="size-3.5 4xl:size-5"
-                    viewBox="0 0 24 20"
-                  />
-                  )
+                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />)
                 </span>
               )}
               position="right center"
@@ -534,7 +527,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               {sortedTableData.map((item, index) => (
                 <p
                   key={`${column.field}-${index}`}
-                  className={`py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
+                  className={`py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6`}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",

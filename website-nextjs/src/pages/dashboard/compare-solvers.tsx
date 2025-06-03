@@ -30,15 +30,12 @@ const PageCompareSolvers = () => {
           header={
             <div className="max-w-8xl mx-auto">
               <AdminHeader>
-                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
-                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
-                    <ArrowIcon
-                      fill="none"
-                      className="size-3 stroke-navy 4xl:size-4"
-                    />
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center whitespace-nowrap">
                       Compare Solvers
                     </p>

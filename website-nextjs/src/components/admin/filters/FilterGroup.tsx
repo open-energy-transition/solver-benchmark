@@ -96,9 +96,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                   closeOnDocumentClick
                   arrowStyle={{ color: "#ebeff2" }}
                 >
-                  <div className="bg-stroke p-2 rounded 4xl:text-lg">
-                    {item}
-                  </div>
+                  <div className="bg-stroke p-2 rounded">{item}</div>
                 </Popup>
               </span>
               <span
