@@ -207,7 +207,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     if "XDG_RUNTIME_DIR" in os.environ:
         command.append("--user")
 
-# I modify this part
+    # I modify this part
     command.extend(
         [
             "--scope",
@@ -220,19 +220,23 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     )
 
     if timeout:  # only add timeout if it's non-zero and non-None
-        command.extend([
-            "timeout",
-            f"{timeout}s",
-        ])
+        command.extend(
+            [
+                "timeout",
+                f"{timeout}s",
+            ]
+        )
 
-    command.extend([
-        "python",
-        f"{Path(__file__).parent / 'run_solver.py'}",
-        solver_name,
-        input_file,
-        solver_version,
-    ])
-# End of modification
+    command.extend(
+        [
+            "python",
+            f"{Path(__file__).parent / 'run_solver.py'}",
+            solver_name,
+            input_file,
+            solver_version,
+        ]
+    )
+    # End of modification
 
     # Run the command and capture the output
     result = subprocess.run(

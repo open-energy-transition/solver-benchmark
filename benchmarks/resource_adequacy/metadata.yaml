@@ -1,5 +1,5 @@
 ## https://github.com/lprieto1409/DC-OPF-Carolinas
-benchmarks:  
+benchmarks:
   DCOPF-Carolinas_1W:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Modelling framework: DCOPF
