@@ -14,6 +14,8 @@ interface ID3ChartLineChart {
   className?: string;
   chartData: SolverYearlyChartData[];
   xAxisTooltipFormat?: (value: number | string) => string;
+  yDomain?: [number, number];
+  showMaxLine?: boolean;
 }
 
 const D3ChartLineChart = ({
@@ -21,7 +23,9 @@ const D3ChartLineChart = ({
   height = 280,
   className = "",
   chartData = [],
+  yDomain = undefined,
   xAxisTooltipFormat,
+  showMaxLine = false,
 }: ID3ChartLineChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -78,7 +82,9 @@ const D3ChartLineChart = ({
       .range([margin.left + 20, width - margin.right]);
     const yScale = d3
       .scaleLinear()
-      .domain([0, (d3?.max(chartData, (d) => d.value) ?? 0) + 1])
+      .domain(
+        yDomain ? yDomain : [0, (d3?.max(chartData, (d) => d.value) ?? 0) + 1],
+      )
       .range([height - margin.bottom, margin.top]);
 
     // Axes
@@ -124,6 +130,29 @@ const D3ChartLineChart = ({
       .text(title)
       .attr("text-anchor", "middle")
       .attr("class", "text-xs 4xl:text-base -rotate-90");
+
+    const maxValue = yDomain
+      ? yDomain[1]
+      : d3.max(chartData, (d) => d.value) || 0;
+
+    if (showMaxLine) {
+      svg
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", yScale(maxValue))
+        .attr("y2", yScale(maxValue))
+        .attr("stroke-dasharray", "3,3")
+        .attr("class", "max-value-line stroke-red-500 stroke-1");
+
+      // Add label for max value
+      svg
+        .append("text")
+        .attr("x", width - margin.right + 5)
+        .attr("y", yScale(maxValue))
+        .attr("class", "text-xs")
+        .text(`Total: ${maxValue}`);
+    }
 
     // Group data by solver
     const groupedData = d3.group(chartData, (d) => d.solver);

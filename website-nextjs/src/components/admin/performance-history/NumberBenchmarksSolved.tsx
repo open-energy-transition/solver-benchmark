@@ -23,6 +23,8 @@ const NumberBenchmarksSolved = ({
         xAxisTooltipFormat={(value) =>
           `<strong>Number of Benchmarks Solved:</strong> ${value}`
         }
+        yDomain={[0, totalBenchmarks]}
+        showMaxLine={true}
       />
     </div>
   );
