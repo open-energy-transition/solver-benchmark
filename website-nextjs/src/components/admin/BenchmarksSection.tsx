@@ -113,10 +113,7 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
         customTooltip={getTooltip}
         onPointClick={(result) => {
           router.push(
-            PATH_DASHBOARD.benchmarkDetail.one.replace(
-              "{name}",
-              result.benchmark,
-            ),
+            PATH_DASHBOARD.benchmarkSet.one.replace("{name}", result.benchmark),
           );
         }}
       />

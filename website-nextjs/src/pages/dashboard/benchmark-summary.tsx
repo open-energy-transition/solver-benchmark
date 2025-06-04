@@ -180,7 +180,7 @@ const PageBenchmarkDetail = () => {
                   className="size-3 stroke-navy 4xl:size-4"
                 />
 
-                <Link href={PATH_DASHBOARD.benchmarkDetail.list}>
+                <Link href={PATH_DASHBOARD.benchmarkSet.list}>
                   <span className="self-center font-semibold whitespace-nowrap">
                     Benchmark Details
                   </span>
