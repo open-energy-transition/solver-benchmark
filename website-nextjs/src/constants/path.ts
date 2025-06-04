@@ -3,7 +3,7 @@ const BASE_PATH = "dashboard";
 export const PATH_DASHBOARD = {
   root: "/",
   home: `/${BASE_PATH}/main-results`,
-  benchmarkDetail: {
+  benchmarkSet: {
     list: `/${BASE_PATH}/benchmark-set`,
     one: `/${BASE_PATH}/benchmark-set/{name}`,
   },

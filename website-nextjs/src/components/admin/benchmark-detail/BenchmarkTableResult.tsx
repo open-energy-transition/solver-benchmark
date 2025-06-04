@@ -98,7 +98,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         cell: (info) => (
           <Link
             className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={PATH_DASHBOARD.benchmarkDetail.one.replace(
+            href={PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
               info.row.original.name,
             )}

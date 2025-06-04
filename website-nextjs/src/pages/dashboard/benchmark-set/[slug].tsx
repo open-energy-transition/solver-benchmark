@@ -101,7 +101,7 @@ const PageBenchmarkDetail = () => {
                     className="size-3 4xl:size-4 stroke-navy"
                   />
                   <Link
-                    href={PATH_DASHBOARD.benchmarkDetail.list}
+                    href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
                     Benchmark Details

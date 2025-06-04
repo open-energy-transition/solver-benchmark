@@ -31,22 +31,22 @@ const Navbar = () => {
     },
     {
       label: "Benchmark Set",
-      route: PATH_DASHBOARD.benchmarkDetail.list,
+      route: PATH_DASHBOARD.benchmarkSet.list,
       icon: <ChartBarIcon />,
     },
     {
       label: "Solvers",
-      route: "/dashboard/solvers",
+      route: PATH_DASHBOARD.solvers,
       icon: <VectorSquareIcon />,
     },
     {
       label: "Compare Solvers",
-      route: "/dashboard/compare-solvers",
+      route: PATH_DASHBOARD.compareSolvers,
       icon: <BalanceScaleIcon />,
     },
     {
       label: "Performance History",
-      route: "/dashboard/performance-history",
+      route: PATH_DASHBOARD.performanceHistory,
       icon: <ChartLineIcon />,
     },
     {
