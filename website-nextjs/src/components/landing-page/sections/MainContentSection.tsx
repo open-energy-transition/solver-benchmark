@@ -29,7 +29,7 @@ const MainContent = () => {
             </h2>
           </div>
           <div className="mt-4 text-grey text-2xl font-light">
-            <h5 className="font-light">
+            <h5 className="font-light text-grey">
               Built by{" "}
               <span className="font-bold">
                 <Link href="https://openenergytransition.org/">

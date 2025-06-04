@@ -137,24 +137,26 @@ const BenchmarkSummaryTable = () => {
   });
 
   return (
-    <div className="bg-white p-4 rounded-xl mb-6 space-y-8">
+    <div className="bg-[#F4F6FA] p-4 px-0 rounded-xl mb-6 space-y-8">
       <div>
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200">
+          <table className="min-w-full  -gray-200">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="border p-2 text-center"></th>
-                <th className="border p-2 text-center"></th>
+              <tr className="bg-[#F4F6FA]">
+                <th className=" p-2 text-left tag-line-xs font-extrabold"></th>
+                <th className=" p-2 text-left tag-line-xs font-extrabold"></th>
                 {availableModellingFrameworks.map((framework, frameworkIdx) => (
                   <th
                     key={frameworkIdx}
-                    className="border p-2 text-center"
+                    className=" p-2 text-left tag-line-xs font-extrabold"
                     colSpan={1}
                   >
                     {framework}
                   </th>
                 ))}
-                <th className="border p-2 text-center">Total</th>
+                <th className=" p-2 text-left tag-line-xs font-extrabold">
+                  Total
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -162,31 +164,23 @@ const BenchmarkSummaryTable = () => {
               {nOfProblems.map((nOfProblem, nOfProblemIdx) => (
                 <tr
                   key={nOfProblemIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {nOfProblemIdx === 0 && (
-                    <td
-                      className="border p-2 text-left font-medium"
-                      rowSpan={2}
-                    >
+                    <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
                       <span>N. of Problems</span>
                     </td>
                   )}
 
-                  <td className="border p-2 text-left font-medium">
-                    {nOfProblem}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{nOfProblem}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {nOfProblemIdx === 0
                         ? s.nOfProblems.get("totalNOfDiffProblems") || 0
                         : s.nOfProblems.get("multipleSizes")}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {nOfProblemIdx === 0
                       ? summary.reduce(
                           (acc, curr) =>
@@ -206,28 +200,23 @@ const BenchmarkSummaryTable = () => {
               {availableProblemClasses.map((problemClass, problemClassIdx) => (
                 <tr
                   key={problemClassIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {problemClassIdx === 0 && (
                     <td
-                      className="border p-2 text-left font-medium"
+                      className=" p-2 text-left tag-line-sm"
                       rowSpan={availableProblemClasses.length}
                     >
                       Problem Class
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
-                    {problemClass}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{problemClass}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {s.problemClasses.get(problemClass) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {summary.reduce(
                       (acc, curr) =>
                         acc + (curr.problemClasses.get(problemClass) || 0),
@@ -240,28 +229,23 @@ const BenchmarkSummaryTable = () => {
               {availableApplications.map((application, applicationIdx) => (
                 <tr
                   key={applicationIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {applicationIdx === 0 && (
                     <td
-                      className="border p-2 text-left font-medium"
+                      className=" p-2 text-left tag-line-sm"
                       rowSpan={availableApplications.length}
                     >
                       Application
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
-                    {application}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{application}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {s.applications.get(application) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {summary.reduce(
                       (acc, curr) =>
                         acc + (curr.applications.get(application) || 0),
@@ -274,30 +258,27 @@ const BenchmarkSummaryTable = () => {
               {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
                 <tr
                   key={timeHorizonIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {timeHorizonIdx === 0 && (
                     <td
-                      className="border p-2 text-left font-medium"
+                      className=" p-2 text-left tag-line-sm"
                       rowSpan={availabletimeHorizons.length}
                     >
                       Time Horizon
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {getTimeHorizonLabel(timeHorizon)}
                   </td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {s.timeHorizons.get(timeHorizon) == -1
                         ? "N/A"
                         : s.timeHorizons.get(timeHorizon) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {summary.reduce((acc, curr) => {
                       // If the value is -1, then it is N/A
                       const a = acc == -1 ? 0 : acc || 0;
@@ -314,28 +295,25 @@ const BenchmarkSummaryTable = () => {
               {availableMilpFeatures.map((milpFeature, milpFeatureIdx) => (
                 <tr
                   key={milpFeatureIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {milpFeatureIdx === 0 && (
                     <td
-                      className="border p-2 font-medium text-left"
+                      className=" p-2 tag-line-sm text-left"
                       rowSpan={availableMilpFeatures.length}
                     >
                       MILP Features
                     </td>
                   )}
-                  <td className="border p-2 font-medium text-left">
+                  <td className=" p-2 tag-line-sm text-left">
                     {milpFeature || "-"}
                   </td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 font-medium text-right"
-                    >
+                    <td key={sIdx} className=" p-2 tag-line-sm text-left">
                       {s.milpFeatures.get(milpFeature as string) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 font-medium text-left">
+                  <td className=" p-2 tag-line-sm text-left">
                     {summary.reduce(
                       (acc, curr) =>
                         acc +
@@ -349,24 +327,16 @@ const BenchmarkSummaryTable = () => {
               {["Real(MILP)", "Other"].map((size, sizeIdx) => (
                 <tr
                   key={sizeIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {sizeIdx === 0 && (
-                    <td
-                      className="border p-2 text-left font-medium"
-                      rowSpan={2}
-                    >
+                    <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
                       Size
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
-                    {size || "-"}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{size || "-"}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {" "}
                       {size === "Other"
                         ? s.realSizes.get("other") || 0
@@ -375,7 +345,7 @@ const BenchmarkSummaryTable = () => {
                           })`}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {size === "Other"
                       ? summary.reduce(
                           (acc, curr) =>

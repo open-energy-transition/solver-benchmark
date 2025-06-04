@@ -171,13 +171,13 @@ const PageBenchmarkDetail = () => {
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Benchmark Set
                     </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="text-navy">
+              <div>
                 <h5>Benchmark Set</h5>
                 <p className="mb-6 mt-4 max-w-screen-lg">
                   On this page you can see details of all the benchmarks on our
@@ -186,7 +186,7 @@ const PageBenchmarkDetail = () => {
               </div>
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 pl-4 pr-2 mt-6 rounded-[32px]">
-              <h6 className="text-navy py-4 pl-3.5">List of All Benchmarks</h6>
+              <h6 className="py-4 pl-3.5">List of All Benchmarks</h6>
               <div className="flex overflow-hidden rounded-xl">
                 <div className="sm:w-[248px] min-w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
                   <BenchmarkDetailFilterSection

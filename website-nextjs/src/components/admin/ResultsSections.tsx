@@ -16,8 +16,14 @@ type ColumnType = {
   name: string;
   field: string;
   width: string;
-  bgColor: string;
-  color: string;
+  header?: {
+    bgStyle?: string;
+    textStyle?: string;
+  };
+  row?: {
+    bgStyle?: string;
+    textStyle?: string;
+  };
   sort?: boolean;
   headerContent?: (header: string) => React.ReactNode;
   sortFunc?: (a: TableRowType, b: TableRowType) => number;
@@ -198,32 +204,43 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         name: "Rank",
         field: "rank",
         width: "flex-1",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sort: false,
       },
       {
         name: "Solver",
         field: "solver",
         width: "w-1/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sortFunc: (a, b) => a.solver.localeCompare(b.solver),
       },
       {
         name: "Version",
         field: "version",
         width: "w-1/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sortFunc: (a, b) => a.version.localeCompare(b.version),
       },
       {
         name: "SGM Memory",
         field: "memory",
         width: "w-1/5",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-start",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -236,8 +253,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         name: "Solved Benchmarks",
         field: "solvedBenchmarks",
         width: "w-1/5",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-start",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -274,8 +296,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           sgmMode !== SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS
             ? "w-1/5"
             : "w-2/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-start",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -405,7 +432,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <p className="text-navy pl-6 text-l block items-center mt-2">
+        <p className="text-navy pl-2 text-l block items-center mt-2 max-w-screen-lg">
           <span>
             This table summarizes the benchmark results of the latest version
           </span>
@@ -499,7 +526,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           {columns.map((column) => (
             <div
               key={column.field}
-              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl
+                ${column?.header?.textStyle ?? ""} ${
+                  column?.header?.bgStyle ?? ""
+                } ${column.width}`}
             >
               <div
                 className="py-2.5 tag-line-xs leading-1.5 font-bold flex items-center gap-1 px-3 cursor-pointer justify-center"
@@ -527,7 +557,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               {sortedTableData.map((item, index) => (
                 <p
                   key={`${column.field}-${index}`}
-                  className={`py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6`}
+                  className={`py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke items-center pl-3 pr-6 odd:bg-[#E0E6F1] even:bg-[#EEF2F2]
+                    ${column.row?.textStyle ?? "justify-center"} ${
+                      column.row?.bgStyle ?? ""
+                    }`}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",

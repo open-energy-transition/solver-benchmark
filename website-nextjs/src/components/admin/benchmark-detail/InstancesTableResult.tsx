@@ -188,7 +188,7 @@ const InstancesTableResult = ({
         cell: (info: CellContext<RowData, unknown>) => (
           <Link
             href={info.getValue() as string}
-            className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center w-max"
+            className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-4 py-2"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -244,9 +244,7 @@ const InstancesTableResult = ({
 
   return (
     <div className="py-2">
-      <h5 className="text-navy font-medium mb-2 mt-2 font-league pl-1.5">
-        Instances
-      </h5>
+      <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">Instances</h5>
       <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
         A benchmark may have multiple size instances, obtained by varying
         parameters such as the spatial or temporal resolution, but which utilize
@@ -271,7 +269,7 @@ const InstancesTableResult = ({
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
                     <div
-                      className="flex gap-2 items-center"
+                      className="flex gap-2 items-center tag-line-xs font-extrabold"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {flexRender(
@@ -293,7 +291,10 @@ const InstancesTableResult = ({
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-navy text-start py-2 px-6">
+                  <td
+                    key={cell.id}
+                    className="text-navy text-start py-2 px-6 tag-line-sm"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

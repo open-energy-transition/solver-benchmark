@@ -1,6 +1,6 @@
 const SolverVersions = ({}) => {
   return (
-    <p>
+    <p className="max-w-screen-lg">
       Our platform includes the highest version of each solver released on conda
       each year since 2020. For 2025, we include a solver version if the solver
       had a major or minor release in 2025 as of April 20, 2025. The 2025

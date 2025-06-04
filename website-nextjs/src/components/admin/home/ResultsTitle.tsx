@@ -28,7 +28,7 @@ const ResultsSectionsTitle = ({
 
   return (
     <div>
-      <div className="relative text-navy font-bold text-xl pl-6 flex justify-between items-end">
+      <div className="relative text-navy font-bold text-xl pl-2 flex justify-between items-end">
         <h6 className="flex">
           Ranking
           {latestBenchmarkResult.length !== benchmarkResults.length && (

@@ -147,7 +147,7 @@ const ContactSection = () => {
             >
               contact
             </div>
-            <h3 className="leading-1.4">GET IN TOUCH</h3>
+            <h3 className="leading-1.4 text-white">GET IN TOUCH</h3>
             <h5 className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
               issue for all feedback and suggestions!

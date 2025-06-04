@@ -507,7 +507,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   return (
     <div className="bg-[#F4F6FA] p-4 rounded-xl">
       <h6 className="mb-2">Relative performance plot</h6>
-      <p className="text-navy mb-4 max-w-[755px]">
+      <p className="text-navy mb-4 max-w-screen-lg">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots

@@ -29,7 +29,7 @@ const LandingPage = () => {
 
   const Caveats = () => {
     return (
-      <div className="pt-1.5 pb-3 px-5">
+      <div className="pt-1.5 pb-3 px-5" id="caveats">
         <h6>Caveats</h6>
         <div className="text-navy tag-line-xs leading-1.4 block items-center">
           <span>
@@ -134,7 +134,7 @@ const LandingPage = () => {
                     <Link href={PATH_DASHBOARD.root}>
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
-                    <p className="self-center font-semibold whitespace-nowrap">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Main Results
                     </p>
                   </div>
@@ -200,14 +200,19 @@ const LandingPage = () => {
                         your problems.
                         <br />
                         We recommend using{" "}
-                        <span className="underline font-bold">
+                        <span className="hover:underline underline-offset-4  font-bold">
                           <a href="https://github.com/open-energy-transition/solver-benchmark/">
                             our scripts
                           </a>
                         </span>{" "}
                         to benchmark on your own problems before picking a
                         solver See also the section on{" "}
-                        <span className="underline font-bold">Caveats</span>{" "}
+                        <Link
+                          href="#caveats"
+                          className="hover:underline underline-offset-4 font-bold"
+                        >
+                          Caveats
+                        </Link>{" "}
                         below.
                       </div>
                     </div>

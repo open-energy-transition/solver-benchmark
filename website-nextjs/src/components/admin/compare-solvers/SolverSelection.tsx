@@ -149,7 +149,7 @@ const SolverSelection = () => {
         </div>
       </div>
       <div className="py-2">
-        <h6 className="text-navy">Comparison</h6>
+        <h6>Comparison</h6>
         <p className="mb-6 mt-4 max-w-screen-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those

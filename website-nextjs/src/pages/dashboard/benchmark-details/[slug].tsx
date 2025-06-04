@@ -121,7 +121,7 @@ const PageBenchmarkDetail = () => {
             <Popup
               on={["hover"]}
               trigger={() => (
-                <h5 className="text-navy text-ellipsis overflow-hidden pl-1.5">
+                <h5 className="text-ellipsis overflow-hidden pl-1.5">
                   {benchmarkName}
                 </h5>
               )}
@@ -179,7 +179,7 @@ const PageBenchmarkDetail = () => {
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              <h5 className="text-navy font-medium mb-2 mt-2 font-league pl-1.5">
+              <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">
                 Results on this benchmark
               </h5>
               <DataTable benchmarkName={benchmarkName as string} />

@@ -35,11 +35,10 @@ const MissionStart = () => {
             description="Use our performance data to pick the best solver for your application domain, hardware constraints, and budget"
             linkText="Compare Solvers"
             linkHref="/dashboard/compare-solvers"
-            linkClass="mb-4"
           />
           <MissionCard
             Icon={DollarSignIcon}
-            title="Donors and Stakeholders"
+            title="Donors & Stakeholders"
             description="Track the evolution of solver performance over time, and maximize the potential return on your investment"
             linkText="Solver Performance History"
             linkHref="/dashboard/performance-history"

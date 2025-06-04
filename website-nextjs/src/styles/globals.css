@@ -5,30 +5,30 @@
 @layer base {
   h1,
   .h1 {
-    @apply text-[56px] font-lato font-bold leading-1.2 tracking-normal;
+    @apply text-[56px] font-lato font-bold leading-1.2 tracking-normal text-navy;
   }
   h2,
   .h2 {
-    @apply text-5xl font-lato font-bold leading-1.2 tracking-normal;
+    @apply text-5xl font-lato font-bold leading-1.2 tracking-normal text-navy;
   }
   h3,
   .h3 {
-    @apply text-[40px] font-lato font-extrabold leading-1.2 tracking-normal;
+    @apply text-[40px] font-lato font-extrabold leading-1.2 tracking-normal text-navy;
   }
   h4,
   .h4 {
-    @apply text-[32px] font-lato font-bold leading-1.3 tracking-normal;
+    @apply text-[32px] font-lato font-bold leading-1.3 tracking-normal text-navy;
   }
   h5,
   .h5 {
-    @apply text-2xl font-lato font-bold leading-1.4 tracking-normal;
+    @apply text-2xl font-lato font-bold leading-1.4 tracking-normal text-navy;
   }
   h6,
   .h6 {
-    @apply text-xl font-lato font-bold leading-1.4 tracking-normal;
+    @apply text-xl font-lato font-bold leading-1.4 tracking-normal text-navy;
   }
   p {
-    @apply text-sm font-lato font-normal leading-1.5 tracking-normal;
+    @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy;
   }
   .tag-line-lg {
     @apply text-lg font-lato font-medium leading-1.1 tracking-normal;
