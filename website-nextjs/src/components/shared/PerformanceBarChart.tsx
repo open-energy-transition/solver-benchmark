@@ -306,8 +306,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-              `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
-              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
+              `${d.solver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>` +
+              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s (${
+                d.baseSolverStatus
+              })<br/>` +
               ratioText,
           )
           .style("left", `${event.pageX + 10}px`)
@@ -377,8 +379,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-              `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
-              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
+              `${d.solver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>` +
+              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s (${
+                d.baseSolverStatus
+              })<br/>` +
               ratioText,
           )
           .style("left", `${event.pageX + 10}px`)
@@ -442,8 +446,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             tooltip
               .html(
                 `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-                  `${baseSolver}: ${d.runtime.toFixed(2)}s<br/>` +
-                  `Status: ${d.status === "ok" ? "OK" : "TO"}`,
+                  `${baseSolver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>`,
               )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 28}px`);
