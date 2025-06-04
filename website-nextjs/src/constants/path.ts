@@ -5,7 +5,7 @@ export const PATH_DASHBOARD = {
   home: `/${BASE_PATH}/main-results`,
   benchmarkDetail: {
     list: `/${BASE_PATH}/benchmark-set`,
-    one: `/${BASE_PATH}/benchmark-details/{name}`,
+    one: `/${BASE_PATH}/benchmark-set/{name}`,
   },
   benchmarkSummary: `/${BASE_PATH}/benchmark-summary`,
   compareSolvers: `/${BASE_PATH}/compare-solvers`,
