@@ -51,7 +51,7 @@ const Navbar = () => {
     },
     {
       label: "Full Results",
-      route: "/dashboard/raw-result",
+      route: PATH_DASHBOARD.fullResults,
       icon: <WindowIcon />,
     },
   ];

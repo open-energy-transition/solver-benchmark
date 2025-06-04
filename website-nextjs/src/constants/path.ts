@@ -11,5 +11,5 @@ export const PATH_DASHBOARD = {
   compareSolvers: `/${BASE_PATH}/compare-solvers`,
   solvers: `/${BASE_PATH}/solvers`,
   performanceHistory: `/${BASE_PATH}/performance-history`,
-  rawResult: `/${BASE_PATH}/raw-result`,
+  fullResults: `/${BASE_PATH}/full-results`,
 };
