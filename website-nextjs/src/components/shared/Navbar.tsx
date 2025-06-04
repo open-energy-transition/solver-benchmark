@@ -26,7 +26,7 @@ const Navbar = () => {
   const navConfig = [
     {
       label: "Main Results",
-      route: "/dashboard/home",
+      route: PATH_DASHBOARD.home,
       icon: <AlignLeftJustifyIcon />,
     },
     {
