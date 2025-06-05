@@ -460,7 +460,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             }
             onSelectAll={() => handleSelectAll({ category: "modelName" })}
             className="w-full"
-            gridClassName="grid-cols-2"
+            gridClassName="!flex flex-wrap"
             uppercase={false}
           />
         </div>

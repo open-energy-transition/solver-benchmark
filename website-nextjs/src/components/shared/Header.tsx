@@ -100,7 +100,7 @@ const Header = () => {
             href="#methodology"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
-            METHODOLOY
+            METHODOLOGY
           </Link>
           <Link
             href="#contribution"

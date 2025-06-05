@@ -51,7 +51,6 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
           <div className="hidden lg:flex items-center space-x-4">
             <a
               href="https://github.com/open-energy-transition/"
-              className="text-gray-700 hover:text-gray-900"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -71,7 +70,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
         <div className="flex flex-col space-y-4 px-2 pt-2 pb-3">
           <a
             href="https://github.com/open-energy-transition/"
-            className="text-gray-700 hover:text-gray-900 flex items-center space-x-2"
+            className="flex items-center space-x-2"
             target="_blank"
             rel="noopener noreferrer"
           >

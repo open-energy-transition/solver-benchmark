@@ -42,10 +42,7 @@ const LandingPage = () => {
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
                 than 4%. More details on this{" "}
-                <a
-                  href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
-                  className="hover:underline underline-offset-4"
-                >
+                <a href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md">
                   here
                 </a>
                 .
@@ -64,10 +61,7 @@ const LandingPage = () => {
                 include things like time for input file parsing and license
                 checks. See more details and join the discussion on whether to
                 use reported or measured runtime{" "}
-                <a
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
-                  className="hover:underline underline-offset-4"
-                >
+                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/159">
                   here
                 </a>
                 .
@@ -75,10 +69,7 @@ const LandingPage = () => {
               <li>
                 Some solvers returned errors when running on some benchmark
                 instances. For more details, please see the{" "}
-                <a
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
-                  className="hover:underline underline-offset-4"
-                >
+                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/193">
                   tracking issue
                 </a>
                 .
@@ -191,7 +182,26 @@ const LandingPage = () => {
                     {benchmarkResults.length ? (
                       <ResultsSection timeout={timeout} />
                     ) : (
-                      <></>
+                      <div className="px-6 py-4 text-navy font-lato border border-[#CAD9EF] bg-[#F4F6FA] rounded-2xl flex items-center gap-3">
+                        <svg
+                          className="w-6 h-6 text-navy"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <div>
+                          <h6 className="font-semibold mb-1">
+                            No benchmark instances match the selected filters.
+                          </h6>
+                        </div>
+                      </div>
                     )}
                     <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="tag-line-xs leading-1.5">

@@ -28,7 +28,7 @@
     @apply text-xl font-lato font-bold leading-1.4 tracking-normal text-navy;
   }
   p {
-    @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy;
+    @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy my-1;
   }
   .tag-line-lg {
     @apply text-lg font-lato font-medium leading-1.1 tracking-normal;
@@ -47,6 +47,9 @@
   }
   .text-medium-normal {
     @apply text-lg/1.5 font-medium tracking-normal;
+  }
+  a {
+    @apply hover:underline underline-offset-4;
   }
 }
 

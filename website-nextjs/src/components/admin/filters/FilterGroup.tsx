@@ -100,7 +100,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 </Popup>
               </span>
               <span
-                className="text-navy font-bold text-[9px] absolute pr-0.5 -right-3 bg-[#F4F6FA] z-50 hidden group-hover:inline-block cursor-pointer"
+                className="text-navy font-bold text-[9px] mt-0.5 absolute pr-0.5 -right-3 bg-[#F4F6FA] z-50 hidden group-hover:inline-block cursor-pointer"
                 onClick={() => onItemOnly(item)}
               >
                 only

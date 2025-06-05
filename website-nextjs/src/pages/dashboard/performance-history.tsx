@@ -310,10 +310,7 @@ const PagePerformanceHistory = () => {
                 {" "}
                 Some solvers returned errors when running on some benchmark
                 instances. For more details, please see the{" "}
-                <a
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
-                  className="hover:underline underline-offset-4"
-                >
+                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/193">
                   tracking issue
                 </a>
                 .

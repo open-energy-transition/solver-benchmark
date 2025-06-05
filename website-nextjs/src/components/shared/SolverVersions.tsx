@@ -7,10 +7,7 @@ const SolverVersions = ({}) => {
       results will be updated with the last version released in 2025 at the end
       of this year. Some solver versions are not available on conda or have
       compatibility issues with our benchmarking infrastructure, see{" "}
-      <a
-        className="hover:underline underline-offset-4"
-        href="https://github.com/open-energy-transition/solver-benchmark?tab=readme-ov-file#solver-versions"
-      >
+      <a href="https://github.com/open-energy-transition/solver-benchmark?tab=readme-ov-file#solver-versions">
         here
       </a>{" "}
       for more details. (GLPK has not had a release since 2020.)

@@ -432,57 +432,64 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <p className="text-navy pl-2 text-l block items-center mt-2 max-w-screen-lg">
-          <span>
-            This table summarizes the benchmark results of the latest version
-          </span>
-          <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <span className="flex items-baseline">
-                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
-                </span>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <SolverVersions />
-              </div>
-            </Popup>
-          </span>
-          <span>
-            {" "}
-            of each solver on the selected configuration.
-            <br />
+        <div className="pl-2 mt-2 max-w-screen-lg">
+          <p>
+            <span>
+              This table summarizes the benchmark results of the latest version
+            </span>
+            <span className="inline-flex gap-2">
+              <Popup
+                on={["hover"]}
+                trigger={() => (
+                  <span className="flex items-baseline">
+                    <QuestionLineIcon
+                      className="size-3.5"
+                      viewBox="0 0 24 20"
+                    />
+                  </span>
+                )}
+                position="right center"
+                closeOnDocumentClick
+                arrow={false}
+              >
+                <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                  <SolverVersions />
+                </div>
+              </Popup>
+            </span>
+            <span> of each solver on the selected configuration.</span>
+          </p>
+          <p>
             You can rank the solvers by the normalized shifted geometric mean
             (SGM
-          </span>
-          <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <span className="flex items-baseline">
-                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />)
-                </span>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <SgmExplanation />
-              </div>
-            </Popup>
-          </span>
-          <span>
-            &nbsp; of runtime or memory consumption over all benchmarks, or by
-            the number of solved benchmark instances. Click on any column header
-            to sort the results by that column.
-          </span>
-        </p>
+            <span className="inline-flex gap-2">
+              <Popup
+                on={["hover"]}
+                trigger={() => (
+                  <span className="flex items-baseline">
+                    <QuestionLineIcon
+                      className="size-3.5"
+                      viewBox="0 0 24 20"
+                    />
+                    )
+                  </span>
+                )}
+                position="right center"
+                closeOnDocumentClick
+                arrow={false}
+              >
+                <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                  <SgmExplanation />
+                </div>
+              </Popup>
+            </span>
+            <span>
+              &nbsp; of runtime or memory consumption over all benchmarks, or by
+              the number of solved benchmark instances. Click on any column
+              header to sort the results by that column.
+            </span>
+          </p>
+        </div>
       </div>
       <div className="flex justify-end items-center gap-2 mb-2">
         <ResultsSgmModeDropdown />
