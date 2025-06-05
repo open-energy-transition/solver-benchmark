@@ -8,7 +8,7 @@ const SolverVersions = ({}) => {
       of this year. Some solver versions are not available on conda or have
       compatibility issues with our benchmarking infrastructure, see{" "}
       <a
-        className="underline"
+        className="hover:underline underline-offset-4"
         href="https://github.com/open-energy-transition/solver-benchmark?tab=readme-ov-file#solver-versions"
       >
         here

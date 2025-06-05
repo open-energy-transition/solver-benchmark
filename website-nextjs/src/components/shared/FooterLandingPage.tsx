@@ -74,15 +74,29 @@ const Footer = () => {
         <div className="py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs text-black leading-[110%] tracking-normal">
           <p>
             © 2025 Solver Benchmark. Licensed under the{" "}
-            <span className="underline">MIT License</span>. All rights reserved.
+            <span className="hover:underline underline-offset-4">
+              MIT License
+            </span>
+            . All rights reserved.
           </p>
           <p className="mt-4 sm:mt-0">
-            <span className="underline">Documentation</span> |{" "}
-            <span className="underline">GitHub</span> |{" "}
-            <span className="underline">Community Forum</span> |{" "}
-            <span className="underline">Donate</span> |{" "}
-            <span className="underline">Privacy Policy</span>|{" "}
-            <span className="underline">Terms of Service</span>
+            <span className="hover:underline underline-offset-4">
+              Documentation
+            </span>{" "}
+            | <span className="hover:underline underline-offset-4">GitHub</span>{" "}
+            |{" "}
+            <span className="hover:underline underline-offset-4">
+              Community Forum
+            </span>{" "}
+            | <span className="hover:underline underline-offset-4">Donate</span>{" "}
+            |{" "}
+            <span className="hover:underline underline-offset-4">
+              Privacy Policy
+            </span>
+            |{" "}
+            <span className="hover:underline underline-offset-4">
+              Terms of Service
+            </span>
           </p>
         </div>
       </div>

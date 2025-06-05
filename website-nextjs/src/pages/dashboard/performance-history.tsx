@@ -312,7 +312,7 @@ const PagePerformanceHistory = () => {
                 instances. For more details, please see the{" "}
                 <a
                   href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
-                  className="underline"
+                  className="hover:underline underline-offset-4"
                 >
                   tracking issue
                 </a>

@@ -19,7 +19,7 @@ const Footer = () => {
             Supported by{" "}
             <Link
               href="https://www.breakthroughenergy.org/"
-              className="font-bold underline"
+              className="font-bold hover:underline underline-offset-4"
             >
               Breakthrough Energy
             </Link>
@@ -29,7 +29,7 @@ const Footer = () => {
             Powered by the{" "}
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
-              className="underline"
+              className="hover:underline underline-offset-4"
             >
               open source community
             </Link>

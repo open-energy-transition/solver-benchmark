@@ -44,7 +44,7 @@ const LandingPage = () => {
                 than 4%. More details on this{" "}
                 <a
                   href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
-                  className="underline"
+                  className="hover:underline underline-offset-4"
                 >
                   here
                 </a>
@@ -66,7 +66,7 @@ const LandingPage = () => {
                 use reported or measured runtime{" "}
                 <a
                   href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
-                  className="underline"
+                  className="hover:underline underline-offset-4"
                 >
                   here
                 </a>
@@ -77,7 +77,7 @@ const LandingPage = () => {
                 instances. For more details, please see the{" "}
                 <a
                   href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
-                  className="underline"
+                  className="hover:underline underline-offset-4"
                 >
                   tracking issue
                 </a>
