@@ -24,7 +24,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -47,7 +47,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -70,7 +70,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -93,7 +93,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -118,7 +118,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -141,7 +141,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -164,7 +164,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -187,7 +187,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -210,7 +210,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -233,7 +233,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -256,7 +256,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -279,7 +279,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -302,7 +302,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -325,7 +325,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -348,7 +348,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -371,7 +371,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -394,7 +394,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -417,7 +417,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -440,7 +440,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -463,7 +463,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -486,7 +486,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -509,7 +509,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -532,7 +532,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -555,7 +555,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -578,7 +578,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -601,7 +601,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -624,7 +624,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -647,7 +647,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -670,7 +670,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -693,7 +693,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -716,7 +716,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -739,7 +739,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -762,7 +762,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -785,7 +785,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -808,7 +808,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
