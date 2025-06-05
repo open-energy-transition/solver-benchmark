@@ -14,6 +14,8 @@ interface ID3ChartLineChart {
   className?: string;
   chartData: SolverYearlyChartData[];
   xAxisTooltipFormat?: (value: number | string) => string;
+  maxYValue?: number;
+  showMaxLine?: boolean;
 }
 
 const D3ChartLineChart = ({
@@ -22,6 +24,8 @@ const D3ChartLineChart = ({
   className = "",
   chartData = [],
   xAxisTooltipFormat,
+  maxYValue,
+  showMaxLine = false,
 }: ID3ChartLineChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -76,9 +80,15 @@ const D3ChartLineChart = ({
       .scalePoint()
       .domain(chartData.map((d) => d.year.toString()))
       .range([margin.left + 20, width - margin.right]);
+
+    const yDomainMax =
+      maxYValue !== undefined
+        ? maxYValue
+        : (d3?.max(chartData, (d) => d.value) ?? 0) + 1;
+
     const yScale = d3
       .scaleLinear()
-      .domain([0, (d3?.max(chartData, (d) => d.value) ?? 0) + 1])
+      .domain([0, yDomainMax])
       .range([height - margin.bottom, margin.top]);
 
     // Axes
@@ -199,11 +209,34 @@ const D3ChartLineChart = ({
         });
     svg.append("g").call(grid);
 
+    if (showMaxLine && maxYValue !== undefined) {
+      svg
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", yScale(maxYValue))
+        .attr("y2", yScale(maxYValue))
+        .attr("stroke", "#FF6B6B")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "8,4")
+        .attr("opacity", 0.8);
+
+      svg
+        .append("text")
+        .attr("x", width - margin.right - 5)
+        .attr("y", yScale(maxYValue) - 5)
+        .attr("text-anchor", "end")
+        .attr("fill", "#FF6B6B")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold")
+        .text(`Max: ${maxYValue}`);
+    }
+
     return () => {
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData]);
+  }, [chartData, maxYValue, showMaxLine]);
 
   return (
     <div className={`bg-white p-4 rounded-xl ${className}`}>

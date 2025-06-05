@@ -20,6 +20,8 @@ const NumberBenchmarksSolved = ({
         title="Number of Benchmarks Solved"
         height={300}
         chartData={numSolvedBenchMark}
+        maxYValue={totalBenchmarks}
+        showMaxLine={true}
         xAxisTooltipFormat={(value) =>
           `<strong>Number of Benchmarks Solved:</strong> ${value}`
         }
