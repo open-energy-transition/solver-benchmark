@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -30,7 +30,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -53,7 +53,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -76,7 +76,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -99,7 +99,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -122,7 +122,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-period (3 years)
@@ -145,7 +145,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -166,7 +166,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -187,7 +187,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -208,7 +208,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: DC optimal power flow
+    Application: DC Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)

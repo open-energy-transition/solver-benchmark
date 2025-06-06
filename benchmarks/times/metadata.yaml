@@ -1,6 +1,6 @@
 benchmarks:
   TIMES-GEO-global-base:
-    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario without decarbonization constraints.
+    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario without decarbonization constraints.
     Modelling framework: TIMES
     Model name: TIMES-GEO
     Version:
@@ -22,7 +22,7 @@ benchmarks:
       Num. constraints: 6027253
       Num. variables: 6449851
   TIMES-GEO-global-netzero:
-    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario with a net-zero decarbonization constraints.
+    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario with a net-zero decarbonization constraints.
     Modelling framework: TIMES
     Model name: TIMES-GEO
     Version:

@@ -1,14 +1,14 @@
 benchmarks:
   pypsa-eur-sec:
-    Short description: Sector-coupled (power, heating, biomass, industry, transport) PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
+    Short description: Sector-coupled (power, heating, biomass, industrial, transport) PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Biomass, Industry, Transport
+    Sectors: Power, Heating, Biomass, Industrial, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -52,7 +52,7 @@ benchmarks:
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -196,7 +196,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -217,7 +217,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -238,7 +238,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -261,7 +261,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -282,7 +282,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -305,7 +305,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -328,7 +328,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -351,7 +351,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -374,7 +374,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -397,7 +397,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
