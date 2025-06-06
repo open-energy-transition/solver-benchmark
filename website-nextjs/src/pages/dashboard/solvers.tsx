@@ -23,27 +23,24 @@ const PageSolvers = () => {
           header={
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
-                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
-                    <ArrowIcon
-                      fill="none"
-                      className="size-3 4xl:size-4 stroke-navy"
-                    />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Solvers
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">Solvers</div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+              <h5>Solvers</h5>
+              <p className="mb-6 mt-4 max-w-screen-lg">
                 This page shows details of each solver available on this
                 platform, along with a relative performance plot that lets you
                 compare the selected solver against all other solvers.
-              </div>
+              </p>
             </div>
           }
         >

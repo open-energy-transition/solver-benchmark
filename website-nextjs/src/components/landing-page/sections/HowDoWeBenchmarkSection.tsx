@@ -22,53 +22,30 @@ const HowDoWeBenchmarkSection = () => {
         <div className="w-full xl:w-1/4">
           <div
             className="
-              text-lg/1.1
+              tag-line-lg
               uppercase
-              font-medium
-              tracking-normal
               font-league
               mb-4
             "
           >
             Methodology
           </div>
-          <div
-            className="
-              text-[2.5rem]/1.4
-              tracking-normal
-              font-extrabold
-              font-lato
-              mb-2
-            "
-          >
-            HOW DO WE BENCHMARK?
-          </div>
+          <h3 className="leading-1.4 mb-2">HOW DO WE BENCHMARK?</h3>
         </div>
         <div className="w-full xl:w-[67.42%] xl:pr-32">
-          <h5
-            className="
-              text-lg/1.5
-              font-medium
-              max-w-4xl
-              mb-2.5
-              font-roboto
-              xl:pl-4.5
-              tracking-normal
-              mt-10
-            "
-          >
+          <div className="text-medium-normal max-w-4xl mb-2.5 xl:pl-4.5 mt-10">
             We run the benchmarks on cloud virtual machines (VMs) for efficiency
             and cost reasons, and have validated that the measured runtimes have
             acceptable error margins. We use a custom built benchmarking
             infrastructure based on Python and OpenTofu, that is open,
             transparent, and fully reproducible -- meaning you can also use it
             to run your own benchmarks!
-          </h5>
-          <div className="mt-6 xl:ml-4">
+          </div>
+          <div className="mt-6 xl:ml-4 text-medium-normal">
             Read more about our methodology, caveats, and known issues{" "}
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
-              className="underline font-bold cursor-pointer"
+              className="hover:underline underline-offset-4 cursor-pointer"
             >
               here →
             </Link>

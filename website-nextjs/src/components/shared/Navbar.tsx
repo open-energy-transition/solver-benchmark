@@ -103,11 +103,11 @@ const Navbar = () => {
                   alt="Contribution image"
                   width={35}
                   height={35}
-                  className="4xl:size-11"
+                  className=""
                 />
               </div>
               {isNavExpanded && (
-                <div className="font-grotesk font-thin text-base leading-[21px] 4xl:text-lg 4xl:ml-2">
+                <div className="font-grotesk font-thin text-base leading-[21px]">
                   Solver
                   <br />
                   Benchmark
@@ -144,14 +144,14 @@ const Navbar = () => {
                           }
                           ${
                             isNavExpanded
-                              ? "pl-8 pr-2 justify-start 4xl:pl-4"
+                              ? "pl-8 pr-2 justify-start"
                               : "px-2 justify-center"
                           }
                         `}
                       >
                         {navData.icon}
                         {isNavExpanded && (
-                          <span className="ml-3.5 pl-[1px] text-xl mt-0.5 4xl:text-2xl 4xl:ml-1">
+                          <span className="ml-3.5 pl-[1px] text-xl mt-0.5">
                             {navData.label}
                           </span>
                         )}
@@ -175,7 +175,7 @@ const Navbar = () => {
           <a
             onClick={() => dispatch(navbarActions.toggleNav())}
             href="#"
-            className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none 4xl:text-xl"
+            className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none"
           >
             {isNavExpanded && "Collapse"}
             <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />

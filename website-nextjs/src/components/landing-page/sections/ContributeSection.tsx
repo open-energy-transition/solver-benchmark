@@ -138,7 +138,9 @@ const Contribute = () => {
             >
               <div className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase">
                 <GithubIcon className="mr-2" />
-                <div>Contribute now</div>
+                <div className="hover:underline underline-offset-4">
+                  Contribute now
+                </div>
               </div>
               <LinkOutlineIcon className="text-navy size-5 ml-3 mr-4" />
             </Link>

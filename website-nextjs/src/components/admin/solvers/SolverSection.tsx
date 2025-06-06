@@ -4,6 +4,7 @@ import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
+import { SolverStatusType } from "@/types/benchmark";
 
 const SOLVES_DATA = [
   {
@@ -52,10 +53,7 @@ const SolverSection = () => {
   });
 
   // Filter results where all solvers succeeded
-  const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
-    const key = `${result.benchmark}-${result.size}`;
-    return benchmarkSuccessMap.get(key) === availableSolvers.length;
-  });
+  const benchmarkLatestResults = rawBenchmarkLatestResults;
 
   const [selectedSolver, setSelectedSolver] = useState("");
 
@@ -98,7 +96,19 @@ const SolverSection = () => {
             sData.benchmark === oData.benchmark && sData.size === oData.size,
         );
         if (!sData) {
-          throw new Error("Base data not found for comparison");
+          // If no base solver data exists for this benchmark/size,
+          // set factor to 1 to hide it in the chart
+          return {
+            benchmark: oData.benchmark,
+            solver: oData.solver,
+            status: oData.status,
+            size: oData.size,
+            runtime: oData.runtime || 0,
+            baseSolverRuntime: 1,
+            baseSolverStatus: "TO" as SolverStatusType,
+            factor: 1,
+            logRuntime: 1,
+          };
         }
         return {
           benchmark: oData.benchmark,
@@ -143,15 +153,13 @@ const SolverSection = () => {
       <div className="flex gap-4 mb-4">
         {/* Solver select */}
         <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
-          <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">
-            Select Solver
-          </div>
+          <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
           <select
             name="solver"
             value={selectedSolver}
             onChange={(event) => setSelectedSolver(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] 4xl:text-xl
-            border-transparent text-dark-grey text-base rounded-b-lg block focus-visible:outline-none"
+            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] tag-line-lg
+            border-transparent text-navy rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled>Solver</option>
             {solverOptions.map((solver, idx) => (
@@ -165,13 +173,13 @@ const SolverSection = () => {
         {/* Enhanced solver info section */}
         {selectedSolverInfo && (
           <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
-            <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">
+            <h6 className="p-3 pl-3.5 border-b border-gray-200">
               Solver Information
-            </div>
+            </h6>
             <div className="p-4">
-              <h3 className="text-xl 4xl:text-2xl font-bold mb-4 text-gray-800">
+              <div className="mb-4 text-navy tag-line-lg font-bold">
                 {selectedSolverInfo.label}
-              </h3>
+              </div>
               <div className="space-y-3">
                 <a
                   href={selectedSolverInfo.website}
@@ -180,7 +188,7 @@ const SolverSection = () => {
                   className="flex items-center gap-3 transition-colors"
                 >
                   <FaGlobe className="w-5 h-5" />
-                  <span className="hover:underline 4xl:text-lg">
+                  <span className="hover:underline underline-offset-4">
                     Official Website
                   </span>
                 </a>
@@ -191,11 +199,11 @@ const SolverSection = () => {
                   className="flex items-center gap-3 transition-colors"
                 >
                   <FaGithub className="w-5 h-5" />
-                  <span className="hover:underline 4xl:text-lg">
+                  <span className="hover:underlineunderline-offset-4">
                     Source Code
                   </span>
                 </a>
-                <div className="flex items-center gap-3 transition-colors 4xl:text-lg">
+                <div className="flex items-center gap-3 transition-colors">
                   <FaBalanceScale className="w-5 h-5" />
                   <span>License: MIT</span>
                 </div>

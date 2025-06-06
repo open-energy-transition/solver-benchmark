@@ -28,7 +28,7 @@ const TableResult = () => {
           <Popup
             on={["hover"]}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {String(info.getValue())}
               </div>
             )}
@@ -129,7 +129,7 @@ const TableResult = () => {
           <Popup
             on={["hover"]}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {String(info.getValue() || "")}
               </div>
             )}

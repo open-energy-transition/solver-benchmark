@@ -16,6 +16,7 @@ import { getMetaData } from "@/utils/meta-data";
 import { BenchmarkResult } from "@/types/benchmark";
 import { IFilterState, RealisticOption } from "@/types/state";
 import { MetaData } from "@/types/meta-data";
+import { useRouter } from "next/router";
 
 function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
@@ -159,6 +160,29 @@ function App({ Component, pageProps }: AppProps) {
 
     initializeData();
   }, []);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      // Only scroll to top if the base path changes
+      const newPath = url.split("?")[0];
+      const currentPath = router.pathname;
+
+      if (newPath !== currentPath) {
+        const mainElement = document.querySelector("main");
+        if (mainElement) {
+          mainElement.scrollTo(0, 0);
+        }
+      }
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.pathname]);
 
   const renderLayout = () => {
     return (

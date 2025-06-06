@@ -16,8 +16,14 @@ type ColumnType = {
   name: string;
   field: string;
   width: string;
-  bgColor: string;
-  color: string;
+  header?: {
+    bgStyle?: string;
+    textStyle?: string;
+  };
+  row?: {
+    bgStyle?: string;
+    textStyle?: string;
+  };
   sort?: boolean;
   headerContent?: (header: string) => React.ReactNode;
   sortFunc?: (a: TableRowType, b: TableRowType) => number;
@@ -198,32 +204,43 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         name: "Rank",
         field: "rank",
         width: "flex-1",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sort: false,
       },
       {
         name: "Solver",
         field: "solver",
         width: "w-1/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sortFunc: (a, b) => a.solver.localeCompare(b.solver),
       },
       {
         name: "Version",
         field: "version",
         width: "w-1/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sortFunc: (a, b) => a.version.localeCompare(b.version),
       },
       {
         name: "SGM Memory",
         field: "memory",
         width: "w-1/5",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-start",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -236,8 +253,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         name: "Solved Benchmarks",
         field: "solvedBenchmarks",
         width: "w-1/5",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-start",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -274,8 +296,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           sgmMode !== SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS
             ? "w-1/5"
             : "w-2/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-start",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -405,63 +432,63 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     <div>
       <div className="pb-3">
         <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-navy pl-6 text-l block items-center mt-2">
-          <span>
-            This table summarizes the benchmark results of the latest version
-          </span>
-          <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <span className="flex items-baseline">
-                  <QuestionLineIcon
-                    className="size-3.5 4xl:size-5"
-                    viewBox="0 0 24 20"
-                  />
-                </span>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <SolverVersions />
-              </div>
-            </Popup>
-          </span>
-          <span>
-            {" "}
-            of each solver on the selected configuration.
-            <br />
+        <div className="pl-2 mt-2 max-w-screen-lg">
+          <p>
+            <span>
+              This table summarizes the benchmark results of the latest version
+            </span>
+            <span className="inline-flex gap-2">
+              <Popup
+                on={["hover"]}
+                trigger={() => (
+                  <span className="flex items-baseline">
+                    <QuestionLineIcon
+                      className="size-3.5"
+                      viewBox="0 0 24 20"
+                    />
+                  </span>
+                )}
+                position="right center"
+                closeOnDocumentClick
+                arrow={false}
+              >
+                <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                  <SolverVersions />
+                </div>
+              </Popup>
+            </span>
+            <span> of each solver on the selected configuration.</span>
+          </p>
+          <p>
             You can rank the solvers by the normalized shifted geometric mean
             (SGM
-          </span>
-          <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <span className="flex items-baseline">
-                  <QuestionLineIcon
-                    className="size-3.5 4xl:size-5"
-                    viewBox="0 0 24 20"
-                  />
-                  )
-                </span>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <SgmExplanation />
-              </div>
-            </Popup>
-          </span>
-          <span>
-            &nbsp; of runtime or memory consumption over all benchmarks, or by
-            the number of solved benchmark instances. Click on any column header
-            to sort the results by that column.
-          </span>
+            <span className="inline-flex gap-2">
+              <Popup
+                on={["hover"]}
+                trigger={() => (
+                  <span className="flex items-baseline">
+                    <QuestionLineIcon
+                      className="size-3.5"
+                      viewBox="0 0 24 20"
+                    />
+                    )
+                  </span>
+                )}
+                position="right center"
+                closeOnDocumentClick
+                arrow={false}
+              >
+                <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                  <SgmExplanation />
+                </div>
+              </Popup>
+            </span>
+            <span>
+              &nbsp; of runtime or memory consumption over all benchmarks, or by
+              the number of solved benchmark instances. Click on any column
+              header to sort the results by that column.
+            </span>
+          </p>
         </div>
       </div>
       <div className="flex justify-end items-center gap-2 mb-2">
@@ -506,10 +533,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           {columns.map((column) => (
             <div
               key={column.field}
-              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+              className={`first-of-type:rounded-tl-2xl first-of-type:overflow-hidden first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:overflow-hidden last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl
+                ${column?.header?.textStyle ?? ""} ${
+                  column?.header?.bgStyle ?? ""
+                } ${column.width}`}
             >
               <div
-                className="py-2.5 flex items-center gap-1 px-3 cursor-pointer justify-center 4xl:text-xl"
+                className="py-2.5 tag-line-xs leading-1.5 font-bold flex items-center gap-1 px-3 cursor-pointer justify-center"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -532,9 +562,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               </div>
 
               {sortedTableData.map((item, index) => (
-                <div
+                <p
                   key={`${column.field}-${index}`}
-                  className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
+                  className={`py-2.5 my-0 flex even:border-y last:!border-b-0 border-x-0 border-stroke items-center pl-3 pr-6 odd:bg-[#E0E6F1] even:bg-[#EEF2F2]
+                    ${column.row?.textStyle ?? "justify-center"} ${
+                      column.row?.bgStyle ?? ""
+                    }`}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",
