@@ -324,14 +324,14 @@ const BenchmarkSummaryTable = () => {
                 </tr>
               ))}
               {/* Size Features */}
-              {["Real(MILP)", "Other"].map((size, sizeIdx) => (
+              {["Real (MILP)", "Other"].map((size, sizeIdx) => (
                 <tr
                   key={sizeIdx}
                   className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {sizeIdx === 0 && (
                     <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
-                      Size
+                      Realistic
                     </td>
                   )}
                   <td className=" p-2 text-left tag-line-sm">{size || "-"}</td>

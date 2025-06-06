@@ -4,6 +4,7 @@ import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
+import { SolverStatusType } from "@/types/benchmark";
 
 const SOLVES_DATA = [
   {
@@ -52,10 +53,7 @@ const SolverSection = () => {
   });
 
   // Filter results where all solvers succeeded
-  const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
-    const key = `${result.benchmark}-${result.size}`;
-    return benchmarkSuccessMap.get(key) === availableSolvers.length;
-  });
+  const benchmarkLatestResults = rawBenchmarkLatestResults;
 
   const [selectedSolver, setSelectedSolver] = useState("");
 
@@ -98,7 +96,19 @@ const SolverSection = () => {
             sData.benchmark === oData.benchmark && sData.size === oData.size,
         );
         if (!sData) {
-          throw new Error("Base data not found for comparison");
+          // If no base solver data exists for this benchmark/size,
+          // set factor to 1 to hide it in the chart
+          return {
+            benchmark: oData.benchmark,
+            solver: oData.solver,
+            status: oData.status,
+            size: oData.size,
+            runtime: oData.runtime || 0,
+            baseSolverRuntime: 1,
+            baseSolverStatus: "TO" as SolverStatusType,
+            factor: 1,
+            logRuntime: 1,
+          };
         }
         return {
           benchmark: oData.benchmark,

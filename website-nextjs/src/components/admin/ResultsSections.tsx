@@ -533,7 +533,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           {columns.map((column) => (
             <div
               key={column.field}
-              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl
+              className={`first-of-type:rounded-tl-2xl first-of-type:overflow-hidden first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:overflow-hidden last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl
                 ${column?.header?.textStyle ?? ""} ${
                   column?.header?.bgStyle ?? ""
                 } ${column.width}`}
@@ -564,7 +564,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               {sortedTableData.map((item, index) => (
                 <p
                   key={`${column.field}-${index}`}
-                  className={`py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke items-center pl-3 pr-6 odd:bg-[#E0E6F1] even:bg-[#EEF2F2]
+                  className={`py-2.5 my-0 flex even:border-y last:!border-b-0 border-x-0 border-stroke items-center pl-3 pr-6 odd:bg-[#E0E6F1] even:bg-[#EEF2F2]
                     ${column.row?.textStyle ?? "justify-center"} ${
                       column.row?.bgStyle ?? ""
                     }`}
