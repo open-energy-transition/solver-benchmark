@@ -261,7 +261,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 9
       Realistic: true
-      Realistic motivation: TODO
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 114708
       Num. variables: 103612
   genx-1_three_zones:
@@ -1595,7 +1596,7 @@ benchmarks:
       Num. continuous variables: 1619199
       Num. integer variables: 252
   pypsa-eur-sec:
-    Short description: Sector-coupled (power, heating, biomass, industry, transport)
+    Short description: Sector-coupled (power, heating, biomass, industrial, transport)
       PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
@@ -1604,7 +1605,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Biomass, Industry, Transport
+    Sectors: Power, Heating, Biomass, Industrial, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
