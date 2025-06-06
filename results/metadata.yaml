@@ -2590,7 +2590,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
-    - Name: 40-1
+    - Name: 40-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
       Temporal resolution: 1
@@ -2611,7 +2611,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1
+    - Name: 26-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Temporal resolution: 1
@@ -2633,7 +2633,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Temporal resolution: 24
@@ -2656,7 +2656,7 @@ benchmarks:
     Time horizon: Single stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
       Temporal resolution: 24
