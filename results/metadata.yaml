@@ -249,7 +249,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: DC optimal power flow
+    Application: DC Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -530,7 +530,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: DC optimal power flow
+    Application: DC Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -557,7 +557,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -582,7 +582,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -604,7 +604,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -628,7 +628,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -652,7 +652,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
