@@ -261,7 +261,8 @@ benchmarks:
       Temporal resolution: 1
       Spatial resolution: 9
       Realistic: true
-      Realistic motivation: TODO
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 114708
       Num. variables: 103612
   genx-1_three_zones:
