@@ -239,7 +239,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           textStyle: "text-navy font-semibold",
         },
         row: {
-          textStyle: "justify-start",
+          textStyle: "justify-end",
         },
         sort: true,
         sortFunc: (a, b) => {
@@ -258,7 +258,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           textStyle: "text-navy font-semibold",
         },
         row: {
-          textStyle: "justify-start",
+          textStyle: "justify-end",
         },
         sort: true,
         sortFunc: (a, b) => {
@@ -301,7 +301,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           textStyle: "text-navy font-semibold",
         },
         row: {
-          textStyle: "justify-start",
+          textStyle: "justify-end",
         },
         sort: true,
         sortFunc: (a, b) => {

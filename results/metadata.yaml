@@ -2604,7 +2604,7 @@ benchmarks:
     Modelling framework: TIMES
     Model name: TIMES-Ireland
     Version:
-    Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
+    Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Sector-coupled
