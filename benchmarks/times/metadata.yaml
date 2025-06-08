@@ -261,7 +261,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1h
+    - Name: 1-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       Temporal resolution: 1
@@ -282,7 +282,7 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 1-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Temporal resolution: 24
