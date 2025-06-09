@@ -285,8 +285,8 @@ benchmarks:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
-      Temporal resolution: 24
-      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 24 time slices
+      Spatial resolution: 24 (Transport) / 2 (all other sectors)
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
@@ -307,8 +307,8 @@ benchmarks:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
-      Temporal resolution: 24
-      Spatial resolution: 2
+      Temporal resolution: 24 time slices
+      Spatial resolution: 24 (Transport) / 2 (all other sectors)
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
