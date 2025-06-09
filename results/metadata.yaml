@@ -8,7 +8,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -33,7 +33,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -58,7 +58,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (30 days)
@@ -85,7 +85,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -1525,7 +1525,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -2203,7 +2203,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
@@ -2225,7 +2225,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2249,7 +2249,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2273,7 +2273,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2297,7 +2297,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2321,7 +2321,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
@@ -2344,7 +2344,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -2367,7 +2367,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -2390,7 +2390,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2414,7 +2414,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2437,7 +2437,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2461,7 +2461,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2484,7 +2484,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2508,7 +2508,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2531,7 +2531,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2555,7 +2555,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2577,7 +2577,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -2606,7 +2606,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -2628,7 +2628,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -2651,7 +2651,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage
