@@ -1,6 +1,6 @@
 benchmarks:
   TIMES-GEO-global-base:
-    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario without decarbonization constraints.
+    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario without decarbonization constraints.
     Modelling framework: TIMES
     Model name: TIMES-GEO
     Version:
@@ -22,7 +22,7 @@ benchmarks:
       Num. constraints: 6027253
       Num. variables: 6449851
   TIMES-GEO-global-netzero:
-    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base sceanario with a net-zero decarbonization constraints.
+    Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario with a net-zero decarbonization constraints.
     Modelling framework: TIMES
     Model name: TIMES-GEO
     Version:
@@ -253,7 +253,7 @@ benchmarks:
     Modelling framework: TIMES
     Model name: TIMES-Ireland
     Version:
-    Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
+    Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
     Application: Infrastructure
     Sectoral focus: Sector-coupled
@@ -285,8 +285,8 @@ benchmarks:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
-      Temporal resolution: 24
-      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 24 time slices
+      Spatial resolution: 2
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
@@ -307,7 +307,7 @@ benchmarks:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
-      Temporal resolution: 24
+      Temporal resolution: 24 time slices
       Spatial resolution: 2
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.

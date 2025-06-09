@@ -31,7 +31,7 @@ const ContentWrapper = ({
         {header && <div>{header}</div>}
         <div className="sm:flex bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-4 pr-2 mt-6 rounded-[32px]">
           {showFilter && (
-            <div className="my-4 sm:x-0 sm:w-1/5 overflow-hidden bg-white rounded-xl h-max">
+            <div className="min-w-248px my-4 sm:x-0 sm:w-1/5 overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
               <FilterSection />
             </div>
           )}

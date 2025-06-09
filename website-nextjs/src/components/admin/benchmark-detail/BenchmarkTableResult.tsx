@@ -103,11 +103,10 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               info.row.original.name,
             )}
           >
-            View Details
-            <ArrowRightIcon
-              className="w-3 h-3 text-navy fill-none stroke-green-pop hover:stroke-white"
-              strokeOpacity="0.5"
-            />
+            <div className="hover:underline underline-offset-4">
+              View Details
+            </div>
+            <ArrowRightIcon className="size-2 ml-1 fill-none stroke-green-pop hover:stroke-white" />
           </Link>
         ),
       },
@@ -116,7 +115,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   );
 
   return (
-    <div className="py-2">
+    <div>
       <TanStackTable data={memoizedMetaData} columns={columns} />
     </div>
   );

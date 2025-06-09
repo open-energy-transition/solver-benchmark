@@ -39,7 +39,7 @@ const defaultTooltipTemplate = (
   solver1: string,
   solver2: string,
 ) => `
-  <div class="text-sm 4xl:text-lg">
+  <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
     <strong>Runtime of ${solver1.replace("--", " (")}):</strong> ${roundNumber(
@@ -180,7 +180,7 @@ const ChartCompare = ({
         g.selectAll("line").attr("stroke", "#A1A9BC");
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
-          .attr("class", "font-lato text-xs 4xl:text-lg");
+          .attr("class", "font-lato text-xs");
       });
     svg
       .append("g")
@@ -191,7 +191,7 @@ const ChartCompare = ({
         g.selectAll("line").attr("stroke", "#A1A9BC");
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
-          .attr("class", "font-lato text-xs 4xl:text-lg");
+          .attr("class", "font-lato text-xs");
       });
     // Scatter points
     svg
@@ -315,7 +315,6 @@ const ChartCompare = ({
         className="
           -rotate-90
           -translate-y-1/2
-          4xl:text-lg
           absolute
           font-lato
           left-6
@@ -356,7 +355,6 @@ const ChartCompare = ({
         className="
           -translate-y-1/2
           -translate-x-1/2
-          4xl:text-lg
           absolute
           font-lato
           left-1/2

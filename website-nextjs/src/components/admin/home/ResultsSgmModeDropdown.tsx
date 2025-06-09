@@ -1,8 +1,4 @@
-import {
-  ArrowUpTriangleFillIcon,
-  FilterBarIcon,
-  QuestionLineIcon,
-} from "@/assets/icons";
+import { ArrowRightIcon, QuestionLineIcon } from "@/assets/icons";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,16 +76,13 @@ const ResultsSgmModeDropdown = ({
   return (
     <div className="relative w-full h-[35px]">
       <div className=" absolute right-0 text-left flex gap-1" ref={dropdownRef}>
-        <div className="text-navy text-xs my-auto">SGM Mode:</div>
+        <div className="text-navy tag-line-xxs my-auto">SGM Mode:</div>
         <span className="inline-flex gap-2">
           <Popup
             on={["hover"]}
             trigger={() => (
               <span className="flex items-baseline my-auto cursor-pointer">
-                <QuestionLineIcon
-                  className="size-3.5 4xl:size-5"
-                  viewBox="0 0 24 20"
-                />
+                <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
               </span>
             )}
             position="right center"
@@ -125,8 +118,8 @@ const ResultsSgmModeDropdown = ({
           items-center
           justify-center
           p-1
-          pr-3
-          rounded-2xl
+          pr-2
+          rounded-lg
           shadow-xs
           text-navy
           text-xs
@@ -136,19 +129,14 @@ const ResultsSgmModeDropdown = ({
           aria-expanded={open}
           aria-haspopup="true"
         >
-          <div className="flex gap-1 items-center 4xl:text-lg">
-            <span className="rounded-full p-1 bg-[#F7F7F7]">
-              {" "}
-              <FilterBarIcon className="size-4 fill-navy stroke-navy" />
-            </span>
-
-            {selectedMode.optionTitle}
+          <div className="flex gap-1 items-center pl-1">
+            <div className="tag-line-xxs">{selectedMode.optionTitle}</div>
             <span className="right-2 top-2.5">
               <Popup
                 on={["hover"]}
                 trigger={() => (
                   <div>
-                    <QuestionLineIcon className="size-4 4xl:size-5" />
+                    <QuestionLineIcon className="h-3.5 w-3.5" />
                   </div>
                 )}
                 position="top right"
@@ -162,7 +150,7 @@ const ResultsSgmModeDropdown = ({
               </Popup>
             </span>
           </div>
-          <ArrowUpTriangleFillIcon />
+          <ArrowRightIcon className="stroke-navy fill-none size-2 block rotate-90" />
         </button>
         {selectedMode.value === SgmMode.PENALIZING_TO_BY_FACTOR && (
           <DebouncedInput
@@ -170,7 +158,7 @@ const ResultsSgmModeDropdown = ({
             type="number"
             value={xFactor}
             onChange={(newValue) => onXFactorChange(newValue)}
-            className="text-start p-1 rounded-2xl text-base/1.5 font-semibold font-lato"
+            className="text-start p-1 rounded-2xl tag-line-xs mb-0.5"
             wrapperClassName="bg-white rounded-2xl px-3 border border-[#CAD9EF80]"
           />
         )}
@@ -188,11 +176,11 @@ const ResultsSgmModeDropdown = ({
                   onClick={() => {
                     handleChangeMode(mode.value);
                   }}
-                  className="flex relative w-full flex-wrap text-left px-4 py-2 pr-4 text-sm text-gray-700 hover:bg-gray-100"
+                  className="flex relative w-full flex-wrap text-left px-4 py-2 pr-4 text-sm navy hover:bg-gray-100"
                   role="menuitem"
                 >
                   {mode.optionTitle}
-                  <span className="absolute right-2 top-2.5">
+                  <span className="absolute right-1 top-2.5">
                     <Popup
                       on={["hover"]}
                       trigger={() => <QuestionLineIcon className="w-4 h-4" />}

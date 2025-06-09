@@ -77,7 +77,7 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
         <div className="pt-1.5 pb-3">
           <div className="text-navy font-bold text-xl">Runtime vs Memory</div>
 
-          <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
+          <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm">
             A graph showing all the benchmark results (potentially filtered)
             that are summarized by the table above. Every data point in this
             graph is the result of running one solver on one benchmark problem
@@ -87,7 +87,7 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
             memory, and a point that is to the left of another means it ran
             faster.
           </p>
-          <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm 4xl:text-xl">
+          <p className="flex flex-wrap gap-1 items-center text-dark-grey text-sm">
             <span>
               Click on any point in this graph to see details of the benchmark
               instance.

@@ -24,13 +24,13 @@ const MainContent = () => {
       <div className="pb-12 pt-24 md:pt-64 mx-auto max-w-8xl px-4 lg:px-[70px] relative">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
-            <h1 className="inline leading-1.4 text-white text-4xl font-semibold tracking-tight sm:text-[3.5rem] box-decoration-clone">
+            <h2 className="inline text-white box-decoration-clone">
               An open-source benchmark of optimization solvers on representative
               problems from the energy planning domain.
-            </h1>
+            </h2>
           </div>
           <div className="mt-4 text-grey text-2xl font-light">
-            <p>
+            <h5 className="font-light text-grey">
               Built by{" "}
               <span className="font-bold">
                 <Link href="https://openenergytransition.org/">
@@ -44,7 +44,7 @@ const MainContent = () => {
                 </Link>
               </span>
               , and contributions from the community.
-            </p>
+            </h5>
           </div>
 
           <div className="mt-8 grid sm:flex items-center justify-start gap-2 md:gap-6 text-center">

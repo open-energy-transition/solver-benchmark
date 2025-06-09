@@ -17,17 +17,14 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
       onClick={() => setIsOpen(!isOpen)}
     >
       <div className="flex justify-between items-center">
-        <div
+        <h4
           className={`
-          font-lato
-          text-[32px]
-          leading-[100%]
-          tracking-normal
+          text-start
           ${isOpen ? "text-[#193D2C] font-bold" : "text-black font-medium"}
           `}
         >
           {question}
-        </div>
+        </h4>
         <div
           className={`${
             isOpen ? "bg-[#0C321A] " : "bg-white "

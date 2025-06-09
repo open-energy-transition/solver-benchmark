@@ -64,7 +64,7 @@ const Option = (props: OptionProps<any>) => {
         arrow={false}
       >
         {data.value !== "all" ? (
-          <div className="bg-stroke p-2 rounded 4xl:text-lg">{data.label}</div>
+          <div className="bg-stroke p-2 rounded">{data.label}</div>
         ) : (
           <></>
         )}

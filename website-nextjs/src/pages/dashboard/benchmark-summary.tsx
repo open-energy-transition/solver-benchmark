@@ -168,35 +168,36 @@ const PageBenchmarkDetail = () => {
       </Head>
       <div className="bg-light-blue">
         <Navbar />
-        <ContentWrapper>
-          <AdminHeader>
-            <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
-              <div className="flex items-center gap-1">
-                <Link href={PATH_DASHBOARD.root}>
-                  <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
-                </Link>
-                <ArrowIcon
-                  fill="none"
-                  className="size-3 stroke-navy 4xl:size-4"
-                />
+        <ContentWrapper
+          header={
+            <div>
+              <AdminHeader>
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+                  <div className="flex items-center gap-1">
+                    <Link href={PATH_DASHBOARD.root}>
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem" />
+                    </Link>
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
 
-                <Link href={PATH_DASHBOARD.benchmarkSet.list}>
-                  <span className="self-center font-semibold whitespace-nowrap">
-                    Benchmark Details
-                  </span>
-                </Link>
-                <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                <span className="self-center font-semibold whitespace-nowrap">
-                  Feature Distribution
-                </span>
-              </div>
+                    <Link href={PATH_DASHBOARD.benchmarkSet.list}>
+                      <span className="self-center font-semibold whitespace-nowrap">
+                        Benchmark Details
+                      </span>
+                    </Link>
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                    <span className="self-center font-semibold whitespace-nowrap">
+                      Feature Distribution
+                    </span>
+                  </div>
+                </div>
+              </AdminHeader>
+              <h5>Feature Distribution</h5>
+              <p className="mb-6 mt-4 max-w-screen-lg">
+                Distribution of Model Features in Benchmark Set
+              </p>
             </div>
-          </AdminHeader>
-          <div className="py-2 mb-2">
-            <div className="text-navy text-xl font-bold">
-              Distribution of Model Features in Benchmark Set
-            </div>
-          </div>
+          }
+        >
           {/* Content */}
           <BenchmarkSummaryTable />
         </ContentWrapper>
