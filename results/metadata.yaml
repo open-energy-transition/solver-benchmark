@@ -2044,7 +2044,7 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 1-997h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
       Temporal resolution: 1
@@ -2071,7 +2071,7 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 1-997h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
       Temporal resolution: 1
@@ -2100,7 +2100,7 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 1-997h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
       Temporal resolution: 1
@@ -2127,7 +2127,7 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 1-997h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
       Temporal resolution: 1
@@ -2156,7 +2156,7 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 1-997h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
       Temporal resolution: 1
@@ -2183,7 +2183,7 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 1-997h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
       Temporal resolution: 1
@@ -2209,11 +2209,11 @@ benchmarks:
     Time horizon: Multi-stage (4 years)
     MILP features: None
     Sizes:
-    - Name: 1-6
+    - Name: 1-6ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
-      Spatial resolution: 1 node
+      Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 1505
       Num. variables: 990
@@ -2231,11 +2231,11 @@ benchmarks:
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594079
@@ -2255,11 +2255,11 @@ benchmarks:
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594091
@@ -2279,11 +2279,11 @@ benchmarks:
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594085
@@ -2303,11 +2303,11 @@ benchmarks:
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594116
@@ -2327,11 +2327,11 @@ benchmarks:
     Time horizon: Multi-stage (5 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 665474
@@ -2353,7 +2353,7 @@ benchmarks:
     - Name: 31-20ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
-      Temporal resolution: 20
+      Temporal resolution: 20 time slices
       Spatial resolution: 31
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
@@ -2376,7 +2376,7 @@ benchmarks:
     - Name: 31-20ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
-      Temporal resolution: 20
+      Temporal resolution: 20 time slices
       Spatial resolution: 31
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
@@ -2399,7 +2399,7 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
-      Temporal resolution: 64
+      Temporal resolution: 64 time slices
       Spatial resolution: 1
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
@@ -2423,7 +2423,7 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
-      Temporal resolution: 64
+      Temporal resolution: 64 time slices
       Spatial resolution: 1
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
@@ -2446,7 +2446,7 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
-      Temporal resolution: 64
+      Temporal resolution: 64 time slices
       Spatial resolution: 1
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
@@ -2470,7 +2470,7 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
-      Temporal resolution: 64
+      Temporal resolution: 64 time slices
       Spatial resolution: 1
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
@@ -2493,7 +2493,7 @@ benchmarks:
     - Name: 29-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
-      Temporal resolution: 64
+      Temporal resolution: 64 time slices
       Spatial resolution: 29
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
@@ -2517,7 +2517,7 @@ benchmarks:
     - Name: 29-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
-      Temporal resolution: 64
+      Temporal resolution: 64 time slices
       Spatial resolution: 29
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
@@ -2540,8 +2540,8 @@ benchmarks:
     - Name: 29-64ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 29
+      Temporal resolution: 64 time slices
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720516
@@ -2564,8 +2564,8 @@ benchmarks:
     - Name: 29-64ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 29
+      Temporal resolution: 64 time slices
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720786
@@ -2583,19 +2583,19 @@ benchmarks:
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
-    - Name: 1-1h
+    - Name: 1-1ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 time slice
+      Spatial resolution: 1 regions
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
-    - Name: 40-1h
+    - Name: 40-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
-      Temporal resolution: 1
-      Spatial resolution: 40
+      Temporal resolution: 1 time slice
+      Spatial resolution: 40 regions
       Realistic: false
       Num. constraints: 4809283
       Num. variables: 4534121
@@ -2612,11 +2612,11 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1h
+    - Name: 26-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
-      Temporal resolution: 1
-      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 1 time slices
+      Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
       Num. constraints: 873805
       Num. variables: 1235884
@@ -2634,11 +2634,11 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
       Temporal resolution: 24 time slices
-      Spatial resolution: 2
+      Spatial resolution: 2 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
@@ -2657,11 +2657,11 @@ benchmarks:
     Time horizon: Single stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
       Temporal resolution: 24 time slices
-      Spatial resolution: 2
+      Spatial resolution: 2 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
