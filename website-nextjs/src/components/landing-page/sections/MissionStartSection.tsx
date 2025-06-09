@@ -26,22 +26,23 @@ const MissionStart = () => {
             Icon={SoftwareDevIcon}
             title="Solver Developers"
             description="Improve your solver algorithms and performance using our realistic and energy planning relevant benchmarks"
-            linkText="Benchmark Details"
-            linkHref={PATH_DASHBOARD.benchmarkDetail.list}
+            linkText="Benchmark Set"
+            linkHref={PATH_DASHBOARD.benchmarkSet.list}
           />
           <MissionCard
             Icon={BoldAltIcon}
             title="Energy Modellers"
             description="Use our performance data to pick the best solver for your application domain, hardware constraints, and budget"
             linkText="Compare Solvers"
-            linkHref="/dashboard/compare-solvers"
+            linkHref={PATH_DASHBOARD.compareSolvers}
+            linkClass="mb-4"
           />
           <MissionCard
             Icon={DollarSignIcon}
             title="Donors & Stakeholders"
             description="Track the evolution of solver performance over time, and maximize the potential return on your investment"
             linkText="Solver Performance History"
-            linkHref="/dashboard/performance-history"
+            linkHref={PATH_DASHBOARD.performanceHistory}
           />
         </div>
       </div>
