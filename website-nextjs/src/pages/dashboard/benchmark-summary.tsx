@@ -179,13 +179,13 @@ const PageBenchmarkDetail = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
 
-                    <Link href={PATH_DASHBOARD.benchmarkDetail.list}>
-                      <span className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <Link href={PATH_DASHBOARD.benchmarkSet.list}>
+                      <span className="self-center font-semibold whitespace-nowrap">
                         Benchmark Details
                       </span>
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <span className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <span className="self-center font-semibold whitespace-nowrap">
                       Feature Distribution
                     </span>
                   </div>

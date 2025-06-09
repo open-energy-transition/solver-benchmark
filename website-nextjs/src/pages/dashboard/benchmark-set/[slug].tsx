@@ -98,7 +98,7 @@ const PageBenchmarkDetail = () => {
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
                   <Link
-                    href={PATH_DASHBOARD.benchmarkDetail.list}
+                    href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
                     Benchmark Details

@@ -2,6 +2,7 @@ import { ArrowUpIcon } from "@/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
 import Popup from "reactjs-popup";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const MainContent = () => {
   return (
@@ -83,7 +84,7 @@ const MainContent = () => {
             </Popup>
 
             <Link
-              href="/dashboard/home"
+              href={PATH_DASHBOARD.home}
               className="
                 bg-teal
                 flex

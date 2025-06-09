@@ -225,7 +225,7 @@ const ChartCompare = ({
 
         group
           .on("click", () => {
-            window.location.href = PATH_DASHBOARD.benchmarkDetail.one.replace(
+            window.location.href = PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
               d.benchmark,
             );
