@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { formatTick, getChartColor } from "@/utils/chart";
+import { getChartColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { roundNumber } from "@/utils/number";
@@ -182,7 +182,12 @@ const ChartCompare = ({
             .range([height - margin.bottom, margin.top]);
 
     // Axes
-
+    const formatTick = (d: number) => {
+      if (d < 1) {
+        return d3.format(".1f")(d); // Show 1 decimal place for numbers < 1
+      }
+      return d3.format(",.0f")(d); // Show thousands separator for numbers >= 1
+    };
     const xAxis =
       scaleType === "log"
         ? d3

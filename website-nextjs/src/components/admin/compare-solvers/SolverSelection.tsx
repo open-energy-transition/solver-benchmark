@@ -111,10 +111,17 @@ const SolverSelection = () => {
   </div>
 `;
 
-  const { scaleRange, tickValues } = calculateScaleRangeAndTicks(
+  const runtimeLogScale = calculateScaleRangeAndTicks(
     chartData.map((d) => ({
       xaxis: d.d1.runtime,
       yaxis: d.d2.runtime,
+    })),
+  );
+
+  const memoryUsageLogScale = calculateScaleRangeAndTicks(
+    chartData.map((d) => ({
+      xaxis: d.d1.memoryUsage,
+      yaxis: d.d2.memoryUsage,
     })),
   );
 
@@ -195,8 +202,8 @@ const SolverSelection = () => {
             solver1={solver1}
             solver2={solver2}
             scaleType="log"
-            scaleRange={scaleRange}
-            tickValues={tickValues}
+            scaleRange={runtimeLogScale.scaleRange}
+            tickValues={runtimeLogScale.tickValues}
           />
           <div className="w-full font-league text-navy text-center mt-4 text-medium-normal">
             Runtime Comparison
@@ -224,6 +231,9 @@ const SolverSelection = () => {
             solver1={solver1}
             solver2={solver2}
             tooltipTemplate={memoryUsageTooltipTemplate}
+            scaleType="log"
+            scaleRange={memoryUsageLogScale.scaleRange}
+            tickValues={memoryUsageLogScale.tickValues}
           />
           <div className="w-full font-league text-medium-normal text-navy text-center mt-4">
             Memory Usage Comparison

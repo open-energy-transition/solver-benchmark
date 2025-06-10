@@ -58,11 +58,3 @@ export const calculateScaleRangeAndTicks = (
     tickValues: ticks,
   };
 };
-
-export const formatTick = (d: number) => {
-  if (d >= 1000) {
-    // Format with spaces instead of commas (e.g., "10 000" instead of "10,000")
-    return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
-  return d.toString();
-};
