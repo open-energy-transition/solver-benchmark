@@ -24,3 +24,37 @@ const presetColors = [
 export function getChartColor(index: number): string {
   return presetColors[index % presetColors.length];
 }
+
+export const calculateScaleRangeAndTicks = (
+  data: { xaxis: number; yaxis: number }[],
+) => {
+  if (data.length === 0) {
+    return {
+      scaleRange: { min: 1, max: 10000 },
+      tickValues: [1, 10, 100, 1000, 10000],
+    };
+  }
+
+  // Find min and max values from both axes
+  const values = data.flatMap((d) => [d.xaxis, d.yaxis]);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+
+  // Get the order of magnitude
+  const minOrder = Math.floor(Math.log10(minValue));
+  const maxOrder = Math.ceil(Math.log10(maxValue));
+
+  // Generate scale range
+  const scaleMin = Math.pow(10, minOrder);
+  const scaleMax = Math.pow(10, maxOrder);
+
+  // Generate tick values
+  const ticks = [];
+  for (let i = minOrder; i <= maxOrder; i++) {
+    ticks.push(Math.pow(10, i));
+  }
+  return {
+    scaleRange: { min: scaleMin, max: scaleMax },
+    tickValues: ticks,
+  };
+};
