@@ -7,6 +7,7 @@ import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
 import { roundNumber } from "@/utils/number";
+import { calculateScaleRangeAndTicks } from "@/utils/chart";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -110,6 +111,13 @@ const SolverSelection = () => {
   </div>
 `;
 
+  const { scaleRange, tickValues } = calculateScaleRangeAndTicks(
+    chartData.map((d) => ({
+      xaxis: d.d1.runtime,
+      yaxis: d.d2.runtime,
+    })),
+  );
+
   return (
     <div>
       <div className="flex flex-row gap-2 sm:gap-0 mb-4">
@@ -168,8 +176,8 @@ const SolverSelection = () => {
         <div className="w-full lg:w-1/2">
           <ChartCompare
             chartData={chartData.map((d) => ({
-              xaxis: d.d1.logRuntime,
-              yaxis: d.d2.logRuntime,
+              xaxis: d.d1.runtime,
+              yaxis: d.d2.runtime,
               status: d.status,
               size: d.size,
               benchmark: d.benchmark,
@@ -177,8 +185,8 @@ const SolverSelection = () => {
               d2: d.d2,
             }))}
             title={{
-              xaxis: `Log runtime (s) of ${solver1.replace("--", " (")})`,
-              yaxis: `Log runtime (s) of ${solver2.replace("--", " (")})`,
+              xaxis: `Runtime (s) of ${solver1.replace("--", " (")})`,
+              yaxis: `Runtime (s) of ${solver2.replace("--", " (")})`,
             }}
             backgroundColor={{
               upper: "#F0F4F2",
@@ -186,6 +194,9 @@ const SolverSelection = () => {
             }}
             solver1={solver1}
             solver2={solver2}
+            scaleType="log"
+            scaleRange={scaleRange}
+            tickValues={tickValues}
           />
           <div className="w-full font-league text-navy text-center mt-4 text-medium-normal">
             Runtime Comparison
