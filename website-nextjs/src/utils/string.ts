@@ -33,3 +33,20 @@ export const parseSolverInfo = (solverString: string): SolverInfo => {
   const [name, version] = solverString.split("--");
   return { name, version };
 };
+
+export function humanizeSeconds(seconds: number): string {
+  if (seconds < 60) {
+    return `${Math.round(seconds)} sec`;
+  }
+  if (seconds < 3600) {
+    return `${Math.round(seconds / 60)} min`;
+  }
+  if (seconds < 86400) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.round((seconds % 3600) / 60);
+    return minutes > 0 ? `${hours} hour ${minutes} min` : `${hours} hour`;
+  }
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.round((seconds % 86400) / 3600);
+  return hours > 0 ? `${days} day ${hours} hour` : `${days} day`;
+}

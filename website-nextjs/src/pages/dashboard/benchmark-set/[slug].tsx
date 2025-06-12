@@ -13,11 +13,11 @@ import { useMemo } from "react";
 import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult";
-import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
 import { IResultState } from "@/types/state";
 import DataTable from "@/components/admin/benchmark-detail/DataTable";
+import SolverRuntimeComparison from "@/components/admin/benchmark-detail/SolverRuntimeComparison";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -32,6 +32,8 @@ const PageBenchmarkDetail = () => {
     () => metaData[benchmarkName as string],
     [metaData],
   );
+
+  if (!benchmarkDetail) return <div></div>;
 
   const columns = [
     {
@@ -80,7 +82,6 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.milpFeatures,
     },
   ];
-
   return (
     <>
       <Head>
@@ -176,6 +177,7 @@ const PageBenchmarkDetail = () => {
               ))}
             </div>
           </div>
+
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
@@ -183,7 +185,10 @@ const PageBenchmarkDetail = () => {
                 Results on this benchmark
               </h5>
               <DataTable benchmarkName={benchmarkName as string} />
-              <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <SolverRuntimeComparison
+                benchmarkDetail={benchmarkDetail}
+                benchmarkName={benchmarkName as string}
+              />
             </>
           )}
         </ContentWrapper>
