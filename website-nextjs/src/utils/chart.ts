@@ -21,8 +21,21 @@ const presetColors = [
   "#808080", // grey
 ];
 
+// Color map
+const colorMap: Record<string, string> = {
+  cbc: "#F9CD5A", // yellow
+  glpk: "#7C3AED", // purple
+  gurobi: "#F66C49", // red
+  highs: "#43BF94", // green
+  scip: "#3B82F6", // blue
+};
+
 export function getChartColor(index: number): string {
   return presetColors[index % presetColors.length];
+}
+
+export function getSolverColor(solver: string): string {
+  return colorMap[solver] || getChartColor(Object.keys(colorMap).length + 1);
 }
 
 export const calculateScaleRangeAndTicks = (
