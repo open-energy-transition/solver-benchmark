@@ -35,18 +35,28 @@ export const parseSolverInfo = (solverString: string): SolverInfo => {
 };
 
 export function humanizeSeconds(seconds: number): string {
+  if (seconds < 1) {
+    return "< 1 sec";
+  }
   if (seconds < 60) {
-    return `${Math.round(seconds)} sec`;
+    return `${Math.round(seconds)} ${seconds === 1 ? "sec" : "secs"}`;
   }
   if (seconds < 3600) {
-    return `${Math.round(seconds / 60)} min`;
+    const mins = Math.round(seconds / 60);
+    return `${mins} ${mins === 1 ? "min" : "mins"}`;
   }
   if (seconds < 86400) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.round((seconds % 3600) / 60);
-    return minutes > 0 ? `${hours} hour ${minutes} min` : `${hours} hour`;
+    const hourUnit = hours === 1 ? "hr" : "hrs";
+    return minutes > 0
+      ? `${hours} ${hourUnit} ${minutes} ${minutes === 1 ? "min" : "mins"}`
+      : `${hours} ${hourUnit}`;
   }
   const days = Math.floor(seconds / 86400);
   const hours = Math.round((seconds % 86400) / 3600);
-  return hours > 0 ? `${days} day ${hours} hour` : `${days} day`;
+  const dayUnit = days === 1 ? "day" : "days";
+  return hours > 0
+    ? `${days} ${dayUnit} ${hours} ${hours === 1 ? "hr" : "hrs"}`
+    : `${days} ${dayUnit}`;
 }

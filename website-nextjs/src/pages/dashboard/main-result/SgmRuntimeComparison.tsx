@@ -10,12 +10,14 @@ interface ISolverRuntimeComparison {
   sgmData: TableRowType[];
   uniqueBenchmarkCount: number;
   uniqueLatestBenchmarkCount: number;
+  timeout: number;
 }
 
 const SgmRuntimeComparison = ({
   sgmData = [],
   uniqueBenchmarkCount,
   uniqueLatestBenchmarkCount,
+  timeout,
 }: ISolverRuntimeComparison) => {
   const solverResults = sgmData;
 
@@ -56,10 +58,12 @@ const SgmRuntimeComparison = ({
   );
 
   const getXAxisTickFormat = useCallback(() => {
-    return `Short timeout (filtered to ${uniqueBenchmarkCount}/${uniqueLatestBenchmarkCount} problems) \n
-    Fastest solver: ${humanizeSeconds(
+    return `${uniqueBenchmarkCount}/${uniqueLatestBenchmarkCount} benchmark problems \n
+    Fastest solver's average runtime: ${humanizeSeconds(
       Math.min(...solverResults.map((s) => s.unnormalizedData.runtime)),
-    )}`;
+    )} \n
+    Timeout: ${humanizeSeconds(timeout)} \n
+    `;
   }, [solverResults]);
 
   return (
@@ -72,7 +76,7 @@ const SgmRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        yAxisLabel="Relative Runtime (normalized)"
+        yAxisLabel="Relative average runtime (normalized)"
         height={400}
         rotateXAxisLabels={false}
         xAxisTooltipFormat={getXAxisTooltipFormat}

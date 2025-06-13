@@ -89,19 +89,18 @@ const SolverRuntimeComparison = ({
   );
 
   const getXAxisTickFormat = useCallback(
-    (value: string, data: unknown) => {
-      const size =
-        typeof data === "object" && data !== null && "size" in data
-          ? (data as { size: string }).size
-          : undefined;
-      if (!size) return value;
+    (value: string) => {
       const benchmarkData = benchmarkLatestResults.filter(
-        (result) => result.size === size && result.benchmark === benchmarkName,
+        (result) => result.size === value && result.benchmark === benchmarkName,
       );
+      const modelSize = benchmarkDetail.sizes.find((s) => s.name === value)
+        ?.size;
+
       const minRuntime = Math.min(
         ...benchmarkData.map((result) => result.runtime),
       );
-      return `${value}\nFastest solver: ${humanizeSeconds(minRuntime)}`;
+      return `Size instance: ${value} (${modelSize}) \n
+      Fastest solver's runtime: ${humanizeSeconds(minRuntime)}`;
     },
     [benchmarkLatestResults, benchmarkName],
   );
@@ -116,7 +115,7 @@ const SolverRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        yAxisLabel="Relative Runtime (normalized)"
+        yAxisLabel="Relative runtime (normalized)"
         height={400}
         rotateXAxisLabels={false}
         barTextClassName={getBarTextClassName}

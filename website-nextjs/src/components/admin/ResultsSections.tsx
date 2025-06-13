@@ -360,8 +360,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             ) + 1,
           solver: solverData,
           unnormalizedData: {
-            runtime: runtimeSgm,
-            memoryUsage: memorySgm,
+            runtime: calculateSgm(getRelevantResults(solverData, "runtime")),
+            memoryUsage: calculateSgm(
+              getRelevantResults(solverData, "memoryUsage"),
+            ),
           },
           version: getHighestVersion(solverVersions[solverData]),
           memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
@@ -606,6 +608,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         </div>
       )}
       <SgmRuntimeComparison
+        timeout={timeout}
         sgmData={tableData}
         uniqueBenchmarkCount={uniqueBenchmarkCount}
         uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
