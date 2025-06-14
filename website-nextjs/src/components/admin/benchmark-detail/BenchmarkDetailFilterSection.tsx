@@ -25,8 +25,8 @@ interface IBenchmarkDetailFilterSectionProps {
   availableSectors: string[];
   availableProblemClasses: string[];
   availableApplications: string[];
-  availableModels: string[];
   availableProblemSizes: string[];
+  availableModellingFrameworks: string[];
 }
 
 const BenchmarkDetailFilterSection = ({
@@ -36,8 +36,8 @@ const BenchmarkDetailFilterSection = ({
   availableSectors,
   availableProblemClasses,
   availableApplications,
-  availableModels,
   availableProblemSizes,
+  availableModellingFrameworks,
 }: IBenchmarkDetailFilterSectionProps) => {
   const router = useRouter();
 
@@ -96,7 +96,7 @@ const BenchmarkDetailFilterSection = ({
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
     }[category] as string[];
@@ -116,8 +116,8 @@ const BenchmarkDetailFilterSection = ({
     sectors: availableSectors.length,
     problemClass: availableProblemClasses.length,
     application: availableApplications.length,
-    modelName: availableModels.length,
     problemSize: availableProblemSizes.length,
+    modellingFramework: availableModellingFrameworks.length,
     realistic: [RealisticOption.Realistic, RealisticOption.Other].length,
   };
 
@@ -163,7 +163,7 @@ const BenchmarkDetailFilterSection = ({
       "sectors",
       "problemClass",
       "application",
-      "modelName",
+      "modellingFramework",
       "problemSize",
       "realistic",
     ].forEach((key) => {
@@ -194,7 +194,7 @@ const BenchmarkDetailFilterSection = ({
         sectors: availableSectors,
         problemClass: availableProblemClasses,
         application: availableApplications,
-        modelName: availableModels,
+        modellingFramework: availableModellingFrameworks,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
       });
@@ -239,7 +239,7 @@ const BenchmarkDetailFilterSection = ({
         sectors: availableSectors,
         problemClass: availableProblemClasses,
         application: availableApplications,
-        modelName: availableModels,
+        modellingFramework: availableModellingFrameworks,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
       };
@@ -272,7 +272,7 @@ const BenchmarkDetailFilterSection = ({
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
     };
@@ -447,19 +447,25 @@ const BenchmarkDetailFilterSection = ({
             gridClassName="grid-cols-2"
             uppercase={false}
           />
-          {/* Model */}
+          {/* Modelling Framework */}
           <FilterGroup
-            title="Model"
+            title="Modelling Framework"
             icon={<PolygonIcon className="w-5 h-5" />}
-            items={availableModels}
-            selectedItems={localFilters?.modelName}
+            items={availableModellingFrameworks}
+            selectedItems={localFilters?.modellingFramework}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "modelName", value })
+              handleCheckboxChange({ category: "modellingFramework", value })
             }
             onItemOnly={(value) =>
-              handleCheckboxChange({ category: "modelName", value, only: true })
+              handleCheckboxChange({
+                category: "modellingFramework",
+                value,
+                only: true,
+              })
             }
-            onSelectAll={() => handleSelectAll({ category: "modelName" })}
+            onSelectAll={() =>
+              handleSelectAll({ category: "modellingFramework" })
+            }
             className="w-full"
             gridClassName="grid-cols-2"
             uppercase={false}

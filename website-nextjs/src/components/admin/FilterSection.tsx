@@ -57,9 +57,9 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   const availableApplications = useSelector(
     (state: { results: IResultState }) => state.results.availableApplications,
   );
-
-  const availableModels = useSelector(
-    (state: { results: IResultState }) => state.results.availableModels,
+  const availableModellingFrameworks = useSelector(
+    (state: { results: IResultState }) =>
+      state.results.availableModellingFrameworks,
   );
 
   const availableProblemSizes = useSelector(
@@ -92,7 +92,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: realisticOptions,
     }[category] as string[];
@@ -149,7 +149,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       "sectors",
       "problemClass",
       "application",
-      "modelName",
+      "modellingFramework",
       "problemSize",
       "realistic",
     ].forEach((key) => {
@@ -209,7 +209,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
-          modelName: availableModels,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
@@ -235,7 +235,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
-          modelName: availableModels,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
@@ -268,7 +268,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
     };
@@ -446,19 +446,25 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             className="w-full"
             gridClassName="grid-cols-2"
           />
-          {/* Model */}
+          {/* Modelling Framework */}
           <FilterGroup
-            title="Model"
+            title="Modelling Framework"
             icon={<PolygonIcon className="w-5 h-5" />}
-            items={availableModels}
-            selectedItems={selectedFilters?.modelName}
+            items={availableModellingFrameworks}
+            selectedItems={selectedFilters?.modellingFramework}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "modelName", value })
+              handleCheckboxChange({ category: "modellingFramework", value })
             }
             onItemOnly={(value) =>
-              handleCheckboxChange({ category: "modelName", value, only: true })
+              handleCheckboxChange({
+                category: "modellingFramework",
+                value,
+                only: true,
+              })
             }
-            onSelectAll={() => handleSelectAll({ category: "modelName" })}
+            onSelectAll={() =>
+              handleSelectAll({ category: "modellingFramework" })
+            }
             className="w-full"
             gridClassName="!flex flex-wrap"
             uppercase={false}

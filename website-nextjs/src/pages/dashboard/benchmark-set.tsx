@@ -42,7 +42,6 @@ const PageBenchmarkDetail = () => {
       sectors,
       problemClass,
       application,
-      modelName,
       modellingFramework,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
@@ -51,7 +50,6 @@ const PageBenchmarkDetail = () => {
     });
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
-    uniqueValues.models.add(modelName);
     uniqueValues.modellingFrameworks.add(modellingFramework);
   });
 
@@ -59,11 +57,13 @@ const PageBenchmarkDetail = () => {
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
-  const availableModels = Array.from(uniqueValues.models);
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
     ),
+  );
+  const availableModellingFrameworks = Array.from(
+    uniqueValues.modellingFrameworks,
   );
 
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
@@ -71,8 +71,8 @@ const PageBenchmarkDetail = () => {
     sectors: availableSectors,
     problemClass: availableProblemClasses,
     application: availableApplications,
-    modelName: availableModels,
     problemSize: availableProblemSizes,
+    modellingFramework: availableModellingFrameworks,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
 
@@ -83,9 +83,9 @@ const PageBenchmarkDetail = () => {
         sectors,
         problemClass,
         application,
-        modelName,
         problemSize,
         realistic,
+        modellingFramework,
       } = localFilters;
 
       const isSectoralFocusMatch =
@@ -102,8 +102,9 @@ const PageBenchmarkDetail = () => {
         problemClass.length === 0 || problemClass.includes(value.problemClass);
       const isApplicationMatch =
         application.length === 0 || application.includes(value.application);
-      const isModelNameMatch =
-        modelName.length === 0 || modelName.includes(value.modelName);
+      const isModellingFrameworkMatch =
+        modellingFramework.length === 0 ||
+        modellingFramework.includes(value.modellingFramework);
       const isProblemSizeMatch =
         problemSize.length === 0 ||
         (value.sizes &&
@@ -133,9 +134,9 @@ const PageBenchmarkDetail = () => {
         isSectorsMatch &&
         isProblemClassMatch &&
         isApplicationMatch &&
-        isModelNameMatch &&
         isProblemSizeMatch &&
-        isRealisticMatch
+        isRealisticMatch &&
+        isModellingFrameworkMatch
       );
     });
 
@@ -196,8 +197,8 @@ const PageBenchmarkDetail = () => {
                     availableSectors={availableSectors}
                     availableProblemClasses={availableProblemClasses}
                     availableApplications={availableApplications}
-                    availableModels={availableModels}
                     availableProblemSizes={availableProblemSizes}
+                    availableModellingFrameworks={availableModellingFrameworks}
                   />
                 </div>
                 <div className="3xl:mx-auto sm:w-4/5 ml-4">

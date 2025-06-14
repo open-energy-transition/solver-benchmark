@@ -33,7 +33,6 @@ const BenchmarkSet = () => {
       sectors,
       problemClass,
       application,
-      modelName,
       modellingFramework,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
@@ -42,7 +41,6 @@ const BenchmarkSet = () => {
     });
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
-    uniqueValues.models.add(modelName);
     uniqueValues.modellingFrameworks.add(modellingFramework);
   });
 

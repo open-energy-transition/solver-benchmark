@@ -150,7 +150,7 @@ function App({ Component, pageProps }: AppProps) {
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
-          modelName: availableModels,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
           isReady: true,

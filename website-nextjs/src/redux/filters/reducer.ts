@@ -9,7 +9,7 @@ const { TOGGLE_FILTER, SET_FILTER, SET_SGM_MODE, SET_X_FACTOR } = actions;
 const initialState: IFilterState = {
   benchmarks: [],
   application: [],
-  modelName: [],
+  modellingFramework: [],
   problemSize: [],
   sectoralFocus: [],
   sectors: [],

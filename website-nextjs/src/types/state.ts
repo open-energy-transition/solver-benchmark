@@ -10,7 +10,7 @@ export enum RealisticOption {
 export type IFilterState = {
   benchmarks: string[];
   application: string[];
-  modelName: string[];
+  modellingFramework: string[];
   problemSize: string[];
   realistic: RealisticOption[];
   sectoralFocus: string[];

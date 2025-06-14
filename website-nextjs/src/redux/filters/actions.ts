@@ -76,7 +76,7 @@ const actions = {
             filters.problemClass.includes(metaData.problemClass) &&
             filters.sectoralFocus.includes(metaData.sectoralFocus) &&
             isSectorsMatch &&
-            filters.modelName.includes(metaData.modelName)
+            filters.modellingFramework.includes(metaData.modellingFramework)
           );
         }),
       );
