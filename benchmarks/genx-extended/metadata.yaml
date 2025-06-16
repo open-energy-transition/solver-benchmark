@@ -6,7 +6,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -28,7 +28,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -49,7 +49,7 @@ benchmarks:
 #    Model name: GenX
 #    Version:
 #    Problem class: MILP
-#    Application: Infrastructure & Capacity expansion
+#    Application: Infrastructure & Capacity Expansion
 #    Sectoral focus: Power-only
 #    Sectors: Electric
 #    Time horizon: Single period (1 year)
@@ -71,7 +71,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (30 days)
@@ -95,7 +95,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -116,7 +116,7 @@ benchmarks:
 #   Model name: GenX
 #   Version:
 #   Problem class: MILP
-#   Application: Infrastructure & Capacity expansion
+#   Application: Infrastructure & Capacity Expansion
 #   Sectoral focus: Power-only
 #   Sectors: Electric
 #   Time horizon: Single period (1 year)
@@ -137,7 +137,7 @@ benchmarks:
 #   Model name: GenX
 #   Version:
 #   Problem class: MILP
-#   Application: Infrastructure & Capacity expansion
+#   Application: Infrastructure & Capacity Expansion
 #   Sectoral focus: Power-only
 #   Sectors: Electric
 #   Time horizon: Single period (1 year)
