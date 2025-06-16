@@ -49,7 +49,7 @@ const D3SGMChart = ({
 
     const normalizedData: SolverYearlyChartData[] = [];
 
-    dataByYear.forEach((yearData, year) => {
+    dataByYear.forEach((yearData) => {
       // Find the best (minimum) value for this year
       const bestValue = d3.min(yearData, (d) => d.value) || 1;
 
@@ -227,10 +227,12 @@ const D3SGMChart = ({
              <strong>Version:</strong> ${d.version}<br>
              <strong>Normalized Value:</strong> ${d.value.toFixed(1)}x<br>
              ${
-               xAxisTooltipFormat && (d as any).originalValue
-                 ? xAxisTooltipFormat((d as any).originalValue)
+               xAxisTooltipFormat && (d as SolverYearlyChartData).originalValue
+                 ? xAxisTooltipFormat(
+                     (d as SolverYearlyChartData).originalValue ?? 0,
+                   )
                  : `<strong>Original Value:</strong> ${
-                     (d as any).originalValue || d.value
+                     (d as SolverYearlyChartData).originalValue || d.value
                    }`
              }
              `,
