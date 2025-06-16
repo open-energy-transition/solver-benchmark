@@ -11,6 +11,7 @@ import {
 } from "@/components/shared";
 import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
+import SolverEvolutionSection from "@/components/admin/performance-history/SolverEvolutionSection";
 
 import {
   ISolverYearlyChartData,
@@ -299,6 +300,11 @@ const PagePerformanceHistory = () => {
           {/* Content */}
           <SgmModeSection />
           <NormalizedSection chartData={chartData} />
+          <SolverEvolutionSection
+            solverYearlyMetrics={solverYearlyMetrics}
+            numSolvedBenchMark={chartData.numSolvedBenchMark}
+            totalBenchmarks={commonInstances.length}
+          />
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
