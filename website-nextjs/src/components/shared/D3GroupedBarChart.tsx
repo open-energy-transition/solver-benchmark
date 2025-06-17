@@ -19,7 +19,7 @@ const D3GroupedBarChart = ({
   barOpacity = 1,
   showXaxisLabel = true,
   transformHeightValue,
-  xAxisBarTextClassName = "text-xs fill-dark-grey",
+  xAxisBarTextClassName = "text-[10px] fill-dark-grey",
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -80,7 +80,17 @@ const D3GroupedBarChart = ({
       .scaleLinear()
       .domain([
         0,
-        d3.max(data, (d) => d3.max(keys, (key) => Number(d[key]))) || 0,
+        d3.max(data, (d) =>
+          d3.max(keys, (key) =>
+            transformHeightValue
+              ? transformHeightValue({
+                  key,
+                  value: d[key],
+                  category: d[categoryKey],
+                })
+              : Number(d[key]),
+          ),
+        ) || 0,
       ])
       .nice()
       .range([height - margin.bottom, margin.top]);
@@ -190,7 +200,7 @@ const D3GroupedBarChart = ({
       .attr(
         "class",
         (d) =>
-          `text-xs bar-text ${barTextClassName ? barTextClassName(d) : ""}`,
+          `text-[10px] bar-text ${barTextClassName ? barTextClassName(d) : ""}`,
       )
       .attr("y", (d) =>
         yScale(

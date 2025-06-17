@@ -4,47 +4,50 @@ import { useCallback } from "react";
 import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
-import { MetaDataEntry } from "@/types/meta-data";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
 
-interface ISolverRuntimeComparison {
-  benchmarkName: string;
-  benchmarkDetail: MetaDataEntry;
-}
+const BENCHMARKS_FILTERS = [
+  "genx-10_IEEE_9_bus_DC_OPF-9-1h",
+  "tulipa-1_EU_investment_simple-28-1h",
+  "temoa-US_9R_TS_SP-9-12",
+  "genx-elec_trex_uc-15-24h",
+  "pypsa-eur-sec-5-12h",
+  "pypsa-eur-elec-op-10-3h",
+  "TIMES-GEO-global-netzero-31-20ts",
+];
+const CATEGORY = "benchmark";
 
-const SolverRuntimeComparison = ({
-  benchmarkName,
-  benchmarkDetail,
-}: ISolverRuntimeComparison) => {
+const SolverRuntimeComparison = () => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  ).filter((result) => result.benchmark === benchmarkName);
+  ).filter((result) =>
+    BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`),
+  );
 
   const findBenchmarkData = useCallback(
-    (key: string, cateogry: string | number) => {
+    (key: string, category: string | number) => {
       return benchmarkLatestResults.find(
         (result) =>
           result.solver === key &&
-          result.benchmark === benchmarkName &&
-          result.size === cateogry,
+          `${result.benchmark}-${result.size}` === category,
       );
     },
-    [benchmarkLatestResults, benchmarkName],
+    [benchmarkLatestResults],
   );
 
-  const chartData = benchmarkDetail.sizes.map((s) => {
+  const chartData = BENCHMARKS_FILTERS.map((benchmark) => {
     const data = benchmarkLatestResults.filter(
-      (result) => result.size === s.name && result.benchmark === benchmarkName,
+      (result) => `${result.benchmark}-${result.size}` === benchmark,
     );
     const res: { [solver: string]: number } = {};
     data.forEach((d) => {
       res[d.solver] = d.runtime;
     });
     return {
-      size: s.name,
+      benchmark,
       ...res,
     };
   });
@@ -65,7 +68,7 @@ const SolverRuntimeComparison = ({
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              Memory: ${benchmarkData?.memoryUsage} MB <br/>`;
+              `;
     },
     [findBenchmarkData],
   );
@@ -89,32 +92,35 @@ const SolverRuntimeComparison = ({
       const valueNum = typeof d.value === "number" ? d.value : Number(d.value);
       return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x`;
     },
-    [findBenchmarkData, chartData],
+    [findBenchmarkData],
   );
 
   const getXAxisTickFormat = useCallback(
     (value: string) => {
-      const benchmarkData = benchmarkLatestResults.filter(
-        (result) => result.size === value && result.benchmark === benchmarkName,
-      );
-      const modelSize = benchmarkDetail.sizes.find((s) => s.name === value)
-        ?.size;
+      const benchmarkData = chartData.find((data) => data.benchmark === value);
 
       const minRuntime = Math.min(
-        ...benchmarkData.map((result) => result.runtime),
+        ...Object.keys(benchmarkData ?? {}).map((key) => {
+          if (key !== CATEGORY) {
+            return Number(benchmarkData[key]);
+          } else {
+            return Number.MAX_VALUE;
+          }
+        }),
       );
-      return `Size instance: ${value} (${modelSize}) \n
+      return `${value} \n
       Fastest solver's runtime: ${humanizeSeconds(minRuntime)}`;
     },
-    [benchmarkLatestResults, benchmarkName],
+    [benchmarkLatestResults],
   );
+  console.log(chartData);
 
   return (
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
-        title="Solver Runtime Comparison"
+        title="Runtime relative to fastest solver"
         chartData={chartData}
-        categoryKey="size"
+        categoryKey={CATEGORY}
         colors={(d) => {
           return getSolverColor(d.key);
         }}

@@ -160,7 +160,7 @@ const KeyInsights = () => {
   return (
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
-        title="Solver Runtime Comparison"
+        title="Runtime relative to fastest solver"
         chartData={chartData}
         categoryKey="key"
         colors={(d) => {
