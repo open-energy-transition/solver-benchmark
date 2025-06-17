@@ -28,6 +28,7 @@ export interface ID3GroupedBarChart {
       }
     | ((d: ID3GroupedBarChartData) => string);
   transformHeightValue?: (d: ID3GroupedBarChartData) => number;
+  xAxisBarTextClassName?: string;
 }
 
 export interface ID3StackedBarChart {
