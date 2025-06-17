@@ -16,6 +16,9 @@ interface INormalizedSection {
 const NormalizedSection = ({ chartData }: INormalizedSection) => {
   return (
     <>
+      <h4 className="text-xl font-bold text-gray-800 mb-2">
+        Relative Solver Performance Evolution
+      </h4>
       <p className="max-w-screen-lg">
         <span>The below graphs show the shifted geometric mean (SGM</span>
         <span className="inline-flex gap-2">

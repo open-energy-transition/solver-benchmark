@@ -298,14 +298,14 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
+          <NumberBenchmarksSolved
+            numSolvedBenchMark={chartData.numSolvedBenchMark}
+            totalBenchmarks={commonInstances.length}
+          />
           <SgmModeSection />
           <NormalizedSection chartData={chartData} />
           <SolverEvolutionSection
             solverYearlyMetrics={solverYearlyMetrics}
-            numSolvedBenchMark={chartData.numSolvedBenchMark}
-            totalBenchmarks={commonInstances.length}
-          />
-          <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
           />
