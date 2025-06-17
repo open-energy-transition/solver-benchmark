@@ -28,30 +28,41 @@ const Footer = () => {
           <div className="flex gap-0 justify-between md:gap-4 lg:gap-[64px] pl-0 xl:pl-[221px] mt-4 lg:mt-8">
             <div className="flex flex-col gap-2">
               <p className="font-lato font-bold text-lg text-black leading-[110%] tracking-normal">
-                Community
+                Company
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                Our projects
+                <a href="https://openenergytransition.org">Website</a>
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                GitHub Repo
+                <a href="https://openenergytransition.org/projects.html">
+                  Our projects
+                </a>
+              </p>
+              <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
+                <a href="https://github.com/open-energy-transition">GitHub</a>
               </p>
             </div>
             <div className="flex flex-col gap-2">
               <p className="font-lato font-bold text-lg text-black leading-[110%] tracking-normal">
-                Company
+                Socials
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                Website
+                <a href="https://www.linkedin.com/company/open-energy-transition">
+                  LinkedIn
+                </a>
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                Github
+                <a href="https://x.com/OETenergy">X</a>
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                Linkedin
+                <a href="https://bsky.app/profile/oetenergy.bsky.social">
+                  Bluesky
+                </a>
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                X account
+                <a href="https://mastodon.social/@OpenEnergyTransition">
+                  Mastodon
+                </a>
               </p>
             </div>
             <div className="flex flex-col gap-2">
@@ -59,13 +70,14 @@ const Footer = () => {
                 Resources
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                Documentation
+                <a href="https://github.com/open-energy-transition/solver-benchmark">
+                  Source repository
+                </a>
               </p>
               <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                Papers
-              </p>
-              <p className="font-lato font-normal text-xs text-black leading-[110%] tracking-normal">
-                News
+                <a href="https://github.com/open-energy-transition/solver-benchmark/issues">
+                  Issues
+                </a>
               </p>
             </div>
           </div>
@@ -78,25 +90,6 @@ const Footer = () => {
               MIT License
             </span>
             . All rights reserved.
-          </p>
-          <p className="mt-4 sm:mt-0">
-            <span className="hover:underline underline-offset-4">
-              Documentation
-            </span>{" "}
-            | <span className="hover:underline underline-offset-4">GitHub</span>{" "}
-            |{" "}
-            <span className="hover:underline underline-offset-4">
-              Community Forum
-            </span>{" "}
-            | <span className="hover:underline underline-offset-4">Donate</span>{" "}
-            |{" "}
-            <span className="hover:underline underline-offset-4">
-              Privacy Policy
-            </span>
-            |{" "}
-            <span className="hover:underline underline-offset-4">
-              Terms of Service
-            </span>
           </p>
         </div>
       </div>
