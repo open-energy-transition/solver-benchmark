@@ -23,7 +23,6 @@ const D3SolverEvolutionChart = ({
   data,
   height = 300,
   className = "",
-  colorIndex,
 }: ID3SolverEvolutionChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
