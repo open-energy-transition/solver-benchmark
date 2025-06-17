@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
-import { getChartColor } from "@/utils/chart";
+import { getSolverColor } from "@/utils/chart";
 
 interface SolverEvolutionData {
   year: number;
@@ -28,7 +28,7 @@ const D3SolverEvolutionChart = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
-  const solverColor = useMemo(() => getChartColor(colorIndex), [colorIndex]);
+  const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
 
   useEffect(() => {
     if (data.length === 0) return;
@@ -154,7 +154,7 @@ const D3SolverEvolutionChart = ({
         );
     svg.append("g").call(grid);
 
-    // Blue bars (unsolved count) - use sorted data
+    // Colored bars (unsolved count) - use sorted data
     svg
       .selectAll(".bar")
       .data(sortedData)
@@ -168,7 +168,7 @@ const D3SolverEvolutionChart = ({
         "height",
         (d) => height - margin.bottom - yLeftScale(d.unsolvedCount),
       )
-      .attr("fill", "#3B82F6")
+      .attr("fill", solverColor)
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
         tooltip
@@ -206,7 +206,7 @@ const D3SolverEvolutionChart = ({
       .attr("x", (d) => (xScale(d.version) ?? 0) + xScale.bandwidth() / 2)
       .attr("y", (d) => yLeftScale(d.unsolvedCount) - 5)
       .attr("text-anchor", "middle")
-      .attr("fill", "#3B82F6")
+      .attr("fill", solverColor)
       .attr("font-size", "10px")
       .attr("font-weight", "500")
       .text((d) => d.unsolvedCount);
@@ -282,7 +282,7 @@ const D3SolverEvolutionChart = ({
     svg
       .append("text")
       .attr("text-anchor", "middle")
-      .attr("fill", "#3B82F6")
+      .attr("fill", solverColor)
       .attr("font-size", "12px")
       .attr("transform", `translate(20, ${height / 2}) rotate(-90)`)
       .text("Unsolved Problems");
@@ -298,7 +298,7 @@ const D3SolverEvolutionChart = ({
     return () => {
       tooltip.remove();
     };
-  }, [data, solverColor]);
+  }, [data, solverColor, solverName]);
 
   return (
     <div className={`bg-white p-4 rounded-xl ${className}`}>
@@ -308,7 +308,10 @@ const D3SolverEvolutionChart = ({
         </h3>
         <div className="flex gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-3 bg-blue-500 opacity-80"></div>
+            <div
+              className="w-4 h-3 opacity-80"
+              style={{ backgroundColor: solverColor }}
+            ></div>
             <span className="text-gray-600">Unsolved Problems</span>
           </div>
           <div className="flex items-center gap-2">
