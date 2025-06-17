@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import D3SolverEvolutionChart from "@/components/shared/D3SolverEvolutionChart";
 import {
   ISolverYearlyChartData,
@@ -24,6 +24,8 @@ const SolverEvolutionSection = ({
   numSolvedBenchMark,
   totalBenchmarks,
 }: ISolverEvolutionSection) => {
+  const [selectedSolver, setSelectedSolver] = useState("");
+
   const solverEvolutionData = useMemo(() => {
     const result: Record<string, SolverEvolutionData[]> = {};
 
@@ -104,9 +106,20 @@ const SolverEvolutionSection = ({
     });
   }, [solverEvolutionData]);
 
+  // Set default selected solver when data changes
+  useEffect(() => {
+    if (sortedSolverNames.length > 0 && !selectedSolver) {
+      setSelectedSolver(sortedSolverNames[0]);
+    }
+  }, [sortedSolverNames, selectedSolver]);
+
   if (sortedSolverNames.length === 0) {
     return null;
   }
+
+  const selectedSolverData = selectedSolver
+    ? solverEvolutionData[selectedSolver]
+    : null;
 
   return (
     <div className="mt-8 mb-6">
@@ -114,26 +127,53 @@ const SolverEvolutionSection = ({
         <h4 className="text-xl font-bold text-gray-800 mb-2">
           Individual Solver Performance Evolution
         </h4>
-        <p className="text-gray-600 max-w-4xl">
-          The charts below show the performance evolution for each solver
-          individually. The blue bars represent the number of unsolved problems
-          in the benchmark set, while the red line shows the SGM runtime
-          speed-up relative to the first version we have data for (higher values
-          indicate better performance).
+        <p className="text-gray-600 max-w-4xl mb-4">
+          The chart below shows the performance evolution for the selected
+          solver. The bars represent the number of unsolved problems in the
+          benchmark set, while the red line shows the SGM runtime speed-up
+          relative to the first version we have data for (higher values indicate
+          better performance).
         </p>
+
+        {/* Solver Dropdown */}
+        <div className="w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
+          <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
+          <select
+            name="solver"
+            value={selectedSolver}
+            onChange={(event) => setSelectedSolver(event.target.value)}
+            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] tag-line-lg
+            border-transparent text-navy rounded-b-lg block focus-visible:outline-none"
+          >
+            <option disabled value="">
+              Select a solver
+            </option>
+            {sortedSolverNames.map((solverName) => (
+              <option key={solverName} value={solverName}>
+                {solverName.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        {sortedSolverNames.map((solverName, index) => (
-          <D3SolverEvolutionChart
-            key={solverName}
-            solverName={solverName}
-            data={solverEvolutionData[solverName]}
-            colorIndex={index}
-            className="w-full"
-          />
-        ))}
-      </div>
+      {/* Single Chart Display */}
+      {selectedSolver && selectedSolverData && (
+        <D3SolverEvolutionChart
+          key={selectedSolver}
+          solverName={selectedSolver}
+          data={selectedSolverData}
+          colorIndex={0} // Can be 0 since we're only showing one chart
+          className="w-full"
+        />
+      )}
+
+      {/* No data message */}
+      {selectedSolver && !selectedSolverData && (
+        <div className="text-center text-gray-500 py-8">
+          No data available for the selected solver.
+        </div>
+      )}
     </div>
   );
 };
