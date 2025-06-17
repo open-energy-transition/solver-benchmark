@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverYearlyChartData } from "@/types/performance-history";
-import { getChartColor } from "@/utils/chart";
+import { getSolverColor } from "@/utils/chart";
 import { IResultState } from "@/types/state";
 
 type SolverType = "glpk" | "scip" | "highs";
@@ -32,8 +32,8 @@ const D3SGMChart = ({
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
-      (acc, solver: string, index: number) => {
-        acc[solver] = getChartColor(index);
+      (acc, solver: string) => {
+        acc[solver] = getSolverColor(solver);
         return acc;
       },
       {} as Record<string, string>,
