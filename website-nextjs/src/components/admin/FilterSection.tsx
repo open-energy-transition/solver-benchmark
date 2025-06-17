@@ -57,9 +57,9 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   const availableApplications = useSelector(
     (state: { results: IResultState }) => state.results.availableApplications,
   );
-
-  const availableModels = useSelector(
-    (state: { results: IResultState }) => state.results.availableModels,
+  const availableModellingFrameworks = useSelector(
+    (state: { results: IResultState }) =>
+      state.results.availableModellingFrameworks,
   );
 
   const availableProblemSizes = useSelector(
@@ -92,7 +92,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: realisticOptions,
     }[category] as string[];
@@ -149,7 +149,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       "sectors",
       "problemClass",
       "application",
-      "modelName",
+      "modellingFramework",
       "problemSize",
       "realistic",
     ].forEach((key) => {
@@ -209,7 +209,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
-          modelName: availableModels,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
@@ -235,7 +235,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
-          modelName: availableModels,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
@@ -268,7 +268,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
     };
@@ -323,63 +323,25 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             height: height || "",
           }}
         >
-          {/* Sectoral Focus */}
+          {/* Modelling Framework */}
           <FilterGroup
-            title="Sectoral Focus"
-            icon={<ForkIcon className="w-5 h-5" />}
-            items={availableSectoralFocus}
-            selectedItems={selectedFilters?.sectoralFocus}
+            title="Modelling Framework"
+            icon={<PolygonIcon className="w-5 h-5" />}
+            items={availableModellingFrameworks}
+            selectedItems={selectedFilters?.modellingFramework}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "sectoralFocus", value })
+              handleCheckboxChange({ category: "modellingFramework", value })
             }
             onItemOnly={(value) =>
               handleCheckboxChange({
-                category: "sectoralFocus",
+                category: "modellingFramework",
                 value,
                 only: true,
               })
             }
-            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
-            className="w-full"
-            itemClassName=""
-            gridClassName="!flex flex-wrap gap-0"
-            uppercase={false}
-          />
-          {/* Sectors */}
-          <FilterGroup
-            title="Sectors"
-            icon={<BrightIcon className="w-5 h-5" />}
-            items={availableSectors}
-            selectedItems={selectedFilters?.sectors}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "sectors", value })
+            onSelectAll={() =>
+              handleSelectAll({ category: "modellingFramework" })
             }
-            onItemOnly={(value) =>
-              handleCheckboxChange({ category: "sectors", value, only: true })
-            }
-            onSelectAll={() => handleSelectAll({ category: "sectors" })}
-            className="w-full"
-            itemClassName=""
-            gridClassName="!flex flex-wrap gap-0"
-            uppercase={false}
-          />
-          {/* Problem Class */}
-          <FilterGroup
-            title="Problem Class"
-            icon={<ProcessorIcon className="w-5 h-5" />}
-            items={availableProblemClasses}
-            selectedItems={selectedFilters?.problemClass}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "problemClass", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({
-                category: "problemClass",
-                value,
-                only: true,
-              })
-            }
-            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
             className="w-full"
             gridClassName="!flex flex-wrap"
             uppercase={false}
@@ -403,6 +365,27 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             onSelectAll={() => handleSelectAll({ category: "application" })}
             className="w-full"
             gridClassName="grid-cols-1"
+            uppercase={false}
+          />
+          {/* Problem Class */}
+          <FilterGroup
+            title="Problem Class"
+            icon={<ProcessorIcon className="w-5 h-5" />}
+            items={availableProblemClasses}
+            selectedItems={selectedFilters?.problemClass}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "problemClass", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "problemClass",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
+            className="w-full"
+            gridClassName="!flex flex-wrap"
             uppercase={false}
           />
           {/* Problem Size */}
@@ -446,21 +429,44 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             className="w-full"
             gridClassName="grid-cols-2"
           />
-          {/* Model */}
+          {/* Sectoral Focus */}
           <FilterGroup
-            title="Model"
-            icon={<PolygonIcon className="w-5 h-5" />}
-            items={availableModels}
-            selectedItems={selectedFilters?.modelName}
+            title="Sectoral Focus"
+            icon={<ForkIcon className="w-5 h-5" />}
+            items={availableSectoralFocus}
+            selectedItems={selectedFilters?.sectoralFocus}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "modelName", value })
+              handleCheckboxChange({ category: "sectoralFocus", value })
             }
             onItemOnly={(value) =>
-              handleCheckboxChange({ category: "modelName", value, only: true })
+              handleCheckboxChange({
+                category: "sectoralFocus",
+                value,
+                only: true,
+              })
             }
-            onSelectAll={() => handleSelectAll({ category: "modelName" })}
+            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
             className="w-full"
-            gridClassName="!flex flex-wrap"
+            itemClassName=""
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
+          />
+          {/* Sectors */}
+          <FilterGroup
+            title="Sectors"
+            icon={<BrightIcon className="w-5 h-5" />}
+            items={availableSectors}
+            selectedItems={selectedFilters?.sectors}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "sectors", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({ category: "sectors", value, only: true })
+            }
+            onSelectAll={() => handleSelectAll({ category: "sectors" })}
+            className="w-full"
+            itemClassName=""
+            gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
         </div>
