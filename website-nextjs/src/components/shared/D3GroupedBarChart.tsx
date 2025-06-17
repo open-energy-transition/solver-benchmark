@@ -19,12 +19,13 @@ const D3GroupedBarChart = ({
   barOpacity = 1,
   showXaxisLabel = true,
   transformHeightValue,
+  xAxisBarTextClassName = "text-xs fill-dark-grey",
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
   useEffect(() => {
-    const data = [...chartData];
+    const data = chartData.map((d) => ({ ...d }));
     if (!data.length) return;
 
     // Find minimum value for normalization
@@ -228,7 +229,7 @@ const D3GroupedBarChart = ({
           .attr("d", `M${margin.left},0H${width - margin.right}`);
         g.selectAll("text")
           .attr("dy", "2em")
-          .attr("class", "text-xs fill-dark-grey")
+          .attr("class", xAxisBarTextClassName)
           .attr("fill", "#666")
           .style("text-anchor", "middle")
           .each(function () {
@@ -303,6 +304,7 @@ const D3GroupedBarChart = ({
     yAxisLabel,
     categoryKey,
     rotateXAxisLabels,
+    xAxisBarTextClassName,
   ]);
 
   return (
