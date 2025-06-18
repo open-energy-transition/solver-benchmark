@@ -142,15 +142,15 @@ const SolverEvolutionSection = ({
             name="solver"
             value={selectedSolver}
             onChange={(event) => setSelectedSolver(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] tag-line-lg
-            border-transparent text-navy rounded-b-lg block focus-visible:outline-none"
+            className="w-full text-lg font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem]
+            border-transparent text-navy sm:text-base rounded-b-lg block focus-visible:outline-none"
           >
             <option disabled value="">
               Select a solver
             </option>
             {sortedSolverNames.map((solverName) => (
               <option key={solverName} value={solverName}>
-                {solverName.toUpperCase()}
+                {solverName.toLowerCase()}
               </option>
             ))}
           </select>
