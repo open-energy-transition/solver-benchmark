@@ -1,6 +1,8 @@
 import Image from "next/image";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="max-w-8xl px-4 lg:px-[70px] mx-auto pb-9">
       <div>
@@ -85,7 +87,7 @@ const Footer = () => {
 
         <div className="py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs text-black leading-[110%] tracking-normal">
           <p>
-            © 2025 Solver Benchmark. Licensed under the{" "}
+            © {currentYear} Open Energy Transition. Licensed under the{" "}
             <span className="hover:underline underline-offset-4">
               MIT License
             </span>
