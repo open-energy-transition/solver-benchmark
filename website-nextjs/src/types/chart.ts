@@ -19,7 +19,7 @@ export interface ID3GroupedBarChart {
   yAxisLabel?: string;
   rotateXAxisLabels?: boolean;
   showXaxisLabel?: boolean;
-  axisLabelTitle?: (value: { value: unknown; key: string }) => string;
+  axisLabelTitle?: (d: ID3GroupedBarChartData) => string;
   barOpacity?: number | ((d: ID3GroupedBarChartData) => number);
   xAxisTickFormat?: (value: string, data: unknown) => string;
   colors:
@@ -28,6 +28,7 @@ export interface ID3GroupedBarChart {
       }
     | ((d: ID3GroupedBarChartData) => string);
   transformHeightValue?: (d: ID3GroupedBarChartData) => number;
+  xAxisBarTextClassName?: string;
 }
 
 export interface ID3StackedBarChart {
