@@ -5,6 +5,7 @@ import { ISolverYearlyChartData } from "@/types/benchmark";
 import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage";
 import NormalizedSGMRuntime from "./NormalizedSGMRuntime";
 import { SgmExplanation } from "@/components/shared";
+import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
 
 interface INormalizedSection {
   chartData: {
@@ -46,6 +47,7 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
         that it is on average 25% slower than the best performing solver in that
         specific year.
       </p>
+      <SgmModeSection />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full mt-2 mb-4">
         <NormalizedSGMRuntime chartData={chartData.runtime} />
         <NormalizedSGMMemoryUsage chartData={chartData.memoryUsage} />

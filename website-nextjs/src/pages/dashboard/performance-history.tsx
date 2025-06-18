@@ -24,7 +24,6 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
-import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
 import { SgmMode } from "@/constants/sgm";
 
 const PagePerformanceHistory = () => {
@@ -302,7 +301,6 @@ const PagePerformanceHistory = () => {
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
           />
-          <SgmModeSection />
           <NormalizedSection chartData={chartData} />
           <SolverEvolutionSection
             solverYearlyMetrics={solverYearlyMetrics}
