@@ -6,6 +6,7 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { MetaDataEntry } from "@/types/meta-data";
 import { humanizeSeconds } from "@/utils/string";
+import { ID3GroupedBarChartData } from "@/types/chart";
 
 interface ISolverRuntimeComparison {
   benchmarkName: string;
@@ -23,9 +24,12 @@ const SolverRuntimeComparison = ({
   ).filter((result) => result.benchmark === benchmarkName);
 
   const findBenchmarkData = useCallback(
-    (key: string) => {
+    (key: string, cateogry: string | number) => {
       return benchmarkLatestResults.find(
-        (result) => result.solver === key && result.benchmark === benchmarkName,
+        (result) =>
+          result.solver === key &&
+          result.benchmark === benchmarkName &&
+          result.size === cateogry,
       );
     },
     [benchmarkLatestResults, benchmarkName],
@@ -46,8 +50,8 @@ const SolverRuntimeComparison = ({
   });
 
   const getBarTextClassName = useCallback(
-    (d: { key: string }) => {
-      const benchmarkData = findBenchmarkData(d.key);
+    (d: ID3GroupedBarChartData) => {
+      const benchmarkData = findBenchmarkData(d.key, d.category);
       if (benchmarkData?.status !== "ok") {
         return "font-extrabold fill-red-500";
       }
@@ -57,8 +61,8 @@ const SolverRuntimeComparison = ({
   );
 
   const getXAxisTooltipFormat = useCallback(
-    (d: { key: string }) => {
-      const benchmarkData = findBenchmarkData(d.key);
+    (d: ID3GroupedBarChartData) => {
+      const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
               Memory: ${benchmarkData?.memoryUsage} MB <br/>`;
@@ -67,8 +71,8 @@ const SolverRuntimeComparison = ({
   );
 
   const getBarOpacity = useCallback(
-    (d: { key: string }) => {
-      const benchmarkData = findBenchmarkData(d.key);
+    (d: ID3GroupedBarChartData) => {
+      const benchmarkData = findBenchmarkData(d.key, d.category);
       if (!benchmarkData) return 1;
       if (benchmarkData.status !== "ok") return 1;
       return 1;
@@ -77,15 +81,15 @@ const SolverRuntimeComparison = ({
   );
 
   const getAxisLabelTitle = useCallback(
-    (d: { key: string; value: unknown }) => {
-      const benchmarkData = findBenchmarkData(d.key);
+    (d: ID3GroupedBarChartData) => {
+      const benchmarkData = findBenchmarkData(d.key, d.category);
       if (benchmarkData?.status !== "ok") {
         return benchmarkData?.status ?? "-";
       }
       const valueNum = typeof d.value === "number" ? d.value : Number(d.value);
       return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x`;
     },
-    [findBenchmarkData],
+    [findBenchmarkData, chartData],
   );
 
   const getXAxisTickFormat = useCallback(
@@ -124,7 +128,7 @@ const SolverRuntimeComparison = ({
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
         transformHeightValue={(d) => {
-          const benchmarkData = findBenchmarkData(d.key);
+          const benchmarkData = findBenchmarkData(d.key, d.category);
           if (benchmarkData?.status !== "ok") return 1;
           return Number(d.value);
         }}
