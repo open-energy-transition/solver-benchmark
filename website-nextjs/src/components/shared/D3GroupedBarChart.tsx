@@ -60,7 +60,7 @@ const D3GroupedBarChart = ({
       .sort((a, b) => {
         const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
         const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
-        return avgB - avgA;
+        return avgA - avgB;
       });
 
     // Scales for side-by-side bars
@@ -125,7 +125,7 @@ const D3GroupedBarChart = ({
         // Get keys for this specific data item and sort them by value
         const itemKeys = Object.keys(d)
           .filter((key) => key !== categoryKey)
-          .sort((a, b) => Number(d[b]) - Number(d[a]));
+          .sort((a, b) => Number(d[a]) - Number(d[b]));
 
         // Create a separate xScale for each group
         const groupXScale = d3
@@ -180,7 +180,7 @@ const D3GroupedBarChart = ({
       .data((d) => {
         const itemKeys = Object.keys(d)
           .filter((key) => key !== categoryKey)
-          .sort((a, b) => Number(d[b]) - Number(d[a]));
+          .sort((a, b) => Number(d[a]) - Number(d[b]));
 
         const groupXScale = d3
           .scaleBand()
