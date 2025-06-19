@@ -141,7 +141,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         header: "Runtime",
         accessorKey: "runtime",
         enableColumnFilter: false,
-        enableSorting: false,
+        enableSorting: true,
         cell: (info) => (
           <div className="text-left">
             {humanizeSeconds(info.getValue() as number)}
@@ -253,7 +253,12 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
             : "N/A",
       };
     })
-    .filter((item) => item !== null);
+    .filter((item) => item !== null)
+    .sort((a, b) => {
+      const runtimeA = a.runtime === "N/A" ? 0 : a.runtime;
+      const runtimeB = b.runtime === "N/A" ? 0 : b.runtime;
+      return runtimeB - runtimeA;
+    });
 
   return (
     <div className="my-4 mt-8 rounded-xl">
