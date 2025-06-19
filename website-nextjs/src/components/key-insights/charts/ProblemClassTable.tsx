@@ -20,6 +20,10 @@ interface ProblemClassTableProps {
   problemClass: string;
 }
 
+const formatNumberWithCommas = (num: number): string => {
+  return num.toLocaleString();
+};
+
 const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
@@ -64,18 +68,26 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         ),
       },
       {
-        header: () => (
-          <div className="whitespace-pre-line text-right w-full">
-            # variables
-            <br /># constraints
+        header: "Num. variables",
+        accessorKey: "numVariables",
+        enableColumnFilter: false,
+        enableSorting: true,
+        size: 80,
+        cell: (info) => (
+          <div className="text-right">
+            {formatNumberWithCommas(info.getValue() as number)}
           </div>
         ),
+      },
+      {
+        header: "Num. constraints",
+        accessorKey: "constraints",
         enableColumnFilter: false,
-        enableSorting: false,
-        accessorKey: "variables_and_constraints",
-        cell: ({ row }) => (
+        enableSorting: true,
+        size: 120,
+        cell: (info) => (
           <div className="text-right">
-            {`${row.original.numVariables}; ${row.original.constraints}`}
+            {formatNumberWithCommas(info.getValue() as number)}
           </div>
         ),
       },
