@@ -26,6 +26,7 @@ interface TanStackTableProps<T> {
   onDownload?: (filteredData: T[]) => void;
   enableColumnSelector?: boolean;
   initialColumnVisibility?: VisibilityState;
+  showPagination?: boolean;
 }
 
 export function TanStackTable<T>({
@@ -37,6 +38,7 @@ export function TanStackTable<T>({
   onDownload,
   enableColumnSelector = false,
   initialColumnVisibility = {},
+  showPagination = true,
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -153,7 +155,7 @@ export function TanStackTable<T>({
                               : 200,
                           }}
                         >
-                          <div className="truncate">
+                          <div className="truncate w-full">
                             {flexRender(
                               header.column.columnDef.header,
                               header.getContext(),
@@ -204,9 +206,11 @@ export function TanStackTable<T>({
           </div>
         </div>
       </div>
-      <div className="mt-4">
-        <PaginationTable table={table} />
-      </div>
+      {showPagination && (
+        <div className="mt-4">
+          <PaginationTable table={table} />
+        </div>
+      )}
     </div>
   );
 }

@@ -13,3 +13,8 @@ export const PATH_DASHBOARD = {
   performanceHistory: `/${BASE_PATH}/performance-history`,
   fullResults: `/${BASE_PATH}/full-results`,
 };
+
+export const ROOT_PATH = {
+  home: "/",
+  keyInsights: "/key-insights",
+};
