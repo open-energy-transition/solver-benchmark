@@ -24,12 +24,12 @@ const SolverRuntimeComparison = ({
   ).filter((result) => result.benchmark === benchmarkName);
 
   const findBenchmarkData = useCallback(
-    (key: string, cateogry: string | number) => {
+    (key: string, category: string | number) => {
       return benchmarkLatestResults.find(
         (result) =>
           result.solver === key &&
           result.benchmark === benchmarkName &&
-          result.size === cateogry,
+          result.size === category,
       );
     },
     [benchmarkLatestResults, benchmarkName],
@@ -39,6 +39,7 @@ const SolverRuntimeComparison = ({
     const data = benchmarkLatestResults.filter(
       (result) => result.size === s.name && result.benchmark === benchmarkName,
     );
+
     const res: { [solver: string]: number } = {};
     data.forEach((d) => {
       res[d.solver] = d.runtime;
@@ -49,13 +50,30 @@ const SolverRuntimeComparison = ({
     };
   });
 
+  const maxNormalizedRuntime = Math.max(
+    ...benchmarkDetail.sizes.map((size) => {
+      const data = benchmarkLatestResults.filter(
+        (result) =>
+          result.size === size.name &&
+          result.benchmark === benchmarkName &&
+          result.status === "ok",
+      );
+      const res: { [solver: string]: number } = {};
+      const minRuntime = Math.min(...data.map((d) => d.runtime));
+      data.forEach((d) => {
+        res[d.solver] = d.runtime / minRuntime;
+      });
+      return Math.max(...Object.values(res));
+    }),
+  );
+
   const getBarTextClassName = useCallback(
     (d: ID3GroupedBarChartData) => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       if (benchmarkData?.status !== "ok") {
-        return "font-extrabold fill-red-500";
+        return "text-[7px] font-extrabold fill-red-500";
       }
-      return "fill-dark-grey";
+      return "text-[8px] fill-dark-grey";
     },
     [findBenchmarkData],
   );
@@ -75,7 +93,7 @@ const SolverRuntimeComparison = ({
     (d: ID3GroupedBarChartData) => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       if (!benchmarkData) return 1;
-      if (benchmarkData.status !== "ok") return 1;
+      if (benchmarkData.status !== "ok") return 0.3;
       return 1;
     },
     [findBenchmarkData],
@@ -90,7 +108,7 @@ const SolverRuntimeComparison = ({
       const valueNum = typeof d.value === "number" ? d.value : Number(d.value);
       return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x`;
     },
-    [findBenchmarkData, chartData],
+    [findBenchmarkData],
   );
 
   const getXAxisTickFormat = useCallback(
@@ -128,10 +146,13 @@ const SolverRuntimeComparison = ({
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
+        xAxisBarTextClassName="text-[8px] fill-dark-grey"
         transformHeightValue={(d) => {
+          const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);
-          if (benchmarkData?.status !== "ok") return 1;
-          return Number(d.value);
+          const height =
+            benchmarkData?.status !== "ok" ? maxNormalizedRuntime : dataPoint;
+          return Number(height);
         }}
       />
     </div>
