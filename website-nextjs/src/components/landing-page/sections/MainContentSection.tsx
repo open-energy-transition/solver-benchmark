@@ -23,10 +23,10 @@ const MainContent = () => {
       <div className="pb-12 pt-24 md:pt-64 mx-auto max-w-8xl px-4 lg:px-[70px] relative">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
-            <h2 className="inline text-white box-decoration-clone">
+            <h1 className="inline text-white box-decoration-clone">
               An open-source benchmark of optimization solvers on representative
               problems from the energy planning domain.
-            </h2>
+            </h1>
           </div>
           <div className="mt-4 text-grey text-2xl font-light">
             <h5 className="font-light text-grey">
