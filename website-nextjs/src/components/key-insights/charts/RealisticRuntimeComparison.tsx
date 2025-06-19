@@ -47,7 +47,7 @@ const PROBLEM_SIZE_FILTERS = [
   },
 ];
 
-const KeyInsights = () => {
+const RealisticRuntimeComparison = () => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
@@ -69,7 +69,7 @@ const KeyInsights = () => {
     [benchmarkLatestResults],
   );
 
-  const solversData = PROBLEM_SIZE_FILTERS.map((filterConfig) => {
+  const solverPerformanceBySize = PROBLEM_SIZE_FILTERS.map((filterConfig) => {
     const benchmarkDatas = benchmarkLatestResults.filter((result) => {
       const instances = metaData[result.benchmark].sizes
         .filter(
@@ -102,7 +102,7 @@ const KeyInsights = () => {
     };
   });
 
-  const chartData = solversData.map((filterConfig) => {
+  const chartData = solverPerformanceBySize.map((filterConfig) => {
     return {
       key: filterConfig.key,
       ...Object.fromEntries(
@@ -135,7 +135,9 @@ const KeyInsights = () => {
 
   const getXAxisTickFormat = useCallback(
     (value: string) => {
-      const solverData = solversData.find((solver) => solver.key === value);
+      const solverData = solverPerformanceBySize.find(
+        (solver) => solver.key === value,
+      );
       if (!solverData) return value;
       const filteredSolvers = solverData.solversData.filter(
         (solver) => !isNaN(solver.data),
@@ -150,7 +152,8 @@ const KeyInsights = () => {
 
       return `${
         PROBLEM_SIZE_FILTERS.find((f) => f.key === value)?.label || value
-      } (${problemText}; ${timeout} timeout)
+      }
+      (${problemText}; ${timeout} timeout)
       Fastest solver: ${humanizeSeconds(minRuntime)}
       `;
     },
@@ -174,12 +177,9 @@ const KeyInsights = () => {
         xAxisBarTextClassName="text-[10px] fill-dark-grey"
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
-        transformHeightValue={(d) => {
-          return Number(d.value);
-        }}
       />
     </div>
   );
 };
 
-export default KeyInsights;
+export default RealisticRuntimeComparison;

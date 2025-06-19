@@ -1,8 +1,7 @@
 import { ArrowUpIcon } from "@/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
-import Popup from "reactjs-popup";
-import { PATH_DASHBOARD } from "@/constants/path";
+import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 
 const MainContent = () => {
   return (
@@ -48,11 +47,9 @@ const MainContent = () => {
           </div>
 
           <div className="mt-8 grid sm:flex items-center justify-start gap-2 md:gap-6 text-center">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <div
-                  className="
+            <Link
+              href={ROOT_PATH.keyInsights}
+              className="
                   bg-white
                   cursor-pointer
                   duration-200
@@ -68,20 +65,10 @@ const MainContent = () => {
                   text-lg
                   text-teal
                   transition-all
-                  hover:bg-gray-300
                 "
-                >
-                  GETTING STARTED
-                </div>
-              )}
-              position="top center"
-              closeOnDocumentClick
-              arrow={true}
             >
-              <div className="bg-white px-4 py-2 rounded-lg">
-                Work in progress: coming soon!
-              </div>
-            </Popup>
+              KEY INSIGHTS
+            </Link>
 
             <Link
               href={PATH_DASHBOARD.home}

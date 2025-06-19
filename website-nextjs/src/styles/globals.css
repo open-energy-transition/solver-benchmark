@@ -9,7 +9,7 @@
   }
   h2,
   .h2 {
-    @apply text-5xl font-lato font-bold leading-1.2 tracking-normal text-navy;
+    @apply text-[24px] font-lato font-bold leading-1.2 tracking-normal text-navy;
   }
   h3,
   .h3 {

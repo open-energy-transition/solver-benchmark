@@ -18,7 +18,7 @@ const BENCHMARKS_FILTERS = [
 ];
 const CATEGORY = "benchmark";
 
-const SolverRuntimeComparison = () => {
+const BenchmarkRuntimeComparison = () => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
@@ -37,28 +37,48 @@ const SolverRuntimeComparison = () => {
     },
     [benchmarkLatestResults],
   );
-
-  const chartData = BENCHMARKS_FILTERS.map((benchmark) => {
+  const benchmarkWithStatus = BENCHMARKS_FILTERS.map((benchmark) => {
     const data = benchmarkLatestResults.filter(
       (result) => `${result.benchmark}-${result.size}` === benchmark,
     );
+    return {
+      benchmark,
+      data,
+    };
+  });
+  const chartData = benchmarkWithStatus.map((d) => {
     const res: { [solver: string]: number } = {};
-    data.forEach((d) => {
+    d.data.forEach((d) => {
       res[d.solver] = d.runtime;
     });
     return {
-      benchmark,
+      benchmark: d.benchmark,
       ...res,
     };
   });
+  const maxNormalizedRuntime = Math.max(
+    ...BENCHMARKS_FILTERS.map((benchmark) => {
+      const data = benchmarkLatestResults.filter(
+        (result) =>
+          `${result.benchmark}-${result.size}` === benchmark &&
+          result.status === "ok",
+      );
+      const res: { [solver: string]: number } = {};
+      const minRuntime = Math.min(...data.map((d) => d.runtime));
+      data.forEach((d) => {
+        res[d.solver] = d.runtime / minRuntime;
+      });
+      return Math.max(...Object.values(res));
+    }),
+  );
 
   const getBarTextClassName = useCallback(
     (d: ID3GroupedBarChartData) => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       if (benchmarkData?.status !== "ok") {
-        return "font-extrabold fill-red-500";
+        return "text-[7px] font-extrabold fill-red-500";
       }
-      return "fill-dark-grey";
+      return "text-[8px] fill-dark-grey";
     },
     [findBenchmarkData],
   );
@@ -77,7 +97,7 @@ const SolverRuntimeComparison = () => {
     (d: ID3GroupedBarChartData) => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       if (!benchmarkData) return 1;
-      if (benchmarkData.status !== "ok") return 1;
+      if (benchmarkData.status !== "ok") return 0.3;
       return 1;
     },
     [findBenchmarkData],
@@ -96,24 +116,27 @@ const SolverRuntimeComparison = () => {
   );
 
   const getXAxisTickFormat = useCallback(
-    (value: string) => {
-      const benchmarkData = chartData.find((data) => data.benchmark === value);
+    (category: string) => {
+      const solverData = chartData.find((data) => data.benchmark === category);
+      const benchmarkData = findBenchmarkData("highs", category);
 
       const minRuntime = Math.min(
-        ...Object.keys(benchmarkData ?? {}).map((key) => {
+        ...Object.keys(solverData ?? {}).map((key) => {
           if (key !== CATEGORY) {
-            return Number(benchmarkData[key]);
+            const runtime = solverData?.[key as keyof typeof solverData];
+            return Number(runtime);
           } else {
             return Number.MAX_VALUE;
           }
         }),
       );
-      return `${value} \n
+      const [] = category.split("-");
+      return `${benchmarkData?.benchmark} \n
+      Size: ${benchmarkData?.size} \n
       Fastest solver's runtime: ${humanizeSeconds(minRuntime)}`;
     },
     [benchmarkLatestResults],
   );
-  console.log(chartData);
 
   return (
     <div className="my-4 mt-8 rounded-xl">
@@ -133,14 +156,19 @@ const SolverRuntimeComparison = () => {
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
+        xAxisBarTextClassName="text-[8px] fill-dark-grey"
         transformHeightValue={(d) => {
-          const benchmarkData = findBenchmarkData(d.key, d.category);
-          if (benchmarkData?.status !== "ok") return 1;
-          return Number(d.value);
+          const dataPoint = Number(d.value);
+          const status = benchmarkWithStatus
+            .find((b) => b.benchmark === d.category)
+            ?.data.find((res) => res.solver === d.key);
+          const height =
+            status?.status !== "ok" ? maxNormalizedRuntime : dataPoint;
+          return Number(height);
         }}
       />
     </div>
   );
 };
 
-export default SolverRuntimeComparison;
+export default BenchmarkRuntimeComparison;

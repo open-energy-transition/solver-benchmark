@@ -8,25 +8,21 @@ import { IResultState } from "@/types/state";
 
 type SolverType = "glpk" | "scip" | "highs";
 
-interface ID3ChartLineChart {
+interface ID3SGMChart {
   title: string;
   height?: number;
   className?: string;
   chartData: SolverYearlyChartData[];
   xAxisTooltipFormat?: (value: number | string) => string;
-  maxYValue?: number;
-  showMaxLine?: boolean;
 }
 
-const D3ChartLineChart = ({
+const D3SGMChart = ({
   title,
   height = 280,
   className = "",
   chartData = [],
   xAxisTooltipFormat,
-  maxYValue,
-  showMaxLine = false,
-}: ID3ChartLineChart) => {
+}: ID3SGMChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
@@ -44,10 +40,38 @@ const D3ChartLineChart = ({
     );
   }, [availableSolvers]);
 
+  // Normalize data by year (best solver in each year = 1.0)
+  const normalizedChartData = useMemo(() => {
+    if (chartData.length === 0) return [];
+
+    // Group data by year
+    const dataByYear = d3.group(chartData, (d) => d.year);
+
+    const normalizedData: SolverYearlyChartData[] = [];
+
+    dataByYear.forEach((yearData) => {
+      // Find the best (minimum) value for this year
+      const bestValue = d3.min(yearData, (d) => d.value) || 1;
+
+      // Normalize all values for this year
+      yearData.forEach((d) => {
+        normalizedData.push({
+          ...d,
+          value: d.value / bestValue,
+          originalValue: d.value, // Keep original value for tooltip
+        });
+      });
+    });
+
+    return normalizedData;
+  }, [chartData]);
+
   useEffect(() => {
+    if (normalizedChartData.length === 0) return;
+
     // Dimensions
     const width = containerRef.current?.clientWidth || 600;
-    const margin = { top: 20, right: 20, bottom: 40, left: 85 };
+    const margin = { top: 40, right: 20, bottom: 40, left: 85 };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -78,13 +102,11 @@ const D3ChartLineChart = ({
     // Scales
     const xScale = d3
       .scalePoint()
-      .domain(chartData.map((d) => d.year.toString()))
+      .domain(normalizedChartData.map((d) => d.year.toString()))
       .range([margin.left + 20, width - margin.right]);
 
-    const yDomainMax =
-      maxYValue !== undefined
-        ? maxYValue
-        : (d3?.max(chartData, (d) => d.value) ?? 0) + 1;
+    const maxValue = d3.max(normalizedChartData, (d) => d.value) || 1;
+    const yDomainMax = Math.max(maxValue + 1, 2); // Ensure we have space above the highest point
 
     const yScale = d3
       .scaleLinear()
@@ -131,62 +153,7 @@ const D3ChartLineChart = ({
       .attr("text-anchor", "middle")
       .attr("class", "text-xs -rotate-90");
 
-    // Group data by solver
-    const groupedData = d3.group(chartData, (d) => d.solver);
-
-    // Line generator
-    const line = d3
-      .line<{ year: number; value: number }>()
-      .x((d) => xScale(d.year.toString()) ?? 0)
-      .y((d) => yScale(d.value));
-
-    // Draw lines for each solver group
-    groupedData.forEach((values, solver) => {
-      svg
-        .append("path")
-        .datum(values)
-        .attr("fill", "none")
-        .attr("stroke", solverColors[solver as SolverType]) // Use solver color
-        .attr("stroke-width", 2)
-        .attr("d", line);
-    });
-
-    // Scatter points
-    svg
-      .selectAll(".dot")
-      .data(chartData)
-      .enter()
-      .append("circle")
-      .attr("cx", (d) => xScale(d.year.toString()) ?? 0)
-      .attr("cy", (d) => yScale(d.value))
-      .attr("r", 6)
-      .attr("fill", (d) => solverColors[d.solver]) // Use solver color for points
-      .on("mouseover", (event, d) => {
-        tooltip
-          .style("opacity", 1)
-          .html(
-            `<strong>Solver:</strong> ${d.solver}<br>
-             <strong>Year:</strong> ${d.year}<br>
-             <strong>Version:</strong> ${d.version}<br>
-             ${
-               xAxisTooltipFormat
-                 ? xAxisTooltipFormat(d.value)
-                 : `<strong>Value:</strong> ${d.value}`
-             }
-             `,
-          )
-          .style("left", `${event.pageX + 10}px`)
-          .style("top", `${event.pageY - 30}px`);
-      })
-      .on("mousemove", (event) => {
-        tooltip
-          .style("left", `${event.pageX + 10}px`)
-          .style("top", `${event.pageY - 30}px`);
-      })
-      .on("mouseout", () => {
-        tooltip.style("opacity", 0);
-      });
-
+    // Grid
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
         .attr("stroke", "currentColor")
@@ -209,34 +176,99 @@ const D3ChartLineChart = ({
         });
     svg.append("g").call(grid);
 
-    if (showMaxLine && maxYValue !== undefined) {
-      svg
-        .append("line")
-        .attr("x1", margin.left)
-        .attr("x2", width - margin.right)
-        .attr("y1", yScale(maxYValue))
-        .attr("y2", yScale(maxYValue))
-        .attr("stroke", "#FF6B6B")
-        .attr("stroke-width", 2)
-        .attr("stroke-dasharray", "8,4")
-        .attr("opacity", 0.8);
+    // Add dotted line at y=1
+    svg
+      .append("line")
+      .attr("x1", margin.left)
+      .attr("x2", width - margin.right)
+      .attr("y1", yScale(1))
+      .attr("y2", yScale(1))
+      .attr("stroke", "#666")
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", "5,5")
+      .attr("opacity", 0.8);
 
+    // Group data by solver
+    const groupedData = d3.group(normalizedChartData, (d) => d.solver);
+
+    // Line generator
+    const line = d3
+      .line<{ year: number; value: number }>()
+      .x((d) => xScale(d.year.toString()) ?? 0)
+      .y((d) => yScale(d.value));
+
+    // Draw lines for each solver group
+    groupedData.forEach((values, solver) => {
       svg
-        .append("text")
-        .attr("x", width - margin.right - 5)
-        .attr("y", yScale(maxYValue) - 5)
-        .attr("text-anchor", "end")
-        .attr("fill", "#FF6B6B")
-        .attr("font-size", "12px")
-        .attr("font-weight", "bold")
-        .text(`Max: ${maxYValue}`);
-    }
+        .append("path")
+        .datum(values)
+        .attr("fill", "none")
+        .attr("stroke", solverColors[solver as SolverType])
+        .attr("stroke-width", 2)
+        .attr("d", line);
+    });
+
+    // Scatter points
+    svg
+      .selectAll(".dot")
+      .data(normalizedChartData)
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => xScale(d.year.toString()) ?? 0)
+      .attr("cy", (d) => yScale(d.value))
+      .attr("r", 6)
+      .attr("fill", (d) => solverColors[d.solver])
+      .on("mouseover", (event, d) => {
+        tooltip
+          .style("opacity", 1)
+          .html(
+            `<strong>Solver:</strong> ${d.solver}<br>
+             <strong>Year:</strong> ${d.year}<br>
+             <strong>Version:</strong> ${d.version}<br>
+             <strong>Normalized Value:</strong> ${d.value.toFixed(1)}x<br>
+             ${
+               xAxisTooltipFormat && (d as SolverYearlyChartData).originalValue
+                 ? xAxisTooltipFormat(
+                     (d as SolverYearlyChartData).originalValue ?? 0,
+                   )
+                 : `<strong>Original Value:</strong> ${
+                     (d as SolverYearlyChartData).originalValue || d.value
+                   }`
+             }
+             `,
+          )
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY - 30}px`);
+      })
+      .on("mousemove", (event) => {
+        tooltip
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY - 30}px`);
+      })
+      .on("mouseout", () => {
+        tooltip.style("opacity", 0);
+      });
+
+    // Add labels on data points
+    svg
+      .selectAll(".point-label")
+      .data(normalizedChartData)
+      .enter()
+      .append("text")
+      .attr("class", "point-label")
+      .attr("x", (d) => xScale(d.year.toString()) ?? 0)
+      .attr("y", (d) => yScale(d.value) - 12) // Position above the point
+      .attr("text-anchor", "middle")
+      .attr("fill", "#333")
+      .attr("font-size", "10px")
+      .attr("font-weight", "500")
+      .text((d) => `${d.value.toFixed(1)}x`);
 
     return () => {
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData, maxYValue, showMaxLine]);
+  }, [normalizedChartData, solverColors]);
 
   return (
     <div className={`bg-white p-4 rounded-xl ${className}`}>
@@ -267,4 +299,4 @@ const D3ChartLineChart = ({
   );
 };
 
-export default D3ChartLineChart;
+export default D3SGMChart;

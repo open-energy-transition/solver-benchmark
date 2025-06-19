@@ -14,8 +14,8 @@ const Header = () => {
         aria-label="Global"
       >
         <div className="flex w-max">
-          <a
-            href="#"
+          <Link
+            href="/"
             className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max"
           >
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[71px]">
@@ -72,7 +72,7 @@ const Header = () => {
             <div className="pt-0 lg:pt-4 pl-2 lg:pl-4 text-[28px]">
               SOLVER BENCHMARK
             </div>
-          </a>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -85,37 +85,37 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
           <Link
-            href="#benchmarks"
+            href="/#benchmarks"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             BENCHMARKS
           </Link>
           <Link
-            href="#mission"
+            href="/#mission"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             MISSION
           </Link>
           <Link
-            href="#methodology"
+            href="/#methodology"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             METHODOLOGY
           </Link>
           <Link
-            href="#contribution"
+            href="/#contribution"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             CONTRIBUTIONS
           </Link>
           <Link
-            href="#faq"
+            href="/#faq"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             FAQs
           </Link>
           <Link
-            href="#contact"
+            href="/#contact"
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             CONTACT

@@ -7,7 +7,7 @@ const SGM_CALCULATION_MODES = DEFAULT_SGM_CALCULATION_MODES.filter(
 
 const SgmModeSection = () => {
   return (
-    <div className="relative h-8">
+    <div className="relative h-8 mt-4">
       <ResultsSgmModeDropdown sgmCalculationModes={SGM_CALCULATION_MODES} />
     </div>
   );

@@ -5,6 +5,7 @@ interface SolverYearlyChartData {
   value: number;
   solver: SolverType;
   version: string;
+  originalValue?: number;
 }
 
 export type { SolverYearlyChartData };

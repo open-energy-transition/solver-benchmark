@@ -19,7 +19,7 @@ const D3GroupedBarChart = ({
   barOpacity = 1,
   showXaxisLabel = true,
   transformHeightValue,
-  xAxisBarTextClassName = "text-[10px] fill-dark-grey",
+  xAxisBarTextClassName = "text-xs fill-dark-grey",
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -125,7 +125,7 @@ const D3GroupedBarChart = ({
         // Get keys for this specific data item and sort them by value
         const itemKeys = Object.keys(d)
           .filter((key) => key !== categoryKey)
-          .sort((a, b) => Number(d[b]) - Number(d[a]));
+          .sort((a, b) => -Number(d[b]) + Number(d[a]));
 
         // Create a separate xScale for each group
         const groupXScale = d3
@@ -180,7 +180,7 @@ const D3GroupedBarChart = ({
       .data((d) => {
         const itemKeys = Object.keys(d)
           .filter((key) => key !== categoryKey)
-          .sort((a, b) => Number(d[b]) - Number(d[a]));
+          .sort((a, b) => -Number(d[b]) + Number(d[a]));
 
         const groupXScale = d3
           .scaleBand()
@@ -226,11 +226,13 @@ const D3GroupedBarChart = ({
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(
-        d3.axisBottom(xScale).tickFormat((d: string) => {
+        d3.axisBottom(xScale).tickFormat((category: string) => {
           const dataPoint = data.find(
-            (item) => item[categoryKey].toString() === d,
+            (item) => item[categoryKey].toString() === category,
           );
-          return xAxisTickFormat ? xAxisTickFormat(d, dataPoint) : d;
+          return xAxisTickFormat
+            ? xAxisTickFormat(category, dataPoint)
+            : category;
         }),
       )
       .call((g) => {

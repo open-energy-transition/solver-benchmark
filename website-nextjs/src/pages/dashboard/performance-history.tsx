@@ -11,6 +11,7 @@ import {
 } from "@/components/shared";
 import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
+import SolverEvolutionSection from "@/components/admin/performance-history/SolverEvolutionSection";
 
 import {
   ISolverYearlyChartData,
@@ -23,7 +24,6 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
-import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
 import { SgmMode } from "@/constants/sgm";
 
 const PagePerformanceHistory = () => {
@@ -297,9 +297,13 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
-          <SgmModeSection />
-          <NormalizedSection chartData={chartData} />
           <NumberBenchmarksSolved
+            numSolvedBenchMark={chartData.numSolvedBenchMark}
+            totalBenchmarks={commonInstances.length}
+          />
+          <NormalizedSection chartData={chartData} />
+          <SolverEvolutionSection
+            solverYearlyMetrics={solverYearlyMetrics}
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
           />
