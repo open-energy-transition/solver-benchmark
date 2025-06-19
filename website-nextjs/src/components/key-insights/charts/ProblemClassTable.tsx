@@ -208,12 +208,19 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         curr.sizes.forEach((size) => {
           if (
             typeof size.numVariables === "number" &&
-            size.numVariables > maxNumVariables &&
+            typeof size.numConstraints === "number" &&
             listSuccessBenchmarkArray.includes(`${curr.key} ${size.name}`)
           ) {
-            maxNumVariables = size.numVariables;
-            maxEntry = curr;
-            maxSize = size;
+            const isBetter =
+              size.numVariables > maxNumVariables ||
+              (size.numVariables === maxNumVariables &&
+                size.numConstraints > (maxSize?.numConstraints || -Infinity));
+
+            if (isBetter) {
+              maxNumVariables = size.numVariables;
+              maxEntry = curr;
+              maxSize = size;
+            }
           }
         });
       });
