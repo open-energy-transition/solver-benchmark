@@ -30,7 +30,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       {
         header: "Model Framework",
         accessorKey: "modelName",
-        size: 130,
+        size: 120,
         enableColumnFilter: false,
         enableSorting: true,
         sortingFn: "alphanumeric",
@@ -41,6 +41,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       {
         header: `${problemClass} Benchmark`,
         accessorKey: "problemClass",
+        size: 230,
         enableColumnFilter: false,
         enableSorting: false,
         cell: (info) => {
@@ -53,7 +54,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
             <Popup
               on={["hover"]}
               trigger={() => (
-                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden py-2">
+                <div className="py-2 whitespace-normal break-words">
                   <Link
                     href={getBenchmarksetLink(fullValue)}
                     className="font-bold text-blue-600 hover:text-blue-800 inline-block"
@@ -89,7 +90,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "numVariables",
         enableColumnFilter: false,
         enableSorting: true,
-        size: 80,
+        size: 100,
         cell: (info) => (
           <div className="text-right">
             {formatNumberWithCommas(info.getValue() as number)}
@@ -113,9 +114,11 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "spatialResolution",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 100,
+        size: 120,
         cell: (info) => (
-          <div className="text-left">{String(info.getValue())}</div>
+          <div className="text-left whitespace-normal break-words">
+            {String(info.getValue())}
+          </div>
         ),
       },
       {
@@ -123,9 +126,11 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "temporalResolution",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 100,
+        size: 140,
         cell: (info) => (
-          <div className="text-left">{String(info.getValue())}</div>
+          <div className="text-left whitespace-normal break-words">
+            {String(info.getValue())}
+          </div>
         ),
       },
       {
@@ -133,8 +138,11 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "solver",
         enableColumnFilter: false,
         enableSorting: false,
+        size: 90,
         cell: (info) => (
-          <div className="text-left">{String(info.getValue())}</div>
+          <div className="text-left whitespace-normal break-words">
+            {String(info.getValue())}
+          </div>
         ),
       },
       {
@@ -142,6 +150,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "runtime",
         enableColumnFilter: false,
         enableSorting: true,
+        size: 80,
         cell: (info) => (
           <div className="text-left">
             {humanizeSeconds(info.getValue() as number)}
