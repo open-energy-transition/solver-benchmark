@@ -20,13 +20,17 @@ interface ProblemClassTableProps {
   problemClass: string;
 }
 
+const formatNumberWithCommas = (num: number): string => {
+  return num.toLocaleString();
+};
+
 const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
       {
         header: "Model Framework",
         accessorKey: "modelName",
-        size: 130,
+        size: 120,
         enableColumnFilter: false,
         enableSorting: true,
         sortingFn: "alphanumeric",
@@ -37,45 +41,71 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       {
         header: `${problemClass} Benchmark`,
         accessorKey: "problemClass",
+        size: 230,
         enableColumnFilter: false,
         enableSorting: false,
+        cell: (info) => {
+          const fullValue = String(info.getValue());
+          const parts = fullValue.split(" ");
+          const benchmarkName = parts[0];
+          const sizeName = parts.slice(1).join(" ");
+
+          return (
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <div className="py-2 whitespace-normal break-words">
+                  <Link
+                    href={getBenchmarksetLink(fullValue)}
+                    className="font-bold text-blue-600 hover:text-blue-800 inline-block"
+                    style={{ textDecoration: "underline", lineHeight: "1.5" }}
+                  >
+                    {benchmarkName}
+                  </Link>
+                  {sizeName && <span className="ml-1">({sizeName})</span>}
+                </div>
+              )}
+              position="right center"
+              closeOnDocumentClick
+              arrow={false}
+            >
+              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <div className="text-left">
+                  <a
+                    href={getBenchmarksetLink(fullValue)}
+                    className="font-bold text-blue-600 hover:text-blue-800 inline-block"
+                    style={{ textDecoration: "underline", lineHeight: "1.5" }}
+                  >
+                    {benchmarkName}
+                  </a>
+                  {sizeName && <span className="ml-1">({sizeName})</span>}
+                </div>
+              </div>
+            </Popup>
+          );
+        },
+      },
+      {
+        header: "Num. variables",
+        accessorKey: "numVariables",
+        enableColumnFilter: false,
+        enableSorting: true,
+        size: 100,
         cell: (info) => (
-          <Popup
-            on={["hover"]}
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                <Link href={getBenchmarksetLink(info.getValue() as string)}>
-                  {String(info.getValue())}
-                </Link>
-              </div>
-            )}
-            position="right center"
-            closeOnDocumentClick
-            arrow={false}
-          >
-            <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-              <div className="text-left">
-                <a href={getBenchmarksetLink(info.getValue() as string)}>
-                  {String(info.getValue())}
-                </a>
-              </div>
-            </div>
-          </Popup>
+          <div className="text-right">
+            {formatNumberWithCommas(info.getValue() as number)}
+          </div>
         ),
       },
       {
-        header: () => (
-          <div className="whitespace-pre-line text-right w-full">
-            # variables
-            <br /># constraints
-          </div>
-        ),
+        header: "Num. constraints",
+        accessorKey: "constraints",
         enableColumnFilter: false,
-        enableSorting: false,
-        accessorKey: "variables_and_constraints",
-        cell: ({ row }) => (
+        enableSorting: true,
+        size: 120,
+        cell: (info) => (
           <div className="text-right">
-            {`${row.original.numVariables}; ${row.original.constraints}`}
+            {formatNumberWithCommas(info.getValue() as number)}
           </div>
         ),
       },
@@ -84,9 +114,11 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "spatialResolution",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 100,
+        size: 120,
         cell: (info) => (
-          <div className="text-left">{String(info.getValue())}</div>
+          <div className="text-left whitespace-normal break-words">
+            {String(info.getValue())}
+          </div>
         ),
       },
       {
@@ -94,9 +126,11 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "temporalResolution",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 100,
+        size: 140,
         cell: (info) => (
-          <div className="text-left">{String(info.getValue())}</div>
+          <div className="text-left whitespace-normal break-words">
+            {String(info.getValue())}
+          </div>
         ),
       },
       {
@@ -104,15 +138,19 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "solver",
         enableColumnFilter: false,
         enableSorting: false,
+        size: 90,
         cell: (info) => (
-          <div className="text-left">{String(info.getValue())}</div>
+          <div className="text-left whitespace-normal break-words">
+            {String(info.getValue())}
+          </div>
         ),
       },
       {
         header: "Runtime",
         accessorKey: "runtime",
         enableColumnFilter: false,
-        enableSorting: false,
+        enableSorting: true,
+        size: 80,
         cell: (info) => (
           <div className="text-left">
             {humanizeSeconds(info.getValue() as number)}
@@ -179,12 +217,19 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         curr.sizes.forEach((size) => {
           if (
             typeof size.numVariables === "number" &&
-            size.numVariables > maxNumVariables &&
+            typeof size.numConstraints === "number" &&
             listSuccessBenchmarkArray.includes(`${curr.key} ${size.name}`)
           ) {
-            maxNumVariables = size.numVariables;
-            maxEntry = curr;
-            maxSize = size;
+            const isBetter =
+              size.numVariables > maxNumVariables ||
+              (size.numVariables === maxNumVariables &&
+                size.numConstraints > (maxSize?.numConstraints || -Infinity));
+
+            if (isBetter) {
+              maxNumVariables = size.numVariables;
+              maxEntry = curr;
+              maxSize = size;
+            }
           }
         });
       });
@@ -224,7 +269,12 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
             : "N/A",
       };
     })
-    .filter((item) => item !== null);
+    .filter((item) => item !== null)
+    .sort((a, b) => {
+      const runtimeA = a.runtime === "N/A" ? 0 : a.runtime;
+      const runtimeB = b.runtime === "N/A" ? 0 : b.runtime;
+      return runtimeB - runtimeA;
+    });
 
   return (
     <div className="my-4 mt-8 rounded-xl">
