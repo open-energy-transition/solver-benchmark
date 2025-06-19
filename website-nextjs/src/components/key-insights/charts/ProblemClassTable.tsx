@@ -43,29 +43,46 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "problemClass",
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (info) => (
-          <Popup
-            on={["hover"]}
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                <Link href={getBenchmarksetLink(info.getValue() as string)}>
-                  {String(info.getValue())}
-                </Link>
+        cell: (info) => {
+          const fullValue = String(info.getValue());
+          const parts = fullValue.split(" ");
+          const benchmarkName = parts[0];
+          const sizeName = parts.slice(1).join(" ");
+
+          return (
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden py-2">
+                  <Link
+                    href={getBenchmarksetLink(fullValue)}
+                    className="font-bold text-blue-600 hover:text-blue-800 inline-block"
+                    style={{ textDecoration: "underline", lineHeight: "1.5" }}
+                  >
+                    {benchmarkName}
+                  </Link>
+                  {sizeName && <span className="ml-1">({sizeName})</span>}
+                </div>
+              )}
+              position="right center"
+              closeOnDocumentClick
+              arrow={false}
+            >
+              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <div className="text-left">
+                  <a
+                    href={getBenchmarksetLink(fullValue)}
+                    className="font-bold text-blue-600 hover:text-blue-800 inline-block"
+                    style={{ textDecoration: "underline", lineHeight: "1.5" }}
+                  >
+                    {benchmarkName}
+                  </a>
+                  {sizeName && <span className="ml-1">({sizeName})</span>}
+                </div>
               </div>
-            )}
-            position="right center"
-            closeOnDocumentClick
-            arrow={false}
-          >
-            <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-              <div className="text-left">
-                <a href={getBenchmarksetLink(info.getValue() as string)}>
-                  {String(info.getValue())}
-                </a>
-              </div>
-            </div>
-          </Popup>
-        ),
+            </Popup>
+          );
+        },
       },
       {
         header: "Num. variables",
