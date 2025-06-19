@@ -88,7 +88,8 @@ const BenchmarkRuntimeComparison = () => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              `;
+              Memory: ${benchmarkData?.memoryUsage} MB <br/>
+              Status: ${benchmarkData?.status} <br/>`;
     },
     [findBenchmarkData],
   );
