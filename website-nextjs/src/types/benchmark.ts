@@ -1,4 +1,4 @@
-type SolverType = "glpk" | "scip" | "highs";
+type SolverType = "glpk" | "scip" | "highs" | "gurobi" | "cbc";
 type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 
 type BenchmarkResult = {

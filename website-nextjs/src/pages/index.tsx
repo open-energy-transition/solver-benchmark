@@ -8,11 +8,16 @@ import {
 } from "@/components/landing-page/sections";
 import HowDoWeBenchmarkSection from "@/components/landing-page/sections/HowDoWeBenchmarkSection";
 import { FooterLandingPage, Header } from "@/components/shared";
+import Head from "next/head";
 
 const LandingPage = () => {
   return (
     <>
       <div>
+        <Head>
+          <title>Solver benchmark</title>
+          <meta name="description" content="Solver benchmark" />
+        </Head>
         {/* Header Section */}
         <Header />
         {/* Main Content Section */}
