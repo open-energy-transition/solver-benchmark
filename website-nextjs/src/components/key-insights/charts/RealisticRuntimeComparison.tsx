@@ -8,6 +8,7 @@ import { humanizeSeconds } from "@/utils/string";
 import { calculateSgm } from "@/utils/calculations";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { getHighestVersion } from "@/utils/versions";
+import { BenchmarkResult } from "@/types/benchmark";
 
 const PROBLEM_SIZE_FILTERS = [
   {
@@ -90,7 +91,7 @@ const RealisticRuntimeComparison = () => {
   }, [benchmarkLatestResults]);
 
   const getNumberSolvedBenchmark = useCallback(
-    (solver: string, categoryData: any[]) => {
+    (solver: string, categoryData: BenchmarkResult[]) => {
       return categoryData.filter(
         (result) => result.status === "ok" && result.solver === solver,
       ).length;
@@ -181,7 +182,8 @@ const RealisticRuntimeComparison = () => {
               Average runtime: ${humanizeSeconds(
                 solver?.unnormalizedData.runtime ?? 0,
               )} <br/>
-              Benchmarks solved: ${successRate}% (${solver?.solvedBenchmarks}/${solver?.totalBenchmarks}) <br/>`;
+              Benchmarks solved: ${solver?.solvedBenchmarks} <br/>
+              Success rate: ${successRate}% (${solver?.solvedBenchmarks}/${solver?.totalBenchmarks}) <br/>`;
     },
     [solverResults],
   );
