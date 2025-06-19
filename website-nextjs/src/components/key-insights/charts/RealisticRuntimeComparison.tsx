@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { calculateSgm } from "@/utils/calculations";
+import { ID3GroupedBarChartData } from "@/types/chart";
+import { getHighestVersion } from "@/utils/versions";
 
 const PROBLEM_SIZE_FILTERS = [
   {
@@ -69,6 +71,33 @@ const RealisticRuntimeComparison = () => {
     [benchmarkLatestResults],
   );
 
+  const solverVersions = useMemo(() => {
+    const versions: { [key: string]: string[] } = {};
+    benchmarkLatestResults.forEach((benchmarkResult) => {
+      if (!versions[benchmarkResult.solver]) {
+        versions[benchmarkResult.solver] = [];
+      }
+
+      if (
+        !versions[benchmarkResult.solver].includes(
+          benchmarkResult.solverVersion,
+        )
+      ) {
+        versions[benchmarkResult.solver].push(benchmarkResult.solverVersion);
+      }
+    });
+    return versions;
+  }, [benchmarkLatestResults]);
+
+  const getNumberSolvedBenchmark = useCallback(
+    (solver: string, categoryData: any[]) => {
+      return categoryData.filter(
+        (result) => result.status === "ok" && result.solver === solver,
+      ).length;
+    },
+    [],
+  );
+
   const solverPerformanceBySize = PROBLEM_SIZE_FILTERS.map((filterConfig) => {
     const benchmarkDatas = benchmarkLatestResults.filter((result) => {
       const instances = metaData[result.benchmark].sizes
@@ -82,12 +111,21 @@ const RealisticRuntimeComparison = () => {
         .map((sizeInfo) => sizeInfo.name);
       return instances.includes(result.size);
     });
+
     const solversData = availableSolvers.map((solver) => {
       const solverResults = benchmarkDatas.filter((d) => d.solver === solver);
+      const solvedCount = getNumberSolvedBenchmark(solver, benchmarkDatas);
+      const runtimeSgm = calculateSgm(solverResults.map((d) => d.runtime));
+
       return {
         solver,
-        data: calculateSgm(solverResults.map((d) => d.runtime)),
+        data: runtimeSgm,
         total: solverResults.length,
+        solvedBenchmarks: solvedCount,
+        version: getHighestVersion(solverVersions[solver] || []),
+        unnormalizedData: {
+          runtime: runtimeSgm,
+        },
         problemText: `${solverResults.length} ${
           solverResults.length === 1 ? "problem" : "problems"
         }`,
@@ -102,6 +140,21 @@ const RealisticRuntimeComparison = () => {
     };
   });
 
+  const solverResults = solverPerformanceBySize.flatMap((filterConfig) =>
+    filterConfig.solversData
+      .filter((solver) => !isNaN(solver.data))
+      .map((solverData) => ({
+        solver: solverData.solver,
+        version: solverData.version,
+        unnormalizedData: {
+          runtime: solverData.unnormalizedData.runtime,
+        },
+        solvedBenchmarks: solverData.solvedBenchmarks,
+        totalBenchmarks: solverData.total,
+        category: filterConfig.key,
+      })),
+  );
+
   const chartData = solverPerformanceBySize.map((filterConfig) => {
     return {
       key: filterConfig.key,
@@ -114,15 +167,23 @@ const RealisticRuntimeComparison = () => {
   });
 
   const getXAxisTooltipFormat = useCallback(
-    (d: { key: string; value: string | number; category: string | number }) => {
-      const data = chartData.find((data) => data.key === d.category) as
-        | Record<string, string | number>
-        | undefined;
-      return `Solver: ${d.key}<br/>
-              Runtime: ${humanizeSeconds(Number(data ? data[d.key] : 0))} <br/>
-            `;
+    (d: ID3GroupedBarChartData) => {
+      const solver = solverResults.find(
+        (s) => s.solver === d.key && s.category === d.category,
+      );
+      const successRate = solver
+        ? ((solver.solvedBenchmarks / solver.totalBenchmarks) * 100).toFixed(1)
+        : "0";
+
+      return `Solver: ${d.key}${
+        solver?.version ? ` v${solver.version}` : ""
+      }<br/>
+              Average runtime: ${humanizeSeconds(
+                solver?.unnormalizedData.runtime ?? 0,
+              )} <br/>
+              Benchmarks solved: ${successRate}% (${solver?.solvedBenchmarks}/${solver?.totalBenchmarks}) <br/>`;
     },
-    [findData],
+    [solverResults],
   );
 
   const getAxisLabelTitle = useCallback(
