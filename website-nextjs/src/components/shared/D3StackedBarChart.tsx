@@ -169,7 +169,9 @@ const D3StackedBarChart = ({
   return (
     <div className={`bg-white rounded-xl ${className}`}>
       <div className="flex justify-between items-center">
-        <div className="tag-line-xs text-center text-dark-grey ">{title}</div>
+        <div className="tag-line-xs text-center text-dark-grey">
+          {typeof title === "string" ? title : title}
+        </div>
         <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
           {Object.keys(colors).map((solverKey) => (
             <div

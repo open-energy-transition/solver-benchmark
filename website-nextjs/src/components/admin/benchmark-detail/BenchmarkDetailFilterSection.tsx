@@ -9,12 +9,14 @@ import {
   ProblemSizeIcon,
   GlobeSearchIcon,
   ForkIcon,
+  QuestionLineIcon,
 } from "@/assets/icons";
 import { useSelector } from "react-redux";
 import { IResultState, RealisticOption } from "@/types/state";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
 import FilterGroup from "../filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
+import Popup from "reactjs-popup";
 
 interface IBenchmarkDetailFilterSectionProps {
   setLocalFilters: React.Dispatch<
@@ -28,6 +30,73 @@ interface IBenchmarkDetailFilterSectionProps {
   availableProblemSizes: string[];
   availableModellingFrameworks: string[];
 }
+
+const FilterGroupWithTooltip = ({
+  title,
+  tooltipText,
+  tooltipContent,
+  icon,
+  items,
+  selectedItems,
+  onItemChange,
+  onItemOnly,
+  onSelectAll,
+  className,
+  gridClassName,
+  itemClassName,
+  uppercase,
+}: {
+  title: string;
+  tooltipText?: string;
+  tooltipContent?: React.ReactNode;
+  icon: React.ReactNode;
+  items: string[];
+  selectedItems?: string[];
+  onItemChange: (value: string) => void;
+  onItemOnly: (value: string) => void;
+  onSelectAll: () => void;
+  className?: string;
+  gridClassName?: string;
+  itemClassName?: string;
+  uppercase?: boolean;
+}) => {
+  const titleWithTooltip = (
+    <div className="flex items-center gap-1">
+      <span>{title}</span>
+      <Popup
+        on={["hover"]}
+        trigger={() => (
+          <span className="flex items-baseline my-auto cursor-pointer">
+            <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
+          </span>
+        )}
+        position="right center"
+        closeOnDocumentClick
+        arrow={false}
+      >
+        <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+          {tooltipContent || tooltipText || title}
+        </div>
+      </Popup>
+    </div>
+  );
+
+  return (
+    <FilterGroup
+      title={titleWithTooltip}
+      icon={icon}
+      items={items}
+      selectedItems={selectedItems}
+      onItemChange={onItemChange}
+      onItemOnly={onItemOnly}
+      onSelectAll={onSelectAll}
+      className={className}
+      gridClassName={gridClassName}
+      itemClassName={itemClassName}
+      uppercase={uppercase}
+    />
+  );
+};
 
 const BenchmarkDetailFilterSection = ({
   setLocalFilters,
@@ -324,8 +393,9 @@ const BenchmarkDetailFilterSection = ({
           "
         >
           {/* Modelling Framework */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Modelling Framework"
+            tooltipText="A modelling framework is a set of tools, rules, methods, and structures that support the development, execution, and management of models."
             icon={<PolygonIcon className="w-5 h-5" />}
             items={availableModellingFrameworks}
             selectedItems={localFilters?.modellingFramework}
@@ -347,8 +417,9 @@ const BenchmarkDetailFilterSection = ({
             uppercase={false}
           />
           {/* Application */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Application"
+            tooltipText="What kind of practical question the energy model is used to answer"
             icon={<WrenchIcon className="w-5 h-5" />}
             items={availableApplications}
             selectedItems={localFilters?.application}
@@ -368,8 +439,25 @@ const BenchmarkDetailFilterSection = ({
             uppercase={false}
           />
           {/* Problem Class */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Problem Class"
+            tooltipContent={
+              <div>
+                <div>
+                  Describes the type of mathematical optimization problem
+                </div>
+                <ul className="list-disc list-outside ml-6">
+                  <li>
+                    LP: Only continuous variables; all equations and
+                    inequalities are linear
+                  </li>
+                  <li>
+                    MILP: Includes integer or binary variables, e.g., for on/off
+                    decisions, investment choices
+                  </li>
+                </ul>
+              </div>
+            }
             icon={<ProcessorIcon className="w-5 h-5" />}
             items={availableProblemClasses}
             selectedItems={localFilters?.problemClass}
@@ -390,8 +478,20 @@ const BenchmarkDetailFilterSection = ({
           />
 
           {/* Problem Size */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Problem Size"
+            tooltipContent={
+              <div>
+                <div>
+                  Defines the computational scale of the optimization problem
+                </div>
+                <ul className="list-disc list-outside ml-6">
+                  <li>S: n. vars {"<"} 1e4</li>
+                  <li>M: 1e4 ≤ n. vars {"<"} 1e6</li>
+                  <li>L: 1e6 ≤ n. vars</li>
+                </ul>
+              </div>
+            }
             icon={<ProblemSizeIcon className="w-5 h-5" />}
             items={availableProblemSizes}
             selectedItems={localFilters?.problemSize}
@@ -411,8 +511,9 @@ const BenchmarkDetailFilterSection = ({
             uppercase={true}
           />
           {/* Realistic */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Realistic"
+            tooltipText="Benchmark instances are marked as realistic if they come from a model that was used, or is similar to a model used in an actual energy modelling study. Please note that this is a rather subjective and modelling framework-dependent definition, but is still useful when estimating solver performance on real-world energy models."
             icon={<GlobeSearchIcon className="w-5 h-5" />}
             items={[RealisticOption.Realistic, RealisticOption.Other]}
             selectedItems={localFilters?.realistic}
@@ -432,8 +533,9 @@ const BenchmarkDetailFilterSection = ({
             uppercase={false}
           />
           {/* Sectoral Focus */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Sectoral Focus"
+            tooltipText="Categorizes energy models based on whether they focus on the power/electricity sector only, or whether they also consider interactions with other sectors that produce/use energy (e.g., transport, industry, etc.)."
             icon={<ForkIcon className="w-5 h-5" />}
             items={availableSectoralFocus}
             selectedItems={localFilters?.sectoralFocus}
@@ -454,8 +556,9 @@ const BenchmarkDetailFilterSection = ({
             uppercase={false}
           />
           {/* Sectors */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Sectors"
+            tooltipText="A sector is a set of energy production/consumption technologies/energy services devoted to satisfy the demand for a particular category of human activity (i.e. transport, industry, etc.)."
             icon={<BrightIcon className="w-5 h-5" />}
             items={availableSectors}
             selectedItems={localFilters?.sectors}

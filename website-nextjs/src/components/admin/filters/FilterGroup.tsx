@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Popup from "reactjs-popup";
 
 interface FilterGroupProps {
-  title: string;
+  title: string | React.ReactNode;
   icon: React.ReactNode;
   items: string[];
   selectedItems?: string[];
