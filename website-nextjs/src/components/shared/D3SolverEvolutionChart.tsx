@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
-import { getSolverColor } from "@/utils/chart";
+import { getSolverColor, roundUpToNearest } from "@/utils/chart";
 
 interface SolverEvolutionData {
   year: number;
@@ -16,12 +16,14 @@ interface ID3SolverEvolutionChart {
   height?: number;
   className?: string;
   colorIndex: number;
+  totalBenchmarks: number;
 }
 
 const D3SolverEvolutionChart = ({
   solverName,
   data,
   height = 300,
+  totalBenchmarks = 105,
   className = "",
 }: ID3SolverEvolutionChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -71,10 +73,9 @@ const D3SolverEvolutionChart = ({
       .padding(0.3);
 
     // Left Y-axis (unsolved count)
-    const maxUnsolved = d3.max(data, (d) => d.unsolvedCount) || 0;
     const yLeftScale = d3
       .scaleLinear()
-      .domain([0, maxUnsolved])
+      .domain([0, roundUpToNearest(totalBenchmarks)])
       .range([height - margin.bottom, margin.top]);
 
     // Right Y-axis (speed-up) - ensure reasonable range even for flat lines
@@ -87,12 +88,12 @@ const D3SolverEvolutionChart = ({
       validSpeedUps.length > 0 ? Math.min(...validSpeedUps) : 1;
 
     // Add padding to make flat lines visible
-    const speedUpRange = maxSpeedUp - minSpeedUp;
-    const padding = speedUpRange === 0 ? 0.5 : speedUpRange * 0.1;
-
     const yRightScale = d3
       .scaleLinear()
-      .domain([Math.max(0, minSpeedUp - padding), maxSpeedUp + padding])
+      .domain([
+        Math.floor(minSpeedUp * 10) / 10,
+        Math.ceil(maxSpeedUp * 16) / 10,
+      ])
       .range([height - margin.bottom, margin.top]);
 
     // X-axis
@@ -111,7 +112,7 @@ const D3SolverEvolutionChart = ({
       });
 
     // Left Y-axis (unsolved)
-    const yLeftAxis = d3.axisLeft(yLeftScale).ticks(6).tickSizeOuter(0);
+    const yLeftAxis = d3.axisLeft(yLeftScale).ticks(10).tickSizeOuter(0);
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
@@ -293,6 +294,26 @@ const D3SolverEvolutionChart = ({
       .attr("font-size", "12px")
       .attr("transform", `translate(${width - 20}, ${height / 2}) rotate(90)`)
       .text("Speed-up");
+
+    svg
+      .append("line")
+      .attr("x1", margin.left)
+      .attr("x2", width - margin.right)
+      .attr("y1", yLeftScale(totalBenchmarks))
+      .attr("y2", yLeftScale(totalBenchmarks))
+      .attr("stroke", "#FF6B6B")
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", "8,4")
+      .attr("opacity", 0.8);
+    svg
+      .append("text")
+      .attr("x", width - margin.right - 5)
+      .attr("y", yLeftScale(totalBenchmarks + 2))
+      .attr("text-anchor", "end")
+      .attr("fill", "#FF6B6B")
+      .attr("font-size", "12px")
+      .attr("font-weight", "bold")
+      .text(`Max: 105`);
 
     return () => {
       tooltip.remove();

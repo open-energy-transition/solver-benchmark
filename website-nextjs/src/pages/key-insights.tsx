@@ -7,6 +7,7 @@ import Popup from "reactjs-popup";
 import React from "react";
 import RealisticRuntimeComparison from "@/components/key-insights/charts/RealisticRuntimeComparison";
 import Head from "next/head";
+import SolverPerformanceHistory from "@/components/key-insights/SolverPerformanceHistory";
 
 const useHash = () => {
   const [hash, setHash] = React.useState("");
@@ -39,7 +40,7 @@ const KeyInsightsPage = () => {
         <meta name="description" content="Key insights" />
       </Head>
       <Header />
-      <div className="bg-[#F5F4F4] mx-auto max-w-screen-4xl px-4 lg:px-[70px] relative pb-36">
+      <div className="bg-[#F5F4F4] mx-auto max-w-screen-4xl text-navy px-4 lg:px-[70px] relative pb-36">
         <h3 className="py-4.5 font-bold">Key Insights</h3>
         <div className="grid grid-cols-6 gap-2">
           <div className="col-start-1 col-end-2 py-8 px-0 bg-[#FAFAFACC] bg-opacity-80 h-max rounded-xl sticky top-[150px]">
@@ -68,6 +69,13 @@ const KeyInsightsPage = () => {
               >
                 <a href="#what-is-feasible-for-open-source-solvers">
                   What is feasible for open source solvers?
+                </a>
+              </div>
+              <div
+                className={getLinkStyle("#how-are-solvers-evolving-over-time")}
+              >
+                <a href="#how-are-solvers-evolving-over-time">
+                  How are solvers evolving over time?
                 </a>
               </div>
             </div>
@@ -217,6 +225,9 @@ const KeyInsightsPage = () => {
                   some modelling frameworks in our benchmark set. We welcome
                   contributions to fill these gaps!
                 </p>
+              </div>
+              <div className="rounded-xl">
+                <SolverPerformanceHistory />
               </div>
             </div>
           </div>
