@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface StackedBarData {
   [key: string]: number | string;
 }
@@ -32,7 +34,7 @@ export interface ID3GroupedBarChart {
 }
 
 export interface ID3StackedBarChart {
-  title: string;
+  title: string | React.ReactNode;
   height?: number;
   className?: string;
   data: StackedBarData[];

@@ -2,6 +2,8 @@ import D3StackedBarChart from "@/components/shared/D3StackedBarChart";
 import { IResultState } from "@/types/state";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { QuestionLineIcon } from "@/assets/icons";
+import Popup from "reactjs-popup";
 
 const BenchmarkStatisticsCharts = ({
   availableSectoralFocus,
@@ -160,6 +162,57 @@ const BenchmarkStatisticsCharts = ({
     });
   }, [metaData, availableProblemSizes]);
 
+  const timeHorizonTitleWithTooltip = (
+    <div className="flex items-center gap-1">
+      <span>By Time Horizon</span>
+      <Popup
+        on={["hover"]}
+        trigger={() => (
+          <span className="flex items-baseline my-auto cursor-pointer">
+            <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
+          </span>
+        )}
+        position="right center"
+        closeOnDocumentClick
+        arrow={false}
+      >
+        <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+          Defines how far in the future the model optimizes and the number of
+          optimization stages
+          <ul className="list-disc list-outside ml-6">
+            <li>
+              Single-stage: solution in a single step assuming full foresight,
+              i.e. that all future weather and demand assumptions are known in
+              advance (the evolution of decision variables cannot be observed
+              over time). The model does not account for the temporal evolution
+              of decisions or new information over time.
+            </li>
+            <li>
+              Multi-stage: The optimization is solved sequentially over
+              different time steps, allowing decisions to evolve over time.
+              Indeed, multi-stage models can be formulated with:
+              <ul className="list-disc list-outside ml-6">
+                <li>
+                  <b>Perfect foresight</b>: assuming full knowledge of future
+                  conditions, but decisions are optimized over several periods.
+                </li>
+                <li>
+                  <b>Myopic</b>: only current and possibly short-term future
+                  information is available at each step.
+                </li>
+                <li>
+                  <b>Stochastic</b>: future conditions are uncertain and
+                  represented via scenarios or probability distributions;
+                  decisions adapt as uncertainty resolves over time.
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </Popup>
+    </div>
+  );
+
   return (
     <div className="p-1 rounded-xl space-y-8 relative">
       <div className="xl:flex xl:flex-row justify-between gap-2 ">
@@ -185,7 +238,7 @@ const BenchmarkStatisticsCharts = ({
             categoryKey="modellingFramework"
             colors={{ single: "#004B69", multi: "#6B9080" }}
             rotateXAxisLabels={true}
-            title="By Time Horizon"
+            title={timeHorizonTitleWithTooltip}
             showXaxisLabel={false}
           />
         </div>
