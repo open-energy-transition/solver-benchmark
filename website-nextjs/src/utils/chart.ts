@@ -71,3 +71,10 @@ export const calculateScaleRangeAndTicks = (
     tickValues: ticks,
   };
 };
+
+export const roundUpToNearest = (
+  value: number,
+  multiple: number = 10,
+): number => {
+  return Math.ceil(value / multiple) * multiple;
+};

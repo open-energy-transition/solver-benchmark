@@ -157,6 +157,7 @@ const SolverEvolutionSection = ({
       {selectedSolver && selectedSolverData && (
         <D3SolverEvolutionChart
           key={selectedSolver}
+          totalBenchmarks={totalBenchmarks}
           solverName={selectedSolver}
           data={selectedSolverData}
           colorIndex={0} // Can be 0 since we're only showing one chart

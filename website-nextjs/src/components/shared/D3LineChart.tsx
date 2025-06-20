@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverYearlyChartData } from "@/types/performance-history";
-import { getSolverColor } from "@/utils/chart";
+import { getSolverColor, roundUpToNearest } from "@/utils/chart";
 import { IResultState } from "@/types/state";
 
 type SolverType = "glpk" | "scip" | "highs";
@@ -88,12 +88,12 @@ const D3ChartLineChart = ({
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, yDomainMax])
+      .domain([0, roundUpToNearest(yDomainMax)])
       .range([height - margin.bottom, margin.top]);
 
     // Axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
+    const yAxis = d3.axisLeft(yScale).ticks(10).tickSizeOuter(0);
 
     svg
       .append("g")
