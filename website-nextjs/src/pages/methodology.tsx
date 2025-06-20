@@ -51,31 +51,33 @@ const Methodology = () => {
             </p>
             <ol className="list-decimal list-outside ml-6">
               <li className="mb-2">
-                Runtime: of the linopy.Model.solve() call to the solver (we also
+                <strong>Runtime</strong>: of the{" "}
+                <code>linopy.Model.solve()</code> call to the solver (we also
                 record the solving runtime reported by the solver when
                 available)
               </li>
               <li className="mb-2">
-                Peak memory consumption: of the script runner/run_solver.py that
-                uses linopy to call the solver, as reported by /usr/bin/time -f
-                %M
+                <strong>Peak memory consumption</strong>: of the script{" "}
+                <code>runner/run_solver.py</code> that uses linopy to call the
+                solver, as reported by <code>/usr/bin/time -f %M</code>
               </li>
               <li className="mb-2">
-                Status: OK, warning, TO (timeout), OOM (out of memory), ER
-                (error). Statuses OK and warning are as returned by linopy, TO
-                indicates that we terminated the solver when the time limit was
-                reached, OOM indicates cases where the solver ran out of memory
-                (we set a bound of 95% of available system memory using
-                systemd-run), and ER denotes cases where the solver returned a
-                non-zero exit code.
+                <strong>Status</strong>: OK, warning, TO (timeout), OOM (out of
+                memory), ER (error). Statuses OK and warning are as returned by
+                linopy, TO indicates that we terminated the solver when the time
+                limit was reached, OOM indicates cases where the solver ran out
+                of memory (we set a bound of 95% of available system memory
+                using
+                <code>systemd-run</code>), and ER denotes cases where the solver
+                returned a non-zero exit code.
               </li>
               <li className="mb-2">
-                Termination condition: as returned by the solver, for example
-                optimal, infeasible, unbounded, …
+                <strong>Termination condition</strong>: as returned by the
+                solver, for example optimal, infeasible, unbounded, …
               </li>
               <li className="mb-2">
-                Objective value: (a floating point value) the optimal objective
-                value
+                <strong>Objective value</strong>: (a floating point value) the
+                optimal objective value
               </li>
             </ol>
             <p>
@@ -84,28 +86,30 @@ const Methodology = () => {
             </p>
             <ol className="list-decimal list-outside ml-6">
               <li className="mb-2">
-                Maximum integrality violation: the maximum absolute difference
-                between the solution of each integer variable and its integer
-                value
+                <strong>Maximum integrality violation</strong>: the maximum
+                absolute difference between the solution of each integer
+                variable and its integer value
               </li>
               <li className="mb-2">
-                Duality gap: the gap between the two objective bounds for MILPs,
-                which should be below the requested tolerance (1e-4). The
-                duality gap can be used to judge how close the returned solution
-                is to the optimal solution, and we set a tolerance in order to
-                allow solvers to terminate in a reasonable time period when they
-                have found a close-to-optimal solution. Precisely, if p is the
-                primal objective bound (i.e., the incumbent objective value,
-                which is the upper bound for minimization problems), and d is
-                the dual objective bound (i.e., the lower bound for minimization
-                problems), then the relative duality gap is defined as |p - d| /
-                |p|.
+                <strong>Duality gap</strong>: the gap between the two objective
+                bounds for MILPs, which should be below the requested tolerance
+                (<code>1e-4</code>). The duality gap can be used to judge how
+                close the returned solution is to the optimal solution, and we
+                set a tolerance in order to allow solvers to terminate in a
+                reasonable time period when they have found a close-to-optimal
+                solution. Precisely, if <code>p</code> is the primal objective
+                bound (i.e., the incumbent objective value, which is the upper
+                bound for minimization problems), and <code>d</code> is the dual
+                objective bound (i.e., the lower bound for minimization
+                problems), then the relative duality gap is defined as{" "}
+                <code>|p - d| / |p|</code>.
               </li>
             </ol>
             <p>
               After running benchmarks, we manually check any runs where the
-              above 2 metrics are above 1e-4 for errors. In our results so far,
-              no solver had a max integrality violation of above 1e-5.
+              above 2 metrics are above <code>1e-4</code> for errors. In our
+              results so far, no solver had a max integrality violation of above{" "}
+              <code>1e-5</code>.
             </p>
           </div>
 
@@ -129,8 +133,8 @@ const Methodology = () => {
               geometric mean (GM). Given a set of measured values t₁, …, tₙ,
               e.g. runtimes of a solver on a set of benchmarks, the SGM value is
               defined as: e^(∑ᵢ₌₁ⁿ ln(max(1, tᵢ + s))/n) - s. The SGM differs
-              from the geometric mean because it uses a shift s and also uses a
-              max with 1. Key features are:
+              from the geometric mean because it uses a <em>shift</em>{" "}
+              <code>s</code> and also uses a max with 1. Key features are:
             </p>
             <ul className="list-disc list-outside ml-6">
               <li className="mb-2">(S)GM commutes with normalization</li>
@@ -152,7 +156,8 @@ const Methodology = () => {
               </li>
             </ul>
             <p>
-              We use a shift of s = 10, which is also the shift used by the{" "}
+              We use a shift of <code>s = 10</code>, which is also the shift
+              used by the{" "}
               <a href="https://plato.asu.edu/ftp/shgeom.html">
                 Mittlemann benchmark
               </a>
@@ -184,19 +189,19 @@ const Methodology = () => {
             </p>
             <ol className="list-decimal list-outside ml-6 text-base leading-relaxed">
               <li className="mb-2">
-                Penalizing TO/OOM/ER by a factor of X: this mode uses the
-                time-out value for runtime or the maximum available value of
-                memory, multiplied by a factor of X, for benchmark instances
-                that time-out, go out of memory, or error. By using a high
-                factor, this avoids the misleading case above as the second
-                solver will have a much higher SGM value.
+                <strong>Penalizing TO/OOM/ER by a factor of X</strong>: this
+                mode uses the time-out value for runtime or the maximum
+                available value of memory, multiplied by a factor of X, for
+                benchmark instances that time-out, go out of memory, or error.
+                By using a high factor, this avoids the misleading case above as
+                the second solver will have a much higher SGM value.
               </li>
               <li className="mb-2">
-                Only on intersection of solved benchmarks: this mode filters the
-                benchmark instances to the subset of instances where all solvers
-                solve successfully. This also avoids the misleading case above,
-                but at the cost of comparing solvers on a smaller subset of
-                benchmarks.
+                <strong>Only on intersection of solved benchmarks</strong>: this
+                mode filters the benchmark instances to the subset of instances
+                where all solvers solve successfully. This also avoids the
+                misleading case above, but at the cost of comparing solvers on a
+                smaller subset of benchmarks.
               </li>
             </ol>
           </div>
@@ -223,32 +228,33 @@ const Methodology = () => {
                 </p>
                 <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
                   <li className="mb-2">
-                    It allows us to run different benchmarks in parallel,
-                    reducing the total runtime (running all benchmarks and
-                    solvers as of May 2025 would take 35 days), and allowing us
-                    to scale to a large number of benchmarks and solver versions
-                    in the future.
+                    It allows us to run different benchmarks in{" "}
+                    <strong>parallel</strong>, reducing the total runtime
+                    (running all benchmarks and solvers as of May 2025 would
+                    take 35 days), and allowing us to scale to a large number of
+                    benchmarks and solver versions in the future.
                   </li>
                   <li className="mb-2">
-                    It is more cost-efficient compared to buying and maintaining
-                    a physical machine, or to renting a bare metal cloud server
-                    (which require minimum monthly commitments, and usually have
-                    a lot more CPUs than are used by most solvers).
+                    It is more <strong>cost-efficient</strong> compared to
+                    buying and maintaining a physical machine, or to renting a
+                    bare metal cloud server (which require minimum monthly
+                    commitments, and usually have a lot more CPUs than are used
+                    by most solvers).
                   </li>
                   <li className="mb-2">
-                    It is also more automatable, as we can use
+                    It is also more <strong>automatable</strong>, as we can use
                     infrastructure-as-code to set up as many VMs as we need with
                     minimal manual effort.
                   </li>
                   <li className="mb-2">
-                    It is more transparent, as anyone can reproduce our
-                    benchmark results on similar machines using their own cloud
-                    accounts.
+                    It is more <strong>transparent</strong>, as anyone can{" "}
+                    <strong>reproduce</strong> our benchmark results on similar
+                    machines using their own cloud accounts.
                   </li>
                   <li className="mb-2">
                     <p>
-                      What about errors in runtime measurements due to the
-                      shared nature of cloud computing?
+                      What about <strong>errors</strong> in runtime measurements
+                      due to the shared nature of cloud computing?
                     </p>
                     <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
                       <li className="mb-2">
@@ -257,15 +263,15 @@ const Methodology = () => {
                         experiments to estimate the error in runtime.
                       </li>
                       <li className="mb-2">
-                        We run a reference benchmark and solver periodically on
-                        every benchmark runner and estimate the coefficient of
-                        variation of the runtime of this reference benchmark for
-                        each VM. All our results have a variation of less than
-                        4%, which is less than the difference in runtimes
-                        between 98.8% of pairs of solvers on our benchmark
-                        instances. (You can think of this as 99% of our
-                        benchmarks should have the same ranking of solvers if
-                        run on a bare metal server.)
+                        We run a <strong>reference benchmark</strong> and solver
+                        periodically on every benchmark runner and estimate the
+                        coefficient of variation of the runtime of this
+                        reference benchmark for each VM. All our results have a
+                        variation of less than 4%, which is less than the
+                        difference in runtimes between 98.8% of pairs of solvers
+                        on our benchmark instances. (You can think of this as
+                        99% of our benchmarks should have the same ranking of
+                        solvers if run on a bare metal server.)
                       </li>
                       <li className="mb-2">
                         See more details of our error estimation in this
@@ -287,14 +293,15 @@ const Methodology = () => {
                   We use the Python solver interface{" "}
                   <a href="https://github.com/PyPSA/linopy">linopy</a> to
                   interface with different solvers and the measured runtime is
-                  the runtime of the call to linopy.Model.solve(). Why?
+                  the runtime of the call to <code>linopy.Model.solve()</code>.
+                  Why?
                 </p>
                 <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
                   <li className="mb-2">
                     It reduces the need for us to write a Python interface for
                     each solver and version (already 13 as of May 2025, and
                     counting), which would largely be a duplicate of the code in
-                    linopy.
+                    <code>linopy</code>.
                   </li>
                   <li className="mb-2">
                     Measuring the runtime of linopy is a consistent definition
@@ -320,7 +327,7 @@ const Methodology = () => {
                 <p>
                   We run all solvers using their default options, with two
                   exceptions: the first is that we set a duality gap tolerance
-                  of 1e-4 for all MILP instances.
+                  of <code>1e-4</code> for all MILP instances.
                 </p>
                 <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
                   <li className="mb-2">
@@ -382,12 +389,13 @@ const Methodology = () => {
             <ol className="list-decimal list-outside ml-6 text-base leading-relaxed">
               <li className="mb-2">
                 Small and Medium sized benchmark instances are run with a
-                timeout of 1 hour on a GCP c4-standard-2 VM (1 core (2 vCPU), 7
-                GB RAM)
+                timeout of 1 hour on a GCP <code>c4-standard-2</code> VM (1 core
+                (2 vCPU), 7 GB RAM)
               </li>
               <li className="mb-2">
                 Large sized benchmark instances are run with a timeout of 10
-                hours on a GCP c4-highmem-8 VM (4 cores (8 vCPU), 62 GB RAM)
+                hours on a GCP <code>c4-highmem-8</code> VM (4 cores (8 vCPU),
+                62 GB RAM)
               </li>
             </ol>
             <p>
@@ -395,9 +403,15 @@ const Methodology = () => {
               on the number of variables in the problem, as follows:
             </p>
             <ul className="list-disc list-outside ml-6 text-base leading-relaxed">
-              <li className="mb-2">Small: num vars &lt; 1e4</li>
-              <li className="mb-2">Medium: 1e4 ≤ num vars &lt; 1e6</li>
-              <li className="mb-2">Large: num vars ≥ 1e6</li>
+              <li className="mb-2">
+                Small: num vars &lt; <code>1e4</code>
+              </li>
+              <li className="mb-2">
+                Medium: <code>1e4</code> ≤ num vars &lt; <code>1e6</code>
+              </li>
+              <li className="mb-2">
+                Large: num vars ≥ <code>1e6</code>
+              </li>
             </ul>
           </div>
 
@@ -406,8 +420,9 @@ const Methodology = () => {
               Details of the Runner
             </h4>
             <p>
-              Given a time out T (seconds) and a number of iterations N, the
-              benchmark runner runner/run_benchmarks.py operates as follows:
+              Given a time out <code>T</code> (seconds) and a number of
+              iterations <code>N</code>, the benchmark runner{" "}
+              <code>runner/run_benchmarks.py</code> operates as follows:
             </p>
             <ul className="list-disc list-outside ml-6 text-base leading-relaxed">
               <li className="mb-2">
@@ -416,18 +431,19 @@ const Methodology = () => {
               </li>
               <li className="mb-2">
                 For each benchmark and solver combination, the runner calls
-                runner/run_solver.py, which imports the input file into linopy
-                and calls linopy.Model.solve() with the chosen solver
+                <code>runner/run_solver.py</code>, which imports the input file
+                into linopy and calls <code>linopy.Model.solve()</code> with the
+                chosen solver
               </li>
               <li className="mb-2">
-                run_solver.py reports the time taken for the solve() call, along
-                with the status, termination condition, and objective value
-                returned by the solver
+                <code>run_solver.py</code> reports the time taken for the{" "}
+                <code>solve()</code> call, along with the status, termination
+                condition, and objective value returned by the solver
               </li>
               <li className="mb-2">
                 <p>
-                  The runner uses /usr/bin/time to measure the peak memory usage
-                  of the run_solver.py script
+                  The runner uses <code>/usr/bin/time</code> to measure the peak
+                  memory usage of the <code>run_solver.py</code> script
                 </p>
                 <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
                   <li className="mb-2">
@@ -438,22 +454,23 @@ const Methodology = () => {
                 </ul>
               </li>
               <li className="mb-2">
-                The above is repeated N times, and the mean and standard
-                deviation of runtime and memory usage are computed
+                The above is repeated <code>N</code> times, and the mean and
+                standard deviation of runtime and memory usage are computed
               </li>
               <li className="mb-2">
                 The value from the last iteration is used for other metrics such
                 as status, termination condition, and objective value
               </li>
               <li className="mb-2">
-                If the solver errors in any iteration, then the (benchmark,
-                solver) combination is marked with status ER and no further
-                iterations are performed
+                If the solver errors in any iteration, then the{" "}
+                <code>(benchmark, solver)</code> combination is marked with
+                status <code>ER</code> and no further iterations are performed
               </li>
               <li className="mb-2">
-                If the solver takes longer than T in any iteration, then the
-                (benchmark, solver) combination is marked with status TO and no
-                further iterations are performed
+                If the solver takes longer than <code>T</code> in any iteration,
+                then the
+                <code>(benchmark, solver)</code> combination is marked with
+                status <code>TO</code> and no further iterations are performed
               </li>
             </ul>
             <p>Future improvements:</p>
