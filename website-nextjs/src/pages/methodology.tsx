@@ -41,8 +41,8 @@ const Methodology = () => {
       <TableOfContents items={tocItems} />
       <ContentSection>
         <div className="info-pages-content">
-          <div className="rounded-xl">
-            <h4 id="metrics" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h4 id="metrics" className="info-pages-heading">
               Metrics
             </h4>
             <p>
@@ -109,8 +109,8 @@ const Methodology = () => {
             </p>
           </div>
 
-          <div className="rounded-xl">
-            <h4 id="ranking-solvers" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h4 id="ranking-solvers" className="info-pages-heading">
               Ranking Solvers: Shifted Geometric Mean (SGM)
             </h4>
             <p>
@@ -170,8 +170,8 @@ const Methodology = () => {
             </ul>
           </div>
 
-          <div className="rounded-xl">
-            <h4 id="when-not-to-use-sgm" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h4 id="when-not-to-use-sgm" className="info-pages-heading">
               When Not to Use SGM
             </h4>
             <p>
@@ -180,7 +180,7 @@ const Methodology = () => {
               under the time limit, which will result in very similar SGM values
               even though the first solver could be much better than the second.
               In such cases, we offer the possibility of using the following
-              alternate "modes" of computing SGM:
+              alternate &quot;modes&quot; of computing SGM:
             </p>
             <ol className="list-decimal list-outside ml-6 text-base leading-relaxed">
               <li className="mb-2">
@@ -201,14 +201,14 @@ const Methodology = () => {
             </ol>
           </div>
 
-          <div className="rounded-xl">
-            <h4 id="methodology" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h4 id="methodology" className="info-pages-heading">
               Methodology
             </h4>
           </div>
 
-          <div className="rounded-xl">
-            <h5 id="key-decisions" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h5 id="key-decisions" className="info-pages-heading">
               Key Decisions
             </h5>
             <p>
@@ -371,8 +371,8 @@ const Methodology = () => {
             </ol>
           </div>
 
-          <div className="rounded-xl">
-            <h4 id="hardware-configurations" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h4 id="hardware-configurations" className="info-pages-heading">
               Hardware Configurations
             </h4>
             <p>
@@ -401,8 +401,8 @@ const Methodology = () => {
             </ul>
           </div>
 
-          <div className="rounded-xl">
-            <h4 id="details-of-the-runner" className="scroll-mt-[9rem]">
+          <div className="info-pages-section">
+            <h4 id="details-of-the-runner" className="info-pages-heading">
               Details of the Runner
             </h4>
             <p>
@@ -451,7 +451,7 @@ const Methodology = () => {
                 iterations are performed
               </li>
               <li className="mb-2">
-                If the solver takes longer than Ts in any iteration, then the
+                If the solver takes longer than T in any iteration, then the
                 (benchmark, solver) combination is marked with status TO and no
                 further iterations are performed
               </li>

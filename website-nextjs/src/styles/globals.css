@@ -128,13 +128,26 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.info-pages-content ol li,
-.info-pages-content ul li {
-  @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy;
+/* Info Pages Unified Styles */
+.info-pages-content {
+  /* Container for info pages content - enables list styling */
 }
 
 .info-pages-content ol li,
 .info-pages-content ul li {
+  @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy;
   margin: 0;
   padding: 0;
+}
+
+.info-pages-section {
+  @apply rounded-xl mb-6;
+}
+
+.info-pages-section:last-child {
+  @apply mb-0;
+}
+
+.info-pages-heading {
+  @apply scroll-mt-[9rem];
 }
