@@ -60,7 +60,7 @@ const D3GroupedBarChart = ({
       .sort((a, b) => {
         const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
         const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
-        return avgB - avgA;
+        return avgA - avgB;
       });
 
     // Scales for side-by-side bars
