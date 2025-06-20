@@ -9,6 +9,7 @@ import ProblemClassTable from "@/components/key-insights/charts/ProblemClassTabl
 import { PATH_DASHBOARD } from "@/constants/path";
 import Popup from "reactjs-popup";
 import RealisticRuntimeComparison from "@/components/key-insights/charts/RealisticRuntimeComparison";
+import SolverPerformanceHistory from "@/components/key-insights/SolverPerformanceHistory";
 
 const KeyInsightsPage = () => {
   const tocItems = [
@@ -23,6 +24,10 @@ const KeyInsightsPage = () => {
     {
       hash: "#what-is-feasible-for-open-source-solvers",
       label: "What is feasible for open source solvers?",
+    },
+    {
+      hash: "#how-are-solvers-evolving-over-time",
+      label: "How are solvers evolving over time?",
     },
   ];
 
@@ -166,6 +171,9 @@ const KeyInsightsPage = () => {
               modelling frameworks in our benchmark set. We welcome
               contributions to fill these gaps!
             </p>
+          </div>
+          <div className="info-pages-section">
+            <SolverPerformanceHistory />
           </div>
         </div>
       </ContentSection>

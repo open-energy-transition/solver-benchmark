@@ -16,8 +16,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 171878
       Num. variables: 127530
@@ -39,8 +39,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 232867
       Num. variables: 177437
@@ -62,8 +62,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_3_three_zones_w_co2_capture-3222908514bd19ae55895811eb847ad882270e280657123420407a885ccb34bc.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 171878
       Num. variables: 127530
@@ -85,8 +85,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_4_three_zones_w_policies_slack-0be00acbe74d795dfc6aec53239998a93ac0310563b3e65fca00f2acebe2b6c1.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 184817
       Num. variables: 146016
@@ -108,8 +108,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_5_three_zones_w_piecewise_fuel-51ff0e52d559b549f9e45a13eb267156a2416566f126d1567e1846353a4e9936.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 205142
       Num. variables: 140466
@@ -131,8 +131,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_6_three_zones_w_multistage-62d4538e93e8e775de4f754baf121d4996da332da11066a1a496e298f2319641.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 171944
       Num. variables: 127636
@@ -154,8 +154,8 @@ benchmarks:
     - Name: 3-24h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_7_three_zones_w_colocated_VRE_storage-053eaf1f441d6cb6da75f0dfdaab95f8011afb3be0a34e3b0ae02dbd1043ee74.mps.gz
-      Temporal resolution: 24
-      Spatial resolution: 3
+      Temporal resolution: 24 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 4325
       Num. variables: 4260
@@ -175,8 +175,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
-      Temporal resolution: 168
-      Spatial resolution: 3
+      Temporal resolution: 168 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 302449
       Num. variables: 257129
@@ -196,8 +196,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 438008
       Num. variables: 260604
@@ -217,8 +217,8 @@ benchmarks:
     - Name: 9-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 9
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1235166
