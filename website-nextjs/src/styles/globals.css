@@ -136,8 +136,6 @@ input[type="number"] {
 .info-pages-content ol li,
 .info-pages-content ul li {
   @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy;
-  margin: 0;
-  padding: 0;
 }
 
 .info-pages-section {
