@@ -17,12 +17,16 @@ interface ISolverEvolutionSection {
   solverYearlyMetrics: ISolverYearlyMetrics[];
   numSolvedBenchMark: ISolverYearlyChartData[];
   totalBenchmarks: number;
+  title?: string;
+  description?: string;
 }
 
 const SolverEvolutionSection = ({
   solverYearlyMetrics,
   numSolvedBenchMark,
   totalBenchmarks,
+  title = "Individual Solver Performance Evolution",
+  description = "The chart below shows the performance evolution for the selected solver. The bars represent the number of unsolved problems in the benchmark set, while the red line shows the SGM runtime speed-up relative to the first version we have data for (higher values indicate better performance).",
 }: ISolverEvolutionSection) => {
   const [selectedSolver, setSelectedSolver] = useState("");
 
@@ -124,16 +128,8 @@ const SolverEvolutionSection = ({
   return (
     <div className="mt-8 mb-6">
       <div className="mb-6">
-        <h4 className="text-xl font-bold text-gray-800 mb-2">
-          Individual Solver Performance Evolution
-        </h4>
-        <p className="text-gray-600 max-w-4xl mb-4">
-          The chart below shows the performance evolution for the selected
-          solver. The bars represent the number of unsolved problems in the
-          benchmark set, while the red line shows the SGM runtime speed-up
-          relative to the first version we have data for (higher values indicate
-          better performance).
-        </p>
+        <h4 className="text-xl font-bold text-gray-800 mb-2">{title}</h4>
+        <p className="text-gray-600 max-w-4xl mb-4">{description}</p>
 
         {/* Solver Dropdown */}
         <div className="w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
