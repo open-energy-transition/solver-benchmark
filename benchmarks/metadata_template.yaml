@@ -1,6 +1,6 @@
 ## (optional) link to the modelling framework repo used to generate the benchmark(s) (e.g. https://github.com/PyPSA/pypsa-eur)
 benchmarks:
-  Benchmark_name:
+  Benchmark_name: # Add the benchmark name
     Short description: # Description of the main features of your benchmarks
     Modelling framework: # Name of modelling framework, e.g., PyPSA, TIMES
     Model name: # Specific model used to generate the benchmark, e.g. PyPSA-Eur, TIMES-Ireland
@@ -13,7 +13,7 @@ benchmarks:
     Time horizon: # Single-stage (1 year, 1 week, ...), Multi-stage (indicate how many stages)
     MILP features: # Current set (feel free to propose new ones if necessary): None, Unit commitment, Piecewise fuel usage, Transmission switching, Modularity
     Sizes:
-    - Name: # Spatial resolution-Temporal resolution, e.g. 2-12ts, 10-1h
+    - Name: # Spatial resolution-Temporal resolution, e.g., 2-12ts, 10-1h
       Size: # Automatically assigned when running the benchmark
       URL: # link to the shared folder where the .lp / .mps file is stored, maintainers will assign a new link after accepting the contribution
       Temporal resolution: # n. of time steps in one planning horizon, e.g., 1 hour / 8 time slices
