@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ROOT_PATH } from "@/constants/path";
 
 const HowDoWeBenchmarkSection = () => {
   return (
@@ -44,7 +45,7 @@ const HowDoWeBenchmarkSection = () => {
           <div className="mt-6 xl:ml-4 text-medium-normal">
             Read more about our methodology, caveats, and known issues{" "}
             <Link
-              href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
+              href={ROOT_PATH.methodology}
               className="hover:underline underline-offset-4 cursor-pointer"
             >
               here →

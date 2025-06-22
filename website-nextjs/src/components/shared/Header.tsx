@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons";
 import Link from "next/link";
+import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -85,40 +86,28 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
           <Link
-            href="/#benchmarks"
+            href={ROOT_PATH.home}
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
-            BENCHMARKS
+            HOME
           </Link>
           <Link
-            href="/#mission"
+            href={ROOT_PATH.keyInsights}
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
-            MISSION
+            KEY INSIGHTS
           </Link>
           <Link
-            href="/#methodology"
+            href={PATH_DASHBOARD.home}
+            className="text-sm/6 font-medium hover:underline underline-offset-4"
+          >
+            DETAILED RESULTS
+          </Link>
+          <Link
+            href={ROOT_PATH.methodology}
             className="text-sm/6 font-medium hover:underline underline-offset-4"
           >
             METHODOLOGY
-          </Link>
-          <Link
-            href="/#contribution"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
-          >
-            CONTRIBUTIONS
-          </Link>
-          <Link
-            href="/#faq"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
-          >
-            FAQs
-          </Link>
-          <Link
-            href="/#contact"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
-          >
-            CONTACT
           </Link>
         </div>
         <div className="hidden lg:flex w-max">
