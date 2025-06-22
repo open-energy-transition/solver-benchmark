@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { SolverStatusType } from "@/types/benchmark";
 import { IResultState } from "@/types/state";
@@ -9,10 +9,29 @@ import D3PlotChartPerformanceScaling from "./D3PlotChartPerformanceScalling";
 const PerformanceScalling = () => {
   const [allSolvers, setallSolvers] = useState(false);
 
-  const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.rawBenchmarkResults;
-  }).filter((result) => (allSolvers ? true : result.solver !== "gurobi"));
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => state.results.rawBenchmarkResults,
+  );
 
+  const minRuntime = useMemo(() => {
+    const value = rawBenchmarkResults
+      .filter((element) => element.status === "ok")
+      .reduce(
+        (min, element) => Math.min(min, element.runtime),
+        Number.MAX_SAFE_INTEGER,
+      );
+
+    // Floor to nearest 0.01
+    return Math.floor(value * 100) / 100;
+  }, [rawBenchmarkResults]);
+
+  const benchmarkResults = useMemo(
+    () =>
+      rawBenchmarkResults.filter((result) =>
+        allSolvers ? true : result.solver !== "gurobi",
+      ),
+    [rawBenchmarkResults, allSolvers],
+  );
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.rawMetaData;
   });
@@ -128,6 +147,7 @@ const PerformanceScalling = () => {
       <div>
         <D3PlotChartPerformanceScaling
           chartData={chartData}
+          minYaxis={minRuntime}
           solverColor={allSolvers ? "gurobi" : "highs"}
         />
       </div>

@@ -16,7 +16,8 @@ export interface ID3GroupedBarChart {
   chartData: StackedBarData[];
   categoryKey: string;
   barTextClassName?: (d: ID3GroupedBarChartData) => string;
-  xAxisTooltipFormat?: (d: ID3GroupedBarChartData) => string;
+  xAxisTooltipFormat?: (category: string) => string;
+  tooltipFormat?: (d: ID3GroupedBarChartData) => string;
   xAxisLabel?: string;
   yAxisLabel?: string;
   rotateXAxisLabels?: boolean;

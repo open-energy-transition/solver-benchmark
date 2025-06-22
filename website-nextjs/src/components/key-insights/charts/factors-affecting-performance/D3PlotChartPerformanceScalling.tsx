@@ -15,10 +15,12 @@ interface PerformanceScalingProps {
   chartData: ChartData[];
   onPointClick?: (benchmark: ChartData) => void;
   solverColor: string;
+  minYaxis?: number;
 }
 
 const D3PlotChartPerformanceScaling = ({
   chartData,
+  minYaxis,
   onPointClick,
   solverColor = "highs",
 }: PerformanceScalingProps) => {
@@ -47,16 +49,14 @@ const D3PlotChartPerformanceScaling = ({
       .style("overflow", "visible");
 
     // Create scales
-    const maxNumVariables = d3.max(chartData, (d) => d.numVariables) ?? 1e7;
-
     const xScale = d3
       .scaleLog()
-      .domain([100, maxNumVariables > 1e7 ? maxNumVariables : 1e7])
+      .domain([100, 5e7])
       .range([margin.left, width - margin.right]);
 
     const yScale = d3
       .scaleLog()
-      .domain([d3.min(chartData, (d) => d.runtime) || 0, 100000])
+      .domain([minYaxis || d3.min(chartData, (d) => d.runtime) || 0, 1e6])
       .range([height - margin.bottom, margin.top]);
 
     // Add timeout lines
@@ -104,7 +104,7 @@ const D3PlotChartPerformanceScaling = ({
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(yScale).ticks(5))
+      .call(d3.axisLeft(yScale).ticks(6))
       .selectAll("text")
       .html("")
       .append("tspan")
@@ -231,7 +231,7 @@ const D3PlotChartPerformanceScaling = ({
 
   return (
     <div className="relative">
-      <div className="justify-end flex gap-4 mb-4 items-center text-sm">
+      <div className="justify-end flex gap-4 items-center text-sm">
         <div className="flex items-center gap-2">
           <div
             className="w-2 h-2 rounded-full"

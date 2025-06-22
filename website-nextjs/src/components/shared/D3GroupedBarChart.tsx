@@ -11,6 +11,7 @@ const D3GroupedBarChart = ({
   customLegend,
   axisLabelTitle,
   xAxisTooltipFormat,
+  tooltipFormat,
   xAxisTickFormat,
   colors,
   xAxisLabel = "Category",
@@ -187,9 +188,7 @@ const D3GroupedBarChart = ({
       .on("mouseover", (event, d) => {
         tooltip
           .style("opacity", 1)
-          .html(
-            (xAxisTooltipFormat ? xAxisTooltipFormat(d) : d.value) as string,
-          )
+          .html((tooltipFormat ? tooltipFormat(d) : d.value) as string)
           .style("left", `${event.pageX + 10}px`)
           .style("top", `${event.pageY - 28}px`);
       })
@@ -234,9 +233,7 @@ const D3GroupedBarChart = ({
       .on("mouseover", (event, d) => {
         tooltip
           .style("opacity", 1)
-          .html(
-            (xAxisTooltipFormat ? xAxisTooltipFormat(d) : d.value) as string,
-          )
+          .html((tooltipFormat ? tooltipFormat(d) : d.value) as string)
           .style("left", `${event.pageX + 10}px`)
           .style("top", `${event.pageY - 28}px`);
       })
@@ -265,6 +262,20 @@ const D3GroupedBarChart = ({
           .attr("class", xAxisBarTextClassName)
           .attr("fill", "#666")
           .style("text-anchor", "middle")
+          .style("cursor", xAxisTooltipFormat ? "pointer" : "default")
+          .on("mouseover", (event, d) => {
+            const dataPoint = data.find(
+              (item) => item[categoryKey].toString() === d,
+            );
+            if (xAxisTooltipFormat && dataPoint) {
+              tooltip
+                .style("opacity", 1)
+                .html(xAxisTooltipFormat(d as string))
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 28}px`);
+            }
+          })
+          .on("mouseout", () => tooltip.style("opacity", 0))
           .each(function () {
             const text = d3.select(this);
             const lines = text.text().split("\n");

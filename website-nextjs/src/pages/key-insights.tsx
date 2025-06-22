@@ -15,10 +15,6 @@ import FactorsAffectingPerformanceInsights from "@/components/key-insights/Facto
 const KeyInsightsPage = () => {
   const tocItems = [
     {
-      hash: "#key-insights",
-      label: "Key Insights",
-    },
-    {
       hash: "#how-good-is-each-solver-and-for-what-cases",
       label: "How good is each solver, and for what cases?",
     },
@@ -30,6 +26,10 @@ const KeyInsightsPage = () => {
       hash: "#how-are-solvers-evolving-over-time",
       label: "How are solvers evolving over time?",
     },
+    {
+      hash: "#what-factors-affect-solver-performance",
+      label: "What factors affect solver performance?",
+    },
   ];
 
   return (
@@ -38,9 +38,6 @@ const KeyInsightsPage = () => {
       <ContentSection>
         <div className="info-pages-content">
           <div className="info-pages-section">
-            <h4 id="key-insights" className="info-pages-heading">
-              Key Insights
-            </h4>
             <p>
               This platform contains the results of benchmarking 5 optimization
               solvers on 120 problems arising from energy system models. For

@@ -34,6 +34,10 @@ const RuntimeOfFastestSolver = ({
     return state.results.availableSolvers;
   });
 
+  const metaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
+
   const successfulResults = benchmarkResults.filter((result) => {
     return benchmarkList.includes(`${result.benchmark}-${result.size}`);
   });
@@ -42,19 +46,29 @@ const RuntimeOfFastestSolver = ({
     new Set(
       successfulResults.map((result) => `${result.benchmark}-${result.size}`),
     ),
-  ).reduce<Record<string, { runtime: number; solver: string; status: string }>>(
-    (acc, instance) => {
-      return {
-        ...acc,
-        [instance]: {
-          runtime: Number.MAX_VALUE,
-          solver: "",
-          status: "unknown",
-        },
-      };
-    },
-    {},
-  );
+  ).reduce<
+    Record<
+      string,
+      {
+        runtime: number;
+        solver: string;
+        status: string;
+        size: string;
+        benchmark: string;
+      }
+    >
+  >((acc, instance) => {
+    return {
+      ...acc,
+      [instance]: {
+        runtime: Number.MAX_VALUE,
+        solver: "",
+        status: "unknown",
+        size: "",
+        benchmark: "",
+      },
+    };
+  }, {});
 
   successfulResults.forEach((result) => {
     const key = `${result.benchmark}-${result.size}`;
@@ -62,6 +76,8 @@ const RuntimeOfFastestSolver = ({
       fastestRuntimeByBenchmark[key].runtime = result.runtime;
       fastestRuntimeByBenchmark[key].solver = result.solver;
       fastestRuntimeByBenchmark[key].status = result.status;
+      fastestRuntimeByBenchmark[key].size = result.size;
+      fastestRuntimeByBenchmark[key].benchmark = result.benchmark;
     }
   });
 
@@ -92,15 +108,44 @@ const RuntimeOfFastestSolver = ({
     return humanizeSeconds(Number(d.value));
   };
 
-  const getXAxisTooltipFormat = (d: IDataPoint) => {
+  const getXAxisTooltipFormat = (d: string) => {
+    const benchmarkData = fastestRuntimeByBenchmark[d];
+    const metaDataEntry =
+      metaData[benchmarkData?.benchmark as keyof typeof metaData];
+    const sizeData = metaDataEntry?.sizes.find(
+      (s) => s.name === benchmarkData?.size,
+    );
+
+    return `
+    ${metaDataEntry.shortDescription}<br/><br/>
+    Modelling framework: ${metaDataEntry.modellingFramework}<br/>
+    Model name: ${metaDataEntry.modelName}<br/>
+    Problem class: ${metaDataEntry.problemClass}<br/>
+    Application: ${metaDataEntry.application}<br/>
+    Sectoral focus: ${metaDataEntry.sectoralFocus}<br/>
+    Sectors: ${metaDataEntry.sectors}<br/>
+    Time horizon: ${metaDataEntry.timeHorizon}<br/>
+    MILP features: ${metaDataEntry.milpFeatures}<br/>
+    Size: ${sizeData?.name} (${sizeData?.size})<br/>
+    Temporal resolution: ${sizeData?.temporalResolution || "N/A"}<br/>
+    Spatial resolution: ${sizeData?.spatialResolution || "N/A"}<br/>
+    Realistic: ${
+      metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
+    }<br/>
+    Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
+    Num. variables: ${sizeData?.numVariables}<br/>
+            `;
+  };
+
+  const tooltipFormat = (d: IDataPoint) => {
     const benchmarkData = fastestRuntimeByBenchmark[d.category];
     let solver = "";
     if (benchmarkData?.status === "ok") {
       solver = `Solver: ${benchmarkData?.solver}<br/>
             `;
     }
-
-    return `Benchmark: ${d.category}<br/>
+    return `
+    Benchmark: ${d.category}<br/>
               Runtime: ${humanizeSeconds(Number(d.value))} <br/>
               ${solver}
               Status: ${benchmarkData?.status}<br/>
@@ -182,6 +227,7 @@ const RuntimeOfFastestSolver = ({
           customLegend={chartLegend}
           barTextClassName={getBarTextClassName}
           xAxisTooltipFormat={getXAxisTooltipFormat}
+          tooltipFormat={tooltipFormat}
           axisLabelTitle={getAxisLabelTitle}
           xAxisBarTextClassName="text-xs fill-dark-grey"
           transformHeightValue={getTransformHeightValue}

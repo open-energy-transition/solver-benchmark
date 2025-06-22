@@ -5,7 +5,10 @@ const FactorsAffectingPerformanceInsights = () => {
   return (
     <>
       {/* Content */}
-      <h4 id="how-are-solvers-evolving-over-time" className="scroll-mt-[9rem]">
+      <h4
+        id="what-factors-affect-solver-performance"
+        className="scroll-mt-[9rem]"
+      >
         What factors affect solver performance?
       </h4>
       <p>
@@ -27,9 +30,9 @@ const FactorsAffectingPerformanceInsights = () => {
         you the details of the model scenario, including application type,
         constraints, LP/MILP, etc.
       </p>
-      <h4>
+      <h5>
         Effect of increasing spatial and temporal resolutions on PyPSA models
-      </h4>
+      </h5>
       <p>
         This is a series of different size instances of a PyPSA-Eur
         sector-coupled model, where the spatial and temporal resolution are
@@ -45,7 +48,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "pypsa-eur-sec-2-3h",
         ]}
       />
-      <h4>Effect of unit commitment (UC) on GenX models</h4>
+      <h5>Effect of unit commitment (UC) on GenX models</h5>
       <p>
         genx-10_IEEE_9_bus_DC_OPF-9-1h is an MILP problem that adds UC as an
         extra model constraint to the power sector model
@@ -63,7 +66,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
         ]}
       />
-      <h4>Effect of unit commitment (UC) on PyPSA models</h4>
+      <h5>Effect of unit commitment (UC) on PyPSA models</h5>
       <p>
         pypsa-eur-elec-op-ucconv-2-3h is an MILP problem that adds UC as an
         extra model constraint to the power sector operational model
@@ -83,9 +86,9 @@ const FactorsAffectingPerformanceInsights = () => {
           "pypsa-eur-elec-op-ucconv-2-3h",
         ]}
       />
-      <h4>
+      <h5>
         Effect of UC, transmission expansion, and CO2 constraints on GenX models
-      </h4>
+      </h5>
       <p>
         The set of GenX benchmarks below compares solver performance on 1) a
         case with optimal transmission expansion, 2) a case with both optimal
@@ -112,7 +115,7 @@ const FactorsAffectingPerformanceInsights = () => {
         same time resolution as for the other benchmarks listed here would be
         needed.
       </p>
-      <h4>Effect of increasingly stringent CO2 constraints on TEMOA models</h4>
+      <h5>Effect of increasingly stringent CO2 constraints on TEMOA models</h5>
       <p>
         In this set of TEMOA models, the 1st case has no CO2 constraints, the
         2nd one considers US Nationally Determined Contributions (NDCs), and the
@@ -130,7 +133,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "temoa-US_9R_TS_NZ-9-12",
         ]}
       />
-      <h4>Effect of time horizons on TIMES models</h4>
+      <h5>Effect of time horizons on TIMES models</h5>
       <p>
         The comparison on two eTIMES-EU benchmarks highlights how the addition
         of multi-stage analysis (in this case 8 optimization periods) in perfect
