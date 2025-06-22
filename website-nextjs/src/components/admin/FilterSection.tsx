@@ -485,9 +485,9 @@ const FilterSection = ({ height }: FilterSectionProps) => {
                   Defines the computational scale of the optimization problem
                 </div>
                 <ul className="list-disc list-outside ml-6">
-                  <li>S: n. vars {"<"} 1e4</li>
-                  <li>M: 1e4 ≤ n. vars {"<"} 1e6</li>
-                  <li>L: 1e6 ≤ n. vars</li>
+                  <li>S: num. vars {"<"} 1e4</li>
+                  <li>M: 1e4 ≤ num. vars {"<"} 1e6</li>
+                  <li>L: 1e6 ≤ num. vars</li>
                 </ul>
               </div>
             }

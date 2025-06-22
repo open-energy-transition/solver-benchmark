@@ -75,6 +75,14 @@ const LandingPage = () => {
                 .
               </li>
             </ul>
+            For more details, please see our{" "}
+            <Link
+              href="/methodology"
+              className="hover:underline underline-offset-4 font-bold"
+            >
+              Methodology
+            </Link>{" "}
+            page.
           </span>
         </div>
       </div>
@@ -216,7 +224,7 @@ const LandingPage = () => {
                           </a>
                         </span>{" "}
                         to benchmark on your own problems before picking a
-                        solver See also the section on{" "}
+                        solver. See also the section on{" "}
                         <Link
                           href="#caveats"
                           className="hover:underline underline-offset-4 font-bold"

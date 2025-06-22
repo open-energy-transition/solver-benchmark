@@ -10,6 +10,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import Popup from "reactjs-popup";
 import RealisticRuntimeComparison from "@/components/key-insights/charts/RealisticRuntimeComparison";
 import SolverPerformanceHistory from "@/components/key-insights/SolverPerformanceHistory";
+import { QuestionLineIcon } from "@/assets/icons";
 
 const KeyInsightsPage = () => {
   const tocItems = [
@@ -80,19 +81,32 @@ const KeyInsightsPage = () => {
               which shows the runtime of each solver, relative to the fastest
               solver, on each subset of our benchmark set. A problem on which a
               solver timed out or errored is assumed to have a runtime equal to
-              the timeout with which it was run. We split our set of problems by{" "}
-              <Popup
-                on={["hover"]}
-                trigger={() => <span>problem size*</span>}
-                position="right center"
-                closeOnDocumentClick
-                arrow={false}
-              >
-                <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
-                  (Small: number of variables &lt; 1e4; Medium: 1e4 &lt; number
-                  of variables &lt; 1e6; Large 1e6 &lt; number of variables)
-                </div>
-              </Popup>{" "}
+              the timeout with which it was run. We split our set of problems by
+              problem size
+              <span className="inline-flex gap-2">
+                <Popup
+                  on={["hover"]}
+                  trigger={() => (
+                    <span className="flex items-baseline my-auto cursor-pointer">
+                      <QuestionLineIcon
+                        className="size-3.5"
+                        viewBox="0 0 24 20"
+                      />
+                    </span>
+                  )}
+                  position="right center"
+                  closeOnDocumentClick
+                  arrow={false}
+                >
+                  <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
+                    <b>Small</b>: number of variables &lt; 1e4
+                    <br />
+                    <b>Medium</b>: 1e4 ≤; number of variables &lt; 1e6
+                    <br />
+                    <b>Large</b> 1e6 ≤; number of variables
+                  </div>
+                </Popup>
+              </span>{" "}
               and also categorize certain problems as realistic if they arise
               from, or have similar model features as, models used in real-world
               energy planning studies. Hovering over any bar on the plot above
