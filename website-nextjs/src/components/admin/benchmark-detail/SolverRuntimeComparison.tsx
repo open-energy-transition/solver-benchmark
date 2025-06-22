@@ -150,9 +150,15 @@ const SolverRuntimeComparison = ({
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);
-          const height =
-            benchmarkData?.status !== "ok" ? maxNormalizedRuntime : dataPoint;
-          return Number(height);
+
+          if (benchmarkData?.status !== "ok") {
+            if (Math.abs(maxNormalizedRuntime - 1.0) < 0.1) {
+              return 1.1;
+            }
+            return maxNormalizedRuntime;
+          }
+
+          return dataPoint;
         }}
       />
     </div>
