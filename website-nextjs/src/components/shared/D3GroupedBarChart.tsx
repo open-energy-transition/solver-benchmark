@@ -8,6 +8,7 @@ const D3GroupedBarChart = ({
   height = 200,
   chartData = [],
   categoryKey,
+  customLegend,
   axisLabelTitle,
   xAxisTooltipFormat,
   xAxisTickFormat,
@@ -20,6 +21,7 @@ const D3GroupedBarChart = ({
   showXaxisLabel = true,
   transformHeightValue,
   xAxisBarTextClassName = "text-xs fill-dark-grey",
+  normalize = true,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -29,18 +31,20 @@ const D3GroupedBarChart = ({
     if (!data.length) return;
 
     // Find minimum value for normalization
-    data.forEach((d) => {
-      const minValue = Math.min(
-        ...Object.keys(d)
-          .filter((key) => key !== categoryKey)
-          .map((key) => Number(d[key] || 0)),
-      );
-      Object.keys(d).forEach((key) => {
-        if (d[key] !== null && d[key] !== undefined && key !== categoryKey) {
-          d[key] = Number(d[key]) / minValue;
-        }
+    if (normalize) {
+      data.forEach((d) => {
+        const minValue = Math.min(
+          ...Object.keys(d)
+            .filter((key) => key !== categoryKey)
+            .map((key) => Number(d[key] || 0)),
+        );
+        Object.keys(d).forEach((key) => {
+          if (d[key] !== null && d[key] !== undefined && key !== categoryKey) {
+            d[key] = Number(d[key]) / minValue;
+          }
+        });
       });
-    });
+    }
 
     const width = containerRef.current?.clientWidth || 400;
     const margin = { top: 30, right: 30, bottom: 90, left: 60 };
@@ -319,6 +323,34 @@ const D3GroupedBarChart = ({
     xAxisBarTextClassName,
   ]);
 
+  const defaultLegend = () => (
+    <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
+      {Object.keys(chartData[0] || {})
+        .filter((key) => key !== categoryKey)
+        .map((solverKey) => (
+          <div
+            key={solverKey}
+            className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+          >
+            <CircleIcon
+              style={{
+                color:
+                  typeof colors === "function"
+                    ? colors({
+                        key: solverKey,
+                        value: "",
+                        category: "",
+                      })
+                    : colors[solverKey],
+              }}
+              className="size-2"
+            />
+            {solverKey}
+          </div>
+        ))}
+    </div>
+  );
+
   return (
     <div className="relative bg-[#F4F6FA] rounded-2xl p-2">
       <div className="bg-white rounded-2xl p-1">
@@ -326,31 +358,9 @@ const D3GroupedBarChart = ({
           {/* Title */}
           <div className="text-sm text-center text-dark-grey ">{title}</div>
           {/* Legend */}
-          <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
-            {Object.keys(chartData[0] || {})
-              .filter((key) => key !== categoryKey)
-              .map((solverKey) => (
-                <div
-                  key={solverKey}
-                  className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
-                >
-                  <CircleIcon
-                    style={{
-                      color:
-                        typeof colors === "function"
-                          ? colors({
-                              key: solverKey,
-                              value: "",
-                              category: "",
-                            })
-                          : colors[solverKey],
-                    }}
-                    className="size-2"
-                  />
-                  {solverKey}
-                </div>
-              ))}
-          </div>
+          {customLegend
+            ? customLegend({ chartData, categoryKey })
+            : defaultLegend()}
         </div>
         <div className="">
           <div ref={containerRef} className="overflow-hidden min-h-[300px]">
