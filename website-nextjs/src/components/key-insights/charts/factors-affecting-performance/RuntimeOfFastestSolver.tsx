@@ -19,7 +19,7 @@ interface IDataPoint {
 const RuntimeOfFastestSolver = ({
   benchmarkList = [],
 }: IRuntimeOfFastestSolver) => {
-  const [allSolvers, setallSolvers] = useState(true);
+  const [allSolvers, setallSolvers] = useState(false);
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.rawBenchmarkResults;
@@ -38,9 +38,9 @@ const RuntimeOfFastestSolver = ({
     return benchmarkList.includes(`${result.benchmark}-${result.size}`);
   });
 
-  const successfulBenchmarkData = Array.from(
+  const fastestRuntimeByBenchmark = Array.from(
     new Set(
-      successfulResults.map((result) => `${result.benchmark} ${result.size}`),
+      successfulResults.map((result) => `${result.benchmark}-${result.size}`),
     ),
   ).reduce<Record<string, { runtime: number; solver: string; status: string }>>(
     (acc, instance) => {
@@ -57,31 +57,27 @@ const RuntimeOfFastestSolver = ({
   );
 
   successfulResults.forEach((result) => {
-    const key = `${result.benchmark} ${result.size}`;
-    if (successfulBenchmarkData[key].runtime > result.runtime) {
-      successfulBenchmarkData[key].runtime = result.runtime;
-      successfulBenchmarkData[key].solver = result.solver;
-      successfulBenchmarkData[key].status = result.status;
+    const key = `${result.benchmark}-${result.size}`;
+    if (fastestRuntimeByBenchmark[key].runtime > result.runtime) {
+      fastestRuntimeByBenchmark[key].runtime = result.runtime;
+      fastestRuntimeByBenchmark[key].solver = result.solver;
+      fastestRuntimeByBenchmark[key].status = result.status;
     }
   });
 
-  const chartData = Object.keys(successfulBenchmarkData)
-    .map((key) => {
-      return {
-        benchmark: key,
-        runtime: successfulBenchmarkData[key].runtime,
-      };
-    })
-    .sort((a, b) => {
-      return a.runtime - b.runtime;
-    });
+  const chartData = benchmarkList.map((benchmark) => {
+    return {
+      benchmark,
+      runtime: fastestRuntimeByBenchmark[benchmark]?.runtime || 0,
+    };
+  });
 
   if (chartData.length === 0) {
     return <p className="text-center">No data available</p>;
   }
 
   const getBarTextClassName = (d: IDataPoint) => {
-    const benchmarkData = successfulBenchmarkData[d.category];
+    const benchmarkData = fastestRuntimeByBenchmark[d.category];
     if (benchmarkData?.status !== "ok") {
       return "text-[10px] font-extrabold fill-red-500 mb-2";
     }
@@ -89,7 +85,7 @@ const RuntimeOfFastestSolver = ({
   };
 
   const getAxisLabelTitle = (d: IDataPoint) => {
-    const benchmarkData = successfulBenchmarkData[d.category];
+    const benchmarkData = fastestRuntimeByBenchmark[d.category];
     if (benchmarkData?.status !== "ok") {
       return "TO";
     }
@@ -97,7 +93,7 @@ const RuntimeOfFastestSolver = ({
   };
 
   const getXAxisTooltipFormat = (d: IDataPoint) => {
-    const benchmarkData = successfulBenchmarkData[d.category];
+    const benchmarkData = fastestRuntimeByBenchmark[d.category];
     let solver = "";
     if (benchmarkData?.status === "ok") {
       solver = `Solver: ${benchmarkData?.solver}<br/>
@@ -112,12 +108,12 @@ const RuntimeOfFastestSolver = ({
   };
 
   const getTransformHeightValue = (d: IDataPoint) => {
-    if (successfulBenchmarkData[d.category].status !== "ok") return 1;
+    if (fastestRuntimeByBenchmark[d.category]?.status !== "ok") return 1;
     return Number(d.value);
   };
 
   const chartLegend = () => (
-    <div className="flex flex-col gap-2 border border-stroke rounded-xl px-2 py-1">
+    <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
       {availableSolvers.map((solverKey) => (
         <div
           key={solverKey}
@@ -137,30 +133,26 @@ const RuntimeOfFastestSolver = ({
 
   return (
     <>
-      <div className="flex items-center gap-4 mb-4 cursor-pointer">
-        <div className="flex items-center gap-2">
-          <input
-            type="radio"
-            checked={allSolvers}
-            onChange={() => setallSolvers(true)}
-          />
-          <label className="cursor-pointer" onClick={() => setallSolvers(true)}>
-            all solvers
-          </label>
-        </div>
+      <div className="flex items-center gap-6 mb-4 cursor-pointer">
         <div className="flex items-center gap-2">
           <input
             type="radio"
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
-          <label
-            className="cursor-pointer"
-            onClick={() => setallSolvers(false)}
-            htmlFor="openSolvers"
-          >
-            open solvers only
-          </label>
+          <p className="cursor-pointer" onClick={() => setallSolvers(false)}>
+            Open solvers only
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <input
+            type="radio"
+            checked={allSolvers}
+            onChange={() => setallSolvers(true)}
+          />
+          <p className="cursor-pointer" onClick={() => setallSolvers(true)}>
+            All solvers
+          </p>
         </div>
       </div>
       <div>
@@ -172,13 +164,13 @@ const RuntimeOfFastestSolver = ({
           colors={(d) => {
             if (!d?.category) return "grey";
 
-            if (successfulBenchmarkData[d.category].status !== "ok") {
+            if (fastestRuntimeByBenchmark[d.category]?.status !== "ok") {
               return "text-dark-grey";
             }
-            return getSolverColor(successfulBenchmarkData[d.category].solver);
+            return getSolverColor(fastestRuntimeByBenchmark[d.category].solver);
           }}
           barOpacity={(d) => {
-            if (successfulBenchmarkData[d.category].status !== "ok") {
+            if (fastestRuntimeByBenchmark[d.category]?.status !== "ok") {
               return 0.5;
             }
             return 1;
@@ -191,7 +183,7 @@ const RuntimeOfFastestSolver = ({
           barTextClassName={getBarTextClassName}
           xAxisTooltipFormat={getXAxisTooltipFormat}
           axisLabelTitle={getAxisLabelTitle}
-          xAxisBarTextClassName="text-[8px] fill-dark-grey"
+          xAxisBarTextClassName="text-xs fill-dark-grey"
           transformHeightValue={getTransformHeightValue}
         />
       </div>

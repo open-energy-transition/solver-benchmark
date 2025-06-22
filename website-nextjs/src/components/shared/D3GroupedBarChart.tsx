@@ -111,7 +111,24 @@ const D3GroupedBarChart = ({
       .style("font-size", "12px")
       .style("pointer-events", "none")
       .style("opacity", 0);
-
+    const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
+      g
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        // Add horizontal grid lines
+        .call((g) =>
+          g
+            .append("g")
+            .selectAll("line")
+            .data(yScale.ticks())
+            .join("line")
+            .attr("y1", (d) => yScale(d))
+            .attr("y2", (d) => yScale(d))
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("stroke-dasharray", "4,4"),
+        );
+    svg.append("g").call(grid);
     // Create bars side by side
     const barGroups = svg
       .selectAll(".barGroup")
@@ -276,7 +293,7 @@ const D3GroupedBarChart = ({
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(yScale).ticks(5))
+      .call(d3.axisLeft(yScale).ticks(10))
       .call((g) => {
         g.selectAll(".domain")
           .attr("stroke", "currentColor")

@@ -48,7 +48,6 @@ const D3PlotChartPerformanceScaling = ({
 
     // Create scales
     const maxNumVariables = d3.max(chartData, (d) => d.numVariables) ?? 1e7;
-    console.log(maxNumVariables);
 
     const xScale = d3
       .scaleLog()
@@ -114,6 +113,26 @@ const D3PlotChartPerformanceScaling = ({
       .attr("dy", "-5")
       .attr("font-size", "8px")
       .text((d) => formatPower(d as number));
+
+    const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
+      g
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        // Add horizontal grid lines
+        .call((g) =>
+          g
+            .append("g")
+            .selectAll("line")
+            .data(yScale.ticks(5))
+            .join("line")
+            .attr("y1", (d) => yScale(d))
+            .attr("y2", (d) => yScale(d))
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("stroke-dasharray", "4,4"),
+        );
+
+    svg.append("g").call(grid);
 
     // Add labels
     svg

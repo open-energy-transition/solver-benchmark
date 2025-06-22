@@ -7,7 +7,7 @@ import { MetaData } from "@/types/meta-data";
 import D3PlotChartPerformanceScaling from "./D3PlotChartPerformanceScalling";
 
 const PerformanceScalling = () => {
-  const [allSolvers, setallSolvers] = useState(true);
+  const [allSolvers, setallSolvers] = useState(false);
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.rawBenchmarkResults;
@@ -107,25 +107,22 @@ const PerformanceScalling = () => {
         <div className="flex items-center gap-2">
           <input
             type="radio"
-            checked={allSolvers}
-            onChange={() => setallSolvers(true)}
+            checked={!allSolvers}
+            onChange={() => setallSolvers(false)}
           />
-          <label className="cursor-pointer" onClick={() => setallSolvers(true)}>
-            all solvers
-          </label>
+          <p className="cursor-pointer" onClick={() => setallSolvers(false)}>
+            Open solvers only
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <input
             type="radio"
-            checked={!allSolvers}
-            onChange={() => setallSolvers(false)}
+            checked={allSolvers}
+            onChange={() => setallSolvers(true)}
           />
-          <label
-            className="cursor-pointer"
-            onClick={() => setallSolvers(false)}
-          >
-            open solvers only
-          </label>
+          <p className="cursor-pointer" onClick={() => setallSolvers(true)}>
+            All solvers
+          </p>
         </div>
       </div>
       <div>
