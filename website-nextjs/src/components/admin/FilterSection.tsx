@@ -359,7 +359,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
     <>
       <div className="sm:w-[248px] pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
         <div className="flex gap-2 items-center">
-          <div className="text-navy font-bold text-base">Filters</div>
+          <div className="text-navy font-bold text-base">Filter By:</div>
         </div>
 
         <div className="flex justify-end ml-2">
