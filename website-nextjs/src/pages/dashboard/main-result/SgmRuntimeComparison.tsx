@@ -36,7 +36,7 @@ const SgmRuntimeComparison = ({
   };
   const chartData = getChartData();
 
-  const getXAxisTooltipFormat = useCallback(
+  const tooltipFormat = useCallback(
     (d: ID3GroupedBarChartData) => {
       const solver = solverResults.find((s) => s.solver === d.key);
 
@@ -79,7 +79,7 @@ const SgmRuntimeComparison = ({
         yAxisLabel="Relative average runtime (normalized)"
         height={400}
         rotateXAxisLabels={false}
-        xAxisTooltipFormat={getXAxisTooltipFormat}
+        tooltipFormat={tooltipFormat}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
       />

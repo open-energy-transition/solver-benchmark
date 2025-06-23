@@ -17,4 +17,5 @@ export const PATH_DASHBOARD = {
 export const ROOT_PATH = {
   home: "/",
   keyInsights: "/key-insights",
+  methodology: "/methodology",
 };

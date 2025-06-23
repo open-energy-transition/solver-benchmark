@@ -89,7 +89,7 @@ const MainContent = () => {
                 text-white
                 "
             >
-              <span>BENCHMARK RESULTS</span>
+              <span>DETAILED RESULTS</span>
               <ArrowUpIcon className="ml-3 text-white rotate-90 size-6" />
             </Link>
           </div>

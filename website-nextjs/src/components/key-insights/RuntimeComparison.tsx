@@ -113,7 +113,7 @@ const RuntimeComparison = () => {
     };
   });
 
-  const getXAxisTooltipFormat = useCallback(
+  const tooltipFormat = useCallback(
     (d: { key: string; value: string | number; category: string | number }) => {
       const data = chartData.find((data) => data.key === d.category) as
         | Record<string, string | number>
@@ -172,7 +172,7 @@ const RuntimeComparison = () => {
         yAxisLabel="Relative runtime (normalized)"
         height={400}
         rotateXAxisLabels={false}
-        xAxisTooltipFormat={getXAxisTooltipFormat}
+        tooltipFormat={tooltipFormat}
         xAxisBarTextClassName="text-[10px] fill-dark-grey"
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
