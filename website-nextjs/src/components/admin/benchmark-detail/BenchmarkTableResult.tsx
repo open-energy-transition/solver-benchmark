@@ -87,8 +87,15 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           <Popup
             on={["hover"]}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as string}
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden font-bold">
+                <Link
+                  href={PATH_DASHBOARD.benchmarkSet.one.replace(
+                    "{name}",
+                    info.getValue() as string,
+                  )}
+                >
+                  {info.getValue() as string}
+                </Link>
               </div>
             )}
             position="top center"
