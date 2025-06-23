@@ -4,12 +4,14 @@ interface FooterProps {
   wrapperClassName?: string;
   textClassName?: string;
   descriptionTextClassName?: string;
+  theme?: "dark" | "light";
 }
 
 const Footer = ({
   wrapperClassName = "",
   textClassName = "text-black",
   descriptionTextClassName = "text-dark-grey",
+  theme = "light",
 }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
@@ -38,7 +40,7 @@ const Footer = ({
                 </div>
                 <Image
                   className="mt-4"
-                  src="/landing_page/BE_logo.png"
+                  src={`/landing_page/BE_logo_${theme}.png`}
                   alt="be-logo"
                   width={215}
                   height={29}
@@ -128,9 +130,9 @@ const Footer = ({
           </div>
 
           <div
-            className={`py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs ${textClassName} leading-[110%] tracking-normal`}
+            className={`py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs leading-[110%] tracking-normal`}
           >
-            <p>
+            <p className={theme === "light" ? "text-navy" : "text-white"}>
               © {currentYear} Open Energy Transition. Licensed under the{" "}
               <span className="hover:underline underline-offset-4">
                 MIT License

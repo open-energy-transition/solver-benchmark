@@ -6,7 +6,7 @@ interface ContentSectionProps {
 
 export const ContentSection: React.FC<ContentSectionProps> = ({ children }) => {
   return (
-    <div className="col-start-2 col-end-7 ml-4">
+    <div className="col-start-2 col-end-7 ml-8">
       <div className="flex flex-col gap-4">{children}</div>
     </div>
   );

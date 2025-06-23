@@ -22,12 +22,13 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
       <Header />
       <div className="bg-[#F5F4F4] mx-auto max-w-screen-4xl px-4 lg:px-[70px] relative pb-36">
         <h3 className="py-4.5 font-bold">{title}</h3>
-        <div className="grid grid-cols-6 gap-2">{children}</div>
+        <div className="grid grid-cols-6 gap-4">{children}</div>
       </div>
       <FooterLandingPage
         wrapperClassName="bg-navy text-white"
         textClassName="text-white"
         descriptionTextClassName="text-white"
+        theme="dark"
       />
     </div>
   );

@@ -62,7 +62,9 @@ export function TanStackTable<T>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...(showPagination
+      ? { getPaginationRowModel: getPaginationRowModel() }
+      : {}),
   });
 
   const handleDownload = () => {
