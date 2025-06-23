@@ -134,7 +134,7 @@ const BenchmarkRuntimeComparison = () => {
       const [] = category.split("-");
       return `${benchmarkData?.benchmark} \n
       Size: ${benchmarkData?.size} \n
-      Fastest solver's runtime: ${humanizeSeconds(minRuntime)}`;
+      Fastest solver: ${humanizeSeconds(minRuntime)}`;
     },
     [benchmarkLatestResults],
   );

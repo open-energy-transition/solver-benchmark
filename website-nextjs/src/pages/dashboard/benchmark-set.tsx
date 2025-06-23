@@ -189,7 +189,6 @@ const PageBenchmarkDetail = () => {
                   on our platform. Click on a benchmark problem name to see all
                   the details about the problem, including links to download the
                   problem file, solution files, and logs.
-                  {/* TODO make the benchmark names clickable */}
                 </p>
               </div>
             </div>
