@@ -167,7 +167,7 @@ const RealisticRuntimeComparison = () => {
     };
   });
 
-  const getXAxisTooltipFormat = useCallback(
+  const tooltipFormat = useCallback(
     (d: ID3GroupedBarChartData) => {
       const solver = solverResults.find(
         (s) => s.solver === d.key && s.category === d.category,
@@ -236,7 +236,7 @@ const RealisticRuntimeComparison = () => {
         yAxisLabel="Relative runtime (normalized)"
         height={400}
         rotateXAxisLabels={false}
-        xAxisTooltipFormat={getXAxisTooltipFormat}
+        tooltipFormat={tooltipFormat}
         xAxisBarTextClassName="text-[10px] fill-dark-grey"
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}

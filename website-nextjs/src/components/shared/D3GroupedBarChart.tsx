@@ -8,8 +8,10 @@ const D3GroupedBarChart = ({
   height = 200,
   chartData = [],
   categoryKey,
+  customLegend,
   axisLabelTitle,
   xAxisTooltipFormat,
+  tooltipFormat,
   xAxisTickFormat,
   colors,
   xAxisLabel = "Category",
@@ -20,6 +22,7 @@ const D3GroupedBarChart = ({
   showXaxisLabel = true,
   transformHeightValue,
   xAxisBarTextClassName = "text-xs fill-dark-grey",
+  normalize = true,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -29,18 +32,20 @@ const D3GroupedBarChart = ({
     if (!data.length) return;
 
     // Find minimum value for normalization
-    data.forEach((d) => {
-      const minValue = Math.min(
-        ...Object.keys(d)
-          .filter((key) => key !== categoryKey)
-          .map((key) => Number(d[key] || 0)),
-      );
-      Object.keys(d).forEach((key) => {
-        if (d[key] !== null && d[key] !== undefined && key !== categoryKey) {
-          d[key] = Number(d[key]) / minValue;
-        }
+    if (normalize) {
+      data.forEach((d) => {
+        const minValue = Math.min(
+          ...Object.keys(d)
+            .filter((key) => key !== categoryKey)
+            .map((key) => Number(d[key] || 0)),
+        );
+        Object.keys(d).forEach((key) => {
+          if (d[key] !== null && d[key] !== undefined && key !== categoryKey) {
+            d[key] = Number(d[key]) / minValue;
+          }
+        });
       });
-    });
+    }
 
     const width = containerRef.current?.clientWidth || 400;
     const margin = { top: 30, right: 30, bottom: 90, left: 60 };
@@ -107,7 +112,24 @@ const D3GroupedBarChart = ({
       .style("font-size", "12px")
       .style("pointer-events", "none")
       .style("opacity", 0);
-
+    const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
+      g
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        // Add horizontal grid lines
+        .call((g) =>
+          g
+            .append("g")
+            .selectAll("line")
+            .data(yScale.ticks())
+            .join("line")
+            .attr("y1", (d) => yScale(d))
+            .attr("y2", (d) => yScale(d))
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("stroke-dasharray", "4,4"),
+        );
+    svg.append("g").call(grid);
     // Create bars side by side
     const barGroups = svg
       .selectAll(".barGroup")
@@ -166,9 +188,7 @@ const D3GroupedBarChart = ({
       .on("mouseover", (event, d) => {
         tooltip
           .style("opacity", 1)
-          .html(
-            (xAxisTooltipFormat ? xAxisTooltipFormat(d) : d.value) as string,
-          )
+          .html((tooltipFormat ? tooltipFormat(d) : d.value) as string)
           .style("left", `${event.pageX + 10}px`)
           .style("top", `${event.pageY - 28}px`);
       })
@@ -213,9 +233,7 @@ const D3GroupedBarChart = ({
       .on("mouseover", (event, d) => {
         tooltip
           .style("opacity", 1)
-          .html(
-            (xAxisTooltipFormat ? xAxisTooltipFormat(d) : d.value) as string,
-          )
+          .html((tooltipFormat ? tooltipFormat(d) : d.value) as string)
           .style("left", `${event.pageX + 10}px`)
           .style("top", `${event.pageY - 28}px`);
       })
@@ -244,6 +262,20 @@ const D3GroupedBarChart = ({
           .attr("class", xAxisBarTextClassName)
           .attr("fill", "#666")
           .style("text-anchor", "middle")
+          .style("cursor", xAxisTooltipFormat ? "pointer" : "default")
+          .on("mouseover", (event, d) => {
+            const dataPoint = data.find(
+              (item) => item[categoryKey].toString() === d,
+            );
+            if (xAxisTooltipFormat && dataPoint) {
+              tooltip
+                .style("opacity", 1)
+                .html(xAxisTooltipFormat(d as string))
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 28}px`);
+            }
+          })
+          .on("mouseout", () => tooltip.style("opacity", 0))
           .each(function () {
             const text = d3.select(this);
             const lines = text.text().split("\n");
@@ -272,7 +304,7 @@ const D3GroupedBarChart = ({
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(yScale).ticks(5))
+      .call(d3.axisLeft(yScale).ticks(10))
       .call((g) => {
         g.selectAll(".domain")
           .attr("stroke", "currentColor")
@@ -319,6 +351,34 @@ const D3GroupedBarChart = ({
     xAxisBarTextClassName,
   ]);
 
+  const defaultLegend = () => (
+    <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
+      {Object.keys(chartData[0] || {})
+        .filter((key) => key !== categoryKey)
+        .map((solverKey) => (
+          <div
+            key={solverKey}
+            className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+          >
+            <CircleIcon
+              style={{
+                color:
+                  typeof colors === "function"
+                    ? colors({
+                        key: solverKey,
+                        value: "",
+                        category: "",
+                      })
+                    : colors[solverKey],
+              }}
+              className="size-2"
+            />
+            {solverKey}
+          </div>
+        ))}
+    </div>
+  );
+
   return (
     <div className="relative bg-[#F4F6FA] rounded-2xl p-2">
       <div className="bg-white rounded-2xl p-1">
@@ -326,31 +386,9 @@ const D3GroupedBarChart = ({
           {/* Title */}
           <div className="text-sm text-center text-dark-grey ">{title}</div>
           {/* Legend */}
-          <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
-            {Object.keys(chartData[0] || {})
-              .filter((key) => key !== categoryKey)
-              .map((solverKey) => (
-                <div
-                  key={solverKey}
-                  className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
-                >
-                  <CircleIcon
-                    style={{
-                      color:
-                        typeof colors === "function"
-                          ? colors({
-                              key: solverKey,
-                              value: "",
-                              category: "",
-                            })
-                          : colors[solverKey],
-                    }}
-                    className="size-2"
-                  />
-                  {solverKey}
-                </div>
-              ))}
-          </div>
+          {customLegend
+            ? customLegend({ chartData, categoryKey })
+            : defaultLegend()}
         </div>
         <div className="">
           <div ref={containerRef} className="overflow-hidden min-h-[300px]">
