@@ -71,7 +71,7 @@ const Header = () => {
               </svg>
             </div>
             <div className="pt-0 lg:pt-4 pl-2 lg:pl-4 text-[28px]">
-              SOLVER BENCHMARK
+              Open Energy Benchmark
             </div>
           </Link>
         </div>

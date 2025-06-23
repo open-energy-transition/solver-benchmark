@@ -16,7 +16,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   return (
     <div>
       <Head>
-        <title>{title}</title>
+        <title>{title} | Open Energy Benchmark</title>
         <meta name="description" content={description} />
       </Head>
       <Header />

@@ -85,7 +85,7 @@ const PageBenchmarkDetail = () => {
   return (
     <>
       <Head>
-        <title>{benchmarkName}</title>
+        <title>{benchmarkName} | Open Energy Benchmark</title>
       </Head>
       <div className="bg-light-blue h-screen">
         <Navbar />

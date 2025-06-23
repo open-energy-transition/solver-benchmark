@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Solver Benchmark",
-  description: "Solver Benchmark",
+  title: "Open Energy Benchmark",
+  description:
+    "An open-source benchmark of optimization solvers on representative problems from the energy planning domain.",
 };
 
 export default function RootLayout({
