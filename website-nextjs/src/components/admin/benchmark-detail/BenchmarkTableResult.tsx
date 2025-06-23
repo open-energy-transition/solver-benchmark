@@ -5,7 +5,6 @@ import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { ArrowRightIcon } from "@/assets/icons";
 import { filterSelect } from "@/utils/table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 
@@ -98,7 +97,24 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "sectors",
         size: 100,
         filterFn: filterSelect,
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <Popup
+            on={["hover"]}
+            trigger={() => (
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                {info.getValue() as string}
+              </div>
+            )}
+            position="top center"
+            closeOnDocumentClick
+            arrowStyle={{ color: Color.Stroke }}
+          >
+            <div className="bg-stroke p-2 rounded">
+              {" "}
+              {info.getValue() as string}{" "}
+            </div>
+          </Popup>
+        ),
       },
     ],
     [],
