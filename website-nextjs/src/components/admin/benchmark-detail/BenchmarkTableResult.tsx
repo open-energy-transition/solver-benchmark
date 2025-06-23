@@ -83,7 +83,24 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "application",
         filterFn: filterSelect,
         size: 110,
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <Popup
+            on={["hover"]}
+            trigger={() => (
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                {info.getValue() as string}
+              </div>
+            )}
+            position="top center"
+            closeOnDocumentClick
+            arrowStyle={{ color: Color.Stroke }}
+          >
+            <div className="bg-stroke p-2 rounded">
+              {" "}
+              {info.getValue() as string}{" "}
+            </div>
+          </Popup>
+        ),
       },
       {
         header: "SECTORAL FOCUS",
