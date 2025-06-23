@@ -8,7 +8,6 @@ import { MetaDataEntry } from "@/types/meta-data";
 import { IResultState } from "@/types/state";
 import { humanizeSeconds } from "@/utils/string";
 import { PATH_DASHBOARD } from "@/constants/path";
-import Popup from "reactjs-popup";
 import Link from "next/link";
 
 interface IColumnTable extends MetaDataEntry {
@@ -51,37 +50,16 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
           const sizeName = parts.slice(1).join(" ");
 
           return (
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <div className="py-2 whitespace-normal break-words">
-                  <Link
-                    href={getBenchmarksetLink(fullValue)}
-                    className="font-bold text-blue-600 hover:text-blue-800 inline-block"
-                    style={{ textDecoration: "underline", lineHeight: "1.5" }}
-                  >
-                    {benchmarkName}
-                  </Link>
-                  {sizeName && <span className="ml-1">({sizeName})</span>}
-                </div>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <div className="text-left">
-                  <a
-                    href={getBenchmarksetLink(fullValue)}
-                    className="font-bold text-blue-600 hover:text-blue-800 inline-block"
-                    style={{ textDecoration: "underline", lineHeight: "1.5" }}
-                  >
-                    {benchmarkName}
-                  </a>
-                  {sizeName && <span className="ml-1">({sizeName})</span>}
-                </div>
-              </div>
-            </Popup>
+            <div className="py-2 whitespace-normal break-words">
+              <Link
+                href={getBenchmarksetLink(fullValue)}
+                className="font-bold inline-block"
+                style={{ lineHeight: "1.5" }}
+              >
+                {benchmarkName}
+              </Link>
+              {sizeName && <span className="ml-1">({sizeName})</span>}
+            </div>
           );
         },
       },
