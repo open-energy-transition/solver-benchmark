@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { getChartColor } from "@/utils/chart";
-import { Color } from "@/constants/color";
+import { getSolverColor } from "@/utils/chart";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
@@ -35,8 +34,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
   const solverColors = useMemo(() => {
     return availableSolvers.reduce(
-      (acc, solver, index) => {
-        acc[solver] = getChartColor(index);
+      (acc, solver) => {
+        acc[solver] = getSolverColor(solver);
         return acc;
       },
       {} as Record<string, string>,
@@ -425,7 +424,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 y + size
               } L${x + size},${y - size}`,
             )
-            .attr("stroke", Color.Teal)
+            .attr("stroke", solverColors[baseSolver])
             .attr("fill", "none");
         } else {
           // Regular circle for normal cases
@@ -433,7 +432,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             .attr("cx", x)
             .attr("cy", y)
             .attr("r", 4)
-            .attr("fill", Color.Teal);
+            .attr("fill", solverColors[baseSolver]);
         }
 
         // Add event listeners for tooltip
@@ -531,9 +530,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           >
             <div className="flex items-center justify-center w-4 h-4">
               <div
-                className={`w-4 h-4 rounded-full bg-teal ${
+                className={`w-4 h-4 rounded-full transition-opacity ${
                   visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
                 }`}
+                style={{ backgroundColor: solverColors[baseSolver] }}
               />
             </div>
             <span className="text-sm text-navy">{baseSolver}</span>
