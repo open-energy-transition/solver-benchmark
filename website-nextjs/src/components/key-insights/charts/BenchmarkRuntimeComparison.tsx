@@ -27,6 +27,10 @@ const BenchmarkRuntimeComparison = () => {
     BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`),
   );
 
+  const metaData = useSelector((state: { results: IResultState }) => {
+    return state.results.rawMetaData;
+  });
+
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
       return benchmarkLatestResults.find(
@@ -70,6 +74,49 @@ const BenchmarkRuntimeComparison = () => {
       });
       return Math.max(...Object.values(res));
     }),
+  );
+
+  const getXAxisTooltipFormat = useCallback(
+    (d: string) => {
+      const benchmarkData = benchmarkLatestResults.find(
+        (result) => `${result.benchmark}-${result.size}` === d,
+      );
+
+      if (!benchmarkData) {
+        return `Benchmark: ${d}<br/>No benchmark data available`;
+      }
+
+      const metaDataEntry =
+        metaData[benchmarkData.benchmark as keyof typeof metaData];
+      const sizeData = metaDataEntry?.sizes.find(
+        (s) => s.name === benchmarkData.size,
+      );
+
+      if (!metaDataEntry) {
+        return `Benchmark: ${d}<br/>No metadata available`;
+      }
+
+      return `
+      ${metaDataEntry.shortDescription}<br/><br/>
+      Modelling framework: ${metaDataEntry.modellingFramework}<br/>
+      Model name: ${metaDataEntry.modelName}<br/>
+      Problem class: ${metaDataEntry.problemClass}<br/>
+      Application: ${metaDataEntry.application}<br/>
+      Sectoral focus: ${metaDataEntry.sectoralFocus}<br/>
+      Sectors: ${metaDataEntry.sectors}<br/>
+      Time horizon: ${metaDataEntry.timeHorizon}<br/>
+      MILP features: ${metaDataEntry.milpFeatures}<br/>
+      Size: ${sizeData?.name} (${sizeData?.size})<br/>
+      Temporal resolution: ${sizeData?.temporalResolution || "N/A"}<br/>
+      Spatial resolution: ${sizeData?.spatialResolution || "N/A"}<br/>
+      Realistic: ${
+        metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
+      }<br/>
+      Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
+      Num. variables: ${sizeData?.numVariables}<br/>
+              `;
+    },
+    [metaData, benchmarkLatestResults],
   );
 
   const getBarTextClassName = useCallback(
@@ -157,6 +204,7 @@ const BenchmarkRuntimeComparison = () => {
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
+        xAxisTooltipFormat={getXAxisTooltipFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
