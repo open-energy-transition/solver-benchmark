@@ -16,7 +16,8 @@ export interface ID3GroupedBarChart {
   chartData: StackedBarData[];
   categoryKey: string;
   barTextClassName?: (d: ID3GroupedBarChartData) => string;
-  xAxisTooltipFormat?: (d: ID3GroupedBarChartData) => string;
+  xAxisTooltipFormat?: (category: string) => string;
+  tooltipFormat?: (d: ID3GroupedBarChartData) => string;
   xAxisLabel?: string;
   yAxisLabel?: string;
   rotateXAxisLabels?: boolean;
@@ -24,6 +25,7 @@ export interface ID3GroupedBarChart {
   axisLabelTitle?: (d: ID3GroupedBarChartData) => string;
   barOpacity?: number | ((d: ID3GroupedBarChartData) => number);
   xAxisTickFormat?: (value: string, data: unknown) => string;
+  normalize?: boolean;
   colors:
     | {
         [key: string]: string;
@@ -31,6 +33,10 @@ export interface ID3GroupedBarChart {
     | ((d: ID3GroupedBarChartData) => string);
   transformHeightValue?: (d: ID3GroupedBarChartData) => number;
   xAxisBarTextClassName?: string;
+  customLegend?: (props: {
+    chartData: StackedBarData[];
+    categoryKey: string;
+  }) => React.ReactNode;
 }
 
 export interface ID3StackedBarChart {
