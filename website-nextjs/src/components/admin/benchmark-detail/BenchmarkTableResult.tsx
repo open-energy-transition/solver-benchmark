@@ -38,22 +38,31 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         enableSorting: true,
         filterFn: filterSelect,
         cell: (info) => (
-          <Popup
-            on={["hover"]}
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as string}
-              </div>
+          <Link
+            className="font-bold text-blue-600 hover:text-blue-800 inline-block"
+            style={{ textDecoration: "underline", lineHeight: "1.5" }}
+            href={PATH_DASHBOARD.benchmarkSet.one.replace(
+              "{name}",
+              info.row.original.name,
             )}
-            position="top center"
-            closeOnDocumentClick
-            arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
-              {" "}
-              {info.getValue() as string}{" "}
-            </div>
-          </Popup>
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                  {info.getValue() as string}
+                </div>
+              )}
+              position="top center"
+              closeOnDocumentClick
+              arrowStyle={{ color: Color.Stroke }}
+            >
+              <div className="bg-stroke p-2 rounded">
+                {" "}
+                {info.getValue() as string}{" "}
+              </div>
+            </Popup>
+          </Link>
         ),
       },
       {
@@ -61,7 +70,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "modelName",
         filterFn: filterSelect,
         cell: (info) => info.getValue(),
-        size: 130,
+        size: 110,
       },
       {
         header: "PROBLEM CLASS",
@@ -74,12 +83,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         header: "APPLICATION",
         accessorKey: "application",
         filterFn: filterSelect,
+        size: 110,
         cell: (info) => info.getValue(),
       },
       {
         header: "SECTORAL FOCUS",
         accessorKey: "sectoralFocus",
-        size: 100,
+        size: 125,
         filterFn: filterSelect,
         cell: (info) => info.getValue(),
       },
@@ -89,26 +99,6 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         size: 100,
         filterFn: filterSelect,
         cell: (info) => info.getValue(),
-      },
-      {
-        header: "DETAILS",
-        accessorKey: "details",
-        enableColumnFilter: false,
-        enableSorting: false,
-        cell: (info) => (
-          <Link
-            className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={PATH_DASHBOARD.benchmarkSet.one.replace(
-              "{name}",
-              info.row.original.name,
-            )}
-          >
-            <div className="hover:underline underline-offset-4">
-              View Details
-            </div>
-            <ArrowRightIcon className="size-2 ml-1 fill-none stroke-green-pop hover:stroke-white" />
-          </Link>
-        ),
       },
     ],
     [],
