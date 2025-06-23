@@ -10,6 +10,7 @@ import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/Be
 import { IResultState, RealisticOption } from "@/types/state";
 import { useMemo, useState } from "react";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
+import { isEmpty } from "lodash";
 
 const PageBenchmarkDetail = () => {
   const fullMetaData = useSelector((state: { results: IResultState }) => {
@@ -139,9 +140,12 @@ const PageBenchmarkDetail = () => {
         isModellingFrameworkMatch
       );
     });
-
     return Object.fromEntries(filteredEntries);
   }, [localFilters, fullMetaData]);
+
+  if (isEmpty(fullMetaData))
+    return <div className="text-center">Loading...</div>;
+
   return (
     <>
       <Head>

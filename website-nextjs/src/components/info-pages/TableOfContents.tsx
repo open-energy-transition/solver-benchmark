@@ -22,9 +22,9 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   };
 
   return (
-    <div className="col-start-1 col-end-2 py-8 px-0 bg-[#FAFAFACC] bg-opacity-80 h-max rounded-xl sticky top-[150px]">
+    <div className="w-[min(212px,14.72vw)] py-8 px-0 bg-[#FAFAFACC] bg-opacity-80 h-max rounded-xl sticky top-[150px]">
       <div className="px-4">
-        <h2 className="border-b border-[#D8E3F2] leading-snug">Content</h2>
+        <h2 className="border-b border-[#D8E3F2] leading-snug">On this page</h2>
       </div>
       <div className="flex flex-col mt-4">
         {items.map((item, index) => (

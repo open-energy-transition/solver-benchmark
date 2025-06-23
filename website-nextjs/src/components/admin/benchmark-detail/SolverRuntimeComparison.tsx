@@ -50,7 +50,31 @@ const SolverRuntimeComparison = ({
     };
   });
 
-  const maxNormalizedRuntime = Math.max(
+  // Calculate the maximum ratio across all non-OK bars
+  const maxNonOkRatio = Math.max(
+    ...benchmarkDetail.sizes.map((size) => {
+      const categoryData = benchmarkLatestResults.filter(
+        (result) =>
+          result.size === size.name && result.benchmark === benchmarkName,
+      );
+
+      const okData = categoryData.filter((r) => r.status === "ok");
+      const nonOkData = categoryData.filter((r) => r.status !== "ok");
+
+      if (okData.length === 0 || nonOkData.length === 0) return 1.1;
+
+      const fastestOkRuntime = Math.min(...okData.map((r) => r.runtime));
+      const maxNonOkRatio = Math.max(
+        ...nonOkData.map((r) => r.runtime / fastestOkRuntime),
+      );
+
+      return maxNonOkRatio;
+    }),
+    1.1, // Ensure minimum of 1.1
+  );
+
+  // Calculate the maximum normalized runtime across all OK statuses
+  const maxOkNormalizedRuntime = Math.max(
     ...benchmarkDetail.sizes.map((size) => {
       const data = benchmarkLatestResults.filter(
         (result) =>
@@ -58,14 +82,21 @@ const SolverRuntimeComparison = ({
           result.benchmark === benchmarkName &&
           result.status === "ok",
       );
-      const res: { [solver: string]: number } = {};
+      if (data.length === 0) return 1.0;
+
       const minRuntime = Math.min(...data.map((d) => d.runtime));
-      data.forEach((d) => {
-        res[d.solver] = d.runtime / minRuntime;
-      });
-      return Math.max(...Object.values(res));
+      const normalizedRuntimes = data.map((d) => d.runtime / minRuntime);
+      return Math.max(...normalizedRuntimes);
     }),
+    1.0,
   );
+
+  // If the non-OK ratio is too extreme (>50x), fall back to using the worst OK performance + buffer
+  // This prevents charts from becoming unreadable due to extreme timeout values
+  const nonOkBarHeight =
+    maxNonOkRatio > 50
+      ? Math.max(1.1, maxOkNormalizedRuntime * 1.1) // 10% above worst OK performance, min 1.1
+      : maxNonOkRatio;
 
   const getBarTextClassName = useCallback(
     (d: ID3GroupedBarChartData) => {
@@ -78,7 +109,7 @@ const SolverRuntimeComparison = ({
     [findBenchmarkData],
   );
 
-  const getXAxisTooltipFormat = useCallback(
+  const tooltipFormat = useCallback(
     (d: ID3GroupedBarChartData) => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
@@ -142,7 +173,7 @@ const SolverRuntimeComparison = ({
         height={400}
         rotateXAxisLabels={false}
         barTextClassName={getBarTextClassName}
-        xAxisTooltipFormat={getXAxisTooltipFormat}
+        tooltipFormat={tooltipFormat}
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
@@ -150,9 +181,12 @@ const SolverRuntimeComparison = ({
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);
-          const height =
-            benchmarkData?.status !== "ok" ? maxNormalizedRuntime : dataPoint;
-          return Number(height);
+
+          if (benchmarkData?.status !== "ok") {
+            return nonOkBarHeight;
+          }
+
+          return dataPoint;
         }}
       />
     </div>

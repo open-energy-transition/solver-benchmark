@@ -219,7 +219,7 @@ const LandingPage = () => {
                         <br />
                         We recommend using{" "}
                         <span className="hover:underline underline-offset-4  font-bold">
-                          <a href="https://github.com/open-energy-transition/solver-benchmark/">
+                          <a href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks">
                             our scripts
                           </a>
                         </span>{" "}

@@ -83,7 +83,7 @@ const BenchmarkRuntimeComparison = () => {
     [findBenchmarkData],
   );
 
-  const getXAxisTooltipFormat = useCallback(
+  const tooltipFormat = useCallback(
     (d: ID3GroupedBarChartData) => {
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
@@ -153,7 +153,7 @@ const BenchmarkRuntimeComparison = () => {
         height={400}
         rotateXAxisLabels={false}
         barTextClassName={getBarTextClassName}
-        xAxisTooltipFormat={getXAxisTooltipFormat}
+        tooltipFormat={tooltipFormat}
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
