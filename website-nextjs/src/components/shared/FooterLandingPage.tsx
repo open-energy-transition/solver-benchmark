@@ -35,7 +35,11 @@ const Footer = ({
                 collaboration and efficiency in the energy sector.
               </div>
               <div className="gap-2 items-center">
-                <div className="font-lato w-full md:w-max uppercase font-bold text-sm/1.1 tracking-normal">
+                <div
+                  className={`font-lato w-full md:w-max uppercase font-bold text-sm/1.1 tracking-normal ${
+                    theme === "light" ? "text-navy" : "text-white"
+                  }`}
+                >
                   Supported by
                 </div>
                 <Image

@@ -39,7 +39,7 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Problem Class",
         accessorKey: "problemClass",
-        size: 120,
+        size: 80,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -86,7 +86,7 @@ const BenchmarkModelInsightsTable = () => {
         accessorKey: "realistic",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 140,
+        size: 80,
       },
       {
         header: "Example",
@@ -182,6 +182,7 @@ const BenchmarkModelInsightsTable = () => {
     <div className="my-4 mt-8 rounded-xl">
       <TanStackTable
         data={tableData}
+        headerClassName="text-center text-navy p-2 cursor-pointer"
         columns={columns as any}
         showPagination={false}
       />

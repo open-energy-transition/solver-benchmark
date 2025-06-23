@@ -27,6 +27,7 @@ interface TanStackTableProps<T> {
   enableColumnSelector?: boolean;
   initialColumnVisibility?: VisibilityState;
   showPagination?: boolean;
+  headerClassName?: string;
 }
 
 export function TanStackTable<T>({
@@ -39,6 +40,7 @@ export function TanStackTable<T>({
   enableColumnSelector = false,
   initialColumnVisibility = {},
   showPagination = true,
+  headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -145,7 +147,7 @@ export function TanStackTable<T>({
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        className="text-center text-navy py-4 px-6 cursor-pointer"
+                        className={headerClassName}
                       >
                         <div
                           onClick={header.column.getToggleSortingHandler()}

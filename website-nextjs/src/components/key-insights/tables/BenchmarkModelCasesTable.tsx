@@ -3,19 +3,10 @@ import { useMemo } from "react";
 
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
-
-interface IColumnTable {
-  header: string;
-  dcopf: string;
-  genkX: string;
-  powerModels: string;
-  pypsa: string;
-  sienna: string;
-  temoa: string;
-  times: string;
-  tulipa: string;
-  [key: string]: string;
-}
+import {
+  benchmarkModelCasesData,
+  IBenchmarkModelCases,
+} from "@/data/benchmarkModelCasesData";
 
 const BenchmarkModelCasesTable = () => {
   const renderModelData = (model: string | boolean) => {
@@ -48,7 +39,7 @@ const BenchmarkModelCasesTable = () => {
         return <div className="flex justify-center">{String(model)}</div>;
     }
   };
-  const renderHeader = (header: CellContext<IColumnTable, string>) => {
+  const renderHeader = (header: CellContext<IBenchmarkModelCases, string>) => {
     const isMain = Object.keys(header.row.original)
       .filter((key) => key !== "header")
       .every((key) => {
@@ -61,7 +52,7 @@ const BenchmarkModelCasesTable = () => {
     );
   };
 
-  const columns = useMemo<ColumnDef<IColumnTable>[]>(
+  const columns = useMemo<ColumnDef<IBenchmarkModelCases>[]>(
     () => [
       {
         header: "",
@@ -69,8 +60,8 @@ const BenchmarkModelCasesTable = () => {
         size: 120,
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (info: CellContext<IColumnTable, unknown>) =>
-          renderHeader(info as CellContext<IColumnTable, string>),
+        cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>
+          renderHeader(info as CellContext<IBenchmarkModelCases, string>),
       },
       ...[
         "DCOPF",
@@ -84,265 +75,21 @@ const BenchmarkModelCasesTable = () => {
       ].map((framework) => ({
         header: framework,
         accessorKey: framework,
-        size: 120,
+        size: 50,
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (info: CellContext<IColumnTable, unknown>) =>
+        cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>
           renderModelData(info.getValue() as string | boolean),
       })),
     ],
     [],
   );
 
-  const dataTable = [
-    {
-      header: "Problem Classes",
-      DCOPF: "",
-      GenX: "",
-      PowerModels: "",
-      PyPSA: "",
-      Sienna: "",
-      TEMOA: "",
-      TIMES: "",
-      Tulipa: "",
-    },
-    {
-      header: "LP",
-      DCOPF: "true",
-      GenX: "true",
-      PowerModels: "true",
-      PyPSA: "true",
-      Sienna: "false",
-      TEMOA: "true",
-      TIMES: "true",
-      Tulipa: "false",
-    },
-    {
-      header: "MILP",
-      DCOPF: "true",
-      GenX: "true",
-      PowerModels: "true",
-      PyPSA: "true",
-      Sienna: "true",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "true",
-    },
-    {
-      header: "Applications",
-      DCOPF: "",
-      GenX: "",
-      PowerModels: "",
-      PyPSA: "",
-      Sienna: "",
-      TEMOA: "",
-      TIMES: "",
-      Tulipa: "",
-    },
-
-    {
-      header: "DC Optimal Power Flow",
-      DCOPF: "false",
-      GenX: "true",
-      PowerModels: "false",
-      PyPSA: "false",
-      Sienna: "false",
-      TEMOA: "N.A",
-      TIMES: "N.A",
-      Tulipa: "false",
-    },
-    {
-      header: "Resource Adequacy",
-      DCOPF: "true",
-      GenX: "false",
-      PowerModels: "false",
-      PyPSA: "false",
-      Sienna: "false",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "false",
-    },
-    {
-      header: "Infrastructure & Capacity Expansion",
-      DCOPF: "N.A",
-      GenX: "true",
-      PowerModels: "false",
-      PyPSA: "true",
-      Sienna: "false",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "false",
-    },
-    {
-      header: "Operational",
-      DCOPF: "false",
-      GenX: "false",
-      PowerModels: "N.A",
-      PyPSA: "true",
-      Sienna: "false",
-      TEMOA: "N.A",
-      TIMES: "N.A",
-      Tulipa: "false",
-    },
-    {
-      header: "Steady-state Optimal Power Flow",
-      DCOPF: "N.A",
-      GenX: "false",
-      PowerModels: "true",
-      PyPSA: "false",
-      Sienna: "N.A",
-      TEMOA: "N.A",
-      TIMES: "N.A",
-      Tulipa: "N.A",
-    },
-    {
-      header: "Production cost modelling",
-      DCOPF: "false",
-      GenX: "false",
-      PowerModels: "N.A",
-      PyPSA: "false",
-      Sienna: "false",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "false",
-    },
-    {
-      header: "Time Horizons",
-      DCOPF: "",
-      GenX: "",
-      PowerModels: "",
-      PyPSA: "",
-      Sienna: "",
-      TEMOA: "",
-      TIMES: "",
-      Tulipa: "",
-    },
-    {
-      header: "Single Period",
-      DCOPF: "true",
-      GenX: "true",
-      PowerModels: "true",
-      PyPSA: "true",
-      Sienna: "true",
-      TEMOA: "true",
-      TIMES: "false",
-      Tulipa: "true",
-    },
-    {
-      header: "Multi Period",
-      DCOPF: "false",
-      GenX: "true",
-      PowerModels: "false",
-      PyPSA: "false",
-      Sienna: "false",
-      TEMOA: "true",
-      TIMES: "true",
-      Tulipa: "false",
-    },
-    {
-      header: "MILP Features",
-      DCOPF: "",
-      GenX: "",
-      PowerModels: "",
-      PyPSA: "",
-      Sienna: "",
-      TEMOA: "",
-      TIMES: "",
-      Tulipa: "",
-    },
-    {
-      header: "None",
-      DCOPF: "true",
-      GenX: "true",
-      PowerModels: "false",
-      PyPSA: "true",
-      Sienna: "false",
-      TEMOA: "true",
-      TIMES: "true",
-      Tulipa: "false",
-    },
-    {
-      header: "Unit commitment",
-      DCOPF: "true",
-      GenX: "true",
-      PowerModels: "true",
-      PyPSA: "true",
-      Sienna: "true",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "true",
-    },
-    {
-      header: "Piecewise fuel usage",
-      DCOPF: "false",
-      GenX: "true",
-      PowerModels: "false",
-      PyPSA: "false",
-      Sienna: "false",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "false",
-    },
-    {
-      header: "Transmission switching",
-      DCOPF: "false",
-      GenX: "false",
-      PowerModels: "true",
-      PyPSA: "false",
-      Sienna: "false",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "false",
-    },
-    {
-      header: "Modularity",
-      DCOPF: "false",
-      GenX: "false",
-      PowerModels: "false",
-      PyPSA: "true",
-      Sienna: "false",
-      TEMOA: "false",
-      TIMES: "false",
-      Tulipa: "true",
-    },
-    {
-      header: "Realistic",
-      DCOPF: "",
-      GenX: "",
-      PowerModels: "",
-      PyPSA: "",
-      Sienna: "",
-      TEMOA: "",
-      TIMES: "",
-      Tulipa: "",
-    },
-    {
-      header: "Realistic",
-      DCOPF: "true",
-      GenX: "true",
-      PowerModels: "true",
-      PyPSA: "true",
-      Sienna: "false",
-      TEMOA: "true",
-      TIMES: "true",
-      Tulipa: "true",
-    },
-    {
-      header: "Other",
-      DCOPF: "false",
-      GenX: "true",
-      PowerModels: "true",
-      PyPSA: "true",
-      Sienna: "true",
-      TEMOA: "true",
-      TIMES: "true",
-      Tulipa: "false",
-    },
-  ];
   return (
     <div className="my-4 mt-8 rounded-xl">
       <TanStackTable
-        data={dataTable}
+        data={benchmarkModelCasesData}
+        headerClassName="text-center text-navy p-2 cursor-pointer"
         columns={columns as any}
         showPagination={false}
       />

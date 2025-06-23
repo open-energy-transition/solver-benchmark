@@ -38,8 +38,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         filterFn: filterSelect,
         cell: (info) => (
           <Link
-            className="font-bold text-blue-600 hover:text-blue-800 inline-block"
-            style={{ textDecoration: "underline", lineHeight: "1.5" }}
+            className="font-bold inline-block"
+            style={{ lineHeight: "1.5" }}
             href={PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
               info.row.original.name,
@@ -98,7 +98,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                 </Link>
               </div>
             )}
-            position="top center"
+            position="top left"
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
