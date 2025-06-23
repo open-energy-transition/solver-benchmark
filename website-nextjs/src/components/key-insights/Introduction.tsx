@@ -9,10 +9,7 @@ const Introduction = () => {
         solvers on 120 problems arising from energy system models. For each
         benchmark run, we measure runtime and memory consumption of the solver,
         along with{" "}
-        <a
-          className="font-bold"
-          href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md#metrics"
-        >
+        <a className="font-bold" href="/methodology/#metrics">
           other metrics
         </a>{" "}
         to ensure solution quality across solvers.
@@ -20,10 +17,7 @@ const Introduction = () => {
       <p>
         Note that we run all solvers with their default options, with some
         exceptions – see full details on our{" "}
-        <a
-          className="font-bold"
-          href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md"
-        >
+        <a className="font-bold" href="/methodology/">
           Methodology
         </a>{" "}
         page. We also gather information such as the number of variables and

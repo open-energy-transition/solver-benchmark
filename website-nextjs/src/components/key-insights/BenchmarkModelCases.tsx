@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BenchmarkModelCasesTable from "./tables/BenchmarkModelCasesTable";
 
 const BenchmarkModelCases = () => {
@@ -57,6 +58,13 @@ const BenchmarkModelCases = () => {
           above.
         </li>
       </ul>
+      <p>
+        <Link className="font-bold" href="/#contact">
+          Reach out
+        </Link>{" "}
+        to us if you&apos;d like to contribute any benchmark problems that can
+        fill the above gaps!
+      </p>
     </>
   );
 };

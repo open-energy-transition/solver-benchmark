@@ -20,7 +20,12 @@ const HowGoodIsSolver = () => {
         shows the runtime of each solver, relative to the fastest solver, on
         each subset of our benchmark set. A problem on which a solver timed out
         or errored is assumed to have a runtime equal to the timeout with which
-        it was run. We split our set of problems by problem size
+        it was run. (More details, and other ways to handle time outs and
+        errors, can be found on our{" "}
+        <Link className="font-bold" href="/dashboard/main-results">
+          main dashboard
+        </Link>
+        ). We split our set of problems by problem size
         <span className="inline-flex gap-2">
           <Popup
             on={["hover"]}

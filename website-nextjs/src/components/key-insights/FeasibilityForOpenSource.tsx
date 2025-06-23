@@ -1,6 +1,7 @@
 import React from "react";
 import ProblemClassTable from "./charts/ProblemClassTable";
 import Note from "../shared/Note";
+import Link from "next/link";
 
 const FeasibilityForOpenSource = () => {
   return (
@@ -58,9 +59,21 @@ const FeasibilityForOpenSource = () => {
         below). This is despite the fact that the above problems do not share
         many features and are built with different spatial/temporal resolutions
         and time horizons. It is also interesting that a realistic TEMOA-based
-        problem like `temoa-US_9R_TS_NZ 9-12ts` does not have similar runtime to
-        the largest solved TIMES-based model (Times-Ireland-noco2-counties
-        26-1ts): despite both having &gt; 1e6 variables.
+        problem like{" "}
+        <Link
+          className="font-bold"
+          href="/dashboard/benchmark-set/temoa-US_9R_TS_SP"
+        >
+          temoa-US_9R_TS_SP (9-12)
+        </Link>{" "}
+        does not have similar runtime to the largest solved TIMES-based model,{" "}
+        <Link
+          className="font-bold"
+          href="dashboard/benchmark-set/times-ireland-noco2-counties"
+        >
+          Times-Ireland-noco2-counties (26-1ts)
+        </Link>
+        , despite both having &gt; 1e6 variables.
       </p>
       <ProblemClassTable problemClass="MILP" />
       <p>
