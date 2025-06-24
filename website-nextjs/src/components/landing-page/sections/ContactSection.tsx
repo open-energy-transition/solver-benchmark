@@ -130,32 +130,24 @@ const ContactForm = () => {
 
 const ContactSection = () => {
   return (
-    <div className="text-white bg-navy pt-[105px] pb-[73px]">
+    <div
+      id="contact"
+      className="text-white bg-navy pt-[105px] pb-[73px] scroll-mt-16 lg:scroll-mt-28"
+    >
       <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
         <div className="grid md:flex">
           <div className="w-full md:w-1/2">
             <div
               className="
-                text-lg/1.1
+                tag-line-lg
                 uppercase
-                font-medium
-                tracking-normal
                 font-league
                 mb-4
               "
             >
               contact
             </div>
-            <div
-              className="
-                text-[2.5rem]/1.4
-                tracking-normal
-                font-extrabold
-                font-lato
-              "
-            >
-              GET IN TOUCH
-            </div>
+            <h3 className="leading-1.4 text-white">GET IN TOUCH</h3>
             <h5 className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
               issue for all feedback and suggestions!

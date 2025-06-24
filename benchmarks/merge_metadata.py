@@ -1,10 +1,23 @@
+import argparse
 import os
 from pathlib import Path
 
 import yaml
 
-# Define the directory paths
-base_dir = Path.cwd()
+# Parse command line arguments
+parser = argparse.ArgumentParser(
+    description="Merge metadata YAML files into a single file"
+)
+parser.add_argument(
+    "--skip-validation",
+    action="store_true",
+    help="Skip validation of benchmark entries (default: validation enabled)",
+)
+args = parser.parse_args()
+
+# Define the directory paths relative to the script location
+# Script is in benchmarks/, so we need to go up one level to get to project root
+base_dir = Path(__file__).parent.parent
 benchmarks_dir = base_dir / "benchmarks"
 results_file = base_dir / "results" / "metadata.yaml"
 
@@ -18,6 +31,123 @@ results_file.parent.mkdir(parents=True, exist_ok=True)
 
 # Dictionary to store unified metadata
 unified_metadata = {}
+
+# Required fields for benchmark entries
+REQUIRED_BENCHMARK_FIELDS = [
+    "Short description",
+    "Modelling framework",
+    "Model name",
+    "Version",
+    "Contributor(s)/Source",
+    "Problem class",
+    "Application",
+    "Sectoral focus",
+    "Sectors",
+    "Time horizon",
+    "MILP features",
+    "Sizes",
+]
+
+# Required fields for size entries
+REQUIRED_SIZE_FIELDS = [
+    "Name",
+    "Size",
+    "URL",
+    "Temporal resolution",
+    "Spatial resolution",
+    "Realistic",
+    "Num. constraints",
+    "Num. variables",
+]
+
+
+# Helper function to validate a benchmark entry
+def validate_benchmark_entry(model_name, model_info, file_path):
+    """
+    Validate that a benchmark entry has all required fields
+
+    Args:
+        model_name: Name of the benchmark model
+        model_info: Dictionary containing benchmark information
+        file_path: Path to the file being processed (for error reporting)
+
+    Returns:
+        True if valid, False otherwise
+    """
+    # Check if model_info is a dictionary
+    if not isinstance(model_info, dict):
+        print(f"ERROR in {file_path}: Benchmark '{model_name}' is not a dictionary")
+        return False
+
+    # Check for required benchmark fields
+    missing_fields = []
+    for field in REQUIRED_BENCHMARK_FIELDS:
+        if field not in model_info:
+            missing_fields.append(field)
+
+    if missing_fields:
+        print(
+            f"ERROR in {file_path}: Benchmark '{model_name}' missing required fields: {missing_fields}"
+        )
+        return False
+
+    # Check if this is a MILP problem
+    problem_class = model_info.get("Problem class", "")
+    is_milp = problem_class == "MILP"
+
+    # Validate Sizes section
+    sizes = model_info.get("Sizes")
+    if not isinstance(sizes, list):
+        print(
+            f"ERROR in {file_path}: Benchmark '{model_name}' - 'Sizes' must be a list"
+        )
+        return False
+
+    # Validate each size entry
+    for i, size_entry in enumerate(sizes):
+        if not isinstance(size_entry, dict):
+            print(
+                f"ERROR in {file_path}: Benchmark '{model_name}' - Size entry {i} is not a dictionary"
+            )
+            return False
+
+        # Start with base required fields
+        required_fields = REQUIRED_SIZE_FIELDS.copy()
+
+        # Add MILP-specific fields if this is a MILP problem
+        if is_milp:
+            required_fields.extend(
+                ["Num. continuous variables", "Num. integer variables"]
+            )
+
+        missing_size_fields = []
+        for field in required_fields:
+            if field not in size_entry:
+                missing_size_fields.append(field)
+
+        if missing_size_fields:
+            size_name = size_entry.get("Name", f"entry {i}")
+            print(
+                f"ERROR in {file_path}: Benchmark '{model_name}' - Size '{size_name}' missing required fields: {missing_size_fields}"
+            )
+            return False
+
+        # Validate Realistic motivation when Realistic is true
+        realistic = size_entry.get("Realistic", False)
+        if realistic is True:  # Explicitly check for boolean True
+            realistic_motivation = size_entry.get("Realistic motivation", "")
+            if (
+                not realistic_motivation
+                or not isinstance(realistic_motivation, str)
+                or realistic_motivation.strip() == ""
+            ):
+                size_name = size_entry.get("Name", f"entry {i}")
+                print(
+                    f"ERROR in {file_path}: Benchmark '{model_name}' - Size '{size_name}' has Realistic=true but missing, empty, or placeholder 'Realistic motivation'"
+                )
+                return False
+
+    return True
 
 
 # Helper function to process a single YAML file
@@ -33,48 +163,38 @@ def process_yaml_file(file_path):
                 print(f"Skipping file with no content: {file_path}")
                 return
 
+            # Check if 'benchmarks' section exists
+            if "benchmarks" not in yaml_data:
+                print(f"No 'benchmarks' section found in: {file_path}")
+                return
+
             benchmark_data = yaml_data["benchmarks"]
 
+            # Process benchmark entries with optional validation
             for model_name, model_info in benchmark_data.items():
-                sizes = []
-                for size in model_info.get("Sizes", []):
-                    size_entry = {
-                        "Name": size["Name"],
-                        "Size": size["Size"],
-                        "URL": size["URL"],
-                        "Spatial resolution": size.get("Spatial resolution"),
-                        "Temporal resolution": size.get("Temporal resolution"),
-                        "Realistic": size.get("Realistic"),
-                        "Num. constraints": size.get("Num. constraints"),
-                        "Num. variables": size.get("Num. variables"),
-                    }
+                # Skip validation if requested
+                if args.skip_validation:
+                    # Check for duplicate benchmark names
+                    if model_name in unified_metadata:
+                        print(
+                            f"WARNING: Duplicate benchmark name '{model_name}' found in {file_path}. Overwriting previous entry."
+                        )
 
-                    # Add optional fields if they exist
-                    if "Num. continuous variables" in size:
-                        size_entry["Num. continuous variables"] = size[
-                            "Num. continuous variables"
-                        ]
-                    if "Num. integer variables" in size:
-                        size_entry["Num. integer variables"] = size[
-                            "Num. integer variables"
-                        ]
-                    sizes.append(size_entry)
+                    unified_metadata[model_name] = model_info
+                else:
+                    # Validate entry before adding
+                    if validate_benchmark_entry(model_name, model_info, file_path):
+                        # Check for duplicate benchmark names
+                        if model_name in unified_metadata:
+                            print(
+                                f"WARNING: Duplicate benchmark name '{model_name}' found in {file_path}. Overwriting previous entry."
+                            )
 
-                # Create metadata entry
-                entry = {
-                    "Short description": model_info.get("Short description"),
-                    "Model name": model_info.get("Model name"),
-                    "Version": model_info.get("Version"),
-                    "Contributor(s)/Source": model_info.get("Contributor(s)/Source"),
-                    "Technique": model_info.get("Technique"),
-                    "Kind of problem": model_info.get("Kind of problem"),
-                    "Sectors": model_info.get("Sectors"),
-                    "Time horizon": model_info.get("Time horizon"),
-                    "MILP features": model_info.get("MILP features"),
-                    "Sizes": sizes,
-                }
-                # Add entry to unified metadata
-                unified_metadata[model_name] = entry
+                        unified_metadata[model_name] = model_info
+                    else:
+                        print(
+                            f"Skipping invalid benchmark '{model_name}' from {file_path}"
+                        )
 
     except yaml.YAMLError as e:
         print(f"Error parsing YAML file {file_path}: {e}")
@@ -107,4 +227,8 @@ with open(results_file, "w") as output_file:
     )
 
 print(f"Processed {len(unified_metadata)} entries.")
+if args.skip_validation:
+    print("Validation was skipped.")
+else:
+    print("Validation was enabled.")
 print(f"Unified metadata has been written to {results_file}")

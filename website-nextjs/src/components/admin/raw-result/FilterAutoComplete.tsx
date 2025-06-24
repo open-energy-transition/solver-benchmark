@@ -12,19 +12,63 @@ import Popup from "reactjs-popup";
 const Option = (props: OptionProps<any>) => {
   const { data, innerRef, innerProps } = props;
 
+  const selectOnly = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const selected = [
+      { value: "all", label: "All", isSelected: false },
+      ...props.selectProps.options.slice(1).map((o: any) => ({
+        ...o,
+        isSelected: o.value === data.value,
+      })),
+    ];
+    props.selectProps.onChange(
+      selected.filter((s) => s.isSelected),
+      {
+        action: "select-option",
+        option: data,
+      },
+    );
+  };
+
   return (
     <div
       ref={innerRef}
       {...innerProps}
-      className="flex items-center px-4 cursor-pointer"
+      className="flex items-center px-2 cursor-pointer group"
     >
-      <input
-        type="checkbox"
-        checked={data.isSelected}
-        readOnly
-        className="mr-2 accent-navy rounded"
-      />
-      <label>{data.label}</label>
+      <Popup
+        on={["hover"]}
+        trigger={() => (
+          <div className="flex w-full items-center">
+            <input
+              type="checkbox"
+              checked={data?.isSelected ?? false}
+              readOnly
+              className="mr-2 size-3"
+            />
+            <label className="truncate max-w-[100%] group-hover:max-w-[80%] flex-1">
+              {data.label}
+            </label>
+            {data.value !== "all" && (
+              <button
+                onClick={selectOnly}
+                className="hidden group-hover:block text-xs font-bold text-navy px-2"
+              >
+                Only
+              </button>
+            )}
+          </div>
+        )}
+        position="top right"
+        closeOnDocumentClick
+        arrow={false}
+      >
+        {data.value !== "all" ? (
+          <div className="bg-stroke p-2 rounded">{data.label}</div>
+        ) : (
+          <></>
+        )}
+      </Popup>
     </div>
   );
 };
@@ -169,7 +213,12 @@ const FilterAutoComplete: React.FC<FilterAutoCompleteProps> = ({
       onOpen={() => toggleMenuIsOpen()}
       trigger={
         <div className="flex gap-2 w-max items-center z-50 relative">
-          <FilterIcon className="size-4" />
+          <div className="relative">
+            <FilterIcon className="size-4" />
+            {selectedValue.length !== options.length + 1 && (
+              <div className="absolute -top-0.5 -right-0.5 size-1.5 bg-green-500 rounded-full" />
+            )}
+          </div>
         </div>
       }
       position="bottom center"

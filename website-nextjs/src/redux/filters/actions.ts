@@ -4,9 +4,12 @@ import { ThunkAction } from "redux-thunk";
 import resultActions from "@/redux/results/actions";
 import { BenchmarkResult } from "@/types/benchmark";
 import { MetaData, MetaDataEntry, Size } from "@/types/meta-data";
-import { getLatestBenchmarkResult } from "@/utils/results";
+import {
+  checkRealisticFilter,
+  getLatestBenchmarkResult,
+} from "@/utils/results";
 import { IFilterState } from "@/types/state";
-import { SgmMode } from "@/constants/filter";
+import { SgmMode } from "@/constants/sgm";
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
@@ -57,11 +60,23 @@ const actions = {
       const metaData = Object.fromEntries(
         Object.entries(results.rawMetaData).filter(([, _metaData]) => {
           const metaData = _metaData as MetaDataEntry;
+
+          const isSectorsMatch =
+            filters.sectors.length === 0 ||
+            (metaData.sectors &&
+              filters.sectors.some((selectedSector) => {
+                const metaDataSectors = metaData.sectors
+                  .split(",")
+                  .map((s) => s.trim());
+                return metaDataSectors.includes(selectedSector);
+              }));
+
           return (
-            filters.kindOfProblem.includes(metaData.kindOfProblem) &&
-            filters.technique.includes(metaData.technique) &&
-            filters.sectors.includes(metaData.sectors) &&
-            filters.modelName.includes(metaData.modelName)
+            filters.application.includes(metaData.application) &&
+            filters.problemClass.includes(metaData.problemClass) &&
+            filters.sectoralFocus.includes(metaData.sectoralFocus) &&
+            isSectorsMatch &&
+            filters.modellingFramework.includes(metaData.modellingFramework)
           );
         }),
       );
@@ -87,7 +102,8 @@ const actions = {
                   problemSizeResult[
                     `${benchmark.benchmark}'-'${benchmark.size}`
                   ],
-                )
+                ) &&
+                checkRealisticFilter(size, filters)
               );
             },
           );

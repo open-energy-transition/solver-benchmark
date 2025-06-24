@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Head from "next/head";
 
 import type { AppProps } from "next/app";
@@ -14,15 +14,20 @@ import AdminLayout from "@/pages/AdminLayout";
 import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results";
 import { getMetaData } from "@/utils/meta-data";
 import { BenchmarkResult } from "@/types/benchmark";
-import { IFilterState } from "@/types/state";
+import { IFilterState, RealisticOption } from "@/types/state";
 import { MetaData } from "@/types/meta-data";
+import { useRouter } from "next/router";
 
 function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
+  const initialized = useRef(false);
 
   const { store, props } = wrapper.useWrappedStore(pageProps);
 
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     const initializeData = async () => {
       const resultsRes = await getBenchmarkResults();
 
@@ -73,25 +78,41 @@ function App({ Component, pageProps }: AppProps) {
       });
 
       const uniqueValues = {
+        sectoralFocus: new Set<string>(),
         sectors: new Set<string>(),
-        techniques: new Set<string>(),
-        kindOfProblems: new Set<string>(),
+        problemClasses: new Set<string>(),
+        applications: new Set<string>(),
         models: new Set<string>(),
+        modellingFrameworks: new Set<string>(),
       };
 
       Object.keys(benchmarksMetaData).forEach((key) => {
-        const { sectors, technique, kindOfProblem, modelName } =
-          benchmarksMetaData[key];
-        uniqueValues.sectors.add(sectors);
-        uniqueValues.techniques.add(technique);
-        uniqueValues.kindOfProblems.add(kindOfProblem);
+        const {
+          sectoralFocus,
+          sectors,
+          problemClass,
+          application,
+          modelName,
+          modellingFramework,
+        } = benchmarksMetaData[key];
+        uniqueValues.sectoralFocus.add(sectoralFocus);
+        sectors.split(",").forEach((sector) => {
+          uniqueValues.sectors.add(sector.trim());
+        });
+        uniqueValues.problemClasses.add(problemClass);
+        uniqueValues.applications.add(application);
         uniqueValues.models.add(modelName);
+        uniqueValues.modellingFrameworks.add(modellingFramework);
       });
 
+      const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
       const availableSectors = Array.from(uniqueValues.sectors);
-      const availableTechniques = Array.from(uniqueValues.techniques);
-      const availableKindOfProblems = Array.from(uniqueValues.kindOfProblems);
+      const availableProblemClasses = Array.from(uniqueValues.problemClasses);
+      const availableApplications = Array.from(uniqueValues.applications);
       const availableModels = Array.from(uniqueValues.models);
+      const availableModellingFrameworks = Array.from(
+        uniqueValues.modellingFrameworks,
+      );
       const availableProblemSizes = Array.from(
         new Set(
           Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
@@ -109,11 +130,14 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(resultActions.setRawMetaData(benchmarksMetaData));
       dispatch(
         resultActions.setAvailableFilterData({
+          availableSectoralFocus,
           availableSectors,
-          availableTechniques,
-          availableKindOfProblems,
+          availableProblemClasses,
+          availableApplications,
           availableModels,
+          availableModellingFrameworks,
           availableProblemSizes,
+          realisticOptions: [RealisticOption.Realistic, RealisticOption.Other],
         }),
       );
       dispatch(
@@ -122,17 +146,43 @@ function App({ Component, pageProps }: AppProps) {
 
       dispatch(
         filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
           sectors: availableSectors,
-          technique: availableTechniques,
-          kindOfProblem: availableKindOfProblems,
-          modelName: availableModels,
+          problemClass: availableProblemClasses,
+          application: availableApplications,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
+          isReady: true,
         } as IFilterState),
       );
     };
 
     initializeData();
   }, []);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      // Only scroll to top if the base path changes
+      const newPath = url.split("?")[0];
+      const currentPath = router.pathname;
+
+      if (newPath !== currentPath) {
+        const mainElement = document.querySelector("main");
+        if (mainElement) {
+          mainElement.scrollTo(0, 0);
+        }
+      }
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.pathname]);
 
   const renderLayout = () => {
     return (

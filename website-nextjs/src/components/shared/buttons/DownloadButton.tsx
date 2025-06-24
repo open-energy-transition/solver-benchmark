@@ -4,14 +4,17 @@ interface DownloadButtonProps {
   children: React.ReactNode;
   url: string;
   fileName: string;
+  disabled?: boolean;
 }
 
 const DownloadButton: React.FC<DownloadButtonProps> = ({
   children,
   url,
   fileName,
+  disabled = false,
 }) => {
   const handleDownload = async () => {
+    if (disabled) return;
     const fileUrl = url;
 
     try {
@@ -39,7 +42,17 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
     }
   };
 
-  return <div onClick={handleDownload}>{children}</div>;
+  return (
+    <div
+      onClick={handleDownload}
+      style={{
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.5 : 1,
+      }}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default DownloadButton;

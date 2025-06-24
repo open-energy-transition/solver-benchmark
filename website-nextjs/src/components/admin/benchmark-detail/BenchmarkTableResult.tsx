@@ -1,24 +1,12 @@
-import React, { useMemo, useState } from "react";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  getFacetedUniqueValues,
-  useReactTable,
-  SortingState,
-  ColumnFiltersState,
-} from "@tanstack/react-table";
+import React, { useMemo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import SortIcon from "@/components/shared/tables/SortIcon";
-import { ArrowRightIcon } from "@/assets/icons";
-import PaginationTable from "@/components/shared/tables/PaginationTable";
+import { filterSelect } from "@/utils/table";
+import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -47,6 +35,92 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "name",
         size: 200,
         enableSorting: true,
+        filterFn: filterSelect,
+        cell: (info) => (
+          <Link
+            className="font-bold inline-block"
+            style={{ lineHeight: "1.5" }}
+            href={PATH_DASHBOARD.benchmarkSet.one.replace(
+              "{name}",
+              info.row.original.name,
+            )}
+          >
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                  {info.getValue() as string}
+                </div>
+              )}
+              position="top center"
+              closeOnDocumentClick
+              arrowStyle={{ color: Color.Stroke }}
+            >
+              <div className="bg-stroke p-2 rounded">
+                {" "}
+                {info.getValue() as string}{" "}
+              </div>
+            </Popup>
+          </Link>
+        ),
+      },
+      {
+        header: "MODEL NAME",
+        accessorKey: "modelName",
+        filterFn: filterSelect,
+        cell: (info) => info.getValue(),
+        size: 110,
+      },
+      {
+        header: "PROBLEM CLASS",
+        accessorKey: "problemClass",
+        filterFn: filterSelect,
+        size: 120,
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "APPLICATION",
+        accessorKey: "application",
+        filterFn: filterSelect,
+        size: 110,
+        cell: (info) => (
+          <Popup
+            on={["hover"]}
+            trigger={() => (
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden font-bold">
+                <Link
+                  href={PATH_DASHBOARD.benchmarkSet.one.replace(
+                    "{name}",
+                    info.getValue() as string,
+                  )}
+                >
+                  {info.getValue() as string}
+                </Link>
+              </div>
+            )}
+            position="top left"
+            closeOnDocumentClick
+            arrowStyle={{ color: Color.Stroke }}
+          >
+            <div className="bg-stroke p-2 rounded">
+              {" "}
+              {info.getValue() as string}{" "}
+            </div>
+          </Popup>
+        ),
+      },
+      {
+        header: "SECTORAL FOCUS",
+        accessorKey: "sectoralFocus",
+        size: 125,
+        filterFn: filterSelect,
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "SECTORS",
+        accessorKey: "sectors",
+        size: 100,
+        filterFn: filterSelect,
         cell: (info) => (
           <Popup
             on={["hover"]}
@@ -66,119 +140,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           </Popup>
         ),
       },
-      {
-        header: "MODEL NAME",
-        accessorKey: "modelName",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "TECHNIQUE",
-        accessorKey: "technique",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "PROBLEM KIND",
-        accessorKey: "kindOfProblem",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "SECTORS",
-        accessorKey: "sectors",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "DETAILS",
-        accessorKey: "details",
-        enableSorting: false,
-        cell: (info) => (
-          <Link
-            className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={PATH_DASHBOARD.benchmarkDetail.one.replace(
-              "{name}",
-              info.row.original.name,
-            )}
-          >
-            View Details
-            <ArrowRightIcon
-              className="w-3 h-3 text-navy fill-none stroke-green-pop hover:stroke-white"
-              strokeOpacity="0.5"
-            />
-          </Link>
-        ),
-      },
     ],
     [],
   );
 
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const table = useReactTable({
-    data: memoizedMetaData,
-    columns,
-    state: {
-      sorting,
-      columnFilters,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: false,
-  });
-
   return (
-    <div className="py-2">
-      <div className="rounded-xl overflow-auto">
-        <table className="table-auto bg-white w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="text-start text-navy py-4 px-6 cursor-pointer"
-                  >
-                    <div
-                      className="flex gap-2 items-center 4xl:text-xl"
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                      {/* Sort */}
-                      <SortIcon
-                        canSort={header.column.getCanSort()}
-                        sortDirection={header.column.getIsSorted()}
-                      />
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-navy text-start py-2 px-6 4xl:text-xl"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {/* Pagination */}
-      <PaginationTable<IColumnTable> table={table} />
+    <div>
+      <TanStackTable data={memoizedMetaData} columns={columns} />
     </div>
   );
 };

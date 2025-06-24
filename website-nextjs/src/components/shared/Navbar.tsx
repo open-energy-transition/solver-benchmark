@@ -15,40 +15,43 @@ import { useRouter } from "next/router";
 import navbarActions from "@/redux/theme/actions";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
+import Popup from "reactjs-popup";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const Navbar = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
+  const isMobile = useIsMobile();
 
   const navConfig = [
     {
-      label: "Home",
-      route: "/dashboard/home",
+      label: "Main Results",
+      route: PATH_DASHBOARD.home,
       icon: <AlignLeftJustifyIcon />,
     },
     {
-      label: "Benchmark details",
-      route: PATH_DASHBOARD.benchmarkDetail.list,
+      label: "Benchmark Set",
+      route: PATH_DASHBOARD.benchmarkSet.list,
       icon: <ChartBarIcon />,
     },
     {
       label: "Solvers",
-      route: "/dashboard/solvers",
+      route: PATH_DASHBOARD.solvers,
       icon: <VectorSquareIcon />,
     },
     {
-      label: "Compare solvers",
-      route: "/dashboard/compare-solvers",
+      label: "Compare Solvers",
+      route: PATH_DASHBOARD.compareSolvers,
       icon: <BalanceScaleIcon />,
     },
     {
-      label: "Performance history",
-      route: "/dashboard/performance-history",
+      label: "Performance History",
+      route: PATH_DASHBOARD.performanceHistory,
       icon: <ChartLineIcon />,
     },
     {
       label: "Full Results",
-      route: "/dashboard/raw-result",
+      route: PATH_DASHBOARD.fullResults,
       icon: <WindowIcon />,
     },
   ];
@@ -92,7 +95,7 @@ const Navbar = () => {
             <Link
               href="/"
               className={`-m-1.5 p-1.5 flex items-center gap-0.5 text-white w-max
-                 ${isNavExpanded ? "px-16" : "px-4"}`}
+                 ${isNavExpanded ? "px-16" : "px-4 pl-6"}`}
             >
               <div className="size-10">
                 <Image
@@ -100,11 +103,11 @@ const Navbar = () => {
                   alt="Contribution image"
                   width={35}
                   height={35}
-                  className="4xl:size-11"
+                  className=""
                 />
               </div>
               {isNavExpanded && (
-                <div className="font-grotesk font-thin text-base leading-[21px] 4xl:text-lg 4xl:ml-2">
+                <div className="font-grotesk font-thin text-base leading-[21px]">
                   Solver
                   <br />
                   Benchmark
@@ -115,35 +118,51 @@ const Navbar = () => {
           <ul className="space-y-2">
             {navConfig.map((navData, idx) => (
               <li key={idx}>
-                <Link
-                  onClick={() => {
-                    if (window.innerWidth < 768) {
-                      dispatch(navbarActions.toggleNav());
-                    }
-                  }}
-                  scroll={false}
-                  replace
-                  href={navData.route}
-                  className={`flex items-center h-[55px] text-lavender font-normal font-league
-                     ${
-                       currentRoute === navData.route
-                         ? "bg-white bg-opacity-40"
-                         : ""
-                     }
-                     ${
-                       isNavExpanded
-                         ? "pl-8 pr-2 justify-start 4xl:pl-4"
-                         : "px-2 justify-center"
-                     }
-                    `}
-                >
-                  {navData.icon}
-                  {isNavExpanded && (
-                    <span className="ml-3.5 pl-[1px] text-xl mt-0.5 4xl:text-2xl 4xl:ml-1">
-                      {navData.label}
-                    </span>
+                <Popup
+                  on={["hover"]}
+                  disabled={isMobile || isNavExpanded}
+                  arrow
+                  arrowStyle={{ color: "#ffffff" }}
+                  trigger={() => (
+                    <div>
+                      <Link
+                        onClick={() => {
+                          if (window.innerWidth < 768) {
+                            dispatch(navbarActions.toggleNav());
+                          }
+                        }}
+                        scroll={false}
+                        replace
+                        href={navData.route}
+                        className={`
+                          flex items-center h-[55px] text-lavender font-normal font-league
+                          hover:bg-white hover:bg-opacity-10
+                          ${
+                            currentRoute === navData.route
+                              ? "bg-white bg-opacity-40"
+                              : ""
+                          }
+                          ${
+                            isNavExpanded
+                              ? "pl-8 pr-2 justify-start"
+                              : "px-2 justify-center"
+                          }
+                        `}
+                      >
+                        {navData.icon}
+                        {isNavExpanded && (
+                          <span className="ml-3.5 pl-[1px] text-xl mt-0.5">
+                            {navData.label}
+                          </span>
+                        )}
+                      </Link>
+                    </div>
                   )}
-                </Link>
+                  position="right center"
+                  closeOnDocumentClick
+                >
+                  <div className="bg-white p-2 rounded">{navData.label}</div>
+                </Popup>
               </li>
             ))}
           </ul>
@@ -156,7 +175,7 @@ const Navbar = () => {
           <a
             onClick={() => dispatch(navbarActions.toggleNav())}
             href="#"
-            className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none 4xl:text-xl"
+            className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none"
           >
             {isNavExpanded && "Collapse"}
             <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />

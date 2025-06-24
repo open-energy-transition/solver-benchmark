@@ -1,135 +1,153 @@
 benchmarks:
   genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
-      Temporal resolution: 168
-      Spatial resolution: 15
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832658
       Num. variables: 13777226
   genx-elec_trex_co2:
+    Modelling framework: GenX
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
-      Temporal resolution: 168
-      Spatial resolution: 15
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832689
       Num. variables: 13777227
 #  genx-elec_trex_co2_uc:
+#    Modelling framework: GenX
 #    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
 #    Model name: GenX
 #    Version:
-#    Technique: MILP
-#    Kind of problem: Infrastructure
-#    Sectors: Power
+#    Problem class: MILP
+#    Application: Infrastructure & Capacity Expansion
+#    Sectoral focus: Power-only
+#    Sectors: Electric
 #    Time horizon: Single period (1 year)
 #    MILP features: Unit commitment
 #    Sizes:
 #    - Name: 15-168h
 #      Size: R
 #      URL:
-#      Temporal resolution: 168
-#      Spatial resolution: 15
+#      Temporal resolution: 168 hours
+#      Spatial resolution: 15 nodes
 #      N. of constraints:
 #      N. of continuous variables:
 #      N. of integer variables:
 #      N. of binary variables:
   genx-elec_trex_uc:
     Short description: This is 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (30 days)
     MILP features: Unit commitment
     Sizes:
     - Name: 15-24h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
-      Temporal resolution: 24h
-      Spatial resolution: 15
+      Temporal resolution: 24h hours
+      Spatial resolution: 15 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3123898
       Num. variables: 2551346
       Num. continuous variables: 2062938
       Num. integer variables: 488408
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
-      Temporal resolution: 168
-      Spatial resolution: 15
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832633
       Num. variables: 13777201
 # genx-15-zones_elec_co2_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
+#   Modelling framework: GenX
 #   Model name: GenX
 #   Version:
-#   Technique: MILP
-#   Kind of problem: Infrastructure
-#   Sectors: Power
+#   Problem class: MILP
+#   Application: Infrastructure & Capacity Expansion
+#   Sectoral focus: Power-only
+#   Sectors: Electric
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment
 #   Sizes:
 #   - Name: 15-168h
 #     Size: R
 #     URL:
-#     Temporal resolution: 168
-#     Spatial resolution: 15
+#     Temporal resolution: 168 hours
+#     Spatial resolution: 15 nodes
 #     N. of constraints:
 #     N. of continuous variables:
 #     N. of integer variables:
 #     N. of binary variables:
 # genx-15-zones_elec_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes unit commitment for conventional generators.
+#   Modelling framework: GenX
 #   Model name: GenX
 #   Version:
-#   Technique: MILP
-#   Kind of problem: Infrastructure
-#   Sectors: Power
+#   Problem class: MILP
+#   Application: Infrastructure & Capacity Expansion
+#   Sectoral focus: Power-only
+#   Sectors: Electric
 #   Time horizon: Single period (1 year)
 #   MILP features: Unit commitment
 #   Sizes:
 #   - Name: 15-168h
 #     Size: R
 #     URL:
-#     Temporal resolution: 168
-#     Spatial resolution: 15
+#     Temporal resolution: 168 hours
+#     Spatial resolution: 15 nodes
 #     N. of constraints: 20128472
 #     N. of continuous variables: 13897912
 #     N. of integer variables: 3417368

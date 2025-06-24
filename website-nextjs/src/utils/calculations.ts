@@ -15,4 +15,13 @@ const calculateSgm = (dataPoints: number[], sh = 10) => {
 
   return sgm;
 };
-export { calculateSgm };
+
+const isNullorUndefined = (value: number | null | undefined): boolean => {
+  return value === null || value === undefined;
+};
+
+function isEmptyStringOrUndefined(params: string | undefined | number) {
+  return params === "" || params === undefined;
+}
+
+export { calculateSgm, isNullorUndefined, isEmptyStringOrUndefined };

@@ -24,12 +24,12 @@ const MACHINE_CONFIGS: Record<number, MachineConfig> = {
   [TIMEOUT.STANDARD]: {
     instance: "c4-standard-2",
     vcpus: "2",
-    memory: "7 GiB",
+    memory: "7 GB",
   },
   [TIMEOUT.EXTENDED]: {
     instance: "c4-highmem-8",
     vcpus: "8",
-    memory: "62 GiB",
+    memory: "62 GB",
   },
 };
 
@@ -63,9 +63,7 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
 
   return (
     <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-3 px-2 pl-8 pr-4 text-navy flex items-center justify-between">
-      <div className="font-lato font-semibold  text-base/1.5 tracking-normal">
-        Configuration
-      </div>
+      <div className="tag-line font-semibold text-dark-grey">Configuration</div>
       <ul className="flex gap-6 font-inter">
         {detailData.map((data, idx) => (
           <li
@@ -73,12 +71,12 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
             className="text-xs font-inter flex items-center border border-[#cad9ef] rounded-2xl p-1 pr-4"
           >
             <span className="rounded-full p-1 bg-[#F7F7F7]">{data.icon}</span>
-            <div className="ml-1 2xl:ml-2 4xl:ml-3">
-              <span className="ml-1 2xl:ml-2 4xl:ml-3">
+            <div className="ml-1 2xl:ml-2 text-dark-grey">
+              <span className="ml-1 2xl:ml-2 tag-line-xs">
                 {data.label}
                 {":"}
               </span>
-              <span className="font-bold ml-1 2xl:ml-2 4xl:ml-3">
+              <span className="font-bold ml-1 2xl:ml-2 tag-line-xs">
                 {data.value}
               </span>
             </div>

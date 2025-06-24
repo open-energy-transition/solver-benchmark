@@ -1,151 +1,160 @@
 benchmarks:
   pypsa-eur-sec:
-    Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints).
+    Short description: Sector-coupled (power, heating, biomass, industrial, transport) PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power, heating biomass, industry, transport
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Biomass, Industrial, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 2
+      Temporal resolution: 24 hours
+      Spatial resolution: 2 nodes
       Realistic: false
       Num. constraints: 132272
       Num. variables: 63264
     - Name: 6-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-6-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 6
+      Temporal resolution: 24 hours
+      Spatial resolution: 6 nodes
       Realistic: false
       Num. constraints: 377463
       Num. variables: 178831
     - Name: 5-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 5
+      Temporal resolution: 12 hour
+      Spatial resolution: 5 node
       Realistic: false
       Num. constraints: 636907
       Num. variables: 301038
     - Name: 2-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 2
+      Temporal resolution: 3 hours
+      Spatial resolution: 2 nodes
       Realistic: false
     # TODO: No R size
       Num. constraints: 1057182
       Num. variables: 505253
   pypsa-eur-elec-trex:
-    Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion (LP, lot of variables, intermeshed constraints).
+    Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 3-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 3
+      Temporal resolution: 12 hours
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 119786
       Num. variables: 57705
     - Name: 6-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-6-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 6
+      Temporal resolution: 12 hours
+      Spatial resolution: 6 nodes
       Realistic: false
       Num. constraints: 253453
       Num. variables: 117605
     - Name: 3-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 3
+      Temporal resolution: 3 hours
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 478946
       Num. variables: 230682
     - Name: 4-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-4-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 4
+      Temporal resolution: 3 hours
+      Spatial resolution: 4 nodes
       Realistic: false
     # TODO: No R size
       Num. constraints: 677533
       Num. variables: 318285
   pypsa-eur-elec-op:
-    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon (LP, lot of variables, poorly intermeshed constraints).
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Operational
-    Sectors: Power
+    Problem class: LP
+    Application: Operational
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 6-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-6-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 6
+      Temporal resolution: 24 hours
+      Spatial resolution: 6 nodes
       Realistic: false
       Num. constraints: 126776
       Num. variables: 58841
     - Name: 8-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-8-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 8
+      Temporal resolution: 12 hours
+      Spatial resolution: 8 nodes
       Realistic: false
       Num. constraints: 326473
       Num. variables: 152656
     - Name: 4-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 4
+      Temporal resolution: 3 hours
+      Spatial resolution: 4 nodes
       Realistic: false
       Num. constraints: 677519
       Num. variables: 318278
     - Name: 2-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 2
+      Temporal resolution: 1 hours
+      Spatial resolution: 2 nodes
       Realistic: false
       Num. constraints: 928600
       Num. variables: 455458
     - Name: 10-3h
       Size: M # TODO: Solved in 18 hours
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-10-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 10
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 1620797
       Num. variables: 750434
   pypsa-eur-elec-op-ucconv:
-    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet (MILP, lot of variables, poorly intermeshed constraints).
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon and unit commitment for conventional fleet.
+    Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Operational
-    Sectors: Power
+    Problem class: MILP
+    Application: Operational
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
@@ -153,8 +162,8 @@ benchmarks:
     - Name: 5-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-5-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 5
+      Temporal resolution: 24 hours
+      Spatial resolution: 5 nodes
       Realistic: false
       Num. constraints: 129672
       Num. variables: 60288
@@ -163,8 +172,8 @@ benchmarks:
     - Name: 2-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 2
+      Temporal resolution: 3 hour
+      Spatial resolution: 2 node
       Realistic: false
       Num. constraints: 385478
       Num. variables: 186880
@@ -173,212 +182,232 @@ benchmarks:
     - Name: 10-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 10
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
       Realistic: false
       Num. constraints: 238164
       Num. variables: 109259
       Num. continuous variables: 93929
       Num. integer variables: 15330
   pypsa-power+ely:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140165
       Num. variables: 61325
   pypsa-power+ely+battery:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 201486
       Num. variables: 87606
   pypsa-power+ely+battery-ucgas:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 219005
       Num. variables: 113885
       Num. continuous variables: 87605
       Num. integer variables: 26280
   pypsa-power+ely-co2:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: None
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140166
       Num. variables: 61325
   pypsa-power+ely-ucgas:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 157684
       Num. variables: 87604
       Num. continuous variables: 61324
       Num. integer variables: 26280
   pypsa-power+ely+battery-ucgas-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 219009
       Num. variables: 113889
       Num. continuous variables: 87605
       Num. integer variables: 26284
   pypsa-power+ely-co2-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with CO2 emission limit with integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140170
       Num. variables: 61329
       Num. continuous variables: 61325
       Num. integer variables: 4
   pypsa-power+ely-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar infrastructure model with integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140170
       Num. variables: 61330
       Num. continuous variables: 61325
       Num. integer variables: 5
   pypsa-power+ely-ucgas-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model with unit commitment on gas generator and integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Unit commitment; Modularity
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 157687
       Num. variables: 87607
       Num. continuous variables: 61324
       Num. integer variables: 26283
   pypsa-power+ely+battery-mod:
-    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity.
+    Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer + battery infrastructure model with integer investment capacity for a single year-time horizon.
+    Modelling framework: PyPSA
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    Technique: MILP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: 1 year
     MILP features: Modularity
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 201491
       Num. variables: 87611

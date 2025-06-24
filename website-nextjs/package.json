@@ -14,6 +14,7 @@
     "@redux-devtools/extension": "^3.3.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-table": "^8.20.6",
+    "better-react-mathjax": "^2.3.0",
     "compare-versions": "^6.1.1",
     "d3": "^7.9.0",
     "i": "^0.3.7",

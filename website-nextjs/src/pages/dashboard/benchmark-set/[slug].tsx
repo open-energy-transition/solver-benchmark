@@ -13,12 +13,11 @@ import { useMemo } from "react";
 import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult";
-import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import MilpTableResult from "@/components/admin/benchmark-detail/MilpTableResult";
-import { Technique } from "@/constants";
 import { IResultState } from "@/types/state";
+import DataTable from "@/components/admin/benchmark-detail/DataTable";
+import SolverRuntimeComparison from "@/components/admin/benchmark-detail/SolverRuntimeComparison";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -34,6 +33,8 @@ const PageBenchmarkDetail = () => {
     [metaData],
   );
 
+  if (!benchmarkDetail) return <div></div>;
+
   const columns = [
     {
       name: "name",
@@ -41,19 +42,29 @@ const PageBenchmarkDetail = () => {
       value: benchmarkName,
     },
     {
+      name: "modellingFramework",
+      label: "Modelling Framework",
+      value: benchmarkDetail?.modellingFramework,
+    },
+    {
       name: "version",
       label: "version",
       value: benchmarkDetail?.version,
     },
     {
-      name: "technique",
-      label: "technique",
-      value: benchmarkDetail?.technique,
+      name: "problemClass",
+      label: "problem class",
+      value: benchmarkDetail?.problemClass,
     },
     {
-      name: "problemKind",
-      label: "problem kind",
-      value: benchmarkDetail?.kindOfProblem,
+      name: "application",
+      label: "application",
+      value: benchmarkDetail?.application,
+    },
+    {
+      name: "sectoralFocus",
+      label: "Sectoral focus",
+      value: benchmarkDetail?.sectoralFocus,
     },
     {
       name: "sectors",
@@ -71,7 +82,6 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.milpFeatures,
     },
   ];
-
   return (
     <>
       <Head>
@@ -82,25 +92,22 @@ const PageBenchmarkDetail = () => {
         <ContentWrapper
           header={
             <AdminHeader>
-              <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+              <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                 <div className="flex flex-wrap items-center gap-1">
                   <Link href={PATH_DASHBOARD.root}>
-                    <HomeIcon className="w-[1.125rem] h-[1.125rem] 4xl:size-5" />
+                    <HomeIcon className="w-[1.125rem] h-[1.125rem]" />
                   </Link>
-                  <ArrowIcon
-                    fill="none"
-                    className="size-3 4xl:size-4 stroke-navy"
-                  />
+                  <ArrowIcon fill="none" className="size-3 stroke-navy" />
                   <Link
-                    href={PATH_DASHBOARD.benchmarkDetail.list}
+                    href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
                     Benchmark Details
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                  <span className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
+                  <p className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
                     {benchmarkName}
-                  </span>
+                  </p>
                 </div>
               </div>
             </AdminHeader>
@@ -108,18 +115,16 @@ const PageBenchmarkDetail = () => {
           showFilter={false}
         >
           {/* Content */}
-          <div className="border-b border-stroke pt-2" />
-
-          <div className="pb-2 pt-8 md:py-4 flex items-center">
+          <div className="pb-2 md:py-4 md:pt-2 flex items-center">
             <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>
             <Popup
               on={["hover"]}
               trigger={() => (
-                <div className="text-navy text-2xl md:text-4xl font-bold text-ellipsis overflow-hidden pl-1.5">
+                <h5 className="text-ellipsis overflow-hidden pl-1.5">
                   {benchmarkName}
-                </div>
+                </h5>
               )}
               position="top center"
               closeOnDocumentClick
@@ -172,13 +177,18 @@ const PageBenchmarkDetail = () => {
               ))}
             </div>
           </div>
+
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
-              {benchmarkDetail.technique === Technique.MILP && (
-                <MilpTableResult benchmarkName={benchmarkName as string} />
-              )}
-              <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">
+                Results on this benchmark
+              </h5>
+              <DataTable benchmarkName={benchmarkName as string} />
+              <SolverRuntimeComparison
+                benchmarkDetail={benchmarkDetail}
+                benchmarkName={benchmarkName as string}
+              />
             </>
           )}
         </ContentWrapper>
