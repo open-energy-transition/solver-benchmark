@@ -211,12 +211,12 @@ const LandingPage = () => {
                         <br />
                         We recommend using{" "}
                         <span className="hover:underline underline-offset-4  font-bold">
-                          <a href="https://github.com/open-energy-transition/solver-benchmark/">
+                          <a href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks">
                             our scripts
                           </a>
                         </span>{" "}
                         to benchmark on your own problems before picking a
-                        solver See also the section on{" "}
+                        solver. See also the section on{" "}
                         <Link
                           href="#caveats"
                           className="hover:underline underline-offset-4 font-bold"
