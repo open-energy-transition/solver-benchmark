@@ -112,6 +112,7 @@ const Header = () => {
         <div className="hidden lg:flex w-max">
           <Link
             href="https://openenergytransition.org/"
+            target="_blank"
             className="
               2xl:px-7
               border

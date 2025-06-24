@@ -50,7 +50,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
           {/* Desktop menu */}
           <div className="hidden lg:flex items-center space-x-4">
             <a
-              href="https://github.com/open-energy-transition/"
+              href="https://github.com/open-energy-transition/solver-benchmark"
               target="_blank"
               rel="noopener noreferrer"
             >

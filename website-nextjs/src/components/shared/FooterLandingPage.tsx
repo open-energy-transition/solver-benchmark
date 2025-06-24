@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface FooterProps {
   wrapperClassName?: string;
@@ -21,12 +22,14 @@ const Footer = ({
         <div>
           <div className="md:flex gap-1 py-[1.375rem] justify-between text-navy text-xs">
             <div>
-              <Image
-                width={127}
-                height={57}
-                src="/logo/oet.png"
-                alt="oet-logo"
-              />
+              <Link href="https://openenergytransition.org/" target="_blank">
+                <Image
+                  width={127}
+                  height={57}
+                  src="/logo/oet.png"
+                  alt="oet-logo"
+                />
+              </Link>
               <div
                 className={`${descriptionTextClassName} font-league text-sm/1.1 tracking-normal font-normal w-[362px] my-6 mb-4`}
               >
@@ -37,18 +40,23 @@ const Footer = ({
               <div className="gap-2 items-center">
                 <div
                   className={`font-lato w-full md:w-max uppercase font-bold text-sm/1.1 tracking-normal ${
-                    theme === "light" ? "text-navy" : "text-white"
+                    theme === "light" ? "text-dark-grey" : "text-white"
                   }`}
                 >
                   Supported by
                 </div>
-                <Image
-                  className="mt-4"
-                  src={`/landing_page/BE_logo_${theme}.png`}
-                  alt="be-logo"
-                  width={215}
-                  height={29}
-                />
+                <Link
+                  href="https://www.breakthroughenergy.org/"
+                  target="_blank"
+                >
+                  <Image
+                    className="mt-4"
+                    src={`/landing_page/BE_logo_${theme}.png`}
+                    alt="be-logo"
+                    width={215}
+                    height={29}
+                  />
+                </Link>
               </div>
             </div>
             <div className="flex gap-0 justify-between md:gap-4 lg:gap-[64px] pl-0 xl:pl-[221px] mt-4 lg:mt-8">
@@ -136,11 +144,15 @@ const Footer = ({
           <div
             className={`py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs leading-[110%] tracking-normal`}
           >
-            <p className={theme === "light" ? "text-navy" : "text-white"}>
+            <p className={theme === "light" ? "text-dark-grey" : "text-white"}>
               © {currentYear} Open Energy Transition. Licensed under the{" "}
-              <span className="hover:underline underline-offset-4">
+              <Link
+                href="https://opensource.org/license/MIT"
+                target="_blank"
+                className="hover:underline underline-offset-4"
+              >
                 MIT License
-              </span>
+              </Link>
               . All rights reserved.
             </p>
           </div>

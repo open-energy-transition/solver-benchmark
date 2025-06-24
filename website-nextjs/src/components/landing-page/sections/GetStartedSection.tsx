@@ -79,7 +79,7 @@ const GetStarted = () => {
             insights on how performance varies with benchmark size,
             computational resources, and solver evolution.
           </div>
-          <div className="flex justify-between">
+          <div className="md:flex justify-between">
             <StatsBox value={modelNames.length} label="Model Frameworks" />
             <StatsBox
               value={availableBenchmarksAndSizes.length}
