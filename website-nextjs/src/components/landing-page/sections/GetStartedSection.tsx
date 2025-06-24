@@ -8,12 +8,12 @@ const GetStarted = () => {
     return state.results.rawMetaData;
   });
 
-  const modelNames = useMemo(
+  const modellingFrameworks = useMemo(
     () =>
       Array.from(
         new Set(
           Object.keys(rawMetaData).map((key) => {
-            return rawMetaData[key].modelName;
+            return rawMetaData[key].modellingFramework;
           }),
         ),
       ),
@@ -80,7 +80,7 @@ const GetStarted = () => {
             computational resources, and solver evolution.
           </div>
           <div className="md:flex justify-between">
-            <StatsBox value={modelNames.length} label="Model Frameworks" />
+            <StatsBox value={modellingFrameworks.length} label="Model Frameworks" />
             <StatsBox
               value={availableBenchmarksAndSizes.length}
               label="Benchmarks"
