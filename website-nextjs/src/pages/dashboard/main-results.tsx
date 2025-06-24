@@ -41,7 +41,11 @@ const LandingPage = () => {
                 efficiency and cost reasons. The shared nature of cloud
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
-                than 4%. More details on this <a href="/methodology">here</a>.
+                than 4%. More details on this{" "}
+                <Link className="font-bold" href="/methodology">
+                  here
+                </Link>
+                .
               </li>
               <li>
                 All solvers are run with their default options, except for the
@@ -57,17 +61,23 @@ const LandingPage = () => {
                 include things like time for input file parsing and license
                 checks. See more details and join the discussion on whether to
                 use reported or measured runtime{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/159">
+                <Link
+                  className="font-bold"
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
+                >
                   here
-                </a>
+                </Link>
                 .
               </li>
               <li>
                 Some solvers returned errors when running on some benchmark
                 instances. For more details, please see the{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/193">
+                <Link
+                  className="font-bold"
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
+                >
                   tracking issue
-                </a>
+                </Link>
                 .
               </li>
             </ul>
@@ -215,9 +225,12 @@ const LandingPage = () => {
                         <br />
                         We recommend using{" "}
                         <span className="hover:underline underline-offset-4  font-bold">
-                          <a href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks">
+                          <Link
+                            className="font-bold"
+                            href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks"
+                          >
                             our scripts
-                          </a>
+                          </Link>
                         </span>{" "}
                         to benchmark on your own problems before picking a
                         solver. See also the section on{" "}
