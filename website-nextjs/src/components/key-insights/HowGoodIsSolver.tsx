@@ -4,6 +4,7 @@ import Note from "@/components/shared/Note";
 import Link from "next/link";
 import RealisticRuntimeComparison from "./charts/RealisticRuntimeComparison";
 import SolverRuntimeComparison from "./charts/BenchmarkRuntimeComparison";
+import { QuestionLineIcon } from "@/assets/icons";
 
 const HowGoodIsSolver = () => {
   return (
@@ -19,19 +20,33 @@ const HowGoodIsSolver = () => {
         shows the runtime of each solver, relative to the fastest solver, on
         each subset of our benchmark set. A problem on which a solver timed out
         or errored is assumed to have a runtime equal to the timeout with which
-        it was run. We split our set of problems by{" "}
-        <Popup
-          on={["hover"]}
-          trigger={() => <span>problem size*</span>}
-          position="center center"
-          closeOnDocumentClick
-          arrow={false}
-        >
-          <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
-            (Small: number of variables &lt; 1e4; Medium: 1e4 &lt; number of
-            variables &lt; 1e6; Large 1e6 &lt; number of variables)
-          </div>
-        </Popup>{" "}
+        it was run. (More details, and other ways to handle time outs and
+        errors, can be found on our{" "}
+        <Link className="font-bold" href="/dashboard/main-results">
+          main dashboard
+        </Link>
+        ). We split our set of problems by problem size
+        <span className="inline-flex gap-2">
+          <Popup
+            on={["hover"]}
+            trigger={() => (
+              <span className="flex items-baseline my-auto cursor-pointer">
+                <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
+              </span>
+            )}
+            position="right center"
+            closeOnDocumentClick
+            arrow={false}
+          >
+            <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
+              <b>Small</b>: number of variables &lt; 1e4
+              <br />
+              <b>Medium</b>: 1e4 ≤; number of variables &lt; 1e6
+              <br />
+              <b>Large</b> 1e6 ≤; number of variables
+            </div>
+          </Popup>
+        </span>{" "}
         and also categorize certain problems as realistic if they arise from, or
         have similar model features as, models used in real-world energy
         planning studies. Hovering over any bar on the plot above will show you

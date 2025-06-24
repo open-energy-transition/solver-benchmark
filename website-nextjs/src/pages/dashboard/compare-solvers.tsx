@@ -22,7 +22,7 @@ const PageCompareSolvers = () => {
   return (
     <>
       <Head>
-        <title>Compare Solvers</title>
+        <title>Compare Solvers | Open Energy Benchmark</title>
       </Head>
       <div className="bg-light-blue">
         <Navbar />

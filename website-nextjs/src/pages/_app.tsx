@@ -197,9 +197,7 @@ function App({ Component, pageProps }: AppProps) {
   const renderLayout = () => {
     return (
       <AdminLayout>
-        <main
-          className={`${fontClasses} bg-light-blue overflow-auto h-[calc(100vh-var(--banner-height))]`}
-        >
+        <main className={`${fontClasses} bg-light-blue overflow-auto h-screen`}>
           <Component {...props} />
         </main>
       </AdminLayout>
@@ -231,10 +229,18 @@ function App({ Component, pageProps }: AppProps) {
 
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
-        {/* TODO: Add these when you have the files
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        */}
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
 
         {/* Theme Color */}

@@ -15,8 +15,8 @@ const LandingPage = () => {
     <>
       <div>
         <Head>
-          <title>Solver benchmark</title>
-          <meta name="description" content="Solver benchmark" />
+          <title>Open Energy Benchmark</title>
+          <meta name="description" content="Open Energy Benchmark" />
         </Head>
         {/* Header Section */}
         <Header />

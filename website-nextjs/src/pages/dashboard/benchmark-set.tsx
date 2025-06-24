@@ -149,7 +149,7 @@ const PageBenchmarkDetail = () => {
   return (
     <>
       <Head>
-        <title>Benchmark Detail</title>
+        <title>Benchmark Set | Open Energy Benchmark</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -185,8 +185,10 @@ const PageBenchmarkDetail = () => {
               <div>
                 <h5>Benchmark Set</h5>
                 <p className="mb-6 mt-4 max-w-screen-lg">
-                  On this page you can see details of all the benchmarks on our
-                  platform, including their source and download links.
+                  On this page you can see a lit of all the benchmark problems
+                  on our platform. Click on a benchmark problem name to see all
+                  the details about the problem, including links to download the
+                  problem file, solution files, and logs.
                 </p>
               </div>
             </div>

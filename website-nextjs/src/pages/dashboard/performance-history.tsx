@@ -263,7 +263,7 @@ const PagePerformanceHistory = () => {
   return (
     <>
       <Head>
-        <title>Performance History</title>
+        <title>Performance History | Open Energy Benchmark</title>
       </Head>
       <div className="bg-light-blue">
         <Navbar />

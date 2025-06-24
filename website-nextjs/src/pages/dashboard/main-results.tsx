@@ -75,6 +75,14 @@ const LandingPage = () => {
                 .
               </li>
             </ul>
+            For more details, please see our{" "}
+            <Link
+              href="/methodology"
+              className="hover:underline underline-offset-4 font-bold"
+            >
+              Methodology
+            </Link>{" "}
+            page.
           </span>
         </div>
       </div>
@@ -98,7 +106,7 @@ const LandingPage = () => {
   return (
     <>
       <Head>
-        <title>Main Results</title>
+        <title>Main Results | Open Energy Benchmark</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"

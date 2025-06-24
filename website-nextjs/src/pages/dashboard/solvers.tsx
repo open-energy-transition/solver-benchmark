@@ -15,7 +15,7 @@ const PageSolvers = () => {
   return (
     <>
       <Head>
-        <title>Solvers</title>
+        <title>Solvers | Open Energy Benchmark</title>
       </Head>
       <div className="bg-light-blue">
         <Navbar />
