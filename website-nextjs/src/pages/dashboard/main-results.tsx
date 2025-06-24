@@ -41,11 +41,7 @@ const LandingPage = () => {
                 efficiency and cost reasons. The shared nature of cloud
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
-                than 4%. More details on this{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md">
-                  here
-                </a>
-                .
+                than 4%. More details on this <a href="/methodology">here</a>.
               </li>
               <li>
                 All solvers are run with their default options, except for the

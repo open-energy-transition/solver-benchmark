@@ -39,24 +39,27 @@ The unified `results/metadata.yaml` contains all details of each benchmark probl
 
 The benchmark runner script creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary.
 ```shell
-./runner/benchmark_all.sh ./benchmarks/benchmark_config.yaml
+./runner/benchmark_all.sh ./results/metadata.yaml
 ```
 The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display.
 The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
 ```
-Usage: ./runner/benchmark_all.sh [-a] [-y "<space separated years>"] <benchmarks yaml file>
+Usage: ./runner/benchmark_all.sh [-a] [-y "<space separated years>"] [-r <seconds>] [-u <run_id>] <benchmarks yaml file>
 Runs the solvers from the specified years (default all) on the benchmarks in the given file
 Options:
     -a    Append to the results CSV file instead of overwriting. Default: overwrite
-    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024
+    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024 2025
+    -r    Reference benchmark interval in seconds. Default: 0 (disabled)
+    -u    Unique run ID to identify this benchmark run. Default: auto-generated
 ```
 
 The `benchmark_all.sh` script activates the appropriate conda environment and then calls `python runner/run_benchmarks.py`.
 This script can also be called directly, if required, but you must be in a conda environment that contains the solvers you want to benchmark.
 For example:
 ```shell
-python runner/run_benchmarks.py benchmarks/benchmark_config.yaml 2024
+python ./runner/run_benchmarks.py ./results/metadata.yaml 2024
 ```
+Call `python runner/run_benchmarks.py -h` to see more options.
 
 ### Solver Versions
 
