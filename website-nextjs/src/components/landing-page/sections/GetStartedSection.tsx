@@ -80,7 +80,10 @@ const GetStarted = () => {
             computational resources, and solver evolution.
           </div>
           <div className="md:flex justify-between">
-            <StatsBox value={modellingFrameworks.length} label="Model Frameworks" />
+            <StatsBox
+              value={modellingFrameworks.length}
+              label="Model Frameworks"
+            />
             <StatsBox
               value={availableBenchmarksAndSizes.length}
               label="Benchmarks"
