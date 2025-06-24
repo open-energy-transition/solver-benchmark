@@ -17,13 +17,12 @@ const Header = () => {
         <div className="flex w-max">
           <Link
             href="/"
-            className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max"
+            className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
           >
-            <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[71px]">
+            <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg
                 className="absolute w-[35.5px] h-[43px] sm:w-[49.7px]
-                  sm:h-[60.2px] lg:w-[71px] lg:h-[86px] -top-[6px] sm:-top-[12px]
-                  lg:-top-[0.75rem] left-0
+                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 -top-3
                 "
                 width="71"
                 height="86"
@@ -70,7 +69,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <div className="pt-0 lg:pt-4 pl-2 lg:pl-4 text-[28px]">
+            <div className="pt-0 text-2xl lg:text-[32px] font-lato font-bold">
               Open Energy Benchmark
             </div>
           </Link>
@@ -87,25 +86,25 @@ const Header = () => {
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
           <Link
             href={ROOT_PATH.home}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             HOME
           </Link>
           <Link
             href={ROOT_PATH.keyInsights}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             KEY INSIGHTS
           </Link>
           <Link
             href={PATH_DASHBOARD.home}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             DETAILED RESULTS
           </Link>
           <Link
             href={ROOT_PATH.methodology}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             METHODOLOGY
           </Link>
@@ -149,7 +148,7 @@ const Header = () => {
         <div className="lg:hidden" role="dialog" aria-modal="true">
           {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
           <div className="fixed inset-0 z-50"></div>
-          <div className="fixed mt-12 inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between font-league font-bold text-white text-3xl md:text-4xl">
               <a href="#" className="-m-1.5 p-1.5">
                 <div className="flex">
@@ -174,46 +173,32 @@ const Header = () => {
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
                   <Link
-                    href="#benchmarks"
+                    href="/"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white "
                   >
-                    BENCHMARKS
+                    HOME
                   </Link>
                   <Link
-                    href="#mission"
+                    href="/key-insights"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
-                    MISSION
+                    KEY INSIGHTS
                   </Link>
                   <Link
-                    href="#methodology"
+                    href="/dashboard/main-results"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
+                  >
+                    DETAILED RESULTS
+                  </Link>
+                  <Link
+                    href="/methodology"
                     onClick={() => setIsMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
                   >
                     METHODOLOGY
-                  </Link>
-                  <Link
-                    href="#contribution"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    CONTRIBUTIONS
-                  </Link>
-                  <Link
-                    href="#faq"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    FAQs
-                  </Link>
-                  <Link
-                    href="#contact"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    CONTACT
                   </Link>
                   <Link
                     onClick={() => setIsMenuOpen(false)}

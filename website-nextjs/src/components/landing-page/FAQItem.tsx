@@ -41,7 +41,7 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
         className={`overflow-hidden transition-all duration-300 ease-in-out}`}
         style={{ maxHeight: isOpen ? "100vh" : "0" }}
       >
-        <div className="text-lg max-w-[650px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2">
+        <div className="text-lg max-w-[1152px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2">
           {answer}
         </div>
       </div>
