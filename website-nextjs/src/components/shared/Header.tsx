@@ -17,13 +17,12 @@ const Header = () => {
         <div className="flex w-max">
           <Link
             href="/"
-            className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max"
+            className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
           >
-            <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[71px]">
+            <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg
                 className="absolute w-[35.5px] h-[43px] sm:w-[49.7px]
-                  sm:h-[60.2px] lg:w-[71px] lg:h-[86px] -top-[6px] sm:-top-[12px]
-                  lg:-top-[0.75rem] left-0
+                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 -top-2
                 "
                 width="71"
                 height="86"
@@ -70,7 +69,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <div className="pt-0 lg:pt-4 pl-2 lg:pl-4 text-[28px]">
+            <div className="pt-0 text-[32px] font-lato font-bold">
               Open Energy Benchmark
             </div>
           </Link>
@@ -87,25 +86,25 @@ const Header = () => {
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
           <Link
             href={ROOT_PATH.home}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             HOME
           </Link>
           <Link
             href={ROOT_PATH.keyInsights}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             KEY INSIGHTS
           </Link>
           <Link
             href={PATH_DASHBOARD.home}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             DETAILED RESULTS
           </Link>
           <Link
             href={ROOT_PATH.methodology}
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            className="text-sm/6 font-bold hover:underline underline-offset-4"
           >
             METHODOLOGY
           </Link>

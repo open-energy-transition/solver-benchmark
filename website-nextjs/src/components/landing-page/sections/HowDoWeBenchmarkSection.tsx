@@ -43,12 +43,15 @@ const HowDoWeBenchmarkSection = () => {
             to run your own benchmarks!
           </div>
           <div className="mt-6 xl:ml-4 text-medium-normal">
-            Read more about our methodology, caveats, and known issues{" "}
+            <strong>Read more</strong> about our methodology, caveats, and known
+            issues{" "}
+          </div>
+          <div>
             <Link
               href={ROOT_PATH.methodology}
-              className="hover:underline underline-offset-4 cursor-pointer"
+              className="bg-navy mt-6 xl:ml-4 uppercase w-max flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 font-bold items-center md:text-xl px-8 py-4 rounded-2xl shadow-sm text-lg text-white "
             >
-              here →
+              Methodology page
             </Link>
           </div>
         </div>
