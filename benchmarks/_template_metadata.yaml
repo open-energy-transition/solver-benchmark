@@ -1,0 +1,24 @@
+## (optional) link to the modelling framework repo used to generate the benchmark(s) (e.g. https://github.com/PyPSA/pypsa-eur)
+benchmarks:
+  Benchmark_name: # Add the benchmark name
+    Short description: # Description of the main features of your benchmarks
+    Modelling framework: # Name of modelling framework, e.g., PyPSA, TIMES
+    Model name: # Specific model used to generate the benchmark, e.g. PyPSA-Eur, TIMES-Ireland
+    Version: # (optional) version of the model used to generate the benchmark
+    Contributor(s)/Source: # Name, Affiliation or link to repo used to generate the benchmark (e.g., https://github.com/lprieto1409/DC-OPF-Carolinas)
+    Problem class: # LP, MILP
+    Application: # Current set (feel free to propose new ones if necessary): DC optimal power flow, Resource Adequacy, Infrastructure, Capacity expansion, Infrastructure & Capacity expansion, Operational, Steady-state optimal power flow, Production cost modelling
+    Sectoral focus: # Power-only, Sector-coupled
+    Sectors: # Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Time horizon: # Single-stage (1 year, 1 week, ...), Multi-stage (indicate how many stages)
+    MILP features: # Current set (feel free to propose new ones if necessary): None, Unit commitment, Piecewise fuel usage, Transmission switching, Modularity
+    Sizes:
+    - Name: # Spatial resolution-Temporal resolution, e.g., 2-12ts, 10-1h
+      Size: # Automatically assigned when running the benchmark
+      URL: # link to the shared folder where the .lp / .mps file is stored, maintainers will assign a new link after accepting the contribution
+      Temporal resolution: # n. of time steps in one planning horizon, e.g., 1 hour / 8 time slices
+      Spatial resolution: # n. of nodes / regions, e.g., 997 nodes / 25 regions
+      Realistic: # true, false
+      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
