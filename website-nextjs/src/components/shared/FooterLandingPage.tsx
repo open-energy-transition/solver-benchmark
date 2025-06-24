@@ -31,7 +31,7 @@ const Footer = ({
                 />
               </Link>
               <div
-                className={`${descriptionTextClassName} font-league text-sm/1.1 tracking-normal font-normal w-[362px] my-6 mb-4`}
+                className={`${descriptionTextClassName} font-league text-sm/1.1 tracking-normal font-normal w-[min(362px,100%)] my-6 mb-4`}
               >
                 Open Energy Transition GmbH drives sustainable energy solutions
                 with innovative technology and data-driven insights, enabling

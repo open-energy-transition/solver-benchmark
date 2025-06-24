@@ -22,7 +22,7 @@ const Header = () => {
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg
                 className="absolute w-[35.5px] h-[43px] sm:w-[49.7px]
-                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 -top-3
+                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 sm:-top-3 -top-2
                 "
                 width="71"
                 height="86"
@@ -69,7 +69,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <div className="pt-0 text-2xl lg:text-[32px] font-lato font-bold">
+            <div className="pt-0 text-[22px] lg:text-[32px] font-lato font-bold">
               Open Energy Benchmark
             </div>
           </Link>
