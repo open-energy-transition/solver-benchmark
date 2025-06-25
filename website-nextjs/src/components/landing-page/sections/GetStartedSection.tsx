@@ -72,8 +72,8 @@ const GetStarted = () => {
               xl:pl-4.5
             "
           >
-            Our platform consists of open-source, community-contributed
-            benchmarks from leading open energy modelling systems. Our open
+            Our platform consists of open, community-contributed benchmark
+            problems from various energy modelling frameworks. Our open-source
             benchmarking infrastructure runs them on multiple versions of
             leading solvers on multiple hardware configurations, to gather
             insights on how performance varies with benchmark size,
