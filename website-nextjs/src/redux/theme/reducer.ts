@@ -14,6 +14,11 @@ const themeReducer = (state = initialState, action: AnyAction) => {
         ...state,
         isNavExpanded: !state.isNavExpanded,
       };
+    case actions.SET_NAV_EXPANDED:
+      return {
+        ...state,
+        isNavExpanded: action.payload,
+      };
     default:
       return state;
   }

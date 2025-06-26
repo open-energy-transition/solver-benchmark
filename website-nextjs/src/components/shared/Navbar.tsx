@@ -16,6 +16,10 @@ import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Popup from "reactjs-popup";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useEffect } from "react";
+import debounce from "lodash/debounce";
+
+const SMALL_SCREEN_BREAKPOINT = 1336;
 
 const Navbar = () => {
   const router = useRouter();
@@ -60,6 +64,24 @@ const Navbar = () => {
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
 
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      if (window.innerWidth < SMALL_SCREEN_BREAKPOINT) {
+        dispatch(navbarActions.setNavExpanded(false));
+      } else if (window.innerWidth >= SMALL_SCREEN_BREAKPOINT) {
+        dispatch(navbarActions.setNavExpanded(true));
+      }
+    }, 250); // 250ms delay
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      handleResize.cancel(); // Cancel any pending debounced calls
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [dispatch]);
+
   return (
     <>
       {/* Mobile Menu Button */}
@@ -81,7 +103,7 @@ const Navbar = () => {
       )}
 
       <div
-        className={`fixed md:pt-0 top-0 left-0 z-40 h-screen bg-navy rounded-e-xl
+        className={`fixed md:pt-0 z-50 top-0 left-0 z-40 h-screen bg-navy rounded-e-xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
         sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
         aria-label="Sidenav"
