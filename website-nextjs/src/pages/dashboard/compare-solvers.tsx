@@ -36,7 +36,7 @@ const PageCompareSolvers = () => {
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center whitespace-nowrap">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Compare Solvers
                     </p>
                   </div>

@@ -29,17 +29,16 @@ const ContentWrapper = ({
     >
       <div className="max-w-8xl mx-auto text-navy">
         {header && <div>{header}</div>}
-        <div className="sm:flex bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-4 pr-2 mt-6 rounded-[32px]">
+        <div className="sm:flex bg-[#E6ECF5] gap-5 border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
           {showFilter && (
-            <div className="min-w-248px my-4 sm:x-0 sm:w-1/5 overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
+            <div className="mt-4 sm:x-0 max-w-[255px] bg-[#F4F6FA] rounded-xl h-max">
               <FilterSection />
             </div>
           )}
           <div
             className={`
-              pd:mx-0
-              3xl:mx-auto
-              ${showFilter ? "sm:w-4/5 pl-4 pr-0 pt-4" : "w-full"}
+              pd:mx-0 overflow-scroll
+              ${showFilter ? "w-full pr-0 pt-4" : "w-full"}
               `}
           >
             {children}

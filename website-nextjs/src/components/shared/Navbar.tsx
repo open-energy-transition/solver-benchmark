@@ -81,19 +81,17 @@ const Navbar = () => {
       )}
 
       <div
-        className={`fixed
-           md:pt-0
-          top-0 left-0 z-40 h-screen transition-transform bg-navy rounded-tr-4xl rounded-br-4xl
+        className={`fixed md:pt-0 top-0 left-0 z-40 h-screen bg-navy rounded-e-xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
-        sm:translate-x-0`}
+        sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
         aria-label="Sidenav"
       >
         {/* Close button for mobile */}
         <div className="overflow-auto overflow-x-hidden py-5 px-0 h-full text-white">
-          <div className="pt-5 pb-4">
+          <div className="pt-5 mb-8">
             <Link
               href="/"
-              className={`-m-1.5 p-1.5 flex flex-col items-center gap-0.5 text-white w-max hover:no-underline mx-auto
+              className={`-m-1.5 p-1.5 transition-all duration-300 ease-in-out flex flex-col items-center gap-0.5 text-white w-max hover:no-underline mx-auto
                 }`}
             >
               <div
@@ -149,11 +147,16 @@ const Navbar = () => {
                   />
                 </svg>
               </div>
-              {isNavExpanded && (
-                <div className="font-lato mt-4 text-[16px]/1.5  font-bold ">
+              <div className="h-6">
+                <div
+                  className={`font-lato text-[16px]/1.5 font-bold
+                    transition-all duration-200 ease-in-out
+                    ${isNavExpanded ? "opacity-100" : "hidden"}
+                  `}
+                >
                   Open Energy Benchmark
                 </div>
-              )}
+              </div>
             </Link>
           </div>
           <ul className="space-y-2">
@@ -176,7 +179,7 @@ const Navbar = () => {
                         replace
                         href={navData.route}
                         className={`
-                          flex items-center h-[55px] text-lavender font-normal font-league
+                          flex items-center h-[55px] text-lavender font-normal
                           hover:bg-white hover:bg-opacity-10
                           ${
                             currentRoute === navData.route
@@ -192,8 +195,10 @@ const Navbar = () => {
                       >
                         {navData.icon}
                         {isNavExpanded && (
-                          <span className="ml-3.5 pl-[1px] text-xl mt-0.5">
-                            {navData.label}
+                          <span className="ml-3.5 pl-[1px] text-lg relative">
+                            <span className="absolute left-0 w-max top-1/2 -translate-y-1/2">
+                              {navData.label}
+                            </span>
                           </span>
                         )}
                       </Link>
@@ -213,14 +218,13 @@ const Navbar = () => {
             isNavExpanded ? "pl-2" : ""
           }`}
         >
-          <a
+          <div
             onClick={() => dispatch(navbarActions.toggleNav())}
-            href="#"
             className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none"
           >
             {isNavExpanded && "Collapse"}
             <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />
-          </a>
+          </div>
         </div>
       </div>
     </>

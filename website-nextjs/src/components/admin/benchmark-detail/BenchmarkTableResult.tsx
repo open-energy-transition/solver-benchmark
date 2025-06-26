@@ -82,23 +82,16 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         header: "APPLICATION",
         accessorKey: "application",
         filterFn: filterSelect,
-        size: 110,
+        size: 200,
         cell: (info) => (
           <Popup
             on={["hover"]}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden font-bold">
-                <Link
-                  href={PATH_DASHBOARD.benchmarkSet.one.replace(
-                    "{name}",
-                    info.getValue() as string,
-                  )}
-                >
-                  {info.getValue() as string}
-                </Link>
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                {info.getValue() as string}
               </div>
             )}
-            position="top left"
+            position="top center"
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >

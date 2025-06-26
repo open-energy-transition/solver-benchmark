@@ -79,7 +79,7 @@ export function TanStackTable<T>({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
+    <div className="w-full max-w-full overflow-auto">
       {(title || enableDownload || enableColumnSelector) && (
         <div
           className={`

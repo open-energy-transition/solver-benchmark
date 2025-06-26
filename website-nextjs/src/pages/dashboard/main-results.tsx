@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import ResultsSection from "@/components/admin/ResultsSections";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
-import { HomeIcon, PreviousIcon } from "@/assets/icons";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IResultState } from "@/types/state";
@@ -134,11 +134,11 @@ const LandingPage = () => {
             <div>
               <AdminHeader>
                 <div className="flex text-navy text-opacity-50 items-center space-x-1">
-                  <div className="flex items-center gap-1 ml-[-0.45rem]">
-                    <PreviousIcon width={20} className="fill-navy" />
+                  <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Main Results
                     </p>
@@ -179,17 +179,17 @@ const LandingPage = () => {
                 Long
               </div>
             </div>
-            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 pl-4 pr-2 rounded-r-lg">
+            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-4 rounded-r-lg">
               <div className="pt-6">
                 <ConfigurationSection timeout={timeout} />
               </div>
-              <div className="sm:flex justify-between">
-                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl">
+              <div className="sm:flex justify-between gap-5">
+                <div className="max-w-[255px] bg-[#F4F6FA] rounded-xl">
                   <FilterSection height={`${contentHeight}px`} />
                 </div>
                 <div
                   id="benchmark-results"
-                  className="3xl:mx-auto sm:w-4/5 pl-4 h-max"
+                  className="3xl:mx-auto sm:w-4/5 h-max"
                   ref={contentRef}
                 >
                   <div className="space-y-4 sm:space-y-6 min-h-96">
