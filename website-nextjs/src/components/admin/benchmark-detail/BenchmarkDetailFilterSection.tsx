@@ -413,7 +413,7 @@ const BenchmarkDetailFilterSection = ({
               handleSelectAll({ category: "modellingFramework" })
             }
             className="w-full"
-            gridClassName="grid-cols-2"
+            gridClassName="!flex flex-wrap"
             uppercase={false}
           />
           {/* Application */}

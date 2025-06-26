@@ -192,10 +192,10 @@ const PageBenchmarkDetail = () => {
                 </p>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pl-4 pr-2 mt-6 rounded-[32px]">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
               <h6 className="py-4 pl-3.5">List of All Benchmarks</h6>
-              <div className="flex overflow-hidden rounded-xl">
-                <div className="sm:w-[248px] min-w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
+              <div className="flex overflow-hidden rounded-xl gap-5">
+                <div className="bg-[#F4F6FA] max-w-[255px] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
@@ -207,7 +207,7 @@ const PageBenchmarkDetail = () => {
                     availableModellingFrameworks={availableModellingFrameworks}
                   />
                 </div>
-                <div className="3xl:mx-auto sm:w-4/5 ml-4">
+                <div className="w-full overflow-auto">
                   <div className="space-y-4 sm:space-y-6">
                     <BenchmarkTableResult metaData={filteredMetaData} />
                   </div>
