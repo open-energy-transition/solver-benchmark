@@ -319,7 +319,7 @@ const D3SolverEvolutionChart = ({
       .attr("opacity", 0.8);
     svg
       .append("text")
-      .attr("x", width - margin.right - 5)
+      .attr("x", margin.left + 50)
       .attr("y", yLeftScale(totalBenchmarks + 2))
       .attr("text-anchor", "end")
       .attr("fill", "#FF6B6B")
