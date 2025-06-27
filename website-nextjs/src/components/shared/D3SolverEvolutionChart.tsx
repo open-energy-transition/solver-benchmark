@@ -17,6 +17,7 @@ interface ID3SolverEvolutionChart {
   className?: string;
   colorIndex: number;
   totalBenchmarks: number;
+  yRightDomain?: [number, number];
 }
 
 const D3SolverEvolutionChart = ({
@@ -24,6 +25,7 @@ const D3SolverEvolutionChart = ({
   data,
   height = 300,
   totalBenchmarks = 105,
+  yRightDomain,
   className = "",
 }: ID3SolverEvolutionChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -91,8 +93,8 @@ const D3SolverEvolutionChart = ({
     const yRightScale = d3
       .scaleLinear()
       .domain([
-        Math.floor(minSpeedUp * 10) / 10,
-        Math.ceil(maxSpeedUp * 16) / 10,
+        Math.floor((yRightDomain ? yRightDomain[0] : minSpeedUp) * 10) / 10,
+        Math.ceil((yRightDomain ? yRightDomain[1] : maxSpeedUp) * 16) / 10,
       ])
       .range([height - margin.bottom, margin.top]);
 
@@ -124,7 +126,17 @@ const D3SolverEvolutionChart = ({
       });
 
     // Right Y-axis (speed-up)
-    const yRightAxis = d3.axisRight(yRightScale).ticks(6).tickSizeOuter(0);
+    const yRightAxis = d3
+      .axisRight(yRightScale)
+      .tickSize(0)
+      .ticks(5)
+      .tickValues(
+        d3.range(
+          yRightScale.domain()[0],
+          yRightScale.domain()[1] + 0.1,
+          (yRightScale.domain()[1] - yRightScale.domain()[0]) / 5,
+        ),
+      );
     svg
       .append("g")
       .attr("transform", `translate(${width - margin.right},0)`)
@@ -307,7 +319,7 @@ const D3SolverEvolutionChart = ({
       .attr("opacity", 0.8);
     svg
       .append("text")
-      .attr("x", width - margin.right - 5)
+      .attr("x", margin.left + 50)
       .attr("y", yLeftScale(totalBenchmarks + 2))
       .attr("text-anchor", "end")
       .attr("fill", "#FF6B6B")
