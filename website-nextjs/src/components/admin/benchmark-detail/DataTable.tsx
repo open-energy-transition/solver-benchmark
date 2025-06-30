@@ -126,16 +126,28 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         ),
       },
       {
-        header: "Runtime",
+        header: "Runtime (s)",
         accessorKey: "runtime",
+        size: 100,
+        cell: (info: CellContext<TableData, "runtime">) => (
+          <div className="text-end">{String(info.getValue())}</div>
+        ),
       },
       {
-        header: "Memory",
+        header: "Memory (MB)",
         accessorKey: "memoryUsage",
+        size: 100,
+        cell: (info: CellContext<TableData, "memoryUsage">) => (
+          <div className="text-end">{String(info.getValue())}</div>
+        ),
       },
       {
         header: "Objective Value",
         accessorKey: "objectiveValue",
+        size: 100,
+        cell: (info: CellContext<TableData, "objectiveValue">) => (
+          <div className="text-end">{String(info.getValue())}</div>
+        ),
       },
       {
         header: "Max Integrality Violation",
