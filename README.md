@@ -1,6 +1,8 @@
-# Solver Benchmark Website
+# Open Energy Benchmark
 
-This repository contains code for benchmarking optimization solvers on problems from the energy planning domain, and an interactive website for analyzing the results.
+This repository contains code for benchmarking optimization solvers on problems from the energy planning domain, and an interactive website for analyzing the results. The live website can be viewed at:
+
+https://openenergybenchmark.org/
 
 ## Benchmark Problems
 
