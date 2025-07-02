@@ -320,7 +320,7 @@ benchmarks:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
       resources include natural gas, solar PV, wind, and lithium-ion battery storage
-      and biomass with carbon capture and storage. This examples shows the usage of
+      and biomass with carbon capture and storage. This example shows the usage of
       CO2, biomass, and piecewise fuel usage related functions of GenX.
     Modelling framework: GenX
     Model name: GenX
@@ -498,10 +498,10 @@ benchmarks:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented
       resources include natural gas, solar PV, wind, lithium-ion battery, and coal
-      power plants. This examples shows the usage of the retrofit module of GenX,
-      and the model will be allowed to retire as well as retrofit the existing coal
-      power plants and replacing the coal with blue ammonia with 85% efficiency. Unit
-      commitment is linearized.
+      power plants. This example shows the usage of the retrofit module of GenX, and
+      the model will be allowed to retire as well as retrofit the existing coal power
+      plants and replacing the coal with blue ammonia with 85% efficiency. Unit commitment
+      is linearized.
     Modelling framework: GenX
     Model name: GenX
     Version:
@@ -522,7 +522,7 @@ benchmarks:
       Num. constraints: 438008
       Num. variables: 260604
   genx-10_IEEE_9_bus_DC_OPF:
-    Short description: This examples shows the usage of DC_OPF related functions of
+    Short description: This example shows the usage of DC_OPF related functions of
       GenX. The IEEE 9-bus system is a standard test case for power system optimization
       problems. In this example, there are three thermal generators and three loads.
     Modelling framework: GenX
