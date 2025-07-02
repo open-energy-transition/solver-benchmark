@@ -33,8 +33,8 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
 
   return (
     <div className={`border-b xl:border-b-0 border-stroke w-full ${className}`}>
-      <div className="flex items-center justify-between pr-3 rounded-lg bg-white">
-        <div className="flex items-center border-b-0 border-stroke p-2 gap-2">
+      <div className="flex items-center justify-between pr-2 rounded-lg bg-white">
+        <div className="flex items-center border-b-0 border-stroke p-2 pr-0 gap-2">
           <input
             className="size-3.5 accent-navy rounded checked:before:text-xs "
             type="checkbox"

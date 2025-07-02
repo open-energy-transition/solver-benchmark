@@ -121,6 +121,17 @@ const SolverEvolutionSection = ({
     return null;
   }
 
+  const domain = Object.values(solverEvolutionData).reduce<[number, number]>(
+    (domain, solverData) => {
+      const speedUps = solverData.map((item) => item.speedUp);
+      return [
+        Math.min(domain[0], ...speedUps),
+        Math.max(domain[1], ...speedUps),
+      ];
+    },
+    [Number.MAX_SAFE_INTEGER, 0],
+  );
+
   const selectedSolverData = selectedSolver
     ? solverEvolutionData[selectedSolver]
     : null;
@@ -158,6 +169,7 @@ const SolverEvolutionSection = ({
         <D3SolverEvolutionChart
           key={selectedSolver}
           totalBenchmarks={totalBenchmarks}
+          yRightDomain={domain}
           solverName={selectedSolver}
           data={selectedSolverData}
           colorIndex={0} // Can be 0 since we're only showing one chart
