@@ -162,14 +162,20 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         header: "Log",
         accessorKey: "log",
         size: 105,
-        cell: (info: CellContext<TableData, unknown>) => (
-          <Link
-            href={info.getValue() as string}
-            className="text-white bg-green-pop p-2 py-1.5 rounded-lg text-sm"
-          >
-            Download Log
-          </Link>
-        ),
+        cell: (info: CellContext<TableData, unknown>) => {
+          const solver = info.row.original?.solver;
+          if (solver === "gurobi") {
+            return <></>;
+          }
+          return (
+            <Link
+              href={info.getValue() as string}
+              className="text-white bg-green-pop p-2 py-1.5 rounded-lg text-sm"
+            >
+              Download Log
+            </Link>
+          );
+        },
       },
       {
         header: "Solution",
