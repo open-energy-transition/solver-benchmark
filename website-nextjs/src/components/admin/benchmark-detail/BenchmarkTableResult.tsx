@@ -7,6 +7,7 @@ import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
 import { filterSelect } from "@/utils/table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
+import { FilterIcon } from "@/assets/icons";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -139,7 +140,23 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
   return (
     <div>
-      <TanStackTable data={memoizedMetaData} columns={columns} />
+      <div className="flex items-center gap-1 text-xs mb-4">
+        To search for a particular benchmark problem by name, click the filter
+        icon
+        <FilterIcon className="size-4" />
+        on the name column and type to search
+      </div>
+      <div>
+        <TanStackTable showAllRows data={memoizedMetaData} columns={columns} />
+      </div>
+      <div>
+        <div className="text-xs my-4">
+          <div className="text-dark-grey tag-line-xxs">
+            Showing {memoizedMetaData.length} benchmark problems matching the
+            filters
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
