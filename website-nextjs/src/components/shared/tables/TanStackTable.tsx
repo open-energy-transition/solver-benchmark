@@ -137,7 +137,7 @@ export function TanStackTable<T>({
         </div>
       )}
 
-      <div className="rounded-xl overflow-auto -mx-4 sm:mx-0">
+      <div className="rounded-xl -mx-4 sm:mx-0">
         {/* Table implementation */}
         <div className="min-w-full inline-block align-middle">
           <div

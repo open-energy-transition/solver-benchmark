@@ -144,7 +144,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         To search for a particular benchmark problem by name, click the filter
         icon
         <FilterIcon className="size-4" />
-        on the name column and type to search
+        on the benchmark name column and type to search
       </div>
       <div>
         <TanStackTable showAllRows data={memoizedMetaData} columns={columns} />
