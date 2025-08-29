@@ -387,6 +387,8 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             transition-all
             opacity-100
             overflow-y-auto
+            max-h-fit
+            md:max-h-full
           "
           style={{
             height: height || "",

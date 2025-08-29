@@ -29,7 +29,7 @@ const LandingPage = () => {
 
   const Caveats = () => {
     return (
-      <div className="pt-1.5 pb-3 px-5" id="caveats">
+      <div className="pt-1.5 pb-3 px-2 md:px-5" id="caveats">
         <h6>Caveats</h6>
         <div className="text-navy tag-line-xs leading-1.4 block items-center">
           <span>
@@ -184,7 +184,7 @@ const LandingPage = () => {
                 <ConfigurationSection timeout={timeout} />
               </div>
               <div className="sm:flex justify-between gap-5">
-                <div className="max-w-[255px] bg-[#F4F6FA] rounded-xl">
+                <div className="mb-4 md:mb-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl">
                   <FilterSection height={`${contentHeight}px`} />
                 </div>
                 <div
@@ -217,7 +217,7 @@ const LandingPage = () => {
                         </div>
                       </div>
                     )}
-                    <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
+                    <div className="px-2 md:px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="tag-line-xs leading-1.5">
                         <b>Note:</b> As with all benchmarks, our results provide
                         only an indication of which solvers might be good for

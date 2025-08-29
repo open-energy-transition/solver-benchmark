@@ -526,7 +526,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
 
       {isMobileView ? (
         // Mobile view
-        <div className="flex flex-col gap-4 px-4 text-navy">
+        <div className="flex flex-col gap-4 px-2 md:px-4 text-navy">
           {sortedTableData.map((item, index) => (
             <div
               key={index}
