@@ -46,6 +46,7 @@ export default function DebouncedInput({
           {...props}
           style={autoWidth ? { width: `${width}px` } : undefined}
           value={value}
+          min={props.min}
           onChange={(e) => setValue(e.target.value)}
         />
         {autoWidth && (
@@ -76,7 +77,10 @@ export default function DebouncedInput({
             onClick={() => {
               if (props.type === "number") {
                 const newValue = Number(value) - (Number(props.step) || 1);
-                if (!props.min || newValue >= Number(props.min)) {
+                if (
+                  (!props.min && props.min !== 0) ||
+                  newValue >= Number(props.min)
+                ) {
                   setValue(newValue);
                 }
               }
