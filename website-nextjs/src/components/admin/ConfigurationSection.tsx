@@ -62,9 +62,9 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
   ];
 
   return (
-    <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-3 px-2 md:pl-8 md:pr-4 px-2 text-navy md:flex items-center justify-between">
+    <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-3 lg:pl-8 lg:pr-4 px-2 text-navy lg:flex items-center justify-between">
       <div className="tag-line font-semibold text-dark-grey">Configuration</div>
-      <ul className="grid-cols-2 mt-2 md:gap-6 gap-2 md:mt-0 md:flex font-inter">
+      <ul className="grid grid-cols-2 mt-2 lg:gap-6 gap-2 lg:mt-0 lg:flex font-inter">
         {detailData.map((data, idx) => (
           <li
             key={idx}

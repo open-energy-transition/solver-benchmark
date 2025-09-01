@@ -160,6 +160,8 @@ const PageBenchmarkDetail = () => {
         <div
           className={`
         min-h-[calc(100vh-var(--footer-height))]
+        mt-16
+        md:mt-0
         px-2
         sm:px-6
         transition-all

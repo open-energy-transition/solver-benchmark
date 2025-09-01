@@ -84,16 +84,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      {isNavExpanded && (
-        <button
-          onClick={() => dispatch(navbarActions.toggleNav())}
-          className="block md:hidden fixed top-[100px] right-[15%] z-50 p-2 text-white"
-        >
-          <CloseIcon className="size-6" />
-        </button>
-      )}
-
       {/* Mobile Menu Overlay */}
       {isNavExpanded && (
         <div
@@ -103,11 +93,20 @@ const Navbar = () => {
       )}
 
       <div
-        className={`fixed md:pt-0 z-50 top-0 left-0 z-40 h-screen bg-navy rounded-e-xl
+        className={`fixed md:pt-0 z-50 top-0 left-0 h-screen bg-navy rounded-e-xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
         sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
         aria-label="Sidenav"
       >
+        {/* Mobile Menu Button */}
+        {isNavExpanded && (
+          <button
+            onClick={() => dispatch(navbarActions.toggleNav())}
+            className="delayedShow block lg:hidden fixed top-4 right-4 z-max p-2 bg-white rounded-full text-navy"
+          >
+            <CloseIcon className="size-6" />
+          </button>
+        )}
         {/* Close button for mobile */}
         <div className="overflow-auto overflow-x-hidden py-5 px-0 h-full text-white">
           <div className="pt-5 mb-8">

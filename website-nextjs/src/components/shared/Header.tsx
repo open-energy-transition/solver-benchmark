@@ -4,9 +4,12 @@ import Image from "next/image";
 import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons";
 import Link from "next/link";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+  const currentRoute = router.pathname;
 
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
@@ -22,7 +25,7 @@ const Header = () => {
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg
                 className="absolute w-[35.5px] h-[43px] sm:w-[49.7px]
-                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 sm:-top-3 -top-2
+                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 -top-6 md:-top-8 xl:-top-3
                 "
                 width="71"
                 height="86"
@@ -69,7 +72,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <div className="pt-0 text-[22px] lg:text-[32px] font-lato font-bold">
+            <div className="hidden xl:block pt-0 text-[22px] lg:text-[32px] font-lato font-bold">
               Open Energy Benchmark
             </div>
           </Link>
@@ -86,25 +89,41 @@ const Header = () => {
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
           <Link
             href={ROOT_PATH.home}
-            className="text-sm/6 font-bold hover:underline underline-offset-4"
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
             HOME
           </Link>
           <Link
             href={ROOT_PATH.keyInsights}
-            className="text-sm/6 font-bold hover:underline underline-offset-4"
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/key-insights"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
             KEY INSIGHTS
           </Link>
           <Link
             href={PATH_DASHBOARD.home}
-            className="text-sm/6 font-bold hover:underline underline-offset-4"
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/dashboard/main-results"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
             DETAILED RESULTS
           </Link>
           <Link
             href={ROOT_PATH.methodology}
-            className="text-sm/6 font-bold hover:underline underline-offset-4"
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/methodology"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
             METHODOLOGY
           </Link>
@@ -173,41 +192,38 @@ const Header = () => {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  <Link
-                    href="/"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white "
-                  >
-                    HOME
-                  </Link>
-                  <Link
-                    href="/key-insights"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    KEY INSIGHTS
-                  </Link>
-                  <Link
-                    href="/dashboard/main-results"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    DETAILED RESULTS
-                  </Link>
-                  <Link
-                    href="/methodology"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    METHODOLOGY
-                  </Link>
-                  <Link
-                    onClick={() => setIsMenuOpen(false)}
-                    href="https://openenergytransition.org/"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    OPEN ENERGY TRANSITION
-                  </Link>
+                  {[
+                    { href: "/", label: "HOME" },
+                    { href: "/key-insights", label: "KEY INSIGHTS" },
+                    {
+                      href: "/dashboard/main-results",
+                      label: "DETAILED RESULTS",
+                    },
+                    { href: "/methodology", label: "METHODOLOGY" },
+                    {
+                      href: "https://openenergytransition.org/",
+                      label: "OPEN ENERGY TRANSITION",
+                      external: true,
+                    },
+                  ].map((link, index) => {
+                    const isActive =
+                      !link.external && currentRoute === link.href;
+                    console.log(isActive);
+                    return (
+                      <Link
+                        key={index}
+                        href={link.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        {...(link.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                        className={`-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white
+                          ${isActive ? "bg-white bg-opacity-40" : ""}`}
+                      >
+                        {link.label}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>

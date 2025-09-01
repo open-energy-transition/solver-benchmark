@@ -123,6 +123,8 @@ const LandingPage = () => {
         <div
           className={`
           min-h-[calc(100vh-var(--footer-height))]
+          mt-16
+          md:mt-10
           px-2
           sm:px-6
           transition-all
