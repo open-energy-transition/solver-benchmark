@@ -167,7 +167,7 @@ const ResultsSgmModeDropdown = ({
         )}
         {open && (
           <div
-            className="absolute w-full right-0 z-10 mt-2 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5"
+            className="absolute w-full right-0 top-6 z-10 mt-2 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"

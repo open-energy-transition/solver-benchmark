@@ -17,12 +17,11 @@ const MissionCard = ({
   description,
   linkText,
   linkHref,
-  linkClass = "",
   wrapperClass = "",
 }: MissionCardProps) => {
   return (
     <div
-      className={`p-11 rounded-[48px] border-white border bg-white bg-opacity-30 w-full flex flex-col hover:border-opacity-30 border-opacity-60 ${wrapperClass}`}
+      className={`p-11 rounded-[48px] border-white border bg-white bg-opacity-30 w-full flex flex-col border-opacity-30 hover:border-opacity-60 ${wrapperClass}`}
     >
       <div className="h-[49px]">
         <Icon />
@@ -33,7 +32,7 @@ const MissionCard = ({
       </div>
       <Link
         href={linkHref}
-        className={`mt-6 px-3 pt-7 pb-1 relative flex justify-between ${linkClass}`}
+        className={`mt-6 px-3 pt-7 pb-1 relative flex justify-between`}
       >
         <div className="font-normal text-base font-lato text-[#e2e2e2] hover:underline underline-offset-4">
           {linkText}
