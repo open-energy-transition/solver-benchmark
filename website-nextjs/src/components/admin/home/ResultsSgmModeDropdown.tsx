@@ -157,7 +157,10 @@ const ResultsSgmModeDropdown = ({
             autoWidth
             type="number"
             value={xFactor}
-            onChange={(newValue) => onXFactorChange(newValue)}
+            min={1}
+            onChange={(newValue) =>
+              onXFactorChange(Number(newValue) >= 1 ? newValue : 1)
+            }
             className="text-start p-1 rounded-2xl tag-line-xs mb-0.5"
             wrapperClassName="bg-white rounded-2xl px-3 border border-[#CAD9EF80]"
           />

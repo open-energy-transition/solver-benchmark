@@ -27,6 +27,7 @@ interface TanStackTableProps<T> {
   enableColumnSelector?: boolean;
   initialColumnVisibility?: VisibilityState;
   showPagination?: boolean;
+  showAllRows?: boolean;
   headerClassName?: string;
 }
 
@@ -40,6 +41,7 @@ export function TanStackTable<T>({
   enableColumnSelector = false,
   initialColumnVisibility = {},
   showPagination = true,
+  showAllRows = false,
   headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
@@ -64,7 +66,7 @@ export function TanStackTable<T>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    ...(showPagination
+    ...(showPagination && !showAllRows
       ? { getPaginationRowModel: getPaginationRowModel() }
       : {}),
   });
@@ -135,12 +137,20 @@ export function TanStackTable<T>({
         </div>
       )}
 
-      <div className="rounded-xl overflow-auto -mx-4 sm:mx-0">
+      <div className="rounded-xl -mx-4 sm:mx-0">
         {/* Table implementation */}
         <div className="min-w-full inline-block align-middle">
-          <div className="overflow-x-auto">
+          <div
+            className={`overflow-x-auto ${
+              showAllRows ? "max-h-[525px] overflow-y-auto" : ""
+            }`}
+          >
             <table className="table-auto bg-[#F4F6FA] w-full min-w-[800px]">
-              <thead>
+              <thead
+                className={
+                  showAllRows ? "sticky top-0 bg-[#F4F6FA] shadow-sm z-10" : ""
+                }
+              >
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
@@ -210,7 +220,7 @@ export function TanStackTable<T>({
           </div>
         </div>
       </div>
-      {showPagination && (
+      {showPagination && !showAllRows && (
         <div className="mt-4">
           <PaginationTable table={table} />
         </div>
