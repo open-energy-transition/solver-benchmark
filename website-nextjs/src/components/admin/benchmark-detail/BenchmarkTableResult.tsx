@@ -140,12 +140,16 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
   return (
     <div>
-      <div className="flex items-center gap-1 text-xs mb-4">
-        To search for a particular benchmark problem by name, click the filter
-        icon
-        <FilterIcon className="size-4" />
-        on the benchmark name column and type to search
-      </div>
+      <p className="text-xs my-4 md:mt-0">
+        <span>
+          To search for a particular benchmark problem by name, click the filter
+          icon
+        </span>
+        <span className="inline-flex gap-2">
+          <FilterIcon className="size-4 shrink-0" />
+        </span>
+        <span>on the benchmark name column and type to search</span>
+      </p>
       <div>
         <TanStackTable showAllRows data={memoizedMetaData} columns={columns} />
       </div>

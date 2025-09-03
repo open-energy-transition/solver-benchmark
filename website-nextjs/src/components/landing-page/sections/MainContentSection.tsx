@@ -20,7 +20,7 @@ const MainContent = () => {
         />
       </div>
 
-      <div className="pb-12 pt-24 md:pt-64 mx-auto max-w-8xl px-4 lg:px-[70px] relative">
+      <div className="pb-12 pt-24 md:pt-[18rem] mx-auto max-w-8xl px-4 lg:px-[70px] relative">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
             <h1 className="inline text-white box-decoration-clone">

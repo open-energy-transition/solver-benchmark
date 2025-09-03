@@ -143,7 +143,7 @@ const SolverEvolutionSection = ({
         <p className="text-gray-600 max-w-4xl mb-4">{description}</p>
 
         {/* Solver Dropdown */}
-        <div className="w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
+        <div className="lg:w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
           <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
           <select
             name="solver"

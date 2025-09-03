@@ -564,7 +564,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             <p>🔻/🔺: base / other solver failed to solve in time limit</p>
             <p>❌ : both solvers failed to solve in time limit</p>
           </div>
-          <div className="mr-24">
+          <div className="lg:mr-24">
             <p className="flex gap-1 items-center">
               <CircleIcon className="size-3" />
               base solver solved successfully

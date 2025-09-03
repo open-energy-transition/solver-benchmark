@@ -21,7 +21,7 @@ const MissionStart = () => {
             participants in the green energy transition.
           </h5>
         </div>
-        <div className="grid gap-8 md:flex justify-between text-stroke">
+        <div className="grid gap-8 lg:flex justify-between text-stroke">
           <MissionCard
             Icon={SoftwareDevIcon}
             title="Solver Developers"

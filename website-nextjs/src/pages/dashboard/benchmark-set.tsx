@@ -160,6 +160,8 @@ const PageBenchmarkDetail = () => {
         <div
           className={`
         min-h-[calc(100vh-var(--footer-height))]
+        mt-16
+        md:mt-0
         px-2
         sm:px-6
         transition-all
@@ -194,8 +196,8 @@ const PageBenchmarkDetail = () => {
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
               <h6 className="py-4 pl-3.5">List of All Benchmarks</h6>
-              <div className="flex overflow-hidden rounded-xl gap-5">
-                <div className="bg-[#F4F6FA] max-w-[255px] rounded-xl h-max">
+              <div className="block md:flex overflow-hidden rounded-xl gap-5">
+                <div className="bg-[#F4F6FA] md:max-w-[255px] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
