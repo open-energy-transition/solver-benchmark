@@ -12,24 +12,34 @@ const SOLVES_DATA = [
     name: "highs",
     sourceCode: "https://github.com/ERGO-Code/HiGHS",
     website: "https://highs.dev/",
+    license: "MIT License",
   },
   {
     label: "SCIP",
     name: "scip",
     sourceCode: "https://github.com/scipopt/scip",
     website: "https://www.scipopt.org/",
+    license: "Apache License 2.0",
   },
   {
     label: "CBC",
     name: "cbc",
     sourceCode: "https://github.com/coin-or/Cbc",
     website: "https://coin-or.github.io/Cbc/intro.html",
+    license: "Eclipse Public License 2.0",
   },
   {
     label: "GLPK",
     name: "glpk",
     sourceCode: "https://github.com/firedrakeproject/glpk",
     website: "https://www.gnu.org/software/glpk/",
+    license: "GNU General Public License v3.0",
+  },
+  {
+    label: "Gurobi",
+    name: "gurobi",
+    website: "https://www.gurobi.com/solutions/gurobi-optimizer/",
+    license: "Commercial License",
   },
 ];
 
@@ -192,20 +202,22 @@ const SolverSection = () => {
                     Official Website
                   </span>
                 </a>
-                <a
-                  href={selectedSolverInfo.sourceCode}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 transition-colors"
-                >
-                  <FaGithub className="w-5 h-5" />
-                  <span className="hover:underlineunderline-offset-4">
-                    Source Code
-                  </span>
-                </a>
+                {selectedSolverInfo.sourceCode && (
+                  <a
+                    href={selectedSolverInfo.sourceCode}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 transition-colors"
+                  >
+                    <FaGithub className="w-5 h-5" />
+                    <span className="hover:underlineunderline-offset-4">
+                      Source Code
+                    </span>
+                  </a>
+                )}
                 <div className="flex items-center gap-3 transition-colors">
                   <FaBalanceScale className="w-5 h-5" />
-                  <span>License: MIT</span>
+                  <span>{selectedSolverInfo.license}</span>
                 </div>
               </div>
             </div>

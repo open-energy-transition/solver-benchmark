@@ -47,7 +47,7 @@ benchmarks:
     Modelling framework: GenX
     Model name: GenX
     Version:
-    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;  Daniele Lerede, Open Energy Transition
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
