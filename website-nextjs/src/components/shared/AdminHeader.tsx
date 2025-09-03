@@ -15,7 +15,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
 
   return (
     <nav>
-      <div className="fixed md:relative w-full md:w-auto md:bg-transparent top-0 left-0 bg-white z-10 flex items-center mx-auto md:mt-9 md:pb-6 pl-4 md:pl-0 pr-4 md:pr-8">
+      <div className="fixed md:relative w-full py-2 md:py-0 md:w-auto md:bg-transparent top-0 left-0 bg-white z-10 flex items-center mx-auto md:mt-9 md:pb-6 pl-4 md:pl-0 pr-4 md:pr-8">
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="flex items-center truncate">{children}</div>
         </div>
