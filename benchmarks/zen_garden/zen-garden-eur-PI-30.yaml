@@ -1,6 +1,6 @@
 https://github.com/ZEN-universe/ZEN-garden
 benchmarks:
-  Benchmark_name: zen-garden-eur-PI-30
+  Benchmark_name: zen-garden-eur-PI-28-30ts
     Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion.
     Modelling framework: ZEN-garden
     Model name: ZEN-garden-PI
@@ -10,14 +10,14 @@ benchmarks:
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Electric, Heating
-    Time horizon: Multi-stage 15 stages
+    Time horizon: Multi-stage (15 stages)
     MILP features: None
     Sizes:
     - Name: 28-30ts
       Size: # Automatically assigned when running the benchmark
       URL: https://drive.google.com/drive/folders/1OfWV41bHyKSy_0xQEPff29BpkBU_a-5X?usp=sharing
-      Temporal resolution: 30 timesteps per year
-      Spatial resolution: 28 nodes for 28 countries
+      Temporal resolution: 30 time slices
+      Spatial resolution: 28 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: # Automatically assigned when running the benchmark
