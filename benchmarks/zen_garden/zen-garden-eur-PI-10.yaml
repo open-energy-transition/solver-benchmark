@@ -1,6 +1,6 @@
 https://github.com/ZEN-universe/ZEN-garden
 benchmarks:
-  Benchmark_name: zen-garden-eur-PI-28-10
+  Benchmark_name: zen-garden-eur-PI-28-10ts
     Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion.
     Modelling framework: ZEN-garden
     Model name: ZEN-garden-PI
