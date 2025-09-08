@@ -537,21 +537,25 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 <span className="text-navy font-bold">{item.solver}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                {Object.keys(item).map(
-                  (key) =>
-                    key !== "rank" &&
-                    key !== "solver" && (
-                      <div key={key}>
-                        <div>{key.charAt(0).toUpperCase() + key.slice(1)}</div>
-                        <div
-                          className="font-medium"
-                          dangerouslySetInnerHTML={{
-                            __html: item[key as keyof typeof item] ?? "-",
-                          }}
-                        />
-                      </div>
-                    ),
-                )}
+                {Object.keys(item)
+                  .filter((key) => key !== "unnormalizedData")
+                  .map(
+                    (key) =>
+                      key !== "rank" &&
+                      key !== "solver" && (
+                        <div key={key}>
+                          <div>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                          </div>
+                          <div
+                            className="font-medium"
+                            dangerouslySetInnerHTML={{
+                              __html: item[key as keyof typeof item] ?? "-",
+                            }}
+                          />
+                        </div>
+                      ),
+                  )}
               </div>
             </div>
           ))}

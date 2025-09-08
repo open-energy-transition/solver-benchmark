@@ -18,7 +18,7 @@ const Footer = ({
 
   return (
     <footer className={wrapperClassName}>
-      <div className="max-w-8xl px-4 lg:px-[70px] mx-auto pb-16 lg:pb-9">
+      <div className="max-w-8xl px-4 lg:px-[70px] mx-auto pb-16 lg:pb-0">
         <div>
           <div className="md:flex gap-1 py-[1.375rem] justify-between text-navy text-xs">
             <div>

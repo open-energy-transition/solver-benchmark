@@ -167,7 +167,7 @@ const ResultsSgmModeDropdown = ({
         )}
         {open && (
           <div
-            className="absolute w-full right-0 top-6 z-10 mt-2 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5"
+            className="absolute w-max right-0 top-6 z-10 mt-2 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"
@@ -179,7 +179,7 @@ const ResultsSgmModeDropdown = ({
                   onClick={() => {
                     handleChangeMode(mode.value);
                   }}
-                  className="flex relative w-full flex-wrap text-left px-4 py-2 pr-4 text-sm navy hover:bg-gray-100"
+                  className="flex relative w-full flex-wrap text-left px-4 py-2 pr-6 text-sm navy hover:bg-gray-100"
                   role="menuitem"
                 >
                   {mode.optionTitle}

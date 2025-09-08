@@ -160,9 +160,9 @@ const SolverSection = () => {
 
   return (
     <div>
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-col lg:flex-row gap-4 mb-4">
         {/* Solver select */}
-        <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
+        <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
           <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
           <select
             name="solver"
@@ -182,7 +182,7 @@ const SolverSection = () => {
 
         {/* Enhanced solver info section */}
         {selectedSolverInfo && (
-          <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
+          <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
             <h6 className="p-3 pl-3.5 border-b border-gray-200">
               Solver Information
             </h6>

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 // local
 
@@ -17,6 +18,10 @@ import SolverEvolutionSection from "../admin/performance-history/SolverEvolution
 import NormalizedSGMRuntime from "../admin/performance-history/NormalizedSGMRuntime";
 
 const SolverPerformanceHistory = () => {
+  const { ref: sectionRef } = useScrollSpy({
+    hash: "#how-are-solvers-evolving-over-time",
+  });
+
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkResults;
@@ -251,8 +256,7 @@ const SolverPerformanceHistory = () => {
   }, [solverYearlyMetrics]);
 
   return (
-    <>
-      {/* Content */}
+    <div ref={sectionRef}>
       <h4 id="how-are-solvers-evolving-over-time" className="scroll-mt-[9rem]">
         How are solvers evolving over time?
       </h4>
@@ -289,7 +293,7 @@ const SolverPerformanceHistory = () => {
           subset of benchmarks that are of interest.
         </p>
       </div>
-    </>
+    </div>
   );
 };
 

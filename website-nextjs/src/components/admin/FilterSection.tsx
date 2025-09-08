@@ -68,7 +68,7 @@ const FilterGroupWithTooltip = ({
         closeOnDocumentClick
         arrow={false}
       >
-        <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+        <div className="text-white bg-navy border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
           {tooltipContent || tooltipText || title}
         </div>
       </Popup>
@@ -396,7 +396,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
         >
           {/* Modelling Framework */}
           <FilterGroupWithTooltip
-            title="Modelling Framework"
+            title="Model Framework"
             tooltipText="A modelling framework is a set of tools, rules, methods, and structures that support the development, execution, and management of models."
             icon={<PolygonIcon className="w-5 h-5" />}
             items={availableModellingFrameworks}

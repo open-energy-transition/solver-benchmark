@@ -149,16 +149,17 @@ const PageBenchmarkDetail = () => {
                 "-"
               )}
             </div>
-            <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">
+            <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0">
               {columns.map((col) => (
                 <div
                   key={col.name}
-                  className="border-b md:border-b-0 md:border-r last:border-none border-grey font-league w-full md:w-[14%] p-2 last:pl-2 md:last:pl-6 my-auto"
+                  className="border-b md:border-b-0 md:border-r last:border-none border-grey font-league w-full md:w-[14%] p-2 last:pl-2 md:last:pl-6 my-auto
+        flex flex-col md:block bg-white md:bg-transparent rounded-lg md:rounded-none shadow-sm md:shadow-none"
                 >
                   <Popup
                     on={["hover"]}
                     trigger={() => (
-                      <div className="font-bold text-sm md:text-base overflow-hidden text-ellipsis whitespace-nowrap">
+                      <div className="font-bold text-base md:text-base overflow-hidden text-ellipsis whitespace-nowrap">
                         {col.value ?? "-"}
                       </div>
                     )}
@@ -170,7 +171,7 @@ const PageBenchmarkDetail = () => {
                       {col.value ?? "-"}
                     </div>
                   </Popup>
-                  <div className="text-drak-green text-xs uppercase">
+                  <div className="text-drak-green text-xs uppercase mt-1 md:mt-0">
                     {col.label}
                   </div>
                 </div>

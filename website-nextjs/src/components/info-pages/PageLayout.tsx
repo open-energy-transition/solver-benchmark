@@ -21,7 +21,6 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
       </Head>
       <Header />
       <div className="bg-[#F5F4F4] mx-auto max-w-screen-2xl px-2 sm:px-4 lg:pl-[min(62px,4.3vw)] lg:pr-[min(198px,13.75vw)] relative pb-36">
-        <h3 className="py-4.5 font-bold">{title}</h3>
         <div className="flex flex-col lg:flex-row gap-4">{children}</div>
       </div>
       <FooterLandingPage

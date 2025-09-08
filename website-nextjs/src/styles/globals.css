@@ -131,6 +131,7 @@ input[type="number"] {
 /* Info Pages Unified Styles */
 .info-pages-content {
   /* Container for info pages content - enables list styling */
+  @apply lg:mt-[84px];
 }
 
 .info-pages-content ol li,
@@ -161,4 +162,34 @@ input[type="number"] {
 .delayedShow{
   visibility: hidden;
   animation: 0s linear 0.25s forwards delayedShow ;
+}
+
+/* Custom scrollbar styles */
+/* For Webkit browsers (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 10px;  /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;  /* color of the tracking area */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-navy rounded-lg
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-navy
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;  /* "auto" or "thin" */
+  scrollbar-color: #022b3b #f1f1f1;  /* thumb and track color */
+}
+
+/* Captcha */
+.grecaptcha-badge {
+  @apply left-0 right-auto;
 }
