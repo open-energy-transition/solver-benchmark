@@ -1,0 +1,69 @@
+## https://github.com/ZEN-universe/ZEN-garden
+benchmarks:
+  zen-garden-eur-PI:
+    Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI
+    Version:
+    Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich https://zenodo.org/records/11074289
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-2ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/19pgwi9-nWMWkbvIiRtJs6H3MEnaFzEOY?usp=sharing
+      Temporal resolution: 2 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-10ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/157GuAkgbpUvaXR5IFRNQkJYjap3Angp5?usp=sharing
+      Temporal resolution: 10 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-50ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/1LLX1hjXN9VNi_l-x5hUvh2pujI1bkrb8?usp=sharing
+      Temporal resolution: 50 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-30ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/1OfWV41bHyKSy_0xQEPff29BpkBU_a-5X?usp=sharing
+      Temporal resolution: 30 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-100ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/1gEH8dV0OZ0uWrOLD_SpX1NwlZCN5VWFg?usp=sharing
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-200ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/1mh2HDyfTksXUqLTODRQgWDicctOLndQo?usp=sharing
+      Temporal resolution: 200 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
