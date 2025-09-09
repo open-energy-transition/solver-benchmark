@@ -1,9 +1,14 @@
 import Link from "next/link";
 import BenchmarkModelCasesTable from "./tables/BenchmarkModelCasesTable";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 const BenchmarkModelCases = () => {
+  const { ref: sectionRef } = useScrollSpy({
+    hash: "#what-benchmark-problems-do-we-have-and-what-are-missing",
+  });
+
   return (
-    <>
+    <div ref={sectionRef}>
       {/* Content */}
       <h4
         id="what-benchmark-problems-do-we-have-and-what-are-missing"
@@ -65,7 +70,7 @@ const BenchmarkModelCases = () => {
         to us if you&apos;d like to contribute any benchmark problems that can
         fill the above gaps!
       </p>
-    </>
+    </div>
   );
 };
 

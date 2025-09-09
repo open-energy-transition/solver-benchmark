@@ -111,7 +111,7 @@ const ContactForm = () => {
           required
         />
       </div>
-      <div className="flex justify-start mt-6">
+      <div className="flex justify-end lg:justify-start mt-6">
         <button
           type="submit"
           className={`rounded-2xl px-12 py-4 text-base text-white font-bold bg-[#1E7A8C]

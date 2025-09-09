@@ -91,12 +91,13 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               >
                 <Popup
                   on={["hover"]}
+                  disabled={item.length < 32}
                   trigger={() => <span>{item}</span>}
                   position="top right"
                   closeOnDocumentClick
                   arrowStyle={{ color: "#ebeff2" }}
                 >
-                  <div className="bg-stroke p-2 rounded">{item}</div>
+                  <div className="text-white bg-navy p-2 rounded">{item}</div>
                 </Popup>
               </span>
               <span

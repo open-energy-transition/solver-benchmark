@@ -35,7 +35,6 @@ const MissionStart = () => {
             description="Use our performance data to pick the best solver for your application domain, hardware constraints, and budget"
             linkText="Compare Solvers"
             linkHref={PATH_DASHBOARD.compareSolvers}
-            linkClass="mb-4"
           />
           <MissionCard
             Icon={DollarSignIcon}

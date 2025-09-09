@@ -2,10 +2,15 @@ import React from "react";
 import ProblemClassTable from "./charts/ProblemClassTable";
 import Note from "../shared/Note";
 import Link from "next/link";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 const FeasibilityForOpenSource = () => {
+  const { ref: sectionRef } = useScrollSpy({
+    hash: "#what-is-feasible-for-open-source-solvers",
+  });
+
   return (
-    <>
+    <div ref={sectionRef}>
       <h4
         id="what-is-feasible-for-open-source-solvers"
         className="info-pages-heading"
@@ -81,7 +86,7 @@ const FeasibilityForOpenSource = () => {
         modelling frameworks in our benchmark set. We welcome contributions to
         fill these gaps!
       </p>
-    </>
+    </div>
   );
 };
 

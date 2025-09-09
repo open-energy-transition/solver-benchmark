@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   PageLayout,
   TableOfContents,
@@ -11,6 +11,7 @@ import BenchmarkModelCases from "@/components/key-insights/BenchmarkModelCases";
 import Introduction from "@/components/key-insights/Introduction";
 import HowGoodIsSolver from "@/components/key-insights/HowGoodIsSolver";
 import FeasibilityForOpenSource from "@/components/key-insights/FeasibilityForOpenSource";
+import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 
 const KeyInsightsPage = () => {
   const tocItems = [
@@ -18,38 +19,60 @@ const KeyInsightsPage = () => {
       hash: "#how-good-is-each-solver-and-for-what-cases",
       label: "How good is each solver, and for what cases?",
       component: HowGoodIsSolver,
+      threshold: 0.5,
     },
     {
       hash: "#how-are-solvers-evolving-over-time",
       label: "How are solvers evolving over time?",
       component: SolverPerformanceHistory,
+      threshold: 0.5,
     },
     {
       hash: "#what-is-feasible-for-open-source-solvers",
       label: "What is feasible for open source solvers?",
       component: FeasibilityForOpenSource,
+      threshold: 0.5,
     },
     {
       hash: "#what-factors-affect-solver-performance",
       label: "What factors affect solver performance?",
       component: FactorsAffectingPerformanceInsights,
+      threshold: 0.5,
     },
     {
       hash: "#benchmark-problems-corresponding-to-representative-model-use-cases",
       label:
         "Benchmark problems corresponding to representative model use-cases",
       component: BenchmarkModelInsights,
+      threshold: 0.5,
     },
     {
       hash: "#what-benchmark-problems-do-we-have-and-what-are-missing",
       label: "What benchmark problems do we have (and what are missing?)",
       component: BenchmarkModelCases,
+      threshold: 0.5,
     },
   ];
+  const visibilities = useSectionsVisibility(tocItems);
+  const [currentSection, setCurrentSection] = useState<string | null>(null);
+
+  useEffect(() => {
+    for (let i = 0; i < visibilities.length; i++) {
+      if (visibilities[i]) {
+        window.history.replaceState(null, "", tocItems[i].hash);
+        setCurrentSection(tocItems[i].hash);
+        return;
+      }
+    }
+  }, [visibilities]);
 
   return (
     <PageLayout title="Key Insights" description="Key insights">
-      <TableOfContents items={tocItems} />
+      <TableOfContents
+        title="Key Insights"
+        currentSection={currentSection}
+        items={tocItems}
+      />
       <ContentSection>
         <div className="info-pages-content">
           <div className="info-pages-section">
