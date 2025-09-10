@@ -17,9 +17,11 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import SolverEvolutionSection from "../admin/performance-history/SolverEvolutionSection";
 import NormalizedSGMRuntime from "../admin/performance-history/NormalizedSGMRuntime";
 
+const HASH = "how-are-solvers-evolving-over-time";
+
 const SolverPerformanceHistory = () => {
   const { ref: sectionRef } = useScrollSpy({
-    hash: "#how-are-solvers-evolving-over-time",
+    hash: `#${HASH}`,
   });
 
   const rawBenchmarkResults = useSelector(
@@ -256,10 +258,8 @@ const SolverPerformanceHistory = () => {
   }, [solverYearlyMetrics]);
 
   return (
-    <div ref={sectionRef}>
-      <h4 id="how-are-solvers-evolving-over-time" className="scroll-mt-[9rem]">
-        How are solvers evolving over time?
-      </h4>
+    <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
+      <h4>How are solvers evolving over time?</h4>
       <p>
         This plot shows the average runtime of each year’s final-released solver
         version, relative to that year’s fastest solver, over all S and M size

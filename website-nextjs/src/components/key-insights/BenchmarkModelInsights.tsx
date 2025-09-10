@@ -1,18 +1,17 @@
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import BenchmarkModelInsightsTable from "./tables/BenchmarkModelInsightsTable";
 
+const HASH =
+  "benchmark-problems-corresponding-to-representative-model-use-cases";
 const BenchmarkModelInsights = () => {
   const { ref: sectionRef } = useScrollSpy({
-    hash: "#benchmark-problems-corresponding-to-representative-model-use-cases",
+    hash: `#${HASH}`,
   });
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
       {/* Content */}
-      <h4
-        id="benchmark-problems-corresponding-to-representative-model-use-cases"
-        className="scroll-mt-[9rem]"
-      >
+      <h4 className="scroll-mt-[9rem]">
         Benchmark problems corresponding to representative model use-cases
       </h4>
       <p>

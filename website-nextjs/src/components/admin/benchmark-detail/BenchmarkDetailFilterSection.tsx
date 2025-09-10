@@ -74,7 +74,7 @@ const FilterGroupWithTooltip = ({
         closeOnDocumentClick
         arrow={false}
       >
-        <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+        <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg max-w-xs">
           {tooltipContent || tooltipText || title}
         </div>
       </Popup>

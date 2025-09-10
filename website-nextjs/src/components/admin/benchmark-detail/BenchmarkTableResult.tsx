@@ -57,7 +57,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               closeOnDocumentClick
               arrowStyle={{ color: Color.Stroke }}
             >
-              <div className="bg-stroke p-2 rounded">
+              <div className="bg-navy text-white p-2 rounded">
                 {" "}
                 {info.getValue() as string}{" "}
               </div>
@@ -96,7 +96,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
+            <div className="bg-navy text-white p-2 rounded">
               {" "}
               {info.getValue() as string}{" "}
             </div>
@@ -127,7 +127,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
+            <div className="bg-navy text-white p-2 rounded">
               {" "}
               {info.getValue() as string}{" "}
             </div>

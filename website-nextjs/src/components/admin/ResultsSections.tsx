@@ -287,7 +287,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               closeOnDocumentClick
               arrow={false}
             >
-              <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
+              <div className="bg-navy text-white px-4 py-2 rounded-lg">
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
@@ -481,7 +481,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 closeOnDocumentClick
                 arrow={false}
               >
-                <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <div className="bg-navy text-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
                   <SolverVersions />
                 </div>
               </Popup>
@@ -507,7 +507,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 closeOnDocumentClick
                 arrow={false}
               >
-                <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <div className="bg-navy text-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
                   <SgmExplanation />
                 </div>
               </Popup>

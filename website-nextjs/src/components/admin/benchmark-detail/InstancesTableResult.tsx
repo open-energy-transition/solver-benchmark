@@ -184,7 +184,7 @@ const InstancesTableResult = ({
               closeOnDocumentClick
               arrow={false}
             >
-              <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+              <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg max-w-xs">
                 Benchmark instances are marked as realistic if they come from a
                 model that was used, or is similar to a model used in an actual
                 energy modelling study. Please note that this is a rather

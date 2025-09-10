@@ -188,8 +188,3 @@ input[type="number"] {
   scrollbar-width: thin;  /* "auto" or "thin" */
   scrollbar-color: #022b3b #f1f1f1;  /* thumb and track color */
 }
-
-/* Captcha */
-.grecaptcha-badge {
-  @apply left-0 right-auto;
-}

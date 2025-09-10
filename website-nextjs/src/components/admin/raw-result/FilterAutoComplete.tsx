@@ -61,10 +61,11 @@ const Option = (props: OptionProps<any>) => {
         )}
         position="top right"
         closeOnDocumentClick
+        disabled={data.value.length < 30}
         arrow={false}
       >
         {data.value !== "all" ? (
-          <div className="bg-stroke p-2 rounded">{data.label}</div>
+          <div className="bg-navy text-white p-2 rounded">{data.label}</div>
         ) : (
           <></>
         )}

@@ -313,7 +313,7 @@ const D3SolverEvolutionChart = ({
       .attr("x2", width - margin.right)
       .attr("y1", yLeftScale(totalBenchmarks))
       .attr("y2", yLeftScale(totalBenchmarks))
-      .attr("stroke", "#FF6B6B")
+      .attr("stroke", "#43BF94")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "8,4")
       .attr("opacity", 0.8);
@@ -322,7 +322,7 @@ const D3SolverEvolutionChart = ({
       .attr("x", margin.left + 50)
       .attr("y", yLeftScale(totalBenchmarks + 2))
       .attr("text-anchor", "end")
-      .attr("fill", "#FF6B6B")
+      .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
       .text(`Max: 105`);
