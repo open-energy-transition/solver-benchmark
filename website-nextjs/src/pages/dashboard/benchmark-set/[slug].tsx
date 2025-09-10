@@ -130,7 +130,9 @@ const PageBenchmarkDetail = () => {
               closeOnDocumentClick
               arrowStyle={{ color: Color.Stroke }}
             >
-              <div className="bg-stroke p-2 rounded">{benchmarkName}</div>
+              <div className="bg-navy text-white p-2 rounded">
+                {benchmarkName}
+              </div>
             </Popup>
           </div>
           <div className="text-navy bg-white px-3 md:px-6 py-4 md:py-8 rounded-lg">
@@ -167,7 +169,7 @@ const PageBenchmarkDetail = () => {
                     closeOnDocumentClick
                     arrowStyle={{ color: Color.Stroke }}
                   >
-                    <div className="bg-stroke p-2 rounded">
+                    <div className="bg-navy text-white p-2 rounded">
                       {col.value ?? "-"}
                     </div>
                   </Popup>

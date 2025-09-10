@@ -137,7 +137,7 @@ const TableResult = () => {
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
+            <div className="bg-navy text-white p-2 rounded">
               {" "}
               {String(info.getValue())}{" "}
             </div>

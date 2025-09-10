@@ -7,18 +7,16 @@ import SolverRuntimeComparison from "./charts/BenchmarkRuntimeComparison";
 import { QuestionLineIcon } from "@/assets/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 
+const HASH = "how-good-is-each-solver-and-for-what-cases";
 const HowGoodIsSolver = () => {
   const { ref: sectionRef } = useScrollSpy({
-    hash: "#how-good-is-each-solver-and-for-what-cases",
+    hash: `#${HASH}`,
   });
 
   return (
     <>
-      <div ref={sectionRef}>
-        <h4
-          id="how-good-is-each-solver-and-for-what-cases"
-          className="info-pages-heading"
-        >
+      <div id={HASH} className="scroll-mt-[9rem]" ref={sectionRef}>
+        <h4 className="info-pages-heading">
           How good is each solver, and for what cases?
         </h4>
         <p>

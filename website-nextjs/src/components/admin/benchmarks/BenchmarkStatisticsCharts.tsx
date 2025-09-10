@@ -176,7 +176,7 @@ const BenchmarkStatisticsCharts = ({
         closeOnDocumentClick
         arrow={false}
       >
-        <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+        <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg max-w-xs">
           Defines how far in the future the model optimizes and the number of
           optimization stages
           <ul className="list-disc list-outside ml-6">

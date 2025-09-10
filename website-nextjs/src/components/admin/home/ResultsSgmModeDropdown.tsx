@@ -89,7 +89,7 @@ const ResultsSgmModeDropdown = ({
             closeOnDocumentClick
             arrow={false}
           >
-            <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg">
+            <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg">
               Note that data points where the solver does not successfully solve
               the benchmark instance (i.e. errors, times out, or runs out of
               memory) are given the time out value for runtime and maximum
@@ -144,7 +144,7 @@ const ResultsSgmModeDropdown = ({
                 arrow={false}
                 arrowStyle={{ color: "#ffffff" }}
               >
-                <div className="bg-white border border-stroke px-4 py-2 m-2 rounded-lg">
+                <div className="bg-navy text-white px-4 py-2 m-2 rounded-lg">
                   {selectedMode.optionTooltip}
                 </div>
               </Popup>
@@ -191,7 +191,7 @@ const ResultsSgmModeDropdown = ({
                       closeOnDocumentClick
                       arrowStyle={{ color: "#ebeff2" }}
                     >
-                      <div className="bg-stroke p-2 rounded">
+                      <div className="bg-navy text-white p-2 rounded">
                         {mode.optionTooltip}
                       </div>
                     </Popup>

@@ -1,9 +1,9 @@
 import { ArrowUpLeftIcon } from "@/assets/icons";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 interface FAQItemProps {
   question: string;
-  answer: string;
+  answer: string | ReactNode;
 }
 
 const FAQItem = ({ question = "", answer }: FAQItemProps) => {

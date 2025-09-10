@@ -39,7 +39,7 @@ const ContentWrapper = ({
           )}
           <div
             className={`
-              pd:mx-0 overflow-scroll
+              pd:mx-0 overflow-auto
               ${showFilter ? "w-full pr-0 pt-4" : "w-full"}
               `}
           >

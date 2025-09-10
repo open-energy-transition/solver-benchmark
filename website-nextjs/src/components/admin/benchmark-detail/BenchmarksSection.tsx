@@ -51,7 +51,7 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
             closeOnDocumentClick
             arrow={false}
           >
-            <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+            <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg break-words">
               <SolverVersions />
             </div>
           </Popup>

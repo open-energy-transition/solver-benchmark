@@ -2,19 +2,17 @@ import { useScrollSpy } from "@/hooks/useScrollSpy";
 import PerformanceScalling from "./charts/factors-affecting-performance/PerformanceScalling";
 import RuntimeOfFastestSolver from "./charts/factors-affecting-performance/RuntimeOfFastestSolver";
 
+const HASH = "what-factors-affect-solver-performance";
 const FactorsAffectingPerformanceInsights = () => {
   const { ref: sectionRef } = useScrollSpy({
-    hash: "#what-factors-affect-solver-performance",
+    hash: `#${HASH}`,
     threshold: 0.1,
   });
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
       {/* Content */}
-      <h4
-        id="what-factors-affect-solver-performance"
-        className="scroll-mt-[9rem]"
-      >
+      <h4 id="what-factors-affect-solver-performance">
         What factors affect solver performance?
       </h4>
       <p>
