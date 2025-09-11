@@ -15,9 +15,7 @@ FROM benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
     && git checkout e43746d
-    # This is the last commit using pypsa version 0.30.x, after which the generated LP
-    # files fail with the GLPK solver:
-    # https://github.com/PyPSA/PyPSA/issues/1073
+    # This is the commit corresponding to PyPSA-Eur v2025.07.0
 
 FROM repo_clone AS conda_env
 RUN --mount=type=cache,target=/opt/conda/pkgs \
