@@ -1,10 +1,10 @@
 diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index 3982e767..8aa3c0ec 100644
+index f9945579..c00696c9 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
-@@ -1003,6 +1003,9 @@ def solve_network(n, config, params, solving, **kwargs):
-     kwargs["assign_all_duals"] = cf_solving.get("assign_all_duals", False)
-     kwargs["io_api"] = cf_solving.get("io_api", None)
+@@ -1331,6 +1331,9 @@ def solve_network(
+     kwargs["model_kwargs"] = cf_solving.get("model_kwargs", {})
+     kwargs["keep_files"] = cf_solving.get("keep_files", False)
 
 +    # Use env var to determine if to dump LP file instead of solving
 +    kwargs["only_generate_problem_file"] = os.getenv("ONLY_GENERATE_PROBLEM_FILE", False)

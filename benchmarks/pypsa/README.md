@@ -7,13 +7,13 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
 1. Build and run the docker container containing all the dependencies to generate the benchmarks:
      ```sh
      cd solver-benchmark/benchmarks/pypsa/
-     docker build .
+     docker build --platform=linux/amd64 .
      docker run -it --entrypoint bash <image-hash-from-previous-output>
      ```
 
 1. Inside the docker container, run the benchmark generating script:
      ```sh
-     micromamba activate benchmark-gen
+     conda activate benchmark-gen
      cd pypsa-eur
      ./solver-benchmarks/generate-sizes.sh <benchmark-name> /tmp/
      ```
