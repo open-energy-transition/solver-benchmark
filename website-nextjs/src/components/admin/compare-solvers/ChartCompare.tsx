@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { getChartColor } from "@/utils/chart";
+import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { roundNumber } from "@/utils/number";
@@ -141,20 +141,7 @@ const ChartCompare = ({
     }
 
     // Tooltip container
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
     const xScale =

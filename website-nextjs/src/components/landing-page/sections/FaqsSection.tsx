@@ -57,7 +57,7 @@ const Contribute = () => {
                   reproduce and use our benchmarks for development. Our website
                   offers numerous interactive dashboards that allow users to
                   perform fine-grained analysis depending on their application
-                  domain and features of interest.&quot;
+                  domain and features of interest.
                 </span>
               }
             />

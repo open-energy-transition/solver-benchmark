@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { CircleIcon, CloseIcon, QuestionLineIcon } from "@/assets/icons";
 import D3PlotChart from "@/components/shared/D3PlotChart";
 import { IResultState } from "@/types/state";
-import Popup from "reactjs-popup";
 import { SolverVersions } from "@/components/shared";
+import InfoPopup from "@/components/common/InfoPopup";
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
@@ -40,8 +40,7 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
           version{" "}
         </span>
         <span className="inline-flex gap-2">
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <span className="flex items-baseline">
                 <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
@@ -51,10 +50,10 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
             closeOnDocumentClick
             arrow={false}
           >
-            <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg break-words">
+            <div>
               <SolverVersions />
             </div>
-          </Popup>
+          </InfoPopup>
         </span>
         <span>
           (available on our platform) of each solver on the size instances of

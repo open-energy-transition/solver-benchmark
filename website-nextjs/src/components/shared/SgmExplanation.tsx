@@ -12,7 +12,7 @@ const SgmExplanation = ({}) => {
   return (
     <MathJaxContext config={config}>
       <>
-        <p className="text-white">
+        <p>
           SGM, or (normalized) shifted geometric mean, is a more robust summary
           metric compared to the arithmetic mean (AM) or geometric mean (GM).
           <br />
@@ -30,7 +30,7 @@ const SgmExplanation = ({}) => {
           solver.
         </p>
 
-        <p className="text-white">
+        <p>
           The SGM differs from the geometric mean becauses it uses a{" "}
           <b>shift</b> s and also takes max with 1 of the measured values. Some
           reasons for using SGM are:
@@ -50,7 +50,7 @@ const SgmExplanation = ({}) => {
             </li>
           </ul>
         </p>
-        <p className="text-white">
+        <p>
           We use a shift of <MathJax inline>s = 10</MathJax>, which is also the
           shift used by the{" "}
           <a href="https://plato.asu.edu/ftp/shgeom.html">

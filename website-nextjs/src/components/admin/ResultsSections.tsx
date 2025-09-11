@@ -4,7 +4,6 @@ import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
-import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { extractNumberFromFormattedString } from "@/utils/string";
@@ -13,6 +12,7 @@ import { SgmExplanation, SolverVersions } from "@/components/shared";
 import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
 import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
 import { getLatestBenchmarkResult } from "@/utils/results";
+import InfoPopup from "../common/InfoPopup";
 
 type ColumnType = {
   name: string;
@@ -276,8 +276,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         headerContent: (header: string) => (
           <div className="flex items-center w-max">
             {header}
-            <Popup
-              on={["hover"]}
+            <InfoPopup
               trigger={() => (
                 <div>
                   <QuestionLineIcon className="w-4 h-4" />
@@ -287,11 +286,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               closeOnDocumentClick
               arrow={false}
             >
-              <div className="bg-navy text-white px-4 py-2 rounded-lg">
+              <div>
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
-            </Popup>
+            </InfoPopup>
           </div>
         ),
       },
@@ -467,8 +466,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               This table summarizes the benchmark results of the latest version
             </span>
             <span className="inline-flex gap-2">
-              <Popup
-                on={["hover"]}
+              <InfoPopup
                 trigger={() => (
                   <span className="flex items-baseline">
                     <QuestionLineIcon
@@ -481,10 +479,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 closeOnDocumentClick
                 arrow={false}
               >
-                <div className="bg-navy text-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <div>
                   <SolverVersions />
                 </div>
-              </Popup>
+              </InfoPopup>
             </span>
             <span> of each solver on the selected configuration.</span>
           </p>
@@ -492,8 +490,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             You can rank the solvers by the normalized shifted geometric mean
             (SGM
             <span className="inline-flex gap-2">
-              <Popup
-                on={["hover"]}
+              <InfoPopup
                 trigger={() => (
                   <span className="flex items-baseline">
                     <QuestionLineIcon
@@ -507,10 +504,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 closeOnDocumentClick
                 arrow={false}
               >
-                <div className="bg-navy text-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
+                <div>
                   <SgmExplanation />
                 </div>
-              </Popup>
+              </InfoPopup>
             </span>
             <span>
               &nbsp; of runtime or memory consumption over all benchmarks, or by

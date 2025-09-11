@@ -188,3 +188,10 @@ input[type="number"] {
   scrollbar-width: thin;  /* "auto" or "thin" */
   scrollbar-color: #022b3b #f1f1f1;  /* thumb and track color */
 }
+
+.popup-wrapper {
+  @apply bg-navy text-white p-2 rounded-lg max-w-xs break-words;
+  p {
+    @apply text-white;
+  }
+}

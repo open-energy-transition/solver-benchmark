@@ -2,7 +2,6 @@ import { ArrowRightIcon, QuestionLineIcon } from "@/assets/icons";
 import React, { useState, useRef, useEffect } from "react";
 import filterActions from "@/redux/filters/actions";
 import { useDispatch, useSelector } from "react-redux";
-import Popup from "reactjs-popup";
 import { IFilterState } from "@/types/state";
 import DebouncedInput from "../raw-result/DebouncedInput";
 import {
@@ -10,6 +9,7 @@ import {
   DEFAULT_X_FACTOR,
   SgmMode,
 } from "@/constants/sgm";
+import InfoPopup from "@/components/common/InfoPopup";
 
 interface SgmCalculationMode {
   optionTitle: string;
@@ -78,8 +78,7 @@ const ResultsSgmModeDropdown = ({
       <div className=" absolute right-0 text-left flex gap-1" ref={dropdownRef}>
         <div className="text-navy tag-line-xxs my-auto">SGM Mode:</div>
         <span className="inline-flex gap-2">
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <span className="flex items-baseline my-auto cursor-pointer">
                 <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
@@ -89,7 +88,7 @@ const ResultsSgmModeDropdown = ({
             closeOnDocumentClick
             arrow={false}
           >
-            <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg">
+            <div>
               Note that data points where the solver does not successfully solve
               the benchmark instance (i.e. errors, times out, or runs out of
               memory) are given the time out value for runtime and maximum
@@ -100,7 +99,7 @@ const ResultsSgmModeDropdown = ({
               subset of instances that are solved by all solvers, by using the
               dropdown menu to the right.
             </div>
-          </Popup>
+          </InfoPopup>
         </span>
 
         <button
@@ -132,8 +131,7 @@ const ResultsSgmModeDropdown = ({
           <div className="flex gap-1 items-center pl-1">
             <div className="tag-line-xxs">{selectedMode.optionTitle}</div>
             <span className="right-2 top-2.5">
-              <Popup
-                on={["hover"]}
+              <InfoPopup
                 trigger={() => (
                   <div>
                     <QuestionLineIcon className="h-3.5 w-3.5" />
@@ -144,10 +142,8 @@ const ResultsSgmModeDropdown = ({
                 arrow={false}
                 arrowStyle={{ color: "#ffffff" }}
               >
-                <div className="bg-navy text-white px-4 py-2 m-2 rounded-lg">
-                  {selectedMode.optionTooltip}
-                </div>
-              </Popup>
+                <div>{selectedMode.optionTooltip}</div>
+              </InfoPopup>
             </span>
           </div>
           <ArrowRightIcon className="stroke-navy fill-none size-2 block rotate-90" />
@@ -184,17 +180,14 @@ const ResultsSgmModeDropdown = ({
                 >
                   {mode.optionTitle}
                   <span className="absolute right-1 top-2.5">
-                    <Popup
-                      on={["hover"]}
+                    <InfoPopup
                       trigger={() => <QuestionLineIcon className="w-4 h-4" />}
                       position="top right"
                       closeOnDocumentClick
                       arrowStyle={{ color: "#ebeff2" }}
                     >
-                      <div className="bg-navy text-white p-2 rounded">
-                        {mode.optionTooltip}
-                      </div>
-                    </Popup>
+                      <div>{mode.optionTooltip}</div>
+                    </InfoPopup>
                   </span>
                 </button>
               ))}

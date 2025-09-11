@@ -23,6 +23,7 @@ export interface ID3GroupedBarChart {
   yAxisLabel?: string;
   rotateXAxisLabels?: boolean;
   showXaxisLabel?: boolean;
+  diagonalXAxisLabelsOnMobile?: boolean;
   axisLabelTitle?: (d: ID3GroupedBarChartData) => string;
   barOpacity?: number | ((d: ID3GroupedBarChartData) => number);
   xAxisTickFormat?: (value: string, data: unknown) => string;

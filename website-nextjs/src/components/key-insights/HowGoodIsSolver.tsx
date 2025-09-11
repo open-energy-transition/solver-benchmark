@@ -1,11 +1,11 @@
 import React from "react";
-import Popup from "reactjs-popup";
 import Note from "@/components/shared/Note";
 import Link from "next/link";
 import RealisticRuntimeComparison from "./charts/RealisticRuntimeComparison";
 import SolverRuntimeComparison from "./charts/BenchmarkRuntimeComparison";
 import { QuestionLineIcon } from "@/assets/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
+import InfoPopup from "../common/InfoPopup";
 
 const HASH = "how-good-is-each-solver-and-for-what-cases";
 const HowGoodIsSolver = () => {
@@ -31,8 +31,7 @@ const HowGoodIsSolver = () => {
           </Link>
           ). We split our set of problems by problem size
           <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
+            <InfoPopup
               trigger={() => (
                 <span className="flex items-baseline my-auto cursor-pointer">
                   <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
@@ -42,14 +41,14 @@ const HowGoodIsSolver = () => {
               closeOnDocumentClick
               arrow={false}
             >
-              <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
+              <div>
                 <b>Small</b>: number of variables &lt; 1e4
                 <br />
                 <b>Medium</b>: 1e4 ≤; number of variables &lt; 1e6
                 <br />
                 <b>Large</b> 1e6 ≤; number of variables
               </div>
-            </Popup>
+            </InfoPopup>
           </span>{" "}
           and also categorize certain problems as realistic if they arise from,
           or have similar model features as, models used in real-world energy

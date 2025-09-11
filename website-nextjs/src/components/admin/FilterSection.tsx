@@ -19,7 +19,7 @@ import { getLatestBenchmarkResult } from "@/utils/results";
 import { isArray } from "lodash";
 import FilterGroup from "./filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
-import Popup from "reactjs-popup";
+import InfoPopup from "@/components/common/InfoPopup";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface FilterSectionProps {
@@ -58,8 +58,7 @@ const FilterGroupWithTooltip = ({
   const titleWithTooltip = (
     <div className="flex items-center gap-1">
       <span>{title}</span>
-      <Popup
-        on={["hover"]}
+      <InfoPopup
         trigger={() => (
           <span className="flex items-baseline my-auto cursor-pointer">
             <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
@@ -69,10 +68,8 @@ const FilterGroupWithTooltip = ({
         closeOnDocumentClick
         arrow={false}
       >
-        <div className="text-white bg-navy border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
-          {tooltipContent || tooltipText || title}
-        </div>
-      </Popup>
+        <div>{tooltipContent || tooltipText || title}</div>
+      </InfoPopup>
     </div>
   );
 

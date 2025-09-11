@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { ID3GroupedBarChart } from "@/types/chart";
 import { CircleIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { createD3Tooltip } from "@/utils/chart";
 
 const D3GroupedBarChart = ({
   title,
@@ -22,6 +23,7 @@ const D3GroupedBarChart = ({
   barOpacity = 1,
   showXaxisLabel = true,
   transformHeightValue,
+  diagonalXAxisLabelsOnMobile = false,
   xAxisBarTextClassName = "text-xs fill-dark-grey",
   normalize = true,
 }: ID3GroupedBarChart) => {
@@ -31,6 +33,7 @@ const D3GroupedBarChart = ({
   const [height, setHeight] = useState(chartHeight);
 
   useEffect(() => {
+    if (!diagonalXAxisLabelsOnMobile) return;
     if (isMobile) {
       setHeight(chartHeight + 50);
     } else {
@@ -117,17 +120,8 @@ const D3GroupedBarChart = ({
       .range([height - margin.bottom, margin.top]);
 
     // Tooltip
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
+
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
         .attr("stroke", "currentColor")

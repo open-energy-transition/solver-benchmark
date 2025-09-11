@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FilterIcon } from "@/assets/icons";
+import InfoPopup from "@/components/common/InfoPopup";
 import React, { useEffect, useRef, useState } from "react";
 import Select, {
   ActionMeta,
@@ -36,8 +37,7 @@ const Option = (props: OptionProps<any>) => {
       {...innerProps}
       className="flex items-center px-2 cursor-pointer group"
     >
-      <Popup
-        on={["hover"]}
+      <InfoPopup
         trigger={() => (
           <div className="flex w-full items-center">
             <input
@@ -64,12 +64,8 @@ const Option = (props: OptionProps<any>) => {
         disabled={data.value.length < 30}
         arrow={false}
       >
-        {data.value !== "all" ? (
-          <div className="bg-navy text-white p-2 rounded">{data.label}</div>
-        ) : (
-          <></>
-        )}
-      </Popup>
+        {data.value !== "all" ? <div>{data.label}</div> : <></>}
+      </InfoPopup>
     </div>
   );
 };

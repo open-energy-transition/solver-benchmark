@@ -3,12 +3,12 @@ import Papa from "papaparse";
 
 import { useSelector } from "react-redux";
 import { BenchmarkResult, OriginBenchmarkResult } from "@/types/benchmark";
-import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { IResultState } from "@/types/state";
 import { filterNumber, filterSelect } from "@/utils/table";
+import InfoPopup from "@/components/common/InfoPopup";
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
@@ -25,8 +25,7 @@ const TableResult = () => {
         accessorKey: "benchmark",
         filterFn: filterSelect,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {String(info.getValue())}
@@ -36,11 +35,8 @@ const TableResult = () => {
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
-              {" "}
-              {String(info.getValue())}{" "}
-            </div>
-          </Popup>
+            <div> {String(info.getValue())} </div>
+          </InfoPopup>
         ),
       },
       {
@@ -126,8 +122,7 @@ const TableResult = () => {
         },
         filterFn: filterNumber,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {String(info.getValue() || "")}
@@ -137,11 +132,8 @@ const TableResult = () => {
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-navy text-white p-2 rounded">
-              {" "}
-              {String(info.getValue())}{" "}
-            </div>
-          </Popup>
+            <div> {String(info.getValue())} </div>
+          </InfoPopup>
         ),
       },
     ],

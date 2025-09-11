@@ -1,4 +1,3 @@
-import Popup from "reactjs-popup";
 import { QuestionLineIcon } from "@/assets/icons";
 // internal
 import { ISolverYearlyChartData } from "@/types/benchmark";
@@ -6,6 +5,7 @@ import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage";
 import NormalizedSGMRuntime from "./NormalizedSGMRuntime";
 import { SgmExplanation } from "@/components/shared";
 import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
+import InfoPopup from "@/components/common/InfoPopup";
 
 interface INormalizedSection {
   chartData: {
@@ -23,8 +23,7 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
       <p className="max-w-screen-lg">
         <span>The below graphs show the shifted geometric mean (SGM</span>
         <span className="inline-flex gap-2">
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <span className="flex items-baseline">
                 <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />)
@@ -34,10 +33,10 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
             closeOnDocumentClick
             arrow={false}
           >
-            <div className="bg-navy text-white px-4 py-2 m-4 rounded-lg break-words">
+            <div>
               <SgmExplanation />
             </div>
-          </Popup>
+          </InfoPopup>
         </span>{" "}
         of the runtime / memory consumption each solver version on all the
         benchmarks in the (filtered) set of instances that all solver versions

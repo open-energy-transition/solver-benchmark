@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { ID3StackedBarChart } from "@/types/chart";
+import { createD3Tooltip } from "@/utils/chart";
 
 const D3StackedBarChart = ({
   title,
@@ -58,17 +59,7 @@ const D3StackedBarChart = ({
       .range([height - margin.bottom, margin.top]);
 
     // Tooltip
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Create bars
     svg

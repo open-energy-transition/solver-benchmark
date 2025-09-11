@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
@@ -8,6 +7,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { filterSelect } from "@/utils/table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { FilterIcon } from "@/assets/icons";
+import InfoPopup from "@/components/common/InfoPopup";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -46,8 +46,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               info.row.original.name,
             )}
           >
-            <Popup
-              on={["hover"]}
+            <InfoPopup
+              disabled={((info.getValue() as string) || "").length <= 30}
               trigger={() => (
                 <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                   {info.getValue() as string}
@@ -57,11 +57,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               closeOnDocumentClick
               arrowStyle={{ color: Color.Stroke }}
             >
-              <div className="bg-navy text-white p-2 rounded">
-                {" "}
-                {info.getValue() as string}{" "}
-              </div>
-            </Popup>
+              <div> {info.getValue() as string} </div>
+            </InfoPopup>
           </Link>
         ),
       },
@@ -85,8 +82,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         filterFn: filterSelect,
         size: 200,
         cell: (info) => (
-          <Popup
-            on={["hover"]}
+          <InfoPopup
+            disabled={((info.getValue() as string) || "").length <= 30}
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {info.getValue() as string}
@@ -96,11 +93,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-navy text-white p-2 rounded">
-              {" "}
-              {info.getValue() as string}{" "}
-            </div>
-          </Popup>
+            <div> {info.getValue() as string} </div>
+          </InfoPopup>
         ),
       },
       {
@@ -116,22 +110,19 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         size: 100,
         filterFn: filterSelect,
         cell: (info) => (
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {info.getValue() as string}
               </div>
             )}
             position="top center"
+            disabled={((info.getValue() as string) || "").length <= 30}
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-navy text-white p-2 rounded">
-              {" "}
-              {info.getValue() as string}{" "}
-            </div>
-          </Popup>
+            <div> {info.getValue() as string} </div>
+          </InfoPopup>
         ),
       },
     ],

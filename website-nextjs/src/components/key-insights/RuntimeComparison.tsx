@@ -169,6 +169,7 @@ const RuntimeComparison = () => {
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
+        diagonalXAxisLabelsOnMobile
         yAxisLabel="Relative runtime (normalized)"
         chartHeight={400}
         rotateXAxisLabels={false}
