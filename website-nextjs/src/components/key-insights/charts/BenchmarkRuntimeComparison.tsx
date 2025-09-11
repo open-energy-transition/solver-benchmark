@@ -197,7 +197,7 @@ const BenchmarkRuntimeComparison = () => {
         }}
         xAxisLabel=""
         yAxisLabel="Relative runtime (normalized)"
-        height={400}
+        chartHeight={400}
         rotateXAxisLabels={false}
         barTextClassName={getBarTextClassName}
         tooltipFormat={tooltipFormat}

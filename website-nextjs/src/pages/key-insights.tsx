@@ -12,6 +12,7 @@ import Introduction from "@/components/key-insights/Introduction";
 import HowGoodIsSolver from "@/components/key-insights/HowGoodIsSolver";
 import FeasibilityForOpenSource from "@/components/key-insights/FeasibilityForOpenSource";
 import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 
 const KeyInsightsPage = () => {
   const tocItems = [
@@ -54,6 +55,7 @@ const KeyInsightsPage = () => {
     },
   ];
   const visibilities = useSectionsVisibility(tocItems);
+  const scrollDirection = useScrollDirection();
   const [currentSection, setCurrentSection] = useState<string | null>(null);
 
   useEffect(() => {
@@ -61,7 +63,9 @@ const KeyInsightsPage = () => {
       if (visibilities[i]) {
         window.history.replaceState(null, "", tocItems[i].hash);
         setCurrentSection(tocItems[i].hash);
-        return;
+        if (scrollDirection === "up") {
+          return;
+        }
       }
     }
   }, [visibilities, scrollDirection]);

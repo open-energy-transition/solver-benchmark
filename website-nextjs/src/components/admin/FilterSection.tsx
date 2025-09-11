@@ -20,6 +20,7 @@ import { isArray } from "lodash";
 import FilterGroup from "./filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
 import Popup from "reactjs-popup";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface FilterSectionProps {
   height?: string;
@@ -138,6 +139,8 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   const realisticOptions = useSelector(
     (state: { results: IResultState }) => state.results.realisticOptions,
   );
+
+  const isMobile = useIsMobile();
 
   const [isInit, setIsInit] = useState(false);
 
@@ -391,7 +394,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             md:max-h-full
           "
           style={{
-            height: height || "",
+            height: isMobile ? "auto" : height || "",
           }}
         >
           {/* Modelling Framework */}

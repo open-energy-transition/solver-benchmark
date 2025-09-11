@@ -222,7 +222,7 @@ const RuntimeOfFastestSolver = ({
           }}
           xAxisLabel=""
           yAxisLabel="Runtime (s)"
-          height={400}
+          chartHeight={400}
           rotateXAxisLabels={false}
           customLegend={chartLegend}
           barTextClassName={getBarTextClassName}

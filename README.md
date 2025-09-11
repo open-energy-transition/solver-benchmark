@@ -145,6 +145,3 @@ If you want to skip these pre-commit steps for a particular commit, you can run:
 ```bash
 git commit --no-verify
 ```
-
-
-<!-- Security scan triggered at 2025-09-09 05:43:32 -->

@@ -12,6 +12,7 @@ export interface ID3GroupedBarChartData {
 export interface ID3GroupedBarChart {
   title: string;
   height?: number;
+  chartHeight?: number;
   className?: string;
   chartData: StackedBarData[];
   categoryKey: string;

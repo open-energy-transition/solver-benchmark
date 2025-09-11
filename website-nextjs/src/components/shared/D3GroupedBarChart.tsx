@@ -1,11 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { ID3GroupedBarChart } from "@/types/chart";
 import { CircleIcon } from "@/assets/icons";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const D3GroupedBarChart = ({
   title,
-  height = 200,
+  chartHeight = 200,
   chartData = [],
   categoryKey,
   customLegend,
@@ -26,6 +27,16 @@ const D3GroupedBarChart = ({
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const isMobile = useIsMobile();
+  const [height, setHeight] = useState(chartHeight);
+
+  useEffect(() => {
+    if (isMobile) {
+      setHeight(chartHeight + 50);
+    } else {
+      setHeight(chartHeight);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     const data = chartData.map((d) => ({ ...d }));
@@ -48,7 +59,12 @@ const D3GroupedBarChart = ({
     }
 
     const width = containerRef.current?.clientWidth || 400;
-    const margin = { top: 30, right: 30, bottom: 90, left: 60 };
+    const margin = {
+      top: 30,
+      right: 30,
+      bottom: isMobile ? 130 : 90,
+      left: 60,
+    };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -261,8 +277,11 @@ const D3GroupedBarChart = ({
           .attr("dy", "2em")
           .attr("class", xAxisBarTextClassName)
           .attr("fill", "#666")
-          .style("text-anchor", "middle")
+          .style("text-anchor", isMobile ? "end" : "middle")
           .style("cursor", xAxisTooltipFormat ? "pointer" : "default")
+          .attr("transform", isMobile ? "rotate(-45)" : null)
+          .attr("x", isMobile ? "-10" : null)
+          .attr("y", isMobile ? "10" : null)
           .on("mouseover", (event, d) => {
             const dataPoint = data.find(
               (item) => item[categoryKey].toString() === d,
