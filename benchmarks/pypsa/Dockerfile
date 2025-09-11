@@ -1,33 +1,31 @@
-# A dockerfile to generate the Pypsa benchmarks reproducibly
+# A Dockerfile to generate the Pypsa benchmarks reproducibly
 # Build with: docker build .
 # Debug with: docker run -it --entrypoint bash <image hash>
 
-# Use a lightweight base image with micromamba support
-FROM mambaorg/micromamba AS benchmark_gen_base
+# Use a lightweight base image with conda support
+FROM continuumio/miniconda3 AS benchmark_gen_base
 
-# Activate mamba env automatically
-ENV MAMBA_DOCKERFILE_ACTIVATE=1
+# Activate conda env automatically
 ENV CONDA_ENV_NAME=benchmark-gen
 
 USER root
 RUN apt-get update && apt-get install -y git
-USER mambauser
 
 FROM benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout 4435f021
+    && git checkout e43746d
     # This is the last commit using pypsa version 0.30.x, after which the generated LP
     # files fail with the GLPK solver:
     # https://github.com/PyPSA/PyPSA/issues/1073
 
-FROM repo_clone AS mamaba_env
+FROM repo_clone AS conda_env
 RUN --mount=type=cache,target=/opt/conda/pkgs \
     cd pypsa-eur \
-    && micromamba env create -f envs/environment.fixed.yaml -n benchmark-gen
+    && conda env create -f envs/linux-64.lock.yaml -n benchmark-gen
 
-RUN eval "$(micromamba shell hook --shell bash)" \
-    && micromamba activate benchmark-gen \
+RUN eval "$(conda shell.bash hook)" \
+    && conda activate benchmark-gen \
     && pip install git+https://github.com/open-energy-transition/linopy.git@92e289a --no-deps
     # This is a commit on linopy branch only-generate-problem-files
 
@@ -35,13 +33,13 @@ RUN eval "$(micromamba shell hook --shell bash)" \
 COPY solve_network.patch pypsa-eur/solve_network.patch
 RUN cd pypsa-eur && git apply solve_network.patch
 
-FROM mamaba_env AS benchmark_gen
-COPY --chown=mambauser . pypsa-eur/solver-benchmarks
+FROM conda_env AS benchmark_gen
+COPY --chown=conda . pypsa-eur/solver-benchmarks
 
 # For now, let's run this command manually in the above docker container:
 
-# RUN eval "$(micromamba shell hook --shell bash)" \
-#     && micromamba activate benchmark-gen \
+# RUN eval "$(conda shell.bash hook)" \
+#     && conda activate benchmark-gen \
 #     && cd pypsa-eur \
 #     && ./solver-benchmarks/generate.sh
 
