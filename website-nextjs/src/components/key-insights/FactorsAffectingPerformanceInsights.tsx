@@ -51,6 +51,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "pypsa-eur-sec-5-12h",
           "pypsa-eur-sec-2-3h",
         ]}
+        extraCategoryLengthMargin={5}
       />
       <h5>Effect of unit commitment (UC) on GenX models</h5>
       <p>
@@ -69,6 +70,9 @@ const FactorsAffectingPerformanceInsights = () => {
           "genx-10_IEEE_9_bus_DC_OPF-9-1h",
           "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
         ]}
+        xAxisLabelRotation={-35}
+        xAxisLabelWrapLength={6}
+        splitter="_"
       />
       <h5>Effect of unit commitment (UC) on PyPSA models</h5>
       <p>
@@ -89,6 +93,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "pypsa-eur-elec-op-2-1h",
           "pypsa-eur-elec-op-ucconv-2-3h",
         ]}
+        xAxisLabelWrapLength={18}
       />
       <h5>
         Effect of UC, transmission expansion, and CO2 constraints on GenX models
@@ -136,6 +141,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "temoa-US_9R_TS_NDC-9-12",
           "temoa-US_9R_TS_NZ-9-12",
         ]}
+        xAxisLabelWrapLength={18}
       />
       <h5>Effect of time horizons on TIMES models</h5>
       <p>
@@ -151,6 +157,8 @@ const FactorsAffectingPerformanceInsights = () => {
           "times-etimeseu-europe-elec+heat-co2-single_stage-29-64ts",
           "times-etimeseu-europe-elec+heat-co2-multi_stage-29-64ts",
         ]}
+        xAxisLabelRotation={-45}
+        xAxisLabelWrapLength={5}
       />
     </div>
   );

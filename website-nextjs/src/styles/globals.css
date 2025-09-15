@@ -21,26 +21,26 @@
   }
   h5,
   .h5 {
-    @apply text-base sm:text-2xl font-lato font-bold sm:leading-1.4 tracking-normal text-navy;
+    @apply text-lg sm:text-2xl font-lato font-bold sm:leading-1.4 tracking-normal text-navy;
   }
   h6,
   .h6 {
     @apply text-base sm:text-xl font-lato font-bold sm:leading-1.4 tracking-normal text-navy;
   }
   p {
-    @apply text-xs sm:text-sm font-lato font-normal sm:leading-1.5 tracking-normal text-navy my-1;
+    @apply text-[15px] sm:text-sm font-lato font-normal sm:leading-1.5 tracking-normal text-navy my-1;
   }
   .tag-line-lg {
     @apply text-base sm:text-lg font-lato font-medium sm:leading-1.1 tracking-normal;
   }
   .tag-line {
-    @apply text-xs sm:text-base font-lato font-normal sm:leading-1.5 tracking-normal;
+    @apply text-[15px] sm:text-base font-lato font-normal sm:leading-1.5 tracking-normal;
   }
   .tag-line-xs {
-    @apply text-[10px] sm:text-xs font-lato font-normal sm:leading-none tracking-normal;
+    @apply text-xs font-lato font-normal lg:leading-4 sm:leading-none tracking-normal;
   }
   .tag-line-sm {
-    @apply text-xs sm:text-sm font-lato font-normal sm:leading-none tracking-normal;
+    @apply text-sm font-lato font-normal sm:leading-none tracking-normal;
   }
   .tag-line-xxs {
     @apply text-[8px] sm:text-[10px] font-lato font-normal sm:leading-none tracking-normal;

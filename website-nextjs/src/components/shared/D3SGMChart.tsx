@@ -259,7 +259,7 @@ const D3SGMChart = ({
   }, [normalizedChartData, solverColors]);
 
   return (
-    <div className={`bg-white p-4 rounded-xl ${className}`}>
+    <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
         <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">

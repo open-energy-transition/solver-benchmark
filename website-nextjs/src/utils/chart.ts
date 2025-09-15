@@ -100,3 +100,16 @@ export function applyTooltipStyles(
 export function createD3Tooltip() {
   return applyTooltipStyles(d3.select("body").append("div"));
 }
+
+export function wrapTextByPosition(
+  text: string,
+  segmentsPerLine = 2,
+  splitter = "-",
+) {
+  const parts = text.split(splitter);
+  const lines: string[] = [];
+  for (let i = 0; i < parts.length; i += segmentsPerLine) {
+    lines.push(parts.slice(i, i + segmentsPerLine).join(splitter));
+  }
+  return lines;
+}

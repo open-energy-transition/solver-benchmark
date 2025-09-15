@@ -269,13 +269,13 @@ const InstancesTableResult = ({
   return (
     <div className="py-2">
       <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">Instances</h5>
-      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+      <div className="text-navy px-2 lg:px-5 text-l block items-center mt-2 mb-2">
         A benchmark may have multiple size instances, obtained by varying
         parameters such as the spatial or temporal resolution, but which utilize
         the same model features and are presumed to have the same optimization
         problem structure.
       </div>
-      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+      <div className="text-navy px-2 lg:px-5 text-l block items-center mt-2 mb-2">
         We categorize a benchmark instance as realistic if it comes from a model
         that was used, or is similar to a model used in an actual energy
         modelling study. Hover over the &ldquo;Realistic&rdquo; button in any

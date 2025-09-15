@@ -325,8 +325,8 @@ const D3SolverEvolutionChart = ({
   }, [data, solverColor, solverName]);
 
   return (
-    <div className={`bg-white p-4 rounded-xl ${className}`}>
-      <div className="mb-4">
+    <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
+      <div className="mb-4 pl-4 lg:pl-0">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           {solverName.toUpperCase()} Performance Evolution
         </h3>

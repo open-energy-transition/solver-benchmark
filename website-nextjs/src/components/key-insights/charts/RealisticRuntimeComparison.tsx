@@ -50,7 +50,13 @@ const PROBLEM_SIZE_FILTERS = [
   },
 ];
 
-const RealisticRuntimeComparison = () => {
+const RealisticRuntimeComparison = ({
+  xAxisLabelWrapLength,
+  splitter = "-",
+}: {
+  xAxisLabelWrapLength?: number;
+  splitter?: string;
+}) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
@@ -240,6 +246,8 @@ const RealisticRuntimeComparison = () => {
         xAxisBarTextClassName="text-[10px] fill-dark-grey"
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
+        xAxisLabelWrapLength={xAxisLabelWrapLength}
+        splitter={splitter}
       />
     </div>
   );

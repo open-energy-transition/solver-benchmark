@@ -9,6 +9,10 @@ import { CircleIcon } from "@/assets/icons";
 
 interface IRuntimeOfFastestSolver {
   benchmarkList?: string[];
+  xAxisLabelRotation?: number;
+  xAxisLabelWrapLength?: number;
+  splitter?: string;
+  extraCategoryLengthMargin?: number;
 }
 
 interface IDataPoint {
@@ -18,6 +22,10 @@ interface IDataPoint {
 
 const RuntimeOfFastestSolver = ({
   benchmarkList = [],
+  xAxisLabelRotation = -45,
+  xAxisLabelWrapLength = undefined,
+  splitter = "-",
+  extraCategoryLengthMargin = undefined,
 }: IRuntimeOfFastestSolver) => {
   const [allSolvers, setallSolvers] = useState(false);
 
@@ -229,8 +237,12 @@ const RuntimeOfFastestSolver = ({
           xAxisTooltipFormat={getXAxisTooltipFormat}
           tooltipFormat={tooltipFormat}
           axisLabelTitle={getAxisLabelTitle}
+          xAxisLabelRotation={xAxisLabelRotation}
+          xAxisLabelWrapLength={xAxisLabelWrapLength}
           xAxisBarTextClassName="text-xs fill-dark-grey"
           transformHeightValue={getTransformHeightValue}
+          extraCategoryLengthMargin={extraCategoryLengthMargin}
+          splitter={splitter}
         />
       </div>
     </>

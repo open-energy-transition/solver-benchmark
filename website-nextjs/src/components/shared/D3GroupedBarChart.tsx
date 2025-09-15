@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { ID3GroupedBarChart } from "@/types/chart";
 import { CircleIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { createD3Tooltip } from "@/utils/chart";
+import { createD3Tooltip, wrapTextByPosition } from "@/utils/chart";
 
 const D3GroupedBarChart = ({
   title,
@@ -26,12 +26,20 @@ const D3GroupedBarChart = ({
   diagonalXAxisLabelsOnMobile = false,
   xAxisBarTextClassName = "text-xs fill-dark-grey",
   normalize = true,
+  xAxisLabelRotation = -45,
+  xAxisLabelWrapLength = undefined,
+  splitter = "-",
+  extraCategoryLengthMargin = undefined,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const isMobile = useIsMobile();
   const [height, setHeight] = useState(chartHeight);
-
+  const categoryLengths = chartData.reduce((acc, d) => {
+    const length = String(d[categoryKey] || "").length;
+    console.log("category", d[categoryKey], "length", length);
+    return Math.max(acc, length);
+  }, 0);
   useEffect(() => {
     if (!diagonalXAxisLabelsOnMobile) return;
     if (isMobile) {
@@ -65,7 +73,12 @@ const D3GroupedBarChart = ({
     const margin = {
       top: 30,
       right: 30,
-      bottom: isMobile ? 130 : 90,
+      bottom: isMobile
+        ? 100 +
+          (extraCategoryLengthMargin
+            ? extraCategoryLengthMargin
+            : categoryLengths)
+        : 90,
       left: 60,
     };
 
@@ -273,7 +286,7 @@ const D3GroupedBarChart = ({
           .attr("fill", "#666")
           .style("text-anchor", isMobile ? "end" : "middle")
           .style("cursor", xAxisTooltipFormat ? "pointer" : "default")
-          .attr("transform", isMobile ? "rotate(-45)" : null)
+          .attr("transform", isMobile ? `rotate(${xAxisLabelRotation})` : null)
           .attr("x", isMobile ? "-10" : null)
           .attr("y", isMobile ? "10" : null)
           .on("mouseover", (event, d) => {
@@ -291,13 +304,22 @@ const D3GroupedBarChart = ({
           .on("mouseout", () => tooltip.style("opacity", 0))
           .each(function () {
             const text = d3.select(this);
-            const lines = text.text().split("\n");
-            text.text(null); // Clear existing text
-            lines.forEach((line, i) => {
+            let lines = [];
+            if (xAxisLabelWrapLength && isMobile) {
+              lines = wrapTextByPosition(
+                text.text(),
+                xAxisLabelWrapLength,
+                splitter,
+              );
+            } else {
+              lines = text.text().split("\n");
+            }
+            text.text(null);
+            lines.forEach((line) => {
               text
                 .append("tspan")
-                .attr("x", 0)
-                .attr("dy", i === 0 ? "1em" : "1.2em")
+                .attr("x", isMobile ? "-10" : "0")
+                .attr("dy", "1.6em")
                 .text(line);
             });
           });

@@ -72,7 +72,12 @@ const HowGoodIsSolver = () => {
           providing the best performance on different problems.
         </p>
         <div className="my-4">
-          <SolverRuntimeComparison />
+          <SolverRuntimeComparison
+            xAxisLabelRotation={-45}
+            splitter="  "
+            xAxisLabelWrapLength={3}
+            extraCategoryLengthMargin={5}
+          />
         </div>
 
         <p>

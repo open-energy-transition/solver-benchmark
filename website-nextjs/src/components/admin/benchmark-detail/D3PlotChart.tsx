@@ -149,7 +149,7 @@ const D3Chart = () => {
   }, []);
 
   return (
-    <div className="bg-white py-4 px-10 rounded-xl">
+    <div className="bg-white py-4 pl-0 lg:px-10 rounded-xl">
       {/* Legend */}
       <svg ref={svgRef}></svg>
     </div>

@@ -27,7 +27,11 @@ export interface ID3GroupedBarChart {
   axisLabelTitle?: (d: ID3GroupedBarChartData) => string;
   barOpacity?: number | ((d: ID3GroupedBarChartData) => number);
   xAxisTickFormat?: (value: string, data: unknown) => string;
+  xAxisLabelWrapLength?: number;
+  extraCategoryLengthMargin?: number;
   normalize?: boolean;
+  xAxisLabelRotation?: number;
+  splitter?: string;
   colors:
     | {
         [key: string]: string;
