@@ -301,7 +301,7 @@ benchmarks:
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
-    Time horizon: Single stage
+    Time horizon: Single-stage
     MILP features: None
     Sizes:
     - Name: 2-24h
@@ -313,3 +313,47 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
+  times-jrc:
+    Short description: Model of the EU (and neighboring countries) representing all energy sectors, that analyzes the long-term role of energy technologies and innovation for climate goals, and optimizes investment and operational decisions to meet energy service demands under different assumptions and constraints.
+    Modelling framework: TIMES
+    Model name: JRC-EU TIMES
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 31-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
+      Temporal resolution: 1 hour
+      Spatial resolution: 31 regions
+      Realistic: true
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+  times-stem:
+    Short description: Model of the Swiss energy system, including dispatch analysis features (i.e. ramping rates, minimum online/offline times, minimum stable operating level, part load efficiency losses, startup/shutdown costs) and ancillary services (endogenous demand for primary and secondary, positive and negative reserve, adjusted minimum online and offline times for reserve provision, adjusted ramping constraints, capacity margin constraints for reserve provision, maximum contribution of power plant in reserve provision, reserve provision from storages and demand units, other bounds on reserve provision, storage degradation due to cycling)
+    Modelling framework: TIMES
+    Model name: Swiss TIMES Energy Model
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 15-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/stem.mps
+      Temporal resolution: 1h
+      Spatial resolution: 15 nodes
+      Realistic: true
+      Realistic motivation: Typical TIMES model instances including multi-stage and multi-regional analysis with hourly resolution and operational constraints
+      Num. constraints:
+      Num. variables:
