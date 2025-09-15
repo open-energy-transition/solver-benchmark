@@ -81,7 +81,7 @@ export function TanStackTable<T>({
   };
 
   return (
-    <div className="w-full max-w-full overflow-auto">
+    <div className="w-full">
       {(title || enableDownload || enableColumnSelector) && (
         <div
           className={`
@@ -137,7 +137,7 @@ export function TanStackTable<T>({
         </div>
       )}
 
-      <div className="rounded-xl -mx-4 sm:mx-0">
+      <div className="rounded-xl sm:mx-0 overflow-auto">
         {/* Table implementation */}
         <div className="min-w-full inline-block align-middle">
           <div

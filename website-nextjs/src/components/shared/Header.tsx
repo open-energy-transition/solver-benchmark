@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons";
+import {
+  ArrowUpLeftIcon,
+  CloseIcon,
+  MenuIcon,
+  OutIcon,
+} from "../../assets/icons";
 import Link from "next/link";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 import { useRouter } from "next/router";
@@ -14,18 +19,17 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between pt-11 pb-10 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
+        className="flex items-center justify-between py-2 lg:pt-11 lg:pb-10 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
         aria-label="Global"
       >
         <div className="flex w-max">
           <Link
             href="/"
-            className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
+            className="-ml-1.5 lg:-m-1.5 lg:p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
           >
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg
-                className="absolute w-[35.5px] h-[43px] sm:w-[49.7px]
-                  sm:h-[60.2px] lg:w-[53px] lg:h-[64px] left-0 -top-6 md:-top-8 xl:-top-3
+                className="w-[43px] h-[52px] lg:absolute lg:w-[53px] lg:h-[64px] left-0 -top-6 md:-top-8 xl:-top-3
                 "
                 width="71"
                 height="86"
@@ -168,9 +172,9 @@ const Header = () => {
         <div className="lg:hidden" role="dialog" aria-modal="true">
           {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
           <div className="fixed inset-0 z-50"></div>
-          <div className="fixed inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-4 py-2 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between font-league font-bold text-white text-3xl md:text-4xl">
-              <a href="#" className="-m-1.5 p-1.5">
+              <a href="#" className="">
                 <div className="flex">
                   <Image
                     src="/logo.png"
@@ -217,10 +221,11 @@ const Header = () => {
                         {...(link.external
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
-                        className={`-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white
+                        className={`-mx-3 flex item-center gap-2 rounded-lg px-3 py-2 text-base/7 font-semibold text-white
                           ${isActive ? "bg-white bg-opacity-40" : ""}`}
                       >
                         {link.label}
+                        {link.external && <OutIcon className="mt-2 size-3" />}
                       </Link>
                     );
                   })}

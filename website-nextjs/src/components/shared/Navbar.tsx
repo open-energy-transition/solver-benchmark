@@ -65,11 +65,12 @@ const Navbar = () => {
   );
 
   useEffect(() => {
+    const navExpanded = localStorage.getItem("navExpanded") === "true" || false;
     const handleResize = debounce(() => {
       if (window.innerWidth < SMALL_SCREEN_BREAKPOINT) {
         dispatch(navbarActions.setNavExpanded(false));
       } else if (window.innerWidth >= SMALL_SCREEN_BREAKPOINT) {
-        dispatch(navbarActions.setNavExpanded(true));
+        dispatch(navbarActions.setNavExpanded(navExpanded));
       }
     }, 250); // 250ms delay
 
@@ -228,7 +229,9 @@ const Navbar = () => {
                   position="right center"
                   closeOnDocumentClick
                 >
-                  <div className="bg-white p-2 rounded">{navData.label}</div>
+                  <div className="text-white bg-navy p-2 rounded">
+                    {navData.label}
+                  </div>
                 </Popup>
               </li>
             ))}
@@ -240,7 +243,10 @@ const Navbar = () => {
           }`}
         >
           <div
-            onClick={() => dispatch(navbarActions.toggleNav())}
+            onClick={() => {
+              localStorage.setItem("navExpanded", (!isNavExpanded).toString());
+              dispatch(navbarActions.toggleNav());
+            }}
             className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none"
           >
             {isNavExpanded && "Collapse"}

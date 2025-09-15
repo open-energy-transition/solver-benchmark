@@ -94,13 +94,22 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .range([margin.left, width - margin.right])
       .padding(0.5);
 
-    // Add sub-band scale for bars with more spacing
+    // Add sub-band scale for bars with dynamic spacing based on visible solvers
+    const visibleNonBaseSolvers = availableSolvers.filter(
+      (s) => s !== baseSolver && visibleSolvers.has(s),
+    );
+
     const xSubScale = d3
       .scaleBand()
       .domain(availableSolvers.filter((s) => s !== baseSolver))
       .range([0, xScale.bandwidth()])
-      .padding(0.4); // Increased padding between bars within group
-    const barWidth = Math.min(xSubScale.bandwidth(), 15);
+      .padding(visibleNonBaseSolvers.length > 3 ? 0.2 : 0.4); // Less padding when more solvers
+
+    // Dynamic bar width - gets wider with fewer solvers (minimum 15px, maximum 30px)
+    const barWidth = Math.min(
+      Math.max(xSubScale.bandwidth(), 5),
+      visibleNonBaseSolvers.length <= 2 ? 30 : 25,
+    );
 
     // Scale for primary y-axis (ratio/factor)
 
@@ -559,7 +568,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
               </div>
             ))}
         </div>
-        <div className="flex justify-between items-start text-sm mb-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4">
           <div>
             <p>🔻/🔺: base / other solver failed to solve in time limit</p>
             <p>❌ : both solvers failed to solve in time limit</p>

@@ -1,9 +1,15 @@
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 import PerformanceScalling from "./charts/factors-affecting-performance/PerformanceScalling";
 import RuntimeOfFastestSolver from "./charts/factors-affecting-performance/RuntimeOfFastestSolver";
 
 const FactorsAffectingPerformanceInsights = () => {
+  const { ref: sectionRef } = useScrollSpy({
+    hash: "#what-factors-affect-solver-performance",
+    threshold: 0.1,
+  });
+
   return (
-    <>
+    <div ref={sectionRef}>
       {/* Content */}
       <h4
         id="what-factors-affect-solver-performance"
@@ -148,7 +154,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "times-etimeseu-europe-elec+heat-co2-multi_stage-29-64ts",
         ]}
       />
-    </>
+    </div>
   );
 };
 
