@@ -15,10 +15,10 @@ benchmarks:
     Sizes:
     - Name: 28-2ts
       Size: # Automatically assigned when running the benchmark
-      URL: https://drive.google.com/drive/folders/19pgwi9-nWMWkbvIiRtJs6H3MEnaFzEOY?usp=sharing
+      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_2.mps
       Temporal resolution: 2 time slices
       Spatial resolution: 28 nodes
-      Realistic: true
+      Realistic: false
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
@@ -27,7 +27,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_10.mps
       Temporal resolution: 10 time slices
       Spatial resolution: 28 nodes
-      Realistic: true
+      Realistic: false
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
@@ -36,7 +36,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_50.mps
       Temporal resolution: 50 time slices
       Spatial resolution: 28 nodes
-      Realistic: true
+      Realistic: false
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
@@ -45,7 +45,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_30.mps
       Temporal resolution: 30 time slices
       Spatial resolution: 28 nodes
-      Realistic: true
+      Realistic: false
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
