@@ -26,6 +26,9 @@ interface TanStackTableProps<T> {
   onDownload?: (filteredData: T[]) => void;
   enableColumnSelector?: boolean;
   initialColumnVisibility?: VisibilityState;
+  showPagination?: boolean;
+  showAllRows?: boolean;
+  headerClassName?: string;
 }
 
 export function TanStackTable<T>({
@@ -37,6 +40,9 @@ export function TanStackTable<T>({
   onDownload,
   enableColumnSelector = false,
   initialColumnVisibility = {},
+  showPagination = true,
+  showAllRows = false,
+  headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -60,7 +66,9 @@ export function TanStackTable<T>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...(showPagination && !showAllRows
+      ? { getPaginationRowModel: getPaginationRowModel() }
+      : {}),
   });
 
   const handleDownload = () => {
@@ -73,7 +81,7 @@ export function TanStackTable<T>({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
+    <div className="w-full">
       {(title || enableDownload || enableColumnSelector) && (
         <div
           className={`
@@ -129,19 +137,27 @@ export function TanStackTable<T>({
         </div>
       )}
 
-      <div className="rounded-xl overflow-auto -mx-4 sm:mx-0">
+      <div className="rounded-xl sm:mx-0 overflow-auto">
         {/* Table implementation */}
         <div className="min-w-full inline-block align-middle">
-          <div className="overflow-x-auto">
+          <div
+            className={`overflow-x-auto ${
+              showAllRows ? "max-h-[525px] overflow-y-auto" : ""
+            }`}
+          >
             <table className="table-auto bg-[#F4F6FA] w-full min-w-[800px]">
-              <thead>
+              <thead
+                className={
+                  showAllRows ? "sticky top-0 bg-[#F4F6FA] shadow-sm z-10" : ""
+                }
+              >
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        className="text-center text-navy py-4 px-6 cursor-pointer"
+                        className={headerClassName}
                       >
                         <div
                           onClick={header.column.getToggleSortingHandler()}
@@ -153,7 +169,7 @@ export function TanStackTable<T>({
                               : 200,
                           }}
                         >
-                          <div className="truncate">
+                          <div className="truncate w-full">
                             {flexRender(
                               header.column.columnDef.header,
                               header.getContext(),
@@ -204,9 +220,11 @@ export function TanStackTable<T>({
           </div>
         </div>
       </div>
-      <div className="mt-4">
-        <PaginationTable table={table} />
-      </div>
+      {showPagination && !showAllRows && (
+        <div className="mt-4">
+          <PaginationTable table={table} />
+        </div>
+      )}
     </div>
   );
 }

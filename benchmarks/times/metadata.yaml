@@ -6,7 +6,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -16,7 +16,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
       Temporal resolution: 20 time slices
-      Spatial resolution: 31
+      Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 6027253
@@ -28,7 +28,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -38,7 +38,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
       Temporal resolution: 20 time slices
-      Spatial resolution: 31
+      Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 5063755
@@ -50,7 +50,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -60,7 +60,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
       Temporal resolution: 64 time slices
-      Spatial resolution: 1
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation:  Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
@@ -72,7 +72,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -82,7 +82,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
       Temporal resolution: 64 time slices
-      Spatial resolution: 1
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15451
@@ -94,7 +94,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -104,7 +104,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
       Temporal resolution: 64 time slices
-      Spatial resolution: 1
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91288
@@ -116,7 +116,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -126,7 +126,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
       Temporal resolution: 64 time slices
-      Spatial resolution: 1
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91306
@@ -138,7 +138,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -148,7 +148,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
       Temporal resolution: 64 time slices
-      Spatial resolution: 29
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456603
@@ -160,7 +160,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -170,7 +170,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
       Temporal resolution: 64 time slices
-      Spatial resolution: 29
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456663
@@ -182,7 +182,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -204,7 +204,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -213,7 +213,7 @@ benchmarks:
     - Name: 29-64ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
-      Temporal resolution: 64 time slices
+      Temporal resolution: 64 time slice
       Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
@@ -226,7 +226,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -236,7 +236,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
       Temporal resolution: 1 time slice
-      Spatial resolution: 1 regions
+      Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
@@ -255,7 +255,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -264,7 +264,7 @@ benchmarks:
     - Name: 26-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
-      Temporal resolution: 1 time slices
+      Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
       Num. constraints: 873805
@@ -276,7 +276,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -298,7 +298,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage

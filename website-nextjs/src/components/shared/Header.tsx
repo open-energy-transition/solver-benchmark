@@ -1,28 +1,35 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpLeftIcon, CloseIcon, MenuIcon } from "../../assets/icons";
+import {
+  ArrowUpLeftIcon,
+  CloseIcon,
+  MenuIcon,
+  OutIcon,
+} from "../../assets/icons";
 import Link from "next/link";
+import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+  const currentRoute = router.pathname;
 
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between pt-11 pb-10 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
+        className="flex items-center justify-between py-2 lg:pt-11 lg:pb-10 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
         aria-label="Global"
       >
         <div className="flex w-max">
-          <a
-            href="#"
-            className="-m-1.5 p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max"
+          <Link
+            href="/"
+            className="-ml-1.5 lg:-m-1.5 lg:p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
           >
-            <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[71px]">
+            <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg
-                className="absolute w-[35.5px] h-[43px] sm:w-[49.7px]
-                  sm:h-[60.2px] lg:w-[71px] lg:h-[86px] -top-[6px] sm:-top-[12px]
-                  lg:-top-[0.75rem] left-0
+                className="w-[43px] h-[52px] lg:absolute lg:w-[53px] lg:h-[64px] left-0 -top-6 md:-top-8 xl:-top-3
                 "
                 width="71"
                 height="86"
@@ -69,10 +76,10 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <div className="pt-0 lg:pt-4 pl-2 lg:pl-4 text-[28px]">
-              SOLVER BENCHMARK
+            <div className="hidden xl:block pt-0 text-[22px] lg:text-[32px] font-lato font-bold">
+              Open Energy Benchmark
             </div>
-          </a>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -85,45 +92,50 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
           <Link
-            href="#benchmarks"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            href={ROOT_PATH.home}
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
-            BENCHMARKS
+            HOME
           </Link>
           <Link
-            href="#mission"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            href={ROOT_PATH.keyInsights}
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/key-insights"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
-            MISSION
+            KEY INSIGHTS
           </Link>
           <Link
-            href="#methodology"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
+            href={PATH_DASHBOARD.home}
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/dashboard/main-results"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
+          >
+            DETAILED RESULTS
+          </Link>
+          <Link
+            href={ROOT_PATH.methodology}
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/methodology"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
           >
             METHODOLOGY
-          </Link>
-          <Link
-            href="#contribution"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
-          >
-            CONTRIBUTIONS
-          </Link>
-          <Link
-            href="#faq"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
-          >
-            FAQs
-          </Link>
-          <Link
-            href="#contact"
-            className="text-sm/6 font-medium hover:underline underline-offset-4"
-          >
-            CONTACT
           </Link>
         </div>
         <div className="hidden lg:flex w-max">
           <Link
             href="https://openenergytransition.org/"
+            target="_blank"
             className="
               2xl:px-7
               border
@@ -160,9 +172,9 @@ const Header = () => {
         <div className="lg:hidden" role="dialog" aria-modal="true">
           {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
           <div className="fixed inset-0 z-50"></div>
-          <div className="fixed mt-12 inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-y-0 right-0 z-50 w-screen left-0 overflow-y-auto bg-navy px-4 py-2 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between font-league font-bold text-white text-3xl md:text-4xl">
-              <a href="#" className="-m-1.5 p-1.5">
+              <a href="#" className="">
                 <div className="flex">
                   <Image
                     src="/logo.png"
@@ -184,55 +196,39 @@ const Header = () => {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  <Link
-                    href="#benchmarks"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white "
-                  >
-                    BENCHMARKS
-                  </Link>
-                  <Link
-                    href="#mission"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    MISSION
-                  </Link>
-                  <Link
-                    href="#methodology"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    METHODOLOGY
-                  </Link>
-                  <Link
-                    href="#contribution"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    CONTRIBUTIONS
-                  </Link>
-                  <Link
-                    href="#faq"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    FAQs
-                  </Link>
-                  <Link
-                    href="#contact"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    CONTACT
-                  </Link>
-                  <Link
-                    onClick={() => setIsMenuOpen(false)}
-                    href="https://openenergytransition.org/"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white"
-                  >
-                    OPEN ENERGY TRANSITION
-                  </Link>
+                  {[
+                    { href: "/", label: "HOME" },
+                    { href: "/key-insights", label: "KEY INSIGHTS" },
+                    {
+                      href: "/dashboard/main-results",
+                      label: "DETAILED RESULTS",
+                    },
+                    { href: "/methodology", label: "METHODOLOGY" },
+                    {
+                      href: "https://openenergytransition.org/",
+                      label: "OPEN ENERGY TRANSITION",
+                      external: true,
+                    },
+                  ].map((link, index) => {
+                    const isActive =
+                      !link.external && currentRoute === link.href;
+                    console.log(isActive);
+                    return (
+                      <Link
+                        key={index}
+                        href={link.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        {...(link.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                        className={`-mx-3 flex item-center gap-2 rounded-lg px-3 py-2 text-base/7 font-semibold text-white
+                          ${isActive ? "bg-white bg-opacity-40" : ""}`}
+                      >
+                        {link.label}
+                        {link.external && <OutIcon className="mt-2 size-3" />}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>

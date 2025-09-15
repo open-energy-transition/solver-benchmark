@@ -15,7 +15,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
 
   return (
     <nav>
-      <div className="flex items-center mx-auto mt-9 pb-6 pr-4 md:pr-8">
+      <div className="fixed md:relative w-full py-2 md:py-0 md:w-auto md:bg-transparent top-0 left-0 bg-white z-10 flex items-center mx-auto md:mt-9 md:pb-6 pl-4 md:pl-0 pr-4 md:pr-8">
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="flex items-center truncate">{children}</div>
         </div>
@@ -50,7 +50,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
           {/* Desktop menu */}
           <div className="hidden lg:flex items-center space-x-4">
             <a
-              href="https://github.com/open-energy-transition/"
+              href="https://github.com/open-energy-transition/solver-benchmark"
               target="_blank"
               rel="noopener noreferrer"
             >

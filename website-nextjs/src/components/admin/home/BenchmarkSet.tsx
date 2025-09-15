@@ -33,7 +33,6 @@ const BenchmarkSet = () => {
       sectors,
       problemClass,
       application,
-      modelName,
       modellingFramework,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
@@ -42,7 +41,6 @@ const BenchmarkSet = () => {
     });
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
-    uniqueValues.models.add(modelName);
     uniqueValues.modellingFrameworks.add(modellingFramework);
   });
 
@@ -61,14 +59,14 @@ const BenchmarkSet = () => {
 
   return (
     <div className="pl-1 pb-1 pr-3 bg-[#F4F6FA] rounded-xl">
-      <div className="flex items-center justify-between gap-2 py-4 ml-5 mr-7">
+      <div className="lg:flex items-center justify-between gap-2 py-4 px-2 md:px-0 md:ml-5 md:mr-7">
         <div className="text-navy">
           <h5>Benchmark Set</h5>
         </div>
         <div className="grid sm:flex justify-between items-center gap-2">
           <Link
-            className="tag-line-xs w-max text-green-pop text-opacity-80 border border-green-pop border-opacity-40 bg-white px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
-            href={PATH_DASHBOARD.benchmarkDetail.list}
+            className="tag-line-xs w-max text-green-pop border border-green-pop border-opacity-40 bg-white px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
+            href={PATH_DASHBOARD.benchmarkSet.list}
           >
             Benchmark Set
           </Link>

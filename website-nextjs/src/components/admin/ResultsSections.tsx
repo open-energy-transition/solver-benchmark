@@ -11,6 +11,8 @@ import { extractNumberFromFormattedString } from "@/utils/string";
 import { SgmMode } from "@/constants/sgm";
 import { SgmExplanation, SolverVersions } from "@/components/shared";
 import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
+import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
+import { getLatestBenchmarkResult } from "@/utils/results";
 
 type ColumnType = {
   name: string;
@@ -29,13 +31,17 @@ type ColumnType = {
   sortFunc?: (a: TableRowType, b: TableRowType) => number;
 };
 
-type TableRowType = {
+export type TableRowType = {
   rank: number;
   solver: string;
   version: string;
   memory: string;
   solvedBenchmarks: string;
   runtime: string;
+  unnormalizedData: {
+    runtime: number;
+    memoryUsage: number;
+  };
 };
 
 interface ResultsSectionProps {
@@ -353,6 +359,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               (solver) => solver.solver === solverData,
             ) + 1,
           solver: solverData,
+          unnormalizedData: {
+            runtime: calculateSgm(getRelevantResults(solverData, "runtime")),
+            memoryUsage: calculateSgm(
+              getRelevantResults(solverData, "memoryUsage"),
+            ),
+          },
           version: getHighestVersion(solverVersions[solverData]),
           memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
             memorySgm,
@@ -428,10 +440,27 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
 
   const isMobileView = windowWidth < 1024;
 
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.rawBenchmarkResults;
+    },
+  );
+
+  const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults);
+
+  const uniqueLatestBenchmarkCount = new Set(
+    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
+  ).size;
+
   return (
     <div>
       <div className="pb-3">
-        <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
+        <ResultsSectionsTitle
+          benchmarkResults={benchmarkResults}
+          latestBenchmarkResultLength={latestBenchmarkResult.length}
+          uniqueBenchmarkCount={uniqueBenchmarkCount}
+          uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
+        />
         <div className="pl-2 mt-2 max-w-screen-lg">
           <p>
             <span>
@@ -497,7 +526,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
 
       {isMobileView ? (
         // Mobile view
-        <div className="flex flex-col gap-4 px-4 text-navy">
+        <div className="flex flex-col gap-4 px-2 lg:px-4 text-navy">
           {sortedTableData.map((item, index) => (
             <div
               key={index}
@@ -508,21 +537,25 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 <span className="text-navy font-bold">{item.solver}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                {Object.keys(item).map(
-                  (key) =>
-                    key !== "rank" &&
-                    key !== "solver" && (
-                      <div key={key}>
-                        <div>{key.charAt(0).toUpperCase() + key.slice(1)}</div>
-                        <div
-                          className="font-medium"
-                          dangerouslySetInnerHTML={{
-                            __html: item[key as keyof typeof item] ?? "-",
-                          }}
-                        />
-                      </div>
-                    ),
-                )}
+                {Object.keys(item)
+                  .filter((key) => key !== "unnormalizedData")
+                  .map(
+                    (key) =>
+                      key !== "rank" &&
+                      key !== "solver" && (
+                        <div key={key}>
+                          <div>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                          </div>
+                          <div
+                            className="font-medium"
+                            dangerouslySetInnerHTML={{
+                              __html: item[key as keyof typeof item] ?? "-",
+                            }}
+                          />
+                        </div>
+                      ),
+                  )}
               </div>
             </div>
           ))}
@@ -578,6 +611,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           ))}
         </div>
       )}
+      <SgmRuntimeComparison
+        timeout={timeout}
+        sgmData={tableData}
+        uniqueBenchmarkCount={uniqueBenchmarkCount}
+        uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
+      />
     </div>
   );
 };

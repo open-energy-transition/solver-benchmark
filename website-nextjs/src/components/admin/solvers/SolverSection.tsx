@@ -12,24 +12,34 @@ const SOLVES_DATA = [
     name: "highs",
     sourceCode: "https://github.com/ERGO-Code/HiGHS",
     website: "https://highs.dev/",
+    license: "MIT License",
   },
   {
     label: "SCIP",
     name: "scip",
     sourceCode: "https://github.com/scipopt/scip",
     website: "https://www.scipopt.org/",
+    license: "Apache License 2.0",
   },
   {
     label: "CBC",
     name: "cbc",
     sourceCode: "https://github.com/coin-or/Cbc",
     website: "https://coin-or.github.io/Cbc/intro.html",
+    license: "Eclipse Public License 2.0",
   },
   {
     label: "GLPK",
     name: "glpk",
     sourceCode: "https://github.com/firedrakeproject/glpk",
     website: "https://www.gnu.org/software/glpk/",
+    license: "GNU General Public License v3.0",
+  },
+  {
+    label: "Gurobi",
+    name: "gurobi",
+    website: "https://www.gurobi.com/solutions/gurobi-optimizer/",
+    license: "Commercial License",
   },
 ];
 
@@ -150,9 +160,9 @@ const SolverSection = () => {
 
   return (
     <div>
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-col lg:flex-row gap-4 mb-4">
         {/* Solver select */}
-        <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
+        <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
           <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
           <select
             name="solver"
@@ -172,7 +182,7 @@ const SolverSection = () => {
 
         {/* Enhanced solver info section */}
         {selectedSolverInfo && (
-          <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
+          <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
             <h6 className="p-3 pl-3.5 border-b border-gray-200">
               Solver Information
             </h6>
@@ -192,20 +202,22 @@ const SolverSection = () => {
                     Official Website
                   </span>
                 </a>
-                <a
-                  href={selectedSolverInfo.sourceCode}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 transition-colors"
-                >
-                  <FaGithub className="w-5 h-5" />
-                  <span className="hover:underlineunderline-offset-4">
-                    Source Code
-                  </span>
-                </a>
+                {selectedSolverInfo.sourceCode && (
+                  <a
+                    href={selectedSolverInfo.sourceCode}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 transition-colors"
+                  >
+                    <FaGithub className="w-5 h-5" />
+                    <span className="hover:underlineunderline-offset-4">
+                      Source Code
+                    </span>
+                  </a>
+                )}
                 <div className="flex items-center gap-3 transition-colors">
                   <FaBalanceScale className="w-5 h-5" />
-                  <span>License: MIT</span>
+                  <span>{selectedSolverInfo.license}</span>
                 </div>
               </div>
             </div>

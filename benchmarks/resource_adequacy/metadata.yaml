@@ -16,7 +16,7 @@ benchmarks:
     - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -38,7 +38,7 @@ benchmarks:
     - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -62,7 +62,7 @@ benchmarks:
     - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -84,7 +84,7 @@ benchmarks:
     - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -108,7 +108,7 @@ benchmarks:
     - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -130,7 +130,7 @@ benchmarks:
     - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Popup from "reactjs-popup";
 
 interface FilterGroupProps {
-  title: string;
+  title: string | React.ReactNode;
   icon: React.ReactNode;
   items: string[];
   selectedItems?: string[];
@@ -33,8 +33,8 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
 
   return (
     <div className={`border-b xl:border-b-0 border-stroke w-full ${className}`}>
-      <div className="flex items-center justify-between pr-3 rounded-lg bg-white">
-        <div className="flex items-center border-b-0 border-stroke p-2 gap-2">
+      <div className="flex items-center justify-between pr-2 rounded-lg bg-white">
+        <div className="flex items-center border-b-0 border-stroke p-2 pr-0 gap-2">
           <input
             className="size-3.5 accent-navy rounded checked:before:text-xs "
             type="checkbox"
@@ -91,12 +91,13 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               >
                 <Popup
                   on={["hover"]}
+                  disabled={item.length < 32}
                   trigger={() => <span>{item}</span>}
                   position="top right"
                   closeOnDocumentClick
                   arrowStyle={{ color: "#ebeff2" }}
                 >
-                  <div className="bg-stroke p-2 rounded">{item}</div>
+                  <div className="text-white bg-navy p-2 rounded">{item}</div>
                 </Popup>
               </span>
               <span

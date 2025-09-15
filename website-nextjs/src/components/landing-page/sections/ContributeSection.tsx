@@ -94,47 +94,50 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <UserIcon className="mr-2" />
-                  <div className="font-bold text-2xl/1.4 font-lato">
+                  <div className="text-white font-bold text-2xl/1.4 font-lato">
                     {loading
                       ? "..."
                       : stats.contributors.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 font-lato text-left mt-2">
+                <p className="text-base/1.5 text-white text-left mt-2">
                   Contributors
                 </p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <CircleOutlineIcon className="mr-2" />
-                  <div className="font-bold text-2xl/1.4 font-lato">
+                  <div className="text-white font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.issues.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 font-lato text-left mt-2">Issues</p>
+                <p className="text-base/1.5 text-white text-left mt-2">
+                  Issues
+                </p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <StarIcon className="mr-2" />
-                  <div className="font-bold text-2xl/1.4 font-lato">
+                  <div className="text-white font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.stars.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 font-lato text-left mt-2">Stars</p>
+                <p className="text-base/1.5 text-white text-left mt-2">Stars</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <ForkIcon className="mr-2" />
-                  <h5 className="font-bold text-2xl/1.4 font-lato">
+                  <h5 className="text-white font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </h5>
                 </div>
-                <p className="text-base/1.5 font-lato text-left mt-2">Forks</p>
+                <p className="text-base/1.5 text-white text-left mt-2">Forks</p>
               </div>
             </div>
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
               className="w-max bg-[#F0ECE4] items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
+              target="_blank"
             >
               <div className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase">
                 <GithubIcon className="mr-2" />

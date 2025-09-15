@@ -1,4 +1,4 @@
-type SolverType = "glpk" | "scip" | "highs";
+type SolverType = "glpk" | "scip" | "highs" | "gurobi" | "cbc";
 type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 
 type BenchmarkResult = {
@@ -65,8 +65,8 @@ type IFilterBenchmarkDetails = {
   problemClass: string[];
   application: string[];
   problemSize: string[];
-  modelName: string[];
   realistic: string[];
+  modellingFramework: string[];
 };
 
 export type {

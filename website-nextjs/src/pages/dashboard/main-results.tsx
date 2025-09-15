@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import ResultsSection from "@/components/admin/ResultsSections";
 import { AdminHeader, Footer, Navbar } from "@/components/shared";
 import Head from "next/head";
-import { HomeIcon, PreviousIcon } from "@/assets/icons";
+import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IResultState } from "@/types/state";
@@ -29,7 +29,7 @@ const LandingPage = () => {
 
   const Caveats = () => {
     return (
-      <div className="pt-1.5 pb-3 px-5" id="caveats">
+      <div className="pt-1.5 pb-3 px-2 md:px-5" id="caveats">
         <h6>Caveats</h6>
         <div className="text-navy tag-line-xs leading-1.4 block items-center">
           <span>
@@ -42,9 +42,9 @@ const LandingPage = () => {
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
                 than 4%. More details on this{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/blob/main/docs/Metrics_and_methodology.md">
+                <Link className="font-bold" href="/methodology">
                   here
-                </a>
+                </Link>
                 .
               </li>
               <li>
@@ -61,20 +61,34 @@ const LandingPage = () => {
                 include things like time for input file parsing and license
                 checks. See more details and join the discussion on whether to
                 use reported or measured runtime{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/159">
+                <Link
+                  className="font-bold"
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
+                >
                   here
-                </a>
+                </Link>
                 .
               </li>
               <li>
                 Some solvers returned errors when running on some benchmark
                 instances. For more details, please see the{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/193">
+                <Link
+                  className="font-bold"
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
+                >
                   tracking issue
-                </a>
+                </Link>
                 .
               </li>
             </ul>
+            For more details, please see our{" "}
+            <Link
+              href="/methodology"
+              className="hover:underline underline-offset-4 font-bold"
+            >
+              Methodology
+            </Link>{" "}
+            page.
           </span>
         </div>
       </div>
@@ -98,7 +112,7 @@ const LandingPage = () => {
   return (
     <>
       <Head>
-        <title>Main Results</title>
+        <title>Main Results | Open Energy Benchmark</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -109,6 +123,8 @@ const LandingPage = () => {
         <div
           className={`
           min-h-[calc(100vh-var(--footer-height))]
+          mt-16
+          md:mt-10
           px-2
           sm:px-6
           transition-all
@@ -120,11 +136,11 @@ const LandingPage = () => {
             <div>
               <AdminHeader>
                 <div className="flex text-navy text-opacity-50 items-center space-x-1">
-                  <div className="flex items-center gap-1 ml-[-0.45rem]">
-                    <PreviousIcon width={20} className="fill-navy" />
+                  <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Main Results
                     </p>
@@ -165,17 +181,17 @@ const LandingPage = () => {
                 Long
               </div>
             </div>
-            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 pl-4 pr-2 rounded-r-lg">
+            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-4 rounded-r-lg">
               <div className="pt-6">
                 <ConfigurationSection timeout={timeout} />
               </div>
-              <div className="sm:flex justify-between">
-                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl">
+              <div className="sm:flex justify-between gap-5">
+                <div className="mb-4 md:mb-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl">
                   <FilterSection height={`${contentHeight}px`} />
                 </div>
                 <div
                   id="benchmark-results"
-                  className="3xl:mx-auto sm:w-4/5 pl-4 h-max"
+                  className="3xl:mx-auto sm:w-4/5 h-max"
                   ref={contentRef}
                 >
                   <div className="space-y-4 sm:space-y-6 min-h-96">
@@ -203,7 +219,7 @@ const LandingPage = () => {
                         </div>
                       </div>
                     )}
-                    <div className="px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
+                    <div className="px-2 md:px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="tag-line-xs leading-1.5">
                         <b>Note:</b> As with all benchmarks, our results provide
                         only an indication of which solvers might be good for
@@ -211,12 +227,15 @@ const LandingPage = () => {
                         <br />
                         We recommend using{" "}
                         <span className="hover:underline underline-offset-4  font-bold">
-                          <a href="https://github.com/open-energy-transition/solver-benchmark/">
+                          <Link
+                            className="font-bold"
+                            href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks"
+                          >
                             our scripts
-                          </a>
+                          </Link>
                         </span>{" "}
                         to benchmark on your own problems before picking a
-                        solver See also the section on{" "}
+                        solver. See also the section on{" "}
                         <Link
                           href="#caveats"
                           className="hover:underline underline-offset-4 font-bold"

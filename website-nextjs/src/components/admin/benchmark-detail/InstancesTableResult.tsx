@@ -13,8 +13,9 @@ import {
 } from "@tanstack/react-table";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
-import { ArrowToRightIcon } from "@/assets/icons";
+import { ArrowToRightIcon, QuestionLineIcon } from "@/assets/icons";
 import SortIcon from "@/components/shared/tables/SortIcon";
+import Popup from "reactjs-popup";
 
 type RowData = {
   instance: string;
@@ -169,7 +170,31 @@ const InstancesTableResult = ({
 
     baseColumns.push(
       {
-        header: "REALISTIC",
+        header: () => (
+          <div className="flex items-center gap-1">
+            <span>REALISTIC</span>
+            <Popup
+              on={["hover"]}
+              trigger={() => (
+                <span className="flex items-baseline my-auto cursor-pointer">
+                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
+                </span>
+              )}
+              position="right center"
+              closeOnDocumentClick
+              arrow={false}
+            >
+              <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+                Benchmark instances are marked as realistic if they come from a
+                model that was used, or is similar to a model used in an actual
+                energy modelling study. Please note that this is a rather
+                subjective and modelling framework-dependent definition, but is
+                still useful when estimating solver performance on real-world
+                energy models.
+              </div>
+            </Popup>
+          </div>
+        ),
         accessorKey: "realistic",
         cell: (info: CellContext<RowData, unknown>) => {
           const rowData = info.row.original;

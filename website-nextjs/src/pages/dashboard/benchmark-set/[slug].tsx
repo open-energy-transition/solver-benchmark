@@ -13,11 +13,11 @@ import { useMemo } from "react";
 import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult";
-import BenchmarksSection from "@/components/admin/benchmark-detail/BenchmarksSection";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
 import { IResultState } from "@/types/state";
 import DataTable from "@/components/admin/benchmark-detail/DataTable";
+import SolverRuntimeComparison from "@/components/admin/benchmark-detail/SolverRuntimeComparison";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -32,6 +32,8 @@ const PageBenchmarkDetail = () => {
     () => metaData[benchmarkName as string],
     [metaData],
   );
+
+  if (!benchmarkDetail) return <div></div>;
 
   const columns = [
     {
@@ -80,11 +82,10 @@ const PageBenchmarkDetail = () => {
       value: benchmarkDetail?.milpFeatures,
     },
   ];
-
   return (
     <>
       <Head>
-        <title>{benchmarkName}</title>
+        <title>{benchmarkName} | Open Energy Benchmark</title>
       </Head>
       <div className="bg-light-blue h-screen">
         <Navbar />
@@ -98,7 +99,7 @@ const PageBenchmarkDetail = () => {
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
                   <Link
-                    href={PATH_DASHBOARD.benchmarkDetail.list}
+                    href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
                     Benchmark Details
@@ -148,16 +149,17 @@ const PageBenchmarkDetail = () => {
                 "-"
               )}
             </div>
-            <div className="bg-[#F4F6F8] flex py-2.5 rounded-lg">
+            <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0">
               {columns.map((col) => (
                 <div
                   key={col.name}
-                  className="border-b md:border-b-0 md:border-r last:border-none border-grey font-league w-full md:w-[14%] p-2 last:pl-2 md:last:pl-6 my-auto"
+                  className="border-b md:border-b-0 md:border-r last:border-none border-grey font-league w-full md:w-[14%] p-2 last:pl-2 md:last:pl-6 my-auto
+        flex flex-col md:block bg-white md:bg-transparent rounded-lg md:rounded-none shadow-sm md:shadow-none"
                 >
                   <Popup
                     on={["hover"]}
                     trigger={() => (
-                      <div className="font-bold text-sm md:text-base overflow-hidden text-ellipsis whitespace-nowrap">
+                      <div className="font-bold text-base md:text-base overflow-hidden text-ellipsis whitespace-nowrap">
                         {col.value ?? "-"}
                       </div>
                     )}
@@ -169,13 +171,14 @@ const PageBenchmarkDetail = () => {
                       {col.value ?? "-"}
                     </div>
                   </Popup>
-                  <div className="text-drak-green text-xs uppercase">
+                  <div className="text-drak-green text-xs uppercase mt-1 md:mt-0">
                     {col.label}
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
           {benchmarkDetail && (
             <>
               <InstancesTableResult benchmarkDetail={benchmarkDetail} />
@@ -183,7 +186,10 @@ const PageBenchmarkDetail = () => {
                 Results on this benchmark
               </h5>
               <DataTable benchmarkName={benchmarkName as string} />
-              <BenchmarksSection benchmarkName={benchmarkName as string} />
+              <SolverRuntimeComparison
+                benchmarkDetail={benchmarkDetail}
+                benchmarkName={benchmarkName as string}
+              />
             </>
           )}
         </ContentWrapper>

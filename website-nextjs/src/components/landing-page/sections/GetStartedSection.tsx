@@ -8,12 +8,12 @@ const GetStarted = () => {
     return state.results.rawMetaData;
   });
 
-  const modelNames = useMemo(
+  const modellingFrameworks = useMemo(
     () =>
       Array.from(
         new Set(
           Object.keys(rawMetaData).map((key) => {
-            return rawMetaData[key].modelName;
+            return rawMetaData[key].modellingFramework;
           }),
         ),
       ),
@@ -72,15 +72,18 @@ const GetStarted = () => {
               xl:pl-4.5
             "
           >
-            Our platform consists of open-source, community-contributed
-            benchmarks from leading open energy modelling systems. Our open
+            Our platform consists of open, community-contributed benchmark
+            problems from various energy modelling frameworks. Our open-source
             benchmarking infrastructure runs them on multiple versions of
             leading solvers on multiple hardware configurations, to gather
             insights on how performance varies with benchmark size,
             computational resources, and solver evolution.
           </div>
-          <div className="flex justify-between">
-            <StatsBox value={modelNames.length} label="Model Frameworks" />
+          <div className="md:flex justify-between">
+            <StatsBox
+              value={modellingFrameworks.length}
+              label="Model Frameworks"
+            />
             <StatsBox
               value={availableBenchmarksAndSizes.length}
               label="Benchmarks"

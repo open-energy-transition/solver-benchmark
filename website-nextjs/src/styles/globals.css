@@ -5,48 +5,48 @@
 @layer base {
   h1,
   .h1 {
-    @apply text-[56px] font-lato font-bold leading-1.2 tracking-normal text-navy;
+    @apply text-4xl sm:text-5xl font-lato font-bold sm:leading-1.2 tracking-normal text-navy;
   }
   h2,
   .h2 {
-    @apply text-5xl font-lato font-bold leading-1.2 tracking-normal text-navy;
+    @apply text-lg sm:text-[24px] font-lato font-bold sm:leading-1.2 tracking-normal text-navy;
   }
   h3,
   .h3 {
-    @apply text-[40px] font-lato font-extrabold leading-1.2 tracking-normal text-navy;
+    @apply text-2xl sm:text-[40px] font-lato font-extrabold sm:leading-1.2 tracking-normal text-navy;
   }
   h4,
   .h4 {
-    @apply text-[32px] font-lato font-bold leading-1.3 tracking-normal text-navy;
+    @apply text-xl sm:text-[32px] font-lato font-bold sm:leading-1.3 tracking-normal text-navy;
   }
   h5,
   .h5 {
-    @apply text-2xl font-lato font-bold leading-1.4 tracking-normal text-navy;
+    @apply text-base sm:text-2xl font-lato font-bold sm:leading-1.4 tracking-normal text-navy;
   }
   h6,
   .h6 {
-    @apply text-xl font-lato font-bold leading-1.4 tracking-normal text-navy;
+    @apply text-base sm:text-xl font-lato font-bold sm:leading-1.4 tracking-normal text-navy;
   }
   p {
-    @apply text-sm font-lato font-normal leading-1.5 tracking-normal text-navy my-1;
+    @apply text-xs sm:text-sm font-lato font-normal sm:leading-1.5 tracking-normal text-navy my-1;
   }
   .tag-line-lg {
-    @apply text-lg font-lato font-medium leading-1.1 tracking-normal;
+    @apply text-base sm:text-lg font-lato font-medium sm:leading-1.1 tracking-normal;
   }
   .tag-line {
-    @apply text-base font-lato font-normal leading-1.5 tracking-normal;
+    @apply text-xs sm:text-base font-lato font-normal sm:leading-1.5 tracking-normal;
   }
   .tag-line-xs {
-    @apply text-xs font-lato font-normal leading-none tracking-normal;
+    @apply text-[10px] sm:text-xs font-lato font-normal sm:leading-none tracking-normal;
   }
   .tag-line-sm {
-    @apply text-sm font-lato font-normal leading-none tracking-normal;
+    @apply text-xs sm:text-sm font-lato font-normal sm:leading-none tracking-normal;
   }
   .tag-line-xxs {
-    @apply text-[10px] font-lato font-normal leading-none tracking-normal;
+    @apply text-[8px] sm:text-[10px] font-lato font-normal sm:leading-none tracking-normal;
   }
   .text-medium-normal {
-    @apply text-lg/1.5 font-medium tracking-normal;
+    @apply text-base sm:text-lg/1.5 font-medium sm:tracking-normal;
   }
   a {
     @apply hover:underline underline-offset-4;
@@ -126,4 +126,70 @@ input[type="number"]::-webkit-outer-spin-button {
 /* For Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Info Pages Unified Styles */
+.info-pages-content {
+  /* Container for info pages content - enables list styling */
+  @apply lg:mt-[84px];
+}
+
+.info-pages-content ol li,
+
+.info-pages-content ol li,
+.info-pages-content ul li {
+  @apply text-xs sm:text-sm font-lato font-normal sm:leading-1.5 tracking-normal text-navy;
+}
+
+.info-pages-section {
+  @apply rounded-xl mb-6;
+}
+
+.info-pages-section:last-child {
+  @apply mb-0;
+}
+
+.info-pages-heading {
+  @apply scroll-mt-[9rem];
+}
+
+@keyframes delayedShow {
+  to {
+    visibility: visible;
+  }
+}
+
+.delayedShow{
+  visibility: hidden;
+  animation: 0s linear 0.25s forwards delayedShow ;
+}
+
+/* Custom scrollbar styles */
+/* For Webkit browsers (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 10px;  /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;  /* color of the tracking area */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-navy rounded-lg
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-navy
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;  /* "auto" or "thin" */
+  scrollbar-color: #022b3b #f1f1f1;  /* thumb and track color */
+}
+
+/* Captcha */
+.grecaptcha-badge {
+  @apply left-0 right-auto;
 }

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { getChartColor } from "@/utils/chart";
-import { Color } from "@/constants/color";
+import { getSolverColor } from "@/utils/chart";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
@@ -35,8 +34,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
   const solverColors = useMemo(() => {
     return availableSolvers.reduce(
-      (acc, solver, index) => {
-        acc[solver] = getChartColor(index);
+      (acc, solver) => {
+        acc[solver] = getSolverColor(solver);
         return acc;
       },
       {} as Record<string, string>,
@@ -95,13 +94,22 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .range([margin.left, width - margin.right])
       .padding(0.5);
 
-    // Add sub-band scale for bars with more spacing
+    // Add sub-band scale for bars with dynamic spacing based on visible solvers
+    const visibleNonBaseSolvers = availableSolvers.filter(
+      (s) => s !== baseSolver && visibleSolvers.has(s),
+    );
+
     const xSubScale = d3
       .scaleBand()
       .domain(availableSolvers.filter((s) => s !== baseSolver))
       .range([0, xScale.bandwidth()])
-      .padding(0.4); // Increased padding between bars within group
-    const barWidth = Math.min(xSubScale.bandwidth(), 15);
+      .padding(visibleNonBaseSolvers.length > 3 ? 0.2 : 0.4); // Less padding when more solvers
+
+    // Dynamic bar width - gets wider with fewer solvers (minimum 15px, maximum 30px)
+    const barWidth = Math.min(
+      Math.max(xSubScale.bandwidth(), 5),
+      visibleNonBaseSolvers.length <= 2 ? 30 : 25,
+    );
 
     // Scale for primary y-axis (ratio/factor)
 
@@ -425,7 +433,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 y + size
               } L${x + size},${y - size}`,
             )
-            .attr("stroke", Color.Teal)
+            .attr("stroke", solverColors[baseSolver])
             .attr("fill", "none");
         } else {
           // Regular circle for normal cases
@@ -433,7 +441,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             .attr("cx", x)
             .attr("cy", y)
             .attr("r", 4)
-            .attr("fill", Color.Teal);
+            .attr("fill", solverColors[baseSolver]);
         }
 
         // Add event listeners for tooltip
@@ -531,9 +539,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           >
             <div className="flex items-center justify-center w-4 h-4">
               <div
-                className={`w-4 h-4 rounded-full bg-teal ${
+                className={`w-4 h-4 rounded-full transition-opacity ${
                   visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
                 }`}
+                style={{ backgroundColor: solverColors[baseSolver] }}
               />
             </div>
             <span className="text-sm text-navy">{baseSolver}</span>
@@ -559,12 +568,12 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
               </div>
             ))}
         </div>
-        <div className="flex justify-between items-start text-sm mb-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4">
           <div>
             <p>🔻/🔺: base / other solver failed to solve in time limit</p>
             <p>❌ : both solvers failed to solve in time limit</p>
           </div>
-          <div className="mr-24">
+          <div className="lg:mr-24">
             <p className="flex gap-1 items-center">
               <CircleIcon className="size-3" />
               base solver solved successfully
