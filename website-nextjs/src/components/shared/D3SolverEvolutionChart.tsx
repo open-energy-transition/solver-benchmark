@@ -5,6 +5,7 @@ import {
   getSolverColor,
   roundUpToNearest,
 } from "@/utils/chart";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 interface SolverEvolutionData {
   year: number;
@@ -36,6 +37,7 @@ const D3SolverEvolutionChart = ({
   const svgRef = useRef(null);
 
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
+  const windowWidth = useDebouncedWindowWidth(200);
 
   useEffect(() => {
     if (data.length === 0) return;
@@ -322,7 +324,7 @@ const D3SolverEvolutionChart = ({
     return () => {
       tooltip.remove();
     };
-  }, [data, solverColor, solverName]);
+  }, [data, solverColor, solverName, windowWidth]);
 
   return (
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>

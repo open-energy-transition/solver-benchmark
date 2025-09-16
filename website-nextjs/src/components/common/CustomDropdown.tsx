@@ -43,8 +43,8 @@ const CustomDropdown = ({
     <div className={`relative w-full ${className}`} ref={dropdownRef}>
       <button
         type="button"
-        className={`w-full text-lg pl-3 font-bold ${bgColor} px-4 sm:px-6 py-3 sm:py-4
-        text-navy sm:text-base rounded-b-lg block text-left focus-visible:outline-none`}
+        className={`w-full lg:text-lg pl-3 font-bold ${bgColor} px-4 sm:px-6 py-3 sm:py-4
+        text-navy text-base rounded-b-lg block text-left focus-visible:outline-none`}
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}

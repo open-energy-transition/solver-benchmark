@@ -53,9 +53,11 @@ const PROBLEM_SIZE_FILTERS = [
 const RealisticRuntimeComparison = ({
   xAxisLabelWrapLength,
   splitter = "-",
+  rotateXAxisLabels = false,
 }: {
   xAxisLabelWrapLength?: number;
   splitter?: string;
+  rotateXAxisLabels?: boolean;
 }) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
@@ -241,13 +243,13 @@ const RealisticRuntimeComparison = ({
         xAxisLabel=""
         yAxisLabel="Relative runtime (normalized)"
         chartHeight={400}
-        rotateXAxisLabels={false}
         tooltipFormat={tooltipFormat}
         xAxisBarTextClassName="text-[10px] fill-dark-grey"
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
         xAxisLabelWrapLength={xAxisLabelWrapLength}
         splitter={splitter}
+        rotateXAxisLabels={rotateXAxisLabels}
       />
     </div>
   );

@@ -231,7 +231,6 @@ const RuntimeOfFastestSolver = ({
           xAxisLabel=""
           yAxisLabel="Runtime (s)"
           chartHeight={400}
-          rotateXAxisLabels={false}
           customLegend={chartLegend}
           barTextClassName={getBarTextClassName}
           xAxisTooltipFormat={getXAxisTooltipFormat}
@@ -242,6 +241,7 @@ const RuntimeOfFastestSolver = ({
           xAxisBarTextClassName="text-xs fill-dark-grey"
           transformHeightValue={getTransformHeightValue}
           extraCategoryLengthMargin={extraCategoryLengthMargin}
+          rotateXAxisLabels={true}
           splitter={splitter}
         />
       </div>

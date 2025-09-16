@@ -88,13 +88,13 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       {isNavExpanded && (
         <div
-          className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="sm:hidden fixed z-30 inset-0 bg-black bg-opacity-50"
           onClick={() => dispatch(navbarActions.toggleNav())}
         />
       )}
 
       <div
-        className={`fixed md:pt-0 z-50 top-0 left-0 h-screen bg-navy rounded-e-xl
+        className={`fixed z-max md:pt-0 top-0 left-0 h-screen bg-navy rounded-e-xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
         sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
         aria-label="Sidenav"

@@ -6,6 +6,7 @@ import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { roundNumber } from "@/utils/number";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type ChartData = {
   d1: SolverMetrics;
@@ -72,6 +73,7 @@ const ChartCompare = ({
 }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const windowWidth = useDebouncedWindowWidth(200);
 
   useEffect(() => {
     const data = chartData;
@@ -333,7 +335,7 @@ const ChartCompare = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData]);
+  }, [chartData, windowWidth]);
 
   const formatLegend = (status: string): string => {
     const [status1, status2] = status.split("-");

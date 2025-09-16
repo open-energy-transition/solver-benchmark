@@ -7,6 +7,7 @@ import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { isNullorUndefined } from "@/utils/calculations";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type ChartData = {
   runtime: number;
@@ -44,6 +45,7 @@ const D3PlotChart = ({
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+  const windowWidth = useDebouncedWindowWidth(200);
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
@@ -376,7 +378,7 @@ const D3PlotChart = ({
       tooltip.remove();
       zoomControls.remove();
     };
-  }, [chartData, xAxis, customTooltip]);
+  }, [chartData, xAxis, customTooltip, windowWidth]);
 
   return (
     <div className="relative">

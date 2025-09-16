@@ -58,7 +58,7 @@ const HowGoodIsSolver = () => {
           limit.
         </p>
         <div className="my-4">
-          <RealisticRuntimeComparison />
+          <RealisticRuntimeComparison rotateXAxisLabels />
         </div>
         <p>
           The next plot shows the concrete performance of each solver on a few
@@ -73,7 +73,7 @@ const HowGoodIsSolver = () => {
         </p>
         <div className="my-4">
           <SolverRuntimeComparison
-            xAxisLabelRotation={-45}
+            xAxisLabelRotation={-48}
             splitter="  "
             xAxisLabelWrapLength={3}
             extraCategoryLengthMargin={5}

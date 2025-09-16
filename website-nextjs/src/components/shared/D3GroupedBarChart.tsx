@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { ID3GroupedBarChart } from "@/types/chart";
 import { CircleIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 import { createD3Tooltip, wrapTextByPosition } from "@/utils/chart";
 
 const D3GroupedBarChart = ({
@@ -35,11 +36,13 @@ const D3GroupedBarChart = ({
   const svgRef = useRef(null);
   const isMobile = useIsMobile();
   const [height, setHeight] = useState(chartHeight);
+  const windowWidth = useDebouncedWindowWidth(200);
+
   const categoryLengths = chartData.reduce((acc, d) => {
     const length = String(d[categoryKey] || "").length;
-    console.log("category", d[categoryKey], "length", length);
     return Math.max(acc, length);
   }, 0);
+
   useEffect(() => {
     if (!diagonalXAxisLabelsOnMobile) return;
     if (isMobile) {
@@ -74,7 +77,7 @@ const D3GroupedBarChart = ({
       top: 30,
       right: 30,
       bottom: isMobile
-        ? 100 +
+        ? 110 +
           (extraCategoryLengthMargin
             ? extraCategoryLengthMargin
             : categoryLengths)
@@ -284,11 +287,19 @@ const D3GroupedBarChart = ({
           .attr("dy", "2em")
           .attr("class", xAxisBarTextClassName)
           .attr("fill", "#666")
-          .style("text-anchor", isMobile ? "end" : "middle")
+          .style(
+            "text-anchor",
+            isMobile && rotateXAxisLabels ? "end" : "middle",
+          )
           .style("cursor", xAxisTooltipFormat ? "pointer" : "default")
-          .attr("transform", isMobile ? `rotate(${xAxisLabelRotation})` : null)
-          .attr("x", isMobile ? "-10" : null)
-          .attr("y", isMobile ? "10" : null)
+          .attr(
+            "transform",
+            isMobile && rotateXAxisLabels
+              ? `rotate(${xAxisLabelRotation})`
+              : null,
+          )
+          .attr("x", isMobile && rotateXAxisLabels ? "-10" : null)
+          .attr("y", isMobile && rotateXAxisLabels ? "10" : "5")
           .on("mouseover", (event, d) => {
             const dataPoint = data.find(
               (item) => item[categoryKey].toString() === d,
@@ -318,8 +329,8 @@ const D3GroupedBarChart = ({
             lines.forEach((line) => {
               text
                 .append("tspan")
-                .attr("x", isMobile ? "-10" : "0")
-                .attr("dy", "1.6em")
+                .attr("x", isMobile && rotateXAxisLabels ? "10" : "0")
+                .attr("dy", isMobile && rotateXAxisLabels ? "1.1em" : "1.2em")
                 .text(line);
             });
           });
@@ -384,6 +395,7 @@ const D3GroupedBarChart = ({
     categoryKey,
     rotateXAxisLabels,
     xAxisBarTextClassName,
+    windowWidth,
   ]);
 
   const defaultLegend = () => (

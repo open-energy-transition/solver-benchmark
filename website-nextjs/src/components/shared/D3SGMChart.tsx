@@ -5,6 +5,7 @@ import { CircleIcon } from "@/assets/icons";
 import { SolverYearlyChartData } from "@/types/performance-history";
 import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { IResultState } from "@/types/state";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -29,6 +30,7 @@ const D3SGMChart = ({
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+  const windowWidth = useDebouncedWindowWidth(200);
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
@@ -256,7 +258,7 @@ const D3SGMChart = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [normalizedChartData, solverColors]);
+  }, [normalizedChartData, solverColors, windowWidth]);
 
   return (
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>

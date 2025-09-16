@@ -70,7 +70,7 @@ const FactorsAffectingPerformanceInsights = () => {
           "genx-10_IEEE_9_bus_DC_OPF-9-1h",
           "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
         ]}
-        xAxisLabelRotation={-35}
+        xAxisLabelRotation={-40}
         xAxisLabelWrapLength={6}
         splitter="_"
       />
