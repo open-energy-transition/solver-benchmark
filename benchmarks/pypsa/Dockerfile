@@ -28,8 +28,8 @@ RUN eval "$(conda shell.bash hook)" \
     # This is a commit on linopy branch only-generate-problem-files
 
 # Now patch solve_network.py so that it generates LP files without solving:
-COPY solve_network.patch pypsa-eur/solve_network.patch
-RUN cd pypsa-eur && git apply solve_network.patch
+#COPY solve_network.patch pypsa-eur/solve_network.patch
+#RUN cd pypsa-eur && git apply solve_network.patch
 
 FROM conda_env AS benchmark_gen
 COPY --chown=conda . pypsa-eur/solver-benchmarks

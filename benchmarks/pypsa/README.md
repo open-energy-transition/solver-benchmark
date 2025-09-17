@@ -7,8 +7,8 @@ This folder contains benchmarks based on PyPSA and PyPSA-Eur. The benchmarks can
 1. Build and run the docker container containing all the dependencies to generate the benchmarks:
      ```sh
      cd solver-benchmark/benchmarks/pypsa/
-     docker build --no-cache --platform=linux/amd64 -t benchmark-image.
-     docker run -it --entrypoint bash <image-hash-from-previous-output>
+     docker build --no-cache --platform=linux/amd64 -t benchmark-image .
+     docker run -it benchmark-image
      ```
 
 1. Inside the docker container, run the benchmark generating script:
