@@ -11,4 +11,3 @@ index f9945579..c00696c9 100644
 +
      if kwargs["solver_name"] == "gurobi":
          logging.getLogger("gurobipy").setLevel(logging.CRITICAL)
-
