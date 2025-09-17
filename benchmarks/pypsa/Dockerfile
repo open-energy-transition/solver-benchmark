@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/opt/conda/pkgs \
 
 RUN eval "$(conda shell.bash hook)" \
     && conda activate benchmark-gen \
-    && pip install git+https://github.com/open-energy-transition/linopy.git@92e289a --no-deps
+    && pip install git+https://github.com/open-energy-transition/linopy.git@075f24e --no-deps
     # This is a commit on linopy branch only-generate-problem-files
 
 # Now patch solve_network.py so that it generates LP files without solving:
