@@ -23,7 +23,13 @@ RUN --mount=type=cache,target=/opt/conda/pkgs \
     && conda env create -f envs/linux-64.lock.yaml -n benchmark-gen
 
 RUN eval "$(conda shell.bash hook)" \
-    && conda activate benchmark-gen
+    && conda activate benchmark-gen \
+    && pip install git+https://github.com/open-energy-transition/linopy.git@92e289a --no-deps
+    # This is a commit on linopy branch only-generate-problem-files
+
+# Now patch solve_network.py so that it generates LP files without solving:
+COPY solve_network.patch pypsa-eur/solve_network.patch
+RUN cd pypsa-eur && git apply solve_network.patch
 
 FROM conda_env AS benchmark_gen
 COPY --chown=conda . pypsa-eur/solver-benchmarks
