@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y git
 FROM benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout e43746d
-    # This is the commit corresponding to PyPSA-Eur v2025.07.0
+    && git checkout 3a058b4
+    # This is the last commit of PyPSA-Eur on Sept 16th 2025
 
 FROM repo_clone AS conda_env
 RUN --mount=type=cache,target=/opt/conda/pkgs \

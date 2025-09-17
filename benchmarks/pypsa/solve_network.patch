@@ -1,8 +1,8 @@
 diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index f9945579..c00696c9 100644
+index ca852d2c..3debf458 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
-@@ -1331,6 +1331,9 @@ def solve_network(
+@@ -1338,6 +1338,9 @@ def solve_network(
      kwargs["model_kwargs"] = cf_solving.get("model_kwargs", {})
      kwargs["keep_files"] = cf_solving.get("keep_files", False)
  
