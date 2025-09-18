@@ -170,7 +170,8 @@ const SolverRuntimeComparison = ({
         }}
         xAxisLabel=""
         yAxisLabel="Relative runtime (normalized)"
-        height={400}
+        chartHeight={400}
+        extraCategoryLengthMargin={-50}
         rotateXAxisLabels={false}
         barTextClassName={getBarTextClassName}
         tooltipFormat={tooltipFormat}

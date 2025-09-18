@@ -5,6 +5,7 @@ import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
 import { SolverStatusType } from "@/types/benchmark";
+import CustomDropdown from "@/components/common/CustomDropdown";
 
 const SOLVES_DATA = [
   {
@@ -164,20 +165,16 @@ const SolverSection = () => {
         {/* Solver select */}
         <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
           <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
-          <select
-            name="solver"
+          <CustomDropdown
             value={selectedSolver}
-            onChange={(event) => setSelectedSolver(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] tag-line-lg
-            border-transparent text-navy rounded-b-lg block focus-visible:outline-none"
-          >
-            <option disabled>Solver</option>
-            {solverOptions.map((solver, idx) => (
-              <option key={idx} value={solver}>
-                {solver}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedSolver}
+            options={solverOptions}
+            formatOption={(solver: string) => solver}
+            label="Solver"
+            bgColor="bg-[#F0F4F2]"
+            optionActiveBg="bg-[#F0F4F2]"
+            className="font-bold text-navy tag-line-lg"
+          />
         </div>
 
         {/* Enhanced solver info section */}

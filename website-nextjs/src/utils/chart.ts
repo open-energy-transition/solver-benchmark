@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 const presetColors = [
   "#F66C49", // red
   "#43BF94", // green
@@ -78,3 +80,36 @@ export const roundUpToNearest = (
 ): number => {
   return Math.ceil(value / multiple) * multiple;
 };
+
+export function applyTooltipStyles(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selection: d3.Selection<any, any, any, any>,
+) {
+  return selection
+    .style("position", "absolute")
+    .style("background", "#022B3B")
+    .style("border-radius", "5px")
+    .style("padding", "8px")
+    .style("font-size", "12px")
+    .style("font-family", "'Lato', sans-serif")
+    .style("color", "white")
+    .style("pointer-events", "none")
+    .style("z-index", "100");
+}
+
+export function createD3Tooltip() {
+  return applyTooltipStyles(d3.select("body").append("div"));
+}
+
+export function wrapTextByPosition(
+  text: string,
+  segmentsPerLine = 2,
+  splitter = "-",
+) {
+  const parts = text.split(splitter);
+  const lines: string[] = [];
+  for (let i = 0; i < parts.length; i += segmentsPerLine) {
+    lines.push(parts.slice(i, i + segmentsPerLine).join(splitter));
+  }
+  return lines;
+}

@@ -15,7 +15,7 @@ import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { ArrowToRightIcon, QuestionLineIcon } from "@/assets/icons";
 import SortIcon from "@/components/shared/tables/SortIcon";
-import Popup from "reactjs-popup";
+import InfoPopup from "@/components/common/InfoPopup";
 
 type RowData = {
   instance: string;
@@ -173,8 +173,7 @@ const InstancesTableResult = ({
         header: () => (
           <div className="flex items-center gap-1">
             <span>REALISTIC</span>
-            <Popup
-              on={["hover"]}
+            <InfoPopup
               trigger={() => (
                 <span className="flex items-baseline my-auto cursor-pointer">
                   <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
@@ -184,7 +183,7 @@ const InstancesTableResult = ({
               closeOnDocumentClick
               arrow={false}
             >
-              <div className="bg-white border border-stroke px-4 py-2 m-4 rounded-lg max-w-xs">
+              <div>
                 Benchmark instances are marked as realistic if they come from a
                 model that was used, or is similar to a model used in an actual
                 energy modelling study. Please note that this is a rather
@@ -192,7 +191,7 @@ const InstancesTableResult = ({
                 still useful when estimating solver performance on real-world
                 energy models.
               </div>
-            </Popup>
+            </InfoPopup>
           </div>
         ),
         accessorKey: "realistic",
@@ -270,13 +269,13 @@ const InstancesTableResult = ({
   return (
     <div className="py-2">
       <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">Instances</h5>
-      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+      <div className="text-navy px-2 lg:px-5 text-l block items-center mt-2 mb-2">
         A benchmark may have multiple size instances, obtained by varying
         parameters such as the spatial or temporal resolution, but which utilize
         the same model features and are presumed to have the same optimization
         problem structure.
       </div>
-      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+      <div className="text-navy px-2 lg:px-5 text-l block items-center mt-2 mb-2">
         We categorize a benchmark instance as realistic if it comes from a model
         that was used, or is similar to a model used in an actual energy
         modelling study. Hover over the &ldquo;Realistic&rdquo; button in any

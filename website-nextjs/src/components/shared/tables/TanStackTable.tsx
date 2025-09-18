@@ -29,6 +29,7 @@ interface TanStackTableProps<T> {
   showPagination?: boolean;
   showAllRows?: boolean;
   headerClassName?: string;
+  rowClassName?: string;
 }
 
 export function TanStackTable<T>({
@@ -43,6 +44,7 @@ export function TanStackTable<T>({
   showPagination = true,
   showAllRows = false,
   headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
+  rowClassName = "tag-line-sm leading-1.4 text-navy text-start py-2 px-6 truncate",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -205,7 +207,7 @@ export function TanStackTable<T>({
                             ? cell.column.getSize()
                             : 200,
                         }}
-                        className="tag-line-sm leading-1.4 text-navy text-start py-2 px-6 truncate"
+                        className={rowClassName}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
