@@ -17,6 +17,7 @@ for n, b in meta["benchmarks"].items():
         elif s["Size"] in ["S", "M"]:
             short_TO_benchs.add(n + "-" + s["Name"])
         else:
+            print(f"::warning Unknown size {s['Size']}")
             raise ValueError(f"Unknown size {s['Size']}")
 
 data["bench-size"] = data["Benchmark"] + "-" + data["Size"]
@@ -33,6 +34,9 @@ for (bench, size), group in data.groupby(["Benchmark", "Size"]):
             short_TO_solvers = str(solvers_present)
         else:
             if short_TO_solvers != str(solvers_present):
+                print(
+                    f"::warning Unexpected solvers for {bench_size}: {solvers_present}"
+                )
                 raise ValueError(
                     f"Unexpected solvers for {bench_size}: {solvers_present}"
                 )
@@ -42,10 +46,14 @@ for (bench, size), group in data.groupby(["Benchmark", "Size"]):
             long_TO_solvers = str(solvers_present)
         else:
             if long_TO_solvers != str(solvers_present):
+                print(
+                    f"::warning Unexpected solvers for {bench_size}: {solvers_present}"
+                )
                 raise ValueError(
                     f"Unexpected solvers for {bench_size}: {solvers_present}"
                 )
     else:
+        print(f"::warning Unknown benchmark {bench_size}")
         raise ValueError(f"Unknown benchmark {bench_size}")
     seen_benchs.add(bench_size)
 
@@ -55,4 +63,5 @@ print(f"Solvers run on long TO benchmarks:\n{long_TO_solvers}")
 # Check that no bench-size from metadata is missing
 missing_benchs = (short_TO_benchs | long_TO_benchs) - seen_benchs
 if missing_benchs:
-    print(f"ERROR: couldn't find these benchs in the results: {missing_benchs}")
+    print("::warning ERROR: couldn't find these benchs in the results:")
+    print(missing_benchs)

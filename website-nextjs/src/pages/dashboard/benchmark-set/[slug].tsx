@@ -28,6 +28,12 @@ const PageBenchmarkDetail = () => {
     return state.results.fullMetaData;
   });
 
+  const benchmarkLatestResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.benchmarkLatestResults;
+    },
+  ).filter((result) => result.benchmark === benchmarkName);
+
   const benchmarkDetail = useMemo(
     () => metaData[benchmarkName as string],
     [metaData],
@@ -181,11 +187,17 @@ const PageBenchmarkDetail = () => {
               <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">
                 Results on this benchmark
               </h5>
-              <DataTable benchmarkName={benchmarkName as string} />
-              <SolverRuntimeComparison
-                benchmarkDetail={benchmarkDetail}
-                benchmarkName={benchmarkName as string}
-              />
+              {benchmarkLatestResults.length > 1 ? (
+                <>
+                  <DataTable benchmarkName={benchmarkName as string} />
+                  <SolverRuntimeComparison
+                    benchmarkDetail={benchmarkDetail}
+                    benchmarkName={benchmarkName as string}
+                  />
+                </>
+              ) : (
+                <div className="pl-2">No data available yet (coming soon!)</div>
+              )}
             </>
           )}
         </ContentWrapper>
