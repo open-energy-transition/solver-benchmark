@@ -1,5 +1,7 @@
 import json
+import subprocess
 import sys
+import time
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -17,6 +19,10 @@ except ModuleNotFoundError:
 
 def get_solver(solver_name):
     solver_name = solver_name.lower()
+    # Handle highs-hipo as a special case - it doesn't use linopy
+    if solver_name == "highs-hipo":
+        return None  # Signal that this solver needs special handling
+
     try:
         solver_enum = SolverName(solver_name)
     except ValueError:
@@ -143,8 +149,107 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     return None
 
 
+def run_highs_hipo_solver(input_file, solver_version):
+    """
+    Run the HiGHS-HiPO solver directly using the binary with --solver="hipo" --parallel="on"
+    """
+    highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+
+    solution_dir = Path(__file__).parent / "solutions"
+    solution_dir.mkdir(parents=True, exist_ok=True)
+
+    logs_dir = Path(__file__).parent / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+
+    output_filename = f"{Path(input_file).stem}-highs-hipo-{solver_version}"
+    solution_fn = solution_dir / f"{output_filename}.sol"
+    log_fn = logs_dir / f"{output_filename}.log"
+
+    command = [
+        highs_hipo_binary,
+        "--solver=hipo",
+        "--parallel=on",
+        input_file,
+        f"--solution_file={solution_fn}",
+    ]
+
+    # Run the command and capture the output
+    start_time = time.perf_counter()
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=False,
+            encoding="utf-8",
+        )
+        runtime = time.perf_counter() - start_time
+
+        # Write stdout and stderr to log file
+        with open(log_fn, "w") as f:
+            f.write(f"Command: {' '.join(command)}\n")
+            f.write(f"Return code: {result.returncode}\n\n")
+            f.write("STDOUT:\n")
+            f.write(result.stdout)
+            f.write("\n\nSTDERR:\n")
+            f.write(result.stderr)
+
+        if result.returncode != 0:
+            return {
+                "runtime": runtime,
+                "reported_runtime": runtime,
+                "status": "error",
+                "condition": "Error",
+                "objective": None,
+                "duality_gap": None,
+                "max_integrality_violation": None,
+            }
+        else:
+            # Parse HiGHS output to extract objective value
+            objective = None
+            for line in result.stdout.splitlines():
+                if "Objective value" in line:
+                    try:
+                        objective = float(line.split(":")[-1].strip())
+                    except (ValueError, IndexError):
+                        pass
+
+            return {
+                "runtime": runtime,
+                "reported_runtime": runtime,
+                "status": "ok",
+                "condition": "Optimal",
+                "objective": objective,
+                "duality_gap": None,  # Not available from command line output
+                "max_integrality_violation": None,  # Not available from command line output
+            }
+    except Exception as e:
+        runtime = time.perf_counter() - start_time
+        # Write error to log file
+        with open(log_fn, "w") as f:
+            f.write(f"Command: {' '.join(command)}\n")
+            f.write(f"Exception: {str(e)}\n")
+
+        return {
+            "runtime": runtime,
+            "reported_runtime": runtime,
+            "status": "error",
+            "condition": "Error",
+            "objective": None,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
+
+
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
+
+    # Handle highs-hipo solver separately
+    if solver_name.lower() == "highs-hipo":
+        results = run_highs_hipo_solver(input_file, solver_version)
+        print(json.dumps(results))
+        return
+
     solver = get_solver(solver_name)
 
     solution_dir = Path(__file__).parent / "solutions"

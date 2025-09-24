@@ -64,10 +64,18 @@ for year in "${years[@]}"; do
     # Run the benchmark script for the year
     echo "Running benchmarks for the year: $year"
     conda activate "$env_name"
-    if [ "$idx" -eq 0 ]; then
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id"
+
+    # Add highs-hipo solver for 2025 benchmarks
+    if [ "$year" = "2025" ]; then
+        solver_args="--solvers highs scip cbc gurobi glpk highs-hipo"
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id"
+        solver_args="--solvers highs scip cbc gurobi glpk"
+    fi
+
+    if [ "$idx" -eq 0 ]; then
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args
+    else
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args
     fi
     conda deactivate
 
