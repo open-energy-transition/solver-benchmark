@@ -12,6 +12,7 @@ export interface ID3GroupedBarChartData {
 export interface ID3GroupedBarChart {
   title: string;
   height?: number;
+  chartHeight?: number;
   className?: string;
   chartData: StackedBarData[];
   categoryKey: string;
@@ -22,10 +23,15 @@ export interface ID3GroupedBarChart {
   yAxisLabel?: string;
   rotateXAxisLabels?: boolean;
   showXaxisLabel?: boolean;
+  diagonalXAxisLabelsOnMobile?: boolean;
   axisLabelTitle?: (d: ID3GroupedBarChartData) => string;
   barOpacity?: number | ((d: ID3GroupedBarChartData) => number);
   xAxisTickFormat?: (value: string, data: unknown) => string;
+  xAxisLabelWrapLength?: number;
+  extraCategoryLengthMargin?: number;
   normalize?: boolean;
+  xAxisLabelRotation?: number;
+  splitter?: string;
   colors:
     | {
         [key: string]: string;

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { SolverStatusType } from "@/types/benchmark";
-import { getSolverColor } from "@/utils/chart";
+import { applyTooltipStyles, getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 
 type ChartData = {
@@ -157,18 +157,8 @@ const D3PlotChartPerformanceScaling = ({
       .attr(
         "class",
         "absolute hidden bg-white p-2 rounded text-sm pointer-events-none",
-      )
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("z-index", "10");
+      );
+    applyTooltipStyles(tooltip);
 
     const showTooltip = (event: MouseEvent, d: ChartData) => {
       const formatRuntime = (runtime: number) => {

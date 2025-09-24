@@ -21,7 +21,11 @@ const SolverPerformanceDetails = () => {
         performance on different problems.
       </p>
       <div className="my-4">
-        <SolverRuntimeComparison />
+        <SolverRuntimeComparison
+          extraCategoryLengthMargin={5}
+          xAxisLabelWrapLength={2}
+          splitter="_"
+        />
       </div>
       <p>
         <Note>
