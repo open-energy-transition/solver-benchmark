@@ -43,8 +43,9 @@ jobs:
             echo "git diff is empty, metadata must be up to date"
           else
             git diff
-            echo "::warning file=benchmarks/merge_metadata.py::git diff non empty, metadata needs updating, please run the following command: python benchmarks/merge_metadata.py. Please check the logs in the 'Check benchmark metadata and results' step of this CI run."
-            fi
+            printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
+            exit 1
+          fi
           python tests/validate_results.py
 
       - name: Run Streamlit App Action
