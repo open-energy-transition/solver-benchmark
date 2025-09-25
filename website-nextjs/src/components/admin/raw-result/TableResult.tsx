@@ -9,6 +9,8 @@ import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { IResultState } from "@/types/state";
 import { filterNumber, filterSelect } from "@/utils/table";
 import InfoPopup from "@/components/common/InfoPopup";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
@@ -25,18 +27,27 @@ const TableResult = () => {
         accessorKey: "benchmark",
         filterFn: filterSelect,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
-          <InfoPopup
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {String(info.getValue())}
-              </div>
+          <Link
+            className="font-bold inline-block"
+            style={{ lineHeight: "1.5" }}
+            href={PATH_DASHBOARD.benchmarkSet.one.replace(
+              "{name}",
+              info.row.original.benchmark,
             )}
-            position="top center"
-            closeOnDocumentClick
-            arrowStyle={{ color: Color.Stroke }}
           >
-            <div> {String(info.getValue())} </div>
-          </InfoPopup>
+            <InfoPopup
+              trigger={() => (
+                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                  {String(info.getValue())}
+                </div>
+              )}
+              position="top center"
+              closeOnDocumentClick
+              arrowStyle={{ color: Color.Stroke }}
+            >
+              <div> {String(info.getValue())} </div>
+            </InfoPopup>
+          </Link>
         ),
       },
       {
@@ -194,6 +205,7 @@ const TableResult = () => {
 
   return (
     <TanStackTable
+      showAllRows
       data={benchmarkResults}
       columns={columns}
       title="Full Results"
