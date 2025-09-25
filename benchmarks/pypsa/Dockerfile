@@ -20,10 +20,10 @@ RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
 FROM repo_clone AS conda_env
 RUN --mount=type=cache,target=/opt/conda/pkgs \
     cd pypsa-eur \
-    && conda env create -f envs/linux-64.lock.yaml -n benchmark-gen
+    && conda env create -f envs/linux-64.lock.yaml -n $CONDA_ENV_NAME
 
 RUN eval "$(conda shell.bash hook)" \
-    && conda activate benchmark-gen \
+    && conda activate $CONDA_ENV_NAME \
     && pip install git+https://github.com/open-energy-transition/linopy.git@075f24e --no-deps
     # This is a commit on linopy branch only-generate-problem-files
 
@@ -37,7 +37,7 @@ COPY --chown=conda . pypsa-eur/solver-benchmarks
 # For now, let's run this command manually in the above docker container:
 
 # RUN eval "$(conda shell.bash hook)" \
-#     && conda activate benchmark-gen \
+#     && conda activate $CONDA_ENV_NAME \
 #     && cd pypsa-eur \
 #     && ./solver-benchmarks/generate.sh
 
