@@ -1,7 +1,0 @@
-# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries
-countries: ['IT']
-
-solving:
-  solver:
-    name: highs
-    options: highs-default

@@ -1,4 +1,4 @@
 electricity:
-    transmission_limit: v1
+    transmission_limit: copt
 
 countries: ['IT']
