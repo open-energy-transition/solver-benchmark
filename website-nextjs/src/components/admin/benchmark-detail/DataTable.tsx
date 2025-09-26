@@ -112,7 +112,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Status",
         accessorKey: "status",
-        filterFn: "equals" as const,
+        filterFn: "arrIncludesSome" as const,
         size: 80,
       },
       {

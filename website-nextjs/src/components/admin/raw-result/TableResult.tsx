@@ -26,6 +26,7 @@ const TableResult = () => {
         header: "Benchmark",
         accessorKey: "benchmark",
         filterFn: filterSelect,
+        size: 230,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
           <Link
             className="font-bold inline-block"
@@ -54,37 +55,37 @@ const TableResult = () => {
         header: "Instance",
         accessorKey: "size",
         filterFn: filterSelect,
-        size: 100,
+        size: 150,
       },
       {
         header: "Solver",
         accessorKey: "solver",
         filterFn: filterSelect,
-        size: 80,
+        size: 120,
       },
       {
         header: "Solver Version",
         accessorKey: "solverVersion",
-        size: 130,
+        size: 160,
         filterFn: filterSelect,
       },
       {
         header: "Solver Release Year",
         accessorKey: "solverReleaseYear",
-        size: 170,
+        size: 200,
         filterFn: filterSelect,
       },
       {
         header: "Status",
         accessorKey: "status",
         filterFn: filterSelect,
-        size: 80,
+        size: 120,
       },
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
         filterFn: filterSelect,
-        size: 200,
+        size: 220,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
             {String(info.getValue())}
@@ -115,11 +116,12 @@ const TableResult = () => {
           filterVariant: "range",
         },
         filterFn: filterNumber,
+        size: 180,
       },
       {
         header: "Max Integrality Violation",
         accessorKey: "maxIntegralityViolation",
-        size: 210,
+        size: 240,
         meta: {
           filterVariant: "range",
         },
