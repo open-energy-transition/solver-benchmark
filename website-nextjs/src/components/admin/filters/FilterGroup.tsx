@@ -1,6 +1,7 @@
 import { ArrowIcon } from "@/assets/icons";
+import InfoPopup from "@/components/common/InfoPopup";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import React, { useState } from "react";
-import Popup from "reactjs-popup";
 
 interface FilterGroupProps {
   title: string | React.ReactNode;
@@ -30,10 +31,22 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   uppercase = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const isMobile = useIsMobile();
 
+  // Auto collapse on mobile
+  React.useEffect(() => {
+    if (isMobile) {
+      setIsExpanded(false);
+    } else {
+      setIsExpanded(true);
+    }
+  }, [isMobile]);
   return (
     <div className={`border-b xl:border-b-0 border-stroke w-full ${className}`}>
-      <div className="flex items-center justify-between pr-2 rounded-lg bg-white">
+      <div
+        onClick={() => isMobile && setIsExpanded(!isExpanded)}
+        className="flex items-center justify-between pr-2 rounded-lg bg-white"
+      >
         <div className="flex items-center border-b-0 border-stroke p-2 pr-0 gap-2">
           <input
             className="size-3.5 accent-navy rounded checked:before:text-xs "
@@ -89,16 +102,15 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                   uppercase ? "uppercase" : ""
                 }`}
               >
-                <Popup
-                  on={["hover"]}
+                <InfoPopup
                   disabled={item.length < 32}
                   trigger={() => <span>{item}</span>}
                   position="top right"
                   closeOnDocumentClick
                   arrowStyle={{ color: "#ebeff2" }}
                 >
-                  <div className="text-white bg-navy p-2 rounded">{item}</div>
-                </Popup>
+                  <div>{item}</div>
+                </InfoPopup>
               </span>
               <span
                 className="text-navy font-bold text-[9px] mt-0.5 absolute pr-0.5 -right-3 bg-[#F4F6FA] z-50 hidden group-hover:inline-block cursor-pointer"

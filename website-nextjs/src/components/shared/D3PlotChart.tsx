@@ -5,8 +5,9 @@ import { CircleIcon } from "@/assets/icons";
 import { SolverStatusType, SolverType } from "@/types/benchmark";
 import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
-import { getChartColor } from "@/utils/chart";
+import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { isNullorUndefined } from "@/utils/calculations";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type ChartData = {
   runtime: number;
@@ -44,6 +45,7 @@ const D3PlotChart = ({
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+  const windowWidth = useDebouncedWindowWidth(200);
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
@@ -249,20 +251,7 @@ const D3PlotChart = ({
       .raise(); // Bring axes to front
 
     // Tooltip container
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
     const xScale = d3
@@ -389,7 +378,7 @@ const D3PlotChart = ({
       tooltip.remove();
       zoomControls.remove();
     };
-  }, [chartData, xAxis, customTooltip]);
+  }, [chartData, xAxis, customTooltip, windowWidth]);
 
   return (
     <div className="relative">

@@ -14,10 +14,10 @@ import { useRouter } from "next/router";
 import navbarActions from "@/redux/theme/actions";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import Popup from "reactjs-popup";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useEffect } from "react";
 import debounce from "lodash/debounce";
+import InfoPopup from "../common/InfoPopup";
 
 const SMALL_SCREEN_BREAKPOINT = 1336;
 
@@ -88,13 +88,13 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       {isNavExpanded && (
         <div
-          className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="sm:hidden fixed z-30 inset-0 bg-black bg-opacity-50"
           onClick={() => dispatch(navbarActions.toggleNav())}
         />
       )}
 
       <div
-        className={`fixed md:pt-0 z-50 top-0 left-0 h-screen bg-navy rounded-e-xl
+        className={`fixed z-max md:pt-0 top-0 left-0 h-screen bg-navy rounded-e-xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
         sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
         aria-label="Sidenav"
@@ -184,8 +184,7 @@ const Navbar = () => {
           <ul className="space-y-2">
             {navConfig.map((navData, idx) => (
               <li key={idx}>
-                <Popup
-                  on={["hover"]}
+                <InfoPopup
                   disabled={isMobile || isNavExpanded}
                   arrow
                   arrowStyle={{ color: "#ffffff" }}
@@ -229,10 +228,8 @@ const Navbar = () => {
                   position="right center"
                   closeOnDocumentClick
                 >
-                  <div className="text-white bg-navy p-2 rounded">
-                    {navData.label}
-                  </div>
-                </Popup>
+                  <div>{navData.label}</div>
+                </InfoPopup>
               </li>
             ))}
           </ul>

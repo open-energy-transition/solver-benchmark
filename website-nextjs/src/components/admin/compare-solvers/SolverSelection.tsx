@@ -8,6 +8,7 @@ import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
 import { roundNumber } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
+import CustomDropdown from "@/components/common/CustomDropdown";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -130,37 +131,26 @@ const SolverSelection = () => {
       <div className="flex flex-row gap-2 sm:gap-0 mb-4">
         <div className="w-full sm:w-1/2 bg-[#F0F4F2] rounded-lg sm:rounded-l-lg sm:rounded-r-none">
           <h6 className="p-2 sm:p-3 pl-3.5">Solver 1</h6>
-          <select
-            name="solver1"
+          <CustomDropdown
             value={solver1}
-            onChange={(event) => setSolver1(event.target.value)}
-            className="w-full text-lg font-bold pl-3 bg-[#F0F4F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
-            border-transparent text-navy sm:text-base rounded-b-lg block focus-visible:outline-none"
-          >
-            <option disabled>Solver & version</option>
-            {solverOptions.map((solver, idx) => (
-              <option key={idx} value={solver}>
-                {formatSolverWithVersion(solver)}
-              </option>
-            ))}
-          </select>
+            onChange={setSolver1}
+            options={solverOptions}
+            formatOption={formatSolverWithVersion}
+            label="Solver & version"
+            bgColor="bg-[#F0F4F2]"
+          />
         </div>
-        <div className="w-full sm:w-1/2 bg-[#E1E5F2] rounded-lg sm:rounded-r-lg sm:rounded-l-none">
+        <div className="w-full sm:w-1/2 bg-lavender rounded-lg sm:rounded-r-lg sm:rounded-l-none">
           <h6 className="p-2 sm:p-3 pl-3.5">Solver 2</h6>
-          <select
-            name="solver2"
+          <CustomDropdown
             value={solver2}
-            onChange={(event) => setSolver2(event.target.value)}
-            className="w-full text-lg pl-3 font-bold bg-[#E1E5F2] px-4 sm:px-6 py-3 sm:py-4 border-r-[1.5rem]
-            border-transparent navy sm:text-base rounded-b-lg block focus-visible:outline-none"
-          >
-            <option disabled>Solver & version</option>
-            {solverOptions.map((solver, idx) => (
-              <option key={idx} value={solver}>
-                {formatSolverWithVersion(solver)}
-              </option>
-            ))}
-          </select>
+            onChange={setSolver2}
+            options={solverOptions}
+            formatOption={formatSolverWithVersion}
+            label="Solver & version"
+            bgColor="bg-lavender"
+            optionActiveBg="bg-lavender"
+          />
         </div>
       </div>
       <div className="py-2">
@@ -170,12 +160,16 @@ const SolverSelection = () => {
           Solver 1 performs better, and those in the lower triangle are those
           where Solver 2 performs better. Click on any point in this graph to
           see details of that benchmark instance.
-          <p className="flex gap-1 items-center text-navy text-sm">
-            <CloseIcon className="size-3" />
-            represents benchmark instances where at least one of the solvers
-            failed to solve within the time limit, while
-            <CircleIcon className="size-3" />
-            indicates that both solvers ran successfully.
+          <p className="flex-col gap-1 items-center text-navy text-sm">
+            <div className="inline-flex gap-1 items-start">
+              <CloseIcon className="size-3 mt-1.5" />
+              represents benchmark instances where at leinteast one of the
+              solvers failed to solve within the time limit, while
+            </div>
+            <div className="flex gap-1 items-center">
+              <CircleIcon className="size-3" />
+              indicates that both solvers ran successfully.
+            </div>
           </p>
         </p>
       </div>
