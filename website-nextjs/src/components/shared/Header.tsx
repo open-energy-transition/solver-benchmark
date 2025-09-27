@@ -25,7 +25,7 @@ const Header = () => {
         <div className="flex w-max">
           <Link
             href="/"
-            className="-ml-1.5 lg:-m-1.5 lg:p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
+            className="lg:-m-1.5 lg:p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
           >
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
               <svg

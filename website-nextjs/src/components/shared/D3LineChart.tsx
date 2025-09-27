@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverYearlyChartData } from "@/types/performance-history";
-import { getSolverColor, roundUpToNearest } from "@/utils/chart";
+import {
+  createD3Tooltip,
+  getSolverColor,
+  roundUpToNearest,
+} from "@/utils/chart";
 import { IResultState } from "@/types/state";
 
 type SolverType = "glpk" | "scip" | "highs";
@@ -61,19 +65,7 @@ const D3ChartLineChart = ({
       .style("overflow", "visible");
 
     // Tooltip container
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
     const xScale = d3
@@ -239,7 +231,7 @@ const D3ChartLineChart = ({
   }, [chartData, maxYValue, showMaxLine]);
 
   return (
-    <div className={`bg-white p-4 rounded-xl ${className}`}>
+    <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
         <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">

@@ -16,7 +16,7 @@ const NumberBenchmarksSolved = ({
         Number of Benchmarks Solved (Out of {totalBenchmarks})
       </div>
       <D3LineChart
-        className="px-10"
+        className="pl-0 lg:px-10"
         title="Number of Benchmarks Solved"
         height={300}
         chartData={numSolvedBenchMark}

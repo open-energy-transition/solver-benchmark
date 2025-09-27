@@ -12,6 +12,7 @@ import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import BenchmarkSet from "@/components/admin/home/BenchmarkSet";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const LandingPage = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -22,6 +23,7 @@ const LandingPage = () => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkLatestResults;
   });
+  const isMobile = useIsMobile();
 
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
@@ -106,8 +108,15 @@ const LandingPage = () => {
       requestAnimationFrame(updateHeight);
     }, 0);
 
-    return () => clearTimeout(timeoutId);
-  }, [benchmarkResults, timeout]);
+    // Add window resize listener
+    window.addEventListener("resize", updateHeight);
+
+    // Cleanup
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [benchmarkResults, timeout, isMobile]);
 
   return (
     <>
