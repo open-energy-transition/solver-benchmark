@@ -1,7 +1,83 @@
 import argparse
-import sys
+import pathlib
 import re
-from typing import List, Optional, Sequence, Union
+import typing
+
+
+DEFAULT_BENCHMARKS = [
+    "pypsa-eur-elec-trex",
+    "pypsa-eur-elec-dfp",
+    "pypsa-eur-elec-ucconv",
+    "pypsa-eur-sec"
+]
+
+
+def select_yaml_files(benchmark_name: str, yaml_dir: typing.Optional[pathlib.Path] = None) -> typing.List[pathlib.Path]:
+    """
+    Select YAML files corresponding to the given benchmark name.
+
+    Parameters
+    ----------
+    benchmark_name : str
+        Name of the benchmark to select YAML files for
+    yaml_dir : Optional[Path], optional
+        Directory containing YAML files. If None, uses the current directory.
+
+    Returns
+    -------
+    List[Path]
+        List of matching YAML files as Path objects
+
+    Raises
+    ------
+    ValueError
+        If no matching YAML files are found
+    """
+    # If no directory specified, use current directory
+    if yaml_dir is None:
+        yaml_dir = pathlib.Path(__file__).parent
+
+    # Ensure yaml_dir is a Path object
+    yaml_dir = pathlib.Path(yaml_dir)
+
+    # Mapping of benchmark names to their matching YAML files
+    benchmark_yaml_map = {
+        "pypsa-eur-elec-trex": [
+            "pypsa-eur-elec-trex_copt.yaml",
+            "pypsa-eur-elec-trex_vopt.yaml",
+            "pypsa-eur-elec-trex_vopt-dfp.yaml",
+            "pypsa-eur-elec-trex_copt-dfp.yaml",
+            "pypsa-eur-elec-trex_vopt-ucconv.yaml",
+            "pypsa-eur-elec-trex_copt-ucconv.yaml"
+        ],
+        "pypsa-eur-elec-dfp": [
+            "pypsa-eur-elec-dfp.yaml",
+        ],
+        "pypsa-eur-elec-ucconv": [
+            "pypsa-eur-elec-ucconv.yaml",
+        ],
+        "pypsa-eur-sec": [
+            "pypsa-eur-sec.yaml",
+            "pypsa-eur-sec-trex_copt.yaml",
+            "pypsa-eur-sec-trex_vopt.yaml"
+        ]
+    }
+
+    # Get matching YAML files
+    matching_yamls = benchmark_yaml_map.get(benchmark_name, [])
+
+    # Check if yaml files exist
+    existing_yamls = [
+        pathlib.Path(yaml_dir, yaml_file)
+        for yaml_file in matching_yamls
+        if pathlib.Path(yaml_dir, yaml_file).exists()
+    ]
+
+    # Raise error if no matching files found
+    if not existing_yamls:
+        raise ValueError(f"No YAML files found for benchmark: {benchmark_name}")
+
+    return existing_yamls
 
 
 def validate_time_resolution(resolution: str) -> str:
@@ -23,15 +99,8 @@ def validate_time_resolution(resolution: str) -> str:
     argparse.ArgumentTypeError
         If the resolution format is invalid
 
-    Examples
-    --------
-    >>> validate_time_resolution('1h')
-    '1H'
-    >>> validate_time_resolution('12H')
-    '12H'
-    >>> validate_time_resolution('3')
-    argparse.ArgumentTypeError: Invalid time resolution format: 3. Must be in format like 1H, 12H, etc.
     """
+
     # Use regex to match valid time resolution format
     match = re.match(r'^(\d+)([hH])$', resolution)
 
@@ -46,29 +115,20 @@ def validate_time_resolution(resolution: str) -> str:
     return f"{number}H"
 
 
-def parse_arguments(argv: Optional[Sequence[str]] = None) -> int:
+def parse_input_arguments() -> argparse.Namespace:
     """
-    Main function to parse arguments and process benchmark generation.
-
-    Parameters
-    ----------
-    argv : Optional[Sequence[str]], optional
-        Command-line arguments to parse. If None, uses sys.argv[1:].
+    Parse command line arguments.
 
     Returns
     -------
-    int
-        Exit status code (0 for success, non-zero for failure)
+    argparse.Namespace
+        Parsed command line arguments containing:
+        - benchmark name
+        - output directory
+        - dry run flag.
+        - clusters.
+        - time resolutions
 
-    Examples
-    --------
-    >>> parse_arguments(['mybenchmark', '/output/path'])
-    Benchmark Name: mybenchmark
-    Output Directory: /output/path
-    Dry Run: False
-    Clusters: [2, 3, 4, 5, 6, 7, 8, 9, 10]
-    Time Resolutions: ['1H', '3H', '12H', '24H']
-    0
     """
 
     # Create the parser
@@ -79,9 +139,13 @@ def parse_arguments(argv: Optional[Sequence[str]] = None) -> int:
 
     # Define arguments
     parser.add_argument("--benchmark_name",
-                        help="Name of the benchmark to generate")
+                        type=str,
+                        choices=DEFAULT_BENCHMARKS,
+                        default="pypsa-eur-elec-trex",
+                        help="Name of the benchmark to generate. ")
 
     parser.add_argument("--output_dir",
+                        type=str,
                         default="/tmp/",
                         help="Output directory for LP files")
 
@@ -111,6 +175,15 @@ def parse_arguments(argv: Optional[Sequence[str]] = None) -> int:
     print(f"Clusters: {args.clusters}")
     print(f"Time Resolutions: {args.time_resolutions}")
 
+    return args
+
 
 if __name__ == "__main__":
-    parse_arguments()
+
+    # Parse input arguments
+    input_args = parse_input_arguments()
+
+    # Select yaml files based on benchmark name
+    list_yamls = select_yaml_files(input_args.benchmark_name)
+
+    print(list_yamls)
