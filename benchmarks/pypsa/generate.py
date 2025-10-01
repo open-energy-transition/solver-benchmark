@@ -1,6 +1,7 @@
 import argparse
 import pathlib
 import re
+import subprocess
 import typing
 
 import yaml
@@ -185,7 +186,7 @@ def parse_input_arguments() -> argparse.Namespace:
     return args
 
 
-def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_resolution: str) -> pathlib.Path:
+def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_resolution: str, planning_horizon: str = "2050") -> pathlib.Path:
     """
     Create a scenario section for a configuration dictionary.
 
@@ -198,6 +199,8 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
     time_resolution : str
         The time resolution for the scenario (e.g., '2H' for 2-hour intervals).
         Applied to both 'opts' and 'sector_opts' in the scenario configuration.
+    planning_horizon : str
+        The planning horizon. Default is 2050.
 
     Returns
     -------
@@ -219,20 +222,63 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
             "clusters": number_clusters,
             "opts": time_resolution,
             "sector_opts": time_resolution,
-            "planning_horizons": 2050
+            "planning_horizons": planning_horizon
         }
     }
 
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
 
-    output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}')
+    output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}_{planning_horizon}')
 
     # Write the updated YAML to a file
     with open(output_file_name, "w") as file:
         yaml_loader.dump(original_yaml, file)
 
     return output_file_name
+
+
+def run_snakemake_command(command: str) -> subprocess.CompletedProcess:
+    try:
+        # Run Snakemake and capture output
+        result = subprocess.run(
+            command,
+            check=True,  # Raise exception on non-zero exit
+            capture_output=True,  # Capture stdout and stderr
+            text=True  # Return strings instead of bytes
+        )
+
+        # Print output for logging
+        print("Snakemake stdout:")
+        print(result.stdout)
+
+        if result.stderr:
+            print("Snakemake stderr:")
+            print(result.stderr)
+
+        return result
+
+    except subprocess.CalledProcessError as e:
+        # Detailed error handling
+        raise Exception(f"Snakemake command failed with return code {e.returncode}, STDOUT: {e.stdout}, STDERR: {e.stderr}")
+
+
+def run_benchmark(name_of_benchmark: str, config_file: pathlib.Path, n_c: str, time_res: str, p_hor: str, dry_run: bool) -> None:
+
+    config_file_name = config_file.name
+    elec_benchmarks_filter = list(filter(lambda x: "elec" in x, DEFAULT_BENCHMARKS))
+
+    if name_of_benchmark in elec_benchmarks_filter:
+        snakemake_command_network = f"snakemake -call solve_elec_networks --configfile {config_file_name} "
+        run_snakemake_command(snakemake_command_network)
+        snakemake_elec_benchmark = f"snakemake -call results/networks/base_s_{n_c}_elec_{time_res}_{p_hor}_op --configfile {config_file_name}"
+        run_snakemake_command(snakemake_elec_benchmark)
+    elif name_of_benchmark == "pypsa-eur-sec":
+        snakemake_sec_benchmark = f"snakemake -call solve_sector_networks --configfile {config_file_name}"
+        run_snakemake_command(snakemake_sec_benchmark)
+    else:
+        print(f"{name_of_benchmark} is not among the supported ones")
+
 
 
 if __name__ == "__main__":
@@ -243,11 +289,14 @@ if __name__ == "__main__":
     # Select yaml files based on benchmark name
     list_yamls = select_yaml_files(input_args.benchmark_name)
 
+    p_horizon = "2050"
+
     # Generate the yaml files
     for yaml_file_name in list_yamls:
         for n_clusters in input_args.clusters:
             for t_res in input_args.time_resolutions:
-                output_yaml_file_name = add_scenario_section(yaml_file_name, n_clusters, t_res)
+                output_yaml_file_name = add_scenario_section(yaml_file_name, n_clusters, t_res, p_horizon)
+
 
                 if input_args.remove_configs:
                     output_yaml_file_name.unlink(missing_ok=True)
