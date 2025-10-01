@@ -11,15 +11,15 @@ This folder contains benchmarks based on PyPSA-Eur. The benchmarks can be genera
      ```
 - Inside the docker container, run the benchmark generating script:
      ```sh
-     conda activate benchmark-gen
+     conda activate pypsa-benchmark-gen
      cd pypsa-eur
-     ./solver-benchmarks/generate.sh <benchmark-name> /tmp/
+     python /solver-benchmarks/generate.py  <benchmark-name> /tmp/
      ```
      where `<benchmark-name>` is one of:
      ```
-     pypsa-eur-sec
-     pypsa-eur-elec-trex
-     pypsa-eur-elec-op
-     pypsa-eur-elec-op-ucconv
+    pypsa-eur-elec-trex
+    pypsa-eur-elec-dfp
+    pypsa-eur-elec-ucconv
+    pypsa-eur-sec
      ```
 - The benchmarks can be found inside the docker container, under `/tmp/pypsa*.lp`.

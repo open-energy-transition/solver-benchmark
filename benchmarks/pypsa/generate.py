@@ -238,47 +238,120 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
     return output_file_name
 
 
-def run_snakemake_command(command: str) -> subprocess.CompletedProcess:
+def run_snakemake_command(command: str, capture_output: bool = True) -> subprocess.CompletedProcess:
+    """
+    Execute a Snakemake command and handle its output and potential errors.
+
+    Parameters
+    ----------
+    command : str
+        The full Snakemake command to be executed
+    capture_output : bool, optional
+        Whether to capture and log command output (default is True)
+
+    Returns
+    -------
+    subprocess.CompletedProcess
+        The completed process with run information
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the Snakemake command fails to execute successfully
+
+    Examples
+    --------
+    >>> result = run_snakemake_command("snakemake -call solve_elec_networks")
+    """
     try:
-        # Run Snakemake and capture output
+        # Split the command to handle shell=False for better security
+        cmd_parts = command.split()
+
+        # Run Snakemake command
         result = subprocess.run(
-            command,
+            cmd_parts,
             check=True,  # Raise exception on non-zero exit
-            capture_output=True,  # Capture stdout and stderr
+            capture_output=capture_output,  # Optionally capture output
             text=True  # Return strings instead of bytes
         )
 
-        # Print output for logging
-        print("Snakemake stdout:")
-        print(result.stdout)
+        # Conditionally print output for logging
+        if capture_output:
+            if result.stdout:
+                print("Snakemake stdout:")
+                print(result.stdout)
 
-        if result.stderr:
-            print("Snakemake stderr:")
-            print(result.stderr)
+            if result.stderr:
+                print("Snakemake stderr:")
+                print(result.stderr)
 
         return result
 
     except subprocess.CalledProcessError as e:
-        # Detailed error handling
-        raise Exception(f"Snakemake command failed with return code {e.returncode}, STDOUT: {e.stdout}, STDERR: {e.stderr}")
+        # Detailed error handling with informative message
+        error_msg = (
+            f"Snakemake command failed:\n"
+            f"Command: {command}\n"
+            f"Return Code: {e.returncode}\n"
+            f"STDOUT: {e.stdout}\n"
+            f"STDERR: {e.stderr}"
+        )
+        raise RuntimeError(error_msg) from e
 
 
-def run_benchmark(name_of_benchmark: str, config_file: pathlib.Path, n_c: str, time_res: str, p_hor: str, dry_run: bool) -> None:
+def run_benchmark(
+    name_of_benchmark: str,
+    config_file: pathlib.Path,
+    n_c: str,
+    time_res: str,
+    p_hor: str,
+    dry_run_flag: bool
+) -> None:
+    """
+    Run specific Snakemake benchmarks based on benchmark name and configuration.
+
+    Parameters
+    ----------
+    name_of_benchmark : str
+        Name of the benchmark to run
+    config_file : pathlib.Path
+        Configuration YAML file
+    n_c : str
+        Number of clusters
+    time_res : str
+        Time resolution
+    p_hor : str
+        Planning horizon
+    dry_run_flag : bool
+        Flag to perform a dry run without actual execution (default is False)
+
+    Raises
+    ------
+    ValueError
+        If the benchmark is not supported
+
+    Notes
+    -----
+    Supports benchmarks containing 'elec' and 'pypsa-eur-sec'
+    """
 
     config_file_name = config_file.name
     elec_benchmarks_filter = list(filter(lambda x: "elec" in x, DEFAULT_BENCHMARKS))
+    if dry_run_flag:
+        dry_run = "-n"
+    else:
+        dry_run = ""
 
     if name_of_benchmark in elec_benchmarks_filter:
-        snakemake_command_network = f"snakemake -call solve_elec_networks --configfile {config_file_name} "
+        snakemake_command_network = f"snakemake -call solve_elec_networks --configfile {config_file_name} {dry_run}"
         run_snakemake_command(snakemake_command_network)
-        snakemake_elec_benchmark = f"snakemake -call results/networks/base_s_{n_c}_elec_{time_res}_{p_hor}_op --configfile {config_file_name}"
+        snakemake_elec_benchmark = f"snakemake -call results/networks/base_s_{n_c}_elec_{time_res}_{p_hor}_op --configfile {config_file_name} {dry_run}"
         run_snakemake_command(snakemake_elec_benchmark)
     elif name_of_benchmark == "pypsa-eur-sec":
-        snakemake_sec_benchmark = f"snakemake -call solve_sector_networks --configfile {config_file_name}"
+        snakemake_sec_benchmark = f"snakemake -call solve_sector_networks --configfile {config_file_name} {dry_run}"
         run_snakemake_command(snakemake_sec_benchmark)
     else:
         print(f"{name_of_benchmark} is not among the supported ones")
-
 
 
 if __name__ == "__main__":
@@ -296,7 +369,6 @@ if __name__ == "__main__":
         for n_clusters in input_args.clusters:
             for t_res in input_args.time_resolutions:
                 output_yaml_file_name = add_scenario_section(yaml_file_name, n_clusters, t_res, p_horizon)
-
-
+                run_benchmark(input_args.benchmark_name, output_yaml_file_name, n_clusters, t_res, p_horizon, input_args.dry_run)
                 if input_args.remove_configs:
                     output_yaml_file_name.unlink(missing_ok=True)
