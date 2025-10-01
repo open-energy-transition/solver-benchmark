@@ -4,7 +4,6 @@ import re
 import subprocess
 import typing
 
-import yaml
 import ruamel.yaml
 
 
@@ -335,6 +334,7 @@ def run_benchmark(
     Supports benchmarks containing 'elec' and 'pypsa-eur-sec'
     """
 
+    # Extract the final pathlib.Path component
     config_file_name = config_file.name
     elec_benchmarks_filter = list(filter(lambda x: "elec" in x, DEFAULT_BENCHMARKS))
     if dry_run_flag:

@@ -12,8 +12,7 @@ This folder contains benchmarks based on PyPSA-Eur. The benchmarks can be genera
 - Inside the docker container, run the benchmark generating script:
      ```sh
      conda activate pypsa-benchmark-gen
-     cd pypsa-eur
-     python /solver-benchmarks/generate.py --benchmark_name <benchmark-name> --output_dir /tmp/
+     python generate.py --benchmark_name <benchmark-name> --output_dir /tmp/
      ```
      where `<benchmark-name>` is one of:
      ```

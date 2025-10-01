@@ -1,11 +1,12 @@
 # A Dockerfile to generate the Pypsa benchmarks reproducibly
-# Build with: docker build .
-# Debug with: docker run -it --entrypoint bash <image hash>
 
 # Use a lightweight base image with conda support
 FROM continuumio/miniconda3 AS pypsa_benchmark_gen_base
 
-# Create a non‑root user and switch to it
+# Create a non‑root user
+RUN useradd -m conda
+
+#Switch to root user
 USER root
 
 # Install system packages
@@ -29,6 +30,7 @@ RUN --mount=type=cache,target=/opt/conda/pkgs \
 RUN /bin/bash -c "\
     source $(conda info --base)/etc/profile.d/conda.sh && \
     conda activate $CONDA_ENV_NAME && \
+    conda install ruamel.yaml && \
     pip install git+https://github.com/open-energy-transition/linopy.git@075f24e --no-deps \
 "
 
@@ -37,10 +39,6 @@ COPY solve_network.patch pypsa-eur/solve_network.patch
 RUN cd pypsa-eur && git apply solve_network.patch
 
 FROM conda_env AS pypsa_benchmark_gen
-COPY --chown=conda . pypsa-eur/solver-benchmarks
-WORKDIR /home/conda/solver-benchmarks
+COPY --chown=conda . pypsa-eur/
+WORKDIR ./pypsa-eur/
 CMD ["bash"]
-
-# Initialise conda for the conda user permanently
-RUN echo 'source $(conda info --base)/etc/profile.d/conda.sh' >> /home/conda/.bashrc && \
-    echo 'conda activate $CONDA_ENV_NAME' >> /home/conda/.bashrc
