@@ -1,0 +1,11 @@
+electricity:
+    transmission_limit: v1
+
+countries: ['IT']
+
+conventional:
+  dynamic_fuel_price: true
+
+solving:
+  options:
+    linearized_unit_commitment: false
