@@ -1,3 +1,5 @@
+# A Dockerfile to generate the plain Pypsa benchmarks reproducibly
+
 # Use a lightweight base image with conda support
 FROM continuumio/miniconda3 AS plain_pypsa_benchmark_gen_base
 
