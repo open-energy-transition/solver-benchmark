@@ -1,6 +1,49 @@
 import argparse
 import sys
+import re
 from typing import List, Optional, Sequence, Union
+
+
+def validate_time_resolution(resolution: str) -> str:
+    """
+    Validate and normalize time resolution format.
+
+    Parameters
+    ----------
+    resolution : str
+        Input time resolution string
+
+    Returns
+    -------
+    str
+        Normalized time resolution with uppercase 'H'
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        If the resolution format is invalid
+
+    Examples
+    --------
+    >>> validate_time_resolution('1h')
+    '1H'
+    >>> validate_time_resolution('12H')
+    '12H'
+    >>> validate_time_resolution('3')
+    argparse.ArgumentTypeError: Invalid time resolution format: 3. Must be in format like 1H, 12H, etc.
+    """
+    # Use regex to match valid time resolution format
+    match = re.match(r'^(\d+)([hH])$', resolution)
+
+    if not match:
+        raise argparse.ArgumentTypeError(
+            f"Invalid time resolution format: {resolution}. "
+            "Must be in format like 1H, 12H, etc."
+        )
+
+    # Extract number and convert to uppercase H
+    number, _ = match.groups()
+    return f"{number}H"
 
 
 def parse_arguments(argv: Optional[Sequence[str]] = None) -> int:
@@ -24,7 +67,7 @@ def parse_arguments(argv: Optional[Sequence[str]] = None) -> int:
     Output Directory: /output/path
     Dry Run: False
     Clusters: [2, 3, 4, 5, 6, 7, 8, 9, 10]
-    Time Resolutions: ['1h', '3h', '12h', '24h']
+    Time Resolutions: ['1H', '3H', '12H', '24H']
     0
     """
 
@@ -54,8 +97,9 @@ def parse_arguments(argv: Optional[Sequence[str]] = None) -> int:
 
     parser.add_argument("-r", "--time_resolutions",
                         nargs="+",
-                        default=["1h", "3h", "12h", "24h"],
-                        help="List of time resolutions. Default: 1h 3h 12h 24h")
+                        type=validate_time_resolution,
+                        default=["1H", "3H", "12H", "24H"],
+                        help="List of time resolutions. Default: 1H 3H 12H 24H")
 
     # Parse arguments
     args = parser.parse_args()
