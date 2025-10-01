@@ -3,6 +3,9 @@ import pathlib
 import re
 import typing
 
+import yaml
+import ruamel.yaml
+
 
 DEFAULT_BENCHMARKS = [
     "pypsa-eur-elec-trex",
@@ -12,7 +15,7 @@ DEFAULT_BENCHMARKS = [
 ]
 
 
-def select_yaml_files(benchmark_name: str, yaml_dir: typing.Optional[pathlib.Path] = None) -> typing.List[pathlib.Path]:
+def select_yaml_files(benchmark_name: str, yaml_dir: typing.Optional[pathlib.Path] = None) -> list[pathlib.Path]:
     """
     Select YAML files corresponding to the given benchmark name.
 
@@ -25,7 +28,7 @@ def select_yaml_files(benchmark_name: str, yaml_dir: typing.Optional[pathlib.Pat
 
     Returns
     -------
-    List[Path]
+    list[Path]
         List of matching YAML files as Path objects
 
     Raises
@@ -165,6 +168,10 @@ def parse_input_arguments() -> argparse.Namespace:
                         default=["1H", "3H", "12H", "24H"],
                         help="List of time resolutions. Default: 1H 3H 12H 24H")
 
+    parser.add_argument("-rmc", "--remove_configs",
+                        action="store_false",
+                        help="Remove configs, remove modified config files. Default: true")
+
     # Parse arguments
     args = parser.parse_args()
 
@@ -178,6 +185,56 @@ def parse_input_arguments() -> argparse.Namespace:
     return args
 
 
+def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_resolution: str) -> pathlib.Path:
+    """
+    Create a scenario section for a configuration dictionary.
+
+    Parameters
+    ----------
+    file_name: pathlib.Path
+        Original input yaml configuration file
+    number_clusters : str
+        The number of clusters to be used in the scenario.
+    time_resolution : str
+        The time resolution for the scenario (e.g., '2H' for 2-hour intervals).
+        Applied to both 'opts' and 'sector_opts' in the scenario configuration.
+
+    Returns
+    -------
+    pathlib.Path:
+        Output yaml configuration file
+
+    """
+
+    # Create a YAML loader with precise formatting
+    yaml_loader = ruamel.yaml.YAML()
+    yaml_loader.preserve_quotes = True  # Preserve quote styles
+    yaml_loader.width = 4096  # Prevent unexpected line breaks
+
+    with open(file_name, "r") as file:
+        original_yaml = yaml_loader.load(file)
+
+    scenario_section = {
+        "scenario": {
+            "clusters": number_clusters,
+            "opts": time_resolution,
+            "sector_opts": time_resolution,
+            "planning_horizons": 2050
+        }
+    }
+
+    # Merge the new section into the existing YAML
+    original_yaml.update(scenario_section)
+
+    output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}')
+
+    # Write the updated YAML to a file
+    with open(output_file_name, "w") as file:
+        yaml_loader.dump(original_yaml, file)
+
+    return output_file_name
+
+
 if __name__ == "__main__":
 
     # Parse input arguments
@@ -186,4 +243,11 @@ if __name__ == "__main__":
     # Select yaml files based on benchmark name
     list_yamls = select_yaml_files(input_args.benchmark_name)
 
-    print(list_yamls)
+    # Generate the yaml files
+    for yaml_file_name in list_yamls:
+        for n_clusters in input_args.clusters:
+            for t_res in input_args.time_resolutions:
+                output_yaml_file_name = add_scenario_section(yaml_file_name, n_clusters, t_res)
+
+                if input_args.remove_configs:
+                    output_yaml_file_name.unlink(missing_ok=True)
