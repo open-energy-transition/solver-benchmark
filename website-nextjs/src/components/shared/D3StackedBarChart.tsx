@@ -48,7 +48,7 @@ const D3StackedBarChart = ({
     // Scales
     const xScale = d3
       .scaleBand()
-      .domain(data.map((d) => d[categoryKey].toString()))
+      .domain(data.map((d) => d[categoryKey]?.toString()))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
@@ -73,7 +73,7 @@ const D3StackedBarChart = ({
       .selectAll("rect")
       .data((d) => d)
       .join("rect")
-      .attr("x", (d) => xScale(d.data[categoryKey].toString()) || 0)
+      .attr("x", (d) => xScale((d.data[categoryKey] || "").toString()) || 0)
       .attr("y", (d) => yScale(d[1]))
       .attr("height", (d) => yScale(d[0]) - yScale(d[1]))
       .attr("width", xScale.bandwidth())
