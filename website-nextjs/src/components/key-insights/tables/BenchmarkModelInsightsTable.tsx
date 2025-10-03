@@ -28,7 +28,7 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Framework",
         accessorKey: "framework",
-        size: 120,
+        size: 180,
         enableColumnFilter: false,
         enableSorting: true,
         sortingFn: "alphanumeric",
@@ -39,7 +39,7 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Problem Class",
         accessorKey: "problemClass",
-        size: 80,
+        size: 230,
         enableColumnFilter: false,
         enableSorting: false,
       },

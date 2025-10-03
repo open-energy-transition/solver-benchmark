@@ -84,7 +84,7 @@ export function TanStackTable<T>({
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableContainerRef.current,
-    estimateSize: () => 45, // Estimated row height
+    estimateSize: () => 36, // Estimated row height
     overscan: 20,
     enabled: showAllRows,
   });
@@ -234,7 +234,7 @@ export function TanStackTable<T>({
                     >
                       <div
                         style={{
-                          height: `${rowVirtualizer.getTotalSize() - 45}px`,
+                          height: `${rowVirtualizer.getTotalSize() - 36}px`,
                         }}
                       />
                     </td>
@@ -249,7 +249,7 @@ export function TanStackTable<T>({
                         data-index={virtualRow.index}
                         className={
                           virtualRow.index % 2
-                            ? "bg-[#BFD8C71A] bg-opacity-10"
+                            ? "bg-[#BFD8C71A] bg-opacity-10 !w-max"
                             : ""
                         }
                         style={{

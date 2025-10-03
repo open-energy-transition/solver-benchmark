@@ -34,7 +34,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       {
         header: "BENCHMARK NAME",
         accessorKey: "name",
-        size: 200,
+        size: 230,
         enableSorting: true,
         filterFn: filterSelect,
         cell: (info) => (
