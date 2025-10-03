@@ -1,7 +1,7 @@
 ## (optional) link to the modelling framework repo used to generate the benchmark(s) (e.g. https://github.com/PyPSA/pypsa-eur)
 benchmarks:
   Benchmark_name: 1-3h-1y
-    Short description: Energy system model of the Netherlands (1n = 1 node) with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of the Netherlands (1n = 1 node) with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251002
@@ -23,7 +23,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 20-3h-1y
-    Short description: Energy system model of the Netherlands (20n = 20 nodes) with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of the Netherlands (20n = 20 nodes) with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251002
