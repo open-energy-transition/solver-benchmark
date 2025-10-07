@@ -1,137 +1,47 @@
-# Reproducible Solver Benchmark Infrastructure
+# OpenTofu
 
-This module automates the deployment of VMs on Google Cloud Platform to run energy system model benchmarks. Each VM is provisioned based on YAML configuration files that specify the benchmarks to run.
+- [Manifesto](https://opentofu.org/manifesto)
+- [About the OpenTofu fork](https://opentofu.org/fork)
+- [How to install](https://opentofu.org/docs/intro/install)
+- [Join our Slack community!](https://opentofu.org/slack)
+- [Weekly OpenTofu Status Updates](WEEKLY_UPDATES.md)
 
-## Prerequisites
+![](https://raw.githubusercontent.com/opentofu/brand-artifacts/main/full/transparent/SVG/on-dark.svg#gh-dark-mode-only)
+![](https://raw.githubusercontent.com/opentofu/brand-artifacts/main/full/transparent/SVG/on-light.svg#gh-light-mode-only)
 
-- [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine
-- A Google Cloud Platform account with a project set up
-- GCP service account credentials with appropriate permissions
-- SSH key pair (optional, for VM access)
+OpenTofu is an OSS tool for building, changing, and versioning infrastructure safely and efficiently. OpenTofu can manage existing and popular service providers as well as custom in-house solutions.
 
-## Quick Start
+The key features of OpenTofu are:
 
-### 1. Clone the Repository
+- **Infrastructure as Code**: Infrastructure is described using a high-level configuration syntax. This allows a blueprint of your datacenter to be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
 
-```bash
-git clone https://github.com/your-repo/solver-benchmark-infrastructure.git
-cd solver-benchmark-infrastructure
-```
+- **Execution Plans**: OpenTofu has a "planning" step where it generates an execution plan. The execution plan shows what OpenTofu will do when you call apply. This lets you avoid any surprises when OpenTofu manipulates infrastructure.
 
-### 2. Create Your Benchmark Files
+- **Resource Graph**: OpenTofu builds a graph of all your resources, and parallelizes the creation and modification of any non-dependent resources. Because of this, OpenTofu builds infrastructure as efficiently as possible, and operators get insight into dependencies in their infrastructure.
 
-Place your benchmark YAML files in the `benchmarks` directory. Example:
+- **Change Automation**: Complex changesets can be applied to your infrastructure with minimal human interaction. With the previously mentioned execution plan and resource graph, you know exactly what OpenTofu will change and in what order, avoiding many possible human errors.
 
-```yaml
-machine-type: c4-standard-2
-zone: "europe-west4-b"
-years: [2023, 2024]
-benchmarks:
-    Short description: Sector-coupled PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-    Model name: PyPSA-Eur
-    Version: 0.13.0 (commit 8f1a6b1)
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-    Time horizon: Single period (1 year)
-    MILP features: None
-    Sizes:
-    - Name: 2-24h
-      Size: XS
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 2
-      N. of constraints: 132272
-      N. of variables: 63264
-    - Name: 6-24h
-      Size: XS
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 6
-      N. of constraints: 377463
-      N. of variables: 178831
-    # ... additional configuration
-```
+## Getting help and contributing
 
-### 3. Set Up Variables
+- Have a question? Post it in [GitHub Discussions](https://github.com/orgs/opentofu/discussions) or on the [OpenTofu Slack](https://opentofu.org/slack/)!
+- Want to contribute? Please read the [Contribution Guide](CONTRIBUTING.md).
+- Want to stay up to date? Read the [weekly updates](WEEKLY_UPDATES.md), [TSC summary](TSC_SUMMARY.md), or join the [community meetings](https://meet.google.com/xfm-cgms-has) on Wednesdays at 14:30 CET / 8:30 AM Eastern / 5:30 AM Western / 19:00 India time on this link: https://meet.google.com/xfm-cgms-has ([📅 calendar link](https://calendar.google.com/calendar/event?eid=NDg0aWl2Y3U1aHFva3N0bGhyMHBhNzdpZmsgY18zZjJkZDNjMWZlMGVmNGU5M2VmM2ZjNDU2Y2EyZGQyMTlhMmU4ZmQ4NWY2YjQwNzUwYWYxNmMzZGYzNzBiZjkzQGc))
 
-Create a `terraform.tfvars` file with your GCP configuration:
+> [!TIP]
+> For more OpenTofu events, subscribe to the [OpenTofu Events Calendar](https://calendar.google.com/calendar/embed?src=c_3f2dd3c1fe0ef4e93ef3fc456ca2dd219a2e8fd85f6b40750af16c3df370bf93%40group.calendar.google.com)!
 
-```hcl
-project_id           = "your-gcp-project-id"
-zone                 = "europe-west4-a" # This will be overriden if a value is specified in the input metadata file
-gcp_service_key_path = "/path/to/your-gcp-credentials.json"
-ssh_user             = "your-username"  # Optional
-ssh_key_path         = "~/.ssh/id_rsa.pub"  # Optional
-```
+## Reporting security vulnerabilities
+If you've found a vulnerability or a potential vulnerability in OpenTofu please follow [Security Policy](https://github.com/opentofu/opentofu/security/policy). We'll send a confirmation email to acknowledge your report, and we'll send an additional email when we've identified the issue positively or negatively.
 
-### 4. Initialize OpenTofu
+## Reporting possible copyright issues
 
-```bash
-tofu init
-```
+If you believe you have found any possible copyright or intellectual property issues, please contact liaison@opentofu.org. We'll send a confirmation email to acknowledge your report.
 
-### 5. Plan Your Deployment
+## Registry Access
 
-```bash
-tofu plan
-```
+In an effort to comply with applicable sanctions, we block access from specific countries of origin.
 
-This will show you what resources will be created based on your benchmark files.
+## License
 
-### 6. Deploy the Infrastructure
+[Mozilla Public License v2.0](https://github.com/opentofu/opentofu/blob/main/LICENSE)
 
-```bash
-tofu apply
-```
-
-### 7. Monitor Your Instances
-
-Once deployed, you'll see the IP addresses of your VMs:
-
-```
-Outputs:
-
-instance_ips = {
-  "benchmark-instance-pypsa-eur-sec" = "34.90.XX.XX"
-  # ...
-}
-```
-
-### 8. Destroy Infrastructure When Done
-
-Once the benchmarks finish, by default the VM will auto delete its self. If you change `auto_destroy_vm`
-to `false` in the configuration option, you can delete the whole infrastructure with:
-
-```bash
-tofu destroy
-```
-
-## Configuration Options
-
-### Benchmark YAML Format
-
-Each YAML file defines a benchmark with specific configuration:
-
-- `machine-type`: GCP machine type to use
-- `year`: Benchmark environment year
-- `benchmarks`: Model configurations to benchmark
-
-### OpenTofu Variables
-
-| Variable | Description                                                                     | Default            |
-|----------|---------------------------------------------------------------------------------|--------------------|
-| `project_id` | GCP Project ID                                                                  | *Required*         |
-| `gcp_service_key_path` | Path to GCP credentials                                                         | *Required*         |
-| `zone` | GCP Zone (Will be overriden if a value is specified in the input metadata file) | europe-west4-a     |
-| `instance_name` | Base name for instances                                                         | benchmark-instance |
-| `startup_script_path` | Path to startup script                                                          | startup-script.sh  |
-| `enable_gcs_upload` | Enable/disable results upload to GCS bucket                                     | true               |
-| `gcs_bucket_name` | Name of the GCS bucket to upload the results                                    | solver-benchmarks  |
-| `auto_destroy_vm` | Enable/disable auto deletion of VM on benchmark completion                      | true               |
-| `reference_benchmark_interval` | Time interval in seconds to run the reference benchmark                         | 3600               |
-| `ssh_user` | SSH username                                                                    | ""                 |
-| `ssh_key_path` | Path to SSH public key                                                          | ""                 |
-
-## Troubleshooting
-Check logs with `tail -f /var/log/startup-script.log`
