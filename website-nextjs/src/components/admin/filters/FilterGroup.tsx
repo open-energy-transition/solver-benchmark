@@ -103,7 +103,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 }`}
               >
                 <InfoPopup
-                  disabled={item.length < 32}
+                  disabled={(item?.length ?? 0) < 32}
                   trigger={() => <span>{item}</span>}
                   position="top right"
                   closeOnDocumentClick
