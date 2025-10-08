@@ -1,0 +1,135 @@
+## https://github.com/ZEN-universe/ZEN-garden
+benchmarks:
+  zen-garden-eur-PI:
+    Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion. A cumulative carbon budget is set for the carbon emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI
+    Version:
+    Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich https://zenodo.org/records/11074289
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-2ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://drive.google.com/drive/folders/19pgwi9-nWMWkbvIiRtJs6H3MEnaFzEOY?usp=sharing
+      Temporal resolution: 2 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-10ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_10.mps
+      Temporal resolution: 10 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-50ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_50.mps
+      Temporal resolution: 50 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-30ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_30.mps
+      Temporal resolution: 30 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-100ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_100.mps
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 28-200ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_200.mps
+      Temporal resolution: 200 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+  zen-garden-eur-PI-annual-emission-limit:
+    Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion. Annual emissions targets are set for each year resulting in the same carbon emissions as the carbon emission budget.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-annual-emission-limit
+    Version:
+    Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+      - Name: 28-100ts
+        Size: # Automatically assigned when running the benchmark
+        URL: https://drive.google.com/drive/folders/1zpFhsmQwWixkDvF9_tbT4qIH75nsM9UC?usp=sharing
+        Temporal resolution: 100 time slices
+        Spatial resolution: 28 nodes
+        Realistic: true
+        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+        Num. constraints: # Automatically assigned when running the benchmark
+        Num. variables: # Automatically assigned when running the benchmark
+  zen-garden-eur-PI-constrained-expansion:
+    Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and constrained technology expansion. A cumulative carbon budget is set for the carbon emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-constrained-expansion
+    Version:
+    Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+      - Name: 28-100ts
+        Size: # Automatically assigned when running the benchmark
+        URL: https://drive.google.com/drive/folders/11EiArNqSdn49voTqmTYfJJO5-2XtBWJj?usp=sharing
+        Temporal resolution: 100 time slices
+        Spatial resolution: 28 nodes
+        Realistic: true
+        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+        Num. constraints: # Automatically assigned when running the benchmark
+        Num. variables: # Automatically assigned when running the benchmark
+  zen-garden-eur-PI-no-storage:
+    Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion without storage technologies. A cumulative carbon budget is set for the carbon emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-no-storage
+    Version:
+    Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+      - Name: 28-100ts
+        Size: # Automatically assigned when running the benchmark
+        URL: https://drive.google.com/drive/folders/1TG0mfHAd7HdqULxlREEWDqthpYAbvZ3X?usp=sharing
+        Temporal resolution: 100 time slices
+        Spatial resolution: 28 nodes
+        Realistic: true
+        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+        Num. constraints: # Automatically assigned when running the benchmark
+        Num. variables: # Automatically assigned when running the benchmark
