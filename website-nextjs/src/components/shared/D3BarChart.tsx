@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { createD3Tooltip } from "@/utils/chart";
 
 interface DataPoint {
   category: string;
@@ -45,19 +46,7 @@ const D3BarChart = ({
       .style("background", "white")
       .style("overflow", "visible");
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
     const xScale = d3
@@ -83,9 +72,7 @@ const D3BarChart = ({
       .call((g) => {
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       });
 
     svg
@@ -95,9 +82,7 @@ const D3BarChart = ({
       .call((g) => {
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       });
 
     // Group data by group
@@ -186,7 +171,7 @@ const D3BarChart = ({
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey 4xl:text-lg">
+      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey">
         {title}
       </div>
       {/* Legend */}
@@ -194,7 +179,7 @@ const D3BarChart = ({
         {Array.from(new Set(data.map((d) => d.group))).map((group) => (
           <div
             key={group}
-            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
+            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
           >
             <span
               className="w-2 h-2 rounded-full"

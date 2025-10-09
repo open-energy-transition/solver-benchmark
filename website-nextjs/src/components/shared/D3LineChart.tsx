@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverYearlyChartData } from "@/types/performance-history";
-import { getChartColor } from "@/utils/chart";
+import {
+  createD3Tooltip,
+  getSolverColor,
+  roundUpToNearest,
+} from "@/utils/chart";
 import { IResultState } from "@/types/state";
 
 type SolverType = "glpk" | "scip" | "highs";
@@ -14,6 +18,8 @@ interface ID3ChartLineChart {
   className?: string;
   chartData: SolverYearlyChartData[];
   xAxisTooltipFormat?: (value: number | string) => string;
+  maxYValue?: number;
+  showMaxLine?: boolean;
 }
 
 const D3ChartLineChart = ({
@@ -22,6 +28,8 @@ const D3ChartLineChart = ({
   className = "",
   chartData = [],
   xAxisTooltipFormat,
+  maxYValue,
+  showMaxLine = false,
 }: ID3ChartLineChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -32,8 +40,8 @@ const D3ChartLineChart = ({
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
-      (acc, solver: string, index: number) => {
-        acc[solver] = getChartColor(index);
+      (acc, solver: string) => {
+        acc[solver] = getSolverColor(solver);
         return acc;
       },
       {} as Record<string, string>,
@@ -57,33 +65,27 @@ const D3ChartLineChart = ({
       .style("overflow", "visible");
 
     // Tooltip container
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
     const xScale = d3
       .scalePoint()
       .domain(chartData.map((d) => d.year.toString()))
       .range([margin.left + 20, width - margin.right]);
+
+    const yDomainMax =
+      maxYValue !== undefined
+        ? maxYValue
+        : (d3?.max(chartData, (d) => d.value) ?? 0) + 1;
+
     const yScale = d3
       .scaleLinear()
-      .domain([0, (d3?.max(chartData, (d) => d.value) ?? 0) + 1])
+      .domain([0, roundUpToNearest(yDomainMax)])
       .range([height - margin.bottom, margin.top]);
 
     // Axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
+    const yAxis = d3.axisLeft(yScale).ticks(10).tickSizeOuter(0);
 
     svg
       .append("g")
@@ -94,16 +96,14 @@ const D3ChartLineChart = ({
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "text-xs 4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC").attr("class", "text-xs");
       })
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
       .attr("fill", "#8C8C8C")
       .text("Year")
-      .attr("class", "text-xs 4xl:text-base");
+      .attr("class", "text-xs");
 
     svg
       .append("g")
@@ -113,9 +113,7 @@ const D3ChartLineChart = ({
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
         g.selectAll("line").attr("stroke", "#A1A9BC");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "text-xs 4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC").attr("class", "text-xs");
       })
       .append("text")
       .attr("x", -height / 2)
@@ -123,7 +121,7 @@ const D3ChartLineChart = ({
       .attr("fill", "#8C8C8C")
       .text(title)
       .attr("text-anchor", "middle")
-      .attr("class", "text-xs 4xl:text-base -rotate-90");
+      .attr("class", "text-xs -rotate-90");
 
     // Group data by solver
     const groupedData = d3.group(chartData, (d) => d.solver);
@@ -161,6 +159,7 @@ const D3ChartLineChart = ({
           .html(
             `<strong>Solver:</strong> ${d.solver}<br>
              <strong>Year:</strong> ${d.year}<br>
+             <strong>Version:</strong> ${d.version}<br>
              ${
                xAxisTooltipFormat
                  ? xAxisTooltipFormat(d.value)
@@ -202,24 +201,47 @@ const D3ChartLineChart = ({
         });
     svg.append("g").call(grid);
 
+    if (showMaxLine && maxYValue !== undefined) {
+      svg
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", yScale(maxYValue))
+        .attr("y2", yScale(maxYValue))
+        .attr("stroke", "#FF6B6B")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "8,4")
+        .attr("opacity", 0.8);
+
+      svg
+        .append("text")
+        .attr("x", width - margin.right - 5)
+        .attr("y", yScale(maxYValue) - 5)
+        .attr("text-anchor", "end")
+        .attr("fill", "#FF6B6B")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold")
+        .text(`Max: ${maxYValue}`);
+    }
+
     return () => {
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData]);
+  }, [chartData, maxYValue, showMaxLine]);
 
   return (
-    <div className={`bg-white p-4 rounded-xl ${className}`}>
+    <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="items-start font-semibold text-[#8C8C8C] text-xs 4xl:text-base mr-1 flex">
+        <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">
           {Object.keys(solverColors).map((solverKey) => (
             <div
               key={solverKey}
-              className="py-1 px-5 uppercase bg-stroke 4xl:text-sm text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+              className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
             >
               <CircleIcon
                 style={{ color: solverColors[solverKey] }}

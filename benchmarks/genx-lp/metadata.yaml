@@ -2,115 +2,128 @@
 benchmarks:
   genx-1_three_zones-no_uc:
     Short description: Three Zones, a one-year example with hourly resolution, contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114590
       Num. variables: 103506
   genx-2_three_zones_w_electrolyzer-no_uc:
     Short description: This is a one-year example with hourly resolution which contains three zones representing Massachusetts, Connecticut, and Maine. It is designed to show the electrolyzer feature in GenX. The sixteen represented resources include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 175579
       Num. variables: 153413
   genx-3_three_zones_w_co2_capture-no_uc:
     Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This examples shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX.
+    Modelling framework: GenX
     Model name: GenX
     Version:
-    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;  Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114590
       Num. variables: 103506
   genx-4_three_zones_w_policies_slack-no_uc:
     Short description: "This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. It additionally contains example input files (inside the policies folder) establishing slack variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap, etc.). These slack variables allow the relevant constraints to be violated at the cost of a specified objective function penalty, which can be used to either identify problematic constraints without causing infeasibilities in GenX, or to set price caps beyond which policies are no longer enforced. These slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv, CO2_cap_slack.csv, Energy_share_requirement_slack.csv, or the PriceCap column in Minimum_capacity_requirement.csv and Maximum_capacity_requirement.csv) are present. If any of these inputs are not present, GenX will instantiate the relevant policy as a hard constraint, which will throw an infeasibility error if violated."
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 127529
       Num. variables: 121992
   genx-6_three_zones_w_multistage-no_uc:
     Short description: This is a toy multi-stage example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to run multi-stage investment planning models. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: Infrastructure
-    Sectors: Power
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Multi-period (3 years)
     MILP features: None
     Sizes:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114708
       Num. variables: 103612
   genx-10_IEEE_9_bus_DC_OPF-no_uc:
     Short description: This examples shows the usage of DC_OPF related functions of GenX. The IEEE 9-bus system is a standard test case for power system optimization problems. In this example, there are three thermal generators and three loads.
+    Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
-    Technique: LP
-    Kind of problem: DC optimal power flow
-    Sectors: Power
+    Problem class: LP
+    Application: DC Optimal Power Flow
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 9-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 9
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
       Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 114708
       Num. variables: 103612

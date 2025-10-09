@@ -1,9 +1,10 @@
 import { ArrowIcon } from "@/assets/icons";
+import InfoPopup from "@/components/common/InfoPopup";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import React, { useState } from "react";
-import Popup from "reactjs-popup";
 
 interface FilterGroupProps {
-  title: string;
+  title: string | React.ReactNode;
   icon: React.ReactNode;
   items: string[];
   selectedItems?: string[];
@@ -30,21 +31,31 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   uppercase = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const isMobile = useIsMobile();
 
+  // Auto collapse on mobile
+  React.useEffect(() => {
+    if (isMobile) {
+      setIsExpanded(false);
+    } else {
+      setIsExpanded(true);
+    }
+  }, [isMobile]);
   return (
-    <div
-      className={`text-xs border-b xl:border-b-0 border-stroke w-full ${className}`}
-    >
-      <div className="flex items-center justify-between pr-3 border-y border-stroke bg-white">
-        <div className="flex items-center border-b-0 border-stroke p-2 gap-2 4xl:text-lg">
+    <div className={`border-b xl:border-b-0 border-stroke w-full ${className}`}>
+      <div
+        onClick={() => isMobile && setIsExpanded(!isExpanded)}
+        className="flex items-center justify-between pr-2 rounded-lg bg-white"
+      >
+        <div className="flex items-center border-b-0 border-stroke p-2 pr-0 gap-2">
           <input
-            className="size-3 accent-navy rounded checked:before:text-xs "
+            className="size-3.5 accent-navy rounded checked:before:text-xs "
             type="checkbox"
             checked={items.every((item) => selectedItems.includes(item))}
             onChange={onSelectAll}
           />
           {icon}
-          <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+          <span className="overflow-hidden whitespace-nowrap text-ellipsis tag-line-sm">
             {title}
           </span>
           {selectedItems.length > 0 && selectedItems.length < items.length && (
@@ -76,7 +87,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
         <div className={`grid ${gridClassName} text-xs`}>
           {[...items].sort().map((item) => (
             <div
-              className="flex items-center gap-1 p-3 px-2.5 relative group min-w-[72px]"
+              className="flex items-center gap-1 p-3 px-2.5 relative group min-w-max max-w-max"
               key={item}
             >
               <input
@@ -87,24 +98,22 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               />
               <span
                 onClick={() => onItemChange(item)}
-                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[70%] whitespace-nowrap overflow-hidden ${itemClassName} ${
+                className={`w-max cursor-pointer text-ellipsis max-w-[90%] group-hover:max-w-[90%] whitespace-nowrap overflow-hidden ${itemClassName} ${
                   uppercase ? "uppercase" : ""
                 }`}
               >
-                <Popup
-                  on={["hover"]}
+                <InfoPopup
+                  disabled={(item?.length ?? 0) < 32}
                   trigger={() => <span>{item}</span>}
                   position="top right"
                   closeOnDocumentClick
                   arrowStyle={{ color: "#ebeff2" }}
                 >
-                  <div className="bg-stroke p-2 rounded 4xl:text-lg">
-                    {item}
-                  </div>
-                </Popup>
+                  <div>{item}</div>
+                </InfoPopup>
               </span>
               <span
-                className="text-navy font-bold text-[9px] hidden group-hover:inline-block cursor-pointer"
+                className="text-navy font-bold text-[9px] mt-0.5 absolute pr-0.5 -right-3 bg-[#F4F6FA] z-50 hidden group-hover:inline-block cursor-pointer"
                 onClick={() => onItemOnly(item)}
               >
                 only

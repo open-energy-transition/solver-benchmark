@@ -1,24 +1,13 @@
-import React, { useMemo, useState } from "react";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  getFacetedUniqueValues,
-  useReactTable,
-  SortingState,
-  ColumnFiltersState,
-} from "@tanstack/react-table";
-import Popup from "reactjs-popup";
+import React, { useMemo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import SortIcon from "@/components/shared/tables/SortIcon";
-import { ArrowRightIcon } from "@/assets/icons";
-import PaginationTable from "@/components/shared/tables/PaginationTable";
+import { filterSelect } from "@/utils/table";
+import { TanStackTable } from "@/components/shared/tables/TanStackTable";
+import { FilterIcon } from "@/assets/icons";
+import InfoPopup from "@/components/common/InfoPopup";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -47,9 +36,54 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "name",
         size: 200,
         enableSorting: true,
+        filterFn: filterSelect,
         cell: (info) => (
-          <Popup
-            on={["hover"]}
+          <Link
+            className="font-bold inline-block"
+            style={{ lineHeight: "1.5" }}
+            href={PATH_DASHBOARD.benchmarkSet.one.replace(
+              "{name}",
+              info.row.original.name,
+            )}
+          >
+            <InfoPopup
+              disabled={((info.getValue() as string) || "").length <= 30}
+              trigger={() => (
+                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                  {info.getValue() as string}
+                </div>
+              )}
+              position="top center"
+              closeOnDocumentClick
+              arrowStyle={{ color: Color.Stroke }}
+            >
+              <div> {info.getValue() as string} </div>
+            </InfoPopup>
+          </Link>
+        ),
+      },
+      {
+        header: "MODEL NAME",
+        accessorKey: "modelName",
+        filterFn: filterSelect,
+        cell: (info) => info.getValue(),
+        size: 110,
+      },
+      {
+        header: "PROBLEM CLASS",
+        accessorKey: "problemClass",
+        filterFn: filterSelect,
+        size: 120,
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "APPLICATION",
+        accessorKey: "application",
+        filterFn: filterSelect,
+        size: 200,
+        cell: (info) => (
+          <InfoPopup
+            disabled={((info.getValue() as string) || "").length <= 30}
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {info.getValue() as string}
@@ -59,126 +93,65 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
-              {" "}
-              {info.getValue() as string}{" "}
-            </div>
-          </Popup>
+            <div> {info.getValue() as string} </div>
+          </InfoPopup>
         ),
       },
       {
-        header: "MODEL NAME",
-        accessorKey: "modelName",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "TECHNIQUE",
-        accessorKey: "technique",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "PROBLEM KIND",
-        accessorKey: "kindOfProblem",
+        header: "SECTORAL FOCUS",
+        accessorKey: "sectoralFocus",
+        size: 125,
+        filterFn: filterSelect,
         cell: (info) => info.getValue(),
       },
       {
         header: "SECTORS",
         accessorKey: "sectors",
-        cell: (info) => info.getValue(),
-      },
-      {
-        header: "DETAILS",
-        accessorKey: "details",
-        enableSorting: false,
+        size: 100,
+        filterFn: filterSelect,
         cell: (info) => (
-          <Link
-            className="hover:text-white hover:bg-green-pop text-green-pop border border-green-pop border-opacity-80 rounded-lg py-2 px-4 flex w-max items-center"
-            href={PATH_DASHBOARD.benchmarkDetail.one.replace(
-              "{name}",
-              info.row.original.name,
+          <InfoPopup
+            trigger={() => (
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                {info.getValue() as string}
+              </div>
             )}
+            position="top center"
+            disabled={((info.getValue() as string) || "").length <= 30}
+            closeOnDocumentClick
+            arrowStyle={{ color: Color.Stroke }}
           >
-            View Details
-            <ArrowRightIcon
-              className="w-3 h-3 text-navy fill-none stroke-green-pop hover:stroke-white"
-              strokeOpacity="0.5"
-            />
-          </Link>
+            <div> {info.getValue() as string} </div>
+          </InfoPopup>
         ),
       },
     ],
     [],
   );
 
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const table = useReactTable({
-    data: memoizedMetaData,
-    columns,
-    state: {
-      sorting,
-      columnFilters,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: false,
-  });
-
   return (
-    <div className="py-2">
-      <div className="rounded-xl overflow-auto">
-        <table className="table-auto bg-white w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="text-start text-navy py-4 px-6 cursor-pointer"
-                  >
-                    <div
-                      className="flex gap-2 items-center 4xl:text-xl"
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                      {/* Sort */}
-                      <SortIcon
-                        canSort={header.column.getCanSort()}
-                        sortDirection={header.column.getIsSorted()}
-                      />
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-navy text-start py-2 px-6 4xl:text-xl"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div>
+      <p className="text-xs my-4 md:mt-0">
+        <span>
+          To search for a particular benchmark problem by name, click the filter
+          icon
+        </span>
+        <span className="inline-flex gap-2">
+          <FilterIcon className="size-4 shrink-0" />
+        </span>
+        <span>on the benchmark name column and type to search</span>
+      </p>
+      <div>
+        <TanStackTable showAllRows data={memoizedMetaData} columns={columns} />
       </div>
-      {/* Pagination */}
-      <PaginationTable<IColumnTable> table={table} />
+      <div>
+        <div className="text-xs my-4">
+          <div className="text-dark-grey tag-line-xxs">
+            Showing {memoizedMetaData.length} benchmark problems matching the
+            filters
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

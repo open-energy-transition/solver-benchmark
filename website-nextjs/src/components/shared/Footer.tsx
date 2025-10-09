@@ -6,7 +6,7 @@ const Footer = () => {
     <footer>
       <div className="h-1 w-full border-b border-[#e5e7eb] mx-auto pt-10"></div>
       <div>
-        <div className="grid px-4 md:flex gap-1 py-6 justify-start md:justify-center items-center text-navy text-xs 4xl:text-lg">
+        <div className="grid px-4 md:flex gap-1 pt-6 pb-24 lg:pb-6 justify-start md:justify-center items-center text-navy text-xs">
           <Image width={54} height={25} src="/logo/oet.png" alt="oet-logo" />
           <span>© 2025</span>
           <Link
@@ -19,7 +19,7 @@ const Footer = () => {
             Supported by{" "}
             <Link
               href="https://www.breakthroughenergy.org/"
-              className="font-bold underline"
+              className="font-bold hover:underline underline-offset-4"
             >
               Breakthrough Energy
             </Link>
@@ -29,7 +29,7 @@ const Footer = () => {
             Powered by the{" "}
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
-              className="underline"
+              className="hover:underline underline-offset-4"
             >
               open source community
             </Link>

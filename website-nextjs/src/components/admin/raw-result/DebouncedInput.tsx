@@ -46,6 +46,7 @@ export default function DebouncedInput({
           {...props}
           style={autoWidth ? { width: `${width}px` } : undefined}
           value={value}
+          min={props.min}
           onChange={(e) => setValue(e.target.value)}
         />
         {autoWidth && (
@@ -59,7 +60,7 @@ export default function DebouncedInput({
         )}
       </div>
       {props.type === "number" && (
-        <div className="flex flex-col cursor-pointer">
+        <div className="flex flex-col cursor-pointer ml-1">
           <ArrowUpTriangleFillIcon
             className="rotate-180 size-2 hover:text-blue-500"
             onClick={() => {
@@ -76,7 +77,10 @@ export default function DebouncedInput({
             onClick={() => {
               if (props.type === "number") {
                 const newValue = Number(value) - (Number(props.step) || 1);
-                if (!props.min || newValue >= Number(props.min)) {
+                if (
+                  (!props.min && props.min !== 0) ||
+                  newValue >= Number(props.min)
+                ) {
                   setValue(newValue);
                 }
               }

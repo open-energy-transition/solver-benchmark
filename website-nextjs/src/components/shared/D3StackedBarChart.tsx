@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { ID3StackedBarChart } from "@/types/chart";
+import { createD3Tooltip } from "@/utils/chart";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 const D3StackedBarChart = ({
   title,
@@ -18,12 +20,13 @@ const D3StackedBarChart = ({
 }: ID3StackedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const windowWidth = useDebouncedWindowWidth(200);
 
   useEffect(() => {
     if (!data.length) return;
 
     const width = containerRef.current?.clientWidth || 400;
-    const margin = { top: 20, right: 10, bottom: 40, left: 40 };
+    const margin = { top: 20, right: 10, bottom: 60, left: 20 };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -45,7 +48,7 @@ const D3StackedBarChart = ({
     // Scales
     const xScale = d3
       .scaleBand()
-      .domain(data.map((d) => d[categoryKey].toString()))
+      .domain(data.map((d) => d[categoryKey]?.toString()))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
@@ -58,17 +61,7 @@ const D3StackedBarChart = ({
       .range([height - margin.bottom, margin.top]);
 
     // Tooltip
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Create bars
     svg
@@ -80,7 +73,7 @@ const D3StackedBarChart = ({
       .selectAll("rect")
       .data((d) => d)
       .join("rect")
-      .attr("x", (d) => xScale(d.data[categoryKey].toString()) || 0)
+      .attr("x", (d) => xScale((d.data[categoryKey] || "").toString()) || 0)
       .attr("y", (d) => yScale(d[1]))
       .attr("height", (d) => yScale(d[0]) - yScale(d[1]))
       .attr("width", xScale.bandwidth())
@@ -117,8 +110,7 @@ const D3StackedBarChart = ({
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
           .style("text-anchor", rotateXAxisLabels ? "end" : "middle")
-          .attr("transform", rotateXAxisLabels ? "rotate(-45)" : "rotate(0)")
-          .attr("class", "4xl:text-base");
+          .attr("transform", rotateXAxisLabels ? "rotate(-45)" : "rotate(0)");
       });
 
     // Y-axis
@@ -129,9 +121,7 @@ const D3StackedBarChart = ({
       .call((g) => {
         g.selectAll(".domain").attr("display", "none");
         g.selectAll(".tick line").attr("display", "none");
-        g.selectAll("text")
-          .attr("fill", "#A1A9BC")
-          .attr("class", "4xl:text-base");
+        g.selectAll("text").attr("fill", "#A1A9BC");
       });
     if (showXaxisLabel) {
       // Update axis labels
@@ -167,26 +157,29 @@ const D3StackedBarChart = ({
     yAxisLabel,
     categoryKey,
     rotateXAxisLabels,
+    windowWidth,
   ]);
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey 4xl:text-base">
-        {title}
-      </div>
-      <div className="flex gap-2 ml-4">
-        {Object.keys(colors).map((solverKey) => (
-          <div
-            key={solverKey}
-            className="py-1 px-2 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max 4xl:text-base"
-          >
-            <CircleIcon
-              style={{ color: colors[solverKey] }}
-              className={"size-2"}
-            />
-            {solverKey}
-          </div>
-        ))}
+      <div className="flex justify-between items-center">
+        <div className="tag-line-xs text-center text-dark-grey">
+          {typeof title === "string" ? title : title}
+        </div>
+        <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
+          {Object.keys(colors).map((solverKey) => (
+            <div
+              key={solverKey}
+              className="capitalize text-navy tag-line-xs flex items-center gap-1 rounded-md h-max w-max"
+            >
+              <CircleIcon
+                style={{ color: colors[solverKey] }}
+                className={"size-2"}
+              />
+              {solverKey}
+            </div>
+          ))}
+        </div>
       </div>
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>

@@ -111,7 +111,7 @@ const ContactForm = () => {
           required
         />
       </div>
-      <div className="flex justify-start mt-6">
+      <div className="flex justify-end lg:justify-start mt-6">
         <button
           type="submit"
           className={`rounded-2xl px-12 py-4 text-base text-white font-bold bg-[#1E7A8C]
@@ -139,26 +139,15 @@ const ContactSection = () => {
           <div className="w-full md:w-1/2">
             <div
               className="
-                text-lg/1.1
+                tag-line-lg
                 uppercase
-                font-medium
-                tracking-normal
                 font-league
                 mb-4
               "
             >
               contact
             </div>
-            <div
-              className="
-                text-[2.5rem]/1.4
-                tracking-normal
-                font-extrabold
-                font-lato
-              "
-            >
-              GET IN TOUCH
-            </div>
+            <h3 className="leading-1.4 text-white">GET IN TOUCH</h3>
             <h5 className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
               issue for all feedback and suggestions!
@@ -172,6 +161,12 @@ const ContactSection = () => {
                 async: true,
                 defer: true,
                 appendTo: "head",
+              }}
+              container={{
+                element: "re-captcha",
+                parameters: {
+                  badge: "bottomleft",
+                },
               }}
             >
               <ContactForm />

@@ -9,4 +9,9 @@ function getSolverLabel(solverName: string): string {
   return solverLabels.get(normalizedSolverName) || "Unknown Solver";
 }
 
-export { getSolverLabel };
+function formatSolverWithVersion(solverWithVersion: string) {
+  const [solver, version] = solverWithVersion.split("--");
+  return `${solver} v${version}`;
+}
+
+export { getSolverLabel, formatSolverWithVersion };

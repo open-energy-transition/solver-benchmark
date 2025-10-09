@@ -47,6 +47,11 @@ echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
 ~/miniconda3/bin/conda init bash
 echo "Elapsed: $(($(date +%s)-start_time))s"
 
+# Accept Anaconda Terms of Service to avoid interactive prompts
+echo "Accepting Anaconda Terms of Service..."
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
 # Get benchmark years from instance metadata
 BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
 echo "Retrieved benchmark years: ${BENCHMARK_YEARS_JSON}"

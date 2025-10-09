@@ -1,9 +1,9 @@
 import { ArrowUpLeftIcon } from "@/assets/icons";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 interface FAQItemProps {
   question: string;
-  answer: string;
+  answer: string | ReactNode;
 }
 
 const FAQItem = ({ question = "", answer }: FAQItemProps) => {
@@ -17,21 +17,18 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
       onClick={() => setIsOpen(!isOpen)}
     >
       <div className="flex justify-between items-center">
-        <div
+        <h4
           className={`
-          font-lato
-          text-[32px]
-          leading-[100%]
-          tracking-normal
+          text-start
           ${isOpen ? "text-[#193D2C] font-bold" : "text-black font-medium"}
           `}
         >
           {question}
-        </div>
+        </h4>
         <div
           className={`${
             isOpen ? "bg-[#0C321A] " : "bg-white "
-          } rounded-full p-3.5 transition-transform duration-300 ${
+          } rounded-full p-3.5 transition-transform duration-150 ${
             isOpen ? "rotate-90" : "rotate-180"
           }`}
         >
@@ -41,10 +38,10 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
         </div>
       </div>
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out}`}
+        className={`overflow-hidden transition-all duration-150 ease-in-out}`}
         style={{ maxHeight: isOpen ? "100vh" : "0" }}
       >
-        <div className="text-lg max-w-[650px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2">
+        <div className="text-lg max-w-[1152px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2">
           {answer}
         </div>
       </div>

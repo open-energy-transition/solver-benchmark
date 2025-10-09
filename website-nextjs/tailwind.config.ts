@@ -6,7 +6,14 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: ["grid-cols-1", "grid-cols-2", "grid-cols-3"],
+  safelist: [
+    "grid-cols-1",
+    "grid-cols-2",
+    "grid-cols-3",
+    "hover:bg-lavender",
+    "bg-[#F0F4F2]",
+    "hover:bg-[#F0F4F2]",
+  ],
   theme: {
     container: {
       center: true,
@@ -58,6 +65,9 @@ export default {
       },
       padding: {
         "4.5": "1.125rem",
+      },
+      zIndex: {
+        max: "999999",
       },
     },
   },

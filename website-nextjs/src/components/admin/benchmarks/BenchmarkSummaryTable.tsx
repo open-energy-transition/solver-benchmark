@@ -11,19 +11,27 @@ const BenchmarkSummaryTable = () => {
     "Total number of benchmark problems",
     "Total number of benchmark size instances",
   ];
-  const availableModels = useSelector((state: { results: IResultState }) => {
-    return state.results.availableModels;
-  });
-
-  const availableTechniques = useSelector(
+  const availableModellingFrameworks = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.availableTechniques;
+      return state.results.availableModellingFrameworks;
     },
   );
 
-  const availableKindOfProblems = useSelector(
+  const availableProblemClasses = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.availableKindOfProblems;
+      return state.results.availableProblemClasses;
+    },
+  );
+
+  const availableApplications = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableApplications;
+    },
+  );
+
+  const availableSectoralFocus = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableSectoralFocus;
     },
   );
 
@@ -49,9 +57,10 @@ const BenchmarkSummaryTable = () => {
     }
   }
 
-  const summary = availableModels.map((model) => {
-    const techniquesMap = new Map<string, number>();
-    const kindOfProblemsMap = new Map<string, number>();
+  const summary = availableModellingFrameworks.map((framework) => {
+    const problemClassesMap = new Map<string, number>();
+    const applicationsMap = new Map<string, number>();
+    const sectoralFocusMap = new Map<string, number>();
     const sectorsMap = new Map<string, number>();
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
@@ -62,21 +71,26 @@ const BenchmarkSummaryTable = () => {
       data.set(key, (data.get(key) || 0) + 1);
     }
     Object.keys(metaData).forEach((key) => {
-      if (metaData[key].modelName === model) {
+      if (metaData[key].modellingFramework === framework) {
         // Number of problems
         updateData(nOfProblemsMap, "totalNOfDiffProblems");
         metaData[key].sizes.forEach(() => {
           updateData(nOfProblemsMap, "multipleSizes");
         });
 
-        availableTechniques.forEach((technique) => {
-          if (metaData[key].technique === technique) {
-            updateData(techniquesMap, technique);
+        availableProblemClasses.forEach((problemClass) => {
+          if (metaData[key].problemClass === problemClass) {
+            updateData(problemClassesMap, problemClass);
           }
         });
-        availableKindOfProblems.forEach((kindOfProblem) => {
-          if (metaData[key].kindOfProblem === kindOfProblem) {
-            updateData(kindOfProblemsMap, kindOfProblem);
+        availableApplications.forEach((application) => {
+          if (metaData[key].application === application) {
+            updateData(applicationsMap, application);
+          }
+        });
+        availableSectoralFocus.forEach((focus) => {
+          if (metaData[key].sectoralFocus === focus) {
+            updateData(sectoralFocusMap, focus);
           }
         });
         availableSectors.forEach((sector) => {
@@ -94,8 +108,8 @@ const BenchmarkSummaryTable = () => {
             updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
-        if (metaData[key].sizes.some((instance) => instance.size === "R")) {
-          if (metaData[key].technique === "MILP") {
+        if (metaData[key].sizes.some((instance) => instance.realistic)) {
+          if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
           updateData(realSizesMap, "real" as string);
@@ -110,11 +124,12 @@ const BenchmarkSummaryTable = () => {
       timeHorizonsMap.set("multi", -1);
     }
     return {
-      modelName: model,
-      techniques: techniquesMap,
-      kindOfProblems: kindOfProblemsMap,
+      modellingFramework: framework,
+      problemClasses: problemClassesMap,
+      applications: applicationsMap,
       milpFeatures: milpFeaturesMap,
       timeHorizons: timeHorizonsMap,
+      sectoralFocus: sectoralFocusMap,
       sectors: sectorsMap,
       realSizes: realSizesMap,
       nOfProblems: nOfProblemsMap,
@@ -122,24 +137,26 @@ const BenchmarkSummaryTable = () => {
   });
 
   return (
-    <div className="bg-white p-4 rounded-xl mb-6 space-y-8">
+    <div className="bg-[#F4F6FA] p-4 px-0 rounded-xl mb-6 space-y-8 w-full">
       <div>
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200">
+          <table className="min-w-full  -gray-200">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="border p-2 text-center"></th>
-                <th className="border p-2 text-center"></th>
-                {availableModels.map((model, modelIdx) => (
+              <tr className="bg-[#F4F6FA]">
+                <th className=" p-2 text-left tag-line-xs font-extrabold"></th>
+                <th className=" p-2 text-left tag-line-xs font-extrabold"></th>
+                {availableModellingFrameworks.map((framework, frameworkIdx) => (
                   <th
-                    key={modelIdx}
-                    className="border p-2 text-center"
+                    key={frameworkIdx}
+                    className=" p-2 text-left tag-line-xs font-extrabold"
                     colSpan={1}
                   >
-                    {model}
+                    {framework}
                   </th>
                 ))}
-                <th className="border p-2 text-center">Total</th>
+                <th className=" p-2 text-left tag-line-xs font-extrabold">
+                  Total
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -147,31 +164,23 @@ const BenchmarkSummaryTable = () => {
               {nOfProblems.map((nOfProblem, nOfProblemIdx) => (
                 <tr
                   key={nOfProblemIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {nOfProblemIdx === 0 && (
-                    <td
-                      className="border p-2 text-left font-medium"
-                      rowSpan={2}
-                    >
+                    <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
                       <span>N. of Problems</span>
                     </td>
                   )}
 
-                  <td className="border p-2 text-left font-medium">
-                    {nOfProblem}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{nOfProblem}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {nOfProblemIdx === 0
                         ? s.nOfProblems.get("totalNOfDiffProblems") || 0
                         : s.nOfProblems.get("multipleSizes")}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {nOfProblemIdx === 0
                       ? summary.reduce(
                           (acc, curr) =>
@@ -187,104 +196,89 @@ const BenchmarkSummaryTable = () => {
                   </td>
                 </tr>
               ))}
-              {/* Technique */}
-              {availableTechniques.map((technique, techniqueIdx) => (
+              {/* Problem Class */}
+              {availableProblemClasses.map((problemClass, problemClassIdx) => (
                 <tr
-                  key={techniqueIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  key={problemClassIdx}
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
-                  {techniqueIdx === 0 && (
+                  {problemClassIdx === 0 && (
                     <td
-                      className="border p-2 text-left font-medium"
-                      rowSpan={availableTechniques.length}
+                      className=" p-2 text-left tag-line-sm"
+                      rowSpan={availableProblemClasses.length}
                     >
-                      Technique
+                      Problem Class
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
-                    {technique}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{problemClass}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
-                      {s.techniques.get(technique) || 0}
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
+                      {s.problemClasses.get(problemClass) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {summary.reduce(
                       (acc, curr) =>
-                        acc + (curr.techniques.get(technique) || 0),
+                        acc + (curr.problemClasses.get(problemClass) || 0),
                       0,
                     )}
                   </td>
                 </tr>
               ))}
-              {/* Kind of Problem */}
-              {availableKindOfProblems.map(
-                (kindOfProblem, kindOfProblemIdx) => (
-                  <tr
-                    key={kindOfProblemIdx}
-                    className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                  >
-                    {kindOfProblemIdx === 0 && (
-                      <td
-                        className="border p-2 text-left font-medium"
-                        rowSpan={availableKindOfProblems.length}
-                      >
-                        Kind Of Problem
-                      </td>
+              {/* Application */}
+              {availableApplications.map((application, applicationIdx) => (
+                <tr
+                  key={applicationIdx}
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                >
+                  {applicationIdx === 0 && (
+                    <td
+                      className=" p-2 text-left tag-line-sm"
+                      rowSpan={availableApplications.length}
+                    >
+                      Application
+                    </td>
+                  )}
+                  <td className=" p-2 text-left tag-line-sm">{application}</td>
+                  {summary.map((s, sIdx) => (
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
+                      {s.applications.get(application) || 0}
+                    </td>
+                  ))}
+                  <td className=" p-2 text-left tag-line-sm">
+                    {summary.reduce(
+                      (acc, curr) =>
+                        acc + (curr.applications.get(application) || 0),
+                      0,
                     )}
-                    <td className="border p-2 text-left font-medium">
-                      {kindOfProblem}
-                    </td>
-                    {summary.map((s, sIdx) => (
-                      <td
-                        key={sIdx}
-                        className="border p-2 text-right font-medium"
-                      >
-                        {s.kindOfProblems.get(kindOfProblem) || 0}
-                      </td>
-                    ))}
-                    <td className="border p-2 text-left font-medium">
-                      {summary.reduce(
-                        (acc, curr) =>
-                          acc + (curr.kindOfProblems.get(kindOfProblem) || 0),
-                        0,
-                      )}
-                    </td>
-                  </tr>
-                ),
-              )}
+                  </td>
+                </tr>
+              ))}
               {/* Time Horizon */}
               {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
                 <tr
                   key={timeHorizonIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {timeHorizonIdx === 0 && (
                     <td
-                      className="border p-2 text-left font-medium"
+                      className=" p-2 text-left tag-line-sm"
                       rowSpan={availabletimeHorizons.length}
                     >
                       Time Horizon
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {getTimeHorizonLabel(timeHorizon)}
                   </td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {s.timeHorizons.get(timeHorizon) == -1
                         ? "N/A"
                         : s.timeHorizons.get(timeHorizon) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {summary.reduce((acc, curr) => {
                       // If the value is -1, then it is N/A
                       const a = acc == -1 ? 0 : acc || 0;
@@ -301,28 +295,25 @@ const BenchmarkSummaryTable = () => {
               {availableMilpFeatures.map((milpFeature, milpFeatureIdx) => (
                 <tr
                   key={milpFeatureIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {milpFeatureIdx === 0 && (
                     <td
-                      className="border p-2 font-medium text-left"
+                      className=" p-2 tag-line-sm text-left"
                       rowSpan={availableMilpFeatures.length}
                     >
                       MILP Features
                     </td>
                   )}
-                  <td className="border p-2 font-medium text-left">
+                  <td className=" p-2 tag-line-sm text-left">
                     {milpFeature || "-"}
                   </td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 font-medium text-right"
-                    >
+                    <td key={sIdx} className=" p-2 tag-line-sm text-left">
                       {s.milpFeatures.get(milpFeature as string) || 0}
                     </td>
                   ))}
-                  <td className="border p-2 font-medium text-left">
+                  <td className=" p-2 tag-line-sm text-left">
                     {summary.reduce(
                       (acc, curr) =>
                         acc +
@@ -333,27 +324,19 @@ const BenchmarkSummaryTable = () => {
                 </tr>
               ))}
               {/* Size Features */}
-              {["Real(MILP)", "Other"].map((size, sizeIdx) => (
+              {["Real (MILP)", "Other"].map((size, sizeIdx) => (
                 <tr
                   key={sizeIdx}
-                  className="border-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
                 >
                   {sizeIdx === 0 && (
-                    <td
-                      className="border p-2 text-left font-medium"
-                      rowSpan={2}
-                    >
-                      Size
+                    <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
+                      Realistic
                     </td>
                   )}
-                  <td className="border p-2 text-left font-medium">
-                    {size || "-"}
-                  </td>
+                  <td className=" p-2 text-left tag-line-sm">{size || "-"}</td>
                   {summary.map((s, sIdx) => (
-                    <td
-                      key={sIdx}
-                      className="border p-2 text-right font-medium"
-                    >
+                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {" "}
                       {size === "Other"
                         ? s.realSizes.get("other") || 0
@@ -362,7 +345,7 @@ const BenchmarkSummaryTable = () => {
                           })`}
                     </td>
                   ))}
-                  <td className="border p-2 text-left font-medium">
+                  <td className=" p-2 text-left tag-line-sm">
                     {size === "Other"
                       ? summary.reduce(
                           (acc, curr) =>
