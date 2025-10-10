@@ -154,9 +154,9 @@ def run_highs_hipo_solver(input_file, solver_version, solver_name="highs-hipo"):
     Run the HiGHS-HiPO solver directly using the binary with variant-specific arguments
     """
     import tempfile
-    
-    # highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"  # Original path
-    highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+
+    highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"  # Original path
+    # highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
 
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
