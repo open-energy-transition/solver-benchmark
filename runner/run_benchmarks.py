@@ -311,8 +311,10 @@ def get_highs_binary_version():
 
 def get_highs_hipo_version():
     """Get the version of the HiGHS-HiPO binary from the --version command"""
-    # highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"  # Original path
-    highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+    if os.geteuid() != 0:
+        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+    else:
+        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
 
     try:
         result = subprocess.run(
