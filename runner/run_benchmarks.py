@@ -45,8 +45,8 @@ def get_conda_package_versions(solvers, env_name=None):
         name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            # Handle highs-hipo as a special case - not a conda package
-            if solver == "highs-hipo":
+            # Handle highs-hipo variants as special cases - not conda packages
+            if solver in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"]:
                 solver_versions[solver] = get_highs_hipo_version()
             else:
                 package = name_to_pkg.get(solver, solver)
@@ -208,7 +208,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
 
     command = ["systemd-run"]
 
-    if "XDG_RUNTIME_DIR" in os.environ:
+    if os.geteuid() != 0:
         command.append("--user")
 
     command.extend(
@@ -311,7 +311,8 @@ def get_highs_binary_version():
 
 def get_highs_hipo_version():
     """Get the version of the HiGHS-HiPO binary from the --version command"""
-    highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+    # highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"  # Original path
+    highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
 
     try:
         result = subprocess.run(
@@ -486,8 +487,8 @@ def main(
         timeout = 10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
 
         for solver in solvers:
-            # Restrict highs-hipo to 2025 only
-            if solver == "highs-hipo" and year != "2025":
+            # Restrict highs-hipo variants to 2025 only
+            if solver in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"] and year != "2025":
                 print(
                     f"Solver {solver} is only available for 2025 benchmarks. Current year: {year}. Skipping."
                 )
@@ -618,7 +619,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs-hipo is also available.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs-hipo variants are available: highs-hipo, highs-hipo-ipm, highs-hipo-32, highs-hipo-64.",
     )
     parser.add_argument(
         "--append",

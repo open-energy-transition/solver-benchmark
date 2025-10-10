@@ -65,9 +65,9 @@ for year in "${years[@]}"; do
     echo "Running benchmarks for the year: $year"
     conda activate "$env_name"
 
-    # Add highs-hipo solver for 2025 benchmarks
+    # Add highs-hipo solver variants for 2025 benchmarks
     if [ "$year" = "2025" ]; then
-        solver_args="--solvers highs scip cbc gurobi glpk highs-hipo"
+        solver_args="--solvers highs highs-hipo highs-hipo-ipm highs-hipo-32 highs-hipo-64"
     else
         solver_args="--solvers highs scip cbc gurobi glpk"
     fi

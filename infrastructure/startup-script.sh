@@ -21,7 +21,7 @@ gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt
 
 # Clone the repository
 echo "Cloning repository..."
-git clone --depth=1 -b highs-hipo-runs https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b highs-hipo-runs-v1 https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing Highs..."

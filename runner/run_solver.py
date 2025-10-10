@@ -19,8 +19,8 @@ except ModuleNotFoundError:
 
 def get_solver(solver_name):
     solver_name = solver_name.lower()
-    # Handle highs-hipo as a special case - it doesn't use linopy
-    if solver_name == "highs-hipo":
+    # Handle highs-hipo variants as special cases - they don't use linopy
+    if solver_name in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"]:
         return None  # Signal that this solver needs special handling
 
     try:
@@ -149,11 +149,14 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     return None
 
 
-def run_highs_hipo_solver(input_file, solver_version):
+def run_highs_hipo_solver(input_file, solver_version, solver_name="highs-hipo"):
     """
-    Run the HiGHS-HiPO solver directly using the binary with --solver="hipo" --parallel="on"
+    Run the HiGHS-HiPO solver directly using the binary with variant-specific arguments
     """
-    highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+    import tempfile
+    
+    # highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"  # Original path
+    highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
 
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -161,40 +164,95 @@ def run_highs_hipo_solver(input_file, solver_version):
     logs_dir = Path(__file__).parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    output_filename = f"{Path(input_file).stem}-highs-hipo-{solver_version}"
+    output_filename = f"{Path(input_file).stem}-{solver_name}-{solver_version}"
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    command = [
-        highs_hipo_binary,
-        "--solver=hipo",
-        "--parallel=on",
-        input_file,
-        f"--solution_file={solution_fn}",
-    ]
-
-    # Run the command and capture the output
-    start_time = time.perf_counter()
+    name = solver_name.lower()
+    
+    # Create temporary options file for block size variants
+    options_file = None
     try:
-        result = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            check=False,
-            encoding="utf-8",
-        )
-        runtime = time.perf_counter() - start_time
+        if name == "highs-hipo-32":
+            options_file = tempfile.NamedTemporaryFile(mode='w', suffix='.options', delete=False)
+            options_file.write("hipo_block_size = 32\n")
+            options_file.close()
+            solver_args = ["--solver=hipo", "--run_crossover=off", f"--options_file={options_file.name}"]
+        elif name == "highs-hipo-64":
+            options_file = tempfile.NamedTemporaryFile(mode='w', suffix='.options', delete=False)
+            options_file.write("hipo_block_size = 64\n")
+            options_file.close()
+            solver_args = ["--solver=hipo", "--run_crossover=off", f"--options_file={options_file.name}"]
+        elif name == "highs-hipo-ipm":
+            solver_args = ["--solver=ipm", "--run_crossover=off"]
+        else:
+            # Default highs-hipo
+            solver_args = ["--solver=hipo", "--parallel=on"]
 
-        # Write stdout and stderr to log file
-        with open(log_fn, "w") as f:
-            f.write(f"Command: {' '.join(command)}\n")
-            f.write(f"Return code: {result.returncode}\n\n")
-            f.write("STDOUT:\n")
-            f.write(result.stdout)
-            f.write("\n\nSTDERR:\n")
-            f.write(result.stderr)
+        command = [
+            highs_hipo_binary,
+            *solver_args,
+            input_file,
+            f"--solution_file={solution_fn}",
+        ]
 
-        if result.returncode != 0:
+        # Run the command and capture the output
+        start_time = time.perf_counter()
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=False,
+                encoding="utf-8",
+            )
+            runtime = time.perf_counter() - start_time
+
+            # Write stdout and stderr to log file
+            with open(log_fn, "w") as f:
+                f.write(f"Command: {' '.join(command)}\n")
+                f.write(f"Return code: {result.returncode}\n\n")
+                f.write("STDOUT:\n")
+                f.write(result.stdout)
+                f.write("\n\nSTDERR:\n")
+                f.write(result.stderr)
+
+            if result.returncode != 0:
+                return {
+                    "runtime": runtime,
+                    "reported_runtime": runtime,
+                    "status": "error",
+                    "condition": "Error",
+                    "objective": None,
+                    "duality_gap": None,
+                    "max_integrality_violation": None,
+                }
+            else:
+                # Parse HiGHS output to extract objective value
+                objective = None
+                for line in result.stdout.splitlines():
+                    if "Objective value" in line:
+                        try:
+                            objective = float(line.split(":")[-1].strip())
+                        except (ValueError, IndexError):
+                            pass
+
+                return {
+                    "runtime": runtime,
+                    "reported_runtime": runtime,
+                    "status": "ok",
+                    "condition": "Optimal",
+                    "objective": objective,
+                    "duality_gap": None,  # Not available from command line output
+                    "max_integrality_violation": None,  # Not available from command line output
+                }
+        except Exception as e:
+            runtime = time.perf_counter() - start_time
+            # Write error to log file
+            with open(log_fn, "w") as f:
+                f.write(f"Command: {' '.join(command)}\n")
+                f.write(f"Exception: {str(e)}\n")
+
             return {
                 "runtime": runtime,
                 "reported_runtime": runtime,
@@ -204,49 +262,22 @@ def run_highs_hipo_solver(input_file, solver_version):
                 "duality_gap": None,
                 "max_integrality_violation": None,
             }
-        else:
-            # Parse HiGHS output to extract objective value
-            objective = None
-            for line in result.stdout.splitlines():
-                if "Objective value" in line:
-                    try:
-                        objective = float(line.split(":")[-1].strip())
-                    except (ValueError, IndexError):
-                        pass
-
-            return {
-                "runtime": runtime,
-                "reported_runtime": runtime,
-                "status": "ok",
-                "condition": "Optimal",
-                "objective": objective,
-                "duality_gap": None,  # Not available from command line output
-                "max_integrality_violation": None,  # Not available from command line output
-            }
-    except Exception as e:
-        runtime = time.perf_counter() - start_time
-        # Write error to log file
-        with open(log_fn, "w") as f:
-            f.write(f"Command: {' '.join(command)}\n")
-            f.write(f"Exception: {str(e)}\n")
-
-        return {
-            "runtime": runtime,
-            "reported_runtime": runtime,
-            "status": "error",
-            "condition": "Error",
-            "objective": None,
-            "duality_gap": None,
-            "max_integrality_violation": None,
-        }
+    finally:
+        # Clean up temporary options file
+        if options_file is not None:
+            import os
+            try:
+                os.unlink(options_file.name)
+            except OSError:
+                pass
 
 
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
 
-    # Handle highs-hipo solver separately
-    if solver_name.lower() == "highs-hipo":
-        results = run_highs_hipo_solver(input_file, solver_version)
+    # Handle highs-hipo solver variants separately
+    if solver_name.lower() in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"]:
+        results = run_highs_hipo_solver(input_file, solver_version, solver_name.lower())
         print(json.dumps(results))
         return
 

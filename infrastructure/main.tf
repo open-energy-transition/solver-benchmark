@@ -9,7 +9,7 @@ terraform {
 
 # GCP provider configuration
 provider "google" {
-    credentials = file(var.gcp_service_key_path)
+    # credentials = file(var.gcp_service_key_path)
     project = var.project_id
     zone = var.zone
 }
@@ -26,10 +26,10 @@ variable "zone" {
     default = "europe-west4-a"
 }
 
-variable "gcp_service_key_path" {
-  description = "Path to the GCP credentials JSON file"
-  type        = string
-}
+# variable "gcp_service_key_path" {
+#   description = "Path to the GCP credentials JSON file"
+#   type        = string
+# }
 
 variable "ssh_user" {
     description = "SSH username"
