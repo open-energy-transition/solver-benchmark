@@ -1,0 +1,9 @@
+machine-type: c4-standard-2
+years:
+- 2025
+benchmarks:
+  pypsa-eur-elec-op:
+    Sizes:
+    - Name: 4-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp

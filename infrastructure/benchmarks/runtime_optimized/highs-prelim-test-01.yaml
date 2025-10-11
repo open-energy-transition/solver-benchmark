@@ -1,0 +1,12 @@
+machine-type: c4-standard-2
+years:
+- 2025
+_total_runtime_s: 2889.01
+_total_runtime_h: 0.8
+_num_benchmarks: 1
+benchmarks:
+  Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
