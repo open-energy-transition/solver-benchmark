@@ -67,7 +67,7 @@ for year in "${years[@]}"; do
 
     # Add highs-hipo solver variants for 2025 benchmarks
     if [ "$year" = "2025" ]; then
-        solver_args="--solvers highs highs-hipo highs-hipo-ipm highs-hipo-32 highs-hipo-64"
+        solver_args="--solvers highs highs-hipo-ipm highs-hipo-128 highs-hipo-32 highs-hipo-64"
     else
         solver_args="--solvers highs scip cbc gurobi glpk"
     fi

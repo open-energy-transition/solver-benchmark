@@ -1,7 +1,11 @@
+import collections
+import collections.abc
 import json
+import os
 import subprocess
 import sys
 import time
+from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -9,6 +13,38 @@ from traceback import format_exc
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
+
+
+class HighsHipoVariant(str, Enum):
+    HIPO_IPM = "highs-hipo-ipm"
+    HIPO_32 = "highs-hipo-32"
+    HIPO_64 = "highs-hipo-64"
+    HIPO_128 = "highs-hipo-128"
+
+    # cli args returns a list of command line arguments for the HiGHS binary.
+    def cli_args(self) -> collections.abc.Iterable[str]:
+        args = {
+            "solver": "hipo",
+            "run_crossover": "off",
+        }
+        if self == HighsHipoVariant.HIPO_IPM:
+            args["solver"] = "ipx"
+
+        return [f"--{k}={v}" for k, v in args.items()]
+
+    # options returns the contents for the HiGHS options file.
+    # passed to the HiGHS binary via --options_file=<file>
+    def options(self) -> str:
+        options = {}
+        match self:
+            case HighsHipoVariant.HIPO_32:
+                options["hipo_block_size"] = 32
+            case HighsHipoVariant.HIPO_64:
+                options["hipo_block_size"] = 64
+            case HighsHipoVariant.HIPO_128:
+                options["hipo_block_size"] = 128
+        return "\n".join(f"{k} = {v}" for k, v in options.items())
+
 
 # HiGHS is not available in the 2020 environment that we use to run GLPK
 try:
@@ -19,14 +55,7 @@ except ModuleNotFoundError:
 
 def get_solver(solver_name):
     solver_name = solver_name.lower()
-    # Handle highs-hipo variants as special cases - they don't use linopy
-    if solver_name in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"]:
-        return None  # Signal that this solver needs special handling
-
-    try:
-        solver_enum = SolverName(solver_name)
-    except ValueError:
-        raise ValueError(f"Solver '{solver_name}' is not recognized")
+    solver_enum = SolverName(solver_name)
 
     solver_class = getattr(solvers, solver_enum.name)
 
@@ -42,10 +71,7 @@ def get_solver(solver_name):
         },
     }
 
-    if solver_name in seed_options:
-        return solver_class(**seed_options[solver_name])
-    else:
-        return solver_class()
+    return solver_class(**seed_options.get(solver_name, {}))
 
 
 def is_mip_problem(solver_model, solver_name):
@@ -149,14 +175,18 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     return None
 
 
-def run_highs_hipo_solver(input_file, solver_version, solver_name="highs-hipo"):
+def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVariant):
     """
     Run the HiGHS-HiPO solver directly using the binary with variant-specific arguments
     """
     import tempfile
 
-    highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"  # Original path
-    # highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+    # check if we are root
+    if os.getuid() == 0:
+        # VM path
+        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+    else:
+        highs_hipo_binary = f"{os.getenv('HOME')}/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
 
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -168,26 +198,17 @@ def run_highs_hipo_solver(input_file, solver_version, solver_name="highs-hipo"):
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    name = solver_name.lower()
-    
-    # Create temporary options file for block size variants
-    options_file = None
     try:
-        if name == "highs-hipo-32":
-            options_file = tempfile.NamedTemporaryFile(mode='w', suffix='.options', delete=False)
-            options_file.write("hipo_block_size = 32\n")
-            options_file.close()
-            solver_args = ["--solver=hipo", "--run_crossover=off", f"--options_file={options_file.name}"]
-        elif name == "highs-hipo-64":
-            options_file = tempfile.NamedTemporaryFile(mode='w', suffix='.options', delete=False)
-            options_file.write("hipo_block_size = 64\n")
-            options_file.close()
-            solver_args = ["--solver=hipo", "--run_crossover=off", f"--options_file={options_file.name}"]
-        elif name == "highs-hipo-ipm":
-            solver_args = ["--solver=ipm", "--run_crossover=off"]
-        else:
-            # Default highs-hipo
-            solver_args = ["--solver=hipo", "--parallel=on"]
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".options",
+            delete=False,
+            delete_on_close=False,
+        ) as options_file:
+            options_file.write(highs_hipo.options())
+            options_file.flush()
+
+            solver_args = highs_hipo.cli_args()
 
         command = [
             highs_hipo_binary,
@@ -265,7 +286,6 @@ def run_highs_hipo_solver(input_file, solver_version, solver_name="highs-hipo"):
     finally:
         # Clean up temporary options file
         if options_file is not None:
-            import os
             try:
                 os.unlink(options_file.name)
             except OSError:
@@ -276,10 +296,13 @@ def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
 
     # Handle highs-hipo solver variants separately
-    if solver_name.lower() in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"]:
-        results = run_highs_hipo_solver(input_file, solver_version, solver_name.lower())
+    try:
+        highs_hipo = HighsHipoVariant(solver_name.lower())
+        results = run_highs_hipo_solver(input_file, solver_version, highs_hipo)
         print(json.dumps(results))
         return
+    except ValueError:
+        pass
 
     solver = get_solver(solver_name)
 

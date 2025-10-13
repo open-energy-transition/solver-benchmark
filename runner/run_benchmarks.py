@@ -16,6 +16,8 @@ import psutil
 import requests
 import yaml
 
+from run_solver import HighsHipoVariant
+
 hostname = gethostname()
 
 
@@ -46,7 +48,7 @@ def get_conda_package_versions(solvers, env_name=None):
         solver_versions = {}
         for solver in solvers:
             # Handle highs-hipo variants as special cases - not conda packages
-            if solver in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"]:
+            if solver in HighsHipoVariant:
                 solver_versions[solver] = get_highs_hipo_version()
             else:
                 package = name_to_pkg.get(solver, solver)
@@ -490,7 +492,7 @@ def main(
 
         for solver in solvers:
             # Restrict highs-hipo variants to 2025 only
-            if solver in ["highs-hipo", "highs-hipo-ipm", "highs-hipo-32", "highs-hipo-64"] and year != "2025":
+            if solver in HighsHipoVariant and year != "2025":
                 print(
                     f"Solver {solver} is only available for 2025 benchmarks. Current year: {year}. Skipping."
                 )
@@ -498,7 +500,7 @@ def main(
 
             solver_version = solvers_versions.get(solver)
             if not solver_version:
-                print(f"Solver {solver} is not available. Skipping.")
+                print(f"Solver {solver} is not available. Skipping fr fr.")
                 continue
 
             print(f"Found solver {solver} with version {solver_version}")
