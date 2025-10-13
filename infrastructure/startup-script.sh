@@ -84,12 +84,17 @@ ls -la "${HIGHS_HIPO_DIR}/installs/lib"
 
 # 7. Clone and build HiGHS with hipo support
 echo "Cloning HiGHS repository..."
-git clone https://github.com/ERGO-Code/HiGHS.git
+git clone --depth   1 https://github.com/ERGO-Code/HiGHS.git
 cd HiGHS
 
 # Checkout the hipo branch
 echo "Checking out hipo branch..."
-git checkout hipo
+# https://github.com/ERGO-Code/HiGHS/commits/hipo/
+
+# 35e30f812e0f109913a9370cfc9fdeea70e1a92d: Tree parallelism now uses TaskGroup
+HIPO_COMMIT_SHA="35e30f812e0f109913a9370cfc9fdeea70e1a92d"
+git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
+git checkout "${HIPO_COMMIT_SHA}"
 
 # 8. Configure HiGHS with HIPO enabled and dependency paths
 echo "Configuring HiGHS with HIPO support..."
