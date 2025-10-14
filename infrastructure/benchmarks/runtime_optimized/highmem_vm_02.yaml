@@ -1,19 +1,42 @@
 machine-type: c4-highmem-8
 years:
 - 2025
-_total_runtime_s: 127407.5
-_total_runtime_h: 35.39
-_num_benchmarks: 2
+_total_runtime_s: 307746.92
+_total_runtime_h: 85.49
+_max_runtime_cap_h: 96.0
+_num_benchmarks: 4
+_note: Benchmarks sorted by runtime (smallest first). YAML dict order is preserved
+  in Python 3.7+.
 benchmarks:
-  temoa-US_9R_TS:
+  TIMES-GEO-global-base:
     Sizes:
-    - Name: 9-12
+    - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
-      _runtime_s: 65194.47
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
+      _runtime_s: 339.42
+      _base_runtime_s: 67.88
+    _runtime_s: 339.42
   tulipa-1_EU_investment_simple:
     Sizes:
     - Name: 28-1h
       Size: L
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
       _runtime_s: 62213.04
+      _base_runtime_s: 12442.61
+    _runtime_s: 62213.04
+  temoa-US_9R_TS:
+    Sizes:
+    - Name: 9-12
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
+      _runtime_s: 65194.47
+      _base_runtime_s: 13038.89
+    _runtime_s: 65194.47
+  genx-elec_trex_uc:
+    Sizes:
+    - Name: 15-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
+      _runtime_s: 180000.0
+      _base_runtime_s: 36000.0
+    _runtime_s: 180000.0

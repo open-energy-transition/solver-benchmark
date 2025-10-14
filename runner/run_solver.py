@@ -301,8 +301,11 @@ def main(solver_name, input_file, solver_version):
         results = run_highs_hipo_solver(input_file, solver_version, highs_hipo)
         print(json.dumps(results))
         return
-    except ValueError:
-        pass
+    except ValueError as e:
+        # re-raise the error if it isn't expected.
+        # we want to continue only if the error is about invalid HighsHipoVariant
+        if "is not a valid HighsHipoVariant" not in str(e):
+            raise e
 
     solver = get_solver(solver_name)
 

@@ -1,0 +1,18 @@
+machine-type: c4-highmem-8
+years:
+- 2025
+_total_runtime_s: 180000.0
+_total_runtime_h: 50.0
+_max_runtime_cap_h: 96.0
+_num_benchmarks: 1
+_note: Benchmarks sorted by runtime (smallest first). YAML dict order is preserved
+  in Python 3.7+.
+benchmarks:
+  temoa-US_9R_TS_NDC:
+    Sizes:
+    - Name: 9-12
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
+      _runtime_s: 180000.0
+      _base_runtime_s: 36000.0
+    _runtime_s: 180000.0

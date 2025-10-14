@@ -1,19 +1,42 @@
 machine-type: c4-highmem-8
 years:
 - 2025
-_total_runtime_s: 127706.54
-_total_runtime_h: 35.47
-_num_benchmarks: 2
+_total_runtime_s: 307984.33
+_total_runtime_h: 85.55
+_max_runtime_cap_h: 96.0
+_num_benchmarks: 4
+_note: Benchmarks sorted by runtime (smallest first). YAML dict order is preserved
+  in Python 3.7+.
 benchmarks:
-  temoa-US_9R_TS_SP:
+  TIMES-GEO-global-netzero:
     Sizes:
-    - Name: 9-12
+    - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
-      _runtime_s: 105324.17
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
+      _runtime_s: 277.79
+      _base_runtime_s: 55.56
+    _runtime_s: 277.79
   times-ireland-noco2-counties:
     Sizes:
     - Name: 26-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
       _runtime_s: 22382.37
+      _base_runtime_s: 4476.47
+    _runtime_s: 22382.37
+  temoa-US_9R_TS_SP:
+    Sizes:
+    - Name: 9-12
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
+      _runtime_s: 105324.17
+      _base_runtime_s: 21064.83
+    _runtime_s: 105324.17
+  genx-elec_trex_co2:
+    Sizes:
+    - Name: 15-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
+      _runtime_s: 180000.0
+      _base_runtime_s: 36000.0
+    _runtime_s: 180000.0

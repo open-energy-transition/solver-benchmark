@@ -500,7 +500,7 @@ def main(
 
             solver_version = solvers_versions.get(solver)
             if not solver_version:
-                print(f"Solver {solver} is not available. Skipping fr fr.")
+                print(f"Solver {solver} is not available. Skipping.")
                 continue
 
             print(f"Found solver {solver} with version {solver_version}")

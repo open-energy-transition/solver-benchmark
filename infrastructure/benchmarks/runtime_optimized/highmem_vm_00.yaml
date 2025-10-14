@@ -1,9 +1,12 @@
 machine-type: c4-highmem-8
 years:
 - 2025
-_total_runtime_s: 132787.54
-_total_runtime_h: 36.89
-_num_benchmarks: 1
+_total_runtime_s: 312787.54
+_total_runtime_h: 86.89
+_max_runtime_cap_h: 96.0
+_num_benchmarks: 2
+_note: Benchmarks sorted by runtime (smallest first). YAML dict order is preserved
+  in Python 3.7+.
 benchmarks:
   temoa-US_9R_TS_NZ:
     Sizes:
@@ -11,3 +14,13 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
       _runtime_s: 132787.54
+      _base_runtime_s: 26557.51
+    _runtime_s: 132787.54
+  genx-elec_co2:
+    Sizes:
+    - Name: 15-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
+      _runtime_s: 180000.0
+      _base_runtime_s: 36000.0
+    _runtime_s: 180000.0
