@@ -277,6 +277,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     else:
+        print(f"Solver completed successfully with output:\n {result.stdout}\n")
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:

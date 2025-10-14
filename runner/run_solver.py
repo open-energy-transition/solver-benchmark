@@ -208,7 +208,8 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
             options_file.write(highs_hipo.options())
             options_file.flush()
 
-            solver_args = highs_hipo.cli_args()
+            solver_args = list(highs_hipo.cli_args())
+            solver_args.append(f"--options_file={options_file.name}")
 
         command = [
             highs_hipo_binary,
@@ -220,6 +221,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
         # Run the command and capture the output
         start_time = time.perf_counter()
         try:
+            print(f"running command {command}")
             result = subprocess.run(
                 command,
                 capture_output=True,
@@ -284,12 +286,13 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
                 "max_integrality_violation": None,
             }
     finally:
+        pass
         # Clean up temporary options file
-        if options_file is not None:
-            try:
-                os.unlink(options_file.name)
-            except OSError:
-                pass
+        # if options_file is not None:
+        #     try:
+        #         os.unlink(options_file.name)
+        #     except OSError:
+        #         pass
 
 
 def main(solver_name, input_file, solver_version):
