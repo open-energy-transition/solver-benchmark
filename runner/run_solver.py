@@ -201,6 +201,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
     try:
         with tempfile.NamedTemporaryFile(
             mode="w",
+            prefix=highs_hipo.value,
             suffix=".options",
             delete=False,
             delete_on_close=False,
