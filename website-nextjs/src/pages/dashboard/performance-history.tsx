@@ -25,6 +25,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
+import { yearSort } from "@/utils/chart";
 
 const PagePerformanceHistory = () => {
   const rawBenchmarkResults = useSelector(
@@ -176,7 +177,6 @@ const PagePerformanceHistory = () => {
         const maxYearData = solverYearlyMetric.data.find(
           (d) => d.year === maxYear,
         );
-        console.log("maxYearData", maxYearData, solverYearlyMetric);
         // Replace 2024 data with max year data
         if (maxYearData?.benchmarkResults.length) {
           solverMetric = solverMetric.filter((d) => d.year !== 2024);
@@ -264,15 +264,6 @@ const PagePerformanceHistory = () => {
         .flat()
         .filter(Number) as number[]),
     );
-
-    const yearSort = (
-      a: { year: string | number },
-      b: { year: string | number },
-    ) => {
-      const parseYear = (y: string | number) =>
-        y === "2024-2025" ? 2025 : Number(y);
-      return parseYear(a.year) - parseYear(b.year);
-    };
 
     return {
       runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime)
