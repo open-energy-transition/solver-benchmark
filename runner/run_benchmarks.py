@@ -15,7 +15,6 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
-
 from run_solver import HighsHipoVariant
 
 hostname = gethostname()
@@ -278,7 +277,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         }
     else:
         print(
-            f"Solver command:\n {"\n".join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
+            f"Solver command:\n {'\n'.join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
         )
         metrics = json.loads(result.stdout.splitlines()[-1])
 
