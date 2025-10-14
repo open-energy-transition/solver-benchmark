@@ -1,8 +1,16 @@
 #!/bin/bash
+# Add timestamp to each line of output
+log_with_timestamp() {
+    while IFS= read -r line; do
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $line"
+    done
+}
+
 # Log all output to a file
-exec > >(tee /var/log/startup-script.log) 2>&1
+exec > >(log_with_timestamp | tee -a /var/log/startup-script.log) 2>&1
 echo "Starting setup script at $(date)"
 start_time=$(date +%s)
+
 
 # Generate a unique run ID using timestamp and instance ID
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -89,8 +97,8 @@ cd HiGHS
 
 # Checkout the hipo branch
 echo "Checking out hipo branch..."
-# https://github.com/ERGO-Code/HiGHS/commits/hipo/
 
+# https://github.com/ERGO-Code/HiGHS/commits/hipo/
 # 35e30f812e0f109913a9370cfc9fdeea70e1a92d: Tree parallelism now uses TaskGroup
 HIPO_COMMIT_SHA="35e30f812e0f109913a9370cfc9fdeea70e1a92d"
 git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
