@@ -1,0 +1,19 @@
+machine-type: c4-highmem-8
+years:
+- 2025
+_total_runtime_s: 127407.5
+_total_runtime_h: 35.39
+_num_benchmarks: 2
+benchmarks:
+  temoa-US_9R_TS:
+    Sizes:
+    - Name: 9-12
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
+      _runtime_s: 65194.47
+  tulipa-1_EU_investment_simple:
+    Sizes:
+    - Name: 28-1h
+      Size: L
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
+      _runtime_s: 62213.04

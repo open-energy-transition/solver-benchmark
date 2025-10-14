@@ -1,0 +1,79 @@
+machine-type: c4-standard-2
+years:
+- 2025
+_total_runtime_s: 106733.68
+_total_runtime_h: 29.65
+_num_benchmarks: 13
+benchmarks:
+  genx-2_three_zones_w_electrolyzer:
+    Sizes:
+    - Name: 3-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
+      _runtime_s: 10664.12
+  DCOPF-Carolinas_uc_2M:
+    Sizes:
+    - Name: 1-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
+      _runtime_s: 10404.53
+  pypsa-eur-elec-op-ucconv:
+    Sizes:
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
+      _runtime_s: 10302.48
+  pypsa-eur-elec-op:
+    Sizes:
+    - Name: 2-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
+      _runtime_s: 9968.35
+    - Name: 2-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
+      _runtime_s: 9837.89
+    - Name: 2-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
+      _runtime_s: 9736.43
+  Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332-15df931033d1a5a3f0133bd141798d3b02c4211befb6f25c19e8218797a05447.mps.gz
+      _runtime_s: 9612.72
+  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-66258a0e8497e1e17a702b769ebc9c4dcb1ef285993d4f1f41d9dda59878c5cc.mps.gz
+      _runtime_s: 8239.85
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-66258a0e8497e1e17a702b769ebc9c4dcb1ef285993d4f1f41d9dda59878c5cc.mps.gz
+      _runtime_s: 7916.94
+  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
+      _runtime_s: 7903.32
+  Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
+      _runtime_s: 6992.8
+  Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29-12a9e8c3e475aa02d68692347b1fbed9f4769d3b89c3d5f803ebcf8e06d05197.mps.gz
+      _runtime_s: 2801.67
+  tulipa-1_EU_investment_simple:
+    Sizes:
+    - Name: 28-4.3h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
+      _runtime_s: 2352.58

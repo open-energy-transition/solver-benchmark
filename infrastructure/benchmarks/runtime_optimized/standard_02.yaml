@@ -1,0 +1,63 @@
+machine-type: c4-standard-2
+years:
+- 2025
+_total_runtime_s: 105372.12
+_total_runtime_h: 29.27
+_num_benchmarks: 10
+benchmarks:
+  Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
+      _runtime_s: 14445.06
+  temoa-US_9R_TS_NZ_trunc_4periods:
+    Sizes:
+    - Name: 9-12
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
+      _runtime_s: 14103.13
+  pypsa-eur-elec-op:
+    Sizes:
+    - Name: 4-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
+      _runtime_s: 13534.7
+  pypsa-eur-elec-op-ucconv:
+    Sizes:
+    - Name: 2-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
+      _runtime_s: 12895.07
+    - Name: 2-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
+      _runtime_s: 12638.24
+    - Name: 2-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
+      _runtime_s: 12122.47
+  DCOPF-Carolinas_uc_1W:
+    Sizes:
+    - Name: 1-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
+      _runtime_s: 12404.19
+  pypsa-eur-sec:
+    Sizes:
+    - Name: 5-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
+      _runtime_s: 7363.81
+  genx-4_three_zones_w_policies_slack-no_uc:
+    Sizes:
+    - Name: 3-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
+      _runtime_s: 3235.13
+  tulipa-1_EU_investment_simple:
+    Sizes:
+    - Name: 28-4.3h
+      Size: M
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
+      _runtime_s: 2630.32
