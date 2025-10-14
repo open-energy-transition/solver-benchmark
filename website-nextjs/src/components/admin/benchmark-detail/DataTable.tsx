@@ -89,36 +89,36 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Instance",
         accessorKey: "instance",
-        size: 100,
+        size: 140,
       },
       {
         header: "Size",
         accessorKey: "size",
         filterFn: "arrIncludesSome" as const,
-        size: 100,
+        size: 110,
       },
       {
         header: "Solver",
         accessorKey: "solver",
         filterFn: "arrIncludesSome" as const,
-        size: 80,
+        size: 140,
       },
       {
         header: "Solver Version",
         accessorKey: "solverVersion",
-        size: 130,
+        size: 180,
         filterFn: "arrIncludesSome" as const,
       },
       {
         header: "Status",
         accessorKey: "status",
-        filterFn: "equals" as const,
-        size: 80,
+        filterFn: "arrIncludesSome" as const,
+        size: 140,
       },
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
-        size: 200,
+        size: 220,
         cell: (info: CellContext<TableData, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
             {String(info.getValue())}
@@ -128,7 +128,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Runtime (s)",
         accessorKey: "runtime",
-        size: 100,
+        size: 150,
         cell: (info: CellContext<TableData, "runtime">) => (
           <div className="text-end">{String(info.getValue())}</div>
         ),
@@ -136,7 +136,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Memory (MB)",
         accessorKey: "memoryUsage",
-        size: 100,
+        size: 150,
         cell: (info: CellContext<TableData, "memoryUsage">) => (
           <div className="text-end">{String(info.getValue())}</div>
         ),
@@ -144,7 +144,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Objective Value",
         accessorKey: "objectiveValue",
-        size: 100,
+        size: 180,
         cell: (info: CellContext<TableData, "objectiveValue">) => (
           <div className="text-end">{String(info.getValue())}</div>
         ),
@@ -152,16 +152,22 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Max Integrality Violation",
         accessorKey: "maxIntegralityViolation",
-        size: 210,
+        size: 250,
+        cell: (info: CellContext<TableData, "maxIntegralityViolation">) => (
+          <div className="text-end">{String(info.getValue())}</div>
+        ),
       },
       {
         header: "Duality Gap",
         accessorKey: "dualityGap",
+        cell: (info: CellContext<TableData, "dualityGap">) => (
+          <div className="text-end">{String(info.getValue())}</div>
+        ),
       },
       {
         header: "Log",
         accessorKey: "log",
-        size: 105,
+        size: 180,
         cell: (info: CellContext<TableData, unknown>) => {
           const solver = info.row.original?.solver;
           if (solver === "gurobi") {
@@ -180,7 +186,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Solution",
         accessorKey: "solution",
-        size: 135,
+        size: 210,
         cell: (info: CellContext<TableData, unknown>) => (
           <Link
             href={info.getValue() as string}
@@ -233,6 +239,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       data={tableData}
       columns={columns}
       enableDownload
+      showAllRows
       enableColumnSelector
       onDownload={handleDownload}
       initialColumnVisibility={columnVisibility}
