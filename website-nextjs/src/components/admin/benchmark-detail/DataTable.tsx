@@ -9,6 +9,7 @@ import { ProblemClass } from "@/constants";
 import Link from "next/link";
 import { roundNumber } from "@/utils/number";
 import { isNullorUndefined } from "@/utils/calculations";
+import { filterNumber } from "@/utils/table";
 
 type DataTableProps = {
   benchmarkName: string;
@@ -118,6 +119,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
+        filterFn: "arrIncludesSome" as const,
         size: 220,
         cell: (info: CellContext<TableData, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
@@ -128,6 +130,10 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Runtime (s)",
         accessorKey: "runtime",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
         size: 150,
         cell: (info: CellContext<TableData, "runtime">) => (
           <div className="text-end">{String(info.getValue())}</div>
@@ -136,7 +142,11 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       {
         header: "Memory (MB)",
         accessorKey: "memoryUsage",
-        size: 150,
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
+        size: 170,
         cell: (info: CellContext<TableData, "memoryUsage">) => (
           <div className="text-end">{String(info.getValue())}</div>
         ),
@@ -145,6 +155,10 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         header: "Objective Value",
         accessorKey: "objectiveValue",
         size: 180,
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
         cell: (info: CellContext<TableData, "objectiveValue">) => (
           <div className="text-end">{String(info.getValue())}</div>
         ),
@@ -153,12 +167,20 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         header: "Max Integrality Violation",
         accessorKey: "maxIntegralityViolation",
         size: 250,
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
         cell: (info: CellContext<TableData, "maxIntegralityViolation">) => (
           <div className="text-end">{String(info.getValue())}</div>
         ),
       },
       {
         header: "Duality Gap",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
         accessorKey: "dualityGap",
         cell: (info: CellContext<TableData, "dualityGap">) => (
           <div className="text-end">{String(info.getValue())}</div>

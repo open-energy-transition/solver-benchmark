@@ -234,7 +234,7 @@ export function TanStackTable<T>({
                     >
                       <div
                         style={{
-                          height: `${rowVirtualizer.getTotalSize() - 36}px`,
+                          height: `${rowVirtualizer.getTotalSize()}px`,
                         }}
                       />
                     </td>
@@ -254,7 +254,7 @@ export function TanStackTable<T>({
                         }
                         style={{
                           position: "absolute",
-                          top: 0,
+                          top: 48.8,
                           left: 0,
                           width: "100%",
                           height: `${virtualRow.size}px`,
