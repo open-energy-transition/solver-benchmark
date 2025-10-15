@@ -25,6 +25,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
+import { yearSort } from "@/utils/chart";
 
 const PagePerformanceHistory = () => {
   const rawBenchmarkResults = useSelector(
@@ -135,7 +136,7 @@ const PagePerformanceHistory = () => {
   const solvers = [...new Set(benchmarkResults.map((result) => result.solver))];
 
   const solverYearlyMetrics = useMemo(() => {
-    const metrics: ISolverYearlyMetrics[] = solvers.map((solver) => {
+    const initialMetrics: ISolverYearlyMetrics[] = solvers.map((solver) => {
       return {
         solver,
         data: years.map((year) => ({
@@ -156,7 +157,7 @@ const PagePerformanceHistory = () => {
     });
 
     benchmarkResults.forEach((result) => {
-      const resultGroupedBySolver = metrics.find(
+      const resultGroupedBySolver = initialMetrics.find(
         (resultGroupedBySolver) =>
           resultGroupedBySolver.solver === result.solver,
       );
@@ -168,7 +169,28 @@ const PagePerformanceHistory = () => {
           status: result.status,
         });
     });
+    const metrics = initialMetrics.map((solverYearlyMetric) => {
+      const maxYear = Math.max(...solverYearlyMetric.data.map((d) => d.year));
 
+      let solverMetric = solverYearlyMetric.data.filter((d) => d.year <= 2024);
+      if (maxYear > 2024) {
+        const maxYearData = solverYearlyMetric.data.find(
+          (d) => d.year === maxYear,
+        );
+        // Replace 2024 data with max year data
+        if (maxYearData?.benchmarkResults.length) {
+          solverMetric = solverMetric.filter((d) => d.year !== 2024);
+          solverMetric.push(maxYearData);
+        }
+      }
+      // Change year 2024 to 2025 to indicate combined year
+      solverMetric.forEach((d) => {
+        if (d.year === 2024) {
+          d.year = 2025;
+        }
+      });
+      return { ...solverYearlyMetric, data: solverMetric };
+    });
     metrics.forEach((solverYearlyMetric) => {
       solverYearlyMetric.data.forEach((d) => {
         d.sgm.runtime = calculateSgm(
@@ -244,21 +266,105 @@ const PagePerformanceHistory = () => {
     );
 
     return {
-      runtime: getNormalizedData(
-        solverYearlyMetrics,
-        "runtime",
-        minRuntime,
-      ).sort((a, b) => a.year - b.year),
+      runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime)
+        .map((d) => ({
+          ...d,
+          year: d.year === 2025 ? ("2024-2025" as unknown as number) : d.year,
+        }))
+        .sort(yearSort),
       memoryUsage: getNormalizedData(
         solverYearlyMetrics,
         "memoryUsage",
         minMemoryUsage,
-      ).sort((a, b) => a.year - b.year),
-      numSolvedBenchMark: getNumSolvedBenchMark().sort(
-        (a, b) => a.year - b.year,
-      ),
+      )
+        .map((d) => ({
+          ...d,
+          year: d.year === 2025 ? ("2024-2025" as unknown as number) : d.year,
+        }))
+        .sort(yearSort),
+      numSolvedBenchMark: getNumSolvedBenchMark()
+        .map((d) => ({
+          ...d,
+          year: d.year === 2025 ? ("2024-2025" as unknown as number) : d.year,
+        }))
+        .sort(yearSort),
     };
   }, [solverYearlyMetrics]);
+
+  const allSolverYearlyMetrics = useMemo(() => {
+    const metrics: ISolverYearlyMetrics[] = solvers.map((solver) => {
+      return {
+        solver,
+        data: years.map((year) => ({
+          year,
+          benchmarkResults: [],
+          sgm: {
+            runtime: null,
+            memoryUsage: null,
+          },
+          numSolvedBenchmark: 0,
+          version:
+            benchmarkResults.find(
+              (result) =>
+                result.solver === solver && result.solverReleaseYear === year,
+            )?.solverVersion ?? "-",
+        })),
+      };
+    });
+
+    benchmarkResults.forEach((result) => {
+      const resultGroupedBySolver = metrics.find(
+        (resultGroupedBySolver) =>
+          resultGroupedBySolver.solver === result.solver,
+      );
+      resultGroupedBySolver?.data
+        .find((d) => d.year === result.solverReleaseYear)
+        ?.benchmarkResults.push({
+          runtime: result.runtime,
+          memoryUsage: result.memoryUsage,
+          status: result.status,
+        });
+    });
+
+    metrics.forEach((solverYearlyMetric) => {
+      solverYearlyMetric.data.forEach((d) => {
+        d.sgm.runtime = calculateSgm(
+          d.benchmarkResults.map((res) => res.runtime),
+        );
+        d.sgm.memoryUsage = calculateSgm(
+          d.benchmarkResults.map((res) => res.memoryUsage),
+        );
+        d.numSolvedBenchmark = d.benchmarkResults.filter(
+          (res) => res.status === "ok",
+        ).length;
+      });
+    });
+
+    metrics.map((solverYearlyMetric) =>
+      solverYearlyMetric.data.map((d) => d.benchmarkResults),
+    );
+    return metrics;
+  }, [benchmarkResults]);
+
+  const numSolvedBenchMark = useMemo(() => {
+    const getNumSolvedBenchMark = (): ISolverYearlyChartData[] => {
+      const numSolvedBenchMark: ISolverYearlyChartData[] = [];
+      allSolverYearlyMetrics.forEach((solverYearlyMetric) => {
+        solverYearlyMetric.data.forEach((solverData) => {
+          if (solverData.numSolvedBenchmark > 0) {
+            numSolvedBenchMark.push({
+              solver: solverYearlyMetric.solver as SolverType,
+              year: solverData.year,
+              value: solverData.numSolvedBenchmark,
+              version: solverData.version,
+            });
+          }
+        });
+      });
+      return numSolvedBenchMark;
+    };
+    return getNumSolvedBenchMark().sort((a, b) => a.year - b.year);
+  }, [allSolverYearlyMetrics]);
 
   return (
     <>
@@ -303,8 +409,8 @@ const PagePerformanceHistory = () => {
           />
           <NormalizedSection chartData={chartData} />
           <SolverEvolutionSection
-            solverYearlyMetrics={solverYearlyMetrics}
-            numSolvedBenchMark={chartData.numSolvedBenchMark}
+            solverYearlyMetrics={allSolverYearlyMetrics}
+            numSolvedBenchMark={numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
           />
           <div className="pt-1.5 pb-3 px-5">
