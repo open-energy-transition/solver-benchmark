@@ -1,0 +1,13 @@
+machine-type: c4-standard-2
+years:
+- 2025
+_total_runtime_s: 2945.66
+_total_runtime_h: 0.82
+_num_benchmarks: 1
+benchmarks:
+  pypsa-eur-elec-op-ucconv:
+    Sizes:
+    - Name: 2-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
+      _runtime_s: 2945.66

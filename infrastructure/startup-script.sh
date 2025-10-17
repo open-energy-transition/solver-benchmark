@@ -1,7 +1,16 @@
 #!/bin/bash
+# Add timestamp to each line of output
+log_with_timestamp() {
+    while IFS= read -r line; do
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $line"
+    done
+}
+
 # Log all output to a file
-exec > >(tee /var/log/startup-script.log) 2>&1
+exec > >(log_with_timestamp | tee -a /var/log/startup-script.log) 2>&1
 echo "Starting setup script at $(date)"
+start_time=$(date +%s)
+
 
 # Generate a unique run ID using timestamp and instance ID
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -12,7 +21,7 @@ echo "Generated unique run ID: ${RUN_ID}"
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
-apt-get -qq install -y tmux git time curl jq build-essential
+apt-get -qq install -y tmux git time curl jq build-essential cmake
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
@@ -20,7 +29,7 @@ gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt
 
 # Clone the repository
 echo "Cloning repository..."
-git clone --depth=1 -b run-v1 https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b highs-hipo-runs-v1 https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing Highs..."
@@ -29,6 +38,87 @@ curl -L "https://github.com/JuliaBinaryWrappers/HiGHSstatic_jll.jl/releases/down
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
+
+# Install additional HiGHS from hipo branch with dependencies
+echo "Installing HiGHS from hipo branch with required dependencies..."
+
+# Set up working directory
+HIGHS_HIPO_DIR="/opt/highs-hipo-workspace"
+mkdir -p "${HIGHS_HIPO_DIR}"
+cd "${HIGHS_HIPO_DIR}"
+
+# Install BLAS dependency
+echo "Installing BLAS..."
+apt-get -qq install -y libblas-dev
+
+# 1. Clone GKLib
+echo "Cloning GKLib..."
+git clone https://github.com/KarypisLab/GKlib.git
+
+# 2. Clone METIS
+echo "Cloning METIS..."
+git clone https://github.com/KarypisLab/METIS.git
+
+# 3. Create installs directory
+echo "Creating installs directory..."
+mkdir -p installs
+
+# 4. Install GKLib shared (using shared approach due to linking errors)
+echo "Installing GKLib as shared library..."
+cd GKlib
+make config shared=1 prefix="${HIGHS_HIPO_DIR}/installs"
+make
+make install
+cd "${HIGHS_HIPO_DIR}"
+
+# Check if shared library link is needed and create it
+if [ ! -f "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so" ] && [ -f "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so.0" ]; then
+    echo "Creating symlink for libGKlib.so..."
+    ln -sf "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so.0" "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so"
+fi
+
+# 5. Install METIS shared
+echo "Installing METIS as shared library..."
+cd METIS
+make config shared=1 gklib_path="${HIGHS_HIPO_DIR}/installs" prefix="${HIGHS_HIPO_DIR}/installs"
+make
+make install
+cd "${HIGHS_HIPO_DIR}"
+
+# 6. Verify dependencies installation
+echo "Verifying dependencies installation..."
+ls -la "${HIGHS_HIPO_DIR}/installs"
+ls -la "${HIGHS_HIPO_DIR}/installs/lib"
+
+# 7. Clone and build HiGHS with hipo support
+echo "Cloning HiGHS repository..."
+git clone --depth   1 https://github.com/ERGO-Code/HiGHS.git
+cd HiGHS
+
+# Checkout the hipo branch
+echo "Checking out hipo branch..."
+
+# https://github.com/ERGO-Code/HiGHS/commits/hipo/
+# 35e30f812e0f109913a9370cfc9fdeea70e1a92d: Tree parallelism now uses TaskGroup
+HIPO_COMMIT_SHA="35e30f812e0f109913a9370cfc9fdeea70e1a92d"
+git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
+git checkout "${HIPO_COMMIT_SHA}"
+
+# 8. Configure HiGHS with HIPO enabled and dependency paths
+echo "Configuring HiGHS with HIPO support..."
+cmake -S. -B build \
+      -DHIPO=ON \
+      -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs" \
+      -DGKLIB_ROOT="${HIGHS_HIPO_DIR}/installs"
+cmake --build build
+
+# Verify the installation
+echo "Verifying HiGHS hipo installation..."
+"${HIGHS_HIPO_DIR}/HiGHS/build/bin/highs" --version
+echo "HiGHS hipo installation completed"
+
+# Go back to root directory
+cd /
 
 # Downloading benchmark reference model
 curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.lp" -o benchmark-test-model.lp
@@ -44,6 +134,12 @@ rm ~/miniconda3/miniconda.sh
 echo "Setting up conda environment..."
 echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
 ~/miniconda3/bin/conda init bash
+echo "Elapsed: $(($(date +%s)-start_time))s"
+
+# Accept Anaconda Terms of Service to avoid interactive prompts
+echo "Accepting Anaconda Terms of Service..."
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 # Accept Anaconda Terms of Service to avoid interactive prompts
 echo "Accepting Anaconda Terms of Service..."
@@ -87,6 +183,7 @@ if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "All benchmarks completed at $(date)"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # Create a copy of results
 CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
@@ -103,6 +200,7 @@ if [ $COPY_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Benchmark results successfully copied at $(date)"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # ----- GCS UPLOAD CONFIGURATION -----
 # Check if GCS upload is enabled

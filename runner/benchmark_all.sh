@@ -58,16 +58,24 @@ for year in "${years[@]}"; do
         echo "Conda env $env_name already exists; using this env for $year's benchmarks"
     else
         echo "Creating conda env $env_name..."
-        conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+        time conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
     fi
 
     # Run the benchmark script for the year
     echo "Running benchmarks for the year: $year"
     conda activate "$env_name"
-    if [ "$idx" -eq 0 ]; then
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id"
+
+    # Add highs-hipo solver variants for 2025 benchmarks
+    if [ "$year" = "2025" ]; then
+        solver_args="--solvers highs highs-hipo-ipm highs-hipo-128 highs-hipo-32 highs-hipo-64"
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id"
+        solver_args="--solvers highs scip cbc gurobi glpk"
+    fi
+
+    if [ "$idx" -eq 0 ]; then
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args
+    else
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args
     fi
     conda deactivate
 

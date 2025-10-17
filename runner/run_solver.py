@@ -1,5 +1,11 @@
+import collections
+import collections.abc
 import json
+import os
+import subprocess
 import sys
+import time
+from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -7,6 +13,38 @@ from traceback import format_exc
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
+
+
+class HighsHipoVariant(str, Enum):
+    HIPO_IPM = "highs-hipo-ipm"
+    HIPO_32 = "highs-hipo-32"
+    HIPO_64 = "highs-hipo-64"
+    HIPO_128 = "highs-hipo-128"
+
+    # cli args returns a list of command line arguments for the HiGHS binary.
+    def cli_args(self) -> collections.abc.Iterable[str]:
+        args = {
+            "solver": "hipo",
+            "run_crossover": "off",
+        }
+        if self == HighsHipoVariant.HIPO_IPM:
+            args["solver"] = "ipx"
+
+        return [f"--{k}={v}" for k, v in args.items()]
+
+    # options returns the contents for the HiGHS options file.
+    # passed to the HiGHS binary via --options_file=<file>
+    def options(self) -> str:
+        options = {}
+        match self:
+            case HighsHipoVariant.HIPO_32:
+                options["hipo_block_size"] = 32
+            case HighsHipoVariant.HIPO_64:
+                options["hipo_block_size"] = 64
+            case HighsHipoVariant.HIPO_128:
+                options["hipo_block_size"] = 128
+        return "\n".join(f"{k} = {v}" for k, v in options.items())
+
 
 # HiGHS is not available in the 2020 environment that we use to run GLPK
 try:
@@ -16,27 +54,24 @@ except ModuleNotFoundError:
 
 
 def get_solver(solver_name):
-    try:
-        solver_enum = SolverName(solver_name.lower())
-    except ValueError:
-        raise ValueError(f"Solver '{solver_name}' is not recognized")
+    solver_name = solver_name.lower()
+    solver_enum = SolverName(solver_name)
 
     solver_class = getattr(solvers, solver_enum.name)
 
+    mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
     seed_options = {
-        "highs": {"random_seed": 0},
-        "glpk": {"seed": 0},
-        "gurobi": {"seed": 0},
-        "scip": {
-            "randomization/randomseedshift": 0,
+        "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
+        "glpk": {"seed": 0, "mipgap": mip_gap},
+        "gurobi": {"seed": 0, "MIPGap": mip_gap},
+        "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
+        "cbc": {
+            "randomCbcSeed": 1,  # 0 indicates time of day
+            "ratioGap": mip_gap,
         },
-        "cbc": {"randomCbcSeed": 1},  # 0 indicates time of day
     }
 
-    if solver_name.lower() in seed_options:
-        return solver_class(**seed_options[solver_name.lower()])
-    else:
-        return solver_class()
+    return solver_class(**seed_options.get(solver_name, {}))
 
 
 def is_mip_problem(solver_model, solver_name):
@@ -80,13 +115,14 @@ def get_duality_gap(solver_model, solver_name: str):
     """Retrieve the duality gap for the given solver model, if available."""
     if solver_name == "scip":
         return solver_model.getGap()
-    elif solver_name == "gurobi" and solver_model.IsMIP:
+    elif solver_name == "gurobi":
         return solver_model.MIPGap
-    elif solver_name == "highs" and solver_model:
-        info = solver_model.getInfo()
-        return info.mip_gap if hasattr(info, "mip_gap") else None
-    elif solver_name in {"glpk", "cbc"}:
-        # These solvers do not have a way to retrieve the duality gap from python
+    elif solver_name == "highs":
+        return getattr(solver_model.getInfo(), "mip_gap", None)
+    elif solver_name == "cbc":
+        return getattr(solver_model, "mip_gap", None)
+    elif solver_name == "glpk":
+        # GLPK does not have a way to retrieve the duality gap from python
         return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
@@ -111,8 +147,11 @@ def get_milp_metrics(input_file, solver_result):
                     integer_vars, solver_result.solution.primal
                 )
                 return duality_gap, max_integrality_violation
-    except Exception as e:
-        print(f"ERROR obtaining milp metrics for {input_file}: {e}", file=sys.stderr)
+    except Exception:
+        print(
+            f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
+            file=sys.stderr,
+        )
     return None, None
 
 
@@ -124,6 +163,8 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.getRunTime()
             case "scip":
                 return solver_model.getSolvingTime()
+            case "cbc":
+                return solver_model.runtime
             case "gurobi":
                 return solver_model.Runtime
             case _:
@@ -134,8 +175,142 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     return None
 
 
+def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVariant):
+    """
+    Run the HiGHS-HiPO solver directly using the binary with variant-specific arguments
+    """
+    import tempfile
+
+    # check if we are root
+    if os.getuid() == 0:
+        # VM path
+        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+    else:
+        highs_hipo_binary = f"{os.getenv('HOME')}/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+
+    solution_dir = Path(__file__).parent / "solutions"
+    solution_dir.mkdir(parents=True, exist_ok=True)
+
+    logs_dir = Path(__file__).parent / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+
+    output_filename = f"{Path(input_file).stem}-{solver_name}-{solver_version}"
+    solution_fn = solution_dir / f"{output_filename}.sol"
+    log_fn = logs_dir / f"{output_filename}.log"
+
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            prefix=highs_hipo.value,
+            suffix=".options",
+            delete=False,
+            delete_on_close=False,
+        ) as options_file:
+            options_file.write(highs_hipo.options())
+            options_file.flush()
+
+            solver_args = list(highs_hipo.cli_args())
+            solver_args.append(f"--options_file={options_file.name}")
+
+        command = [
+            highs_hipo_binary,
+            *solver_args,
+            input_file,
+            f"--solution_file={solution_fn}",
+        ]
+
+        # Run the command and capture the output
+        start_time = time.perf_counter()
+        try:
+            print(f"running command {command}")
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=False,
+                encoding="utf-8",
+            )
+            runtime = time.perf_counter() - start_time
+
+            # Write stdout and stderr to log file
+            with open(log_fn, "w") as f:
+                f.write(f"Command: {' '.join(command)}\n")
+                f.write(f"Return code: {result.returncode}\n\n")
+                f.write("STDOUT:\n")
+                f.write(result.stdout)
+                f.write("\n\nSTDERR:\n")
+                f.write(result.stderr)
+
+            if result.returncode != 0:
+                return {
+                    "runtime": runtime,
+                    "reported_runtime": runtime,
+                    "status": "error",
+                    "condition": "Error",
+                    "objective": None,
+                    "duality_gap": None,
+                    "max_integrality_violation": None,
+                }
+            else:
+                # Parse HiGHS output to extract objective value
+                objective = None
+                for line in result.stdout.splitlines():
+                    if "Objective value" in line:
+                        try:
+                            objective = float(line.split(":")[-1].strip())
+                        except (ValueError, IndexError):
+                            pass
+
+                return {
+                    "runtime": runtime,
+                    "reported_runtime": runtime,
+                    "status": "ok",
+                    "condition": "Optimal",
+                    "objective": objective,
+                    "duality_gap": None,  # Not available from command line output
+                    "max_integrality_violation": None,  # Not available from command line output
+                }
+        except Exception as e:
+            runtime = time.perf_counter() - start_time
+            # Write error to log file
+            with open(log_fn, "w") as f:
+                f.write(f"Command: {' '.join(command)}\n")
+                f.write(f"Exception: {str(e)}\n")
+
+            return {
+                "runtime": runtime,
+                "reported_runtime": runtime,
+                "status": "error",
+                "condition": "Error",
+                "objective": None,
+                "duality_gap": None,
+                "max_integrality_violation": None,
+            }
+    finally:
+        pass
+        # Clean up temporary options file
+        # if options_file is not None:
+        #     try:
+        #         os.unlink(options_file.name)
+        #     except OSError:
+        #         pass
+
+
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
+
+    # Handle highs-hipo solver variants separately
+    try:
+        highs_hipo = HighsHipoVariant(solver_name.lower())
+        results = run_highs_hipo_solver(input_file, solver_version, highs_hipo)
+        print(json.dumps(results))
+        return
+    except ValueError as e:
+        # re-raise the error if it isn't expected.
+        # we want to continue only if the error is about invalid HighsHipoVariant
+        if "is not a valid HighsHipoVariant" not in str(e):
+            raise e
+
     solver = get_solver(solver_name)
 
     solution_dir = Path(__file__).parent / "solutions"
@@ -149,27 +324,41 @@ def main(solver_name, input_file, solver_version):
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    # We measure runtime here and not of this entire script because lines like
-    # `import linopy` take a long (and varying) amount of time
-    start_time = perf_counter()
-    solver_result = solver.solve_problem(
-        problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
-    )
-    runtime = perf_counter() - start_time
+    try:
+        # We measure runtime here and not of this entire script because lines like
+        # `import linopy` take a long (and varying) amount of time
+        start_time = perf_counter()
+        solver_result = solver.solve_problem(
+            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
+        )
+        runtime = perf_counter() - start_time
 
-    duality_gap, max_integrality_violation = get_milp_metrics(input_file, solver_result)
+        duality_gap, max_integrality_violation = get_milp_metrics(
+            input_file, solver_result
+        )
 
-    results = {
-        "runtime": runtime,
-        "reported_runtime": get_reported_runtime(
-            solver_name, solver_result.solver_model
-        ),
-        "status": solver_result.status.status.value,
-        "condition": solver_result.status.termination_condition.value,
-        "objective": solver_result.solution.objective,
-        "duality_gap": duality_gap,
-        "max_integrality_violation": max_integrality_violation,
-    }
+        results = {
+            "runtime": runtime,
+            "reported_runtime": get_reported_runtime(
+                solver_name, solver_result.solver_model
+            ),
+            "status": solver_result.status.status.value,
+            "condition": solver_result.status.termination_condition.value,
+            "objective": solver_result.solution.objective,
+            "duality_gap": duality_gap,
+            "max_integrality_violation": max_integrality_violation,
+        }
+    except Exception:
+        print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
+        results = {
+            "runtime": None,
+            "reported_runtime": None,
+            "status": "ER",
+            "condition": None,
+            "objective": None,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
     print(json.dumps(results))
 
 
