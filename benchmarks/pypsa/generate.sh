@@ -73,7 +73,7 @@ esac
 # Single snakemake call that builds all the inputs to the solve_*_network rule
 targets=$(for n in "${clusters[@]}"; do for res in "${resolutions[@]}"; do eval echo $pre_solve_file_schema; done; done)
 echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
-time snakemake --cores all --configfile ./solver-benchmarks/${benchmark}.yaml -call ${targets} ${dry_run}
+time snakemake --cores all --configfile ./${benchmark}.yaml -call ${targets} ${dry_run}
 
 # Loop over snakemake calls to solve_*_network rules to generate LP files
 for n in "${clusters[@]}"; do
@@ -83,7 +83,7 @@ for n in "${clusters[@]}"; do
         echo -e "\n$line\nGenerating $lp_file\n$line"
 
         export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
-        time snakemake --cores all --configfile ./solver-benchmarks/${benchmark}.yaml -call ${result_file} ${dry_run}
+        time snakemake --cores all --configfile ./${benchmark}.yaml -call ${result_file} ${dry_run}
     done
 done
 
