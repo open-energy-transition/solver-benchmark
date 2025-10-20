@@ -23,8 +23,8 @@ usage() {
     echo "    -h    Show this help and exit."
 }
 dry_run=""
-clusters=(2 3 4 5 6 7 8 9 10)
-resolutions=(1h 3h 12h 24h)
+clusters=(10 50 100)
+resolutions=(1H 3H)
 while getopts "hnc:r:" flag
 do
     case ${flag} in
@@ -54,8 +54,8 @@ line=$(eval printf '=%.0s' {1..80})
 
 case ${benchmark} in
     pypsa-eur-sec )
-        pre_solve_file_schema="results/prenetworks/base_s_\${n}_lv1_\${res}__2050.nc"
-        result_file_schema="results/postnetworks/base_s_\${n}_lv1_\${res}__2050.nc"
+        pre_solve_file_schema="results/prenetworks/base_s_\${n}_lv1_\${res}_2050.nc"
+        result_file_schema="results/postnetworks/base_s_\${n}_lv1_\${res}_2050.nc"
         ;;
     pypsa-eur-elec-trex )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
