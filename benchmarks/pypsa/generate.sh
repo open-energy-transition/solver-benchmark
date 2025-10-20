@@ -66,16 +66,16 @@ case ${benchmark} in
         result_file_schema="results/networks/base_s_\${n}_lvopt_\${res}_2050.nc"
         ;;
     pypsa-eur-elec-trex_copt | pypsa-eur-elec-trex_copt-ucconv )
-        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lcopt_\${res}.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}.nc"
+        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lcopt_\${res}_2050.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}_2050.nc"
         ;;
     pypsa-eur-elec-trex_vopt | pypsa-eur-elec-trex_vopt-ucconv )
-        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}.nc"
+        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}_2050.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}_2050.nc"
         ;;
     pypsa-eur-elec-op | pypsa-eur-elec-op-ucconv )
-        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lv1_\${res}.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lv1_\${res}_op.nc"
+        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lv1_\${res}_2050.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lv1_\${res}_op_2050.nc"
         ;;
     *)
         echo "Unknown benchmark $benchmark"
