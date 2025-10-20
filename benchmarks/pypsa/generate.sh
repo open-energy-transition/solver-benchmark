@@ -57,9 +57,21 @@ case ${benchmark} in
         pre_solve_file_schema="results/networks/base_s_\${n}_lv1_\${res}_2050.nc"
         result_file_schema="results/networks/base_s_\${n}_lv1_\${res}_2050.nc"
         ;;
-    pypsa-eur-elec-trex )
+    pypsa-eur-sec-trex_copt )
+        pre_solve_file_schema="results/networks/base_s_\${n}_lcopt_\${res}_2050.nc"
+        result_file_schema="results/networks/base_s_\${n}_lcopt_\${res}_2050.nc"
+        ;;
+    pypsa-eur-sec-trex_vopt )
+        pre_solve_file_schema="results/networks/base_s_\${n}_lvopt_\${res}_2050.nc"
+        result_file_schema="results/networks/base_s_\${n}_lvopt_\${res}_2050.nc"
+        ;;
+    pypsa-eur-elec-trex_copt | pypsa-eur-elec-trex_copt-ucconv )
+        pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lcopt_\${res}.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}.nc"
+        ;;
+    pypsa-eur-elec-trex_vopt | pypsa-eur-elec-trex_vopt-ucconv )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
+        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}.nc"
         ;;
     pypsa-eur-elec-op | pypsa-eur-elec-op-ucconv )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lv1_\${res}.nc"
@@ -79,11 +91,10 @@ time snakemake --cores all --configfile ./${benchmark}.yaml -call ${targets} ${d
 for n in "${clusters[@]}"; do
     for res in "${resolutions[@]}"; do
         lp_file="${output_dir}/${benchmark}-${n}-${res}.lp"
-        result_file=$(eval echo $result_file_schema)
         echo -e "\n$line\nGenerating $lp_file\n$line"
 
         export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
-        time snakemake --cores all --configfile ./${benchmark}.yaml -call ${result_file} ${dry_run}
+        time snakemake --cores all --configfile ./${benchmark}.yaml ${dry_run}
     done
 done
 
