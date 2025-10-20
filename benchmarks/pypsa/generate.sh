@@ -55,27 +55,27 @@ line=$(eval printf '=%.0s' {1..80})
 case ${benchmark} in
     pypsa-eur-sec )
         pre_solve_file_schema="results/networks/base_s_\${n}_lv1_\${res}_2050.nc"
-        result_file_schema="results/networks/base_s_\${n}_lv1_\${res}_2050.nc"
+        solve_rule="solve_sector_networks"
         ;;
     pypsa-eur-sec-trex_copt )
         pre_solve_file_schema="results/networks/base_s_\${n}_lcopt_\${res}_2050.nc"
-        result_file_schema="results/networks/base_s_\${n}_lcopt_\${res}_2050.nc"
+        solve_rule="solve_sector_networks"
         ;;
     pypsa-eur-sec-trex_vopt )
         pre_solve_file_schema="results/networks/base_s_\${n}_lvopt_\${res}_2050.nc"
-        result_file_schema="results/networks/base_s_\${n}_lvopt_\${res}_2050.nc"
+        solve_rule="solve_sector_networks"
         ;;
     pypsa-eur-elec-trex_copt | pypsa-eur-elec-trex_copt-ucconv )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lcopt_\${res}_2050.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lcopt_\${res}_2050.nc"
+        solve_rule="solve_elec_networks"
         ;;
     pypsa-eur-elec-trex_vopt | pypsa-eur-elec-trex_vopt-ucconv )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}_2050.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lvopt_\${res}_2050.nc"
+        solve_rule="solve_elec_networks"
         ;;
     pypsa-eur-elec-op | pypsa-eur-elec-op-ucconv )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lv1_\${res}_2050.nc"
-        result_file_schema="results/networks/base_s_\${n}_elec_lv1_\${res}_op_2050.nc"
+        solve_rule="solve_operations_networks"
         ;;
     *)
         echo "Unknown benchmark: $benchmark"
@@ -83,28 +83,20 @@ case ${benchmark} in
         ;;
 esac
 
-# --- Determine which snakemake cores option to use ---
-if [[ ${benchmark} == pypsa-eur-sec* ]]; then
-    cores_arg="--cores all"
-else
-    cores_arg="--cores solve_elec_networks"
-fi
-
 # --- Build pre-solve networks ---
 targets=$(for n in "${clusters[@]}"; do for res in "${resolutions[@]}"; do eval echo "$pre_solve_file_schema"; done; done)
 
 echo -e "\n$line\nBuilding pre-network files for $benchmark\n$line"
-time snakemake ${cores_arg} --configfile "./${benchmark}.yaml" -call ${targets} ${dry_run}
+time snakemake --cores all --configfile "./${benchmark}.yaml" -call ${targets} ${dry_run}
 
-# --- Generate LP problem files ---
+# --- Generate MPS problem files ---
 for n in "${clusters[@]}"; do
     for res in "${resolutions[@]}"; do
-        lp_file="${output_dir}/${benchmark}-${n}-${res}.lp"
-        echo -e "\n$line\nGenerating $lp_file\n$line"
+        mps_file="${output_dir}/${benchmark}-${n}-${res}.mps"
+        echo -e "\n$line\nGenerating $mps_file\n$line"
 
-        export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
-        result_file=$(eval echo "$result_file_schema")
-        time snakemake ${cores_arg} --configfile "./${benchmark}.yaml" -call "${result_file}" ${dry_run}
+        export ONLY_GENERATE_PROBLEM_FILE="$mps_file"
+        time snakemake --cores all --configfile "./${benchmark}.yaml" -call "${solve_rule}" ${dry_run}
     done
 done
 # TODO rename config files to remove nodes? also change paths here
