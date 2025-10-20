@@ -54,8 +54,8 @@ line=$(eval printf '=%.0s' {1..80})
 
 case ${benchmark} in
     pypsa-eur-sec )
-        pre_solve_file_schema="results/prenetworks/base_s_\${n}_lv1_\${res}_2050.nc"
-        result_file_schema="results/postnetworks/base_s_\${n}_lv1_\${res}_2050.nc"
+        pre_solve_file_schema="results/networks/base_s_\${n}_lv1_\${res}_2050.nc"
+        result_file_schema="results/networks/base_s_\${n}_lv1_\${res}_2050.nc"
         ;;
     pypsa-eur-elec-trex )
         pre_solve_file_schema="resources/networks/base_s_\${n}_elec_lvopt_\${res}.nc"
