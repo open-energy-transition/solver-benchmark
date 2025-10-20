@@ -94,7 +94,7 @@ for n in "${clusters[@]}"; do
         echo -e "\n$line\nGenerating $lp_file\n$line"
 
         export ONLY_GENERATE_PROBLEM_FILE="$lp_file"
-        time snakemake --cores all --configfile ./${benchmark}.yaml ${dry_run}
+        time snakemake --cores all --configfile ./${benchmark}.yaml -call ${result_file} ${dry_run}
     done
 done
 
