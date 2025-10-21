@@ -79,13 +79,19 @@ variable "reference_benchmark_interval" {
   default     = 3600
 }
 
+variable "benchmarks_dir" {
+  description = "Subdirectory containing benchmark YAML files (e.g., 'runtime_optimized', 'phase_1_parallel', 'phase_2_sequential')"
+  type        = string
+  default     = "runtime_optimized"
+}
+
 locals {
-  benchmark_files = fileset("${path.module}/benchmarks/runtime_optimized/", "*.yaml*")
+  benchmark_files = fileset("${path.module}/benchmarks/${var.benchmarks_dir}/", "*.yaml*")
 
   # Force validation of each YAML file individually with clear error messages
   yaml_validations = {
     for file in local.benchmark_files :
-      file => yamldecode(file("${path.module}/benchmarks/runtime_optimized/${file}"))
+      file => yamldecode(file("${path.module}/benchmarks/${var.benchmarks_dir}/${file}"))
   }
 
   benchmarks = {
@@ -124,7 +130,7 @@ resource "google_compute_instance" "benchmark_instances" {
     ssh-keys = var.ssh_user != "" && var.ssh_key_path != "" ? "${var.ssh_user}:${file(var.ssh_key_path)}" : null
     benchmark_file = each.value.filename
     benchmark_years = jsonencode(lookup(each.value.content, "years", ["2024"]))
-    benchmark_content = file("${path.module}/benchmarks/runtime_optimized/${each.value.filename}")
+    benchmark_content = file("${path.module}/benchmarks/${var.benchmarks_dir}/${each.value.filename}")
     enable_gcs_upload = tostring(var.enable_gcs_upload)
     gcs_bucket_name = var.gcs_bucket_name
     auto_destroy_vm = tostring(var.auto_destroy_vm)
