@@ -155,7 +155,7 @@ def parse_input_arguments() -> argparse.Namespace:
                         nargs="+",
                         type=int,
                         default=[50, 100],
-                        help="List of number of clusters. Default: 50 100"
+                        help="List of number of clusters. Default: 50 100")
 
     parser.add_argument("-r", "--time_resolutions",
                         nargs="+",
