@@ -1,8 +1,6 @@
 electricity:
     transmission_limit: copt
 
-countries: ['IT']
-
 conventional:
   dynamic_fuel_price: true
 
