@@ -154,8 +154,8 @@ def parse_input_arguments() -> argparse.Namespace:
     parser.add_argument("-c", "--clusters",
                         nargs="+",
                         type=int,
-                        default=list(range(2, 11)),  # Default: 2 3 ... 10
-                        help="List of number of clusters. Default: 2 3 ... 10")
+                        default=[50, 100],
+                        help="List of number of clusters. Default: 50 100"
 
     parser.add_argument("-r", "--time_resolutions",
                         nargs="+",
@@ -338,7 +338,7 @@ def run_benchmark(
         dry_run = ""
 
     if name_of_benchmark in elec_benchmarks_filter:
-        snakemake_command_network = f"snakemake -call solve_elec_networks --configfile {config_file_name} {dry_run}"
+        snakemake_command_network = f"snakemake -call solve_elec_networks --configfile {config_file_name} --latency-wait 60 {dry_run} "
         run_snakemake_command(snakemake_command_network)
         snakemake_elec_benchmark = f"snakemake -call results/networks/base_s_{n_c}_elec_{time_res}_{p_hor}_op --configfile {config_file_name} {dry_run}"
         run_snakemake_command(snakemake_elec_benchmark)
