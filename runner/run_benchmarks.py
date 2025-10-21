@@ -490,8 +490,8 @@ def main(
         reference_solver_version = get_highs_binary_version()
 
     for benchmark in processed_benchmarks:
-        # Set timeout of 1h for S & M, 10h for L
-        timeout = 10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
+        # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 10h for L)
+        timeout = benchmark.get("timeout_seconds", 10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60)
 
         for solver in solvers:
             # Restrict highs-hipo variants to 2025 only
