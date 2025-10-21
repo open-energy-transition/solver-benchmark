@@ -1,0 +1,91 @@
+benchmarks:
+  pypsa-eur-sec-trex_vopt:
+    Short description: Sector-coupled (power, heating, biomass, industrial, transport) PyPSA-Eur infrastructure run for Europe considering 2050 as single planning horizon with optimal volume-transmission expansion.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Biomass, Industrial, Transport
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-50-1H-vopt.lp
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-50-3H-vopt.lp
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-100-1H-vopt.lp
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-100-3H-vopt.lp
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+  pypsa-eur-elec-trex_vopt:
+    Short description: PyPSA-Eur power sector infrastructure run for Europe considering 2050 as single planning horizon with optimal volume-transmission expansion.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Biomass, Industrial, Transport
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-50-1H-vopt.lp
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-50-3H-vopt.lp
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-100-1H-vopt.lp
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-100-3H-vopt.lp
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
