@@ -8,9 +8,7 @@ import ruamel.yaml
 
 
 DEFAULT_BENCHMARKS = [
-    "pypsa-eur-elec-trex",
-    "pypsa-eur-elec-dfp",
-    "pypsa-eur-elec-ucconv",
+    "pypsa-eur-elec",
     "pypsa-eur-sec"
 ]
 
@@ -45,18 +43,15 @@ def select_yaml_files(benchmark_name: str, yaml_dir: typing.Optional[pathlib.Pat
 
     # Mapping of benchmark names to their matching YAML files
     benchmark_yaml_map = {
-        "pypsa-eur-elec-trex": [
+        "pypsa-eur-elec": [
+            "pypsa-eur-elec.yaml",
+            "pypsa-eur-elec-dfp.yaml",
             "pypsa-eur-elec-trex_copt.yaml",
+            "pypsa-eur-elec-trex_copt-dfp.yaml",
+            "pypsa-eur-elec-trex_copt-ucconv.yaml",
             "pypsa-eur-elec-trex_vopt.yaml",
             "pypsa-eur-elec-trex_vopt-dfp.yaml",
-            "pypsa-eur-elec-trex_copt-dfp.yaml",
             "pypsa-eur-elec-trex_vopt-ucconv.yaml",
-            "pypsa-eur-elec-trex_copt-ucconv.yaml"
-        ],
-        "pypsa-eur-elec-dfp": [
-            "pypsa-eur-elec-dfp.yaml",
-        ],
-        "pypsa-eur-elec-ucconv": [
             "pypsa-eur-elec-ucconv.yaml",
         ],
         "pypsa-eur-sec": [
@@ -144,7 +139,7 @@ def parse_input_arguments() -> argparse.Namespace:
     parser.add_argument("--benchmark_name",
                         type=str,
                         choices=DEFAULT_BENCHMARKS,
-                        default="pypsa-eur-elec-trex",
+                        default="pypsa-eur-elec",
                         help="Name of the benchmark to generate. ")
 
     parser.add_argument("--output_dir",
