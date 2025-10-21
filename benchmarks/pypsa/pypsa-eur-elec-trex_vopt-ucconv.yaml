@@ -1,8 +1,6 @@
 electricity:
     transmission_limit: vopt
 
-countries: ['IT']
-
 conventional:
   unit_commitment: true
 

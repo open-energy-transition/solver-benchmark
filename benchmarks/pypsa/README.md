@@ -16,9 +16,17 @@ This folder contains benchmarks based on PyPSA-Eur. The benchmarks can be genera
      ```
      where `<benchmark-name>` is one of:
      ```
-    pypsa-eur-elec-trex
+    pypsa-eur-elec
     pypsa-eur-elec-dfp
+    pypsa-eur-elec-trex_copt
+    pypsa-eur-elec-trex_copt-dfp
+    pypsa-eur-elec-trex_copt-ucconv
+    pypsa-eur-elec-trex_vopt
+    pypsa-eur-elec-trex_vopt-dfp
+    pypsa-eur-elec-trex_vopt-ucconv
     pypsa-eur-elec-ucconv
     pypsa-eur-sec
+    pypsa-eur-sec-trex_copt
+    pypsa-eur-sec-trex_vopt
      ```
 - The benchmarks can be found inside the docker container, under `/tmp/pypsa*.lp`.
