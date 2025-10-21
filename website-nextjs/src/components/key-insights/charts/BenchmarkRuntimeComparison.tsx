@@ -18,7 +18,19 @@ const BENCHMARKS_FILTERS = [
 ];
 const CATEGORY = "benchmark";
 
-const BenchmarkRuntimeComparison = () => {
+interface IBenchmarkRuntimeComparison {
+  xAxisLabelWrapLength?: number;
+  splitter?: string;
+  xAxisLabelRotation?: number;
+  extraCategoryLengthMargin?: number;
+}
+
+const BenchmarkRuntimeComparison = ({
+  xAxisLabelWrapLength = undefined,
+  splitter = "-",
+  xAxisLabelRotation = -45,
+  extraCategoryLengthMargin = undefined,
+}: IBenchmarkRuntimeComparison) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
@@ -197,8 +209,8 @@ const BenchmarkRuntimeComparison = () => {
         }}
         xAxisLabel=""
         yAxisLabel="Relative runtime (normalized)"
-        height={400}
-        rotateXAxisLabels={false}
+        chartHeight={400}
+        rotateXAxisLabels={true}
         barTextClassName={getBarTextClassName}
         tooltipFormat={tooltipFormat}
         barOpacity={getBarOpacity}
@@ -206,6 +218,10 @@ const BenchmarkRuntimeComparison = () => {
         xAxisTickFormat={getXAxisTickFormat}
         xAxisTooltipFormat={getXAxisTooltipFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
+        xAxisLabelWrapLength={xAxisLabelWrapLength}
+        xAxisLabelRotation={xAxisLabelRotation}
+        extraCategoryLengthMargin={extraCategoryLengthMargin}
+        splitter={splitter}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const status = benchmarkWithStatus

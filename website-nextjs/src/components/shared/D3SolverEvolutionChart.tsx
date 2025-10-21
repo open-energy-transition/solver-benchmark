@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
-import { getSolverColor, roundUpToNearest } from "@/utils/chart";
+import {
+  createD3Tooltip,
+  getSolverColor,
+  roundUpToNearest,
+} from "@/utils/chart";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 interface SolverEvolutionData {
   year: number;
@@ -32,6 +37,7 @@ const D3SolverEvolutionChart = ({
   const svgRef = useRef(null);
 
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
+  const windowWidth = useDebouncedWindowWidth(200);
 
   useEffect(() => {
     if (data.length === 0) return;
@@ -52,19 +58,7 @@ const D3SolverEvolutionChart = ({
       .style("overflow", "visible");
 
     // Tooltip container
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales - ensure chronological order
     const sortedData = [...data].sort((a, b) => a.year - b.year);
@@ -313,7 +307,7 @@ const D3SolverEvolutionChart = ({
       .attr("x2", width - margin.right)
       .attr("y1", yLeftScale(totalBenchmarks))
       .attr("y2", yLeftScale(totalBenchmarks))
-      .attr("stroke", "#FF6B6B")
+      .attr("stroke", "#43BF94")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "8,4")
       .attr("opacity", 0.8);
@@ -322,7 +316,7 @@ const D3SolverEvolutionChart = ({
       .attr("x", margin.left + 50)
       .attr("y", yLeftScale(totalBenchmarks + 2))
       .attr("text-anchor", "end")
-      .attr("fill", "#FF6B6B")
+      .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
       .text(`Max: 105`);
@@ -330,11 +324,11 @@ const D3SolverEvolutionChart = ({
     return () => {
       tooltip.remove();
     };
-  }, [data, solverColor, solverName]);
+  }, [data, solverColor, solverName, windowWidth]);
 
   return (
-    <div className={`bg-white p-4 rounded-xl ${className}`}>
-      <div className="mb-4">
+    <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
+      <div className="mb-4 pl-4 lg:pl-0">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           {solverName.toUpperCase()} Performance Evolution
         </h3>
