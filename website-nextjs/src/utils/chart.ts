@@ -28,8 +28,14 @@ const colorMap: Record<string, string> = {
   cbc: "#F9CD5A", // yellow
   glpk: "#7C3AED", // purple
   gurobi: "#F66C49", // red
-  highs: "#43BF94", // green
   scip: "#3B82F6", // blue
+
+  highs: "#43BF94", // green
+  // HiGHS HiPO variants - shades of teal/cyan
+  "highs-hipo-32": "#e9760aff",
+  "highs-hipo-64": "#e6dc10ff",
+  "highs-hipo-128": "#650be3ff",
+  "highs-hipo-ipm": "#00e1ffff",
 };
 
 export function getChartColor(index: number): string {
