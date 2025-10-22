@@ -172,10 +172,33 @@ echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 cd /solver-benchmark/
 chmod +x ./runner/benchmark_all.sh
 
+# Extract solver from benchmark YAML content if present
+# This enables per-VM solver selection for multi-phase orchestration
+SOLVER_FROM_YAML=$(echo "${BENCHMARK_CONTENT}" | python3 -c "
+import yaml
+import sys
+try:
+    data = yaml.safe_load(sys.stdin)
+    if data and 'solver' in data:
+        print(data['solver'])
+        sys.exit(0)
+except Exception as e:
+    print('', file=sys.stderr)
+    sys.exit(1)
+" 2>/dev/null)
+
+if [ -n "${SOLVER_FROM_YAML}" ]; then
+    SOLVER_ARGS="-s ${SOLVER_FROM_YAML}"
+    echo "Using solver from benchmark YAML: ${SOLVER_FROM_YAML}"
+else
+    SOLVER_ARGS=""
+    echo "No solver field in benchmark YAML, using default solver list for year"
+fi
+
 # Run the benchmark_all.sh script with our years and the run_id
 echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"
 source ~/miniconda3/bin/activate
-./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
+./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ${SOLVER_ARGS} ./benchmarks/"${BENCHMARK_FILE}"
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
