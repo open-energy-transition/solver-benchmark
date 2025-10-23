@@ -21,7 +21,7 @@ echo "Generated unique run ID: ${RUN_ID}"
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
-apt-get -qq install -y tmux git time curl jq build-essential cmake htop
+apt-get -qq install -y tmux git time curl yq jq build-essential cmake htop
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
@@ -175,18 +175,13 @@ chmod +x ./runner/benchmark_all.sh
 
 # Extract solver from benchmark YAML content if present
 # This enables per-VM solver selection for multi-phase orchestration
-SOLVER_FROM_YAML=$(echo "${BENCHMARK_CONTENT}" | python3 -c "
-import yaml
-import sys
-try:
-    data = yaml.safe_load(sys.stdin)
-    if data and 'solver' in data:
-        print(data['solver'])
-        sys.exit(0)
-except Exception as e:
-    print('', file=sys.stderr)
-    sys.exit(1)
-" 2>/dev/null)
+# Extract solver from benchmark YAML content if present using yq
+# This enables per-VM solver selection for multi-phase orchestration
+# Use yq to extract the 'solver' field from the benchmark YAML content.
+# We assume yq is available on the system.
+SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver // ""' - 2>/dev/null)
+# Normalize: strip surrounding quotes and CR, then trim whitespace
+SOLVER_FROM_YAML=$(printf "%s" "${SOLVER_FROM_YAML}" | sed -e 's/^"//' -e 's/"$//' | tr -d '\r' | xargs || true)
 
 if [ -n "${SOLVER_FROM_YAML}" ]; then
     SOLVER_ARGS="-s ${SOLVER_FROM_YAML}"
