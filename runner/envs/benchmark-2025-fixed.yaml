@@ -2,6 +2,7 @@ name: benchmark-2025
 channels:
   - gurobi
   - conda-forge
+  - https://conda.anaconda.org/gurobi
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
@@ -18,7 +19,7 @@ dependencies:
   - c-ares=1.34.5=hb9d3cd8_0
   - ca-certificates=2025.10.5=hbd8a1cb_0
   - cachetools=6.2.1=pyhd8ed1ab_0
-  - certifi=2025.10.5=py312h06a4308_0
+  - certifi=2025.10.5=pyhd8ed1ab_0
   - cffi=2.0.0=py312h460c074_1
   - charset-normalizer=3.4.4=pyhd8ed1ab_0
   - click=8.3.0=pyh707e725_0
