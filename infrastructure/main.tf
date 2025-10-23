@@ -86,7 +86,11 @@ variable "benchmarks_dir" {
 }
 
 locals {
-  benchmark_files = fileset("${path.module}/benchmarks/${var.benchmarks_dir}/", "*.yaml*")
+  # Get all YAML files except allocation.yaml (which is just an index file)
+  benchmark_files = [
+    for file in fileset("${path.module}/benchmarks/${var.benchmarks_dir}/", "*.yaml*") :
+      file if file != "allocation.yaml"
+  ]
 
   # Force validation of each YAML file individually with clear error messages
   yaml_validations = {

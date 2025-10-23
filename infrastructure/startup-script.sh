@@ -21,7 +21,7 @@ echo "Generated unique run ID: ${RUN_ID}"
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
-apt-get -qq install -y tmux git time curl jq build-essential cmake
+apt-get -qq install -y tmux git time curl jq build-essential cmake htop
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
@@ -49,7 +49,8 @@ cd "${HIGHS_HIPO_DIR}"
 
 # Install BLAS dependency
 echo "Installing BLAS..."
-apt-get -qq install -y libblas-dev
+apt-get -qq install -y libopenblas-dev
+sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
 
 # 1. Clone GKLib
 echo "Cloning GKLib..."
