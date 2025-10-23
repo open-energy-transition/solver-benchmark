@@ -245,7 +245,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
                 return {
                     "runtime": runtime,
                     "reported_runtime": runtime,
-                    "status": "error",
+                    "status": "ER",
                     "condition": "Error",
                     "objective": None,
                     "duality_gap": None,
@@ -254,7 +254,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
             else:
                 # Parse HiGHS output to extract objective value
                 objective = None
-                model_status = "Error"
+                model_status = "ER"
                 for line in result.stdout.splitlines():
                     if "Objective value" in line:
                         try:
@@ -267,10 +267,15 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
                         except (ValueError, IndexError):
                             pass
 
+                if objective is not None and model_status in ["Optimal", "Infeasible"]:
+                    status = "ok"
+                else:
+                    status = "warning"
+
                 return {
                     "runtime": runtime,
                     "reported_runtime": runtime,
-                    "status": "ok" if objective else "error",
+                    "status": status,
                     # Model status        : Optimal
                     "condition": model_status,
                     "objective": objective,
