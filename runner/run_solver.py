@@ -260,12 +260,15 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
                             objective = float(line.split(":")[-1].strip())
                         except (ValueError, IndexError):
                             pass
+                    if "Model status" in line:
+                        model_status = line.split(":")[-1].strip()
 
                 return {
                     "runtime": runtime,
                     "reported_runtime": runtime,
-                    "status": "ok",
-                    "condition": "Optimal",
+                    "status": "ok" if objective else "error",
+                    # Model status        : Optimal
+                    "condition": model_status,
                     "objective": objective,
                     "duality_gap": None,  # Not available from command line output
                     "max_integrality_violation": None,  # Not available from command line output
