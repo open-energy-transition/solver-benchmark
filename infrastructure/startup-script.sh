@@ -21,7 +21,10 @@ echo "Generated unique run ID: ${RUN_ID}"
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
-apt-get -qq install -y tmux git time curl yq jq build-essential cmake htop
+apt-get -qq install -y tmux git time curl jq build-essential cmake htop
+
+wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x /usr/local/bin/yq
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
