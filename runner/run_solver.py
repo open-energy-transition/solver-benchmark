@@ -254,6 +254,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
             else:
                 # Parse HiGHS output to extract objective value
                 objective = None
+                model_status = "Error"
                 for line in result.stdout.splitlines():
                     if "Objective value" in line:
                         try:
