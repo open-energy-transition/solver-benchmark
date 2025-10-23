@@ -15,7 +15,6 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
-
 from run_solver import HighsHipoVariant
 
 hostname = gethostname()
@@ -278,7 +277,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         }
     else:
         print(
-            f"Solver command:\n {"\n".join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
+            f"Solver command:\n {'\n'.join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
         )
         metrics = json.loads(result.stdout.splitlines()[-1])
 
@@ -491,7 +490,10 @@ def main(
 
     for benchmark in processed_benchmarks:
         # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 10h for L)
-        timeout = benchmark.get("timeout_seconds", 10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60)
+        timeout = benchmark.get(
+            "timeout_seconds",
+            10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60,
+        )
 
         for solver in solvers:
             # Restrict highs-hipo variants to 2025 only
