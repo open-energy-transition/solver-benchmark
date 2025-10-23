@@ -420,6 +420,8 @@ def main(
     with open(benchmark_yaml_path, "r") as file:
         yaml_content = yaml.safe_load(file)
         benchmarks_info = yaml_content["benchmarks"]
+        # Read timeout from top-level YAML if present
+        yaml_timeout_seconds = yaml_content.get("timeout_seconds")
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
@@ -476,6 +478,7 @@ def main(
                     "size": instance["Name"],
                     "size_category": instance["Size"],
                     "path": benchmark_path,
+                    "timeout_seconds": yaml_timeout_seconds,
                 }
             )
 
