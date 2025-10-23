@@ -262,7 +262,10 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
                         except (ValueError, IndexError):
                             pass
                     if "Model status" in line:
-                        model_status = line.split(":")[-1].strip()
+                        try:
+                            model_status = line.split(":")[-1].strip()
+                        except (ValueError, IndexError):
+                            pass
 
                 return {
                     "runtime": runtime,
