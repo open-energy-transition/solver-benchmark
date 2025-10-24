@@ -497,9 +497,8 @@ def main(
 
     for benchmark in processed_benchmarks:
         # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 10h for L)
-        timeout = benchmark.get(
-            "timeout_seconds",
-            10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60,
+        timeout = benchmark.get("timeout_seconds") or (
+            10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
         )
 
         for solver in solvers:
