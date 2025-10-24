@@ -215,7 +215,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
         command = [
             highs_hipo_binary,
             *solver_args,
-            input_file,
+            str(Path(input_file).resolve()),
             f"--solution_file={solution_fn}",
         ]
 
