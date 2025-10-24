@@ -12,11 +12,20 @@ echo "Starting setup script at $(date)"
 start_time=$(date +%s)
 
 
-# Generate a unique run ID using timestamp and instance ID
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+# Try to get run_id from metadata (if provided by Terraform for shared parallel runs)
+RUN_ID=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/run_id" 2>/dev/null || echo "")
+
+# Get instance name (used for file naming even if using shared run_id)
 INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
-RUN_ID="${TIMESTAMP}_${INSTANCE_NAME}"
-echo "Generated unique run ID: ${RUN_ID}"
+
+# If no run_id from metadata, generate a unique one using timestamp and instance ID
+if [[ -z "${RUN_ID}" ]]; then
+    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+    RUN_ID="${TIMESTAMP}_${INSTANCE_NAME}"
+    echo "Generated unique run ID: ${RUN_ID}"
+else
+    echo "Using shared run ID from Terraform: ${RUN_ID}"
+fi
 
 # Update and install packages
 echo "Updating packages..."

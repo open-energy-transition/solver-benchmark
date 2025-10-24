@@ -85,7 +85,17 @@ variable "benchmarks_dir" {
   default     = "runtime_optimized"
 }
 
+variable "run_id" {
+  description = "Unique identifier for this benchmark run. If not provided, each VM will generate its own. Use this to group parallel VMs into a single logical benchmark campaign."
+  type        = string
+  default     = ""
+}
+
 locals {
+  # Generate a shared run_id if not provided (timestamp + a random suffix)
+  # If provided, use the user's run_id
+  shared_run_id = var.run_id != "" ? var.run_id : "${formatdate("YYYYMMDD_hhmmmss", timestamp())}_batch"
+
   # Get all YAML files except allocation.yaml (which is just an index file)
   benchmark_files = [
     for file in fileset("${path.module}/benchmarks/${var.benchmarks_dir}/", "*.yaml*") :
@@ -117,7 +127,7 @@ resource "google_compute_instance" "benchmark_instances" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "debian-cloud/debian-12"
       size = 50 # Size in GB
     }
   }
@@ -141,6 +151,7 @@ resource "google_compute_instance" "benchmark_instances" {
     project_id = var.project_id
     zone = lookup(each.value.content, "zone", var.zone)
     reference_benchmark_interval = tostring(var.reference_benchmark_interval)
+    run_id = local.shared_run_id
   }
 
   # Add the startup script from external file
