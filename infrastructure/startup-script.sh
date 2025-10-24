@@ -23,6 +23,11 @@ echo "Updating packages..."
 apt-get -qq update
 apt-get -qq install -y tmux git time curl jq build-essential cmake htop
 
+# Install BLAS dependency
+echo "Installing BLAS..."
+apt-get -qq install -y libopenblas-dev
+sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+
 wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 chmod a+x /usr/local/bin/yq
 
@@ -43,68 +48,50 @@ chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
 
 # Install additional HiGHS from hipo branch with dependencies
-echo "Installing HiGHS from hipo branch with required dependencies..."
+echo "Installing HiGHS from latest branch (which merges in highs development) with required dependencies..."
 
 # Set up working directory
 HIGHS_HIPO_DIR="/opt/highs-hipo-workspace"
 mkdir -p "${HIGHS_HIPO_DIR}"
 cd "${HIGHS_HIPO_DIR}"
 
-# Install BLAS dependency
-echo "Installing BLAS..."
-apt-get -qq install -y libopenblas-dev
-sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
-
-# 1. Clone GKLib
-echo "Cloning GKLib..."
-git clone https://github.com/KarypisLab/GKlib.git
-
 # 2. Clone METIS
-echo "Cloning METIS..."
-git clone https://github.com/KarypisLab/METIS.git
+echo "Cloning METIS (patched version)..."
+git clone --depth=1 --branch 510-ts https://github.com/galabovaa/METIS.git
+# pushd METIS
+# git fetch origin --depth=1 510-ts
+# git checkout 510-ts
+# popd
 
 # 3. Create installs directory
 echo "Creating installs directory..."
 mkdir -p installs
 
-# 4. Install GKLib shared (using shared approach due to linking errors)
-echo "Installing GKLib as shared library..."
-cd GKlib
-make config shared=1 prefix="${HIGHS_HIPO_DIR}/installs"
-make
-make install
-cd "${HIGHS_HIPO_DIR}"
+# 4. Install METIS
+echo "Installing METIS..."
+pushd METIS
+cmake -S. -B build -DGKLIB_PATH="${HIGHS_HIPO_DIR}/METIS/GKlib" \
+  -DCMAKE_INSTALL_PREFIX="${HIGHS_HIPO_DIR}/installs"
+cmake --build build
+cmake --install build
+popd
 
-# Check if shared library link is needed and create it
-if [ ! -f "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so" ] && [ -f "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so.0" ]; then
-    echo "Creating symlink for libGKlib.so..."
-    ln -sf "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so.0" "${HIGHS_HIPO_DIR}/installs/lib/libGKlib.so"
-fi
-
-# 5. Install METIS shared
-echo "Installing METIS as shared library..."
-cd METIS
-make config shared=1 gklib_path="${HIGHS_HIPO_DIR}/installs" prefix="${HIGHS_HIPO_DIR}/installs"
-make
-make install
-cd "${HIGHS_HIPO_DIR}"
-
-# 6. Verify dependencies installation
-echo "Verifying dependencies installation..."
-ls -la "${HIGHS_HIPO_DIR}/installs"
-ls -la "${HIGHS_HIPO_DIR}/installs/lib"
+# # 6. Verify dependencies installation
+# echo "Verifying dependencies installation..."
+# ls -la "${HIGHS_HIPO_DIR}/installs"
+# ls -la "${HIGHS_HIPO_DIR}/installs/lib"
 
 # 7. Clone and build HiGHS with hipo support
 echo "Cloning HiGHS repository..."
-git clone --depth   1 https://github.com/ERGO-Code/HiGHS.git
+git clone --depth=1 https://github.com/ERGO-Code/HiGHS.git
 cd HiGHS
 
 # Checkout the hipo branch
 echo "Checking out hipo branch..."
 
-# https://github.com/ERGO-Code/HiGHS/commits/hipo/
-# 35e30f812e0f109913a9370cfc9fdeea70e1a92d: Tree parallelism now uses TaskGroup
-HIPO_COMMIT_SHA="35e30f812e0f109913a9370cfc9fdeea70e1a92d"
+# https://github.com/ERGO-Code/HiGHS/commits/latest/
+# a65e195af2bbacca8edf31f6498cf1b0d45c39b9: Merge pull request #2596 from ERGO-Code/latest-2460
+HIPO_COMMIT_SHA="a65e195af2bbacca8edf31f6498cf1b0d45c39b9"
 git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
 git checkout "${HIPO_COMMIT_SHA}"
 
@@ -112,8 +99,7 @@ git checkout "${HIPO_COMMIT_SHA}"
 echo "Configuring HiGHS with HIPO support..."
 cmake -S. -B build \
       -DHIPO=ON \
-      -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs" \
-      -DGKLIB_ROOT="${HIGHS_HIPO_DIR}/installs"
+      -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs"
 cmake --build build
 
 # Verify the installation
