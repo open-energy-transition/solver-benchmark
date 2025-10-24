@@ -263,7 +263,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
-        print(f"ERROR running solver. Return code:\n{result.returncode}")
+        print(
+            f"ERROR running solver. Return code: {result.returncode}\n",
+            f"Stdout:\n{result.stdout}\n",
+            f"Stderr:\n{result.stderr}\n",
+        )
         # Errors are also said to have run for `timeout`s, so that they appear
         # along with timeouts in charts
         metrics = {
