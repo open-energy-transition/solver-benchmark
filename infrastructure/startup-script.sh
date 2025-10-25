@@ -182,17 +182,19 @@ SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver // ""' 
 SOLVER_FROM_YAML=$(printf "%s" "${SOLVER_FROM_YAML}" | sed -e 's/^"//' -e 's/"$//' | tr -d '\r' | xargs || true)
 
 if [ -n "${SOLVER_FROM_YAML}" ]; then
-    SOLVER_ARGS="-s ${SOLVER_FROM_YAML}"
     echo "Using solver from benchmark YAML: ${SOLVER_FROM_YAML}"
 else
-    SOLVER_ARGS=""
     echo "No solver field in benchmark YAML, using default solver list for year"
 fi
 
 # Run the benchmark_all.sh script with our years and the run_id
 echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"
 source ~/miniconda3/bin/activate
-./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ${SOLVER_ARGS} ./benchmarks/"${BENCHMARK_FILE}"
+if [ -n "${SOLVER_FROM_YAML}" ]; then
+    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" -s "${SOLVER_FROM_YAML}" ./benchmarks/"${BENCHMARK_FILE}"
+else
+    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
+fi
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
