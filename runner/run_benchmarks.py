@@ -239,7 +239,12 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         encoding="utf-8",
     )
 
-    memory = parse_memory(result.stderr)
+    memory = None
+    try:
+        memory = parse_memory(result.stderr)
+    except ValueError:
+        print("Failed to parse memory usage from stderr")
+
     if result.returncode == 124:
         print("TIMEOUT")
         metrics = {
@@ -251,7 +256,8 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "duality_gap": None,
             "max_integrality_violation": None,
         }
-    elif result.returncode == 137:
+    # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
+    elif result.returncode in (137, 143):
         print("OUT OF MEMORY")
         metrics = {
             "status": "OOM",
