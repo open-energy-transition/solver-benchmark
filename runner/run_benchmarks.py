@@ -257,7 +257,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
-    elif result.returncode in (137, 143):
+    # subprocess returns -<signal> for signals
+    # these things don't seem very portable
+    elif result.returncode in (137, 143, -9, -15):
         print("OUT OF MEMORY")
         metrics = {
             "status": "OOM",
