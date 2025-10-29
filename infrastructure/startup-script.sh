@@ -35,7 +35,6 @@ apt-get -qq install -y tmux git time curl jq build-essential cmake htop
 # Install BLAS dependency
 echo "Installing BLAS..."
 apt-get -qq install -y libopenblas-dev
-sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
 
 wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 chmod a+x /usr/local/bin/yq
@@ -85,11 +84,6 @@ cmake --build build
 cmake --install build
 popd
 
-# # 6. Verify dependencies installation
-# echo "Verifying dependencies installation..."
-# ls -la "${HIGHS_HIPO_DIR}/installs"
-# ls -la "${HIGHS_HIPO_DIR}/installs/lib"
-
 # 7. Clone and build HiGHS with hipo support
 echo "Cloning HiGHS repository..."
 git clone --depth=1 https://github.com/ERGO-Code/HiGHS.git
@@ -98,9 +92,7 @@ cd HiGHS
 # Checkout the hipo branch
 echo "Checking out hipo branch..."
 
-# https://github.com/ERGO-Code/HiGHS/commits/latest/
-# a65e195af2bbacca8edf31f6498cf1b0d45c39b9: Merge pull request #2596 from ERGO-Code/latest-2460
-HIPO_COMMIT_SHA="a65e195af2bbacca8edf31f6498cf1b0d45c39b9"
+HIPO_COMMIT_SHA="755a8e027a99a8d4ecf153a8dde4b2a767cdf384"
 git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
 git checkout "${HIPO_COMMIT_SHA}"
 

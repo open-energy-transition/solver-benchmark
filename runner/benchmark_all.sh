@@ -81,9 +81,10 @@ for year in "${years[@]}"; do
     fi
 
     if [ "$idx" -eq 0 ]; then
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args
+        # we're running the script with -e, ignoring error with <command> || true so that execution continues if the script fails
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args ||true
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
     fi
     conda deactivate
 

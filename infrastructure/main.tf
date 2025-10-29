@@ -94,7 +94,7 @@ variable "run_id" {
 locals {
   # Generate a shared run_id if not provided (timestamp + a random suffix)
   # If provided, use the user's run_id
-  shared_run_id = var.run_id != "" ? var.run_id : "${formatdate("YYYYMMDD_hhmmmss", timestamp())}_batch"
+  shared_run_id = var.run_id != "" ? var.run_id : "${formatdate("YYYYMMDD_hhmmss", timestamp())}_batch"
 
   # Get all YAML files except allocation.yaml (which is just an index file)
   benchmark_files = [
@@ -127,7 +127,7 @@ resource "google_compute_instance" "benchmark_instances" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-12"
+      image = "debian-cloud/debian-13"
       size = 50 # Size in GB
     }
   }
@@ -178,4 +178,8 @@ output "instance_ips" {
     for name, instance in google_compute_instance.benchmark_instances :
       name => instance.network_interface[0].access_config[0].nat_ip
   }
+}
+
+output "shared_run_id" {
+  value = local.shared_run_id
 }
