@@ -15,6 +15,7 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
+from run_solver import HighsHipoVariant
 
 hostname = gethostname()
 
@@ -45,8 +46,12 @@ def get_conda_package_versions(solvers, env_name=None):
         name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            package = name_to_pkg.get(solver, solver)
-            solver_versions[solver] = installed_packages.get(package, None)
+            # Handle highs-hipo variants as special cases - not conda packages
+            if solver in HighsHipoVariant:
+                solver_versions[solver] = get_highs_hipo_version()
+            else:
+                package = name_to_pkg.get(solver, solver)
+                solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -204,7 +209,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
 
     command = ["systemd-run"]
 
-    if "XDG_RUNTIME_DIR" in os.environ:
+    if os.geteuid() != 0:
         command.append("--user")
 
     command.extend(
@@ -234,7 +239,12 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         encoding="utf-8",
     )
 
-    memory = parse_memory(result.stderr)
+    memory = None
+    try:
+        memory = parse_memory(result.stderr)
+    except ValueError:
+        print("Failed to parse memory usage from stderr")
+
     if result.returncode == 124:
         print("TIMEOUT")
         metrics = {
@@ -246,7 +256,10 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "duality_gap": None,
             "max_integrality_violation": None,
         }
-    elif result.returncode == 137:
+    # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
+    # subprocess returns -<signal> for signals
+    # these things don't seem very portable
+    elif result.returncode in (137, 143, -9, -15):
         print("OUT OF MEMORY")
         metrics = {
             "status": "OOM",
@@ -258,7 +271,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
-        print(f"ERROR running solver. Return code:\n{result.returncode}")
+        print(
+            f"ERROR running solver. Return code: {result.returncode}\n",
+            f"Stdout:\n{result.stdout}\n",
+            f"Stderr:\n{result.stderr}\n",
+        )
         # Errors are also said to have run for `timeout`s, so that they appear
         # along with timeouts in charts
         metrics = {
@@ -271,6 +288,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     else:
+        print(
+            f"Solver command:\n {'\n'.join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
+        )
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
@@ -303,6 +323,32 @@ def get_highs_binary_version():
     except Exception as e:
         print(f"Error getting HiGHS binary version: {str(e)}")
         return "unknown"
+
+
+def get_highs_hipo_version():
+    """Get the version of the HiGHS-HiPO binary from the --version command"""
+    if os.geteuid() != 0:
+        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+    else:
+        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+
+    try:
+        result = subprocess.run(
+            [highs_hipo_binary, "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        )
+
+        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
+        if version_match:
+            return version_match.group(1) + "-hipo"
+
+        return "unknown-hipo"
+    except Exception as e:
+        print(f"Error getting HiGHS-HiPO binary version: {str(e)}")
+        return "unknown-hipo"
 
 
 def benchmark_highs_binary():
@@ -365,7 +411,6 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=10 * 60,
     reference_interval=0,  # Default: disabled
     append=False,
     run_id=None,
@@ -387,6 +432,8 @@ def main(
     with open(benchmark_yaml_path, "r") as file:
         yaml_content = yaml.safe_load(file)
         benchmarks_info = yaml_content["benchmarks"]
+        # Read timeout from top-level YAML if present
+        yaml_timeout_seconds = yaml_content.get("timeout_seconds")
 
     # Create results folder `results/` if it doesn't exist
     results_folder = Path(__file__).parent.parent / "results"
@@ -441,7 +488,9 @@ def main(
                 {
                     "name": benchmark_name,
                     "size": instance["Name"],
+                    "size_category": instance["Size"],
                     "path": benchmark_path,
+                    "timeout_seconds": yaml_timeout_seconds,
                 }
             )
 
@@ -455,11 +504,25 @@ def main(
         reference_solver_version = get_highs_binary_version()
 
     for benchmark in processed_benchmarks:
+        # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 10h for L)
+        timeout = benchmark.get("timeout_seconds") or (
+            10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
+        )
+
         for solver in solvers:
+            # Restrict highs-hipo variants to 2025 only
+            if solver in HighsHipoVariant and year != "2025":
+                print(
+                    f"Solver {solver} is only available for 2025 benchmarks. Current year: {year}. Skipping."
+                )
+                continue
+
             solver_version = solvers_versions.get(solver)
             if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
+
+            print(f"Found solver {solver} with version {solver_version}")
 
             metrics = {}
             runtimes = []
@@ -537,6 +600,7 @@ def main(
                     reference_metrics["solver_version"] = reference_solver_version
                     reference_metrics["solver_release_year"] = "N/A"
                     reference_metrics["reported_runtime"] = None
+                    reference_metrics["timeout"] = None
 
                     # Record reference benchmark results
                     reference_timestamp = datetime.datetime.now().strftime(
@@ -578,7 +642,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs-hipo variants are available: highs-hipo, highs-hipo-ipm, highs-hipo-32, highs-hipo-64.",
     )
     parser.add_argument(
         "--append",

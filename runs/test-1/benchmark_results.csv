@@ -1,0 +1,11 @@
+Benchmark,Size,Solver,Solver Version,Solver Release Year,Status,Termination Condition,Runtime (s),Memory Usage (MB),Objective Value,Max Integrality Violation,Duality Gap,Reported Runtime (s),Timeout,Hostname,Run ID,Timestamp
+pypsa-eur-elec-trex,3-12h,highs,1.10.0,2025,ok,optimal,12.23790470199674,393.024,7398190482.72359,,,11.801597356796265,3600,madhukar-pc,validation_test_5,2025-10-13 18:27:12.357769
+pypsa-eur-elec-trex,3-12h,highs-hipo-ipm,1.11.0-hipo,2025,ok,Optimal,14.971790477000468,127.028,7398190501.7,,,14.971790477000468,3600,madhukar-pc,validation_test_5,2025-10-13 18:27:25.414950
+pypsa-eur-elec-trex,3-12h,highs-hipo-128,1.11.0-hipo,2025,ok,Optimal,9.898788667996996,174.876,7398190483.6,,,9.898788667996996,3600,madhukar-pc,validation_test_5,2025-10-13 18:27:40.710209
+pypsa-eur-elec-trex,3-12h,highs-hipo-32,1.11.0-hipo,2025,ok,Optimal,9.951576988998568,174.376,7398190483.6,,,9.951576988998568,3600,madhukar-pc,validation_test_5,2025-10-13 18:27:50.947610
+pypsa-eur-elec-trex,3-12h,highs-hipo-64,1.11.0-hipo,2025,ok,Optimal,9.93077464900125,174.6,7398190483.6,,,9.93077464900125,3600,madhukar-pc,validation_test_5,2025-10-13 18:28:01.228215
+pypsa-eur-elec-op,6-24h,highs,1.10.0,2025,ok,optimal,18.884815181001613,406.256,7251071004.255489,,,18.41546106338501,3600,madhukar-pc,validation_test_5,2025-10-13 18:28:11.480153
+pypsa-eur-elec-op,6-24h,highs-hipo-ipm,1.11.0-hipo,2025,ok,Optimal,12.747854691999237,127.372,7251071015.1,,,12.747854691999237,3600,madhukar-pc,validation_test_5,2025-10-13 18:28:31.143800
+pypsa-eur-elec-op,6-24h,highs-hipo-128,1.11.0-hipo,2025,ok,Optimal,8.818298949001473,175.556,7251071033.3,,,8.818298949001473,3600,madhukar-pc,validation_test_5,2025-10-13 18:28:44.229402
+pypsa-eur-elec-op,6-24h,highs-hipo-32,1.11.0-hipo,2025,ok,Optimal,8.925033855000947,175.612,7251071033.3,,,8.925033855000947,3600,madhukar-pc,validation_test_5,2025-10-13 18:28:53.389176
+pypsa-eur-elec-op,6-24h,highs-hipo-64,1.11.0-hipo,2025,ok,Optimal,8.997252853001555,175.64,7251071033.3,,,8.997252853001555,3600,madhukar-pc,validation_test_5,2025-10-13 18:29:02.654049
