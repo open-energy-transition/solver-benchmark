@@ -7,7 +7,7 @@ This folder contains benchmarks based on PyPSA-Eur. The benchmarks can be genera
      ```sh
      cd solver-benchmark/benchmarks/pypsa/
      docker build --no-cache --platform=linux/amd64 -t pypsa-eur-image .
-     docker run -it pypsa-eur-image
+     docker run -it --network host pypsa-eur-image
      ```
 - Inside the docker container, run the benchmark generating script:
      ```sh
