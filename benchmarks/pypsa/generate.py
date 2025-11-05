@@ -132,7 +132,7 @@ def parse_input_arguments() -> argparse.Namespace:
 
     # Create the parser
     parser = argparse.ArgumentParser(
-        description="Generates benchmark sizes and puts LP files in output directory",
+        description="Generates benchmark output files and puts them in output directory",
         formatter_class=argparse.RawTextHelpFormatter
     )
 
@@ -143,10 +143,15 @@ def parse_input_arguments() -> argparse.Namespace:
                         default="pypsa-eur-elec",
                         help="Name of the benchmark to generate. ")
 
+    parser.add_argument("--file_extension",
+                        type=str,
+                        default=".lp",
+                        help="Benchmark file extension")
+
     parser.add_argument("--output_dir",
                         type=str,
                         default="/tmp/",
-                        help="Output directory for LP files")
+                        help="Output directory for benchmark files")
 
     parser.add_argument("-n", "--dry_run",
                         action="store_true",
@@ -359,7 +364,7 @@ if __name__ == "__main__":
                 output_yaml_file_name = add_scenario_section(yaml_file_name, n_clusters, t_res, p_horizon)
 
                 # Generate benchmark file name
-                benchmark_file_name = pathlib.Path(output_yaml_file_name.parent, input_args.output_dir, output_yaml_file_name.with_suffix('.mps').name)
+                benchmark_file_name = pathlib.Path(output_yaml_file_name.parent, input_args.output_dir, output_yaml_file_name.with_suffix(input_args.file_extension).name)
 
                 # Set environment variable ONLY_GENERATE_PROBLEM_FILE to benchmark file name
                 os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(benchmark_file_name)
