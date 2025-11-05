@@ -1,4 +1,5 @@
 import argparse
+import os
 import pathlib
 import re
 import subprocess
@@ -223,6 +224,7 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
 
+    # Generate a new config file name
     output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}_{planning_horizon}')
 
     # Write the updated YAML to a file
@@ -293,16 +295,13 @@ def run_snakemake_command(command: str, capture_output: bool = True) -> subproce
         raise RuntimeError(error_msg) from e
 
 
-def run_benchmark(
+def generate_benchmark(
     name_of_benchmark: str,
     config_file: pathlib.Path,
-    n_c: str,
-    time_res: str,
-    p_hor: str,
     dry_run_flag: bool
 ) -> None:
     """
-    Run specific Snakemake benchmarks based on benchmark name and configuration.
+    Generate benchmark file based on benchmark name and configuration.
 
     Parameters
     ----------
@@ -310,12 +309,6 @@ def run_benchmark(
         Name of the benchmark to run
     config_file : pathlib.Path
         Configuration YAML file
-    n_c : str
-        Number of clusters
-    time_res : str
-        Time resolution
-    p_hor : str
-        Planning horizon
     dry_run_flag : bool
         Flag to perform a dry run without actual execution (default is False)
 
@@ -361,7 +354,19 @@ if __name__ == "__main__":
     for yaml_file_name in list_yamls:
         for n_clusters in input_args.clusters:
             for t_res in input_args.time_resolutions:
+
+                # Generate new config file nae
                 output_yaml_file_name = add_scenario_section(yaml_file_name, n_clusters, t_res, p_horizon)
-                run_benchmark(input_args.benchmark_name, output_yaml_file_name, n_clusters, t_res, p_horizon, input_args.dry_run)
+
+                # Generate benchmark file name
+                benchmark_file_name = pathlib.Path(output_yaml_file_name.parent, input_args.output_dir, output_yaml_file_name.with_suffix('.mps').name)
+
+                # Set environment variable ONLY_GENERATE_PROBLEM_FILE to benchmark file name
+                os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(benchmark_file_name)
+
+                # Generate benchmark file
+                generate_benchmark(input_args.benchmark_name, output_yaml_file_name, input_args.dry_run)
+
+                # Remove config file
                 if input_args.remove_configs:
                     output_yaml_file_name.unlink(missing_ok=True)
