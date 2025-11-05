@@ -19,8 +19,8 @@ ENV CONDA_ENV_NAME=pypsa-benchmark-gen
 FROM pypsa_benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout 3679dc5
-    # This is the last commit of PyPSA-Eur on Oct 28, 2025
+    && git checkout c45ef4b
+    # This is the last commit of PyPSA-Eur on Nov 4th, 2025
 
 FROM repo_clone AS conda_env
 RUN --mount=type=cache,target=/opt/conda/pkgs \
