@@ -31,7 +31,7 @@ RUN /bin/bash -c "\
     source $(conda info --base)/etc/profile.d/conda.sh && \
     conda activate $CONDA_ENV_NAME && \
     conda install ruamel.yaml && \
-    pip install git+https://github.com/open-energy-transition/linopy.git@075f24e --no-deps \
+    pip install git+https://github.com/open-energy-transition/linopy.git@917cb19 --no-deps \
 "
 
 # Now patch solve_network.py so that it generates LP files without solving:
