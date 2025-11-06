@@ -1,5 +1,11 @@
+import collections
+import collections.abc
 import json
+import os
+import subprocess
 import sys
+import time
+from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -16,27 +22,24 @@ except ModuleNotFoundError:
 
 
 def get_solver(solver_name):
-    try:
-        solver_enum = SolverName(solver_name.lower())
-    except ValueError:
-        raise ValueError(f"Solver '{solver_name}' is not recognized")
+    solver_name = solver_name.lower()
+    solver_enum = SolverName(solver_name)
 
     solver_class = getattr(solvers, solver_enum.name)
 
+    mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
     seed_options = {
-        "highs": {"random_seed": 0},
-        "glpk": {"seed": 0},
-        "gurobi": {"seed": 0},
-        "scip": {
-            "randomization/randomseedshift": 0,
+        "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
+        "glpk": {"seed": 0, "mipgap": mip_gap},
+        "gurobi": {"seed": 0, "MIPGap": mip_gap},
+        "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
+        "cbc": {
+            "randomCbcSeed": 1,  # 0 indicates time of day
+            "ratioGap": mip_gap,
         },
-        "cbc": {"randomCbcSeed": 1},  # 0 indicates time of day
     }
 
-    if solver_name.lower() in seed_options:
-        return solver_class(**seed_options[solver_name.lower()])
-    else:
-        return solver_class()
+    return solver_class(**seed_options.get(solver_name, {}))
 
 
 def is_mip_problem(solver_model, solver_name):
@@ -80,13 +83,14 @@ def get_duality_gap(solver_model, solver_name: str):
     """Retrieve the duality gap for the given solver model, if available."""
     if solver_name == "scip":
         return solver_model.getGap()
-    elif solver_name == "gurobi" and solver_model.IsMIP:
+    elif solver_name == "gurobi":
         return solver_model.MIPGap
-    elif solver_name == "highs" and solver_model:
-        info = solver_model.getInfo()
-        return info.mip_gap if hasattr(info, "mip_gap") else None
-    elif solver_name in {"glpk", "cbc"}:
-        # These solvers do not have a way to retrieve the duality gap from python
+    elif solver_name == "highs":
+        return getattr(solver_model.getInfo(), "mip_gap", None)
+    elif solver_name == "cbc":
+        return getattr(solver_model, "mip_gap", None)
+    elif solver_name == "glpk":
+        # GLPK does not have a way to retrieve the duality gap from python
         return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
@@ -111,8 +115,11 @@ def get_milp_metrics(input_file, solver_result):
                     integer_vars, solver_result.solution.primal
                 )
                 return duality_gap, max_integrality_violation
-    except Exception as e:
-        print(f"ERROR obtaining milp metrics for {input_file}: {e}", file=sys.stderr)
+    except Exception:
+        print(
+            f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
+            file=sys.stderr,
+        )
     return None, None
 
 
@@ -124,6 +131,8 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.getRunTime()
             case "scip":
                 return solver_model.getSolvingTime()
+            case "cbc":
+                return solver_model.runtime
             case "gurobi":
                 return solver_model.Runtime
             case _:
@@ -149,27 +158,41 @@ def main(solver_name, input_file, solver_version):
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    # We measure runtime here and not of this entire script because lines like
-    # `import linopy` take a long (and varying) amount of time
-    start_time = perf_counter()
-    solver_result = solver.solve_problem(
-        problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
-    )
-    runtime = perf_counter() - start_time
+    try:
+        # We measure runtime here and not of this entire script because lines like
+        # `import linopy` take a long (and varying) amount of time
+        start_time = perf_counter()
+        solver_result = solver.solve_problem(
+            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
+        )
+        runtime = perf_counter() - start_time
 
-    duality_gap, max_integrality_violation = get_milp_metrics(input_file, solver_result)
+        duality_gap, max_integrality_violation = get_milp_metrics(
+            input_file, solver_result
+        )
 
-    results = {
-        "runtime": runtime,
-        "reported_runtime": get_reported_runtime(
-            solver_name, solver_result.solver_model
-        ),
-        "status": solver_result.status.status.value,
-        "condition": solver_result.status.termination_condition.value,
-        "objective": solver_result.solution.objective,
-        "duality_gap": duality_gap,
-        "max_integrality_violation": max_integrality_violation,
-    }
+        results = {
+            "runtime": runtime,
+            "reported_runtime": get_reported_runtime(
+                solver_name, solver_result.solver_model
+            ),
+            "status": solver_result.status.status.value,
+            "condition": solver_result.status.termination_condition.value,
+            "objective": solver_result.solution.objective,
+            "duality_gap": duality_gap,
+            "max_integrality_violation": max_integrality_violation,
+        }
+    except Exception:
+        print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
+        results = {
+            "runtime": None,
+            "reported_runtime": None,
+            "status": "ER",
+            "condition": None,
+            "objective": None,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
     print(json.dumps(results))
 
 
