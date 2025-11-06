@@ -532,6 +532,7 @@ async def scp_on_vms(
         # 2. Destination ends with / (target is a directory)
         # 3. Source has no file extension (likely a directory)
         from pathlib import Path
+
         src_name = Path(src_path).name
         has_extension = "." in src_name and not src_name.startswith(".")
 
@@ -620,18 +621,18 @@ async def ssh_exec_on_vms(
         if isinstance(result, tuple) and len(result) == 4:
             vm_name, success, stdout, stderr = result
             if success:
-                print(f"\n{'='*60}")
+                print(f"\n{'=' * 60}")
                 print(f"✓ {vm_name}: Success")
                 if show_output and stdout:
                     print(f"STDOUT:\n{stdout}")
                 success_count += 1
             else:
-                print(f"\n{'='*60}")
+                print(f"\n{'=' * 60}")
                 print(f"✗ {vm_name}: Failed")
                 if show_output and stderr:
                     print(f"STDERR:\n{stderr}", file=sys.stderr)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Completed: {success_count}/{len(instances)} successful")
 
 
