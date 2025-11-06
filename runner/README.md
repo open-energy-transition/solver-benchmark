@@ -2,6 +2,79 @@
 
 This folder contains the scripts used to benchmark various solvers.
 
+### Running run_benchmarks.py
+
+Use `run_benchmarks.py` to run benchmarks for a specific year with more control. If
+`benchmark_all.sh` hasn't been run yet, you will have to manually create the conda environment
+for the year.
+
+```sh
+# if a 'fixed' version is available, use that instead
+year=2025
+conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+```
+
+```sh
+python run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
+```
+
+**Required Arguments:**
+- `benchmark_yaml` - Path to benchmark configuration file (e.g., `../results/metadata.yaml`)
+- `year` - Solver release year (2020-2025)
+
+**Optional Arguments:**
+- `-a, --append` - Append to CSV results instead of overwriting
+- `--solvers SOLVERS` - Space-separated list of solvers to run
+- `--ref_bench_interval SECONDS` - Run reference benchmark every N seconds - This is not supported for local runs yet
+- `--run_id RUN_ID` - Custom identifier for this benchmark run
+- `-h, --help` - Show help message
+
+**Examples:**
+
+```bash
+# Run HiGHS only
+conda activate benchmark-2025
+python run_benchmarks.py ../results/metadata.yaml 2024 --solvers highs
+
+# Run multiple solvers and append results
+conda activate benchmark-2024
+python run_benchmarks.py ../results/metadata.yaml 2024 --solvers "highs scip cbc" -a
+
+# Run with custom run ID for tracking
+conda activate benchmark-2024
+python run_benchmarks.py ../results/metadata.yaml 2024 --run_id "debug-run-001"
+```
+
+### Running run_solver.py
+
+Use `run_solver.py` to test a single solver on a single benchmark problem. This is useful for debugging:
+
+```bash
+python run_solver.py <solver_name> <input_file> <solver_version>
+```
+
+**Arguments:**
+- `solver_name` - Solver name (highs, scip, cbc, gurobi, glpk)
+- `input_file` - Path to benchmark problem file (.lp or .mps)
+- `solver_version` - Solver version string (e.g., 1.10.0)
+
+**Examples:**
+
+```bash
+# Test HiGHS
+conda activate benchmark-2024
+python run_solver.py highs ./benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+
+# Test SCIP
+conda activate benchmark-2024
+python run_solver.py scip ./benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+```
+
+**Output:**
+- Solution files are saved to `solutions/`
+- Detailed logs are saved to `logs/`
+- JSON metrics are printed to stdout (runtime, status, objective value, etc.)
+
 ## Updating Solver Versions
 
 Use the following commands to update the conda environments containing the solver versions:

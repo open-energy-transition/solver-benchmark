@@ -84,11 +84,9 @@ Ensure you have the following installed:
 - **Git** for cloning the repository
 - **systemd** (usually pre-installed on modern Linux distributions)
 
-#### Running supported solvers on benchmarks config
+#### Running supported solvers on benchmarks
 
-The `benchmark_all.sh` script takes a YAML benchmark config file  as argument and runs all the solvers in series for each benchmark problem.
-
-> see `Generating Benchmark Problems` section above to understand how to generate the benchmark problems and the schema of these configs. *TODO* describe the schema - its required fields
+The `benchmark_all.sh` script takes a YAML benchmark config file  as argument and runs all the solvers in series for each benchmark problem. See the [Generating Benchmark Problems section](#generating-benchmark-problems) above to understand how to generate the benchmark problems and the schema of these configs. *TODO* describe the schema - its required fields
 
 The benchmark runner script creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary just for running the benchmark runner.
 It can only run existing solvers tabulated in the next section. To add a new solver you must *TODO*
@@ -97,12 +95,11 @@ It can only run existing solvers tabulated in the next section. To add a new sol
 ./runner/benchmark_all.sh ./results/metadata.yaml
 ```
 
-The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display.
+The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
+
 The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
-```bash
-$ ./runner/benchmark_all.sh -h
-```
-```
+```shell
+$./runner/benchmark_all.sh -h
 Runs the solvers from the specified years (default all) on the benchmarks in the given file
 Options:
     -a    Append to the results CSV file instead of overwriting. Default: overwrite
@@ -112,13 +109,18 @@ Options:
     -s    Space separated list of solvers to run. Default: year-specific default
 ```
 
-The `benchmark_all.sh` script activates the appropriate conda environment and then calls `python runner/run_benchmarks.py`.
-This script can also be called directly, if required, but you must be in a conda environment that contains the solvers you want to benchmark.
-For example:
+Usage examples:
+
+1. Add results to the results CSV file by running the script with the `-a`
 ```shell
-python ./runner/run_benchmarks.py ./results/metadata.yaml 2024
+./runner/benchmark_all.sh -a -y "2025" -u "local-run" benchmarks/sample_run/standard-00.yaml
 ```
-Call `python runner/run_benchmarks.py -h` to see more options.
+
+2. Run specific solvers by passing the `-s` flag with a space separated list of solver names.
+```shell
+./runner/benchmark_all.sh -s "highs scip" -y "2025" benchmarks/sample_run/standard-00.yaml
+```
+`runner/benchmark_all.sh` uses `runner/run_benchmarks.py` to run the benchmarks by year. If you wish to run benchmarks directly, you can set up the requisite conda env manually. [see Documentation](runner/README.md).
 
 ### Solver Versions
 
@@ -141,8 +143,6 @@ When determining which is the most recent version released in a particular year,
 
 ## Running the Website
 
-### NextJS Production Website
-
 The website code is under `website-nextjs/`. To run the website locally, you need a recent version of `node` and `npm` installed. Then, run the following commands:
 
 ```sh
@@ -152,8 +152,6 @@ npm run build && npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
-
-### Running the Streamlit Website
 
 ## Development
 
