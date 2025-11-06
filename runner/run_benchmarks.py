@@ -479,13 +479,6 @@ def main(
         )
 
         for solver in solvers:
-            # Restrict highs-hipo variants to 2025 only
-            if solver in HighsHipoVariant and year != "2025":
-                print(
-                    f"Solver {solver} is only available for 2025 benchmarks. Current year: {year}. Skipping."
-                )
-                continue
-
             solver_version = solvers_versions.get(solver)
             if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")

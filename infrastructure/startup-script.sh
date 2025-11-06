@@ -45,7 +45,7 @@ gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt
 
 # Clone the repository
 echo "Cloning repository..."
-git clone --depth=1 -b highs-hipo-runs-v1 https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing Highs..."
@@ -54,6 +54,9 @@ curl -L "https://github.com/JuliaBinaryWrappers/HiGHSstatic_jll.jl/releases/down
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
+
+# Go back to root directory
+cd /
 
 # Downloading benchmark reference model
 curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.lp" -o benchmark-test-model.lp
