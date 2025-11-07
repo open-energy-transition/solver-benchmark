@@ -31,6 +31,12 @@ Usage examples:
 ./runner/benchmark_all.sh -s "highs scip" -y "2025" benchmarks/sample_run/standard-00.yaml
 ```
 
+3. Full run for the entire website benchmarks set for 2025
+
+```sh
+./runner/benchmark_all.sh -y "2025" results/metadata.yaml
+```
+
 ## Running run_benchmarks.py
 
 Use `run_benchmarks.py` to run benchmarks for a specific year with more control. If

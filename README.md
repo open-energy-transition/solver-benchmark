@@ -78,18 +78,12 @@ Ensure you have the following installed:
 
 #### Running Supported Solvers on Benchmarks
 
-The benchmark runner script creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner.
+The benchmark runner script (`runner/benchmark_all.sh`) is the main entry point for running benchmarks. It takes a list of solvers and a list of years as arguments, and runs the benchmarks for each solver and year. It creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
 
 *Quickstart:*
 
 ```sh
 ./runner/benchmark_all.sh -s "highs scip" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
-```
-
-*Full run*:
-
-```sh
-./runner/benchmark_all.sh -y "2025" results/metadata.yaml
 ```
 
 The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
