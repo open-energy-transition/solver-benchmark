@@ -61,7 +61,7 @@ benchmarks:
 | Variable                       | Description                                                                     | Default                                                   |
 |--------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------|
 | `project_id`                   | GCP Project ID                                                                  | *Required*                                                |
-| `zone`                         | GCP Zone (Will be overriden if a value is specified in the input metadata file) | europe-west4-a                                            |
+| `zone`                         | GCP Zone (Will be overridden if a value is specified in the input metadata file) | europe-west4-a                                            |
 | `instance_name`                | Base name for instances                                                         | benchmark-instance                                        |
 | `startup_script_path`          | Path to startup script                                                          | startup-script.sh                                         |
 | `enable_gcs_upload`            | Enable/disable results upload to GCS bucket                                     | true                                                      |
@@ -77,11 +77,11 @@ Create a `run.tfvars` file with your GCP configuration:
 
 ```hcl
 project_id = "your-gcp-project"
-# This will be overriden if a value is specified in the input metadata file
+# This will be overridden if a value is specified in the input metadata file
 zone = "europe-west4-a"
 
 # Optional
-run_id = "my_benchmark_run" # calcuated from current time if not provided
+run_id = "my_benchmark_run" # calculated from current time if not provided
 
 # Setting enable_gcs_uploads to true results and log artifacts to `gcs`
 # results are available at gs://<gcs_bucket_name>/results/<run_id>
