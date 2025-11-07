@@ -82,9 +82,19 @@ The benchmark runner script (`runner/benchmark_all.sh`) is the main entry point 
 
 *Quickstart:*
 
+1. Run benchmarks
 ```sh
 ./runner/benchmark_all.sh -s "highs scip" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
 ```
+
+2. View logs and results
+
+```sh
+tail results/benchmark_results.csv # will overwrite currently committed results
+tail runner/logs/*
+```
+
+3. View and analyze results by running the website [locally](#running-the-website)
 
 The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
 
