@@ -1,0 +1,43 @@
+machine-type: c4-standard-2
+years:
+- 2025
+solver: highs scip
+_total_runtime_s: 3573.68
+_total_runtime_h: 0.99
+_max_runtime_cap_h: 1.0
+_num_benchmarks: 2
+_note: Each benchmark-size runs all solvers together. For failed/timed-out runs, Timeout
+  value is used as runtime estimate.
+benchmarks:
+  pypsa-power+ely+battery-ucgas:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      _solvers:
+      - highs
+      - scip
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
+      _runtime_s: 281.97
+      _solver_runtimes_s:
+        highs: 106.75
+        scip: 175.22
+      _solver_status:
+        highs: ok
+        scip: ok
+    _runtime_s: 281.97
+  genx-2_three_zones_w_electrolyzer:
+    Sizes:
+    - Name: 3-1h
+      Size: M
+      _solvers:
+      - highs
+      - scip
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
+      _runtime_s: 3291.71
+      _solver_runtimes_s:
+        highs: 2132.82
+        scip: 1158.88
+      _solver_status:
+        highs: ok
+        scip: ok
+    _runtime_s: 3291.71
