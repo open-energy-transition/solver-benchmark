@@ -313,29 +313,60 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
-  times-jrc:
+  JRC-EU-TIMES:
     Short description: Model of the EU (and neighboring countries) representing all energy sectors, that analyzes the long-term role of energy technologies and innovation for climate goals, and optimizes investment and operational decisions to meet energy service demands under different assumptions and constraints.
     Modelling framework: TIMES
     Model name: JRC-EU TIMES
     Version:
-    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
     Problem class: LP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
-    Time horizon: Multi-stage
+    Time horizon: Multi-stage (8 stages)
     MILP features: None
     Sizes:
-    - Name: 31-1h
+    - Name: 30-12ts
       Size:
       URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
-      Temporal resolution: 1 hour
-      Spatial resolution: 31 regions
+      Temporal resolution: 12 time slices
+      Spatial resolution: 30 regions
       Realistic: true
-      Realistic motivation:
+      Realistic motivation: Used for EU policy relevant analyses
       Num. constraints:
       Num. variables:
-  times-stem:
+    - Name: 30-2016ts
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
+      Temporal resolution: 12 time slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU-policy relevant analyses
+      Num. constraints:
+      Num. variables:
+  JRC-EU-TIMES-dispatch:
+    Short description: Model of the EU (and neighboring countries) representing all energy sectors and including final energy supply (T&D Infrastructure, pipeline etc.).
+    Modelling framework: TIMES
+    Model name: JRC-EU-TIMES
+    Version: # (optional) version of the model used to generate the benchmark
+    Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
+    Problem class: LP
+    Application: Infrastructure, Capacity Expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 30-2016ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://storage.googleapis.com/solver-benchmarks/jrc_2016.mps
+      Temporal resolution: 2016 times slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU-policy relevant analyses
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+  TIMES-STEM:
     Short description: Model of the Swiss energy system, including dispatch analysis features (i.e. ramping rates, minimum online/offline times, minimum stable operating level, part load efficiency losses, startup/shutdown costs) and ancillary services (endogenous demand for primary and secondary, positive and negative reserve, adjusted minimum online and offline times for reserve provision, adjusted ramping constraints, capacity margin constraints for reserve provision, maximum contribution of power plant in reserve provision, reserve provision from storages and demand units, other bounds on reserve provision, storage degradation due to cycling)
     Modelling framework: TIMES
     Model name: Swiss TIMES Energy Model
