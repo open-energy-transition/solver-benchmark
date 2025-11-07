@@ -80,7 +80,7 @@ Ensure you have the following installed:
 
 The benchmark runner script creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner.
 
-Quick run to test the benchmark runner:
+*Quickstart:*
 
 ```sh
 ./runner/benchmark_all.sh -s "highs scip" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
@@ -98,12 +98,14 @@ The script will save the measured runtime and memory consumption into a CSV file
 
 ### Cloud Runs
 
+We have cloud orchestration setup for running benchmarks on Google Cloud Platform. [See Documentation](infrastructure/README.md).
+
+*Quickstart:*
+
 For cloud infrastructure setup, install:
 
 - [Opentofu](https://opentofu.org/docs/v1.11/intro/install/)
 - [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
-
-We have cloud orchestration setup for running benchmarks on Google Cloud Platform. [See Documentation](infrastructure/README.md).
 
 ```sh
 gcloud auth application-default login
