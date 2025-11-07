@@ -34,7 +34,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       {
         header: "BENCHMARK NAME",
         accessorKey: "name",
-        size: 200,
+        size: 230,
         enableSorting: true,
         filterFn: filterSelect,
         cell: (info) => (
@@ -67,13 +67,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         accessorKey: "modelName",
         filterFn: filterSelect,
         cell: (info) => info.getValue(),
-        size: 110,
+        size: 180,
       },
       {
         header: "PROBLEM CLASS",
         accessorKey: "problemClass",
         filterFn: filterSelect,
-        size: 120,
+        size: 180,
         cell: (info) => info.getValue(),
       },
       {
@@ -85,7 +85,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           <InfoPopup
             disabled={((info.getValue() as string) || "").length <= 30}
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+              <div className="pl-4 w-40 whitespace-nowrap text-ellipsis overflow-hidden">
                 {info.getValue() as string}
               </div>
             )}
@@ -100,14 +100,14 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       {
         header: "SECTORAL FOCUS",
         accessorKey: "sectoralFocus",
-        size: 125,
+        size: 200,
         filterFn: filterSelect,
         cell: (info) => info.getValue(),
       },
       {
         header: "SECTORS",
         accessorKey: "sectors",
-        size: 100,
+        size: 150,
         filterFn: filterSelect,
         cell: (info) => (
           <InfoPopup

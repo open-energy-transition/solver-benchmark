@@ -35,13 +35,23 @@ const BenchmarkSet = () => {
       application,
       modellingFramework,
     } = fullMetaData[key];
-    uniqueValues.sectoralFocus.add(sectoralFocus);
-    sectors.split(",").forEach((sector) => {
-      uniqueValues.sectors.add(sector.trim());
-    });
-    uniqueValues.problemClasses.add(problemClass);
-    uniqueValues.applications.add(application);
-    uniqueValues.modellingFrameworks.add(modellingFramework);
+    if (sectoralFocus) {
+      uniqueValues.sectoralFocus.add(sectoralFocus);
+    }
+    if (sectors) {
+      sectors.split(",").forEach((sector) => {
+        uniqueValues.sectors.add(sector.trim());
+      });
+    }
+    if (problemClass) {
+      uniqueValues.problemClasses.add(problemClass);
+    }
+    if (application) {
+      uniqueValues.applications.add(application);
+    }
+    if (modellingFramework) {
+      uniqueValues.modellingFrameworks.add(modellingFramework);
+    }
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -55,7 +65,7 @@ const BenchmarkSet = () => {
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
     ),
-  );
+  ).filter((size) => size !== undefined && size !== null);
 
   return (
     <div className="pl-1 pb-1 pr-3 bg-[#F4F6FA] rounded-xl">
