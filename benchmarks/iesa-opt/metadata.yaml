@@ -1,7 +1,7 @@
 ## (optional) link to the modelling framework repo used to generate the benchmark(s) (e.g. https://github.com/PyPSA/pypsa-eur)
 benchmarks:
-  Benchmark_name: 1-3h-1y
-    Short description: Energy system model of the Netherlands (1n = 1 node) with 3-hourly resolution over one year (2050) with netzero climate target.
+  IESA-Opt-NL:
+    Short description: Energy system model of the Netherlands over one year (2050) with net-zero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251002
@@ -11,35 +11,22 @@ benchmarks:
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
     Time horizon: Single-stage (1 year)
-    MILP features: none
+    MILP features: None
     Sizes:
-    - Name: 1-3h-1y
+    - Name: 1-3h
       Size: # Automatically assigned when running the benchmark
       URL: https://filesender.surf.nl/?s=download&token=1100e202-e0eb-4f0c-af30-037cf74d1c81
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 1 node (The Netherlands)
+      Temporal resolution: 3 hours
+      Spatial resolution: 1 node
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
-  Benchmark_name: 20-3h-1y
-    Short description: Energy system model of the Netherlands (20n = 20 nodes) with 3-hourly resolution over one year (2050) with netzero climate target.
-    Modelling framework: IESA-Opt
-    Model name: IESA-Opt-NL
-    Version: 20251002
-    Contributor(s)/Source: TNO, Utrecht University
-    Problem class: LP
-    Application:  Infrastructure & Capacity expansion , Operational
-    Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
-    Time horizon: Single-stage (1 year)
-    MILP features: none
-    Sizes:
-    - Name: 20-3h-1y
+    - Name: 20-3h
       Size: # Automatically assigned when running the benchmark
       URL: https://filesender.surf.nl/?s=download&token=a198561f-3b98-4d48-9c1e-36c4ffdc90be
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 20 nodes (The Netherlands)
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: # Automatically assigned when running the benchmark
