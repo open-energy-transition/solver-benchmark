@@ -2,6 +2,114 @@
 
 This folder contains the scripts used to benchmark various solvers.
 
+## Running benchmark_all.sh
+
+The `benchmark_all.sh` script takes a YAML benchmark config file  as argument and runs all the solvers in series for each benchmark problem. It creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary just for running the benchmark runner.
+
+The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
+
+```shell
+$./runner/benchmark_all.sh -h
+Runs the solvers from the specified years (default all) on the benchmarks in the given file
+Options:
+    -a    Append to the results CSV file instead of overwriting. Default: overwrite
+    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024 2025
+    -r    Reference benchmark interval in seconds. Default: 0 (disabled)
+    -u    Unique run ID to identify this benchmark run. Default: auto-generated
+    -s    Space separated list of solvers to run. Default: year-specific default
+```
+
+Usage examples:
+
+1. Add results to the results CSV file by running the script with the `-a`
+```shell
+./runner/benchmark_all.sh -a -y "2025" -u "local-run" benchmarks/sample_run/standard-00.yaml
+```
+
+2. Run specific solvers by passing the `-s` flag with a space separated list of solver names.
+```shell
+./runner/benchmark_all.sh -s "highs scip" -y "2025" benchmarks/sample_run/standard-00.yaml
+```
+
+3. Full run for the entire website benchmarks set for 2025
+
+```sh
+./runner/benchmark_all.sh -y "2025" results/metadata.yaml
+```
+
+## Running run_benchmarks.py
+
+Use `run_benchmarks.py` to run benchmarks for a specific year with more control. If
+`benchmark_all.sh` hasn't been run yet, you will have to manually create the conda environment
+for the year.
+
+```sh
+# if a 'fixed' version is available, use that instead
+year=2025
+conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+```
+
+```sh
+python run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
+```
+
+**Required Arguments:**
+- `benchmark_yaml` - Path to benchmark configuration file (e.g., `../results/metadata.yaml`)
+- `year` - Solver release year (2020-2025)
+
+**Optional Arguments:**
+- `-a, --append` - Append to CSV results instead of overwriting
+- `--solvers SOLVERS` - Space-separated list of solvers to run
+- `--ref_bench_interval SECONDS` - Run reference benchmark every N seconds - This is not supported for local runs yet
+- `--run_id RUN_ID` - Custom identifier for this benchmark run
+- `-h, --help` - Show help message
+
+**Examples:**
+
+```bash
+# Run HiGHS only
+conda activate benchmark-2025
+python run_benchmarks.py ../results/metadata.yaml 2024 --solvers highs
+
+# Run multiple solvers and append results
+conda activate benchmark-2024
+python run_benchmarks.py ../results/metadata.yaml 2024 --solvers "highs scip cbc" -a
+
+# Run with custom run ID for tracking
+conda activate benchmark-2024
+python run_benchmarks.py ../results/metadata.yaml 2024 --run_id "debug-run-001"
+```
+
+## Running run_solver.py
+
+Use `run_solver.py` to test a single solver on a single benchmark problem. This is useful for debugging:
+
+```bash
+python run_solver.py <solver_name> <input_file> <solver_version>
+```
+
+**Arguments:**
+- `solver_name` - Solver name (highs, scip, cbc, gurobi, glpk)
+- `input_file` - Path to benchmark problem file (.lp or .mps)
+- `solver_version` - Solver version string (e.g., 1.10.0)
+
+**Examples:**
+
+```bash
+# Test HiGHS
+conda activate benchmark-2024
+python run_solver.py highs ./benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+
+# Test SCIP
+conda activate benchmark-2024
+python run_solver.py scip ./benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+```
+
+**Output:**
+- Solution files are saved to `solutions/`
+- Detailed logs are saved to `logs/`
+- JSON metrics are printed to stdout (runtime, status, objective value, etc.)
+
 ## Updating Solver Versions
 
 Use the following commands to update the conda environments containing the solver versions:
