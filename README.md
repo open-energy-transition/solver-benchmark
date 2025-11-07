@@ -14,19 +14,19 @@ Understanding the project layout to help you navigate and contribute:
 
 ```bash
 solver-benchmark/
-├── runner/                   # Benchmark execution scripts
-│   ├── benchmark_all.sh      # Main entry point for running benchmarks
-│   ├── run_benchmarks.py     # Python script that orchestrates benchmark runs
-│   ├── run_solver.py         # Individual solver runner
-│   ├── envs/                 # Conda environment definitions for each solver year
-│   └── benchmarks/           # Downloaded benchmark problem files
-├── benchmarks/               # Benchmark problem definitions and metadata
-│   ├── pypsa/               # PyPSA-generated energy models
-│   ├── jump_highs_platform/ # JuMP/HiGHS benchmark metadata
-│   └── *_metadata.yaml      # Problem definitions and details
-├── website-nextjs/          # Next.js website for viewing results
-├── infrastructure/          # GCP VM deployment scripts (for running benchmarks at scale)
-├── results/                 # Output directory for benchmark results
+├── runner/                        # Benchmark execution scripts
+│   ├── benchmark_all.sh           # Main entry point for running benchmarks
+│   ├── run_benchmarks.py          # Python script that orchestrates benchmark runs
+│   ├── run_solver.py              # Individual solver runner
+│   ├── envs/                      # Conda environment definitions for each solver year
+│   └── benchmarks/                # Downloaded benchmark problem files
+├── benchmarks/                    # Benchmark problem definitions and metadata
+│   ├── pypsa/                     # PyPSA-generated energy models
+│   ├── jump_highs_platform/       # JuMP/HiGHS benchmark metadata
+│   └── *_metadata.yaml            # Problem definitions and details
+├── website-nextjs/                # Next.js website for viewing results
+├── infrastructure/                # GCP VM deployment scripts (for running benchmarks at scale)
+├── results/                       # Output directory for benchmark results
 │   ├── benchmark_results.csv      # Main results file
 │   └── metadata.yaml              # Merged metadata of all problems on the website
 │
@@ -68,7 +68,7 @@ The unified `results/metadata.yaml` contains all details of each benchmark probl
 
 #### System Requirements
 
-**This project requires Linux.** The benchmark runner uses `systemd-run` to enforce memory limits on solvers, which is not available on macOS or Windows.
+The benchmark runner currently **requires Linux** as it uses `systemd-run` to enforce memory limits on solvers, which is not available on macOS or Windows.
 
 Supported Linux distributions:
 - Ubuntu 20.04 LTS or later
@@ -84,7 +84,7 @@ Ensure you have the following installed:
 - **Git** for cloning the repository
 - **systemd** (usually pre-installed on modern Linux distributions)
 
-#### Running supported solvers on benchmarks
+### Running supported solvers on benchmarks
 
 The `benchmark_all.sh` script takes a YAML benchmark config file  as argument and runs all the solvers in series for each benchmark problem. See the [Generating Benchmark Problems section](#generating-benchmark-problems) above to understand how to generate the benchmark problems and the schema of these configs. *TODO* describe the schema - its required fields
 
@@ -99,7 +99,8 @@ The script will save the measured runtime and memory consumption into a CSV file
 
 The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
 ```shell
-$./runner/benchmark_all.sh -h
+$ ./runner/benchmark_all.sh -h
+
 Runs the solvers from the specified years (default all) on the benchmarks in the given file
 Options:
     -a    Append to the results CSV file instead of overwriting. Default: overwrite
@@ -124,7 +125,7 @@ Usage examples:
 
 ### Solver Versions
 
-We support the following versions of solvers: (We use the last released solver version in each calendar year.)
+We support the following versions of solvers: (We use the last released solver version in each calendar year. 2025 solvers will be updated at the end of the year!)
 
 | Solver | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
 | ------ | ---- | ---- | ---- | ---- | ---- | ---- |
