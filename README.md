@@ -11,11 +11,8 @@ All our benchmark problems are open and available as LP/MPS files that can be do
 For more details on how to contribute benchmark problems, see [this page](benchmarks/README.md).
 
 ## Solvers
-
-The benchmark runner can only run existing solvers presented in the [Solvers](runner/SOLVERS.md) page.
-
-TODO
-- How to support new solver
+The benchmark runner can run solvers listed on the [Solvers](runner/SOLVERS.md) page.
+We use the last released solver version in each calendar year. 2025 solvers will be updated at the end of the year.
 
 
 ## Project Structure
@@ -37,14 +34,14 @@ solver-benchmark/
 ├── website-nextjs/             # Next.js website for viewing results
 ├── infrastructure/             # GCP VM deployment scripts (for running benchmarks at scale)
 ├── results/                    # Output directory for benchmark results
-   ├── benchmark_results.csv         # Main results file
-   └── metadata.yaml                 # Merged metadata of all problems on the website
+    ├── benchmark_results.csv   # Main results file
+    └── metadata.yaml           # Merged metadata of all problems on the website
 ```
 ## Running Benchmarks
 
 ### Local Runs
 
-#### Pre-requisites
+#### Prerequisites
 
 ##### System Requirements
 
@@ -66,7 +63,7 @@ Ensure you have the following installed:
 
 #### Running Supported Solvers on Benchmarks
 
-The benchmark runner script creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary just for running the benchmark runner.
+The benchmark runner script creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner.
 
 Quick run to test the benchmark runner:
 
@@ -81,13 +78,13 @@ Full run:
 
 The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
 
-`runner/benchmark_all.sh` uses `runner/run_benchmarks.py` to run the benchmarks by year. If you wish to run benchmarks directly, you can set up the requisite conda env manually. [see Documentation](runner/README.md).
+`runner/benchmark_all.sh` uses `runner/run_benchmarks.py` to run the benchmarks by year. If you wish to run benchmarks directly, you can set up the requisite conda env manually. [See Documentation](runner/README.md).
 
 ### Cloud Runs
 
-We support the following versions of solvers: (We use the last released solver version in each calendar year. 2025 solvers will be updated at the end of the year!)
+For cloud infrastructure setup, install:
 
-- (Opentofu)[https://opentofu.org/docs/v1.11/intro/install/]
+- [Opentofu](https://opentofu.org/docs/v1.11/intro/install/)
 
 We have cloud orchestration setup for running benchmarks on Google Cloud Platform. [See Documentation](infrastructure/README.md).
 
@@ -96,7 +93,7 @@ cd infrastructure
 tofu apply -var-file benchmarks/sample_run/run.tfvars
 ```
 
-To set up comprehensive benchmark campaigns, like the one available on the website
+To set up comprehensive benchmark campaigns, like the one available on the website:
 
 1. Use `notebooks/allocate-benchmarks-to-vms.ipynb` to create the benchmark campaigns.
 2. Run `notebooks/run-and-observe-benchmarks.ipynb` to observe the benchmark campaign progress.
