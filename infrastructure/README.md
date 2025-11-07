@@ -9,6 +9,10 @@
 ![](https://raw.githubusercontent.com/opentofu/brand-artifacts/main/full/transparent/SVG/on-dark.svg#gh-dark-mode-only)
 ![](https://raw.githubusercontent.com/opentofu/brand-artifacts/main/full/transparent/SVG/on-light.svg#gh-light-mode-only)
 
+- [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine
+- A Google Cloud Platform account with a project set up
+- SSH key pair (optional, for VM access)
+
 OpenTofu is an OSS tool for building, changing, and versioning infrastructure safely and efficiently. OpenTofu can manage existing and popular service providers as well as custom in-house solutions.
 
 The key features of OpenTofu are:

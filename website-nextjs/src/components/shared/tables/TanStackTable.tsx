@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -12,6 +12,7 @@ import {
   ColumnFilter,
   VisibilityState,
 } from "@tanstack/react-table";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { ArrowToRightIcon } from "@/assets/icons";
 import FilterTable from "./FilterTable";
 import PaginationTable from "./PaginationTable";
@@ -27,7 +28,7 @@ interface TanStackTableProps<T> {
   enableColumnSelector?: boolean;
   initialColumnVisibility?: VisibilityState;
   showPagination?: boolean;
-  showAllRows?: boolean;
+  showAllRows?: boolean; // Enable virtualization for large datasets
   headerClassName?: string;
   rowClassName?: string;
 }
@@ -53,6 +54,9 @@ export function TanStackTable<T>({
   );
   const [showColumnSelector, setShowColumnSelector] = useState(false);
 
+  // Reference for the container that holds the table for virtualization
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
   const table = useReactTable({
     data,
     columns,
@@ -72,6 +76,30 @@ export function TanStackTable<T>({
       ? { getPaginationRowModel: getPaginationRowModel() }
       : {}),
   });
+
+  // Set up virtualization for large datasets when showAllRows is enabled
+  const { rows } = table.getRowModel();
+
+  // Set up the virtualizer with dynamic row height measurement
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 36, // Estimated row height
+    overscan: 20,
+    enabled: showAllRows,
+  });
+
+  // Re-render virtualizer on window resize to ensure correct calculations
+  useEffect(() => {
+    const handleResize = () => {
+      if (showAllRows) {
+        rowVirtualizer.measure();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [rowVirtualizer, showAllRows]);
 
   const handleDownload = () => {
     if (onDownload) {
@@ -141,85 +169,207 @@ export function TanStackTable<T>({
 
       <div className="rounded-xl sm:mx-0 overflow-auto">
         {/* Table implementation */}
-        <div className="min-w-full inline-block align-middle">
-          <div
-            className={`overflow-x-auto ${
-              showAllRows ? "max-h-[525px] overflow-y-auto" : ""
-            }`}
-          >
-            <table className="table-auto bg-[#F4F6FA] w-full min-w-[800px]">
-              <thead
-                className={
-                  showAllRows ? "sticky top-0 bg-[#F4F6FA] shadow-sm z-10" : ""
-                }
+        <div className="min-w-full align-middle">
+          {showAllRows ? (
+            // Virtualized table for large datasets
+            <div
+              ref={tableContainerRef}
+              style={{
+                height: "525px",
+                overflow: "auto",
+                position: "relative",
+              }}
+              className="overflow-x-auto"
+            >
+              <table
+                className="bg-[#F4F6FA] w-full min-w-[800px]"
+                style={{ tableLayout: "fixed" }}
               >
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        className={headerClassName}
-                      >
-                        <div
-                          onClick={header.column.getToggleSortingHandler()}
-                          className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full max-w-[200px] mx-auto truncate"
+                <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className={headerClassName}
                           style={{
-                            width: header.getSize() + 10,
-                            maxWidth: header.getSize()
-                              ? header.getSize() + 10
-                              : 200,
+                            width: header.getSize() ? header.getSize() : 200,
+                            minWidth: header.getSize() ? header.getSize() : 200,
+                            maxWidth: header.getSize() ? header.getSize() : 200,
                           }}
                         >
-                          <div className="truncate w-full">
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                          <div
+                            onClick={header.column.getToggleSortingHandler()}
+                            className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
+                          >
+                            <div className="truncate w-full">
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                            </div>
+                            <div className="flex gap-1 shrink-0">
+                              {header.column.getCanFilter() && (
+                                <FilterTable column={header.column} />
+                              )}
+                              <SortIcon
+                                sortDirection={header.column.getIsSorted()}
+                                canSort={header.column.getCanSort()}
+                              />
+                            </div>
                           </div>
-                          <div className="flex gap-1 shrink-0">
-                            {header.column.getCanFilter() && (
-                              <FilterTable column={header.column} />
-                            )}
-                            <SortIcon
-                              sortDirection={header.column.getIsSorted()}
-                              canSort={header.column.getCanSort()}
-                            />
-                          </div>
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+
+                <tbody>
+                  {/* Spacer row for total scroll height */}
+                  <tr>
+                    <td
+                      colSpan={table.getAllColumns().length}
+                      style={{ height: 0 }}
+                    >
+                      <div
                         style={{
-                          width: cell.column.getSize(),
-                          maxWidth: cell.column.getSize()
-                            ? cell.column.getSize()
-                            : 200,
+                          height: `${rowVirtualizer.getTotalSize()}px`,
                         }}
-                        className={rowClassName}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
+                      />
+                    </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+
+                  {/* Virtualized rows */}
+                  {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                    const row = rows[virtualRow.index];
+                    return (
+                      <tr
+                        key={row.id}
+                        data-index={virtualRow.index}
+                        className={
+                          virtualRow.index % 2
+                            ? "bg-[#BFD8C71A] bg-opacity-10 !w-max"
+                            : ""
+                        }
+                        style={{
+                          position: "absolute",
+                          top: 48.8,
+                          left: 0,
+                          width: "100%",
+                          height: `${virtualRow.size}px`,
+                          transform: `translateY(${virtualRow.start}px)`,
+                        }}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <td
+                            key={cell.id}
+                            style={{
+                              width: cell.column.getSize()
+                                ? cell.column.getSize()
+                                : 200,
+                              minWidth: cell.column.getSize()
+                                ? cell.column.getSize()
+                                : 200,
+                              maxWidth: cell.column.getSize()
+                                ? cell.column.getSize()
+                                : 200,
+                            }}
+                            className={rowClassName}
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            // Standard table for smaller datasets or paginated view
+            <div className="overflow-x-auto">
+              <table
+                className="bg-[#F4F6FA] w-full min-w-[800px]"
+                style={{ tableLayout: "fixed" }}
+              >
+                <thead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className={headerClassName}
+                          style={{
+                            width: header.getSize(),
+                            maxWidth: header.getSize() ? header.getSize() : 200,
+                            minWidth: header.getSize() ? header.getSize() : 150,
+                          }}
+                        >
+                          <div
+                            onClick={header.column.getToggleSortingHandler()}
+                            className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
+                          >
+                            <div className="truncate w-full">
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                            </div>
+                            <div className="flex gap-1 shrink-0">
+                              {header.column.getCanFilter() && (
+                                <FilterTable column={header.column} />
+                              )}
+                              <SortIcon
+                                sortDirection={header.column.getIsSorted()}
+                                canSort={header.column.getCanSort()}
+                              />
+                            </div>
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody>
+                  {table
+                    .getRowModel()
+                    .rows.slice(0, 500)
+                    .map((row) => (
+                      <tr
+                        key={row.id}
+                        className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <td
+                            key={cell.id}
+                            style={{
+                              width: cell.column.getSize(),
+                              maxWidth: cell.column.getSize()
+                                ? cell.column.getSize()
+                                : 200,
+                              minWidth: cell.column.getSize()
+                                ? cell.column.getSize()
+                                : 150,
+                            }}
+                            className={rowClassName}
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
       {showPagination && !showAllRows && (
