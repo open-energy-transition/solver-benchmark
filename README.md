@@ -86,7 +86,7 @@ The benchmark runner script creates conda environments containing the solvers an
 ./runner/benchmark_all.sh -s "highs scip" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
 ```
 
-Full run:
+*Full run*:
 
 ```sh
 ./runner/benchmark_all.sh -y "2025" results/metadata.yaml
