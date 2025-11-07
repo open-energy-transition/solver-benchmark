@@ -24,21 +24,21 @@ Understanding the project layout to help you navigate and contribute:
 
 ```bash
 solver-benchmark/
-├── runner/                   # Benchmark execution scripts
-│   ├── benchmark_all.sh      # Main entry point for running benchmarks
-│   ├── run_benchmarks.py     # Python script that orchestrates benchmark runs
-│   ├── run_solver.py         # Individual solver runner
-│   ├── envs/                 # Conda environment definitions for each solver year
-│   └── benchmarks/           # Downloaded benchmark problem files
-├── benchmarks/               # Benchmark problem definitions and metadata
-│   ├── pypsa/               # PyPSA-generated energy models
-│   ├── jump_highs_platform/ # JuMP/HiGHS benchmark metadata
-│   └── *_metadata.yaml      # Problem definitions and details
-├── website-nextjs/          # Next.js website for viewing results
-├── infrastructure/          # GCP VM deployment scripts (for running benchmarks at scale)
-├── results/                 # Output directory for benchmark results
-   ├── benchmark_results.csv      # Main results file
-   └── metadata.yaml              # Merged metadata of all problems on the website
+├── runner/                     # Benchmark execution scripts
+│   ├── benchmark_all.sh        # Main entry point for running benchmarks
+│   ├── run_benchmarks.py       # Python script that orchestrates benchmark runs
+│   ├── run_solver.py           # Individual solver runner
+│   ├── envs/                   # Conda environment definitions for each solver year
+│   └── benchmarks/             # Downloaded benchmark problem files
+├── benchmarks/                 # Benchmark problem definitions and metadata
+│   ├── pypsa/                  # PyPSA-generated energy models
+│   ├── jump_highs_platform/    # JuMP/HiGHS benchmark metadata
+│   └── *_metadata.yaml         # Problem definitions and details
+├── website-nextjs/             # Next.js website for viewing results
+├── infrastructure/             # GCP VM deployment scripts (for running benchmarks at scale)
+├── results/                    # Output directory for benchmark results
+   ├── benchmark_results.csv         # Main results file
+   └── metadata.yaml                 # Merged metadata of all problems on the website
 ```
 ## Running Benchmarks
 
@@ -48,7 +48,7 @@ solver-benchmark/
 
 ##### System Requirements
 
-**This project requires Linux.** The benchmark runner uses `systemd-run` to enforce memory limits on solvers, which is not available on macOS or Windows.
+The benchmark runner currently **requires Linux** as it uses `systemd-run` to enforce memory limits on solvers, which is not available on macOS or Windows.
 
 Supported Linux distributions:
 - Ubuntu 20.04 LTS or later
@@ -85,7 +85,7 @@ The script will save the measured runtime and memory consumption into a CSV file
 
 ### Cloud Runs
 
-#### Preqrequisites
+We support the following versions of solvers: (We use the last released solver version in each calendar year. 2025 solvers will be updated at the end of the year!)
 
 - (Opentofu)[https://opentofu.org/docs/v1.11/intro/install/]
 
