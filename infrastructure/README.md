@@ -6,7 +6,8 @@ This module automates the deployment of VMs on Google Cloud Platform to run ener
 
 - [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine
 - A Google Cloud Platform account with a project set up
-- SSH key pair (optional, for VM access)
+- [gcloud CLI](https://cloud.google.com/sdk/docs/install) installed on your machine
+- SSH key pair (optional, for VM access).
 
 ## Quick Start
 
@@ -16,7 +17,7 @@ To set up Google Cloud Application Default Credentials (ADC) for local developme
 
 This method stores credentials in ~/.config/gcloud/application_default_credentials.json for use by Google Cloud client libraries. Opentofu will use these credentials to authenticate with GCP.
 
-```
+```sh
 # Use your personal account, open browser to authenticate your Google account
 gcloud auth application-default login
 
@@ -24,17 +25,13 @@ gcloud auth application-default login
 gcloud auth login --quiet --force --update-adc --cred-file "$GOOGLE_APPLICATION_CREDENTIALS"
 ```
 
-### 1. Clone the Repository
-
-```bash
-cd infra
-```
-
 ### 2. Create Your Benchmark Files
 
 2.1. Create a directory for your benchmarking session in `infrastructure/benchmarks` directory
-```
-mkdir infrastructure/benchmarks/sample_run
+
+```sh
+cd infrastructure
+mkdir benchmarks/sample_run
 ```
 
 2.2 Place your benchmark YAML files in the `benchmarks` directory. Example:

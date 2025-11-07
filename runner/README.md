@@ -2,7 +2,36 @@
 
 This folder contains the scripts used to benchmark various solvers.
 
-### Running run_benchmarks.py
+## Running benchmark_all.sh
+
+The `benchmark_all.sh` script takes a YAML benchmark config file  as argument and runs all the solvers in series for each benchmark problem. It creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary just for running the benchmark runner.
+
+The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
+
+```shell
+$./runner/benchmark_all.sh -h
+Runs the solvers from the specified years (default all) on the benchmarks in the given file
+Options:
+    -a    Append to the results CSV file instead of overwriting. Default: overwrite
+    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024 2025
+    -r    Reference benchmark interval in seconds. Default: 0 (disabled)
+    -u    Unique run ID to identify this benchmark run. Default: auto-generated
+    -s    Space separated list of solvers to run. Default: year-specific default
+```
+
+Usage examples:
+
+1. Add results to the results CSV file by running the script with the `-a`
+```shell
+./runner/benchmark_all.sh -a -y "2025" -u "local-run" benchmarks/sample_run/standard-00.yaml
+```
+
+2. Run specific solvers by passing the `-s` flag with a space separated list of solver names.
+```shell
+./runner/benchmark_all.sh -s "highs scip" -y "2025" benchmarks/sample_run/standard-00.yaml
+```
+
+## Running run_benchmarks.py
 
 Use `run_benchmarks.py` to run benchmarks for a specific year with more control. If
 `benchmark_all.sh` hasn't been run yet, you will have to manually create the conda environment
@@ -45,7 +74,7 @@ conda activate benchmark-2024
 python run_benchmarks.py ../results/metadata.yaml 2024 --run_id "debug-run-001"
 ```
 
-### Running run_solver.py
+## Running run_solver.py
 
 Use `run_solver.py` to test a single solver on a single benchmark problem. This is useful for debugging:
 
