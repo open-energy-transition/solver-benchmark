@@ -159,6 +159,16 @@ const SolverSection = () => {
     return SOLVES_DATA.find((s) => s.name.toLowerCase() === solverName);
   }, [selectedSolver]);
 
+  const getSolverWithVersion = (solver: string) => {
+    const matchingResult = benchmarkLatestResults.find(
+      (result) => result.solver === solver,
+    );
+    if (matchingResult && matchingResult.solverVersion) {
+      return `${solver} v${matchingResult.solverVersion}`;
+    }
+    return solver;
+  };
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row gap-4 mb-4">
@@ -169,7 +179,7 @@ const SolverSection = () => {
             value={selectedSolver}
             onChange={setSelectedSolver}
             options={solverOptions}
-            formatOption={(solver: string) => solver}
+            formatOption={getSolverWithVersion}
             label="Solver"
             bgColor="bg-[#F0F4F2]"
             optionActiveBg="bg-[#F0F4F2]"
