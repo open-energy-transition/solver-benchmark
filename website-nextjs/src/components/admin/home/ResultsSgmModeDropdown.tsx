@@ -28,7 +28,6 @@ const ResultsSgmModeDropdown = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
-    console.log("state.filters", state.filters);
     return state.filters.sgmMode;
   });
   const xFactor = useSelector((state: { filters: IFilterState }) => {

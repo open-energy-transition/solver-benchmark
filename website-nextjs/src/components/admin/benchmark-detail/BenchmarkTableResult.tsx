@@ -232,6 +232,10 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               ),
               size: 50,
               enableSorting: false,
+              enableColumnFilter: false,
+              meta: {
+                headerClassName: "overflow-visible",
+              },
             },
           ]
         : []),
@@ -336,7 +340,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   return (
     <div>
       <div className="flex items-center justify-between my-4 md:mt-0">
-        <p className="text-xs w-1/2 2xl:w-full">
+        <p className="text-xs w-1/2 4xl:w-3/4">
           <span>
             To search for a particular benchmark problem by name, click the
             filter icon
@@ -381,24 +385,27 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       </div>
 
       {downloadProgress && (
-        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-4 p-4 bg-[#F4F6FA]  border border-[#e5e7eb] rounded-lg animate-fade-in">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-navy">
+            <span className="text-sm font-semibold text-navy flex items-center gap-2">
+              <span className="inline-block animate-pulse">⬇️</span>
               Downloading: {downloadProgress.currentFile}
             </span>
-            <span className="text-sm text-navy">
+            <span className="text-sm text-navy font-semibold">
               {downloadProgress.current} of {downloadProgress.total}
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
             <div
-              className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+              className="bg-teal h-2.5 rounded-full transition-all duration-500 ease-out relative overflow-hidden"
               style={{
                 width: `${
                   (downloadProgress.current / downloadProgress.total) * 100
                 }%`,
               }}
-            ></div>
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-shimmer"></div>
+            </div>
           </div>
         </div>
       )}

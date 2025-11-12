@@ -188,7 +188,6 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   };
 
   useEffect(() => {
-    console.log("selectedFilters", selectedFilters);
     if (isInit) {
       updateUrlParams(selectedFilters);
     }
@@ -196,6 +195,28 @@ const FilterSection = ({ height }: FilterSectionProps) => {
 
   const updateUrlParams = (filters: IFilterState) => {
     const queryParams = new URLSearchParams();
+
+    // First, preserve non-filter query params from current URL
+    Object.entries(router.query).forEach(([key, value]) => {
+      if (
+        ![
+          "sectoralFocus",
+          "sectors",
+          "problemClass",
+          "application",
+          "modellingFramework",
+          "problemSize",
+          "realistic",
+          "sgmMode",
+          "xFactor",
+        ].includes(key) &&
+        value !== undefined
+      ) {
+        queryParams.set(key, Array.isArray(value) ? value.join(",") : value);
+      }
+    });
+
+    // Then add/update filter params
     Object.entries(filters).forEach(([key, values]) => {
       if (Array.isArray(values) && values.length > 0) {
         queryParams.set(key, values.map(encodeValue).join(";"));
@@ -205,7 +226,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
         queryParams.set(key, values.toString());
       }
     });
-    console.log("queryParams", Object.fromEntries(queryParams));
+
     router.replace(
       {
         pathname: router.pathname,
@@ -247,7 +268,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
     // Parse xFactor from URL
     const xFactorValue = router.query["xFactor"];
     if (typeof xFactorValue === "string" && xFactorValue) {
-      const parsed = parseInt(xFactorValue, 10);
+      const parsed = Number(xFactorValue);
       if (!isNaN(parsed)) {
         // @ts-expect-error Type inference issues with dynamic keys
         filters.xFactor = parsed;
@@ -263,17 +284,10 @@ const FilterSection = ({ height }: FilterSectionProps) => {
 
     if (Object.keys(urlFilters).length > 0) {
       // Apply sgmMode from URL if present
-      console.log(
-        "urlFilters",
-        urlFilters.sgmMode,
-        urlFilters.sgmMode && urlFilters.sgmMode !== selectedFilters.sgmMode,
-      );
-      console.log(selectedFilters.sgmMode);
       if (
         urlFilters.sgmMode &&
         urlFilters.sgmMode !== selectedFilters.sgmMode
       ) {
-        console.log("urlFilters.sgmMode", urlFilters.sgmMode);
         dispatch(filterActions.setSgmMode(urlFilters.sgmMode as SgmMode));
       }
 
