@@ -226,6 +226,19 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
         }
     }
 
+    # REMOVE THIS PART
+
+    enable_section = {
+        "enable": {
+            "retrieve": "auto",
+            "retrieve_databundle": "false",
+            "retrieve_cost_data": "false",
+            "build_cutout": "false",
+            "retrieve_cutout": "false",
+            "drop_leap_day": "true"
+        }
+    }
+
     countries_section = {
         "countries": ["BE"]
     }
@@ -251,11 +264,15 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
         }
     }
 
+
+    # REMOVE PART ABOVE
+
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
-    original_yaml.update(countries_section)
-    original_yaml.update(snapshot_section)
-    original_yaml.update(atlite_section)
+    #original_yaml.update(enable_section)
+    #original_yaml.update(countries_section)
+    #original_yaml.update(snapshot_section)
+    #original_yaml.update(atlite_section)
 
     # Generate a new config file name
     output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}_{planning_horizon}')
