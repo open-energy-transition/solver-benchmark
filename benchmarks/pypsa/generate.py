@@ -233,7 +233,7 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
             "retrieve": "auto",
             "retrieve_databundle": "false",
             "retrieve_cost_data": "false",
-            "build_cutout": "false",
+            "build_cutout": "true",
             "retrieve_cutout": "false",
             "drop_leap_day": "true"
         }
