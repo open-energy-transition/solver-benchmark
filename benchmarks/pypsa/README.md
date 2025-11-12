@@ -29,4 +29,6 @@ This folder contains benchmarks based on PyPSA-Eur. The benchmarks can be genera
     pypsa-eur-sec-trex_copt
     pypsa-eur-sec-trex_vopt
      ```
-- The benchmarks can be found inside the docker container, under `/tmp/pypsa*.lp`.
+- The benchmarks can be found inside the docker container, under `/tmp/pypsa*.mps`.
+
+> If the PyPSA-Eur workflow fails during the retrieval of public data, please restart the workflow.

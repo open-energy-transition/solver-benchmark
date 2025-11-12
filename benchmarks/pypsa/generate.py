@@ -226,8 +226,36 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
         }
     }
 
+    countries_section = {
+        "countries": ["BE"]
+    }
+
+    snapshot_section = {
+        "snapshots": {
+            "start": "2013-03-01",
+            "end": "2013-03-08"
+        }
+    }
+
+    atlite_section = {
+        "atlite": {
+            "default_cutout": "be-03-2013-era5",
+            "cutouts": {
+                "be-03-2013-era5": {
+                    "module": "era5",
+                    "x": [4., 15.],
+                    "y": [46., 56.],
+                    "time": ["2013-03-01", "2013-03-08"]
+                }
+            }
+        }
+    }
+
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
+    original_yaml.update(countries_section)
+    original_yaml.update(snapshot_section)
+    original_yaml.update(atlite_section)
 
     # Generate a new config file name
     output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}_{planning_horizon}')
