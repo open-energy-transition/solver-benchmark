@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
@@ -45,6 +46,8 @@ const SOLVES_DATA = [
 ];
 
 const SolverSection = () => {
+  const router = useRouter();
+
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
@@ -70,11 +73,40 @@ const SolverSection = () => {
 
   const [solverOptions, setSolverOptions] = useState<string[]>([]);
 
+  // Initialize solver from URL or default to first available
   useEffect(() => {
-    if (!availableSolvers.length) return;
-    setSelectedSolver(availableSolvers[0]);
+    if (!availableSolvers.length || !router.isReady) return;
+
+    const solverFromUrl = router.query.solver as string;
+
+    if (solverFromUrl && availableSolvers.includes(solverFromUrl)) {
+      setSelectedSolver(solverFromUrl);
+    } else if (!selectedSolver) {
+      setSelectedSolver(availableSolvers[0]);
+    }
+
     setSolverOptions(availableSolvers);
-  }, [availableSolvers]);
+  }, [availableSolvers, router.isReady]);
+
+  // Update URL when solver changes
+  useEffect(() => {
+    if (!selectedSolver || !router.isReady) return;
+
+    const currentQuery = { ...router.query };
+
+    if (currentQuery.solver !== selectedSolver) {
+      currentQuery.solver = selectedSolver;
+
+      router.push(
+        {
+          pathname: router.pathname,
+          query: currentQuery,
+        },
+        undefined,
+        { shallow: true, scroll: false },
+      );
+    }
+  }, [selectedSolver, router.isReady]);
 
   function calculateFactor(baseTime: number, solverTime: number) {
     return Math.log2((solverTime + 10) / (baseTime + 10));

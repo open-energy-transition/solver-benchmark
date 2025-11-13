@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
@@ -200,6 +200,21 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     setSelectedBenchmarks(new Set());
     setIsSelectMode(false);
   };
+
+  // Prevent tab/window close during download
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDownloading) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDownloading]);
 
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
