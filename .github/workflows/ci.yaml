@@ -53,6 +53,10 @@ jobs:
         with:
             app-path: website/app.py
 
+      - name: Set FORK_PR environment variable
+        if: ${{ github.event.pull_request.head.repo.fork == true && github.event_name == 'pull_request' }}
+        run: echo "FORK_PR=true" >> $GITHUB_ENV
+
       - name: Check Next.js build
         run: |
           echo "Checking Next.js build..."
@@ -60,11 +64,15 @@ jobs:
             cd website-nextjs
 
             # Check if reCAPTCHA key is set
-            if [ -z "$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" ]; then
-              echo "Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
-              exit 1
+            if [ "$FORK_PR" != "true" ]; then
+              if [ -z "$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" ]; then
+                echo "Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
+                exit 1
+              else
+                echo "✓ reCAPTCHA key is configured"
+              fi
             else
-              echo "✓ reCAPTCHA key is configured"
+              echo "Skipping reCAPTCHA key check for PRs from forks."
             fi
             npm install
             npm run build
