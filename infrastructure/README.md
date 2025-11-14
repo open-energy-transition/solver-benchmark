@@ -6,7 +6,8 @@ This module automates the deployment of VMs on Google Cloud Platform to run ener
 
 - [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine
 - A Google Cloud Platform account with a project set up
-- SSH key pair (optional, for VM access)
+- [gcloud CLI](https://cloud.google.com/sdk/docs/install) installed on your machine
+- SSH key pair (optional, for VM access).
 
 ## Quick Start
 
@@ -16,7 +17,7 @@ To set up Google Cloud Application Default Credentials (ADC) for local developme
 
 This method stores credentials in ~/.config/gcloud/application_default_credentials.json for use by Google Cloud client libraries. Opentofu will use these credentials to authenticate with GCP.
 
-```
+```sh
 # Use your personal account, open browser to authenticate your Google account
 gcloud auth application-default login
 
@@ -24,17 +25,13 @@ gcloud auth application-default login
 gcloud auth login --quiet --force --update-adc --cred-file "$GOOGLE_APPLICATION_CREDENTIALS"
 ```
 
-### 1. Clone the Repository
-
-```bash
-cd infra
-```
-
 ### 2. Create Your Benchmark Files
 
 2.1. Create a directory for your benchmarking session in `infrastructure/benchmarks` directory
-```
-mkdir infrastructure/benchmarks/sample_run
+
+```sh
+cd infrastructure
+mkdir benchmarks/sample_run
 ```
 
 2.2 Place your benchmark YAML files in the `benchmarks` directory. Example:
@@ -64,7 +61,7 @@ benchmarks:
 | Variable                       | Description                                                                     | Default                                                   |
 |--------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------|
 | `project_id`                   | GCP Project ID                                                                  | *Required*                                                |
-| `zone`                         | GCP Zone (Will be overriden if a value is specified in the input metadata file) | europe-west4-a                                            |
+| `zone`                         | GCP Zone (Will be overridden if a value is specified in the input metadata file) | europe-west4-a                                            |
 | `instance_name`                | Base name for instances                                                         | benchmark-instance                                        |
 | `startup_script_path`          | Path to startup script                                                          | startup-script.sh                                         |
 | `enable_gcs_upload`            | Enable/disable results upload to GCS bucket                                     | true                                                      |
@@ -80,11 +77,11 @@ Create a `run.tfvars` file with your GCP configuration:
 
 ```hcl
 project_id = "your-gcp-project"
-# This will be overriden if a value is specified in the input metadata file
+# This will be overridden if a value is specified in the input metadata file
 zone = "europe-west4-a"
 
 # Optional
-run_id = "my_benchmark_run" # calcuated from current time if not provided
+run_id = "my_benchmark_run" # calculated from current time if not provided
 
 # Setting enable_gcs_uploads to true results and log artifacts to `gcs`
 # results are available at gs://<gcs_bucket_name>/results/<run_id>

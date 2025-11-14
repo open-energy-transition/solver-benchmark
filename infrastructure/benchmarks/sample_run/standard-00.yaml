@@ -1,0 +1,43 @@
+machine-type: c4-standard-2
+years:
+- 2025
+solver: highs scip
+_total_runtime_s: 3591.59
+_total_runtime_h: 1.0
+_max_runtime_cap_h: 1.0
+_num_benchmarks: 2
+_note: Each benchmark-size runs all solvers together. For failed/timed-out runs, Timeout
+  value is used as runtime estimate.
+benchmarks:
+  genx-3_three_zones_w_co2_capture-no_uc:
+    Sizes:
+    - Name: 3-1h
+      Size: M
+      _solvers:
+      - highs
+      - scip
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
+      _runtime_s: 168.83
+      _solver_runtimes_s:
+        highs: 75.74
+        scip: 93.09
+      _solver_status:
+        highs: ok
+        scip: ok
+    _runtime_s: 168.83
+  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
+    Sizes:
+    - Name: 1-1h
+      Size: M
+      _solvers:
+      - highs
+      - scip
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
+      _runtime_s: 3422.76
+      _solver_runtimes_s:
+        highs: 1198.63
+        scip: 2224.12
+      _solver_status:
+        highs: ok
+        scip: ok
+    _runtime_s: 3422.76
