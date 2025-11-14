@@ -1,0 +1,46 @@
+## https://github.com/FZJ-IEK3-VSA/FINE
+benchmarks:
+  ethos-fine-multi-regional-full-time-series:
+    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The model uses full time series.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version: 
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-sector
+    Sectors: Supply, Electric
+    Time horizon: 1 year
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-8760ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQDWHsLkucIBTrQlg2V61ktrAUAR57sNo5-pU2_m5oulon8?e=YWZ0X5
+      Temporal resolution: 8760 time steps (1 year with hourly resolution)
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+  ethos-fine-multi-regional-48tp:
+    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The model uses time series aggregation by tsam with 48 typical days without segmentation.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version: 
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-sector
+    Sectors: Supply, Electric
+    Time horizon: 1 year
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-1152ts
+      Size: # Automatically assigned when running the benchmark
+      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQAz3fr41jGnSrRGpHtqYoWoAWTqKSuf6YGaPc-_fTLykdQ?e=rWCJPs
+      Temporal resolution: 1152 time steps (48 typical days with 24 hours each)
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
