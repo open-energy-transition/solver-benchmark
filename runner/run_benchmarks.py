@@ -211,12 +211,23 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         [
             "--scope",
             f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
-            "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
+            "--property=MemorySwapMax=0",
             "/usr/bin/time",
             "--format",
             "MaxResidentSetSizeKB=%M",
-            "timeout",
-            f"{timeout}s",
+        ]
+    )
+
+    if timeout:  # only add timeout if it's non-zero and non-None
+        command.extend(
+            [
+                "timeout",
+                f"{timeout}s",
+            ]
+        )
+
+    command.extend(
+        [
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
             solver_name,
@@ -224,7 +235,6 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             solver_version,
         ]
     )
-
     # Run the command and capture the output
     result = subprocess.run(
         command,
@@ -623,12 +633,19 @@ if __name__ == "__main__":
         default=None,
         help="Unique identifier for this benchmark run.",
     )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=None,
+        help="Maximum time (in seconds) allowed for a solver run. Use 0 or omit to disable timeout.",
+    )
     args = parser.parse_args()
 
     main(
         args.benchmark_yaml_path,
         args.solvers,
         args.year,
+        timeout=args.timeout if args.timeout != 0 else None,
         reference_interval=args.ref_bench_interval,
         append=args.append,
         run_id=args.run_id,
