@@ -219,7 +219,6 @@ const Header = () => {
                   ].map((link, index) => {
                     const isActive =
                       !link.external && currentRoute === link.href;
-                    console.log(isActive);
                     return (
                       <Link
                         key={index}

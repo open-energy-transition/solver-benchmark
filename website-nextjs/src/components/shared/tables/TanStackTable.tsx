@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from "react";
 import {
   ColumnDef,
@@ -201,9 +202,14 @@ export function TanStackTable<T>({
                         >
                           <div
                             onClick={header.column.getToggleSortingHandler()}
-                            className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
+                            className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full"
                           >
-                            <div className="truncate w-full">
+                            <div
+                              className={`${
+                                (header.column.columnDef.meta as any)
+                                  ?.headerClassName || "truncate"
+                              } w-full`}
+                            >
                               {flexRender(
                                 header.column.columnDef.header,
                                 header.getContext(),
@@ -314,7 +320,12 @@ export function TanStackTable<T>({
                             onClick={header.column.getToggleSortingHandler()}
                             className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
                           >
-                            <div className="truncate w-full">
+                            <div
+                              className={`${
+                                (header.column.columnDef.meta as any)
+                                  ?.headerClassName || "truncate"
+                              } w-full`}
+                            >
                               {flexRender(
                                 header.column.columnDef.header,
                                 header.getContext(),
