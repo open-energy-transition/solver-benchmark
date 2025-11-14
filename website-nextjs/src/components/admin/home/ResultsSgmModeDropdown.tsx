@@ -10,6 +10,7 @@ import {
   SgmMode,
 } from "@/constants/sgm";
 import InfoPopup from "@/components/common/InfoPopup";
+import { useRouter } from "next/router";
 
 interface SgmCalculationMode {
   optionTitle: string;
@@ -25,6 +26,7 @@ const ResultsSgmModeDropdown = ({
   sgmCalculationModes = DEFAULT_SGM_CALCULATION_MODES,
 }: ResultsSgmModeDropdownProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const sgmMode = useSelector((state: { filters: IFilterState }) => {
     return state.filters.sgmMode;
   });
@@ -64,12 +66,24 @@ const ResultsSgmModeDropdown = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
+    // Set default values if no URL params exist
+    if (router.isReady) {
+      const hasSgmModeInUrl = router.query.sgmMode !== undefined;
+      const hasXFactorInUrl = router.query.xFactor !== undefined;
+
+      if (!hasSgmModeInUrl) {
+        dispatch(filterActions.setSgmMode(SgmMode.COMPUTE_SGM_USING_TO_VALUES));
+      }
+      if (!hasXFactorInUrl) {
+        dispatch(filterActions.setXFactor(DEFAULT_X_FACTOR));
+      }
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      dispatch(filterActions.setSgmMode(SgmMode.COMPUTE_SGM_USING_TO_VALUES));
-      dispatch(filterActions.setXFactor(DEFAULT_X_FACTOR));
     };
-  }, []);
+  }, [router.isReady, router.query.sgmMode, router.query.xFactor, dispatch]);
 
   if (!selectedMode) return <div>Sgm Mode Not found</div>;
 
