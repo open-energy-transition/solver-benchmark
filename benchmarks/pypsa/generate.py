@@ -231,11 +231,11 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
     enable_section = {
         "enable": {
             "retrieve": "auto",
-            "retrieve_databundle": "false",
-            "retrieve_cost_data": "false",
-            "build_cutout": "true",
-            "retrieve_cutout": "false",
-            "drop_leap_day": "true"
+            "retrieve_databundle": False,
+            "retrieve_cost_data": True,
+            "build_cutout": False,
+            "retrieve_cutout": False,
+            "drop_leap_day": True
         }
     }
 
@@ -269,7 +269,7 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
 
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
-    #original_yaml.update(enable_section)
+    original_yaml.update(enable_section)
     #original_yaml.update(countries_section)
     #original_yaml.update(snapshot_section)
     #original_yaml.update(atlite_section)
