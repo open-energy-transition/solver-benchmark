@@ -4,7 +4,7 @@ benchmarks:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses full time series.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
-    Version: 
+    Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     Problem class: MILP
     Application: Infrastructure & Capacity expansion, Operational
@@ -26,7 +26,7 @@ benchmarks:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 48 typical days without segmentation.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
-    Version: 
+    Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     Problem class: MILP
     Application: Infrastructure & Capacity expansion, Operational
