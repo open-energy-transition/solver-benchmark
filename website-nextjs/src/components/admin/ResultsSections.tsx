@@ -4,32 +4,44 @@ import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { roundNumber } from "@/utils/number";
-import Popup from "reactjs-popup";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { extractNumberFromFormattedString } from "@/utils/string";
 import { SgmMode } from "@/constants/sgm";
 import { SgmExplanation, SolverVersions } from "@/components/shared";
 import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
+import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
+import { getLatestBenchmarkResult } from "@/utils/results";
+import InfoPopup from "../common/InfoPopup";
 
 type ColumnType = {
   name: string;
   field: string;
   width: string;
-  bgColor: string;
-  color: string;
+  header?: {
+    bgStyle?: string;
+    textStyle?: string;
+  };
+  row?: {
+    bgStyle?: string;
+    textStyle?: string;
+  };
   sort?: boolean;
   headerContent?: (header: string) => React.ReactNode;
   sortFunc?: (a: TableRowType, b: TableRowType) => number;
 };
 
-type TableRowType = {
+export type TableRowType = {
   rank: number;
   solver: string;
   version: string;
   memory: string;
   solvedBenchmarks: string;
   runtime: string;
+  unnormalizedData: {
+    runtime: number;
+    memoryUsage: number;
+  };
 };
 
 interface ResultsSectionProps {
@@ -198,32 +210,43 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         name: "Rank",
         field: "rank",
         width: "flex-1",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sort: false,
       },
       {
         name: "Solver",
         field: "solver",
         width: "w-1/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sortFunc: (a, b) => a.solver.localeCompare(b.solver),
       },
       {
         name: "Version",
         field: "version",
         width: "w-1/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
         sortFunc: (a, b) => a.version.localeCompare(b.version),
       },
       {
         name: "SGM Memory",
         field: "memory",
         width: "w-1/5",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-end",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -236,8 +259,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         name: "Solved Benchmarks",
         field: "solvedBenchmarks",
         width: "w-1/5",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-end",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -248,8 +276,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         headerContent: (header: string) => (
           <div className="flex items-center w-max">
             {header}
-            <Popup
-              on={["hover"]}
+            <InfoPopup
               trigger={() => (
                 <div>
                   <QuestionLineIcon className="w-4 h-4" />
@@ -259,11 +286,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               closeOnDocumentClick
               arrow={false}
             >
-              <div className="bg-white border-stroke border px-4 py-2 rounded-lg">
+              <div>
                 Solved benchmarks is the number of benchmarks where the solver
                 returns an &apos;ok&apos; status
               </div>
-            </Popup>
+            </InfoPopup>
           </div>
         ),
       },
@@ -274,8 +301,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           sgmMode !== SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS
             ? "w-1/5"
             : "w-2/6",
-        bgColor: "bg-[#F4F6FA]",
-        color: "text-navy font-semibold",
+        header: {
+          bgStyle: "bg-[#F4F6FA]",
+          textStyle: "text-navy font-semibold",
+        },
+        row: {
+          textStyle: "justify-end",
+        },
         sort: true,
         sortFunc: (a, b) => {
           return (
@@ -326,6 +358,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               (solver) => solver.solver === solverData,
             ) + 1,
           solver: solverData,
+          unnormalizedData: {
+            runtime: calculateSgm(getRelevantResults(solverData, "runtime")),
+            memoryUsage: calculateSgm(
+              getRelevantResults(solverData, "memoryUsage"),
+            ),
+          },
           version: getHighestVersion(solverVersions[solverData]),
           memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
             memorySgm,
@@ -401,67 +439,82 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
 
   const isMobileView = windowWidth < 1024;
 
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.rawBenchmarkResults;
+    },
+  );
+
+  const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults);
+
+  const uniqueLatestBenchmarkCount = new Set(
+    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
+  ).size;
+
   return (
     <div>
       <div className="pb-3">
-        <ResultsSectionsTitle benchmarkResults={benchmarkResults} />
-        <div className="text-navy pl-6 text-l block items-center mt-2">
-          <span>
-            This table summarizes the benchmark results of the latest version
-          </span>
-          <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <span className="flex items-baseline">
-                  <QuestionLineIcon
-                    className="size-3.5 4xl:size-5"
-                    viewBox="0 0 24 20"
-                  />
-                </span>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <SolverVersions />
-              </div>
-            </Popup>
-          </span>
-          <span>
-            {" "}
-            of each solver on the selected configuration.
-            <br />
+        <ResultsSectionsTitle
+          benchmarkResults={benchmarkResults}
+          latestBenchmarkResultLength={latestBenchmarkResult.length}
+          uniqueBenchmarkCount={uniqueBenchmarkCount}
+          uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
+        />
+        <div className="pl-2 mt-2 max-w-screen-lg">
+          <p>
+            <span>
+              This table summarizes the benchmark results of the latest version
+            </span>
+            <span className="inline-flex gap-2">
+              <InfoPopup
+                trigger={() => (
+                  <span className="flex items-baseline">
+                    <QuestionLineIcon
+                      className="size-3.5"
+                      viewBox="0 0 24 20"
+                    />
+                  </span>
+                )}
+                position="right center"
+                closeOnDocumentClick
+                arrow={false}
+              >
+                <div>
+                  <SolverVersions />
+                </div>
+              </InfoPopup>
+            </span>
+            <span> of each solver on the selected configuration.</span>
+          </p>
+          <p>
             You can rank the solvers by the normalized shifted geometric mean
             (SGM
-          </span>
-          <span className="inline-flex gap-2">
-            <Popup
-              on={["hover"]}
-              trigger={() => (
-                <span className="flex items-baseline">
-                  <QuestionLineIcon
-                    className="size-3.5 4xl:size-5"
-                    viewBox="0 0 24 20"
-                  />
-                  )
-                </span>
-              )}
-              position="right center"
-              closeOnDocumentClick
-              arrow={false}
-            >
-              <div className="bg-white border-stroke border px-4 py-2 m-4 rounded-lg break-words">
-                <SgmExplanation />
-              </div>
-            </Popup>
-          </span>
-          <span>
-            &nbsp; of runtime or memory consumption over all benchmarks, or by
-            the number of solved benchmark instances. Click on any column header
-            to sort the results by that column.
-          </span>
+            <span className="inline-flex gap-2">
+              <InfoPopup
+                trigger={() => (
+                  <span className="flex items-baseline">
+                    <QuestionLineIcon
+                      className="size-3.5"
+                      viewBox="0 0 24 20"
+                    />
+                    )
+                  </span>
+                )}
+                position="right center"
+                closeOnDocumentClick
+                arrow={false}
+              >
+                <div>
+                  <SgmExplanation />
+                </div>
+              </InfoPopup>
+            </span>
+            <span>
+              &nbsp; of runtime or memory consumption over all benchmarks, or by
+              the number of solved benchmark instances. Click on any column
+              header to sort the results by that column.
+            </span>
+          </p>
         </div>
       </div>
       <div className="flex justify-end items-center gap-2 mb-2">
@@ -470,7 +523,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
 
       {isMobileView ? (
         // Mobile view
-        <div className="flex flex-col gap-4 px-4 text-navy">
+        <div className="flex flex-col gap-4 px-2 lg:px-4 text-navy">
           {sortedTableData.map((item, index) => (
             <div
               key={index}
@@ -481,21 +534,25 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 <span className="text-navy font-bold">{item.solver}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                {Object.keys(item).map(
-                  (key) =>
-                    key !== "rank" &&
-                    key !== "solver" && (
-                      <div key={key}>
-                        <div>{key.charAt(0).toUpperCase() + key.slice(1)}</div>
-                        <div
-                          className="font-medium"
-                          dangerouslySetInnerHTML={{
-                            __html: item[key as keyof typeof item] ?? "-",
-                          }}
-                        />
-                      </div>
-                    ),
-                )}
+                {Object.keys(item)
+                  .filter((key) => key !== "unnormalizedData")
+                  .map(
+                    (key) =>
+                      key !== "rank" &&
+                      key !== "solver" && (
+                        <div key={key}>
+                          <div>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                          </div>
+                          <div
+                            className="font-medium"
+                            dangerouslySetInnerHTML={{
+                              __html: item[key as keyof typeof item] ?? "-",
+                            }}
+                          />
+                        </div>
+                      ),
+                  )}
               </div>
             </div>
           ))}
@@ -506,10 +563,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           {columns.map((column) => (
             <div
               key={column.field}
-              className={`first-of-type:rounded-tl-2xl first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl ${column.color} ${column.bgColor} ${column.width}`}
+              className={`first-of-type:rounded-tl-2xl first-of-type:overflow-hidden first-of-type:rounded-bl-2xl first:!border-l odd:border-x-0 border border-stroke last-of-type:overflow-hidden last-of-type:rounded-tr-2xl last-of-type:rounded-br-2xl
+                ${column?.header?.textStyle ?? ""} ${
+                  column?.header?.bgStyle ?? ""
+                } ${column.width}`}
             >
               <div
-                className="py-2.5 flex items-center gap-1 px-3 cursor-pointer justify-center 4xl:text-xl"
+                className="py-2.5 tag-line-xs leading-1.5 font-bold flex items-center gap-1 px-3 cursor-pointer justify-center"
                 onClick={() => column.sort && handleSort(column.field)}
               >
                 {column.headerContent
@@ -532,9 +592,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               </div>
 
               {sortedTableData.map((item, index) => (
-                <div
+                <p
                   key={`${column.field}-${index}`}
-                  className={`font-normal py-2.5 flex even:border-y last:!border-b-0 border-x-0 border-stroke justify-center items-center pl-3 pr-6 4xl:text-xl 4xl:py-4`}
+                  className={`py-2.5 my-0 flex even:border-y last:!border-b-0 border-x-0 border-stroke items-center pl-3 pr-6 odd:bg-[#E0E6F1] even:bg-[#EEF2F2]
+                    ${column.row?.textStyle ?? "justify-center"} ${
+                      column.row?.bgStyle ?? ""
+                    }`}
                   dangerouslySetInnerHTML={{
                     __html:
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",
@@ -545,6 +608,12 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           ))}
         </div>
       )}
+      <SgmRuntimeComparison
+        timeout={timeout}
+        sgmData={tableData}
+        uniqueBenchmarkCount={uniqueBenchmarkCount}
+        uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
+      />
     </div>
   );
 };

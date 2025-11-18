@@ -15,7 +15,11 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
 
   return (
     <nav>
-      <div className="flex items-center mx-auto mt-9 pb-6 pr-4 md:pr-8">
+      <div
+        className={`fixed md:relative w-full py-2 md:py-0 md:w-auto md:bg-transparent top-0 left-0 bg-white flex items-center mx-auto md:mt-9 md:pb-6 pl-4 md:pl-0 pr-4 md:pr-8 ${
+          isNavExpanded ? "" : "z-50"
+        }`}
+      >
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="flex items-center truncate">{children}</div>
         </div>
@@ -26,7 +30,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
             <button
               onClick={toggleMobileMenu}
               type="button"
-              className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="inline-flex items-center p-2 text-sm text-navy rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
               aria-controls="mobile-menu"
               aria-expanded={isNavExpanded}
             >
@@ -50,8 +54,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
           {/* Desktop menu */}
           <div className="hidden lg:flex items-center space-x-4">
             <a
-              href="https://github.com/open-energy-transition/"
-              className="text-gray-700 hover:text-gray-900"
+              href="https://github.com/open-energy-transition/solver-benchmark"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -71,7 +74,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
         <div className="flex flex-col space-y-4 px-2 pt-2 pb-3">
           <a
             href="https://github.com/open-energy-transition/"
-            className="text-gray-700 hover:text-gray-900 flex items-center space-x-2"
+            className="flex items-center space-x-2"
             target="_blank"
             rel="noopener noreferrer"
           >

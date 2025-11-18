@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -17,7 +17,7 @@ benchmarks:
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 162
+      Spatial resolution: 162 nodes
       Realistic: false
       Num. constraints: 1867
       Num. variables: 742
@@ -30,7 +30,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -40,7 +40,7 @@ benchmarks:
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 1803
+      Spatial resolution: 1803 nodes
       Realistic: false
       Num. constraints: 18574
       Num. variables: 7623
@@ -51,7 +51,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -61,7 +61,7 @@ benchmarks:
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 1951
+      Spatial resolution: 1951 nodes
       Realistic: false
       Num. constraints: 17528
       Num. variables: 7509
@@ -74,7 +74,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -84,7 +84,7 @@ benchmarks:
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 2848
+      Spatial resolution: 2848 nodes
       Realistic: false
       Num. constraints: 25505
       Num. variables: 10911
@@ -97,7 +97,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -107,7 +107,7 @@ benchmarks:
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 2868
+      Spatial resolution: 2868 nodes
       Realistic: false
       Num. constraints: 25717
       Num. variables: 11045

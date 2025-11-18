@@ -3,15 +3,10 @@ import { useSelector } from "react-redux";
 import { ArrowWhiteIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import { IFilterState, IResultState, RealisticOption } from "@/types/state";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { IFilterBenchmarkDetails } from "@/types/benchmark";
+import { IResultState } from "@/types/state";
 import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
 
 const BenchmarkSet = () => {
-  const router = useRouter();
-
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -38,24 +33,31 @@ const BenchmarkSet = () => {
       sectors,
       problemClass,
       application,
-      modelName,
       modellingFramework,
     } = fullMetaData[key];
-    uniqueValues.sectoralFocus.add(sectoralFocus);
-    sectors.split(",").forEach((sector) => {
-      uniqueValues.sectors.add(sector.trim());
-    });
-    uniqueValues.problemClasses.add(problemClass);
-    uniqueValues.applications.add(application);
-    uniqueValues.models.add(modelName);
-    uniqueValues.modellingFrameworks.add(modellingFramework);
+    if (sectoralFocus) {
+      uniqueValues.sectoralFocus.add(sectoralFocus);
+    }
+    if (sectors) {
+      sectors.split(",").forEach((sector) => {
+        uniqueValues.sectors.add(sector.trim());
+      });
+    }
+    if (problemClass) {
+      uniqueValues.problemClasses.add(problemClass);
+    }
+    if (application) {
+      uniqueValues.applications.add(application);
+    }
+    if (modellingFramework) {
+      uniqueValues.modellingFrameworks.add(modellingFramework);
+    }
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
-  const availableModels = Array.from(uniqueValues.models);
   const availableModellingFrameworks = Array.from(
     uniqueValues.modellingFrameworks,
   );
@@ -63,130 +65,23 @@ const BenchmarkSet = () => {
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
     ),
-  );
-
-  const encodeValue = (value: string) => {
-    return encodeURIComponent(value);
-  };
-
-  const decodeValue = (value: string) => {
-    return decodeURIComponent(value);
-  };
-
-  const parseUrlParams = () => {
-    const filters: Partial<IFilterState> = {};
-
-    [
-      "sectoralFocus",
-      "sectors",
-      "problemClass",
-      "application",
-      "modelName",
-      "problemSize",
-      "realistic",
-    ].forEach((key) => {
-      const value = router.query[key];
-      if (typeof value === "string") {
-        // @ts-expect-error Type inference issues with dynamic keys
-        filters[key as keyof IFilterState] = value
-          ? value.split(";").map(decodeValue)
-          : [];
-      }
-    });
-
-    return filters;
-  };
-
-  const [isInit, setIsInit] = useState(false);
-  const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
-    sectoralFocus: availableSectoralFocus,
-    sectors: availableSectors,
-    problemClass: availableProblemClasses,
-    application: availableApplications,
-    modelName: availableModels,
-    problemSize: availableProblemSizes,
-    realistic: [RealisticOption.Realistic, RealisticOption.Other],
-  });
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const urlFilters = parseUrlParams();
-
-    if (Object.keys(urlFilters).length > 0) {
-      setLocalFilters((prevFilters) => ({
-        ...prevFilters,
-        ...urlFilters,
-      }));
-    } else {
-      setLocalFilters({
-        sectoralFocus: availableSectoralFocus,
-        sectors: availableSectors,
-        problemClass: availableProblemClasses,
-        application: availableApplications,
-        modelName: availableModels,
-        problemSize: availableProblemSizes,
-        realistic: [RealisticOption.Realistic, RealisticOption.Other],
-      });
-    }
-    setIsInit(true);
-  }, [router.isReady, fullMetaData]);
-
-  // Update URL when filters change
-  useEffect(() => {
-    if (!isInit) return;
-
-    const queryParams = new URLSearchParams();
-    Object.entries(localFilters).forEach(([key, values]) => {
-      if (
-        Array.isArray(values) &&
-        values.length > 0 &&
-        values.length <
-          (key === "sectoralFocus"
-            ? availableSectoralFocus.length
-            : key === "sectors"
-              ? availableSectors.length
-              : key === "problemClass"
-                ? availableProblemClasses.length
-                : key === "application"
-                  ? availableApplications.length
-                  : key === "modelName"
-                    ? availableModels.length
-                    : key === "problemSize"
-                      ? availableProblemSizes.length
-                      : key === "realistic"
-                        ? 2
-                        : 0)
-      ) {
-        queryParams.set(key, values.map(encodeValue).join(";"));
-      }
-    });
-
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: Object.fromEntries(queryParams),
-      },
-      undefined,
-      { shallow: true },
-    );
-  }, [localFilters, isInit]);
+  ).filter((size) => size !== undefined && size !== null);
 
   return (
     <div className="pl-1 pb-1 pr-3 bg-[#F4F6FA] rounded-xl">
-      <div className="flex items-center justify-between gap-2 py-6 ml-5 mr-7">
+      <div className="lg:flex items-center justify-between gap-2 py-4 px-2 md:px-0 md:ml-5 md:mr-7">
         <div className="text-navy">
-          <div className="font-lato font-bold text-2xl/1.4">Benchmark Set</div>
+          <h5>Benchmark Set</h5>
         </div>
-        <div className="py-2 grid sm:flex justify-between items-center gap-2">
+        <div className="grid sm:flex justify-between items-center gap-2">
           <Link
-            className="w-max text-green-pop text-opacity-80 border border-green-pop border-opacity-40 bg-white px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
-            href={PATH_DASHBOARD.benchmarkDetail.list}
+            className="tag-line-xs w-max text-green-pop border border-green-pop border-opacity-40 bg-white px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
+            href={PATH_DASHBOARD.benchmarkSet.list}
           >
             Benchmark Set
           </Link>
           <Link
-            className="w-max text-white bg-green-pop px-4 py-2 rounded-lg flex gap-1 items-center cursor-pointer 4xl:text-xl"
+            className="tag-line-xs w-max text-white bg-green-pop px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
             href={PATH_DASHBOARD.benchmarkSummary}
           >
             More details

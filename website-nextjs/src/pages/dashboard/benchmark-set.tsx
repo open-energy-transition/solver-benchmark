@@ -7,14 +7,12 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
-import { IFilterState, IResultState, RealisticOption } from "@/types/state";
-import { useMemo, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { IResultState, RealisticOption } from "@/types/state";
+import { useMemo, useState } from "react";
 import { IFilterBenchmarkDetails } from "@/types/benchmark";
+import { isEmpty } from "lodash";
 
 const PageBenchmarkDetail = () => {
-  const router = useRouter();
-
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -45,7 +43,6 @@ const PageBenchmarkDetail = () => {
       sectors,
       problemClass,
       application,
-      modelName,
       modellingFramework,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
@@ -54,7 +51,6 @@ const PageBenchmarkDetail = () => {
     });
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
-    uniqueValues.models.add(modelName);
     uniqueValues.modellingFrameworks.add(modellingFramework);
   });
 
@@ -62,119 +58,24 @@ const PageBenchmarkDetail = () => {
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
-  const availableModels = Array.from(uniqueValues.models);
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
     ),
   );
+  const availableModellingFrameworks = Array.from(
+    uniqueValues.modellingFrameworks,
+  );
 
-  const encodeValue = (value: string) => {
-    return encodeURIComponent(value);
-  };
-
-  const decodeValue = (value: string) => {
-    return decodeURIComponent(value);
-  };
-
-  const parseUrlParams = () => {
-    const filters: Partial<IFilterState> = {};
-
-    [
-      "sectoralFocus",
-      "sectors",
-      "problemClass",
-      "application",
-      "modelName",
-      "problemSize",
-      "realistic",
-    ].forEach((key) => {
-      const value = router.query[key];
-      if (typeof value === "string") {
-        // @ts-expect-error Type inference issues with dynamic keys
-        filters[key as keyof IFilterState] = value
-          ? value.split(";").map(decodeValue)
-          : [];
-      }
-    });
-
-    return filters;
-  };
-
-  const [isInit, setIsInit] = useState(false);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
     problemClass: availableProblemClasses,
     application: availableApplications,
-    modelName: availableModels,
     problemSize: availableProblemSizes,
+    modellingFramework: availableModellingFrameworks,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
   });
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const urlFilters = parseUrlParams();
-
-    if (Object.keys(urlFilters).length > 0) {
-      setLocalFilters((prevFilters) => ({
-        ...prevFilters,
-        ...urlFilters,
-      }));
-    } else {
-      setLocalFilters({
-        sectoralFocus: availableSectoralFocus,
-        sectors: availableSectors,
-        problemClass: availableProblemClasses,
-        application: availableApplications,
-        modelName: availableModels,
-        problemSize: availableProblemSizes,
-        realistic: [RealisticOption.Realistic, RealisticOption.Other],
-      });
-    }
-    setIsInit(true);
-  }, [router.isReady, fullMetaData]);
-
-  // Update URL when filters change
-  useEffect(() => {
-    if (!isInit) return;
-
-    const queryParams = new URLSearchParams();
-    Object.entries(localFilters).forEach(([key, values]) => {
-      if (
-        Array.isArray(values) &&
-        values.length > 0 &&
-        values.length <
-          (key === "sectoralFocus"
-            ? availableSectoralFocus.length
-            : key === "sectors"
-              ? availableSectors.length
-              : key === "problemClass"
-                ? availableProblemClasses.length
-                : key === "application"
-                  ? availableApplications.length
-                  : key === "modelName"
-                    ? availableModels.length
-                    : key === "problemSize"
-                      ? availableProblemSizes.length
-                      : key === "realistic"
-                        ? 2
-                        : 0)
-      ) {
-        queryParams.set(key, values.map(encodeValue).join(";"));
-      }
-    });
-
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: Object.fromEntries(queryParams),
-      },
-      undefined,
-      { shallow: true },
-    );
-  }, [localFilters, isInit]);
 
   const filteredMetaData = useMemo(() => {
     const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
@@ -183,9 +84,9 @@ const PageBenchmarkDetail = () => {
         sectors,
         problemClass,
         application,
-        modelName,
         problemSize,
         realistic,
+        modellingFramework,
       } = localFilters;
 
       const isSectoralFocusMatch =
@@ -202,8 +103,9 @@ const PageBenchmarkDetail = () => {
         problemClass.length === 0 || problemClass.includes(value.problemClass);
       const isApplicationMatch =
         application.length === 0 || application.includes(value.application);
-      const isModelNameMatch =
-        modelName.length === 0 || modelName.includes(value.modelName);
+      const isModellingFrameworkMatch =
+        modellingFramework.length === 0 ||
+        modellingFramework.includes(value.modellingFramework);
       const isProblemSizeMatch =
         problemSize.length === 0 ||
         (value.sizes &&
@@ -233,18 +135,21 @@ const PageBenchmarkDetail = () => {
         isSectorsMatch &&
         isProblemClassMatch &&
         isApplicationMatch &&
-        isModelNameMatch &&
         isProblemSizeMatch &&
-        isRealisticMatch
+        isRealisticMatch &&
+        isModellingFrameworkMatch
       );
     });
-
     return Object.fromEntries(filteredEntries);
   }, [localFilters, fullMetaData]);
+
+  if (isEmpty(fullMetaData))
+    return <div className="text-center">Loading...</div>;
+
   return (
     <>
       <Head>
-        <title>Benchmark Detail</title>
+        <title>Benchmark Set | Open Energy Benchmark</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -255,6 +160,8 @@ const PageBenchmarkDetail = () => {
         <div
           className={`
         min-h-[calc(100vh-var(--footer-height))]
+        mt-16
+        md:mt-0
         px-2
         sm:px-6
         transition-all
@@ -265,34 +172,32 @@ const PageBenchmarkDetail = () => {
           <div className="max-w-8xl mx-auto">
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
-                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
-                    <ArrowIcon
-                      fill="none"
-                      className="size-3 4xl:size-4 stroke-navy"
-                    />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Benchmark Set
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="text-navy">
-                <div className="font-lato font-bold text-2xl/1.4">
-                  Benchmark Set
-                </div>
-                <p className="font-lato font-normal/1.4 text-l max-w-screen-lg">
-                  On this page you can see details of all the benchmarks on our
-                  platform, including their source and download links.
+              <div>
+                <h5>Benchmark Set</h5>
+                <p className="mb-6 mt-4 max-w-screen-lg">
+                  On this page you can see a list of all the benchmark problems
+                  on our platform. Click on a benchmark problem name to see all
+                  the details about the problem, including links to download the
+                  problem file, solution files, and logs.
                 </p>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-8 pl-4 pr-2 mt-6 rounded-[32px]">
-              <div className="sm:flex sm:gap-6 justify-between">
-                <div className="sm:w-[248px] overflow-hidden bg-[#F4F6FA] rounded-xl h-max">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
+              <h6 className="py-4 pl-3.5">List of All Benchmarks</h6>
+              <div className="block md:flex overflow-hidden rounded-xl gap-5">
+                <div className="bg-[#F4F6FA] md:max-w-[255px] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
                     localFilters={localFilters}
                     setLocalFilters={setLocalFilters}
@@ -300,22 +205,12 @@ const PageBenchmarkDetail = () => {
                     availableSectors={availableSectors}
                     availableProblemClasses={availableProblemClasses}
                     availableApplications={availableApplications}
-                    availableModels={availableModels}
                     availableProblemSizes={availableProblemSizes}
+                    availableModellingFrameworks={availableModellingFrameworks}
                   />
                 </div>
-                <div
-                  className={`
-                3xl:mx-auto
-                sm:w-4/5
-                `}
-                >
+                <div className="w-full overflow-auto">
                   <div className="space-y-4 sm:space-y-6">
-                    <div className="py-2">
-                      <div className="text-navy text-lg font-bold 4xl:text-xl">
-                        List of All Benchmarks
-                      </div>
-                    </div>
                     <BenchmarkTableResult metaData={filteredMetaData} />
                   </div>
                 </div>

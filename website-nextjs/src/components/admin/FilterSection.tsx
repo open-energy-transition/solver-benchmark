@@ -8,6 +8,7 @@ import {
   ProblemSizeIcon,
   ProcessorIcon,
   WrenchIcon,
+  QuestionLineIcon,
 } from "@/assets/icons";
 import { useSelector, useDispatch } from "react-redux";
 import filterAction from "@/redux/filters/actions";
@@ -18,10 +19,77 @@ import { getLatestBenchmarkResult } from "@/utils/results";
 import { isArray } from "lodash";
 import FilterGroup from "./filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
+import InfoPopup from "@/components/common/InfoPopup";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { SgmMode } from "@/constants/sgm";
 
 interface FilterSectionProps {
   height?: string;
 }
+
+const FilterGroupWithTooltip = ({
+  title,
+  tooltipText,
+  tooltipContent,
+  icon,
+  items,
+  selectedItems,
+  onItemChange,
+  onItemOnly,
+  onSelectAll,
+  className,
+  gridClassName,
+  itemClassName,
+  uppercase,
+}: {
+  title: string;
+  tooltipText?: string;
+  tooltipContent?: React.ReactNode;
+  icon: React.ReactNode;
+  items: string[];
+  selectedItems?: string[];
+  onItemChange: (value: string) => void;
+  onItemOnly: (value: string) => void;
+  onSelectAll: () => void;
+  className?: string;
+  gridClassName?: string;
+  itemClassName?: string;
+  uppercase?: boolean;
+}) => {
+  const titleWithTooltip = (
+    <div className="flex items-center gap-1">
+      <span>{title}</span>
+      <InfoPopup
+        trigger={() => (
+          <span className="flex items-baseline my-auto cursor-pointer">
+            <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
+          </span>
+        )}
+        position="right center"
+        closeOnDocumentClick
+        arrow={false}
+      >
+        <div>{tooltipContent || tooltipText || title}</div>
+      </InfoPopup>
+    </div>
+  );
+
+  return (
+    <FilterGroup
+      title={titleWithTooltip}
+      icon={icon}
+      items={items}
+      selectedItems={selectedItems}
+      onItemChange={onItemChange}
+      onItemOnly={onItemOnly}
+      onSelectAll={onSelectAll}
+      className={className}
+      gridClassName={gridClassName}
+      itemClassName={itemClassName}
+      uppercase={uppercase}
+    />
+  );
+};
 
 const FilterSection = ({ height }: FilterSectionProps) => {
   const router = useRouter();
@@ -57,9 +125,9 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   const availableApplications = useSelector(
     (state: { results: IResultState }) => state.results.availableApplications,
   );
-
-  const availableModels = useSelector(
-    (state: { results: IResultState }) => state.results.availableModels,
+  const availableModellingFrameworks = useSelector(
+    (state: { results: IResultState }) =>
+      state.results.availableModellingFrameworks,
   );
 
   const availableProblemSizes = useSelector(
@@ -69,6 +137,8 @@ const FilterSection = ({ height }: FilterSectionProps) => {
   const realisticOptions = useSelector(
     (state: { results: IResultState }) => state.results.realisticOptions,
   );
+
+  const isMobile = useIsMobile();
 
   const [isInit, setIsInit] = useState(false);
 
@@ -92,7 +162,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: realisticOptions,
     }[category] as string[];
@@ -125,9 +195,35 @@ const FilterSection = ({ height }: FilterSectionProps) => {
 
   const updateUrlParams = (filters: IFilterState) => {
     const queryParams = new URLSearchParams();
+
+    // First, preserve non-filter query params from current URL
+    Object.entries(router.query).forEach(([key, value]) => {
+      if (
+        ![
+          "sectoralFocus",
+          "sectors",
+          "problemClass",
+          "application",
+          "modellingFramework",
+          "problemSize",
+          "realistic",
+          "sgmMode",
+          "xFactor",
+        ].includes(key) &&
+        value !== undefined
+      ) {
+        queryParams.set(key, Array.isArray(value) ? value.join(",") : value);
+      }
+    });
+
+    // Then add/update filter params
     Object.entries(filters).forEach(([key, values]) => {
       if (Array.isArray(values) && values.length > 0) {
         queryParams.set(key, values.map(encodeValue).join(";"));
+      } else if (key === "sgmMode" && values) {
+        queryParams.set(key, encodeValue(values as string));
+      } else if (key === "xFactor" && typeof values === "number") {
+        queryParams.set(key, values.toString());
       }
     });
 
@@ -149,7 +245,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       "sectors",
       "problemClass",
       "application",
-      "modelName",
+      "modellingFramework",
       "problemSize",
       "realistic",
     ].forEach((key) => {
@@ -162,15 +258,47 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       }
     });
 
+    // Parse sgmMode from URL
+    const sgmModeValue = router.query["sgmMode"];
+    if (typeof sgmModeValue === "string" && sgmModeValue) {
+      // @ts-expect-error Type inference issues with dynamic keys
+      filters.sgmMode = decodeValue(sgmModeValue);
+    }
+
+    // Parse xFactor from URL
+    const xFactorValue = router.query["xFactor"];
+    if (typeof xFactorValue === "string" && xFactorValue) {
+      const parsed = Number(xFactorValue);
+      if (!isNaN(parsed)) {
+        // @ts-expect-error Type inference issues with dynamic keys
+        filters.xFactor = parsed;
+      }
+    }
+
     return filters;
   };
 
   useEffect(() => {
-    if (isInit || !selectedFilters.isReady || !router.isReady) return;
-
+    if (isInit || !router.isReady || !selectedFilters.isReady) return;
     const urlFilters = parseUrlParams();
 
     if (Object.keys(urlFilters).length > 0) {
+      // Apply sgmMode from URL if present
+      if (
+        urlFilters.sgmMode &&
+        urlFilters.sgmMode !== selectedFilters.sgmMode
+      ) {
+        dispatch(filterActions.setSgmMode(urlFilters.sgmMode as SgmMode));
+      }
+
+      // Apply xFactor from URL if present
+      if (
+        urlFilters.xFactor &&
+        urlFilters.xFactor !== selectedFilters.xFactor
+      ) {
+        dispatch(filterActions.setXFactor(urlFilters.xFactor as number));
+      }
+
       Object.keys(selectedFilters).forEach((key) => {
         if (
           isArray(urlFilters[key as keyof IFilterState]) &&
@@ -204,27 +332,24 @@ const FilterSection = ({ height }: FilterSectionProps) => {
         }
       });
     } else {
-      return () => {
-        // Fix filters not being selected when no URL parameters are present in the production environment
-        dispatch(
-          filterActions.setFilter({
-            sectoralFocus: availableSectoralFocus,
-            sectors: availableSectors,
-            problemClass: availableProblemClasses,
-            application: availableApplications,
-            modelName: availableModels,
-            problemSize: availableProblemSizes,
-            realistic: [RealisticOption.Realistic, RealisticOption.Other],
-          } as IFilterState),
-        );
-        dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
-        dispatch(
-          resultActions.setBenchmarkLatestResults(
-            getLatestBenchmarkResult(rawBenchmarkResults),
-          ),
-        );
-        dispatch(resultActions.setMetaData(rawMetaData));
-      };
+      dispatch(
+        filterActions.setFilter({
+          sectoralFocus: availableSectoralFocus,
+          sectors: availableSectors,
+          problemClass: availableProblemClasses,
+          application: availableApplications,
+          modellingFramework: availableModellingFrameworks,
+          problemSize: availableProblemSizes,
+          realistic: [RealisticOption.Realistic, RealisticOption.Other],
+        } as IFilterState),
+      );
+      dispatch(resultActions.setBenchmarkResults(rawBenchmarkResults));
+      dispatch(
+        resultActions.setBenchmarkLatestResults(
+          getLatestBenchmarkResult(rawBenchmarkResults),
+        ),
+      );
+      dispatch(resultActions.setMetaData(rawMetaData));
     }
     setIsInit(true);
   }, [router.isReady, selectedFilters.isReady]);
@@ -239,7 +364,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
           sectors: availableSectors,
           problemClass: availableProblemClasses,
           application: availableApplications,
-          modelName: availableModels,
+          modellingFramework: availableModellingFrameworks,
           problemSize: availableProblemSizes,
           realistic: [RealisticOption.Realistic, RealisticOption.Other],
         } as IFilterState),
@@ -253,11 +378,32 @@ const FilterSection = ({ height }: FilterSectionProps) => {
         ),
       );
 
-      // Clear URL parameters
+      // Clear filter parameters but keep other query params (tab, sgmMode, etc.)
+      const nonFilterParams = Object.entries(router.query).reduce(
+        (acc, [key, value]) => {
+          if (
+            ![
+              "sectoralFocus",
+              "sectors",
+              "problemClass",
+              "application",
+              "modellingFramework",
+              "problemSize",
+              "realistic",
+            ].includes(key) &&
+            value !== undefined
+          ) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, string | string[]>,
+      );
+
       router.replace(
         {
           pathname: router.pathname,
-          query: {},
+          query: nonFilterParams,
         },
         undefined,
         { shallow: true },
@@ -272,7 +418,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       sectors: availableSectors,
       problemClass: availableProblemClasses,
       application: availableApplications,
-      modelName: availableModels,
+      modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
     };
@@ -294,7 +440,7 @@ const FilterSection = ({ height }: FilterSectionProps) => {
     <>
       <div className="sm:w-[248px] pt-2.5 px-8 pb-2 flex items-center justify-between gap-1 border-stroke border-b">
         <div className="flex gap-2 items-center">
-          <div className="text-navy font-bold text-base">Filters</div>
+          <div className="text-navy font-bold text-base">Filter By:</div>
         </div>
 
         <div className="flex justify-end ml-2">
@@ -322,75 +468,41 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             transition-all
             opacity-100
             overflow-y-auto
+            max-h-fit
+            md:max-h-full
           "
           style={{
-            height: height || "",
+            height: isMobile ? "auto" : height || "",
           }}
         >
-          {/* Sectoral Focus */}
-          <FilterGroup
-            title="Sectoral Focus"
-            icon={<ForkIcon className="w-5 h-5" />}
-            items={availableSectoralFocus}
-            selectedItems={selectedFilters?.sectoralFocus}
+          {/* Modelling Framework */}
+          <FilterGroupWithTooltip
+            title="Model Framework"
+            tooltipText="A modelling framework is a set of tools, rules, methods, and structures that support the development, execution, and management of models."
+            icon={<PolygonIcon className="w-5 h-5" />}
+            items={availableModellingFrameworks}
+            selectedItems={selectedFilters?.modellingFramework}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "sectoralFocus", value })
+              handleCheckboxChange({ category: "modellingFramework", value })
             }
             onItemOnly={(value) =>
               handleCheckboxChange({
-                category: "sectoralFocus",
+                category: "modellingFramework",
                 value,
                 only: true,
               })
             }
-            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
-            className="w-full"
-            itemClassName="4xl:text-xl"
-            gridClassName="!flex flex-wrap gap-0"
-            uppercase={false}
-          />
-          {/* Sectors */}
-          <FilterGroup
-            title="Sectors"
-            icon={<BrightIcon className="w-5 h-5" />}
-            items={availableSectors}
-            selectedItems={selectedFilters?.sectors}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "sectors", value })
+            onSelectAll={() =>
+              handleSelectAll({ category: "modellingFramework" })
             }
-            onItemOnly={(value) =>
-              handleCheckboxChange({ category: "sectors", value, only: true })
-            }
-            onSelectAll={() => handleSelectAll({ category: "sectors" })}
-            className="w-full"
-            itemClassName="4xl:text-xl"
-            gridClassName="!flex flex-wrap gap-0"
-            uppercase={false}
-          />
-          {/* Problem Class */}
-          <FilterGroup
-            title="Problem Class"
-            icon={<ProcessorIcon className="w-5 h-5" />}
-            items={availableProblemClasses}
-            selectedItems={selectedFilters?.problemClass}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "problemClass", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({
-                category: "problemClass",
-                value,
-                only: true,
-              })
-            }
-            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
             className="w-full"
             gridClassName="!flex flex-wrap"
             uppercase={false}
           />
           {/* Application */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Application"
+            tooltipText="What kind of practical question the energy model is used to answer"
             icon={<WrenchIcon className="w-5 h-5" />}
             items={availableApplications}
             selectedItems={selectedFilters?.application}
@@ -409,9 +521,59 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             gridClassName="grid-cols-1"
             uppercase={false}
           />
+          {/* Problem Class */}
+          <FilterGroupWithTooltip
+            title="Problem Class"
+            tooltipContent={
+              <div>
+                <div>
+                  Describes the type of mathematical optimization problem
+                </div>
+                <ul className="list-disc list-outside ml-6">
+                  <li>
+                    LP: Only continuous variables; all equations and
+                    inequalities are linear
+                  </li>
+                  <li>
+                    MILP: Includes integer or binary variables, e.g., for on/off
+                    decisions, investment choices
+                  </li>
+                </ul>
+              </div>
+            }
+            icon={<ProcessorIcon className="w-5 h-5" />}
+            items={availableProblemClasses}
+            selectedItems={selectedFilters?.problemClass}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "problemClass", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "problemClass",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "problemClass" })}
+            className="w-full"
+            gridClassName="!flex flex-wrap"
+            uppercase={false}
+          />
           {/* Problem Size */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Problem Size"
+            tooltipContent={
+              <div>
+                <div>
+                  Defines the computational scale of the optimization problem
+                </div>
+                <ul className="list-disc list-outside ml-6">
+                  <li>S: num. vars {"<"} 1e4</li>
+                  <li>M: 1e4 ≤ num. vars {"<"} 1e6</li>
+                  <li>L: 1e6 ≤ num. vars</li>
+                </ul>
+              </div>
+            }
             icon={<ProblemSizeIcon className="w-5 h-5" />}
             items={availableProblemSizes}
             selectedItems={selectedFilters?.problemSize}
@@ -431,8 +593,9 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             uppercase={true}
           />
           {/* Realistic */}
-          <FilterGroup
+          <FilterGroupWithTooltip
             title="Realistic"
+            tooltipText="Benchmark instances are marked as realistic if they come from a model that was used, or is similar to a model used in an actual energy modelling study. Please note that this is a rather subjective and modelling framework-dependent definition, but is still useful when estimating solver performance on real-world energy models."
             icon={<GlobeSearchIcon className="w-5 h-5" />}
             items={realisticOptions}
             selectedItems={selectedFilters?.realistic}
@@ -450,21 +613,46 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             className="w-full"
             gridClassName="grid-cols-2"
           />
-          {/* Model */}
-          <FilterGroup
-            title="Model"
-            icon={<PolygonIcon className="w-5 h-5" />}
-            items={availableModels}
-            selectedItems={selectedFilters?.modelName}
+          {/* Sectoral Focus */}
+          <FilterGroupWithTooltip
+            title="Sectoral Focus"
+            tooltipText="Categorizes energy models based on whether they focus on the power/electricity sector only, or whether they also consider interactions with other sectors that produce/use energy (e.g., transport, industry, etc.)."
+            icon={<ForkIcon className="w-5 h-5" />}
+            items={availableSectoralFocus}
+            selectedItems={selectedFilters?.sectoralFocus}
             onItemChange={(value) =>
-              handleCheckboxChange({ category: "modelName", value })
+              handleCheckboxChange({ category: "sectoralFocus", value })
             }
             onItemOnly={(value) =>
-              handleCheckboxChange({ category: "modelName", value, only: true })
+              handleCheckboxChange({
+                category: "sectoralFocus",
+                value,
+                only: true,
+              })
             }
-            onSelectAll={() => handleSelectAll({ category: "modelName" })}
+            onSelectAll={() => handleSelectAll({ category: "sectoralFocus" })}
             className="w-full"
-            gridClassName="grid-cols-2"
+            itemClassName=""
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
+          />
+          {/* Sectors */}
+          <FilterGroupWithTooltip
+            title="Sectors"
+            tooltipText="A sector is a set of energy production/consumption technologies/energy services devoted to satisfy the demand for a particular category of human activity (i.e. transport, industry, etc.)."
+            icon={<BrightIcon className="w-5 h-5" />}
+            items={availableSectors}
+            selectedItems={selectedFilters?.sectors}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "sectors", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({ category: "sectors", value, only: true })
+            }
+            onSelectAll={() => handleSelectAll({ category: "sectors" })}
+            className="w-full"
+            itemClassName=""
+            gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
         </div>

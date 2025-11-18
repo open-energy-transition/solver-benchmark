@@ -8,12 +8,12 @@ const GetStarted = () => {
     return state.results.rawMetaData;
   });
 
-  const modelNames = useMemo(
+  const modellingFrameworks = useMemo(
     () =>
       Array.from(
         new Set(
           Object.keys(rawMetaData).map((key) => {
-            return rawMetaData[key].modelName;
+            return rawMetaData[key].modellingFramework;
           }),
         ),
       ),
@@ -51,49 +51,39 @@ const GetStarted = () => {
         <div className="w-full xl:w-1/4">
           <div
             className="
-              text-lg/1.1
+              tag-line-lg
               uppercase
-              font-medium
-              tracking-normal
               font-league
               mb-4
             "
           >
             BENCHMARKS
           </div>
-          <div
-            className="
-              text-[2.5rem]/1.4
-              tracking-normal
-              font-extrabold
-              font-lato
-              mb-2
-            "
-          >
-            WHAT DO WE HAVE?
-          </div>
+          <h3 className="leading-1.4 mb-2">WHAT DO WE HAVE?</h3>
         </div>
         <div className="w-full xl:w-[67.42%]">
-          <h5
+          <div
             className="
-              text-lg/1.4
+              tag-line-lg
+              leading-1.4
               font-medium
               max-w-4xl
               mb-2.5
-              font-lato
               xl:pl-4.5
-              tracking-normal
             "
           >
-            Our platform consists of open-source, community-contributed
-            benchmarks from leading open energy modelling systems. Our open
+            Our platform consists of open, community-contributed benchmark
+            problems from various energy modelling frameworks. Our open-source
             benchmarking infrastructure runs them on multiple versions of
             leading solvers on multiple hardware configurations, to gather
             insights on how performance varies with benchmark size,
             computational resources, and solver evolution.
-          </h5>
-          <div className="flex justify-between">
-            <StatsBox value={modelNames.length} label="Model Frameworks" />
+          </div>
+          <div className="md:flex justify-between">
+            <StatsBox
+              value={modellingFrameworks.length}
+              label="Model Frameworks"
+            />
             <StatsBox
               value={availableBenchmarksAndSizes.length}
               label="Benchmarks"

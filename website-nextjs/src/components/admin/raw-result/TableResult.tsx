@@ -3,12 +3,14 @@ import Papa from "papaparse";
 
 import { useSelector } from "react-redux";
 import { BenchmarkResult, OriginBenchmarkResult } from "@/types/benchmark";
-import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { IResultState } from "@/types/state";
 import { filterNumber, filterSelect } from "@/utils/table";
+import InfoPopup from "@/components/common/InfoPopup";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
@@ -24,60 +26,66 @@ const TableResult = () => {
         header: "Benchmark",
         accessorKey: "benchmark",
         filterFn: filterSelect,
+        size: 230,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
-          <Popup
-            on={["hover"]}
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
-                {String(info.getValue())}
-              </div>
+          <Link
+            className="font-bold inline-block"
+            style={{ lineHeight: "1.5" }}
+            href={PATH_DASHBOARD.benchmarkSet.one.replace(
+              "{name}",
+              info.row.original.benchmark,
             )}
-            position="top center"
-            closeOnDocumentClick
-            arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
-              {" "}
-              {String(info.getValue())}{" "}
-            </div>
-          </Popup>
+            <InfoPopup
+              trigger={() => (
+                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                  {String(info.getValue())}
+                </div>
+              )}
+              position="top center"
+              closeOnDocumentClick
+              arrowStyle={{ color: Color.Stroke }}
+            >
+              <div> {String(info.getValue())} </div>
+            </InfoPopup>
+          </Link>
         ),
       },
       {
         header: "Instance",
         accessorKey: "size",
         filterFn: filterSelect,
-        size: 100,
+        size: 150,
       },
       {
         header: "Solver",
         accessorKey: "solver",
         filterFn: filterSelect,
-        size: 80,
+        size: 120,
       },
       {
         header: "Solver Version",
         accessorKey: "solverVersion",
-        size: 130,
+        size: 160,
         filterFn: filterSelect,
       },
       {
         header: "Solver Release Year",
         accessorKey: "solverReleaseYear",
-        size: 170,
+        size: 200,
         filterFn: filterSelect,
       },
       {
         header: "Status",
         accessorKey: "status",
         filterFn: filterSelect,
-        size: 80,
+        size: 120,
       },
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
         filterFn: filterSelect,
-        size: 200,
+        size: 220,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
             {String(info.getValue())}
@@ -108,11 +116,12 @@ const TableResult = () => {
           filterVariant: "range",
         },
         filterFn: filterNumber,
+        size: 180,
       },
       {
         header: "Max Integrality Violation",
         accessorKey: "maxIntegralityViolation",
-        size: 210,
+        size: 240,
         meta: {
           filterVariant: "range",
         },
@@ -126,10 +135,9 @@ const TableResult = () => {
         },
         filterFn: filterNumber,
         cell: (info: CellContext<BenchmarkResult, unknown>) => (
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden 4xl:text-lg">
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {String(info.getValue() || "")}
               </div>
             )}
@@ -137,11 +145,8 @@ const TableResult = () => {
             closeOnDocumentClick
             arrowStyle={{ color: Color.Stroke }}
           >
-            <div className="bg-stroke p-2 rounded">
-              {" "}
-              {String(info.getValue())}{" "}
-            </div>
-          </Popup>
+            <div> {String(info.getValue())} </div>
+          </InfoPopup>
         ),
       },
     ],
@@ -202,6 +207,7 @@ const TableResult = () => {
 
   return (
     <TanStackTable
+      showAllRows
       data={benchmarkResults}
       columns={columns}
       title="Full Results"

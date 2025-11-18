@@ -1,9 +1,12 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
+import { SolverStatusType } from "@/types/benchmark";
+import CustomDropdown from "@/components/common/CustomDropdown";
 
 const SOLVES_DATA = [
   {
@@ -11,28 +14,40 @@ const SOLVES_DATA = [
     name: "highs",
     sourceCode: "https://github.com/ERGO-Code/HiGHS",
     website: "https://highs.dev/",
+    license: "MIT License",
   },
   {
     label: "SCIP",
     name: "scip",
     sourceCode: "https://github.com/scipopt/scip",
     website: "https://www.scipopt.org/",
+    license: "Apache License 2.0",
   },
   {
     label: "CBC",
     name: "cbc",
     sourceCode: "https://github.com/coin-or/Cbc",
     website: "https://coin-or.github.io/Cbc/intro.html",
+    license: "Eclipse Public License 2.0",
   },
   {
     label: "GLPK",
     name: "glpk",
     sourceCode: "https://github.com/firedrakeproject/glpk",
     website: "https://www.gnu.org/software/glpk/",
+    license: "GNU General Public License v3.0",
+  },
+  {
+    label: "Gurobi",
+    name: "gurobi",
+    website: "https://www.gurobi.com/solutions/gurobi-optimizer/",
+    license: "Commercial License",
   },
 ];
 
 const SolverSection = () => {
+  const router = useRouter();
+
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
@@ -52,20 +67,46 @@ const SolverSection = () => {
   });
 
   // Filter results where all solvers succeeded
-  const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
-    const key = `${result.benchmark}-${result.size}`;
-    return benchmarkSuccessMap.get(key) === availableSolvers.length;
-  });
+  const benchmarkLatestResults = rawBenchmarkLatestResults;
 
   const [selectedSolver, setSelectedSolver] = useState("");
 
   const [solverOptions, setSolverOptions] = useState<string[]>([]);
 
+  // Initialize solver from URL or default to first available
   useEffect(() => {
-    if (!availableSolvers.length) return;
-    setSelectedSolver(availableSolvers[0]);
+    if (!availableSolvers.length || !router.isReady) return;
+
+    const solverFromUrl = router.query.solver as string;
+
+    if (solverFromUrl && availableSolvers.includes(solverFromUrl)) {
+      setSelectedSolver(solverFromUrl);
+    } else if (!selectedSolver) {
+      setSelectedSolver(availableSolvers[0]);
+    }
+
     setSolverOptions(availableSolvers);
-  }, [availableSolvers]);
+  }, [availableSolvers, router.isReady]);
+
+  // Update URL when solver changes
+  useEffect(() => {
+    if (!selectedSolver || !router.isReady) return;
+
+    const currentQuery = { ...router.query };
+
+    if (currentQuery.solver !== selectedSolver) {
+      currentQuery.solver = selectedSolver;
+
+      router.push(
+        {
+          pathname: router.pathname,
+          query: currentQuery,
+        },
+        undefined,
+        { shallow: true, scroll: false },
+      );
+    }
+  }, [selectedSolver, router.isReady]);
 
   function calculateFactor(baseTime: number, solverTime: number) {
     return Math.log2((solverTime + 10) / (baseTime + 10));
@@ -98,7 +139,19 @@ const SolverSection = () => {
             sData.benchmark === oData.benchmark && sData.size === oData.size,
         );
         if (!sData) {
-          throw new Error("Base data not found for comparison");
+          // If no base solver data exists for this benchmark/size,
+          // set factor to 1 to hide it in the chart
+          return {
+            benchmark: oData.benchmark,
+            solver: oData.solver,
+            status: oData.status,
+            size: oData.size,
+            runtime: oData.runtime || 0,
+            baseSolverRuntime: 1,
+            baseSolverStatus: "TO" as SolverStatusType,
+            factor: 1,
+            logRuntime: 1,
+          };
         }
         return {
           benchmark: oData.benchmark,
@@ -138,40 +191,44 @@ const SolverSection = () => {
     return SOLVES_DATA.find((s) => s.name.toLowerCase() === solverName);
   }, [selectedSolver]);
 
+  const getSolverWithVersion = (solver: string) => {
+    const matchingResult = benchmarkLatestResults.find(
+      (result) => result.solver === solver,
+    );
+    if (matchingResult && matchingResult.solverVersion) {
+      return `${solver} v${matchingResult.solverVersion}`;
+    }
+    return solver;
+  };
+
   return (
     <div>
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-col lg:flex-row gap-4 mb-4">
         {/* Solver select */}
-        <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
-          <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">
-            Select Solver
-          </div>
-          <select
-            name="solver"
+        <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
+          <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
+          <CustomDropdown
             value={selectedSolver}
-            onChange={(event) => setSelectedSolver(event.target.value)}
-            className="w-full font-bold pl-3 bg-[#F0F4F2] px-6 py-4 border-r-[1.5rem] 4xl:text-xl
-            border-transparent text-dark-grey text-base rounded-b-lg block focus-visible:outline-none"
-          >
-            <option disabled>Solver</option>
-            {solverOptions.map((solver, idx) => (
-              <option key={idx} value={solver}>
-                {solver}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedSolver}
+            options={solverOptions}
+            formatOption={getSolverWithVersion}
+            label="Solver"
+            bgColor="bg-[#F0F4F2]"
+            optionActiveBg="bg-[#F0F4F2]"
+            className="font-bold text-navy tag-line-lg"
+          />
         </div>
 
         {/* Enhanced solver info section */}
         {selectedSolverInfo && (
-          <div className="w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
-            <div className="p-3 pl-3.5 font-bold font-lato text-lg border-b border-gray-200 4xl:text-xl">
+          <div className="w-full lg:w-1/2 bg-[#F0F4F2] rounded-lg shadow-sm">
+            <h6 className="p-3 pl-3.5 border-b border-gray-200">
               Solver Information
-            </div>
+            </h6>
             <div className="p-4">
-              <h3 className="text-xl 4xl:text-2xl font-bold mb-4 text-gray-800">
+              <div className="mb-4 text-navy tag-line-lg font-bold">
                 {selectedSolverInfo.label}
-              </h3>
+              </div>
               <div className="space-y-3">
                 <a
                   href={selectedSolverInfo.website}
@@ -180,24 +237,26 @@ const SolverSection = () => {
                   className="flex items-center gap-3 transition-colors"
                 >
                   <FaGlobe className="w-5 h-5" />
-                  <span className="hover:underline 4xl:text-lg">
+                  <span className="hover:underline underline-offset-4">
                     Official Website
                   </span>
                 </a>
-                <a
-                  href={selectedSolverInfo.sourceCode}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 transition-colors"
-                >
-                  <FaGithub className="w-5 h-5" />
-                  <span className="hover:underline 4xl:text-lg">
-                    Source Code
-                  </span>
-                </a>
-                <div className="flex items-center gap-3 transition-colors 4xl:text-lg">
+                {selectedSolverInfo.sourceCode && (
+                  <a
+                    href={selectedSolverInfo.sourceCode}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 transition-colors"
+                  >
+                    <FaGithub className="w-5 h-5" />
+                    <span className="hover:underlineunderline-offset-4">
+                      Source Code
+                    </span>
+                  </a>
+                )}
+                <div className="flex items-center gap-3 transition-colors">
                   <FaBalanceScale className="w-5 h-5" />
-                  <span>License: MIT</span>
+                  <span>{selectedSolverInfo.license}</span>
                 </div>
               </div>
             </div>

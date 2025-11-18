@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -16,8 +16,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114590
       Num. variables: 103506
@@ -28,7 +28,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -37,8 +37,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 175579
       Num. variables: 153413
@@ -47,9 +47,9 @@ benchmarks:
     Modelling framework: GenX
     Model name: GenX
     Version:
-    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;  Daniele Lerede, Open Energy Transition
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -58,8 +58,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114590
       Num. variables: 103506
@@ -70,7 +70,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -79,8 +79,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 127529
       Num. variables: 121992
@@ -91,7 +91,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-period (3 years)
@@ -100,8 +100,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114708
       Num. variables: 103612
@@ -112,7 +112,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: DC optimal power flow
+    Application: DC Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -121,9 +121,9 @@ benchmarks:
     - Name: 9-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 9
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
       Realistic: true
-      Realistic motivation: TODO
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 114708
       Num. variables: 103612

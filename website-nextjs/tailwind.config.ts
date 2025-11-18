@@ -6,7 +6,14 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: ["grid-cols-1", "grid-cols-2", "grid-cols-3"],
+  safelist: [
+    "grid-cols-1",
+    "grid-cols-2",
+    "grid-cols-3",
+    "hover:bg-lavender",
+    "bg-[#F0F4F2]",
+    "hover:bg-[#F0F4F2]",
+  ],
   theme: {
     container: {
       center: true,
@@ -58,6 +65,23 @@ export default {
       },
       padding: {
         "4.5": "1.125rem",
+      },
+      zIndex: {
+        max: "999999",
+      },
+      keyframes: {
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(-10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        shimmer: "shimmer 1.5s infinite",
+        "fade-in": "fade-in 0.3s ease-out",
       },
     },
   },

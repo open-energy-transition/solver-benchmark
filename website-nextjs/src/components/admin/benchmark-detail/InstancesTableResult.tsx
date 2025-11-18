@@ -13,8 +13,9 @@ import {
 } from "@tanstack/react-table";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
-import { ArrowToRightIcon } from "@/assets/icons";
+import { ArrowToRightIcon, QuestionLineIcon } from "@/assets/icons";
 import SortIcon from "@/components/shared/tables/SortIcon";
+import InfoPopup from "@/components/common/InfoPopup";
 
 type RowData = {
   instance: string;
@@ -169,7 +170,30 @@ const InstancesTableResult = ({
 
     baseColumns.push(
       {
-        header: "REALISTIC",
+        header: () => (
+          <div className="flex items-center gap-1">
+            <span>REALISTIC</span>
+            <InfoPopup
+              trigger={() => (
+                <span className="flex items-baseline my-auto cursor-pointer">
+                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />
+                </span>
+              )}
+              position="right center"
+              closeOnDocumentClick
+              arrow={false}
+            >
+              <div>
+                Benchmark instances are marked as realistic if they come from a
+                model that was used, or is similar to a model used in an actual
+                energy modelling study. Please note that this is a rather
+                subjective and modelling framework-dependent definition, but is
+                still useful when estimating solver performance on real-world
+                energy models.
+              </div>
+            </InfoPopup>
+          </div>
+        ),
         accessorKey: "realistic",
         cell: (info: CellContext<RowData, unknown>) => {
           const rowData = info.row.original;
@@ -188,7 +212,7 @@ const InstancesTableResult = ({
         cell: (info: CellContext<RowData, unknown>) => (
           <Link
             href={info.getValue() as string}
-            className="text-white bg-green-pop px-6 py-3 rounded-lg flex gap-1 items-center w-max"
+            className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-4 py-2"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -244,16 +268,14 @@ const InstancesTableResult = ({
 
   return (
     <div className="py-2">
-      <div className="text-back text-2xl font-medium mb-2 mt-2 font-league pl-1.5">
-        Instances
-      </div>
-      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+      <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">Instances</h5>
+      <div className="text-navy px-2 lg:px-5 text-l block items-center mt-2 mb-2">
         A benchmark may have multiple size instances, obtained by varying
         parameters such as the spatial or temporal resolution, but which utilize
         the same model features and are presumed to have the same optimization
         problem structure.
       </div>
-      <div className="text-navy px-5 text-l block items-center mt-2 mb-2">
+      <div className="text-navy px-2 lg:px-5 text-l block items-center mt-2 mb-2">
         We categorize a benchmark instance as realistic if it comes from a model
         that was used, or is similar to a model used in an actual energy
         modelling study. Hover over the &ldquo;Realistic&rdquo; button in any
@@ -271,7 +293,7 @@ const InstancesTableResult = ({
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
                     <div
-                      className="flex gap-2 items-center"
+                      className="flex gap-2 items-center tag-line-xs font-extrabold"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {flexRender(
@@ -293,7 +315,10 @@ const InstancesTableResult = ({
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-navy text-start py-2 px-6">
+                  <td
+                    key={cell.id}
+                    className="text-navy text-start py-2 px-6 tag-line-sm"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

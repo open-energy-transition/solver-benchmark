@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
@@ -17,7 +17,7 @@ benchmarks:
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
-      Spatial resolution: 1 node
+      Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 1505
       Num. variables: 990
@@ -29,7 +29,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -39,7 +39,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594079
@@ -51,7 +51,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -61,7 +61,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594091
@@ -73,7 +73,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -83,7 +83,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594085
@@ -95,7 +95,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -105,7 +105,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594116
@@ -117,7 +117,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
@@ -127,7 +127,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 665474

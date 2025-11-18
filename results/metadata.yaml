@@ -8,7 +8,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -17,8 +17,8 @@ benchmarks:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
-      Temporal resolution: 168
-      Spatial resolution: 15
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -33,7 +33,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -42,8 +42,8 @@ benchmarks:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
-      Temporal resolution: 168
-      Spatial resolution: 15
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -58,7 +58,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (30 days)
@@ -67,8 +67,8 @@ benchmarks:
     - Name: 15-24h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
-      Temporal resolution: 24h
-      Spatial resolution: 15
+      Temporal resolution: 24h hours
+      Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -85,7 +85,7 @@ benchmarks:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -94,8 +94,8 @@ benchmarks:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
-      Temporal resolution: 168
-      Spatial resolution: 15
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -111,7 +111,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -120,8 +120,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114590
       Num. variables: 103506
@@ -136,7 +136,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -145,8 +145,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 175579
       Num. variables: 153413
@@ -159,10 +159,10 @@ benchmarks:
     Modelling framework: GenX
     Model name: GenX
     Version:
-    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;  Daniele
-      Lerede, Open Energy Transition
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
+      Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -171,8 +171,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114590
       Num. variables: 103506
@@ -200,7 +200,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -209,8 +209,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 127529
       Num. variables: 121992
@@ -225,7 +225,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-period (3 years)
@@ -234,8 +234,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 114708
       Num. variables: 103612
@@ -249,7 +249,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: DC optimal power flow
+    Application: DC Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -258,10 +258,11 @@ benchmarks:
     - Name: 9-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
-      Temporal resolution: 1
-      Spatial resolution: 9
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
       Realistic: true
-      Realistic motivation: TODO
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 114708
       Num. variables: 103612
   genx-1_three_zones:
@@ -273,7 +274,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -282,8 +283,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_1_three_zones-2b66b543f23170441438f4d10acfb436136aef55ebcc483d502c5493a62d163c.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 171878
       Num. variables: 127530
@@ -299,7 +300,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -308,8 +309,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_2_three_zones_w_electrolyzer-f211ccdcc1a2145c1f4854dcc714f50d5b8fcc524bac465a2022ffb8942ffd53.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 232867
       Num. variables: 177437
@@ -319,14 +320,14 @@ benchmarks:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
       resources include natural gas, solar PV, wind, and lithium-ion battery storage
-      and biomass with carbon capture and storage. This examples shows the usage of
+      and biomass with carbon capture and storage. This example shows the usage of
       CO2, biomass, and piecewise fuel usage related functions of GenX.
     Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -335,8 +336,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_3_three_zones_w_co2_capture-3222908514bd19ae55895811eb847ad882270e280657123420407a885ccb34bc.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 171878
       Num. variables: 127530
@@ -365,7 +366,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -374,8 +375,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_4_three_zones_w_policies_slack-0be00acbe74d795dfc6aec53239998a93ac0310563b3e65fca00f2acebe2b6c1.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 184817
       Num. variables: 146016
@@ -397,7 +398,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -406,8 +407,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_5_three_zones_w_piecewise_fuel-51ff0e52d559b549f9e45a13eb267156a2416566f126d1567e1846353a4e9936.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 205142
       Num. variables: 140466
@@ -423,7 +424,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-period (3 years)
@@ -432,8 +433,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_6_three_zones_w_multistage-62d4538e93e8e775de4f754baf121d4996da332da11066a1a496e298f2319641.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 171944
       Num. variables: 127636
@@ -453,7 +454,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -462,8 +463,8 @@ benchmarks:
     - Name: 3-24h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_7_three_zones_w_colocated_VRE_storage-053eaf1f441d6cb6da75f0dfdaab95f8011afb3be0a34e3b0ae02dbd1043ee74.mps.gz
-      Temporal resolution: 24
-      Spatial resolution: 3
+      Temporal resolution: 24 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 4325
       Num. variables: 4260
@@ -479,7 +480,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -488,8 +489,8 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
-      Temporal resolution: 168
-      Spatial resolution: 3
+      Temporal resolution: 168 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 302449
       Num. variables: 257129
@@ -497,16 +498,16 @@ benchmarks:
     Short description: This is a one-year example with hourly resolution which contains
       zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented
       resources include natural gas, solar PV, wind, lithium-ion battery, and coal
-      power plants. This examples shows the usage of the retrofit module of GenX,
-      and the model will be allowed to retire as well as retrofit the existing coal
-      power plants and replacing the coal with blue ammonia with 85% efficiency. Unit
-      commitment is linearized.
+      power plants. This example shows the usage of the retrofit module of GenX, and
+      the model will be allowed to retire as well as retrofit the existing coal power
+      plants and replacing the coal with blue ammonia with 85% efficiency. Unit commitment
+      is linearized.
     Modelling framework: GenX
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -515,13 +516,13 @@ benchmarks:
     - Name: 3-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 3
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 438008
       Num. variables: 260604
   genx-10_IEEE_9_bus_DC_OPF:
-    Short description: This examples shows the usage of DC_OPF related functions of
+    Short description: This example shows the usage of DC_OPF related functions of
       GenX. The IEEE 9-bus system is a standard test case for power system optimization
       problems. In this example, there are three thermal generators and three loads.
     Modelling framework: GenX
@@ -529,7 +530,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: DC optimal power flow
+    Application: DC Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -538,8 +539,8 @@ benchmarks:
     - Name: 9-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_10_IEEE_9_bus_DC_OPF-79dee0225f3120ff0403a4b59238ede01562914e4dbf068d832e5d960e3afc40.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 9
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -556,7 +557,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -566,7 +567,7 @@ benchmarks:
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 162
+      Spatial resolution: 162 nodes
       Realistic: false
       Num. constraints: 1867
       Num. variables: 742
@@ -581,7 +582,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: LP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -591,7 +592,7 @@ benchmarks:
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 1803
+      Spatial resolution: 1803 nodes
       Realistic: false
       Num. constraints: 18574
       Num. variables: 7623
@@ -603,7 +604,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -613,7 +614,7 @@ benchmarks:
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 1951
+      Spatial resolution: 1951 nodes
       Realistic: false
       Num. constraints: 17528
       Num. variables: 7509
@@ -627,7 +628,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -637,7 +638,7 @@ benchmarks:
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 2848
+      Spatial resolution: 2848 nodes
       Realistic: false
       Num. constraints: 25505
       Num. variables: 10911
@@ -651,7 +652,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Steady-state optimal power flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
@@ -661,7 +662,7 @@ benchmarks:
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
       Temporal resolution: NA
-      Spatial resolution: 2868
+      Spatial resolution: 2868 nodes
       Realistic: false
       Num. constraints: 25717
       Num. variables: 11045
@@ -685,8 +686,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day29-082507660a1ec655fed92d2b6d49a1d606f029e30cb0dfcd4915f8b8ce896f2e.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 6048
       Num. variables: 7380
@@ -695,7 +696,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -709,8 +710,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314-16130d073126ae057331ac06d84b99ec39ec673d90e6905b97d4a63326b48708.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 6048
       Num. variables: 7380
@@ -719,7 +720,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -733,8 +734,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332-3bf569a3c3108f4dde780873e6eabe9461cb9432af281c716efacfbad4837ba1.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 6048
       Num. variables: 7380
@@ -743,7 +744,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -757,8 +758,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29-fc330569fd9116b60a77ce31693e7b88ae4137cb463d769b9e21adf49c1eb6f1.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12096
       Num. variables: 14760
@@ -767,7 +768,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -776,15 +777,15 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single stage (24 hours)
-    Temporal resolution: 1
-    Spatial resolution: 1
+    Temporal resolution: 1 hours
+    spatial resolution: 73 nodes
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12096
       Num. variables: 14760
@@ -793,7 +794,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -807,8 +808,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332-35f61df3d7e00db245b09ef67b21ea954c6bbff05511cb1702cd419bd7fd2711.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12096
       Num. variables: 14760
@@ -817,7 +818,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -831,8 +832,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29-bc96d26484b652f0ec372e43ddf2b30aa8af03386a3a5d7ee65200d1dc97e4b0.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 24192
       Num. variables: 29520
@@ -841,7 +842,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -855,8 +856,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314-2b77a5de6b6f96cfa72c7ec7940a1f701ee898ee8014816b7dc644baff15a89c.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 24192
       Num. variables: 29520
@@ -865,7 +866,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
     Short description: Infinite capacity approximation of network flow to represent
       entire system with a single node.
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -879,8 +880,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332-1a6c28ae9bd6ab741441e47b9ec4ceddbbeb31eea0e243dddcea414d84171583.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 24192
       Num. variables: 29520
@@ -888,7 +889,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -902,8 +903,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29-0b223b43ed886810bf678ef53e6242e07e1528daff59505cb15567625fb866f2.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12540
       Num. variables: 9696
@@ -911,7 +912,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -925,8 +926,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314-11b79112e8b2da7a756189e831d00d40b9bf05069c6b59183e7d88fa28da392a.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12540
       Num. variables: 9696
@@ -934,7 +935,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -948,8 +949,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332-1079c962fa915ebe34bf2be8be82c6aed03bccea348410a8dc5f5d83a4a3dff1.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12540
       Num. variables: 9696
@@ -957,7 +958,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -971,8 +972,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29-12a9e8c3e475aa02d68692347b1fbed9f4769d3b89c3d5f803ebcf8e06d05197.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 25080
       Num. variables: 19392
@@ -980,7 +981,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -994,8 +995,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314-a50a463915826563a3430374d34d27cf5cc7e7e8d4fce55b2371e6c12b261455.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 25080
       Num. variables: 19392
@@ -1003,7 +1004,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1017,8 +1018,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332-2afa1ade7ab1d59c4ca58bc59ba2c50538c809c3951a7961f8f68a489bdee719.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 25080
       Num. variables: 19392
@@ -1026,7 +1027,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1040,8 +1041,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29-dbf0e850812c48d60a10754b5a57f6ccc4fea126abd3fba4e32d68277501ca80.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 50160
       Num. variables: 38784
@@ -1049,7 +1050,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1063,8 +1064,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314-534efa06a79fce256e898897b9f5fbeaab4294bdbf86b2650961ed940effb1a2.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 50160
       Num. variables: 38784
@@ -1072,7 +1073,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
     Short description: Direct Current Approximation
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1086,8 +1087,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332-a4c0a55a6159313ab87daae5e03fb8a9faca21d44bc6bd4ed085d46357eec3a7.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 50160
       Num. variables: 38784
@@ -1096,7 +1097,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1110,8 +1111,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-584e340fc9e79c75e07daa790d8b956d159a81187e25c077b3d5666039d25e75.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 10368
       Num. variables: 8820
@@ -1120,7 +1121,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1134,8 +1135,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314-4ea0f31269b786b7a96c59cf7ae7a7a6b782a96461ba9a05ca24091afa77b303.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 10368
       Num. variables: 8820
@@ -1144,7 +1145,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1158,8 +1159,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332-94334977dd58464a000d3aa3515f45dce7afc672326d685df3a58b702508af0a.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 10368
       Num. variables: 8820
@@ -1168,7 +1169,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1182,8 +1183,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29-273c75c90ebdad62f763619da32a0e44b6456f076aeff7345e8603659a19b3ee.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 20736
       Num. variables: 17640
@@ -1192,7 +1193,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1206,8 +1207,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314-11aaca595a3ad6a8619f2e510a9fbcf9169b22449c76dd46776df829ab9aba64.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 20736
       Num. variables: 17640
@@ -1216,7 +1217,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1230,8 +1231,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332-15df931033d1a5a3f0133bd141798d3b02c4211befb6f25c19e8218797a05447.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 20736
       Num. variables: 17640
@@ -1240,7 +1241,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1254,8 +1255,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29-8cabe382d8293ca2c795321015d05603b54f9dbf2dbcfff3e9116c367bd42eac.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 41472
       Num. variables: 35280
@@ -1264,7 +1265,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1278,8 +1279,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314-7fa7bf7b284cfc8f93c2541d159617c4964c40daf64cff299f083ba81c25b5ad.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 41472
       Num. variables: 35280
@@ -1288,7 +1289,7 @@ benchmarks:
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1302,8 +1303,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332-864c7b757abad07ecb724ec46ef134aedc73ae5d286ce16129a9c913dd9a0975.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 41472
       Num. variables: 35280
@@ -1311,7 +1312,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1325,8 +1326,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29-4c0d0a8855ccd93b4831a532eedc3d0dc9f33df77c1e98cf81e9834713337b60.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 9792
       Num. variables: 8820
@@ -1334,7 +1335,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1348,8 +1349,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314-0bb1986753999d5831bc4345e6ce53f547ea0849b129fd761809e36d4a9906b4.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 9792
       Num. variables: 8820
@@ -1357,7 +1358,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1371,8 +1372,8 @@ benchmarks:
     - Name: 1-1h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332-9329d35ea14edb840379be5519aa15021d5cfdbedec342326b9165ca6f0abc05.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 9792
       Num. variables: 8820
@@ -1380,7 +1381,7 @@ benchmarks:
       Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1394,8 +1395,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29-66258a0e8497e1e17a702b769ebc9c4dcb1ef285993d4f1f41d9dda59878c5cc.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 19584
       Num. variables: 17640
@@ -1403,7 +1404,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1417,8 +1418,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 19584
       Num. variables: 17640
@@ -1426,7 +1427,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1440,8 +1441,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332-b8b4fb5c2c4b0a5f18333028c8d9a7de9d11a5607bb8b660b73cd8a2f617d26a.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 24 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 19584
       Num. variables: 17640
@@ -1449,7 +1450,7 @@ benchmarks:
       Num. integer variables: 3888
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1463,8 +1464,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29-baddda2ca9ed73b7a9935f88b30a217e31cfa48670e659a44d07142f65039029.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 39168
       Num. variables: 35280
@@ -1472,7 +1473,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1486,8 +1487,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314-ec745b9b237a474e1ed2a2ef455cba4c7cc926d59742ae1fd4930415cc1a46d4.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 39168
       Num. variables: 35280
@@ -1495,7 +1496,7 @@ benchmarks:
       Num. integer variables: 7776
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
     Short description: Transport problem
-    Modelling framework: PowerModels
+    Modelling framework: Sienna
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
@@ -1509,8 +1510,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332-c5f9c340dae227b689ac284a47d285373a0cd023658a17e9e56bc68136fad3de.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 48 hours
+      Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 39168
       Num. variables: 35280
@@ -1524,7 +1525,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -1533,8 +1534,8 @@ benchmarks:
     - Name: 28-24h
       Size: S
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_24h-dc195d31e02ab753b5f047a4e754d2d387b59e15ac813c515b7fab21651779ea.mps.gz
-      Temporal resolution: 24
-      Spatial resolution: 28
+      Temporal resolution: 24 hours
+      Spatial resolution: 28 nodes
       Realistic: false
       Num. constraints: 6656
       Num. variables: 4747
@@ -1543,8 +1544,8 @@ benchmarks:
     - Name: 28-52.1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_168h-a213cb9c037b9b9e0d0d38a1b7644a46407203a1f8e5f036c9e39870270c4a4f.mps.gz
-      Temporal resolution: 52.1
-      Spatial resolution: 28
+      Temporal resolution: 52.1 hours
+      Spatial resolution: 28 nodes
       Realistic: false
       Num. constraints: 46592
       Num. variables: 31363
@@ -1553,8 +1554,8 @@ benchmarks:
     - Name: 28-13h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_672h-336e9a77dd9deae1ef81069c4e3f0c4c39cbbe0bc24b4d4e3f666657cbc76ab6.mps.gz
-      Temporal resolution: 13
-      Spatial resolution: 28
+      Temporal resolution: 13 hours
+      Spatial resolution: 28 nodes
       Realistic: false
       Num. constraints: 186368
       Num. variables: 124519
@@ -1563,8 +1564,8 @@ benchmarks:
     - Name: 28-4.3h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_2016h-6f7e83e8d3d3d676153925691417a73265d784e70f52b3f70eaa9664921dcd85.mps.gz
-      Temporal resolution: 4.3
-      Spatial resolution: 28
+      Temporal resolution: 4.3 hours
+      Spatial resolution: 28 nodes
       Realistic: false
       Num. constraints: 559104
       Num. variables: 372935
@@ -1573,8 +1574,8 @@ benchmarks:
     - Name: 28-2.2h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_4032h-76d00dd60487dc27e60808bb6421b3091a937cfa503e37de4ef6927757f8ec11.mps.gz
-      Temporal resolution: 2.2
-      Spatial resolution: 28
+      Temporal resolution: 2.2 hours
+      Spatial resolution: 28 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -1585,8 +1586,8 @@ benchmarks:
     - Name: 28-1h
       Size: L
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/TulipaEnergyModel_1_EU_investment_simple_8760h-beb8fc0072ed50c7bf40d264ffb87ba24de4ae6736d55a7c0a78209f2c5883ef.mps.gz
-      Temporal resolution: 1
-      Spatial resolution: 28
+      Temporal resolution: 1 hour
+      Spatial resolution: 28 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -1595,48 +1596,48 @@ benchmarks:
       Num. continuous variables: 1619199
       Num. integer variables: 252
   pypsa-eur-sec:
-    Short description: Sector-coupled (power, heating, biomass, industry, transport)
+    Short description: Sector-coupled (power, heating, biomass, industrial, transport)
       PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Biomass, Industry, Transport
+    Sectors: Power, Heating, Biomass, Industrial, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 2
+      Temporal resolution: 24 hours
+      Spatial resolution: 2 nodes
       Realistic: false
       Num. constraints: 132272
       Num. variables: 63264
     - Name: 6-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-6-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 6
+      Temporal resolution: 24 hours
+      Spatial resolution: 6 nodes
       Realistic: false
       Num. constraints: 377463
       Num. variables: 178831
     - Name: 5-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-5-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 5
+      Temporal resolution: 12 hour
+      Spatial resolution: 5 node
       Realistic: false
       Num. constraints: 636907
       Num. variables: 301038
     - Name: 2-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-2-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 2
+      Temporal resolution: 3 hours
+      Spatial resolution: 2 nodes
       Realistic: false
       Num. constraints: 1057182
       Num. variables: 505253
@@ -1648,7 +1649,7 @@ benchmarks:
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1657,32 +1658,32 @@ benchmarks:
     - Name: 3-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 3
+      Temporal resolution: 12 hours
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 119786
       Num. variables: 57705
     - Name: 6-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-6-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 6
+      Temporal resolution: 12 hours
+      Spatial resolution: 6 nodes
       Realistic: false
       Num. constraints: 253453
       Num. variables: 117605
     - Name: 3-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 3
+      Temporal resolution: 3 hours
+      Spatial resolution: 3 nodes
       Realistic: false
       Num. constraints: 478946
       Num. variables: 230682
     - Name: 4-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-4-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 4
+      Temporal resolution: 3 hours
+      Spatial resolution: 4 nodes
       Realistic: false
       Num. constraints: 677533
       Num. variables: 318285
@@ -1703,40 +1704,40 @@ benchmarks:
     - Name: 6-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-6-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 6
+      Temporal resolution: 24 hours
+      Spatial resolution: 6 nodes
       Realistic: false
       Num. constraints: 126776
       Num. variables: 58841
     - Name: 8-12h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-8-12h.lp
-      Temporal resolution: 12
-      Spatial resolution: 8
+      Temporal resolution: 12 hours
+      Spatial resolution: 8 nodes
       Realistic: false
       Num. constraints: 326473
       Num. variables: 152656
     - Name: 4-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-4-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 4
+      Temporal resolution: 3 hours
+      Spatial resolution: 4 nodes
       Realistic: false
       Num. constraints: 677519
       Num. variables: 318278
     - Name: 2-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-2-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 2
+      Temporal resolution: 1 hours
+      Spatial resolution: 2 nodes
       Realistic: false
       Num. constraints: 928600
       Num. variables: 455458
     - Name: 10-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-10-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 10
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
@@ -1759,8 +1760,8 @@ benchmarks:
     - Name: 5-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-5-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 5
+      Temporal resolution: 24 hours
+      Spatial resolution: 5 nodes
       Realistic: false
       Num. constraints: 129672
       Num. variables: 60288
@@ -1769,8 +1770,8 @@ benchmarks:
     - Name: 2-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-2-3h.lp
-      Temporal resolution: 3
-      Spatial resolution: 2
+      Temporal resolution: 3 hour
+      Spatial resolution: 2 node
       Realistic: false
       Num. constraints: 385478
       Num. variables: 186880
@@ -1779,8 +1780,8 @@ benchmarks:
     - Name: 10-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-ucconv-10-24h.lp
-      Temporal resolution: 24
-      Spatial resolution: 10
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
       Realistic: false
       Num. constraints: 238164
       Num. variables: 109259
@@ -1794,7 +1795,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1803,8 +1804,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140165
       Num. variables: 61325
@@ -1816,7 +1817,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1825,8 +1826,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 201486
       Num. variables: 87606
@@ -1839,7 +1840,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1848,8 +1849,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 219005
       Num. variables: 113885
@@ -1863,7 +1864,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1872,8 +1873,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140166
       Num. variables: 61325
@@ -1886,7 +1887,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1895,8 +1896,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 157684
       Num. variables: 87604
@@ -1911,7 +1912,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1920,8 +1921,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-ucgas-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 219009
       Num. variables: 113889
@@ -1936,7 +1937,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1945,8 +1946,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-co2-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140170
       Num. variables: 61329
@@ -1960,7 +1961,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1969,8 +1970,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 140170
       Num. variables: 61330
@@ -1985,7 +1986,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -1994,8 +1995,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely-ucgas-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 157687
       Num. variables: 87607
@@ -2010,7 +2011,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     Problem class: MILP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
@@ -2019,8 +2020,8 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-power%2Bely%2Bbattery-mod-1-1h.lp
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 201491
       Num. variables: 87611
@@ -2037,7 +2038,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 week
@@ -2046,7 +2047,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
@@ -2064,7 +2065,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 week
@@ -2073,7 +2074,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
@@ -2093,7 +2094,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 2 months
@@ -2102,7 +2103,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
@@ -2120,7 +2121,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 2 months
@@ -2129,7 +2130,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
@@ -2149,7 +2150,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 179 days (~6 months)
@@ -2158,7 +2159,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
@@ -2176,7 +2177,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 179 days (~6 months)
@@ -2185,7 +2186,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
@@ -2202,7 +2203,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
@@ -2212,7 +2213,7 @@ benchmarks:
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
-      Spatial resolution: 1 node
+      Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 1505
       Num. variables: 990
@@ -2224,7 +2225,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2234,7 +2235,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594079
@@ -2248,7 +2249,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2258,7 +2259,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594091
@@ -2272,7 +2273,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2282,7 +2283,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594085
@@ -2296,7 +2297,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -2306,7 +2307,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 1594116
@@ -2320,7 +2321,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
@@ -2330,20 +2331,20 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
-      Spatial resolution: 9 nodes
+      Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
       Num. constraints: 665474
       Num. variables: 708899
   TIMES-GEO-global-base:
     Short description: Global energy system model with a time scale from 2019 to 2100.
-      This run considers a base sceanario without decarbonization constraints.
+      This run considers a base scenario without decarbonization constraints.
     Modelling framework: TIMES
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -2352,21 +2353,21 @@ benchmarks:
     - Name: 31-20ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
-      Temporal resolution: 20
-      Spatial resolution: 31
+      Temporal resolution: 20 time slices
+      Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 6027253
       Num. variables: 6449851
   TIMES-GEO-global-netzero:
     Short description: Global energy system model with a time scale from 2019 to 2100.
-      This run considers a base sceanario with a net-zero decarbonization constraints.
+      This run considers a base scenario with a net-zero decarbonization constraints.
     Modelling framework: TIMES
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -2375,8 +2376,8 @@ benchmarks:
     - Name: 31-20ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
-      Temporal resolution: 20
-      Spatial resolution: 31
+      Temporal resolution: 20 time slices
+      Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 5063755
@@ -2389,7 +2390,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2398,8 +2399,8 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 1
+      Temporal resolution: 64 time slices
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
@@ -2413,7 +2414,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2422,8 +2423,8 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 1
+      Temporal resolution: 64 time slices
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15451
@@ -2436,7 +2437,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2445,8 +2446,8 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 1
+      Temporal resolution: 64 time slices
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91288
@@ -2460,7 +2461,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2469,8 +2470,8 @@ benchmarks:
     - Name: 1-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 1
+      Temporal resolution: 64 time slices
+      Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91306
@@ -2483,7 +2484,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2492,8 +2493,8 @@ benchmarks:
     - Name: 29-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 29
+      Temporal resolution: 64 time slices
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456603
@@ -2507,7 +2508,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -2516,8 +2517,8 @@ benchmarks:
     - Name: 29-64ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 29
+      Temporal resolution: 64 time slices
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456663
@@ -2530,7 +2531,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2539,8 +2540,8 @@ benchmarks:
     - Name: 29-64ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 29
+      Temporal resolution: 64 time slices
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720516
@@ -2554,7 +2555,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -2563,8 +2564,8 @@ benchmarks:
     - Name: 29-64ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
-      Temporal resolution: 64
-      Spatial resolution: 29
+      Temporal resolution: 64 time slice
+      Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720786
@@ -2576,7 +2577,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -2585,16 +2586,16 @@ benchmarks:
     - Name: 1-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
-      Temporal resolution: 1
-      Spatial resolution: 1
+      Temporal resolution: 1 time slice
+      Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
     - Name: 40-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
-      Temporal resolution: 1
-      Spatial resolution: 40
+      Temporal resolution: 1 time slice
+      Spatial resolution: 40 regions
       Realistic: false
       Num. constraints: 4809283
       Num. variables: 4534121
@@ -2603,9 +2604,9 @@ benchmarks:
     Modelling framework: TIMES
     Model name: TIMES-Ireland
     Version:
-    Contributor(s)/Source: Olexandr Balyk, Facilitate Energy
+    Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -2614,8 +2615,8 @@ benchmarks:
     - Name: 26-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
-      Temporal resolution: 1
-      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 1 time slice
+      Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
       Num. constraints: 873805
       Num. variables: 1235884
@@ -2627,7 +2628,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -2636,8 +2637,8 @@ benchmarks:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
-      Temporal resolution: 24
-      Spatial resolution: 26 (Transport) / 1 (all other sectors)
+      Temporal resolution: 24 time slices
+      Spatial resolution: 2 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
@@ -2650,7 +2651,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Olexandr Balyk
     Problem class: LP
-    Application: Infrastructure
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single stage
@@ -2659,8 +2660,8 @@ benchmarks:
     - Name: 2-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
-      Temporal resolution: 24
-      Spatial resolution: 2
+      Temporal resolution: 24 time slices
+      Spatial resolution: 2 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730

@@ -20,35 +20,46 @@ const Contribute = () => {
         <div className="">
           <div
             className="
-                text-lg/1.1
+                tag-line-lg
                 uppercase
-                font-medium
-                tracking-normal
                 font-league
-                text-dark-grey
+                text-navy
                 mb-4
               "
           >
             Questions
           </div>
-          <div
-            className="
-                text-[2.5rem]/1.4
-                tracking-normal
-                font-extrabold
-                font-lato
-                mb-8
-              "
-          >
-            FAQ
-          </div>
+          <h3 className="mb-8 leading-1.4">FAQ</h3>
         </div>
         <div>
           <div className="mt-4 flex flex-col gap-6">
             {/* TODO allow rich text and links in FAQ answers */}
             <FAQItem
               question="Why are we building a new benchmark platform?"
-              answer="While there exist well-known benchmark sets such as the Mittelmann benchmarks (https://plato.asu.edu/bench.html) or MIPLIB (https://miplib.zib.de/), we do not yet have a benchmark set that focuses on up-to-date and representative problems from the energy planning domain. This is a crucial missing piece that can enable optimization solvers to develop new algorithms and improve their performance on energy models, thereby accelerating key technologies used to plan and implement the energy transition. By building an open-source, transparent, and reproducible platform, we maximize our impact by enabling modellers to submit new benchmark instances and solver developers to reproduce and use our benchmarks for development. Our website offers numerous interactive dashboards that allow users to perform fine-grained analysis depending on their application domain and features of interest."
+              answer={
+                <span>
+                  While there exist well-known benchmark sets such as the
+                  Mittelmann benchmarks (
+                  <a href="https://plato.asu.edu/bench.html">
+                    https://plato.asu.edu/bench.html
+                  </a>
+                  ) or MIPLIB (
+                  <a href="https://miplib.zib.de/">https://miplib.zib.de/</a>),
+                  we do not yet have a benchmark set that focuses on up-to-date
+                  and representative problems from the energy planning domain.
+                  This is a crucial missing piece that can enable optimization
+                  solvers to develop new algorithms and improve their
+                  performance on energy models, thereby accelerating key
+                  technologies used to plan and implement the energy transition.
+                  By building an open-source, transparent, and reproducible
+                  platform, we maximize our impact by enabling modellers to
+                  submit new benchmark instances and solver developers to
+                  reproduce and use our benchmarks for development. Our website
+                  offers numerous interactive dashboards that allow users to
+                  perform fine-grained analysis depending on their application
+                  domain and features of interest.
+                </span>
+              }
             />
             <FAQItem
               question="How do we select which solvers we benchmark?"

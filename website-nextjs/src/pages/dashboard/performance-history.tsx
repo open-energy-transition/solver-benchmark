@@ -11,19 +11,19 @@ import {
 } from "@/components/shared";
 import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
+import SolverEvolutionSection from "@/components/admin/performance-history/SolverEvolutionSection";
 
 import {
-  ISolverYearlyChartData,
-  ISolverYearlyMetrics,
-  SolverType,
-} from "@/types/benchmark";
-import { calculateSgm } from "@/utils/calculations";
+  buildSolverYearlyMetrics,
+  generateChartData,
+  processCombinedYearMetrics,
+  getNumSolvedBenchMark,
+} from "@/utils/performanceHistory";
 import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
-import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
 import { SgmMode } from "@/constants/sgm";
 
 const PagePerformanceHistory = () => {
@@ -135,135 +135,38 @@ const PagePerformanceHistory = () => {
   const solvers = [...new Set(benchmarkResults.map((result) => result.solver))];
 
   const solverYearlyMetrics = useMemo(() => {
-    const metrics: ISolverYearlyMetrics[] = solvers.map((solver) => {
-      return {
-        solver,
-        data: years.map((year) => ({
-          year,
-          benchmarkResults: [],
-          sgm: {
-            runtime: null,
-            memoryUsage: null,
-          },
-          numSolvedBenchmark: 0,
-          version:
-            benchmarkResults.find(
-              (result) =>
-                result.solver === solver && result.solverReleaseYear === year,
-            )?.solverVersion ?? "-",
-        })),
-      };
-    });
-
-    benchmarkResults.forEach((result) => {
-      const resultGroupedBySolver = metrics.find(
-        (resultGroupedBySolver) =>
-          resultGroupedBySolver.solver === result.solver,
-      );
-      resultGroupedBySolver?.data
-        .find((d) => d.year === result.solverReleaseYear)
-        ?.benchmarkResults.push({
-          runtime: result.runtime,
-          memoryUsage: result.memoryUsage,
-          status: result.status,
-        });
-    });
-
-    metrics.forEach((solverYearlyMetric) => {
-      solverYearlyMetric.data.forEach((d) => {
-        d.sgm.runtime = calculateSgm(
-          d.benchmarkResults.map((res) => res.runtime),
-        );
-        d.sgm.memoryUsage = calculateSgm(
-          d.benchmarkResults.map((res) => res.memoryUsage),
-        );
-        d.numSolvedBenchmark = d.benchmarkResults.filter(
-          (res) => res.status === "ok",
-        ).length;
-      });
-    });
-
-    metrics.map((solverYearlyMetric) =>
-      solverYearlyMetric.data.map((d) => d.benchmarkResults),
+    // Build initial metrics
+    const initialMetrics = buildSolverYearlyMetrics(
+      benchmarkResults,
+      years,
+      solvers,
     );
-    return metrics;
-  }, [benchmarkResults]);
 
-  const getNormalizedData = (
-    solverYearlyMetrics: ISolverYearlyMetrics[],
-    key: "runtime" | "memoryUsage",
-    minValue: number,
-  ): ISolverYearlyChartData[] => {
-    const normalizedData: ISolverYearlyChartData[] = [];
-    solverYearlyMetrics.forEach((solverYearlyMetric) => {
-      solverYearlyMetric.data.forEach((solverData) => {
-        const value = solverData.sgm[key];
-        if (value !== null && value !== undefined && !isNaN(value)) {
-          normalizedData.push({
-            solver: solverYearlyMetric.solver as SolverType,
-            year: solverData.year,
-            value: value / minValue,
-            version: solverData.version,
-          });
-        }
-      });
-    });
-    return normalizedData;
-  };
-
-  const getNumSolvedBenchMark = (): ISolverYearlyChartData[] => {
-    const numSolvedBenchMark: ISolverYearlyChartData[] = [];
-    solverYearlyMetrics.forEach((solverYearlyMetric) => {
-      solverYearlyMetric.data.forEach((solverData) => {
-        if (solverData.numSolvedBenchmark > 0) {
-          numSolvedBenchMark.push({
-            solver: solverYearlyMetric.solver as SolverType,
-            year: solverData.year,
-            value: solverData.numSolvedBenchmark,
-            version: solverData.version,
-          });
-        }
-      });
-    });
-    return numSolvedBenchMark;
-  };
+    // Process for combined 2024/2025 data
+    return processCombinedYearMetrics(initialMetrics);
+  }, [benchmarkResults, years, solvers]);
 
   const chartData = useMemo(() => {
-    const minRuntime = Math.min(
-      ...(solverYearlyMetrics
-        .map((item) => item.data.map((d) => d.sgm.runtime))
-        .flat()
-        .filter(Number) as number[]),
-    );
-
-    const minMemoryUsage = Math.min(
-      ...(solverYearlyMetrics
-        .map((item) => item.data.map((d) => d.sgm.memoryUsage))
-        .flat()
-        .filter(Number) as number[]),
-    );
-
-    return {
-      runtime: getNormalizedData(
-        solverYearlyMetrics,
-        "runtime",
-        minRuntime,
-      ).sort((a, b) => a.year - b.year),
-      memoryUsage: getNormalizedData(
-        solverYearlyMetrics,
-        "memoryUsage",
-        minMemoryUsage,
-      ).sort((a, b) => a.year - b.year),
-      numSolvedBenchMark: getNumSolvedBenchMark().sort(
-        (a, b) => a.year - b.year,
-      ),
-    };
+    // Generate chart data from solver metrics
+    return generateChartData(solverYearlyMetrics);
   }, [solverYearlyMetrics]);
+
+  // Build all solver yearly metrics without combining 2024/2025
+  const allSolverYearlyMetrics = useMemo(() => {
+    return buildSolverYearlyMetrics(benchmarkResults, years, solvers);
+  }, [benchmarkResults, years, solvers]);
+
+  // Get number of solved benchmarks
+  const numSolvedBenchMark = useMemo(() => {
+    return getNumSolvedBenchMark(allSolverYearlyMetrics).sort(
+      (a, b) => a.year - b.year,
+    );
+  }, [allSolverYearlyMetrics]);
 
   return (
     <>
       <Head>
-        <title>Performance History</title>
+        <title>Performance History | Open Energy Benchmark</title>
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -271,61 +174,55 @@ const PagePerformanceHistory = () => {
           header={
             <div className="max-w-8xl mx-auto">
               <AdminHeader>
-                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1 4xl:text-lg">
+                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
                     <Link href={PATH_DASHBOARD.root}>
-                      <HomeIcon className="w-[1.125rem] h-[1.125rem 4xl:size-5" />
+                      <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
-                    <ArrowIcon
-                      fill="none"
-                      className="size-3 4xl:size-4 stroke-navy"
-                    />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
                       Performance History
-                    </span>
+                    </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div className="font-lato font-bold text-2xl/1.4">
-                Performance History
-              </div>
-              <div className="font-lato font-normal/1.4 text-l max-w-screen-lg">
+              <h5>Performance History</h5>
+              <p className="mt-4 max-w-screen-lg">
                 This page tracks the performance of different solvers over time.
                 This can be used to see which solvers are improving, and on what
                 kinds of benchmarks. Once again, you can filter the benchmark
                 set to your problems of interest and the graphs will
                 automatically re-generate to show you the performance history on
                 your chosen subset.
-              </div>
+              </p>
               <SolverVersions />
             </div>
           }
         >
           {/* Content */}
-          <SgmModeSection />
-          <NormalizedSection chartData={chartData} />
           <NumberBenchmarksSolved
             numSolvedBenchMark={chartData.numSolvedBenchMark}
             totalBenchmarks={commonInstances.length}
           />
+          <NormalizedSection chartData={chartData} />
+          <SolverEvolutionSection
+            solverYearlyMetrics={allSolverYearlyMetrics}
+            numSolvedBenchMark={numSolvedBenchMark}
+            totalBenchmarks={commonInstances.length}
+          />
           <div className="pt-1.5 pb-3 px-5">
-            <div className="text-navy font-bold text-xl 4xl:text-2xl">
-              Caveats
-            </div>
-            <div className="text-navy text-sm block items-center mt-2">
+            <h6>Caveats</h6>
+            <p className="text-navy block items-center mt-2">
               <span>
                 {" "}
                 Some solvers returned errors when running on some benchmark
                 instances. For more details, please see the{" "}
-                <a
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
-                  className="underline"
-                >
+                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/193">
                   tracking issue
                 </a>
                 .
               </span>
-            </div>
+            </p>
           </div>
         </ContentWrapper>
       </div>

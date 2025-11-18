@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { getChartColor } from "@/utils/chart";
+import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { roundNumber } from "@/utils/number";
+import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type ChartData = {
   d1: SolverMetrics;
@@ -31,6 +32,12 @@ interface D3ChartProps {
   };
   solver1: string;
   solver2: string;
+  scaleType?: "linear" | "log";
+  scaleRange?: {
+    min: number;
+    max: number;
+  };
+  tickValues?: number[];
   tooltipTemplate?: (d: ChartData, solver1: string, solver2: string) => string;
 }
 
@@ -39,7 +46,7 @@ const defaultTooltipTemplate = (
   solver1: string,
   solver2: string,
 ) => `
-  <div class="text-sm 4xl:text-lg">
+  <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
     <strong>Runtime of ${solver1.replace("--", " (")}):</strong> ${roundNumber(
@@ -50,14 +57,6 @@ const defaultTooltipTemplate = (
       d.d2.runtime,
       2,
     )}s (${d.d2.status})<br>
-    <strong>Log Runtime (s) of ${solver1.replace(
-      "--",
-      " (",
-    )}):</strong> ${roundNumber(d.d1.logRuntime, 1)} (${d.d1.status})<br>
-    <strong>Log Runtime (s) of ${solver2.replace(
-      "--",
-      " (",
-    )}):</strong> ${roundNumber(d.d2.logRuntime, 1)} (${d.d2.status})<br>
   </div>
 `;
 
@@ -68,9 +67,13 @@ const ChartCompare = ({
   solver1 = "",
   solver2 = "",
   tooltipTemplate = defaultTooltipTemplate,
+  scaleType = "linear",
+  scaleRange = { min: 1, max: 100000 },
+  tickValues = [1, 10, 100, 1000, 10000, 100000],
 }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const windowWidth = useDebouncedWindowWidth(200);
 
   useEffect(() => {
     const data = chartData;
@@ -88,8 +91,8 @@ const ChartCompare = ({
     const isMobile = width < 640; // Add mobile breakpoint check
     const height = isMobile ? 300 : 400; // Adjust height for mobile
     const margin = isMobile
-      ? { top: 30, right: 15, bottom: 40, left: 50 }
-      : { top: 40, right: 20, bottom: 50, left: 70 };
+      ? { top: 30, right: 25, bottom: 40, left: 60 }
+      : { top: 40, right: 30, bottom: 50, left: 80 };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -140,36 +143,64 @@ const ChartCompare = ({
     }
 
     // Tooltip container
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("font-family", "'Lato', sans-serif")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
-    const xScale = d3
-      .scaleLinear()
-      .domain([minValue, maxValue])
-      .range([margin.left, width - margin.right]);
+    const xScale =
+      scaleType === "log"
+        ? d3
+            .scaleLog()
+            .base(10)
+            .domain([scaleRange.min, scaleRange.max])
+            .range([margin.left, width - margin.right])
+        : d3
+            .scaleLinear()
+            .domain([minValue, maxValue])
+            .range([margin.left, width - margin.right]);
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([minValue, maxValue])
-      .range([height - margin.bottom, margin.top]);
+    const yScale =
+      scaleType === "log"
+        ? d3
+            .scaleLog()
+            .base(10)
+            .domain([scaleRange.min, scaleRange.max])
+            .range([height - margin.bottom, margin.top])
+        : d3
+            .scaleLinear()
+            .domain([minValue, maxValue])
+            .range([height - margin.bottom, margin.top]);
 
     // Axes
-    const xAxis = d3.axisBottom(xScale).ticks(6).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
-
+    const formatTick = (d: number) => {
+      if (d < 1) {
+        return d3.format(".1f")(d); // Show 1 decimal place for numbers < 1
+      }
+      return d3.format(",.0f")(d); // Show thousands separator for numbers >= 1
+    };
+    const xAxis =
+      scaleType === "log"
+        ? d3
+            .axisBottom(xScale)
+            .tickValues(tickValues)
+            .tickFormat((d) => formatTick(+d))
+            .tickSizeOuter(0)
+        : d3
+            .axisBottom(xScale)
+            .ticks(6)
+            .tickSizeOuter(0)
+            .tickFormat((d) => formatTick(+d));
+    const yAxis =
+      scaleType === "log"
+        ? d3
+            .axisLeft(yScale)
+            .tickValues(tickValues)
+            .tickFormat((d) => formatTick(+d))
+            .tickSizeOuter(0)
+        : d3
+            .axisLeft(yScale)
+            .ticks(6)
+            .tickSizeOuter(0)
+            .tickFormat((d) => formatTick(+d));
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -180,7 +211,7 @@ const ChartCompare = ({
         g.selectAll("line").attr("stroke", "#A1A9BC");
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
-          .attr("class", "font-lato text-xs 4xl:text-lg");
+          .attr("class", "font-lato text-xs");
       });
     svg
       .append("g")
@@ -191,7 +222,7 @@ const ChartCompare = ({
         g.selectAll("line").attr("stroke", "#A1A9BC");
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
-          .attr("class", "font-lato text-xs 4xl:text-lg");
+          .attr("class", "font-lato text-xs");
       });
     // Scatter points
     svg
@@ -225,7 +256,7 @@ const ChartCompare = ({
 
         group
           .on("click", () => {
-            window.location.href = PATH_DASHBOARD.benchmarkDetail.one.replace(
+            window.location.href = PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
               d.benchmark,
             );
@@ -251,16 +282,21 @@ const ChartCompare = ({
           });
       });
 
-    // Draw x = y line
+    // Draw x = y line with appropriate scale values
+    const lineStart = scaleType === "log" ? scaleRange.min : minValue;
+    const lineEnd = scaleType === "log" ? scaleRange.max : maxValue;
+
     svg
       .append("line")
-      .attr("x1", xScale(minValue))
-      .attr("y1", yScale(minValue))
-      .attr("x2", xScale(maxValue))
-      .attr("y2", yScale(maxValue))
+      .attr("x1", xScale(lineStart))
+      .attr("y1", yScale(lineStart))
+      .attr("x2", xScale(lineEnd))
+      .attr("y2", yScale(lineEnd))
       .attr("stroke", "#8B8B8B")
       .attr("stroke-width", 2);
 
+    // Grid
+    const gridValues = scaleType === "log" ? tickValues : xScale.ticks();
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
         .attr("stroke", "currentColor")
@@ -269,7 +305,7 @@ const ChartCompare = ({
           g
             .append("g")
             .selectAll("line")
-            .data(xScale.ticks())
+            .data(gridValues)
             .join("line")
             .attr("x1", (d) => 0.5 + xScale(d))
             .attr("x2", (d) => 0.5 + xScale(d))
@@ -281,7 +317,7 @@ const ChartCompare = ({
           g
             .append("g")
             .selectAll("line")
-            .data(yScale.ticks())
+            .data(gridValues)
             .join("line")
             .attr("y1", (d) => 0.5 + yScale(d))
             .attr("y2", (d) => 0.5 + yScale(d))
@@ -299,7 +335,7 @@ const ChartCompare = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData]);
+  }, [chartData, windowWidth]);
 
   const formatLegend = (status: string): string => {
     const [status1, status2] = status.split("-");
@@ -309,13 +345,12 @@ const ChartCompare = ({
     return `${solver1Info.name} ${status1} - ${solver2Info.name} ${status2}`;
   };
   return (
-    <div className="bg-white py-4 px-4 sm:px-10 rounded-xl relative">
+    <div className="bg-white py-4 p-4 sm:pl-10 rounded-xl relative">
       {/* yaxis Title */}
       <div
         className="
           -rotate-90
           -translate-y-1/2
-          4xl:text-lg
           absolute
           font-lato
           left-6
@@ -356,7 +391,6 @@ const ChartCompare = ({
         className="
           -translate-y-1/2
           -translate-x-1/2
-          4xl:text-lg
           absolute
           font-lato
           left-1/2

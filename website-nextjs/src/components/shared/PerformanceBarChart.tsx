@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { getChartColor } from "@/utils/chart";
-import { Color } from "@/constants/color";
+import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
@@ -35,8 +34,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
   const solverColors = useMemo(() => {
     return availableSolvers.reduce(
-      (acc, solver, index) => {
-        acc[solver] = getChartColor(index);
+      (acc, solver) => {
+        acc[solver] = getSolverColor(solver);
         return acc;
       },
       {} as Record<string, string>,
@@ -76,18 +75,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("overflow", "visible");
 
     // Tooltip setup
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("padding", "8px")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "4px")
-      .style("font-size", "12px")
-      .style("opacity", 0)
-      .style("pointer-events", "none") // Prevent tooltip from interfering with hover
-      .style("z-index", "100");
+    const tooltip = createD3Tooltip();
 
     const xScale = d3
       .scaleBand()
@@ -95,13 +83,22 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .range([margin.left, width - margin.right])
       .padding(0.5);
 
-    // Add sub-band scale for bars with more spacing
+    // Add sub-band scale for bars with dynamic spacing based on visible solvers
+    const visibleNonBaseSolvers = availableSolvers.filter(
+      (s) => s !== baseSolver && visibleSolvers.has(s),
+    );
+
     const xSubScale = d3
       .scaleBand()
       .domain(availableSolvers.filter((s) => s !== baseSolver))
       .range([0, xScale.bandwidth()])
-      .padding(0.4); // Increased padding between bars within group
-    const barWidth = Math.min(xSubScale.bandwidth(), 15);
+      .padding(visibleNonBaseSolvers.length > 3 ? 0.2 : 0.4); // Less padding when more solvers
+
+    // Dynamic bar width - gets wider with fewer solvers (minimum 15px, maximum 30px)
+    const barWidth = Math.min(
+      Math.max(xSubScale.bandwidth(), 5),
+      visibleNonBaseSolvers.length <= 2 ? 30 : 25,
+    );
 
     // Scale for primary y-axis (ratio/factor)
 
@@ -193,7 +190,6 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     // Add primary y-axis (ratio)
     svg
       .append("g")
-      .attr("class", "4xl:text-sm")
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxisRatio);
 
@@ -202,7 +198,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .append("g")
       .attr("transform", `translate(${width - margin.right},0)`)
       .call(yAxisRuntime)
-      .attr("class", "secondcary-axis 4xl:text-sm")
+      .attr("class", "secondcary-axis")
       .selectAll("text")
       .style("fill", "#666")
       .attr("dx", "10px")
@@ -291,7 +287,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           .duration(100)
           .attr("opacity", 1);
 
-        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip.transition().duration(200).style("opacity", 1);
 
         let ratioText;
         if (d.status !== "ok" && d.baseSolverStatus === "ok") {
@@ -306,8 +302,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-              `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
-              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
+              `${d.solver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>` +
+              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s (${
+                d.baseSolverStatus
+              })<br/>` +
               ratioText,
           )
           .style("left", `${event.pageX + 10}px`)
@@ -363,7 +361,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         return "";
       })
       .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip.transition().duration(200).style("opacity", 1);
         let ratioText;
         if (d.status !== "ok" && d.baseSolverStatus === "ok") {
           ratioText = `Ratio: N/A because ${d.solver} TO`;
@@ -377,8 +375,10 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-              `${d.solver}: ${d.runtime.toFixed(2)}s<br/>` +
-              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s<br/>` +
+              `${d.solver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>` +
+              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s (${
+                d.baseSolverStatus
+              })<br/>` +
               ratioText,
           )
           .style("left", `${event.pageX + 10}px`)
@@ -422,7 +422,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 y + size
               } L${x + size},${y - size}`,
             )
-            .attr("stroke", Color.Teal)
+            .attr("stroke", solverColors[baseSolver])
             .attr("fill", "none");
         } else {
           // Regular circle for normal cases
@@ -430,7 +430,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             .attr("cx", x)
             .attr("cy", y)
             .attr("r", 4)
-            .attr("fill", Color.Teal);
+            .attr("fill", solverColors[baseSolver]);
         }
 
         // Add event listeners for tooltip
@@ -438,12 +438,11 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           .on("mouseover", (event) => {
             element.attr("opacity", 0.7);
 
-            tooltip.transition().duration(200).style("opacity", 0.9);
+            tooltip.transition().duration(200).style("opacity", 1);
             tooltip
               .html(
                 `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-                  `${baseSolver}: ${d.runtime.toFixed(2)}s<br/>` +
-                  `Status: ${d.status === "ok" ? "OK" : "TO"}`,
+                  `${baseSolver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>`,
               )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 28}px`);
@@ -461,6 +460,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
+      .style("fill", "rgb(79 78 78)")
       .text(`Instances sorted by solving time of ${baseSolver}`);
 
     // Primary y-axis label
@@ -471,6 +471,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", 15)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
+      .style("fill", "rgb(79 78 78)")
       .text("Runtime ratio (log scale)");
 
     // Secondary y-axis label
@@ -481,7 +482,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", width - margin.right + 70)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
-      .style("fill", "#666")
+      .style("fill", "rgb(79 78 78)")
       .text(`Runtime of ${baseSolver} (s)`);
 
     // Add a legend entry for scatter points
@@ -495,7 +496,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           <div class="w-3 h-3 rounded-full bg-white border-2"
                style="border-color: ${solverColors[baseSolver]}"></div>
         </div>
-        <span class="text-sm text-gray-700 4xl:text-base">${baseSolver}</span>
+        <span class="text-sm text-dark-grey">${baseSolver}</span>
       `);
 
     return () => {
@@ -504,11 +505,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers]);
 
   return (
-    <div className="bg-white p-4 rounded-xl">
-      <h2 className="text-xl font-semibold mb-2 4xl:text-2xl">
-        Relative performance plot
-      </h2>
-      <p className="text-sm text-gray-600 mb-4 max-w-[755px] 4xl:text-base">
+    <div className="bg-[#F4F6FA] p-4 rounded-xl">
+      <h6 className="mb-2">Relative performance plot</h6>
+      <p className="text-navy mb-4 max-w-screen-lg">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots
@@ -529,14 +528,13 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           >
             <div className="flex items-center justify-center w-4 h-4">
               <div
-                className={`w-4 h-4 rounded-full bg-teal ${
+                className={`w-4 h-4 rounded-full transition-opacity ${
                   visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
                 }`}
+                style={{ backgroundColor: solverColors[baseSolver] }}
               />
             </div>
-            <span className="text-sm text-gray-700 4xl:text-bae">
-              {baseSolver}
-            </span>
+            <span className="text-sm text-navy">{baseSolver}</span>
           </div>
 
           {/* Other solvers legend (squares) */}
@@ -555,18 +553,16 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                     opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
                   }}
                 />
-                <span className="text-sm text-gray-700 4xl:text-bae">
-                  {solver}
-                </span>
+                <span className="text-sm text-navy">{solver}</span>
               </div>
             ))}
         </div>
-        <div className="flex justify-between items-start text-sm mb-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4">
           <div>
             <p>🔻/🔺: base / other solver failed to solve in time limit</p>
             <p>❌ : both solvers failed to solve in time limit</p>
           </div>
-          <div className="mr-24">
+          <div className="lg:mr-24">
             <p className="flex gap-1 items-center">
               <CircleIcon className="size-3" />
               base solver solved successfully

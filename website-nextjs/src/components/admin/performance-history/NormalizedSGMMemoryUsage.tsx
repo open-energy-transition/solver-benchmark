@@ -1,4 +1,4 @@
-import D3LineChart from "@/components/shared/D3LineChart";
+import D3SGMChart from "@/components/shared/D3SGMChart";
 import { SolverYearlyChartData } from "@/types/performance-history";
 import { roundNumber } from "@/utils/number";
 
@@ -9,14 +9,14 @@ interface INormalizedSGMMemoryUsage {
 const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
   return (
     <div>
-      <p className="text-navy font-bold leading-1.5 mb-3 4xl:text-xl">
-        Normalized SGM Memory Usage
-      </p>
-      <D3LineChart
+      <div className="tag-line font-bold mb-2">
+        SGM Memory Usage (Relative to Best per Year)
+      </div>
+      <D3SGMChart
         chartData={chartData}
-        title="Normalized SGM Memory Usage"
+        title="Performance Ratio"
         xAxisTooltipFormat={(value) =>
-          `<strong>(Norm.) SGM Memory Usage:</strong> ${roundNumber(
+          `<strong>Original SGM Memory Usage:</strong> ${roundNumber(
             Number(value),
             2,
           )}`
@@ -25,4 +25,5 @@ const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
     </div>
   );
 };
+
 export default NormalizedSGMMemoryUsage;

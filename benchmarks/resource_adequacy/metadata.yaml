@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 week)
@@ -16,7 +16,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -29,7 +29,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 week)
@@ -38,7 +38,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -53,7 +53,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2 months)
@@ -62,7 +62,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -75,7 +75,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2 months)
@@ -84,7 +84,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -99,7 +99,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: LP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (6 months)
@@ -108,7 +108,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
@@ -121,7 +121,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     Problem class: MILP
-    Application: Infrastructure
+    Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (6 months)
@@ -130,7 +130,7 @@ benchmarks:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
-      Temporal resolution: 1
+      Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.

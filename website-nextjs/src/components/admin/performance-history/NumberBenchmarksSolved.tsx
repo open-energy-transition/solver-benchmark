@@ -12,14 +12,16 @@ const NumberBenchmarksSolved = ({
 }: INumberBenchmarksSolved) => {
   return (
     <div className="pb-4">
-      <p className="text-navy font-bold leading-1.5 mb-3 4xl:text-xl">
+      <div className="text-xl font-bold text-gray-800 mb-2">
         Number of Benchmarks Solved (Out of {totalBenchmarks})
-      </p>
+      </div>
       <D3LineChart
-        className="px-10"
+        className="pl-0 lg:px-10"
         title="Number of Benchmarks Solved"
         height={300}
         chartData={numSolvedBenchMark}
+        maxYValue={totalBenchmarks}
+        showMaxLine={true}
         xAxisTooltipFormat={(value) =>
           `<strong>Number of Benchmarks Solved:</strong> ${value}`
         }

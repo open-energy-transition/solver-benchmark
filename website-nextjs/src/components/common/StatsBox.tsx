@@ -9,43 +9,39 @@ const StatsBox = ({ value, label }: StatsBoxProps) => {
   return (
     <div
       className="
-        py-9
+        py-6
+        md:py-9
         text-center
         flex-1
-        border-r-2
+        md:border-r-2
         border-navy
         px-4
         last:border-r-0
         "
     >
-      <div
+      <h3
         className="
           bg-navy
           flex
           font-extrabold
-          font-lato
           items-center
           mx-auto
           justify-center
           rounded-full
           size-16
-          text-2xl
           md:size-[5.5rem]
-          md:text-4.5xl/1.4
           text-white
-          tracking-normal
+          text-3xl
+          md:text-4xl
         "
       >
         {value}
-      </div>
+      </h3>
       <h5
         className="
           font-extrabold
-          font-lato
           mt-4
-          text-sm/1.4
           md:text-2xl/1.4
-          tracking-normal
           uppercase
         "
       >
