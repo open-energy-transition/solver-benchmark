@@ -1,7 +1,7 @@
 ## https://github.com/FZJ-IEK3-VSA/FINE
 benchmarks:
   ethos-fine-multi-regional-full-time-series:
-    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The model uses full time series.
+    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses full time series.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
     Version: 
@@ -23,7 +23,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   ethos-fine-multi-regional-48tp:
-    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The model uses time series aggregation by tsam with 48 typical days without segmentation.
+    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 48 typical days without segmentation.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
     Version: 
