@@ -375,7 +375,7 @@ def main(
     solvers,
     year=None,
     iterations=1,
-    timeout=10 * 60,
+    timeout=10 * 60 * 60,  # 10 hours for large instances
     reference_interval=0,  # Default: disabled
     append=False,
     run_id=None,
