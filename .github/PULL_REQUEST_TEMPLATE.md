@@ -8,6 +8,7 @@ Fixes # (issue) [if applicable, otherwise delete]
 
 For PRs adding new benchmark instances:
 - [ ] I consent to releasing these benchmark instance files under the CC BY 4.0 license
+- [ ] I have tested that this model instance can be solved to optimality with {solver} solver [please indicate which solver]
 - [ ] (Benchmark team) has tested that some solver solves these benchmarks within our timeouts
 
 For changes to the website:
