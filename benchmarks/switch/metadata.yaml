@@ -3,19 +3,19 @@ benchmarks:
     Short description: A minimal 3-zone SWITCH tutorial model demonstrating core SWITCH functionality and several custom modules.
     Modelling framework: SWITCH
     Model name: 3_zone_tiny
-    Version: 
+    Version:
     Contributor(s)/Source: https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
     Problem class: MILP
     Application: Capacity expansion & planning
     Sectoral focus: Electric power system
     Sectors: Electric
-    Time horizon: 
+    Time horizon:
     MILP features: Unit commitment binaries
     Sizes:
       - Name: 3-zone-tiny
         Size: S
         URL: https://storage.googleapis.com/solver-benchmarks/switch_3-zone-tiny.lp
-        Temporal resolution: 
+        Temporal resolution:
         Spatial resolution: 3 zones
         Realistic: false
         Num. constraints: 795
@@ -69,4 +69,4 @@ benchmarks:
         Num. variables: 580
         Num. continuous variables: 576
         Num. integer variables: 4
-       
+
