@@ -1,0 +1,72 @@
+benchmarks:
+  SWITCH-3-zone-tiny:
+    Short description: A minimal 3-zone SWITCH tutorial model demonstrating core SWITCH functionality and several custom modules.
+    Modelling framework: SWITCH
+    Model name: 3_zone_tiny
+    Version: 
+    Contributor(s)/Source: https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
+    Problem class: MILP
+    Application: Capacity expansion & planning
+    Sectoral focus: Electric power system
+    Sectors: Electric
+    Time horizon: 
+    MILP features: Unit commitment binaries
+    Sizes:
+      - Name: 3-zone-tiny
+        Size: S
+        URL: https://storage.googleapis.com/solver-benchmarks/switch_3-zone-tiny.lp
+        Temporal resolution: 
+        Spatial resolution: 3 zones
+        Realistic: false
+        Num. constraints: 795
+        Num. variables: 582
+        Num. continuous variables: 578
+        Num. integer variables: 4
+  SWITCH-3-zone-toy:
+    Short description: A 3-zone SWITCH toy model with two investment periods, where the first period has higher temporal resolution. Demonstrates core SWITCH functionality and selected custom modules.
+    Modelling framework: SWITCH
+    Model name: 3zone_toy
+    Version:
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/3zone_toy
+    Problem class: MILP
+    Application: Capacity expansion & planning
+    Sectoral focus: Electric power system
+    Sectors: Electric
+    Time horizon: Two investment periods
+    MILP features: Unit commitment binaries
+    Notes: This toy example illustrates how SWITCH can be used to construct and run a multi-period, multi-zone capacity expansion model. Results have not been fully evaluated.
+    Sizes:
+      - Name: 3-zone-toy
+        Size: S
+        URL: https://storage.googleapis.com/solver-benchmarks/switch_3zone-toy.lp
+        Temporal resolution: Mixed, higher in first investment period
+        Spatial resolution: 3 zones
+        Realistic: false
+        Num. constraints: 775
+        Num. variables: 618
+        Num. continuous variables: 614
+        Num. integer variables: 4
+  SWITCH-3zone-toy-stochastic-PySP:
+    Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating scenario-based stochastic optimization in a multi-period power system context.
+    Modelling framework: SWITCH + PySP
+    Model name: 3zone_toy_stochastic_PySP
+    Version:
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
+    Problem class: MILP
+    Application: Stochastic capacity expansion & planning
+    Sectoral focus: Electric power system
+    Sectors: Electric
+    Time horizon: Two investment periods with stochastic scenarios
+    MILP features: Unit commitment binaries
+    Sizes:
+      - Name: 3zone-toy-stochastic-PySP
+        Size: S
+        URL: https://storage.googleapis.com/solver-benchmarks/switch_3zone-toy-stochastic-PySP.lp
+        Temporal resolution: Scenario-based; varied across periods
+        Spatial resolution: 3 zones
+        Realistic: false
+        Num. constraints: 716
+        Num. variables: 580
+        Num. continuous variables: 576
+        Num. integer variables: 4
+       
