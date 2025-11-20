@@ -31,15 +31,14 @@ def derive_expected_filename(
     benchmark_name: str, size_name: str, current_filename: str
 ) -> str:
     """Return expected filename preserving extension and optional .gz suffix."""
-    gz = current_filename.endswith(".gz")
+    # TODO use pathlib to extract extensions
+    gz = ".gz" if current_filename.endswith(".gz") else ""
     base = current_filename[:-3] if gz else current_filename
     ext = base[base.rfind(".") :]
     # If no dot was found, ext will be the full string; make it empty instead
     if "." not in ext:
         ext = ""
-    expected = f"{benchmark_name}-{size_name}{ext}"
-    if gz:
-        expected += ".gz"
+    expected = f"{benchmark_name}-{size_name}{ext}{gz}"
     return expected
 
 
@@ -63,6 +62,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
         return []
 
     changes = []
+    to_compress = []
     for bench_name, bench_info in (data.get("benchmarks") or {}).items():
         sizes = bench_info.get("Sizes") or []
         for size_entry in sizes:
@@ -80,8 +80,16 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
             raw_filename = Path(parsed.path).name
             decoded_filename = unquote(raw_filename)
             expected = derive_expected_filename(bench_name, size_name, decoded_filename)
+            # TODO rename shouldn't have the .gz suffix, but yaml should be updated with it!
+
+            # Check if the file is gzipped. If not, add to to_compress
+            if Path(expected).suffix != ".gz":
+                to_compress.append(expected)
+                expected += ".gz"
+
             encoded_expected = quote(expected, safe="")
 
+            # If filename isn't in expected format, fix/add to changes:
             if raw_filename == encoded_expected:
                 continue
 
@@ -95,7 +103,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
 
     if changes and not dry_run:
         save_yaml(path, data, yaml)
-    return [(path, *c) for c in changes]
+    return [(path, *c) for c in changes], to_compress
 
 
 def main():
@@ -113,8 +121,10 @@ def main():
 
     all_changes = []
     gsutil_commands = []
+    all_to_compress = []
     for file_path in sorted(benchmarks_dir.rglob(FILE_PATTERN)):
-        for change in process_file(file_path, yaml, args.dry_run):
+        changes, to_compress = process_file(file_path, yaml, args.dry_run)
+        for change in changes:
             all_changes.append(change)
             path, bench, size, old_url, new_url = change
             old_parsed = urlparse(old_url)
@@ -127,8 +137,9 @@ def main():
                 gsutil_commands.append(
                     f"gsutil mv gs://{old_key.split('/')[0]}/{'/'.join(old_key.split('/')[1:])} gs://{new_key.split('/')[0]}/{'/'.join(new_key.split('/')[1:])}"
                 )
+        all_to_compress.extend(to_compress)
 
-    if not all_changes:
+    if not all_changes and not all_to_compress:
         print("All URLs already conform to the naming convention.")
         return
 
@@ -136,17 +147,27 @@ def main():
     # for path, bench, size, old, new in all_changes:
     #     print(f"- {path}: {bench} / {size}\n    old: {old}\n    new: {new}")
 
-    updated = [c for c in all_changes if c]
-    print(f"\nUpdated {len(updated)} URLs in metadata files")
-    if updated and gsutil_commands:
+    print(f"\nFound {len(all_changes)} non-conforming URLs in metadata files")
+    if all_changes and gsutil_commands:
         print("\nSuggested gsutil rename commands:\n")
         for cmd in gsutil_commands:
             print(cmd)
+
+    print(f"\nFound {len(all_to_compress)} non-zipped URLs in metadata files")
+    if all_to_compress:
+        print("\nRun these commands to zip them:\n")
+        print("gsutil cp 'gs://solver-benchmarks/*.lp' runner/benchmarks/")
+        print("gsutil cp 'gs://solver-benchmarks/*.mps' runner/benchmarks/")
+        for filename in all_to_compress:
+            print(f"gzip -9k runner/benchmarks/{filename}")
+        for filename in all_to_compress:
+            print(f"gsutil cp runner/benchmarks/{filename} gs://solver-benchmarks/")
+
     if args.dry_run:
         print("\nDry run; no files were modified.")
     else:
         print(
-            "\nFiles rewritten. Updated URLs above can be renamed on storage as needed."
+            "\nFiles rewritten. Run the above gsutil commands to rename the files on GCS accordingly."
         )
 
 
