@@ -14,7 +14,7 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-base-31-20ts.lp
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
@@ -36,7 +36,7 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-netzero-31-20ts.lp
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
@@ -58,11 +58,11 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-single_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
-      Realistic motivation:  Designed for comprehensive French scenario analyses.
+      Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
       Num. variables: 15400
   times-etimeseu-france-elec+heat-co2-single_stage:
@@ -80,7 +80,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-single_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -102,7 +102,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-multi_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -124,7 +124,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-multi_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -146,7 +146,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-single_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -168,7 +168,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-single_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -190,7 +190,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-multi_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -212,7 +212,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-multi_stage-29-64ts.mps
       Temporal resolution: 64 time slice
       Spatial resolution: 29 regions
       Realistic: true
@@ -234,7 +234,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 1 region
       Realistic: false
@@ -242,7 +242,7 @@ benchmarks:
       Num. variables: 544694
     - Name: 40-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 40 regions
       Realistic: false
@@ -263,7 +263,7 @@ benchmarks:
     Sizes:
     - Name: 26-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
@@ -284,7 +284,7 @@ benchmarks:
     Sizes:
     - Name: 2-24h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
@@ -306,7 +306,7 @@ benchmarks:
     Sizes:
     - Name: 2-24h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true

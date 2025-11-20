@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_1W-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -37,7 +37,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_1W-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -61,7 +61,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_2M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -83,7 +83,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_2M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -107,7 +107,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -129,7 +129,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
