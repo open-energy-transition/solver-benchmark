@@ -6,6 +6,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: None
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -28,6 +29,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: None
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -52,6 +54,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: None
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -74,6 +77,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: None
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -98,6 +102,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: None
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -120,6 +125,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: None
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only

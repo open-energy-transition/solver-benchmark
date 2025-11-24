@@ -6,6 +6,7 @@ benchmarks:
     Model name: TEMOA-Utopia
     Version:
     Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -28,6 +29,7 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -50,6 +52,7 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -72,6 +75,7 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -94,6 +98,7 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -116,6 +121,7 @@ benchmarks:
     Model name: TEMOA-US
     Version:
     Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled

@@ -6,6 +6,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -29,6 +30,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -52,6 +54,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -75,6 +78,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -98,6 +102,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -121,6 +126,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -144,6 +150,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -165,6 +172,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -186,6 +194,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -207,6 +216,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: None
     Problem class: MILP
     Application: DC Optimal Power Flow
     Sectoral focus: Power-only

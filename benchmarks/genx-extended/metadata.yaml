@@ -5,6 +5,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -27,6 +28,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -70,6 +72,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
+    License: None
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -94,6 +97,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open Energy Transition
+    License: None
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
