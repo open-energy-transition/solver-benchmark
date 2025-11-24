@@ -1,5 +1,3 @@
-diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index ca852d2c..3debf458 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
 @@ -1338,6 +1338,9 @@ def solve_network(

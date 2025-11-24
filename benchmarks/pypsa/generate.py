@@ -4,6 +4,7 @@ import pathlib
 import re
 import subprocess
 import typing
+import yaml
 
 import ruamel.yaml
 
@@ -49,11 +50,11 @@ def select_yaml_files(benchmark_name: str, yaml_dir: typing.Optional[pathlib.Pat
             "pypsa-eur-elec-dfp.yaml",
             "pypsa-eur-elec-trex_copt.yaml",
             "pypsa-eur-elec-trex_copt-dfp.yaml",
-            "pypsa-eur-elec-trex_copt-ucconv.yaml",
+            #"pypsa-eur-elec-trex_copt-ucconv.yaml",
             "pypsa-eur-elec-trex_vopt.yaml",
             "pypsa-eur-elec-trex_vopt-dfp.yaml",
-            "pypsa-eur-elec-trex_vopt-ucconv.yaml",
-            "pypsa-eur-elec-ucconv.yaml",
+            #"pypsa-eur-elec-trex_vopt-ucconv.yaml",
+            #"pypsa-eur-elec-ucconv.yaml",
         ],
         "pypsa-eur-sec": [
             "pypsa-eur-sec.yaml",
@@ -160,13 +161,13 @@ def parse_input_arguments() -> argparse.Namespace:
     parser.add_argument("-c", "--clusters",
                         nargs="+",
                         type=int,
-                        default=[50, 100],
+                        default=[50],
                         help="List of number of clusters. Default: 50 100")
 
     parser.add_argument("-r", "--time_resolutions",
                         nargs="+",
                         type=validate_time_resolution,
-                        default=["1H", "3H", "12H", "24H"],
+                        default=["12H", "24H"],
                         help="List of time resolutions. Default: 1H 3H 12H 24H")
 
     parser.add_argument("-rmc", "--remove_configs",
@@ -239,40 +240,9 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
         }
     }
 
-    countries_section = {
-        "countries": ["BE"]
-    }
-
-    snapshot_section = {
-        "snapshots": {
-            "start": "2013-03-01",
-            "end": "2013-03-08"
-        }
-    }
-
-    atlite_section = {
-        "atlite": {
-            "default_cutout": "be-03-2013-era5",
-            "cutouts": {
-                "be-03-2013-era5": {
-                    "module": "era5",
-                    "x": [4., 15.],
-                    "y": [46., 56.],
-                    "time": ["2013-03-01", "2013-03-08"]
-                }
-            }
-        }
-    }
-
-
-    # REMOVE PART ABOVE
-
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
     original_yaml.update(enable_section)
-    #original_yaml.update(countries_section)
-    #original_yaml.update(snapshot_section)
-    #original_yaml.update(atlite_section)
 
     # Generate a new config file name
     output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}_{planning_horizon}')
@@ -384,8 +354,45 @@ def generate_benchmark(
         snakemake_command_network = f"snakemake --snakefile Snakefile solve_elec_networks --configfile {config_file_name} {dry_run} --cores all"
         run_snakemake_command(snakemake_command_network)
     elif name_of_benchmark == "pypsa-eur-sec":
-        snakemake_sec_benchmark = f"snakemake --snakefile Snakefile all --configfile {config_file_name} {dry_run} --cores all"
-        run_snakemake_command(snakemake_sec_benchmark)
+        # Prepare operations MPS path (PyPSA will write here instead of NC)
+        mps_path_original = pathlib.Path(os.environ["ONLY_GENERATE_PROBLEM_FILE"])
+        mps_ops = mps_path_original.with_name(
+            mps_path_original.stem + "_op" + mps_path_original.suffix
+        )
+
+        # Override the output target for the operations step
+        os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(mps_ops)
+        print(f"[INFO] Writing OPERATIONS MPS to : {mps_ops}")
+
+        # ------------------------------------------------------------
+        # Load config YAML to extract wildcard values required by the rule
+        # The rule solve_operations_network has output:
+        #   networks/base_s_{clusters}_elec_{opts}_op.nc
+        #
+        # Snakemake needs this target to choose the rule,
+        # even if the actual NC file will NOT be written because
+        # ONLY_GENERATE_PROBLEM_FILE forces PyPSA to output only the MPS.
+        # ------------------------------------------------------------
+        with open(config_file, "r") as f:
+            cfg = yaml.safe_load(f)
+
+        # Extract wildcards from config
+        clusters = cfg["scenario"]["clusters"]
+        opts = cfg["scenario"]["opts"]
+
+        # Build the concrete output target of the rule
+        ops_target = f"results/networks/base_s_{clusters}_elec_{opts}_op.nc"
+
+        # ------------------------------------------------------------
+        # Snakemake call:
+        # We trigger the rule by giving its expected output.
+        # PyPSA will NOT produce the NC because ONLY_GENERATE_PROBLEM_FILE overrides it.
+        # ------------------------------------------------------------
+        cmd_ops = (
+            f"snakemake --snakefile Snakefile {ops_target} "
+            f"--configfile {config_file_name} {dry_run} --cores all"
+        )
+        run_snakemake_command(cmd_ops)
     else:
         print(f"{name_of_benchmark} is not among the supported ones")
 
@@ -411,12 +418,24 @@ if __name__ == "__main__":
                 # Generate benchmark file name
                 benchmark_file_name = pathlib.Path(output_yaml_file_name.parent, input_args.output_dir, output_yaml_file_name.with_suffix(input_args.file_extension).name)
 
-                # Set environment variable ONLY_GENERATE_PROBLEM_FILE to benchmark file name
-                os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(benchmark_file_name)
+                print("\n============================================")
+                print(f"[INFO] Using YAML config     : {output_yaml_file_name}")
+                print(f"[INFO] Clusters = {n_clusters}, Time resolution = {t_res}")
+                print("============================================\n")
 
-                # Generate benchmark file
+                mps_name = (
+                    output_yaml_file_name.with_suffix(input_args.file_extension).name
+                )
+                mps_path = pathlib.Path(
+                    output_yaml_file_name.parent,
+                    input_args.output_dir,
+                    mps_name
+                )
+                os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(mps_path)
+                print(f"[INFO] Writing MPS to : {mps_path}")
+
+                # run solver
                 generate_benchmark(input_args.benchmark_name, output_yaml_file_name, input_args.dry_run)
-
                 # Remove config file
                 if input_args.remove_configs:
                     output_yaml_file_name.unlink(missing_ok=True)
