@@ -30,6 +30,8 @@ jobs:
         run: |
           pip install --upgrade pip pre-commit
           pip install -r website/requirements.txt
+          # For validation scripts (TODO collect these in a requirements.txt file?)
+          pip install ruamel.yaml
 
       - name: Check code formatting
         run: |
@@ -44,6 +46,14 @@ jobs:
           else
             git diff
             printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
+            exit 1
+          fi
+          python tests/validate_urls.py
+          if git diff --quiet; then
+            echo "git diff is empty, benchmark URLs conform to expected format"
+          else
+            git diff
+            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npython tests/validate_urls.py"
             exit 1
           fi
           python tests/validate_results.py

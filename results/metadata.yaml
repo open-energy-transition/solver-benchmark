@@ -119,7 +119,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -144,7 +144,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -170,7 +170,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -208,7 +208,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -233,7 +233,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -257,7 +257,7 @@ benchmarks:
     Sizes:
     - Name: 9-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 9 nodes
       Realistic: true
@@ -2046,7 +2046,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_1W-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2073,7 +2073,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_1W-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2102,7 +2102,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_2M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2129,7 +2129,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_2M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2158,7 +2158,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2185,7 +2185,7 @@ benchmarks:
     Sizes:
     - Name: 1-997
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2287,7 +2287,7 @@ benchmarks:
     Sizes:
     - Name: 1-6
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia-1-6.lp
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
       Spatial resolution: 1 region
       Realistic: false
@@ -2309,7 +2309,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS-9-12.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2333,7 +2333,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC-9-12.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2357,7 +2357,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ-9-12.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2381,7 +2381,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP-9-12.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2405,7 +2405,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods-9-12.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2428,7 +2428,7 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_Base_scenariocplex.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-base-31-20ts.lp
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
@@ -2451,7 +2451,7 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO_E4SMA_NetZero_scenariocplex.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-netzero-31-20ts.lp
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
@@ -2474,7 +2474,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-single_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -2498,7 +2498,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-single_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -2521,7 +2521,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-multi_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -2545,7 +2545,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-1-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-multi_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -2568,7 +2568,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-single_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-single_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -2592,7 +2592,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-single_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-single_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -2615,7 +2615,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-multi_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-multi_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -2639,7 +2639,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-elec%2Bheat-co2-multi_stage-29-64.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-multi_stage-29-64ts.mps
       Temporal resolution: 64 time slice
       Spatial resolution: 29 regions
       Realistic: true
@@ -2661,7 +2661,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 1 region
       Realistic: false
@@ -2669,7 +2669,7 @@ benchmarks:
       Num. variables: 544694
     - Name: 40-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts40-p39.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 40 regions
       Realistic: false
@@ -2690,7 +2690,7 @@ benchmarks:
     Sizes:
     - Name: 26-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nom-ts1-p39-counties.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
@@ -2712,7 +2712,7 @@ benchmarks:
     Sizes:
     - Name: 2-24h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/kea.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
@@ -2735,7 +2735,7 @@ benchmarks:
     Sizes:
     - Name: 2-24h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tui.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
