@@ -1,8 +1,8 @@
 diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index ca852d2c..1a1b5ccb 100644
+index ca852d2c..cb10f9c7 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
-@@ -1338,52 +1338,39 @@ def solve_network(
+@@ -1338,52 +1338,35 @@ def solve_network(
      kwargs["model_kwargs"] = cf_solving.get("model_kwargs", {})
      kwargs["keep_files"] = cf_solving.get("keep_files", False)
  
@@ -49,41 +49,37 @@ index ca852d2c..1a1b5ccb 100644
 +    # Use env var to determine if to dump LP file instead of solving
 +    kwargs["only_generate_problem_file"] = os.getenv("ONLY_GENERATE_PROBLEM_FILE", False)
 +
-+    mps_path = os.getenv("ONLY_GENERATE_PROBLEM_FILE", "")
-+    if mps_path not in ["", "0", None]:
-+        logger.info(f"ONLY_GENERATE_PROBLEM_FILE active → dumping MPS to: {mps_path}")
++    mps_path = os.getenv("ONLY_GENERATE_PROBLEM_FILE", False)
++    logger.info(f"ONLY_GENERATE_PROBLEM_FILE active → dumping MPS to: {mps_path}")
 +
-+        # Remove ALL kwargs not accepted by linopy.Model()
-+        bad_keys = [
-+            "log_fn",
-+            "keep_files",
-+            "assign_all_duals",
-+            "io_api",
-+            "solver_name",
-+            "solver_options",
-+            "extra_functionality",
-+            "transmission_losses",
-+            "linearized_unit_commitment",
-+            "multi_investment_periods",
-+            "rolling_horizon",
-+            "skip_iterations",
-+            "model_kwargs",
-+        ]
-+        for bad in bad_keys:
-+            kwargs.pop(bad, None)
++    # Remove ALL kwargs not accepted by linopy.Model()
++    bad_keys = [
++        "log_fn",
++        "keep_files",
++        "assign_all_duals",
++        "io_api",
++        "solver_name",
++        "solver_options",
++        "extra_functionality",
++        "transmission_losses",
++        "linearized_unit_commitment",
++        "multi_investment_periods",
++        "rolling_horizon",
++        "skip_iterations",
++        "model_kwargs",
++    ]
++    for bad in bad_keys:
++        kwargs.pop(bad, None)
  
 -    if "infeasible" in condition:
 -        labels = n.model.compute_infeasibilities()
 -        logger.info(f"Labels:\n{labels}")
 -        n.model.print_infeasibilities()
 -        raise RuntimeError("Solving status 'infeasible'. Infeasibilities computed.")
-+        # Build and export the model
-+        model = n.optimize.create_model(**kwargs)
-+        model.to_file(mps_path)
-+        logger.info("MPS file generation complete. Exiting without solving.")
-+    else:
-+        logger.info("mps_path does not have a valid value")
-+        raise RuntimeError("Invalid ONLY_GENERATE_PROBLEM_FILE environment variable")
++    # Build and export the model
++    model = n.optimize.create_model(**kwargs)
++    model.to_file(mps_path)
++    logger.info("MPS file generation complete. Exiting without solving.")
  
  
  if __name__ == "__main__":
