@@ -54,8 +54,10 @@ def get_conda_package_versions(solvers, env_name=None):
         raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
 
 
-def download_file_from_google_drive(url, dest_path: Path):
+def download_benchmark_file(url, dest_path: Path):
     """Download a file from url and save it locally in the specified folder if it doesn't already exist.
+
+    If the URL is on GCS (starting gs://), then this uses `gsutil` to download the file (requires authentication).
     If the file is gzipped (.gz), it will be unzipped after downloading.
     """
     # Ensure the destination folder exists
@@ -71,13 +73,22 @@ def download_file_from_google_drive(url, dest_path: Path):
         print(f"File already exists at {uncompressed_dest_path}. Skipping download.")
         return
 
-    print(f"Downloading {url} to {dest_path}...", end="")
-    response = requests.get(url)
-    response.raise_for_status()
+    if url.startswith("gs://"):
+        # GCS file, so download using gsutil
+        print(f"Downloading {url} to {dest_path} using gsutil...", end="")
+        cmd = ["gsutil", "cp", url, dest_path]
+        _result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        print("done.")
+    else:
+        # Download using requests
+        print(f"Downloading {url} to {dest_path}...", end="")
+        response = requests.get(url)
+        response.raise_for_status()
 
-    with open(dest_path, "wb") as f:
-        f.write(response.content)
-    print("done.")
+        with open(dest_path, "wb") as f:
+            f.write(response.content)
+        print("done.")
+
     if dest_path.suffix == ".gz":
         print(f"Unzipping {dest_path}...")
         with gzip.open(dest_path, "rb") as gz_file:
@@ -283,9 +294,6 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     else:
-        print(
-            f"Solver command:\n {'\n'.join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
-        )
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
@@ -446,7 +454,7 @@ def main(
                 benchmark_path = (
                     benchmarks_folder / f"{benchmark_name}-{instance['Name']}.{format}"
                 )
-                download_file_from_google_drive(instance["URL"], benchmark_path)
+                download_benchmark_file(instance["URL"], benchmark_path)
 
                 # Gzip files are unzipped by the above function, so update path accordingly
                 if benchmark_path.suffix == ".gz":
