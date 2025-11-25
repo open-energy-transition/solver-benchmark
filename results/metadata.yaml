@@ -7,7 +7,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -33,7 +33,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -59,7 +59,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -87,7 +87,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -114,7 +114,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -140,7 +140,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -167,7 +167,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -206,7 +206,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -232,7 +232,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -257,7 +257,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks;
       Daniele Lerede, Open Energy Transition
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: DC Optimal Power Flow
     Sectoral focus: Power-only
@@ -576,7 +576,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -602,7 +602,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -625,7 +625,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -650,7 +650,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -675,7 +675,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -1585,7 +1585,7 @@ benchmarks:
     Model name: Tulipa
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -1664,7 +1664,7 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -1711,7 +1711,7 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -1758,7 +1758,7 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Operational
     Sectoral focus: Power-only
@@ -1815,7 +1815,7 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Operational
     Sectoral focus: Power-only
@@ -1860,7 +1860,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -1883,7 +1883,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -1907,7 +1907,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -1932,7 +1932,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -1956,7 +1956,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -1982,7 +1982,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -2008,7 +2008,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -2033,7 +2033,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -2059,7 +2059,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -2085,7 +2085,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -2113,7 +2113,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -2141,7 +2141,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -2171,7 +2171,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -2199,7 +2199,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -2229,7 +2229,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -2257,7 +2257,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
-    License: None
+    License: CC BY 4.0
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -2431,7 +2431,7 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2455,7 +2455,7 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2479,7 +2479,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2504,7 +2504,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2528,7 +2528,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2553,7 +2553,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2577,7 +2577,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2602,7 +2602,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2626,7 +2626,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2651,7 +2651,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2674,7 +2674,7 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2704,7 +2704,7 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2727,7 +2727,7 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2751,7 +2751,7 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
