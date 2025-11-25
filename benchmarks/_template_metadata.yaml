@@ -6,7 +6,7 @@ benchmarks:
     Model name: # Specific model used to generate the benchmark, e.g. PyPSA-Eur, TIMES-Ireland
     Version: # (optional) version of the model used to generate the benchmark
     Contributor(s)/Source: # Name, Affiliation or link to repo used to generate the benchmark (e.g., https://github.com/lprieto1409/DC-OPF-Carolinas)
-    License: # License of the benchmark
+    License: # License the benchmark is released under (we recommend CC BY 4.0)
     Problem class: # LP, MILP
     Application: # Current set (feel free to propose new ones if necessary): DC optimal power flow, Resource Adequacy, Infrastructure, Capacity expansion, Infrastructure & Capacity expansion, Operational, Steady-state optimal power flow, Production cost modelling
     Sectoral focus: # Power-only, Sector-coupled

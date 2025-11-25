@@ -5,7 +5,7 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -28,7 +28,7 @@ benchmarks:
     Model name: TIMES-GEO
     Version:
     Contributor(s)/Source: E4SMA
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -51,7 +51,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -74,7 +74,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -97,7 +97,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -120,7 +120,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -143,7 +143,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -166,7 +166,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -189,7 +189,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -212,7 +212,7 @@ benchmarks:
     Model name: eTIMES-EU
     Version:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -235,7 +235,7 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -265,7 +265,7 @@ benchmarks:
     Model name: TIMES-Ireland
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -287,7 +287,7 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -310,7 +310,7 @@ benchmarks:
     Model name: TIMES-NZ
     Version:
     Contributor(s)/Source: Olexandr Balyk
-    License: None
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
