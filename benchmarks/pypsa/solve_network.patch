@@ -1,8 +1,8 @@
 diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index ca852d2c..cb10f9c7 100644
+index ca852d2c..4a2c3103 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
-@@ -1338,52 +1338,35 @@ def solve_network(
+@@ -1338,52 +1338,36 @@ def solve_network(
      kwargs["model_kwargs"] = cf_solving.get("model_kwargs", {})
      kwargs["keep_files"] = cf_solving.get("keep_files", False)
  
@@ -46,6 +46,12 @@ index ca852d2c..cb10f9c7 100644
 -
 -    if "warning" in condition:
 -        raise RuntimeError("Solving status 'warning'. Discarding solution.")
+-
+-    if "infeasible" in condition:
+-        labels = n.model.compute_infeasibilities()
+-        logger.info(f"Labels:\n{labels}")
+-        n.model.print_infeasibilities()
+-        raise RuntimeError("Solving status 'infeasible'. Infeasibilities computed.")
 +    # Use env var to determine if to dump LP file instead of solving
 +    kwargs["only_generate_problem_file"] = os.getenv("ONLY_GENERATE_PROBLEM_FILE", False)
 +
@@ -70,16 +76,12 @@ index ca852d2c..cb10f9c7 100644
 +    ]
 +    for bad in bad_keys:
 +        kwargs.pop(bad, None)
- 
--    if "infeasible" in condition:
--        labels = n.model.compute_infeasibilities()
--        logger.info(f"Labels:\n{labels}")
--        n.model.print_infeasibilities()
--        raise RuntimeError("Solving status 'infeasible'. Infeasibilities computed.")
++
 +    # Build and export the model
 +    model = n.optimize.create_model(**kwargs)
 +    model.to_file(mps_path)
 +    logger.info("MPS file generation complete. Exiting without solving.")
++    return
  
  
  if __name__ == "__main__":
