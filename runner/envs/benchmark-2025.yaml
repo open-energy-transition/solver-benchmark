@@ -18,7 +18,7 @@ dependencies:
 - pyscipopt==5.4.1
 
 # No major or minor releases in 2025 yet
-# - gurobi==12.0.0
+- gurobi==13.0.0 #latest
 
 - pip:
   - highspy==1.10.0
