@@ -21,6 +21,7 @@ import FilterGroup from "./filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
 import InfoPopup from "@/components/common/InfoPopup";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { SgmMode } from "@/constants/sgm";
 
 interface FilterSectionProps {
   height?: string;
@@ -194,9 +195,35 @@ const FilterSection = ({ height }: FilterSectionProps) => {
 
   const updateUrlParams = (filters: IFilterState) => {
     const queryParams = new URLSearchParams();
+
+    // First, preserve non-filter query params from current URL
+    Object.entries(router.query).forEach(([key, value]) => {
+      if (
+        ![
+          "sectoralFocus",
+          "sectors",
+          "problemClass",
+          "application",
+          "modellingFramework",
+          "problemSize",
+          "realistic",
+          "sgmMode",
+          "xFactor",
+        ].includes(key) &&
+        value !== undefined
+      ) {
+        queryParams.set(key, Array.isArray(value) ? value.join(",") : value);
+      }
+    });
+
+    // Then add/update filter params
     Object.entries(filters).forEach(([key, values]) => {
       if (Array.isArray(values) && values.length > 0) {
         queryParams.set(key, values.map(encodeValue).join(";"));
+      } else if (key === "sgmMode" && values) {
+        queryParams.set(key, encodeValue(values as string));
+      } else if (key === "xFactor" && typeof values === "number") {
+        queryParams.set(key, values.toString());
       }
     });
 
@@ -231,6 +258,23 @@ const FilterSection = ({ height }: FilterSectionProps) => {
       }
     });
 
+    // Parse sgmMode from URL
+    const sgmModeValue = router.query["sgmMode"];
+    if (typeof sgmModeValue === "string" && sgmModeValue) {
+      // @ts-expect-error Type inference issues with dynamic keys
+      filters.sgmMode = decodeValue(sgmModeValue);
+    }
+
+    // Parse xFactor from URL
+    const xFactorValue = router.query["xFactor"];
+    if (typeof xFactorValue === "string" && xFactorValue) {
+      const parsed = Number(xFactorValue);
+      if (!isNaN(parsed)) {
+        // @ts-expect-error Type inference issues with dynamic keys
+        filters.xFactor = parsed;
+      }
+    }
+
     return filters;
   };
 
@@ -239,6 +283,22 @@ const FilterSection = ({ height }: FilterSectionProps) => {
     const urlFilters = parseUrlParams();
 
     if (Object.keys(urlFilters).length > 0) {
+      // Apply sgmMode from URL if present
+      if (
+        urlFilters.sgmMode &&
+        urlFilters.sgmMode !== selectedFilters.sgmMode
+      ) {
+        dispatch(filterActions.setSgmMode(urlFilters.sgmMode as SgmMode));
+      }
+
+      // Apply xFactor from URL if present
+      if (
+        urlFilters.xFactor &&
+        urlFilters.xFactor !== selectedFilters.xFactor
+      ) {
+        dispatch(filterActions.setXFactor(urlFilters.xFactor as number));
+      }
+
       Object.keys(selectedFilters).forEach((key) => {
         if (
           isArray(urlFilters[key as keyof IFilterState]) &&
@@ -318,11 +378,32 @@ const FilterSection = ({ height }: FilterSectionProps) => {
         ),
       );
 
-      // Clear URL parameters
+      // Clear filter parameters but keep other query params (tab, sgmMode, etc.)
+      const nonFilterParams = Object.entries(router.query).reduce(
+        (acc, [key, value]) => {
+          if (
+            ![
+              "sectoralFocus",
+              "sectors",
+              "problemClass",
+              "application",
+              "modellingFramework",
+              "problemSize",
+              "realistic",
+            ].includes(key) &&
+            value !== undefined
+          ) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, string | string[]>,
+      );
+
       router.replace(
         {
           pathname: router.pathname,
-          query: {},
+          query: nonFilterParams,
         },
         undefined,
         { shallow: true },

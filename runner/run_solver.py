@@ -17,10 +17,7 @@ except ModuleNotFoundError:
 
 def get_solver(solver_name):
     solver_name = solver_name.lower()
-    try:
-        solver_enum = SolverName(solver_name)
-    except ValueError:
-        raise ValueError(f"Solver '{solver_name}' is not recognized")
+    solver_enum = SolverName(solver_name)
 
     solver_class = getattr(solvers, solver_enum.name)
 
@@ -36,10 +33,7 @@ def get_solver(solver_name):
         },
     }
 
-    if solver_name in seed_options:
-        return solver_class(**seed_options[solver_name])
-    else:
-        return solver_class()
+    return solver_class(**seed_options.get(solver_name, {}))
 
 
 def is_mip_problem(solver_model, solver_name):

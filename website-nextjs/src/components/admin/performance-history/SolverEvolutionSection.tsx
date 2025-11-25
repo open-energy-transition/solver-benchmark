@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import D3SolverEvolutionChart from "@/components/shared/D3SolverEvolutionChart";
 import {
   ISolverYearlyChartData,
@@ -28,6 +29,7 @@ const SolverEvolutionSection = ({
   title = "Individual Solver Performance Evolution",
   description = "The chart below shows the performance evolution for the selected solver. The bars represent the number of unsolved problems in the benchmark set, while the red line shows the SGM runtime speed-up relative to the first version we have data for (higher values indicate better performance).",
 }: ISolverEvolutionSection) => {
+  const router = useRouter();
   const [selectedSolver, setSelectedSolver] = useState("");
 
   const solverEvolutionData = useMemo(() => {
@@ -110,12 +112,34 @@ const SolverEvolutionSection = ({
     });
   }, [solverEvolutionData]);
 
-  // Set default selected solver when data changes
+  // Initialize solver from URL or default to first available
   useEffect(() => {
-    if (sortedSolverNames.length > 0 && !selectedSolver) {
+    if (sortedSolverNames.length === 0 || !router.isReady) return;
+
+    const solverFromUrl = router.query.solver as string;
+
+    if (solverFromUrl && sortedSolverNames.includes(solverFromUrl)) {
+      setSelectedSolver(solverFromUrl);
+    } else if (!selectedSolver) {
       setSelectedSolver(sortedSolverNames[0]);
     }
-  }, [sortedSolverNames, selectedSolver]);
+  }, [sortedSolverNames, router.isReady]);
+
+  // Update URL when solver changes
+  useEffect(() => {
+    if (!selectedSolver || !router.isReady) return;
+
+    const currentQuery = { ...router.query };
+
+    if (currentQuery.solver !== selectedSolver) {
+      currentQuery.solver = selectedSolver;
+
+      // Use replaceState to update URL without triggering navigation
+      const url = new URL(window.location.href);
+      url.searchParams.set("solver", selectedSolver);
+      window.history.replaceState({}, "", url.toString());
+    }
+  }, [selectedSolver, router.isReady]);
 
   if (sortedSolverNames.length === 0) {
     return null;

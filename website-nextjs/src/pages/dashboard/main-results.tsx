@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 // local
 import ResultsSection from "@/components/admin/ResultsSections";
@@ -17,7 +18,29 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 const LandingPage = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
+  const router = useRouter();
+  const { tab } = router.query;
   const [activeTab, setActiveTab] = useState("short");
+
+  // Set tab from URL on mount or when query changes
+  useEffect(() => {
+    if (typeof tab === "string") {
+      setActiveTab(tab);
+    }
+  }, [tab]);
+
+  // Update URL when tab changes
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab);
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, tab: newTab },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
   const timeout =
     activeTab === "short" ? TIMEOUT_VALUES.SHORT : TIMEOUT_VALUES.LONG;
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
@@ -170,7 +193,7 @@ const LandingPage = () => {
             </div>
             <div className="flex">
               <div
-                onClick={() => setActiveTab("short")}
+                onClick={() => handleTabChange("short")}
                 className={`w-1/3 tag-line cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
                   activeTab === "short"
                     ? "bg-[#E6ECF5] font-semibold"
@@ -180,7 +203,7 @@ const LandingPage = () => {
                 Short
               </div>
               <div
-                onClick={() => setActiveTab("long")}
+                onClick={() => handleTabChange("long")}
                 className={`w-1/3 tag-line cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
                   activeTab === "long"
                     ? "bg-[#E6ECF5] font-semibold"

@@ -4,20 +4,22 @@ set -euo pipefail
 
 # Parse command line arguments
 usage() {
-    echo "Usage: $0 [-a] [-y \"<space separated years>\"] [-r <seconds>] [-u <run_id>] <benchmarks yaml file>"
+    echo "Usage: $0 [-a] [-y \"<space separated years>\"] [-r <seconds>] [-u <run_id>] [-s \"<solvers>\"] <benchmarks yaml file>"
     echo "Runs the solvers from the specified years (default all) on the benchmarks in the given file"
     echo "Options:"
     echo "    -a    Append to the results CSV file instead of overwriting. Default: overwrite"
     echo "    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024 2025"
     echo "    -r    Reference benchmark interval in seconds. Default: 0 (disabled)"
     echo "    -u    Unique run ID to identify this benchmark run. Default: auto-generated"
+    echo "    -s    Space separated list of solvers to run. Default: year-specific defaults"
 }
 append_results=""
 years=(2020 2021 2022 2023 2024 2025)
 reference_interval=0  # Default: disabled
 run_id=$(date +%Y%m%d_%H%M%S)_$(hostname)  # Default run_id if not provided
+solvers_override=""  # Default: use year-specific solver lists
 
-while getopts "hay:r:u:" flag
+while getopts "hay:r:u:s:" flag
 do
     case ${flag} in
     h)  usage
@@ -33,6 +35,9 @@ do
         ;;
     u)  run_id="$OPTARG"
         echo "Using provided run ID: $run_id"
+        ;;
+    s)  solvers_override="$OPTARG"
+        echo "Using solver override: $solvers_override"
         ;;
     esac
 done
@@ -64,10 +69,21 @@ for year in "${years[@]}"; do
     # Run the benchmark script for the year
     echo "Running benchmarks for the year: $year"
     conda activate "$env_name"
-    if [ "$idx" -eq 0 ]; then
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id"
+
+    # If --solvers flag was provided, use it; otherwise use year-specific defaults
+    if [ -n "${solvers_override}" ]; then
+        solver_args="--solvers ${solvers_override}"
+        echo "Using solver override: ${solvers_override}"
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id"
+        solver_args="--solvers highs scip cbc gurobi glpk"
+    fi
+
+    # Overwrite results for the first year, append thereafter
+    if [ "$idx" -eq 0 ]; then
+        # we're running the script with -e, ignoring error with <command> || true so that execution continues if the script fails
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args ||true
+    else
+        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
     fi
     conda deactivate
 

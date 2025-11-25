@@ -4,6 +4,7 @@ import Image from "next/image";
 import {
   ArrowUpLeftIcon,
   CloseIcon,
+  GithubIcon,
   MenuIcon,
   OutIcon,
 } from "../../assets/icons";
@@ -90,7 +91,7 @@ const Header = () => {
             <MenuIcon className="text-white h-6 w-6" />
           </button>
         </div>
-        <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24">
+        <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24 2xl:pr-20">
           <Link
             href={ROOT_PATH.home}
             className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
@@ -132,12 +133,18 @@ const Header = () => {
             METHODOLOGY
           </Link>
         </div>
-        <div className="hidden lg:flex w-max">
+        <div className="hidden lg:flex w-max items-center">
+          <Link
+            href="https://github.com/open-energy-transition/solver-benchmark"
+            target="_blank"
+            className="mr-8"
+          >
+            <GithubIcon className="size-8 text-white" />
+          </Link>
           <Link
             href="https://openenergytransition.org/"
             target="_blank"
             className="
-              2xl:px-7
               border
               border-[#EBEFF24D]
               border-opacity-30
@@ -212,7 +219,6 @@ const Header = () => {
                   ].map((link, index) => {
                     const isActive =
                       !link.external && currentRoute === link.href;
-                    console.log(isActive);
                     return (
                       <Link
                         key={index}

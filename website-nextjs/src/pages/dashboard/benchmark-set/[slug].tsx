@@ -108,10 +108,10 @@ const PageBenchmarkDetail = () => {
                     href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
-                    Benchmark Details
+                    Benchmark Set
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                  <p className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
+                  <p className="text-opacity-50 self-center font-semibold whitespace-normal md:whitespace-nowrap">
                     {benchmarkName}
                   </p>
                 </div>
