@@ -283,7 +283,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -310,7 +310,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -338,7 +338,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -378,7 +378,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -411,7 +411,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -438,7 +438,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -469,7 +469,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -496,7 +496,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -524,7 +524,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -548,7 +548,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: DC Optimal Power Flow
     Sectoral focus: Power-only
@@ -701,7 +701,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -726,7 +726,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -751,7 +751,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -776,7 +776,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -801,7 +801,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -828,7 +828,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -853,7 +853,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -878,7 +878,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -903,7 +903,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -927,7 +927,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -951,7 +951,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -975,7 +975,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -999,7 +999,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1023,7 +1023,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1047,7 +1047,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1071,7 +1071,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1095,7 +1095,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1119,7 +1119,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1144,7 +1144,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1169,7 +1169,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1194,7 +1194,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1219,7 +1219,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1244,7 +1244,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1269,7 +1269,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1294,7 +1294,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1319,7 +1319,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1344,7 +1344,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1368,7 +1368,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1392,7 +1392,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1416,7 +1416,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1440,7 +1440,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1464,7 +1464,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1488,7 +1488,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1512,7 +1512,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1536,7 +1536,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -1560,7 +1560,7 @@ benchmarks:
     Model name: Sienna
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-    License: None
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Infrastructure
     Sectoral focus: Power-only
@@ -2283,8 +2283,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-Utopia
     Version:
-    Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
-    License: None
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/https://github.com/TemoaProject/temoacloud
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2306,8 +2306,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    License: None
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2331,8 +2331,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    License: None
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2356,8 +2356,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    License: None
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2381,8 +2381,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    License: None
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -2406,8 +2406,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
-    License: None
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
