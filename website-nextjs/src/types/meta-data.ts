@@ -24,6 +24,7 @@ interface MetaDataEntry {
   timeHorizon: string;
   milpFeatures: string | null;
   contributorSSource: string | null;
+  license: string | null;
   sizes: Size[];
 }
 

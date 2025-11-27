@@ -108,10 +108,10 @@ const PageBenchmarkDetail = () => {
                     href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
-                    Benchmark Details
+                    Benchmark Set
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                  <p className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
+                  <p className="text-opacity-50 self-center font-semibold whitespace-normal md:whitespace-nowrap">
                     {benchmarkName}
                   </p>
                 </div>
@@ -153,6 +153,10 @@ const PageBenchmarkDetail = () => {
               ) : (
                 "-"
               )}
+            </div>
+            <div className="pr-4 pb-4 text-sm text-navy/70">
+              <span className="font-semibold">License:</span>{" "}
+              {benchmarkDetail?.license ?? "None"}
             </div>
             <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0">
               {columns.map((col) => (
