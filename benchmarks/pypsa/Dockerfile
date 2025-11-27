@@ -1,44 +1,38 @@
 # A Dockerfile to generate the Pypsa benchmarks reproducibly
 
-# Use a lightweight base image with conda support
-FROM continuumio/miniconda3 AS pypsa_benchmark_gen_base
-
-# Create a non‑root user
-RUN useradd -m conda
+# Use a lightweight base image with ubuntu latest support
+FROM ubuntu:latest AS pypsa_benchmark_gen_base
 
 #Switch to root user
 USER root
 
 # Install system packages
-RUN apt-get update && apt-get install -y git && \
+RUN apt-get update && apt-get install -y git wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Set environment name
-ENV CONDA_ENV_NAME=pypsa-benchmark-gen
 
 FROM pypsa_benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout 3679dc5
-    # This is the last commit of PyPSA-Eur on Oct 28, 2025
+    && git checkout 687bd02
+    # This is the last commit of PyPSA-Eur on Nov 26, 2025
 
-FROM repo_clone AS conda_env
-RUN --mount=type=cache,target=/opt/conda/pkgs \
-    cd pypsa-eur \
-    && conda env create -f envs/linux-64.lock.yaml -n $CONDA_ENV_NAME
+FROM repo_clone AS pixi_env
+RUN wget -qO- https://pixi.sh/install.sh | sh
 
-RUN /bin/bash -c "\
-    source $(conda info --base)/etc/profile.d/conda.sh && \
-    conda activate $CONDA_ENV_NAME && \
-    conda install ruamel.yaml && \
-    pip install git+https://github.com/open-energy-transition/linopy.git@b45dae3 --no-deps \
-"
+FROM pixi_env AS pypsa_eur_setup
+# Set up PATH and add explicit pip installation
+ENV PATH="/root/.pixi/bin:${PATH}"
+RUN cd pypsa-eur && \
+    pixi install --locked && \
+    pixi run python -m ensurepip && \
+    pixi run python -m pip install --upgrade pip && \
+    pixi run python -m pip install --no-deps git+https://github.com/open-energy-transition/linopy.git@9116e17
 
 # Now patch solve_network.py so that it generates LP files without solving:
 COPY solve_network.patch pypsa-eur/solve_network.patch
 RUN cd pypsa-eur && git apply solve_network.patch
 
-FROM conda_env AS pypsa_benchmark_gen
-COPY --chown=conda . pypsa-eur/
-WORKDIR ./pypsa-eur/
+FROM pypsa_eur_setup AS pypsa_benchmark_gen
+COPY --chown=pixi . pypsa-eur/
+WORKDIR pypsa-eur/
 CMD ["bash"]

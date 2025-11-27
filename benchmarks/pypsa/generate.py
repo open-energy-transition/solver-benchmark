@@ -242,7 +242,7 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
 
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
-    original_yaml.update(enable_section)
+    #original_yaml.update(enable_section)
 
     # Generate a new config file name
     output_file_name = file_name.with_stem(f'{file_name.stem}_{number_clusters}_{time_resolution}_{planning_horizon}')
