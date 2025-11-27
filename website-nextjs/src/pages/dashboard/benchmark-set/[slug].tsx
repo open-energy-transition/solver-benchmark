@@ -10,7 +10,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { ArrowIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
 import { useMemo } from "react";
-import Popup from "reactjs-popup";
 import { Color } from "@/constants/color";
 import InstancesTableResult from "@/components/admin/benchmark-detail/InstancesTableResult";
 import Link from "next/link";
@@ -18,6 +17,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { IResultState } from "@/types/state";
 import DataTable from "@/components/admin/benchmark-detail/DataTable";
 import SolverRuntimeComparison from "@/components/admin/benchmark-detail/SolverRuntimeComparison";
+import InfoPopup from "@/components/common/InfoPopup";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -27,6 +27,12 @@ const PageBenchmarkDetail = () => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
+
+  const benchmarkLatestResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.benchmarkLatestResults;
+    },
+  ).filter((result) => result.benchmark === benchmarkName);
 
   const benchmarkDetail = useMemo(
     () => metaData[benchmarkName as string],
@@ -102,10 +108,10 @@ const PageBenchmarkDetail = () => {
                     href={PATH_DASHBOARD.benchmarkSet.list}
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
-                    Benchmark Details
+                    Benchmark Set
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                  <p className="self-center font-semibold whitespace-normal md:whitespace-nowrap">
+                  <p className="text-opacity-50 self-center font-semibold whitespace-normal md:whitespace-nowrap">
                     {benchmarkName}
                   </p>
                 </div>
@@ -119,8 +125,7 @@ const PageBenchmarkDetail = () => {
             <Link href={"./"}>
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>
-            <Popup
-              on={["hover"]}
+            <InfoPopup
               trigger={() => (
                 <h5 className="text-ellipsis overflow-hidden pl-1.5">
                   {benchmarkName}
@@ -130,8 +135,8 @@ const PageBenchmarkDetail = () => {
               closeOnDocumentClick
               arrowStyle={{ color: Color.Stroke }}
             >
-              <div className="bg-stroke p-2 rounded">{benchmarkName}</div>
-            </Popup>
+              <div>{benchmarkName}</div>
+            </InfoPopup>
           </div>
           <div className="text-navy bg-white px-3 md:px-6 py-4 md:py-8 rounded-lg">
             <div className="flex justify-between pb-4">
@@ -149,6 +154,10 @@ const PageBenchmarkDetail = () => {
                 "-"
               )}
             </div>
+            <div className="pr-4 pb-4 text-sm text-navy/70">
+              <span className="font-semibold">License:</span>{" "}
+              {benchmarkDetail?.license ?? "None"}
+            </div>
             <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0">
               {columns.map((col) => (
                 <div
@@ -156,8 +165,7 @@ const PageBenchmarkDetail = () => {
                   className="border-b md:border-b-0 md:border-r last:border-none border-grey font-league w-full md:w-[14%] p-2 last:pl-2 md:last:pl-6 my-auto
         flex flex-col md:block bg-white md:bg-transparent rounded-lg md:rounded-none shadow-sm md:shadow-none"
                 >
-                  <Popup
-                    on={["hover"]}
+                  <InfoPopup
                     trigger={() => (
                       <div className="font-bold text-base md:text-base overflow-hidden text-ellipsis whitespace-nowrap">
                         {col.value ?? "-"}
@@ -167,10 +175,8 @@ const PageBenchmarkDetail = () => {
                     closeOnDocumentClick
                     arrowStyle={{ color: Color.Stroke }}
                   >
-                    <div className="bg-stroke p-2 rounded">
-                      {col.value ?? "-"}
-                    </div>
-                  </Popup>
+                    <div>{col.value ?? "-"}</div>
+                  </InfoPopup>
                   <div className="text-drak-green text-xs uppercase mt-1 md:mt-0">
                     {col.label}
                   </div>
@@ -185,11 +191,17 @@ const PageBenchmarkDetail = () => {
               <h5 className="font-medium mb-2 mt-2 font-league pl-1.5">
                 Results on this benchmark
               </h5>
-              <DataTable benchmarkName={benchmarkName as string} />
-              <SolverRuntimeComparison
-                benchmarkDetail={benchmarkDetail}
-                benchmarkName={benchmarkName as string}
-              />
+              {benchmarkLatestResults.length > 1 ? (
+                <>
+                  <DataTable benchmarkName={benchmarkName as string} />
+                  <SolverRuntimeComparison
+                    benchmarkDetail={benchmarkDetail}
+                    benchmarkName={benchmarkName as string}
+                  />
+                </>
+              ) : (
+                <div className="pl-2">No data available yet (coming soon!)</div>
+              )}
             </>
           )}
         </ContentWrapper>

@@ -162,6 +162,12 @@ const ContactSection = () => {
                 defer: true,
                 appendTo: "head",
               }}
+              container={{
+                element: "re-captcha",
+                parameters: {
+                  badge: "bottomleft",
+                },
+              }}
             >
               <ContactForm />
             </GoogleReCaptchaProvider>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { createD3Tooltip } from "@/utils/chart";
 
 interface DataPoint {
   category: string;
@@ -45,19 +46,7 @@ const D3BarChart = ({
       .style("background", "white")
       .style("overflow", "visible");
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("padding", "8px")
-      .style("font-size", "12px")
-      .style("color", "#333")
-      .style("box-shadow", "0px 4px 6px rgba(0, 0, 0, 0.1)")
-      .style("pointer-events", "none")
-      .style("opacity", 0);
+    const tooltip = createD3Tooltip();
 
     // Scales
     const xScale = d3

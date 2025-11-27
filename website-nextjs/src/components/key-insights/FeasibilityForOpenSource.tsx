@@ -4,17 +4,15 @@ import Note from "../shared/Note";
 import Link from "next/link";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 
+const HASH = "what-is-feasible-for-open-source-solvers";
 const FeasibilityForOpenSource = () => {
   const { ref: sectionRef } = useScrollSpy({
-    hash: "#what-is-feasible-for-open-source-solvers",
+    hash: `#${HASH}`,
   });
 
   return (
-    <div ref={sectionRef}>
-      <h4
-        id="what-is-feasible-for-open-source-solvers"
-        className="info-pages-heading"
-      >
+    <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
+      <h4 className="info-pages-heading">
         What is feasible for open source solvers?
       </h4>
       <p>
