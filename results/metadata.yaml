@@ -2787,20 +2787,11 @@ benchmarks:
     Sizes:
     - Name: 30-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/JRC-EU-TIMES-30-12ts.mps
       Temporal resolution: 12 time slices
       Spatial resolution: 30 regions
       Realistic: true
       Realistic motivation: Used for EU policy relevant analyses
-      Num. constraints: 13462042
-      Num. variables: 18926550
-    - Name: 30-2016ts
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
-      Temporal resolution: 12 time slices
-      Spatial resolution: 30 regions
-      Realistic: true
-      Realistic motivation: Used for EU-policy relevant analyses
       Num. constraints: 13462042
       Num. variables: 18926550
   JRC-EU-TIMES-dispatch:
@@ -2821,7 +2812,7 @@ benchmarks:
     Sizes:
     - Name: 30-2016ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/jrc_2016.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/JRC-EU-TIMES-dispatch-30-2016ts.mps
       Temporal resolution: 2016 times slices
       Spatial resolution: 30 regions
       Realistic: true
@@ -2851,7 +2842,7 @@ benchmarks:
     Sizes:
     - Name: 15-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/stem.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-STEM-15-1h.mps
       Temporal resolution: 1h
       Spatial resolution: 15 nodes
       Realistic: true
