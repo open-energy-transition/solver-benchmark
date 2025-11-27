@@ -64,7 +64,7 @@ jobs:
             app-path: website/app.py
 
       - name: Set FORK_PR environment variable
-        if: ${{ github.event.pull_request.head.repo.fork == true && github.event_name == 'pull_request' }}
+        if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
         run: echo "FORK_PR=true" >> $GITHUB_ENV
 
       - name: Check Next.js build
@@ -82,7 +82,7 @@ jobs:
                 echo "✓ reCAPTCHA key is configured"
               fi
             else
-              echo "Skipping reCAPTCHA key check for PRs from forks."
+              echo "Skipping reCAPTCHA key check for PRs from forks or Dependabot."
             fi
             npm install
             npm run build
