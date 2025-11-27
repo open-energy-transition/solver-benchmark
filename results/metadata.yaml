@@ -2798,7 +2798,7 @@ benchmarks:
       Num. variables: 91744
     - Name: 28-10ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_10.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-10ts.mps
       Temporal resolution: 10 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -2808,7 +2808,7 @@ benchmarks:
       Num. variables: 3105360
     - Name: 28-50ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_50.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-50ts.mps
       Temporal resolution: 50 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -2818,7 +2818,7 @@ benchmarks:
       Num. variables: 8396160
     - Name: 28-30ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_30.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-30ts.mps
       Temporal resolution: 30 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -2828,7 +2828,7 @@ benchmarks:
       Num. variables: 5719680
     - Name: 28-100ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_100.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-100ts.mps
       Temporal resolution: 100 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -2838,7 +2838,7 @@ benchmarks:
       Num. variables: 14342280
     - Name: 28-200ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/PI_OEB_200.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-200ts.mps
       Temporal resolution: 200 time slices
       Spatial resolution: 28 nodes
       Realistic: true
