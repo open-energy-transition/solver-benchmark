@@ -2778,6 +2778,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
       \ of Energy and Process Engineering, ETH Z\xFCrich https://zenodo.org/records/11074289"
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -2856,6 +2857,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
       \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -2883,6 +2885,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
       \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -2911,6 +2914,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
       \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled

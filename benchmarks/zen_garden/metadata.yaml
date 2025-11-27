@@ -6,6 +6,7 @@ benchmarks:
     Model name: ZEN-garden-PI
     Version:
     Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich https://zenodo.org/records/11074289
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -73,6 +74,7 @@ benchmarks:
     Model name: ZEN-garden-PI-annual-emission-limit
     Version:
     Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -95,6 +97,7 @@ benchmarks:
     Model name: ZEN-garden-PI-constrained-expansion
     Version:
     Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -117,6 +120,7 @@ benchmarks:
     Model name: ZEN-garden-PI-no-storage
     Version:
     Contributor(s)/Source: Jacob Mannhardt, Reliability and Risk Engineering, Institute of Energy and Process Engineering, ETH Zürich
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
