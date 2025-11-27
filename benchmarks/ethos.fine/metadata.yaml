@@ -6,6 +6,7 @@ benchmarks:
     Model name: Multi-regional example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: TODO
     Problem class: MILP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power-only
@@ -14,20 +15,23 @@ benchmarks:
     MILP features: Modelling of fixed costs
     Sizes:
     - Name: 8-1h
-      Size: # Automatically assigned when running the benchmark
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-full-time-series.mps
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-full-time-series-8-1h.mps
       Temporal resolution: 1 hour
       Spatial resolution: 8 nodes
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: # Automatically assigned when running the benchmark
-      Num. variables: # Automatically assigned when running the benchmark
+      Num. constraints: 2812735
+      Num. variables: 2374761
+      Num. continuous variables: 2374709
+      Num. integer variables: 52
   ethos-fine-multi-regional-48tp:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 48 typical days without segmentation.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: TODO
     Problem class: MILP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power-only
@@ -36,11 +40,13 @@ benchmarks:
     MILP features: Modelling of fixed costs
     Sizes:
     - Name: 8-1152ts
-      Size: # Automatically assigned when running the benchmark
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-model-48tp.mps
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-48tp-8-1152ts.mps
       Temporal resolution: 1152 time slices
       Spatial resolution: 8 nodes
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: # Automatically assigned when running the benchmark
-      Num. variables: # Automatically assigned when running the benchmark
+      Num. constraints: 222146
+      Num. variables: 169622
+      Num. continuous variables: 169570
+      Num. integer variables: 52
