@@ -254,65 +254,52 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
     return output_file_name
 
 
-def run_snakemake_command(command: str, capture_output: bool = True) -> subprocess.CompletedProcess:
+def run_snakemake_command(command: str, capture_output: bool = False) -> subprocess.CompletedProcess:
     """
-    Execute a Snakemake command and handle its output and potential errors.
-
-    Parameters
-    ----------
-    command : str
-        The full Snakemake command to be executed
-    capture_output : bool, optional
-        Whether to capture and log command output (default is True)
-
-    Returns
-    -------
-    subprocess.CompletedProcess
-        The completed process with run information
-
-    Raises
-    ------
-    subprocess.CalledProcessError
-        If the Snakemake command fails to execute successfully
-
-    Examples
-    --------
-    >>> result = run_snakemake_command("snakemake -call solve_elec_networks")
+    Execute a Snakemake command and stream its output to the container stdout/stderr
+    in real time. If capture_output=True, fall back to capturing for backward compatibility.
     """
-    try:
-        # Split the command to handle shell=False for better security
-        cmd_parts = command.split()
+    # Use shell splitting for security but allow complex commands if needed.
+    cmd_parts = command.split()
 
-        # Run Snakemake command
+    if capture_output:
+        # preserve existing behavior when caller explicitly wants captured output
         result = subprocess.run(
             cmd_parts,
-            check=True,  # Raise exception on non-zero exit
-            capture_output=capture_output,  # Optionally capture output
-            text=True  # Return strings instead of bytes
+            check=True,
+            capture_output=True,
+            text=True
         )
-
-        # Conditionally print output for logging
-        if capture_output:
-            if result.stdout:
-                print("Snakemake stdout:")
-                print(result.stdout)
-
-            if result.stderr:
-                print("Snakemake stderr:")
-                print(result.stderr)
-
+        if result.stdout:
+            print("Snakemake stdout:")
+            print(result.stdout)
+        if result.stderr:
+            print("Snakemake stderr:")
+            print(result.stderr)
         return result
 
-    except subprocess.CalledProcessError as e:
-        # Detailed error handling with informative message
-        error_msg = (
-            f"Snakemake command failed:\n"
-            f"Command: {command}\n"
-            f"Return Code: {e.returncode}\n"
-            f"STDOUT: {e.stdout}\n"
-            f"STDERR: {e.stderr}"
-        )
-        raise RuntimeError(error_msg) from e
+    # Stream output in real time
+    proc = subprocess.Popen(
+        cmd_parts,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+        universal_newlines=True
+    )
+
+    # Print each line as it arrives
+    for line in proc.stdout:
+        print(line, end="")
+
+    proc.stdout.close()
+    returncode = proc.wait()
+
+    if returncode != 0:
+        raise RuntimeError(f"Snakemake command failed (rc={returncode}): {command}")
+
+    # Return a CompletedProcess-like object for compatibility
+    return subprocess.CompletedProcess(cmd_parts, returncode)
 
 
 def generate_benchmark(
