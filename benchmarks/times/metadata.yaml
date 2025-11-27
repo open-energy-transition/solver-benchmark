@@ -341,23 +341,23 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 30-12ts
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
       Temporal resolution: 12 time slices
       Spatial resolution: 30 regions
       Realistic: true
       Realistic motivation: Used for EU policy relevant analyses
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 13462042
+      Num. variables: 18926550
     - Name: 30-2016ts
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
       Temporal resolution: 12 time slices
       Spatial resolution: 30 regions
       Realistic: true
       Realistic motivation: Used for EU-policy relevant analyses
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 13462042
+      Num. variables: 18926550
   JRC-EU-TIMES-dispatch:
     Short description: Model of the EU (and neighboring countries) representing all energy sectors and including final energy supply (T&D Infrastructure, pipeline etc.).
     Modelling framework: TIMES
@@ -372,14 +372,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 30-2016ts
-      Size: # Automatically assigned when running the benchmark
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/jrc_2016.mps
       Temporal resolution: 2016 times slices
       Spatial resolution: 30 regions
       Realistic: true
       Realistic motivation: Used for EU-policy relevant analyses
-      Num. constraints: # Automatically assigned when running the benchmark
-      Num. variables: # Automatically assigned when running the benchmark
+      Num. constraints: 19401352
+      Num. variables: 23208969
   TIMES-STEM:
     Short description: Model of the Swiss energy system, including dispatch analysis features (i.e. ramping rates, minimum online/offline times, minimum stable operating level, part load efficiency losses, startup/shutdown costs) and ancillary services (endogenous demand for primary and secondary, positive and negative reserve, adjusted minimum online and offline times for reserve provision, adjusted ramping constraints, capacity margin constraints for reserve provision, maximum contribution of power plant in reserve provision, reserve provision from storages and demand units, other bounds on reserve provision, storage degradation due to cycling)
     Modelling framework: TIMES
@@ -394,11 +394,11 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-1h
-      Size:
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/stem.mps
       Temporal resolution: 1h
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Typical TIMES model instances including multi-stage and multi-regional analysis with hourly resolution and operational constraints
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 6973257
+      Num. variables: 6670811
