@@ -333,6 +333,7 @@ benchmarks:
     Model name: JRC-EU TIMES
     Version:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Sector-coupled
@@ -364,6 +365,7 @@ benchmarks:
     Model name: JRC-EU-TIMES
     Version: # (optional) version of the model used to generate the benchmark
     Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure, Capacity Expansion, Operational
     Sectoral focus: Sector-coupled
@@ -386,6 +388,7 @@ benchmarks:
     Model name: Swiss TIMES Energy Model
     Version:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Sector-coupled
