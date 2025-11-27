@@ -158,7 +158,7 @@ def update_size_in_yaml(yaml_data, model_name, size_name, model_stats):
             size["Size"] = model_stats["size_category"]
             size["Num. constraints"] = model_stats["num_constraints"]
             size["Num. variables"] = model_stats["num_variables"]
-            if model_info["Technique"] == "MILP":
+            if model_info["Problem class"] == "MILP":
                 size["Num. continuous variables"] = model_stats[
                     "num_continuous_variables"
                 ]
@@ -259,7 +259,7 @@ def process_metadata_files(benchmark_folder, output_folder):
                                     continue
 
                                 model_stats = analyze_model_file(
-                                    model_path, model_info["Technique"] == "MILP"
+                                    model_path, model_info["Problem class"] == "MILP"
                                 )
 
                                 if model_stats:
