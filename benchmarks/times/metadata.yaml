@@ -343,7 +343,7 @@ benchmarks:
     Sizes:
     - Name: 30-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/JRC-EU-TIMES-30-12ts.mps
       Temporal resolution: 12 time slices
       Spatial resolution: 30 regions
       Realistic: true
@@ -352,7 +352,7 @@ benchmarks:
       Num. variables: 18926550
     - Name: 30-2016ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/jrc.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/JRC-EU-TIMES-dispatch-30-2016ts.mps
       Temporal resolution: 12 time slices
       Spatial resolution: 30 regions
       Realistic: true
