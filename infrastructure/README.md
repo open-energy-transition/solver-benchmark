@@ -1,13 +1,8 @@
-# OpenTofu
+# Reproducible Solver Benchmark Infrastructure
 
-- [Manifesto](https://opentofu.org/manifesto)
-- [About the OpenTofu fork](https://opentofu.org/fork)
-- [How to install](https://opentofu.org/docs/intro/install)
-- [Join our Slack community!](https://opentofu.org/slack)
-- [Weekly OpenTofu Status Updates](WEEKLY_UPDATES.md)
+This module automates the deployment of VMs on Google Cloud Platform to run energy system model benchmarks. Each VM is provisioned based on YAML configuration files that specify the benchmarks to run.
 
-![](https://raw.githubusercontent.com/opentofu/brand-artifacts/main/full/transparent/SVG/on-dark.svg#gh-dark-mode-only)
-![](https://raw.githubusercontent.com/opentofu/brand-artifacts/main/full/transparent/SVG/on-light.svg#gh-light-mode-only)
+## Prerequisites
 
 - [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine
 - A Google Cloud Platform account with a project set up
