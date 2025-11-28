@@ -19,7 +19,7 @@
     "compare-versions": "^6.1.1",
     "d3": "^7.9.0",
     "i": "^0.3.7",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "lodash": "^4.17.21",
     "lodash.camelcase": "^4.3.0",
     "next": "15.3.1",
