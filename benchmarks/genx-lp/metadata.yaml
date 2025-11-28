@@ -6,6 +6,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -15,7 +16,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -27,6 +28,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -36,7 +38,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -48,6 +50,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -57,7 +60,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -69,6 +72,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -78,7 +82,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -90,6 +94,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -99,7 +104,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc-3-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -111,6 +116,7 @@ benchmarks:
     Model name: GenX
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks; Daniele Lerede, Open Energy Transition
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: DC Optimal Power Flow
     Sectoral focus: Power-only
@@ -120,7 +126,7 @@ benchmarks:
     Sizes:
     - Name: 9-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 9 nodes
       Realistic: true

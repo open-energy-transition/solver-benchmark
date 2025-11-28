@@ -5,6 +5,7 @@ benchmarks:
     Model name: PyPSA-Eur
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -50,6 +51,7 @@ benchmarks:
     Model name: PyPSA-Eur
     Version: 0.13.0 (commit 8f1a6b1)
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
@@ -95,6 +97,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -116,6 +119,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -137,6 +141,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -160,6 +165,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -181,6 +187,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -204,6 +211,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -227,6 +235,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -250,6 +259,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -273,6 +283,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
@@ -296,6 +307,7 @@ benchmarks:
     Model name: PyPSA
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only

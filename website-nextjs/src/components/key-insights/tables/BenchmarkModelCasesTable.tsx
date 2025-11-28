@@ -57,7 +57,7 @@ const BenchmarkModelCasesTable = () => {
       {
         header: "",
         accessorKey: "header",
-        size: 120,
+        size: 245,
         enableColumnFilter: false,
         enableSorting: false,
         cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>
@@ -75,7 +75,7 @@ const BenchmarkModelCasesTable = () => {
       ].map((framework) => ({
         header: framework,
         accessorKey: framework,
-        size: 50,
+        size: 90,
         enableColumnFilter: false,
         enableSorting: false,
         cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>

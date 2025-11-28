@@ -29,7 +29,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       {
         header: "Model Framework",
         accessorKey: "modelName",
-        size: 120,
+        size: 180,
         enableColumnFilter: false,
         enableSorting: true,
         sortingFn: "alphanumeric",
@@ -40,7 +40,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       {
         header: `${problemClass} Benchmark`,
         accessorKey: "problemClass",
-        size: 230,
+        size: 250,
         enableColumnFilter: false,
         enableSorting: false,
         cell: (info) => {
@@ -68,7 +68,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "numVariables",
         enableColumnFilter: false,
         enableSorting: true,
-        size: 100,
+        size: 150,
         cell: (info) => (
           <div className="text-right">
             {formatNumberWithCommas(info.getValue() as number)}
@@ -80,7 +80,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "constraints",
         enableColumnFilter: false,
         enableSorting: true,
-        size: 120,
+        size: 180,
         cell: (info) => (
           <div className="text-right">
             {formatNumberWithCommas(info.getValue() as number)}
@@ -92,7 +92,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "spatialResolution",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 120,
+        size: 180,
         cell: (info) => (
           <div className="text-left whitespace-normal break-words">
             {String(info.getValue())}
@@ -104,7 +104,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "temporalResolution",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 140,
+        size: 180,
         cell: (info) => (
           <div className="text-left whitespace-normal break-words">
             {String(info.getValue())}
@@ -116,7 +116,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "solver",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 90,
+        size: 150,
         cell: (info) => (
           <div className="text-left whitespace-normal break-words">
             {String(info.getValue())}
@@ -128,7 +128,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         accessorKey: "runtime",
         enableColumnFilter: false,
         enableSorting: true,
-        size: 80,
+        size: 150,
         cell: (info) => (
           <div className="text-left">
             {humanizeSeconds(info.getValue() as number)}
