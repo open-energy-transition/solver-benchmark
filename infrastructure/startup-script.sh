@@ -55,8 +55,8 @@ tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
 
-# Install additional HiGHS from hipo branch with dependencies
-echo "Installing HiGHS from latest branch (which merges in highs development) with required dependencies..."
+# Install HiGHS-HiPO from `latest` branch by building from source
+echo "Installing HiGHS from latest branch from source..."
 
 # Set up working directory
 HIGHS_HIPO_DIR="/opt/highs-hipo-workspace"
@@ -65,11 +65,7 @@ cd "${HIGHS_HIPO_DIR}"
 
 # 2. Clone METIS
 echo "Cloning METIS (patched version)..."
-git clone --depth=1 --branch 510-ts https://github.com/galabovaa/METIS.git
-# pushd METIS
-# git fetch origin --depth=1 510-ts
-# git checkout 510-ts
-# popd
+git clone --depth=1 --branch 521-ts https://github.com/galabovaa/METIS.git
 
 # 3. Create installs directory
 echo "Creating installs directory..."
@@ -80,7 +76,7 @@ echo "Installing METIS..."
 pushd METIS
 cmake -S. -B build -DGKLIB_PATH="${HIGHS_HIPO_DIR}/METIS/GKlib" \
   -DCMAKE_INSTALL_PREFIX="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
+cmake --build build --parallel
 cmake --install build
 popd
 
@@ -89,10 +85,9 @@ echo "Cloning HiGHS repository..."
 git clone --depth=1 https://github.com/ERGO-Code/HiGHS.git
 cd HiGHS
 
-# Checkout the hipo branch
-echo "Checking out hipo branch..."
-
-HIPO_COMMIT_SHA="755a8e027a99a8d4ecf153a8dde4b2a767cdf384"
+# Checkout the latest branch as of Nov 26, 2025
+echo "Checking out branch latest..."
+HIPO_COMMIT_SHA="9e8322ac32c3e95cff3c9dfd1abd9b4a32ed925c"
 git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
 git checkout "${HIPO_COMMIT_SHA}"
 
@@ -101,12 +96,12 @@ echo "Configuring HiGHS with HIPO support..."
 cmake -S. -B build \
       -DHIPO=ON \
       -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
+cmake --build build --parallel
 
 # Verify the installation
-echo "Verifying HiGHS hipo installation..."
+echo "Verifying HiGHS HiPO installation..."
 "${HIGHS_HIPO_DIR}/HiGHS/build/bin/highs" --version
-echo "HiGHS hipo installation completed"
+echo "HiGHS HiPO installation completed"
 
 # Go back to root directory
 cd /
