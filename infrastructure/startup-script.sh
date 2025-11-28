@@ -76,7 +76,7 @@ echo "Installing METIS..."
 pushd METIS
 cmake -S. -B build -DGKLIB_PATH="${HIGHS_HIPO_DIR}/METIS/GKlib" \
   -DCMAKE_INSTALL_PREFIX="${HIGHS_HIPO_DIR}/installs"
-cmake --build build --parallel
+cmake --build build
 cmake --install build
 popd
 
@@ -96,7 +96,7 @@ echo "Configuring HiGHS with HIPO support..."
 cmake -S. -B build \
       -DHIPO=ON \
       -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs"
-cmake --build build --parallel
+cmake --build build
 
 # Verify the installation
 echo "Verifying HiGHS HiPO installation..."
