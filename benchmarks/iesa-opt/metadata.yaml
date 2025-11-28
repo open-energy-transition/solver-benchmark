@@ -1,0 +1,33 @@
+## (optional) link to the modelling framework repo used to generate the benchmark(s) (e.g. https://github.com/PyPSA/pypsa-eur)
+benchmarks:
+  IESA-Opt-NL:
+    Short description: Energy system model of the Netherlands over one year (2050) with net-zero climate target.
+    Modelling framework: IESA-Opt
+    Model name: IESA-Opt-NL
+    Version: 20251002
+    Contributor(s)/Source: TNO, Utrecht University
+    Problem class: LP
+    Application:  Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Time horizon: Single-stage (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 1-3h
+      Size: # Automatically assigned when running the benchmark
+      URL: https://filesender.surf.nl/?s=download&token=1100e202-e0eb-4f0c-af30-037cf74d1c81
+      Temporal resolution: 3 hours
+      Spatial resolution: 1 node
+      Realistic: true
+      Realistic motivation: Designed for long-term energy planning and policy advice
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
+    - Name: 20-3h
+      Size: # Automatically assigned when running the benchmark
+      URL: https://filesender.surf.nl/?s=download&token=a198561f-3b98-4d48-9c1e-36c4ffdc90be
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Designed for long-term energy planning and policy advice
+      Num. constraints: # Automatically assigned when running the benchmark
+      Num. variables: # Automatically assigned when running the benchmark
