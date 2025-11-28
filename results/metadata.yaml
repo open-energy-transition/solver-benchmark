@@ -1,4 +1,29 @@
 benchmarks:
+  ethos_fine_europe_60tp:
+    Short description: Energy system model for Europe (EU27+UK+NO+CH) with focus on
+      hydrogen infrastructure. The model uses time series aggregation by tsam with
+      60 typical days with 12 segments.
+    Modelling framework: ethos.fine
+    Model name: ethos.fine.europe
+    Version:
+    Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric
+    Time horizon: Single-stage (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 175-720ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos_fine_europe_60tp-175-720ts.mps
+      Temporal resolution: 720 time slices
+      Spatial resolution: 175 nodes
+      Realistic: false
+      Realistic motivation:
+      Num. constraints: 9230938
+      Num. variables: 8141182
   genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion.
