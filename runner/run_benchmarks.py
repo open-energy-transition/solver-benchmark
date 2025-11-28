@@ -642,7 +642,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs-hipo variants are available: highs-hipo, highs-hipo-ipm, highs-hipo-32, highs-hipo-64.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs-hipo variants are available: highs-hipo, highs-hipo-ipm, highs-hipo-32, highs-hipo-64, highs-hipo-128, highs-hipo-no2hop.",
     )
     parser.add_argument(
         "--append",

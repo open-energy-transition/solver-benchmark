@@ -75,7 +75,7 @@ for year in "${years[@]}"; do
         solver_args="--solvers ${solvers_override}"
         echo "Using solver override: ${solvers_override}"
     elif [ "$year" = "2025" ]; then
-        solver_args="--solvers highs highs-hipo-ipm highs-hipo-128 highs-hipo-32 highs-hipo-64"
+        solver_args="--solvers highs highs-hipo-ipm highs-hipo-128 highs-hipo-32 highs-hipo-64 highs-hipo-no2hop"
     else
         solver_args="--solvers highs scip cbc gurobi glpk"
     fi

@@ -20,6 +20,7 @@ class HighsHipoVariant(str, Enum):
     HIPO_32 = "highs-hipo-32"
     HIPO_64 = "highs-hipo-64"
     HIPO_128 = "highs-hipo-128"
+    HIPO_NO2HOP = "highs-hipo-no2hop"
 
     # cli args returns a list of command line arguments for the HiGHS binary.
     def cli_args(self) -> collections.abc.Iterable[str]:
@@ -43,6 +44,9 @@ class HighsHipoVariant(str, Enum):
                 options["hipo_block_size"] = 64
             case HighsHipoVariant.HIPO_128:
                 options["hipo_block_size"] = 128
+            case HighsHipoVariant.HIPO_NO2HOP:
+                options["hipo_block_size"] = 64
+                options["hipo_metis_no2hop"] = "true"
         return "\n".join(f"{k} = {v}" for k, v in options.items())
 
 
