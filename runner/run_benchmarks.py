@@ -9,6 +9,7 @@ import shutil
 import statistics
 import subprocess
 import time
+from collections import OrderedDict
 from pathlib import Path
 from socket import gethostname
 
@@ -16,8 +17,6 @@ import psutil
 import requests
 import yaml
 from run_solver import HighsHipoVariant
-
-hostname = gethostname()
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -102,31 +101,47 @@ def parse_memory(output):
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
-def write_csv_headers(results_csv, mean_stddev_csv):
+def csv_record(check=False, **kwargs):
+    record = OrderedDict(
+        [
+            ("Benchmark", kwargs.get("benchmark_name")),
+            ("Size", kwargs.get("size")),
+            ("Solver", kwargs.get("solver")),
+            ("Solver Version", kwargs.get("solver_version")),
+            ("Solver Release Year", kwargs.get("solver_release_year")),
+            ("Status", kwargs.get("status")),
+            ("Termination Condition", kwargs.get("condition")),
+            ("Runtime (s)", kwargs.get("runtime")),
+            ("Memory Usage (MB)", kwargs.get("memory")),
+            ("Objective Value", kwargs.get("objective")),
+            ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
+            ("Duality Gap", kwargs.get("duality_gap")),
+            ("Reported Runtime (s)", kwargs.get("reported_runtime")),
+            ("Timeout", kwargs.get("timeout")),
+            ("Hostname", kwargs.get("vm_hostname")),
+            ("Run ID", kwargs.get("run_id")),
+            ("Timestamp", kwargs.get("timestamp")),
+            ("VM Instance Type", kwargs.get("vm_instance_type")),
+            ("VM Zone", kwargs.get("vm_zone")),
+            ("Solver benchmark version", kwargs.get("solver_benchmark_version")),
+        ]
+    )
+
+    if check:
+        missing_attrs = [key for key, val in record.items() if val is None]
+        if missing_attrs:
+            raise ValueError(f"Missing attributes: {missing_attrs}")
+
+    return record
+
+
+def write_csv_headers(
+    results_csv, mean_stddev_csv, headers=csv_record(check=False).keys()
+):
     # Initialize CSV files with headers
     with open(results_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(
-            [
-                "Benchmark",
-                "Size",
-                "Solver",
-                "Solver Version",
-                "Solver Release Year",
-                "Status",
-                "Termination Condition",
-                "Runtime (s)",
-                "Memory Usage (MB)",
-                "Objective Value",
-                "Max Integrality Violation",
-                "Duality Gap",
-                "Reported Runtime (s)",
-                "Timeout",
-                "Hostname",
-                "Run ID",
-                "Timestamp",
-            ]
-        )
+        writer.writerow(headers)
 
     with open(mean_stddev_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
@@ -150,30 +165,30 @@ def write_csv_headers(results_csv, mean_stddev_csv):
         )
 
 
-def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
+def write_csv_row(
+    results_csv,
+    benchmark_name,
+    metrics,
+    run_id,
+    timestamp,
+    vm_instance_type,
+    vm_zone,
+    solver_benchmark_version,
+):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
-            [
-                benchmark_name,
-                metrics["size"],
-                metrics["solver"],
-                metrics["solver_version"],
-                metrics["solver_release_year"],
-                metrics["status"],
-                metrics["condition"],
-                metrics["runtime"],
-                metrics["memory"],
-                metrics["objective"],
-                metrics["max_integrality_violation"],
-                metrics["duality_gap"],
-                metrics["reported_runtime"],
-                metrics["timeout"],
-                hostname,
-                run_id,
-                timestamp,
-            ]
+            csv_record(
+                check=True,
+                **metrics,
+                run_id=run_id,
+                timestamp=timestamp,
+                benchmark_name=benchmark_name,
+                vm_instance_type=vm_instance_type,
+                vm_zone=vm_zone,
+                solver_benchmark_version=solver_benchmark_version,
+            )
         )
 
 
@@ -416,6 +431,42 @@ def main(
     run_id=None,
 ):
     # If no run_id is provided, generate one
+    hostname = gethostname()
+
+    environment_metadata = {}
+    try:
+        environment_metadata["vm_instance_type"] = requests.get(
+            "http://metadata.google.internal/computeMetadata/v1/instance/machine-type",
+            headers={"Metadata-Flavor": "Google"},
+        ).text.split(
+            "/"
+        )[
+            -1
+        ]  # the api will return a response like projects/319823961160/machineTypes/c4-highmem-8
+    except Exception as e:
+        print(f"Error getting VM instance type: {e}")
+        environment_metadata["vm_instance_type"] = "unknown"
+
+    try:
+        environment_metadata["solver_benchmark_version"] = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except Exception as e:
+        print(f"Error getting git commit hash: {e}")
+        environment_metadata["solver_benchmark_version"] = "unknown"
+
+    try:
+        # curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone
+        environment_metadata["vm_zone"] = requests.get(
+            "http://metadata.google.internal/computeMetadata/v1/instance/zone",
+            headers={"Metadata-Flavor": "Google"},
+        ).text.split("/")[-1]
+    except Exception as e:
+        print(f"Error getting VM zone: {e}")
+        environment_metadata["vm_zone"] = "unknown"
+
     if run_id is None:
         run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
         print(f"Generated run_id: {run_id}")
@@ -551,7 +602,12 @@ def main(
 
                 # Write each benchmark result immediately after the measurement
                 write_csv_row(
-                    results_csv, benchmark["name"], metrics, run_id, timestamp
+                    results_csv,
+                    benchmark["name"],
+                    metrics,
+                    run_id,
+                    timestamp,
+                    **environment_metadata,
                 )
 
                 # If solver errors or times out, don't run further iterations
@@ -612,6 +668,7 @@ def main(
                         reference_metrics,
                         run_id,
                         reference_timestamp,
+                        **environment_metadata,
                     )
 
                     # Update the last reference run time
