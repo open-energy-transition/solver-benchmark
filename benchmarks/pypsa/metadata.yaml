@@ -427,3 +427,99 @@ benchmarks:
       Num. variables: 87611
       Num. continuous variables: 87606
       Num. integer variables: 5
+  pypsa-at-2025:
+    Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2025.lp
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  pypsa-at-2030:
+    Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2030.lp
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  pypsa-at-2040:
+    Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2040.lp
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  pypsa-at-2050:
+    Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2050.lp
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
