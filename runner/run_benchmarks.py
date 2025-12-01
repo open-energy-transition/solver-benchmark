@@ -181,7 +181,7 @@ def write_csv_row(
         writer = csv.writer(file)
         writer.writerow(
             csv_record(
-                check=True,
+                check=False,  # allow None values
                 **metrics,
                 run_id=run_id,
                 timestamp=timestamp,
@@ -190,7 +190,7 @@ def write_csv_row(
                 vm_zone=vm_zone,
                 solver_benchmark_version=solver_benchmark_version,
                 hostname=hostname,
-            )
+            ).values()
         )
 
 
