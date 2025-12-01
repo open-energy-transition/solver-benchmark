@@ -118,7 +118,7 @@ def csv_record(check=False, **kwargs):
             ("Duality Gap", kwargs.get("duality_gap")),
             ("Reported Runtime (s)", kwargs.get("reported_runtime")),
             ("Timeout", kwargs.get("timeout")),
-            ("Hostname", kwargs.get("vm_hostname")),
+            ("Hostname", kwargs.get("hostname")),
             ("Run ID", kwargs.get("run_id")),
             ("Timestamp", kwargs.get("timestamp")),
             ("VM Instance Type", kwargs.get("vm_instance_type")),
@@ -173,6 +173,7 @@ def write_csv_row(
     timestamp,
     vm_instance_type,
     vm_zone,
+    hostname,
     solver_benchmark_version,
 ):
     # NOTE: ensure the order is the same as the headers above
@@ -188,6 +189,7 @@ def write_csv_row(
                 vm_instance_type=vm_instance_type,
                 vm_zone=vm_zone,
                 solver_benchmark_version=solver_benchmark_version,
+                hostname=hostname,
             )
         )
 
@@ -433,7 +435,7 @@ def main(
     # If no run_id is provided, generate one
     hostname = gethostname()
 
-    environment_metadata = {}
+    environment_metadata = {"hostname": hostname}
     try:
         environment_metadata["vm_instance_type"] = requests.get(
             "http://metadata.google.internal/computeMetadata/v1/instance/machine-type",
