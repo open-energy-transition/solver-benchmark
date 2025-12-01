@@ -240,8 +240,16 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
         }
     }
 
+    solver_section = {
+        "solver": {
+            "name": "highs",
+            "options": "highs-default"
+        }
+    }
+
     # Merge the new section into the existing YAML
     original_yaml.update(scenario_section)
+    original_yaml.update(solver_section)
     #original_yaml.update(enable_section)
 
     # Generate a new config file name
