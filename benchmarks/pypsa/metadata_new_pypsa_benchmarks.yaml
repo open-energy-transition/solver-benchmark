@@ -18,32 +18,25 @@ benchmarks:
       Temporal resolution: 1 hour
       Spatial resolution: 50 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 117381417
+      Num. variables: 54430498
     - Name: 50-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-50-3H-vopt.lp
       Temporal resolution: 3 hours
       Spatial resolution: 50 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
-    - Name: 100-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-100-1H-vopt.lp
-      Temporal resolution: 1 hour
-      Spatial resolution: 100 nodes
-      Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 39131257
+      Num. variables: 18146578
     - Name: 100-3h
-      Size: L
+      Size: S
+      # TODO Highs reports parser error while reading this one:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-100-3H-vopt.lp
       Temporal resolution: 3 hours
       Spatial resolution: 100 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 0
+      Num. variables: 0
   pypsa-eur-elec-trex_vopt:
     Short description: PyPSA-Eur power sector infrastructure run for Europe considering 2050 as single planning horizon with optimal volume-transmission expansion.
     Modelling framework: PyPSA
@@ -63,29 +56,61 @@ benchmarks:
       Temporal resolution: 1 hour
       Spatial resolution: 50 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 26254973
+      Num. variables: 11450068
     - Name: 50-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-50-3H-vopt.lp
       Temporal resolution: 3 hours
       Spatial resolution: 50 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 8752493
+      Num. variables: 3817188
+    - Name: 50-8h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-50-8H-vopt.lp
+      Temporal resolution: 8 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints: 4261956
+      Num. variables: 1829368
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-50-12H-vopt.lp
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints: 2189063
+      Num. variables: 954858
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-50-24H-vopt.lp
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Num. constraints: 1095158
+      Num. variables: 477803
     - Name: 100-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-100-1H-vopt.lp
       Temporal resolution: 1 hour
       Spatial resolution: 100 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
-    - Name: 100-3h
+      Num. constraints: 51117006
+      Num. variables: 21936488
+    - Name: 100-8h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-100-3H-vopt.lp
-      Temporal resolution: 3 hours
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-100-8H-vopt.lp
+      Temporal resolution: 8 hours
       Spatial resolution: 100 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 6391731
+      Num. variables: 2743328
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-100-12H-vopt.lp
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Num. constraints: 4261956
+      Num. variables: 1829368
