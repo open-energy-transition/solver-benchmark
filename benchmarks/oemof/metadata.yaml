@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 1-240ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-diesel-genset-nonconvex-investment-default.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-diesel-genset-nonconvex-investment-1-240ts.lp
       Temporal resolution: 240 time slices
       Spatial resolution: Single-node mini-grid
       Realistic: false
@@ -39,7 +39,7 @@ benchmarks:
     Sizes:
     - Name: 1-8760ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-economic-results-default.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-economic-results-1-8760ts.lp
       Temporal resolution: 8760 time slices
       Spatial resolution: Single-node system
       Realistic: false
@@ -63,7 +63,7 @@ benchmarks:
     Sizes:
     - Name: 1-365ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-house-with-nonconvex-investment-default.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-house-with-nonconvex-investment-1-365ts.lp
       Temporal resolution: 365 time slices
       Spatial resolution: Single-node heat system
       Realistic: false
@@ -87,7 +87,7 @@ benchmarks:
     Sizes:
     - Name: 1-365ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-house-without-nonconvex-investment-default.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-house-without-nonconvex-investment-1-365ts.lp
       Temporal resolution: 365 time slices
       Spatial resolution: Single-node heat system
       Realistic: false
