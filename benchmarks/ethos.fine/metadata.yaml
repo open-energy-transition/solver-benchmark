@@ -1,7 +1,7 @@
 ## https://github.com/FZJ-IEK3-VSA/FINE
 benchmarks:
-  ethos-fine-multi-regional-full-time-series:
-    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses full time series.
+  ethos-fine-multi-regional-7tp:
+    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 7 typical days without segmentation.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
     Version:
@@ -14,39 +14,89 @@ benchmarks:
     Time horizon: 1 year
     MILP features: Modelling of fixed costs
     Sizes:
-    - Name: 8-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-full-time-series-8-1h.mps
-      Temporal resolution: 1 hour
-      Spatial resolution: 8 nodes
-      Realistic: false
-      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 2812735
-      Num. variables: 2374761
-      Num. continuous variables: 2374709
-      Num. integer variables: 52
-  ethos-fine-multi-regional-48tp:
-    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 48 typical days without segmentation.
-    Modelling framework: ethos.fine
-    Model name: Multi-regional example
-    Version:
-    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
-    License: TODO
-    Problem class: MILP
-    Application: Infrastructure & Capacity expansion, Operational
-    Sectoral focus: Power-only
-    Sectors: Supply, Power
-    Time horizon: 1 year
-    MILP features: Modelling of fixed costs
-    Sizes:
-    - Name: 8-1152ts
+    - Name: 8-168ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-48tp-8-1152ts.mps
-      Temporal resolution: 1152 time slices
+      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQANc1LGRhscQZ0jo4UG0g73AQrGmNIRE1gfy1hQIIv13Wk?e=DrcPLY
+      Temporal resolution: 168 time slices
       Spatial resolution: 8 nodes
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 222146
-      Num. variables: 169622
-      Num. continuous variables: 169570
-      Num. integer variables: 52
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables: 
+  ethos-fine-multi-regional-7tp-12seg:
+    Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 7 typical days and 12 segments per typical day.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: TODO
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-only
+    Sectors: Supply, Power
+    Time horizon: 1 year
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-84s
+      Size: M
+      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQDhHovxgYp0Q6spIQvXH-PnAY8h5JdLrT0c1r1I_Xixcu8?e=6pizxi
+      Temporal resolution: 84 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 
+      Num. variables: 
+      Num. continuous variables: 
+      Num. integer variables: 
+  ethos-fine-energyland-full-timeseries:
+    Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model features full time series resolution (8760 hours) for one year.
+    Modelling framework: ethos.fine
+    Model name: Energyland example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: TODO
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power, Heat, Transport
+    Sectors: Supply, Power, Heat, Transport
+    Time horizon: 1 year
+    MILP features: 
+    Sizes:
+    - Name: 1-8760s
+      Size: M
+      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQBgTu7HAL49TZvXdsS2tM-pAR7LiN4qu5PX5lgCkBkSTUw?e=IPlFeK
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 
+      Num. variables: 
+      Num. continuous variables: 
+      Num. integer variables: 
+  ethos-fine-energyland-48tp:
+    Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model uses time series aggregation by tsam with 48 typical days without segmentation.
+    Modelling framework: ethos.fine
+    Model name: Energyland example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: TODO
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power, Heat, Transport
+    Sectors: Supply, Power, Heat, Transport
+    Time horizon: 1 year
+    MILP features: 
+    Sizes:
+    - Name: 1-1152s
+      Size: M
+      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQBcZI_0AH6zQL8XMUv3p0b5AQmGLxx3A8_9GPDvTQbkNog?e=cUlJAh
+      Temporal resolution: 1152 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 
+      Num. variables: 
+      Num. continuous variables: 
+      Num. integer variables: 
