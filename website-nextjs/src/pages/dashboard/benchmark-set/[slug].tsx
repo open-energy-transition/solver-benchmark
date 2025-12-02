@@ -154,6 +154,10 @@ const PageBenchmarkDetail = () => {
                 "-"
               )}
             </div>
+            <div className="pr-4 pb-4 text-sm text-navy/70">
+              <span className="font-semibold">License:</span>{" "}
+              {benchmarkDetail?.license ?? "None"}
+            </div>
             <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0">
               {columns.map((col) => (
                 <div
