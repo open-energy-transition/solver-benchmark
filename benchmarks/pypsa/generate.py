@@ -242,6 +242,9 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
 
     solver_section = {
         "solving": {
+            "options": {
+                "io_api": "direct"
+            },
             "solver": {
                 "name": "highs",
                 "options": "highs-default"
