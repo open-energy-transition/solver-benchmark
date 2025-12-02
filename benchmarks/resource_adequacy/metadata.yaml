@@ -1,9 +1,9 @@
 ## https://github.com/lprieto1409/DC-OPF-Carolinas
 benchmarks:
   DCOPF-Carolinas_1W:
-    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Short description: DC optimal power flow model for resource adequacy assessment over a one-week horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
     Modelling framework: DCOPF
-    Model name: DCOPF
+    Model name: DCOPF-Carolinas
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     License: CC BY 4.0
@@ -24,9 +24,9 @@ benchmarks:
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_1W:
-    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Short description: DC optimal power flow model with unit commitment for resource adequacy assessment over a one-week horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
     Modelling framework: DCOPF
-    Model name: DCOPF
+    Model name: DCOPF-Carolinas
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     License: CC BY 4.0
@@ -49,9 +49,9 @@ benchmarks:
       Num. continuous variables: 122017
       Num. integer variables: 9261
   DCOPF-Carolinas_2M:
-    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a two-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Short description: DC optimal power flow model for resource adequacy assessment over a two-month horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
     Modelling framework: DCOPF
-    Model name: DCOPF
+    Model name: DCOPF-Carolinas
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     License: CC BY 4.0
@@ -72,9 +72,9 @@ benchmarks:
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_2M:
-    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a two-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Short description: DC optimal power flow model with unit commitment for resource adequacy assessment over a two-month horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
     Modelling framework: DCOPF
-    Model name: DCOPF
+    Model name: DCOPF-Carolinas
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     License: CC BY 4.0
@@ -97,9 +97,9 @@ benchmarks:
       Num. continuous variables: 122017
       Num. integer variables: 9261
   DCOPF-Carolinas_6M:
-    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a six-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
+    Short description: DC optimal power flow model for resource adequacy assessment over a six-month horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
     Modelling framework: DCOPF
-    Model name: DCOPF
+    Model name: DCOPF-Carolinas
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     License: CC BY 4.0
@@ -107,7 +107,7 @@ benchmarks:
     Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
-    Time horizon: 179 days (~6 months)
+    Time horizon: 6 months
     MILP features: None
     Sizes:
     - Name: 1-997
@@ -120,9 +120,9 @@ benchmarks:
       Num. constraints: 199255
       Num. variables: 122017
   DCOPF-Carolinas_uc_6M:
-    Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a six-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution
+    Short description: DC optimal power flow model with unit commitment for resource adequacy assessment over a six-month horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
     Modelling framework: DCOPF
-    Model name: DCOPF
+    Model name: DCOPF-Carolinas
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
     License: CC BY 4.0
@@ -130,12 +130,60 @@ benchmarks:
     Application: Resource Adequacy
     Sectoral focus: Power-only
     Sectors: Electric
-    Time horizon: 179 days (~6 months)
+    Time horizon: 6 months
     MILP features: Unit commitment
     Sizes:
     - Name: 1-997
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-1-997.lp
+      Temporal resolution: 1 hour
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 220143
+      Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
+  DCOPF-Carolinas_240days:
+    Short description: DC optimal power flow model for resource adequacy assessment over a 240-day horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
+    Modelling framework: DCOPF
+    Model name: DCOPF-Carolinas
+    Version:
+    Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Resource Adequacy
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 240 days
+    MILP features: None
+    Sizes:
+    - Name: 1-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_240days-1-997.lp
+      Temporal resolution: 1 hour
+      Spatial resolution: 997 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 199255
+      Num. variables: 122017
+  DCOPF-Carolinas_240days_uc:
+    Short description: DC optimal power flow model with unit commitment for resource adequacy assessment over a 240-day horizon with hourly resolution. Uses 2021 weather year for load, solar, and wind time series. Evaluates resource adequacy via slack variables under transmission constraints at nodal resolution.
+    Modelling framework: DCOPF
+    Model name: DCOPF-Carolinas
+    Version:
+    Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Resource Adequacy
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 240 days
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 1-997
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_240days_uc-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
