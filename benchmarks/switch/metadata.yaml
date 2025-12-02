@@ -14,7 +14,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-tiny-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -39,7 +39,7 @@ benchmarks:
     Notes: This toy example illustrates how SWITCH can be used to construct and run a multi-period, multi-zone capacity expansion model. Results have not been fully evaluated.
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3zone-toy-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -63,7 +63,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3zone-toy-stochastic-PySP-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -87,7 +87,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-carbon-cap-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -111,7 +111,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-hydrogen-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -135,7 +135,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-planning-reserves-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -159,7 +159,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-retrofits-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
@@ -183,7 +183,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 3-6ts
-      Size:
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-rps-simple-3-6ts.lp
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
