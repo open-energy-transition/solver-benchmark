@@ -443,7 +443,7 @@ benchmarks:
     Sizes:
     - Name: 11-24h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2025.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2025-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
@@ -467,7 +467,7 @@ benchmarks:
     Sizes:
     - Name: 11-24h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2030.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2030-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
@@ -491,7 +491,7 @@ benchmarks:
     Sizes:
     - Name: 11-24h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2040.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2040-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
@@ -515,7 +515,7 @@ benchmarks:
     Sizes:
     - Name: 11-24h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2050.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2050-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
