@@ -2201,7 +2201,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: 3_zone_tiny
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
+    Contributor(s)/Source: https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -2227,7 +2230,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: 3zone_toy
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/3zone_toy
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/3zone_toy;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -2255,7 +2261,10 @@ benchmarks:
     Modelling framework: SWITCH + PySP
     Model name: 3zone_toy_stochastic_PySP
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: MILP
     Application: Infrastructure & Stochastic capacity expansion
     Sectoral focus: Power-only
@@ -2282,7 +2291,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: carbon_cap
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/carbon_cap
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/carbon_cap;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -2308,7 +2320,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: hydrogen
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/hydrogen
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/hydrogen;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -2334,7 +2349,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: planning_reserves
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/planning_reserves
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/planning_reserves;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -2358,7 +2376,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: retrofits
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/retrofits
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/retrofits;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
@@ -2383,7 +2404,10 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: rps_simple
     Version:
-    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/rps_simple
+    Contributor(s)/Source: https://github.com/switch-model/switch/tree/master/examples/rps_simple;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under Apache License 2.0, benchmark instances not
+      licensed.
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
