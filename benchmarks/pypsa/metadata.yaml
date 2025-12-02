@@ -427,7 +427,7 @@ benchmarks:
       Num. variables: 87611
       Num. continuous variables: 87606
       Num. integer variables: 5
-  pypsa-at-2025:
+  pypsa-at-sec-trex_vopt-2025:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
     Model name: PyPSA-AT
@@ -451,7 +451,7 @@ benchmarks:
       Num. variables:
       Num. continuous variables:
       Num. integer variables:
-  pypsa-at-2030:
+  pypsa-at-sec-trex_vopt-2030:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
     Model name: PyPSA-AT
@@ -475,7 +475,7 @@ benchmarks:
       Num. variables:
       Num. continuous variables:
       Num. integer variables:
-  pypsa-at-2040:
+  pypsa-at-sec-trex_vopt-2040:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
     Model name: PyPSA-AT
@@ -499,7 +499,7 @@ benchmarks:
       Num. variables:
       Num. continuous variables:
       Num. integer variables:
-  pypsa-at-2050:
+  pypsa-at-sec-trex_vopt-2050:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
     Model name: PyPSA-AT
