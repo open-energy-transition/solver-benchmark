@@ -442,13 +442,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2025.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 10520250
+      Num. variables: 4810311
       Num. continuous variables:
       Num. integer variables:
   pypsa-at-sec-trex_vopt-2030:
@@ -466,13 +466,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2030.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 11274060
+      Num. variables: 5229269
       Num. continuous variables:
       Num. integer variables:
   pypsa-at-sec-trex_vopt-2040:
@@ -490,13 +490,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2040.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 10717265
+      Num. variables: 5059494
       Num. continuous variables:
       Num. integer variables:
   pypsa-at-sec-trex_vopt-2050:
@@ -514,12 +514,12 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2050.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: true
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 10545129
+      Num. variables: 5042053
       Num. continuous variables:
       Num. integer variables:
