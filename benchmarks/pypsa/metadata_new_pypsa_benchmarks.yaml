@@ -30,7 +30,7 @@ benchmarks:
       Num. variables: 18146578
     - Name: 100-3h
       Size: S
-      # TODO Highs reports parser error while reading this one:
+      # TODO Highs reports parser error while reading this one: (but 20251201 instance-03 shows OOM not error?)
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-sec-100-3H-vopt.lp
       Temporal resolution: 3 hours
       Spatial resolution: 100 nodes
