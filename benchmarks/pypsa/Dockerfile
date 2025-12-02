@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y git wget && \
 FROM pypsa_benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout 687bd02
-    # This is the last commit of PyPSA-Eur on Nov 26, 2025
+    && git checkout 2739717
+    # This is the last commit of PyPSA-Eur on Dec 2, 2025
 
 FROM repo_clone AS pixi_env
 RUN wget -qO- https://pixi.sh/install.sh | sh

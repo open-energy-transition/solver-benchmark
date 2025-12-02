@@ -242,9 +242,6 @@ def add_scenario_section(file_name: pathlib.Path, number_clusters: str, time_res
 
     solver_section = {
         "solving": {
-            "options": {
-                "io_api": "direct"
-            },
             "solver": {
                 "name": "highs",
                 "options": "highs-default"
@@ -432,7 +429,7 @@ if __name__ == "__main__":
                     mps_name
                 )
                 os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(mps_path)
-                print(f"[INFO] Writing MPS to : {mps_path}")
+                print(f"[INFO] Writing MPS to : {os.environ['ONLY_GENERATE_PROBLEM_FILE']}")
 
                 # run solver
                 generate_benchmark(input_args.benchmark_name, output_yaml_file_name, input_args.dry_run)
