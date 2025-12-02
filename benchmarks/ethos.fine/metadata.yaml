@@ -24,7 +24,7 @@ benchmarks:
       Num. constraints:
       Num. variables:
       Num. continuous variables:
-      Num. integer variables: 
+      Num. integer variables:
   ethos-fine-multi-regional-7tp-12seg:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 7 typical days and 12 segments per typical day.
     Modelling framework: ethos.fine
@@ -46,10 +46,10 @@ benchmarks:
       Spatial resolution: 8 nodes
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 
-      Num. variables: 
-      Num. continuous variables: 
-      Num. integer variables: 
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
   ethos-fine-energyland-full-timeseries:
     Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model features full time series resolution (8760 hours) for one year.
     Modelling framework: ethos.fine
@@ -62,7 +62,7 @@ benchmarks:
     Sectoral focus: Power, Heat, Transport
     Sectors: Supply, Power, Heat, Transport
     Time horizon: 1 year
-    MILP features: 
+    MILP features:
     Sizes:
     - Name: 1-8760s
       Size: M
@@ -71,10 +71,10 @@ benchmarks:
       Spatial resolution: 1 node
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 
-      Num. variables: 
-      Num. continuous variables: 
-      Num. integer variables: 
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
   ethos-fine-energyland-48tp:
     Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model uses time series aggregation by tsam with 48 typical days without segmentation.
     Modelling framework: ethos.fine
@@ -87,7 +87,7 @@ benchmarks:
     Sectoral focus: Power, Heat, Transport
     Sectors: Supply, Power, Heat, Transport
     Time horizon: 1 year
-    MILP features: 
+    MILP features:
     Sizes:
     - Name: 1-1152s
       Size: M
@@ -96,7 +96,7 @@ benchmarks:
       Spatial resolution: 1 node
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 
-      Num. variables: 
-      Num. continuous variables: 
-      Num. integer variables: 
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
