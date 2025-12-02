@@ -1663,7 +1663,7 @@ benchmarks:
     Modelling framework: OEMOF
     Model name: diesel_genset_nonconvex_investment
     Version:
-    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/diesel_genset_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
@@ -1678,17 +1678,17 @@ benchmarks:
       Temporal resolution: 240 time slices
       Spatial resolution: Single-node mini-grid
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 4331
+      Num. variables: 3374
+      Num. continuous variables: 3134
+      Num. integer variables: 240
   OEMOF-economic-results:
     Short description: Simple energy system model demonstrating variable and investment
       cost calculation using oemof.solph Results class.
     Modelling framework: OEMOF
     Model name: economic_results_with_invest
     Version:
-    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/economic_results
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
@@ -1698,15 +1698,15 @@ benchmarks:
     MILP features: Investment optimization; minimal binary/integer presence
     Sizes:
     - Name: 1-8760ts
-      Size: L
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-economic-results-1-8760ts.lp
       Temporal resolution: 8760 time slices
       Spatial resolution: Single-node system
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 52567
+      Num. variables: 61326
+      Num. continuous variables: 61325
+      Num. integer variables: 1
   OEMOF-house-with-nonconvex-investment:
     Short description: Hybrid heating system combining solph.Investment and solph.NonConvex
       on the same component, modeling wood fireplace and gas boiler with minimum loads
@@ -1714,7 +1714,7 @@ benchmarks:
     Modelling framework: OEMOF
     Model name: house_with_nonconvex_investment
     Version:
-    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_with_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
@@ -1730,10 +1730,10 @@ benchmarks:
       Temporal resolution: 365 time slices
       Spatial resolution: Single-node heat system
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 2541
+      Num. variables: 1821
+      Num. continuous variables: 1457
+      Num. integer variables: 364
   OEMOF-house-without-nonconvex-investment:
     Short description: Heating system example combining solph.Investment and solph.NonConvex
       applied to different components, including a solar thermal collector, wood fireplace,
@@ -1741,7 +1741,7 @@ benchmarks:
     Modelling framework: OEMOF
     Model name: house_without_nonconvex_investment
     Version:
-    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_without_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
@@ -1757,10 +1757,10 @@ benchmarks:
       Temporal resolution: 365 time slices
       Spatial resolution: Single-node heat system
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 2181
+      Num. variables: 2184
+      Num. continuous variables: 1822
+      Num. integer variables: 362
   pypsa-eur-sec:
     Short description: Sector-coupled (power, heating, biomass, industrial, transport)
       PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
