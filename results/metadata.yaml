@@ -1657,6 +1657,119 @@ benchmarks:
       Num. variables: 1619451
       Num. continuous variables: 1619199
       Num. integer variables: 252
+  OEMOF-diesel-genset-nonconvex-investment:
+    Short description: Hybrid mini-grid model combining Investment and NonConvex options
+      for a diesel generator, PV, battery, and power-conversion components.
+    Modelling framework: OEMOF
+    Model name: diesel_genset_nonconvex_investment
+    Version:
+    Contributor(s)/Source: https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/diesel_genset_nonconvex_investment.py;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under MIT License, benchmark instances not licensed.
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: NonConvex flows, investment optimization, binary on/off for genset
+    Sizes:
+    - Name: default
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/Oemof_diesel-genset-nonconvex-investment.lp
+      Temporal resolution: Hourly time series (solar + demand)
+      Spatial resolution: Single-node mini-grid
+      Realistic: false
+      Num. constraints: 4331
+      Num. variables: 3374
+      Num. continuous variables: 2894
+      Num. integer variables: 240
+      Num. binary variables: 240
+  OEMOF-economic-results:
+    Short description: Simple energy system model demonstrating variable and investment
+      cost calculation using oemof.solph Results class.
+    Modelling framework: OEMOF
+    Model name: economic_results_with_invest
+    Version:
+    Contributor(s)/Source: https://github.com/oemof/oemof-solph/tree/dev/examples/economic_results;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under MIT License, benchmark instances not licensed.
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: Investment optimization; minimal binary/integer presence
+    Sizes:
+    - Name: default
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/Oemof_economic-results.lp
+      Temporal resolution: Hourly time series (wind, PV, demand)
+      Spatial resolution: Single-node system
+      Realistic: false
+      Num. constraints: 52567
+      Num. variables: 61326
+      Num. continuous variables: 61324
+      Num. integer variables: 1
+      Num. binary variables: 1
+  OEMOF-house-with-nonconvex-investment:
+    Short description: Hybrid heating system combining solph.Investment and solph.NonConvex
+      on the same component, modeling wood fireplace and gas boiler with minimum loads
+      and minimum up-times.
+    Modelling framework: OEMOF
+    Model name: house_with_nonconvex_investment
+    Version:
+    Contributor(s)/Source: https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_with_nonconvex_investment.py;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under MIT License, benchmark instances not licensed.
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Heating-only
+    Sectors: Heat
+    Time horizon: Single-stage
+    MILP features: NonConvex operation; Investment decisions; minimum up-time; minimum
+      load
+    Sizes:
+    - Name: default
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/Oemof_house-with-nonconvex-investment.lp
+      Temporal resolution: Hourly time series (seasonal heating demand)
+      Spatial resolution: Single-node heat system
+      Realistic: false
+      Num. constraints: 2541
+      Num. variables: 1821
+      Num. continuous variables: 1093
+      Num. integer variables: 364
+      Num. binary variables: 364
+  OEMOF-house-without-nonconvex-investment:
+    Short description: Heating system example combining solph.Investment and solph.NonConvex
+      applied to different components, including a solar thermal collector, wood fireplace,
+      and gas boiler.
+    Modelling framework: OEMOF
+    Model name: house_without_nonconvex_investment
+    Version:
+    Contributor(s)/Source: https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_without_nonconvex_investment.py;
+      Vamsi Priya Goli, Open Energy Transition
+    License: Model code licensed under MIT License, benchmark instances not licensed.
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Heating-only
+    Sectors: Heat
+    Time horizon: Single-stage
+    MILP features: NonConvex operation; Investment in thermal collector; minimum up-time;
+      minimum load
+    Sizes:
+    - Name: default
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/Oemof_house-without-nonconvex-investment.lp
+      Temporal resolution: Hourly time series (seasonal heating demand + solar thermal
+        input)
+      Spatial resolution: Single-node heat system
+      Realistic: false
+      Num. constraints: 2181
+      Num. variables: 2184
+      Num. continuous variables: 1460
+      Num. integer variables: 362
+      Num. binary variables: 362
   pypsa-eur-sec:
     Short description: Sector-coupled (power, heating, biomass, industrial, transport)
       PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
