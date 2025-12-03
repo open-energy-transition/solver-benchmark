@@ -6,7 +6,7 @@ benchmarks:
     Model name: Multi-regional example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
-    License: TODO
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power-only
@@ -16,22 +16,22 @@ benchmarks:
     Sizes:
     - Name: 8-168ts
       Size: M
-      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQANc1LGRhscQZ0jo4UG0g73AQrGmNIRE1gfy1hQIIv13Wk?e=DrcPLY
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-7tp-8-168ts.mps.gz
       Temporal resolution: 168 time slices
       Spatial resolution: 8 nodes
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 91178
+      Num. variables: 55979
+      Num. continuous variables: 55927
+      Num. integer variables: 52
   ethos-fine-multi-regional-7tp-12seg:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 7 typical days and 12 segments per typical day.
     Modelling framework: ethos.fine
     Model name: Multi-regional example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
-    License: TODO
+    License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power-only
@@ -41,22 +41,22 @@ benchmarks:
     Sizes:
     - Name: 8-84ts
       Size: M
-      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQDhHovxgYp0Q6spIQvXH-PnAY8h5JdLrT0c1r1I_Xixcu8?e=6pizxi
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-7tp-12seg-8-84s.mps.gz
       Temporal resolution: 84 time slices
       Spatial resolution: 8 nodes
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 64214
+      Num. variables: 33215
+      Num. continuous variables: 33163
+      Num. integer variables: 52
   ethos-fine-energyland-full-timeseries:
     Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model features full time series resolution (8760 hours) for one year.
     Modelling framework: ethos.fine
     Model name: Energyland example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
-    License: TODO
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power, Heat, Transport
@@ -66,22 +66,20 @@ benchmarks:
     Sizes:
     - Name: 1-8760ts
       Size: M
-      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQBgTu7HAL49TZvXdsS2tM-pAR7LiN4qu5PX5lgCkBkSTUw?e=IPlFeK
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-energyland-full-timeseries-1-8760s.mps.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 543229
+      Num. variables: 473179
   ethos-fine-energyland-48tp:
     Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model uses time series aggregation by tsam with 48 typical days without segmentation.
     Modelling framework: ethos.fine
     Model name: Energyland example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
-    License: TODO
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power, Heat, Transport
@@ -91,12 +89,10 @@ benchmarks:
     Sizes:
     - Name: 1-1152ts
       Size: M
-      URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQBcZI_0AH6zQL8XMUv3p0b5AQmGLxx3A8_9GPDvTQbkNog?e=cUlJAh
+      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-energyland-48tp-1-1152s.mps.gz
       Temporal resolution: 1152 time slices
       Spatial resolution: 1 node
       Realistic: false
       Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 40198
+      Num. variables: 32770
