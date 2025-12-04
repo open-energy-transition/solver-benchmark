@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_1W-997-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -37,7 +37,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_1W-997-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -61,7 +61,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_2M-997-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -83,7 +83,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_2M-997-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -107,7 +107,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-997-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -129,7 +129,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-997-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true

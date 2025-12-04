@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-1_three_zones-no_uc-3-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-1_three_zones-no_uc-3-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -36,7 +36,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-2_three_zones_w_electrolyzer-no_uc-3-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-2_three_zones_w_electrolyzer-no_uc-3-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -57,7 +57,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -78,7 +78,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-4_three_zones_w_policies_slack-no_uc-3-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-4_three_zones_w_policies_slack-no_uc-3-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -99,7 +99,7 @@ benchmarks:
     Sizes:
     - Name: 3-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-6_three_zones_w_multistage-no_uc-3-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-6_three_zones_w_multistage-no_uc-3-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 3 nodes
       Realistic: false
@@ -120,7 +120,7 @@ benchmarks:
     Sizes:
     - Name: 9-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 9 nodes
       Realistic: true
