@@ -14,7 +14,7 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_1W-1-997.lp
       Temporal resolution: 1 hour
@@ -37,7 +37,7 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_1W-1-997.lp
       Temporal resolution: 1 hour
@@ -62,7 +62,7 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_2M-1-997.lp
       Temporal resolution: 1 hour
@@ -85,7 +85,7 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_2M-1-997.lp
       Temporal resolution: 1 hour
@@ -110,7 +110,7 @@ benchmarks:
     Time horizon: 6 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-1-997.lp
       Temporal resolution: 1 hour
@@ -133,7 +133,7 @@ benchmarks:
     Time horizon: 6 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-1-997.lp
       Temporal resolution: 1 hour
@@ -158,7 +158,7 @@ benchmarks:
     Time horizon: 240 days
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_240days-1-997.lp
       Temporal resolution: 1 hour
@@ -181,7 +181,7 @@ benchmarks:
     Time horizon: 240 days
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_240days_uc-1-997.lp
       Temporal resolution: 1 hour
