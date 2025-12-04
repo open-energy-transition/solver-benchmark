@@ -174,16 +174,14 @@ function App({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      // Only scroll to top if the base path changes
-      const newPath = url.split("?")[0];
-      const currentPath = router.pathname;
+    const handleRouteChange = () => {
+      // Always scroll to top when a route change completes
+      window.scrollTo(0, 0);
 
-      if (newPath !== currentPath) {
-        const mainElement = document.querySelector("main");
-        if (mainElement) {
-          mainElement.scrollTo(0, 0);
-        }
+      // Also scroll the main element if it exists
+      const mainElement = document.querySelector("main");
+      if (mainElement) {
+        mainElement.scrollTo(0, 0);
       }
     };
 
@@ -192,7 +190,7 @@ function App({ Component, pageProps }: AppProps) {
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, [router.pathname]);
+  }, [router]);
 
   const renderLayout = () => {
     return (
@@ -294,6 +292,7 @@ function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <Provider store={store}>{renderLayout()}</Provider>
+      <div id="re-captcha"></div>
     </>
   );
 }

@@ -39,6 +39,7 @@ REQUIRED_BENCHMARK_FIELDS = [
     "Model name",
     "Version",
     "Contributor(s)/Source",
+    "License",
     "Problem class",
     "Application",
     "Sectoral focus",

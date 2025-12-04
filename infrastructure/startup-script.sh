@@ -1,18 +1,43 @@
 #!/bin/bash
-# Log all output to a file
-exec > >(tee /var/log/startup-script.log) 2>&1
-echo "Starting setup script at $(date)"
+# Add timestamp to each line of output
+log_with_timestamp() {
+    while IFS= read -r line; do
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $line"
+    done
+}
 
-# Generate a unique run ID using timestamp and instance ID
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+# Log all output to a file
+exec > >(log_with_timestamp | tee -a /var/log/startup-script.log) 2>&1
+echo "Starting setup script at $(date)"
+start_time=$(date +%s)
+
+
+# Try to get run_id from metadata (if provided by Terraform for shared parallel runs)
+RUN_ID=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/run_id" 2>/dev/null || echo "")
+
+# Get instance name (used for file naming even if using shared run_id)
 INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
-RUN_ID="${TIMESTAMP}_${INSTANCE_NAME}"
-echo "Generated unique run ID: ${RUN_ID}"
+
+# If no run_id from metadata, generate a unique one using timestamp and instance ID
+if [[ -z "${RUN_ID}" ]]; then
+    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+    RUN_ID="${TIMESTAMP}_${INSTANCE_NAME}"
+    echo "Generated unique run ID: ${RUN_ID}"
+else
+    echo "Using shared run ID from Terraform: ${RUN_ID}"
+fi
 
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
-apt-get -qq install -y tmux git time curl jq build-essential
+apt-get -qq install -y tmux git time curl jq build-essential cmake htop
+
+# Install BLAS dependency
+echo "Installing BLAS..."
+apt-get -qq install -y libopenblas-dev
+
+wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x /usr/local/bin/yq
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
@@ -20,7 +45,7 @@ gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt
 
 # Clone the repository
 echo "Cloning repository..."
-git clone --depth=1 -b run-v1 https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing Highs..."
@@ -29,6 +54,9 @@ curl -L "https://github.com/JuliaBinaryWrappers/HiGHSstatic_jll.jl/releases/down
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
+
+# Go back to root directory
+cd /
 
 # Downloading benchmark reference model
 curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.lp" -o benchmark-test-model.lp
@@ -44,6 +72,17 @@ rm ~/miniconda3/miniconda.sh
 echo "Setting up conda environment..."
 echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
 ~/miniconda3/bin/conda init bash
+echo "Elapsed: $(($(date +%s)-start_time))s"
+
+# Accept Anaconda Terms of Service to avoid interactive prompts
+echo "Accepting Anaconda Terms of Service..."
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
+# Accept Anaconda Terms of Service to avoid interactive prompts
+echo "Accepting Anaconda Terms of Service..."
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 # Get benchmark years from instance metadata
 BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
@@ -71,10 +110,30 @@ echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 cd /solver-benchmark/
 chmod +x ./runner/benchmark_all.sh
 
+# Extract solver from benchmark YAML content if present
+# This enables per-VM solver selection for multi-phase orchestration
+# Extract solver from benchmark YAML content if present using yq
+# This enables per-VM solver selection for multi-phase orchestration
+# Use yq to extract the 'solver' field from the benchmark YAML content.
+# We assume yq is available on the system.
+SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver // ""' - 2>/dev/null)
+# Normalize: strip surrounding quotes and CR, then trim whitespace
+SOLVER_FROM_YAML=$(printf "%s" "${SOLVER_FROM_YAML}" | sed -e 's/^"//' -e 's/"$//' | tr -d '\r' | xargs || true)
+
+if [ -n "${SOLVER_FROM_YAML}" ]; then
+    echo "Using solver from benchmark YAML: ${SOLVER_FROM_YAML}"
+else
+    echo "No solver field in benchmark YAML, using default solver list for year"
+fi
+
 # Run the benchmark_all.sh script with our years and the run_id
 echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"
 source ~/miniconda3/bin/activate
-./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
+if [ -n "${SOLVER_FROM_YAML}" ]; then
+    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" -s "${SOLVER_FROM_YAML}" ./benchmarks/"${BENCHMARK_FILE}"
+else
+    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
+fi
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
@@ -82,6 +141,7 @@ if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "All benchmarks completed at $(date)"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # Create a copy of results
 CLEAN_FILENAME=$(basename "${BENCHMARK_FILE}" .yaml)
@@ -98,6 +158,7 @@ if [ $COPY_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Benchmark results successfully copied at $(date)"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # ----- GCS UPLOAD CONFIGURATION -----
 # Check if GCS upload is enabled

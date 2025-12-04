@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import { getSolverColor } from "@/utils/chart";
+import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
@@ -75,18 +75,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("overflow", "visible");
 
     // Tooltip setup
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background", "white")
-      .style("padding", "8px")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "4px")
-      .style("font-size", "12px")
-      .style("opacity", 0)
-      .style("pointer-events", "none") // Prevent tooltip from interfering with hover
-      .style("z-index", "100");
+    const tooltip = createD3Tooltip();
 
     const xScale = d3
       .scaleBand()
@@ -298,7 +287,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           .duration(100)
           .attr("opacity", 1);
 
-        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip.transition().duration(200).style("opacity", 1);
 
         let ratioText;
         if (d.status !== "ok" && d.baseSolverStatus === "ok") {
@@ -372,7 +361,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         return "";
       })
       .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip.transition().duration(200).style("opacity", 1);
         let ratioText;
         if (d.status !== "ok" && d.baseSolverStatus === "ok") {
           ratioText = `Ratio: N/A because ${d.solver} TO`;
@@ -449,7 +438,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           .on("mouseover", (event) => {
             element.attr("opacity", 0.7);
 
-            tooltip.transition().duration(200).style("opacity", 0.9);
+            tooltip.transition().duration(200).style("opacity", 1);
             tooltip
               .html(
                 `Benchmark: ${d.benchmark}-${d.size}<br/>` +

@@ -77,7 +77,7 @@ const SgmRuntimeComparison = ({
         }}
         xAxisLabel=""
         yAxisLabel="Relative average runtime (normalized)"
-        height={400}
+        chartHeight={400}
         rotateXAxisLabels={false}
         tooltipFormat={tooltipFormat}
         axisLabelTitle={getAxisLabelTitle}

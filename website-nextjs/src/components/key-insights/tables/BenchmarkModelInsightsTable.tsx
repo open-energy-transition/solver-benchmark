@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MetaDataEntry } from "@/types/meta-data";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import Popup from "reactjs-popup";
+import InfoPopup from "@/components/common/InfoPopup";
 
 interface IColumnTable extends MetaDataEntry {
   framework: string;
@@ -28,7 +28,7 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Framework",
         accessorKey: "framework",
-        size: 120,
+        size: 180,
         enableColumnFilter: false,
         enableSorting: true,
         sortingFn: "alphanumeric",
@@ -39,7 +39,7 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Problem Class",
         accessorKey: "problemClass",
-        size: 80,
+        size: 230,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -50,8 +50,7 @@ const BenchmarkModelInsightsTable = () => {
         enableSorting: true,
         size: 100,
         cell: (info) => (
-          <Popup
-            on={["hover"]}
+          <InfoPopup
             trigger={() => (
               <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
                 {info.getValue() as string}
@@ -60,11 +59,8 @@ const BenchmarkModelInsightsTable = () => {
             position="top center"
             closeOnDocumentClick
           >
-            <div className="bg-white p-2 rounded">
-              {" "}
-              {info.getValue() as string}{" "}
-            </div>
-          </Popup>
+            <div> {info.getValue() as string} </div>
+          </InfoPopup>
         ),
       },
       {
