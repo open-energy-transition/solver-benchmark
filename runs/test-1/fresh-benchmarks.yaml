@@ -1,0 +1,43 @@
+benchmarks:
+  pypsa-eur-elec-trex:
+    Short description: PyPSA-Eur power sector infrastructure run for Italy considering 2050 as single planning horizon with transmission expansion.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 3-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-trex-3-12h.lp
+      Temporal resolution: 12 hours
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 119786
+      Num. variables: 57705
+  pypsa-eur-elec-op:
+    Short description: PyPSA-Eur operational run for Italy considering 2050 as single planning horizon.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version: 0.13.0 (commit 8f1a6b1)
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    Problem class: LP
+    Application: Operational
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 6-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-eur-elec-op-6-24h.lp
+      Temporal resolution: 24 hours
+      Spatial resolution: 6 nodes
+      Realistic: false
+      Num. constraints: 126776
+      Num. variables: 58841

@@ -9,14 +9,14 @@ import shutil
 import statistics
 import subprocess
 import time
+from collections import OrderedDict
 from pathlib import Path
 from socket import gethostname
 
 import psutil
 import requests
 import yaml
-
-hostname = gethostname()
+from run_solver import HighsHipoVariant
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -45,8 +45,12 @@ def get_conda_package_versions(solvers, env_name=None):
         name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            package = name_to_pkg.get(solver, solver)
-            solver_versions[solver] = installed_packages.get(package, None)
+            # Handle highs-hipo variants as special cases - not conda packages
+            if solver in HighsHipoVariant:
+                solver_versions[solver] = get_highs_hipo_version()
+            else:
+                package = name_to_pkg.get(solver, solver)
+                solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -97,31 +101,47 @@ def parse_memory(output):
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
-def write_csv_headers(results_csv, mean_stddev_csv):
+def csv_record(check=False, **kwargs):
+    record = OrderedDict(
+        [
+            ("Benchmark", kwargs.get("benchmark_name")),
+            ("Size", kwargs.get("size")),
+            ("Solver", kwargs.get("solver")),
+            ("Solver Version", kwargs.get("solver_version")),
+            ("Solver Release Year", kwargs.get("solver_release_year")),
+            ("Status", kwargs.get("status")),
+            ("Termination Condition", kwargs.get("condition")),
+            ("Runtime (s)", kwargs.get("runtime")),
+            ("Memory Usage (MB)", kwargs.get("memory")),
+            ("Objective Value", kwargs.get("objective")),
+            ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
+            ("Duality Gap", kwargs.get("duality_gap")),
+            ("Reported Runtime (s)", kwargs.get("reported_runtime")),
+            ("Timeout", kwargs.get("timeout")),
+            ("Hostname", kwargs.get("hostname")),
+            ("Run ID", kwargs.get("run_id")),
+            ("Timestamp", kwargs.get("timestamp")),
+            ("VM Instance Type", kwargs.get("vm_instance_type")),
+            ("VM Zone", kwargs.get("vm_zone")),
+            ("Solver benchmark version", kwargs.get("solver_benchmark_version")),
+        ]
+    )
+
+    if check:
+        missing_attrs = [key for key, val in record.items() if val is None]
+        if missing_attrs:
+            raise ValueError(f"Missing attributes: {missing_attrs}")
+
+    return record
+
+
+def write_csv_headers(
+    results_csv, mean_stddev_csv, headers=csv_record(check=False).keys()
+):
     # Initialize CSV files with headers
     with open(results_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(
-            [
-                "Benchmark",
-                "Size",
-                "Solver",
-                "Solver Version",
-                "Solver Release Year",
-                "Status",
-                "Termination Condition",
-                "Runtime (s)",
-                "Memory Usage (MB)",
-                "Objective Value",
-                "Max Integrality Violation",
-                "Duality Gap",
-                "Reported Runtime (s)",
-                "Timeout",
-                "Hostname",
-                "Run ID",
-                "Timestamp",
-            ]
-        )
+        writer.writerow(headers)
 
     with open(mean_stddev_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
@@ -145,30 +165,32 @@ def write_csv_headers(results_csv, mean_stddev_csv):
         )
 
 
-def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
+def write_csv_row(
+    results_csv,
+    benchmark_name,
+    metrics,
+    run_id,
+    timestamp,
+    vm_instance_type,
+    vm_zone,
+    hostname,
+    solver_benchmark_version,
+):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
-            [
-                benchmark_name,
-                metrics["size"],
-                metrics["solver"],
-                metrics["solver_version"],
-                metrics["solver_release_year"],
-                metrics["status"],
-                metrics["condition"],
-                metrics["runtime"],
-                metrics["memory"],
-                metrics["objective"],
-                metrics["max_integrality_violation"],
-                metrics["duality_gap"],
-                metrics["reported_runtime"],
-                metrics["timeout"],
-                hostname,
-                run_id,
-                timestamp,
-            ]
+            csv_record(
+                check=False,  # allow None values
+                **metrics,
+                run_id=run_id,
+                timestamp=timestamp,
+                benchmark_name=benchmark_name,
+                vm_instance_type=vm_instance_type,
+                vm_zone=vm_zone,
+                solver_benchmark_version=solver_benchmark_version,
+                hostname=hostname,
+            ).values()
         )
 
 
@@ -320,6 +342,32 @@ def get_highs_binary_version():
         return "unknown"
 
 
+def get_highs_hipo_version():
+    """Get the version of the HiGHS-HiPO binary from the --version command"""
+    if os.geteuid() != 0:
+        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+    else:
+        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+
+    try:
+        result = subprocess.run(
+            [highs_hipo_binary, "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        )
+
+        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
+        if version_match:
+            return version_match.group(1) + "-hipo"
+
+        return "unknown-hipo"
+    except Exception as e:
+        print(f"Error getting HiGHS-HiPO binary version: {str(e)}")
+        return "unknown-hipo"
+
+
 def benchmark_highs_binary():
     """
     Run a reference benchmark using the pre-installed HiGHS binary
@@ -385,6 +433,42 @@ def main(
     run_id=None,
 ):
     # If no run_id is provided, generate one
+    hostname = gethostname()
+
+    environment_metadata = {"hostname": hostname}
+    try:
+        environment_metadata["vm_instance_type"] = requests.get(
+            "http://metadata.google.internal/computeMetadata/v1/instance/machine-type",
+            headers={"Metadata-Flavor": "Google"},
+        ).text.split(
+            "/"
+        )[
+            -1
+        ]  # the api will return a response like projects/319823961160/machineTypes/c4-highmem-8
+    except Exception as e:
+        print(f"Error getting VM instance type: {e}")
+        environment_metadata["vm_instance_type"] = "unknown"
+
+    try:
+        environment_metadata["solver_benchmark_version"] = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except Exception as e:
+        print(f"Error getting git commit hash: {e}")
+        environment_metadata["solver_benchmark_version"] = "unknown"
+
+    try:
+        # curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone
+        environment_metadata["vm_zone"] = requests.get(
+            "http://metadata.google.internal/computeMetadata/v1/instance/zone",
+            headers={"Metadata-Flavor": "Google"},
+        ).text.split("/")[-1]
+    except Exception as e:
+        print(f"Error getting VM zone: {e}")
+        environment_metadata["vm_zone"] = "unknown"
+
     if run_id is None:
         run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
         print(f"Generated run_id: {run_id}")
@@ -479,6 +563,13 @@ def main(
         )
 
         for solver in solvers:
+            # Restrict highs-hipo variants to 2025 only
+            if solver in HighsHipoVariant and year != "2025":
+                print(
+                    f"Solver {solver} is only available for 2025 benchmarks. Current year: {year}. Skipping."
+                )
+                continue
+
             solver_version = solvers_versions.get(solver)
             if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")
@@ -513,7 +604,12 @@ def main(
 
                 # Write each benchmark result immediately after the measurement
                 write_csv_row(
-                    results_csv, benchmark["name"], metrics, run_id, timestamp
+                    results_csv,
+                    benchmark["name"],
+                    metrics,
+                    run_id,
+                    timestamp,
+                    **environment_metadata,
                 )
 
                 # If solver errors or times out, don't run further iterations
@@ -574,6 +670,7 @@ def main(
                         reference_metrics,
                         run_id,
                         reference_timestamp,
+                        **environment_metadata,
                     )
 
                     # Update the last reference run time
@@ -604,7 +701,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs-hipo variants are available: highs-hipo, highs-hipo-ipm, highs-hipo-32, highs-hipo-64, highs-hipo-128, highs-hipo-no2hop.",
     )
     parser.add_argument(
         "--append",
