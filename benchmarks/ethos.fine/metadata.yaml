@@ -39,7 +39,7 @@ benchmarks:
     Time horizon: 1 year
     MILP features: Modelling of fixed costs
     Sizes:
-    - Name: 8-84s
+    - Name: 8-84ts
       Size: M
       URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQDhHovxgYp0Q6spIQvXH-PnAY8h5JdLrT0c1r1I_Xixcu8?e=6pizxi
       Temporal resolution: 84 time slices
@@ -64,7 +64,7 @@ benchmarks:
     Time horizon: 1 year
     MILP features:
     Sizes:
-    - Name: 1-8760s
+    - Name: 1-8760ts
       Size: M
       URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQBgTu7HAL49TZvXdsS2tM-pAR7LiN4qu5PX5lgCkBkSTUw?e=IPlFeK
       Temporal resolution: 8760 time slices
@@ -89,7 +89,7 @@ benchmarks:
     Time horizon: 1 year
     MILP features:
     Sizes:
-    - Name: 1-1152s
+    - Name: 1-1152ts
       Size: M
       URL: https://samfzj-my.sharepoint.com/:u:/g/personal/j_behrens_fz-juelich_de/IQBcZI_0AH6zQL8XMUv3p0b5AQmGLxx3A8_9GPDvTQbkNog?e=cUlJAh
       Temporal resolution: 1152 time slices
