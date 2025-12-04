@@ -57,7 +57,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Heating-only
-    Sectors: Heat
+    Sectors: Heating
     Time horizon: Single-stage
     MILP features: NonConvex operation; Investment decisions; minimum up-time; minimum load
     Sizes:
@@ -81,7 +81,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Heating-only
-    Sectors: Heat
+    Sectors: Heating
     Time horizon: Single-stage
     MILP features: NonConvex operation; Investment in thermal collector; minimum up-time; minimum load
     Sizes:
