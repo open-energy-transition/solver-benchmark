@@ -2046,7 +2046,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_1W-1-997.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_1W-997-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2073,7 +2073,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_1W-1-997.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_1W-997-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2102,7 +2102,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_2M-1-997.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_2M-997-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2129,7 +2129,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_2M-1-997.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_2M-997-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2158,7 +2158,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-1-997.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-997-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2185,7 +2185,7 @@ benchmarks:
     Sizes:
     - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-1-997.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-997-1h.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -2211,7 +2211,7 @@ benchmarks:
     Sizes:
     - Name: 1-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia-1-6.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia-1-6ts.lp
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
       Spatial resolution: 1 region
       Realistic: false
@@ -2233,7 +2233,7 @@ benchmarks:
     Sizes:
     - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS-9-12ts.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2257,7 +2257,7 @@ benchmarks:
     Sizes:
     - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC-9-12ts.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2281,7 +2281,7 @@ benchmarks:
     Sizes:
     - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ-9-12ts.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2305,7 +2305,7 @@ benchmarks:
     Sizes:
     - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP-9-12ts.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2329,7 +2329,7 @@ benchmarks:
     Sizes:
     - Name: 9-12ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods-9-12ts.lp
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -2585,7 +2585,7 @@ benchmarks:
     Sizes:
     - Name: 1-1ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1ts.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 1 region
       Realistic: false
@@ -2593,7 +2593,7 @@ benchmarks:
       Num. variables: 544694
     - Name: 40-1ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1ts.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 40 regions
       Realistic: false
@@ -2614,7 +2614,7 @@ benchmarks:
     Sizes:
     - Name: 26-1ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1ts.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
@@ -2636,7 +2636,7 @@ benchmarks:
     Sizes:
     - Name: 2-24ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24ts.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
@@ -2659,7 +2659,7 @@ benchmarks:
     Sizes:
     - Name: 2-24ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24ts.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true

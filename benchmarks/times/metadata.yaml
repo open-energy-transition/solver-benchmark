@@ -234,7 +234,7 @@ benchmarks:
     Sizes:
     - Name: 1-1ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1ts.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 1 region
       Realistic: false
@@ -242,7 +242,7 @@ benchmarks:
       Num. variables: 544694
     - Name: 40-1ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1ts.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 40 regions
       Realistic: false
@@ -263,7 +263,7 @@ benchmarks:
     Sizes:
     - Name: 26-1ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1ts.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
@@ -284,7 +284,7 @@ benchmarks:
     Sizes:
     - Name: 2-24ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24ts.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
@@ -306,7 +306,7 @@ benchmarks:
     Sizes:
     - Name: 2-24ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24ts.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
