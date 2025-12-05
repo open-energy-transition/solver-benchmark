@@ -16,7 +16,7 @@ benchmarks:
     Sizes:
     - Name: 8-168ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-7tp-8-168ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-multi-regional-7tp-8-168ts.mps.gz
       Temporal resolution: 168 time slices
       Spatial resolution: 8 nodes
       Realistic: false
@@ -41,7 +41,7 @@ benchmarks:
     Sizes:
     - Name: 8-84ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-multi-regional-7tp-12seg-8-84s.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-multi-regional-7tp-12seg-8-84ts.mps.gz
       Temporal resolution: 84 time slices
       Spatial resolution: 8 nodes
       Realistic: false
@@ -66,7 +66,7 @@ benchmarks:
     Sizes:
     - Name: 1-8760ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-energyland-full-timeseries-1-8760s.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-energyland-full-timeseries-1-8760ts.mps.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
@@ -89,7 +89,7 @@ benchmarks:
     Sizes:
     - Name: 1-1152ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos-fine-energyland-48tp-1-1152s.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-energyland-48tp-1-1152ts.mps.gz
       Temporal resolution: 1152 time slices
       Spatial resolution: 1 node
       Realistic: false
