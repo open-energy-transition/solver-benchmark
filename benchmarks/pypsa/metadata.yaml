@@ -9,7 +9,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Biomass, Industrial, Transport
+    Sectors: Electric, Heating, Biomass, Industrial, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -437,7 +437,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -446,7 +446,17 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2025.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
-      Realistic: true
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2025.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
       Num. constraints:
       Num. variables:
       Num. continuous variables:
@@ -461,7 +471,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -470,11 +480,17 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2030.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
-      Realistic: true
+      Realistic: false
       Num. constraints:
       Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2030.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
   pypsa-at-sec-trex_vopt-2040:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
@@ -485,7 +501,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -494,11 +510,17 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2040.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
-      Realistic: true
+      Realistic: false
       Num. constraints:
       Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2040.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
   pypsa-at-sec-trex_vopt-2050:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
@@ -509,7 +531,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -518,8 +540,14 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2050.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
-      Realistic: true
+      Realistic: false
       Num. constraints:
       Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2050.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
