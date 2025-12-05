@@ -442,15 +442,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2025.lp
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2025-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 10520250
+      Num. variables: 4810311
     - Name: 11-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2025.lp.gz
@@ -459,8 +457,6 @@ benchmarks:
       Realistic: false
       Num. constraints:
       Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
   pypsa-at-sec-trex_vopt-2030:
     Short description: Sector-coupled myopic model run of the Austrian energy system, including the majority of relevant energy carriers (electricity, gas, hydrogen, heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of industry, transport, residential, commercial, and agriculture.
     Modelling framework: PyPSA
@@ -476,19 +472,18 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2030.lp
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2030-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 11274060
+      Num. variables: 5229269
     - Name: 11-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2030.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 11 nodes
-      Realistic: false
       Num. constraints:
       Num. variables:
   pypsa-at-sec-trex_vopt-2040:
@@ -506,13 +501,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2040.lp
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2040-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 10717265
+      Num. variables: 5059494
     - Name: 11-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2040.lp.gz
@@ -536,13 +531,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 11-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-11-24H-vopt-2050.lp
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-at-sec-trex_vopt-2050-11-24h.lp
       Temporal resolution: 24 hours
       Spatial resolution: 11 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 10545129
+      Num. variables: 5042053
     - Name: 11-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-11-168h-vopt-2050.lp.gz
