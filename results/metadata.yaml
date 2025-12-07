@@ -1719,7 +1719,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Heating-only
-    Sectors: Heat
+    Sectors: Heating
     Time horizon: Single-stage
     MILP features: NonConvex operation; Investment decisions; minimum up-time; minimum
       load
@@ -1746,7 +1746,7 @@ benchmarks:
     Problem class: MILP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Heating-only
-    Sectors: Heat
+    Sectors: Heating
     Time horizon: Single-stage
     MILP features: NonConvex operation; Investment in thermal collector; minimum up-time;
       minimum load
@@ -1761,6 +1761,235 @@ benchmarks:
       Num. variables: 2184
       Num. continuous variables: 1822
       Num. integer variables: 362
+  OEMOF-invest_optimize_all_technologies_using_mp_and_tsam:
+    Short description: Capacity expansion model with seasonal storage using time-series
+      aggregation (tsam), optimizing wind, PV, gas supply, and storage capacities.
+    Modelling framework: OEMOF
+    Model name: invest_optimize_all_technologies_using_mp_and_tsam
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/time_series_aggragation
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-1920ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-invest_optimize_all_technologies_using_mp_and_tsam-1-1920ts.lp
+      Temporal resolution: 1920 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-offset-diesel-genset-nonconvex-investment:
+    Short description: Hybrid mini-grid model using an OffsetConverter to represent
+      diesel generator efficiency curves with solph.NonConvex and solph.Investment.
+    Modelling framework: OEMOF
+    Model name: offset_diesel_genset_nonconvex_investment
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/offset_converter_example
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: NonConvex operation; Investment decisions; minimum load; piecewise/offset
+      efficiency representation
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-offset-diesel-genset-nonconvex-investment-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node mini-grid
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-result-object:
+    Short description: Basic solph energy system with wind, PV, gas supply, gas power
+      plant, storage, and electricity demand; used to demonstrate the Result object.
+    Modelling framework: OEMOF
+    Model name: result_object
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/result_object
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-result-object-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-simple-dispatch:
+    Short description: Least-cost dispatch model with renewable generators, conventional
+      units, and combined heat and power, meeting an inelastic electricity demand.
+    Modelling framework: OEMOF
+    Model name: simple_dispatch
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/simple_dispatch
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Economic dispatch
+    Sectoral focus: Power & Heating
+    Sectors: Electric, Heating
+    Time horizon: Single-stage, hourly
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-simple-dispatch-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node system with electricity and heat coupling
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-tuple-as-label:
+    Short description: Demonstrates the use of named tuples as labels to manage and
+      filter results in large Oemof energy systems, enabling grouping by region, technology,
+      or custom tags.
+    Modelling framework: OEMOF
+    Model name: tuple_as_label
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/tuple_as_labels
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-tuple-as-label-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-v1-invest-optimize-all-technologies:
+    Short description: Capacity optimization of an energy system with storage, wind,
+      PV, and gas resource.
+    Modelling framework: OEMOF
+    Model name: v1_invest_optimize_all_technologies
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v1_invest_optimize_all_technologies.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-v1-invest-optimize-all-technologies-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-v2-invest-optimize-only-gas-and-storage:
+    Short description: Capacity optimization of an energy system with storage and
+      gas resource only; wind and PV capacities are preinstalled, leading to a higher
+      renewable share (~78%) and no storage installation.
+    Modelling framework: OEMOF
+    Model name: v2_invest_optimize_only_gas_and_storage
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v2_invest_optimize_only_gas_and_storage.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-v2-invest-optimize-only-gas-and-storage-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-v3-invest-optimize-only-storage-with-fossil-share:
+    Short description: Capacity calculation of storage in an energy system with preinstalled
+      wind and PV, targeting a higher renewable share (~80%) without cost optimization.
+    Modelling framework: OEMOF
+    Model name: v3_invest_optimize_only_storage_with_fossil_share
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v3_invest_optimize_only_storage_with_fossil_share.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-v3-invest-optimize-only-storage-with-fossil-share-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  OEMOF-v4-invest-optimize-all-technologies-with-fossil-share:
+    Short description: Capacity optimization of wind, PV, and storage with a set fossil
+      share; achieves 80% renewable share primarily via slightly increased wind and
+      PV capacities, storage is not installed.
+    Modelling framework: OEMOF
+    Model name: v4_invest_optimize_all_technologies_with_fossil_share
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v4_invest_optimize_all_technologies_with_fossil_share.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/OEMOF-v4-invest-optimize-all-technologies-with-fossil-share-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
   pypsa-eur-sec:
     Short description: Sector-coupled (power, heating, biomass, industrial, transport)
       PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
