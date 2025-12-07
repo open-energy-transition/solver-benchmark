@@ -13,75 +13,75 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137355
+      Num. variables: 10626468
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7379675
+      Num. variables: 3542548
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1845545
+      Num. variables: 886078
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 923190
+      Num. variables: 443333
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 42189815
+      Num. variables: 20157932
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14064375
+      Num. variables: 6720092
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 3517335
+      Num. variables: 1680902
+    - Name: 100-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 1759495
+      Num. variables: 841037
   pypsa-eur-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
@@ -94,75 +94,75 @@ benchmarks:
     Sectoral focus: Power
     Time horizon: Single period (2050)
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137675
+      Num. variables: 10626628
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7379995
+      Num. variables: 3542708
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1845865
+      Num. variables: 886238
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 923510
+      Num. variables: 443493
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 42190371
+      Num. variables: 20158210
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14064931
+      Num. variables: 6720370
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 3517891
+      Num. variables: 1681180
+    - Name: 100-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 1760051
+      Num. variables: 841315
   pypsa-eur-elec-trex_copt:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with cost-optimal transmission expansion.
     Modelling framework: PyPSA
@@ -175,75 +175,75 @@ benchmarks:
     Sectoral focus: Power
     Time horizon: Single period (2050)
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137675
+      Num. variables: 10626628
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7379995
+      Num. variables: 3542708
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1845865
+      Num. variables: 886238
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 923510
+      Num. variables: 443493
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 42190371
+      Num. variables: 20158210
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14064931
+      Num. variables: 6720370
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 3517891
+      Num. variables: 1681180
+    - Name: 100-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 1760051
+      Num. variables: 841315
   pypsa-eur-elec-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with dynamic fuel pricing and without transmission expansion.
     Modelling framework: PyPSA
@@ -257,91 +257,91 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: Dynamic fuel pricing
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137355
+      Num. variables: 10626468
+      Num. continuous variables: 10626468
+      Num. integer variables: 0
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7379675
+      Num. variables: 3542548
+      Num. continuous variables: 3542548
+      Num. integer variables: 0
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1845545
+      Num. variables: 886078
+      Num. continuous variables: 886078
+      Num. integer variables: 0
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 923190
+      Num. variables: 443333
+      Num. continuous variables: 443333
+      Num. integer variables: 0
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 42189815
+      Num. variables: 20157932
+      Num. continuous variables: 20157932
+      Num. integer variables: 0
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14064375
+      Num. variables: 6720092
+      Num. continuous variables: 6720092
+      Num. integer variables: 0
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 3517335
+      Num. variables: 1680902
+      Num. continuous variables: 1680902
+      Num. integer variables: 0
+    - Name: 100-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 1759495
+      Num. variables: 841037
+      Num. continuous variables: 841037
+      Num. integer variables: 0
   pypsa-eur-elec-trex_vopt-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with dynamic fuel pricing and transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
@@ -356,91 +356,75 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137675
+      Num. variables: 10626628
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7379995
+      Num. variables: 3542708
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1845865
+      Num. variables: 886238
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 923510
+      Num. variables: 443493
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 42190371
+      Num. variables: 20158210
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14064931
+      Num. variables: 6720370
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 3517891
+      Num. variables: 1681180
+    - Name: 100-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 1760051
+      Num. variables: 841315
   pypsa-eur-elec-trex_copt-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with dynamic fuel pricing and cost-optimal transmission expansion.
     Modelling framework: PyPSA
@@ -455,87 +439,75 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137675
+      Num. variables: 10626628
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7379995
+      Num. variables: 3542708
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1845865
+      Num. variables: 886238
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 923510
+      Num. variables: 443493
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 42190371
+      Num. variables: 20158210
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14064931
+      Num. variables: 6720370
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 3517891
+      Num. variables: 1681180
+    - Name: 100-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 1760051
+      Num. variables: 841315
   pypsa-eur-sec:
     Short description: Sector-coupled PyPSA-Eur runs for all Europe (year 2050) without transmission expansion.
     Modelling framework: PyPSA
@@ -550,74 +522,74 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 113245474
+      Num. variables: 53606831
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 37751794
+      Num. variables: 17871871
+    - Name: 50-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 9441664
+      Num. variables: 4471261
+    - Name: 50-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 4723309
+      Num. variables: 2237826
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 227629892
+      Num. variables: 107634291
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 75883332
+      Num. variables: 35884051
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 18978372
+      Num. variables: 8977711
+    - Name: 100-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 9494212
+      Num. variables: 4493321
   pypsa-eur-sec-trex_copt:
     Short description: Sector-coupled PyPSA-Eur runs for all Europe (year 2050) with cost-optimal transmission expansion.
     Modelling framework: PyPSA
@@ -632,74 +604,74 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 113245926
+      Num. variables: 53607057
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 37752246
+      Num. variables: 17872097
+    - Name: 50-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 9442116
+      Num. variables: 4471487
+    - Name: 50-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 4723761
+      Num. variables: 2238052
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 227630590
+      Num. variables: 107634640
+    - Name: 100-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 75884030
+      Num. variables: 35884400
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 18979070
+      Num. variables: 8978060
+    - Name: 100-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 9494910
+      Num. variables: 4493670
   pypsa-eur-sec-trex_vopt:
     Short description: Sector-coupled PyPSA-Eur runs for all Europe (year 2050) with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
@@ -714,74 +686,74 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-3h
-        Size: M
-        URL: https://storage.cloud.google.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 100 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 100-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 100-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 100 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 113245926
+      Num. variables: 53607057
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 37752246
+      Num. variables: 17872097
+    - Name: 50-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 9442116
+      Num. variables: 4471487
+    - Name: 50-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 4723761
+      Num. variables: 2238052
+    - Name: 100-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 227630590
+      Num. variables: 107634640
+    - Name: 100-3h
+      Size: S
+      URL: https://storage.cloud.google.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 100 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 0
+      Num. variables: 0
+    - Name: 100-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 18979070
+      Num. variables: 8978060
+    - Name: 100-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 9494910
+      Num. variables: 4493670
   pypsa-de-elec:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany without transmission expansion.
     Modelling framework: PyPSA
@@ -796,106 +768,106 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 4502789
+      Num. variables: 2111271
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1501029
+      Num. variables: 703831
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 375369
+      Num. variables: 176041
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 187759
+      Num. variables: 88076
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 8208403
+      Num. variables: 3854613
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 2736323
+      Num. variables: 1285013
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 684293
+      Num. variables: 321413
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 342288
+      Num. variables: 160813
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 18370417
+      Num. variables: 8637885
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 6123937
+      Num. variables: 2879645
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1531507
+      Num. variables: 720305
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 766102
+      Num. variables: 360415
   pypsa-de-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
@@ -908,106 +880,106 @@ benchmarks:
     Sectoral focus: Power
     Time horizon: Single period (2050)
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 4502865
+      Num. variables: 2111309
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1501105
+      Num. variables: 703869
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 375445
+      Num. variables: 176079
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 187835
+      Num. variables: 88114
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 8208517
+      Num. variables: 3854670
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 2736437
+      Num. variables: 1285070
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 684407
+      Num. variables: 321470
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 342402
+      Num. variables: 160870
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 18370653
+      Num. variables: 8638003
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 6124173
+      Num. variables: 2879763
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1531743
+      Num. variables: 720423
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 766338
+      Num. variables: 360533
   pypsa-de-elec-trex_copt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with cost-optimal transmission expansion.
     Modelling framework: PyPSA
@@ -1020,107 +992,107 @@ benchmarks:
     Sectoral focus: Power
     Time horizon: Single period (2050)
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 4502865
+      Num. variables: 2111309
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 1501105
+      Num. variables: 703869
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 375445
+      Num. variables: 176079
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 187835
+      Num. variables: 88114
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 8208517
+      Num. variables: 3854670
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 2736437
+      Num. variables: 1285070
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 684407
+      Num. variables: 321470
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 342402
+      Num. variables: 160870
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 18370653
+      Num. variables: 8638003
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 6124173
+      Num. variables: 2879763
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1531743
+      Num. variables: 720423
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 766338
+      Num. variables: 360533
   pypsa-de-elec-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with dynamic fuel pricing and without transmission expansion.
     Modelling framework: PyPSA
@@ -1134,130 +1106,130 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: Dynamic fuel pricing
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 4502789
+      Num. variables: 2111271
+      Num. continuous variables: 2111271
+      Num. integer variables: 0
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1501029
+      Num. variables: 703831
+      Num. continuous variables: 703831
+      Num. integer variables: 0
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 375369
+      Num. variables: 176041
+      Num. continuous variables: 176041
+      Num. integer variables: 0
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 187759
+      Num. variables: 88076
+      Num. continuous variables: 88076
+      Num. integer variables: 0
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 8208403
+      Num. variables: 3854613
+      Num. continuous variables: 3854613
+      Num. integer variables: 0
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 2736323
+      Num. variables: 1285013
+      Num. continuous variables: 1285013
+      Num. integer variables: 0
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 684293
+      Num. variables: 321413
+      Num. continuous variables: 321413
+      Num. integer variables: 0
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 342288
+      Num. variables: 160813
+      Num. continuous variables: 160813
+      Num. integer variables: 0
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 18370417
+      Num. variables: 8637885
+      Num. continuous variables: 8637885
+      Num. integer variables: 0
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 6123937
+      Num. variables: 2879645
+      Num. continuous variables: 2879645
+      Num. integer variables: 0
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1531507
+      Num. variables: 720305
+      Num. continuous variables: 720305
+      Num. integer variables: 0
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 766102
+      Num. variables: 360415
+      Num. continuous variables: 360415
+      Num. integer variables: 0
   pypsa-de-elec-trex_vopt-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with dynamic fuel pricing and transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
@@ -1272,130 +1244,130 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 4502865
+      Num. variables: 2111309
+      Num. continuous variables: 2111309
+      Num. integer variables: 0
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1501105
+      Num. variables: 703869
+      Num. continuous variables: 703869
+      Num. integer variables: 0
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 375445
+      Num. variables: 176079
+      Num. continuous variables: 176079
+      Num. integer variables: 0
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 187835
+      Num. variables: 88114
+      Num. continuous variables: 88114
+      Num. integer variables: 0
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 8208517
+      Num. variables: 3854670
+      Num. continuous variables: 3854670
+      Num. integer variables: 0
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 2736437
+      Num. variables: 1285070
+      Num. continuous variables: 1285070
+      Num. integer variables: 0
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 684407
+      Num. variables: 321470
+      Num. continuous variables: 321470
+      Num. integer variables: 0
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 342402
+      Num. variables: 160870
+      Num. continuous variables: 160870
+      Num. integer variables: 0
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 18370653
+      Num. variables: 8638003
+      Num. continuous variables: 8638003
+      Num. integer variables: 0
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 6124173
+      Num. variables: 2879763
+      Num. continuous variables: 2879763
+      Num. integer variables: 0
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1531743
+      Num. variables: 720423
+      Num. continuous variables: 720423
+      Num. integer variables: 0
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 766338
+      Num. variables: 360533
+      Num. continuous variables: 360533
+      Num. integer variables: 0
   pypsa-de-elec-trex_copt-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with dynamic fuel pricing and cost-optimal transmission expansion.
     Modelling framework: PyPSA
@@ -1410,130 +1382,130 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-        Num. continuous variables:
-        Num. integer variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 4502865
+      Num. variables: 2111309
+      Num. continuous variables: 2111309
+      Num. integer variables: 0
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1501105
+      Num. variables: 703869
+      Num. continuous variables: 703869
+      Num. integer variables: 0
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 375445
+      Num. variables: 176079
+      Num. continuous variables: 176079
+      Num. integer variables: 0
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 187835
+      Num. variables: 88114
+      Num. continuous variables: 88114
+      Num. integer variables: 0
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 8208517
+      Num. variables: 3854670
+      Num. continuous variables: 3854670
+      Num. integer variables: 0
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 2736437
+      Num. variables: 1285070
+      Num. continuous variables: 1285070
+      Num. integer variables: 0
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 684407
+      Num. variables: 321470
+      Num. continuous variables: 321470
+      Num. integer variables: 0
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 342402
+      Num. variables: 160870
+      Num. continuous variables: 160870
+      Num. integer variables: 0
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 18370653
+      Num. variables: 8638003
+      Num. continuous variables: 8638003
+      Num. integer variables: 0
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 6124173
+      Num. variables: 2879763
+      Num. continuous variables: 2879763
+      Num. integer variables: 0
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 1531743
+      Num. variables: 720423
+      Num. continuous variables: 720423
+      Num. integer variables: 0
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 766338
+      Num. variables: 360533
+      Num. continuous variables: 360533
+      Num. integer variables: 0
   pypsa-de-sec:
     Short description: Sector-coupled PyPSA-Eur runs for Germany without transmission expansion.
     Modelling framework: PyPSA
@@ -1548,106 +1520,82 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 10-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 20-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 20-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+    - Name: 50-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 50-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
   pypsa-de-sec-trex_copt:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with cost-optimal transmission expansion.
     Modelling framework: PyPSA
@@ -1662,106 +1610,106 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 23328996
+      Num. variables: 10994755
+    - Name: 10-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 7777076
+      Num. variables: 3665555
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1945106
+      Num. variables: 917105
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 973111
+      Num. variables: 459030
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 45554134
+      Num. variables: 21472615
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 15186134
+      Num. variables: 7158775
+    - Name: 20-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 3798134
+      Num. variables: 1791085
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 1900134
+      Num. variables: 896470
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 111090778
+      Num. variables: 52371864
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 37033738
+      Num. variables: 17460344
+    - Name: 50-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 9262348
+      Num. variables: 4368524
+    - Name: 50-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 4633783
+      Num. variables: 2186554
   pypsa-de-sec-trex_vopt:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
@@ -1776,106 +1724,105 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-      - Name: 10-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 10-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 10 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_3h.mps.gz
-        Temporal resolution: 3 hours
-        Spatial resolution: 20 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 20-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 20-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 20 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-1h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_1h.mps.gz
-        Temporal resolution: 1 hour
-        Spatial resolution: 50 nodes
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Num. constraints:
-        Num. variables:
-      - Name: 50-3h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_3h.mps.gz
-        Temporal resolution: 3 hours
-        Realistic: true
-        Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-12h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_12h.mps.gz
-        Temporal resolution: 12 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
-      - Name: 50-24h
-        Size: M
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_24h.mps.gz
-        Temporal resolution: 24 hours
-        Spatial resolution: 50 nodes
-        Realistic: false
-        Num. constraints:
-        Num. variables:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 23328996
+      Num. variables: 10994755
+    - Name: 10-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 7777076
+      Num. variables: 3665555
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1945106
+      Num. variables: 917105
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 973111
+      Num. variables: 459030
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 45554134
+      Num. variables: 21472615
+    - Name: 20-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 15186134
+      Num. variables: 7158775
+    - Name: 20-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 3798134
+      Num. variables: 1791085
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 1900134
+      Num. variables: 896470
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 111090778
+      Num. variables: 52371864
+    - Name: 50-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 37033738
+      Num. variables: 17460344
+    - Name: 50-12h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 9262348
+      Num. variables: 4368524
+    - Name: 50-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 4633783
+      Num. variables: 2186554
   pypsa-power+ely:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer infrastructure model for a single year-time horizon.
     Modelling framework: PyPSA
