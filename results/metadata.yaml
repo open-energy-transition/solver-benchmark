@@ -1668,7 +1668,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Power, Heating, Biomass, Industrial, Transport
+    Sectors: Electric, Heating, Biomass, Industrial, Transport
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
@@ -2103,6 +2103,138 @@ benchmarks:
       Num. variables: 87611
       Num. continuous variables: 87606
       Num. integer variables: 5
+  pypsa-at-sec-trex_vopt-2025:
+    Short description: Sector-coupled myopic model run of the Austrian energy system,
+      including the majority of relevant energy carriers (electricity, gas, hydrogen,
+      heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of
+      industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2025-11-24h.lp.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 10520250
+      Num. variables: 4810311
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2025-11-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 1537770
+      Num. variables: 706263
+  pypsa-at-sec-trex_vopt-2030:
+    Short description: Sector-coupled myopic model run of the Austrian energy system,
+      including the majority of relevant energy carriers (electricity, gas, hydrogen,
+      heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of
+      industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2030-11-24h.lp.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 11274060
+      Num. variables: 5229269
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2030-11-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 1609564
+      Num. variables: 750636
+  pypsa-at-sec-trex_vopt-2040:
+    Short description: Sector-coupled myopic model run of the Austrian energy system,
+      including the majority of relevant energy carriers (electricity, gas, hydrogen,
+      heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of
+      industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2040-11-24h.lp.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 10717265
+      Num. variables: 5059494
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2040-11-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 1530006
+      Num. variables: 724369
+  pypsa-at-sec-trex_vopt-2050:
+    Short description: Sector-coupled myopic model run of the Austrian energy system,
+      including the majority of relevant energy carriers (electricity, gas, hydrogen,
+      heat, coal, oil, methanol and Ammonia) and demand profiles for the sectors of
+      industry, transport, residential, commercial, and agriculture.
+    Modelling framework: PyPSA
+    Model name: PyPSA-AT
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating, Industrial, Transport, Residential, Commercial, Agriculture
+    Time horizon: 1 year
+    MILP features: None
+    Sizes:
+    - Name: 11-24h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2050-11-24h.lp.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 10545129
+      Num. variables: 5042053
+    - Name: 11-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-at-sec-trex_vopt-2050-11-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 11 nodes
+      Realistic: false
+      Num. constraints: 1528513
+      Num. variables: 734494
   DCOPF-Carolinas_1W:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a one-week horizon with hourly resolution, using 2021 as the
