@@ -269,6 +269,19 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         encoding="utf-8",
     )
 
+    # Append the stderr to the log file
+    log_file = (
+        Path(__file__).parent
+        / "logs"
+        / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
+    )
+    if log_file.exists:
+        with open(log_file, "a") as f:
+            f.write("\nSTDERR:\n")
+            f.write(result.stderr)
+    else:
+        print(f"ERROR: couldn't find log file {log_file}")
+
     memory = None
     try:
         memory = parse_memory(result.stderr)
