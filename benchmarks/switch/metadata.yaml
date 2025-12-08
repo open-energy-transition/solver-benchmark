@@ -1,0 +1,23 @@
+benchmarks:
+  SWITCH-USA-PG:
+    Short description: A capacity-expansion and operational power-system model of the United States built on the Switch framework and parameterized with PowerGenome data. It provides consistent, reproducible multi-regional U.S. electricity system scenarios using detailed technology cost assumptions (e.g., ATB).
+    Modelling framework: SWITCH
+    Model name: SWITCH-USA-PG
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 26-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/switch_usa_pg-26-168h.lp
+      Temporal resolution: 168 hours
+      Spatial resolution: 26 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
