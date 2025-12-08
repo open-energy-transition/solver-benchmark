@@ -46,7 +46,9 @@ def get_conda_package_versions(solvers, env_name=None):
         solver_versions = {}
         for solver in solvers:
             # Handle highs-hipo variants as special cases - not conda packages
-            if solver in HighsHipoVariant:
+            if solver in [
+                variant.value for variant in HighsHipoVariant
+            ]:  # For py3.10 compatibility
                 solver_versions[solver] = get_highs_hipo_version()
             else:
                 package = name_to_pkg.get(solver, solver)
@@ -573,7 +575,9 @@ def main(
 
         for solver in solvers:
             # Restrict highs-hipo variants to 2025 and LPs only
-            if solver in HighsHipoVariant and (
+            if solver in [
+                variant.value for variant in HighsHipoVariant
+            ] and (  # For py3.10 compatibility
                 year != "2025" or benchmark["class"] != "LP"
             ):
                 print(
