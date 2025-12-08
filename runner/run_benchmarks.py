@@ -550,6 +550,7 @@ def main(
                     "name": benchmark_name,
                     "size": instance["Name"],
                     "size_category": instance["Size"],
+                    "class": benchmark_info["Problem class"],
                     "path": benchmark_path,
                     "timeout_seconds": yaml_timeout_seconds,
                 }
@@ -571,10 +572,13 @@ def main(
         )
 
         for solver in solvers:
-            # Restrict highs-hipo variants to 2025 only
-            if solver in HighsHipoVariant and year != "2025":
+            # Restrict highs-hipo variants to 2025 and LPs only
+            if solver in HighsHipoVariant and (
+                year != "2025" or benchmark.get("class") != "LP"
+            ):
                 print(
-                    f"Solver {solver} is only available for 2025 benchmarks. Current year: {year}. Skipping."
+                    f"Solver {solver} is only available for LP benchmarks and year 2025."
+                    f" Current year: {year}, problem class: {benchmark.get('class')}. Skipping."
                 )
                 continue
 
