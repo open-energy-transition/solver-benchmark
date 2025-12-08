@@ -86,13 +86,13 @@ def download_benchmark_file(url, dest_path: Path):
         _result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         print("done.")
     else:
-        # Download using requests
+        # Perform the download with streaming to handle large files
         print(f"Downloading {url} to {dest_path}...", end="")
-        response = requests.get(url)
-        response.raise_for_status()
-
-        with open(dest_path, "wb") as f:
-            f.write(response.content)
+        with requests.get(url, stream=True) as response:
+            response.raise_for_status()
+            with open(dest_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
         print("done.")
 
     if dest_path.suffix == ".gz":
@@ -543,15 +543,16 @@ def main(
                         f"File specified in 'Path' does not exist: {benchmark_path}"
                     )
             elif "URL" in instance:
-                # TODO do something better like adding a yaml field for format
-                if instance["URL"].endswith(".mps"):
-                    format = "mps"
-                elif instance["URL"].endswith(".mps.gz"):
-                    format = "mps.gz"
-                else:
-                    format = "lp"
+                # TODO share this code with validate_urls.py
+                gz = instance["URL"].endswith(".gz")
+                base = instance["URL"][:-3] if gz else instance["URL"]
+                ext = base[base.rfind(".") :]
+                # If no dot was found, ext will be the full string; make it empty instead
+                if "." not in ext:
+                    ext = ""
+                ext += ".gz" if gz else ""
                 benchmark_path = (
-                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}.{format}"
+                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}{ext}"
                 )
                 download_benchmark_file(instance["URL"], benchmark_path)
 
