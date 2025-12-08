@@ -9,7 +9,7 @@ dependencies:
 - psutil>=5.9
 
 - requests>=2.32
-- linopy==0.5.8
+# - linopy==0.5.8
 
 - coin-or-cbc==2.10.11
 - scip==8.1.0
@@ -19,3 +19,5 @@ dependencies:
   # highspy 1.6.0 wasn't released to PyPI:
   - git+https://github.com//ERGO-Code/HiGHS@v1.6.0
   - pyscipopt==5.7.1
+  # Use branch until old solver support is merged and released
+  - git+https://github.com//PyPSA/linopy@sid/old-solver-support

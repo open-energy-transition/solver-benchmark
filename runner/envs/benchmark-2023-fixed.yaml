@@ -68,7 +68,7 @@ dependencies:
   - libxcrypt=4.4.36=hd590300_1
   - libxml2=2.13.8=h4bc477f_0
   - libzlib=1.3.1=hb9d3cd8_2
-  - linopy=0.5.8=pyhd8ed1ab_0
+  # - linopy=0.5.8=pyhd8ed1ab_0
   - locket=1.0.0=pyhd8ed1ab_0
   - metis=5.1.0=hd0bcaf9_1007
   - mumps-include=5.6.2=ha770c72_4
@@ -119,3 +119,5 @@ dependencies:
   - pip:
       - pyscipopt==5.7.1
       - git+https://github.com//ERGO-Code/HiGHS@v1.6.0
+      # Use branch until old solver support is merged and released
+      - git+https://github.com//PyPSA/linopy@sid/old-solver-support
