@@ -259,40 +259,46 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
                 # Parse HiGHS output to extract objective value
                 objective = None
                 model_status = "ER"
-                for line in result.stdout.splitlines():
-                    # Old format:
-                    if "Objective value" in line and ":" in line:
-                        try:
-                            objective = float(line.split(":")[-1].strip())
-                        except (ValueError, IndexError):
-                            pass
-                    # New format: "
-                    elif "(objective)" in line:
-                        try:
-                            objective = float(line.split("(objective)")[0].strip())
-                        except (ValueError, IndexError):
-                            pass
+                for line in reversed(result.stdout.splitlines()):
+                    if objective is None:
+                        # Old format:
+                        if "Objective value" in line and ":" in line:
+                            try:
+                                objective = float(line.split(":")[-1].strip())
+                            except (ValueError, IndexError):
+                                pass
+                        # New format: "
+                        elif "(objective)" in line:
+                            try:
+                                objective = float(line.split("(objective)")[0].strip())
+                            except (ValueError, IndexError):
+                                pass
 
-                    # Old format:
-                    if "Model status" in line and ":" in line:
-                        try:
-                            model_status = line.split(":")[-1].strip()
-                        except (ValueError, IndexError):
-                            pass
-                    # New format:
-                    elif line.strip().startswith("Status") and ":" not in line:
-                        try:
-                            parts = line.split()
-                            if len(parts) >= 2:
-                                status_value = parts[-1]
-                                if status_value in [
-                                    "Optimal",
-                                    "Infeasible",
-                                    "Unbounded",
-                                ]:
-                                    model_status = status_value
-                        except (ValueError, IndexError):
-                            pass
+                    if model_status == "ER":
+                        # Old format:
+                        if "Model status" in line and ":" in line:
+                            try:
+                                model_status = line.split(":")[-1].strip()
+                            except (ValueError, IndexError):
+                                pass
+                        # New format:
+                        elif line.strip().startswith("Status") and ":" not in line:
+                            try:
+                                parts = line.split()
+                                if len(parts) >= 2:
+                                    status_value = parts[-1]
+                                    if status_value in [
+                                        "Optimal",
+                                        "Infeasible",
+                                        "Unbounded",
+                                    ]:
+                                        model_status = status_value
+                            except (ValueError, IndexError):
+                                pass
+
+                    # Break early once we've found both values
+                    if objective is not None and model_status != "ER":
+                        break
 
                 if objective is not None and model_status in ["Optimal", "Infeasible"]:
                     status = "ok"
