@@ -12,7 +12,7 @@ dependencies:
 - linopy==0.5.8
 
 - coin-or-cbc==2.10.11
-- scip==8.1.0
+- scip==8.0.4
 - gurobi==11.0.0
 
 - pip:
