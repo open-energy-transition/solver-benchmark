@@ -9,12 +9,13 @@ dependencies:
 - psutil>=5.9
 
 - requests>=2.32
+# Linopy 0.5.3 doesn't work with this version of highs and scip
 - linopy==0.5.8
 
 # Disabled due to CBC bug https://github.com/coin-or/Cbc/issues/708
 # - coin-or-cbc==2.10.8
 
-- scip==8.0.2
+- scip==8.0.3
 - gurobi==10.0.0
 
 - pip:
