@@ -111,7 +111,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-997
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_6M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
@@ -134,7 +134,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-997
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_uc_6M-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
@@ -159,7 +159,7 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-997
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_240days-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
@@ -182,7 +182,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 1-997
-      Size: M
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/DCOPF-Carolinas_240days_uc-1-997.lp
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
