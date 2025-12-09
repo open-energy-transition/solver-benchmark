@@ -5,7 +5,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-Utopia
     Version:
-    Contributor(s)/Source: https://github.com/https://github.com/TemoaProject/oeo/temoacloud
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/https://github.com/TemoaProject/temoacloud
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -27,7 +28,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -49,7 +51,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -71,7 +74,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -93,7 +97,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
@@ -115,7 +120,8 @@ benchmarks:
     Modelling framework: TEMOA
     Model name: TEMOA-US
     Version:
-    Contributor(s)/Source: https://github.com/TemoaProject/oeo
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
