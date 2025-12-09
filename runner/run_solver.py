@@ -15,12 +15,12 @@ from linopy import solvers
 from linopy.solvers import SolverName
 
 
-class HighsHipoVariant(str, Enum):
-    HIPO_IPM = "highs-hipo-ipm"
+class HighsVariant(str, Enum):
+    HIPO = "highs-hipo"
     HIPO_32 = "highs-hipo-32"
     HIPO_64 = "highs-hipo-64"
     HIPO_128 = "highs-hipo-128"
-    HIPO_NO2HOP = "highs-hipo-no2hop"
+    HIPO_IPM = "highs-ipm"
 
     # cli args returns a list of command line arguments for the HiGHS binary.
     def cli_args(self) -> collections.abc.Iterable[str]:
@@ -28,7 +28,7 @@ class HighsHipoVariant(str, Enum):
             "solver": "hipo",
             "run_crossover": "off",
         }
-        if self == HighsHipoVariant.HIPO_IPM:
+        if self == HighsVariant.HIPO_IPM:
             args["solver"] = "ipx"
 
         return [f"--{k}={v}" for k, v in args.items()]
@@ -38,13 +38,13 @@ class HighsHipoVariant(str, Enum):
     def options(self) -> str:
         options = {}
         match self:
-            case HighsHipoVariant.HIPO_32:
+            case HighsVariant.HIPO_32:
                 options["hipo_block_size"] = 32
-            case HighsHipoVariant.HIPO_64:
+            case HighsVariant.HIPO_64:
                 options["hipo_block_size"] = 64
-            case HighsHipoVariant.HIPO_128:
+            case HighsVariant.HIPO_128:
                 options["hipo_block_size"] = 128
-            case HighsHipoVariant.HIPO_NO2HOP:
+            case HighsVariant.HIPO:
                 options["hipo_block_size"] = 64
                 options["hipo_metis_no2hop"] = "true"
         return "\n".join(f"{k} = {v}" for k, v in options.items())
@@ -179,7 +179,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     return None
 
 
-def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVariant):
+def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVariant):
     """
     Run the HiGHS-HiPO solver directly using the binary with variant-specific arguments
     """
@@ -205,15 +205,15 @@ def run_highs_hipo_solver(input_file, solver_version, highs_hipo: HighsHipoVaria
     try:
         with tempfile.NamedTemporaryFile(
             mode="w",
-            prefix=highs_hipo.value,
+            prefix=highs_variant.value,
             suffix=".options",
             delete=False,
             delete_on_close=False,
         ) as options_file:
-            options_file.write(highs_hipo.options())
+            options_file.write(highs_variant.options())
             options_file.flush()
 
-            solver_args = list(highs_hipo.cli_args())
+            solver_args = list(highs_variant.cli_args())
             solver_args.append(f"--options_file={options_file.name}")
 
         command = [
@@ -346,14 +346,14 @@ def main(solver_name, input_file, solver_version):
 
     # Handle highs-hipo solver variants separately
     try:
-        highs_hipo = HighsHipoVariant(solver_name.lower())
-        results = run_highs_hipo_solver(input_file, solver_version, highs_hipo)
+        highs_variant = HighsVariant(solver_name.lower())
+        results = run_highs_hipo_solver(input_file, solver_version, highs_variant)
         print(json.dumps(results))
         return
     except ValueError as e:
         # re-raise the error if it isn't expected.
-        # we want to continue only if the error is about invalid HighsHipoVariant
-        if "is not a valid HighsHipoVariant" not in str(e):
+        # we want to continue only if the error is about invalid HighsVariant
+        if "is not a valid HighsVariant" not in str(e):
             raise e
 
     solver = get_solver(solver_name)
