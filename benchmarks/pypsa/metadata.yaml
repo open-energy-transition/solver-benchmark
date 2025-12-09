@@ -714,14 +714,14 @@ benchmarks:
       Num. constraints: 227630590
       Num. variables: 107634640
     - Name: 100-3h
-      Size: S
-      URL: https://storage.cloud.google.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_3h.mps.gz
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_3h.mps.gz
       Temporal resolution: 3 hours
       Spatial resolution: 100 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
+      Num. constraints: 75884030
+      Num. variables: 35884400
     - Name: 100-12h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt_100_12h.mps.gz
