@@ -2285,7 +2285,7 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: SWITCH-USA-PG
     Version:
-    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
