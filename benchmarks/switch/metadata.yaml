@@ -14,10 +14,10 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 26-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/switch_usa_pg-26-168h.lp
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/switch_usa_pg-26-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 26 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 4022362
+      Num. variables: 3989071
