@@ -11,12 +11,15 @@ dependencies:
 - requests>=2.32
 - linopy>=0.5.5
 
-- coin-or-cbc==2.10.12
+# No CBC release in 2025 as of Nov 25
+# - coin-or-cbc==2.10.12
 
-- scip==9.2.2
-- pyscipopt==5.4.1
+- scip==10.0.0
+# - pyscipopt==5.6.0  # 5.7.1 not on conda-forge yet
 
-- gurobi==12.0.0
+- gurobi==13.0.0
+
+- highspy==1.12.0
 
 - pip:
   - pyscipopt==5.7.1
