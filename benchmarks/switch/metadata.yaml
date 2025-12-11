@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 26-168h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/switch_usa_pg-26-168h.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 26 nodes
       Realistic: false
