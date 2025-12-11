@@ -2277,6 +2277,242 @@ benchmarks:
       Num. variables: 131278
       Num. continuous variables: 122017
       Num. integer variables: 9261
+  SWITCH-USA-PG:
+    Short description: A capacity-expansion and operational power-system model of
+      the United States built on the Switch framework and parameterized with PowerGenome
+      data. It provides consistent, reproducible multi-regional U.S. electricity system
+      scenarios using detailed technology cost assumptions (e.g., ATB).
+    Modelling framework: SWITCH
+    Model name: SWITCH-USA-PG
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 26-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 26 nodes
+      Realistic: false
+      Num. constraints: 4022362
+      Num. variables: 3989071
+  SWITCH-3-zone-tiny:
+    Short description: A minimal 3-zone SWITCH tutorial model demonstrating core SWITCH
+      functionality and several custom modules.
+    Modelling framework: SWITCH
+    Model name: 3_zone_tiny
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-tiny-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 795
+      Num. variables: 582
+      Num. continuous variables: 580
+      Num. integer variables: 2
+  SWITCH-3-zone-toy:
+    Short description: A 3-zone SWITCH toy model with two investment periods, where
+      the first period has higher temporal resolution. Demonstrates core SWITCH functionality
+      and selected custom modules.
+    Modelling framework: SWITCH
+    Model name: 3zone_toy
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Notes: This toy example illustrates how SWITCH can be used to construct and run
+      a multi-period, multi-zone capacity expansion model. Results have not been fully
+      evaluated.
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-toy-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 775
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+  SWITCH-3zone-toy-stochastic-PySP:
+    Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating
+      scenario-based stochastic optimization in a multi-period power system context.
+    Modelling framework: SWITCH + PySP
+    Model name: 3zone_toy_stochastic_PySP
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Stochastic capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3zone-toy-stochastic-PySP-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 716
+      Num. variables: 580
+      Num. continuous variables: 578
+      Num. integer variables: 2
+  SWITCH-carbon-cap:
+    Short description: "A carbon-constrained variant of the 3-zone toy SWITCH model,\
+      \ where a system-wide CO\u2082 cap is imposed and the minimum nuclear build\
+      \ constraint is relaxed to enable meaningful dual values on the carbon cost\
+      \ constraint."
+    Modelling framework: SWITCH
+    Model name: carbon_cap
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/carbon_cap
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: None
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-carbon-cap-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 773
+      Num. variables: 616
+  SWITCH-hydrogen:
+    Short description: "A hydrogen-enabled variant of the 3-zone carbon cap model\
+      \ featuring a near-zero CO\u2082 cap, expanded hydrogen production and storage\
+      \ pathways, and dual-fuel natural-gas/hydrogen power plants."
+    Modelling framework: SWITCH
+    Model name: hydrogen
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/hydrogen
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: None
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-hydrogen-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 863
+      Num. variables: 733
+  SWITCH-planning-reserves:
+    Short description: A planning-reserve variant of the 3-zone toy model with lower
+      solar costs to place solar on the margin and distributed solar registered as
+      a DER for better accounting of distribution losses.
+    Modelling framework: SWITCH
+    Model name: planning_reserves
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/planning_reserves
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-planning-reserves-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 784
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+  SWITCH-retrofits:
+    Short description: A retrofit-enabled variant of the 3-zone toy model
+    Modelling framework: SWITCH
+    Model name: retrofits
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/retrofits
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-retrofits-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 1597
+      Num. variables: 1310
+      Num. continuous variables: 1308
+      Num. integer variables: 2
+  SWITCH-rps-simple:
+    Short description: A 3-zone SWITCH toy example implementing a simple Renewable
+      Portfolio Standard (RPS) policy.
+    Modelling framework: SWITCH
+    Model name: rps_simple
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/rps_simple
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-rps-simple-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 777
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
   temoa-utopia:
     Short description: Single-region test system infrastructure model considering
       4 future years and 6 time slices (day/night, intermediate/summer/winter).
