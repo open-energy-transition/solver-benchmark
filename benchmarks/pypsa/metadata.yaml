@@ -90,6 +90,14 @@ benchmarks:
       Realistic: false
       Num. constraints: 1759495
       Num. variables: 841037
+    - Name: 100-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec_100_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
   pypsa-eur-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
