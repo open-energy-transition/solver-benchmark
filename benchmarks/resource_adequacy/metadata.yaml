@@ -6,6 +6,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -13,9 +14,9 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -28,6 +29,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -35,9 +37,9 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -52,6 +54,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -59,9 +62,9 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_M.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -74,6 +77,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -81,9 +85,9 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_M.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -98,6 +102,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
     Problem class: LP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -105,9 +110,9 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_LP_L2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
@@ -120,6 +125,7 @@ benchmarks:
     Model name: DCOPF
     Version:
     Contributor(s)/Source: https://github.com/lprieto1409/DC-OPF-Carolinas
+    License: CC BY 4.0
     Problem class: MILP
     Application: Resource Adequacy
     Sectoral focus: Power-only
@@ -127,9 +133,9 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/RA_DCOPF_2021_TE_10x_MILP_L2.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true

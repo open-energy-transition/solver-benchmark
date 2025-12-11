@@ -30,6 +30,8 @@ jobs:
         run: |
           pip install --upgrade pip pre-commit
           pip install -r website/requirements.txt
+          # For validation scripts (TODO collect these in a requirements.txt file?)
+          pip install ruamel.yaml
 
       - name: Check code formatting
         run: |
@@ -46,6 +48,14 @@ jobs:
             printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
             exit 1
           fi
+          python tests/validate_urls.py
+          if git diff --quiet; then
+            echo "git diff is empty, benchmark URLs conform to expected format"
+          else
+            git diff
+            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npython tests/validate_urls.py"
+            exit 1
+          fi
           python tests/validate_results.py
 
       - name: Run Streamlit App Action
@@ -54,7 +64,7 @@ jobs:
             app-path: website/app.py
 
       - name: Set FORK_PR environment variable
-        if: ${{ github.event.pull_request.head.repo.fork == true && github.event_name == 'pull_request' }}
+        if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
         run: echo "FORK_PR=true" >> $GITHUB_ENV
 
       - name: Check Next.js build
@@ -72,7 +82,7 @@ jobs:
                 echo "✓ reCAPTCHA key is configured"
               fi
             else
-              echo "Skipping reCAPTCHA key check for PRs from forks."
+              echo "Skipping reCAPTCHA key check for PRs from forks or Dependabot."
             fi
             npm install
             npm run build

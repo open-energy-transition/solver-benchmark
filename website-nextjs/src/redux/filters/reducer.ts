@@ -4,7 +4,8 @@ import actions from "./actions";
 import { IFilterState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
 
-const { TOGGLE_FILTER, SET_FILTER, SET_SGM_MODE, SET_X_FACTOR } = actions;
+const { TOGGLE_FILTER, SET_FILTER, SET_SGM_MODE, SET_X_FACTOR, RESET_FILTERS } =
+  actions;
 
 const initialState: IFilterState = {
   benchmarks: [],
@@ -57,6 +58,8 @@ const filterReducer = (
             ) // Remove if already selected
           : [...(state[category] as (typeof value)[]), value], // Add if not selected
       };
+    case RESET_FILTERS:
+      return initialState;
     default:
       return state;
   }

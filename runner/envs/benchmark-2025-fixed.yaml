@@ -1,14 +1,13 @@
 name: benchmark-2025
 channels:
-  - gurobi
   - conda-forge
-  - https://conda.anaconda.org/gurobi
-  - defaults
+  - gurobi
+  - nodefaults
 dependencies:
-  - _libgcc_mutex=0.1=conda_forge
-  - _openmp_mutex=4.5=2_gnu
+  - _openmp_mutex=4.5=7_kmp_llvm
   - _python_abi3_support=1.0=hd8ed1ab_2
   - aiohappyeyeballs=2.6.1=pyhd8ed1ab_0
+  - aiohttp=3.13.2=py312h27b7581_0
   - aiohttp=3.13.2=py312h27b7581_0
   - aiosignal=1.4.0=pyhd8ed1ab_0
   - ampl-asl=1.0.0=h5888daf_2
@@ -17,6 +16,9 @@ dependencies:
   - brotli-python=1.2.0=py312h67db365_0
   - bzip2=1.0.8=hda65f42_8
   - c-ares=1.34.5=hb9d3cd8_0
+  - ca-certificates=2025.11.12=hbd8a1cb_0
+  - cachetools=6.2.2=pyhd8ed1ab_0
+  - certifi=2025.11.12=pyhd8ed1ab_0
   - ca-certificates=2025.11.12=hbd8a1cb_0
   - cachetools=6.2.2=pyhd8ed1ab_0
   - certifi=2025.11.12=pyhd8ed1ab_0
@@ -30,7 +32,6 @@ dependencies:
   - coin-or-osi=0.108.11=hf4fecb4_8
   - coin-or-utils=2.11.12=hc93afbd_7
   - colorama=0.4.6=pyhd8ed1ab_1
-  - cppad=20250000.2=h5888daf_0
   - cpython=3.12.12=py312hd8ed1ab_1
   - cryptography=46.0.3=py312hee9fe19_0
   - dask-core=2025.11.0=pyhcf101f3_0
@@ -42,13 +43,20 @@ dependencies:
   - google-auth=2.43.0=pyhd8ed1ab_0
   - google-cloud-core=2.5.0=pyhd8ed1ab_0
   - google-cloud-storage=3.6.0=pyhcf101f3_0
+  - google-api-core=2.28.1=pyhd8ed1ab_0
+  - google-auth=2.43.0=pyhd8ed1ab_0
+  - google-cloud-core=2.5.0=pyhd8ed1ab_0
+  - google-cloud-storage=3.6.0=pyhcf101f3_0
   - google-crc32c=1.7.1=py312h03f33d3_1
+  - google-resumable-media=2.8.0=pyhd8ed1ab_0
+  - googleapis-common-protos=1.72.0=pyhd8ed1ab_0
   - google-resumable-media=2.8.0=pyhd8ed1ab_0
   - googleapis-common-protos=1.72.0=pyhd8ed1ab_0
   - grpcio=1.74.1=py312h6f3464c_1
   - grpcio-status=1.74.0=pyhd8ed1ab_0
   - gurobi=12.0.0=py312_0
   - h2=4.3.0=pyhcf101f3_0
+  - highspy=1.12.0=np2py312h0f77346_0
   - hpack=4.1.0=pyhd8ed1ab_0
   - hyperframe=6.1.0=pyhd8ed1ab_0
   - icu=75.1=he02047a_0
@@ -62,20 +70,18 @@ dependencies:
   - libcblas=3.11.0=1_h0358290_openblas
   - libcrc32c=1.1.2=h9c3ff4c_0
   - libexpat=2.7.3=hecca717_0
+  - libexpat=2.7.3=hecca717_0
   - libffi=3.5.2=h9ec8514_0
-  - libgcc=15.2.0=h767d61c_7
-  - libgcc-ng=15.2.0=h69a702a_7
-  - libgfortran=15.2.0=h69a702a_7
-  - libgfortran-ng=15.2.0=h69a702a_7
-  - libgfortran5=15.2.0=hcd61629_7
-  - libgomp=15.2.0=h767d61c_7
+  - libgcc=15.2.0=he0feb66_15
+  - libgcc-ng=15.2.0=h69a702a_15
+  - libgfortran=15.2.0=h69a702a_15
+  - libgfortran5=15.2.0=h68bc16d_15
   - libgrpc=1.74.1=h3288cfb_1
-  - libhwloc=2.11.2=default_h3d81e11_1002
+  - libhwloc=2.12.1=default_hafda6a7_1003
   - libiconv=1.18=h3b78370_2
   - liblapack=3.11.0=1_h47877c9_openblas
   - liblapacke=3.11.0=1_h6ae95b6_openblas
   - liblzma=5.8.1=hb9d3cd8_2
-  - liblzma-devel=5.8.1=hb9d3cd8_2
   - libnsl=2.0.1=hb9d3cd8_1
   - libopenblas=0.3.30=pthreads_h94d23a6_4
   - libprotobuf=6.31.1=h49aed37_2
@@ -94,12 +100,14 @@ dependencies:
   - metis=5.1.0=hd0bcaf9_1007
   - mpfr=4.2.1=h90cbb55_3
   - multidict=6.6.3=py312h178313f_0
-  - mumps-include=5.7.3=h82cca05_10
-  - mumps-seq=5.7.3=h27a6a8b_0
+  - mumps-include=5.8.1=h1795ed4_4
+  - mumps-seq=5.8.1=h4374b6a_4
   - ncurses=6.5=h2d0b736_3
   - nomkl=1.0=h5ca1d4c_0
   - numexpr=2.14.1=py312h88efc94_101
+  - numexpr=2.14.1=py312h88efc94_101
   - numpy=1.26.4=py312heda63a1_0
+  - openssl=3.6.0=h26f9b46_0
   - openssl=3.6.0=h26f9b46_0
   - packaging=25.0=pyh29332c3_1
   - pandas=2.3.3=py312hf79963d_1
@@ -111,11 +119,11 @@ dependencies:
   - proto-plus=1.26.1=pyhd8ed1ab_0
   - protobuf=6.31.1=py312hb8af0ac_2
   - psutil=7.1.3=py312h5253ce2_0
+  - psutil=7.1.3=py312h5253ce2_0
   - pyasn1=0.6.1=pyhd8ed1ab_2
   - pyasn1-modules=0.4.2=pyhd8ed1ab_0
   - pycparser=2.22=pyh29332c3_1
   - pyopenssl=25.3.0=pyhd8ed1ab_0
-  - pyscipopt=5.4.1=py312h2ec8cdc_1
   - pysocks=1.7.1=pyha55dd90_7
   - python=3.12.12=hd63d673_1_cpython
   - python-dateutil=2.9.0.post0=pyhe01879c_2
@@ -125,6 +133,7 @@ dependencies:
   - pytz=2025.2=pyhd8ed1ab_0
   - pyu2f=0.1.5=pyhd8ed1ab_1
   - pyyaml=6.0.3=py312h8a5da7c_0
+  - re2=2025.11.05=h5301d42_0
   - re2=2025.11.05=h5301d42_0
   - readline=8.2=h8c095d6_2
   - requests=2.32.5=pyhd8ed1ab_0
@@ -140,7 +149,7 @@ dependencies:
   - typing-extensions=4.15.0=h396c80c_0
   - typing_extensions=4.15.0=pyhcf101f3_0
   - tzdata=2025b=h78e105d_0
-  - urllib3=2.5.0=pyhd8ed1ab_0
+  - urllib3=2.6.0=pyhd8ed1ab_0
   - wheel=0.45.1=pyhd8ed1ab_1
   - xarray=2025.11.0=pyhcf101f3_0
   - xz=5.8.1=hbcc6ac9_2
@@ -153,4 +162,4 @@ dependencies:
   - zstandard=0.25.0=py312h5253ce2_1
   - zstd=1.5.7=hb8e6e7a_2
   - pip:
-      - highspy==1.10.0
+      - pyscipopt==5.7.1

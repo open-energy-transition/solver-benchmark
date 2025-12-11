@@ -19,4 +19,4 @@ dependencies:
 - gurobi==12.0.0
 
 - pip:
-  - highspy==1.10.0
+  - pyscipopt==5.7.1
