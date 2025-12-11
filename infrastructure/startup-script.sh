@@ -55,54 +55,6 @@ tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
 
-# Install HiGHS-HiPO from `latest` branch by building from source
-echo "Installing HiGHS from latest branch from source..."
-
-# Set up working directory
-HIGHS_HIPO_DIR="/opt/highs-hipo-workspace"
-mkdir -p "${HIGHS_HIPO_DIR}"
-cd "${HIGHS_HIPO_DIR}"
-
-# 2. Clone METIS
-echo "Cloning METIS (patched version)..."
-git clone --depth=1 --branch 521-ts https://github.com/galabovaa/METIS.git
-
-# 3. Create installs directory
-echo "Creating installs directory..."
-mkdir -p installs
-
-# 4. Install METIS
-echo "Installing METIS..."
-pushd METIS
-cmake -S. -B build -DGKLIB_PATH="${HIGHS_HIPO_DIR}/METIS/GKlib" \
-  -DCMAKE_INSTALL_PREFIX="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
-cmake --install build
-popd
-
-# 7. Clone and build HiGHS with hipo support
-echo "Cloning HiGHS repository..."
-git clone --depth=1 https://github.com/ERGO-Code/HiGHS.git
-cd HiGHS
-
-# Checkout the latest branch as of Nov 26, 2025
-echo "Checking out branch latest..."
-HIPO_COMMIT_SHA="9e8322ac32c3e95cff3c9dfd1abd9b4a32ed925c"
-git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
-git checkout "${HIPO_COMMIT_SHA}"
-
-# 8. Configure HiGHS with HIPO enabled and dependency paths
-echo "Configuring HiGHS with HIPO support..."
-cmake -S. -B build \
-      -DHIPO=ON \
-      -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
-
-# Verify the installation
-echo "Verifying HiGHS HiPO installation..."
-"${HIGHS_HIPO_DIR}/HiGHS/build/bin/highs" --version
-echo "HiGHS HiPO installation completed"
-
 # Go back to root directory
 cd /
 
