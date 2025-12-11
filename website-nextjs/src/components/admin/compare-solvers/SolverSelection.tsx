@@ -163,8 +163,8 @@ const SolverSelection = () => {
           <p className="flex-col gap-1 items-center text-navy text-sm">
             <div className="inline-flex gap-1 items-start">
               <CloseIcon className="size-3 mt-1.5" />
-              represents benchmark instances where at leinteast one of the
-              solvers failed to solve within the time limit, while
+              represents benchmark instances where at least one of the solvers
+              failed to solve within the time limit, while
             </div>
             <div className="flex gap-1 items-center">
               <CircleIcon className="size-3" />
