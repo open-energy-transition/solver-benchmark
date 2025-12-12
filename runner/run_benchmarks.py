@@ -600,12 +600,23 @@ def main(
                 )
                 continue
 
+            # TODO a hack to run only the latest version per solver on Ls
+            if (
+                benchmark["size_category"] == "L"
+                and year != "2025"
+                and not (
+                    year == "2024" and solver == "cbc"
+                )  # Latest CBC release is in 2024
+            ):
+                print(
+                    f"WARNING: skipping {solver} in {year} because this benchmark instance is size L"
+                )
+                continue
+
             solver_version = solvers_versions.get(solver)
             if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
-
-            print(f"Found solver {solver} with version {solver_version}")
 
             metrics = {}
             runtimes = []
