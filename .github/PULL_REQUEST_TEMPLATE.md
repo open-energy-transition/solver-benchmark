@@ -19,10 +19,10 @@ Please add the following information to the description field of the metadata fo
 **For PRs adding new benchmark instances:**
 - [ ] I consent to releasing these benchmark instance files under the CC BY 4.0 license
 - [ ] The benchmark name and size instance name follow the conventions indicated in the template
-- [ ] I have tested that this model instance can be solved to optimality with [solver] solver, using [options], on a [spec] machine <!-- please indicate which solver, how much RAM memory your machine has, and whether you used any non-default solver options -->
+- [ ] I have tested that this model instance can be solved to optimality in [time] with [solver] solver, using [options], on a [spec] machine <!-- please indicate which solver, how much RAM memory your machine has, and what solver options were used -->
 
 For Benchmark team:
-- [ ] Upload the LP/MPS files to our GCS bucket
+- [ ] Upload the LP/MPS files (compressed using `gzip -9 <filename>`) to our GCS bucket
 - [ ] Run `benchmarks/categorize_benchmarks.py` on them to obtain problem stats and size category
 - [ ] Run `tests/validate_urls.py` to ensure URLs are consistent with benchmark and size instance name
 - [ ] Test that some solver solves these benchmarks within our timeouts on our infra

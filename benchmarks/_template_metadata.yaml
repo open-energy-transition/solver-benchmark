@@ -16,7 +16,7 @@ benchmarks:
     Sizes:
     - Name: # Spatial resolution-Temporal resolution, e.g., 2-12ts, 10-1h
       URL: # link to the shared folder where the .lp / .mps file is stored, maintainers will assign a new link after accepting the contribution
-      Temporal resolution: # n. of time steps in one planning horizon, e.g., 1 hour / 8 time slices
-      Spatial resolution: # n. of nodes / regions, e.g., 997 nodes / 25 regions
+      Temporal resolution: # n. of time steps in one planning horizon, one of: X hours / Y time slices
+      Spatial resolution: # n. of nodes or regions, e.g., 997 nodes / 25 regions
       Realistic: # true, false
       Realistic motivation: # if Realistic, please justify why, e.g., used in XYZ real-world study (with link), or spatial/temporal resolution matches those used in real-world studies
