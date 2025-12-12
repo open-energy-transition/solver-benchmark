@@ -107,8 +107,10 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
+    MILP features: None
     Sizes:
     - Name: 50-1h
       Size: L
@@ -204,8 +206,10 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
+    MILP features: None
     Sizes:
     - Name: 50-1h
       Size: L
@@ -301,9 +305,10 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Dynamic fuel pricing
+    MILP features: Dynamic fuel pricing  # TODO then shouldn't this be class: MILP?
     Sizes:
     - Name: 50-1h
       Size: L
@@ -399,8 +404,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
-    Sectors: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
@@ -498,8 +503,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
-    Sectors: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
@@ -1029,8 +1034,10 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
+    MILP features: None
     Sizes:
     - Name: 10-1h
       Size: L
@@ -1165,8 +1172,10 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
+    MILP features: None
     Sizes:
     - Name: 10-1h
       Size: L
@@ -1302,9 +1311,10 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Dynamic fuel pricing
+    MILP features: Dynamic fuel pricing  # TODO is this a MILP then?
     Sizes:
     - Name: 10-1h
       Size: L
@@ -1439,8 +1449,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
-    Sectors: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
@@ -1577,8 +1587,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Power
-    Sectors: Power
+    Sectoral focus: Power-only
+    Sectors: Electric
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
@@ -2063,6 +2073,7 @@ benchmarks:
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt_50_3h.mps.gz
       Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 37033738
