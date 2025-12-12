@@ -26,7 +26,7 @@ class HighsVariant(str, Enum):
     def cli_args(self) -> collections.abc.Iterable[str]:
         args = {
             "solver": "hipo",
-            "run_crossover": "off",
+            "run_crossover": "choose",
         }
         if self == HighsVariant.HIPO_IPM:
             args["solver"] = "ipx"
