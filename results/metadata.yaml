@@ -1,4 +1,237 @@
 benchmarks:
+  FINE-2-node-electricity-supply-system:
+    Short description: A simple 2-region energy supply system built using the ETHOS.FINE
+      framework, illustrating the creation of an energy system model and the addition
+      of sources, converters, storage, transmission, and sinks.
+    Modelling framework: FINE
+    Model name: 2_node_electricity_supply_system
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/00_Tutorial
+    License: CC BY 4.0
+    Problem class:
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 2-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-2-node-electricity-supply-system-2-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-1-node-energy-system-workflow:
+    Short description: A single-region energy system model built using the ETHOS.FINE
+      framework, demonstrating the use of all major component classes, including sources,
+      converters, storage, and sinks.
+    Modelling framework: FINE
+    Model name: 1_node_energy_system_workflow
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/01_1node_Energy_System_Workflow
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-1-node-energy-system-workflow-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-energyland:
+    Short description: A single-node energy system model with an extended set of technologies,
+      demonstrating a more comprehensive application of the ETHOS.FINE framework including
+      sources, converters, storage, and sinks.
+    Modelling framework: FINE
+    Model name: energyland
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/02_EnergyLand
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-energyland-1-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-multi-regional-energy-system-workflow:
+    Short description: A multi-regional energy system model using the ETHOS.FINE framework,
+      demonstrating the use of all major component classes including sources, converters,
+      storage, transmission, and sinks.
+    Modelling framework: FINE
+    Model name: multi_regional_energy_system_workflow
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/03_Multi-regional_Energy_System_Workflow
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 8-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-multi-regional-energy-system-workflow-8-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-district-optimization:
+    Short description: A small district energy system modeled using the ETHOS.FINE
+      framework, demonstrating sources, converters, storage, transmission, and sinks.
+    Modelling framework: FINE
+    Model name: district_optimization
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/05_District_Optimization
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Multi-energy (electricity, heat, methane)
+    Sectors: Electric, Heat, Gas
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 14-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-district-optimization-14-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 14 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-water-supply-system:
+    Short description: A clean water supply system for a small mountain village, modeled
+      using the ETHOS.FINE framework, including water demand, river water supply,
+      water treatment, storage, and transmission infrastructure.
+    Modelling framework: FINE
+    Model name: water_supply_system
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/06_Water_Supply_System
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Water supply
+    Sectors: Water
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 12-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-water-supply-system-12-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 12 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-spatial-aggregation-of-energy-system-model:
+    Short description: Demonstrates the spatial aggregation of an energy system model,
+      merging similar regions to reduce the number of model nodes while preserving
+      system characteristics.
+    Modelling framework: FINE
+    Model name: spatial_aggregation_of_energy_system_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/blob/develop/examples/08_Spatial_and_technology_aggregation/08a_Spatial_aggregation_of_energy_system_model.ipynb
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Multi-energy (electricity, hydrogen, methane, biogas, CO2)
+    Sectors: Electric, Gas
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 8-8760ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-spatial-aggregation-of-energy-system-model-8-8760ts.lp
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-perfect-foresight:
+    Short description: A single-node energy system transformation pathway modeled
+      using the ETHOS.FINE framework, demonstrating sources, converters, storage,
+      and sinks with perfect foresight optimization.
+    Modelling framework: FINE
+    Model name: perfect_foresight
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/10_PerfectForesight
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectors: Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp
+      Temporal resolution: 8760 hourly time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+  FINE-hydrogen-partload:
+    Short description: A hydrogen system modeled using the ETHOS.FINE framework, considering
+      part-load behavior of the electrolyzer and demonstrating sources, converters,
+      storage, and sinks.
+    Modelling framework: FINE
+    Model name: hydrogen_partload
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/11_Partload
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure planning & operational optimization
+    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectors: Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-168ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp
+      Temporal resolution: 168 hourly time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
   genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion.
