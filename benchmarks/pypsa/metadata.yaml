@@ -308,7 +308,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Dynamic fuel pricing  # TODO then shouldn't this be class: MILP?
+    MILP features: None
     Sizes:
     - Name: 50-1h
       Size: L
@@ -1314,7 +1314,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Dynamic fuel pricing  # TODO is this a MILP then?
+    MILP features: None
     Sizes:
     - Name: 10-1h
       Size: L
