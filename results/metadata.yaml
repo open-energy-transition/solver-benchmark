@@ -85,7 +85,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None
+    MILP features: Binary transmission investment decisions
     Sizes:
     - Name: 8-8760ts
       Size: M
@@ -110,7 +110,7 @@ benchmarks:
     Sectoral focus: Multi-energy (electricity, heat, methane)
     Sectors: Electric, Heat, Gas
     Time horizon: Single-stage
-    MILP features: None
+    MILP features: Binary transmission investment decisions
     Sizes:
     - Name: 14-8760ts
       Size: M
@@ -136,7 +136,7 @@ benchmarks:
     Sectoral focus: Water supply
     Sectors: Water
     Time horizon: Single-stage
-    MILP features: None
+    MILP features: Binary transmission investment decisions
     Sizes:
     - Name: 12-8760ts
       Size: S
@@ -210,7 +210,8 @@ benchmarks:
     Sectoral focus: Multi-energy (electricity, hydrogen)
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
-    MILP features: None
+    MILP features: Binary transmission investment decisions; Piecewise-linear part-load
+      efficiency modeling
     Sizes:
     - Name: 1-168ts
       Size: S
