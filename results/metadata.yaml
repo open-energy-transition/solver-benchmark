@@ -2608,7 +2608,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage
-    MILP features: Unit commitment
+    MILP features: None
     Sizes:
     - Name: 32-433ts
       Size: L
