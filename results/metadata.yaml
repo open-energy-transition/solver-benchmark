@@ -8,7 +8,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/00_Tutorial
     License: CC BY 4.0
-    Problem class:
+    Problem class: LP
     Application: Infrastructure planning & operational optimization
     Sectoral focus: Power-only
     Sectors: Electric
@@ -17,14 +17,12 @@ benchmarks:
     Sizes:
     - Name: 2-8760ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-2-node-electricity-supply-system-2-8760ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-2-node-electricity-supply-system-2-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 2 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 11597
+      Num. variables: 8152
   FINE-1-node-energy-system-workflow:
     Short description: A single-region energy system model built using the ETHOS.FINE
       framework, demonstrating the use of all major component classes, including sources,
@@ -43,14 +41,12 @@ benchmarks:
     Sizes:
     - Name: 1-8760ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-1-node-energy-system-workflow-1-8760ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-1-node-energy-system-workflow-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 8339
+      Num. variables: 4892
   FINE-energyland:
     Short description: A single-node energy system model with an extended set of technologies,
       demonstrating a more comprehensive application of the ETHOS.FINE framework including
@@ -69,14 +65,12 @@ benchmarks:
     Sizes:
     - Name: 1-8760ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-energyland-1-8760ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-energyland-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 40198
+      Num. variables: 32770
   FINE-multi-regional-energy-system-workflow:
     Short description: A multi-regional energy system model using the ETHOS.FINE framework,
       demonstrating the use of all major component classes including sources, converters,
@@ -86,7 +80,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/03_Multi-regional_Energy_System_Workflow
     License: CC BY 4.0
-    Problem class: LP
+    Problem class: MILP
     Application: Infrastructure planning & operational optimization
     Sectoral focus: Power-only
     Sectors: Electric
@@ -95,14 +89,14 @@ benchmarks:
     Sizes:
     - Name: 8-8760ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-multi-regional-energy-system-workflow-8-8760ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-multi-regional-energy-system-workflow-8-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 8 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 44954
+      Num. variables: 16580
+      Num. continuous variables: 16528
+      Num. integer variables: 52
   FINE-district-optimization:
     Short description: A small district energy system modeled using the ETHOS.FINE
       framework, demonstrating sources, converters, storage, transmission, and sinks.
@@ -111,7 +105,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/05_District_Optimization
     License: CC BY 4.0
-    Problem class: LP
+    Problem class: MILP
     Application: Infrastructure planning & operational optimization
     Sectoral focus: Multi-energy (electricity, heat, methane)
     Sectors: Electric, Heat, Gas
@@ -120,14 +114,14 @@ benchmarks:
     Sizes:
     - Name: 14-8760ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-district-optimization-14-8760ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-district-optimization-14-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 14 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 32490
+      Num. variables: 15260
+      Num. continuous variables: 15228
+      Num. integer variables: 32
   FINE-water-supply-system:
     Short description: A clean water supply system for a small mountain village, modeled
       using the ETHOS.FINE framework, including water demand, river water supply,
@@ -137,7 +131,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/06_Water_Supply_System
     License: CC BY 4.0
-    Problem class: LP
+    Problem class: MILP
     Application: Infrastructure planning & operational optimization
     Sectoral focus: Water supply
     Sectors: Water
@@ -145,15 +139,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 12-8760ts
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-water-supply-system-12-8760ts.lp
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-water-supply-system-12-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 12 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 6461
+      Num. variables: 4701
+      Num. continuous variables: 4679
+      Num. integer variables: 22
   FINE-spatial-aggregation-of-energy-system-model:
     Short description: Demonstrates the spatial aggregation of an energy system model,
       merging similar regions to reduce the number of model nodes while preserving
@@ -171,15 +165,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 8-8760ts
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-spatial-aggregation-of-energy-system-model-8-8760ts.lp
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-spatial-aggregation-of-energy-system-model-8-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 8 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 15898
+      Num. variables: 8034
   FINE-perfect-foresight:
     Short description: A single-node energy system transformation pathway modeled
       using the ETHOS.FINE framework, demonstrating sources, converters, storage,
@@ -197,15 +189,13 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp.gz
       Temporal resolution: 8760 hourly time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 19619
+      Num. variables: 10538
   FINE-hydrogen-partload:
     Short description: A hydrogen system modeled using the ETHOS.FINE framework, considering
       part-load behavior of the electrolyzer and demonstrating sources, converters,
@@ -215,7 +205,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/11_Partload
     License: CC BY 4.0
-    Problem class: LP
+    Problem class: MILP
     Application: Infrastructure planning & operational optimization
     Sectoral focus: Multi-energy (electricity, hydrogen)
     Sectors: Electric, Hydrogen
@@ -224,14 +214,14 @@ benchmarks:
     Sizes:
     - Name: 1-168ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp.gz
       Temporal resolution: 168 hourly time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 3883
+      Num. variables: 2707
+      Num. continuous variables: 2370
+      Num. integer variables: 337
   genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion.
