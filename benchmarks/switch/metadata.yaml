@@ -6,7 +6,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
     License: CC BY 4.0
-    Problem class:
+    Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
@@ -20,10 +20,10 @@ benchmarks:
       Spatial resolution: 32 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 14588407
+      Num. variables: 13338520
+      Num. continuous variables: 13338520
+      Num. integer variables: 0
   SWITCH-USA-PG:
     Short description: A capacity-expansion and operational power-system model of the United States built on the Switch framework and parameterized with PowerGenome data. It provides consistent, reproducible multi-regional U.S. electricity system scenarios using detailed technology cost assumptions (e.g., ATB).
     Modelling framework: SWITCH
