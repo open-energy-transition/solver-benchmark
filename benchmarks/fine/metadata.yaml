@@ -7,7 +7,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/00_Tutorial
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -29,7 +29,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/01_1node_Energy_System_Workflow
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -51,7 +51,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/02_EnergyLand
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -73,7 +73,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/03_Multi-regional_Energy_System_Workflow
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -97,7 +97,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/05_District_Optimization
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Multi-energy (electricity, heat, methane)
     Sectors: Electric, Heat, Gas
     Time horizon: Single-stage
@@ -121,7 +121,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/06_Water_Supply_System
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Water supply
     Sectors: Water
     Time horizon: Single-stage
@@ -145,7 +145,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/blob/develop/examples/08_Spatial_and_technology_aggregation/08a_Spatial_aggregation_of_energy_system_model.ipynb
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Multi-energy (electricity, hydrogen, methane, biogas, CO2)
     Sectors: Electric, Gas
     Time horizon: Single-stage
@@ -167,7 +167,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/10_PerfectForesight
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Multi-energy (electricity, hydrogen)
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
@@ -189,7 +189,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/11_Partload
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure planning & operational optimization
+    Application: Infrastructure and Capacity expansion
     Sectoral focus: Multi-energy (electricity, hydrogen)
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
