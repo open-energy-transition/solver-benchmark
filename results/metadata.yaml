@@ -2620,8 +2620,6 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 14588407
       Num. variables: 13338520
-      Num. continuous variables: 13338520
-      Num. integer variables: 0
   SWITCH-USA-PG:
     Short description: A capacity-expansion and operational power-system model of
       the United States built on the Switch framework and parameterized with PowerGenome
