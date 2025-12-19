@@ -28,7 +28,7 @@ We welcome contributions from the community! If you'd like to:
 - Contribute analysis or insights
 - Report issues or suggest improvements
 
-Visit our [GitHub repository](https://github.com/vulcan-services/oet-solver-benchmark) to get started.
+Visit our [GitHub repository](https://github.com/open-energy-transition/solver-benchmark) to get started.
 
 ## Stay Connected
 
