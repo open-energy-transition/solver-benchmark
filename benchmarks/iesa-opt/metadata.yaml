@@ -2,7 +2,7 @@
 ## papers using the model: https://www.sciencedirect.com/science/article/pii/S2666792421000354, https://www.sciencedirect.com/science/article/pii/S266679242100072X, https://www.sciencedirect.com/science/article/pii/S0140988323002487, https://www.sciencedirect.com/science/article/pii/S266679242200021X
 benchmarks:
   Benchmark_name: 1n-3h-1y
-    Short description: Energy system model of the Netherlands (1n = 1 node) with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of the Netherlands (1n = 1 node) with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
@@ -24,7 +24,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 1n-1h-1y
-    Short description: Energy system model of the Netherlands (1n = 1 node) with hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of the Netherlands (1n = 1 node) with hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
@@ -46,7 +46,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 10n-1h-1y
-    Short description: Energy system model of 10 regions within the Netherlands with hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of 10 regions within the Netherlands with hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
@@ -68,7 +68,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 5n-3h-1y
-    Short description: Energy system model of 5 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of 5 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
@@ -90,7 +90,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 10n-3h-1y
-    Short description: Energy system model of 10 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of 10 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
@@ -112,7 +112,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 20n-3h-1y
-    Short description: Energy system model of 20 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of 20 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
@@ -134,7 +134,7 @@ benchmarks:
       Num. constraints: # Automatically assigned when running the benchmark
       Num. variables: # Automatically assigned when running the benchmark
   Benchmark_name: 25n-3h-1y
-    Short description: Energy system model of 25 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target. 
+    Short description: Energy system model of 25 regions within the Netherlands with 3-hourly resolution over one year (2050) with netzero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
