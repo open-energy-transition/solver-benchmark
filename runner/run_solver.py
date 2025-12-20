@@ -31,6 +31,7 @@ def get_solver(solver_name):
             "randomCbcSeed": 1,  # 0 indicates time of day
             "ratioGap": mip_gap,
         },
+        "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
     }
 
     return solver_class(**seed_options.get(solver_name, {}))
@@ -88,6 +89,8 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "glpk":
         # GLPK does not have a way to retrieve the duality gap from python
         return None
+    elif solver_name == "xpress":
+        return solver_model.controls.miprelgapnotify
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
