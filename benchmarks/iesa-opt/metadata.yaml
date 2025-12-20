@@ -13,6 +13,7 @@ benchmarks:
     Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
     Time horizon: Single-stage (1 year)
     MILP features: None
+    License: TODO
     Sizes:
     - Name: 1n-3h-1y
       Size: M
