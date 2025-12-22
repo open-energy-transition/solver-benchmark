@@ -582,9 +582,9 @@ def main(
         reference_solver_version = get_highs_binary_version()
 
     for benchmark in processed_benchmarks:
-        # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 10h for L)
+        # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 24h for L)
         timeout = benchmark.get("timeout_seconds") or (
-            10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
+            24 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
         )
 
         for solver in solvers:
