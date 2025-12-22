@@ -17,7 +17,7 @@ benchmarks:
     Sizes:
     - Name: 175-720ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/ethos_fine_europe_60tp-175-720ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos_fine_europe_60tp-175-720ts.mps.gz
       Temporal resolution: 720 time slices
       Spatial resolution: 175 nodes
       Realistic: false
