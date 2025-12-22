@@ -79,7 +79,7 @@ def check_uptimes():
     print(f"\n{len(hung_vms)} potentially hung instances:\n{'\n'.join(hung_vms)}")
 
 
-# Use SCP to get in-progress results
+# ---------- Use SCP to get in-progress results ----------
 
 
 def fetch_results_from_instance(instance, output_dir="../results/partial-results"):
@@ -217,31 +217,42 @@ def allocate_benchmarks(
     weight_col: str,
     num_vms: int,
     machine_type: str = "c4-standard-2",
+    zone: str = "us-central1-a",
+    solvers: str | None = None,
+    timeout_seconds: int | None = None,
 ) -> list[dict]:
     allocation, _ = allocate_vms_greedy(
         benchmarks_df.index, benchmarks_df[weight_col], num_vms
     )
     vm_yamls = []
     for benchs in allocation:
+        vm_benchmarks = {}
+        # Collect all sizes of a benchmark
+        for b in benchs:
+            size_instance = {
+                "Name": benchmarks_df.loc[b, "Instance"],
+                "Size": benchmarks_df.loc[b, "Size"],
+                "URL": benchmarks_df.loc[b, "URL"],
+            }
+            bench_name = benchmarks_df.loc[b, "Benchmark"]
+            if bench_name in vm_benchmarks:
+                vm_benchmarks[bench_name]["Sizes"].append(size_instance)
+            else:
+                vm_benchmarks[bench_name] = {
+                    "Problem class": benchmarks_df.loc[b, "Problem class"],
+                    "Sizes": [size_instance],
+                }
         vm_yamls.append(
             {
                 "machine-type": machine_type,
-                "zone": "us-central1-a",  # Default cheapest zone, can be overwritten
-                "benchmarks": {
-                    b: {  # TODO b is bench-size! Collect all sizes of bench here instead
-                        "Problem class": benchmarks_df.loc[b, "Problem class"],
-                        "Sizes": [
-                            {
-                                "Name": benchmarks_df.loc[b, "Instance"],
-                                "Size": benchmarks_df.loc[b, "Size"],
-                                "URL": benchmarks_df.loc[b, "URL"],
-                            }
-                        ],
-                    }
-                    for b in benchs
-                },
+                "zone": zone,  # Default cheapest zone, can be overwritten
+                "benchmarks": vm_benchmarks,
             }
         )
+        if solvers:
+            vm_yamls[-1]["solver"] = solvers
+        if timeout_seconds:
+            vm_yamls[-1]["timeout_seconds"] = timeout_seconds
     return vm_yamls
 
 
