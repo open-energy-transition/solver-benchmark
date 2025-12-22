@@ -2,78 +2,78 @@
 ## papers using the model: https://www.sciencedirect.com/science/article/pii/S2666792421000354, https://www.sciencedirect.com/science/article/pii/S266679242100072X, https://www.sciencedirect.com/science/article/pii/S0140988323002487, https://www.sciencedirect.com/science/article/pii/S266679242200021X
 benchmarks:
   IESA-Opt-NL:
-    Short description: Energy system model of the Netherlands (1n = 1 node) with 3-hourly resolution over one year (2050) with netzero climate target.
+    Short description: Energy system model of the Netherlands over one year (2050) with net-zero climate target.
     Modelling framework: IESA-Opt
     Model name: IESA-Opt-NL
     Version: 20251218
     Contributor(s)/Source: TNO, Utrecht University
     Problem class: LP
-    Application: Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
-    Time horizon: Single-stage (1 year)
+    Time horizon: Single period (1 year)
     MILP features: None
     License: TODO
     Sizes:
-    - Name: 1n-3h-1y
+    - Name: 1-3h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1n-3h-1y.mps.gz
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 1 node (The Netherlands)
+      Temporal resolution: 2920 time slices
+      Spatial resolution: 1 node
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 793714
       Num. variables: 493813
-    - Name: 1n-1h-1y
+    - Name: 1-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1n-1h-1y.mps.gz
-      Temporal resolution: 8760 timeslices (hourly for 1 year)
-      Spatial resolution: 1 node (The Netherlands)
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 1967554
       Num. variables: 1107013
-    - Name: 10n-1h-1y
+    - Name: 10-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10n-1h-1y.mps.gz
-      Temporal resolution: 8760 timeslices (hourly for 1 year)
-      Spatial resolution: 10 nodes (Regions within The Netherlands)
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 10 nodes
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 15230366
       Num. variables: 9661524
-    - Name: 5n-3h-1y
+    - Name: 5-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-5n-3h-1y.mps.gz
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 5 nodes (Regions within The Netherlands)
+      Temporal resolution: 2920 time slices
+      Spatial resolution: 5 nodes
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 15025409
       Num. variables: 12077880
-    - Name: 10n-3h-1y
+    - Name: 10-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10n-3h-1y.mps.gz
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 10 nodes (Regions within The Netherlands)
+      Temporal resolution: 2920 time slices
+      Spatial resolution: 10 nodes
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 7603326
       Num. variables: 5672804
-    - Name: 20n-3h-1y
+    - Name: 20-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-20n-3h-1y.mps.gz
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 20 nodes (Regions within The Netherlands)
+      Temporal resolution: 2920 time slices
+      Spatial resolution: 20 nodes
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 24282926
       Num. variables: 20319294
-    - Name: 25n-3h-1y
+    - Name: 25-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-25n-3h-1y.mps.gz
-      Temporal resolution: 2920 timeslices (3-hourly for 1 year)
-      Spatial resolution: 25 nodes (Regions within The Netherlands)
+      Temporal resolution: 2920 time slices
+      Spatial resolution: 25 nodes
       Realistic: true
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 35769573
