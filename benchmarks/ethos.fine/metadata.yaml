@@ -20,7 +20,6 @@ benchmarks:
       Temporal resolution: 168 time slices
       Spatial resolution: 8 nodes
       Realistic: false
-      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 91178
       Num. variables: 55979
       Num. continuous variables: 55927
@@ -45,7 +44,6 @@ benchmarks:
       Temporal resolution: 84 time slices
       Spatial resolution: 8 nodes
       Realistic: false
-      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 64214
       Num. variables: 33215
       Num. continuous variables: 33163
@@ -70,7 +68,6 @@ benchmarks:
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 543229
       Num. variables: 473179
   ethos-fine-energyland-48tp:
@@ -93,6 +90,5 @@ benchmarks:
       Temporal resolution: 1152 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Realistic motivation: # (optional) e.g., Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 40198
       Num. variables: 32770
