@@ -39,15 +39,32 @@ const setXFactor = (xFactor: number) => {
   };
 };
 
+const resetFilters =
+  (): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch, getState) => {
+    dispatch({ type: actions.RESET_FILTERS });
+
+    const { results } = getState();
+    dispatch(resultActions.setBenchmarkResults(results.rawBenchmarkResults));
+    dispatch(
+      resultActions.setBenchmarkLatestResults(
+        getLatestBenchmarkResult(results.rawBenchmarkResults),
+      ),
+    );
+    dispatch(resultActions.setMetaData(results.rawMetaData));
+  };
+
 const actions = {
   TOGGLE_FILTER: "TOGGLE_FILTER",
   SET_FILTER: "SET_FILTER",
   SET_SGM_MODE: "SET_SGM_MODE",
   SET_X_FACTOR: "SET_X_FACTOR",
+  RESET_FILTERS: "RESET_FILTERS",
   setFilter,
   setSgmMode,
   setXFactor,
   toggleFilter,
+  resetFilters,
   toggleFilterAndUpdateResults:
     (payload: {
       category: string;

@@ -1,4 +1,4 @@
-# Instructions to generate GenX benchmakrs
+# Instructions to generate GenX benchmarks
 
 - Install Julia following the [instructions](https://julialang.org/downloads/) and switch to version 1.9 (the latest version to be compatible with GenX)
     - `juliaup status`shows the available versions
