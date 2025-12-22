@@ -24,6 +24,7 @@ benchmarks:
       Realistic motivation:
       Num. constraints: 9230938
       Num. variables: 8141182
+      Skip because: TO (needs special solver options)
   ethos-fine-multi-regional-7tp:
     Short description: Multi-regional energy system optimization model with 8 nodes
       modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
