@@ -24,6 +24,332 @@ benchmarks:
       Realistic motivation:
       Num. constraints: 9230938
       Num. variables: 8141182
+  ethos-fine-multi-regional-7tp:
+    Short description: Multi-regional energy system optimization model with 8 nodes
+      modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
+      8 regional clusters in Germany. The model uses time series aggregation by tsam
+      with 7 typical days without segmentation.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-only
+    Sectors: Supply, Power
+    Time horizon: Single period (1 year)
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-168ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-multi-regional-7tp-8-168ts.mps.gz
+      Temporal resolution: 168 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 91178
+      Num. variables: 55979
+      Num. continuous variables: 55927
+      Num. integer variables: 52
+  ethos-fine-multi-regional-7tp-12seg:
+    Short description: Multi-regional energy system optimization model with 8 nodes
+      modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
+      8 regional clusters in Germany. The model uses time series aggregation by tsam
+      with 7 typical days and 12 segments per typical day.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-only
+    Sectors: Supply, Power
+    Time horizon: 1 year
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-84ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-multi-regional-7tp-12seg-8-84ts.mps.gz
+      Temporal resolution: 84 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 64214
+      Num. variables: 33215
+      Num. continuous variables: 33163
+      Num. integer variables: 52
+  ethos-fine-energyland-full-timeseries:
+    Short description: Fictional on node energy system model depicting power, heat,
+      and transport sectors. The model features full time series resolution (8760
+      hours) for one year.
+    Modelling framework: ethos.fine
+    Model name: Energyland example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power, Heat, Transport
+    Sectors: Supply, Power, Heat, Transport
+    Time horizon: 1 year
+    MILP features:
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-energyland-full-timeseries-1-8760ts.mps.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 543229
+      Num. variables: 473179
+  ethos-fine-energyland-48tp:
+    Short description: Fictional on node energy system model depicting power, heat,
+      and transport sectors. The model uses time series aggregation by tsam with 48
+      typical days without segmentation.
+    Modelling framework: ethos.fine
+    Model name: Energyland example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power, Heat, Transport
+    Sectors: Supply, Power, Heat, Transport
+    Time horizon: 1 year
+    MILP features:
+    Sizes:
+    - Name: 1-1152ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-energyland-48tp-1-1152ts.mps.gz
+      Temporal resolution: 1152 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 40198
+      Num. variables: 32770
+  FINE-2-node-electricity-supply-system:
+    Short description: A simple 2-region energy supply system built using the ETHOS.FINE
+      framework, illustrating the creation of an energy system model and the addition
+      of sources, converters, storage, transmission, and sinks.
+    Modelling framework: FINE
+    Model name: 2_node_electricity_supply_system
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/00_Tutorial
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 2-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-2-node-electricity-supply-system-2-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 11597
+      Num. variables: 8152
+  FINE-1-node-energy-system-workflow:
+    Short description: A single-region energy system model built using the ETHOS.FINE
+      framework, demonstrating the use of all major component classes, including sources,
+      converters, storage, and sinks.
+    Modelling framework: FINE
+    Model name: 1_node_energy_system_workflow
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/01_1node_Energy_System_Workflow
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-1-node-energy-system-workflow-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 8339
+      Num. variables: 4892
+  FINE-energyland:
+    Short description: A single-node energy system model with an extended set of technologies,
+      demonstrating a more comprehensive application of the ETHOS.FINE framework including
+      sources, converters, storage, and sinks.
+    Modelling framework: FINE
+    Model name: energyland
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/02_EnergyLand
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-energyland-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 40198
+      Num. variables: 32770
+  FINE-multi-regional-energy-system-workflow:
+    Short description: A multi-regional energy system model using the ETHOS.FINE framework,
+      demonstrating the use of all major component classes including sources, converters,
+      storage, transmission, and sinks.
+    Modelling framework: FINE
+    Model name: multi_regional_energy_system_workflow
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/03_Multi-regional_Energy_System_Workflow
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: Binary transmission investment decisions
+    Sizes:
+    - Name: 8-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-multi-regional-energy-system-workflow-8-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 44954
+      Num. variables: 16580
+      Num. continuous variables: 16528
+      Num. integer variables: 52
+  FINE-district-optimization:
+    Short description: A small district energy system modeled using the ETHOS.FINE
+      framework, demonstrating sources, converters, storage, transmission, and sinks.
+    Modelling framework: FINE
+    Model name: district_optimization
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/05_District_Optimization
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Multi-energy (electricity, heat, methane)
+    Sectors: Electric, Heat, Gas
+    Time horizon: Single-stage
+    MILP features: Binary transmission investment decisions
+    Sizes:
+    - Name: 14-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-district-optimization-14-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 14 nodes
+      Realistic: false
+      Num. constraints: 32490
+      Num. variables: 15260
+      Num. continuous variables: 15228
+      Num. integer variables: 32
+  FINE-water-supply-system:
+    Short description: A clean water supply system for a small mountain village, modeled
+      using the ETHOS.FINE framework, including water demand, river water supply,
+      water treatment, storage, and transmission infrastructure.
+    Modelling framework: FINE
+    Model name: water_supply_system
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/06_Water_Supply_System
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Water supply
+    Sectors: Water
+    Time horizon: Single-stage
+    MILP features: Binary transmission investment decisions
+    Sizes:
+    - Name: 12-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-water-supply-system-12-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 12 nodes
+      Realistic: false
+      Num. constraints: 6461
+      Num. variables: 4701
+      Num. continuous variables: 4679
+      Num. integer variables: 22
+  FINE-spatial-aggregation-of-energy-system-model:
+    Short description: Demonstrates the spatial aggregation of an energy system model,
+      merging similar regions to reduce the number of model nodes while preserving
+      system characteristics.
+    Modelling framework: FINE
+    Model name: spatial_aggregation_of_energy_system_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/blob/develop/examples/08_Spatial_and_technology_aggregation/08a_Spatial_aggregation_of_energy_system_model.ipynb
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Multi-energy (electricity, hydrogen, methane, biogas, CO2)
+    Sectors: Electric, Gas
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 8-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-spatial-aggregation-of-energy-system-model-8-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 15898
+      Num. variables: 8034
+  FINE-perfect-foresight:
+    Short description: A single-node energy system transformation pathway modeled
+      using the ETHOS.FINE framework, demonstrating sources, converters, storage,
+      and sinks with perfect foresight optimization.
+    Modelling framework: FINE
+    Model name: perfect_foresight
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/10_PerfectForesight
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectors: Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp.gz
+      Temporal resolution: 8760 hourly time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 19619
+      Num. variables: 10538
+  FINE-hydrogen-partload:
+    Short description: A hydrogen system modeled using the ETHOS.FINE framework, considering
+      part-load behavior of the electrolyzer and demonstrating sources, converters,
+      storage, and sinks.
+    Modelling framework: FINE
+    Model name: hydrogen_partload
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/11_Partload
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure and Capacity expansion
+    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectors: Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: Binary transmission investment decisions; Piecewise-linear part-load
+      efficiency modeling
+    Sizes:
+    - Name: 1-168ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp.gz
+      Temporal resolution: 168 hourly time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 3883
+      Num. variables: 2707
+      Num. continuous variables: 2370
+      Num. integer variables: 337
   genx-elec_trex:
     Short description: This is a one-year example which contains 15 zones. This example
       includes transmission expansion.
@@ -1682,6 +2008,323 @@ benchmarks:
       Num. variables: 1619451
       Num. continuous variables: 1619199
       Num. integer variables: 252
+  OEMOF-diesel-genset-nonconvex-investment:
+    Short description: Hybrid mini-grid model combining Investment and NonConvex options
+      for a diesel generator, PV, battery, and power-conversion components.
+    Modelling framework: OEMOF
+    Model name: diesel_genset_nonconvex_investment
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/diesel_genset_nonconvex_investment.py
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: NonConvex flows, investment optimization, binary on/off for genset
+    Sizes:
+    - Name: 1-240ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-diesel-genset-nonconvex-investment-1-240ts.lp.gz
+      Temporal resolution: 240 time slices
+      Spatial resolution: Single-node mini-grid
+      Realistic: false
+      Num. constraints: 4331
+      Num. variables: 3374
+      Num. continuous variables: 3134
+      Num. integer variables: 240
+  OEMOF-economic-results:
+    Short description: Simple energy system model demonstrating variable and investment
+      cost calculation using oemof.solph Results class.
+    Modelling framework: OEMOF
+    Model name: economic_results_with_invest
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/economic_results
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: Investment optimization; minimal binary/integer presence
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-economic-results-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node system
+      Realistic: false
+      Num. constraints: 52567
+      Num. variables: 61326
+      Num. continuous variables: 61325
+      Num. integer variables: 1
+  OEMOF-house-with-nonconvex-investment:
+    Short description: Hybrid heating system combining solph.Investment and solph.NonConvex
+      on the same component, modeling wood fireplace and gas boiler with minimum loads
+      and minimum up-times.
+    Modelling framework: OEMOF
+    Model name: house_with_nonconvex_investment
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_with_nonconvex_investment.py
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Heating-only
+    Sectors: Heating
+    Time horizon: Single-stage
+    MILP features: NonConvex operation; Investment decisions; minimum up-time; minimum
+      load
+    Sizes:
+    - Name: 1-365ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-house-with-nonconvex-investment-1-365ts.lp.gz
+      Temporal resolution: 365 time slices
+      Spatial resolution: Single-node heat system
+      Realistic: false
+      Num. constraints: 2541
+      Num. variables: 1821
+      Num. continuous variables: 1457
+      Num. integer variables: 364
+  OEMOF-house-without-nonconvex-investment:
+    Short description: Heating system example combining solph.Investment and solph.NonConvex
+      applied to different components, including a solar thermal collector, wood fireplace,
+      and gas boiler.
+    Modelling framework: OEMOF
+    Model name: house_without_nonconvex_investment
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_without_nonconvex_investment.py
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Heating-only
+    Sectors: Heating
+    Time horizon: Single-stage
+    MILP features: NonConvex operation; Investment in thermal collector; minimum up-time;
+      minimum load
+    Sizes:
+    - Name: 1-365ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-house-without-nonconvex-investment-1-365ts.lp.gz
+      Temporal resolution: 365 time slices
+      Spatial resolution: Single-node heat system
+      Realistic: false
+      Num. constraints: 2181
+      Num. variables: 2184
+      Num. continuous variables: 1822
+      Num. integer variables: 362
+  OEMOF-invest-optimize-all-technologies-using-mp-and-tsam:
+    Short description: Capacity expansion model with seasonal storage using time-series
+      aggregation (tsam), optimizing wind, PV, gas supply, and storage capacities.
+    Modelling framework: OEMOF
+    Model name: invest_optimize_all_technologies_using_mp_and_tsam
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/time_series_aggragation
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-1920ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-invest-optimize-all-technologies-using-mp-and-tsam-1-1920ts.lp.gz
+      Temporal resolution: 1920 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints: 51174
+      Num. variables: 18061
+  OEMOF-offset-diesel-genset-nonconvex-investment:
+    Short description: Hybrid mini-grid model using an OffsetConverter to represent
+      diesel generator efficiency curves with solph.NonConvex and solph.Investment.
+    Modelling framework: OEMOF
+    Model name: offset_diesel_genset_nonconvex_investment
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/offset_converter_example
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: NonConvex operation; Investment decisions; minimum load; piecewise/offset
+      efficiency representation
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-offset-diesel-genset-nonconvex-investment-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node mini-grid
+      Realistic: false
+      Num. constraints: 2153
+      Num. variables: 1680
+      Num. continuous variables: 1561
+      Num. integer variables: 119
+  OEMOF-result-object:
+    Short description: Basic solph energy system with wind, PV, gas supply, gas power
+      plant, storage, and electricity demand; used to demonstrate the Result object.
+    Modelling framework: OEMOF
+    Model name: result_object
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/result_object
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-result-object-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints: 43801
+      Num. variables: 70081
+  OEMOF-simple-dispatch:
+    Short description: Least-cost dispatch model with renewable generators, conventional
+      units, and combined heat and power, meeting an inelastic electricity demand.
+    Modelling framework: OEMOF
+    Model name: simple_dispatch
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/simple_dispatch
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Economic dispatch
+    Sectoral focus: Power & Heating
+    Sectors: Electric, Heating
+    Time horizon: Single-stage, hourly
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-simple-dispatch-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node system with electricity and heat coupling
+      Realistic: false
+      Num. constraints: 96360
+      Num. variables: 140160
+  OEMOF-tuple-as-label:
+    Short description: Demonstrates the use of named tuples as labels to manage and
+      filter results in large Oemof energy systems, enabling grouping by region, technology,
+      or custom tags.
+    Modelling framework: OEMOF
+    Model name: tuple_as_label
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/tuple_as_labels
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-tuple-as-label-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node system
+      Realistic: false
+      Num. constraints: 43801
+      Num. variables: 70081
+  OEMOF-v1-invest-optimize-all-technologies:
+    Short description: Capacity optimization of an energy system with storage, wind,
+      PV, and gas resource.
+    Modelling framework: OEMOF
+    Model name: v1_invest_optimize_all_technologies
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v1_invest_optimize_all_technologies.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v1-invest-optimize-all-technologies-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints: 78850
+      Num. variables: 78851
+  OEMOF-v2-invest-optimize-only-gas-and-storage:
+    Short description: Capacity optimization of an energy system with storage and
+      gas resource only; wind and PV capacities are preinstalled, leading to a higher
+      renewable share (~78%) and no storage installation.
+    Modelling framework: OEMOF
+    Model name: v2_invest_optimize_only_gas_and_storage
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v2_invest_optimize_only_gas_and_storage.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v2-invest-optimize-only-gas-and-storage-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints: 61328
+      Num. variables: 61327
+  OEMOF-v3-invest-optimize-only-storage-with-fossil-share:
+    Short description: Capacity calculation of storage in an energy system with preinstalled
+      wind and PV, targeting a higher renewable share (~80%) without cost optimization.
+    Modelling framework: OEMOF
+    Model name: v3_invest_optimize_only_storage_with_fossil_share
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v3_invest_optimize_only_storage_with_fossil_share.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v3-invest-optimize-only-storage-with-fossil-share-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints: 61329
+      Num. variables: 61327
+  OEMOF-v4-invest-optimize-all-technologies-with-fossil-share:
+    Short description: Capacity optimization of wind, PV, and storage with a set fossil
+      share; achieves 80% renewable share primarily via slightly increased wind and
+      PV capacities, storage is not installed.
+    Modelling framework: OEMOF
+    Model name: v4_invest_optimize_all_technologies_with_fossil_share
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v4_invest_optimize_all_technologies_with_fossil_share.py
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None (pure LP)
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v4-invest-optimize-all-technologies-with-fossil-share-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: Single-node electricity system
+      Realistic: false
+      Num. constraints: 78851
+      Num. variables: 78851
   pypsa-eur-sec:
     Short description: Sector-coupled (power, heating, biomass, industrial, transport)
       PyPSA-Eur infrastructure run for Italy considering 2050 as single planning horizon.
@@ -2302,6 +2945,268 @@ benchmarks:
       Num. variables: 131278
       Num. continuous variables: 122017
       Num. integer variables: 9261
+  SWITCH-China-open-model:
+    Short description: A large-scale national energy system model of China built using
+      the SWITCH framework, including extended China-specific modules and updated
+      inputs based on a 2020 base year.
+    Modelling framework: SWITCH
+    Model name: SWITCH_China_open_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 32-433ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
+      Temporal resolution: 433 time slices
+      Spatial resolution: 32 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14588407
+      Num. variables: 13338520
+  SWITCH-USA-PG:
+    Short description: A capacity-expansion and operational power-system model of
+      the United States built on the Switch framework and parameterized with PowerGenome
+      data. It provides consistent, reproducible multi-regional U.S. electricity system
+      scenarios using detailed technology cost assumptions (e.g., ATB).
+    Modelling framework: SWITCH
+    Model name: SWITCH-USA-PG
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 26-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 26 nodes
+      Realistic: false
+      Num. constraints: 4022362
+      Num. variables: 3989071
+  SWITCH-3-zone-tiny:
+    Short description: A minimal 3-zone SWITCH tutorial model demonstrating core SWITCH
+      functionality and several custom modules.
+    Modelling framework: SWITCH
+    Model name: 3_zone_tiny
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-tiny-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 795
+      Num. variables: 582
+      Num. continuous variables: 580
+      Num. integer variables: 2
+  SWITCH-3-zone-toy:
+    Short description: A 3-zone SWITCH toy model with two investment periods, where
+      the first period has higher temporal resolution. Demonstrates core SWITCH functionality
+      and selected custom modules.
+    Modelling framework: SWITCH
+    Model name: 3zone_toy
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Notes: This toy example illustrates how SWITCH can be used to construct and run
+      a multi-period, multi-zone capacity expansion model. Results have not been fully
+      evaluated.
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-toy-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 775
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+  SWITCH-3zone-toy-stochastic-PySP:
+    Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating
+      scenario-based stochastic optimization in a multi-period power system context.
+    Modelling framework: SWITCH + PySP
+    Model name: 3zone_toy_stochastic_PySP
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3zone-toy-stochastic-PySP-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 716
+      Num. variables: 580
+      Num. continuous variables: 578
+      Num. integer variables: 2
+  SWITCH-carbon-cap:
+    Short description: "A carbon-constrained variant of the 3-zone toy SWITCH model,\
+      \ where a system-wide CO\u2082 cap is imposed and the minimum nuclear build\
+      \ constraint is relaxed to enable meaningful dual values on the carbon cost\
+      \ constraint."
+    Modelling framework: SWITCH
+    Model name: carbon_cap
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/carbon_cap
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: None
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-carbon-cap-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 773
+      Num. variables: 616
+  SWITCH-hydrogen:
+    Short description: "A hydrogen-enabled variant of the 3-zone carbon cap model\
+      \ featuring a near-zero CO\u2082 cap, expanded hydrogen production and storage\
+      \ pathways, and dual-fuel natural-gas/hydrogen power plants."
+    Modelling framework: SWITCH
+    Model name: hydrogen
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/hydrogen
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: None
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-hydrogen-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 863
+      Num. variables: 733
+  SWITCH-planning-reserves:
+    Short description: A planning-reserve variant of the 3-zone toy model with lower
+      solar costs to place solar on the margin and distributed solar registered as
+      a DER for better accounting of distribution losses.
+    Modelling framework: SWITCH
+    Model name: planning_reserves
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/planning_reserves
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-planning-reserves-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 784
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+  SWITCH-retrofits:
+    Short description: A retrofit-enabled variant of the 3-zone toy model
+    Modelling framework: SWITCH
+    Model name: retrofits
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/retrofits
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-retrofits-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 1597
+      Num. variables: 1310
+      Num. continuous variables: 1308
+      Num. integer variables: 2
+  SWITCH-rps-simple:
+    Short description: A 3-zone SWITCH toy example implementing a simple Renewable
+      Portfolio Standard (RPS) policy.
+    Modelling framework: SWITCH
+    Model name: rps_simple
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/rps_simple
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-rps-simple-3-6ts.lp
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 777
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
   temoa-utopia:
     Short description: Single-region test system infrastructure model considering
       4 future years and 6 time slices (day/night, intermediate/summer/winter).
@@ -2781,7 +3686,7 @@ benchmarks:
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
-    Time horizon: Single stage
+    Time horizon: Single-stage
     MILP features: None
     Sizes:
     - Name: 2-24h
@@ -2793,3 +3698,259 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
+  JRC-EU-TIMES:
+    Short description: Model of the EU (and neighboring countries) representing all
+      energy sectors, that analyzes the long-term role of energy technologies and
+      innovation for climate goals, and optimizes investment and operational decisions
+      to meet energy service demands under different assumptions and constraints.
+    Modelling framework: TIMES
+    Model name: JRC-EU TIMES
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage (8 stages)
+    MILP features: None
+    Sizes:
+    - Name: 30-12ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-30-12ts.mps.gz
+      Temporal resolution: 12 time slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU policy relevant analyses
+      Num. constraints: 13462042
+      Num. variables: 18926550
+      Skip because: OOM?
+  JRC-EU-TIMES-dispatch:
+    Short description: Model of the EU (and neighboring countries) representing all
+      energy sectors and including final energy supply (T&D Infrastructure, pipeline
+      etc.).
+    Modelling framework: TIMES
+    Model name: JRC-EU-TIMES
+    Version:
+    Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure, Capacity Expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 30-2016ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-dispatch-30-2016ts.mps.gz
+      Temporal resolution: 2016 times slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU-policy relevant analyses
+      Num. constraints: 19401352
+      Num. variables: 23208969
+      Skip because: OOM?
+  TIMES-STEM:
+    Short description: Model of the Swiss energy system, including dispatch analysis
+      features (i.e. ramping rates, minimum online/offline times, minimum stable operating
+      level, part load efficiency losses, startup/shutdown costs) and ancillary services
+      (endogenous demand for primary and secondary, positive and negative reserve,
+      adjusted minimum online and offline times for reserve provision, adjusted ramping
+      constraints, capacity margin constraints for reserve provision, maximum contribution
+      of power plant in reserve provision, reserve provision from storages and demand
+      units, other bounds on reserve provision, storage degradation due to cycling)
+    Modelling framework: TIMES
+    Model name: Swiss TIMES Energy Model
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 15-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-STEM-15-1h.mps.gz
+      Temporal resolution: 1h
+      Spatial resolution: 15 nodes
+      Realistic: true
+      Realistic motivation: Typical TIMES model instances including multi-stage and
+        multi-regional analysis with hourly resolution and operational constraints
+      Num. constraints: 6973257
+      Num. variables: 6670811
+      Skip because: OOM?
+  zen-garden-eur-PI:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and instantaneous technology expansion.
+      A cumulative carbon budget is set for the carbon emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich https://zenodo.org/records/11074289"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-2ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-2ts.mps.gz
+      Temporal resolution: 2 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 126822
+      Num. variables: 91744
+    - Name: 28-10ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-10ts.mps.gz
+      Temporal resolution: 10 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 4845191
+      Num. variables: 3105360
+    - Name: 28-50ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-50ts.mps.gz
+      Temporal resolution: 50 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 10723991
+      Num. variables: 8396160
+      Skip because: TO
+    - Name: 28-30ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-30ts.mps.gz
+      Temporal resolution: 30 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7722431
+      Num. variables: 5719680
+      Skip because: TO
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 16737731
+      Num. variables: 14342280
+      Skip because: TO
+    - Name: 28-200ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-200ts.mps.gz
+      Temporal resolution: 200 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 28039451
+      Num. variables: 25871640
+      Skip because: TO
+  zen-garden-eur-PI-annual-emission-limit:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and instantaneous technology expansion.
+      Annual emissions targets are set for each year resulting in the same carbon
+      emissions as the carbon emission budget.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-annual-emission-limit
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-annual-emission-limit-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 16737720
+      Num. variables: 14342280
+      Skip because: TO
+  zen-garden-eur-PI-constrained-expansion:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and constrained technology expansion.
+      A cumulative carbon budget is set for the carbon emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-constrained-expansion
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-constrained-expansion-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 16738346
+      Num. variables: 14342280
+      Skip because: TO
+  zen-garden-eur-PI-no-storage:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and instantaneous technology expansion
+      without storage technologies. A cumulative carbon budget is set for the carbon
+      emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-no-storage
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-no-storage-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 10429331
+      Num. variables: 10673160
+      Skip because: OOM
