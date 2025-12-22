@@ -11,7 +11,7 @@ benchmarks:
     Application: Infrastructure & Capacity expansion, Operational
     Sectoral focus: Power-only
     Sectors: Supply, Power
-    Time horizon: 1 year
+    Time horizon: Single period (1 year)
     MILP features: Modelling of fixed costs
     Sizes:
     - Name: 8-168ts
