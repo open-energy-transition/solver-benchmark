@@ -13,6 +13,8 @@ Please add the following information to the description field of the metadata fo
 - Instructions to reproduce the generation of the benchmark file (see, for instance, this [example](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/switch/README.md))
 - Reference to any real-world study or published paper that this model was used for
 
+Please add a README with instructions on how to run the model framework's code to reproduce benchmark generation, particularly if the code doesn't automatically generate MPS or LP files (see, for instance, this [example](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/switch/README.md)).
+
 ### Checklist
 
 <!-- Delete the section(s) that are not relevant to this PR type -->
