@@ -1,4 +1,106 @@
 benchmarks:
+  ethos-fine-multi-regional-7tp:
+    Short description: Multi-regional energy system optimization model with 8 nodes
+      modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
+      8 regional clusters in Germany. The model uses time series aggregation by tsam
+      with 7 typical days without segmentation.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-only
+    Sectors: Supply, Power
+    Time horizon: Single period (1 year)
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-168ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-multi-regional-7tp-8-168ts.mps.gz
+      Temporal resolution: 168 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 91178
+      Num. variables: 55979
+      Num. continuous variables: 55927
+      Num. integer variables: 52
+  ethos-fine-multi-regional-7tp-12seg:
+    Short description: Multi-regional energy system optimization model with 8 nodes
+      modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
+      8 regional clusters in Germany. The model uses time series aggregation by tsam
+      with 7 typical days and 12 segments per typical day.
+    Modelling framework: ethos.fine
+    Model name: Multi-regional example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power-only
+    Sectors: Supply, Power
+    Time horizon: 1 year
+    MILP features: Modelling of fixed costs
+    Sizes:
+    - Name: 8-84ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-multi-regional-7tp-12seg-8-84ts.mps.gz
+      Temporal resolution: 84 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 64214
+      Num. variables: 33215
+      Num. continuous variables: 33163
+      Num. integer variables: 52
+  ethos-fine-energyland-full-timeseries:
+    Short description: Fictional on node energy system model depicting power, heat,
+      and transport sectors. The model features full time series resolution (8760
+      hours) for one year.
+    Modelling framework: ethos.fine
+    Model name: Energyland example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power, Heat, Transport
+    Sectors: Supply, Power, Heat, Transport
+    Time horizon: 1 year
+    MILP features:
+    Sizes:
+    - Name: 1-8760ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-energyland-full-timeseries-1-8760ts.mps.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 543229
+      Num. variables: 473179
+  ethos-fine-energyland-48tp:
+    Short description: Fictional on node energy system model depicting power, heat,
+      and transport sectors. The model uses time series aggregation by tsam with 48
+      typical days without segmentation.
+    Modelling framework: ethos.fine
+    Model name: Energyland example
+    Version:
+    Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Power, Heat, Transport
+    Sectors: Supply, Power, Heat, Transport
+    Time horizon: 1 year
+    MILP features:
+    Sizes:
+    - Name: 1-1152ts
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos-fine-energyland-48tp-1-1152ts.mps.gz
+      Temporal resolution: 1152 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 40198
+      Num. variables: 32770
   FINE-2-node-electricity-supply-system:
     Short description: A simple 2-region energy supply system built using the ETHOS.FINE
       framework, illustrating the creation of an energy system model and the addition
@@ -3559,7 +3661,7 @@ benchmarks:
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
-    Time horizon: Single stage
+    Time horizon: Single-stage
     MILP features: None
     Sizes:
     - Name: 2-24h
@@ -3571,6 +3673,91 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
+  JRC-EU-TIMES:
+    Short description: Model of the EU (and neighboring countries) representing all
+      energy sectors, that analyzes the long-term role of energy technologies and
+      innovation for climate goals, and optimizes investment and operational decisions
+      to meet energy service demands under different assumptions and constraints.
+    Modelling framework: TIMES
+    Model name: JRC-EU TIMES
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage (8 stages)
+    MILP features: None
+    Sizes:
+    - Name: 30-12ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-30-12ts.mps.gz
+      Temporal resolution: 12 time slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU policy relevant analyses
+      Num. constraints: 13462042
+      Num. variables: 18926550
+      Skip because: OOM?
+  JRC-EU-TIMES-dispatch:
+    Short description: Model of the EU (and neighboring countries) representing all
+      energy sectors and including final energy supply (T&D Infrastructure, pipeline
+      etc.).
+    Modelling framework: TIMES
+    Model name: JRC-EU-TIMES
+    Version:
+    Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure, Capacity Expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 30-2016ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-dispatch-30-2016ts.mps.gz
+      Temporal resolution: 2016 times slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU-policy relevant analyses
+      Num. constraints: 19401352
+      Num. variables: 23208969
+      Skip because: OOM?
+  TIMES-STEM:
+    Short description: Model of the Swiss energy system, including dispatch analysis
+      features (i.e. ramping rates, minimum online/offline times, minimum stable operating
+      level, part load efficiency losses, startup/shutdown costs) and ancillary services
+      (endogenous demand for primary and secondary, positive and negative reserve,
+      adjusted minimum online and offline times for reserve provision, adjusted ramping
+      constraints, capacity margin constraints for reserve provision, maximum contribution
+      of power plant in reserve provision, reserve provision from storages and demand
+      units, other bounds on reserve provision, storage degradation due to cycling)
+    Modelling framework: TIMES
+    Model name: Swiss TIMES Energy Model
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion, Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 15-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-STEM-15-1h.mps.gz
+      Temporal resolution: 1h
+      Spatial resolution: 15 nodes
+      Realistic: true
+      Realistic motivation: Typical TIMES model instances including multi-stage and
+        multi-regional analysis with hourly resolution and operational constraints
+      Num. constraints: 6973257
+      Num. variables: 6670811
+      Skip because: OOM?
   zen-garden-eur-PI:
     Short description: Model of the European transition pathway for the electricity
       and heating sectors of 28 European countries from 2022 to 2050. Performs time
