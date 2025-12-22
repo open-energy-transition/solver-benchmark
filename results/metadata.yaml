@@ -3591,7 +3591,7 @@ benchmarks:
     Sizes:
     - Name: 28-2ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-2ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-2ts.mps.gz
       Temporal resolution: 2 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3601,7 +3601,7 @@ benchmarks:
       Num. variables: 91744
     - Name: 28-10ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-10ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-10ts.mps.gz
       Temporal resolution: 10 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3611,7 +3611,7 @@ benchmarks:
       Num. variables: 3105360
     - Name: 28-50ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-50ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-50ts.mps.gz
       Temporal resolution: 50 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3619,9 +3619,10 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 10723991
       Num. variables: 8396160
+      Skip because: TO
     - Name: 28-30ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-30ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-30ts.mps.gz
       Temporal resolution: 30 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3629,9 +3630,10 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 7722431
       Num. variables: 5719680
+      Skip because: TO
     - Name: 28-100ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-100ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-100ts.mps.gz
       Temporal resolution: 100 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3639,9 +3641,10 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 16737731
       Num. variables: 14342280
+      Skip because: TO
     - Name: 28-200ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-28-200ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-200ts.mps.gz
       Temporal resolution: 200 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3649,6 +3652,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 28039451
       Num. variables: 25871640
+      Skip because: TO
   zen-garden-eur-PI-annual-emission-limit:
     Short description: Model of the European transition pathway for the electricity
       and heating sectors of 28 European countries from 2022 to 2050. Performs time
@@ -3670,7 +3674,7 @@ benchmarks:
     Sizes:
     - Name: 28-100ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-annual-emission-limit-28-100ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-annual-emission-limit-28-100ts.mps.gz
       Temporal resolution: 100 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3678,6 +3682,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 16737720
       Num. variables: 14342280
+      Skip because: TO
   zen-garden-eur-PI-constrained-expansion:
     Short description: Model of the European transition pathway for the electricity
       and heating sectors of 28 European countries from 2022 to 2050. Performs time
@@ -3698,7 +3703,7 @@ benchmarks:
     Sizes:
     - Name: 28-100ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-constrained-expansion-28-100ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-constrained-expansion-28-100ts.mps.gz
       Temporal resolution: 100 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3706,6 +3711,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 16738346
       Num. variables: 14342280
+      Skip because: TO
   zen-garden-eur-PI-no-storage:
     Short description: Model of the European transition pathway for the electricity
       and heating sectors of 28 European countries from 2022 to 2050. Performs time
@@ -3727,7 +3733,7 @@ benchmarks:
     Sizes:
     - Name: 28-100ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/zen-garden-eur-PI-no-storage-28-100ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-no-storage-28-100ts.mps.gz
       Temporal resolution: 100 time slices
       Spatial resolution: 28 nodes
       Realistic: true
@@ -3735,3 +3741,4 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 10429331
       Num. variables: 10673160
+      Skip because: OOM
