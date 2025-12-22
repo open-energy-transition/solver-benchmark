@@ -3590,13 +3590,14 @@ benchmarks:
     Sizes:
     - Name: 30-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/JRC-EU-TIMES-30-12ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-30-12ts.mps.gz
       Temporal resolution: 12 time slices
       Spatial resolution: 30 regions
       Realistic: true
       Realistic motivation: Used for EU policy relevant analyses
       Num. constraints: 13462042
       Num. variables: 18926550
+      Skip because: OOM?
   JRC-EU-TIMES-dispatch:
     Short description: Model of the EU (and neighboring countries) representing all
       energy sectors and including final energy supply (T&D Infrastructure, pipeline
@@ -3615,13 +3616,14 @@ benchmarks:
     Sizes:
     - Name: 30-2016ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/JRC-EU-TIMES-dispatch-30-2016ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-dispatch-30-2016ts.mps.gz
       Temporal resolution: 2016 times slices
       Spatial resolution: 30 regions
       Realistic: true
       Realistic motivation: Used for EU-policy relevant analyses
       Num. constraints: 19401352
       Num. variables: 23208969
+      Skip because: OOM?
   TIMES-STEM:
     Short description: Model of the Swiss energy system, including dispatch analysis
       features (i.e. ramping rates, minimum online/offline times, minimum stable operating
@@ -3645,7 +3647,7 @@ benchmarks:
     Sizes:
     - Name: 15-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-STEM-15-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-STEM-15-1h.mps.gz
       Temporal resolution: 1h
       Spatial resolution: 15 nodes
       Realistic: true
@@ -3653,3 +3655,4 @@ benchmarks:
         multi-regional analysis with hourly resolution and operational constraints
       Num. constraints: 6973257
       Num. variables: 6670811
+      Skip because: OOM?
