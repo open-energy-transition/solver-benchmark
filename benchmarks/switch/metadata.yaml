@@ -101,7 +101,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Stochastic capacity expansion
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
