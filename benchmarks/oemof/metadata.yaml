@@ -171,7 +171,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/simple_dispatch
     License: CC BY 4.0
     Problem class: LP
-    Application: Economic dispatch
+    Application: Operational
     Sectoral focus: Power & Heating
     Sectors: Electric, Heating
     Time horizon: Single-stage, hourly
