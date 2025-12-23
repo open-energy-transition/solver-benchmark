@@ -3,6 +3,7 @@ export interface IBenchmarkModelCases {
   DCOPF: string;
   "ETHOS.FINE": string;
   GenX: string;
+  OEMOF: string;
   PowerModels: string;
   PyPSA: string;
   Sienna: string;
@@ -18,8 +19,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Problem Classes",
     DCOPF: "",
-    GenX: "",
     "ETHOS.FINE": "",
+    GenX: "",
+    OEMOF: "",
     PowerModels: "",
     PyPSA: "",
     Sienna: "",
@@ -32,8 +34,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "LP",
     DCOPF: "true",
-    GenX: "true",
     "ETHOS.FINE": "true",
+    GenX: "true",
+    OEMOF: "true",
     PowerModels: "true",
     PyPSA: "true",
     Sienna: "false",
@@ -46,8 +49,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "MILP",
     DCOPF: "true",
-    GenX: "true",
     "ETHOS.FINE": "true",
+    GenX: "true",
+    OEMOF: "true",
     PowerModels: "true",
     PyPSA: "true",
     Sienna: "true",
@@ -60,8 +64,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Applications",
     DCOPF: "",
-    GenX: "",
     "ETHOS.FINE": "",
+    GenX: "",
+    OEMOF: "",
     PowerModels: "",
     PyPSA: "",
     Sienna: "",
@@ -75,8 +80,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Infrastructure & Capacity Expansion",
     DCOPF: "false",
-    GenX: "true",
     "ETHOS.FINE": "true",
+    GenX: "true",
+    OEMOF: "true",
     PowerModels: "false",
     PyPSA: "true",
     Sienna: "false",
@@ -89,8 +95,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Operational",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "false",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "true",
     Sienna: "false",
@@ -103,8 +110,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Production cost modelling",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "false",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "false",
     Sienna: "false",
@@ -117,8 +125,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "DC Optimal Power Flow",
     DCOPF: "false",
-    GenX: "true",
     "ETHOS.FINE": "false",
+    GenX: "true",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "false",
     Sienna: "false",
@@ -131,8 +140,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Steady-state Optimal Power Flow",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "false",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "true",
     PyPSA: "false",
     Sienna: "false",
@@ -145,8 +155,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Resource Adequacy",
     DCOPF: "true",
-    GenX: "false",
     "ETHOS.FINE": "false",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "false",
     Sienna: "false",
@@ -159,8 +170,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "MILP Features",
     DCOPF: "",
-    GenX: "",
     "ETHOS.FINE": "",
+    GenX: "",
+    OEMOF: "",
     PowerModels: "",
     PyPSA: "",
     Sienna: "",
@@ -173,8 +185,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "None",
     DCOPF: "true",
-    GenX: "true",
     "ETHOS.FINE": "true",
+    GenX: "true",
+    OEMOF: "true",
     PowerModels: "true",
     PyPSA: "true",
     Sienna: "false",
@@ -187,8 +200,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Unit commitment",
     DCOPF: "true",
-    GenX: "true",
     "ETHOS.FINE": "false",
+    GenX: "true",
+    OEMOF: "false",
     PowerModels: "true",
     PyPSA: "true",
     Sienna: "true",
@@ -201,8 +215,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Piecewise fuel usage",
     DCOPF: "false",
-    GenX: "true",
     "ETHOS.FINE": "false",
+    GenX: "true",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "false",
     Sienna: "false",
@@ -215,8 +230,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Transmission switching",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "false",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "true",
     PyPSA: "false",
     Sienna: "false",
@@ -229,8 +245,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Modularity",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "false",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "true",
     Sienna: "false",
@@ -243,8 +260,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Binary transmission investment decisions",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "true",
+    GenX: "false",
+    OEMOF: "true",
     PowerModels: "false",
     PyPSA: "false",
     Sienna: "false",
@@ -257,8 +275,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Piecewise-linear part-load efficiency modeling",
     DCOPF: "false",
-    GenX: "false",
     "ETHOS.FINE": "true",
+    GenX: "false",
+    OEMOF: "false",
     PowerModels: "false",
     PyPSA: "false",
     Sienna: "false",
@@ -271,8 +290,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Realistic",
     DCOPF: "",
-    GenX: "",
     "ETHOS.FINE": "",
+    GenX: "",
+    OEMOF: "",
     PowerModels: "",
     PyPSA: "",
     Sienna: "",
@@ -285,8 +305,9 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Realistic",
     DCOPF: "true",
-    GenX: "true",
     "ETHOS.FINE": "false",
+    GenX: "true",
+    OEMOF: "false",
     PowerModels: "true",
     PyPSA: "true",
     Sienna: "false",
