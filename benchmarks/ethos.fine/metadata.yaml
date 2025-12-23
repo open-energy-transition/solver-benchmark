@@ -116,7 +116,6 @@ benchmarks:
       Realistic: false
       Num. constraints: 40198
       Num. variables: 32770
-benchmarks:
   FINE-2-node-electricity-supply-system:
     Short description: A simple 2-region energy supply system built using the ETHOS.FINE framework, illustrating the creation of an energy system model and the addition of sources, converters, storage, transmission, and sinks.
     Modelling framework: ETHOS.FINE
