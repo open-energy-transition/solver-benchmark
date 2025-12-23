@@ -1,4 +1,27 @@
 benchmarks:
+  SWITCH-China-open-model:
+    Short description: A large-scale national energy system model of China built using the SWITCH framework, including extended China-specific modules and updated inputs based on a 2020 base year.
+    Modelling framework: SWITCH
+    Model name: SWITCH_China_open_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 32-433ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
+      Temporal resolution: 433 time slices
+      Spatial resolution: 32 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 14588407
+      Num. variables: 13338520
   SWITCH-USA-PG:
     Short description: A capacity-expansion and operational power-system model of the United States built on the Switch framework and parameterized with PowerGenome data. It provides consistent, reproducible multi-regional U.S. electricity system scenarios using detailed technology cost assumptions (e.g., ATB).
     Modelling framework: SWITCH
@@ -78,7 +101,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Stochastic capacity expansion
+    Application: Infrastructure & Capacity expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
