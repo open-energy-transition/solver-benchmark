@@ -7,7 +7,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -30,7 +30,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -53,7 +53,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -76,7 +76,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -99,7 +99,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -122,7 +122,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -145,7 +145,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -168,7 +168,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -191,7 +191,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -214,7 +214,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -237,7 +237,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -267,7 +267,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -289,7 +289,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -312,7 +312,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -335,7 +335,7 @@ benchmarks:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
     Time horizon: Multi-stage (8 stages)
@@ -359,7 +359,7 @@ benchmarks:
     Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure, Capacity Expansion, Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Hydrogen
     Time horizon: Single-stage
@@ -383,7 +383,7 @@ benchmarks:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
     Time horizon: Multi-stage
