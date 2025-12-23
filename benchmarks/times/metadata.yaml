@@ -359,7 +359,7 @@ benchmarks:
     Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Hydrogen
     Time horizon: Single-stage
@@ -383,7 +383,7 @@ benchmarks:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
     Time horizon: Multi-stage
