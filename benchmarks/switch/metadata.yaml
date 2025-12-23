@@ -95,7 +95,7 @@ benchmarks:
       Num. integer variables: 2
   SWITCH-3zone-toy-stochastic-PySP:
     Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating scenario-based stochastic optimization in a multi-period power system context.
-    Modelling framework: SWITCH + PySP
+    Modelling framework: SWITCH
     Model name: 3zone_toy_stochastic_PySP
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
