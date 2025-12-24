@@ -17,6 +17,9 @@ eggs/
 lib/
 lib64/
 parts/
+
+# Exception: Allow Next.js src/lib directory
+!website-nextjs/src/lib/
 sdist/
 var/
 wheels/
