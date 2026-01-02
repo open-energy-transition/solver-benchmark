@@ -443,14 +443,14 @@ benchmarks:
       Realistic: false
       Num. constraints: 923510
       Num. variables: 443493
-    # - Name: 50-168h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_168h.mps.gz
-    #   Temporal resolution: 168 hours
-    #   Spatial resolution: 50 nodes
-    #   Realistic: false
-    #   Num. constraints:
-    #   Num. variables:
+    - Name: 50-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_50_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
     - Name: 100-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp_100_1h.mps.gz
@@ -542,14 +542,14 @@ benchmarks:
       Realistic: false
       Num. constraints: 923510
       Num. variables: 443493
-    # - Name: 50-168h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_168h.mps.gz
-    #   Temporal resolution: 168 hours
-    #   Spatial resolution: 50 nodes
-    #   Realistic: false
-    #   Num. constraints:
-    #   Num. variables:
+    - Name: 50-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_50_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
     - Name: 100-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp_100_1h.mps.gz
