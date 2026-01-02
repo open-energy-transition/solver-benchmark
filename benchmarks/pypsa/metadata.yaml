@@ -1730,94 +1730,94 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
-    # - Name: 10-1h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_1h.mps.gz
-    #   Temporal resolution: 1 hour
-    #   Spatial resolution: 10 nodes
-    #   Realistic: false
-    # - Name: 10-3h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_3h.mps.gz
-    #   Temporal resolution: 3 hours
-    #   Spatial resolution: 10 nodes
-    #   Realistic: false
-    # - Name: 10-12h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_12h.mps.gz
-    #   Temporal resolution: 12 hours
-    #   Spatial resolution: 10 nodes
-    #   Realistic: false
-    # - Name: 10-24h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_24h.mps.gz
-    #   Temporal resolution: 24 hours
-    #   Spatial resolution: 10 nodes
-    #   Realistic: false
-    # - Name: 10-168h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_168h.mps.gz
-    #   Temporal resolution: 168 hours
-    #   Spatial resolution: 10 nodes
-    #   Realistic: false
-    # - Name: 20-1h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_1h.mps.gz
-    #   Temporal resolution: 1 hour
-    #   Spatial resolution: 20 nodes
-    #   Realistic: true
-    #   Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-    # - Name: 20-3h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_3h.mps.gz
-    #   Temporal resolution: 3 hours
-    #   Spatial resolution: 20 nodes
-    #   Realistic: true
-    #   Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-    # - Name: 20-12h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_12h.mps.gz
-    #   Temporal resolution: 12 hours
-    #   Spatial resolution: 20 nodes
-    #   Realistic: false
-    # - Name: 20-24h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_24h.mps.gz
-    #   Temporal resolution: 24 hours
-    #   Spatial resolution: 20 nodes
-    #   Realistic: false
-    # - Name: 20-168h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_168h.mps.gz
-    #   Temporal resolution: 168 hours
-    #   Spatial resolution: 20 nodes
-    #   Realistic: false
-    # - Name: 50-1h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_1h.mps.gz
-    #   Temporal resolution: 1 hour
-    #   Spatial resolution: 50 nodes
-    #   Realistic: true
-    #   Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-    # - Name: 50-3h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_3h.mps.gz
-    #   Temporal resolution: 3 hours
-    #   Spatial resolution: 50 nodes
-    #   Realistic: true
-    #   Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-    # - Name: 50-12h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_12h.mps.gz
-    #   Temporal resolution: 12 hours
-    #   Spatial resolution: 50 nodes
-    #   Realistic: false
-    # - Name: 50-24h
-    #   Size: M
-    #   URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_24h.mps.gz
-    #   Temporal resolution: 24 hours
-    #   Spatial resolution: 50 nodes
-    #   Realistic: false
+    - Name: 10-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 10-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_10_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+    - Name: 20-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 20-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 20-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+    - Name: 20-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_20_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 20 nodes
+      Realistic: false
+    - Name: 50-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 50-3h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+    - Name: 50-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
     - Name: 50-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec_50_168h.mps.gz
