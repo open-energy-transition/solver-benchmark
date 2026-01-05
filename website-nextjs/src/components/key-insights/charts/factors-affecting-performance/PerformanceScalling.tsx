@@ -123,26 +123,24 @@ const PerformanceScalling = () => {
   return (
     <>
       <div className="flex items-center gap-4 mb-4">
-        <div className="flex items-center gap-2">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name="solver-filter"
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(false)}>
-            Open solvers only
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
+          <span>Open solvers only</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name="solver-filter"
             checked={allSolvers}
             onChange={() => setallSolvers(true)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(true)}>
-            All solvers
-          </p>
-        </div>
+          <span>All solvers</span>
+        </label>
       </div>
       <div>
         <D3PlotChartPerformanceScaling

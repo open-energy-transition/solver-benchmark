@@ -180,7 +180,7 @@ const PagePerformanceHistory = () => {
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Performance History
                     </p>
                   </div>

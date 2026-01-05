@@ -186,27 +186,25 @@ const RuntimeOfFastestSolver = ({
 
   return (
     <>
-      <div className="flex items-center gap-6 mb-4 cursor-pointer">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-6 mb-4">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name="solver-filter-runtime"
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(false)}>
-            Open solvers only
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
+          <span>Open solvers only</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name="solver-filter-runtime"
             checked={allSolvers}
             onChange={() => setallSolvers(true)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(true)}>
-            All solvers
-          </p>
-        </div>
+          <span>All solvers</span>
+        </label>
       </div>
       <div>
         <D3GroupedBarChart

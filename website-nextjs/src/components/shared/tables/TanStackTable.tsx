@@ -181,6 +181,9 @@ export function TanStackTable<T>({
                 position: "relative",
               }}
               className="overflow-x-auto"
+              tabIndex={0}
+              role="region"
+              aria-label="Scrollable table content"
             >
               <table
                 className="bg-[#F4F6FA] w-full min-w-[800px]"
@@ -297,7 +300,12 @@ export function TanStackTable<T>({
             </div>
           ) : (
             // Standard table for smaller datasets or paginated view
-            <div className="overflow-x-auto">
+            <div
+              className="overflow-x-auto"
+              tabIndex={0}
+              role="region"
+              aria-label="Scrollable table content"
+            >
               <table
                 className="bg-[#F4F6FA] w-full min-w-[800px]"
                 style={{ tableLayout: "fixed" }}

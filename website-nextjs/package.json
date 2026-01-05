@@ -7,7 +7,11 @@
     "move-results": "mkdir -p public/results && cp ../results/benchmark_results.csv public/results/ && cp ../results/metadata.yaml public/results/",
     "build": "npm run move-results && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "axe": "axe http://localhost:3000 --tags wcag2a,wcag2aa --exit",
+    "axe:extract": "node scripts/extract-sitemap-urls.mjs",
+    "axe:test": "node scripts/run-a11y-tests.mjs",
+    "axe:full": "npm run axe:extract && npm run axe:test"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -43,6 +47,8 @@
     "yaml": "^2.7.0"
   },
   "devDependencies": {
+    "@axe-core/cli": "^4.11.0",
+    "@axe-core/react": "^4.11.0",
     "@eslint/eslintrc": "^3",
     "@types/d3": "^7.4.3",
     "@types/js-yaml": "^4.0.9",
@@ -54,6 +60,7 @@
     "@types/semver": "^7.5.8",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.18",
     "typescript": "^5"

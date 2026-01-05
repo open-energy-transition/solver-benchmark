@@ -234,7 +234,7 @@ const D3ChartLineChart = ({
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">
+        <span className="items-start font-semibold text-[#022B3BB3] text-xs mr-1 flex">
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">
