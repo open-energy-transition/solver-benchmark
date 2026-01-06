@@ -3,13 +3,13 @@ benchmarks:
     Short description: Energy system model for Europe (EU27+UK+NO+CH) with focus on
       hydrogen infrastructure. The model uses time series aggregation by tsam with
       60 typical days with 12 segments.
-    Modelling framework: ethos.fine
+    Modelling framework: ETHOS.FINE
     Model name: ethos.fine.europe
     Version:
     Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric
     Time horizon: Single-stage (1 year)
@@ -30,13 +30,13 @@ benchmarks:
       modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
       8 regional clusters in Germany. The model uses time series aggregation by tsam
       with 7 typical days without segmentation.
-    Modelling framework: ethos.fine
+    Modelling framework: ETHOS.FINE
     Model name: Multi-regional example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Power-only
     Sectors: Supply, Power
     Time horizon: Single period (1 year)
@@ -57,13 +57,13 @@ benchmarks:
       modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
       8 regional clusters in Germany. The model uses time series aggregation by tsam
       with 7 typical days and 12 segments per typical day.
-    Modelling framework: ethos.fine
+    Modelling framework: ETHOS.FINE
     Model name: Multi-regional example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Power-only
     Sectors: Supply, Power
     Time horizon: 1 year
@@ -83,13 +83,13 @@ benchmarks:
     Short description: Fictional on node energy system model depicting power, heat,
       and transport sectors. The model features full time series resolution (8760
       hours) for one year.
-    Modelling framework: ethos.fine
+    Modelling framework: ETHOS.FINE
     Model name: Energyland example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Power, Heat, Transport
     Sectors: Supply, Power, Heat, Transport
     Time horizon: 1 year
@@ -107,13 +107,13 @@ benchmarks:
     Short description: Fictional on node energy system model depicting power, heat,
       and transport sectors. The model uses time series aggregation by tsam with 48
       typical days without segmentation.
-    Modelling framework: ethos.fine
+    Modelling framework: ETHOS.FINE
     Model name: Energyland example
     Version:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Power, Heat, Transport
     Sectors: Supply, Power, Heat, Transport
     Time horizon: 1 year
@@ -131,13 +131,13 @@ benchmarks:
     Short description: A simple 2-region energy supply system built using the ETHOS.FINE
       framework, illustrating the creation of an energy system model and the addition
       of sources, converters, storage, transmission, and sinks.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: 2_node_electricity_supply_system
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/00_Tutorial
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -155,13 +155,13 @@ benchmarks:
     Short description: A single-region energy system model built using the ETHOS.FINE
       framework, demonstrating the use of all major component classes, including sources,
       converters, storage, and sinks.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: 1_node_energy_system_workflow
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/01_1node_Energy_System_Workflow
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -179,13 +179,13 @@ benchmarks:
     Short description: A single-node energy system model with an extended set of technologies,
       demonstrating a more comprehensive application of the ETHOS.FINE framework including
       sources, converters, storage, and sinks.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: energyland
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/02_EnergyLand
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -203,17 +203,17 @@ benchmarks:
     Short description: A multi-regional energy system model using the ETHOS.FINE framework,
       demonstrating the use of all major component classes including sources, converters,
       storage, transmission, and sinks.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: multi_regional_energy_system_workflow
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/03_Multi-regional_Energy_System_Workflow
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: Binary transmission investment decisions
+    MILP features: Binary investment decisions
     Sizes:
     - Name: 8-8760ts
       Size: M
@@ -228,17 +228,17 @@ benchmarks:
   FINE-district-optimization:
     Short description: A small district energy system modeled using the ETHOS.FINE
       framework, demonstrating sources, converters, storage, transmission, and sinks.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: district_optimization
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/05_District_Optimization
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Multi-energy (electricity, heat, methane)
     Sectors: Electric, Heat, Gas
     Time horizon: Single-stage
-    MILP features: Binary transmission investment decisions
+    MILP features: Binary investment decisions
     Sizes:
     - Name: 14-8760ts
       Size: M
@@ -254,17 +254,17 @@ benchmarks:
     Short description: A clean water supply system for a small mountain village, modeled
       using the ETHOS.FINE framework, including water demand, river water supply,
       water treatment, storage, and transmission infrastructure.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: water_supply_system
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/06_Water_Supply_System
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Water supply
     Sectors: Water
     Time horizon: Single-stage
-    MILP features: Binary transmission investment decisions
+    MILP features: Binary investment decisions
     Sizes:
     - Name: 12-8760ts
       Size: S
@@ -280,13 +280,13 @@ benchmarks:
     Short description: Demonstrates the spatial aggregation of an energy system model,
       merging similar regions to reduce the number of model nodes while preserving
       system characteristics.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: spatial_aggregation_of_energy_system_model
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/blob/develop/examples/08_Spatial_and_technology_aggregation/08a_Spatial_aggregation_of_energy_system_model.ipynb
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Multi-energy (electricity, hydrogen, methane, biogas, CO2)
     Sectors: Electric, Gas
     Time horizon: Single-stage
@@ -304,13 +304,13 @@ benchmarks:
     Short description: A single-node energy system transformation pathway modeled
       using the ETHOS.FINE framework, demonstrating sources, converters, storage,
       and sinks with perfect foresight optimization.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: perfect_foresight
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/10_PerfectForesight
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Multi-energy (electricity, hydrogen)
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
@@ -328,18 +328,17 @@ benchmarks:
     Short description: A hydrogen system modeled using the ETHOS.FINE framework, considering
       part-load behavior of the electrolyzer and demonstrating sources, converters,
       storage, and sinks.
-    Modelling framework: FINE
+    Modelling framework: ETHOS.FINE
     Model name: hydrogen_partload
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/11_Partload
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure and Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Multi-energy (electricity, hydrogen)
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
-    MILP features: Binary transmission investment decisions; Piecewise-linear part-load
-      efficiency modeling
+    MILP features: Binary investment decisions; Piecewise efficiency
     Sizes:
     - Name: 1-168ts
       Size: S
@@ -1939,7 +1938,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -2018,7 +2017,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/diesel_genset_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2043,7 +2042,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/economic_results
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2069,7 +2068,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_with_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
@@ -2095,7 +2094,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_without_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
@@ -2120,7 +2119,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/time_series_aggragation
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2143,7 +2142,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/offset_converter_example
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2169,7 +2168,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/result_object
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2192,7 +2191,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/simple_dispatch
     License: CC BY 4.0
     Problem class: LP
-    Application: Economic dispatch
+    Application: Operational
     Sectoral focus: Power & Heating
     Sectors: Electric, Heating
     Time horizon: Single-stage, hourly
@@ -2216,7 +2215,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/tuple_as_labels
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2239,7 +2238,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v1_invest_optimize_all_technologies.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2263,7 +2262,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v2_invest_optimize_only_gas_and_storage.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2286,7 +2285,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v3_invest_optimize_only_storage_with_fossil_share.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2310,7 +2309,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v4_invest_optimize_all_technologies_with_fossil_share.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
@@ -2954,7 +2953,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage
@@ -3004,7 +3003,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3031,7 +3030,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3054,13 +3053,13 @@ benchmarks:
   SWITCH-3zone-toy-stochastic-PySP:
     Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating
       scenario-based stochastic optimization in a multi-period power system context.
-    Modelling framework: SWITCH + PySP
+    Modelling framework: SWITCH
     Model name: 3zone_toy_stochastic_PySP
     Version:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3088,7 +3087,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/carbon_cap
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3113,7 +3112,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/hydrogen
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3138,7 +3137,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/planning_reserves
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3163,7 +3162,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/retrofits
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3189,7 +3188,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/rps_simple
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage (2 stages)
@@ -3215,7 +3214,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/https://github.com/TemoaProject/temoacloud
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
@@ -3238,7 +3237,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -3263,7 +3262,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -3288,7 +3287,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -3313,7 +3312,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
@@ -3338,7 +3337,7 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
@@ -3362,7 +3361,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -3386,7 +3385,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -3410,7 +3409,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -3435,7 +3434,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -3459,7 +3458,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -3484,7 +3483,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -3508,7 +3507,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -3533,7 +3532,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -3557,7 +3556,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -3582,7 +3581,7 @@ benchmarks:
     Contributor(s)/Source: "Victor Guillot, \xC9cole des Mines de Paris"
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -3605,7 +3604,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
@@ -3635,7 +3634,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
@@ -3658,7 +3657,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -3682,7 +3681,7 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
@@ -3708,7 +3707,7 @@ benchmarks:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
     Time horizon: Multi-stage (8 stages)
@@ -3734,7 +3733,7 @@ benchmarks:
     Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure, Capacity Expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Hydrogen
     Time horizon: Single-stage
@@ -3765,7 +3764,7 @@ benchmarks:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion, Operational
+    Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
     Time horizon: Multi-stage
