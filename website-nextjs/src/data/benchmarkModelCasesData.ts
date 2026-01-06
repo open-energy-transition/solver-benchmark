@@ -202,7 +202,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     DCOPF: "true",
     "ETHOS.FINE": "false",
     GenX: "true",
-    OEMOF: "false",
+    OEMOF: "true",
     PowerModels: "true",
     PyPSA: "true",
     Sienna: "true",
