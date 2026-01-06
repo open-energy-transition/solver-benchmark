@@ -91,7 +91,7 @@ const Header = () => {
             <MenuIcon className="text-white h-6 w-6" />
           </button>
         </div>
-        <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24 2xl:pr-20">
+        <div className="hidden lg:flex gap-x-6 text-white px-6 2xl:px-24 2xl:pr-20">
           <Link
             href={ROOT_PATH.home}
             className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
@@ -131,6 +131,16 @@ const Header = () => {
             }`}
           >
             METHODOLOGY
+          </Link>
+          <Link
+            href={ROOT_PATH.blog}
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/blog"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
+          >
+            BLOG
           </Link>
         </div>
         <div className="hidden lg:flex w-max items-center">
@@ -211,6 +221,7 @@ const Header = () => {
                       label: "DETAILED RESULTS",
                     },
                     { href: "/methodology", label: "METHODOLOGY" },
+                    { href: "/blog", label: "BLOG" },
                     {
                       href: "https://openenergytransition.org/",
                       label: "OPEN ENERGY TRANSITION",
