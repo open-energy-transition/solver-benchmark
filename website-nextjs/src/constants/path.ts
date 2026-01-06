@@ -18,4 +18,5 @@ export const ROOT_PATH = {
   home: "/",
   keyInsights: "/key-insights",
   methodology: "/methodology",
+  blog: "/blog",
 };
