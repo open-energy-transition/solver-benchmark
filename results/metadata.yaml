@@ -2022,7 +2022,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex flows, investment optimization, binary on/off for genset
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
     Sizes:
     - Name: 1-240ts
       Size: S
@@ -2047,7 +2047,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: Investment optimization; minimal binary/integer presence
+    MILP features: Binary investment decisions
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2073,8 +2073,7 @@ benchmarks:
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Investment decisions; minimum up-time; minimum
-      load
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
@@ -2100,8 +2099,7 @@ benchmarks:
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Investment in thermal collector; minimum up-time;
-      minimum load
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
@@ -2126,7 +2124,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-1920ts
       Size: M
@@ -2149,8 +2147,8 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Investment decisions; minimum load; piecewise/offset
-      efficiency representation
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment;
+      Piecewise efficiency
     Sizes:
     - Name: 1-8760ts
       Size: S
@@ -2175,7 +2173,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2198,7 +2196,7 @@ benchmarks:
     Sectoral focus: Power & Heating
     Sectors: Electric, Heating
     Time horizon: Single-stage, hourly
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2222,7 +2220,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2245,7 +2243,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2269,7 +2267,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2292,7 +2290,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -2316,7 +2314,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
