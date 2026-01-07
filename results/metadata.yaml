@@ -8,7 +8,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
     License: CC BY 4.0
-    Problem class: LPmilpfgfafff
+    Problem class: LP
     Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric
