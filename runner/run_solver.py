@@ -31,6 +31,10 @@ def get_solver(solver_name):
             "randomCbcSeed": 1,  # 0 indicates time of day
             "ratioGap": mip_gap,
         },
+        "cplex": {
+            "randomseed": 0,
+            "mip.tolerances.mipgap": mip_gap,
+        },
     }
 
     return solver_class(**seed_options.get(solver_name, {}))
@@ -49,6 +53,10 @@ def is_mip_problem(solver_model, solver_name):
     elif solver_name == "highs":
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
+    elif solver_name == "cplex":
+        # Check if any variables are integer or binary
+        var_types = solver_model.variables.get_types()
+        return any(t in ("I", "B") for t in var_types)
     elif solver_name in {"glpk", "cbc"}:
         # These solvers do not provide a solver model in the solver result,
         # so MIP problem detection is not possible.
@@ -86,6 +94,8 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "glpk":
         # GLPK does not have a way to retrieve the duality gap from python
         return None
+    elif solver_name == "cplex":
+        return solver_model.solution.MIP.get_mip_relative_gap()
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
@@ -129,6 +139,8 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.runtime
             case "gurobi":
                 return solver_model.Runtime
+            case "cplex":
+                return solver_model.solution.get_time()
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None
