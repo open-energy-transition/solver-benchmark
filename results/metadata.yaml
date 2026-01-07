@@ -8,7 +8,7 @@ benchmarks:
     Version:
     Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
     License: CC BY 4.0
-    Problem class: LP
+    Problem class: LPmilpfgfafff
     Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric
@@ -93,7 +93,7 @@ benchmarks:
     Sectoral focus: Power, Heat, Transport
     Sectors: Supply, Power, Heat, Transport
     Time horizon: 1 year
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
@@ -117,7 +117,7 @@ benchmarks:
     Sectoral focus: Power, Heat, Transport
     Sectors: Supply, Power, Heat, Transport
     Time horizon: 1 year
-    MILP features:
+    MILP features: None
     Sizes:
     - Name: 1-1152ts
       Size: M
