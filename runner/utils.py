@@ -304,9 +304,9 @@ color_map = {
     "glpk": "#7C3AED",  # purple
     "gurobi": "#F66C49",  # red
     "highs": "#43BF94",  # green
-    "scip": "#3B82F6",  # blue
     "highs-hipo": "#F759B8",  # magenta
     "highs-ipm": "#6D712E",  # green-brown
+    "scip": "#3B82F6",  # blue
 }
 
 
@@ -390,6 +390,7 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
     width = 1 / (max_num_solvers + 1)  # the width of the bars
 
     fig, ax = plt.subplots(figsize=figsize, layout="constrained")
+    seen_solvers = set()
 
     # Add a dotted line at y=1
     ax.axhline(1, color="grey", linestyle="--")
@@ -403,7 +404,7 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
         # Compute x-axis offsets
         xs = i + (np.arange(num_solvers) * width) - 0.5 + width
         # Pick colors based on solvers
-        # colors = [color_map[s] for s in benchmark_data["Solver"]]
+        seen_solvers.update(benchmark_data["Solver"])
         colors = [
             color_map[r["Solver"]]
             if r["Status"] == "ok"
@@ -443,17 +444,21 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
     ax.set_ylabel("Relative Runtime (normalized)")
     ax.set_title("Solver Runtime Comparison" + (f" – {cls}" if cls else ""))
     ax.legend(
-        handles=[Patch(color=c, label=s) for s, c in color_map.items()],
+        handles=[
+            Patch(color=c, label=s) for s, c in color_map.items() if s in seen_solvers
+        ],
         title="Solver",
         loc="upper left",
     )
 
 
-def plot_summary_results(summary_df, cls, max_num_solvers=5):
-    # TODO add num-probs and timeout to labels
+def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
     # TODO add percentage instances solved above/below the bars?
     # Add the columns expected by the plotting function
     lp_summary = summary_df.query(f'Class == "{cls}"').copy()
+    # TODO add num-probs and timeout to labels in a less hacky way
+    if label_map:
+        lp_summary["Category"] = lp_summary["Category"].map(label_map)
     lp_summary = lp_summary.rename(
         columns={"Category": "Benchmark", "SGM Runtime": "Runtime (s)"}
     )
