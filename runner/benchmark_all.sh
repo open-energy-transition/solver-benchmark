@@ -74,11 +74,12 @@ for year in "${years[@]}"; do
     if [ -n "${solvers_override}" ]; then
         solver_args="--solvers ${solvers_override}"
         echo "Using solver override: ${solvers_override}"
+    elif [ "$year" = "2025" ]; then
+        solver_args="--solvers highs highs-hipo-ipm highs-hipo-128 highs-hipo-32 highs-hipo-64 highs-hipo-no2hop"
     else
         solver_args="--solvers highs scip cbc gurobi glpk"
     fi
 
-    # Overwrite results for the first year, append thereafter
     if [ "$idx" -eq 0 ]; then
         # we're running the script with -e, ignoring error with <command> || true so that execution continues if the script fails
         python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args ||true
