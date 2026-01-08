@@ -1,9 +1,16 @@
+import re
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import yaml
+from humanize import naturaldelta
+from matplotlib.patches import Patch
+
+# ---------- Monitor in-progress runs ----------
 
 
 def get_running_instances():
@@ -138,6 +145,9 @@ def fetch_all_partial_results(output_dir="../results/partial-results"):
             except Exception as e:
                 print(f"{instance}: Exception - {e}")
     print("Done.")
+
+
+# ---------- Load results ----------
 
 
 def load_results(folder: str | list[str]):
@@ -282,4 +292,178 @@ def create_benchmark_campaign(batch_id: str, vm_prefix: str, vm_yamls: list[dict
     print(
         "Run this campaign from the infrastructure/ directory using the command:\n"
         f"tofu apply -var-file benchmarks/{batch_id}/run.tfvars -state=states/{batch_id}.tfstate"
+    )
+
+
+# ---------- Analyze results and make plots ----------
+
+
+# Color map
+color_map = {
+    "cbc": "#F9CD5A",  # yellow
+    "glpk": "#7C3AED",  # purple
+    "gurobi": "#F66C49",  # red
+    "highs": "#43BF94",  # green
+    "scip": "#3B82F6",  # blue
+    "highs-hipo": "#F759B8",  # magenta
+    "highs-ipm": "#6D712E",  # green-brown
+}
+
+
+def calculate_sgm(data_points, sh=10):
+    data_points = np.maximum(1, data_points + sh)
+    sgm = np.exp(np.mean(np.log(data_points))) - sh
+    return sgm
+
+
+def is_solved(row):
+    # Solved Instances: where Status == 'ok' and Termination Condition == 'optimal'
+    # TODO for now, relaxing to Status == 'ok'
+    return row["Status"] == "ok"
+
+
+def compute_summary_results(results_extended, category_suffix=""):
+    grouped = results_extended.groupby(
+        ["Problem class", "Size Category", "solver-version"]
+    )
+    summaries = []
+    for (cls, size, solver), group in grouped:
+        solved_instances = (is_solved(group)).sum()
+
+        # Compute SGM using: Runtime if solved, else Timeout
+        data_points = group.apply(
+            lambda row: row["Runtime (s)"] if is_solved(row) else row["Timeout"],
+            axis=1,
+        )
+        sgm_runtime = calculate_sgm(data_points.values)
+
+        full_size = {x[0]: x for x in ["Small", "Medium", "Large"]}[size]
+
+        total_instances = group.shape[0]
+        solved_frac = solved_instances * 100 / total_instances
+        solved_instances_str = (
+            f"{solved_frac: 3.0f}% ({solved_instances}/{total_instances})"
+        )
+
+        summaries.append(
+            {
+                "Class": cls,
+                "Category": full_size + category_suffix,
+                "Solver": solver,
+                "Solved Instances": solved_instances_str,
+                "SGM Runtime": sgm_runtime,
+            }
+        )
+    return pd.DataFrame(summaries)
+
+
+def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
+    """Plots relative runtimes (slowdown factors) in a bar chart.
+
+    Expects df to have columns: Benchmark, Solver, Runtime (s), Status, Timeout
+    """
+    if "bench-size" in df.columns:
+        df["Benchmark"] = df["bench-size"]
+    # Fill NaN runtimes and non-ok statuses with TO value
+    df.loc[df["Runtime (s)"].isna(), "Runtime (s)"] = df["Timeout"]
+    df.loc[df.query('Status != "ok"').index, "Runtime (s)"] = df["Timeout"]
+
+    # Find the fastest solver for each benchmark
+    df_ok = df.query('Status == "ok"')
+    fastest_runtimes = df_ok.loc[df_ok.groupby("Benchmark")["Runtime (s)"].idxmin()]
+
+    # Sort benchmarks by fastest runtime
+    sorted_benchmarks = fastest_runtimes.sort_values("Runtime (s)").reset_index(
+        drop=True
+    )
+
+    # Normalize runtimes to find each solver's slowdown factor
+    df = df.merge(
+        fastest_runtimes[["Benchmark", "Runtime (s)"]],
+        on="Benchmark",
+        suffixes=("", "_fastest"),
+    )
+    df["Slowdown"] = df["Runtime (s)"] / df["Runtime (s)_fastest"]
+    max_slowdown = max(df.query('Status == "ok"')["Slowdown"])
+    df.loc[df.query('Status != "ok"').index, "Slowdown"] = 1.1 * max_slowdown
+
+    width = 1 / (max_num_solvers + 1)  # the width of the bars
+
+    fig, ax = plt.subplots(figsize=figsize, layout="constrained")
+
+    # Add a dotted line at y=1
+    ax.axhline(1, color="grey", linestyle="--")
+
+    # Plot each benchmark
+    for i, benchmark in enumerate(sorted_benchmarks["Benchmark"]):
+        benchmark_data = df[df["Benchmark"] == benchmark].sort_values(
+            "Slowdown", ascending=True
+        )
+        num_solvers = len(benchmark_data)
+        # Compute x-axis offsets
+        xs = i + (np.arange(num_solvers) * width) - 0.5 + width
+        # Pick colors based on solvers
+        # colors = [color_map[s] for s in benchmark_data["Solver"]]
+        colors = [
+            color_map[r["Solver"]]
+            if r["Status"] == "ok"
+            else (color_map[r["Solver"]], 0.2)
+            for _, r in benchmark_data.iterrows()
+        ]
+        # Push down non-ok bars to not make them distracting
+        # benchmark_data.loc[benchmark_data.query('Status != "ok"').index, "Slowdown"] = 1
+        ax.bar(xs, benchmark_data["Slowdown"], width, color=colors)
+        # Add text labels on top of bars
+        for i, x in enumerate(xs):
+            if benchmark_data.iloc[i]["Status"] == "ok":
+                y = benchmark_data.iloc[i]["Slowdown"] + 0.5
+                label = f"{benchmark_data.iloc[i]['Slowdown']:.1f}x"
+                kwargs = {}
+            else:
+                # y = 1.1
+                y = benchmark_data.iloc[i]["Slowdown"] + 0.5
+                label = benchmark_data.iloc[i]["Status"]
+                kwargs = {"color": "red", "weight": "bold"}
+            ax.text(
+                x,
+                y,
+                label,
+                ha="center",
+                **kwargs,
+            )
+
+    # Set x-ticks and labels
+    xlabels = [
+        f"{r['Benchmark']}\nFastest solver: {naturaldelta(r['Runtime (s)'])}"
+        for _, r in sorted_benchmarks.iterrows()
+    ]
+    ax.set_xticks(np.arange(len(sorted_benchmarks)), xlabels)
+
+    # Add labels and title
+    ax.set_ylabel("Relative Runtime (normalized)")
+    ax.set_title("Solver Runtime Comparison" + (f" – {cls}" if cls else ""))
+    ax.legend(
+        handles=[Patch(color=c, label=s) for s, c in color_map.items()],
+        title="Solver",
+        loc="upper left",
+    )
+
+
+def plot_summary_results(summary_df, cls, max_num_solvers=5):
+    # TODO add num-probs and timeout to labels
+    # TODO add percentage instances solved above/below the bars?
+    # Add the columns expected by the plotting function
+    lp_summary = summary_df.query(f'Class == "{cls}"').copy()
+    lp_summary = lp_summary.rename(
+        columns={"Category": "Benchmark", "SGM Runtime": "Runtime (s)"}
+    )
+    lp_summary["Status"] = "ok"
+    lp_summary["Solver"] = lp_summary["Solver"].apply(
+        lambda s: re.match(r"^([a-z\-]+?)(?:-\d)", s).group(1)
+        if re.match(r"^([a-z\-]+?)(?:-\d)", s)
+        else s
+    )
+    lp_summary["Timeout"] = None  # Irrelevant, it's only used if Status != ok
+    plot_runtime_slowdowns(
+        lp_summary, cls=cls, figsize=(20, 6), max_num_solvers=max_num_solvers
     )
