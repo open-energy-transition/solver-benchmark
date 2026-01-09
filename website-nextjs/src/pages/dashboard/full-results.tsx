@@ -25,7 +25,7 @@ const PagePerformanceHistory = () => {
               <AdminHeader>
                 <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
-                    <Link href={PATH_DASHBOARD.root}>
+                    <Link href={PATH_DASHBOARD.root} aria-label="Home">
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />

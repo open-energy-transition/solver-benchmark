@@ -170,7 +170,7 @@ const SolverEvolutionSection = ({
         <div className="lg:w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
           <label
             htmlFor="solver-select"
-            className="p-3 pl-3.5 border-b border-gray-200 block"
+            className="h6 p-3 pl-3.5 border-b border-gray-200 block"
           >
             Select Solver
           </label>

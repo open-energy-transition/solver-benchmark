@@ -194,7 +194,7 @@ const RuntimeOfFastestSolver = ({
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
-          <span>Open solvers only</span>
+          <span className="text-sm text-navy">Open solvers only</span>
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -203,7 +203,7 @@ const RuntimeOfFastestSolver = ({
             checked={allSolvers}
             onChange={() => setallSolvers(true)}
           />
-          <span>All solvers</span>
+          <span className="text-sm text-navy">All solvers</span>
         </label>
       </div>
       <div>
