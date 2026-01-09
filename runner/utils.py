@@ -83,7 +83,8 @@ def check_uptimes():
             except Exception as e:
                 print(f"{instance}: Exception - {e}")
 
-    print(f"\n{len(hung_vms)} potentially hung instances:\n{'\n'.join(hung_vms)}")
+    msg = "\n".join(hung_vms)
+    print(f"\n{len(hung_vms)} potentially hung instances:\n{msg}")
 
 
 # ---------- Use SCP to get in-progress results ----------
