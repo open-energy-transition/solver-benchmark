@@ -12,7 +12,6 @@ import NormalizedSGMRuntime from "../admin/performance-history/NormalizedSGMRunt
 import {
   buildSolverYearlyMetrics,
   generateChartData,
-  processCombinedYearMetrics,
   getNumSolvedBenchMark,
 } from "@/utils/performanceHistory";
 
@@ -137,9 +136,7 @@ const SolverPerformanceHistory = () => {
       years,
       solvers,
     );
-
-    // Process for combined 2024/2025 data
-    return processCombinedYearMetrics(initialMetrics);
+    return initialMetrics;
   }, [benchmarkResults, years, solvers]);
 
   const chartData = useMemo(() => {
@@ -164,9 +161,9 @@ const SolverPerformanceHistory = () => {
       <h4>How are solvers evolving over time?</h4>
       <p>
         This plot shows the average runtime of each year’s final-released solver
-        version, relative to that year’s fastest solver, over all S and M size
-        benchmarks in our set. This shows the performance evolution of solvers,
-        relative to one another.
+        version, relative to the best solver ever measured, over all S and M
+        size benchmarks in our set. This shows the performance evolution of
+        solvers, relative to one another.
       </p>
       <NormalizedSGMRuntime chartData={chartData.runtime} />
       <p>

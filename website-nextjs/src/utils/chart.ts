@@ -118,7 +118,6 @@ export const yearSort = (
   a: { year: string | number },
   b: { year: string | number },
 ) => {
-  const parseYear = (y: string | number) =>
-    y === "2024-2025" ? 2025 : Number(y);
+  const parseYear = (y: string | number) => Number(y);
   return parseYear(a.year) - parseYear(b.year);
 };

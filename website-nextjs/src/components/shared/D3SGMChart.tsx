@@ -42,28 +42,17 @@ const D3SGMChart = ({
     );
   }, [availableSolvers]);
 
-  // Normalize data by year (best solver in each year = 1.0)
+  // Normalize data by best solver ever measured (global best = 1.0)
   const normalizedChartData = useMemo(() => {
     if (chartData.length === 0) return [];
-
-    // Group data by year
-    const dataByYear = d3.group(chartData, (d) => d.year);
-
-    const normalizedData: SolverYearlyChartData[] = [];
-
-    dataByYear.forEach((yearData) => {
-      // Find the best (minimum) value for this year
-      const bestValue = d3.min(yearData, (d) => d.value) || 1;
-
-      // Normalize all values for this year
-      yearData.forEach((d) => {
-        normalizedData.push({
-          ...d,
-          value: d.value / bestValue,
-          originalValue: d.value, // Keep original value for tooltip
-        });
-      });
-    });
+    // Find the best (minimum) value across all years and solvers
+    const bestValueEver = d3.min(chartData, (d) => d.value) || 1;
+    // Normalize all values relative to the best ever measured
+    const normalizedData: SolverYearlyChartData[] = chartData.map((d) => ({
+      ...d,
+      value: d.value / bestValueEver,
+      originalValue: d.value, // Keep original value for tooltip
+    }));
 
     return normalizedData;
   }, [chartData]);
@@ -96,12 +85,13 @@ const D3SGMChart = ({
       .range([margin.left + 20, width - margin.right]);
 
     const maxValue = d3.max(normalizedChartData, (d) => d.value) || 1;
-    const yDomainMax = Math.max(maxValue + 1, 2); // Ensure we have space above the highest point
-
+    const yDomainMax = Math.max(maxValue + 1, 2);
     const yScale = d3
       .scaleLinear()
       .domain([0, yDomainMax])
       .range([height - margin.bottom, margin.top]);
+
+    // const yTickValues = generateYTicks(Math.ceil(maxValue));
 
     // Axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);

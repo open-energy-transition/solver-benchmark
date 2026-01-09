@@ -80,7 +80,7 @@ export const buildSolverYearlyMetrics = (
 };
 
 /**
- * Processes metrics to handle combined 2024-2025 data
+ * Processes metrics
  * @param metrics - The metrics to process
  * @returns The processed metrics with 2024/2025 handling
  */
@@ -190,7 +190,7 @@ export const generateChartData = (
     runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime)
       .map((d) => ({
         ...d,
-        year: d.year === 2025 ? ("2024-2025" as unknown as number) : d.year,
+        year: d.year,
       }))
       .sort(yearSort),
     memoryUsage: getNormalizedData(
@@ -200,13 +200,13 @@ export const generateChartData = (
     )
       .map((d) => ({
         ...d,
-        year: d.year === 2025 ? ("2024-2025" as unknown as number) : d.year,
+        year: d.year,
       }))
       .sort(yearSort),
     numSolvedBenchMark: getNumSolvedBenchMark(solverYearlyMetrics)
       .map((d) => ({
         ...d,
-        year: d.year === 2025 ? ("2024-2025" as unknown as number) : d.year,
+        year: d.year,
       }))
       .sort(yearSort),
   };
