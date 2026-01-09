@@ -412,18 +412,15 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
             else (color_map[r["Solver"]], 0.2)
             for _, r in benchmark_data.iterrows()
         ]
-        # Push down non-ok bars to not make them distracting
-        # benchmark_data.loc[benchmark_data.query('Status != "ok"').index, "Slowdown"] = 1
         ax.bar(xs, benchmark_data["Slowdown"], width, color=colors)
         # Add text labels on top of bars
         for i, x in enumerate(xs):
+            y = benchmark_data.iloc[i]["Slowdown"] + 0.5
             if benchmark_data.iloc[i]["Status"] == "ok":
-                y = benchmark_data.iloc[i]["Slowdown"] + 0.5
                 label = f"{benchmark_data.iloc[i]['Slowdown']:.1f}x"
                 kwargs = {}
             else:
                 # y = 1.1
-                y = benchmark_data.iloc[i]["Slowdown"] + 0.5
                 label = benchmark_data.iloc[i]["Status"]
                 kwargs = {"color": "red", "weight": "bold"}
             ax.text(
@@ -433,6 +430,9 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
                 ha="center",
                 **kwargs,
             )
+            if "Solved Instances" in df.columns:
+                solved = benchmark_data.iloc[i]["Solved Instances"].split()[0]
+                ax.text(x, y + max_slowdown * 0.03, solved, ha="center", color="grey")
 
     # Set x-ticks and labels
     xlabels = [
