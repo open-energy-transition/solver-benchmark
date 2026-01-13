@@ -2945,8 +2945,8 @@ benchmarks:
       Num. integer variables: 9261
   SWITCH-China-open-model:
     Short description: A large-scale national energy system model of China built using
-      the SWITCH framework, including extended China-specific modules and updated
-      inputs based on a 2020 base year.
+      the SWITCH framework, incorporating extended China-specific modules and updated
+      inputs based on a 2020 base year, with 32 load zones.
     Modelling framework: SWITCH
     Model name: SWITCH_China_open_model
     Version:
