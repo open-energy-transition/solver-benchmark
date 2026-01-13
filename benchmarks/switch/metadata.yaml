@@ -1,5 +1,5 @@
 benchmarks:
-  SWITCH-China-open-model:
+  SWITCH-China-open-model-15-loadzones:
     Short description: A large-scale national energy system model of China built using the SWITCH framework, incorporating extended China-specific modules and updated inputs based on a 2020 base year, with 15 load zones.
     Modelling framework: SWITCH
     Model name: SWITCH_China_open_model
@@ -22,7 +22,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints:
       Num. variables:
-  SWITCH-China-open-model:
+  SWITCH-China-open-model-32-loadzones:
     Short description: A large-scale national energy system model of China built using the SWITCH framework, incorporating extended China-specific modules and updated inputs based on a 2020 base year, with 32 load zones.
     Modelling framework: SWITCH
     Model name: SWITCH_China_open_model
