@@ -20,8 +20,8 @@ benchmarks:
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 
-      Num. variables: 
+      Num. constraints:
+      Num. variables:
   SWITCH-China-open-model:
     Short description: A large-scale national energy system model of China built using the SWITCH framework, incorporating extended China-specific modules and updated inputs based on a 2020 base year, with 32 load zones.
     Modelling framework: SWITCH
