@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 15-433ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-15-433ts.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-15-loadzones-15-433ts.lp.gz
       Temporal resolution: 433 time slices
       Spatial resolution: 15 nodes
       Realistic: true
@@ -38,7 +38,7 @@ benchmarks:
     Sizes:
     - Name: 32-433ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-loadzones-32-433ts.lp.gz
       Temporal resolution: 433 time slices
       Spatial resolution: 32 nodes
       Realistic: true
