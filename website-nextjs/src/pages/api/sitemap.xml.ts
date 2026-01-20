@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://openenergybenchmark.org";
+  const baseUrl = "http://localhost:3000";
 
   const routes = [
     "",

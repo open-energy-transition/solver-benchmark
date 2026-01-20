@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 15-168h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex-15-168h.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex-15-168h.lp
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: true
@@ -38,7 +38,7 @@ benchmarks:
     Sizes:
     - Name: 15-168h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_co2-15-168h.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_co2-15-168h.lp
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: true
@@ -82,7 +82,7 @@ benchmarks:
     Sizes:
     - Name: 15-24h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_uc-15-24h.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_trex_uc-15-24h.lp
       Temporal resolution: 24h hours
       Spatial resolution: 15 nodes
       Realistic: true
@@ -107,7 +107,7 @@ benchmarks:
     Sizes:
     - Name: 15-168h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_co2-15-168h.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/genx-elec_co2-15-168h.lp
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: true

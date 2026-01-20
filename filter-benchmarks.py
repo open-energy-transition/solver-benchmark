@@ -9,7 +9,7 @@ import csv
 import sys
 from pathlib import Path
 
-from runner.run_benchmarks import benchmark_solver, download_benchmark_file
+from runner.run_benchmarks import benchmark_solver, download_file_from_google_drive
 
 benchmark = sys.argv[1]
 timeout = 60 * 60
@@ -28,7 +28,7 @@ for r in resolutions:
         lp_file = f"{benchmark}-{n}-{r}.lp"
         gcp_url = "https://storage.googleapis.com/solver-benchmarks/" + lp_file
         lp_path = Path("./runner/benchmarks/") / lp_file
-        download_benchmark_file(gcp_url, lp_path)
+        download_file_from_google_drive(gcp_url, lp_path)
         print(f"Solving {lp_file}..", flush=True)
 
         m = benchmark_solver(lp_path, "highs", timeout, None)

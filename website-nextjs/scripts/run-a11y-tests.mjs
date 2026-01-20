@@ -34,8 +34,10 @@ try {
     console.log("====================================================");
 
     try {
-      // Run axe-core accessibility tests
-      execSync(`axe "${url}" --tags wcag2a,wcag2aa --exit`, {
+      // Run axe-core accessibility tests with delay for page load/hydration
+      // --load-delay: wait for page to load before running tests
+      // --chromedriver-path: ensures we use the synced ChromeDriver
+      execSync(`axe "${url}" --tags wcag2a,wcag2aa --load-delay 3000 --exit`, {
         stdio: "inherit",
         encoding: "utf8",
       });

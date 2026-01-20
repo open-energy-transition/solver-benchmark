@@ -1,5 +1,3 @@
-import { TIMEOUT_VALUES } from "./filter";
-
 export enum ProblemSize {
   XXS = "xxs",
   XS = "xs",
@@ -8,7 +6,7 @@ export enum ProblemSize {
   S = "s",
 }
 
-export const MaxRunTime = TIMEOUT_VALUES.LONG;
+export const MaxRunTime = 36000;
 
 export enum ProblemClass {
   MILP = "MILP",

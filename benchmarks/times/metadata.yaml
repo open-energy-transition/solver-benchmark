@@ -15,7 +15,7 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-GEO-global-base-31-20ts.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-base-31-20ts.lp
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
@@ -38,7 +38,7 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-GEO-global-netzero-31-20ts.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-netzero-31-20ts.lp
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
@@ -61,7 +61,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-single_stage-1-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-single_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -84,7 +84,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-co2-single_stage-1-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-single_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -107,7 +107,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-multi_stage-1-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-multi_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -130,7 +130,7 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-co2-multi_stage-1-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-multi_stage-1-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
@@ -153,7 +153,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-single_stage-29-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-single_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -176,7 +176,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-co2-single_stage-29-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-single_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -199,7 +199,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-multi_stage-29-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-multi_stage-29-64ts.mps
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
@@ -222,7 +222,7 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-co2-multi_stage-29-64ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-multi_stage-29-64ts.mps
       Temporal resolution: 64 time slice
       Spatial resolution: 29 regions
       Realistic: true
@@ -243,17 +243,17 @@ benchmarks:
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
-    - Name: 1-1ts
+    - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-1-1ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
-    - Name: 40-1ts
+    - Name: 40-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-40-1ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 40 regions
       Realistic: false
@@ -273,9 +273,9 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1ts
+    - Name: 26-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-counties-26-1ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
       Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
@@ -295,9 +295,9 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24ts
+    - Name: 2-24h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-nz-kea-2-24ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
@@ -318,9 +318,9 @@ benchmarks:
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24ts
+    - Name: 2-24h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-nz-tui-2-24ts.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true

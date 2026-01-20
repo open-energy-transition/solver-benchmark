@@ -100,6 +100,11 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 type="checkbox"
                 checked={selectedItems.includes(item)}
                 onChange={() => onItemChange(item)}
+                aria-label={item}
+                id={`filter-${String(title).replace(
+                  /\s+/g,
+                  "-",
+                )}-${item.replace(/\s+/g, "-")}`}
               />
               <span
                 onClick={() => onItemChange(item)}

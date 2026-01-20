@@ -177,7 +177,6 @@ cython_debug/
 
 # Ignore results downloaded from GCP
 /results/gcp-results/
-/results/partial-results/
 
 # NextJs
 node_modules

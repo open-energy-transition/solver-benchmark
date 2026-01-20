@@ -4,15 +4,14 @@ import {
   ProcessorIcon,
   TimeoutIcon,
 } from "@/assets/icons";
-import { TIMEOUT_VALUES } from "@/constants/filter";
 
 interface ConfigurationSectionProps {
   timeout: number;
 }
 
 const TIMEOUT = {
-  STANDARD: TIMEOUT_VALUES.SHORT,
-  EXTENDED: TIMEOUT_VALUES.LONG,
+  STANDARD: 3600,
+  EXTENDED: 36000,
 } as const;
 
 type MachineConfig = {

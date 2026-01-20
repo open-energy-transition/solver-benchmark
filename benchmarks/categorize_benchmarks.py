@@ -158,7 +158,7 @@ def update_size_in_yaml(yaml_data, model_name, size_name, model_stats):
             size["Size"] = model_stats["size_category"]
             size["Num. constraints"] = model_stats["num_constraints"]
             size["Num. variables"] = model_stats["num_variables"]
-            if model_info["Problem class"] == "MILP":
+            if model_info["Technique"] == "MILP":
                 size["Num. continuous variables"] = model_stats[
                     "num_continuous_variables"
                 ]
@@ -225,6 +225,9 @@ def process_metadata_files(benchmark_folder, output_folder):
             if not yaml_data or "benchmarks" not in yaml_data:
                 continue
 
+            # Flag to track if any changes were made to this file
+            file_updated = False
+
             for model_name, model_info in yaml_data["benchmarks"].items():
                 # Skip None values (commented out entries)
                 if model_info is None:
@@ -256,7 +259,7 @@ def process_metadata_files(benchmark_folder, output_folder):
                                     continue
 
                                 model_stats = analyze_model_file(
-                                    model_path, model_info["Problem class"] == "MILP"
+                                    model_path, model_info["Technique"] == "MILP"
                                 )
 
                                 if model_stats:
@@ -266,15 +269,19 @@ def process_metadata_files(benchmark_folder, output_folder):
                                         yaml_data, model_name, size_name, model_stats
                                     ):
                                         successful_updates += 1
-                                        # Write to file immediately after successful update
-                                        with open(file_path, "w") as file:
-                                            yaml_writer = YAML()
-                                            yaml_writer.preserve_quotes = True
-                                            yaml_writer.width = float("inf")
-                                            yaml_writer.dump(yaml_data, file)
+                                        file_updated = True
                                         print(f"Updated {model_name} with model stats")
                             else:
                                 failed_tasks += 1
+
+            if file_updated:
+                with open(file_path, "w") as file:
+                    # Use the same YAML parser with infinite width to preserve formatting
+                    yaml_writer = YAML()
+                    yaml_writer.preserve_quotes = True
+                    yaml_writer.width = float("inf")  # Prevent line wrapping
+                    yaml_writer.dump(yaml_data, file)
+                print(f"Updated YAML file: {file_path}")
 
         except Exception as e:
             print(f"Error processing {file_path}: {e}", file=sys.stderr)
