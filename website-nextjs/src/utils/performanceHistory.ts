@@ -112,32 +112,30 @@ export const processCombinedYearMetrics = (
 };
 
 /**
- * Gets normalized data for a specific metric
+ * Gets SGM data for a specific metric (without normalization)
  * @param solverYearlyMetrics - The metrics to process
- * @param key - The key to normalize (runtime or memoryUsage)
- * @param minValue - The minimum value for normalization
- * @returns Normalized chart data
+ * @param key - The key to extract (runtime or memoryUsage)
+ * @returns Chart data with raw SGM values
  */
-export const getNormalizedData = (
+export const getSGMData = (
   solverYearlyMetrics: ISolverYearlyMetrics[],
   key: "runtime" | "memoryUsage",
-  minValue: number,
 ): ISolverYearlyChartData[] => {
-  const normalizedData: ISolverYearlyChartData[] = [];
+  const sgmData: ISolverYearlyChartData[] = [];
   solverYearlyMetrics.forEach((solverYearlyMetric) => {
     solverYearlyMetric.data.forEach((solverData) => {
       const value = solverData.sgm[key];
       if (value !== null && value !== undefined && !isNaN(value)) {
-        normalizedData.push({
+        sgmData.push({
           solver: solverYearlyMetric.solver as SolverType,
           year: solverData.year,
-          value: value / minValue,
+          value: value,
           version: solverData.version,
         });
       }
     });
   });
-  return normalizedData;
+  return sgmData;
 };
 
 /**
@@ -172,32 +170,14 @@ export const getNumSolvedBenchMark = (
 export const generateChartData = (
   solverYearlyMetrics: ISolverYearlyMetrics[],
 ) => {
-  const minRuntime = Math.min(
-    ...(solverYearlyMetrics
-      .map((item) => item.data.map((d) => d.sgm.runtime))
-      .flat()
-      .filter(Number) as number[]),
-  );
-
-  const minMemoryUsage = Math.min(
-    ...(solverYearlyMetrics
-      .map((item) => item.data.map((d) => d.sgm.memoryUsage))
-      .flat()
-      .filter(Number) as number[]),
-  );
-
   return {
-    runtime: getNormalizedData(solverYearlyMetrics, "runtime", minRuntime)
+    runtime: getSGMData(solverYearlyMetrics, "runtime")
       .map((d) => ({
         ...d,
         year: d.year,
       }))
       .sort(yearSort),
-    memoryUsage: getNormalizedData(
-      solverYearlyMetrics,
-      "memoryUsage",
-      minMemoryUsage,
-    )
+    memoryUsage: getSGMData(solverYearlyMetrics, "memoryUsage")
       .map((d) => ({
         ...d,
         year: d.year,

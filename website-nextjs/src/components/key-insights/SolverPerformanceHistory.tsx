@@ -165,7 +165,9 @@ const SolverPerformanceHistory = () => {
         size benchmarks in our set. This shows the performance evolution of
         solvers, relative to one another.
       </p>
-      <NormalizedSGMRuntime chartData={chartData.runtime} />
+      <NormalizedSGMRuntime
+        chartData={chartData.runtime.filter((s) => s.solver !== "glpk")}
+      />
       <p>
         The plot below shows the performance evolution of the selected solver
         individually, relative to the first version of that solver that we have
