@@ -405,7 +405,7 @@ const D3GroupedBarChart = ({
         .map((solverKey) => (
           <div
             key={solverKey}
-            className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+            className="text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
           >
             <CircleIcon
               style={{
