@@ -1,7 +1,7 @@
 ## https://github.com/spine-tools/SpineOpt.jl
 benchmarks:
   spineopt-eu-pathway-planning:
-    Short description: # Description of the main features of your benchmarks
+    Short description: Model of the European transition pathway for the electricity and multiple sectors (e.g., heat, transport, residential, non residential, industry) of 27 European countries plus Norway, Switzerland, and the UK for three milestone years 2030, 2040, and 2050. It uses the representive periods approach with intra and inter temporal constraints to handle seasonal constraints (e.g., hydro reservoirs, yearly productions, etc.).
     Modelling framework: SpineOpt
     Model name: SpineOpt
     Version: 665a449510f3811015bb81b00e8cb2ad6f6bccbf
