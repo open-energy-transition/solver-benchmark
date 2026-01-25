@@ -6,6 +6,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -29,6 +30,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -50,6 +52,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -73,6 +76,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
@@ -96,6 +100,7 @@ benchmarks:
     Model name: PowerModels
     Version:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
