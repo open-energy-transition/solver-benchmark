@@ -107,14 +107,12 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single stage (24 hours)
-    Temporal resolution: 1 hours
-    spatial resolution: 73 nodes
     MILP features: Unit commitment
     Sizes:
     - Name: 1-1h
       Size: M
       URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314-a9522cdcf8178254104ce7ca6f4fff4e2554e5844cb8b92a338635cdf211ef2a.mps.gz
-      Temporal resolution: 24 hours
+      Temporal resolution: 1 hour
       Spatial resolution: 73 nodes
       Realistic: false
       Num. constraints: 12096

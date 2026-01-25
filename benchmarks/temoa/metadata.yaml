@@ -16,7 +16,7 @@ benchmarks:
     Sizes:
     - Name: 1-6
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia-1-6.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-utopia-1-6ts.lp.gz
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
       Spatial resolution: 1 region
       Realistic: false
@@ -39,7 +39,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -62,7 +62,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NDC-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -85,7 +85,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NZ-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -108,7 +108,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_SP-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -131,7 +131,7 @@ benchmarks:
     Sizes:
     - Name: 9-12
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NZ_trunc_4periods-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
