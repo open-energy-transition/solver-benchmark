@@ -3,7 +3,7 @@ benchmarks:
   spineopt-eu-pathway-planning:
     Short description: Model of the European transition pathway for the electricity and multiple sectors (e.g., heat, transport, residential, non residential, industry) of 27 European countries plus Norway, Switzerland, and the UK for three milestone years 2030, 2040, and 2050. It uses the representive periods approach with intra and inter temporal constraints to handle seasonal constraints (e.g., hydro reservoirs, yearly productions, etc.).
     Modelling framework: SpineOpt
-    Model name: SpineOpt
+    Model name: SpineOpt-EU
     Version: 665a449510f3811015bb81b00e8cb2ad6f6bccbf
     Contributor(s)/Source: Alvaro Porras and Diego Tejada; https://github.com/aporrasc/Mopo_HandsOn_Tutorial
     License: GNU General Public License v3.0
@@ -17,8 +17,8 @@ benchmarks:
       - Name: 12rp-per-year
         Size: L
         URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu_30-12rd.gz
-        Temporal resolution: 12 representative days per year with seasonal constraints
-        Spatial resolution: 27 EU countries + Norway + Switzerland + UK
+        Temporal resolution: 36 representative days
+        Spatial resolution: 30 nodes
         Realistic: true
         Realistic motivation: Highly detailed sector, spatial, and temporal resolution over the considered three milestone years to allow the benchmark to be defined as Realistic.
         Num. constraints: 18422757
