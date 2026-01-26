@@ -5,18 +5,18 @@ benchmarks:
     Modelling framework: SpineOpt
     Model name: SpineOpt
     Version: 665a449510f3811015bb81b00e8cb2ad6f6bccbf
-    Contributor(s)/Source: Alvaro Porras and Diego Tejada. https://github.com/aporrasc/Mopo_HandsOn_Tutorial
+    Contributor(s)/Source: Alvaro Porras and Diego Tejada; https://github.com/aporrasc/Mopo_HandsOn_Tutorial
     License: GNU General Public License v3.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
-    Time horizon: Multi-stage (years 2030, 2040, 2050)
+    Time horizon: Multi-stage
     MILP features: None
     Sizes:
       - Name: 12rp-per-year
-        Size: XL
-        URL: https://zenodo.org/records/18311795
+        Size: L
+        URL: 
         Temporal resolution: 12 representative days per year with seasonal constraints
         Spatial resolution: 27 EU countries + Norway + Switzerland + UK
         Realistic: true
