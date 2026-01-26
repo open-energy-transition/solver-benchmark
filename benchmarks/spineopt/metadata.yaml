@@ -16,7 +16,7 @@ benchmarks:
     Sizes:
       - Name: 12rp-per-year
         Size: L
-        URL:
+        URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu_30-12rd.gz
         Temporal resolution: 12 representative days per year with seasonal constraints
         Spatial resolution: 27 EU countries + Norway + Switzerland + UK
         Realistic: true
