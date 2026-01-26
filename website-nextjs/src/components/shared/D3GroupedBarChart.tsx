@@ -402,6 +402,7 @@ const D3GroupedBarChart = ({
     <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
       {Object.keys(chartData[0] || {})
         .filter((key) => key !== categoryKey)
+        .sort((a, b) => a.localeCompare(b))
         .map((solverKey) => (
           <div
             key={solverKey}
