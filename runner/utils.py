@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import yaml
+import matplotlib.colors as mcolors
 from humanize import naturaldelta
 from matplotlib.patches import Patch
 
@@ -407,9 +408,10 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
         # Pick colors based on solvers
         seen_solvers.update(benchmark_data["Solver"])
         colors = [
-            color_map[r["Solver"]]
-            if r["Status"] == "ok"
-            else (color_map[r["Solver"]], 0.2)
+            (
+                *mcolors.to_rgba(color_map[r["Solver"]])[:3],
+                1.0 if r["Status"] == "ok" else 0.2,
+            )
             for _, r in benchmark_data.iterrows()
         ]
         ax.bar(xs, benchmark_data["Slowdown"], width, color=colors)
