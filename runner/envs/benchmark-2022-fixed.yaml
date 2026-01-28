@@ -115,4 +115,4 @@ dependencies:
       - pybind11==2.13.6
       - pyomo==6.9.2
       # Use branch until old solver support is merged and released
-      - git+https://github.com//PyPSA/linopy@sid/old-solver-support
+      - git+https://github.com/PyPSA/linopy@sid/old-solver-support

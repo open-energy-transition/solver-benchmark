@@ -21,4 +21,4 @@ dependencies:
   - highspy==1.5.0.dev0
   - pyscipopt==5.7.1
   # Use branch until old solver support is merged and released
-  - git+https://github.com//PyPSA/linopy@sid/old-solver-support
+  - git+https://github.com/PyPSA/linopy@sid/old-solver-support
