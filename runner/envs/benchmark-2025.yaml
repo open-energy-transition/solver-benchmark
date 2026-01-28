@@ -11,7 +11,7 @@ dependencies:
 - requests>=2.32
 - linopy>=0.5.5
 
-# No CBC release in 2025 as of Nov 25
+# No CBC release in 2025
 # - coin-or-cbc==2.10.12
 
 - scip==10.0.0

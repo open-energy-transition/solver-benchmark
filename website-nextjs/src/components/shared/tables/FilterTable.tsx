@@ -28,6 +28,7 @@ export default function Filter<T>({ column }: { column: Column<T, unknown> }) {
     <select
       onChange={(e) => column.setFilterValue(e.target.value)}
       value={columnFilterValue?.toString()}
+      aria-label={`Filter by ${column.id}`}
     >
       <option value="">All</option>
       {sortedUniqueValues.map((value) => (

@@ -59,7 +59,9 @@ const GetStarted = () => {
           >
             BENCHMARKS
           </div>
-          <h3 className="leading-1.4 mb-2">WHAT DO WE HAVE?</h3>
+          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-navy">
+            WHAT DO WE HAVE?
+          </div>
         </div>
         <div className="w-full xl:w-[67.42%]">
           <div

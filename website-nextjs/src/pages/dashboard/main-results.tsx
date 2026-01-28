@@ -145,10 +145,7 @@ const LandingPage = () => {
     <>
       <Head>
         <title>Main Results | Open Energy Benchmark</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -167,13 +164,16 @@ const LandingPage = () => {
           <div className="max-w-8xl mx-auto">
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-opacity-50 items-center space-x-1">
+                <div className="flex text-navy text-opacity-70 items-center space-x-1">
                   <div className="flex items-center gap-1">
-                    <Link href={PATH_DASHBOARD.root}>
+                    <Link
+                      href={PATH_DASHBOARD.root}
+                      aria-label="Dashboard home"
+                    >
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Main Results
                     </p>
                   </div>

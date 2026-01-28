@@ -588,18 +588,6 @@ def main(
         )
 
         for solver in solvers:
-            # Restrict highs-hipo variants to 2025 and LPs only
-            if solver in [
-                variant.value for variant in HighsVariant
-            ] and (  # For py3.10 compatibility
-                year != "2025" or benchmark["class"] != "LP"
-            ):
-                print(
-                    f"Solver {solver} is only available for LP benchmarks and year 2025."
-                    f" Current year: {year}, problem class: {benchmark['class']}. Skipping."
-                )
-                continue
-
             # TODO a hack to run only the latest version per solver on Ls
             if (
                 benchmark["size_category"] == "L"
@@ -610,6 +598,18 @@ def main(
             ):
                 print(
                     f"WARNING: skipping {solver} in {year} because this benchmark instance is size L"
+                )
+                continue
+
+            # Restrict highs-hipo variants to 2025 and LPs only
+            if solver in [
+                variant.value for variant in HighsVariant
+            ] and (  # For py3.10 compatibility
+                year != "2025" or benchmark["class"] != "LP"
+            ):
+                print(
+                    f"Solver {solver} is only available for LP benchmarks and year 2025."
+                    f" Current year: {year}, problem class: {benchmark['class']}. Skipping."
                 )
                 continue
 

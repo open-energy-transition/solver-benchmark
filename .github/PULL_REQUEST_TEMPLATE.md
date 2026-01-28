@@ -28,6 +28,7 @@ For Benchmark team:
 - [ ] Run `benchmarks/categorize_benchmarks.py` on them to obtain problem stats and size category
 - [ ] Run `tests/validate_urls.py` to ensure URLs are consistent with benchmark and size instance name
 - [ ] Test that some solver solves these benchmarks within our timeouts on our infra
+- [ ] Add CC BY 4.0 license to the metadata file
 
 **For changes to the website:**
 - [ ] I have tested my changes by running the website locally

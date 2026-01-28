@@ -93,11 +93,11 @@ const Navbar = () => {
         />
       )}
 
-      <div
+      <nav
         className={`fixed z-max md:pt-0 top-0 left-0 h-screen bg-navy rounded-e-xl
         ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
         sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
-        aria-label="Sidenav"
+        aria-label="Main navigation"
       >
         {/* Mobile Menu Button */}
         {isNavExpanded && (
@@ -113,6 +113,7 @@ const Navbar = () => {
           <div className="pt-5 mb-8">
             <Link
               href="/"
+              aria-label="Open Energy Benchmark home"
               className={`-m-1.5 p-1.5 transition-all duration-300 ease-in-out flex flex-col items-center gap-0.5 text-white w-max hover:no-underline mx-auto
                 }`}
             >
@@ -199,12 +200,13 @@ const Navbar = () => {
                         scroll={false}
                         replace
                         href={navData.route}
+                        aria-label={navData.label}
                         className={`
                           flex items-center h-[55px] text-lavender font-normal
                           hover:bg-white hover:bg-opacity-10
                           ${
                             currentRoute === navData.route
-                              ? "bg-white bg-opacity-40"
+                              ? "bg-white bg-opacity-30"
                               : ""
                           }
                           ${
@@ -250,7 +252,7 @@ const Navbar = () => {
             <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />
           </div>
         </div>
-      </div>
+      </nav>
     </>
   );
 };

@@ -10,15 +10,15 @@ const MethodologySection = () => {
   return (
     <div ref={sectionRef}>
       <div className="info-pages-section">
-        <h4 id="methodology" className="info-pages-heading">
+        <div id="methodology" className="h4 info-pages-heading">
           Methodology
-        </h4>
+        </div>
       </div>
 
       <div className="info-pages-section">
-        <h5 id="key-decisions" className="info-pages-heading">
+        <div id="key-decisions" className="h5 info-pages-heading">
           Key Decisions
-        </h5>
+        </div>
         <p>
           Here are the key details of our benchmarking methodology, along with
           the reasoning behind these decisions:

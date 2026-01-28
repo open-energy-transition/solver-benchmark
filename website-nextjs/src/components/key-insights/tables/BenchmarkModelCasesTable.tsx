@@ -55,7 +55,7 @@ const BenchmarkModelCasesTable = () => {
   const columns = useMemo<ColumnDef<IBenchmarkModelCases>[]>(
     () => [
       {
-        header: "",
+        header: "Category",
         accessorKey: "header",
         size: 245,
         enableColumnFilter: false,
