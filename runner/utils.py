@@ -3,11 +3,11 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import yaml
-import matplotlib.colors as mcolors
 from humanize import naturaldelta
 from matplotlib.patches import Patch
 
