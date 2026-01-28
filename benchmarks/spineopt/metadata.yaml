@@ -14,7 +14,7 @@ benchmarks:
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
-      - Name: 12rp-per-year
+      - Name: 30-12rp
         Size: L
         URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu_30-12rd.gz
         Temporal resolution: 36 representative days
