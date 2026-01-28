@@ -184,14 +184,22 @@ const PageBenchmarkDetail = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <div>
-                <h5>Benchmark Set</h5>
-                <p className="mb-6 mt-4 max-w-screen-lg">
-                  On this page you can see a list of all the benchmark problems
-                  on our platform. Click on a benchmark problem name to see all
-                  the details about the problem, including links to download the
-                  problem file, solution files, and logs.
-                </p>
+              <div className="md:flex justify-between items-start gap-4">
+                <div className="flex-1">
+                  <h5>Benchmark Set</h5>
+                  <p className="mb-6 mt-4 max-w-screen-lg">
+                    On this page you can see a list of all the benchmark
+                    problems on our platform. Click on a benchmark problem name
+                    to see all the details about the problem, including links to
+                    download the problem file, solution files, and logs.
+                  </p>
+                </div>
+                <Link
+                  href={PATH_DASHBOARD.featureDistribution}
+                  className="text-white bg-navy px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap mt-1"
+                >
+                  Feature Distribution
+                </Link>
               </div>
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
