@@ -10,9 +10,9 @@ const WhenNotUseSGM = () => {
   return (
     <div ref={sectionRef}>
       {/* Content */}
-      <h4 id="when-not-to-use-sgm" className="info-pages-heading">
+      <div id="when-not-to-use-sgm" className="h4 info-pages-heading">
         When Not to Use SGM
-      </h4>
+      </div>
       <p>
         The SGM runtime might be misleading in the case when one solver solves
         more benchmarks than another but with a runtime of just under the time

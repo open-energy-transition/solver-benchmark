@@ -24,18 +24,18 @@ const PageBenchmarkDetail = () => {
               <AdminHeader>
                 <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
-                    <Link href={PATH_DASHBOARD.root}>
+                    <Link href={PATH_DASHBOARD.root} aria-label="Home">
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
 
                     <Link href={PATH_DASHBOARD.benchmarkSet.list}>
-                      <span className="self-center font-semibold whitespace-nowrap">
+                      <span className="self-center font-semibold whitespace-nowrap text-opacity-70">
                         Benchmark Set
                       </span>
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <span className="self-center font-semibold whitespace-nowrap">
+                    <span className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Feature Distribution
                     </span>
                   </div>

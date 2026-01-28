@@ -19,34 +19,17 @@ const StatsBox = ({ value, label }: StatsBoxProps) => {
         last:border-r-0
         "
     >
-      <h3
+      <div
         className="
-          bg-navy
-          flex
-          font-extrabold
-          items-center
-          mx-auto
-          justify-center
-          rounded-full
-          size-16
-          md:size-[5.5rem]
-          text-white
-          text-3xl
-          md:text-4xl
+          bg-navy flex font-extrabold items-center mx-auto justify-center rounded-full
+          size-16 md:size-[5.5rem]  text-white text-3xl md:text-4xl
         "
       >
         {value}
-      </h3>
-      <h5
-        className="
-          font-extrabold
-          mt-4
-          md:text-2xl/1.4
-          uppercase
-        "
-      >
+      </div>
+      <div className="font-extrabold mt-4 md:text-2xl/1.4 uppercase text-lg sm:text-2xl font-lato sm:leading-1.4 tracking-normal">
         {label}
-      </h5>
+      </div>
     </div>
   );
 };
