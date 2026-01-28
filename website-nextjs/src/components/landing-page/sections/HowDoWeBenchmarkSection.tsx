@@ -31,7 +31,9 @@ const HowDoWeBenchmarkSection = () => {
           >
             Methodology
           </div>
-          <h3 className="leading-1.4 mb-2">HOW DO WE BENCHMARK?</h3>
+          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold">
+            HOW DO WE BENCHMARK?
+          </div>
         </div>
         <div className="w-full xl:w-[67.42%] xl:pr-32">
           <div className="text-medium-normal max-w-4xl mb-2.5 xl:pl-4.5 mt-10">

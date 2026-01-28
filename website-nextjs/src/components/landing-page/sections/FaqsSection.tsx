@@ -29,7 +29,9 @@ const Contribute = () => {
           >
             Questions
           </div>
-          <h3 className="mb-8 leading-1.4">FAQ</h3>
+          <div className="mb-8 leading-1.4 text-2xl sm:text-[40px] font-lato font-extrabold">
+            FAQ
+          </div>
         </div>
         <div>
           <div className="mt-4 flex flex-col gap-6">
