@@ -12,9 +12,9 @@ const RankingSolvers = () => {
   return (
     <div ref={sectionRef}>
       {/* Content */}
-      <h4 id={HASH_NAME} className="info-pages-heading">
+      <div id={HASH_NAME} className="h4 info-pages-heading">
         Ranking Solvers: Shifted Geometric Mean (SGM)
-      </h4>
+      </div>
       <p>
         Ranking the overall performance of solvers on a (sub)set of benchmark
         instances is a difficult problem. We offer the following methods for

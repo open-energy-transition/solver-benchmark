@@ -163,7 +163,7 @@ const SolverEvolutionSection = ({
   return (
     <div className="mt-8 mb-6">
       <div className="mb-6">
-        <h4 className="text-xl font-bold text-gray-800 mb-2">{title}</h4>
+        <div className="h4 text-xl font-bold text-gray-800 mb-2">{title}</div>
         <p className="text-gray-600 max-w-4xl mb-4">{description}</p>
 
         {/* Solver Dropdown */}

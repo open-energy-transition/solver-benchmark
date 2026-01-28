@@ -10,9 +10,9 @@ const Metrics = () => {
 
   return (
     <div ref={sectionRef}>
-      <h4 id={HASH_NAME} className="info-pages-heading">
+      <div id={HASH_NAME} className="h4 info-pages-heading">
         Metrics
-      </h4>
+      </div>
       <p>
         We record the following metrics for each benchmark and solver
         combination:
