@@ -612,3 +612,583 @@ def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
     plot_runtime_slowdowns(
         lp_summary, cls=cls, figsize=(20, 6), max_num_solvers=max_num_solvers
     )
+
+
+def print_sgm_tables_per_bucket(
+    final_with_size,
+    buckets,
+    solvers=("highs", "highs-hipo", "highs-ipm", "gurobi"),
+    shift=1.0,
+):
+    """
+    Print one SGM runtime table per bucket, including solved percentage.
+
+    Columns:
+      - Solver
+      - SGM runtime (min)
+      - # solved
+      - # total
+      - % solved
+    """
+
+    def shifted_geometric_mean(x, shift=1.0):
+        x = np.asarray(x)
+        return np.exp(np.mean(np.log(x + shift))) - shift
+
+    df = final_with_size.copy()
+    df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
+
+    for b in buckets:
+        rows = []
+        dfb = df[b["mask"]]
+        n_total = len(dfb)
+
+        if n_total == 0:
+            continue
+
+        for solver in solvers:
+            solved = dfb[solver].dropna().values
+            n_solved = len(solved)
+            n_to = n_total - n_solved
+
+            runtimes = np.concatenate(
+                [
+                    solved,
+                    np.full(n_to, b["penalty"]),
+                ]
+            )
+
+            sgm_sec = shifted_geometric_mean(runtimes, shift=shift)
+
+            rows.append(
+                {
+                    "Solver": solver,
+                    "SGM runtime (min)": round(sgm_sec / 60, 2),
+                    "# solved": n_solved,
+                    "# total": n_total,
+                    "% solved": round(100 * n_solved / n_total, 1),
+                }
+            )
+
+        table = pd.DataFrame(rows)
+
+        print(f"\n{b['name']}")
+        display(
+            table.style.hide(axis="index").format(
+                {
+                    "SGM runtime (min)": "{:.2f}",
+                    "% solved": "{:.1f}",
+                }
+            )
+        )
+
+
+def plot_speedup_vs_variables(
+    final_with_size,
+    figsize=(12, 4),
+    outpath="speedup_vs_num_variables.png",
+    dpi=300,
+):
+    """
+    Scatter plots of speedup vs number of variables (horizontal layout):
+
+      1) HiPO vs simplex
+      2) HiPO vs IPM
+      3) HiPO vs Gurobi
+
+    Speedup = runtime_reference / runtime_target
+    """
+
+    df = final_with_size.copy()
+    df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
+
+    for c in ["highs", "highs-hipo", "highs-ipm", "gurobi"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+
+    fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
+
+    # HiPO vs simplex
+    ax = axes[0]
+    m = (
+        df["highs"].notna()
+        & df["highs-hipo"].notna()
+        & (df["highs"] > 0)
+        & (df["highs-hipo"] > 0)
+    )
+
+    ax.scatter(
+        df.loc[m, "Num. variables"],
+        df.loc[m, "highs"] / df.loc[m, "highs-hipo"],
+        alpha=0.8,
+    )
+
+    ax.axhline(1.0, linestyle="--", linewidth=1)
+    ax.set_title("HiPO vs simplex", fontsize=14, fontweight="bold")
+
+    # HiPO vs IPM
+    ax = axes[1]
+    m = (
+        df["highs-ipm"].notna()
+        & df["highs-hipo"].notna()
+        & (df["highs-ipm"] > 0)
+        & (df["highs-hipo"] > 0)
+    )
+
+    ax.scatter(
+        df.loc[m, "Num. variables"],
+        df.loc[m, "highs-ipm"] / df.loc[m, "highs-hipo"],
+        alpha=0.8,
+    )
+
+    ax.axhline(1.0, linestyle="--", linewidth=1)
+    ax.set_title("HiPO vs IPM", fontsize=14, fontweight="bold")
+
+    # HiPO vs Gurobi
+    ax = axes[2]
+    m = (
+        df["gurobi"].notna()
+        & df["highs-hipo"].notna()
+        & (df["gurobi"] > 0)
+        & (df["highs-hipo"] > 0)
+    )
+
+    ax.scatter(
+        df.loc[m, "Num. variables"],
+        df.loc[m, "gurobi"] / df.loc[m, "highs-hipo"],
+        alpha=0.8,
+    )
+
+    ax.axhline(1.0, linestyle="--", linewidth=1)
+    ax.set_title("HiPO vs Gurobi", fontsize=14, fontweight="bold")
+
+    # Shared formatting
+    for ax in axes:
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.grid(which="both", linestyle="--", linewidth=0.5)
+        ax.tick_params(axis="both", which="major", labelsize=11)
+        ax.tick_params(axis="both", which="minor", labelsize=9)
+
+    axes[0].set_ylabel("Speedup (-)", fontsize=13)
+    for ax in axes:
+        ax.set_xlabel("Number of variables (-)", fontsize=12)
+
+    plt.tight_layout()
+    plt.savefig(outpath, dpi=dpi, bbox_inches="tight")
+    plt.show()
+
+
+def plot_solver_scaling_by_bucket(
+    final_with_size,
+    solvers=("gurobi", "highs", "highs-hipo", "highs-ipm"),
+    figsize=(10, 15),
+):
+    """
+    Same scatter + log-log fit as the original scaling plot,
+    but split by problem size buckets (vertical layout):
+
+        Small  : Num. variables < 1e4
+        Medium : 1e4 <= Num. variables < 1e6
+        Large  : Num. variables >= 1e6
+    """
+
+    df = final_with_size.copy()
+    df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
+
+    for s in solvers:
+        df[s] = pd.to_numeric(df[s], errors="coerce")
+
+    # Define buckets
+    buckets = {
+        "S benchmarks": df["Num. variables"] < 1e4,
+        "M benchmarks": (df["Num. variables"] >= 1e4) & (df["Num. variables"] < 1e6),
+        "L benchmarks": df["Num. variables"] >= 1e6,
+    }
+
+    fig, axes = plt.subplots(3, 1, figsize=figsize, sharex=False, sharey=True)
+
+    for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items()):
+        dfb = df[mask_bucket]
+
+        for s in solvers:
+            sdf = dfb[dfb[s].notna() & (dfb[s] > 0)]
+            if sdf.empty:
+                continue
+
+            x = sdf["Num. variables"].to_numpy()
+            y = sdf[s].to_numpy()
+
+            # Scatter
+            ax.scatter(x, y, label=s, alpha=0.8)
+
+            # Log-log fit (within bucket)
+            lx = np.log10(x)
+            ly = np.log10(y)
+            mask = np.isfinite(lx) & np.isfinite(ly)
+
+            if mask.sum() < 2:
+                continue
+
+            a, b = np.polyfit(lx[mask], ly[mask], 1)
+
+            lx_fit = np.linspace(lx[mask].min(), lx[mask].max(), 100)
+            y_fit = 10 ** (a * lx_fit + b)
+
+            ax.plot(10**lx_fit, y_fit)
+
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+
+        # Titles
+        ax.set_title(bucket_name, fontsize=18, fontweight="bold")
+
+        ax.set_xlabel("Number of variables (-)", fontsize=18)
+        ax.set_ylabel("Runtime (s)", fontsize=18)
+
+        # Larger tick labels
+        ax.tick_params(axis="both", which="major", labelsize=14)
+        ax.tick_params(axis="both", which="minor", labelsize=12)
+
+        ax.grid(which="both", linestyle="--", linewidth=0.5)
+
+    # Legend only once
+    axes[-1].legend(fontsize=14, loc="best")
+
+    plt.tight_layout()
+    plt.show()
+
+
+def print_sgm_tables_per_bucket(
+    final_with_size,
+    buckets,
+    solvers=("highs", "highs-hipo", "highs-ipm", "gurobi"),
+    shift=1.0,
+):
+    """
+    Print one SGM runtime table per bucket, including solved percentage.
+
+    Columns:
+      - Solver
+      - SGM runtime (min)
+      - # solved
+      - # total
+      - % solved
+    """
+
+    def shifted_geometric_mean(x, shift=1.0):
+        x = np.asarray(x)
+        return np.exp(np.mean(np.log(x + shift))) - shift
+
+    df = final_with_size.copy()
+    df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
+
+    for b in buckets:
+        rows = []
+        dfb = df[b["mask"]]
+        n_total = len(dfb)
+
+        if n_total == 0:
+            continue
+
+        for solver in solvers:
+            solved = dfb[solver].dropna().values
+            n_solved = len(solved)
+            n_to = n_total - n_solved
+
+            runtimes = np.concatenate(
+                [
+                    solved,
+                    np.full(n_to, b["penalty"]),
+                ]
+            )
+
+            sgm_sec = shifted_geometric_mean(runtimes, shift=shift)
+
+            rows.append(
+                {
+                    "Solver": solver,
+                    "SGM runtime (min)": round(sgm_sec / 60, 2),
+                    "# solved": n_solved,
+                    "# total": n_total,
+                    "% solved": round(100 * n_solved / n_total, 1),
+                }
+            )
+
+        table = pd.DataFrame(rows)
+
+        print(f"\n{b['name']}")
+        display(
+            table.style.hide(axis="index").format(
+                {
+                    "SGM runtime (min)": "{:.2f}",
+                    "% solved": "{:.1f}",
+                }
+            )
+        )
+
+
+def plot_speedup_vs_constraints(
+    final_with_size,
+    figsize=(12, 4),
+    outpath="speedup_vs_num_constraints.png",
+    dpi=300,
+):
+    """
+    Scatter plots of speedup vs number of constraints (horizontal layout):
+
+      1) HiPO vs simplex
+      2) HiPO vs IPM
+      3) HiPO vs Gurobi
+
+    Speedup = runtime_reference / runtime_target
+    """
+
+    df = final_with_size.copy()
+    df = df[df["Num. constraints"].notna() & (df["Num. constraints"] > 0)]
+
+    for c in ["highs", "highs-hipo", "highs-ipm", "gurobi"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+
+    fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
+
+    # HiPO vs simplex
+    ax = axes[0]
+    m = (
+        df["highs"].notna()
+        & df["highs-hipo"].notna()
+        & (df["highs"] > 0)
+        & (df["highs-hipo"] > 0)
+    )
+
+    ax.scatter(
+        df.loc[m, "Num. constraints"],
+        df.loc[m, "highs"] / df.loc[m, "highs-hipo"],
+        alpha=0.8,
+    )
+
+    ax.axhline(1.0, linestyle="--", linewidth=1)
+    ax.set_title("HiPO vs simplex", fontsize=14, fontweight="bold")
+
+    # HiPO vs IPM
+    ax = axes[1]
+    m = (
+        df["highs-ipm"].notna()
+        & df["highs-hipo"].notna()
+        & (df["highs-ipm"] > 0)
+        & (df["highs-hipo"] > 0)
+    )
+
+    ax.scatter(
+        df.loc[m, "Num. constraints"],
+        df.loc[m, "highs-ipm"] / df.loc[m, "highs-hipo"],
+        alpha=0.8,
+    )
+
+    ax.axhline(1.0, linestyle="--", linewidth=1)
+    ax.set_title("HiPO vs IPM", fontsize=14, fontweight="bold")
+
+    # HiPO vs Gurobi
+    ax = axes[2]
+    m = (
+        df["gurobi"].notna()
+        & df["highs-hipo"].notna()
+        & (df["gurobi"] > 0)
+        & (df["highs-hipo"] > 0)
+    )
+
+    ax.scatter(
+        df.loc[m, "Num. constraints"],
+        df.loc[m, "gurobi"] / df.loc[m, "highs-hipo"],
+        alpha=0.8,
+    )
+
+    ax.axhline(1.0, linestyle="--", linewidth=1)
+    ax.set_title("HiPO vs Gurobi", fontsize=14, fontweight="bold")
+
+    # Shared formatting
+    for ax in axes:
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.grid(which="both", linestyle="--", linewidth=0.5)
+        ax.tick_params(axis="both", which="major", labelsize=11)
+        ax.tick_params(axis="both", which="minor", labelsize=9)
+
+    axes[0].set_ylabel("Speedup (-)", fontsize=13)
+    for ax in axes:
+        ax.set_xlabel("Number of constraints (-)", fontsize=12)
+
+    plt.tight_layout()
+    plt.savefig(outpath, dpi=dpi, bbox_inches="tight")
+    plt.show()
+
+
+def build_gurobi_hipo_comparison_tables(
+    final_with_size,
+    top_n=5,
+):
+    """
+    Build two tables:
+      1) Largest benchmarks solved by HiPO
+      2) Largest benchmarks solved by Gurobi
+
+    Columns:
+      - Num. variables
+      - Num. constraints
+      - Gurobi time (min)
+      - HiPO time (min)
+      - Gurobi / HiPO speedup
+    """
+
+    df = final_with_size.copy()
+
+    # Keep only rows with valid size info
+    df = df[
+        df["Num. variables"].notna()
+        & (df["Num. variables"] > 0)
+        & df["Num. constraints"].notna()
+        & (df["Num. constraints"] > 0)
+    ]
+
+    # Ensure numeric
+    df["gurobi"] = pd.to_numeric(df["gurobi"], errors="coerce")
+    df["highs-hipo"] = pd.to_numeric(df["highs-hipo"], errors="coerce")
+
+    def _display_table(df_sub, title):
+        table = df_sub[
+            [
+                "Benchmark_clean",
+                "Size",
+                "Num. variables",
+                "Num. constraints",
+                "gurobi",
+                "highs-hipo",
+            ]
+        ].copy()
+
+        table = table.rename(columns={"Benchmark_clean": "Benchmark"})
+        table["Gurobi time (min)"] = table["gurobi"] / 60
+        table["HiPO time (min)"] = table["highs-hipo"] / 60
+        table["Gurobi / HiPO speedup"] = table["gurobi"] / table["highs-hipo"]
+
+        table = table.drop(columns=["gurobi", "highs-hipo"])
+
+        print(f"\n{title}")
+        display(
+            table.sort_values("Num. variables", ascending=False)
+            .style.hide(axis="index")
+            .format(
+                {
+                    "Num. variables": "{:,.0f}",
+                    "Num. constraints": "{:,.0f}",
+                    "Gurobi time (min)": "{:.1f}",
+                    "HiPO time (min)": "{:.1f}",
+                    "Gurobi / HiPO speedup": "{:.1f}",
+                },
+                na_rep="N/A",
+            )
+        )
+
+    # Table 1 — Largest benchmarks solved by HiPO
+    hipo_solved = df[df["highs-hipo"].notna() & (df["highs-hipo"] > 0)]
+    hipo_largest = hipo_solved.sort_values("Num. variables", ascending=False).head(
+        top_n
+    )
+
+    _display_table(
+        hipo_largest,
+        f"Largest {top_n} benchmarks solved by HiPO",
+    )
+
+    # Table 2 — Largest benchmarks solved by Gurobi
+    gurobi_solved = df[df["gurobi"].notna() & (df["gurobi"] > 0)]
+    gurobi_largest = gurobi_solved.sort_values("Num. variables", ascending=False).head(
+        top_n
+    )
+
+    _display_table(
+        gurobi_largest,
+        f"Largest {top_n} benchmarks solved by Gurobi",
+    )
+
+
+def plot_solver_scaling_by_bucket_scatter_only(
+    final_with_size,
+    solvers=("gurobi", "highs", "highs-hipo", "highs-ipm"),
+    figsize=(10, 15),
+):
+    """
+    Scatter-only version of the scaling plot, split by problem size buckets,
+    WITH log-log trend lines (power-law fits).
+
+        Small  : Num. variables < 1e4
+        Medium : 1e4 <= Num. variables < 1e6
+        Large  : Num. variables >= 1e6
+    """
+
+    df = final_with_size.copy()
+    df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
+
+    for s in solvers:
+        df[s] = pd.to_numeric(df[s], errors="coerce")
+
+    # Define buckets
+    buckets = {
+        "Small (<1e4)": df["Num. variables"] < 1e4,
+        "Medium (1e4–1e6)": (df["Num. variables"] >= 1e4)
+        & (df["Num. variables"] < 1e6),
+        "Large (≥1e6)": df["Num. variables"] >= 1e6,
+    }
+
+    fig, axes = plt.subplots(3, 1, figsize=figsize, sharey=True)
+
+    for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items()):
+        dfb = df[mask_bucket]
+
+        for s in solvers:
+            sdf = dfb[dfb[s].notna() & (dfb[s] > 0)]
+            if sdf.empty:
+                continue
+
+            x = sdf["Num. variables"].values
+            y = sdf[s].values
+
+            # Scatter
+            ax.scatter(x, y, label=s, alpha=0.8)
+
+            # -------- Trend line (log-log fit) --------
+            if len(x) >= 2:
+                logx = np.log10(x)
+                logy = np.log10(y)
+
+                coeffs = np.polyfit(logx, logy, 1)
+                slope, intercept = coeffs
+
+                x_fit = np.logspace(logx.min(), logx.max(), 100)
+                y_fit = 10 ** (intercept) * x_fit**slope
+
+                ax.plot(
+                    x_fit,
+                    y_fit,
+                    linestyle="--",
+                    linewidth=2,
+                    alpha=0.8,
+                )
+
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+
+        ax.set_title(bucket_name, fontsize=18, fontweight="bold")
+        ax.set_xlabel("Number of variables (-)", fontsize=18)
+        ax.set_ylabel("Runtime (s)", fontsize=18)
+
+        ax.tick_params(axis="both", which="major", labelsize=14)
+        ax.tick_params(axis="both", which="minor", labelsize=12)
+
+        ax.grid(which="both", linestyle="--", linewidth=0.5)
+
+    axes[-1].legend(fontsize=14, loc="best")
+
+    plt.tight_layout()
+    plt.show()
