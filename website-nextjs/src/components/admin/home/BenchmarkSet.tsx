@@ -75,7 +75,7 @@ const BenchmarkSet = () => {
         </div>
         <div className="grid sm:flex justify-between items-center gap-2">
           <Link
-            className="tag-line-xs w-max text-green-pop border border-green-pop border-opacity-40 bg-white px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
+            className="tag-line-xs w-max text-[#50634e] border border-green-pop bg-white px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer hover:bg-green-pop hover:text-white transition-colors"
             href={PATH_DASHBOARD.benchmarkSet.list}
           >
             Benchmark Set

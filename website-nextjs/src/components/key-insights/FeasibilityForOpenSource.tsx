@@ -12,9 +12,9 @@ const FeasibilityForOpenSource = () => {
 
   return (
     <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
-      <h4 className="info-pages-heading">
+      <div className="h4 info-pages-heading">
         What is feasible for open source solvers?
-      </h4>
+      </div>
       <p>
         Here are the largest LP and MILP problems that open source solvers can
         solve, from each modelling framework in our set. Please note that we did
