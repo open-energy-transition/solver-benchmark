@@ -359,13 +359,147 @@ def compute_summary_results(results_extended, category_suffix=""):
     return pd.DataFrame(summaries)
 
 
+def display_speedups(results, new_pypsa_benchs):
+    speedup_df = results.pivot_table(
+        index="bench-size", columns="Solver", values="Runtime (s)", aggfunc="first"
+    ).reset_index()
+
+    # Also pivot Status column
+    status_df = results.pivot_table(
+        index="bench-size", columns="Solver", values="Status", aggfunc="first"
+    ).reset_index()
+
+    # Calculate speedups relative to ipm-time, but use status if not "ok"
+    speedup_df["ipm-speedup"] = speedup_df.apply(
+        lambda row: status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-ipm"
+        ].values[0]
+        if status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-ipm"
+        ].values[0]
+        != "ok"
+        else row["highs"] / row["highs-ipm"],
+        axis=1,
+    )
+
+    speedup_df["hipo-speedup"] = speedup_df.apply(
+        lambda row: status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-hipo"
+        ].values[0]
+        if status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-hipo"
+        ].values[0]
+        != "ok"
+        else row["highs"] / row["highs-hipo"],
+        axis=1,
+    )
+
+    # Rename columns for clarity
+    speedup_df = speedup_df.rename(
+        columns={
+            "highs": "simplex-time",
+            "highs-ipm": "ipm-time",
+            "highs-hipo": "hipo-time",
+        }
+    )
+
+    # Add num-vars column by looking up in new_pypsa_benchs
+    speedup_df = speedup_df.merge(
+        new_pypsa_benchs[["Num. variables"]],
+        left_on="bench-size",
+        right_index=True,
+        how="left",
+    )
+
+    speedup_df = speedup_df.rename(columns={"Num. variables": "num-vars"})
+
+    missing = speedup_df[speedup_df["num-vars"].isna()]["bench-size"]
+    if not missing.empty:
+        raise ValueError(
+            "Missing Num. variables for:\n" + "\n".join(missing.tolist())
+        )
+
+    # Format the dataframe for pretty printing
+    speedup_df = speedup_df.sort_values("num-vars")
+    display_df = pd.DataFrame(speedup_df["bench-size"])
+    display_df["num-vars"] = speedup_df["num-vars"]
+
+    display_df["simplex-time"] = speedup_df.apply(
+        lambda row: status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs"
+        ].values[0]
+        if status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs"
+        ].values[0] != "ok"
+        else naturaldelta(row["simplex-time"]),
+        axis=1,
+    )
+
+    display_df["ipm-time"] = speedup_df.apply(
+        lambda row: status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-ipm"
+        ].values[0]
+        if status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-ipm"
+        ].values[0] != "ok"
+        else naturaldelta(row["ipm-time"]),
+        axis=1,
+    )
+
+    display_df["hipo-time"] = speedup_df.apply(
+        lambda row: status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-hipo"
+        ].values[0]
+        if status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs-hipo"
+        ].values[0] != "ok"
+        else naturaldelta(row["hipo-time"]),
+        axis=1,
+    )
+
+    display_df["ipm-speedup"] = speedup_df["ipm-speedup"].apply(
+        lambda x: f"{x:.1f}x" if isinstance(x, (int, float)) else x
+    )
+    display_df["hipo-speedup"] = speedup_df["hipo-speedup"].apply(
+        lambda x: f"{x:.1f}x" if isinstance(x, (int, float)) else x
+    )
+
+    display_df = display_df.reset_index(drop=True)
+
+    return (
+        display_df
+        .style
+        .hide(axis="index")
+        .format(
+            {
+                "num-vars": "{:,.0f}".format,
+                "ipm-speedup": "{:>s}".format,
+                "hipo-speedup": "{:>s}".format,
+            }
+        )
+    )
+
+
 def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
     """Plots relative runtimes (slowdown factors) in a bar chart.
 
     Expects df to have columns: Benchmark, Solver, Runtime (s), Status, Timeout
     """
+
+    # --- Solver display names (presentation only) ---
+    solver_label_map = {
+        "highs": "highs-simplex",
+        "highs-ipm": "highs-ipm",
+        "highs-hipo": "highs-hipo",
+        "gurobi": "gurobi",
+        "cbc": "cbc",
+        "scip": "scip",
+        "glpk": "glpk",
+    }
+
     if "bench-size" in df.columns:
         df["Benchmark"] = df["bench-size"]
+
     # Fill NaN runtimes and non-ok statuses with TO value
     df.loc[df["Runtime (s)"].isna(), "Runtime (s)"] = df["Timeout"]
     df.loc[df.query('Status != "ok"').index, "Runtime (s)"] = df["Timeout"]
@@ -389,7 +523,7 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
     max_slowdown = max(df.query('Status == "ok"')["Slowdown"])
     df.loc[df.query('Status != "ok"').index, "Slowdown"] = 1.1 * max_slowdown
 
-    width = 1 / (max_num_solvers + 1)  # the width of the bars
+    width = 1 / (max_num_solvers + 1)
 
     fig, ax = plt.subplots(figsize=figsize, layout="constrained")
     seen_solvers = set()
@@ -403,10 +537,12 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
             "Slowdown", ascending=True
         )
         num_solvers = len(benchmark_data)
-        # Compute x-axis offsets
+
         xs = i + (np.arange(num_solvers) * width) - 0.5 + width
-        # Pick colors based on solvers
+
+        # Track solvers actually used
         seen_solvers.update(benchmark_data["Solver"])
+
         colors = [
             (
                 *mcolors.to_rgba(color_map[r["Solver"]])[:3],
@@ -414,45 +550,46 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
             )
             for _, r in benchmark_data.iterrows()
         ]
+
         ax.bar(xs, benchmark_data["Slowdown"], width, color=colors)
-        # Add text labels on top of bars
-        for i, x in enumerate(xs):
-            y = benchmark_data.iloc[i]["Slowdown"] + 0.5
-            if benchmark_data.iloc[i]["Status"] == "ok":
-                label = f"{benchmark_data.iloc[i]['Slowdown']:.1f}x"
+
+        # Labels on bars
+        for j, x in enumerate(xs):
+            y = benchmark_data.iloc[j]["Slowdown"] + 0.5
+            if benchmark_data.iloc[j]["Status"] == "ok":
+                label = f"{benchmark_data.iloc[j]['Slowdown']:.1f}x"
                 kwargs = {}
             else:
-                # y = 1.1
-                label = benchmark_data.iloc[i]["Status"]
+                label = benchmark_data.iloc[j]["Status"]
                 kwargs = {"color": "red", "weight": "bold"}
-            ax.text(
-                x,
-                y,
-                label,
-                ha="center",
-                **kwargs,
-            )
+
+            ax.text(x, y, label, ha="center", **kwargs)
+
             if "Solved Instances" in df.columns:
-                solved = benchmark_data.iloc[i]["Solved Instances"].split()[0]
+                solved = benchmark_data.iloc[j]["Solved Instances"].split()[0]
                 ax.text(x, y + max_slowdown * 0.03, solved, ha="center", color="grey")
 
-    # Set x-ticks and labels
+    # X ticks
     xlabels = [
         f"{r['Benchmark']}\nFastest solver: {naturaldelta(r['Runtime (s)'])}"
         for _, r in sorted_benchmarks.iterrows()
     ]
     ax.set_xticks(np.arange(len(sorted_benchmarks)), xlabels)
 
-    # Add labels and title
+    # Labels and title
     ax.set_ylabel("Relative Runtime (normalized)")
     ax.set_title("Solver Runtime Comparison" + (f" – {cls}" if cls else ""))
+
+    # Legend with renamed solvers
     ax.legend(
         handles=[
-            Patch(color=c, label=s) for s, c in color_map.items() if s in seen_solvers
+            Patch(color=color_map[s], label=solver_label_map.get(s, s))
+            for s in seen_solvers
         ],
         title="Solver",
         loc="upper left",
     )
+
 
 
 def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
