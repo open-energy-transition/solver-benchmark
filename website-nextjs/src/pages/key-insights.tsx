@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   PageLayout,
   TableOfContents,
@@ -13,8 +14,17 @@ import HowGoodIsSolver from "@/components/key-insights/HowGoodIsSolver";
 import FeasibilityForOpenSource from "@/components/key-insights/FeasibilityForOpenSource";
 import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
+import filterActions from "@/redux/filters/actions";
+import { AppDispatch } from "@/redux/store";
+import { IFilterState } from "@/types/state";
 
 const KeyInsightsPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const savedFiltersRef = useRef<IFilterState | null>(null);
+  const currentFilters = useSelector(
+    (state: { filters: IFilterState }) => state.filters,
+  );
+
   const tocItems = [
     {
       hash: "#how-good-is-each-solver-and-for-what-cases",
@@ -57,6 +67,18 @@ const KeyInsightsPage = () => {
   const visibilities = useSectionsVisibility(tocItems);
   const scrollDirection = useScrollDirection();
   const [currentSection, setCurrentSection] = useState<string | null>(null);
+
+  useEffect(() => {
+    savedFiltersRef.current = currentFilters;
+
+    (dispatch as any)(filterActions.resetFilters());
+
+    return () => {
+      if (savedFiltersRef.current) {
+        dispatch(filterActions.setFilter(savedFiltersRef.current));
+      }
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     for (let i = 0; i < visibilities.length; i++) {

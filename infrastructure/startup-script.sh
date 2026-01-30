@@ -48,9 +48,9 @@ echo "Cloning repository..."
 git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
-echo "Installing Highs..."
+echo "Installing reference Highs..."
 mkdir -p /opt/highs/bin
-curl -L "https://github.com/JuliaBinaryWrappers/HiGHSstatic_jll.jl/releases/download/HiGHSstatic-v1.10.0%2B0/HiGHSstatic.v1.10.0.x86_64-linux-gnu-cxx11.tar.gz" -o HiGHSstatic.tar.gz
+gsutil cp gs://solver-benchmarks/HiGHSstatic.tar.gz ./
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version

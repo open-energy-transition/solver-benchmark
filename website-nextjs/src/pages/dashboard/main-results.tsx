@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 // local
 import ResultsSection from "@/components/admin/ResultsSections";
@@ -17,7 +18,29 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 const LandingPage = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
+  const router = useRouter();
+  const { tab } = router.query;
   const [activeTab, setActiveTab] = useState("short");
+
+  // Set tab from URL on mount or when query changes
+  useEffect(() => {
+    if (typeof tab === "string") {
+      setActiveTab(tab);
+    }
+  }, [tab]);
+
+  // Update URL when tab changes
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab);
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, tab: newTab },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
   const timeout =
     activeTab === "short" ? TIMEOUT_VALUES.SHORT : TIMEOUT_VALUES.LONG;
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
@@ -122,10 +145,7 @@ const LandingPage = () => {
     <>
       <Head>
         <title>Main Results | Open Energy Benchmark</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -144,13 +164,16 @@ const LandingPage = () => {
           <div className="max-w-8xl mx-auto">
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-opacity-50 items-center space-x-1">
+                <div className="flex text-navy text-opacity-70 items-center space-x-1">
                   <div className="flex items-center gap-1">
-                    <Link href={PATH_DASHBOARD.root}>
+                    <Link
+                      href={PATH_DASHBOARD.root}
+                      aria-label="Dashboard home"
+                    >
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Main Results
                     </p>
                   </div>
@@ -170,7 +193,7 @@ const LandingPage = () => {
             </div>
             <div className="flex">
               <div
-                onClick={() => setActiveTab("short")}
+                onClick={() => handleTabChange("short")}
                 className={`w-1/3 tag-line cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
                   activeTab === "short"
                     ? "bg-[#E6ECF5] font-semibold"
@@ -180,7 +203,7 @@ const LandingPage = () => {
                 Short
               </div>
               <div
-                onClick={() => setActiveTab("long")}
+                onClick={() => handleTabChange("long")}
                 className={`w-1/3 tag-line cursor-pointer text-center border border-stroke border-b-0 py-3.5 rounded-se-[32px] rounded-ss-[32px] ${
                   activeTab === "long"
                     ? "bg-[#E6ECF5] font-semibold"

@@ -18,6 +18,9 @@ eggs/
 lib/
 lib64/
 parts/
+
+# Exception: Allow Next.js src/lib directory
+!website-nextjs/src/lib/
 sdist/
 var/
 wheels/
@@ -175,6 +178,7 @@ cython_debug/
 
 # Ignore results downloaded from GCP
 /results/gcp-results/
+/results/partial-results/
 
 # NextJs
 node_modules

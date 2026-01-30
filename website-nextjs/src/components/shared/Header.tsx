@@ -26,6 +26,7 @@ const Header = () => {
         <div className="flex w-max">
           <Link
             href="/"
+            aria-label="Home page"
             className="lg:-m-1.5 lg:p-1.5 item-center lg:items-start flex font-league font-bold text-white text-2xl sm:text-4xl w-max hover:no-underline"
           >
             <div className="w-[35.5px] sm:w-[49.7px] relative lg:w-[60px]">
@@ -85,13 +86,15 @@ const Header = () => {
         <div className="flex lg:hidden">
           <button
             type="button"
+            name="open-menu"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 pt-2 lg:pt-0"
+            aria-label="Open menu"
           >
             <MenuIcon className="text-white h-6 w-6" />
           </button>
         </div>
-        <div className="hidden lg:flex gap-x-6 2xl:gap-x-12 text-white px-6 2xl:px-24 2xl:pr-20">
+        <div className="hidden lg:flex gap-x-6 text-white px-6 2xl:px-24 2xl:pr-20">
           <Link
             href={ROOT_PATH.home}
             className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
@@ -132,11 +135,22 @@ const Header = () => {
           >
             METHODOLOGY
           </Link>
+          <Link
+            href={ROOT_PATH.blog}
+            className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
+              currentRoute === "/blog"
+                ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
+                : ""
+            }`}
+          >
+            BLOG
+          </Link>
         </div>
         <div className="hidden lg:flex w-max items-center">
           <Link
             href="https://github.com/open-energy-transition/solver-benchmark"
             target="_blank"
+            aria-label="GitHub repository"
             className="mr-8"
           >
             <GithubIcon className="size-8 text-white" />
@@ -194,6 +208,7 @@ const Header = () => {
               <button
                 type="button"
                 onClick={() => setIsMenuOpen(false)}
+                name="close-menu"
                 className="-m-2.5 rounded-md p-2.5 text-white"
               >
                 <span className="sr-only">Close menu</span>
@@ -211,6 +226,7 @@ const Header = () => {
                       label: "DETAILED RESULTS",
                     },
                     { href: "/methodology", label: "METHODOLOGY" },
+                    { href: "/blog", label: "BLOG" },
                     {
                       href: "https://openenergytransition.org/",
                       label: "OPEN ENERGY TRANSITION",
@@ -219,7 +235,6 @@ const Header = () => {
                   ].map((link, index) => {
                     const isActive =
                       !link.external && currentRoute === link.href;
-                    console.log(isActive);
                     return (
                       <Link
                         key={index}
@@ -229,7 +244,7 @@ const Header = () => {
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
                         className={`-mx-3 flex item-center gap-2 rounded-lg px-3 py-2 text-base/7 font-semibold text-white
-                          ${isActive ? "bg-white bg-opacity-40" : ""}`}
+                          ${isActive ? "bg-white bg-opacity-30" : ""}`}
                       >
                         {link.label}
                         {link.external && <OutIcon className="mt-2 size-3" />}

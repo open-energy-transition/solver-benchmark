@@ -92,8 +92,12 @@ const ContactForm = () => {
         </div>
       )}
       <div className="relative font-league font-medium text-lg text-dark-grey">
+        <label htmlFor="contact-email" className="sr-only">
+          Email
+        </label>
         <span className="absolute top-1/2 -translate-y-1/2 left-8">Email:</span>
         <input
+          id="contact-email"
           className="rounded-[18px] px-8 pl-[5.5rem] py-5 w-full"
           type="email"
           value={email}
@@ -102,8 +106,12 @@ const ContactForm = () => {
         />
       </div>
       <div className="relative text-dark-grey font-league text-base">
+        <label htmlFor="contact-message" className="sr-only">
+          Message
+        </label>
         <span className="absolute font-semibold top-6 left-8">Message</span>
         <textarea
+          id="contact-message"
           className="rounded-[18px] font-normal leading-[110%] px-8 py-8 pt-10 w-full mt-4"
           rows={3}
           value={message}
@@ -147,12 +155,14 @@ const ContactSection = () => {
             >
               contact
             </div>
-            <h3 className="leading-1.4 text-white">GET IN TOUCH</h3>
-            <h5 className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
+            <div className="leading-1.4 text-white text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal">
+              GET IN TOUCH
+            </div>
+            <div className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
               issue for all feedback and suggestions!
               <br /> Otherwise, you can write to us using this form.
-            </h5>
+            </div>
           </div>
           <div className="w-full md:w-1/2 grid gap-4 pt-12">
             <GoogleReCaptchaProvider
