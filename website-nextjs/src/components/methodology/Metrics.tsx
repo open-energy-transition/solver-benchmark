@@ -74,7 +74,7 @@ const Metrics = () => {
       <p>
         After running benchmarks, we manually check any runs where the above 2
         metrics are above <code>1e-4</code> for errors. In our results so far,
-        no solver had a max integrality violation of above <code>1e-5</code>.
+        no solver had a max integrality violation of above <code>1e-7</code>.
       </p>
     </div>
   );

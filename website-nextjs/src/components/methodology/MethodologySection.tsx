@@ -77,7 +77,7 @@ const MethodologySection = () => {
                   </li>
                   <li className="mb-2">
                     See more details of our error estimation in this notebook
-                    (TODO).
+                    (we should something about this now, no?).
                   </li>
                 </ul>
               </li>
@@ -164,14 +164,14 @@ const MethodologySection = () => {
               </li>
               <li className="mb-2">
                 We do not average over multiple random seeds for now, in order
-                to save time and costs (and be slightly greener!). This is
+                to save time, costs and environmental impact. This is
                 something we may consider in the future if there is interest and
                 budget for it.
               </li>
             </ul>
           </li>
           <li className="mb-2">
-            We run benchmarks on linux only. We do not expect a huge difference
+            We run benchmarks on Linux only. We do not expect a huge difference
             in solver performance on other operating systems, but adding this
             feature could be an interesting direction of future work.
           </li>
