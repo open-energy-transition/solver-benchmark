@@ -81,8 +81,8 @@ const BenchmarkSet = () => {
             Benchmark Set
           </Link>
           <Link
-            className="tag-line-xs w-max text-white bg-green-pop px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
-            href={PATH_DASHBOARD.featureDistribution}
+            className="tag-line-xs w-max text-white bg-navy px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer hover:bg-green-pop transition-colors"
+            href={PATH_DASHBOARD.benchmarkSummary}
           >
             More details
             <ArrowWhiteIcon

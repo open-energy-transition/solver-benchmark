@@ -8,7 +8,6 @@ export const PATH_DASHBOARD = {
     one: `/${BASE_PATH}/benchmark-set/{name}`,
   },
   benchmarkSummary: `/${BASE_PATH}/benchmark-summary`,
-  featureDistribution: `/${BASE_PATH}/benchmark-set/feature-distribution`,
   compareSolvers: `/${BASE_PATH}/compare-solvers`,
   solvers: `/${BASE_PATH}/solvers`,
   performanceHistory: `/${BASE_PATH}/performance-history`,
