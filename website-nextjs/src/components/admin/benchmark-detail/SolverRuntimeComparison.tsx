@@ -177,6 +177,7 @@ const SolverRuntimeComparison = ({
         tooltipFormat={tooltipFormat}
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
+        sortByValue
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
         transformHeightValue={(d) => {

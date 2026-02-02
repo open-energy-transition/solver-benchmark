@@ -13,6 +13,7 @@ import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
 import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
 import { getLatestBenchmarkResult } from "@/utils/results";
 import InfoPopup from "../common/InfoPopup";
+import { getSolverColor } from "@/utils/chart";
 
 type ColumnType = {
   name: string;
@@ -451,6 +452,20 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
 
+  const renderedTableData = (data: any) => {
+    availableSolvers.includes(data);
+    if (availableSolvers.includes(data)) {
+      const color = getSolverColor(data);
+      return `<span class="flex items-center gap-2">
+                <span
+                  class="w-3 h-3 rounded-full"
+                  style="background-color: ${color};"
+                ></span>
+                <span>${data}</span>
+              </span>`;
+    }
+    return data;
+  };
   return (
     <div>
       <div className="pb-3">
@@ -599,8 +614,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                       column.row?.bgStyle ?? ""
                     }`}
                   dangerouslySetInnerHTML={{
-                    __html:
+                    __html: renderedTableData(
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",
+                    ),
                   }}
                 />
               ))}
