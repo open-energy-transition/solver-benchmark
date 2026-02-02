@@ -37,6 +37,7 @@ export interface IAvailableFilterData {
 export interface IResultState extends IAvailableFilterData {
   benchmarkResults: BenchmarkResult[];
   benchmarkLatestResults: BenchmarkResult[];
+  benchmarkHipoResults: BenchmarkResult[];
   fullMetaData: MetaData;
   metaData: MetaData;
   rawBenchmarkResults: BenchmarkResult[];
