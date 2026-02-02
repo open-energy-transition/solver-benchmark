@@ -164,9 +164,9 @@ const MethodologySection = () => {
               </li>
               <li className="mb-2">
                 We do not average over multiple random seeds for now, in order
-                to save time, costs and environmental impact. This is
-                something we may consider in the future if there is interest and
-                budget for it.
+                to save time, costs and environmental impact. This is something
+                we may consider in the future if there is interest and budget
+                for it.
               </li>
             </ul>
           </li>
