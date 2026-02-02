@@ -250,7 +250,7 @@ const RealisticRuntimeComparison = ({
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
         title={`Runtime relative to fastest solver - ${problemClass}${
-          dataSource === "hipo" ? " (HIPO data)" : ""
+          dataSource === "hipo" ? " (including HiPO)" : ""
         }`}
         chartData={chartData}
         categoryKey="key"

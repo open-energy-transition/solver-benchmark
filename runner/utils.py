@@ -415,7 +415,9 @@ def display_speedups(results, new_pypsa_benchs):
 
     missing = speedup_df[speedup_df["num-vars"].isna()]["bench-size"]
     if not missing.empty:
-        raise ValueError("Missing Num. variables for:\n" + "\n".join(missing.tolist()))
+        raise ValueError(
+            "Missing Num. variables for:\n" + "\n".join(missing.tolist())
+        )
 
     # Format the dataframe for pretty printing
     speedup_df = speedup_df.sort_values("num-vars")
@@ -426,10 +428,9 @@ def display_speedups(results, new_pypsa_benchs):
         lambda row: status_df.loc[
             status_df["bench-size"] == row["bench-size"], "highs"
         ].values[0]
-        if status_df.loc[status_df["bench-size"] == row["bench-size"], "highs"].values[
-            0
-        ]
-        != "ok"
+        if status_df.loc[
+            status_df["bench-size"] == row["bench-size"], "highs"
+        ].values[0] != "ok"
         else naturaldelta(row["simplex-time"]),
         axis=1,
     )
@@ -440,8 +441,7 @@ def display_speedups(results, new_pypsa_benchs):
         ].values[0]
         if status_df.loc[
             status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        != "ok"
+        ].values[0] != "ok"
         else naturaldelta(row["ipm-time"]),
         axis=1,
     )
@@ -452,8 +452,7 @@ def display_speedups(results, new_pypsa_benchs):
         ].values[0]
         if status_df.loc[
             status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        != "ok"
+        ].values[0] != "ok"
         else naturaldelta(row["hipo-time"]),
         axis=1,
     )
@@ -467,12 +466,17 @@ def display_speedups(results, new_pypsa_benchs):
 
     display_df = display_df.reset_index(drop=True)
 
-    return display_df.style.hide(axis="index").format(
-        {
-            "num-vars": "{:,.0f}".format,
-            "ipm-speedup": "{:>s}".format,
-            "hipo-speedup": "{:>s}".format,
-        }
+    return (
+        display_df
+        .style
+        .hide(axis="index")
+        .format(
+            {
+                "num-vars": "{:,.0f}".format,
+                "ipm-speedup": "{:>s}".format,
+                "hipo-speedup": "{:>s}".format,
+            }
+        )
     )
 
 
@@ -585,6 +589,7 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
         title="Solver",
         loc="upper left",
     )
+
 
 
 def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
