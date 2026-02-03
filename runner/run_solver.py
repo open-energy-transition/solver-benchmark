@@ -138,7 +138,6 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "knitro":
-                print("solver_name here")
                 return solver_model.KN_get_solve_time_real()
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
@@ -172,9 +171,9 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result
-        )
+        #duality_gap, max_integrality_violation = get_milp_metrics(
+        #    input_file, solver_result
+        #)
 
         results = {
             "runtime": runtime,
@@ -184,8 +183,8 @@ def main(solver_name, input_file, solver_version):
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-            "duality_gap": duality_gap,
-            "max_integrality_violation": max_integrality_violation,
+        #    "duality_gap": duality_gap,
+        #    "max_integrality_violation": max_integrality_violation,
         }
     except Exception:
         print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
