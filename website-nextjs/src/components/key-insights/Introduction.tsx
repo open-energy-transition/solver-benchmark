@@ -1,16 +1,26 @@
 import React from "react";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { useSelector } from "react-redux";
 import Link from "next/link";
+import { IResultState } from "@/types/state";
 
 const Introduction = () => {
+  const availableBenchmarksAndSizes = useSelector(
+    (state: { results: IResultState }) =>
+      state.results.availableBenchmarksAndSizes,
+  );
+  const availableSolvers = useSelector(
+    (state: { results: IResultState }) => state.results.availableSolvers,
+  );
+
   return (
     <>
       <p>
-        This platform contains the results of benchmarking 5 optimization{" "}
-        {/* TODO Jacek: can we compute the number of solvers and benchmarks here like we do on the landing page, instead of hard coding? */}
-        solvers on 120 problems arising from energy system models. For each
-        benchmark run, we measure runtime and memory consumption of the solver,
-        along with{" "}
+        This platform contains the results of benchmarking{" "}
+        {availableSolvers.length} optimization solvers on{" "}
+        {availableBenchmarksAndSizes.length} problems arising from energy system
+        models. For each benchmark run, we measure runtime and memory
+        consumption of the solver, along with{" "}
         <Link className="font-bold" href="/methodology/#metrics">
           other metrics
         </Link>{" "}
