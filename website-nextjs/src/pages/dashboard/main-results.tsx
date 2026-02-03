@@ -185,7 +185,7 @@ const LandingPage = () => {
                 <b>Short</b> tab below contains results of the smaller
                 benchmarks (less than a million variables), run with a 1 hour
                 timeout on a less powerful machine. The <b>Long</b> tab contains
-                larger benchmarks (more than a million variables), run with a 10
+                larger benchmarks (more than a million variables), run with a 24
                 hour timeout on a more powerful machine. Select the desired tab
                 to view a summary of the results on that configuration, along
                 with the technical specifications of the machine used.
