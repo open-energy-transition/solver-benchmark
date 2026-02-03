@@ -77,13 +77,13 @@ const HowGoodIsSolver = () => {
           along with the percentage of benchmarks it could solve in the time
           limit.
         </p>
-        {/* TODO Jacek: please replace the below plot with 2 plots, one for LPs and one for MILPs */}
         <div className="my-4">
           <RealisticRuntimeComparison rotateXAxisLabels />
         </div>
         <div className="my-4">
           <RealisticRuntimeComparison problemClass="MILP" rotateXAxisLabels />
         </div>
+        <p>TODO: add some text introducing HiPO experiment.</p>
         <div className="my-4">
           <RealisticRuntimeComparison
             dataSource="hipo"

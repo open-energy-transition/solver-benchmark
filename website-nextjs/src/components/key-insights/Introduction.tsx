@@ -6,7 +6,7 @@ const Introduction = () => {
   return (
     <>
       <p>
-        This platform contains the results of benchmarking 5 optimization
+        This platform contains the results of benchmarking 5 optimization{" "}
         {/* TODO Jacek: can we compute the number of solvers and benchmarks here like we do on the landing page, instead of hard coding? */}
         solvers on 120 problems arising from energy system models. For each
         benchmark run, we measure runtime and memory consumption of the solver,
