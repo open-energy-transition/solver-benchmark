@@ -83,7 +83,7 @@ const HowGoodIsSolver = () => {
         <div className="my-4">
           <RealisticRuntimeComparison problemClass="MILP" rotateXAxisLabels />
         </div>
-        <p>TODO: add some text introducing HiPO experiment.</p>
+        {/* <p>TODO: add some text introducing HiPO experiment.</p> */}
         <div className="my-4">
           <RealisticRuntimeComparison
             dataSource="hipo"
