@@ -90,8 +90,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion; Operational
-    Sectoral focus: Power, Heat, Transport
-    Sectors: Supply, Power, Heat, Transport
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -114,8 +114,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion; Operational
-    Sectoral focus: Power, Heat, Transport
-    Sectors: Supply, Power, Heat, Transport
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -235,8 +235,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, heat, methane)
-    Sectors: Electric, Heat, Gas
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating, Gas
     Time horizon: Single-stage
     MILP features: Binary investment decisions
     Sizes:
@@ -287,7 +287,7 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, hydrogen, methane, biogas, CO2)
+    Sectoral focus: Sector-coupled
     Sectors: Electric, Gas
     Time horizon: Single-stage
     MILP features: None
@@ -311,7 +311,7 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
     MILP features: None
@@ -319,7 +319,7 @@ benchmarks:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp.gz
-      Temporal resolution: 8760 hourly time slices
+      Temporal resolution: 8760 hours
       Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 19619
@@ -335,7 +335,7 @@ benchmarks:
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
     MILP features: Binary investment decisions; Piecewise efficiency
@@ -343,7 +343,7 @@ benchmarks:
     - Name: 1-168ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp.gz
-      Temporal resolution: 168 hourly time slices
+      Temporal resolution: 168 hours
       Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 3883
@@ -2025,7 +2025,7 @@ benchmarks:
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-diesel-genset-nonconvex-investment-1-240ts.lp.gz
       Temporal resolution: 240 time slices
-      Spatial resolution: Single-node mini-grid
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 4331
       Num. variables: 3374
@@ -2050,7 +2050,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-economic-results-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 52567
       Num. variables: 61326
@@ -2076,7 +2076,7 @@ benchmarks:
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-house-with-nonconvex-investment-1-365ts.lp.gz
       Temporal resolution: 365 time slices
-      Spatial resolution: Single-node heat system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 2541
       Num. variables: 1821
@@ -2102,7 +2102,7 @@ benchmarks:
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-house-without-nonconvex-investment-1-365ts.lp.gz
       Temporal resolution: 365 time slices
-      Spatial resolution: Single-node heat system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 2181
       Num. variables: 2184
@@ -2127,7 +2127,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-invest-optimize-all-technologies-using-mp-and-tsam-1-1920ts.lp.gz
       Temporal resolution: 1920 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 51174
       Num. variables: 18061
@@ -2151,7 +2151,7 @@ benchmarks:
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-offset-diesel-genset-nonconvex-investment-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node mini-grid
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 2153
       Num. variables: 1680
@@ -2176,7 +2176,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-result-object-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 43801
       Num. variables: 70081
@@ -2190,16 +2190,16 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Operational
-    Sectoral focus: Power & Heating
+    Sectoral focus: Power-only
     Sectors: Electric, Heating
-    Time horizon: Single-stage, hourly
+    Time horizon: Single-stage
     MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-simple-dispatch-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node system with electricity and heat coupling
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 96360
       Num. variables: 140160
@@ -2223,7 +2223,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-tuple-as-label-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 43801
       Num. variables: 70081
@@ -2246,7 +2246,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v1-invest-optimize-all-technologies-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 78850
       Num. variables: 78851
@@ -2270,7 +2270,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v2-invest-optimize-only-gas-and-storage-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 61328
       Num. variables: 61327
@@ -2293,7 +2293,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v3-invest-optimize-only-storage-with-fossil-share-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 61329
       Num. variables: 61327
@@ -2317,7 +2317,7 @@ benchmarks:
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v4-invest-optimize-all-technologies-with-fossil-share-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 78851
       Num. variables: 78851
