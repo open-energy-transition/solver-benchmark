@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from humanize import naturaldelta
+from IPython.display import display
 from matplotlib.patches import Patch
 
 # ---------- Monitor in-progress runs ----------
@@ -415,9 +416,7 @@ def display_speedups(results, new_pypsa_benchs):
 
     missing = speedup_df[speedup_df["num-vars"].isna()]["bench-size"]
     if not missing.empty:
-        raise ValueError(
-            "Missing Num. variables for:\n" + "\n".join(missing.tolist())
-        )
+        raise ValueError("Missing Num. variables for:\n" + "\n".join(missing.tolist()))
 
     # Format the dataframe for pretty printing
     speedup_df = speedup_df.sort_values("num-vars")
@@ -428,9 +427,10 @@ def display_speedups(results, new_pypsa_benchs):
         lambda row: status_df.loc[
             status_df["bench-size"] == row["bench-size"], "highs"
         ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs"
-        ].values[0] != "ok"
+        if status_df.loc[status_df["bench-size"] == row["bench-size"], "highs"].values[
+            0
+        ]
+        != "ok"
         else naturaldelta(row["simplex-time"]),
         axis=1,
     )
@@ -441,7 +441,8 @@ def display_speedups(results, new_pypsa_benchs):
         ].values[0]
         if status_df.loc[
             status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0] != "ok"
+        ].values[0]
+        != "ok"
         else naturaldelta(row["ipm-time"]),
         axis=1,
     )
@@ -452,7 +453,8 @@ def display_speedups(results, new_pypsa_benchs):
         ].values[0]
         if status_df.loc[
             status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0] != "ok"
+        ].values[0]
+        != "ok"
         else naturaldelta(row["hipo-time"]),
         axis=1,
     )
@@ -466,17 +468,12 @@ def display_speedups(results, new_pypsa_benchs):
 
     display_df = display_df.reset_index(drop=True)
 
-    return (
-        display_df
-        .style
-        .hide(axis="index")
-        .format(
-            {
-                "num-vars": "{:,.0f}".format,
-                "ipm-speedup": "{:>s}".format,
-                "hipo-speedup": "{:>s}".format,
-            }
-        )
+    return display_df.style.hide(axis="index").format(
+        {
+            "num-vars": "{:,.0f}".format,
+            "ipm-speedup": "{:>s}".format,
+            "hipo-speedup": "{:>s}".format,
+        }
     )
 
 
@@ -589,7 +586,6 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
         title="Solver",
         loc="upper left",
     )
-
 
 
 def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
@@ -857,75 +853,6 @@ def plot_solver_scaling_by_bucket(
 
     plt.tight_layout()
     plt.show()
-
-
-def print_sgm_tables_per_bucket(
-    final_with_size,
-    buckets,
-    solvers=("highs", "highs-hipo", "highs-ipm", "gurobi"),
-    shift=1.0,
-):
-    """
-    Print one SGM runtime table per bucket, including solved percentage.
-
-    Columns:
-      - Solver
-      - SGM runtime (min)
-      - # solved
-      - # total
-      - % solved
-    """
-
-    def shifted_geometric_mean(x, shift=1.0):
-        x = np.asarray(x)
-        return np.exp(np.mean(np.log(x + shift))) - shift
-
-    df = final_with_size.copy()
-    df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
-
-    for b in buckets:
-        rows = []
-        dfb = df[b["mask"]]
-        n_total = len(dfb)
-
-        if n_total == 0:
-            continue
-
-        for solver in solvers:
-            solved = dfb[solver].dropna().values
-            n_solved = len(solved)
-            n_to = n_total - n_solved
-
-            runtimes = np.concatenate(
-                [
-                    solved,
-                    np.full(n_to, b["penalty"]),
-                ]
-            )
-
-            sgm_sec = shifted_geometric_mean(runtimes, shift=shift)
-
-            rows.append(
-                {
-                    "Solver": solver,
-                    "SGM runtime (min)": round(sgm_sec / 60, 2),
-                    "# solved": n_solved,
-                    "# total": n_total,
-                    "% solved": round(100 * n_solved / n_total, 1),
-                }
-            )
-
-        table = pd.DataFrame(rows)
-
-        print(f"\n{b['name']}")
-        display(
-            table.style.hide(axis="index").format(
-                {
-                    "SGM runtime (min)": "{:.2f}",
-                    "% solved": "{:.1f}",
-                }
-            )
-        )
 
 
 def plot_speedup_vs_constraints(
