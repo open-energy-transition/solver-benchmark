@@ -33,7 +33,7 @@ const MethodologySection = () => {
               <li className="mb-2">
                 It allows us to run different benchmarks in{" "}
                 <strong>parallel</strong>, reducing the total runtime (running
-                all benchmarks and solvers as of May 2025 would take 35 days),
+                all benchmarks and solvers as of February 2026 would take 35 days),
                 and allowing us to scale to a large number of benchmarks and
                 solver versions in the future.
               </li>
