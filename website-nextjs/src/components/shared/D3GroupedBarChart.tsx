@@ -241,22 +241,34 @@ const D3GroupedBarChart = ({
           xScale: groupXScale,
         }));
       })
-      .join("text")
-      .attr("x", (d) => d.xScale(d.key)! + d.xScale.bandwidth() / 2)
-      .attr(
-        "class",
-        (d) =>
-          `text-[10px] bar-text ${barTextClassName ? barTextClassName(d) : ""}`,
-      )
-      .attr("y", (d) =>
-        yScale(
+      .join("g")
+      .attr("class", "bar-text")
+      .each(function (d) {
+        const group = d3.select(this);
+        const labelText = axisLabelTitle ? axisLabelTitle(d) : String(d.value);
+        const lines = labelText.split("\n");
+        console.log("lines", lines);
+        const xPos = d.xScale(d.key)! + d.xScale.bandwidth() / 2;
+        const yPos = yScale(
           (transformHeightValue ? transformHeightValue(d) : Number(d.value)) +
             0.05,
-        ),
-      )
-      .attr("text-anchor", "middle")
-      .text((d) => (axisLabelTitle ? axisLabelTitle(d) : d.value))
-      .on("mouseover", (event, d) => {
+        );
+
+        lines.forEach((line, i) => {
+          group
+            .append("text")
+            .attr("x", xPos)
+            .attr("y", yPos - i * 12) // Higher index = higher position
+            .attr("text-anchor", "middle")
+            .attr(
+              "class",
+              `text-[9px] ${barTextClassName ? barTextClassName(d) : ""}`,
+            )
+            .attr("fill", i === 1 ? "#999" : "#000") // Light grey for second line (percentage)
+            .text(line);
+        });
+      })
+      .on("mouseover", function (event, d) {
         tooltip
           .style("opacity", 1)
           .html((tooltipFormat ? tooltipFormat(d) : d.value) as string)

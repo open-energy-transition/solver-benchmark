@@ -81,6 +81,16 @@ const HowGoodIsSolver = () => {
         <div className="my-4">
           <RealisticRuntimeComparison rotateXAxisLabels />
         </div>
+        <div className="my-4">
+          <RealisticRuntimeComparison problemClass="MILP" rotateXAxisLabels />
+        </div>
+        <div className="my-4">
+          <RealisticRuntimeComparison
+            dataSource="hipo"
+            problemClass="LP"
+            rotateXAxisLabels
+          />
+        </div>
         <p>
           The next plot shows the concrete performance of each solver on a few
           representative realistic problems from a few modelling frameworks in

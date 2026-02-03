@@ -29,7 +29,9 @@ const colorMap: Record<string, string> = {
   glpk: "#7C3AED", // purple
   gurobi: "#F66C49", // red
   highs: "#43BF94", // green
-  scip: "#3B82F6", // blue
+  scip: "#3B82F6", // blue,
+  "highs-hipo": "#ff48c2", // rose
+  "highs-ipm": "#6a721d", // olive
 };
 
 export function getChartColor(index: number): string {
