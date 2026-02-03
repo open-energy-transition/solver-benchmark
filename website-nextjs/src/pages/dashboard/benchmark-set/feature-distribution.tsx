@@ -19,6 +19,7 @@ const PageBenchmarkDetail = () => {
       <div className="bg-light-blue">
         <Navbar />
         <ContentWrapper
+          showFilter={false}
           header={
             <div>
               <AdminHeader>

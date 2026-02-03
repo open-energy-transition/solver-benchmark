@@ -31,6 +31,7 @@ const D3GroupedBarChart = ({
   xAxisLabelWrapLength = undefined,
   splitter = "-",
   extraCategoryLengthMargin = undefined,
+  sortByValue = false,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -98,9 +99,12 @@ const D3GroupedBarChart = ({
     const keys = Object.keys(data[0])
       .filter((key) => key !== categoryKey)
       .sort((a, b) => {
-        const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
-        const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
-        return avgA - avgB;
+        if (sortByValue) {
+          const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
+          const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
+          return avgA - avgB;
+        }
+        return a.localeCompare(b);
       });
 
     // Scales for side-by-side bars
@@ -414,10 +418,19 @@ const D3GroupedBarChart = ({
     <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
       {Object.keys(chartData[0] || {})
         .filter((key) => key !== categoryKey)
+        .sort((a, b) => {
+          if (sortByValue) {
+            // Sort by average values from smallest to biggest
+            const avgA = d3.mean(chartData, (d) => Number(d[a])) || 0;
+            const avgB = d3.mean(chartData, (d) => Number(d[b])) || 0;
+            return avgA - avgB;
+          }
+          return a.localeCompare(b);
+        })
         .map((solverKey) => (
           <div
             key={solverKey}
-            className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+            className="text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
           >
             <CircleIcon
               style={{

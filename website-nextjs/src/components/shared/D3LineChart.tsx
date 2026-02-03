@@ -241,7 +241,7 @@ const D3ChartLineChart = ({
           {Object.keys(solverColors).map((solverKey) => (
             <div
               key={solverKey}
-              className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+              className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
             >
               <CircleIcon
                 style={{ color: solverColors[solverKey] }}
