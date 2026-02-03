@@ -23,7 +23,7 @@ const FactorsAffectingPerformanceInsights = () => {
         runtime of the fastest (open source) solver on a problem with a given
         number of variables, and a red X denotes that no (open source) solver
         could solve the problem within the timeout (1 hr for small and medium
-        problems, and 10 hrs for large problems). The plot gives an indication
+        problems, and 24 hrs for large problems). The plot gives an indication
         of the order of magnitude at which solvers start to hit the timeout.
       </p>
       <PerformanceScalling />

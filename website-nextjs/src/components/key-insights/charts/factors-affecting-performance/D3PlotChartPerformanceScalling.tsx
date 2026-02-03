@@ -62,6 +62,7 @@ const D3PlotChartPerformanceScaling = ({
     // Add timeout lines
     const timeouts = [
       { value: 60 * 60, label: "1 hr timeout" },
+      // TODO Jacek: does this need to be updated to 24h?
       { value: 10 * 60 * 60, label: "10 hr timeout" },
     ];
 
