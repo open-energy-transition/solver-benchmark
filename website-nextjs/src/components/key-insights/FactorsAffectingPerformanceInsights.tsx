@@ -36,7 +36,10 @@ const FactorsAffectingPerformanceInsights = () => {
       </p>
       <h5>Effect of increasing spatial resolutions on PyPSA models</h5>
       <p>
-	While only HiGHS among open solvers is able to solve the smallest instance (10-1h), at a higher number of nodes Gurobi highlights the expected nonlinear growth in computational effort as model size and complexity expand.
+        While only HiGHS among open solvers is able to solve the smallest
+        instance (10-1h), at a higher number of nodes Gurobi highlights the
+        expected nonlinear growth in computational effort as model size and
+        complexity expand.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
@@ -48,7 +51,12 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of increasing temporal resolutions on PyPSA models</h5>
       <p>
-	Again, only HiGHS among open solvers can solve the smallest instance (50-168h). On the other hand, as temporal resolution increases (from 168h to 24h and below), Gurobi runtime escalates dramatically: while the weekly aggregation solves in seconds, the daily resolution already requires nearly an hour, and finer resolutions hit the time limit (1 hour).
+        Again, only HiGHS among open solvers can solve the smallest instance
+        (50-168h). On the other hand, as temporal resolution increases (from
+        168h to 24h and below), Gurobi runtime escalates dramatically: while the
+        weekly aggregation solves in seconds, the daily resolution already
+        requires nearly an hour, and finer resolutions hit the time limit (1
+        hour).
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
@@ -61,7 +69,18 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of unit commitment (UC) on GenX models</h5>
       <p>
-	`genx-10_IEEE_9_bus_DC_OPF-9-1h` is an MILP problem that adds UC as an extra model constraint to the power sector model `genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h` (LP problem). Adding unit commitment (UC) transforms the LP DC-OPF into an MILP and fundamentally changes solver performance. In the LP case, runtimes are in the order of seconds with HiGHS (which also outperforms Gurobi in this case), while the MILP formulation introduces a dramatic increase in computational effort. In this benchmark, Gurobi is the fastest solver for the UC case (28 seconds), whereas the fastest open-source solver (SCIP) requires around 40 minutes, illustrating the substantial performance gap that can emerge once integer variables are introduced. All solvers are run with default settings except for a fixed relative MIP gap tolerance.
+        `genx-10_IEEE_9_bus_DC_OPF-9-1h` is an MILP problem that adds UC as an
+        extra model constraint to the power sector model
+        `genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h` (LP problem). Adding unit
+        commitment (UC) transforms the LP DC-OPF into an MILP and fundamentally
+        changes solver performance. In the LP case, runtimes are in the order of
+        seconds with HiGHS (which also outperforms Gurobi in this case), while
+        the MILP formulation introduces a dramatic increase in computational
+        effort. In this benchmark, Gurobi is the fastest solver for the UC case
+        (28 seconds), whereas the fastest open-source solver (SCIP) requires
+        around 40 minutes, illustrating the substantial performance gap that can
+        emerge once integer variables are introduced. All solvers are run with
+        default settings except for a fixed relative MIP gap tolerance.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
@@ -74,7 +93,13 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of unit commitment (UC) on PyPSA models</h5>
       <p>
-	`pypsa-power+ely-ucgas-1-1h` is an MILP problem that adds UC as an extra model constraint to the power-only model `pypsa-power+ely-1-1h` (LP problem). The LP version solves in a few seconds with both Gurobi and Highs, while the MILP version requires significantly more time. Gurobi maintain relatively strong performance in the UC case, whereas open-source solvers exhibit a more pronounced slowdown. All solvers are run with default settings except for a fixed relative MIP gap tolerance.
+        `pypsa-power+ely-ucgas-1-1h` is an MILP problem that adds UC as an extra
+        model constraint to the power-only model `pypsa-power+ely-1-1h` (LP
+        problem). The LP version solves in a few seconds with both Gurobi and
+        Highs, while the MILP version requires significantly more time. Gurobi
+        maintain relatively strong performance in the UC case, whereas
+        open-source solvers exhibit a more pronounced slowdown. All solvers are
+        run with default settings except for a fixed relative MIP gap tolerance.
       </p>
       {/* Chart  */}
       <RuntimeOfFastestSolver
@@ -85,7 +110,15 @@ const FactorsAffectingPerformanceInsights = () => {
         Effect of transmission expansion and CO2 constraints on GenX models
       </h5>
       <p>
-	Under open-source solvers, all three GenX variants hit the time limit, failing in providing any indication about the effect of transmission expansion optimization and CO2 constraints. When including Gurobi, the models become solvable within reasonable time, but runtimes vary significantly: adding both transmission expansion and CO2 constraints leads to the longest solve time (2h 45min), while models with only one of the features solve faster (around 1h 30min). This highlights how stacking structural constraints can materially increase computational complexity, even when the formulation remains linear.
+        Under open-source solvers, all three GenX variants hit the time limit,
+        failing in providing any indication about the effect of transmission
+        expansion optimization and CO2 constraints. When including Gurobi, the
+        models become solvable within reasonable time, but runtimes vary
+        significantly: adding both transmission expansion and CO2 constraints
+        leads to the longest solve time (2h 45min), while models with only one
+        of the features solve faster (around 1h 30min). This highlights how
+        stacking structural constraints can materially increase computational
+        complexity, even when the formulation remains linear.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
@@ -96,7 +129,16 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of increasingly stringent CO2 constraints on TEMOA models</h5>
       <p>
-	Increasing the stringency of CO2 constraints affects solver performance differently across solver families. Under open-source solvers, runtime increases substantially when moving from the base case to constrained scenarios, with the NDC case being particularly challenging. When including all solvers, the models solve in a few minutes and runtimes increase only moderately as constraints become more stringent. Notably, the NDC case exhibits atypical behavior for HiGHS (unsolved under the open-only view), despite being less stringent than the net-zero case, indicating solver-specific sensitivity to model structure rather than constraint stringency alone.
+        Increasing the stringency of CO2 constraints affects solver performance
+        differently across solver families. Under open-source solvers, runtime
+        increases substantially when moving from the base case to constrained
+        scenarios, with the NDC case being particularly challenging. When
+        including all solvers, the models solve in a few minutes and runtimes
+        increase only moderately as constraints become more stringent. Notably,
+        the NDC case exhibits atypical behavior for HiGHS (unsolved under the
+        open-only view), despite being less stringent than the net-zero case,
+        indicating solver-specific sensitivity to model structure rather than
+        constraint stringency alone.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
