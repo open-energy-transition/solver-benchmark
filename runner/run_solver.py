@@ -41,30 +41,6 @@ def get_solver(solver_name):
     return solver_class(**seed_options.get(solver_name, {}))
 
 
-def is_mip_problem(solver_model, solver_name):
-    """
-    Determines if a given solver model is a Mixed Integer Programming (MIP) problem.
-    """
-    if solver_name == "scip":
-        if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
-            return True
-        return False
-    elif solver_name == "gurobi":
-        return solver_model.IsMIP
-    elif solver_name == "highs":
-        info = solver_model.getInfo()
-        return info.mip_node_count >= 0
-    elif solver_name in {"glpk", "cbc"}:
-        # These solvers do not provide a solver model in the solver result,
-        # so MIP problem detection is not possible.
-        # TODO preprocess benchmarks and add this info to metadata
-        return False
-    elif solver_name == "knitro":
-        return solver_model # TODO check how to detect MIP in Knitro
-    else:
-        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
-
-
 def calculate_integrality_violation(
     integer_vars: pd.Series, primal_values: pd.Series
 ) -> float:
@@ -94,7 +70,8 @@ def get_duality_gap(solver_model, solver_name: str):
         # GLPK does not have a way to retrieve the duality gap from python
         return None
     elif solver_name == "knitro":
-        pass #TODO check how to get duality gap in Knitro
+        # Knitro duality gap retrieval not implemented yet
+        return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
@@ -139,8 +116,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "knitro":
-                val, rc = knitro.KN_get_solve_time_real(solver_model)
-                return float(val) if rc == 0 else None
+                return solver_model
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None
@@ -173,9 +149,9 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        #duality_gap, max_integrality_violation = get_milp_metrics(
-        #    input_file, solver_result
-        #)
+        duality_gap, max_integrality_violation = get_milp_metrics(
+            input_file, solver_result
+        )
 
         results = {
             "runtime": runtime,
@@ -185,8 +161,8 @@ def main(solver_name, input_file, solver_version):
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-        #    "duality_gap": duality_gap,
-        #    "max_integrality_violation": max_integrality_violation,
+            "duality_gap": duality_gap,
+            "max_integrality_violation": max_integrality_violation,
         }
     except Exception:
         print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
