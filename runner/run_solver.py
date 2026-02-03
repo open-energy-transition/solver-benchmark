@@ -138,6 +138,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "knitro":
+                print("solver_name here")
                 return solver_model.KN_get_solve_time_real()
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
