@@ -34,22 +34,24 @@ const FactorsAffectingPerformanceInsights = () => {
         you the details of the model scenario, including application type,
         constraints, LP/MILP, etc.
       </p>
-      <h5>
-        Effect of increasing spatial and temporal resolutions on PyPSA models
-      </h5>
-      <p>
-        This is a series of different size instances of a PyPSA-Eur
-        sector-coupled model, where the spatial and temporal resolution are
-        varied to create increasingly larger LP problems. One can see the
-        runtime of solvers increasing as either resolution is made more fine
-        grained.
-      </p>
+      <h5>Effect of increasing spatial resolutions on PyPSA models</h5>
+      <p></p>
       <RuntimeOfFastestSolver
         benchmarkList={[
-          "pypsa-eur-sec-2-24h",
-          "pypsa-eur-sec-6-24h",
-          "pypsa-eur-sec-5-12h",
-          "pypsa-eur-sec-2-3h",
+          "pypsa-de-elec-10-1h",
+          "pypsa-de-elec-20-1h",
+          "pypsa-de-elec-50-1h",
+        ]}
+        extraCategoryLengthMargin={5}
+      />
+      <h5>Effect of increasing temporal resolutions on PyPSA models</h5>
+      <p></p>
+      <RuntimeOfFastestSolver
+        benchmarkList={[
+          "pypsa-eur-elec-50-168h",
+          "pypsa-eur-elec-50-24h",
+          "pypsa-eur-elec-50-12h",
+          "pypsa-eur-elec 50-3h",
         ]}
         extraCategoryLengthMargin={5}
       />
@@ -67,8 +69,8 @@ const FactorsAffectingPerformanceInsights = () => {
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
-          "genx-10_IEEE_9_bus_DC_OPF-9-1h",
           "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
+          "genx-10_IEEE_9_bus_DC_OPF-9-1h",
         ]}
         xAxisLabelRotation={-40}
         xAxisLabelWrapLength={6}
@@ -89,41 +91,20 @@ const FactorsAffectingPerformanceInsights = () => {
       </p>
       {/* Chart  */}
       <RuntimeOfFastestSolver
-        benchmarkList={[
-          "pypsa-eur-elec-op-2-1h",
-          "pypsa-eur-elec-op-ucconv-2-3h",
-        ]}
+        benchmarkList={["pypsa-power+ely-1-1h", "pypsa-power+ely-ucgas-1-1h"]}
         xAxisLabelWrapLength={18}
       />
       <h5>
-        Effect of UC, transmission expansion, and CO2 constraints on GenX models
+        Effect of transmission expansion and CO2 constraints on GenX models
       </h5>
-      <p>
-        The set of GenX benchmarks below compares solver performance on 1) a
-        case with optimal transmission expansion, 2) a case with both optimal
-        transmission expansion and a CO2 constraint, 3) a case with transmission
-        expansion and UC, and 4) a case with CO2 emission constraints. All the
-        benchmarks except for genx-elec_trex_uc-15-24h share the same spatial
-        and temporal resolution, except for genx-elec-trex_uc-15-24h (the
-        corresponding 168h instance fails due to memory issues).{" "}
-      </p>
+      <p></p>
       <RuntimeOfFastestSolver
         benchmarkList={[
           "genx-elec_trex-15-168h",
           "genx-elec_trex_co2-15-168h",
-          "genx-elec_trex_uc-15-24h",
           "genx-elec_co2-15-168h",
         ]}
       />
-      <p>
-        Stacking transmission expansion optimality and CO2 constraint leads to
-        almost 2X the solution time of the cases taking into account one of the
-        two features at a time. As in the PyPSA-Eur case above, the effect of UC
-        on Gurobi solution time looks negligible with respect to the different
-        time resolution, though for a better comparison a case with UC and the
-        same time resolution as for the other benchmarks listed here would be
-        needed.
-      </p>
       <h5>Effect of increasingly stringent CO2 constraints on TEMOA models</h5>
       <p>
         In this set of TEMOA models, the 1st case has no CO2 constraints, the
@@ -137,28 +118,12 @@ const FactorsAffectingPerformanceInsights = () => {
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
-          "temoa-US_9R_TS-9-12",
-          "temoa-US_9R_TS_NDC-9-12",
-          "temoa-US_9R_TS_NZ-9-12",
+          "temoa-US_9R_TS-9-12ts",
+          "temoa-US_9R_TS_NDC-9-12ts",
+          "temoa-US_9R_TS_SP-9-12ts",
+          "temoa-US_9R_TS_NZ-9-12ts",
         ]}
         xAxisLabelWrapLength={18}
-      />
-      <h5>Effect of time horizons on TIMES models</h5>
-      <p>
-        The comparison on two eTIMES-EU benchmarks highlights how the addition
-        of multi-stage analysis (in this case 8 optimization periods) in perfect
-        foresight has a large impact on runtime in Gurobi. Though one could
-        expect an increase in runtime comparable to the increase in solution
-        stages, proprietary solvers take approximately 180x more time on the
-        multi-stage problem.
-      </p>
-      <RuntimeOfFastestSolver
-        benchmarkList={[
-          "times-etimeseu-europe-elec+heat-co2-single_stage-29-64ts",
-          "times-etimeseu-europe-elec+heat-co2-multi_stage-29-64ts",
-        ]}
-        xAxisLabelRotation={-45}
-        xAxisLabelWrapLength={5}
       />
     </div>
   );

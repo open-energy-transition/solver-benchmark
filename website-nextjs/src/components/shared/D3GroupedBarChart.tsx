@@ -251,7 +251,6 @@ const D3GroupedBarChart = ({
         const group = d3.select(this);
         const labelText = axisLabelTitle ? axisLabelTitle(d) : String(d.value);
         const lines = labelText.split("\n");
-        console.log("lines", lines);
         const xPos = d.xScale(d.key)! + d.xScale.bandwidth() / 2;
         const yPos = yScale(
           (transformHeightValue ? transformHeightValue(d) : Number(d.value)) +
