@@ -1,4 +1,30 @@
 benchmarks:
+  ethos_fine_europe_60tp:
+    Short description: Energy system model for Europe (EU27+UK+NO+CH) with focus on
+      hydrogen infrastructure. The model uses time series aggregation by tsam with
+      60 typical days with 12 segments.
+    Modelling framework: ETHOS.FINE
+    Model name: ethos.fine.europe
+    Version:
+    Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion; Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric
+    Time horizon: Single-stage (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 175-720ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ethos_fine_europe_60tp-175-720ts.mps.gz
+      Temporal resolution: 720 time slices
+      Spatial resolution: 175 nodes
+      Realistic: false
+      Realistic motivation:
+      Num. constraints: 9230938
+      Num. variables: 8141182
+      Skip because: TO (needs special solver options)
   ethos-fine-multi-regional-7tp:
     Short description: Multi-regional energy system optimization model with 8 nodes
       modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent
@@ -1460,6 +1486,31 @@ benchmarks:
       Num. variables: 38784
       Num. continuous variables: 31008
       Num. integer variables: 7776
+  Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
+    Short description: Uses the PTDF factor matrix to compute the fraction of power
+      transferred in the network across the branches
+    Modelling framework: Sienna
+    Model name: Sienna
+    Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single stage (12 hours)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 73-1h
+      Size: S
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-584e340fc9e79c75e07daa790d8b956d159a81187e25c077b3d5666039d25e75.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
+      Realistic: false
+      Num. constraints: 10368
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power
       transferred in the network across the branches
@@ -4573,6 +4624,91 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
+  JRC-EU-TIMES:
+    Short description: Model of the EU (and neighboring countries) representing all
+      energy sectors, that analyzes the long-term role of energy technologies and
+      innovation for climate goals, and optimizes investment and operational decisions
+      to meet energy service demands under different assumptions and constraints.
+    Modelling framework: TIMES
+    Model name: JRC-EU TIMES
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage (8 stages)
+    MILP features: None
+    Sizes:
+    - Name: 30-12ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-30-12ts.mps.gz
+      Temporal resolution: 12 time slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU policy relevant analyses
+      Num. constraints: 13462042
+      Num. variables: 18926550
+      Skip because: OOM?
+  JRC-EU-TIMES-dispatch:
+    Short description: Model of the EU (and neighboring countries) representing all
+      energy sectors and including final energy supply (T&D Infrastructure, pipeline
+      etc.).
+    Modelling framework: TIMES
+    Model name: JRC-EU-TIMES
+    Version:
+    Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion; Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 30-2016ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-dispatch-30-2016ts.mps.gz
+      Temporal resolution: 2016 times slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU-policy relevant analyses
+      Num. constraints: 19401352
+      Num. variables: 23208969
+      Skip because: OOM?
+  TIMES-STEM:
+    Short description: Model of the Swiss energy system, including dispatch analysis
+      features (i.e. ramping rates, minimum online/offline times, minimum stable operating
+      level, part load efficiency losses, startup/shutdown costs) and ancillary services
+      (endogenous demand for primary and secondary, positive and negative reserve,
+      adjusted minimum online and offline times for reserve provision, adjusted ramping
+      constraints, capacity margin constraints for reserve provision, maximum contribution
+      of power plant in reserve provision, reserve provision from storages and demand
+      units, other bounds on reserve provision, storage degradation due to cycling)
+    Modelling framework: TIMES
+    Model name: Swiss TIMES Energy Model
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion; Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 15-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-STEM-15-1h.mps.gz
+      Temporal resolution: 1h
+      Spatial resolution: 15 nodes
+      Realistic: true
+      Realistic motivation: Typical TIMES model instances including multi-stage and
+        multi-regional analysis with hourly resolution and operational constraints
+      Num. constraints: 6973257
+      Num. variables: 6670811
+      Skip because: OOM?
   zen-garden-eur-PI:
     Short description: Model of the European transition pathway for the electricity
       and heating sectors of 28 European countries from 2022 to 2050. Performs time
@@ -4611,3 +4747,136 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 4845191
       Num. variables: 3105360
+    - Name: 28-50ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-50ts.mps.gz
+      Temporal resolution: 50 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 10723991
+      Num. variables: 8396160
+      Skip because: TO
+    - Name: 28-30ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-30ts.mps.gz
+      Temporal resolution: 30 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 7722431
+      Num. variables: 5719680
+      Skip because: TO
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 16737731
+      Num. variables: 14342280
+      Skip because: TO
+    - Name: 28-200ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-200ts.mps.gz
+      Temporal resolution: 200 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 28039451
+      Num. variables: 25871640
+      Skip because: TO
+  zen-garden-eur-PI-annual-emission-limit:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and instantaneous technology expansion.
+      Annual emissions targets are set for each year resulting in the same carbon
+      emissions as the carbon emission budget.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-annual-emission-limit
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-annual-emission-limit-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 16737720
+      Num. variables: 14342280
+      Skip because: TO
+  zen-garden-eur-PI-constrained-expansion:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and constrained technology expansion.
+      A cumulative carbon budget is set for the carbon emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-constrained-expansion
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-constrained-expansion-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 16738346
+      Num. variables: 14342280
+      Skip because: TO
+  zen-garden-eur-PI-no-storage:
+    Short description: Model of the European transition pathway for the electricity
+      and heating sectors of 28 European countries from 2022 to 2050. Performs time
+      series aggregation under perfect foresight and instantaneous technology expansion
+      without storage technologies. A cumulative carbon budget is set for the carbon
+      emissions.
+    Modelling framework: ZEN-garden
+    Model name: ZEN-garden-PI-no-storage
+    Version:
+    Contributor(s)/Source: "Jacob Mannhardt, Reliability and Risk Engineering, Institute\
+      \ of Energy and Process Engineering, ETH Z\xFCrich"
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating
+    Time horizon: Multi-stage (15 stages)
+    MILP features: None
+    Sizes:
+    - Name: 28-100ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-no-storage-28-100ts.mps.gz
+      Temporal resolution: 100 time slices
+      Spatial resolution: 28 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 10429331
+      Num. variables: 10673160
+      Skip because: OOM
