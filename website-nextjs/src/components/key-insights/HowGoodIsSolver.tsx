@@ -83,7 +83,12 @@ const HowGoodIsSolver = () => {
         <div className="my-4">
           <RealisticRuntimeComparison problemClass="MILP" rotateXAxisLabels />
         </div>
-        {/* <p>TODO: add some text introducing HiPO experiment.</p> */}
+        <p>
+          In this iteration, we also benchmarked the new HiPO algorithm of the
+          HiGHS solver. The plot below shows how this compares to the solvers
+          with default options, and shows how HiPO in particular significantly
+          reduces the gap to Gurobi over the large benchmark instances.
+        </p>
         <div className="my-4">
           <RealisticRuntimeComparison
             dataSource="hipo"
@@ -108,7 +113,6 @@ const HowGoodIsSolver = () => {
             extraCategoryLengthMargin={5}
           />
         </div>
-        {/* TODO update this text after updating the above plot with new representative problems */}
         <p>
           {" "}
           4 out of the 7 problems can be solved by at least one open source
