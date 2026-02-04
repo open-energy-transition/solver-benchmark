@@ -72,7 +72,7 @@ def get_solver(solver_name):
             "randomCbcSeed": 1,  # 0 indicates time of day
             "ratioGap": mip_gap,
         },
-        "knitro": { # TODO check seed option for knitro
+        "knitro": {  # TODO check seed option for knitro
             "KN_PARAM_MS_SEED": 1066,
         },
     }
