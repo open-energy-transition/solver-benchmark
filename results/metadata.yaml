@@ -2652,7 +2652,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Dynamic fuel pricing
+    MILP features: None
     Sizes:
     - Name: 50-1h
       Size: L
@@ -3675,7 +3675,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Dynamic fuel pricing
+    MILP features: None
     Sizes:
     - Name: 10-1h
       Size: L
