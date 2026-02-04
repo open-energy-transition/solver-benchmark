@@ -48,7 +48,7 @@ const BenchmarkModelInsightsTable = () => {
         accessorKey: "application",
         enableColumnFilter: false,
         enableSorting: true,
-        size: 100,
+        size: 230,
         cell: (info) => (
           <InfoPopup
             trigger={() => (
@@ -64,13 +64,6 @@ const BenchmarkModelInsightsTable = () => {
         ),
       },
       {
-        header: "Time Horizon",
-        accessorKey: "timeHorizon",
-        enableColumnFilter: false,
-        enableSorting: true,
-        size: 120,
-      },
-      {
         header: "MILP Features",
         accessorKey: "milpFeatures",
         enableColumnFilter: false,
@@ -82,7 +75,12 @@ const BenchmarkModelInsightsTable = () => {
         accessorKey: "realistic",
         enableColumnFilter: false,
         enableSorting: false,
-        size: 80,
+        size: 120,
+        cell: (info) => (
+          <div className="text-left">
+            {String(info.getValue()) === "Realistic" ? "Yes" : "No"}
+          </div>
+        ),
       },
       {
         header: "Example",
@@ -121,7 +119,6 @@ const BenchmarkModelInsightsTable = () => {
       framework: "GenX",
       problemClass: "LP",
       application: "Infrastructure & Capacity Expansion",
-      timeHorizon: "Single Period",
       milpFeatures: "None",
       realistic: "Realistic",
       example: ["genx-elec_trex, genx-elec_trex_co2", "genx-elec_co2"],
@@ -130,7 +127,6 @@ const BenchmarkModelInsightsTable = () => {
       framework: "GenX",
       problemClass: "MILP",
       application: "Infrastructure & Capacity Expansion",
-      timeHorizon: "Single Period",
       milpFeatures: "Unit commitment",
       realistic: "Realistic",
       example: ["genx-elec_trex_uc"],
@@ -139,16 +135,19 @@ const BenchmarkModelInsightsTable = () => {
       framework: "PyPSA",
       problemClass: "LP",
       application: "Infrastructure & Capacity Expansion",
-      timeHorizon: "Single Period",
       milpFeatures: "None",
       realistic: "Realistic",
-      example: ["pypsa-eur-sec", "pypsa-eur-elec-trex"],
+      example: [
+        "pypsa-eur-elec",
+        "pypsa-eur-elec-trex_vopt",
+        "pypsa-eur-elec-trex_copt",
+        "pypsa-eur-sec",
+      ],
     },
     {
       framework: "TEMOA",
       problemClass: "LP",
       application: "Infrastructure & Capacity Expansion",
-      timeHorizon: "Multi Period",
       milpFeatures: "None",
       realistic: "Realistic",
       example: [
@@ -156,14 +155,12 @@ const BenchmarkModelInsightsTable = () => {
         "temoa-US_9R_TS_NDC",
         "temoa-US_9R_TS_NZ",
         "temoa-US_9R_TS_SP",
-        "temoa-US_9R_TS_NZ_trunc_4periods",
       ],
     },
     {
       framework: "TIMES",
       problemClass: "LP",
       application: "Infrastructure & Capacity Expansion",
-      timeHorizon: "Multi Period",
       milpFeatures: "None",
       realistic: "Realistic",
       example: [
@@ -171,6 +168,14 @@ const BenchmarkModelInsightsTable = () => {
         "TIMES-GEO-global-netzero",
         "times-nz-kea",
       ],
+    },
+    {
+      framework: "Switch",
+      problemClass: "LP",
+      application: "Infrastructure & Capacity Expansion",
+      milpFeatures: "None",
+      realistic: "Realistic",
+      example: ["SWITCH-China-open-model", "SWITCH-USA-PG"],
     },
   ];
 

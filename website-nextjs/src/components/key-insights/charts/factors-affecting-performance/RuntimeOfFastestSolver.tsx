@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useId } from "react";
 
 import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
@@ -28,6 +28,7 @@ const RuntimeOfFastestSolver = ({
   extraCategoryLengthMargin = undefined,
 }: IRuntimeOfFastestSolver) => {
   const [allSolvers, setallSolvers] = useState(false);
+  const radioGroupId = useId();
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.rawBenchmarkResults;
@@ -190,7 +191,7 @@ const RuntimeOfFastestSolver = ({
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
-            name="solver-filter-runtime"
+            name={`solver-filter-runtime-${radioGroupId}`}
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
@@ -199,7 +200,7 @@ const RuntimeOfFastestSolver = ({
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
-            name="solver-filter-runtime"
+            name={`solver-filter-runtime-${radioGroupId}`}
             checked={allSolvers}
             onChange={() => setallSolvers(true)}
           />
