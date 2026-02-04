@@ -431,30 +431,30 @@ benchmarks:
       Num. variables: 38784
       Num. continuous variables: 31008
       Num. integer variables: 7776
-#  Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
-#    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
-#    Modelling framework: Sienna
-#    Model name: Sienna
-#    Version:
-#    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
-#    License: Model code licensed MIT, benchmark instances not licensed yet
-#    Problem class: MILP
-#    Application: Infrastructure
-#    Sectoral focus: Power-only
-#    Sectors: Electric
-#    Time horizon: Single stage (12 hours)
-#    MILP features: Unit commitment
-#    Sizes:
-#    - Name: 73-1h
-#      Size: S
-#      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-584e340fc9e79c75e07daa790d8b956d159a81187e25c077b3d5666039d25e75.mps.gz
-#      Temporal resolution: 12 hours
-#      Spatial resolution: 73 nodes
-#      Realistic: false
-#      Num. constraints: 10368
-#      Num. variables: 8820
-#      Num. continuous variables: 6876
-#      Num. integer variables: 1944
+  Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
+    Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
+    Modelling framework: Sienna
+    Model name: Sienna
+    Version:
+    Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
+    License: Model code licensed MIT, benchmark instances not licensed yet
+    Problem class: MILP
+    Application: Infrastructure
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single stage (12 hours)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 73-1h
+      Size: S
+      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29-584e340fc9e79c75e07daa790d8b956d159a81187e25c077b3d5666039d25e75.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 73 nodes
+      Realistic: false
+      Num. constraints: 10368
+      Num. variables: 8820
+      Num. continuous variables: 6876
+      Num. integer variables: 1944
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
