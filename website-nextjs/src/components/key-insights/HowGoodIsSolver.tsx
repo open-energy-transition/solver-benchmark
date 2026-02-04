@@ -16,9 +16,9 @@ const HowGoodIsSolver = () => {
   return (
     <>
       <div id={HASH} className="scroll-mt-[9rem]" ref={sectionRef}>
-        <h4 className="info-pages-heading">
+        <div className="text-xl sm:text-[32px] font-lato font-bold sm:leading-1.3 tracking-normal text-navy info-pages-heading">
           How good is each solver, and for what cases?
-        </h4>
+        </div>
         <p>
           The overall summary of our results is shown in the plot below, which
           shows the runtime of each solver, relative to the fastest solver, on

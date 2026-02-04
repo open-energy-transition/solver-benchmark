@@ -65,7 +65,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
             (result: BenchmarkResult) => result.solver,
           ),
         ),
-      );
+      ).sort((a, b) => (a as string).localeCompare(b as string));
       const solversData = availableSolvers.map((solver) => {
         const versions = Array.from(
           new Set(

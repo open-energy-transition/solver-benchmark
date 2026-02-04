@@ -42,3 +42,6 @@ next-env.d.ts
 
 #results
 public/results
+
+# accessibility testing (generated files)
+scripts/urls.txt

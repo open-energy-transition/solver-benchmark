@@ -139,7 +139,7 @@ const BenchmarkSummaryTable = () => {
   return (
     <div className="bg-[#F4F6FA] p-4 px-0 rounded-xl mb-6 space-y-8 w-full">
       <div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0}>
           <table className="min-w-full  -gray-200">
             <thead>
               <tr className="bg-[#F4F6FA]">

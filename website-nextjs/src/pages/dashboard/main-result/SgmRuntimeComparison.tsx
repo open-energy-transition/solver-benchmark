@@ -75,6 +75,7 @@ const SgmRuntimeComparison = ({
         colors={(d) => {
           return getSolverColor(d.key);
         }}
+        sortByValue
         xAxisLabel=""
         yAxisLabel="Relative average runtime (normalized)"
         chartHeight={400}
