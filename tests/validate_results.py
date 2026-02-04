@@ -25,7 +25,7 @@ for n, b in meta["benchmarks"].items():
 data["bench-size"] = data["Benchmark"] + "-" + data["Size"]
 data["solver-version"] = data["Solver"] + "-" + data["Solver Version"]
 
-# Check that every bench-size instance has the same set of solvers run on it
+# Check that every bench-size instance has metadata and the same set of solvers run on it
 seen_benchs = set()
 for (bench, size), group in data.groupby(["Benchmark", "Size"]):
     bench_size = bench + "-" + size
@@ -68,7 +68,6 @@ print(f"Solvers run on long TO benchmarks:\n{long_TO_solvers}")
 
 # Check that no bench-size from metadata is missing
 missing_benchs = (short_TO_benchs | long_TO_benchs) - seen_benchs
-
 if missing_benchs:
     print(
         "::warning file=tests/validate_results.py::ERROR: couldn't find these benchs in the results:"
