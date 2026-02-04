@@ -55,7 +55,6 @@ function App({ Component, pageProps }: AppProps) {
       const hipoResultsRes = await getBenchmarkResults(
         "/results/benchmark_results_hipo.csv",
       );
-      console.log("hipoResultsRes", hipoResultsRes);
       const fullmetaData = await getMetaData();
       const metaData = await getMetaData();
 
