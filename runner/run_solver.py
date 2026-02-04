@@ -33,8 +33,7 @@ def get_solver(solver_name):
             "ratioGap": mip_gap,
         },
         "knitro": { # TODO check seed option for knitro
-            "randomCbcSeed": 1,  # 0 indicates time of day
-            "ratioGap": mip_gap,
+            "KN_PARAM_MS_SEED": 1066,
         },
     }
 
