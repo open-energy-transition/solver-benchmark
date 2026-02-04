@@ -5,7 +5,6 @@ from time import perf_counter
 from traceback import format_exc
 
 import pandas as pd
-import knitro
 from linopy import solvers
 from linopy.solvers import SolverName
 
