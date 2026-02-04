@@ -3355,7 +3355,7 @@ benchmarks:
       Num. variables: 459030
     - Name: 20-12h
       Size: L
-      URL: https://storage.goo# gleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-20-12h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-20-12h.mps.gz
       Temporal resolution: 12 hours
       Spatial resolution: 20 nodes
       Realistic: false
