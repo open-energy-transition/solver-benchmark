@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { SolverStatusType } from "@/types/benchmark";
 import { applyTooltipStyles, getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 type ChartData = {
   runtime: number;
@@ -61,9 +62,14 @@ const D3PlotChartPerformanceScaling = ({
 
     // Add timeout lines
     const timeouts = [
-      { value: 60 * 60, label: "1 hr timeout" },
-      // TODO Jacek: does this need to be updated to 24h?
-      { value: 10 * 60 * 60, label: "10 hr timeout" },
+      {
+        value: TIMEOUT_VALUES.SHORT,
+        label: humanizeSeconds(TIMEOUT_VALUES.SHORT) + " timeout",
+      },
+      {
+        value: TIMEOUT_VALUES.LONG,
+        label: humanizeSeconds(TIMEOUT_VALUES.LONG) + " timeout",
+      },
     ];
 
     timeouts.forEach(({ value, label }) => {
