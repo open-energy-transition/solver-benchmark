@@ -9,9 +9,9 @@ const HardwareConfigurations = () => {
   return (
     <div ref={sectionRef}>
       {/* Content */}
-      <h4 id={HASH_NAME} className="info-pages-heading">
+      <div id={HASH_NAME} className="h4 info-pages-heading">
         Hardware Configurations
-      </h4>
+      </div>
       <p>
         We run benchmarks on the following machine configurations and timeouts:
       </p>

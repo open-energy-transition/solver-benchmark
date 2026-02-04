@@ -161,7 +161,7 @@ const SolverPerformanceHistory = () => {
 
   return (
     <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
-      <h4>How are solvers evolving over time?</h4>
+      <div className="h4">How are solvers evolving over time?</div>
       <p>
         This plot shows the average runtime of each year’s final-released solver
         version, relative to that year’s fastest solver, over all S and M size

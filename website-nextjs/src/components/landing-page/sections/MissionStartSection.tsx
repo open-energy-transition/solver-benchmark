@@ -14,12 +14,14 @@ const MissionStart = () => {
             <div className="tag-line-lg uppercase font-league mb-4">
               Mission
             </div>
-            <h3 className="mb-8 text-stroke">WHO IS IT FOR?</h3>
+            <div className="mb-8 text-stroke text-2xl sm:text-[40px] font-lato font-extrabold sm:leading-1.2 ">
+              WHO IS IT FOR?
+            </div>
           </div>
-          <h5 className="text-stroke leading-1.4 tag-line-lg my-2 mb-14 w-full sm:w-2/3">
+          <div className="text-stroke leading-1.4 tag-line-lg my-2 mb-14 w-full sm:w-2/3 font-lato">
             This website is geared towards providing data and insights to all
             participants in the green energy transition.
-          </h5>
+          </div>
         </div>
         <div className="grid gap-8 lg:flex justify-between text-stroke">
           <MissionCard

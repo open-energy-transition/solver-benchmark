@@ -26,7 +26,9 @@ const MissionCard = ({
       <div className="h-[49px]">
         <Icon />
       </div>
-      <h5 className="my-4 uppercase text-stroke">{title}</h5>
+      <div className="my-4 uppercase text-stroke text-lg sm:text-2xl font-lato font-bold sm:leading-1.4">
+        {title}
+      </div>
       <div className="flex-1">
         <div className="tag-line-lg leading-1.5">{description}</div>
       </div>
