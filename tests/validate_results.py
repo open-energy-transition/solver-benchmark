@@ -31,7 +31,9 @@ for (bench, size), group in data.groupby(["Benchmark", "Size"]):
     bench_size = bench + "-" + size
     solvers_present = set(sorted(group["solver-version"].unique()))
     if bench_size in short_TO_benchs:
-        assert len(solvers_present) == 13
+        assert len(solvers_present) == 15, (
+            f"expected {15}, found {len(solvers_present)} solvers in results"
+        )
         if short_TO_solvers is None:
             short_TO_solvers = str(solvers_present)
         else:
