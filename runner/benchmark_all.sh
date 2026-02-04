@@ -75,7 +75,7 @@ for year in "${years[@]}"; do
         solver_args="--solvers ${solvers_override}"
         echo "Using solver override: ${solvers_override}"
     else
-        solver_args="--solvers highs scip cbc gurobi glpk"
+        solver_args="--solvers gurobi highs-hipo highs-ipm highs scip cbc glpk"
     fi
 
     # Overwrite results for the first year, append thereafter
