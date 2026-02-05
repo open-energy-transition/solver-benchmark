@@ -1,5 +1,4 @@
 import collections.abc
-import glob
 import json
 import os
 import subprocess
@@ -13,97 +12,6 @@ from traceback import format_exc
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
-
-
-# Configure CPLEX environment BEFORE importing linopy or cplex
-def configure_cplex_environment():
-    """
-    Autoconfigure environment variables for CPLEX if found on macOS or Linux.
-    This helps the 'cplex' pip package find the academic license.
-    """
-    # Look for CPLEX Studio installations.
-    # macOS: /Applications/CPLEX_Studio*
-    # Linux: /opt/ibm/ILOG/CPLEX_Studio* (default), sometimes /usr/local/CPLEX_Studio*
-    search_patterns = [
-        "/Applications/CPLEX_Studio*",
-        "/opt/ibm/ILOG/CPLEX_Studio*",
-        "/usr/local/CPLEX_Studio*",
-        "/usr/local/ibm/ILOG/CPLEX_Studio*",
-    ]
-
-    cplex_dirs = []
-    for pattern in search_patterns:
-        cplex_dirs.extend(glob.glob(pattern))
-
-    if not cplex_dirs:
-        return
-
-    # Use the first one found (or sort if needed, e.g. latest version)
-    cplex_root = sorted(cplex_dirs)[-1]  # Take latest lexicographically
-
-    # Try to extract version from folder name for CPLEX_STUDIO_DIR<VER>
-    try:
-        ver_suffix = cplex_root.split("Studio")[-1]  # e.g. "2211"
-
-        # The pip package version might differ slightly (e.g. 22.1.2 vs 22.1.1).
-        # We set variables for the found version AND potential patch versions.
-        # e.g. if found 2211, we also set 2210, 2212 which might be what pip expects.
-        if ver_suffix.isdigit():
-            base_ver = int(ver_suffix)
-            possible_versions = [
-                str(base_ver + i) for i in range(-2, 4)
-            ]  # +/- 2 versions
-
-            for ver in possible_versions:
-                env_var = f"CPLEX_STUDIO_DIR{ver}"
-                if env_var not in os.environ:
-                    os.environ[env_var] = cplex_root
-    except Exception:
-        pass
-
-    # Add bin directory to PATH and set CPLEX_CPXCHECKLIC_BINDIR
-    bin_dir = os.path.join(cplex_root, "cplex", "bin")
-    if os.path.isdir(bin_dir):
-        # Find architecture subfolder
-        # On macOS: arm64_osx, x86-64_osx
-        # On Linux: x86-64_linux
-        subdirs = [
-            d for d in os.listdir(bin_dir) if os.path.isdir(os.path.join(bin_dir, d))
-        ]
-        if subdirs:
-            target_bin = os.path.join(bin_dir, subdirs[0])
-
-            # 1. Update PATH
-            current_path = os.environ.get("PATH", "")
-            if target_bin not in current_path:
-                os.environ["PATH"] = f"{current_path}:{target_bin}"
-                print(f"INFO: Added {target_bin} to PATH", file=sys.stderr)
-
-            # 2. Set CPLEX_CPXCHECKLIC_BINDIR which is explicitly checked by cplex package
-            if "CPLEX_CPXCHECKLIC_BINDIR" not in os.environ:
-                os.environ["CPLEX_CPXCHECKLIC_BINDIR"] = target_bin
-                print(
-                    f"INFO: Set CPLEX_CPXCHECKLIC_BINDIR={target_bin}", file=sys.stderr
-                )
-
-    # Force use of local mock cpxchecklic if available (bypass for missing binary)
-    runner_dir = os.path.dirname(os.path.abspath(__file__))
-    mock_checklic = os.path.join(runner_dir, "cpxchecklic")
-
-    # Auto-create mock script if it doesn't exist AND we haven't found a valid bin dir setting yet
-    # actually, create it always just in case the real one is missing from the detected bin dir
-    if not os.path.exists(mock_checklic):
-        try:
-            with open(mock_checklic, "w") as f:
-                f.write("#!/bin/sh\nexit 0\n")
-            os.chmod(mock_checklic, 0o755)
-            print(f"INFO: Created mock cpxchecklic at {mock_checklic}", file=sys.stderr)
-        except Exception as e:
-            print(f"WARNING: Failed to create mock cpxchecklic: {e}", file=sys.stderr)
-
-    if os.path.exists(mock_checklic):
-        os.environ["CPLEX_CPXCHECKLIC_BINDIR"] = runner_dir
-        print(f"INFO: Using mock cpxchecklic in {runner_dir}", file=sys.stderr)
 
 
 class HighsVariant(str, Enum):
@@ -487,9 +395,9 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result
-        )
+        # duality_gap, max_integrality_violation = get_milp_metrics(
+        #    input_file, solver_result
+        # )
 
         results = {
             "runtime": runtime,
@@ -499,8 +407,8 @@ def main(solver_name, input_file, solver_version):
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-            "duality_gap": duality_gap,
-            "max_integrality_violation": max_integrality_violation,
+            # "duality_gap": duality_gap,
+            # "max_integrality_violation": max_integrality_violation,
         }
     except Exception:
         print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
@@ -524,6 +432,4 @@ if __name__ == "__main__":
     solver_name = sys.argv[1]
     input_file = sys.argv[2]
     solver_version = sys.argv[3]
-    if solver_name == "cplex":
-        configure_cplex_environment()
     main(solver_name, input_file, solver_version)
