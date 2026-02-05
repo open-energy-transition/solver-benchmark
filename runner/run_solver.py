@@ -179,14 +179,6 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "cplex":
-                # CPLEX does not provide the runtime. It provides a function model.get_time() that returns a timestamp.
-                # The timestamp could be used to compute the runtime if we had the start time, as
-                # model = cplex.Cplex()
-                # # ... model setup ...
-                #
-                # start_time = model.get_time()
-                # model.solve()
-                # end_time = model.get_time()
                 return None
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
@@ -395,9 +387,9 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        # duality_gap, max_integrality_violation = get_milp_metrics(
-        #    input_file, solver_result
-        # )
+        duality_gap, max_integrality_violation = get_milp_metrics(
+            input_file, solver_result
+        )
 
         results = {
             "runtime": runtime,
@@ -407,8 +399,8 @@ def main(solver_name, input_file, solver_version):
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-            # "duality_gap": duality_gap,
-            # "max_integrality_violation": max_integrality_violation,
+            "duality_gap": duality_gap,
+            "max_integrality_violation": max_integrality_violation,
         }
     except Exception:
         print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
