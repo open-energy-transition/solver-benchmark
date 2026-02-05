@@ -14,6 +14,7 @@ const NormalizedSGMRuntime = ({ chartData }: INormalizedSGMRuntime) => {
         SGM Runtime (Relative to Best Ever Measured)
       </div>
       <D3SGMChart
+        excluseHipo
         title="Performance Ratio"
         chartData={chartData}
         xAxisTooltipFormat={(value) =>

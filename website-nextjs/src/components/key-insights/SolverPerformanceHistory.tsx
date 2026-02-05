@@ -14,6 +14,7 @@ import {
   generateChartData,
   getNumSolvedBenchMark,
 } from "@/utils/performanceHistory";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const HASH = "how-are-solvers-evolving-over-time";
 
@@ -24,14 +25,17 @@ const SolverPerformanceHistory = () => {
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkResults;
+      return state.results.benchmarkResults.filter(
+        (result) => !HIPO_SOLVERS.includes(result.solver),
+      );
     },
   );
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
+    return state.results.availableSolvers.filter(
+      (solver) => !HIPO_SOLVERS.includes(solver),
+    );
   });
-
   const selectedFilters = useSelector(
     (state: { filters: IFilterState }) => state.filters,
   );

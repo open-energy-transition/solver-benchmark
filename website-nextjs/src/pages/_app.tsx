@@ -52,9 +52,6 @@ function App({ Component, pageProps }: AppProps) {
     const initializeData = async () => {
       const resultsRes = await getBenchmarkResults();
 
-      const hipoResultsRes = await getBenchmarkResults(
-        "/results/benchmark_results_hipo.csv",
-      );
       const fullmetaData = await getMetaData();
       const metaData = await getMetaData();
 
@@ -77,15 +74,6 @@ function App({ Component, pageProps }: AppProps) {
         }
       });
       const results = resultsRes.filter((result) => {
-        return (
-          metaDataBenmarkKeys.includes(result.benchmark) &&
-          metaData.benchmarks[result.benchmark].sizes.some(
-            (size) => size.name === result.size,
-          )
-        );
-      });
-
-      const hipoResults = hipoResultsRes.filter((result) => {
         return (
           metaDataBenmarkKeys.includes(result.benchmark) &&
           metaData.benchmarks[result.benchmark].sizes.some(
@@ -157,11 +145,6 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(
         resultActions.setBenchmarkLatestResults(
           getLatestBenchmarkResult(results as BenchmarkResult[]),
-        ),
-      );
-      dispatch(
-        resultActions.setBenchmarkHipoResults(
-          getLatestBenchmarkResult(hipoResultsRes as BenchmarkResult[]),
         ),
       );
 
