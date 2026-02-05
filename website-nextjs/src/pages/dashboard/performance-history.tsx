@@ -16,7 +16,6 @@ import SolverEvolutionSection from "@/components/admin/performance-history/Solve
 import {
   buildSolverYearlyMetrics,
   generateChartData,
-  processCombinedYearMetrics,
   getNumSolvedBenchMark,
 } from "@/utils/performanceHistory";
 import Head from "next/head";
@@ -142,8 +141,7 @@ const PagePerformanceHistory = () => {
       solvers,
     );
 
-    // Process for combined 2024/2025 data
-    return processCombinedYearMetrics(initialMetrics);
+    return initialMetrics;
   }, [benchmarkResults, years, solvers]);
 
   const chartData = useMemo(() => {

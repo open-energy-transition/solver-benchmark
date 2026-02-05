@@ -10,8 +10,8 @@ interface INormalizedSGMRuntime {
 const NormalizedSGMRuntime = ({ chartData }: INormalizedSGMRuntime) => {
   return (
     <div>
-      <div className="tag-line font-bold mb-2 text-navy">
-        SGM Runtime (Relative to Best per Year)
+      <div className="tag-line font-bold mb-2">
+        SGM Runtime (Relative to Best Ever Measured)
       </div>
       <D3SGMChart
         title="Performance Ratio"

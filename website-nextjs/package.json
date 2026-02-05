@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "move-results": "mkdir -p public/results && cp ../results/benchmark_results.csv public/results/ && cp ../results/metadata.yaml public/results/",
+    "move-results": "mkdir -p public/results && cp ../results/benchmark_results.csv public/results/ && cp ../results/benchmark_results_hipo.csv public/results/ && cp ../results/metadata.yaml public/results/",
     "build": "npm run move-results && next build",
     "start": "next start",
     "lint": "next lint",
