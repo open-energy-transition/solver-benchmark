@@ -9,6 +9,7 @@ import { calculateSgm } from "@/utils/calculations";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { getHighestVersion } from "@/utils/versions";
 import { BenchmarkResult } from "@/types/benchmark";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const PROBLEM_SIZE_FILTERS = [
   {
@@ -70,16 +71,18 @@ const RealisticRuntimeComparison = ({
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       if (dataSource === "hipo") {
-        return state.results.benchmarkHipoResults;
+        return state.results.benchmarkLatestResults;
       }
-      return state.results.benchmarkLatestResults;
+      return state.results.benchmarkLatestResults.filter(
+        (result) => !HIPO_SOLVERS.includes(result.solver),
+      );
     },
   ).filter((result) => {
     return metaData[result.benchmark]?.problemClass === problemClass;
   });
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return [...state.results.availableSolvers, "highs-hipo", "highs-ipm"];
+    return [...state.results.availableSolvers, ...HIPO_SOLVERS];
   });
 
   const findData = useCallback(

@@ -3,6 +3,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { IResultState } from "@/types/state";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const Introduction = () => {
   const availableBenchmarksAndSizes = useSelector(
@@ -17,7 +18,7 @@ const Introduction = () => {
     <>
       <p>
         This platform contains the results of benchmarking{" "}
-        {availableSolvers.length} optimization solvers on{" "}
+        {availableSolvers.length - HIPO_SOLVERS.length} optimization solvers on{" "}
         {availableBenchmarksAndSizes.length} problems arising from energy system
         models. For each benchmark run, we measure runtime and memory
         consumption of the solver, along with{" "}

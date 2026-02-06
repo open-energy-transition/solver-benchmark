@@ -54,7 +54,6 @@ export function TanStackTable<T>({
     initialColumnVisibility,
   );
   const [showColumnSelector, setShowColumnSelector] = useState(false);
-
   // Generate a unique ID for this table instance
   const tableId = useId();
   const tableLabel = title || `Data table ${tableId}`;
@@ -183,7 +182,7 @@ export function TanStackTable<T>({
             <div
               ref={tableContainerRef}
               style={{
-                height: "525px",
+                height: data?.length > 12 ? "525px" : "auto",
                 overflow: "auto",
                 position: "relative",
               }}

@@ -14,6 +14,7 @@ import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeCompar
 import { getLatestBenchmarkResult } from "@/utils/results";
 import InfoPopup from "../common/InfoPopup";
 import { getSolverColor } from "@/utils/chart";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 type ColumnType = {
   name: string;
@@ -54,8 +55,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  ).filter((result) => result.timeout === timeout);
-
+  ).filter(
+    (result) =>
+      !HIPO_SOLVERS.includes(result.solver) && result.timeout === timeout,
+  );
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
