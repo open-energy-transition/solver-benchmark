@@ -14,6 +14,7 @@ const NormalizedSGMMemoryUsage = ({ chartData }: INormalizedSGMMemoryUsage) => {
       </div>
       <D3SGMChart
         chartData={chartData}
+        excluseHipo
         title="Performance Ratio"
         xAxisTooltipFormat={(value) =>
           `<strong>Original SGM Memory Usage:</strong> ${roundNumber(
