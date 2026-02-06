@@ -3,6 +3,7 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,7 +12,6 @@ import yaml
 from humanize import naturaldelta
 from IPython.display import display
 from matplotlib.patches import Patch
-import matplotlib as mpl
 
 # ---------- Monitor in-progress runs ----------
 
@@ -480,12 +480,10 @@ def display_speedups(results, new_pypsa_benchs):
             "hipo-speedup": "HiPO vs Simplex speedup",
         }
     )
-    
+
     return display_df.style.hide(axis="index").format(
         {
-            "num-vars": "{:,.0f}".format,
-            "ipm-speedup": "{:>s}".format,
-            "hipo-speedup": "{:>s}".format,
+            "Num. variables": "{:,.0f}".format,
         }
     )
 
@@ -606,17 +604,18 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
 
 
 def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
-
-    mpl.rcParams.update({
-        "font.size": 22,
-        "axes.titlesize": 22,
-        "axes.labelsize": 22,
-        "xtick.labelsize": 22,
-        "ytick.labelsize": 22,
-        "legend.fontsize": 22,
-        "legend.title_fontsize": 22,
-        "figure.constrained_layout.use": True,
-    })
+    mpl.rcParams.update(
+        {
+            "font.size": 22,
+            "axes.titlesize": 22,
+            "axes.labelsize": 22,
+            "xtick.labelsize": 22,
+            "ytick.labelsize": 22,
+            "legend.fontsize": 22,
+            "legend.title_fontsize": 22,
+            "figure.constrained_layout.use": True,
+        }
+    )
 
     lp_summary = summary_df.query(f'Class == "{cls}"').copy()
 
@@ -718,7 +717,6 @@ def print_sgm_tables_per_bucket(
                 }
             )
         )
-
 
 
 def plot_speedup_vs_variables(
