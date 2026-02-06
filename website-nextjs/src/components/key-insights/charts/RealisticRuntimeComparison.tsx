@@ -82,7 +82,7 @@ const RealisticRuntimeComparison = ({
   });
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return [...state.results.availableSolvers, "highs-hipo", "highs-ipm"];
+    return [...state.results.availableSolvers, ...HIPO_SOLVERS];
   });
 
   const findData = useCallback(
