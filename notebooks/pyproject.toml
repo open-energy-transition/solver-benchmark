@@ -1,0 +1,16 @@
+[project]
+name = "notebooks"
+version = "0.1.0"
+description = "Environment for Jupyter notebooks"
+requires-python = ">=3.14"
+dependencies = [
+    "gsutil>=5.35",
+    "humanize>=4.15.0",
+    "ipykernel>=7.1.0",
+    "ipython>=9.10.0",
+    "jinja2>=3.1.6",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.2",
+    "pandas>=3.0.0",
+    "pyyaml>=6.0.3",
+]
