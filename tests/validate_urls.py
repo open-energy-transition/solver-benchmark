@@ -75,7 +75,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
             parsed = urlparse(url)
             if parsed.netloc != GCS_HOST:
                 continue
-            gs_path = "/".join(parsed.path.split("/")[1:])
+            gs_path = unquote("/".join(parsed.path.split("/")[1:]))
 
             raw_filename = Path(parsed.path).name
             decoded_filename = unquote(raw_filename)
@@ -88,7 +88,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
 
             # If it needs gzipping:
             if not raw_filename.endswith(".gz"):
-                to_gzip.append((gs_path, expected))
+                to_gzip.append((gs_path, expected[:-3]))
                 continue
 
             # If it needs moving/renaming:
@@ -132,13 +132,18 @@ def main():
 
     print(f"\nUpdated {len(mv_commands) + len(gzip_commands)} URLs in metadata files")
     print("\nPlease run these commands:\n")
-    for cmd in mv_commands:
-        print(cmd)
-    print("\nmkdir -p /tmp/benchmarks-to-zip")
-    for cmd in gzip_commands:
-        print(cmd)
-    print("\nfind /tmp/benchmarks-to-zip/ -type f | parallel -P 20 gzip --best")
-    print("gsutil -m rsync /tmp/benchmarks-to-zip gs://solver-benchmarks/instances/")
+    if mv_commands:
+        for cmd in mv_commands:
+            print(cmd)
+        print()
+    if gzip_commands:
+        print("mkdir -p /tmp/benchmarks-to-zip")
+        for cmd in gzip_commands:
+            print(cmd)
+        print("find /tmp/benchmarks-to-zip/ -type f | parallel gzip --best")
+        print(
+            "gsutil -m rsync /tmp/benchmarks-to-zip gs://solver-benchmarks/instances/"
+        )
 
     if args.dry_run:
         print("\nDry run; no files were modified.")
@@ -150,8 +155,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# test +
-# only mv
-# mv + gz
-# only gz

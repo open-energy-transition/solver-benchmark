@@ -273,7 +273,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features:  None
+    MILP features: None
     Sizes:
     - Name: 50-168h
       Size: M
