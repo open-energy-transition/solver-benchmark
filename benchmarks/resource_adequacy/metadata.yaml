@@ -14,7 +14,7 @@ benchmarks:
     Time horizon: 1 week
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
@@ -37,7 +37,7 @@ benchmarks:
     Time horizon: 1 week
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
@@ -62,7 +62,7 @@ benchmarks:
     Time horizon: 2 months
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
@@ -85,7 +85,7 @@ benchmarks:
     Time horizon: 2 months
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
@@ -110,7 +110,7 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: None
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
@@ -133,7 +133,7 @@ benchmarks:
     Time horizon: 179 days (~6 months)
     MILP features: Unit commitment
     Sizes:
-    - Name: 1-997
+    - Name: 997-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_6M-997-1h.lp.gz
       Temporal resolution: 1 hour

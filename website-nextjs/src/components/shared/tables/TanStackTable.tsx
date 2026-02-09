@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useId } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -54,6 +54,9 @@ export function TanStackTable<T>({
     initialColumnVisibility,
   );
   const [showColumnSelector, setShowColumnSelector] = useState(false);
+  // Generate a unique ID for this table instance
+  const tableId = useId();
+  const tableLabel = title || `Data table ${tableId}`;
 
   // Reference for the container that holds the table for virtualization
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -136,7 +139,10 @@ export function TanStackTable<T>({
                 className="text-white bg-navy px-4 py-2 rounded-lg flex gap-1 items-center justify-center cursor-pointer w-full sm:w-auto tag-line-xs"
               >
                 {downloadTitle || "Download"}
-                <ArrowToRightIcon className="w-4 h-4 rotate-90" />
+                <ArrowToRightIcon
+                  className="w-4 h-4 rotate-90"
+                  aria-hidden="true"
+                />
               </button>
             )}
           </div>
@@ -176,11 +182,14 @@ export function TanStackTable<T>({
             <div
               ref={tableContainerRef}
               style={{
-                height: "525px",
+                height: data?.length > 12 ? "525px" : "auto",
                 overflow: "auto",
                 position: "relative",
               }}
               className="overflow-x-auto"
+              tabIndex={0}
+              role="region"
+              aria-label={tableLabel}
             >
               <table
                 className="bg-[#F4F6FA] w-full min-w-[800px]"
@@ -189,44 +198,57 @@ export function TanStackTable<T>({
                 <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <th
-                          key={header.id}
-                          colSpan={header.colSpan}
-                          className={headerClassName}
-                          style={{
-                            width: header.getSize() ? header.getSize() : 200,
-                            minWidth: header.getSize() ? header.getSize() : 200,
-                            maxWidth: header.getSize() ? header.getSize() : 200,
-                          }}
-                        >
-                          <div
-                            onClick={header.column.getToggleSortingHandler()}
-                            className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full"
+                      {headerGroup.headers.map((header) => {
+                        const headerContent = flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        );
+                        const hasContent =
+                          headerContent && String(headerContent).trim();
+
+                        return (
+                          <th
+                            key={header.id}
+                            colSpan={header.colSpan}
+                            className={headerClassName}
+                            style={{
+                              width: header.getSize() ? header.getSize() : 200,
+                              minWidth: header.getSize()
+                                ? header.getSize()
+                                : 200,
+                              maxWidth: header.getSize()
+                                ? header.getSize()
+                                : 200,
+                            }}
+                            aria-label={
+                              !hasContent ? "Column actions" : undefined
+                            }
                           >
                             <div
-                              className={`${
-                                (header.column.columnDef.meta as any)
-                                  ?.headerClassName || "truncate"
-                              } w-full`}
+                              onClick={header.column.getToggleSortingHandler()}
+                              className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full"
                             >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
+                              <div
+                                className={`${
+                                  (header.column.columnDef.meta as any)
+                                    ?.headerClassName || "truncate"
+                                } w-full`}
+                              >
+                                {headerContent}
+                              </div>
+                              <div className="flex gap-1 shrink-0">
+                                {header.column.getCanFilter() && (
+                                  <FilterTable column={header.column} />
+                                )}
+                                <SortIcon
+                                  sortDirection={header.column.getIsSorted()}
+                                  canSort={header.column.getCanSort()}
+                                />
+                              </div>
                             </div>
-                            <div className="flex gap-1 shrink-0">
-                              {header.column.getCanFilter() && (
-                                <FilterTable column={header.column} />
-                              )}
-                              <SortIcon
-                                sortDirection={header.column.getIsSorted()}
-                                canSort={header.column.getCanSort()}
-                              />
-                            </div>
-                          </div>
-                        </th>
-                      ))}
+                          </th>
+                        );
+                      })}
                     </tr>
                   ))}
                 </thead>
@@ -297,7 +319,12 @@ export function TanStackTable<T>({
             </div>
           ) : (
             // Standard table for smaller datasets or paginated view
-            <div className="overflow-x-auto">
+            <div
+              className="overflow-x-auto"
+              tabIndex={0}
+              role="region"
+              aria-label={tableLabel}
+            >
               <table
                 className="bg-[#F4F6FA] w-full min-w-[800px]"
                 style={{ tableLayout: "fixed" }}
@@ -305,44 +332,57 @@ export function TanStackTable<T>({
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <th
-                          key={header.id}
-                          colSpan={header.colSpan}
-                          className={headerClassName}
-                          style={{
-                            width: header.getSize(),
-                            maxWidth: header.getSize() ? header.getSize() : 200,
-                            minWidth: header.getSize() ? header.getSize() : 150,
-                          }}
-                        >
-                          <div
-                            onClick={header.column.getToggleSortingHandler()}
-                            className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
+                      {headerGroup.headers.map((header) => {
+                        const headerContent = flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        );
+                        const hasContent =
+                          headerContent && String(headerContent).trim();
+
+                        return (
+                          <th
+                            key={header.id}
+                            colSpan={header.colSpan}
+                            className={headerClassName}
+                            style={{
+                              width: header.getSize(),
+                              maxWidth: header.getSize()
+                                ? header.getSize()
+                                : 200,
+                              minWidth: header.getSize()
+                                ? header.getSize()
+                                : 150,
+                            }}
+                            aria-label={
+                              !hasContent ? "Column actions" : undefined
+                            }
                           >
                             <div
-                              className={`${
-                                (header.column.columnDef.meta as any)
-                                  ?.headerClassName || "truncate"
-                              } w-full`}
+                              onClick={header.column.getToggleSortingHandler()}
+                              className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
                             >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
+                              <div
+                                className={`${
+                                  (header.column.columnDef.meta as any)
+                                    ?.headerClassName || "truncate"
+                                } w-full`}
+                              >
+                                {headerContent}
+                              </div>
+                              <div className="flex gap-1 shrink-0">
+                                {header.column.getCanFilter() && (
+                                  <FilterTable column={header.column} />
+                                )}
+                                <SortIcon
+                                  sortDirection={header.column.getIsSorted()}
+                                  canSort={header.column.getCanSort()}
+                                />
+                              </div>
                             </div>
-                            <div className="flex gap-1 shrink-0">
-                              {header.column.getCanFilter() && (
-                                <FilterTable column={header.column} />
-                              )}
-                              <SortIcon
-                                sortDirection={header.column.getIsSorted()}
-                                canSort={header.column.getCanSort()}
-                              />
-                            </div>
-                          </div>
-                        </th>
-                      ))}
+                          </th>
+                        );
+                      })}
                     </tr>
                   ))}
                 </thead>

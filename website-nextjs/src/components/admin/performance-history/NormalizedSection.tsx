@@ -48,8 +48,12 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
       </p>
       <SgmModeSection />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full mt-2 mb-4">
-        <NormalizedSGMRuntime chartData={chartData.runtime} />
-        <NormalizedSGMMemoryUsage chartData={chartData.memoryUsage} />
+        <NormalizedSGMRuntime
+          chartData={chartData.runtime.filter((s) => s.solver !== "glpk")}
+        />
+        <NormalizedSGMMemoryUsage
+          chartData={chartData.memoryUsage.filter((s) => s.solver !== "glpk")}
+        />
       </div>
     </>
   );

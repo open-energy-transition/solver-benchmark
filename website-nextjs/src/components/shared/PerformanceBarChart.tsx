@@ -227,7 +227,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
         .style("stroke-dasharray", "4,4");
     }
     if (maxDataRuntime >= TIMEOUT_VALUES.LONG / 2) {
-      // Add 10h timeout line (36000s)
+      // Add 24h timeout line (86400s)
       svg
         .append("line")
         .attr("x1", margin.left)

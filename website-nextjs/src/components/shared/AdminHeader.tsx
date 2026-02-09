@@ -57,6 +57,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
               href="https://github.com/open-energy-transition/solver-benchmark"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub repository"
             >
               <GithubIcon />
             </a>
@@ -77,6 +78,7 @@ const AdminHeader = ({ children }: { children: ReactNode }) => {
             className="flex items-center space-x-2"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="GitHub repository"
           >
             <GithubIcon />
             <span>GitHub</span>

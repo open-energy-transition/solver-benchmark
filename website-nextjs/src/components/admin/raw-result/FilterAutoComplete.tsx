@@ -45,8 +45,13 @@ const Option = (props: OptionProps<any>) => {
               checked={data?.isSelected ?? false}
               readOnly
               className="mr-2 size-3"
+              aria-label={data.label}
+              id={`filter-option-${data.value}`}
             />
-            <label className="truncate max-w-[100%] group-hover:max-w-[80%] flex-1">
+            <label
+              htmlFor={`filter-option-${data.value}`}
+              className="truncate max-w-[100%] group-hover:max-w-[80%] flex-1"
+            >
               {data.label}
             </label>
             {data.value !== "all" && (
