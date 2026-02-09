@@ -1,0 +1,15 @@
+name: benchmark-highs-2023
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- cxx-compiler
+- pip:
+  # highspy 1.6.0 wasn't released to PyPI:
+  - git+https://github.com//ERGO-Code/HiGHS@v1.6.0
+  # Use branch until old solver support is merged and released
+  - git+https://github.com/PyPSA/linopy@sid/old-solver-support

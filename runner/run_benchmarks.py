@@ -19,6 +19,36 @@ import yaml
 from run_solver import HighsVariant
 
 
+def load_solver_config():
+    """Load the solver registry from solvers.yaml."""
+    config_path = Path(__file__).parent / "solvers.yaml"
+    with open(config_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+def get_solver_versions_from_config(solvers, year):
+    """Look up solver versions for a given year from solvers.yaml.
+
+    Returns a dict mapping solver name to {"version": str, "env": str|None}.
+    HiGHS-HiPO variants are handled as special cases (not in solvers.yaml).
+    """
+    config = load_solver_config()
+    solver_versions = {}
+    for solver in solvers:
+        # Handle highs-hipo variants as special cases - not conda packages
+        if solver in [variant.value for variant in HighsVariant]:
+            solver_versions[solver] = {"version": get_highs_hipo_version(), "env": None}
+            continue
+
+        solver_entries = config["solvers"].get(solver, {})
+        for version, entry in solver_entries.items():
+            if str(entry["year"]) == str(year):
+                solver_versions[solver] = {"version": version, "env": entry.get("env")}
+                break
+
+    return solver_versions
+
+
 def get_conda_package_versions(solvers, env_name=None):
     try:
         # List packages in the conda environment
@@ -231,27 +261,49 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout, solver_version):
+def _systemd_available():
+    """Check if systemd is running (not just installed)."""
+    return shutil.which("systemd-run") and os.path.isdir("/run/systemd/system")
+
+
+def benchmark_solver(input_file, solver_name, timeout, solver_version, env_name=None):
     available_memory_bytes = psutil.virtual_memory().available
     memory_limit_bytes = int(available_memory_bytes * 0.95)
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
-    print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
 
-    command = ["systemd-run"]
+    command = []
 
-    if os.geteuid() != 0:
-        command.append("--user")
+    if _systemd_available():
+        print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
+        command.append("systemd-run")
+        if os.geteuid() != 0:
+            command.append("--user")
+        command.extend(
+            [
+                "--scope",
+                f"--property=MemoryMax={memory_limit_bytes}",
+                "--property=MemorySwapMax=0",
+            ]
+        )
+    else:
+        print("WARNING: systemd not available, running without memory limit enforcement")
 
     command.extend(
         [
-            "--scope",
-            f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
-            "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
             "/usr/bin/time",
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
             f"{timeout}s",
+        ]
+    )
+
+    # Use conda run to execute in the solver's env, or plain python for the current env
+    if env_name:
+        command.extend(["conda", "run", "-n", env_name])
+
+    command.extend(
+        [
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
             solver_name,
@@ -275,7 +327,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         / "logs"
         / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
     )
-    if log_file.exists:
+    if log_file.exists():
         with open(log_file, "a") as f:
             f.write("\nSTDERR:\n")
             f.write(result.stderr)
@@ -525,7 +577,7 @@ def main(
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
 
-    solvers_versions = get_conda_package_versions(solvers, f"benchmark-{year}")
+    solvers_versions = get_solver_versions_from_config(solvers, year)
 
     # Preprocess the sizes and make a list of individual benchmark files to run on
     processed_benchmarks = []
@@ -613,10 +665,12 @@ def main(
                 )
                 continue
 
-            solver_version = solvers_versions.get(solver)
-            if not solver_version:
+            solver_info = solvers_versions.get(solver)
+            if not solver_info:
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
+            solver_version = solver_info["version"]
+            solver_env = solver_info["env"]
 
             metrics = {}
             runtimes = []
@@ -632,7 +686,7 @@ def main(
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
                 metrics = benchmark_solver(
-                    benchmark["path"], solver, timeout, solver_version
+                    benchmark["path"], solver, timeout, solver_version, env_name=solver_env
                 )
 
                 metrics["size"] = benchmark["size"]

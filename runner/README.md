@@ -2,9 +2,35 @@
 
 This folder contains the scripts used to benchmark various solvers.
 
+## Environment Structure
+
+Each solver-version pair has its own conda environment (e.g., `benchmark-highs-2025`, `benchmark-scip-2025`), enabling running solvers independently.
+
+### `solvers.yaml` — Solver Registry
+
+The source of truth for mapping solver names to version, release year, and conda env is `runner/solvers.yaml`
+
+Example:
+```yaml
+solvers:
+  highs:
+    "1.12.0":
+      year: 2025
+      env: benchmark-highs-2025
+```
+
+### Per-solver Environment Files
+
+Environment YAML files live in `runner/envs/`:
+
+- **Loose YAMLs** (`benchmark-{solver}-{year}.yaml`) — flexible dependency specs for development
+- **Fixed YAMLs** (`benchmark-{solver}-{year}-fixed.yaml`) — pinned versions for reproducibility
+
+To regenerate fixed YAMLs from loose ones on native Linux: `./runner/envs/generate_fixed_envs.sh`. For other platforms, see [Generating Fixed Environment Files](#generating-fixed-environment-files).
+
 ## Running benchmark_all.sh
 
-The `benchmark_all.sh` script takes a YAML benchmark config file  as argument and runs all the solvers in series for each benchmark problem. It creates conda environments containing the solvers and other necessary pre-requisites, so a virtual environment is not necessary just for running the benchmark runner.
+The `benchmark_all.sh` script takes a YAML benchmark config file as argument and runs all the solvers in series for each benchmark problem. It creates per-solver conda environments automatically.
 
 The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
 
@@ -37,19 +63,68 @@ Usage examples:
 ./runner/benchmark_all.sh -y "2025" results/metadata.yaml
 ```
 
-## Running run_benchmarks.py
+## Running with Docker
 
-Use `run_benchmarks.py` to run benchmarks for a specific year with more control. If
-`benchmark_all.sh` hasn't been run yet, you will have to manually create the conda environment
-for the year.
+Docker is optional. On native Linux with systemd, you can run the scripts directly (see above). Memory limit enforcement via `systemd-run` is skipped automatically when systemd is not available.
+
+### Build
 
 ```sh
-# if a 'fixed' version is available, use that instead
-year=2025
-conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+docker build -t solver-benchmark-runner -f runner/Dockerfile .
+```
+
+### Run
+
+The container entrypoint is `benchmark_all.sh`, so pass the same flags you would use natively. Mount `results/` to get output on the host:
+
+```sh
+docker run --rm \
+  -v $(pwd)/results:/solver-benchmark/results \
+  solver-benchmark-runner -s "highs" -y "2025" results/metadata.yaml
+```
+
+### Caching conda environments
+
+Conda environments are created at runtime. To avoid recreating them on every run, mount a named Docker volume:
+
+```sh
+docker run --rm \
+  -v $(pwd)/results:/solver-benchmark/results \
+  -v solver-conda-envs:/opt/conda/envs \
+  solver-benchmark-runner -s "highs" -y "2025" results/metadata.yaml
+```
+
+### Gurobi licensing
+
+Gurobi requires a license file. Mount it into the container:
+
+```sh
+docker run --rm \
+  -v $(pwd)/results:/solver-benchmark/results \
+  -v solver-conda-envs:/opt/conda/envs \
+  -v $HOME/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+  -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
+  solver-benchmark-runner -s "gurobi" -y "2025" results/metadata.yaml
+```
+
+### Limitations
+
+- **No memory limit enforcement**: `systemd-run` is not available inside Docker, so OOM protection is skipped. Solvers that exceed available memory will be killed by the kernel OOM killer instead.
+- **HiGHS-HiPO**: The HiPO solver variant requires a custom build and is not available in the Docker image.
+- **Performance overhead**: Docker adds minimal overhead, but for official benchmark submissions native Linux is recommended.
+
+## Running run_benchmarks.py
+
+Use `run_benchmarks.py` to run benchmarks for a specific year with more control. Solver versions are looked up from `solvers.yaml` and each solver runs in its own conda env automatically. You need to create the per-solver conda environments first and activate any one of them (the script switches envs per solver internally).
+
+```sh
+# Create the per-solver envs for a year
+conda env create -q -f ./runner/envs/benchmark-highs-2025-fixed.yaml -y
+conda env create -q -f ./runner/envs/benchmark-scip-2025-fixed.yaml -y
 ```
 
 ```sh
+conda activate benchmark-highs-2025
 python run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
 ```
 
@@ -67,16 +142,15 @@ python run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
 **Examples:**
 
 ```bash
-# Run HiGHS only
-conda activate benchmark-2025
-python run_benchmarks.py ../results/metadata.yaml 2024 --solvers highs
+# Run HiGHS only for 2025
+conda activate benchmark-highs-2025
+python run_benchmarks.py ../results/metadata.yaml 2025 --solvers highs
 
-# Run multiple solvers and append results
-conda activate benchmark-2024
+# Run multiple solvers for 2024 and append results
+conda activate benchmark-highs-2024
 python run_benchmarks.py ../results/metadata.yaml 2024 --solvers "highs scip cbc" -a
 
 # Run with custom run ID for tracking
-conda activate benchmark-2024
 python run_benchmarks.py ../results/metadata.yaml 2024 --run_id "debug-run-001"
 ```
 
@@ -97,11 +171,11 @@ python run_solver.py <solver_name> <input_file> <solver_version>
 
 ```bash
 # Test HiGHS
-conda activate benchmark-2024
+conda activate benchmark-highs-2024
 python run_solver.py highs ./benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
 
 # Test SCIP
-conda activate benchmark-2024
+conda activate benchmark-scip-2024
 python run_solver.py scip ./benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
 ```
 
@@ -109,3 +183,14 @@ python run_solver.py scip ./benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
 - Solution files are saved to `solutions/`
 - Detailed logs are saved to `logs/`
 - JSON metrics are printed to stdout (runtime, status, objective value, etc.)
+
+## Generating Fixed Environment Files
+
+Fixed YAMLs pin exact dependency versions for reproducibility. To regenerate them from loose YAMLs, use native Linux or Docker:
+
+On native Linux you can also run the script directly: `./runner/envs/generate_fixed_envs.sh`
+
+```bash
+docker run -v $(pwd):/work -w /work continuumio/miniconda3 bash runner/envs/generate_fixed_envs.sh
+```
+

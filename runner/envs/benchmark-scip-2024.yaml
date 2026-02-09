@@ -1,0 +1,13 @@
+name: benchmark-scip-2024
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+- scip==9.2.0
+- pip:
+  - pyscipopt==5.7.1
