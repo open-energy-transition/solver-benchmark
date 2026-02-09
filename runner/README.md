@@ -193,4 +193,3 @@ On native Linux you can also run the script directly: `./runner/envs/generate_fi
 ```bash
 docker run -v $(pwd):/work -w /work continuumio/miniconda3 bash runner/envs/generate_fixed_envs.sh
 ```
-

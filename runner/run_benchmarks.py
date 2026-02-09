@@ -274,7 +274,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version, env_name=
     command = []
 
     if _systemd_available():
-        print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
+        print(
+            f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)"
+        )
         command.append("systemd-run")
         if os.geteuid() != 0:
             command.append("--user")
@@ -286,7 +288,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version, env_name=
             ]
         )
     else:
-        print("WARNING: systemd not available, running without memory limit enforcement")
+        print(
+            "WARNING: systemd not available, running without memory limit enforcement"
+        )
 
     command.extend(
         [
@@ -686,7 +690,11 @@ def main(
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
                 metrics = benchmark_solver(
-                    benchmark["path"], solver, timeout, solver_version, env_name=solver_env
+                    benchmark["path"],
+                    solver,
+                    timeout,
+                    solver_version,
+                    env_name=solver_env,
                 )
 
                 metrics["size"] = benchmark["size"]
