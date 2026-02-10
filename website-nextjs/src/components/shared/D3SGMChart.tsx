@@ -6,6 +6,7 @@ import { SolverYearlyChartData } from "@/types/performance-history";
 import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { IResultState } from "@/types/state";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -15,6 +16,7 @@ interface ID3SGMChart {
   className?: string;
   chartData: SolverYearlyChartData[];
   xAxisTooltipFormat?: (value: number | string) => string;
+  excluseHipo?: boolean;
 }
 
 const D3SGMChart = ({
@@ -23,12 +25,17 @@ const D3SGMChart = ({
   className = "",
   chartData = [],
   xAxisTooltipFormat,
+  excluseHipo = false,
 }: ID3SGMChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
+    return excluseHipo
+      ? state.results.availableSolvers.filter(
+          (solver) => !HIPO_SOLVERS.includes(solver),
+        )
+      : state.results.availableSolvers;
   });
   const windowWidth = useDebouncedWindowWidth(200);
 
@@ -42,28 +49,17 @@ const D3SGMChart = ({
     );
   }, [availableSolvers]);
 
-  // Normalize data by year (best solver in each year = 1.0)
+  // Normalize data by best solver ever measured (global best = 1.0)
   const normalizedChartData = useMemo(() => {
     if (chartData.length === 0) return [];
-
-    // Group data by year
-    const dataByYear = d3.group(chartData, (d) => d.year);
-
-    const normalizedData: SolverYearlyChartData[] = [];
-
-    dataByYear.forEach((yearData) => {
-      // Find the best (minimum) value for this year
-      const bestValue = d3.min(yearData, (d) => d.value) || 1;
-
-      // Normalize all values for this year
-      yearData.forEach((d) => {
-        normalizedData.push({
-          ...d,
-          value: d.value / bestValue,
-          originalValue: d.value, // Keep original value for tooltip
-        });
-      });
-    });
+    // Find the best (minimum) value across all years and solvers
+    const bestValueEver = d3.min(chartData, (d) => d.value) || 1;
+    // Normalize all values relative to the best ever measured
+    const normalizedData: SolverYearlyChartData[] = chartData.map((d) => ({
+      ...d,
+      value: d.value / bestValueEver,
+      originalValue: d.value, // Keep original value for tooltip
+    }));
 
     return normalizedData;
   }, [chartData]);
@@ -96,12 +92,13 @@ const D3SGMChart = ({
       .range([margin.left + 20, width - margin.right]);
 
     const maxValue = d3.max(normalizedChartData, (d) => d.value) || 1;
-    const yDomainMax = Math.max(maxValue + 1, 2); // Ensure we have space above the highest point
-
+    const yDomainMax = Math.max(maxValue + 1, 2);
     const yScale = d3
       .scaleLinear()
       .domain([0, yDomainMax])
       .range([height - margin.bottom, margin.top]);
+
+    // const yTickValues = generateYTicks(Math.ceil(maxValue));
 
     // Axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);

@@ -319,7 +319,7 @@ const D3SolverEvolutionChart = ({
       .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
-      .text(`Max: 105`);
+      .text(`Max: ${totalBenchmarks}`);
 
     return () => {
       tooltip.remove();

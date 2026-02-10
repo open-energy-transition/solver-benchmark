@@ -72,6 +72,10 @@ def get_solver(solver_name):
             "randomCbcSeed": 1,  # 0 indicates time of day
             "ratioGap": mip_gap,
         },
+        "cplex": {
+            "randomseed": 0,
+            "mip.tolerances.mipgap": mip_gap,
+        },
         "knitro": {  # TODO check seed option for knitro
             "KN_PARAM_MS_SEED": 1066,
         },
@@ -93,6 +97,10 @@ def is_mip_problem(solver_model, solver_name):
     elif solver_name == "highs":
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
+    elif solver_name == "cplex":
+        # Check if any variables are integer or binary
+        var_types = solver_model.variables.get_types()
+        return any(t in ("I", "B") for t in var_types)
     elif solver_name in {"glpk", "cbc"}:
         # These solvers do not provide a solver model in the solver result,
         # so MIP problem detection is not possible.
@@ -109,10 +117,8 @@ def calculate_integrality_violation(
     integer_vars: pd.Series, primal_values: pd.Series
 ) -> float:
     """Calculate the maximum integrality violation from primal values.
-
     We only care about Integer vars, not SemiContinuous or SemiInteger, following the code in
     https://github.com/ERGO-Code/HiGHS/blob/fd8665394edfd096c4f847c4a6fbc187364ef474/src/mip/HighsMipSolver.cpp#L888
-
     Note:
         We are not using solver_result.solver_model.getInfo() because it works for HiGHS but not for other solvers
     """
@@ -133,6 +139,8 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "glpk":
         # GLPK does not have a way to retrieve the duality gap from python
         return None
+    elif solver_name == "cplex":
+        return solver_model.solution.MIP.get_mip_relative_gap()
     elif solver_name == "knitro":
         # Knitro duality gap retrieval not implemented yet
         return None
@@ -179,8 +187,10 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.runtime
             case "gurobi":
                 return solver_model.Runtime
+            case "cplex":
+                return None
             case "knitro":
-                return solver_model
+                return solver_model.reported_runtime
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None

@@ -16,7 +16,6 @@ import SolverEvolutionSection from "@/components/admin/performance-history/Solve
 import {
   buildSolverYearlyMetrics,
   generateChartData,
-  processCombinedYearMetrics,
   getNumSolvedBenchMark,
 } from "@/utils/performanceHistory";
 import Head from "next/head";
@@ -25,11 +24,14 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const PagePerformanceHistory = () => {
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkResults;
+      return state.results.benchmarkResults.filter(
+        (result) => !HIPO_SOLVERS.includes(result.solver),
+      );
     },
   );
 
@@ -142,8 +144,7 @@ const PagePerformanceHistory = () => {
       solvers,
     );
 
-    // Process for combined 2024/2025 data
-    return processCombinedYearMetrics(initialMetrics);
+    return initialMetrics;
   }, [benchmarkResults, years, solvers]);
 
   const chartData = useMemo(() => {

@@ -45,7 +45,7 @@ export function humanizeSeconds(seconds: number): string {
     const mins = Math.round(seconds / 60);
     return `${mins} ${mins === 1 ? "min" : "mins"}`;
   }
-  if (seconds < 86400) {
+  if (seconds <= 86400) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.round((seconds % 3600) / 60);
     const hourUnit = hours === 1 ? "hr" : "hrs";
