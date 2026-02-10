@@ -12,6 +12,8 @@ Please add the following information to the description field of the metadata fo
 - Data sources used in constructing the model
 - Reference to any real-world study or published paper that this model was used for
 
+Please add a README with instructions on how to run the model framework's code to reproduce benchmark generation, particularly if the code doesn't automatically generate MPS or LP files (see, for instance, this [example](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/switch/README.md)).
+
 ### Checklist
 
 <!-- Delete the section(s) that are not relevant to this PR type -->
@@ -26,6 +28,7 @@ For Benchmark team:
 - [ ] Run `benchmarks/categorize_benchmarks.py` on them to obtain problem stats and size category
 - [ ] Run `tests/validate_urls.py` to ensure URLs are consistent with benchmark and size instance name
 - [ ] Test that some solver solves these benchmarks within our timeouts on our infra
+- [ ] Add CC BY 4.0 license to the metadata file
 
 **For changes to the website:**
 - [ ] I have tested my changes by running the website locally

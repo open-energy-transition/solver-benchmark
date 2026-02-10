@@ -234,14 +234,14 @@ const D3ChartLineChart = ({
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">
+        <span className="items-start font-semibold text-[#022B3BB3] text-xs mr-1 flex">
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">
           {Object.keys(solverColors).map((solverKey) => (
             <div
               key={solverKey}
-              className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+              className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
             >
               <CircleIcon
                 style={{ color: solverColors[solverKey] }}

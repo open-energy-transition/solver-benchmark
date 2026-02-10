@@ -8,15 +8,15 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/https://github.com/TemoaProject/temoacloud
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (4 years)
     MILP features: None
     Sizes:
-    - Name: 1-6
+    - Name: 1-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-utopia-1-6.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-utopia-1-6ts.lp.gz
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
       Spatial resolution: 1 region
       Realistic: false
@@ -31,15 +31,15 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -54,15 +54,15 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NDC-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NDC-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -77,15 +77,15 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NZ-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -100,15 +100,15 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_SP-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_SP-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
@@ -123,15 +123,15 @@ benchmarks:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/TemoaProject/oeo
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (5 years)
     MILP features: None
     Sizes:
-    - Name: 9-12
+    - Name: 9-12ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/temoa-US_9R_TS_NZ_trunc_4periods-9-12.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NZ_trunc_4periods-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true

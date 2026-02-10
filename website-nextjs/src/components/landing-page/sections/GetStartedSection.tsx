@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import { IResultState } from "@/types/state";
 import StatsBox from "@/components/common/StatsBox";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const GetStarted = () => {
   const rawMetaData = useSelector((state: { results: IResultState }) => {
@@ -59,7 +60,9 @@ const GetStarted = () => {
           >
             BENCHMARKS
           </div>
-          <h3 className="leading-1.4 mb-2">WHAT DO WE HAVE?</h3>
+          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-navy">
+            WHAT DO WE HAVE?
+          </div>
         </div>
         <div className="w-full xl:w-[67.42%]">
           <div
@@ -88,7 +91,10 @@ const GetStarted = () => {
               value={availableBenchmarksAndSizes.length}
               label="Benchmarks"
             />
-            <StatsBox value={availableSolvers.length} label="Solvers" />
+            <StatsBox
+              value={availableSolvers.length - HIPO_SOLVERS.length}
+              label="Solvers"
+            />
           </div>
         </div>
       </div>

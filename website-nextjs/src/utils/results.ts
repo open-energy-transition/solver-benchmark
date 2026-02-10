@@ -57,8 +57,10 @@ const getMaxMemoryUsage = (
   return 7 * 1024;
 };
 
-const getBenchmarkResults = async (): Promise<BenchmarkResult[]> => {
-  const res = await fetchCsvToJson("/results/benchmark_results.csv");
+const getBenchmarkResults = async (
+  url = "/results/benchmark_results.csv",
+): Promise<BenchmarkResult[]> => {
+  const res = await fetchCsvToJson(url);
   return res.map((rawData) => {
     const data = rawData as { [key: string]: string };
     return {

@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
 import { useEffect, useRef } from "react";
 import Head from "next/head";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import type { AppProps } from "next/app";
 import { Provider, useDispatch } from "react-redux";
@@ -17,6 +19,13 @@ import { BenchmarkResult } from "@/types/benchmark";
 import { IFilterState, RealisticOption } from "@/types/state";
 import { MetaData } from "@/types/meta-data";
 import { useRouter } from "next/router";
+
+// Initialize axe-core for accessibility testing in development
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
+  import("@axe-core/react").then((axe) => {
+    axe.default(React, ReactDOM, 1000);
+  });
+}
 
 function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
@@ -219,7 +228,7 @@ function App({ Component, pageProps }: AppProps) {
         {/* Viewport */}
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+          content="width=device-width, initial-scale=1, maximum-scale=5"
         />
 
         {/* Canonical URL */}

@@ -7,17 +7,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/diesel_genset_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex flows, investment optimization, binary on/off for genset
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
     Sizes:
     - Name: 1-240ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-diesel-genset-nonconvex-investment-1-240ts.lp.gz
       Temporal resolution: 240 time slices
-      Spatial resolution: Single-node mini-grid
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 4331
       Num. variables: 3374
@@ -31,17 +31,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/economic_results
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: Investment optimization; minimal binary/integer presence
+    MILP features: Binary investment decisions
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-economic-results-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 52567
       Num. variables: 61326
@@ -55,17 +55,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_with_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Investment decisions; minimum up-time; minimum load
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-house-with-nonconvex-investment-1-365ts.lp.gz
       Temporal resolution: 365 time slices
-      Spatial resolution: Single-node heat system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 2541
       Num. variables: 1821
@@ -79,17 +79,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/invest_nonconvex_flow_examples/house_without_nonconvex_investment.py
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Investment in thermal collector; minimum up-time; minimum load
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-house-without-nonconvex-investment-1-365ts.lp.gz
       Temporal resolution: 365 time slices
-      Spatial resolution: Single-node heat system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 2181
       Num. variables: 2184
@@ -103,17 +103,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/time_series_aggragation
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-1920ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-invest-optimize-all-technologies-using-mp-and-tsam-1-1920ts.lp.gz
       Temporal resolution: 1920 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 51174
       Num. variables: 18061
@@ -125,17 +125,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/offset_converter_example
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Investment decisions; minimum load; piecewise/offset efficiency representation
+    MILP features: NonConvex operation; Binary investment decisions; Unit commitment; Piecewise efficiency
     Sizes:
     - Name: 1-8760ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-offset-diesel-genset-nonconvex-investment-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node mini-grid
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 2153
       Num. variables: 1680
@@ -149,17 +149,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/result_object
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-result-object-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 43801
       Num. variables: 70081
@@ -171,17 +171,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/simple_dispatch
     License: CC BY 4.0
     Problem class: LP
-    Application: Economic dispatch
-    Sectoral focus: Power & Heating
+    Application: Operational
+    Sectoral focus: Power-only
     Sectors: Electric, Heating
-    Time horizon: Single-stage, hourly
-    MILP features: None (pure LP)
+    Time horizon: Single-stage
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-simple-dispatch-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node system with electricity and heat coupling
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 96360
       Num. variables: 140160
@@ -193,17 +193,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/tree/dev/examples/tuple_as_labels
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-tuple-as-label-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 43801
       Num. variables: 70081
@@ -215,17 +215,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v1_invest_optimize_all_technologies.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v1-invest-optimize-all-technologies-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 78850
       Num. variables: 78851
@@ -237,17 +237,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v2_invest_optimize_only_gas_and_storage.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v2-invest-optimize-only-gas-and-storage-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 61328
       Num. variables: 61327
@@ -259,17 +259,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v3_invest_optimize_only_storage_with_fossil_share.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v3-invest-optimize-only-storage-with-fossil-share-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 61329
       Num. variables: 61327
@@ -281,17 +281,17 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/oemof/oemof-solph/blob/dev/examples/storage_investment/v4_invest_optimize_all_technologies_with_fossil_share.py
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: None (pure LP)
+    MILP features: None
     Sizes:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v4-invest-optimize-all-technologies-with-fossil-share-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
-      Spatial resolution: Single-node electricity system
+      Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 78851
       Num. variables: 78851

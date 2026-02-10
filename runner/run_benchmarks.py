@@ -9,14 +9,14 @@ import shutil
 import statistics
 import subprocess
 import time
+from collections import OrderedDict
 from pathlib import Path
 from socket import gethostname
 
 import psutil
 import requests
 import yaml
-
-hostname = gethostname()
+from run_solver import HighsVariant
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -45,8 +45,14 @@ def get_conda_package_versions(solvers, env_name=None):
         name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc", "xpress": "xpress"}
         solver_versions = {}
         for solver in solvers:
-            package = name_to_pkg.get(solver, solver)
-            solver_versions[solver] = installed_packages.get(package, None)
+            # Handle highs-hipo variants as special cases - not conda packages
+            if solver in [
+                variant.value for variant in HighsVariant
+            ]:  # For py3.10 compatibility
+                solver_versions[solver] = get_highs_hipo_version()
+            else:
+                package = name_to_pkg.get(solver, solver)
+                solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -54,8 +60,10 @@ def get_conda_package_versions(solvers, env_name=None):
         raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
 
 
-def download_file_from_google_drive(url, dest_path: Path):
+def download_benchmark_file(url, dest_path: Path):
     """Download a file from url and save it locally in the specified folder if it doesn't already exist.
+
+    If the URL is on GCS (starting gs://), then this uses `gsutil` to download the file (requires authentication).
     If the file is gzipped (.gz), it will be unzipped after downloading.
     """
     # Ensure the destination folder exists
@@ -71,13 +79,22 @@ def download_file_from_google_drive(url, dest_path: Path):
         print(f"File already exists at {uncompressed_dest_path}. Skipping download.")
         return
 
-    print(f"Downloading {url} to {dest_path}...", end="")
-    response = requests.get(url)
-    response.raise_for_status()
+    if url.startswith("gs://"):
+        # GCS file, so download using gsutil
+        print(f"Downloading {url} to {dest_path} using gsutil...", end="")
+        cmd = ["gsutil", "cp", url, dest_path]
+        _result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        print("done.")
+    else:
+        # Perform the download with streaming to handle large files
+        print(f"Downloading {url} to {dest_path}...", end="")
+        with requests.get(url, stream=True) as response:
+            response.raise_for_status()
+            with open(dest_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+        print("done.")
 
-    with open(dest_path, "wb") as f:
-        f.write(response.content)
-    print("done.")
     if dest_path.suffix == ".gz":
         print(f"Unzipping {dest_path}...")
         with gzip.open(dest_path, "rb") as gz_file:
@@ -97,31 +114,47 @@ def parse_memory(output):
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
-def write_csv_headers(results_csv, mean_stddev_csv):
+def csv_record(check=False, **kwargs):
+    record = OrderedDict(
+        [
+            ("Benchmark", kwargs.get("benchmark_name")),
+            ("Size", kwargs.get("size")),
+            ("Solver", kwargs.get("solver")),
+            ("Solver Version", kwargs.get("solver_version")),
+            ("Solver Release Year", kwargs.get("solver_release_year")),
+            ("Status", kwargs.get("status")),
+            ("Termination Condition", kwargs.get("condition")),
+            ("Runtime (s)", kwargs.get("runtime")),
+            ("Memory Usage (MB)", kwargs.get("memory")),
+            ("Objective Value", kwargs.get("objective")),
+            ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
+            ("Duality Gap", kwargs.get("duality_gap")),
+            ("Reported Runtime (s)", kwargs.get("reported_runtime")),
+            ("Timeout", kwargs.get("timeout")),
+            ("Hostname", kwargs.get("hostname")),
+            ("Run ID", kwargs.get("run_id")),
+            ("Timestamp", kwargs.get("timestamp")),
+            ("VM Instance Type", kwargs.get("vm_instance_type")),
+            ("VM Zone", kwargs.get("vm_zone")),
+            ("Solver benchmark version", kwargs.get("solver_benchmark_version")),
+        ]
+    )
+
+    if check:
+        missing_attrs = [key for key, val in record.items() if val is None]
+        if missing_attrs:
+            raise ValueError(f"Missing attributes: {missing_attrs}")
+
+    return record
+
+
+def write_csv_headers(
+    results_csv, mean_stddev_csv, headers=csv_record(check=False).keys()
+):
     # Initialize CSV files with headers
     with open(results_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(
-            [
-                "Benchmark",
-                "Size",
-                "Solver",
-                "Solver Version",
-                "Solver Release Year",
-                "Status",
-                "Termination Condition",
-                "Runtime (s)",
-                "Memory Usage (MB)",
-                "Objective Value",
-                "Max Integrality Violation",
-                "Duality Gap",
-                "Reported Runtime (s)",
-                "Timeout",
-                "Hostname",
-                "Run ID",
-                "Timestamp",
-            ]
-        )
+        writer.writerow(headers)
 
     with open(mean_stddev_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
@@ -145,30 +178,32 @@ def write_csv_headers(results_csv, mean_stddev_csv):
         )
 
 
-def write_csv_row(results_csv, benchmark_name, metrics, run_id, timestamp):
+def write_csv_row(
+    results_csv,
+    benchmark_name,
+    metrics,
+    run_id,
+    timestamp,
+    vm_instance_type,
+    vm_zone,
+    hostname,
+    solver_benchmark_version,
+):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
-            [
-                benchmark_name,
-                metrics["size"],
-                metrics["solver"],
-                metrics["solver_version"],
-                metrics["solver_release_year"],
-                metrics["status"],
-                metrics["condition"],
-                metrics["runtime"],
-                metrics["memory"],
-                metrics["objective"],
-                metrics["max_integrality_violation"],
-                metrics["duality_gap"],
-                metrics["reported_runtime"],
-                metrics["timeout"],
-                hostname,
-                run_id,
-                timestamp,
-            ]
+            csv_record(
+                check=False,  # allow None values
+                **metrics,
+                run_id=run_id,
+                timestamp=timestamp,
+                benchmark_name=benchmark_name,
+                vm_instance_type=vm_instance_type,
+                vm_zone=vm_zone,
+                solver_benchmark_version=solver_benchmark_version,
+                hostname=hostname,
+            ).values()
         )
 
 
@@ -234,6 +269,19 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         encoding="utf-8",
     )
 
+    # Append the stderr to the log file
+    log_file = (
+        Path(__file__).parent
+        / "logs"
+        / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
+    )
+    if log_file.exists:
+        with open(log_file, "a") as f:
+            f.write("\nSTDERR:\n")
+            f.write(result.stderr)
+    else:
+        print(f"ERROR: couldn't find log file {log_file}")
+
     memory = None
     try:
         memory = parse_memory(result.stderr)
@@ -283,9 +331,6 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "max_integrality_violation": None,
         }
     else:
-        print(
-            f"Solver command:\n {'\n'.join(line for line in result.stdout.splitlines() if 'running command' in line)}\n"
-        )
         metrics = json.loads(result.stdout.splitlines()[-1])
 
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
@@ -318,6 +363,32 @@ def get_highs_binary_version():
     except Exception as e:
         print(f"Error getting HiGHS binary version: {str(e)}")
         return "unknown"
+
+
+def get_highs_hipo_version():
+    """Get the version of the HiGHS-HiPO binary from the --version command"""
+    if os.geteuid() != 0:
+        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
+    else:
+        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
+
+    try:
+        result = subprocess.run(
+            [highs_hipo_binary, "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        )
+
+        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
+        if version_match:
+            return version_match.group(1) + "-hipo"
+
+        return "unknown-hipo"
+    except Exception as e:
+        print(f"Error getting HiGHS-HiPO binary version: {str(e)}")
+        return "unknown-hipo"
 
 
 def benchmark_highs_binary():
@@ -385,6 +456,42 @@ def main(
     run_id=None,
 ):
     # If no run_id is provided, generate one
+    hostname = gethostname()
+
+    environment_metadata = {"hostname": hostname}
+    try:
+        environment_metadata["vm_instance_type"] = requests.get(
+            "http://metadata.google.internal/computeMetadata/v1/instance/machine-type",
+            headers={"Metadata-Flavor": "Google"},
+        ).text.split(
+            "/"
+        )[
+            -1
+        ]  # the api will return a response like projects/319823961160/machineTypes/c4-highmem-8
+    except Exception as e:
+        print(f"Error getting VM instance type: {e}")
+        environment_metadata["vm_instance_type"] = "unknown"
+
+    try:
+        environment_metadata["solver_benchmark_version"] = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except Exception as e:
+        print(f"Error getting git commit hash: {e}")
+        environment_metadata["solver_benchmark_version"] = "unknown"
+
+    try:
+        # curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone
+        environment_metadata["vm_zone"] = requests.get(
+            "http://metadata.google.internal/computeMetadata/v1/instance/zone",
+            headers={"Metadata-Flavor": "Google"},
+        ).text.split("/")[-1]
+    except Exception as e:
+        print(f"Error getting VM zone: {e}")
+        environment_metadata["vm_zone"] = "unknown"
+
     if run_id is None:
         run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
         print(f"Generated run_id: {run_id}")
@@ -436,17 +543,18 @@ def main(
                         f"File specified in 'Path' does not exist: {benchmark_path}"
                     )
             elif "URL" in instance:
-                # TODO do something better like adding a yaml field for format
-                if instance["URL"].endswith(".mps"):
-                    format = "mps"
-                elif instance["URL"].endswith(".mps.gz"):
-                    format = "mps.gz"
-                else:
-                    format = "lp"
+                # TODO share this code with validate_urls.py
+                gz = instance["URL"].endswith(".gz")
+                base = instance["URL"][:-3] if gz else instance["URL"]
+                ext = base[base.rfind(".") :]
+                # If no dot was found, ext will be the full string; make it empty instead
+                if "." not in ext:
+                    ext = ""
+                ext += ".gz" if gz else ""
                 benchmark_path = (
-                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}.{format}"
+                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}{ext}"
                 )
-                download_file_from_google_drive(instance["URL"], benchmark_path)
+                download_benchmark_file(instance["URL"], benchmark_path)
 
                 # Gzip files are unzipped by the above function, so update path accordingly
                 if benchmark_path.suffix == ".gz":
@@ -458,6 +566,7 @@ def main(
                     "name": benchmark_name,
                     "size": instance["Name"],
                     "size_category": instance["Size"],
+                    "class": benchmark_info.get("Problem class"),
                     "path": benchmark_path,
                     "timeout_seconds": yaml_timeout_seconds,
                 }
@@ -473,18 +582,41 @@ def main(
         reference_solver_version = get_highs_binary_version()
 
     for benchmark in processed_benchmarks:
-        # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 10h for L)
+        # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 24h for L)
         timeout = benchmark.get("timeout_seconds") or (
-            10 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
+            24 * 60 * 60 if benchmark["size_category"] == "L" else 60 * 60
         )
 
         for solver in solvers:
+            # TODO a hack to run only the latest version per solver on Ls
+            if (
+                benchmark["size_category"] == "L"
+                and year != "2025"
+                and not (
+                    year == "2024" and solver == "cbc"
+                )  # Latest CBC release is in 2024
+            ):
+                print(
+                    f"WARNING: skipping {solver} in {year} because this benchmark instance is size L"
+                )
+                continue
+
+            # Restrict highs-hipo variants to 2025 and LPs only
+            if solver in [
+                variant.value for variant in HighsVariant
+            ] and (  # For py3.10 compatibility
+                year != "2025" or benchmark["class"] != "LP"
+            ):
+                print(
+                    f"Solver {solver} is only available for LP benchmarks and year 2025."
+                    f" Current year: {year}, problem class: {benchmark['class']}. Skipping."
+                )
+                continue
+
             solver_version = solvers_versions.get(solver)
             if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
-
-            print(f"Found solver {solver} with version {solver_version}")
 
             metrics = {}
             runtimes = []
@@ -513,7 +645,12 @@ def main(
 
                 # Write each benchmark result immediately after the measurement
                 write_csv_row(
-                    results_csv, benchmark["name"], metrics, run_id, timestamp
+                    results_csv,
+                    benchmark["name"],
+                    metrics,
+                    run_id,
+                    timestamp,
+                    **environment_metadata,
                 )
 
                 # If solver errors or times out, don't run further iterations
@@ -574,6 +711,7 @@ def main(
                         reference_metrics,
                         run_id,
                         reference_timestamp,
+                        **environment_metadata,
                     )
 
                     # Update the last reference run time
@@ -604,7 +742,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs variants are available: highs-hipo, highs-ipm, highs-hipo-32, highs-hipo-64, highs-hipo-128.",
     )
     parser.add_argument(
         "--append",

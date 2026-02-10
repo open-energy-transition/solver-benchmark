@@ -381,7 +381,13 @@ const ChartCompare = ({
           {formatLegend("fail-fail")}
         </div>
       </div>
-      <div className="w-full overflow-x-auto" ref={containerRef}>
+      <div
+        className="w-full overflow-x-auto"
+        ref={containerRef}
+        role="region"
+        tabIndex={0}
+        aria-label={`Scrollable ${title.xaxis} vs ${title.yaxis} comparison chart`}
+      >
         <div className="min-w-[300px]">
           <svg ref={svgRef}></svg>
         </div>

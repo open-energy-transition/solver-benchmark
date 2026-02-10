@@ -11,9 +11,9 @@ const DetailsOfTheRunner = () => {
   return (
     <div ref={sectionRef}>
       {/* Content */}
-      <h4 id={HASH_NAME} className="info-pages-heading">
+      <div id={HASH_NAME} className="h4 info-pages-heading">
         Details of the Runner
-      </h4>
+      </div>
       <p>
         Given a time out <MathJax inline>{"$T$"}</MathJax> (seconds) and a
         number of iterations <MathJax inline>{"$N$"}</MathJax>, the benchmark
