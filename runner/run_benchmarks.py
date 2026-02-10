@@ -42,7 +42,7 @@ def get_conda_package_versions(solvers, env_name=None):
                 installed_packages[parts[0]] = parts[1]
 
         # Map solver names to their conda package names
-        name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc", "xpress": "xpress"}
+        name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
             # Handle highs-hipo variants as special cases - not conda packages
