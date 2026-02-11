@@ -2864,76 +2864,76 @@ benchmarks:
       Num. variables: 2879645
     - Name: 10-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_10_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_10_1h.mps.gz
     - Name: 11-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_11_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_11_1h.mps.gz
     - Name: 12-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_12_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_12_1h.mps.gz
     - Name: 13-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_13_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_13_1h.mps.gz
     - Name: 14-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_14_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_14_1h.mps.gz
     - Name: 15-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_15_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_15_1h.mps.gz
     - Name: 16-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_16_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_16_1h.mps.gz
     - Name: 17-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_17_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_17_1h.mps.gz
     - Name: 18-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_18_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_18_1h.mps.gz
     - Name: 19-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_19_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_19_1h.mps.gz
     - Name: 20-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_20_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_20_1h.mps.gz
     - Name: 21-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_21_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_21_1h.mps.gz
     - Name: 22-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_22_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_22_1h.mps.gz
     - Name: 23-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_23_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_23_1h.mps.gz
     - Name: 24-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_24_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_24_1h.mps.gz
     - Name: 25-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_25_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_25_1h.mps.gz
     - Name: 26-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_26_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_26_1h.mps.gz
     - Name: 3-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_3_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_3_1h.mps.gz
     - Name: 4-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_4_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_4_1h.mps.gz
     - Name: 5-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_5_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_5_1h.mps.gz
     - Name: 6-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_6_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_6_1h.mps.gz
     - Name: 7-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_7_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_7_1h.mps.gz
     - Name: 8-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_8_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_8_1h.mps.gz
     - Name: 9-1h
       Size: L # TODO update before merge
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-eur-elec_9_1h_2050.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_9_1h.mps.gz
   pypsa-de-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with transmission
       expansion based on optimal volume increase.
