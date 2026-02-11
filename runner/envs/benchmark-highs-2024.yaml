@@ -1,0 +1,13 @@
+name: benchmark-highs-2024
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+- cxx-compiler
+- pip:
+  - highspy==1.9.0
