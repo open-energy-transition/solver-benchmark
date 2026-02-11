@@ -1,15 +1,27 @@
 import React from "react";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { useSelector } from "react-redux";
 import Link from "next/link";
+import { IResultState } from "@/types/state";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const Introduction = () => {
+  const availableBenchmarksAndSizes = useSelector(
+    (state: { results: IResultState }) =>
+      state.results.availableBenchmarksAndSizes,
+  );
+  const availableSolvers = useSelector(
+    (state: { results: IResultState }) => state.results.availableSolvers,
+  );
+
   return (
     <>
       <p>
-        This platform contains the results of benchmarking 5 optimization
-        solvers on 120 problems arising from energy system models. For each
-        benchmark run, we measure runtime and memory consumption of the solver,
-        along with{" "}
+        This platform contains the results of benchmarking{" "}
+        {availableSolvers.length - HIPO_SOLVERS.length} optimization solvers on{" "}
+        {availableBenchmarksAndSizes.length} problems arising from energy system
+        models. For each benchmark run, we measure runtime and memory
+        consumption of the solver, along with{" "}
         <Link className="font-bold" href="/methodology/#metrics">
           other metrics
         </Link>{" "}

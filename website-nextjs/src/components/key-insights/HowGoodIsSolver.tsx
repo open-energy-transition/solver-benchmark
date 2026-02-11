@@ -6,6 +6,7 @@ import SolverRuntimeComparison from "./charts/BenchmarkRuntimeComparison";
 import { QuestionLineIcon } from "@/assets/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import InfoPopup from "../common/InfoPopup";
+import { SgmExplanation } from "@/components/shared";
 
 const HASH = "how-good-is-each-solver-and-for-what-cases";
 const HowGoodIsSolver = () => {
@@ -20,16 +21,35 @@ const HowGoodIsSolver = () => {
           How good is each solver, and for what cases?
         </div>
         <p>
-          The overall summary of our results is shown in the plot below, which
-          shows the runtime of each solver, relative to the fastest solver, on
-          each subset of our benchmark set. A problem on which a solver timed
-          out or errored is assumed to have a runtime equal to the timeout with
-          which it was run. (More details, and other ways to handle time outs
-          and errors, can be found on our{" "}
+          <span>
+            To find out how good each solver is overall, we plot below the
+            average (SGM
+          </span>
+          <span className="inline-flex gap-2">
+            <InfoPopup
+              trigger={() => (
+                <span className="flex items-baseline">
+                  <QuestionLineIcon className="size-3.5" viewBox="0 0 24 20" />)
+                </span>
+              )}
+              position="right center"
+              closeOnDocumentClick
+              arrow={false}
+            >
+              <div>
+                <SgmExplanation />
+              </div>
+            </InfoPopup>
+          </span>{" "}
+          runtime of each solver, relative to the fastest solver, on all the LP
+          and MILP problems in our benchmark set. A problem on which a solver
+          timed out or errored is assumed to have a runtime equal to the timeout
+          with which it was run. (More details, and other ways to handle time
+          outs and errors, can be found on our{" "}
           <Link className="font-bold" href="/dashboard/main-results">
             main dashboard
           </Link>
-          ). We split our set of problems by problem size
+          ). We group our set of problems according to problem size
           <span className="inline-flex gap-2">
             <InfoPopup
               trigger={() => (
@@ -60,6 +80,22 @@ const HowGoodIsSolver = () => {
         <div className="my-4">
           <RealisticRuntimeComparison rotateXAxisLabels />
         </div>
+        <div className="my-4">
+          <RealisticRuntimeComparison problemClass="MILP" rotateXAxisLabels />
+        </div>
+        <p>
+          In this iteration, we also benchmarked the new HiPO algorithm of the
+          HiGHS solver. The plot below shows how this compares to the solvers
+          with default options, and shows how HiPO in particular significantly
+          reduces the gap to Gurobi over the large benchmark instances.
+        </p>
+        <div className="my-4">
+          <RealisticRuntimeComparison
+            dataSource="hipo"
+            problemClass="LP"
+            rotateXAxisLabels
+          />
+        </div>
         <p>
           The next plot shows the concrete performance of each solver on a few
           representative realistic problems from a few modelling frameworks in
@@ -67,9 +103,7 @@ const HowGoodIsSolver = () => {
           details about the benchmark features and why we consider it as
           representative for that modelling framework. Solvers that timed out or
           errored on a particular problem are indicated by red text above the
-          corresponding bar. 4 out of the 7 problems can be solved by at least
-          one open source solver, with different solvers (HiGHS or SCIP)
-          providing the best performance on different problems.
+          corresponding bar.
         </p>
         <div className="my-4">
           <SolverRuntimeComparison
@@ -79,6 +113,12 @@ const HowGoodIsSolver = () => {
             extraCategoryLengthMargin={5}
           />
         </div>
+        <p>
+          {" "}
+          4 out of the 7 problems can be solved by at least one open source
+          solver, with different solvers (HiGHS or SCIP) providing the best
+          performance on different problems.
+        </p>
 
         <p>
           <Note>

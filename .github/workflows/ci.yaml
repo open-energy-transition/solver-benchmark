@@ -56,6 +56,7 @@ jobs:
             printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
             exit 1
           fi
+          python tests/validate_urls_exist.py results/metadata.yaml
           python tests/validate_results.py
 
       - name: Run Streamlit App Action
