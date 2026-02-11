@@ -149,6 +149,12 @@ def select_yaml_files(
             "pypsa-eur-elec-trex_copt-dfp.yaml",
             "pypsa-eur-elec-trex_vopt.yaml",
             "pypsa-eur-elec-trex_vopt-dfp.yaml",
+            "pypsa-eur-elec-uc.yaml"
+            "pypsa-eur-elec-uc-dfp.yaml",
+            "pypsa-eur-elec-trex_copt-uc.yaml",
+            "pypsa-eur-elec-trex_copt-uc-dfp.yaml",
+            "pypsa-eur-elec-trex_vopt-uc.yaml",
+            "pypsa-eur-elec-trex_vopt-uc-dfp.yaml",
         ],
         "pypsa-eur-sec": [
             "pypsa-eur-sec.yaml",

@@ -1,9 +1,0 @@
-electricity:
-    transmission_limit: copt
-
-conventional:
-  unit_commitment: true
-
-solving:
-  options:
-    linearized_unit_commitment: false
