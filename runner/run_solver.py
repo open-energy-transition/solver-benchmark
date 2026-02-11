@@ -194,10 +194,10 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.Runtime
             case "cplex":
                 return None
-            case "knitro":
-                return solver_model.reported_runtime
             case "xpress":
                 return solver_model.getAttrib("time")
+            case "knitro":
+                return solver_model.reported_runtime
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None
@@ -401,7 +401,9 @@ def main(solver_name, input_file, solver_version):
         # `import linopy` take a long (and varying) amount of time
         start_time = perf_counter()
         solver_result = solver.solve_problem(
-            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
+            problem_fn=problem_file,
+            solution_fn=solution_fn,
+            log_fn=log_fn,
         )
         runtime = perf_counter() - start_time
 
