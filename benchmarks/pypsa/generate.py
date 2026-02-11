@@ -284,8 +284,8 @@ if __name__ == "__main__":
                 final_cfg = recursive_merge(default_cfg.copy(), bench_cfg.copy())
 
                 final_cfg.setdefault("scenario", {})
-                final_cfg["scenario"]["clusters"] = clusters
-                final_cfg["scenario"]["planning_horizons"] = horizon
+                final_cfg["scenario"]["clusters"] = [clusters]
+                final_cfg["scenario"]["planning_horizons"] = [horizon]
 
                 final_cfg.setdefault("clustering", {})
                 final_cfg["clustering"].setdefault("temporal", {})
