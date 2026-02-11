@@ -233,6 +233,7 @@ def allocate_benchmarks(
     zone: str = "us-central1-a",
     solvers: str | None = None,
     timeout_seconds: int | None = None,
+    years: list[int] = [2020, 2022, 2023, 2024, 2025],
 ) -> list[dict]:
     allocation, _ = allocate_vms_greedy(
         benchmarks_df.index, benchmarks_df[weight_col], num_vms
@@ -259,6 +260,7 @@ def allocate_benchmarks(
             {
                 "machine-type": machine_type,
                 "zone": zone,  # Default cheapest zone, can be overwritten
+                "years": years,
                 "benchmarks": vm_benchmarks,
             }
         )
@@ -273,7 +275,6 @@ def create_benchmark_campaign(
     batch_id: str,
     vm_prefix: str,
     vm_yamls: list[dict],
-    years: str = '["2020", "2022", "2023", "2024", "2025"]',
 ):
     tfvars = "\n".join(
         [
@@ -282,7 +283,6 @@ def create_benchmark_campaign(
             "auto_destroy_vm = true",
             f'benchmarks_dir = "benchmarks/{batch_id}"',
             f'run_id = "{batch_id}"',
-            f"years = {years}",
         ]
     )
 
