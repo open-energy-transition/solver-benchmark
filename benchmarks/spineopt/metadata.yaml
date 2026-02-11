@@ -6,18 +6,18 @@ benchmarks:
     Model name: SpineOpt-EU
     Version: 665a449510f3811015bb81b00e8cb2ad6f6bccbf
     Contributor(s)/Source: Alvaro Porras and Diego Tejada; https://github.com/aporrasc/Mopo_HandsOn_Tutorial
-    License: GNU General Public License v3.0
+    License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
-    Time horizon: Multi-stage
+    Time horizon: Multi-stage (12 representative days)
     MILP features: None
     Sizes:
-      - Name: 30-12rp
+      - Name: 30-1h
         Size: L
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu_30-12rd.gz
-        Temporal resolution: 36 representative days
+        URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu_30-1h.gz
+        Temporal resolution: 1 hour
         Spatial resolution: 30 nodes
         Realistic: true
         Realistic motivation: Highly detailed sector, spatial, and temporal resolution over the considered three milestone years to allow the benchmark to be defined as Realistic.
