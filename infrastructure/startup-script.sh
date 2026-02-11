@@ -107,7 +107,8 @@ echo "HiGHS HiPO installation completed"
 cd /
 
 # Downloading benchmark reference model
-curl -L "https://storage.googleapis.com/solver-benchmarks/benchmark-test-model.lp" -o benchmark-test-model.lp
+curl -L "https://storage.googleapis.com/solver-benchmarks/instances/benchmark-test-model.lp.gz" -o benchmark-test-model.lp.gz
+gunzip benchmark-test-model.lp.gz
 
 # Install Miniconda
 echo "Installing Miniconda..."
