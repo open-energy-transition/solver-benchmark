@@ -269,13 +269,22 @@ def allocate_benchmarks(
     return vm_yamls
 
 
-def create_benchmark_campaign(batch_id: str, vm_prefix: str, vm_yamls: list[dict]):
-    tfvars = f'''project_id = "compute-app-427709"
-    enable_gcs_upload = true
-    auto_destroy_vm = true
-    benchmarks_dir = "benchmarks/{batch_id}"
-    run_id = "{batch_id}"
-    '''
+def create_benchmark_campaign(
+    batch_id: str,
+    vm_prefix: str,
+    vm_yamls: list[dict],
+    years: str = '["2020", "2022", "2023", "2024", "2025"]',
+):
+    tfvars = "\n".join(
+        [
+            'project_id = "compute-app-427709"',
+            "enable_gcs_upload = true",
+            "auto_destroy_vm = true",
+            f'benchmarks_dir = "benchmarks/{batch_id}"',
+            f'run_id = "{batch_id}"',
+            f"years = {years}",
+        ]
+    )
 
     # Create a campaign folder ../infrastructure/benchmarks/{batch_id}
     bench_dir = Path(f"../infrastructure/benchmarks/{batch_id}")
