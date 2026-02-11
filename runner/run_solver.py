@@ -76,6 +76,9 @@ def get_solver(solver_name):
             "randomseed": 0,
             "mip.tolerances.mipgap": mip_gap,
         },
+        "knitro": {
+            "KN_PARAM_MS_SEED": 1066,
+        },
         "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
     }
 
@@ -105,6 +108,9 @@ def is_mip_problem(solver_model, solver_name):
         # These solvers do not provide a solver model in the solver result,
         # so MIP problem detection is not possible.
         # TODO preprocess benchmarks and add this info to metadata
+        return False
+    elif solver_name == "knitro":
+        # Knitro is not designed for MILP problems
         return False
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
@@ -140,6 +146,9 @@ def get_duality_gap(solver_model, solver_name: str):
         return solver_model.solution.MIP.get_mip_relative_gap()
     elif solver_name == "xpress":
         return solver_model.controls.miprelgapnotify
+    elif solver_name == "knitro":
+        # Knitro duality gap retrieval not implemented yet
+        return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
@@ -185,6 +194,8 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.Runtime
             case "cplex":
                 return None
+            case "knitro":
+                return solver_model.reported_runtime
             case "xpress":
                 return solver_model.getAttrib("time")
             case _:
@@ -390,9 +401,7 @@ def main(solver_name, input_file, solver_version):
         # `import linopy` take a long (and varying) amount of time
         start_time = perf_counter()
         solver_result = solver.solve_problem(
-            problem_fn=problem_file,
-            solution_fn=solution_fn,
-            log_fn=log_fn,
+            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
         )
         runtime = perf_counter() - start_time
 
