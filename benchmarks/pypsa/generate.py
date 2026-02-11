@@ -1,3 +1,33 @@
+"""
+This script generates benchmark problem files for PyPSA-based energy system models.
+It automates the process of creating multiple model instances by iterating over different configurations,
+such as the number of clusters and time resolutions.
+The script uses a base configuration and merges it with benchmark-specific configurations.
+For each combination of parameters, it generates a temporary Snakemake configuration file, runs a Snakemake workflow to
+produce the problem file (e.g., in LP or MPS format), and then cleans up the temporary files.
+The script is intended to be run from the command line and accepts various arguments to customize
+the benchmark generation process.
+
+Example Usage
+-------------
+# Generate default benchmarks ('pypsa-eur-elec') with default settings.
+python benchmarks/pypsa/generate.py
+
+# Generate 'pypsa-eur-sec' benchmarks for 200 and 300 clusters,
+# with 6h and 48h time resolutions, saving as MPS files in './output'.
+python benchmarks/pypsa/generate.py \
+    --benchmark_name pypsa-eur-sec \
+    --file_extension .mps \
+    --output_dir ./output \
+    -c 200 300 \
+    -r 6h 48h
+
+# Perform a dry run to see the commands that would be executed without
+# actually generating the files.
+python benchmarks/pypsa/generate.py -n
+
+"""
+
 import argparse
 import os
 import pathlib
@@ -270,7 +300,9 @@ if __name__ == "__main__":
 
     base_dir = pathlib.Path(__file__).parent
     default_cfg = load_yaml(pathlib.Path(base_dir, "config", "config.default.yaml"))
-    benchmark_files = select_yaml_files(args.benchmark_name, pathlib.Path(base_dir, "config"))
+    benchmark_files = select_yaml_files(
+        args.benchmark_name, pathlib.Path(base_dir, "config")
+    )
 
     bench_type = "elec" if "elec" in args.benchmark_name else "sec"
     horizon = "2050"
