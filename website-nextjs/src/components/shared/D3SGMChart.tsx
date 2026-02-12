@@ -6,6 +6,7 @@ import { SolverYearlyChartData } from "@/types/performance-history";
 import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { IResultState } from "@/types/state";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -15,6 +16,7 @@ interface ID3SGMChart {
   className?: string;
   chartData: SolverYearlyChartData[];
   xAxisTooltipFormat?: (value: number | string) => string;
+  excluseHipo?: boolean;
 }
 
 const D3SGMChart = ({
@@ -23,12 +25,17 @@ const D3SGMChart = ({
   className = "",
   chartData = [],
   xAxisTooltipFormat,
+  excluseHipo = false,
 }: ID3SGMChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
+    return excluseHipo
+      ? state.results.availableSolvers.filter(
+          (solver) => !HIPO_SOLVERS.includes(solver),
+        )
+      : state.results.availableSolvers;
   });
   const windowWidth = useDebouncedWindowWidth(200);
 

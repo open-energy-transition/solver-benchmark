@@ -9,7 +9,12 @@ data = pd.read_csv(Path(__file__).parent / "../results/benchmark_results.csv")
 meta = yaml.safe_load(open("results/metadata.yaml"))
 
 short_TO_benchs, long_TO_benchs = set(), set()
-short_TO_solvers, long_TO_solvers = None, None
+short_TO_solvers_LP, short_TO_solvers_MILP, long_TO_solvers_LP, long_TO_solvers_MILP = (
+    None,
+    None,
+    None,
+    None,
+)
 for n, b in meta["benchmarks"].items():
     for s in b["Sizes"]:
         if s["Size"] == "L":
@@ -31,31 +36,75 @@ for (bench, size), group in data.groupby(["Benchmark", "Size"]):
     bench_size = bench + "-" + size
     solvers_present = set(sorted(group["solver-version"].unique()))
     if bench_size in short_TO_benchs:
-        assert len(solvers_present) == 15, (
-            f"expected {15}, found {len(solvers_present)} solvers in results"
+        problem_class = meta["benchmarks"][bench].get("Problem class", "")
+        if problem_class == "LP":
+            expected_solvers = 17
+        elif problem_class == "MILP":
+            expected_solvers = 15
+        else:
+            expected_solvers = 17  # default
+
+        assert len(solvers_present) == expected_solvers, (
+            f"expected {expected_solvers}, found {len(solvers_present)} solvers in results for {bench_size} ({problem_class})"
         )
-        if short_TO_solvers is None:
-            short_TO_solvers = str(solvers_present)
-        else:
-            if short_TO_solvers != str(solvers_present):
-                print(
-                    f"::warning file=tests/validate_results.py::ERROR: Unexpected solvers for {bench_size}: {solvers_present}"
-                )
-                raise ValueError(
-                    f"Unexpected solvers for {bench_size}: {solvers_present}"
-                )
+
+        if problem_class == "LP":
+            if short_TO_solvers_LP is None:
+                short_TO_solvers_LP = str(solvers_present)
+            else:
+                if short_TO_solvers_LP != str(solvers_present):
+                    print(
+                        f"::warning file=tests/validate_results.py::ERROR: Unexpected LP solvers for {bench_size}: {solvers_present}"
+                    )
+                    raise ValueError(
+                        f"Unexpected LP solvers for {bench_size}: {solvers_present}"
+                    )
+        elif problem_class == "MILP":
+            if short_TO_solvers_MILP is None:
+                short_TO_solvers_MILP = str(solvers_present)
+            else:
+                if short_TO_solvers_MILP != str(solvers_present):
+                    print(
+                        f"::warning file=tests/validate_results.py::ERROR: Unexpected MILP solvers for {bench_size}: {solvers_present}"
+                    )
+                    raise ValueError(
+                        f"Unexpected MILP solvers for {bench_size}: {solvers_present}"
+                    )
     elif bench_size in long_TO_benchs:
-        assert len(solvers_present) == 4
-        if long_TO_solvers is None:
-            long_TO_solvers = str(solvers_present)
+        problem_class = meta["benchmarks"][bench].get("Problem class", "")
+        if problem_class == "LP":
+            expected_solvers = 6
+        elif problem_class == "MILP":
+            expected_solvers = 4
         else:
-            if long_TO_solvers != str(solvers_present):
-                print(
-                    f"::warning file=tests/validate_results.py::ERROR: Unexpected solvers for {bench_size}: {solvers_present}"
-                )
-                raise ValueError(
-                    f"Unexpected solvers for {bench_size}: {solvers_present}"
-                )
+            expected_solvers = 6
+
+        assert len(solvers_present) == expected_solvers, (
+            f"expected {expected_solvers}, found {len(solvers_present)} solvers in results for {bench_size} ({problem_class})"
+        )
+
+        if problem_class == "LP":
+            if long_TO_solvers_LP is None:
+                long_TO_solvers_LP = str(solvers_present)
+            else:
+                if long_TO_solvers_LP != str(solvers_present):
+                    print(
+                        f"::warning file=tests/validate_results.py::ERROR: Unexpected LP solvers for {bench_size}: {solvers_present}"
+                    )
+                    raise ValueError(
+                        f"Unexpected LP solvers for {bench_size}: {solvers_present}"
+                    )
+        elif problem_class == "MILP":
+            if long_TO_solvers_MILP is None:
+                long_TO_solvers_MILP = str(solvers_present)
+            else:
+                if long_TO_solvers_MILP != str(solvers_present):
+                    print(
+                        f"::warning file=tests/validate_results.py::ERROR: Unexpected MILP solvers for {bench_size}: {solvers_present}"
+                    )
+                    raise ValueError(
+                        f"Unexpected MILP solvers for {bench_size}: {solvers_present}"
+                    )
     else:
         print(
             f"::warning file=tests/validate_results.py::ERROR: Unknown benchmark {bench_size}"
@@ -63,8 +112,10 @@ for (bench, size), group in data.groupby(["Benchmark", "Size"]):
         raise ValueError(f"Unknown benchmark {bench_size}")
     seen_benchs.add(bench_size)
 
-print(f"Solvers run on short TO benchmarks:\n{short_TO_solvers}")
-print(f"Solvers run on long TO benchmarks:\n{long_TO_solvers}")
+print(f"Solvers run on short LP benchmarks:\n{short_TO_solvers_LP}")
+print(f"Solvers run on short MILP benchmarks:\n{short_TO_solvers_MILP}")
+print(f"Solvers run on long LP benchmarks:\n{long_TO_solvers_LP}")
+print(f"Solvers run on long MILP benchmarks:\n{long_TO_solvers_MILP}")
 
 # Check that no bench-size from metadata is missing
 missing_benchs = (short_TO_benchs | long_TO_benchs) - seen_benchs

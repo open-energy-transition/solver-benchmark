@@ -24,11 +24,14 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const PagePerformanceHistory = () => {
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkResults;
+      return state.results.benchmarkResults.filter(
+        (result) => !HIPO_SOLVERS.includes(result.solver),
+      );
     },
   );
 
