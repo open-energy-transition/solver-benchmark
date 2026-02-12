@@ -1,3 +1,31 @@
+"""
+Benchmark Executor Script
+
+This script is the core executor for running a set of benchmarks against specified solvers
+within a single, pre-configured Conda environment. It is designed to be called by an
+orchestrator script (like `run_all_benchmarks.py`) which manages multiple environments
+for different years.
+
+Key Responsibilities:
+- Parses a YAML file that defines the benchmarks, including problem file locations (URL or local path).
+- Downloads and prepares benchmark problem files.
+- For each problem, it iterates through a list of specified solvers.
+- Executes each solver on the problem file using `systemd-run` to enforce strict time and memory limits.
+- Captures detailed performance metrics: runtime, memory usage, solver status, termination condition, and objective value.
+- Records metadata about the run, including solver versions, git commit hash, and machine details.
+- Writes the detailed results to `results/benchmark_results.csv` and a summary to `results/benchmark_results_mean_stddev.csv`.
+- Optionally runs a reference benchmark at a specified interval to monitor system performance stability during long runs.
+
+This script should not be run directly by the user for a multi-year benchmark campaign.
+Use the `run_all_benchmarks.py` wrapper for that purpose.
+
+Example Usage (as called by a wrapper):
+python runner/run_benchmarks.py benchmarks.yaml 2023 \\
+    --solvers gurobi highs scip \\
+    --run_id 20240520_123000_my-machine \\
+    --append
+"""
+
 import argparse
 import csv
 import datetime
@@ -12,14 +40,44 @@ import time
 from collections import OrderedDict
 from pathlib import Path
 from socket import gethostname
+from typing import Any, Iterable, Dict, List, Optional, Tuple
 
 import psutil
 import requests
 import yaml
-from run_solver import HighsVariant
+from runner.run_solver import HighsVariant
 
 
-def get_conda_package_versions(solvers, env_name=None):
+def get_conda_package_versions(
+    solvers: list[str], env_name: str | None = None
+) -> dict[str, str | None]:
+    """
+    Get the versions of specified solver packages from a Conda environment.
+
+    This function executes `conda list` to find the versions of installed
+    packages corresponding to a given list of solvers. It handles special
+    cases like HiGHS-HiPO variants which are not installed via Conda.
+
+    Parameters
+    ----------
+    solvers : list[str]
+        A list of solver names to look up.
+    env_name : str or None, optional
+        The name of the Conda environment to inspect. If None, the currently
+        active environment is used. Default is None.
+
+    Returns
+    -------
+    dict[str, str or None]
+        A dictionary mapping each solver name to its version string. If a
+        solver's package is not found, the value will be None.
+
+    Raises
+    ------
+    ValueError
+        If the `conda list` command fails to execute.
+    """
+
     try:
         # List packages in the conda environment
         cmd = "conda list"
@@ -47,7 +105,7 @@ def get_conda_package_versions(solvers, env_name=None):
         for solver in solvers:
             # Handle highs-hipo variants as special cases - not conda packages
             if solver in [
-                variant.value for variant in HighsVariant
+                variant for variant in HighsVariant
             ]:  # For py3.10 compatibility
                 solver_versions[solver] = get_highs_hipo_version()
             else:
@@ -60,8 +118,9 @@ def get_conda_package_versions(solvers, env_name=None):
         raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
 
 
-def download_benchmark_file(url, dest_path: Path):
-    """Download a file from url and save it locally in the specified folder if it doesn't already exist.
+def download_benchmark_file(url, dest_path: Path) -> None:
+    """
+    \Download a file from url and save it locally in the specified folder if it doesn't already exist.
 
     If the URL is on GCS (starting gs://), then this uses `gsutil` to download the file (requires authentication).
     If the file is gzipped (.gz), it will be unzipped after downloading.
@@ -105,7 +164,31 @@ def download_benchmark_file(url, dest_path: Path):
         print(f"Unzipped to {uncompressed_file_path}.")
 
 
-def parse_memory(output):
+def parse_memory(output: str) -> float:
+    """
+    Parse memory usage from the output of `/usr/bin/time`.
+
+    This function extracts the 'MaxResidentSetSizeKB' value from the last line
+    of the provided command output, converts it to a float, and returns it
+    in megabytes (MB).
+
+    Parameters
+    ----------
+    output : str
+        The standard error output from a command, expected to contain memory
+        usage information from `/usr/bin/time`.
+
+    Returns
+    -------
+    float
+        The maximum resident set size in megabytes (MB).
+
+    Raises
+    ------
+    ValueError
+        If the 'MaxResidentSetSizeKB=' string is not found in the last line
+        of the output.
+    """
     line = output.splitlines()[-1]
     if "MaxResidentSetSizeKB=" in line:
         parts = line.strip().split("=")
@@ -114,7 +197,32 @@ def parse_memory(output):
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
 
 
-def csv_record(check=False, **kwargs):
+def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
+    """
+    Create an ordered dictionary representing a single benchmark record.
+
+    This function constructs a standardized record from keyword arguments.
+    It can optionally check for missing (None) values.
+
+    Parameters
+    ----------
+    check : bool, optional
+        If True, the function will check for any values that are None and
+        raise a ValueError if any are found. Default is False.
+    **kwargs : Any
+        Keyword arguments corresponding to the fields of the benchmark record.
+        Expected keys include 'benchmark_name', 'size', 'solver', etc.
+
+    Returns
+    -------
+    OrderedDict[str, Any]
+        An ordered dictionary containing the benchmark data.
+
+    Raises
+    ------
+    ValueError
+        If `check` is True and any of the expected record fields are None.
+    """
     record = OrderedDict(
         [
             ("Benchmark", kwargs.get("benchmark_name")),
@@ -149,8 +257,26 @@ def csv_record(check=False, **kwargs):
 
 
 def write_csv_headers(
-    results_csv, mean_stddev_csv, headers=csv_record(check=False).keys()
-):
+    results_csv: Path,
+    mean_stddev_csv: Path,
+    headers: Iterable[str] = csv_record(check=False).keys(),
+) -> None:
+    """
+    Write headers to the main results and summary CSV files.
+
+    This function initializes two CSV files with their respective headers. If the
+    files already exist, they will be overwritten.
+
+    Parameters
+    ----------
+    results_csv : Path
+        Path to the main benchmark results CSV file.
+    mean_stddev_csv : Path
+        Path to the summary CSV file for mean and standard deviation.
+    headers : Iterable[str], optional
+        An iterable of header strings for the main results file. Defaults to
+        the keys generated by `csv_record()`.
+    """
     # Initialize CSV files with headers
     with open(results_csv, mode="w", newline="") as file:
         writer = csv.writer(file)
@@ -179,16 +305,40 @@ def write_csv_headers(
 
 
 def write_csv_row(
-    results_csv,
-    benchmark_name,
-    metrics,
-    run_id,
-    timestamp,
-    vm_instance_type,
-    vm_zone,
-    hostname,
-    solver_benchmark_version,
-):
+    results_csv: Path,
+    benchmark_name: str,
+    metrics: Dict[str, Any],
+    run_id: str,
+    timestamp: str,
+    vm_instance_type: str,
+    vm_zone: str,
+    hostname: str,
+    solver_benchmark_version: str,
+) -> None:
+    """
+    Append a single result row to the main results CSV file.
+
+    Parameters
+    ----------
+    results_csv : Path
+        Path to the main benchmark results CSV file.
+    benchmark_name : str
+        The name of the benchmark problem.
+    metrics : Dict[str, Any]
+        A dictionary containing the collected metrics for this run.
+    run_id : str
+        The unique identifier for the entire benchmark session.
+    timestamp : str
+        The timestamp for this specific solver run.
+    vm_instance_type : str
+        The type of the VM instance where the benchmark was run.
+    vm_zone : str
+        The zone of the VM instance.
+    hostname : str
+        The hostname of the machine.
+    solver_benchmark_version : str
+        The git commit hash or version of the solver-benchmark repository.
+    """
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -207,7 +357,30 @@ def write_csv_row(
         )
 
 
-def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, timestamp):
+def write_csv_summary_row(
+    mean_stddev_csv: Path,
+    benchmark_name: str,
+    metrics: Dict[str, Any],
+    run_id: str,
+    timestamp: str,
+) -> None:
+    """
+    Append a single summary row to the mean/stddev CSV file.
+
+    Parameters
+    ----------
+    mean_stddev_csv : Path
+        Path to the summary CSV file for mean and standard deviation.
+    benchmark_name : str
+        The name of the benchmark problem.
+    metrics : Dict[str, Any]
+        A dictionary containing the collected and calculated metrics for this
+        benchmark, including mean and standard deviation of runtime and memory.
+    run_id : str
+        The unique identifier for the entire benchmark session.
+    timestamp : str
+        The timestamp for the last run of this benchmark.
+    """
     # NOTE: ensure the order is the same as the headers above
     with open(mean_stddev_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -231,7 +404,37 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout, solver_version):
+def benchmark_solver(
+    input_file: Path, solver_name: str, timeout: int, solver_version: str
+) -> Dict[str, Any]:
+    """
+    Execute a single solver on a benchmark file with resource limits.
+
+    This function uses `systemd-run` to create a transient scope for the solver
+    process, enforcing strict memory limits (95% of available system memory)
+    and disabling swap. It also uses `/usr/bin/time` to measure the peak
+    resident set size and `timeout` to enforce a time limit.
+
+    It captures the solver's output, parses performance metrics, and handles
+    various termination scenarios like timeout, out-of-memory, and errors.
+
+    Parameters
+    ----------
+    input_file : Path
+        The path to the benchmark problem file.
+    solver_name : str
+        The name of the solver to execute.
+    timeout : int
+        The maximum allowed runtime in seconds.
+    solver_version : str
+        The version of the solver to use.
+
+    Returns
+    -------
+    Dict[str, Any]
+        A dictionary containing the collected performance metrics, including
+        runtime, memory usage, status, and objective value.
+    """
     available_memory_bytes = psutil.virtual_memory().available
     memory_limit_bytes = int(available_memory_bytes * 0.95)
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
@@ -447,14 +650,50 @@ def benchmark_highs_binary():
 
 
 def main(
-    benchmark_yaml_path,
-    solvers,
-    year=None,
-    iterations=1,
-    reference_interval=0,  # Default: disabled
-    append=False,
-    run_id=None,
-):
+    benchmark_yaml_path: str,
+    solvers: List[str],
+    year: Optional[str] = None,
+    iterations: int = 1,
+    reference_interval: int = 0,
+    append: bool = False,
+    run_id: Optional[str] = None,
+) -> Dict[Tuple[str, str, str, str], Dict[str, Any]]:
+    """
+    Run a suite of benchmarks based on a YAML configuration file.
+
+    This is the main entry point for the benchmark runner script. It orchestrates
+    the entire process of downloading benchmarks, running solvers, collecting
+    metrics, and writing results to CSV files.
+
+    Parameters
+    ----------
+    benchmark_yaml_path : str
+        Path to the YAML file defining the benchmarks.
+    solvers : List[str]
+        A list of solver names to execute.
+    year : Optional[str], optional
+        The release year of the solvers to use, corresponding to a Conda
+        environment name (e.g., '2023' for 'benchmark-2023'). Defaults to None.
+    iterations : int, optional
+        The number of times to run each solver on each problem. Defaults to 1.
+    reference_interval : int, optional
+        The interval in seconds at which to run a reference benchmark to monitor
+        system stability. If 0, the reference benchmark is disabled. Defaults to 0.
+    append : bool, optional
+        If True, results will be appended to existing CSV files. If False,
+        the files will be overwritten. Defaults to False.
+    run_id : Optional[str], optional
+        A unique identifier for this entire benchmark session. If None, a new
+        ID will be generated based on the current timestamp and hostname.
+        Defaults to None.
+
+    Returns
+    -------
+    Dict[Tuple[str, str, str, str], Dict[str, Any]]
+        A dictionary containing the final metrics for each benchmark run. The
+        keys are tuples of (benchmark_name, size, solver_name, solver_version),
+        and the values are dictionaries of the collected metrics.
+    """
     # If no run_id is provided, generate one
     hostname = gethostname()
 
