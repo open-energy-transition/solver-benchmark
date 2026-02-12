@@ -1672,7 +1672,6 @@ benchmarks:
       Spatial resolution: 10 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints:
       Num. variables:
       Num. continuous variables:
