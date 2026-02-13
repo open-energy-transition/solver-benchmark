@@ -24,6 +24,7 @@ benchmarks:
       Num. constraints: 9230938
       Num. variables: 8141182
       Skip because: TO (needs special solver options)
+      Num. nonzeros: 32766436
   ethos-fine-multi-regional-7tp:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 7 typical days without segmentation.
     Modelling framework: ETHOS.FINE
@@ -48,6 +49,7 @@ benchmarks:
       Num. variables: 55979
       Num. continuous variables: 55927
       Num. integer variables: 52
+      Num. nonzeros: 279562
   ethos-fine-multi-regional-7tp-12seg:
     Short description: Multi-regional energy system optimization model with 8 nodes modelling electricity, methane, hydrogen, biogas, and CO2. The nodes represent 8 regional clusters in Germany. The model uses time series aggregation by tsam with 7 typical days and 12 segments per typical day.
     Modelling framework: ETHOS.FINE
@@ -72,6 +74,7 @@ benchmarks:
       Num. variables: 33215
       Num. continuous variables: 33163
       Num. integer variables: 52
+      Num. nonzeros: 188064
   ethos-fine-energyland-full-timeseries:
     Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model features full time series resolution (8760 hours) for one year.
     Modelling framework: ETHOS.FINE
@@ -94,6 +97,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 543229
       Num. variables: 473179
+      Num. nonzeros: 1660944
   ethos-fine-energyland-48tp:
     Short description: Fictional on node energy system model depicting power, heat, and transport sectors. The model uses time series aggregation by tsam with 48 typical days without segmentation.
     Modelling framework: ETHOS.FINE
@@ -116,6 +120,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 40198
       Num. variables: 32770
+      Num. nonzeros: 122153
   FINE-2-node-electricity-supply-system:
     Short description: A simple 2-region energy supply system built using the ETHOS.FINE framework, illustrating the creation of an energy system model and the addition of sources, converters, storage, transmission, and sinks.
     Modelling framework: ETHOS.FINE
@@ -136,8 +141,9 @@ benchmarks:
       Temporal resolution: 8760 time slices
       Spatial resolution: 2 nodes
       Realistic: false
-      Num. constraints: 11597
-      Num. variables: 8152
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   FINE-1-node-energy-system-workflow:
     Short description: A single-region energy system model built using the ETHOS.FINE framework, demonstrating the use of all major component classes, including sources, converters, storage, and sinks.
     Modelling framework: ETHOS.FINE
@@ -158,8 +164,9 @@ benchmarks:
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 8339
-      Num. variables: 4892
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   FINE-energyland:
     Short description: A single-node energy system model with an extended set of technologies, demonstrating a more comprehensive application of the ETHOS.FINE framework including sources, converters, storage, and sinks.
     Modelling framework: ETHOS.FINE
@@ -175,13 +182,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: M
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-energyland-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 40198
-      Num. variables: 32770
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   FINE-multi-regional-energy-system-workflow:
     Short description: A multi-regional energy system model using the ETHOS.FINE framework, demonstrating the use of all major component classes including sources, converters, storage, transmission, and sinks.
     Modelling framework: ETHOS.FINE
@@ -197,15 +205,16 @@ benchmarks:
     MILP features: Binary investment decisions
     Sizes:
     - Name: 8-8760ts
-      Size: M
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-multi-regional-energy-system-workflow-8-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 8 nodes
       Realistic: false
-      Num. constraints: 44954
-      Num. variables: 16580
-      Num. continuous variables: 16528
-      Num. integer variables: 52
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   FINE-district-optimization:
     Short description: A small district energy system modeled using the ETHOS.FINE framework, demonstrating sources, converters, storage, transmission, and sinks.
     Modelling framework: ETHOS.FINE
@@ -221,15 +230,16 @@ benchmarks:
     MILP features: Binary investment decisions
     Sizes:
     - Name: 14-8760ts
-      Size: M
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-district-optimization-14-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 14 nodes
       Realistic: false
-      Num. constraints: 32490
-      Num. variables: 15260
-      Num. continuous variables: 15228
-      Num. integer variables: 32
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   FINE-water-supply-system:
     Short description: A clean water supply system for a small mountain village, modeled using the ETHOS.FINE framework, including water demand, river water supply, water treatment, storage, and transmission infrastructure.
     Modelling framework: ETHOS.FINE
@@ -250,10 +260,11 @@ benchmarks:
       Temporal resolution: 8760 time slices
       Spatial resolution: 12 nodes
       Realistic: false
-      Num. constraints: 6461
-      Num. variables: 4701
-      Num. continuous variables: 4679
-      Num. integer variables: 22
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   FINE-spatial-aggregation-of-energy-system-model:
     Short description: Demonstrates the spatial aggregation of an energy system model, merging similar regions to reduce the number of model nodes while preserving system characteristics.
     Modelling framework: ETHOS.FINE
@@ -274,8 +285,9 @@ benchmarks:
       Temporal resolution: 8760 time slices
       Spatial resolution: 8 nodes
       Realistic: false
-      Num. constraints: 15898
-      Num. variables: 8034
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   FINE-perfect-foresight:
     Short description: A single-node energy system transformation pathway modeled using the ETHOS.FINE framework, demonstrating sources, converters, storage, and sinks with perfect foresight optimization.
     Modelling framework: ETHOS.FINE
@@ -291,13 +303,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: M
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp.gz
       Temporal resolution: 8760 hours
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 19619
-      Num. variables: 10538
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   FINE-hydrogen-partload:
     Short description: A hydrogen system modeled using the ETHOS.FINE framework, considering part-load behavior of the electrolyzer and demonstrating sources, converters, storage, and sinks.
     Modelling framework: ETHOS.FINE
@@ -318,7 +331,8 @@ benchmarks:
       Temporal resolution: 168 hours
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 3883
-      Num. variables: 2707
-      Num. continuous variables: 2370
-      Num. integer variables: 337
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0

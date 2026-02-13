@@ -20,9 +20,10 @@ benchmarks:
       Temporal resolution: 6 time slices (3 seasons, 2 times of day)
       Spatial resolution: 1 region
       Realistic: false
-      Num. constraints: 1505
-      Num. variables: 990
+      Num. constraints: 0
+      Num. variables: 0
   ## Metadata for samples from https://github.com/https://github.com/TemoaProject/oeo/oeo
+      Num. nonzeros: 0
   temoa-US_9R_TS:
     Short description: US-based sector-coupled infrastructure model run with 9 regions and 8 future periods in absence of further constraints.
     Modelling framework: TEMOA
@@ -38,14 +39,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12ts
-      Size: L
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
-      Num. constraints: 1594079
-      Num. variables: 1801794
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   temoa-US_9R_TS_NDC:
     Short description: US-based sector-coupled infrastructure model run with 9 regions and 8 future periods. This benchmark includes the policy commitments in the U.S. Nationally Determined Contributions (NDC).
     Modelling framework: TEMOA
@@ -61,14 +63,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12ts
-      Size: L
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NDC-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
-      Num. constraints: 1594091
-      Num. variables: 1801794
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   temoa-US_9R_TS_NZ:
     Short description: US-based sector-coupled infrastructure model run with 9 regions and 8 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
     Modelling framework: TEMOA
@@ -84,14 +87,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12ts
-      Size: L
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NZ-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
-      Num. constraints: 1594085
-      Num. variables: 1801794
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   temoa-US_9R_TS_SP:
     Short description: US-based sector-coupled infrastructure model run with 9 regions and 8 future periods. This benchmark includes a collection of CO2 emission limits for US states from stated policies.
     Modelling framework: TEMOA
@@ -107,14 +111,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12ts
-      Size: L
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_SP-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
-      Num. constraints: 1594116
-      Num. variables: 1801794
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   temoa-US_9R_TS_NZ_trunc_4periods:
     Short description: US-based sector-coupled infrastructure model run with 9 regions and 5 future periods. This benchmark assumes that the United States will reach net-zero CO2 emissions by 2050.
     Modelling framework: TEMOA
@@ -130,11 +135,12 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 9-12ts
-      Size: M
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-US_9R_TS_NZ_trunc_4periods-9-12ts.lp.gz
       Temporal resolution: 12 time slices (4 seasons, 3 times of day)
       Spatial resolution: 9 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive US scenario analyses (https://github.com/TemoaProject/oeo).
-      Num. constraints: 665474
-      Num. variables: 708899
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0

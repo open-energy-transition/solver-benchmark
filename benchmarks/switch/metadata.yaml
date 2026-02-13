@@ -14,14 +14,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 32-433ts
-      Size: L
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
       Temporal resolution: 433 time slices
       Spatial resolution: 32 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 14588407
-      Num. variables: 13338520
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   SWITCH-USA-PG:
     Short description: A capacity-expansion and operational power-system model of the United States built on the Switch framework and parameterized with PowerGenome data. It provides consistent, reproducible multi-regional U.S. electricity system scenarios using detailed technology cost assumptions (e.g., ATB).
     Modelling framework: SWITCH
@@ -37,13 +38,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 26-168h
-      Size: L
+      Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 26 nodes
       Realistic: false
-      Num. constraints: 4022362
-      Num. variables: 3989071
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   SWITCH-3-zone-tiny:
     Short description: A minimal 3-zone SWITCH tutorial model demonstrating core SWITCH functionality and several custom modules.
     Modelling framework: SWITCH
@@ -64,10 +66,11 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 795
-      Num. variables: 582
-      Num. continuous variables: 580
-      Num. integer variables: 2
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   SWITCH-3-zone-toy:
     Short description: A 3-zone SWITCH toy model with two investment periods, where the first period has higher temporal resolution. Demonstrates core SWITCH functionality and selected custom modules.
     Modelling framework: SWITCH
@@ -89,10 +92,11 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 775
-      Num. variables: 618
-      Num. continuous variables: 616
-      Num. integer variables: 2
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   SWITCH-3zone-toy-stochastic-PySP:
     Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating scenario-based stochastic optimization in a multi-period power system context.
     Modelling framework: SWITCH
@@ -113,10 +117,11 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 716
-      Num. variables: 580
-      Num. continuous variables: 578
-      Num. integer variables: 2
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   SWITCH-carbon-cap:
     Short description: A carbon-constrained variant of the 3-zone toy SWITCH model, where a system-wide CO₂ cap is imposed and the minimum nuclear build constraint is relaxed to enable meaningful dual values on the carbon cost constraint.
     Modelling framework: SWITCH
@@ -137,8 +142,9 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 773
-      Num. variables: 616
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   SWITCH-hydrogen:
     Short description: A hydrogen-enabled variant of the 3-zone carbon cap model featuring a near-zero CO₂ cap, expanded hydrogen production and storage pathways, and dual-fuel natural-gas/hydrogen power plants.
     Modelling framework: SWITCH
@@ -159,8 +165,9 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 863
-      Num. variables: 733
+      Num. constraints: 0
+      Num. variables: 0
+      Num. nonzeros: 0
   SWITCH-planning-reserves:
     Short description: A planning-reserve variant of the 3-zone toy model with lower solar costs to place solar on the margin and distributed solar registered as a DER for better accounting of distribution losses.
     Modelling framework: SWITCH
@@ -181,10 +188,11 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 784
-      Num. variables: 618
-      Num. continuous variables: 616
-      Num. integer variables: 2
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   SWITCH-retrofits:
     Short description: A retrofit-enabled variant of the 3-zone toy model
     Modelling framework: SWITCH
@@ -205,10 +213,11 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 1597
-      Num. variables: 1310
-      Num. continuous variables: 1308
-      Num. integer variables: 2
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
   SWITCH-rps-simple:
     Short description: A 3-zone SWITCH toy example implementing a simple Renewable Portfolio Standard (RPS) policy.
     Modelling framework: SWITCH
@@ -229,7 +238,8 @@ benchmarks:
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
-      Num. constraints: 777
-      Num. variables: 618
-      Num. continuous variables: 616
-      Num. integer variables: 2
+      Num. constraints: 0
+      Num. variables: 0
+      Num. continuous variables: 0
+      Num. integer variables: 0
+      Num. nonzeros: 0
