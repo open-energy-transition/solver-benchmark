@@ -236,10 +236,22 @@ def process_metadata_files(benchmark_folder, output_folder):
                                 successful_downloads += 1
 
                                 # Skip time consuming analysis if metadata already contains stats
-                                if size.get("Num. variables") is not None:
-                                    print(
-                                        f"Skipping analysis for {model_name} size {size_name}"
+                                required_fields = [
+                                    "Num. constraints",
+                                    "Num. variables",
+                                    "Num. nonzeros",
+                                ]
+
+                                if model_info["Problem class"] == "MILP":
+                                    required_fields.extend(
+                                        [
+                                            "Num. continuous variables",
+                                            "Num. integer variables",
+                                        ]
                                     )
+
+                                if all(size.get(field) is not None for field in required_fields):
+                                    print(f"Skipping analysis for {model_name} size {size_name}")
                                     Path(model_path).unlink(missing_ok=True)
                                     continue
 
