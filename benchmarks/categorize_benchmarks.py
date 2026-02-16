@@ -52,6 +52,9 @@ def analyze_model_file(file_path, is_milp: bool):
 
         # Extract key information
         num_variables = highs.getNumCol()
+        if num_variables == 0:
+            raise RuntimeError("Model loaded but has zero variables")
+
         num_constraints = highs.getNumRow()
 
         try:
@@ -255,10 +258,19 @@ def process_metadata_files(benchmark_folder, output_folder):
                                         ]
                                     )
 
-                                if all(
+                                # Check whether stats are complete and valid
+                                stats_complete = all(
                                     size.get(field) is not None
                                     for field in required_fields
-                                ):
+                                )
+
+                                stats_valid = (
+                                    size.get("Num. variables", 0) > 0
+                                    and size.get("Num. constraints", 0) > 0
+                                    and size.get("Num. nonzeros", 0) > 0
+                                )
+
+                                if stats_complete and stats_valid:
                                     print(
                                         f"Skipping analysis for {model_name} size {size_name}"
                                     )
