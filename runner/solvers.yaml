@@ -1,0 +1,55 @@
+solvers:
+  glpk:
+    "5.0":
+      year: 2020
+      env: benchmark-glpk-2020
+
+  highs:
+    "1.5.0.dev0":
+      year: 2022
+      env: benchmark-highs-2022
+    "1.6.0":
+      year: 2023
+      env: benchmark-highs-2023
+    "1.9.0":
+      year: 2024
+      env: benchmark-highs-2024
+    "1.12.0":
+      year: 2025
+      env: benchmark-highs-2025
+
+  scip:
+    "8.0.3":
+      year: 2022
+      env: benchmark-scip-2022
+    "8.1.0":
+      year: 2023
+      env: benchmark-scip-2023
+    "9.2.0":
+      year: 2024
+      env: benchmark-scip-2024
+    "10.0.0":
+      year: 2025
+      env: benchmark-scip-2025
+
+  gurobi:
+    "10.0.0":
+      year: 2022
+      env: benchmark-gurobi-2022
+    "11.0.0":
+      year: 2023
+      env: benchmark-gurobi-2023
+    "12.0.0":
+      year: 2024
+      env: benchmark-gurobi-2024
+    "13.0.0":
+      year: 2025
+      env: benchmark-gurobi-2025
+
+  cbc:
+    "2.10.11":
+      year: 2023
+      env: benchmark-cbc-2023
+    "2.10.12":
+      year: 2024
+      env: benchmark-cbc-2024
