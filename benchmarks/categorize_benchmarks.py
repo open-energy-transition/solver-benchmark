@@ -129,9 +129,7 @@ def download_benchmark_file(url: str) -> Path | None:
         tmp.close()
 
         if extension.endswith(".gz"):
-            uncompressed_tmp = tempfile.NamedTemporaryFile(
-                delete=False, suffix=".mps"
-            )
+            uncompressed_tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".mps")
 
             with gzip.open(tmp.name, "rb") as gz_file:
                 uncompressed_tmp.write(gz_file.read())
@@ -250,8 +248,13 @@ def process_metadata_files(benchmark_folder, output_folder):
                                         ]
                                     )
 
-                                if all(size.get(field) is not None for field in required_fields):
-                                    print(f"Skipping analysis for {model_name} size {size_name}")
+                                if all(
+                                    size.get(field) is not None
+                                    for field in required_fields
+                                ):
+                                    print(
+                                        f"Skipping analysis for {model_name} size {size_name}"
+                                    )
                                     Path(model_path).unlink(missing_ok=True)
                                     continue
 
