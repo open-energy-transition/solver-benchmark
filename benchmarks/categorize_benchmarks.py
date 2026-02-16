@@ -144,9 +144,6 @@ def download_benchmark_file(url: str) -> Path | None:
 
     except Exception as e:
         print(f"Error processing {url}: {e}", file=sys.stderr)
-        # Remove partial downloads
-        if not file_exists and target_path.exists():
-            target_path.unlink()
         return None
 
 
