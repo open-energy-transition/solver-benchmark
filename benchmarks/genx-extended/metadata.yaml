@@ -14,15 +14,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: S
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex-15-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 11832658
+      Num. variables: 13777226
+      Num. nonzeros: 41476545
   genx-elec_trex_co2:
     Modelling framework: GenX
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
@@ -38,14 +38,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: S
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_co2-15-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
+      Num. constraints: 11832689
+      Num. variables: 13777227
 #  genx-elec_trex_co2_uc:
 #    Modelling framework: GenX
 #    Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint and unit commitment for conventional generators.
@@ -67,7 +67,7 @@ benchmarks:
 #      N. of continuous variables:
 #      N. of integer variables:
 #      N. of binary variables:
-      Num. nonzeros: 0
+      Num. nonzeros: 43263428
   genx-elec_trex_uc:
     Short description: This is 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
     Modelling framework: GenX
@@ -83,17 +83,17 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 15-24h
-      Size: S
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_uc-15-24h.lp.gz
       Temporal resolution: 24h hours
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 3123898
+      Num. variables: 2551346
+      Num. continuous variables: 2062938
+      Num. integer variables: 488408
+      Num. nonzeros: 12519873
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
     Modelling framework: GenX
@@ -109,14 +109,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 15-168h
-      Size: S
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_co2-15-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
+      Num. constraints: 11832633
+      Num. variables: 13777201
 # genx-15-zones_elec_co2_uc:
 #   Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint and unit commitment for conventional generators.
 #   Modelling framework: GenX
@@ -159,4 +159,4 @@ benchmarks:
 #     N. of continuous variables: 13897912
 #     N. of integer variables: 3417368
 #     N. of binary variables: 120960
-      Num. nonzeros: 0
+      Num. nonzeros: 42847400

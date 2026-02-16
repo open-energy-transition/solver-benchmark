@@ -15,15 +15,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 997-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 199255
+      Num. variables: 122017
+      Num. nonzeros: 399325
   DCOPF-Carolinas_uc_1W:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a one-week horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Modelling framework: DCOPF
@@ -39,17 +39,17 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 997-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_1W-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 220143
+      Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
+      Num. nonzeros: 471061
   DCOPF-Carolinas_2M:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a two-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Modelling framework: DCOPF
@@ -65,15 +65,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 997-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 199255
+      Num. variables: 122017
+      Num. nonzeros: 399325
   DCOPF-Carolinas_uc_2M:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a two-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Modelling framework: DCOPF
@@ -89,17 +89,17 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 997-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_2M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 220143
+      Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
+      Num. nonzeros: 471061
   DCOPF-Carolinas_6M:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a six-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution.
     Modelling framework: DCOPF
@@ -115,15 +115,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 997-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 199255
+      Num. variables: 122017
+      Num. nonzeros: 399325
   DCOPF-Carolinas_uc_6M:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model configured for a six-month horizon with hourly resolution, using 2021 as the weather year for time series of load, solar, and wind generation. Resource adequacy is evaluated through slack variables, under transmission constraints, with support for nodal or zonal resolution
     Modelling framework: DCOPF
@@ -139,14 +139,14 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 997-1h
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/DCOPF-Carolinas_uc_6M-997-1h.lp.gz
       Temporal resolution: 1 hour
       Spatial resolution: 997 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 220143
+      Num. variables: 131278
+      Num. continuous variables: 122017
+      Num. integer variables: 9261
+      Num. nonzeros: 471061

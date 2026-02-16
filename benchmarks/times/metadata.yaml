@@ -14,15 +14,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 31-20ts
-      Size: S
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-GEO-global-base-31-20ts.lp.gz
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 6027253
+      Num. variables: 6449851
+      Num. nonzeros: 36624474
   TIMES-GEO-global-netzero:
     Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario with a net-zero decarbonization constraints.
     Modelling framework: TIMES
@@ -38,15 +38,15 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 31-20ts
-      Size: S
+      Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-GEO-global-netzero-31-20ts.lp.gz
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 5063755
+      Num. variables: 5422595
+      Num. nonzeros: 30487085
   times-etimeseu-france-elec+heat-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage.
     Modelling framework: TIMES

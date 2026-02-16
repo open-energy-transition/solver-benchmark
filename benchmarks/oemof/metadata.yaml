@@ -19,11 +19,11 @@ benchmarks:
       Temporal resolution: 240 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 4331
+      Num. variables: 3374
+      Num. continuous variables: 3134
+      Num. integer variables: 240
+      Num. nonzeros: 10451
   OEMOF-economic-results:
     Short description: Simple energy system model demonstrating variable and investment cost calculation using oemof.solph Results class.
     Modelling framework: OEMOF
@@ -39,16 +39,16 @@ benchmarks:
     MILP features: Binary investment decisions
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-economic-results-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 52567
+      Num. variables: 61326
+      Num. continuous variables: 61325
+      Num. integer variables: 1
+      Num. nonzeros: 140173
   OEMOF-house-with-nonconvex-investment:
     Short description: Hybrid heating system combining solph.Investment and solph.NonConvex on the same component, modeling wood fireplace and gas boiler with minimum loads and minimum up-times.
     Modelling framework: OEMOF
@@ -69,11 +69,11 @@ benchmarks:
       Temporal resolution: 365 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 2541
+      Num. variables: 1821
+      Num. continuous variables: 1457
+      Num. integer variables: 364
+      Num. nonzeros: 7232
   OEMOF-house-without-nonconvex-investment:
     Short description: Heating system example combining solph.Investment and solph.NonConvex applied to different components, including a solar thermal collector, wood fireplace, and gas boiler.
     Modelling framework: OEMOF
@@ -94,11 +94,11 @@ benchmarks:
       Temporal resolution: 365 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 2181
+      Num. variables: 2184
+      Num. continuous variables: 1822
+      Num. integer variables: 362
+      Num. nonzeros: 5446
   OEMOF-invest-optimize-all-technologies-using-mp-and-tsam:
     Short description: Capacity expansion model with seasonal storage using time-series aggregation (tsam), optimizing wind, PV, gas supply, and storage capacities.
     Modelling framework: OEMOF
@@ -114,14 +114,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-1920ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-invest-optimize-all-technologies-using-mp-and-tsam-1-1920ts.lp.gz
       Temporal resolution: 1920 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 51174
+      Num. variables: 18061
+      Num. nonzeros: 129548
   OEMOF-offset-diesel-genset-nonconvex-investment:
     Short description: Hybrid mini-grid model using an OffsetConverter to represent diesel generator efficiency curves with solph.NonConvex and solph.Investment.
     Modelling framework: OEMOF
@@ -142,11 +142,11 @@ benchmarks:
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. continuous variables: 0
-      Num. integer variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 2153
+      Num. variables: 1680
+      Num. continuous variables: 1561
+      Num. integer variables: 119
+      Num. nonzeros: 5312
   OEMOF-result-object:
     Short description: Basic solph energy system with wind, PV, gas supply, gas power plant, storage, and electricity demand; used to demonstrate the Result object.
     Modelling framework: OEMOF
@@ -162,14 +162,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-result-object-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 43801
+      Num. variables: 70081
+      Num. nonzeros: 122642
   OEMOF-simple-dispatch:
     Short description: Least-cost dispatch model with renewable generators, conventional units, and combined heat and power, meeting an inelastic electricity demand.
     Modelling framework: OEMOF
@@ -185,14 +185,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-simple-dispatch-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 96360
+      Num. variables: 140160
+      Num. nonzeros: 236520
   OEMOF-tuple-as-label:
     Short description: Demonstrates the use of named tuples as labels to manage and filter results in large Oemof energy systems, enabling grouping by region, technology, or custom tags.
     Modelling framework: OEMOF
@@ -208,14 +208,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-tuple-as-label-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 43801
+      Num. variables: 70081
+      Num. nonzeros: 122642
   OEMOF-v1-invest-optimize-all-technologies:
     Short description: Capacity optimization of an energy system with storage, wind, PV, and gas resource.
     Modelling framework: OEMOF
@@ -231,14 +231,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v1-invest-optimize-all-technologies-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 78850
+      Num. variables: 78851
+      Num. nonzeros: 205560
   OEMOF-v2-invest-optimize-only-gas-and-storage:
     Short description: Capacity optimization of an energy system with storage and gas resource only; wind and PV capacities are preinstalled, leading to a higher renewable share (~78%) and no storage installation.
     Modelling framework: OEMOF
@@ -254,14 +254,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v2-invest-optimize-only-gas-and-storage-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 61328
+      Num. variables: 61327
+      Num. nonzeros: 157695
   OEMOF-v3-invest-optimize-only-storage-with-fossil-share:
     Short description: Capacity calculation of storage in an energy system with preinstalled wind and PV, targeting a higher renewable share (~80%) without cost optimization.
     Modelling framework: OEMOF
@@ -277,14 +277,14 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v3-invest-optimize-only-storage-with-fossil-share-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 61329
+      Num. variables: 61327
+      Num. nonzeros: 166455
   OEMOF-v4-invest-optimize-all-technologies-with-fossil-share:
     Short description: Capacity optimization of wind, PV, and storage with a set fossil share; achieves 80% renewable share primarily via slightly increased wind and PV capacities, storage is not installed.
     Modelling framework: OEMOF
@@ -300,11 +300,11 @@ benchmarks:
     MILP features: None
     Sizes:
     - Name: 1-8760ts
-      Size: S
+      Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/OEMOF-v4-invest-optimize-all-technologies-with-fossil-share-1-8760ts.lp.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: false
-      Num. constraints: 0
-      Num. variables: 0
-      Num. nonzeros: 0
+      Num. constraints: 78851
+      Num. variables: 78851
+      Num. nonzeros: 214320
