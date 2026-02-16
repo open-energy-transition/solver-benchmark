@@ -57,7 +57,7 @@ for b in sizes:
     metadata[b]["Sizes"] = sorted(sizes[b], key=lambda s: s["N. of variables"])
 
 # TODO dump to results/metadata, and also to runner/benchmarks.yaml
-with open("../benchmarks/pypsa/metadata.yaml", "w") as f:
+with open("plain_pypsa/metadata.yaml", "w") as f:
     yaml.safe_dump(
         metadata, f, default_flow_style=False, sort_keys=False, width=99999999
     )
