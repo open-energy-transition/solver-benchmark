@@ -273,7 +273,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features:  None
+    MILP features: None
     Sizes:
     - Name: 50-168h
       Size: M
@@ -510,77 +510,125 @@ benchmarks:
       Num. constraints: 6123937
       Num. variables: 2879645
     - Name: 10-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_10_1h.mps.gz
+      Size: L
+      Num. constraints: 4502789
+      Num. variables: 2111271
     - Name: 11-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_11_1h.mps.gz
+      Size: L
+      Num. constraints: 4835682
+      Num. variables: 2268961
     - Name: 12-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_12_1h.mps.gz
+      Size: L
+      Num. constraints: 5221135
+      Num. variables: 2444171
     - Name: 13-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_13_1h.mps.gz
+      Size: L
+      Num. constraints: 5536508
+      Num. variables: 2601861
     - Name: 14-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_14_1h.mps.gz
+      Size: L
+      Num. constraints: 6053365
+      Num. variables: 2838393
     - Name: 15-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_15_1h.mps.gz
+      Size: L
+      Num. constraints: 6359974
+      Num. variables: 2978561
     - Name: 16-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_16_1h.mps.gz
+      Size: L
+      Num. constraints: 6754193
+      Num. variables: 3171294
     - Name: 17-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_17_1h.mps.gz
+      Size: L
+      Num. constraints: 7183446
+      Num. variables: 3364024
     - Name: 18-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_18_1h.mps.gz
+      Size: L
+      Num. constraints: 7568897
+      Num. variables: 3539233
     - Name: 19-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_19_1h.mps.gz
+      Size: L
+      Num. constraints: 7928072
+      Num. variables: 3714444
     - Name: 20-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_20_1h.mps.gz
+      Size: L
+      Num. constraints: 8208403
+      Num. variables: 3854613
     - Name: 21-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_21_1h.mps.gz
+      Size: L
+      Num. constraints: 8795338
+      Num. variables: 4108664
     - Name: 22-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_22_1h.mps.gz
+      Size: L
+      Num. constraints: 9066911
+      Num. variables: 4240074
     - Name: 23-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_23_1h.mps.gz
+      Size: L
+      Num. constraints: 9434848
+      Num. variables: 4415286
     - Name: 24-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_24_1h.mps.gz
+      Size: L
+      Num. constraints: 9802781
+      Num. variables: 4581736
     - Name: 25-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_25_1h.mps.gz
+      Size: L
+      Num. constraints: 10118152
+      Num. variables: 4739425
     - Name: 26-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_26_1h.mps.gz
+      Size: L
+      Num. constraints: 10459811
+      Num. variables: 4897118
     - Name: 3-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_3_1h.mps.gz
+      Size: M
+      Num. constraints: 1533052
+      Num. variables: 727118
     - Name: 4-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_4_1h.mps.gz
+      Size: M
+      Num. constraints: 2041145
+      Num. variables: 963648
     - Name: 5-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_5_1h.mps.gz
+      Size: L
+      Num. constraints: 2575524
+      Num. variables: 1208941
     - Name: 6-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_6_1h.mps.gz
+      Size: L
+      Num. constraints: 2943457
+      Num. variables: 1384151
     - Name: 7-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_7_1h.mps.gz
+      Size: L
+      Num. constraints: 3285110
+      Num. variables: 1550601
     - Name: 8-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_8_1h.mps.gz
+      Size: L
+      Num. constraints: 3731883
+      Num. variables: 1752091
     - Name: 9-1h
-      Size: L # TODO update before merge
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_9_1h.mps.gz
+      Size: L
+      Num. constraints: 4082296
+      Num. variables: 1918541
   pypsa-de-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
