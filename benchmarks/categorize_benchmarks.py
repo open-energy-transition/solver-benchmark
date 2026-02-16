@@ -105,31 +105,79 @@ def get_extension(url_path: str) -> str:
     raise ValueError(f"Unknown URL extension {url_path}")
 
 
-def download_benchmark_file(url: str) -> Path | None:
+def download_benchmark_file(
+    url: str,
+    use_cache: bool,
+    cache_dir: Path | None = None,
+) -> Path | None:
     """
-    Download file into a temporary file and return its path.
-    File is deleted manually after analysis.
+    Download a benchmark file and return the local path.
+
+    Behaviour depends on `use_cache`:
+
+    - If use_cache=True:
+        The file is stored permanently in `cache_dir`.
+        If the file already exists, it is reused and not downloaded again.
+        This is suitable for HPC / runner workflows.
+
+    - If use_cache=False:
+        The file is downloaded into a temporary file.
+        The caller is responsible for deleting it after analysis.
+        This is suitable for CI or stateless execution.
+
+    Gzipped files (.lp.gz, .mps.gz) are automatically decompressed.
     """
+
     try:
-        # Check if the URL is valid
         if not url or url.lower() == "none" or "http" not in url.lower():
             raise ValueError(f"Invalid URL: {url}")
+
+        parsed_url = urlparse(url)
+        extension = get_extension(parsed_url.path)
+
+        # Determine destination path
+
+        if use_cache:
+            if cache_dir is None:
+                raise ValueError("cache_dir must be provided when use_cache=True")
+
+            cache_dir.mkdir(parents=True, exist_ok=True)
+
+            filename = Path(parsed_url.path).name
+            target_path = cache_dir / filename
+
+            # If already downloaded and uncompressed
+            if extension.endswith(".gz"):
+                if extension not in ("lp.gz", "mps.gz"):
+                    raise ValueError(f"Unsupported gz extension: {extension}")
+
+                uncompressed_path = cache_dir / Path(filename).with_suffix("").name
+
+                if uncompressed_path.exists():
+                    return uncompressed_path
+
+            else:
+                if target_path.exists():
+                    return target_path
+
+        else:
+            # Temporary mode
+            target_path = tempfile.NamedTemporaryFile(
+                delete=False,
+                suffix=f".{extension}",
+            )
+            target_path = Path(target_path.name)
 
         print(f"Downloading {url}")
 
         response = requests.get(url, stream=True)
         response.raise_for_status()
 
-        parsed_url = urlparse(url)
-        extension = get_extension(parsed_url.path)
+        with open(target_path, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
 
-        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}")
-
-        for chunk in response.iter_content(chunk_size=8192):
-            tmp.write(chunk)
-
-        tmp.flush()
-        tmp.close()
+        # Handle gzip
 
         if extension.endswith(".gz"):
             if extension == "lp.gz":
@@ -139,21 +187,25 @@ def download_benchmark_file(url: str) -> Path | None:
             else:
                 raise ValueError(f"Unsupported gz extension: {extension}")
 
-            uncompressed_tmp = tempfile.NamedTemporaryFile(
-                delete=False,
-                suffix=suffix,
-            )
+            if use_cache:
+                uncompressed_path = (
+                    cache_dir / Path(parsed_url.path).with_suffix("").name
+                )
+            else:
+                tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+                uncompressed_path = Path(tmp.name)
+                tmp.close()
 
-            with gzip.open(tmp.name, "rb") as gz_file:
-                uncompressed_tmp.write(gz_file.read())
+            with gzip.open(target_path, "rb") as gz_file:
+                with open(uncompressed_path, "wb") as out:
+                    out.write(gz_file.read())
 
-            uncompressed_tmp.flush()
-            uncompressed_tmp.close()
+            # remove compressed file
+            target_path.unlink(missing_ok=True)
 
-            Path(tmp.name).unlink()
-            return Path(uncompressed_tmp.name)
+            return uncompressed_path
 
-        return Path(tmp.name)
+        return target_path
 
     except Exception as e:
         print(f"Error processing {url}: {e}", file=sys.stderr)
@@ -191,7 +243,7 @@ def update_size_in_yaml(yaml_data, model_name, size_name, model_stats):
     return False
 
 
-def process_metadata_files(benchmark_folder, output_folder):
+def process_metadata_files(benchmark_folder, output_folder, use_cache: bool):
     """
     Process all metadata YAML files, download benchmark models,
     analyze them, and update size values.
@@ -238,7 +290,11 @@ def process_metadata_files(benchmark_folder, output_folder):
                             size_name = size["Name"]
 
                             total_files += 1
-                            model_path = download_benchmark_file(url)
+                            model_path = download_benchmark_file(
+                                url,
+                                use_cache=use_cache,
+                                cache_dir=Path(output_folder),
+                            )
 
                             if model_path is not None:
                                 successful_downloads += 1
@@ -274,7 +330,8 @@ def process_metadata_files(benchmark_folder, output_folder):
                                     print(
                                         f"Skipping analysis for {model_name} size {size_name}"
                                     )
-                                    Path(model_path).unlink(missing_ok=True)
+                                    if not use_cache:
+                                        Path(model_path).unlink(missing_ok=True)
                                     continue
 
                                 model_stats = analyze_model_file(
@@ -282,7 +339,8 @@ def process_metadata_files(benchmark_folder, output_folder):
                                     model_info["Problem class"] == "MILP",
                                 )
 
-                                Path(model_path).unlink(missing_ok=True)
+                                if not use_cache:
+                                    Path(model_path).unlink(missing_ok=True)
 
                                 if model_stats:
                                     successful_analyses += 1
@@ -332,11 +390,20 @@ def main():
         "--output_folder",
         type=str,
         default="./runner/benchmarks",
-        help="Unused (kept for compatibility)",
+        help="Path to store downloaded LP/MPS files when caching is enabled (default: ./runner/benchmarks)",
+    )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Download files to temporary storage instead of using the cache directory",
     )
     args = parser.parse_args()
 
-    process_metadata_files(args.folder, args.output_folder)
+    process_metadata_files(
+        benchmark_folder=args.folder,
+        output_folder=args.output_folder,
+        use_cache=not args.no_cache,
+    )
 
 
 if __name__ == "__main__":
