@@ -372,26 +372,30 @@ def display_speedups(results, new_pypsa_benchs):
 
     # Calculate speedups relative to ipm-time, but use status if not "ok"
     speedup_df["ipm-speedup"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        != "ok"
-        else row["highs"] / row["highs-ipm"],
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            != "ok"
+            else row["highs"] / row["highs-ipm"]
+        ),
         axis=1,
     )
 
     speedup_df["hipo-speedup"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        != "ok"
-        else row["highs"] / row["highs-hipo"],
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            != "ok"
+            else row["highs"] / row["highs-hipo"]
+        ),
         axis=1,
     )
 
@@ -424,38 +428,44 @@ def display_speedups(results, new_pypsa_benchs):
     display_df["num-vars"] = speedup_df["num-vars"]
 
     display_df["simplex-time"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs"
-        ].values[0]
-        if status_df.loc[status_df["bench-size"] == row["bench-size"], "highs"].values[
-            0
-        ]
-        != "ok"
-        else naturaldelta(row["simplex-time"]),
+        lambda row: (
+            status_df.loc[status_df["bench-size"] == row["bench-size"], "highs"].values[
+                0
+            ]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs"
+            ].values[0]
+            != "ok"
+            else naturaldelta(row["simplex-time"])
+        ),
         axis=1,
     )
 
     display_df["ipm-time"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        != "ok"
-        else naturaldelta(row["ipm-time"]),
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            != "ok"
+            else naturaldelta(row["ipm-time"])
+        ),
         axis=1,
     )
 
     display_df["hipo-time"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        != "ok"
-        else naturaldelta(row["hipo-time"]),
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            != "ok"
+            else naturaldelta(row["hipo-time"])
+        ),
         axis=1,
     )
 
@@ -600,9 +610,11 @@ def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
     )
     lp_summary["Status"] = "ok"
     lp_summary["Solver"] = lp_summary["Solver"].apply(
-        lambda s: re.match(r"^([a-z\-]+?)(?:-\d)", s).group(1)
-        if re.match(r"^([a-z\-]+?)(?:-\d)", s)
-        else s
+        lambda s: (
+            re.match(r"^([a-z\-]+?)(?:-\d)", s).group(1)
+            if re.match(r"^([a-z\-]+?)(?:-\d)", s)
+            else s
+        )
     )
     lp_summary["Timeout"] = None  # Irrelevant, it's only used if Status != ok
     plot_runtime_slowdowns(
