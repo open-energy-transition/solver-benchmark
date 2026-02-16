@@ -129,7 +129,17 @@ def download_benchmark_file(url: str) -> Path | None:
         tmp.close()
 
         if extension.endswith(".gz"):
-            uncompressed_tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".mps")
+            if extension == "lp.gz":
+                suffix = ".lp"
+            elif extension == "mps.gz":
+                suffix = ".mps"
+            else:
+                raise ValueError(f"Unsupported gz extension: {extension}")
+
+            uncompressed_tmp = tempfile.NamedTemporaryFile(
+                delete=False,
+                suffix=suffix,
+            )
 
             with gzip.open(tmp.name, "rb") as gz_file:
                 uncompressed_tmp.write(gz_file.read())
