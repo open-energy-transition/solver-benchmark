@@ -212,7 +212,7 @@ const D3SGMChart = ({
             `<strong>Solver:</strong> ${d.solver}<br>
              <strong>Year:</strong> ${d.year}<br>
              <strong>Version:</strong> ${d.version}<br>
-             <strong>Normalized Value:</strong> ${d.value.toFixed(1)}x<br>
+             <strong>Normalized Value:</strong> ${d.value.toFixed(2)}x<br>
              ${
                xAxisTooltipFormat && (d as SolverYearlyChartData).originalValue
                  ? xAxisTooltipFormat(
@@ -249,7 +249,7 @@ const D3SGMChart = ({
       .attr("fill", "#333")
       .attr("font-size", "10px")
       .attr("font-weight", "500")
-      .text((d) => `${d.value.toFixed(1)}x`);
+      .text((d) => `${d.value.toFixed(2)}x`);
 
     return () => {
       // Cleanup tooltip on unmount

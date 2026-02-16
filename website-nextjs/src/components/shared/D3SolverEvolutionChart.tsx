@@ -23,6 +23,7 @@ interface ID3SolverEvolutionChart {
   colorIndex: number;
   totalBenchmarks: number;
   yRightDomain?: [number, number];
+  yRightPadding?: number; // Padding percentage for speed-up axis (default: 0.15 = 15%)
 }
 
 const D3SolverEvolutionChart = ({
@@ -31,6 +32,7 @@ const D3SolverEvolutionChart = ({
   height = 300,
   totalBenchmarks = 105,
   yRightDomain,
+  yRightPadding = 0.15,
   className = "",
 }: ID3SolverEvolutionChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -83,13 +85,30 @@ const D3SolverEvolutionChart = ({
     const minSpeedUp =
       validSpeedUps.length > 0 ? Math.min(...validSpeedUps) : 1;
 
-    // Add padding to make flat lines visible
+    // Calculate sensible y-axis range for speed-up
+    let yMin = yRightDomain ? yRightDomain[0] : minSpeedUp;
+    let yMax = yRightDomain ? yRightDomain[1] : maxSpeedUp;
+    // If no custom domain, add padding and ensure minimum range
+    if (!yRightDomain) {
+      const range = yMax - yMin;
+      const paddingBottom = Math.max(range * yRightPadding, 0.1);
+      yMin = Math.max(0.5, yMin - paddingBottom); // Don't go below 0.5x speedup
+
+      // Ensure minimum range of 0.3 for visibility
+      if (yMax - yMin < 0.3) {
+        const midpoint = (yMax + yMin) / 2;
+        yMin = midpoint - 0.15;
+        yMax = midpoint + 0.15;
+      }
+
+      // Round min down and max up to 1 decimal place for cleaner axis
+      yMin = Math.floor(yMin * 10) / 10;
+      yMax = Math.ceil(yMax * 10) / 10;
+    }
+
     const yRightScale = d3
       .scaleLinear()
-      .domain([
-        Math.floor((yRightDomain ? yRightDomain[0] : minSpeedUp) * 10) / 10,
-        Math.ceil((yRightDomain ? yRightDomain[1] : maxSpeedUp) * 16) / 10,
-      ])
+      .domain([yMin, yMax])
       .range([height - margin.bottom, margin.top]);
 
     // X-axis
@@ -120,17 +139,7 @@ const D3SolverEvolutionChart = ({
       });
 
     // Right Y-axis (speed-up)
-    const yRightAxis = d3
-      .axisRight(yRightScale)
-      .tickSize(0)
-      .ticks(5)
-      .tickValues(
-        d3.range(
-          yRightScale.domain()[0],
-          yRightScale.domain()[1] + 0.1,
-          (yRightScale.domain()[1] - yRightScale.domain()[0]) / 5,
-        ),
-      );
+    const yRightAxis = d3.axisRight(yRightScale).tickSize(0).ticks(5);
     svg
       .append("g")
       .attr("transform", `translate(${width - margin.right},0)`)
@@ -274,6 +283,21 @@ const D3SolverEvolutionChart = ({
       .on("mouseout", () => {
         tooltip.style("opacity", 0);
       });
+
+    // Speed-up value labels
+    svg
+      .selectAll(".speedup-label")
+      .data(validSpeedUpData)
+      .enter()
+      .append("text")
+      .attr("class", "speedup-label")
+      .attr("x", (d) => (xScale(d.version) ?? 0) + xScale.bandwidth() / 2)
+      .attr("y", (d) => yRightScale(d.speedUp) - 15)
+      .attr("text-anchor", "middle")
+      .attr("fill", "#DC2626")
+      .attr("font-size", "10px")
+      .attr("font-weight", "500")
+      .text((d) => d.speedUp.toFixed(2) + "x");
 
     // Axis labels
     svg
