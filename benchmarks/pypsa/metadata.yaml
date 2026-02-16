@@ -510,123 +510,219 @@ benchmarks:
       Num. constraints: 6123937
       Num. variables: 2879645
     - Name: 10-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_10_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 4502789
       Num. variables: 2111271
     - Name: 11-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_11_1h.mps.gz
       Size: L
+      Temporal resolution: 1 hour
+      Spatial resolution: 11 nodes
+      Realistic: TODO
+      Realistic motivation:
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_11_1h.mps.gz
       Num. constraints: 4835682
       Num. variables: 2268961
     - Name: 12-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_12_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_12_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 12 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 5221135
       Num. variables: 2444171
     - Name: 13-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_13_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_13_1h.mps.gz
       Num. constraints: 5536508
+      Temporal resolution: 1 hour
+      Spatial resolution: 13 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. variables: 2601861
     - Name: 14-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_14_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_14_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 14 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 6053365
       Num. variables: 2838393
     - Name: 15-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_15_1h.mps.gz
       Size: L
+      Temporal resolution: 1 hour
+      Spatial resolution: 15 nodes
+      Realistic: TODO
+      Realistic motivation:
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_15_1h.mps.gz
       Num. constraints: 6359974
       Num. variables: 2978561
     - Name: 16-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_16_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_16_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 16 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 6754193
       Num. variables: 3171294
     - Name: 17-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_17_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_17_1h.mps.gz
       Num. constraints: 7183446
+      Temporal resolution: 1 hour
+      Spatial resolution: 17 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. variables: 3364024
     - Name: 18-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_18_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_18_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 18 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 7568897
       Num. variables: 3539233
     - Name: 19-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_19_1h.mps.gz
       Size: L
+      Temporal resolution: 1 hour
+      Spatial resolution: 19 nodes
+      Realistic: TODO
+      Realistic motivation:
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_19_1h.mps.gz
       Num. constraints: 7928072
       Num. variables: 3714444
     - Name: 20-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_20_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 8208403
       Num. variables: 3854613
     - Name: 21-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_21_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_21_1h.mps.gz
       Num. constraints: 8795338
+      Temporal resolution: 1 hour
+      Spatial resolution: 21 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. variables: 4108664
     - Name: 22-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_22_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_22_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 22 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 9066911
       Num. variables: 4240074
     - Name: 23-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_23_1h.mps.gz
       Size: L
+      Temporal resolution: 1 hour
+      Spatial resolution: 23 nodes
+      Realistic: TODO
+      Realistic motivation:
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_23_1h.mps.gz
       Num. constraints: 9434848
       Num. variables: 4415286
     - Name: 24-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_24_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_24_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 24 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 9802781
       Num. variables: 4581736
     - Name: 25-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_25_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_25_1h.mps.gz
       Num. constraints: 10118152
+      Temporal resolution: 1 hour
+      Spatial resolution: 25 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. variables: 4739425
     - Name: 26-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_26_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_26_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 26 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 10459811
       Num. variables: 4897118
     - Name: 3-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_3_1h.mps.gz
       Size: M
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
+      Realistic: TODO
+      Realistic motivation:
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_3_1h.mps.gz
       Num. constraints: 1533052
       Num. variables: 727118
     - Name: 4-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_4_1h.mps.gz
       Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_4_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 4 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 2041145
       Num. variables: 963648
     - Name: 5-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_5_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_5_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 5 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 2575524
       Num. variables: 1208941
     - Name: 6-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_6_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_6_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 6 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 2943457
       Num. variables: 1384151
     - Name: 7-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_7_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_7_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 7 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 3285110
       Num. variables: 1550601
     - Name: 8-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_8_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_8_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 8 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 3731883
       Num. variables: 1752091
     - Name: 9-1h
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_9_1h.mps.gz
       Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_9_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
+      Realistic: TODO
+      Realistic motivation:
       Num. constraints: 4082296
       Num. variables: 1918541
   pypsa-de-elec-trex_vopt:
