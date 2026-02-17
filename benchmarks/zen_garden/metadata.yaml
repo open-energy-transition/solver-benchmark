@@ -23,6 +23,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 126822
       Num. variables: 91744
+      Num. nonzeros: 386968
     - Name: 28-10ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-10ts.mps.gz
@@ -32,6 +33,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 4845191
       Num. variables: 3105360
+      Num. nonzeros: 16076333
     - Name: 28-50ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-50ts.mps.gz
@@ -42,6 +44,7 @@ benchmarks:
       Num. constraints: 10723991
       Num. variables: 8396160
       Skip because: TO
+      Num. nonzeros: 32335433
     - Name: 28-30ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-30ts.mps.gz
@@ -52,6 +55,7 @@ benchmarks:
       Num. constraints: 7722431
       Num. variables: 5719680
       Skip because: TO
+      Num. nonzeros: 23989133
     - Name: 28-100ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-100ts.mps.gz
@@ -62,6 +66,7 @@ benchmarks:
       Num. constraints: 16737731
       Num. variables: 14342280
       Skip because: TO
+      Num. nonzeros: 47988383
     - Name: 28-200ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/zen-garden-eur-PI-28-200ts.mps.gz
@@ -72,6 +77,7 @@ benchmarks:
       Num. constraints: 28039451
       Num. variables: 25871640
       Skip because: TO
+      Num. nonzeros: 76751888
   zen-garden-eur-PI-annual-emission-limit:
     Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion. Annual emissions targets are set for each year resulting in the same carbon emissions as the carbon emission budget.
     Modelling framework: ZEN-garden
@@ -96,6 +102,7 @@ benchmarks:
       Num. constraints: 16737720
       Num. variables: 14342280
       Skip because: TO
+      Num. nonzeros: 47988391
   zen-garden-eur-PI-constrained-expansion:
     Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and constrained technology expansion. A cumulative carbon budget is set for the carbon emissions.
     Modelling framework: ZEN-garden
@@ -120,6 +127,7 @@ benchmarks:
       Num. constraints: 16738346
       Num. variables: 14342280
       Skip because: TO
+      Num. nonzeros: 48304103
   zen-garden-eur-PI-no-storage:
     Short description: Model of the European transition pathway for the electricity and heating sectors of 28 European countries from 2022 to 2050. Performs time series aggregation under perfect foresight and instantaneous technology expansion without storage technologies. A cumulative carbon budget is set for the carbon emissions.
     Modelling framework: ZEN-garden
@@ -144,3 +152,4 @@ benchmarks:
       Num. constraints: 10429331
       Num. variables: 10673160
       Skip because: OOM
+      Num. nonzeros: 26553683
