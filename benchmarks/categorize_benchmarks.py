@@ -231,7 +231,14 @@ def update_size_in_yaml(yaml_data, model_name, size_name, model_stats):
             size["Size"] = model_stats["size_category"]
             size["Num. constraints"] = model_stats["num_constraints"]
             size["Num. variables"] = model_stats["num_variables"]
-            size["Num. nonzeros"] = model_stats["num_nonzeros"]
+
+            # Insert Num. nonzeros immediately after Num. variables
+            if "Num. nonzeros" in size:
+                size["Num. nonzeros"] = model_stats["num_nonzeros"]
+            else:
+                keys = list(size.keys())
+                insert_index = keys.index("Num. variables") + 1
+                size.insert(insert_index, "Num. nonzeros", model_stats["num_nonzeros"])
 
             if model_info["Problem class"] == "MILP":
                 size["Num. continuous variables"] = model_stats[
