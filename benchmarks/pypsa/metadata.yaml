@@ -851,6 +851,96 @@ benchmarks:
       Realistic motivation:
       Num. constraints: 15111557
       Num. variables: 7096020
+    - Name: 41-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_41_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 41 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 42-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_42_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 42 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 43-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_43_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 43 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 44-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_44_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 44 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 45-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_45_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 45 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 46-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_46_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 46 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 47-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_47_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 47 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 48-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_48_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 48 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 49-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_49_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 49 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_50_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
   pypsa-de-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
