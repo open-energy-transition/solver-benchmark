@@ -37,7 +37,6 @@ const D3SolverEvolutionChart = ({
 }: ID3SolverEvolutionChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
-  console.log("data", data);
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
   const windowWidth = useDebouncedWindowWidth(200);
 
