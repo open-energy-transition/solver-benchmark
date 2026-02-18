@@ -236,20 +236,58 @@ const D3SGMChart = ({
         tooltip.style("opacity", 0);
       });
 
-    // Add labels on data points
-    svg
+    // Add labels on data points with collision detection
+    const labels = svg
       .selectAll(".point-label")
       .data(normalizedChartData)
       .enter()
       .append("text")
       .attr("class", "point-label")
       .attr("x", (d) => xScale(d.year.toString()) ?? 0)
-      .attr("y", (d) => yScale(d.value) - 12) // Position above the point
+      .attr("y", (d) => yScale(d.value) - 12) // Initial position above the point
       .attr("text-anchor", "middle")
       .attr("fill", "#333")
       .attr("font-size", "10px")
       .attr("font-weight", "500")
       .text((d) => `${d.value.toFixed(2)}x`);
+
+    // Adjust overlapping labels
+    const labelPadding = 4; // Minimum vertical space between labels
+    const labelHeight = 14; // Approximate height of label text
+
+    // Group labels by x position (year)
+    const labelsByYear = d3.group(
+      normalizedChartData.map((d, i) => ({
+        data: d,
+        index: i,
+        x: xScale(d.year.toString()) ?? 0,
+        y: yScale(d.value) - 12,
+      })),
+      (d) => d.x,
+    );
+
+    // Process each year group
+    labelsByYear.forEach((yearLabels) => {
+      // Sort by y position (top to bottom)
+      const sorted = yearLabels.sort((a, b) => a.y - b.y);
+
+      // Detect and resolve overlaps
+      for (let i = 0; i < sorted.length - 1; i++) {
+        const current = sorted[i];
+        const next = sorted[i + 1];
+
+        const overlap = current.y + labelHeight + labelPadding - next.y;
+        if (overlap > 0) {
+          // Shift the lower label down
+          next.y += overlap;
+        }
+      }
+
+      // Apply adjusted positions
+      sorted.forEach((item) => {
+        labels.filter((_, idx) => idx === item.index).attr("y", item.y);
+      });
+    });
 
     return () => {
       // Cleanup tooltip on unmount

@@ -37,7 +37,7 @@ const D3SolverEvolutionChart = ({
 }: ID3SolverEvolutionChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
-
+  console.log("data", data);
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
   const windowWidth = useDebouncedWindowWidth(200);
 
@@ -219,7 +219,7 @@ const D3SolverEvolutionChart = ({
       .append("text")
       .attr("class", "bar-label")
       .attr("x", (d) => (xScale(d.version) ?? 0) + xScale.bandwidth() / 2)
-      .attr("y", (d) => yLeftScale(d.unsolvedCount) - 5)
+      .attr("y", (d) => yLeftScale(d.unsolvedCount) - 2)
       .attr("text-anchor", "middle")
       .attr("fill", solverColor)
       .attr("font-size", "10px")
@@ -235,8 +235,7 @@ const D3SolverEvolutionChart = ({
       const line = d3
         .line<SolverEvolutionData>()
         .x((d) => (xScale(d.version) ?? 0) + xScale.bandwidth() / 2)
-        .y((d) => yRightScale(d.speedUp))
-        .curve(d3.curveMonotoneX);
+        .y((d) => yRightScale(d.speedUp));
 
       svg
         .append("path")
