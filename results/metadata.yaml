@@ -2337,6 +2337,15 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137355
+      Num. variables: 10626468
     - Name: 50-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-3h.mps.gz
@@ -2847,6 +2856,15 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 8208403
       Num. variables: 3854613
+    - Name: 40-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_40_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 40 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints: 15111557
+      Num. variables: 7096020
     - Name: 50-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-1h.mps.gz
