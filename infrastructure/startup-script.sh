@@ -75,7 +75,7 @@ echo "CPLEX installation completed"
 
 # Clone the repository
 echo "Cloning repository..."
-git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b commercial-solvers-run https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing reference Highs..."
