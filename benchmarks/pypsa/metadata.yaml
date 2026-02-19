@@ -858,8 +858,8 @@ benchmarks:
       Spatial resolution: 41 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 23862730
+      Num. variables: 11352412
     - Name: 42-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_42_1h.mps.gz
@@ -867,8 +867,8 @@ benchmarks:
       Spatial resolution: 42 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 24291986
+      Num. variables: 11580185
     - Name: 43-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_43_1h.mps.gz
@@ -876,8 +876,8 @@ benchmarks:
       Spatial resolution: 43 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 25124202
+      Num. variables: 11983069
     - Name: 44-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_44_1h.mps.gz
@@ -885,8 +885,8 @@ benchmarks:
       Spatial resolution: 44 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 25570974
+      Num. variables: 12184560
     - Name: 45-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_45_1h.mps.gz
@@ -894,8 +894,8 @@ benchmarks:
       Spatial resolution: 45 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 26079069
+      Num. variables: 12421137
     - Name: 46-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_46_1h.mps.gz
@@ -903,8 +903,8 @@ benchmarks:
       Spatial resolution: 46 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 26376913
+      Num. variables: 12543786
     - Name: 47-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_47_1h.mps.gz
@@ -912,8 +912,8 @@ benchmarks:
       Spatial resolution: 47 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 26911290
+      Num. variables: 12806601
     - Name: 48-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_48_1h.mps.gz
@@ -921,8 +921,8 @@ benchmarks:
       Spatial resolution: 48 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 27182854
+      Num. variables: 12903014
     - Name: 49-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_49_1h.mps.gz
@@ -930,8 +930,8 @@ benchmarks:
       Spatial resolution: 49 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 27909951
+      Num. variables: 13279705
     - Name: 50-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_50_1h.mps.gz
@@ -939,8 +939,8 @@ benchmarks:
       Spatial resolution: 50 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints:
-      Num. variables:
+      Num. constraints: 18370417
+      Num. variables: 8637885  # TODO why is this smaller than 49-1h? Is the file/URL correct?
   pypsa-de-elec-trex_vopt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with transmission expansion based on optimal volume increase.
     Modelling framework: PyPSA
