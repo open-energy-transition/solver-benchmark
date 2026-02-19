@@ -35,9 +35,14 @@ const PagePerformanceHistory = () => {
     },
   );
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
+  const allSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+
+  const availableSolvers = useMemo(
+    () => allSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
+    [allSolvers],
+  );
 
   const selectedFilters = useSelector(
     (state: { filters: IFilterState }) => state.filters,

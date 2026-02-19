@@ -71,7 +71,9 @@ const RealisticRuntimeComparison = ({
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       if (dataSource === "hipo") {
-        return state.results.benchmarkLatestResults;
+        return state.results.benchmarkLatestResults.filter((result) =>
+          [...HIPO_SOLVERS, "highs"].includes(result.solver),
+        );
       }
       return state.results.benchmarkLatestResults.filter(
         (result) => !HIPO_SOLVERS.includes(result.solver),

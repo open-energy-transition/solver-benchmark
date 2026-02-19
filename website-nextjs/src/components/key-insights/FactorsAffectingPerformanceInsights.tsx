@@ -96,8 +96,8 @@ const FactorsAffectingPerformanceInsights = () => {
         `pypsa-power+ely-ucgas-1-1h` is an MILP problem that adds UC as an extra
         model constraint to the power-only model `pypsa-power+ely-1-1h` (LP
         problem). The LP version solves in a few seconds with both Gurobi and
-        Highs, while the MILP version requires significantly more time. Gurobi
-        maintain relatively strong performance in the UC case, whereas
+        HiGHS, while the MILP version requires significantly more time. Gurobi
+        maintains relatively strong performance in the UC case, whereas
         open-source solvers exhibit a more pronounced slowdown. All solvers are
         run with default settings except for a fixed relative MIP gap tolerance.
       </p>
