@@ -77,7 +77,7 @@ def get_solver(solver_name):
             "mip.tolerances.mipgap": mip_gap,
         },
         "knitro": {
-            "KN_PARAM_MS_SEED": 1066,
+            "ms_seed": 1066,
         },
         "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
     }
