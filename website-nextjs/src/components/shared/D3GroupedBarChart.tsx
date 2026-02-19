@@ -32,6 +32,7 @@ const D3GroupedBarChart = ({
   splitter = "-",
   extraCategoryLengthMargin = undefined,
   sortByValue = false,
+  showLineAtY1 = true,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -351,15 +352,16 @@ const D3GroupedBarChart = ({
           });
       });
     // Add reference line at y = 1
-    svg
-      .append("line")
-      .attr("x1", margin.left)
-      .attr("x2", width - margin.right)
-      .attr("y1", yScale(1))
-      .attr("y2", yScale(1))
-      .attr("stroke", "#666")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "4,4");
+    showLineAtY1 &&
+      svg
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", yScale(1))
+        .attr("y2", yScale(1))
+        .attr("stroke", "#666")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "4,4");
 
     // Y-axis
     svg
