@@ -206,7 +206,7 @@ else
 fi
 
 # Set environment variables for commercial solvers
-export ARTELYS_LICENSE=/opt/knitro
+export ARTELYS_LICENSE=/opt/knitro/knitro-license.txt
 export XPRESS=/opt/xpress/license.xpr
 export LD_LIBRARY_PATH=/root/miniconda3/envs/benchmark-2025/lib/python3.12/site-packages/knitro/lib:/opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 

@@ -248,6 +248,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     if os.geteuid() != 0:
         command.append("--user")
 
+    for env_var in ["ARTELYS_LICENSE", "XPRESS", "LD_LIBRARY_PATH"]:
+        val = os.environ.get(env_var)
+        if val:
+            command.append(f"--setenv={env_var}={val}")
+
     command.extend(
         [
             "--scope",
