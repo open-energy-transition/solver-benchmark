@@ -55,8 +55,8 @@ gsutil cp gs://solver-benchmarks-testing/license.xpr /opt/xpress/license.xpr
 
 # Download and install CPLEX
 # The CPLEX installer is Java/InstallAnywhere-based and requires X11 libs even in silent mode
-echo "Installing X11 dependencies for CPLEX installer..."
-apt-get -qq install -y libx11-6 libxext6 libxrender1 libxtst6 libxi6 libfreetype6 libfontconfig1
+echo "Installing dependencies for CPLEX installer..."
+apt-get -qq install -y libx11-6 libxext6 libxrender1 libxtst6 libxi6 libfreetype6 libfontconfig1 default-jre-headless
 
 echo "Downloading CPLEX installer..."
 gsutil cp gs://solver-benchmarks-testing/cplex_studio2212.linux_x86_64.bin /tmp/cplex_studio2212.linux_x86_64.bin
@@ -70,7 +70,7 @@ USER_INSTALL_DIR=/opt/ibm/ILOG/CPLEX_Studio2212
 INSTALLER_LOCALE=en
 USER_INPUT_SEGMENT_FALSE=1
 EOF
-/tmp/cplex_studio2212.linux_x86_64.bin -f /tmp/cplex_response.properties -i silent -DINSTALLER_LOG=/tmp/cplex_install.log 2>&1
+/tmp/cplex_studio2212.linux_x86_64.bin -f /tmp/cplex_response.properties 2>&1
 CPLEX_INSTALL_EXIT=$?
 rm /tmp/cplex_studio2212.linux_x86_64.bin /tmp/cplex_response.properties
 
