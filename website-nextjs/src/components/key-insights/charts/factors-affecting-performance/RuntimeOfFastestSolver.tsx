@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useId } from "react";
 
 import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
@@ -28,6 +28,7 @@ const RuntimeOfFastestSolver = ({
   extraCategoryLengthMargin = undefined,
 }: IRuntimeOfFastestSolver) => {
   const [allSolvers, setallSolvers] = useState(false);
+  const radioGroupId = useId();
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.rawBenchmarkResults;
@@ -170,7 +171,7 @@ const RuntimeOfFastestSolver = ({
       {availableSolvers.map((solverKey) => (
         <div
           key={solverKey}
-          className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+          className="text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
         >
           <CircleIcon
             style={{
@@ -186,27 +187,25 @@ const RuntimeOfFastestSolver = ({
 
   return (
     <>
-      <div className="flex items-center gap-6 mb-4 cursor-pointer">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-6 mb-4">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name={`solver-filter-runtime-${radioGroupId}`}
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(false)}>
-            Open solvers only
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
+          <span className="text-sm text-navy">Open solvers only</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name={`solver-filter-runtime-${radioGroupId}`}
             checked={allSolvers}
             onChange={() => setallSolvers(true)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(true)}>
-            All solvers
-          </p>
-        </div>
+          <span className="text-sm text-navy">All solvers</span>
+        </label>
       </div>
       <div>
         <D3GroupedBarChart

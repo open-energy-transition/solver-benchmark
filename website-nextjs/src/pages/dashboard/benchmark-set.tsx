@@ -150,10 +150,7 @@ const PageBenchmarkDetail = () => {
     <>
       <Head>
         <title>Benchmark Set | Open Energy Benchmark</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -172,26 +169,37 @@ const PageBenchmarkDetail = () => {
           <div className="max-w-8xl mx-auto">
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
+                <div className="flex text-navy text-sm text-opacity-70 items-center space-x-1">
                   <div className="flex items-center gap-1">
-                    <Link href={PATH_DASHBOARD.root}>
+                    <Link
+                      href={PATH_DASHBOARD.root}
+                      aria-label="Dashboard home"
+                    >
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Benchmark Set
                     </p>
                   </div>
                 </div>
               </AdminHeader>
-              <div>
-                <h5>Benchmark Set</h5>
-                <p className="mb-6 mt-4 max-w-screen-lg">
-                  On this page you can see a list of all the benchmark problems
-                  on our platform. Click on a benchmark problem name to see all
-                  the details about the problem, including links to download the
-                  problem file, solution files, and logs.
-                </p>
+              <div className="md:flex justify-between items-start gap-4">
+                <div className="flex-1">
+                  <h5>Benchmark Set</h5>
+                  <p className="mb-6 mt-4 max-w-screen-lg">
+                    On this page you can see a list of all the benchmark
+                    problems on our platform. Click on a benchmark problem name
+                    to see all the details about the problem, including links to
+                    download the problem file, solution files, and logs.
+                  </p>
+                </div>
+                <Link
+                  href={PATH_DASHBOARD.featureDistribution}
+                  className="text-white bg-navy px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap mt-1"
+                >
+                  Feature Distribution
+                </Link>
               </div>
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">

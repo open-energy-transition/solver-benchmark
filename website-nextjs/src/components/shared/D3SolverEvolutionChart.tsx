@@ -319,7 +319,7 @@ const D3SolverEvolutionChart = ({
       .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
-      .text(`Max: 105`);
+      .text(`Max: ${totalBenchmarks}`);
 
     return () => {
       tooltip.remove();
@@ -330,7 +330,7 @@ const D3SolverEvolutionChart = ({
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       <div className="mb-4 pl-4 lg:pl-0">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          {solverName.toUpperCase()} Performance Evolution
+          {solverName} Performance Evolution
         </h3>
         <div className="flex gap-4 text-sm">
           <div className="flex items-center gap-2">

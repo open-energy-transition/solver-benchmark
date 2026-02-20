@@ -81,8 +81,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion; Operational
-    Sectoral focus: Power, Heat, Transport
-    Sectors: Supply, Power, Heat, Transport
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -103,8 +103,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion; Operational
-    Sectoral focus: Power, Heat, Transport
-    Sectors: Supply, Power, Heat, Transport
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
     MILP features: None
     Sizes:
@@ -215,8 +215,8 @@ benchmarks:
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, heat, methane)
-    Sectors: Electric, Heat, Gas
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Heating, Gas
     Time horizon: Single-stage
     MILP features: Binary investment decisions
     Sizes:
@@ -263,7 +263,7 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, hydrogen, methane, biogas, CO2)
+    Sectoral focus: Sector-coupled
     Sectors: Electric, Gas
     Time horizon: Single-stage
     MILP features: None
@@ -285,7 +285,7 @@ benchmarks:
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
     MILP features: None
@@ -293,7 +293,7 @@ benchmarks:
     - Name: 1-8760ts
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-perfect-foresight-1-8760ts.lp.gz
-      Temporal resolution: 8760 hourly time slices
+      Temporal resolution: 8760 hours
       Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 19619
@@ -307,7 +307,7 @@ benchmarks:
     License: CC BY 4.0
     Problem class: MILP
     Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Multi-energy (electricity, hydrogen)
+    Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
     MILP features: Binary investment decisions; Piecewise efficiency
@@ -315,7 +315,7 @@ benchmarks:
     - Name: 1-168ts
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp.gz
-      Temporal resolution: 168 hourly time slices
+      Temporal resolution: 168 hours
       Spatial resolution: 1 node
       Realistic: false
       Num. constraints: 3883

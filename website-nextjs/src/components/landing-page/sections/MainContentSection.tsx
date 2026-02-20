@@ -29,7 +29,7 @@ const MainContent = () => {
             </h1>
           </div>
           <div className="mt-4 text-grey text-2xl font-light">
-            <h5 className="font-light text-grey">
+            <div className="font-light text-grey text-lg sm:text-2xl font-lato sm:leading-1.4 tracking-normal">
               Built by{" "}
               <span className="font-bold">
                 <Link href="https://openenergytransition.org/">
@@ -43,7 +43,7 @@ const MainContent = () => {
                 </Link>
               </span>
               , and contributions from the community.
-            </h5>
+            </div>
           </div>
 
           <div className="mt-8 grid sm:flex items-center justify-start gap-2 md:gap-6 text-center">
