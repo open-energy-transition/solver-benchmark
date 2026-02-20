@@ -66,7 +66,7 @@ def get_solver(solver_name):
     seed_options = {
         "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
         "glpk": {"seed": 0, "mipgap": mip_gap},
-        "gurobi": {"seed": 0, "MIPGap": mip_gap},
+        "gurobi": {"seed": 0, "MIPGap": mip_gap, "Crossover": 0},
         "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
         "cbc": {
             "randomCbcSeed": 1,  # 0 indicates time of day
