@@ -75,11 +75,17 @@ def get_solver(solver_name):
         "cplex": {
             "randomseed": 0,
             "mip.tolerances.mipgap": mip_gap,
+            "solutiontype": 2,
         },
         "knitro": {
             "ms_seed": 1066,
+            "bar_maxcrossit": 0,
         },
-        "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
+        "xpress": {
+            "miprelgapnotify": mip_gap,
+            "randomseed": 0,
+            "crossover": 0,
+        },
     }
 
     return solver_class(**seed_options.get(solver_name, {}))
