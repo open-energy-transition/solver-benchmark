@@ -30,7 +30,7 @@ fi
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
-apt-get -qq install -y tmux git time curl jq build-essential cmake htop
+apt-get -qq install -y tmux git time curl jq build-essential cmake htop libnuma1
 
 # Install BLAS dependency
 echo "Installing BLAS..."
@@ -54,6 +54,10 @@ mkdir -p /opt/xpress
 gsutil cp gs://solver-benchmarks-testing/license.xpr /opt/xpress/license.xpr
 
 # Download and install CPLEX
+# The CPLEX installer is Java/InstallAnywhere-based and requires X11 libs even in silent mode
+echo "Installing X11 dependencies for CPLEX installer..."
+apt-get -qq install -y libx11-6 libxext6 libxrender1 libxtst6 libxi6 libfreetype6 libfontconfig1
+
 echo "Downloading CPLEX installer..."
 gsutil cp gs://solver-benchmarks-testing/cplex_studio2212.linux_x86_64.bin /tmp/cplex_studio2212.linux_x86_64.bin
 chmod +x /tmp/cplex_studio2212.linux_x86_64.bin
@@ -66,12 +70,28 @@ USER_INSTALL_DIR=/opt/ibm/ILOG/CPLEX_Studio2212
 INSTALLER_LOCALE=en
 USER_INPUT_SEGMENT_FALSE=1
 EOF
-/tmp/cplex_studio2212.linux_x86_64.bin -f /tmp/cplex_response.properties
+/tmp/cplex_studio2212.linux_x86_64.bin -f /tmp/cplex_response.properties -i silent -DINSTALLER_LOG=/tmp/cplex_install.log 2>&1
+CPLEX_INSTALL_EXIT=$?
 rm /tmp/cplex_studio2212.linux_x86_64.bin /tmp/cplex_response.properties
 
+echo "--- CPLEX installer log ---"
+cat /tmp/cplex_install.log 2>/dev/null || echo "No installer log found at /tmp/cplex_install.log"
+# Also check the default InstallAnywhere log location
+find /tmp -maxdepth 1 -name "*.log" -newer /tmp/cplex_response.properties 2>/dev/null -exec echo "--- {} ---" \; -exec cat {} \;
+echo "--- End CPLEX installer log ---"
+
+if [ $CPLEX_INSTALL_EXIT -ne 0 ]; then
+    echo "ERROR: CPLEX installer exited with code $CPLEX_INSTALL_EXIT"
+fi
+
 echo "Verifying CPLEX installation..."
-/opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux/cplex -c "quit"
-echo "CPLEX installation completed"
+if [ -f /opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux/cplex ]; then
+    /opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux/cplex -c "quit"
+    echo "CPLEX installation completed successfully"
+else
+    echo "ERROR: CPLEX binary not found - installation failed"
+    ls -la /opt/ibm/ILOG/CPLEX_Studio2212/ 2>/dev/null || echo "CPLEX install directory does not exist"
+fi
 
 # Clone the repository
 echo "Cloning repository..."
