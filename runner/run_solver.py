@@ -199,7 +199,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "cplex":
-                return None
+                return solver_model.get_time()
             case "xpress":
                 return solver_model.getAttrib("time")
             case "knitro":
