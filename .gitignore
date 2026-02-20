@@ -179,6 +179,8 @@ cython_debug/
 /results/gcp-results/
 /results/partial-results/
 
+/solver-benchmark-private/
+
 # NextJs
 node_modules
 .next
