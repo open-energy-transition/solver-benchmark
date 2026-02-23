@@ -4101,6 +4101,240 @@ benchmarks:
       Num. variables: 87611
       Num. continuous variables: 87606
       Num. integer variables: 5
+  pypsa-de-elec-uc:
+    Short description:
+    Modelling framework: PyPSA
+    Model name:
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: MILP
+    Application:
+    Sectoral focus:
+    Sectors: Electric
+    Time horizon:
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 1-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_1_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 1 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 2-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 2 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 3-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_3_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 3 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 4-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_4_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 4 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 5-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_5_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 5 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 6-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_6_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 6 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 7-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_7_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 7 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 8-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_8_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 8 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 9-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_9_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 9 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 10-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_10_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 11-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_11_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 11 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 12-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_12_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 12 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 13-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_13_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 13 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 14-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_14_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 14 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 15-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_15_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 15 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 16-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_16_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 16 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 17-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_17_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 17 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 18-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_18_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 18 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 19-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_19_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 19 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 20-1h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_20_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints:
+      Num. variables:
+      Num. continuous variables:
+      Num. integer variables:
   DCOPF-Carolinas_1W:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a one-week horizon with hourly resolution, using 2021 as the
