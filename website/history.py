@@ -75,7 +75,9 @@ for solver in solver_sgm_runtime["Solver"].unique():
             marker=dict(size=10),
             line=dict(width=2),
             text=subset.apply(
-                lambda row: f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Normalized SGM (Runtime): {row['Normalized SGM_Runtime']:.2f}",
+                lambda row: (
+                    f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Normalized SGM (Runtime): {row['Normalized SGM_Runtime']:.2f}"
+                ),
                 axis=1,
             ),
             hoverinfo="text+x+y",
@@ -111,7 +113,9 @@ for solver in solver_sgm_memory["Solver"].unique():
             marker=dict(size=10),
             line=dict(width=2),
             text=subset.apply(
-                lambda row: f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Normalized SGM (Memory): {row['Normalized SGM_Memory']:.2f}",
+                lambda row: (
+                    f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Normalized SGM (Memory): {row['Normalized SGM_Memory']:.2f}"
+                ),
                 axis=1,
             ),
             hoverinfo="text+x+y",
@@ -155,7 +159,9 @@ for solver in benchmarks_solved["Solver"].unique():
             marker=dict(size=10),
             line=dict(width=2),
             text=subset.apply(
-                lambda row: f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Benchmarks Solved: {row['Benchmarks Solved']}",
+                lambda row: (
+                    f"Solver: {row['Solver']}<br>Year: {row['Year']}<br>Benchmarks Solved: {row['Benchmarks Solved']}"
+                ),
                 axis=1,
             ),
             hoverinfo="text+x+y",
