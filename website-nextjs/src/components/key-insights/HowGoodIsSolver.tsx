@@ -87,7 +87,21 @@ const HowGoodIsSolver = () => {
           In this iteration, we also benchmarked the new HiPO algorithm of the
           HiGHS solver. The plot below shows how this compares to the solvers
           with default options, and shows how HiPO in particular significantly
-          reduces the gap to Gurobi over the large benchmark instances.
+          reduces the gap to Gurobi over the large benchmark instances. In
+          addition to the default HiGHS configuration, we evaluated two
+          algorithmic variants: HiPO and IPX. These are not separate solvers but
+          alternative internal algorithms of HiGHS that differ primarily in how
+          the linear program is solved and whether a basic (vertex) solution is
+          constructed via crossover. In particular, HiPO can substantially
+          reduce runtime on large instances because it focuses on obtaining a
+          high-quality feasible solution without always performing the full
+          crossover step required to produce a basic solution. Since some
+          commercial solvers (e.g., Gurobi) always return basic solutions by
+          default, while others may return interior feasible solutions, runtime
+          comparisons should be interpreted with this distinction in mind. The
+          results therefore highlight the potential performance gains from
+          advanced algorithmic configurations, rather than representing strictly
+          like-for-like default solver behavior.
         </p>
         <div className="my-4">
           <RealisticRuntimeComparison
