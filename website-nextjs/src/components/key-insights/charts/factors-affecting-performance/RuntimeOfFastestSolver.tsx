@@ -6,6 +6,8 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { CircleIcon } from "@/assets/icons";
+import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 
 interface IRuntimeOfFastestSolver {
   benchmarkList?: string[];
@@ -13,6 +15,7 @@ interface IRuntimeOfFastestSolver {
   xAxisLabelWrapLength?: number;
   splitter?: string;
   extraCategoryLengthMargin?: number;
+  excludeHipo?: boolean;
 }
 
 interface IDataPoint {
@@ -26,22 +29,24 @@ const RuntimeOfFastestSolver = ({
   xAxisLabelWrapLength = undefined,
   splitter = "-",
   extraCategoryLengthMargin = undefined,
+  excludeHipo = true,
 }: IRuntimeOfFastestSolver) => {
   const [allSolvers, setallSolvers] = useState(false);
   const radioGroupId = useId();
 
-  const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.rawBenchmarkResults;
-  })
+  const availableSolvers = useAvailableSolvers({ excludeHipo });
+
+  const rawResults = useBenchmarkResults({
+    excludeHipo,
+    useRawResults: true,
+  });
+
+  const benchmarkResults = rawResults
     .filter((result) => (allSolvers ? true : result.solver !== "gurobi"))
     .map((result) => ({
       ...result,
       runtime: result.status === "ok" ? result.runtime : result.timeout,
     }));
-
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
-  });
 
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.rawMetaData;
