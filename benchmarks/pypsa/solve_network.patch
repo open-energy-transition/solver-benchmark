@@ -1,13 +1,87 @@
 diff --git a/scripts/solve_network.py b/scripts/solve_network.py
-index 3982e767..8aa3c0ec 100644
+index ca852d2c..4a2c3103 100644
 --- a/scripts/solve_network.py
 +++ b/scripts/solve_network.py
-@@ -1003,6 +1003,9 @@ def solve_network(n, config, params, solving, **kwargs):
-     kwargs["assign_all_duals"] = cf_solving.get("assign_all_duals", False)
-     kwargs["io_api"] = cf_solving.get("io_api", None)
-
+@@ -1338,52 +1338,36 @@ def solve_network(
+     kwargs["model_kwargs"] = cf_solving.get("model_kwargs", {})
+     kwargs["keep_files"] = cf_solving.get("keep_files", False)
+ 
+-    if kwargs["solver_name"] == "gurobi":
+-        logging.getLogger("gurobipy").setLevel(logging.CRITICAL)
+-
+-    rolling_horizon = cf_solving.pop("rolling_horizon", False)
+-    skip_iterations = cf_solving.pop("skip_iterations", False)
+-    if not n.lines.s_nom_extendable.any():
+-        skip_iterations = True
+-        logger.info("No expandable lines found. Skipping iterative solving.")
+-
+-    # add to network for extra_functionality
+-    n.config = config
+-    n.params = params
+-
+-    if rolling_horizon and rule_name == "solve_operations_network":
+-        kwargs["horizon"] = cf_solving.get("horizon", 365)
+-        kwargs["overlap"] = cf_solving.get("overlap", 0)
+-        n.optimize.optimize_with_rolling_horizon(**kwargs)
+-        status, condition = "", ""
+-    elif skip_iterations:
+-        status, condition = n.optimize(**kwargs)
+-    else:
+-        kwargs["track_iterations"] = cf_solving["track_iterations"]
+-        kwargs["min_iterations"] = cf_solving["min_iterations"]
+-        kwargs["max_iterations"] = cf_solving["max_iterations"]
+-        if cf_solving["post_discretization"].pop("enable"):
+-            logger.info("Add post-discretization parameters.")
+-            kwargs.update(cf_solving["post_discretization"])
+-        status, condition = n.optimize.optimize_transmission_expansion_iteratively(
+-            **kwargs
+-        )
+-
+-    if not rolling_horizon:
+-        if status != "ok":
+-            logger.warning(
+-                f"Solving status '{status}' with termination condition '{condition}'"
+-            )
+-        check_objective_value(n, solving)
+-
+-    if "warning" in condition:
+-        raise RuntimeError("Solving status 'warning'. Discarding solution.")
+-
+-    if "infeasible" in condition:
+-        labels = n.model.compute_infeasibilities()
+-        logger.info(f"Labels:\n{labels}")
+-        n.model.print_infeasibilities()
+-        raise RuntimeError("Solving status 'infeasible'. Infeasibilities computed.")
 +    # Use env var to determine if to dump LP file instead of solving
 +    kwargs["only_generate_problem_file"] = os.getenv("ONLY_GENERATE_PROBLEM_FILE", False)
 +
-     if kwargs["solver_name"] == "gurobi":
-         logging.getLogger("gurobipy").setLevel(logging.CRITICAL)
++    mps_path = os.getenv("ONLY_GENERATE_PROBLEM_FILE", False)
++    logger.info(f"ONLY_GENERATE_PROBLEM_FILE active → dumping MPS to: {mps_path}")
++
++    # Remove ALL kwargs not accepted by linopy.Model()
++    bad_keys = [
++        "log_fn",
++        "keep_files",
++        "assign_all_duals",
++        "io_api",
++        "solver_name",
++        "solver_options",
++        "extra_functionality",
++        "transmission_losses",
++        "linearized_unit_commitment",
++        "multi_investment_periods",
++        "rolling_horizon",
++        "skip_iterations",
++        "model_kwargs",
++    ]
++    for bad in bad_keys:
++        kwargs.pop(bad, None)
++
++    # Build and export the model
++    model = n.optimize.create_model(**kwargs)
++    model.to_file(mps_path)
++    logger.info("MPS file generation complete. Exiting without solving.")
++    return
+ 
+ 
+ if __name__ == "__main__":
