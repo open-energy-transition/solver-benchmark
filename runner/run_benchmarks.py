@@ -42,7 +42,13 @@ def get_conda_package_versions(solvers, env_name=None):
                 installed_packages[parts[0]] = parts[1]
 
         # Map solver names to their conda package names
-        name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
+        name_to_pkg = {
+            "highs": "highspy",
+            "cbc": "coin-or-cbc",
+            "cplex": "cplex",
+            "knitro": "knitro",
+            "xpress": "xpress",
+        }
         solver_versions = {}
         for solver in solvers:
             # Handle highs-hipo variants as special cases - not conda packages
@@ -241,6 +247,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
 
     if os.geteuid() != 0:
         command.append("--user")
+
+    for env_var in ["ARTELYS_LICENSE", "XPRESS", "LD_LIBRARY_PATH"]:
+        val = os.environ.get(env_var)
+        if val:
+            command.append(f"--setenv={env_var}={val}")
 
     command.extend(
         [
