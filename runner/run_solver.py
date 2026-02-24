@@ -421,9 +421,9 @@ def main(
         problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
     runtime = perf_counter() - start_time
-    #duality_gap, max_integrality_violation = get_milp_metrics(
+    # duality_gap, max_integrality_violation = get_milp_metrics(
     #    problem_file, solver_result
-    #)
+    # )
     results.update(
         {
             "runtime": runtime,
@@ -433,8 +433,8 @@ def main(
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-        #    "duality_gap": duality_gap,
-        #    "max_integrality_violation": max_integrality_violation,
+            #    "duality_gap": duality_gap,
+            #    "max_integrality_violation": max_integrality_violation,
         }
     )
     print(json.dumps(results))
