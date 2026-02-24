@@ -74,7 +74,7 @@ def set_seed_options(name_of_solver: str) -> dict[str, int | float]:
     seed_options = {
         "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
         "glpk": {"seed": 0, "mipgap": mip_gap},
-        "gurobi": {"seed": 0, "MIPGap": mip_gap},
+        "gurobi": {"seed": 0, "MIPGap": mip_gap, "Crossover": 0},
         "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
         "cbc": {
             "randomCbcSeed": 1,  # 0 indicates time of day
@@ -83,11 +83,17 @@ def set_seed_options(name_of_solver: str) -> dict[str, int | float]:
         "cplex": {
             "randomseed": 0,
             "mip.tolerances.mipgap": mip_gap,
+            "solutiontype": 2,
         },
         "knitro": {
-            "KN_PARAM_MS_SEED": 1066,
+            "ms_seed": 1066,
+            "bar_maxcrossit": 0,
         },
-        "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
+        "xpress": {
+            "miprelgapnotify": mip_gap,
+            "randomseed": 0,
+            "crossover": 0,
+        },
     }
     if name_of_solver in seed_options.keys():
         return seed_options[name_of_solver]
