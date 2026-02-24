@@ -102,7 +102,7 @@ const HowGoodIsSolver = () => {
         </div>
         <p>
           {" "}
-          4 out of the 7 problems can be solved by at least one open source
+          3 out of the 6 problems can be solved by at least one open source
           solver, with different solvers (HiGHS or SCIP) providing the best
           performance on different problems.
         </p>
