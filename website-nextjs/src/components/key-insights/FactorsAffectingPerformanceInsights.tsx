@@ -2,6 +2,7 @@ import { useScrollSpy } from "@/hooks/useScrollSpy";
 import PerformanceScalling from "./charts/factors-affecting-performance/PerformanceScalling";
 import RuntimeOfFastestSolver from "./charts/factors-affecting-performance/RuntimeOfFastestSolver";
 import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "what-factors-affect-solver-performance";
 const FactorsAffectingPerformanceInsights = () => {
@@ -73,7 +74,10 @@ const FactorsAffectingPerformanceInsights = () => {
         {" "}
         <Link
           className="font-bold"
-          href="dashboard/benchmark-set/genx-10_IEEE_9_bus_DC_OPF"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "genx-10_IEEE_9_bus_DC_OPF",
+          )}
         >
           genx-10_IEEE_9_bus_DC_OPF (9-1h)
         </Link>{" "}
@@ -81,7 +85,10 @@ const FactorsAffectingPerformanceInsights = () => {
         power sector model{" "}
         <Link
           className="font-bold"
-          href="dashboard/benchmark-set/genx-10_IEEE_9_bus_DC_OPF-no_uc"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "genx-10_IEEE_9_bus_DC_OPF-no_uc",
+          )}
         >
           genx-10_IEEE_9_bus_DC_OPF-no_uc (9-1h)
         </Link>{" "}
@@ -110,7 +117,10 @@ const FactorsAffectingPerformanceInsights = () => {
         {" "}
         <Link
           className="font-bold"
-          href="dashboard/benchmark-set/pypsa-power+ely-ucgas"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "pypsa-power+ely-ucgas",
+          )}
         >
           pypsa-power+ely-ucgas (1-1h)
         </Link>{" "}
@@ -118,7 +128,10 @@ const FactorsAffectingPerformanceInsights = () => {
         power-only model{" "}
         <Link
           className="font-bold"
-          href="dashboard/benchmark-set/pypsa-power+ely"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "pypsa-power+ely",
+          )}
         >
           pypsa-power+ely (1-1h)
         </Link>{" "}
