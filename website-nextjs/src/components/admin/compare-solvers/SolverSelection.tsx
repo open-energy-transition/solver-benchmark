@@ -158,8 +158,16 @@ const SolverSelection = () => {
         <p className="mb-6 mt-4 max-w-screen-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
-          where Solver 2 performs better. Click on any point in this graph to
-          see details of that benchmark instance.
+          where Solver 2 performs better. Note that we ran benchmarks with two
+          different timeout values: smaller benchmarks (S and M) were run with a
+          timeout of 1h, while larger benchmarks (L) were run with a timeout of
+          24h.{" "}
+          <div className="inline-flex gap-1 items-start">
+            Thus, the
+            <CloseIcon className="size-3 mt-1.5" />s in the graph below might
+            appear at 2 different time values. Click on any point in this graph
+            to see details of that benchmark instance.
+          </div>
           <p className="flex-col gap-1 items-center text-navy text-sm">
             <div className="inline-flex gap-1 items-start">
               <CloseIcon className="size-3 mt-1.5" />
