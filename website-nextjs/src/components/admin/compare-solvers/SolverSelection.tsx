@@ -1,19 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
-import { formatSolverWithVersion } from "@/utils/solvers";
+import { formatSolverWithVersion, HIPO_SOLVERS } from "@/utils/solvers";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal, roundNumber } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
 
 const SolverSelection = () => {
-  const solversData = useSelector((state: { results: IResultState }) => {
+  const allSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.solversData;
   });
+
+  const solversData = useMemo(
+    () => allSolvers.filter((s) => !HIPO_SOLVERS.includes(s.solver)),
+    [allSolvers],
+  );
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults;
   });
@@ -101,14 +106,12 @@ const SolverSelection = () => {
   <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
-    <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
-      d.d1.memoryUsage,
-      2,
-    )} MB (${d.d1.status})<br>
-    <strong>${solver2.replace("--", " (")}):</strong> ${roundNumber(
-      d.d2.memoryUsage,
-      2,
-    )} MB (${d.d2.status})<br>
+    <strong>${solver1.replace("--", " (")}):</strong> ${formatDecimal({
+      value: d.d1.memoryUsage,
+    })} MB (${d.d1.status})<br>
+    <strong>${solver2.replace("--", " (")}):</strong> ${formatDecimal({
+      value: d.d2.memoryUsage,
+    })} MB (${d.d2.status})<br>
   </div>
 `;
 

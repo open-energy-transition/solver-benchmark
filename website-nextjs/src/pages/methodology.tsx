@@ -73,6 +73,11 @@ const Methodology = () => {
       title="Methodology"
       description="Benchmarking Metrics and Methodology"
     >
+      <style jsx>{`
+        :global(.info-pages-content p) {
+          font-size: 16px;
+        }
+      `}</style>
       <TableOfContents
         title="Methodology"
         currentSection={currentSection}

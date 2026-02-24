@@ -9,6 +9,7 @@ import {
   roundUpToNearest,
 } from "@/utils/chart";
 import { IResultState } from "@/types/state";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -20,6 +21,7 @@ interface ID3ChartLineChart {
   xAxisTooltipFormat?: (value: number | string) => string;
   maxYValue?: number;
   showMaxLine?: boolean;
+  showHipoSolvers?: boolean;
 }
 
 const D3ChartLineChart = ({
@@ -30,13 +32,22 @@ const D3ChartLineChart = ({
   xAxisTooltipFormat,
   maxYValue,
   showMaxLine = false,
+  showHipoSolvers = true,
 }: ID3ChartLineChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
+  const allSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+
+  const availableSolvers = useMemo(
+    () =>
+      showHipoSolvers
+        ? allSolvers
+        : allSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
+    [allSolvers, showHipoSolvers],
+  );
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
