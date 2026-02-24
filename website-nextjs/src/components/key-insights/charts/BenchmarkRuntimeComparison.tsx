@@ -6,6 +6,7 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
+import { formatDecimal, formatInteger } from "@/utils/number";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const BENCHMARKS_FILTERS = [
@@ -133,8 +134,8 @@ const BenchmarkRuntimeComparison = ({
       Realistic: ${
         metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
       }<br/>
-      Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
-      Num. variables: ${sizeData?.numVariables}<br/>
+      Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
+      Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
               `;
     },
     [metaData, benchmarkLatestResults],
@@ -156,7 +157,9 @@ const BenchmarkRuntimeComparison = ({
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              Memory: ${benchmarkData?.memoryUsage} MB <br/>
+              Memory: ${formatDecimal({
+                value: benchmarkData?.memoryUsage,
+              })} MB <br/>
               Status: ${benchmarkData?.status} <br/>`;
     },
     [findBenchmarkData],

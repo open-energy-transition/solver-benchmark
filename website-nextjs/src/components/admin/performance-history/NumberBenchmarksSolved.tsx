@@ -18,9 +18,9 @@ const NumberBenchmarksSolved = ({
       <D3LineChart
         className="pl-0 lg:px-10"
         title="Number of Benchmarks Solved"
-        showHipoSolvers={false}
         height={300}
         chartData={numSolvedBenchMark}
+        showHipoSolvers={false}
         maxYValue={totalBenchmarks}
         showMaxLine={true}
         xAxisTooltipFormat={(value) =>

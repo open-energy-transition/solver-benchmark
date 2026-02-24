@@ -89,13 +89,6 @@ const HowGoodIsSolver = () => {
           with default options, and shows how HiPO in particular significantly
           reduces the gap to Gurobi over the large benchmark instances.
         </p>
-        <div className="my-4">
-          <RealisticRuntimeComparison
-            dataSource="hipo"
-            problemClass="LP"
-            rotateXAxisLabels
-          />
-        </div>
         <p>
           The next plot shows the concrete performance of each solver on a few
           representative realistic problems from a few modelling frameworks in

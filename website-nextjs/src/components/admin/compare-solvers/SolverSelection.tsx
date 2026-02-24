@@ -6,7 +6,7 @@ import { formatSolverWithVersion, HIPO_SOLVERS } from "@/utils/solvers";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal, roundNumber } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
 
@@ -107,14 +107,12 @@ const SolverSelection = () => {
   <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
-    <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
-      d.d1.memoryUsage,
-      2,
-    )} MB (${d.d1.status})<br>
-    <strong>${solver2.replace("--", " (")}):</strong> ${roundNumber(
-      d.d2.memoryUsage,
-      2,
-    )} MB (${d.d2.status})<br>
+    <strong>${solver1.replace("--", " (")}):</strong> ${formatDecimal({
+      value: d.d1.memoryUsage,
+    })} MB (${d.d1.status})<br>
+    <strong>${solver2.replace("--", " (")}):</strong> ${formatDecimal({
+      value: d.d2.memoryUsage,
+    })} MB (${d.d2.status})<br>
   </div>
 `;
 
@@ -164,8 +162,16 @@ const SolverSelection = () => {
         <p className="mb-6 mt-4 max-w-screen-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
-          where Solver 2 performs better. Click on any point in this graph to
-          see details of that benchmark instance.
+          where Solver 2 performs better. Note that we ran benchmarks with two
+          different timeout values: smaller benchmarks (S and M) were run with a
+          timeout of 1h, while larger benchmarks (L) were run with a timeout of
+          24h.{" "}
+          <div className="inline-flex gap-1 items-start">
+            Thus, the
+            <CloseIcon className="size-3 mt-1.5" />s in the graph below might
+            appear at 2 different time values. Click on any point in this graph
+            to see details of that benchmark instance.
+          </div>
           <p className="flex-col gap-1 items-center text-navy text-sm">
             <div className="inline-flex gap-1 items-start">
               <CloseIcon className="size-3 mt-1.5" />

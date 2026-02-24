@@ -6,6 +6,7 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { CircleIcon } from "@/assets/icons";
+import { formatInteger } from "@/utils/number";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 
@@ -146,8 +147,8 @@ const RuntimeOfFastestSolver = ({
     Realistic: ${
       metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
     }<br/>
-    Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
-    Num. variables: ${sizeData?.numVariables}<br/>
+    Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
+    Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
             `;
   };
 
@@ -247,6 +248,7 @@ const RuntimeOfFastestSolver = ({
           extraCategoryLengthMargin={extraCategoryLengthMargin}
           rotateXAxisLabels={true}
           splitter={splitter}
+          showLineAtY1={false}
         />
       </div>
     </>

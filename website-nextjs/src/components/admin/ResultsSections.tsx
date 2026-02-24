@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal, roundNumber } from "@/utils/number";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { extractNumberFromFormattedString } from "@/utils/string";
@@ -369,25 +369,21 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             ),
           },
           version: getHighestVersion(solverVersions[solverData]),
-          memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
-            memorySgm,
-            2,
-          )} (${roundNumber(
-            calculateSgm(getRelevantResults(solverData, "memoryUsage")),
-            2,
-          )})${memorySgm === minMemory ? "</b>" : ""}`,
+          memory: `${memorySgm === minMemory ? "<b>" : ""}${formatDecimal({
+            value: memorySgm,
+          })} (${formatDecimal({
+            value: calculateSgm(getRelevantResults(solverData, "memoryUsage")),
+          })})${memorySgm === minMemory ? "</b>" : ""}`,
           solvedBenchmarks: `${
             solvedCount === maxSolved ? "<b>" : ""
           }${getSolvedBenchmarksLabel(solverData, uniqueBenchmarkCount)}${
             solvedCount === maxSolved ? "</b>" : ""
           }`,
-          runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${roundNumber(
-            runtimeSgm,
-            2,
-          )} (${roundNumber(
-            calculateSgm(getRelevantResults(solverData, "runtime")),
-            2,
-          )})${runtimeSgm === minRuntime ? "</b>" : ""}`,
+          runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${formatDecimal({
+            value: runtimeSgm,
+          })} (${formatDecimal({
+            value: calculateSgm(getRelevantResults(solverData, "runtime")),
+          })})${runtimeSgm === minRuntime ? "</b>" : ""}`,
         };
       }),
     );
