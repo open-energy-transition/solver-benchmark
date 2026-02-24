@@ -177,7 +177,7 @@ const SolverRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        yAxisLabel="Relative runtime (normalized)"
+        yAxisLabel="Relative runtime (normalized, log scale)"
         chartHeight={400}
         extraCategoryLengthMargin={-50}
         rotateXAxisLabels={false}
@@ -188,6 +188,7 @@ const SolverRuntimeComparison = ({
         sortByValue
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
+        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);

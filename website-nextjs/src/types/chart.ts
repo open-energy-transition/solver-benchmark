@@ -34,6 +34,7 @@ export interface ID3GroupedBarChart {
   splitter?: string;
   sortByValue?: boolean;
   showLineAtY1?: boolean;
+  useLogScale?: boolean;
   colors:
     | {
         [key: string]: string;

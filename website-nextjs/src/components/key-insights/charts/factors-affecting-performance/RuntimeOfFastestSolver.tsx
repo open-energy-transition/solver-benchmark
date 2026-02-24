@@ -234,7 +234,7 @@ const RuntimeOfFastestSolver = ({
             return 1;
           }}
           xAxisLabel=""
-          yAxisLabel="Runtime (s)"
+          yAxisLabel="Runtime (s, log scale)"
           chartHeight={400}
           customLegend={chartLegend}
           barTextClassName={getBarTextClassName}
@@ -248,6 +248,7 @@ const RuntimeOfFastestSolver = ({
           extraCategoryLengthMargin={extraCategoryLengthMargin}
           rotateXAxisLabels={true}
           splitter={splitter}
+          useLogScale={true}
           showLineAtY1={false}
         />
       </div>
