@@ -37,6 +37,13 @@ const SolverRuntimeComparison = ({
   );
 
   const chartData = benchmarkDetail.sizes
+    .slice() // Create a copy to avoid mutating original
+    .sort((a, b) => {
+      // Sort by number of variables ascending
+      const aVars = a.numVariables ?? 0;
+      const bVars = b.numVariables ?? 0;
+      return aVars - bVars;
+    })
     .map((s) => {
       const data = benchmarkLatestResults.filter(
         (result) =>
@@ -177,7 +184,7 @@ const SolverRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        yAxisLabel="Relative runtime (normalized)"
+        yAxisLabel="Relative runtime (normalized, log scale)"
         chartHeight={400}
         extraCategoryLengthMargin={-50}
         rotateXAxisLabels={false}
@@ -188,6 +195,7 @@ const SolverRuntimeComparison = ({
         sortByValue
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
+        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);
