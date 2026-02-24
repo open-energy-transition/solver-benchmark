@@ -37,6 +37,13 @@ const SolverRuntimeComparison = ({
   );
 
   const chartData = benchmarkDetail.sizes
+    .slice() // Create a copy to avoid mutating original
+    .sort((a, b) => {
+      // Sort by number of variables ascending
+      const aVars = a.numVariables ?? 0;
+      const bVars = b.numVariables ?? 0;
+      return aVars - bVars;
+    })
     .map((s) => {
       const data = benchmarkLatestResults.filter(
         (result) =>
