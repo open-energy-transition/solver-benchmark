@@ -49,6 +49,7 @@ class HighsVariant(str, Enum):
                 options["hipo_metis_no2hop"] = "true"
         return "\n".join(f"{k} = {v}" for k, v in options.items())
 
+
 # ---------- Monitor in-progress runs ----------
 
 

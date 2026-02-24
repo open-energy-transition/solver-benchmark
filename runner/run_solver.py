@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 from enum import Enum
 from pathlib import Path
 from time import perf_counter
@@ -9,7 +10,6 @@ from typing import Any
 import linopy
 import pandas as pd
 from linopy.solvers import SolverName
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,16 @@ try:
 except ModuleNotFoundError:
     highspy = None
 
-SUPPORTED_SOLVERS = ["highs", "glpk", "gurobi", "scip", "cbc", "cplex", "knitro", "xpress"]
+SUPPORTED_SOLVERS = [
+    "highs",
+    "glpk",
+    "gurobi",
+    "scip",
+    "cbc",
+    "cplex",
+    "knitro",
+    "xpress",
+]
 
 
 class HighsSolverVariant(str, Enum):
@@ -35,6 +44,7 @@ class HighsSolverVariant(str, Enum):
     HIPO : str
         HiPO variant of HiGHS.
     """
+
     IPX = "ipx"
     SIMPLEX = "simplex"
     HIPO = "hipo"
@@ -82,11 +92,16 @@ def set_seed_options(name_of_solver: str) -> dict[str, int | float]:
     if name_of_solver in seed_options.keys():
         return seed_options[name_of_solver]
     else:
-        logger.info("No seed options found for solver '%s'. Returning empty options.", name_of_solver)
+        logger.info(
+            "No seed options found for solver '%s'. Returning empty options.",
+            name_of_solver,
+        )
         return dict()
 
 
-def set_solver_options(name_solver: str, variant_highs: str, hipo_block_size_value: int) -> dict[str, int | str]:
+def set_solver_options(
+    name_solver: str, variant_highs: str, hipo_block_size_value: int
+) -> dict[str, int | str]:
     """
     Sets solver-specific options for reproducibility.
 
@@ -113,14 +128,22 @@ def set_solver_options(name_solver: str, variant_highs: str, hipo_block_size_val
     if name_solver == "highs":
         if variant_highs == HighsSolverVariant.HIPO:
             return {"hipo_block_size": hipo_block_size_value, "solver": "hipo"}
-        elif variant_highs == HighsSolverVariant.IPX or variant_highs == HighsSolverVariant.SIMPLEX:
+        elif (
+            variant_highs == HighsSolverVariant.IPX
+            or variant_highs == HighsSolverVariant.SIMPLEX
+        ):
             return {"solver": variant_highs}
     else:
-        logger.info("No specific options found for solver '%s'. Returning empty options.", name_solver)
+        logger.info(
+            "No specific options found for solver '%s'. Returning empty options.",
+            name_solver,
+        )
         return dict()
 
 
-def get_solver(name_solver: str, variant_highs: str, hipo_block_size_value: int) -> linopy.solvers:
+def get_solver(
+    name_solver: str, variant_highs: str, hipo_block_size_value: int
+) -> linopy.solvers:
     """
     Instantiate and configure a solver object based on the specified solver name and options.
 
@@ -146,7 +169,9 @@ def get_solver(name_solver: str, variant_highs: str, hipo_block_size_value: int)
     seed_options = set_seed_options(name_solver)
 
     # Get other solver options if needed (e.g., for HiGHS variants)
-    solver_options = set_solver_options(name_solver, variant_highs, hipo_block_size_value)
+    solver_options = set_solver_options(
+        name_solver, variant_highs, hipo_block_size_value
+    )
 
     return solver_class(**seed_options, **solver_options)
 
@@ -246,7 +271,9 @@ def get_duality_gap(solver_model: Any, name_solver: str) -> float | None:
         return None
 
 
-def get_milp_metrics(input_file: Path, solver_result: Any) -> tuple[float | None, float | None]:
+def get_milp_metrics(
+    input_file: Path, solver_result: Any
+) -> tuple[float | None, float | None]:
     """
     Compute MILP metrics (duality gap and max integrality violation) using HiGHS.
 
@@ -267,11 +294,13 @@ def get_milp_metrics(input_file: Path, solver_result: Any) -> tuple[float | None
         if highspy is not None:
             h = highspy.Highs()
             h.readModel(input_file)
-            integer_vars = pd.Series({
-                h.variableName(i)
-                for i in range(h.numVariables)
-                if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-            })
+            integer_vars = pd.Series(
+                {
+                    h.variableName(i)
+                    for i in range(h.numVariables)
+                    if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+                }
+            )
             if integer_vars:
                 duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
                 max_integrality_violation = calculate_integrality_violation(
@@ -326,7 +355,7 @@ def main(
     input_file: str,
     solver_version: str,
     highs_solver_variant: str,
-    hipo_block_size: int
+    hipo_block_size: int,
 ) -> None:
     """
     Run the specified solver on the given input file and collect results.
@@ -383,17 +412,19 @@ def main(
     duality_gap, max_integrality_violation = get_milp_metrics(
         problem_file, solver_result
     )
-    results.update({
-        "runtime": runtime,
-        "reported_runtime": get_reported_runtime(
-            solver_name, solver_result.solver_model
-        ),
-        "status": solver_result.status.status.value,
-        "condition": solver_result.status.termination_condition.value,
-        "objective": solver_result.solution.objective,
-        "duality_gap": duality_gap,
-        "max_integrality_violation": max_integrality_violation,
-    })
+    results.update(
+        {
+            "runtime": runtime,
+            "reported_runtime": get_reported_runtime(
+                solver_name, solver_result.solver_model
+            ),
+            "status": solver_result.status.status.value,
+            "condition": solver_result.status.termination_condition.value,
+            "objective": solver_result.solution.objective,
+            "duality_gap": duality_gap,
+            "max_integrality_violation": max_integrality_violation,
+        }
+    )
 
     logger.info(json.dumps(results))
 
@@ -414,12 +445,34 @@ def parse_args() -> argparse.Namespace:
     """
     p = argparse.ArgumentParser()
     p.add_argument(
-        "--solver_name", type=str, choices=SUPPORTED_SOLVERS, required=True, help="Name of the solver to run."
+        "--solver_name",
+        type=str,
+        choices=SUPPORTED_SOLVERS,
+        required=True,
+        help="Name of the solver to run.",
     )
-    p.add_argument("--solver_version", type=str, required=True, help="Version of the solver to run.")
-    p.add_argument("--input_file", type=str, required=True, help="Path to the input problem file.")
-    p.add_argument("--highs_solver_variant", type=str, choices=[v.value for v in HighsSolverVariant], help="Variant of HiGHS to run (only applicable if solver_name is 'highs').", default="simplex")
-    p.add_argument("--hipo_block_size", type=int, help="Block size for HiPO variant of HiGHS (only applicable if solver_name is 'highs' and highs_solver_variant is 'hipo').", default=128)
+    p.add_argument(
+        "--solver_version",
+        type=str,
+        required=True,
+        help="Version of the solver to run.",
+    )
+    p.add_argument(
+        "--input_file", type=str, required=True, help="Path to the input problem file."
+    )
+    p.add_argument(
+        "--highs_solver_variant",
+        type=str,
+        choices=[v.value for v in HighsSolverVariant],
+        help="Variant of HiGHS to run (only applicable if solver_name is 'highs').",
+        default="simplex",
+    )
+    p.add_argument(
+        "--hipo_block_size",
+        type=int,
+        help="Block size for HiPO variant of HiGHS (only applicable if solver_name is 'highs' and highs_solver_variant is 'hipo').",
+        default=128,
+    )
     return p.parse_args()
 
 
