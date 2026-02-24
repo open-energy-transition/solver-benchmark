@@ -173,7 +173,13 @@ def get_solver(
         name_solver, variant_highs, hipo_block_size_value
     )
 
-    return solver_class(**seed_options, **solver_options)
+    kwargs = {}
+    if seed_options:
+        kwargs.update(seed_options)
+    if solver_options:
+        kwargs.update(solver_options)
+
+    return solver_class(**kwargs)
 
 
 def is_mip_problem(solver_model: Any, name_solver: str) -> bool:
@@ -409,9 +415,9 @@ def main(
         problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
     )
     runtime = perf_counter() - start_time
-    duality_gap, max_integrality_violation = get_milp_metrics(
-        problem_file, solver_result
-    )
+    #duality_gap, max_integrality_violation = get_milp_metrics(
+    #    problem_file, solver_result
+    #)
     results.update(
         {
             "runtime": runtime,
@@ -421,12 +427,11 @@ def main(
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-            "duality_gap": duality_gap,
-            "max_integrality_violation": max_integrality_violation,
+        #    "duality_gap": duality_gap,
+        #    "max_integrality_violation": max_integrality_violation,
         }
     )
-
-    logger.info(json.dumps(results))
+    print(json.dumps(results))
 
 
 def parse_args() -> argparse.Namespace:
