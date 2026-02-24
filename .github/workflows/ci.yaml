@@ -56,6 +56,7 @@ jobs:
             printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
             exit 1
           fi
+          python tests/validate_urls_exist.py results/metadata.yaml
           python tests/validate_results.py
 
       - name: Run Streamlit App Action
@@ -110,3 +111,57 @@ jobs:
             echo "Some benchmarks did not complete successfully."
             exit 1
           fi
+
+  accessibility-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd website-nextjs
+          npm install
+
+      - name: Build Next.js
+        run: |
+          cd website-nextjs
+          npm run build
+
+      - name: Install browser-driver-manager and sync Chrome/ChromeDriver
+        run: |
+          cd website-nextjs
+          npm install --no-save browser-driver-manager
+          npx browser-driver-manager install chrome
+
+      - name: Start Next.js server in background
+        run: |
+          cd website-nextjs
+          npm start &
+          echo "Waiting for server to start..."
+          sleep 15
+
+      - name: Wait for server to be ready
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done' || exit 1
+
+      - name: Extract URLs from sitemap
+        run: |
+          cd website-nextjs
+          npm run axe:extract
+
+      - name: Run axe-core accessibility tests on all pages
+        run: |
+          cd website-nextjs
+          npm run axe:test
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: website-nextjs/axe-results.json

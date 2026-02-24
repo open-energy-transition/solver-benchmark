@@ -35,20 +35,25 @@ const SolverRuntimeComparison = ({
     [benchmarkLatestResults, benchmarkName],
   );
 
-  const chartData = benchmarkDetail.sizes.map((s) => {
-    const data = benchmarkLatestResults.filter(
-      (result) => result.size === s.name && result.benchmark === benchmarkName,
-    );
+  const chartData = benchmarkDetail.sizes
+    .map((s) => {
+      const data = benchmarkLatestResults.filter(
+        (result) =>
+          result.size === s.name && result.benchmark === benchmarkName,
+      );
 
-    const res: { [solver: string]: number } = {};
-    data.forEach((d) => {
-      res[d.solver] = d.runtime;
+      const res: { [solver: string]: number } = {};
+      data.forEach((d) => {
+        res[d.solver] = d.runtime;
+      });
+      return {
+        size: s.name,
+        ...res,
+      };
+    })
+    .filter((d) => {
+      return Object.keys(d).length > 2; // Filter out sizes with no solver data
     });
-    return {
-      size: s.name,
-      ...res,
-    };
-  });
 
   // Calculate the maximum ratio across all non-OK bars
   const maxNonOkRatio = Math.max(
@@ -177,6 +182,7 @@ const SolverRuntimeComparison = ({
         tooltipFormat={tooltipFormat}
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
+        sortByValue
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
         transformHeightValue={(d) => {

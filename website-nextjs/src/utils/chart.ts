@@ -29,7 +29,9 @@ const colorMap: Record<string, string> = {
   glpk: "#7C3AED", // purple
   gurobi: "#F66C49", // red
   highs: "#43BF94", // green
-  scip: "#3B82F6", // blue
+  scip: "#3B82F6", // blue,
+  "highs-hipo": "#ff48c2", // rose
+  "highs-ipx": "#6a721d", // olive
 };
 
 export function getChartColor(index: number): string {
@@ -118,7 +120,6 @@ export const yearSort = (
   a: { year: string | number },
   b: { year: string | number },
 ) => {
-  const parseYear = (y: string | number) =>
-    y === "2024-2025" ? 2025 : Number(y);
+  const parseYear = (y: string | number) => Number(y);
   return parseYear(a.year) - parseYear(b.year);
 };

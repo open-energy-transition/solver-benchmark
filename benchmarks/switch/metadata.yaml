@@ -126,7 +126,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-tiny-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-3-zone-tiny-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -151,7 +151,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3-zone-toy-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-3-zone-toy-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -175,7 +175,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-3zone-toy-stochastic-PySP-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-3zone-toy-stochastic-PySP-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -199,7 +199,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-carbon-cap-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-carbon-cap-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -221,7 +221,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-hydrogen-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-hydrogen-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -243,7 +243,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-planning-reserves-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-planning-reserves-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -267,7 +267,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-retrofits-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-retrofits-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false
@@ -291,7 +291,7 @@ benchmarks:
     Sizes:
     - Name: 3-6ts
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/SWITCH-rps-simple-3-6ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-rps-simple-3-6ts.lp.gz
       Temporal resolution: 6 time slices (first investment period), 1 time slice (second investment period)
       Spatial resolution: 3 nodes
       Realistic: false

@@ -9,6 +9,7 @@ import { sortStringArray } from "@/utils/string";
 const {
   SET_BENCHMARK_RESULTS,
   SET_BENCHMARK_LATEST_RESULTS,
+  SET_BENCHMARK_HIPO_RESULTS,
   SET_META_DATA,
   SET_RAW_BENCHMARK_RESULTS,
   SET_RAW_META_DATA,
@@ -29,6 +30,7 @@ const initialState: IResultState = {
   availableStatuses: [],
   availableProblemClasses: [],
   benchmarkLatestResults: [],
+  benchmarkHipoResults: [],
   benchmarkResults: [],
   fullMetaData: {},
   metaData: {},
@@ -58,6 +60,14 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
           state.fullMetaData,
         ),
       };
+    case SET_BENCHMARK_HIPO_RESULTS:
+      return {
+        ...state,
+        benchmarkHipoResults: processBenchmarkResults(
+          action.payload.results,
+          state.fullMetaData,
+        ),
+      };
     case SET_RAW_BENCHMARK_RESULTS:
       const availableSolvers = Array.from(
         new Set(
@@ -65,7 +75,7 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
             (result: BenchmarkResult) => result.solver,
           ),
         ),
-      );
+      ).sort((a, b) => (a as string).localeCompare(b as string));
       const solversData = availableSolvers.map((solver) => {
         const versions = Array.from(
           new Set(

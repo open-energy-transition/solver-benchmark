@@ -232,6 +232,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                     }
                     onChange={handleSelectAll}
                     className="cursor-pointer w-4 h-4"
+                    aria-label="Select all benchmarks"
                   />
                 </div>
               ),
@@ -242,6 +243,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                     checked={selectedBenchmarks.has(info.row.original.name)}
                     onChange={() => handleToggleSelect(info.row.original.name)}
                     className="cursor-pointer w-4 h-4"
+                    aria-label={`Select ${info.row.original.name}`}
                   />
                 </div>
               ),

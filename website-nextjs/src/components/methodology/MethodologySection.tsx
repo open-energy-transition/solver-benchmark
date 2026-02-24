@@ -10,15 +10,15 @@ const MethodologySection = () => {
   return (
     <div ref={sectionRef}>
       <div className="info-pages-section">
-        <h4 id="methodology" className="info-pages-heading">
+        <div id="methodology" className="h4 info-pages-heading">
           Methodology
-        </h4>
+        </div>
       </div>
 
       <div className="info-pages-section">
-        <h5 id="key-decisions" className="info-pages-heading">
+        <div id="key-decisions" className="h5 info-pages-heading">
           Key Decisions
-        </h5>
+        </div>
         <p>
           Here are the key details of our benchmarking methodology, along with
           the reasoning behind these decisions:
@@ -33,9 +33,9 @@ const MethodologySection = () => {
               <li className="mb-2">
                 It allows us to run different benchmarks in{" "}
                 <strong>parallel</strong>, reducing the total runtime (running
-                all benchmarks and solvers as of May 2025 would take 35 days),
-                and allowing us to scale to a large number of benchmarks and
-                solver versions in the future.
+                all benchmarks and solvers as of February 2026 would take 268
+                days), and allowing us to scale to a large number of benchmarks
+                and solver versions in the future.
               </li>
               <li className="mb-2">
                 It is more <strong>cost-efficient</strong> compared to buying
@@ -68,16 +68,14 @@ const MethodologySection = () => {
                     We run a <strong>reference benchmark</strong> and solver
                     periodically on every benchmark runner and estimate the
                     coefficient of variation of the runtime of this reference
-                    benchmark for each VM. All our results have a variation of
-                    less than 4%, which is less than the difference in runtimes
-                    between 98.8% of pairs of solvers on our benchmark
-                    instances. (You can think of this as 99% of our benchmarks
-                    should have the same ranking of solvers if run on a bare
-                    metal server.)
-                  </li>
-                  <li className="mb-2">
-                    See more details of our error estimation in this notebook
-                    (TODO).
+                    benchmark for each VM. This is a unitless measure which we
+                    use to estimate how much noise is present in the runtime
+                    measurements from each VM. This{" "}
+                    <a href="https://github.com/open-energy-transition/solver-benchmark/issues/393">
+                      issue
+                    </a>{" "}
+                    discusses heuristics that we use to decide when there is too
+                    much noise and a benchmark problem needs to be re-run.
                   </li>
                 </ul>
               </li>
@@ -149,7 +147,12 @@ const MethodologySection = () => {
               <li className="mb-2">
                 Depending on feedback and capacity, we can consider having a few
                 preset option configurations for solvers as submitted by the
-                solver developers if there is strong interest in this.
+                solver developers if there is strong interest in this. (Please
+                join the discussion in this{" "}
+                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/403">
+                  issue
+                </a>
+                .)
               </li>
             </ul>
           </li>
@@ -164,14 +167,14 @@ const MethodologySection = () => {
               </li>
               <li className="mb-2">
                 We do not average over multiple random seeds for now, in order
-                to save time and costs (and be slightly greener!). This is
-                something we may consider in the future if there is interest and
-                budget for it.
+                to save time, costs, and environmental impact. This is something
+                we may consider in the future if there is interest and budget
+                for it.
               </li>
             </ul>
           </li>
           <li className="mb-2">
-            We run benchmarks on linux only. We do not expect a huge difference
+            We run benchmarks on Linux only. We do not expect a huge difference
             in solver performance on other operating systems, but adding this
             feature could be an interesting direction of future work.
           </li>

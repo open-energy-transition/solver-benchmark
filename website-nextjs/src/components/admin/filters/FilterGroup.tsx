@@ -48,12 +48,16 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
         className="flex items-center justify-between pr-2 rounded-lg bg-white"
       >
         <div className="flex items-center border-b-0 border-stroke p-2 pr-0 gap-2">
-          <input
-            className="size-3.5 accent-navy rounded checked:before:text-xs "
-            type="checkbox"
-            checked={items.every((item) => selectedItems.includes(item))}
-            onChange={onSelectAll}
-          />
+          <label>
+            <input
+              name={String(title)}
+              className="size-3.5 accent-navy rounded checked:before:text-xs "
+              type="checkbox"
+              checked={items.every((item) => selectedItems.includes(item))}
+              onChange={onSelectAll}
+              aria-label={`Select all ${String(title)}`}
+            />
+          </label>
           {icon}
           <span className="overflow-hidden whitespace-nowrap text-ellipsis tag-line-sm">
             {title}
@@ -68,6 +72,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="ml-2 text-navy hover:text-navy-dark"
+            aria-label="Toggle Filter Group"
           >
             {isExpanded ? (
               <ArrowIcon
@@ -95,6 +100,11 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 type="checkbox"
                 checked={selectedItems.includes(item)}
                 onChange={() => onItemChange(item)}
+                aria-label={item}
+                id={`filter-${String(title).replace(
+                  /\s+/g,
+                  "-",
+                )}-${item.replace(/\s+/g, "-")}`}
               />
               <span
                 onClick={() => onItemChange(item)}
