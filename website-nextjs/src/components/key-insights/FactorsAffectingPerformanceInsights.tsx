@@ -171,14 +171,10 @@ const FactorsAffectingPerformanceInsights = () => {
       <p>
         Increasing the stringency of CO2 constraints affects solver performance
         differently across solver families. Under open-source solvers, runtime
-        increases substantially when moving from the base case to constrained
-        scenarios, with the NDC case being particularly challenging. When
-        including all solvers, the models solve in a few minutes and runtimes
-        increase only moderately as constraints become more stringent. Notably,
-        the NDC case exhibits atypical behavior for HiGHS (unsolved under the
-        open-only view), despite being less stringent than the net-zero case,
-        indicating solver-specific sensitivity to model structure rather than
-        constraint stringency alone.
+        increases when moving from the base case to constrained scenarios, with
+        the NDC case being particularly challenging. When including all solvers,
+        the models solve in a few minutes and runtimes increase only moderately
+        as constraints become more stringent.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
