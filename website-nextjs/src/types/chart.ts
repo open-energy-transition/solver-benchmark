@@ -33,8 +33,6 @@ export interface ID3GroupedBarChart {
   xAxisLabelRotation?: number;
   splitter?: string;
   sortByValue?: boolean;
-  showLineAtY1?: boolean;
-  useLogScale?: boolean;
   colors:
     | {
         [key: string]: string;

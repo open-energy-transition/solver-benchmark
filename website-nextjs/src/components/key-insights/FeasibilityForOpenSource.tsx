@@ -3,7 +3,6 @@ import ProblemClassTable from "./charts/ProblemClassTable";
 import Note from "../shared/Note";
 import Link from "next/link";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
-import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "what-is-feasible-for-open-source-solvers";
 const FeasibilityForOpenSource = () => {
@@ -73,12 +72,9 @@ const FeasibilityForOpenSource = () => {
         does not have similar runtime to the largest solved TIMES-based model,{" "}
         <Link
           className="font-bold"
-          href={PATH_DASHBOARD.benchmarkSet.one.replace(
-            "{name}",
-            "TIMES-GEO-global-netzero",
-          )}
+          href="dashboard/benchmark-set/times-ireland-noco2-counties"
         >
-          TIMES-GEO-global-netzero (31-20ts)
+          Times-Ireland-noco2-counties (26-1ts)
         </Link>
         , despite both having &gt; 1e6 variables.
       </p>

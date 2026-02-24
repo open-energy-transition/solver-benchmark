@@ -475,6 +475,52 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             height: isMobile ? "auto" : height || "",
           }}
         >
+          {/* Modelling Framework */}
+          <FilterGroupWithTooltip
+            title="Model Framework"
+            tooltipText="A modelling framework is a set of tools, rules, methods, and structures that support the development, execution, and management of models."
+            icon={<PolygonIcon className="w-5 h-5" />}
+            items={availableModellingFrameworks}
+            selectedItems={selectedFilters?.modellingFramework}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "modellingFramework", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "modellingFramework",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() =>
+              handleSelectAll({ category: "modellingFramework" })
+            }
+            className="w-full"
+            gridClassName="!flex flex-wrap"
+            uppercase={false}
+          />
+          {/* Application */}
+          <FilterGroupWithTooltip
+            title="Application"
+            tooltipText="What kind of practical question the energy model is used to answer"
+            icon={<WrenchIcon className="w-5 h-5" />}
+            items={availableApplications}
+            selectedItems={selectedFilters?.application}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "application", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "application",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "application" })}
+            className="w-full"
+            gridClassName="grid-cols-1"
+            uppercase={false}
+          />
           {/* Problem Class */}
           <FilterGroupWithTooltip
             title="Problem Class"
@@ -566,52 +612,6 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             onSelectAll={() => handleSelectAll({ category: "realistic" })}
             className="w-full"
             gridClassName="grid-cols-2"
-          />
-          {/* Modelling Framework */}
-          <FilterGroupWithTooltip
-            title="Model Framework"
-            tooltipText="A modelling framework is a set of tools, rules, methods, and structures that support the development, execution, and management of models."
-            icon={<PolygonIcon className="w-5 h-5" />}
-            items={availableModellingFrameworks}
-            selectedItems={selectedFilters?.modellingFramework}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "modellingFramework", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({
-                category: "modellingFramework",
-                value,
-                only: true,
-              })
-            }
-            onSelectAll={() =>
-              handleSelectAll({ category: "modellingFramework" })
-            }
-            className="w-full"
-            gridClassName="!flex flex-wrap"
-            uppercase={false}
-          />
-          {/* Application */}
-          <FilterGroupWithTooltip
-            title="Application"
-            tooltipText="What kind of practical question the energy model is used to answer"
-            icon={<WrenchIcon className="w-5 h-5" />}
-            items={availableApplications}
-            selectedItems={selectedFilters?.application}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "application", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({
-                category: "application",
-                value,
-                only: true,
-              })
-            }
-            onSelectAll={() => handleSelectAll({ category: "application" })}
-            className="w-full"
-            gridClassName="grid-cols-1"
-            uppercase={false}
           />
           {/* Sectoral Focus */}
           <FilterGroupWithTooltip

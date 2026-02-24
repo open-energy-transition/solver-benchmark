@@ -28,9 +28,9 @@ const MACHINE_CONFIGS: Record<number, MachineConfig> = {
     memory: "7 GB",
   },
   [TIMEOUT.EXTENDED]: {
-    instance: "c4-highmem-16",
-    vcpus: "16",
-    memory: "124 GB",
+    instance: "c4-highmem-8",
+    vcpus: "8",
+    memory: "62 GB",
   },
 };
 

@@ -7,7 +7,7 @@ const SolverPerformanceDetails = () => {
   return (
     <div className="info-pages-section">
       <div className="my-4">
-        <SolverRuntimeComparison useHipoSolvers />
+        <SolverRuntimeComparison />
       </div>
       <p>
         The next plot shows the concrete performance of each solver on a few

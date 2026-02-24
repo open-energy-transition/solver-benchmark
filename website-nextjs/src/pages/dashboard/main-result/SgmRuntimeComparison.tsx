@@ -77,13 +77,12 @@ const SgmRuntimeComparison = ({
         }}
         sortByValue
         xAxisLabel=""
-        yAxisLabel="Relative average runtime (normalized, log scale)"
+        yAxisLabel="Relative average runtime (normalized)"
         chartHeight={400}
         rotateXAxisLabels={false}
         tooltipFormat={tooltipFormat}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
-        useLogScale={true}
       />
     </div>
   );

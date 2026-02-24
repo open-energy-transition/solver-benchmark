@@ -9,7 +9,6 @@ import { IResultState } from "@/types/state";
 import { humanizeSeconds } from "@/utils/string";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 
 interface IColumnTable extends MetaDataEntry {
   constraints: number;
@@ -145,14 +144,17 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
     return PATH_DASHBOARD.benchmarkSet.one.replace("{name}", benchmarkName);
   };
 
-  const benchmarkLatestResults = useBenchmarkResults({
-    excludeHipo: true,
-  }).filter((result) => result.solver !== "gurobi" && result.status === "ok");
+  const benchmarkLatestResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.benchmarkLatestResults;
+    },
+  ).filter((result) => result.solver !== "gurobi" && result.status === "ok");
 
-  const rawBenchmarkResults = useBenchmarkResults({
-    excludeHipo: true,
-    useRawResults: true,
-  }).filter((result) => result.solver !== "gurobi" && result.status === "ok");
+  const rawBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.rawBenchmarkResults;
+    },
+  ).filter((result) => result.solver !== "gurobi" && result.status === "ok");
 
   const listSuccessBenchmark = new Set(
     benchmarkLatestResults.map(

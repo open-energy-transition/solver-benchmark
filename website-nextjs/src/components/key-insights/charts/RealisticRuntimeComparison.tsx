@@ -71,9 +71,7 @@ const RealisticRuntimeComparison = ({
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       if (dataSource === "hipo") {
-        return state.results.benchmarkLatestResults.filter((result) =>
-          [...HIPO_SOLVERS, "highs"].includes(result.solver),
-        );
+        return state.results.benchmarkLatestResults;
       }
       return state.results.benchmarkLatestResults.filter(
         (result) => !HIPO_SOLVERS.includes(result.solver),
@@ -251,7 +249,6 @@ const RealisticRuntimeComparison = ({
     },
     [benchmarkLatestResults],
   );
-
   return (
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
@@ -264,7 +261,6 @@ const RealisticRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        useLogScale={true}
         yAxisLabel="Relative runtime (normalized)"
         chartHeight={400}
         tooltipFormat={tooltipFormat}

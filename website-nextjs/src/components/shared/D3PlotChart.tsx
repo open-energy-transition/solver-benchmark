@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverStatusType, SolverType } from "@/types/benchmark";
-import { formatDecimal, roundNumber } from "@/utils/number";
+import { roundNumber } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { isNullorUndefined } from "@/utils/calculations";
@@ -62,8 +62,8 @@ const D3PlotChart = ({
     <strong>Size:</strong> ${d.size} (${d.problemSize})<br>
     <strong>Solver:</strong> ${d.solver}<br>
     <strong>Status:</strong> ${d.status}<br>
-    <strong>Runtime:</strong> ${formatDecimal({ value: d.runtime })} s<br>
-    <strong>Memory:</strong> ${formatDecimal({ value: d.memoryUsage })} MB
+    <strong>Runtime:</strong> ${roundNumber(d.runtime, 2)} s<br>
+    <strong>Memory:</strong> ${roundNumber(d.memoryUsage)} MB
   `;
 
   useEffect(() => {

@@ -6,8 +6,6 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
-import { formatDecimal, formatInteger } from "@/utils/number";
-import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const BENCHMARKS_FILTERS = [
   "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
@@ -28,7 +26,6 @@ interface IBenchmarkRuntimeComparison {
   splitter?: string;
   xAxisLabelRotation?: number;
   extraCategoryLengthMargin?: number;
-  useHipoSolvers?: boolean;
 }
 
 const BenchmarkRuntimeComparison = ({
@@ -36,17 +33,13 @@ const BenchmarkRuntimeComparison = ({
   splitter = "-",
   xAxisLabelRotation = -45,
   extraCategoryLengthMargin = undefined,
-  useHipoSolvers = false,
 }: IBenchmarkRuntimeComparison) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
   ).filter((result) =>
-    useHipoSolvers
-      ? BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`)
-      : BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`) &&
-        !HIPO_SOLVERS.includes(result.solver),
+    BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`),
   );
 
   const metaData = useSelector((state: { results: IResultState }) => {
@@ -134,8 +127,8 @@ const BenchmarkRuntimeComparison = ({
       Realistic: ${
         metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
       }<br/>
-      Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
-      Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
+      Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
+      Num. variables: ${sizeData?.numVariables}<br/>
               `;
     },
     [metaData, benchmarkLatestResults],
@@ -157,9 +150,7 @@ const BenchmarkRuntimeComparison = ({
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              Memory: ${formatDecimal({
-                value: benchmarkData?.memoryUsage,
-              })} MB <br/>
+              Memory: ${benchmarkData?.memoryUsage} MB <br/>
               Status: ${benchmarkData?.status} <br/>`;
     },
     [findBenchmarkData],
@@ -237,7 +228,6 @@ const BenchmarkRuntimeComparison = ({
         xAxisLabelRotation={xAxisLabelRotation}
         extraCategoryLengthMargin={extraCategoryLengthMargin}
         splitter={splitter}
-        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const status = benchmarkWithStatus

@@ -7,8 +7,6 @@ import { getSolverColor } from "@/utils/chart";
 import { MetaDataEntry } from "@/types/meta-data";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
-import { formatDecimal } from "@/utils/number";
-import { HIPO_SOLVERS } from "@/utils/solvers";
 
 interface ISolverRuntimeComparison {
   benchmarkName: string;
@@ -23,11 +21,7 @@ const SolverRuntimeComparison = ({
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  ).filter(
-    (result) =>
-      result.benchmark === benchmarkName &&
-      !HIPO_SOLVERS.includes(result.solver),
-  );
+  ).filter((result) => result.benchmark === benchmarkName);
 
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
@@ -42,13 +36,6 @@ const SolverRuntimeComparison = ({
   );
 
   const chartData = benchmarkDetail.sizes
-    .slice() // Create a copy to avoid mutating original
-    .sort((a, b) => {
-      // Sort by number of variables ascending
-      const aVars = a.numVariables ?? 0;
-      const bVars = b.numVariables ?? 0;
-      return aVars - bVars;
-    })
     .map((s) => {
       const data = benchmarkLatestResults.filter(
         (result) =>
@@ -132,9 +119,7 @@ const SolverRuntimeComparison = ({
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              Memory: ${formatDecimal({
-                value: benchmarkData?.memoryUsage as number,
-              })} MB <br/>
+              Memory: ${benchmarkData?.memoryUsage} MB <br/>
               Status: ${benchmarkData?.status} <br/>`;
     },
     [findBenchmarkData],
@@ -189,7 +174,7 @@ const SolverRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        yAxisLabel="Relative runtime (normalized, log scale)"
+        yAxisLabel="Relative runtime (normalized)"
         chartHeight={400}
         extraCategoryLengthMargin={-50}
         rotateXAxisLabels={false}
@@ -200,7 +185,6 @@ const SolverRuntimeComparison = ({
         sortByValue
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
-        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);

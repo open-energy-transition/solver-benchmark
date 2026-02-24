@@ -21,6 +21,9 @@ const BenchmarkModelCases = () => {
       </p>
       <BenchmarkModelCasesTable />
       <p>
+        * N.A. : the modelling framework does not cover this kind of analysis
+      </p>
+      <p>
         {" "}
         For version 2 of our platform, we plan to have a public call for
         benchmarks to address the gaps above. In particular, we welcome

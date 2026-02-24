@@ -170,7 +170,7 @@ const RuntimeComparison = () => {
         }}
         xAxisLabel=""
         diagonalXAxisLabelsOnMobile
-        yAxisLabel="Relative runtime (normalized, log scale)"
+        yAxisLabel="Relative runtime (normalized)"
         chartHeight={400}
         rotateXAxisLabels={false}
         tooltipFormat={tooltipFormat}
@@ -180,7 +180,6 @@ const RuntimeComparison = () => {
         transformHeightValue={(d) => {
           return Number(d.value);
         }}
-        useLogScale={true}
       />
     </div>
   );

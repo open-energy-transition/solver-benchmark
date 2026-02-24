@@ -4,7 +4,6 @@ import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
-import { formatDecimal } from "@/utils/number";
 
 type PerformanceData = {
   benchmark: string;
@@ -297,22 +296,16 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           ratioText = "Ratio: N/A (both TO)";
         } else {
           const ratio = Math.pow(2, d.factor);
-          ratioText = `Ratio: ${
-            ratio < 0.01
-              ? ratio.toExponential(1)
-              : formatDecimal({ value: ratio, maximumFractionDigits: 3 })
-          }`;
+          ratioText = `Ratio: ${ratio < 0.01 ? ratio.toExponential(1) : ratio}`;
         }
 
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-              `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
-                d.status
+              `${d.solver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>` +
+              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s (${
+                d.baseSolverStatus
               })<br/>` +
-              `${baseSolver}: ${formatDecimal({
-                value: d.baseSolverRuntime,
-              })}s (${d.baseSolverStatus})<br/>` +
               ratioText,
           )
           .style("left", `${event.pageX + 10}px`)
@@ -376,22 +369,16 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           ratioText = "Ratio: N/A (both TO)";
         } else {
           const ratio = Math.pow(2, d.factor);
-          ratioText = `Ratio: ${
-            ratio < 0.01
-              ? ratio.toExponential(1)
-              : formatDecimal({ value: ratio, maximumFractionDigits: 3 })
-          }`;
+          ratioText = `Ratio: ${ratio < 0.01 ? ratio.toExponential(1) : ratio}`;
         }
 
         tooltip
           .html(
             `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-              `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
-                d.status
+              `${d.solver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>` +
+              `${baseSolver}: ${d.baseSolverRuntime.toFixed(2)}s (${
+                d.baseSolverStatus
               })<br/>` +
-              `${baseSolver}: ${formatDecimal({
-                value: d.baseSolverRuntime,
-              })}s (${d.baseSolverStatus})<br/>` +
               ratioText,
           )
           .style("left", `${event.pageX + 10}px`)
@@ -455,9 +442,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             tooltip
               .html(
                 `Benchmark: ${d.benchmark}-${d.size}<br/>` +
-                  `${baseSolver}: ${formatDecimal({ value: d.runtime })}s (${
-                    d.status
-                  })<br/>`,
+                  `${baseSolver}: ${d.runtime.toFixed(2)}s (${d.status})<br/>`,
               )
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 28}px`);

@@ -66,7 +66,7 @@ const LandingPage = () => {
                 efficiency and cost reasons. The shared nature of cloud
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
-                than 6%. More details on this{" "}
+                than 4%. More details on this{" "}
                 <Link className="font-bold" href="/methodology">
                   here
                 </Link>
@@ -99,7 +99,7 @@ const LandingPage = () => {
                 instances. For more details, please see the{" "}
                 <Link
                   className="font-bold"
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/437"
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
                 >
                   tracking issue
                 </Link>

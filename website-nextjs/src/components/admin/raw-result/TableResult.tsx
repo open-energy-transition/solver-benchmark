@@ -11,7 +11,6 @@ import { filterNumber, filterSelect } from "@/utils/table";
 import InfoPopup from "@/components/common/InfoPopup";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { formatDecimal, formatScientific } from "@/utils/number";
 
 const CSV_URL =
   "https://raw.githubusercontent.com/open-energy-transition/solver-benchmark/main/results/benchmark_results.csv";
@@ -95,25 +94,20 @@ const TableResult = () => {
       },
 
       {
-        header: "Runtime (s)",
+        header: "Runtime",
         accessorKey: "runtime",
         meta: {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        cell: (info: CellContext<BenchmarkResult, unknown>) =>
-          formatDecimal({ value: info.getValue() as number }),
       },
       {
-        header: "Memory (MB)",
+        header: "Memory",
         accessorKey: "memoryUsage",
-        size: 180,
         meta: {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        cell: (info: CellContext<BenchmarkResult, unknown>) =>
-          formatDecimal({ value: info.getValue() as number }),
       },
       {
         header: "Objective Value",
@@ -123,8 +117,6 @@ const TableResult = () => {
         },
         filterFn: filterNumber,
         size: 180,
-        cell: (info: CellContext<BenchmarkResult, unknown>) =>
-          formatScientific(info.getValue() as number, ""),
       },
       {
         header: "Max Integrality Violation",
@@ -134,8 +126,6 @@ const TableResult = () => {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        cell: (info: CellContext<BenchmarkResult, unknown>) =>
-          formatScientific(info.getValue() as number, ""),
       },
       {
         header: "Duality Gap",
@@ -144,8 +134,20 @@ const TableResult = () => {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        cell: (info: CellContext<BenchmarkResult, unknown>) =>
-          formatScientific(info.getValue() as number, ""),
+        cell: (info: CellContext<BenchmarkResult, unknown>) => (
+          <InfoPopup
+            trigger={() => (
+              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
+                {String(info.getValue() || "")}
+              </div>
+            )}
+            position="top center"
+            closeOnDocumentClick
+            arrowStyle={{ color: Color.Stroke }}
+          >
+            <div> {String(info.getValue())} </div>
+          </InfoPopup>
+        ),
       },
     ],
     [],

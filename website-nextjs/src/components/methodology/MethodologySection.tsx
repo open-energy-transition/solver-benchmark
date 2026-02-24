@@ -82,7 +82,7 @@ const MethodologySection = () => {
               <li className="mb-2">
                 It reflects the experience of most energy modellers, who use
                 cloud compute or shared high performance computing clusters.
-                They will most likely not notice a difference of less than 6% in
+                They will most likely not notice a difference of less than 4% in
                 performance between 2 solvers, as this variation is present in
                 all of their computations.
               </li>
