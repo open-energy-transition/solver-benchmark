@@ -68,7 +68,10 @@ const FeasibilityForOpenSource = () => {
         problem like{" "}
         <Link
           className="font-bold"
-          href="/dashboard/benchmark-set/temoa-US_9R_TS_SP"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "temoa-US_9R_TS_SP",
+          )}
         >
           temoa-US_9R_TS_SP (9-12)
         </Link>{" "}
@@ -77,10 +80,10 @@ const FeasibilityForOpenSource = () => {
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "TIMES-GEO-global-netzero",
+            "times-ireland-noco2-counties",
           )}
         >
-          TIMES-GEO-global-netzero (31-20ts)
+          times-ireland-noco2-counties (26-1ts)
         </Link>
         , despite both having &gt; 1e6 variables.
       </p>
