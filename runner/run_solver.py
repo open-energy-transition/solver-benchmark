@@ -1,9 +1,7 @@
 import collections.abc
 import json
 import tempfile
-import subprocess
 import sys
-import time
 from enum import Enum
 from pathlib import Path
 from time import perf_counter
@@ -24,12 +22,11 @@ except ModuleNotFoundError:
 
 
 class HighsVariant(str, Enum):
-    HIPO = "hipo"
+    IPX = "ipx"
+    SIMPLEX = "simplex"
     HIPO_32 = "hipo-32"
     HIPO_64 = "hipo-64"
     HIPO_128 = "hipo-128"
-    IPM = "ipm"
-    SIMPLEX = "simplex"
 
     # cli args returns a list of command line arguments for the HiGHS binary.
     def cli_args(self) -> collections.abc.Iterable[str]:
@@ -105,7 +102,7 @@ def set_seed_options(name_of_solver: str) -> dict[str, int | float]:
         return dict()
 
 
-def set_solver_options(name_of_solver: str, variant_highs: str | None) -> dict[str, int | float]:
+def set_solver_options(name_solver: str, variant_highs: str | None) -> dict[str, int | str]:
     """
     Sets solver-specific options for reproducibility.
 
@@ -114,7 +111,7 @@ def set_solver_options(name_of_solver: str, variant_highs: str | None) -> dict[s
 
     Parameters
     ----------
-    name_of_solver : str
+    name_solver : str
         Name of the optimization solver. Supported solvers include: "highs",
         "glpk", "gurobi", "scip", "cbc", "cplex", "knitro", and "xpress".
     variant_highs : str | None
@@ -122,28 +119,29 @@ def set_solver_options(name_of_solver: str, variant_highs: str | None) -> dict[s
 
     Returns
     -------
-    dict[str, int | float]
+    dict[str, int | str]
         A dictionary mapping solver-specific parameter names to their values.
         Returns an empty dictionary if the solver name is not recognized.
     """
 
-    if name_of_solver == "highs":
-        if variant_highs and "hipo" in variant_highs:
-
-            return set_solver_options(name_of_solver, variant_highs)
+    if name_solver == "highs":
+        if "hipo" in variant_highs:
+            if variant_highs == HighsVariant.HIPO_32:
+                return {"hipo_block_size": 64, "solver": "hipo"}
+            elif variant_highs == HighsVariant.HIPO_64:
+                return {"hipo_block_size": 64, "solver": "hipo"}
+            elif variant_highs == HighsVariant.HIPO_128:
+                return {"hipo_block_size": 128, "solver": "hipo"}
+            else:
+                logger.info("No specific options found for HiGHS variant '%s'. Returning default options.")
+                return {"hipo_block_size": 64, "solver": "hipo"}
+        elif variant_highs == HighsVariant.IPX or variant_highs == HighsVariant.SIMPLEX:
+            return {"solver": variant_highs}
         else:
+            logger.info("No specific options found for HiGHS variant '%s'. Returning empty options.", variant_highs)
             return dict()
-
-
-    options = {
-        "highs-hipo-32": {"hipo_block_size": 32},
-        "highs-hipo-64": {"hipo_block_size": 64},
-        "highs-hipo-128": {"hipo_block_size": 128},
-    }
-    if name_of_solver in options.keys():
-        return options[name_of_solver]
     else:
-        logger.info("No specific options found for solver '%s'. Returning empty options.", name_of_solver)
+        logger.info("No specific options found for solver '%s'. Returning empty options.", name_solver)
         return dict()
 
 
