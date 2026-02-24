@@ -19,6 +19,7 @@ const SolverSelection = () => {
     () => allSolvers.filter((s) => !HIPO_SOLVERS.includes(s.solver)),
     [allSolvers],
   );
+
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults;
   });

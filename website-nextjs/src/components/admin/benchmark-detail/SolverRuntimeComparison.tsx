@@ -8,6 +8,7 @@ import { MetaDataEntry } from "@/types/meta-data";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { formatDecimal } from "@/utils/number";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 interface ISolverRuntimeComparison {
   benchmarkName: string;
@@ -22,7 +23,11 @@ const SolverRuntimeComparison = ({
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  ).filter((result) => result.benchmark === benchmarkName);
+  ).filter(
+    (result) =>
+      result.benchmark === benchmarkName &&
+      !HIPO_SOLVERS.includes(result.solver),
+  );
 
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
