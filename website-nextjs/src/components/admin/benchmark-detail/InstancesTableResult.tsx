@@ -231,7 +231,9 @@ const InstancesTableResult = ({
     return baseColumns;
   }, [isMILP]);
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "nOfVariables", desc: false },
+  ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const tableData = useMemo(
