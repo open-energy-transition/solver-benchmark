@@ -33,18 +33,18 @@ const Introduction = () => {
         <Link className="font-bold" href="/methodology/">
           Methodology
         </Link>{" "}
-        page. We also gather information such as the number of variables and
-        constraints for each problem instance, along with information about the
-        scenario being modelled by each problem, this along with download links
-        to each problem can be found on our{" "}
+        page. For each problem, we also gather information such as the number of
+        variables and constraints along with information about the scenario
+        being modelled. This along with download links to each problem can be
+        found on our{" "}
         <Link className="font-bold" href={PATH_DASHBOARD.benchmarkSet.list}>
           Benchmark Set
         </Link>{" "}
         page.
       </p>
       <p>
-        This page presents the main takeaways from our benchmark platform, in an
-        introductory and accessible manner. Advanced users, and those wishing to
+        This page presents the main takeaways from our benchmark platform in an
+        introductory and accessible manner. Advanced users and those wishing to
         dig into more details can visit the{" "}
         <Link className="font-bold" href={PATH_DASHBOARD.home}>
           full results
