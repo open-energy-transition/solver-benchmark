@@ -191,9 +191,7 @@ def get_solver(
     seed_options = set_seed_options(name_solver)
 
     # Get other solver options if needed (e.g., for HiGHS variants)
-    solver_options = set_solver_options(
-        name_solver, variant_highs, hipo_block_size_val
-    )
+    solver_options = set_solver_options(name_solver, variant_highs, hipo_block_size_val)
 
     kwargs = {}
     if seed_options:
