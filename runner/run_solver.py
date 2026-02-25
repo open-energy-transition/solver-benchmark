@@ -133,7 +133,7 @@ def set_solver_options(
 
     if name_solver == "highs":
         if variant_highs == HighsSolverVariant.HIPO:
-            return {"hipo_block_size": hipo_block_size_value, "solver": "hipo"}
+            return {"hipo_block_size": hipo_block_size_value, "solver": "hipo", "run_crossover": "choose"}
         elif (
             variant_highs == HighsSolverVariant.IPX
             or variant_highs == HighsSolverVariant.SIMPLEX
