@@ -7,6 +7,7 @@ import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
 import { SolverStatusType } from "@/types/benchmark";
 import CustomDropdown from "@/components/common/CustomDropdown";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const SOLVES_DATA = [
   {
@@ -48,15 +49,20 @@ const SOLVES_DATA = [
 const SolverSection = () => {
   const router = useRouter();
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
-  });
+  const allSolvers = useSelector(
+    (state: { results: IResultState }) => state.results.availableSolvers,
+  );
+
+  const availableSolvers = useMemo(
+    () => allSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
+    [allSolvers],
+  );
 
   const rawBenchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  );
+  ).filter((result) => !HIPO_SOLVERS.includes(result.solver));
 
   const benchmarkSuccessMap = new Map<string, number>();
 

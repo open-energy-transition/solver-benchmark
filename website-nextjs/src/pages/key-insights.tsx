@@ -94,6 +94,11 @@ const KeyInsightsPage = () => {
 
   return (
     <PageLayout title="Key Insights" description="Key insights">
+      <style jsx>{`
+        :global(.info-pages-content p) {
+          font-size: 16px;
+        }
+      `}</style>
       <TableOfContents
         title="Key Insights"
         currentSection={currentSection}
