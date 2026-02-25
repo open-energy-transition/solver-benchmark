@@ -23,7 +23,7 @@ Run the script from the command line:
         --solver_name highs \
         --solver_version 1.6.0 \
         --input_file path/to/problem.mps \
-        --highs_solver_variant simplex \
+        --highs_solver_variant hipo \
         --hipo_block_size 128
 
 Arguments
