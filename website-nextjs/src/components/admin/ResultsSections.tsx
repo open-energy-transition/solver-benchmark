@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { ArrowIcon, QuestionLineIcon } from "@/assets/icons";
 import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal, roundNumber } from "@/utils/number";
 import { IFilterState, IResultState } from "@/types/state";
 import ResultsSectionsTitle from "./home/ResultsTitle";
 import { extractNumberFromFormattedString } from "@/utils/string";
@@ -13,6 +13,8 @@ import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
 import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
 import { getLatestBenchmarkResult } from "@/utils/results";
 import InfoPopup from "../common/InfoPopup";
+import { getSolverColor } from "@/utils/chart";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 type ColumnType = {
   name: string;
@@ -53,8 +55,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
-  ).filter((result) => result.timeout === timeout);
-
+  ).filter(
+    (result) =>
+      !HIPO_SOLVERS.includes(result.solver) && result.timeout === timeout,
+  );
   const availableSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
@@ -365,25 +369,21 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             ),
           },
           version: getHighestVersion(solverVersions[solverData]),
-          memory: `${memorySgm === minMemory ? "<b>" : ""}${roundNumber(
-            memorySgm,
-            2,
-          )} (${roundNumber(
-            calculateSgm(getRelevantResults(solverData, "memoryUsage")),
-            2,
-          )})${memorySgm === minMemory ? "</b>" : ""}`,
+          memory: `${memorySgm === minMemory ? "<b>" : ""}${formatDecimal({
+            value: memorySgm,
+          })} (${formatDecimal({
+            value: calculateSgm(getRelevantResults(solverData, "memoryUsage")),
+          })})${memorySgm === minMemory ? "</b>" : ""}`,
           solvedBenchmarks: `${
             solvedCount === maxSolved ? "<b>" : ""
           }${getSolvedBenchmarksLabel(solverData, uniqueBenchmarkCount)}${
             solvedCount === maxSolved ? "</b>" : ""
           }`,
-          runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${roundNumber(
-            runtimeSgm,
-            2,
-          )} (${roundNumber(
-            calculateSgm(getRelevantResults(solverData, "runtime")),
-            2,
-          )})${runtimeSgm === minRuntime ? "</b>" : ""}`,
+          runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${formatDecimal({
+            value: runtimeSgm,
+          })} (${formatDecimal({
+            value: calculateSgm(getRelevantResults(solverData, "runtime")),
+          })})${runtimeSgm === minRuntime ? "</b>" : ""}`,
         };
       }),
     );
@@ -451,6 +451,20 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
 
+  const renderedTableData = (data: any) => {
+    availableSolvers.includes(data);
+    if (availableSolvers.includes(data)) {
+      const color = getSolverColor(data);
+      return `<span class="flex items-center gap-2">
+                <span
+                  class="w-3 h-3 rounded-full"
+                  style="background-color: ${color};"
+                ></span>
+                <span>${data}</span>
+              </span>`;
+    }
+    return data;
+  };
   return (
     <div>
       <div className="pb-3">
@@ -599,8 +613,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                       column.row?.bgStyle ?? ""
                     }`}
                   dangerouslySetInnerHTML={{
-                    __html:
+                    __html: renderedTableData(
                       item[column.field as keyof (typeof tableData)[0]] ?? "-",
+                    ),
                   }}
                 />
               ))}

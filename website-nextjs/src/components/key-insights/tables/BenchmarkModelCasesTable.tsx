@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from "react";
+import { useSelector } from "react-redux";
 
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
@@ -7,6 +8,7 @@ import {
   benchmarkModelCasesData,
   IBenchmarkModelCases,
 } from "@/data/benchmarkModelCasesData";
+import { IResultState } from "@/types/state";
 
 const BenchmarkModelCasesTable = () => {
   const renderModelData = (model: string | boolean) => {
@@ -52,10 +54,16 @@ const BenchmarkModelCasesTable = () => {
     );
   };
 
+  const availableModellingFrameworks = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableModellingFrameworks;
+    },
+  );
+
   const columns = useMemo<ColumnDef<IBenchmarkModelCases>[]>(
     () => [
       {
-        header: "",
+        header: "Category",
         accessorKey: "header",
         size: 245,
         enableColumnFilter: false,
@@ -63,26 +71,18 @@ const BenchmarkModelCasesTable = () => {
         cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>
           renderHeader(info as CellContext<IBenchmarkModelCases, string>),
       },
-      ...[
-        "DCOPF",
-        "GenX",
-        "PowerModels",
-        "PyPSA",
-        "Sienna",
-        "TEMOA",
-        "TIMES",
-        "Tulipa",
-      ].map((framework) => ({
-        header: framework,
-        accessorKey: framework,
-        size: 90,
+      ...availableModellingFrameworks.map((framework) => ({
+        header: framework.replaceAll(".", "_"),
+        accessorKey: framework.replaceAll(".", "_"),
+        size: framework.length + 90,
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>
-          renderModelData(info.getValue() as string | boolean),
+        cell: (info: CellContext<IBenchmarkModelCases, unknown>) => {
+          return renderModelData(info.getValue() as string | boolean);
+        },
       })),
     ],
-    [],
+    [availableModellingFrameworks],
   );
 
   return (

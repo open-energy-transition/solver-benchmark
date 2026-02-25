@@ -12,9 +12,9 @@ import NormalizedSGMRuntime from "../admin/performance-history/NormalizedSGMRunt
 import {
   buildSolverYearlyMetrics,
   generateChartData,
-  processCombinedYearMetrics,
   getNumSolvedBenchMark,
 } from "@/utils/performanceHistory";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const HASH = "how-are-solvers-evolving-over-time";
 
@@ -25,14 +25,17 @@ const SolverPerformanceHistory = () => {
 
   const rawBenchmarkResults = useSelector(
     (state: { results: IResultState }) => {
-      return state.results.benchmarkResults;
+      return state.results.benchmarkResults.filter(
+        (result) => !HIPO_SOLVERS.includes(result.solver),
+      );
     },
   );
 
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
+    return state.results.availableSolvers.filter(
+      (solver) => !HIPO_SOLVERS.includes(solver),
+    );
   });
-
   const selectedFilters = useSelector(
     (state: { filters: IFilterState }) => state.filters,
   );
@@ -137,9 +140,7 @@ const SolverPerformanceHistory = () => {
       years,
       solvers,
     );
-
-    // Process for combined 2024/2025 data
-    return processCombinedYearMetrics(initialMetrics);
+    return initialMetrics;
   }, [benchmarkResults, years, solvers]);
 
   const chartData = useMemo(() => {
@@ -161,14 +162,16 @@ const SolverPerformanceHistory = () => {
 
   return (
     <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
-      <h4>How are solvers evolving over time?</h4>
+      <div className="h4">How are solvers evolving over time?</div>
       <p>
         This plot shows the average runtime of each year’s final-released solver
-        version, relative to that year’s fastest solver, over all S and M size
-        benchmarks in our set. This shows the performance evolution of solvers,
-        relative to one another.
+        version, relative to the best solver ever measured, over all S and M
+        size benchmarks in our set. This shows the performance evolution of
+        solvers, relative to one another.
       </p>
-      <NormalizedSGMRuntime chartData={chartData.runtime} />
+      <NormalizedSGMRuntime
+        chartData={chartData.runtime.filter((s) => s.solver !== "glpk")}
+      />
       <p>
         The plot below shows the performance evolution of the selected solver
         individually, relative to the first version of that solver that we have

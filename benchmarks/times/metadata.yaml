@@ -7,7 +7,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -15,13 +15,14 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-base-31-20ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-GEO-global-base-31-20ts.lp.gz
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 6027253
       Num. variables: 6449851
+      Num. nonzeros: 36624474
   TIMES-GEO-global-netzero:
     Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario with a net-zero decarbonization constraints.
     Modelling framework: TIMES
@@ -30,7 +31,7 @@ benchmarks:
     Contributor(s)/Source: E4SMA
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
     Time horizon: Multi-stage (13 periods)
@@ -38,13 +39,14 @@ benchmarks:
     Sizes:
     - Name: 31-20ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/TIMES-GEO-global-netzero-31-20ts.lp
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-GEO-global-netzero-31-20ts.lp.gz
       Temporal resolution: 20 time slices
       Spatial resolution: 31 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 5063755
       Num. variables: 5422595
+      Num. nonzeros: 30487085
   times-etimeseu-france-elec+heat-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage.
     Modelling framework: TIMES
@@ -53,7 +55,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -61,13 +63,14 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-single_stage-1-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-single_stage-1-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
       Num. variables: 15400
+      Num. nonzeros: 58258
   times-etimeseu-france-elec+heat-co2-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -76,7 +79,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -84,13 +87,14 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-single_stage-1-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-co2-single_stage-1-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15451
       Num. variables: 15404
+      Num. nonzeros: 61784
   times-etimeseu-france-elec+heat-multi_stage:
     Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050.
     Modelling framework: TIMES
@@ -99,7 +103,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -107,13 +111,14 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-multi_stage-1-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-multi_stage-1-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91288
       Num. variables: 92084
+      Num. nonzeros: 504589
   times-etimeseu-france-elec+heat-co2-multi_stage:
     Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -122,7 +127,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -130,13 +135,14 @@ benchmarks:
     Sizes:
     - Name: 1-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-france-elec%2Bheat-co2-multi_stage-1-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-france-elec%2Bheat-co2-multi_stage-1-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 1 region
       Realistic: true
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91306
       Num. variables: 92102
+      Num. nonzeros: 523144
   times-etimeseu-europe-elec+heat-single_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage.
     Modelling framework: TIMES
@@ -145,7 +151,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -153,13 +159,14 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-single_stage-29-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-single_stage-29-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456603
       Num. variables: 452854
+      Num. nonzeros: 1705785
   times-etimeseu-europe-elec+heat-co2-single_stage:
     Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -168,7 +175,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Single-stage
@@ -176,13 +183,14 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-single_stage-29-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-co2-single_stage-29-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456663
       Num. variables: 452914
+      Num. nonzeros: 1781615
   times-etimeseu-europe-elec+heat-multi_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
     Modelling framework: TIMES
@@ -191,7 +199,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -199,13 +207,14 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-multi_stage-29-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-multi_stage-29-64ts.mps.gz
       Temporal resolution: 64 time slices
       Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720516
       Num. variables: 2729679
+      Num. nonzeros: 14857590
   times-etimeseu-europe-elec+heat-co2-multi_stage:
     Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -214,7 +223,7 @@ benchmarks:
     Contributor(s)/Source: Victor Guillot, École des Mines de Paris
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Power, Heating
     Time horizon: Multi-stage
@@ -222,13 +231,14 @@ benchmarks:
     Sizes:
     - Name: 29-64ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-etimeseu-europe-elec%2Bheat-co2-multi_stage-29-64ts.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-etimeseu-europe-elec%2Bheat-co2-multi_stage-29-64ts.mps.gz
       Temporal resolution: 64 time slice
       Spatial resolution: 29 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720786
       Num. variables: 2729949
+      Num. nonzeros: 15316649
   times-ireland-noco2:
     Short description: TIMES-Ireland
     Modelling framework: TIMES
@@ -237,28 +247,30 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
-    - Name: 1-1h
+    - Name: 1-1ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-1-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-1-1ts.mps.gz
       Temporal resolution: 1 time slice
       Spatial resolution: 1 region
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
-    - Name: 40-1h
+      Num. nonzeros: 2236778
+    - Name: 40-1ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-40-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-40-1ts.mps.gz
       Temporal resolution: 1 time slice
       Spatial resolution: 40 regions
       Realistic: false
       Num. constraints: 4809283
       Num. variables: 4534121
+      Num. nonzeros: 21777077
   times-ireland-noco2-counties:
     Short description: TIMES-Ireland
     Modelling framework: TIMES
@@ -267,20 +279,21 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 26-1h
+    - Name: 26-1ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/times-ireland-noco2-counties-26-1h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-counties-26-1ts.mps.gz
       Temporal resolution: 1 time slice
       Spatial resolution: 26 regions (Transport) / 1 region (all other sectors)
       Realistic: false
       Num. constraints: 873805
       Num. variables: 1235884
+      Num. nonzeros: 5129015
   times-nz-kea:
     Short description: TIMES-NZ run with high carbon price and large investments in clean energy technologies.
     Modelling framework: TIMES
@@ -289,21 +302,22 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
     Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-kea-2-24h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-nz-kea-2-24ts.mps.gz
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
       Num. variables: 202797
+      Num. nonzeros: 1829404
   times-nz-tui:
     Short description: TIMES-NZ run with low carbon prices and adoption of clean energy technologies when they become cost-effective.
     Modelling framework: TIMES
@@ -312,18 +326,94 @@ benchmarks:
     Contributor(s)/Source: Olexandr Balyk
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Industrial, Other
-    Time horizon: Single stage
+    Time horizon: Single-stage
     MILP features: None
     Sizes:
-    - Name: 2-24h
+    - Name: 2-24ts
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/times-nz-tui-2-24h.mps
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/times-nz-tui-2-24ts.mps.gz
       Temporal resolution: 24 time slices
       Spatial resolution: 2 regions
       Realistic: true
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
+      Num. nonzeros: 1820934
+  JRC-EU-TIMES:
+    Short description: Model of the EU (and neighboring countries) representing all energy sectors, that analyzes the long-term role of energy technologies and innovation for climate goals, and optimizes investment and operational decisions to meet energy service demands under different assumptions and constraints.
+    Modelling framework: TIMES
+    Model name: JRC-EU TIMES
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut;
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage (8 stages)
+    MILP features: None
+    Sizes:
+    - Name: 30-12ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-30-12ts.mps.gz
+      Temporal resolution: 12 time slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU policy relevant analyses
+      Num. constraints: 13462042
+      Num. variables: 18926550
+      Skip because: OOM?
+      Num. nonzeros: 126506009
+  JRC-EU-TIMES-dispatch:
+    Short description: Model of the EU (and neighboring countries) representing all energy sectors and including final energy supply (T&D Infrastructure, pipeline etc.).
+    Modelling framework: TIMES
+    Model name: JRC-EU-TIMES
+    Version: # (optional) version of the model used to generate the benchmark
+    Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion; Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 30-2016ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/JRC-EU-TIMES-dispatch-30-2016ts.mps.gz
+      Temporal resolution: 2016 times slices
+      Spatial resolution: 30 regions
+      Realistic: true
+      Realistic motivation: Used for EU-policy relevant analyses
+      Num. constraints: 19401352
+      Num. variables: 23208969
+      Skip because: OOM?
+      Num. nonzeros: 366217326
+  TIMES-STEM:
+    Short description: Model of the Swiss energy system, including dispatch analysis features (i.e. ramping rates, minimum online/offline times, minimum stable operating level, part load efficiency losses, startup/shutdown costs) and ancillary services (endogenous demand for primary and secondary, positive and negative reserve, adjusted minimum online and offline times for reserve provision, adjusted ramping constraints, capacity margin constraints for reserve provision, maximum contribution of power plant in reserve provision, reserve provision from storages and demand units, other bounds on reserve provision, storage degradation due to cycling)
+    Modelling framework: TIMES
+    Model name: Swiss TIMES Energy Model
+    Version:
+    Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion; Operational
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 15-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/TIMES-STEM-15-1h.mps.gz
+      Temporal resolution: 1h
+      Spatial resolution: 15 nodes
+      Realistic: true
+      Realistic motivation: Typical TIMES model instances including multi-stage and multi-regional analysis with hourly resolution and operational constraints
+      Num. constraints: 6973257
+      Num. variables: 6670811
+      Skip because: OOM?
+      Num. nonzeros: 47256401

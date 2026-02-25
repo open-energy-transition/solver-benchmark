@@ -9,6 +9,7 @@ import { calculateSgm } from "@/utils/calculations";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { getHighestVersion } from "@/utils/versions";
 import { BenchmarkResult } from "@/types/benchmark";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const PROBLEM_SIZE_FILTERS = [
   {
@@ -34,18 +35,18 @@ const PROBLEM_SIZE_FILTERS = [
     },
   },
   {
-    label: "Large",
-    key: "large",
-    filter: {
-      size: "L",
-    },
-  },
-  {
     label: "Large & realistic",
     key: "large_realistic",
     filter: {
       size: "L",
       realistic: true,
+    },
+  },
+  {
+    label: "Large",
+    key: "large",
+    filter: {
+      size: "L",
     },
   },
 ];
@@ -54,23 +55,36 @@ const RealisticRuntimeComparison = ({
   xAxisLabelWrapLength,
   splitter = "-",
   rotateXAxisLabels = false,
+  problemClass = "LP",
+  dataSource = "default",
 }: {
   xAxisLabelWrapLength?: number;
   splitter?: string;
   rotateXAxisLabels?: boolean;
+  problemClass?: "LP" | "MILP";
+  dataSource?: "default" | "hipo";
 }) => {
-  const benchmarkLatestResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults;
-    },
-  );
-
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.rawMetaData;
   });
 
+  const benchmarkLatestResults = useSelector(
+    (state: { results: IResultState }) => {
+      if (dataSource === "hipo") {
+        return state.results.benchmarkLatestResults.filter((result) =>
+          [...HIPO_SOLVERS, "highs"].includes(result.solver),
+        );
+      }
+      return state.results.benchmarkLatestResults.filter(
+        (result) => !HIPO_SOLVERS.includes(result.solver),
+      );
+    },
+  ).filter((result) => {
+    return metaData[result.benchmark]?.problemClass === problemClass;
+  });
+
   const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
+    return [...state.results.availableSolvers, ...HIPO_SOLVERS];
   });
 
   const findData = useCallback(
@@ -197,11 +211,18 @@ const RealisticRuntimeComparison = ({
   );
 
   const getAxisLabelTitle = useCallback(
-    (d: { key: string; value: unknown }) => {
+    (d: { key: string; value: unknown; category: string | number }) => {
       const valueNum = typeof d.value === "number" ? d.value : Number(d.value);
-      return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x`;
+      const solver = solverResults.find(
+        (s) => s.solver === d.key && s.category === d.category,
+      );
+      const successRate = solver
+        ? ((solver.solvedBenchmarks / solver.totalBenchmarks) * 100).toFixed(0)
+        : "0";
+
+      return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x\n${successRate}%`;
     },
-    [findData],
+    [solverResults],
   );
 
   const getXAxisTickFormat = useCallback(
@@ -234,13 +255,16 @@ const RealisticRuntimeComparison = ({
   return (
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
-        title="Runtime relative to fastest solver"
+        title={`Runtime relative to fastest solver - ${problemClass}${
+          dataSource === "hipo" ? " (including HiPO)" : ""
+        }`}
         chartData={chartData}
         categoryKey="key"
         colors={(d) => {
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
+        useLogScale={true}
         yAxisLabel="Relative runtime (normalized)"
         chartHeight={400}
         tooltipFormat={tooltipFormat}

@@ -4,14 +4,15 @@ import {
   ProcessorIcon,
   TimeoutIcon,
 } from "@/assets/icons";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 interface ConfigurationSectionProps {
   timeout: number;
 }
 
 const TIMEOUT = {
-  STANDARD: 3600,
-  EXTENDED: 36000,
+  STANDARD: TIMEOUT_VALUES.SHORT,
+  EXTENDED: TIMEOUT_VALUES.LONG,
 } as const;
 
 type MachineConfig = {
@@ -27,9 +28,9 @@ const MACHINE_CONFIGS: Record<number, MachineConfig> = {
     memory: "7 GB",
   },
   [TIMEOUT.EXTENDED]: {
-    instance: "c4-highmem-8",
-    vcpus: "8",
-    memory: "62 GB",
+    instance: "c4-highmem-16",
+    vcpus: "16",
+    memory: "124 GB",
   },
 };
 

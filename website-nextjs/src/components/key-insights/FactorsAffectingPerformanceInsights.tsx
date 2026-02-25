@@ -1,6 +1,8 @@
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import PerformanceScalling from "./charts/factors-affecting-performance/PerformanceScalling";
 import RuntimeOfFastestSolver from "./charts/factors-affecting-performance/RuntimeOfFastestSolver";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "what-factors-affect-solver-performance";
 const FactorsAffectingPerformanceInsights = () => {
@@ -23,7 +25,7 @@ const FactorsAffectingPerformanceInsights = () => {
         runtime of the fastest (open source) solver on a problem with a given
         number of variables, and a red X denotes that no (open source) solver
         could solve the problem within the timeout (1 hr for small and medium
-        problems, and 10 hrs for large problems). The plot gives an indication
+        problems, and 24 hrs for large problems). The plot gives an indication
         of the order of magnitude at which solvers start to hit the timeout.
       </p>
       <PerformanceScalling />
@@ -34,41 +36,77 @@ const FactorsAffectingPerformanceInsights = () => {
         you the details of the model scenario, including application type,
         constraints, LP/MILP, etc.
       </p>
-      <h5>
-        Effect of increasing spatial and temporal resolutions on PyPSA models
-      </h5>
+      <h5>Effect of increasing spatial resolutions on PyPSA models</h5>
       <p>
-        This is a series of different size instances of a PyPSA-Eur
-        sector-coupled model, where the spatial and temporal resolution are
-        varied to create increasingly larger LP problems. One can see the
-        runtime of solvers increasing as either resolution is made more fine
-        grained.
+        While only HiGHS among open solvers is able to solve the smallest
+        instance (10-1h), at a higher number of nodes Gurobi highlights the
+        expected nonlinear growth in computational effort as model size and
+        complexity expand.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
-          "pypsa-eur-sec-2-24h",
-          "pypsa-eur-sec-6-24h",
-          "pypsa-eur-sec-5-12h",
-          "pypsa-eur-sec-2-3h",
+          "pypsa-de-elec-10-1h",
+          "pypsa-de-elec-20-1h",
+          "pypsa-de-elec-50-1h",
+        ]}
+        extraCategoryLengthMargin={5}
+      />
+      <h5>Effect of increasing temporal resolutions on PyPSA models</h5>
+      <p>
+        Again, only HiGHS among open solvers can solve the smallest instance
+        (50-168h). On the other hand, as temporal resolution increases (from
+        168h to 24h and below), Gurobi runtime escalates dramatically: while the
+        weekly aggregation solves in seconds, the daily resolution already
+        requires nearly an hour, and finer resolutions hit the time limit (1
+        hour).
+      </p>
+      <RuntimeOfFastestSolver
+        benchmarkList={[
+          "pypsa-eur-elec-50-168h",
+          "pypsa-eur-elec-50-24h",
+          "pypsa-eur-elec-50-12h",
+          "pypsa-eur-elec 50-3h",
         ]}
         extraCategoryLengthMargin={5}
       />
       <h5>Effect of unit commitment (UC) on GenX models</h5>
       <p>
-        genx-10_IEEE_9_bus_DC_OPF-9-1h is an MILP problem that adds UC as an
-        extra model constraint to the power sector model
-        genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h (LP problem). Open source solvers
-        are slower on the MILP problem with UC, whereas commercial solvers
-        actually have better MILP performance in this case. Recall that we run
-        all solvers with their default options except for setting a relative
-        duality (MIP) gap tolerance; in particular this means that some solvers
-        may choose to run crossover and others not, which could affect
-        performance of the UC case.
+        {" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "genx-10_IEEE_9_bus_DC_OPF",
+          )}
+        >
+          genx-10_IEEE_9_bus_DC_OPF (9-1h)
+        </Link>{" "}
+        is an MILP problem that adds UC as an extra model constraint to the
+        power sector model{" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "genx-10_IEEE_9_bus_DC_OPF-no_uc",
+          )}
+        >
+          genx-10_IEEE_9_bus_DC_OPF-no_uc (9-1h)
+        </Link>{" "}
+        (LP problem). Adding unit commitment (UC) transforms the LP DC-OPF into
+        an MILP and fundamentally changes solver performance. In the LP case,
+        runtimes are in the order of seconds with HiGHS (which also outperforms
+        Gurobi in this case), while the MILP formulation introduces a dramatic
+        increase in computational effort. In this benchmark, Gurobi is the
+        fastest solver for the UC case (28 seconds), whereas the fastest
+        open-source solver (SCIP) requires around 40 minutes, illustrating the
+        substantial performance gap that can emerge once integer variables are
+        introduced. All solvers are run with default settings except for a fixed
+        relative MIP gap tolerance.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
-          "genx-10_IEEE_9_bus_DC_OPF-9-1h",
           "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
+          "genx-10_IEEE_9_bus_DC_OPF-9-1h",
         ]}
         xAxisLabelRotation={-40}
         xAxisLabelWrapLength={6}
@@ -76,89 +114,76 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of unit commitment (UC) on PyPSA models</h5>
       <p>
-        pypsa-eur-elec-op-ucconv-2-3h is an MILP problem that adds UC as an
-        extra model constraint to the power sector operational model
-        pypsa-eur-elec-op-2-1h (LP problem). Despite having different temporal
-        resolutions (1h VS 3h), open source solvers are slower on the MILP
-        problem with UC, whereas commercial solvers have good MILP performance
-        and the gap between the LP and MILP is probably due to the LP problem
-        having a higher temporal resolution. Recall that we run all solvers with
-        their default options except for setting a relative duality (MIP) gap
-        tolerance; in particular this means that some solvers may choose to run
-        crossover and others not, which could affect performance of the UC case.
+        {" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "pypsa-power+ely-ucgas",
+          )}
+        >
+          pypsa-power+ely-ucgas (1-1h)
+        </Link>{" "}
+        is an MILP problem that adds UC as an extra model constraint to the
+        power-only model{" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "pypsa-power+ely",
+          )}
+        >
+          pypsa-power+ely (1-1h)
+        </Link>{" "}
+        (LP problem). The LP version solves in a few seconds with both Gurobi
+        and HiGHS, while the MILP version requires significantly more time.
+        Gurobi maintains relatively strong performance in the UC case, whereas
+        open-source solvers exhibit a more pronounced slowdown. All solvers are
+        run with default settings except for a fixed relative MIP gap tolerance.
       </p>
       {/* Chart  */}
       <RuntimeOfFastestSolver
-        benchmarkList={[
-          "pypsa-eur-elec-op-2-1h",
-          "pypsa-eur-elec-op-ucconv-2-3h",
-        ]}
+        benchmarkList={["pypsa-power+ely-1-1h", "pypsa-power+ely-ucgas-1-1h"]}
         xAxisLabelWrapLength={18}
       />
       <h5>
-        Effect of UC, transmission expansion, and CO2 constraints on GenX models
+        Effect of transmission expansion and CO2 constraints on GenX models
       </h5>
       <p>
-        The set of GenX benchmarks below compares solver performance on 1) a
-        case with optimal transmission expansion, 2) a case with both optimal
-        transmission expansion and a CO2 constraint, 3) a case with transmission
-        expansion and UC, and 4) a case with CO2 emission constraints. All the
-        benchmarks except for genx-elec_trex_uc-15-24h share the same spatial
-        and temporal resolution, except for genx-elec-trex_uc-15-24h (the
-        corresponding 168h instance fails due to memory issues).{" "}
+        Under open-source solvers, all three GenX variants hit the time limit,
+        failing in providing any indication about the effect of transmission
+        expansion optimization and CO2 constraints. When including Gurobi, the
+        models become solvable within reasonable time, but runtimes vary
+        significantly: adding both transmission expansion and CO2 constraints
+        leads to the longest solve time (2h 45min), while models with only one
+        of the features solve faster (around 1h 30min). This highlights how
+        stacking structural constraints can materially increase computational
+        complexity, even when the formulation remains linear.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
           "genx-elec_trex-15-168h",
           "genx-elec_trex_co2-15-168h",
-          "genx-elec_trex_uc-15-24h",
           "genx-elec_co2-15-168h",
         ]}
       />
-      <p>
-        Stacking transmission expansion optimality and CO2 constraint leads to
-        almost 2X the solution time of the cases taking into account one of the
-        two features at a time. As in the PyPSA-Eur case above, the effect of UC
-        on Gurobi solution time looks negligible with respect to the different
-        time resolution, though for a better comparison a case with UC and the
-        same time resolution as for the other benchmarks listed here would be
-        needed.
-      </p>
       <h5>Effect of increasingly stringent CO2 constraints on TEMOA models</h5>
       <p>
-        In this set of TEMOA models, the 1st case has no CO2 constraints, the
-        2nd one considers US Nationally Determined Contributions (NDCs), and the
-        3rd one enforces net-zero emissions by 2050. It is not surprising here
-        to see that, with Gurobi, increasingly stringent CO2 constraints add
-        runtime requirements with respect to the base case. However, the case of
-        HiGHS needs to be investigated as the 2nd case, despite a less stringent
-        CO2 constraint, cannot be solved, while this is not true for the 3rd
-        case.
+        Increasing the stringency of CO2 constraints affects solver performance
+        differently across solver families. Under open-source solvers, runtime
+        increases when moving from the base case to constrained scenarios, with
+        the NDC case being particularly challenging. When including all solvers,
+        the models solve in a few minutes and runtimes increase only moderately
+        as constraints become more stringent.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
-          "temoa-US_9R_TS-9-12",
-          "temoa-US_9R_TS_NDC-9-12",
-          "temoa-US_9R_TS_NZ-9-12",
+          "temoa-US_9R_TS-9-12ts",
+          "temoa-US_9R_TS_NDC-9-12ts",
+          "temoa-US_9R_TS_SP-9-12ts",
+          "temoa-US_9R_TS_NZ-9-12ts",
         ]}
         xAxisLabelWrapLength={18}
-      />
-      <h5>Effect of time horizons on TIMES models</h5>
-      <p>
-        The comparison on two eTIMES-EU benchmarks highlights how the addition
-        of multi-stage analysis (in this case 8 optimization periods) in perfect
-        foresight has a large impact on runtime in Gurobi. Though one could
-        expect an increase in runtime comparable to the increase in solution
-        stages, proprietary solvers take approximately 180x more time on the
-        multi-stage problem.
-      </p>
-      <RuntimeOfFastestSolver
-        benchmarkList={[
-          "times-etimeseu-europe-elec+heat-co2-single_stage-29-64ts",
-          "times-etimeseu-europe-elec+heat-co2-multi_stage-29-64ts",
-        ]}
-        xAxisLabelRotation={-45}
-        xAxisLabelWrapLength={5}
       />
     </div>
   );

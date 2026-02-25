@@ -66,7 +66,7 @@ const LandingPage = () => {
                 efficiency and cost reasons. The shared nature of cloud
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
-                than 4%. More details on this{" "}
+                than 6%. More details on this{" "}
                 <Link className="font-bold" href="/methodology">
                   here
                 </Link>
@@ -99,7 +99,7 @@ const LandingPage = () => {
                 instances. For more details, please see the{" "}
                 <Link
                   className="font-bold"
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/193"
+                  href="https://github.com/open-energy-transition/solver-benchmark/issues/437"
                 >
                   tracking issue
                 </Link>
@@ -145,10 +145,7 @@ const LandingPage = () => {
     <>
       <Head>
         <title>Main Results | Open Energy Benchmark</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -167,13 +164,16 @@ const LandingPage = () => {
           <div className="max-w-8xl mx-auto">
             <div>
               <AdminHeader>
-                <div className="flex text-navy text-opacity-50 items-center space-x-1">
+                <div className="flex text-navy text-opacity-70 items-center space-x-1">
                   <div className="flex items-center gap-1">
-                    <Link href={PATH_DASHBOARD.root}>
+                    <Link
+                      href={PATH_DASHBOARD.root}
+                      aria-label="Dashboard home"
+                    >
                       <HomeIcon className="w-4 sm:w-[1.125rem] h-4 sm:h-[1.125rem]" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap text-opacity-50">
+                    <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Main Results
                     </p>
                   </div>
@@ -183,12 +183,14 @@ const LandingPage = () => {
               <p className="mb-6 mt-4 max-w-screen-lg">
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
-                benchmarks (less than a million variables), run with a 1 hour
+                benchmarks (less than a million variables), run with a{" "}
+                {`${TIMEOUT_VALUES.SHORT / 3600} hour `}
                 timeout on a less powerful machine. The <b>Long</b> tab contains
-                larger benchmarks (more than a million variables), run with a 10
-                hour timeout on a more powerful machine. Select the desired tab
-                to view a summary of the results on that configuration, along
-                with the technical specifications of the machine used.
+                larger benchmarks (more than a million variables), run with a{" "}
+                {`${TIMEOUT_VALUES.LONG / 3600} hour `}
+                timeout on a more powerful machine. Select the desired tab to
+                view a summary of the results on that configuration, along with
+                the technical specifications of the machine used.
               </p>
             </div>
             <div className="flex">

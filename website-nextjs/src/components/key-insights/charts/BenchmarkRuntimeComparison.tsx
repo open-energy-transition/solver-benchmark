@@ -6,15 +6,20 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
+import { formatDecimal, formatInteger } from "@/utils/number";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const BENCHMARKS_FILTERS = [
-  "genx-10_IEEE_9_bus_DC_OPF-9-1h",
-  "tulipa-1_EU_investment_simple-28-1h",
-  "temoa-US_9R_TS_SP-9-12",
-  "genx-elec_trex_uc-15-24h",
-  "pypsa-eur-sec-5-12h",
-  "pypsa-eur-elec-op-10-3h",
+  "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
+  // "pypsa-eur-elec-50-1h",
+  // "pypsa-eur-elec-100-1h",
+  // "pypsa-eur-sec-50-1h",
+  // "pypsa-eur-sec-100-1h",
+  "temoa-US_9R_TS_SP-9-12ts",
   "TIMES-GEO-global-netzero-31-20ts",
+  "SWITCH-China-open-model-32-433ts",
+  // "ethos_fine_europe_60tp-175-720ts",
+  "genx-10_IEEE_9_bus_DC_OPF-9-1h",
 ];
 const CATEGORY = "benchmark";
 
@@ -23,6 +28,7 @@ interface IBenchmarkRuntimeComparison {
   splitter?: string;
   xAxisLabelRotation?: number;
   extraCategoryLengthMargin?: number;
+  useHipoSolvers?: boolean;
 }
 
 const BenchmarkRuntimeComparison = ({
@@ -30,13 +36,17 @@ const BenchmarkRuntimeComparison = ({
   splitter = "-",
   xAxisLabelRotation = -45,
   extraCategoryLengthMargin = undefined,
+  useHipoSolvers = false,
 }: IBenchmarkRuntimeComparison) => {
   const benchmarkLatestResults = useSelector(
     (state: { results: IResultState }) => {
       return state.results.benchmarkLatestResults;
     },
   ).filter((result) =>
-    BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`),
+    useHipoSolvers
+      ? BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`)
+      : BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`) &&
+        !HIPO_SOLVERS.includes(result.solver),
   );
 
   const metaData = useSelector((state: { results: IResultState }) => {
@@ -124,8 +134,8 @@ const BenchmarkRuntimeComparison = ({
       Realistic: ${
         metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
       }<br/>
-      Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
-      Num. variables: ${sizeData?.numVariables}<br/>
+      Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
+      Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
               `;
     },
     [metaData, benchmarkLatestResults],
@@ -147,7 +157,9 @@ const BenchmarkRuntimeComparison = ({
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              Memory: ${benchmarkData?.memoryUsage} MB <br/>
+              Memory: ${formatDecimal({
+                value: benchmarkData?.memoryUsage,
+              })} MB <br/>
               Status: ${benchmarkData?.status} <br/>`;
     },
     [findBenchmarkData],
@@ -190,10 +202,13 @@ const BenchmarkRuntimeComparison = ({
           }
         }),
       );
+      const metaDataEntry =
+        metaData[benchmarkData?.benchmark as keyof typeof metaData];
       const [] = category.split("-");
       return `${benchmarkData?.benchmark} \n
       Size: ${benchmarkData?.size} \n
-      Fastest solver: ${humanizeSeconds(minRuntime)}`;
+      Fastest solver: ${humanizeSeconds(minRuntime)} \n
+      Problem class: ${metaDataEntry?.problemClass || "N/A"} \n`;
     },
     [benchmarkLatestResults],
   );
@@ -222,6 +237,7 @@ const BenchmarkRuntimeComparison = ({
         xAxisLabelRotation={xAxisLabelRotation}
         extraCategoryLengthMargin={extraCategoryLengthMargin}
         splitter={splitter}
+        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const status = benchmarkWithStatus

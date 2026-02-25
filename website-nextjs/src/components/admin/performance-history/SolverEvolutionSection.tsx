@@ -31,6 +31,7 @@ const SolverEvolutionSection = ({
 }: ISolverEvolutionSection) => {
   const router = useRouter();
   const [selectedSolver, setSelectedSolver] = useState("");
+  const defaultSolverSelection = "highs";
 
   const solverEvolutionData = useMemo(() => {
     const result: Record<string, SolverEvolutionData[]> = {};
@@ -99,20 +100,12 @@ const SolverEvolutionSection = ({
   // Sort solvers by number of data points (descending), then alphabetically
   const sortedSolverNames = useMemo(() => {
     return Object.keys(solverEvolutionData).sort((a, b) => {
-      const aPoints = solverEvolutionData[a].length;
-      const bPoints = solverEvolutionData[b].length;
-
-      // Sort by number of data points (descending)
-      if (aPoints !== bPoints) {
-        return bPoints - aPoints;
-      }
-
       // If same number of points, sort alphabetically
       return a.localeCompare(b);
     });
   }, [solverEvolutionData]);
 
-  // Initialize solver from URL or default to first available
+  // Initialize solver from URL
   useEffect(() => {
     if (sortedSolverNames.length === 0 || !router.isReady) return;
 
@@ -121,7 +114,7 @@ const SolverEvolutionSection = ({
     if (solverFromUrl && sortedSolverNames.includes(solverFromUrl)) {
       setSelectedSolver(solverFromUrl);
     } else if (!selectedSolver) {
-      setSelectedSolver(sortedSolverNames[0]);
+      setSelectedSolver(defaultSolverSelection);
     }
   }, [sortedSolverNames, router.isReady]);
 
@@ -163,13 +156,19 @@ const SolverEvolutionSection = ({
   return (
     <div className="mt-8 mb-6">
       <div className="mb-6">
-        <h4 className="text-xl font-bold text-gray-800 mb-2">{title}</h4>
+        <div className="h4 text-xl font-bold text-gray-800 mb-2">{title}</div>
         <p className="text-gray-600 max-w-4xl mb-4">{description}</p>
 
         {/* Solver Dropdown */}
         <div className="lg:w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
-          <h6 className="p-3 pl-3.5 border-b border-gray-200">Select Solver</h6>
+          <label
+            htmlFor="solver-select"
+            className="h6 p-3 pl-3.5 border-b border-gray-200 block"
+          >
+            Select Solver
+          </label>
           <select
+            id="solver-select"
             name="solver"
             value={selectedSolver}
             onChange={(event) => setSelectedSolver(event.target.value)}

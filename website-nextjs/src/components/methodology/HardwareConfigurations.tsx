@@ -9,9 +9,9 @@ const HardwareConfigurations = () => {
   return (
     <div ref={sectionRef}>
       {/* Content */}
-      <h4 id={HASH_NAME} className="info-pages-heading">
+      <div id={HASH_NAME} className="h4 info-pages-heading">
         Hardware Configurations
-      </h4>
+      </div>
       <p>
         We run benchmarks on the following machine configurations and timeouts:
       </p>
@@ -22,8 +22,8 @@ const HardwareConfigurations = () => {
           RAM)
         </li>
         <li className="mb-2">
-          Large sized benchmark instances are run with a timeout of 10 hours on
-          a GCP <code>c4-highmem-8</code> VM (4 cores (8 vCPU), 62 GB RAM)
+          Large sized benchmark instances are run with a timeout of 24 hours on
+          a GCP <code>c4-highmem-16</code> VM (8 cores (16 vCPU), 124 GB RAM)
         </li>
       </ol>
       <p>

@@ -3,6 +3,8 @@ import * as d3 from "d3";
 import { SolverStatusType } from "@/types/benchmark";
 import { applyTooltipStyles, getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
+import { formatInteger } from "@/utils/number";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 type ChartData = {
   runtime: number;
@@ -61,8 +63,14 @@ const D3PlotChartPerformanceScaling = ({
 
     // Add timeout lines
     const timeouts = [
-      { value: 60 * 60, label: "1 hr timeout" },
-      { value: 10 * 60 * 60, label: "10 hr timeout" },
+      {
+        value: TIMEOUT_VALUES.SHORT,
+        label: humanizeSeconds(TIMEOUT_VALUES.SHORT) + " timeout",
+      },
+      {
+        value: TIMEOUT_VALUES.LONG,
+        label: humanizeSeconds(TIMEOUT_VALUES.LONG) + " timeout",
+      },
     ];
 
     timeouts.forEach(({ value, label }) => {
@@ -169,7 +177,7 @@ const D3PlotChartPerformanceScaling = ({
         .html(
           `Benchmark: ${d.benchmark.replace(" ", "<br/> Size: ")}
           <br/>Runtime: ${formatRuntime(d.runtime)}
-          <br/>Number of Variables: ${d.numVariables}`,
+          <br/>Number of Variables: ${formatInteger(d.numVariables)}`,
         )
         .style("left", `${event.offsetX + 10}px`)
         .style("top", `${event.offsetY - 10}px`)

@@ -10,6 +10,7 @@ const actions = {
   SET_RAW_META_DATA: "SET_RAW_META_DATA",
   SET_AVAILABLE_FILTER_DATA: "SET_AVAILABLE_FILTER_DATA",
   SET_FULL_META_DATA: "SET_FULL_META_DATA",
+  SET_BENCHMARK_HIPO_RESULTS: "SET_BENCHMARK_HIPO_RESULTS",
 
   setBenchmarkResults: (results: BenchmarkResult[]) => {
     return {
@@ -51,6 +52,12 @@ const actions = {
     return {
       type: actions.SET_AVAILABLE_FILTER_DATA,
       payload: { availableFilterData },
+    };
+  },
+  setBenchmarkHipoResults: (results: BenchmarkResult[]) => {
+    return {
+      type: actions.SET_BENCHMARK_HIPO_RESULTS,
+      payload: { results },
     };
   },
 };

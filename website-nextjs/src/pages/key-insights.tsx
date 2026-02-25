@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   PageLayout,
   TableOfContents,
@@ -16,9 +16,14 @@ import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import filterActions from "@/redux/filters/actions";
 import { AppDispatch } from "@/redux/store";
+import { IFilterState } from "@/types/state";
 
 const KeyInsightsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const savedFiltersRef = useRef<IFilterState | null>(null);
+  const currentFilters = useSelector(
+    (state: { filters: IFilterState }) => state.filters,
+  );
 
   const tocItems = [
     {
@@ -64,7 +69,15 @@ const KeyInsightsPage = () => {
   const [currentSection, setCurrentSection] = useState<string | null>(null);
 
   useEffect(() => {
+    savedFiltersRef.current = currentFilters;
+
     (dispatch as any)(filterActions.resetFilters());
+
+    return () => {
+      if (savedFiltersRef.current) {
+        dispatch(filterActions.setFilter(savedFiltersRef.current));
+      }
+    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -81,6 +94,11 @@ const KeyInsightsPage = () => {
 
   return (
     <PageLayout title="Key Insights" description="Key insights">
+      <style jsx>{`
+        :global(.info-pages-content p) {
+          font-size: 16px;
+        }
+      `}</style>
       <TableOfContents
         title="Key Insights"
         currentSection={currentSection}

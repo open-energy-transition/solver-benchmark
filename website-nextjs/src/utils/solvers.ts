@@ -14,4 +14,6 @@ function formatSolverWithVersion(solverWithVersion: string) {
   return `${solver} v${version}`;
 }
 
-export { getSolverLabel, formatSolverWithVersion };
+const HIPO_SOLVERS = ["highs-hipo", "highs-ipx"];
+
+export { getSolverLabel, formatSolverWithVersion, HIPO_SOLVERS };

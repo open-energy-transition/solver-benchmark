@@ -119,7 +119,6 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           (s: { url?: string }) => s.url,
         );
         const url = sizeWithUrl?.url;
-        console.log("url", url);
         if (!url) {
           console.warn(`No download URL found for ${benchmark.name}`);
           alert(`No download URL found for ${benchmark.name}. Skipping...`);
@@ -232,6 +231,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                     }
                     onChange={handleSelectAll}
                     className="cursor-pointer w-4 h-4"
+                    aria-label="Select all benchmarks"
                   />
                 </div>
               ),
@@ -242,6 +242,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                     checked={selectedBenchmarks.has(info.row.original.name)}
                     onChange={() => handleToggleSelect(info.row.original.name)}
                     className="cursor-pointer w-4 h-4"
+                    aria-label={`Select ${info.row.original.name}`}
                   />
                 </div>
               ),

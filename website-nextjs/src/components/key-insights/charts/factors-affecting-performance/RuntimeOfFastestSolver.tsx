@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useId } from "react";
 
 import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { CircleIcon } from "@/assets/icons";
+import { formatInteger } from "@/utils/number";
+import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 
 interface IRuntimeOfFastestSolver {
   benchmarkList?: string[];
@@ -13,6 +16,7 @@ interface IRuntimeOfFastestSolver {
   xAxisLabelWrapLength?: number;
   splitter?: string;
   extraCategoryLengthMargin?: number;
+  excludeHipo?: boolean;
 }
 
 interface IDataPoint {
@@ -26,21 +30,24 @@ const RuntimeOfFastestSolver = ({
   xAxisLabelWrapLength = undefined,
   splitter = "-",
   extraCategoryLengthMargin = undefined,
+  excludeHipo = true,
 }: IRuntimeOfFastestSolver) => {
   const [allSolvers, setallSolvers] = useState(false);
+  const radioGroupId = useId();
 
-  const benchmarkResults = useSelector((state: { results: IResultState }) => {
-    return state.results.rawBenchmarkResults;
-  })
+  const availableSolvers = useAvailableSolvers({ excludeHipo });
+
+  const rawResults = useBenchmarkResults({
+    excludeHipo,
+    useRawResults: true,
+  });
+
+  const benchmarkResults = rawResults
     .filter((result) => (allSolvers ? true : result.solver !== "gurobi"))
     .map((result) => ({
       ...result,
       runtime: result.status === "ok" ? result.runtime : result.timeout,
     }));
-
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers;
-  });
 
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.rawMetaData;
@@ -140,8 +147,8 @@ const RuntimeOfFastestSolver = ({
     Realistic: ${
       metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
     }<br/>
-    Num. constraints: ${sizeData?.numConstraints || "N/A"}<br/>
-    Num. variables: ${sizeData?.numVariables}<br/>
+    Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
+    Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
             `;
   };
 
@@ -170,7 +177,7 @@ const RuntimeOfFastestSolver = ({
       {availableSolvers.map((solverKey) => (
         <div
           key={solverKey}
-          className="capitalize text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+          className="text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
         >
           <CircleIcon
             style={{
@@ -186,27 +193,25 @@ const RuntimeOfFastestSolver = ({
 
   return (
     <>
-      <div className="flex items-center gap-6 mb-4 cursor-pointer">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-6 mb-4">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name={`solver-filter-runtime-${radioGroupId}`}
             checked={!allSolvers}
             onChange={() => setallSolvers(false)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(false)}>
-            Open solvers only
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
+          <span className="text-sm text-navy">Open solvers only</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
+            name={`solver-filter-runtime-${radioGroupId}`}
             checked={allSolvers}
             onChange={() => setallSolvers(true)}
           />
-          <p className="cursor-pointer" onClick={() => setallSolvers(true)}>
-            All solvers
-          </p>
-        </div>
+          <span className="text-sm text-navy">All solvers</span>
+        </label>
       </div>
       <div>
         <D3GroupedBarChart
@@ -229,7 +234,7 @@ const RuntimeOfFastestSolver = ({
             return 1;
           }}
           xAxisLabel=""
-          yAxisLabel="Runtime (s)"
+          yAxisLabel="Runtime (s, log scale)"
           chartHeight={400}
           customLegend={chartLegend}
           barTextClassName={getBarTextClassName}
@@ -243,6 +248,8 @@ const RuntimeOfFastestSolver = ({
           extraCategoryLengthMargin={extraCategoryLengthMargin}
           rotateXAxisLabels={true}
           splitter={splitter}
+          useLogScale={true}
+          showLineAtY1={false}
         />
       </div>
     </>

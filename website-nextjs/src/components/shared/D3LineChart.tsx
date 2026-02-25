@@ -9,6 +9,7 @@ import {
   roundUpToNearest,
 } from "@/utils/chart";
 import { IResultState } from "@/types/state";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -20,6 +21,7 @@ interface ID3ChartLineChart {
   xAxisTooltipFormat?: (value: number | string) => string;
   maxYValue?: number;
   showMaxLine?: boolean;
+  showHipoSolvers?: boolean;
 }
 
 const D3ChartLineChart = ({
@@ -30,13 +32,22 @@ const D3ChartLineChart = ({
   xAxisTooltipFormat,
   maxYValue,
   showMaxLine = false,
+  showHipoSolvers = true,
 }: ID3ChartLineChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
+  const allSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
   });
+
+  const availableSolvers = useMemo(
+    () =>
+      showHipoSolvers
+        ? allSolvers
+        : allSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
+    [allSolvers, showHipoSolvers],
+  );
 
   const solverColors = useMemo<Record<string, string>>(() => {
     return availableSolvers.reduce(
@@ -234,14 +245,14 @@ const D3ChartLineChart = ({
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">
+        <span className="items-start font-semibold text-[#022B3BB3] text-xs mr-1 flex">
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">
           {Object.keys(solverColors).map((solverKey) => (
             <div
               key={solverKey}
-              className="py-1 px-5 uppercase bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+              className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
             >
               <CircleIcon
                 style={{ color: solverColors[solverKey] }}
