@@ -3591,10 +3591,88 @@ benchmarks:
       Num. variables: 131278
       Num. continuous variables: 122017
       Num. integer variables: 9261
-  SWITCH-China-open-model:
+  SWITCH-China-open-model-5-loadzones:
     Short description: A large-scale national energy system model of China built using
-      the SWITCH framework, including extended China-specific modules and updated
-      inputs based on a 2020 base year.
+      the SWITCH framework, incorporating extended China-specific modules and updated
+      inputs based on a 2020 base year, with 5 load zones.
+    Modelling framework: SWITCH
+    Model name: SWITCH_China_open_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 5-433ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-5-loadzones-5-433ts.lp.gz
+      Temporal resolution: 433 time slices
+      Spatial resolution: 5 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints:
+      Num. variables:
+  SWITCH-China-open-model-10-loadzones:
+    Short description: A large-scale national energy system model of China built using
+      the SWITCH framework, incorporating extended China-specific modules and updated
+      inputs based on a 2020 base year, with 10 load zones.
+    Modelling framework: SWITCH
+    Model name: SWITCH_China_open_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 10-433ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-10-loadzones-10-433ts.lp.gz
+      Temporal resolution: 433 time slices
+      Spatial resolution: 10 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints:
+      Num. variables:
+  SWITCH-China-open-model-15-loadzones:
+    Short description: A large-scale national energy system model of China built using
+      the SWITCH framework, incorporating extended China-specific modules and updated
+      inputs based on a 2020 base year, with 15 load zones.
+    Modelling framework: SWITCH
+    Model name: SWITCH_China_open_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage
+    MILP features: None
+    Sizes:
+    - Name: 15-433ts
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-15-loadzones-15-433ts.lp.gz
+      Temporal resolution: 433 time slices
+      Spatial resolution: 15 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints:
+      Num. variables:
+  SWITCH-China-open-model-32-loadzones:
+    Short description: A large-scale national energy system model of China built using
+      the SWITCH framework, incorporating extended China-specific modules and updated
+      inputs based on a 2020 base year, with 32 load zones.
     Modelling framework: SWITCH
     Model name: SWITCH_China_open_model
     Version:
@@ -3609,7 +3687,7 @@ benchmarks:
     Sizes:
     - Name: 32-433ts
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-loadzones-32-433ts.lp.gz
       Temporal resolution: 433 time slices
       Spatial resolution: 32 nodes
       Realistic: true
