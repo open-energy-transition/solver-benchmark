@@ -319,6 +319,7 @@ def download_benchmark_file(
             if uncompressed_path is None and download_path.exists():
                 return download_path
 
+            print(f"Downloading {url}")
             download_stream_to_file(url, download_path)
 
             if extension.endswith(".gz"):
@@ -332,7 +333,7 @@ def download_benchmark_file(
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}")
         tmp_path = Path(tmp.name)
         tmp.close()
-
+        print(f"Downloading {url}")
         download_stream_to_file(url, tmp_path)
 
         if not extension.endswith(".gz"):
@@ -410,16 +411,22 @@ def analyze_model_file(file_path: Path, is_milp: bool) -> Optional[ModelStats]:
 
         size_category = determine_size_category(num_variables)
 
+        # LP branch
         if not is_milp:
-            return ModelStats(
+            stats = ModelStats(
                 num_constraints=num_constraints,
                 num_variables=num_variables,
                 num_nonzeros=num_nonzeros,
                 size_category=size_category,
             )
 
+            print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
+            return stats
+
+        # MILP branch
         num_cont, num_int = count_variable_types(highs, num_variables)
-        return ModelStats(
+
+        stats = ModelStats(
             num_constraints=num_constraints,
             num_variables=num_variables,
             num_nonzeros=num_nonzeros,
@@ -427,6 +434,9 @@ def analyze_model_file(file_path: Path, is_milp: bool) -> Optional[ModelStats]:
             num_continuous_variables=num_cont,
             num_integer_variables=num_int,
         )
+
+        print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
+        return stats
 
     except Exception as exc:
         print(f"Error analyzing {file_path}: {exc}", file=sys.stderr)
@@ -736,6 +746,7 @@ def process_size_entry(
 
     summary.successful_updates += 1
     write_yaml_file(file_path, yaml_obj, yaml_data)
+    print(f"Updated {model_name} with model stats")
 
 
 def process_metadata_file(
