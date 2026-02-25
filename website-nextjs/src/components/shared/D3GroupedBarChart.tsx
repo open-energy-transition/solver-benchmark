@@ -32,13 +32,14 @@ const D3GroupedBarChart = ({
   splitter = "-",
   extraCategoryLengthMargin = undefined,
   sortByValue = false,
+  showLineAtY1 = true,
+  useLogScale = false,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const isMobile = useIsMobile();
   const [height, setHeight] = useState(chartHeight);
   const windowWidth = useDebouncedWindowWidth(200);
-
   const categoryLengths = chartData.reduce((acc, d) => {
     const length = String(d[categoryKey] || "").length;
     return Math.max(acc, length);
@@ -120,45 +121,92 @@ const D3GroupedBarChart = ({
       .range([0, xScale.bandwidth()])
       .padding(0.05);
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([
-        0,
-        d3.max(data, (d) =>
-          d3.max(keys, (key) =>
-            transformHeightValue
-              ? transformHeightValue({
-                  key,
-                  value: d[key],
-                  category: d[categoryKey],
-                })
-              : Number(d[key]),
-          ),
-        ) || 0,
-      ])
-      .nice()
-      .range([height - margin.bottom, margin.top]);
+    const maxValue =
+      d3.max(data, (d) =>
+        d3.max(keys, (key) =>
+          transformHeightValue
+            ? transformHeightValue({
+                key,
+                value: d[key],
+                category: d[categoryKey],
+              })
+            : Number(d[key]),
+        ),
+      ) || 1;
+
+    const minValue = useLogScale
+      ? Math.min(
+          1,
+          d3.min(data, (d) =>
+            d3.min(keys, (key) => {
+              const value = transformHeightValue
+                ? transformHeightValue({
+                    key,
+                    value: d[key],
+                    category: d[categoryKey],
+                  })
+                : Number(d[key]);
+              return value > 0 ? value : Infinity;
+            }),
+          ) || 1,
+        )
+      : 0;
+
+    // For log scale, extend domain to next power of 10 for cleaner visualization
+    // Always start from 0.1 for log scale, 0 for linear scale
+    const domainMin = useLogScale ? 0.1 : 0;
+    const domainMax = useLogScale
+      ? Math.pow(10, Math.ceil(Math.log10(maxValue)))
+      : maxValue;
+
+    const yScale = useLogScale
+      ? d3
+          .scaleLog()
+          .domain([domainMin, domainMax])
+          .range([height - margin.bottom, margin.top])
+          .clamp(true)
+      : d3
+          .scaleLinear()
+          .domain([0, maxValue])
+          .nice()
+          .range([height - margin.bottom, margin.top]);
 
     // Tooltip
     const tooltip = createD3Tooltip();
 
-    const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
-      g
-        .attr("stroke", "currentColor")
-        .attr("stroke-opacity", 0.1)
-        // Add horizontal grid lines
-        .call((g) =>
-          g
-            .append("g")
-            .selectAll("line")
-            .data(yScale.ticks())
-            .join("line")
-            .attr("y1", (d) => yScale(d))
-            .attr("y2", (d) => yScale(d))
-            .attr("x1", margin.left)
-            .attr("x2", width - margin.right)
-            .attr("stroke-dasharray", "4,4"),
-        );
+    const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) => {
+      // Generate tick values for gridlines
+      const tickValues = useLogScale
+        ? (() => {
+            const minLog = Math.floor(Math.log10(minValue));
+            const maxLog = Math.ceil(Math.log10(maxValue));
+            const values = [];
+            for (let i = minLog; i <= maxLog; i++) {
+              values.push(Math.pow(10, i));
+            }
+            return values;
+          })()
+        : yScale.ticks();
+
+      return (
+        g
+          .attr("stroke", "currentColor")
+          .attr("stroke-opacity", 0.1)
+          // Add horizontal grid lines
+          .call((g) =>
+            g
+              .append("g")
+              .selectAll("line")
+              .data(tickValues)
+              .join("line")
+              .attr("y1", (d) => yScale(d))
+              .attr("y2", (d) => yScale(d))
+              .attr("x1", margin.left)
+              .attr("x2", width - margin.right)
+              .attr("stroke-dasharray", "4,4"),
+          )
+      );
+    };
     svg.append("g").call(grid);
     // Create bars side by side
     const barGroups = svg
@@ -252,10 +300,12 @@ const D3GroupedBarChart = ({
         const labelText = axisLabelTitle ? axisLabelTitle(d) : String(d.value);
         const lines = labelText.split("\n");
         const xPos = d.xScale(d.key)! + d.xScale.bandwidth() / 2;
-        const yPos = yScale(
-          (transformHeightValue ? transformHeightValue(d) : Number(d.value)) +
-            0.05,
-        );
+        const barValue = transformHeightValue
+          ? transformHeightValue(d)
+          : Number(d.value);
+        // Use pixel offset for label positioning instead of value offset
+        // to avoid log scale issues
+        const yPos = yScale(barValue) - 5;
 
         lines.forEach((line, i) => {
           group
@@ -351,21 +401,38 @@ const D3GroupedBarChart = ({
           });
       });
     // Add reference line at y = 1
-    svg
-      .append("line")
-      .attr("x1", margin.left)
-      .attr("x2", width - margin.right)
-      .attr("y1", yScale(1))
-      .attr("y2", yScale(1))
-      .attr("stroke", "#666")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "4,4");
+    showLineAtY1 &&
+      svg
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", yScale(1))
+        .attr("y2", yScale(1))
+        .attr("stroke", "#666")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "4,4");
 
     // Y-axis
+    const yAxis = useLogScale
+      ? (() => {
+          // Generate tick values at powers of 10 only
+          const minLog = Math.floor(Math.log10(minValue));
+          const maxLog = Math.ceil(Math.log10(maxValue));
+          const tickValues = [];
+          for (let i = minLog; i <= maxLog; i++) {
+            tickValues.push(Math.pow(10, i));
+          }
+          return d3
+            .axisLeft(yScale)
+            .tickValues(tickValues)
+            .tickFormat((d) => d3.format(",")(d as number));
+        })()
+      : d3.axisLeft(yScale).ticks(10);
+
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(yScale).ticks(10))
+      .call(yAxis)
       .call((g) => {
         g.selectAll(".domain")
           .attr("stroke", "currentColor")
