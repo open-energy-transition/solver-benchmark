@@ -246,7 +246,7 @@ def is_mip_problem(solver_model: Any, solver_name_val: str) -> bool:
 
 
 def calculate_integrality_violation(
-    integer_vars: pd.Series, primal_values: pd.Series
+    integer_vars: set, primal_values: pd.Series
 ) -> float:
     """Calculate the maximum integrality violation from primal values.
     We only care about Integer vars, not SemiContinuous or SemiInteger, following the code in
@@ -321,14 +321,12 @@ def get_milp_metrics(
     try:
         if highspy is not None:
             h = highspy.Highs()
-            h.readModel(input_file_path)
-            integer_vars = pd.Series(
-                {
-                    h.variableName(i)
-                    for i in range(h.numVariables)
-                    if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-                }
-            )
+            h.readModel(input_file_path.as_posix())
+            integer_vars = {
+                h.variableName(i)
+                for i in range(h.numVariables)
+                if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+            }
             if integer_vars:
                 duality_gap = get_duality_gap(
                     solver_result.solver_model, solver_name_val
