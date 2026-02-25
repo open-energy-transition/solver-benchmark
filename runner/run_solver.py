@@ -1,3 +1,42 @@
+"""
+Solver Runner Script
+====================
+
+This script provides a unified interface to run various optimization solvers
+(e.g., HiGHS, GLPK, Gurobi, SCIP, CBC, CPLEX, Knitro, Xpress) on a given input
+problem file. It configures solver-specific options for reproducibility,
+executes the solver, and collects key metrics such as runtime, duality gap,
+and integrality violation.
+
+Features
+--------
+- Supports multiple solvers with customizable options.
+- Handles solver-specific seed and tolerance settings.
+- Computes MILP metrics (duality gap, integrality violation) when applicable.
+- Outputs results in JSON format.
+
+Example Usage
+-------------
+Run the script from the command line:
+
+    python runner/run_solver.py \
+        --solver_name highs \
+        --solver_version 1.6.0 \
+        --input_file path/to/problem.mps \
+        --highs_solver_variant simplex \
+        --hipo_block_size 128
+
+Arguments
+---------
+--solver_name           Name of the solver to run (e.g., highs, glpk, gurobi, scip, cbc, cplex, knitro, xpress).
+--solver_version        Version of the solver to use.
+--input_file            Path to the input problem file (e.g., .mps, .lp).
+--highs_solver_variant  Variant of HiGHS to run (hipo, ipm, ipx, pdlp, simplex). Only for HiGHS.
+--hipo_block_size       Block size for HiPO variant of HiGHS (default: 128).
+
+See the function `parse_args()` for more details on arguments.
+"""
+
 import argparse
 import json
 import logging
