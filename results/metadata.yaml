@@ -663,7 +663,7 @@ benchmarks:
     Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
     Time horizon: Single period (1 year)
     MILP features: None
-    License: TODO
+    License: CC BY 4.0
     Sizes:
     - Name: 1-3h
       Size: M
