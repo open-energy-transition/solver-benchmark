@@ -3617,13 +3617,92 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 14588407
       Num. variables: 13338520
-  SWITCH-USA-PG:
+  SWITCH-USA-PG-3-loadzones:
     Short description: A capacity-expansion and operational power-system model of
       the United States built on the Switch framework and parameterized with PowerGenome
       data. It provides consistent, reproducible multi-regional U.S. electricity system
-      scenarios using detailed technology cost assumptions (e.g., ATB).
+      scenarios using detailed technology cost assumptions (e.g., ATB), with the system
+      represented using three load zones.
     Modelling framework: SWITCH
-    Model name: SWITCH-USA-PG
+    Model name: SWITCH-USA-PG-3-loadzones
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 3-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-3-loadzones-3-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+  SWITCH-USA-PG-10-loadzones:
+    Short description: A capacity-expansion and operational power-system model of
+      the United States built on the Switch framework and parameterized with PowerGenome
+      data. It provides consistent, reproducible multi-regional U.S. electricity system
+      scenarios using detailed technology cost assumptions (e.g., ATB), with the system
+      represented using 10 load zones.
+    Modelling framework: SWITCH
+    Model name: SWITCH-USA-PG-10-loadzones
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 10-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-10-loadzones-10-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+  SWITCH-USA-PG-15-loadzones:
+    Short description: A capacity-expansion and operational power-system model of
+      the United States built on the Switch framework and parameterized with PowerGenome
+      data. It provides consistent, reproducible multi-regional U.S. electricity system
+      scenarios using detailed technology cost assumptions (e.g., ATB), with the system
+      represented using 15 load zones.
+    Modelling framework: SWITCH
+    Model name: SWITCH-USA-PG-15-loadzones
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (1 year)
+    MILP features: None
+    Sizes:
+    - Name: 15-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-15-loadzones-15-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+  SWITCH-USA-PG-26-loadzones:
+    Short description: A capacity-expansion and operational power-system model of
+      the United States built on the Switch framework and parameterized with PowerGenome
+      data. It provides consistent, reproducible multi-regional U.S. electricity system
+      scenarios using detailed technology cost assumptions (e.g., ATB), with the system
+      represented using 26 load zones.
+    Modelling framework: SWITCH
+    Model name: SWITCH-USA-PG-26-loadzones
     Version:
     Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
     License: CC BY 4.0
@@ -3636,7 +3715,7 @@ benchmarks:
     Sizes:
     - Name: 26-168h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-loadzones-26-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 26 nodes
       Realistic: false
