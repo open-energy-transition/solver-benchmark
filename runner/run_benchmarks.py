@@ -33,7 +33,7 @@ def get_conda_package_versions(solvers, env_name=None):
         installed_packages = {}
         for line in result.stdout.splitlines():
             if not line.strip() or line.startswith(
-                    "#"
+                "#"
             ):  # Skip comments and empty lines
                 continue
             parts = line.split()
@@ -148,7 +148,7 @@ def csv_record(check=False, **kwargs):
 
 
 def write_csv_headers(
-        results_csv, mean_stddev_csv, headers=csv_record(check=False).keys()
+    results_csv, mean_stddev_csv, headers=csv_record(check=False).keys()
 ):
     # Initialize CSV files with headers
     with open(results_csv, mode="w", newline="") as file:
@@ -178,15 +178,15 @@ def write_csv_headers(
 
 
 def write_csv_row(
-        results_csv,
-        benchmark_name,
-        metrics,
-        run_id,
-        timestamp,
-        vm_instance_type,
-        vm_zone,
-        hostname,
-        solver_benchmark_version,
+    results_csv,
+    benchmark_name,
+    metrics,
+    run_id,
+    timestamp,
+    vm_instance_type,
+    vm_zone,
+    hostname,
+    solver_benchmark_version,
 ):
     # NOTE: ensure the order is the same as the headers above
     with open(results_csv, mode="a", newline="") as file:
@@ -270,9 +270,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
 
     # Append the stderr to the log file
     log_file = (
-            Path(__file__).parent
-            / "logs"
-            / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
+        Path(__file__).parent
+        / "logs"
+        / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
     )
     if log_file.exists:
         with open(log_file, "a") as f:
@@ -446,13 +446,13 @@ def benchmark_highs_binary():
 
 
 def main(
-        benchmark_yaml_path,
-        solvers,
-        year=None,
-        iterations=1,
-        reference_interval=0,  # Default: disabled
-        append=False,
-        run_id=None,
+    benchmark_yaml_path,
+    solvers,
+    year=None,
+    iterations=1,
+    reference_interval=0,  # Default: disabled
+    append=False,
+    run_id=None,
 ):
     # If no run_id is provided, generate one
     hostname = gethostname()
@@ -545,13 +545,13 @@ def main(
                 # TODO share this code with validate_urls.py
                 gz = instance["URL"].endswith(".gz")
                 base = instance["URL"][:-3] if gz else instance["URL"]
-                ext = base[base.rfind("."):]
+                ext = base[base.rfind(".") :]
                 # If no dot was found, ext will be the full string; make it empty instead
                 if "." not in ext:
                     ext = ""
                 ext += ".gz" if gz else ""
                 benchmark_path = (
-                        benchmarks_folder / f"{benchmark_name}-{instance['Name']}{ext}"
+                    benchmarks_folder / f"{benchmark_name}-{instance['Name']}{ext}"
                 )
                 download_benchmark_file(instance["URL"], benchmark_path)
 
@@ -589,11 +589,11 @@ def main(
         for solver in solvers:
             # TODO a hack to run only the latest version per solver on Ls
             if (
-                    benchmark["size_category"] == "L"
-                    and year != "2025"
-                    and not (
+                benchmark["size_category"] == "L"
+                and year != "2025"
+                and not (
                     year == "2024" and solver == "cbc"
-            )  # Latest CBC release is in 2024
+                )  # Latest CBC release is in 2024
             ):
                 print(
                     f"WARNING: skipping {solver} in {year} because this benchmark instance is size L"
@@ -604,7 +604,7 @@ def main(
             if solver in [
                 variant.value for variant in HighsVariant
             ] and (  # For py3.10 compatibility
-                    year != "2025" or benchmark["class"] != "LP"
+                year != "2025" or benchmark["class"] != "LP"
             ):
                 print(
                     f"Solver {solver} is only available for LP benchmarks and year 2025."
@@ -684,7 +684,7 @@ def main(
                 time_since_last_run = current_time - last_reference_run
 
                 if last_reference_run == 0 or time_since_last_run >= int(
-                        reference_interval
+                    reference_interval
                 ):
                     print(
                         f"Running reference benchmark with HiGHS binary (interval: {reference_interval}s)...",
