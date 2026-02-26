@@ -1,0 +1,12 @@
+name: benchmark-gurobi-2025
+channels:
+- conda-forge
+- https://conda.anaconda.org/gurobi
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+- gurobi==13.0.0

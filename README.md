@@ -15,6 +15,7 @@ https://openenergybenchmark.org/
       - [System Requirements](#system-requirements)
       - [Required Software](#required-software)
     - [Running Supported Solvers on Benchmarks](#running-supported-solvers-on-benchmarks)
+  - [Running with Docker](#running-with-docker)
   - [Cloud Runs](#cloud-runs)
 - [Running the Website](#running-the-website)
 - [Development](#development)
@@ -68,6 +69,8 @@ Supported Linux distributions:
 - Debian 11 or later
 - Other systemd-based Linux distributions
 
+**macOS / Windows users:** Use the provided Docker image to run benchmarks in a Linux container. See [Running with Docker](#running-with-docker) below.
+
 ##### Required Software
 
 Ensure you have the following installed:
@@ -99,6 +102,22 @@ tail runner/logs/*
 The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
 
 `runner/benchmark_all.sh` uses `runner/run_benchmarks.py` to run the benchmarks by year. If you wish to run benchmarks directly, you can set up the requisite conda env manually. [See Documentation](runner/README.md).
+
+### Running with Docker
+
+You can use Docker to run benchmarks in a Linux container that has all the required dependencies.
+
+```sh
+# Build the runner image
+docker build -t solver-benchmark-runner -f runner/Dockerfile .
+
+# Run all solvers across all years, results are written to host via a volume mount
+docker run --rm \
+  -v $(pwd)/results:/solver-benchmark/results \
+  solver-benchmark-runner results/metadata.yaml
+```
+
+The container accepts the same flags as `benchmark_all.sh` (e.g. `-s`, `-y`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, conda env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
 
 ### Cloud Runs
 
