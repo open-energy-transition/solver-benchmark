@@ -1,0 +1,21 @@
+https://github.com/IIT-EnergySystemModels/openTEPES ## Link to the source / modelling framework repo used to generate the benchmark(s) (e.g. https://github.com/PyPSA/pypsa-eur)
+benchmarks:
+  Benchmark_name: openTEPES-Spain/Portugal  # Add the benchmark name (convention: [model-name]-[country/region]-[application:trex/op/etc]); remember, spatial/temporal resolution goes in the `Name` field of the size instance below, not here
+    Short description: Iberian electric system with a detailed representation of a hydro basin # Description of the main features of your benchmarks
+    Modelling framework: openTEPES # Name of modelling framework, e.g., PyPSA, TIMES
+    Model name: None # Specific model used to generate the benchmark, e.g. PyPSA-Eur, TIMES-Ireland
+    Version: # (optional) version of the model used to generate the benchmark (& git commit SHA, if possible)
+    Contributor(s)/Source: Andres Ramos, Universidad Pontificia Comillas https://pascua.iit.comillas.edu/aramos/Ramos_CV.htm  # Name, Affiliation and link to repo used to generate the benchmark (e.g.: Luis Prieto, Open Energy Transition; https://github.com/lprieto1409/DC-OPF-Carolinas)
+    Problem class: MILP # LP, MILP
+    Application: Operational with detailed hydro basin modeling # Current set (feel free to propose new ones if necessary): DC optimal power flow, Resource Adequacy, Infrastructure, Capacity expansion, Infrastructure & Capacity expansion, Operational, Steady-state optimal power flow, Production cost modelling
+    Sectoral focus: Power-only # Power-only, Heating-only, Sector-coupled
+    Sectors: Electric # Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Time horizon: 1 year # Single-stage (1 year, 1 week, ...), Multi-stage (indicate how many stages)
+    MILP features: unit commitment of hydro genrators # Current set (feel free to propose new ones if necessary): None, Unit commitment, Piecewise fuel usage, Transmission switching, Modularity
+    Sizes:
+    - Name: Iberia electric system for year 2025 with bihourly time steps # Spatial resolution-Temporal resolution, e.g., 2-12ts, 10-1h
+      URL: https://pascua.iit.comillas.edu/aramos/openTEPES_SEP2025_2025_CY2019_st1.mps # link to the shared folder where the .lp / .mps file is stored, maintainers will assign a new link after accepting the contribution
+      Temporal resolution: 4368 bi-hours # n. of time steps in one planning horizon, one of: X hours / Y time slices
+      Spatial resolution: Spain and Portugal with 8 nodes # n. of nodes or regions, e.g., 997 nodes / 25 regions
+      Realistic: True # true, false
+      Realistic motivation: used in the national research project "Hydro generation advanced systems: modeling, control, and optimized integration to the system (AVANHID)", developed for the Ministry of Science and Innovation/State Research Agency (MICIN/AEI/10.13039/501100011033) under the program Public-Private Partnerships with NextGenerationEU/PRTR funds (CPP2021-009114). October 2022 - November 2025. # if Realistic, please justify why, e.g., used in XYZ real-world study (with link), or spatial/temporal resolution matches those used in real-world studies
