@@ -78,7 +78,6 @@ const ChartCompare = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
-
   useEffect(() => {
     const data = chartData;
 

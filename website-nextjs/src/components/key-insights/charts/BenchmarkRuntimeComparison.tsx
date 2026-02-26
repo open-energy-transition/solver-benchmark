@@ -237,6 +237,7 @@ const BenchmarkRuntimeComparison = ({
         xAxisLabelRotation={xAxisLabelRotation}
         extraCategoryLengthMargin={extraCategoryLengthMargin}
         splitter={splitter}
+        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const status = benchmarkWithStatus

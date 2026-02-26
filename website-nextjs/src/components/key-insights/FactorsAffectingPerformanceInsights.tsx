@@ -1,6 +1,8 @@
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import PerformanceScalling from "./charts/factors-affecting-performance/PerformanceScalling";
 import RuntimeOfFastestSolver from "./charts/factors-affecting-performance/RuntimeOfFastestSolver";
+import Link from "next/link";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "what-factors-affect-solver-performance";
 const FactorsAffectingPerformanceInsights = () => {
@@ -69,18 +71,37 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of unit commitment (UC) on GenX models</h5>
       <p>
-        `genx-10_IEEE_9_bus_DC_OPF-9-1h` is an MILP problem that adds UC as an
-        extra model constraint to the power sector model
-        `genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h` (LP problem). Adding unit
-        commitment (UC) transforms the LP DC-OPF into an MILP and fundamentally
-        changes solver performance. In the LP case, runtimes are in the order of
-        seconds with HiGHS (which also outperforms Gurobi in this case), while
-        the MILP formulation introduces a dramatic increase in computational
-        effort. In this benchmark, Gurobi is the fastest solver for the UC case
-        (28 seconds), whereas the fastest open-source solver (SCIP) requires
-        around 40 minutes, illustrating the substantial performance gap that can
-        emerge once integer variables are introduced. All solvers are run with
-        default settings except for a fixed relative MIP gap tolerance.
+        {" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "genx-10_IEEE_9_bus_DC_OPF",
+          )}
+        >
+          genx-10_IEEE_9_bus_DC_OPF (9-1h)
+        </Link>{" "}
+        is an MILP problem that adds UC as an extra model constraint to the
+        power sector model{" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "genx-10_IEEE_9_bus_DC_OPF-no_uc",
+          )}
+        >
+          genx-10_IEEE_9_bus_DC_OPF-no_uc (9-1h)
+        </Link>{" "}
+        (LP problem). Adding unit commitment (UC) transforms the LP DC-OPF into
+        an MILP and fundamentally changes solver performance. In the LP case,
+        runtimes are in the order of seconds with HiGHS (which also outperforms
+        Gurobi in this case), while the MILP formulation introduces a dramatic
+        increase in computational effort. In this benchmark, Gurobi is the
+        fastest solver for the UC case (28 seconds), whereas the fastest
+        open-source solver (SCIP) requires around 40 minutes, illustrating the
+        substantial performance gap that can emerge once integer variables are
+        introduced. All solvers are run with default settings except for a fixed
+        relative MIP gap tolerance.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[
@@ -93,11 +114,30 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of unit commitment (UC) on PyPSA models</h5>
       <p>
-        `pypsa-power+ely-ucgas-1-1h` is an MILP problem that adds UC as an extra
-        model constraint to the power-only model `pypsa-power+ely-1-1h` (LP
-        problem). The LP version solves in a few seconds with both Gurobi and
-        HiGHS, while the MILP version requires significantly more time. Gurobi
-        maintains relatively strong performance in the UC case, whereas
+        {" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "pypsa-power+ely-ucgas",
+          )}
+        >
+          pypsa-power+ely-ucgas (1-1h)
+        </Link>{" "}
+        is an MILP problem that adds UC as an extra model constraint to the
+        power-only model{" "}
+        <Link
+          className="font-bold"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "pypsa-power+ely",
+          )}
+        >
+          pypsa-power+ely (1-1h)
+        </Link>{" "}
+        (LP problem). The LP version solves in a few seconds with both Gurobi
+        and HiGHS, while the MILP version requires significantly more time.
+        Gurobi maintains relatively strong performance in the UC case, whereas
         open-source solvers exhibit a more pronounced slowdown. All solvers are
         run with default settings except for a fixed relative MIP gap tolerance.
       </p>
@@ -131,14 +171,10 @@ const FactorsAffectingPerformanceInsights = () => {
       <p>
         Increasing the stringency of CO2 constraints affects solver performance
         differently across solver families. Under open-source solvers, runtime
-        increases substantially when moving from the base case to constrained
-        scenarios, with the NDC case being particularly challenging. When
-        including all solvers, the models solve in a few minutes and runtimes
-        increase only moderately as constraints become more stringent. Notably,
-        the NDC case exhibits atypical behavior for HiGHS (unsolved under the
-        open-only view), despite being less stringent than the net-zero case,
-        indicating solver-specific sensitivity to model structure rather than
-        constraint stringency alone.
+        increases when moving from the base case to constrained scenarios, with
+        the NDC case being particularly challenging. When including all solvers,
+        the models solve in a few minutes and runtimes increase only moderately
+        as constraints become more stringent.
       </p>
       <RuntimeOfFastestSolver
         benchmarkList={[

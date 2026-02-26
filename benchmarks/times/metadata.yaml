@@ -22,6 +22,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 6027253
       Num. variables: 6449851
+      Num. nonzeros: 36624474
   TIMES-GEO-global-netzero:
     Short description: Global energy system model with a time scale from 2019 to 2100. This run considers a base scenario with a net-zero decarbonization constraints.
     Modelling framework: TIMES
@@ -45,6 +46,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive global scenario analyses (https://www.e4sma.com/en/times-geo-multi-regional-global-model/).
       Num. constraints: 5063755
       Num. variables: 5422595
+      Num. nonzeros: 30487085
   times-etimeseu-france-elec+heat-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage.
     Modelling framework: TIMES
@@ -68,6 +70,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15447
       Num. variables: 15400
+      Num. nonzeros: 58258
   times-etimeseu-france-elec+heat-co2-single_stage:
     Short description: eTIMES-EU power + heating run for France (1 node - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -91,6 +94,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 15451
       Num. variables: 15404
+      Num. nonzeros: 61784
   times-etimeseu-france-elec+heat-multi_stage:
     Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050.
     Modelling framework: TIMES
@@ -114,6 +118,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91288
       Num. variables: 92084
+      Num. nonzeros: 504589
   times-etimeseu-france-elec+heat-co2-multi_stage:
     Short description: eTIMES-EU power+ heating run for France (1 node - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -137,6 +142,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive French scenario analyses.
       Num. constraints: 91306
       Num. variables: 92102
+      Num. nonzeros: 523144
   times-etimeseu-europe-elec+heat-single_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage.
     Modelling framework: TIMES
@@ -160,6 +166,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456603
       Num. variables: 452854
+      Num. nonzeros: 1705785
   times-etimeseu-europe-elec+heat-co2-single_stage:
     Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 1 optimization stage with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -183,6 +190,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 456663
       Num. variables: 452914
+      Num. nonzeros: 1781615
   times-etimeseu-europe-elec+heat-multi_stage:
     Short description: eTIMES-EU power+ heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050.
     Modelling framework: TIMES
@@ -206,6 +214,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720516
       Num. variables: 2729679
+      Num. nonzeros: 14857590
   times-etimeseu-europe-elec+heat-co2-multi_stage:
     Short description: eTIMES-EU power + heating run for Europe (29 nodes - 64 time slices) considering 5 years-long periods until 2050 with net-zero constraint on CO2 by 2050.
     Modelling framework: TIMES
@@ -229,6 +238,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive European scenario analyses.
       Num. constraints: 2720786
       Num. variables: 2729949
+      Num. nonzeros: 15316649
   times-ireland-noco2:
     Short description: TIMES-Ireland
     Modelling framework: TIMES
@@ -251,6 +261,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 415261
       Num. variables: 544694
+      Num. nonzeros: 2236778
     - Name: 40-1ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/times-ireland-noco2-40-1ts.mps.gz
@@ -259,6 +270,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 4809283
       Num. variables: 4534121
+      Num. nonzeros: 21777077
   times-ireland-noco2-counties:
     Short description: TIMES-Ireland
     Modelling framework: TIMES
@@ -281,6 +293,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 873805
       Num. variables: 1235884
+      Num. nonzeros: 5129015
   times-nz-kea:
     Short description: TIMES-NZ run with high carbon price and large investments in clean energy technologies.
     Modelling framework: TIMES
@@ -304,6 +317,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 300078
       Num. variables: 202797
+      Num. nonzeros: 1829404
   times-nz-tui:
     Short description: TIMES-NZ run with low carbon prices and adoption of clean energy technologies when they become cost-effective.
     Modelling framework: TIMES
@@ -327,6 +341,7 @@ benchmarks:
       Realistic motivation: Designed for comprehensive New Zealand scenario analyses.
       Num. constraints: 298730
       Num. variables: 201443
+      Num. nonzeros: 1820934
   JRC-EU-TIMES:
     Short description: Model of the EU (and neighboring countries) representing all energy sectors, that analyzes the long-term role of energy technologies and innovation for climate goals, and optimizes investment and operational decisions to meet energy service demands under different assumptions and constraints.
     Modelling framework: TIMES
@@ -351,6 +366,7 @@ benchmarks:
       Num. constraints: 13462042
       Num. variables: 18926550
       Skip because: OOM?
+      Num. nonzeros: 126506009
   JRC-EU-TIMES-dispatch:
     Short description: Model of the EU (and neighboring countries) representing all energy sectors and including final energy supply (T&D Infrastructure, pipeline etc.).
     Modelling framework: TIMES
@@ -375,6 +391,7 @@ benchmarks:
       Num. constraints: 19401352
       Num. variables: 23208969
       Skip because: OOM?
+      Num. nonzeros: 366217326
   TIMES-STEM:
     Short description: Model of the Swiss energy system, including dispatch analysis features (i.e. ramping rates, minimum online/offline times, minimum stable operating level, part load efficiency losses, startup/shutdown costs) and ancillary services (endogenous demand for primary and secondary, positive and negative reserve, adjusted minimum online and offline times for reserve provision, adjusted ramping constraints, capacity margin constraints for reserve provision, maximum contribution of power plant in reserve provision, reserve provision from storages and demand units, other bounds on reserve provision, storage degradation due to cycling)
     Modelling framework: TIMES
@@ -399,3 +416,4 @@ benchmarks:
       Num. constraints: 6973257
       Num. variables: 6670811
       Skip because: OOM?
+      Num. nonzeros: 47256401
