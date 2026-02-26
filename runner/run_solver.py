@@ -40,7 +40,6 @@ See the function `parse_args()` for more details on arguments.
 import argparse
 import json
 import logging
-from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -49,6 +48,7 @@ from typing import Any
 import linopy
 import pandas as pd
 from linopy.solvers import SolverName
+from utils import HighsSolverVariants
 
 logger = logging.getLogger(__name__)
 
@@ -68,33 +68,6 @@ SUPPORTED_SOLVERS = [
     "knitro",
     "xpress",
 ]
-
-
-class HighsSolverVariant(str, Enum):
-    """
-    Enumeration of supported HiGHS solver variants.
-    The solver variants are available at
-    https://ergo-code.github.io/HiGHS/stable/options/definitions/#option-solver.
-
-    Attributes
-    ----------
-    HIPO : str
-        HiPO variant of HiGHS.
-    IPM : str
-       IPM variant of HiGHS.
-    IPX : str
-       IPX variant of HiGHS.
-    PDLP : str
-        PDLP variant of HiGHS.
-    SIMPLEX : str
-        SIMPLEX variant of HiGHS.
-    """
-
-    HIPO = "hipo"
-    IPM = "ipm"
-    IPX = "ipx"
-    PDLP = "pdlp"
-    SIMPLEX = "simplex"
 
 
 def set_seed_options(solver_name_val: str) -> dict[str, int | float]:
@@ -118,10 +91,11 @@ def set_seed_options(solver_name_val: str) -> dict[str, int | float]:
         Returns an empty dictionary if the solver name is not recognized.
     """
     mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
+    # TODO: remove extra configs that came from the K PR.
     seed_options = {
         "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
         "glpk": {"seed": 0, "mipgap": mip_gap},
-        "gurobi": {"seed": 0, "MIPGap": mip_gap, "Crossover": 0},
+        "gurobi": {"seed": 0, "MIPGap": mip_gap},
         "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
         "cbc": {
             "randomCbcSeed": 1,  # 0 indicates time of day
@@ -181,17 +155,17 @@ def set_solver_options(
     """
 
     if solver_name_val == "highs":
-        if variant_highs == HighsSolverVariant.HIPO:
+        if variant_highs == HighsSolverVariants.HIPO:
             return {
                 "hipo_block_size": hipo_block_size_val,
                 "solver": "hipo",
                 "run_crossover": "choose",
             }
-        elif (
-            variant_highs == HighsSolverVariant.IPM
-            or variant_highs == HighsSolverVariant.IPX
-            or variant_highs == HighsSolverVariant.PDLP
-            or variant_highs == HighsSolverVariant.SIMPLEX
+        elif variant_highs in (
+            HighsSolverVariants.IPM,
+            HighsSolverVariants.IPX,
+            HighsSolverVariants.PDLP,
+            HighsSolverVariants.SIMPLEX
         ):
             return {"solver": variant_highs}
     else:
@@ -537,9 +511,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--highs_solver_variant",
         type=str,
-        choices=[v.value for v in HighsSolverVariant],
+        choices=[v.value for v in HighsSolverVariants],
         help="Variant of HiGHS to run (only applicable if solver_name is 'highs').",
-        default="simplex",
+        required=False,
     )
     p.add_argument(
         "--hipo_block_size",
@@ -547,7 +521,7 @@ def parse_args() -> argparse.Namespace:
         help="Block size for HiPO variant of HiGHS "
         "(only applicable if solver_name is 'highs' and "
         "highs_solver_variant is 'hipo').",
-        default=128,
+        required=False,
     )
     return p.parse_args()
 

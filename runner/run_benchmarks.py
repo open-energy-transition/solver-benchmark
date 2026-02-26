@@ -16,7 +16,6 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
-from utils import HighsVariant
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -47,7 +46,7 @@ def get_conda_package_versions(solvers, env_name=None):
         for solver in solvers:
             # Handle highs-hipo variants as special cases - not conda packages
             if solver in [
-                variant.value for variant in HighsVariant
+                variant.value for variant in HighsSolverVariants:
             ]:  # For py3.10 compatibility
                 solver_versions[solver] = get_highs_hipo_version()
             else:

@@ -15,6 +15,33 @@ from IPython.display import display
 from matplotlib.patches import Patch
 
 
+class HighsSolverVariants(str, Enum):
+    """
+    Enumeration of supported HiGHS solver variants.
+    The solver variants are available at
+    https://ergo-code.github.io/HiGHS/stable/options/definitions/#option-solver.
+
+    Attributes
+    ----------
+    HIPO : str
+        HiPO variant of HiGHS.
+    IPM : str
+       IPM variant of HiGHS.
+    IPX : str
+       IPX variant of HiGHS.
+    PDLP : str
+        PDLP variant of HiGHS.
+    SIMPLEX : str
+        SIMPLEX variant of HiGHS.
+    """
+
+    HIPO = "hipo"
+    IPM = "ipm"
+    IPX = "ipx"
+    PDLP = "pdlp"
+    SIMPLEX = "simplex"
+
+
 class HighsVariant(str, Enum):
     HIPO = "highs-hipo"
     HIPO_32 = "highs-hipo-32"
