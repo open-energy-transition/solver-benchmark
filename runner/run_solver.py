@@ -70,7 +70,7 @@ SUPPORTED_SOLVERS = [
 ]
 
 
-def set_seed_options(solver_name_val: str) -> dict[str, int | float]:
+def set_seed_options(solver_name: str) -> dict[str, int | float]:
     """
     Sets solver-specific seed and tolerance options for reproducibility.
 
@@ -80,7 +80,7 @@ def set_seed_options(solver_name_val: str) -> dict[str, int | float]:
 
     Parameters
     ----------
-    solver_name_val : str
+    solver_name: str
         Name of the optimization solver. Supported solvers include: "highs",
         "glpk", "gurobi", "scip", "cbc", "cplex", "knitro", and "xpress".
 
@@ -116,18 +116,18 @@ def set_seed_options(solver_name_val: str) -> dict[str, int | float]:
             "crossover": 0,
         },
     }
-    if solver_name_val in seed_options.keys():
-        return seed_options[solver_name_val]
+    if solver_name in seed_options.keys():
+        return seed_options[solver_name]
     else:
         logger.info(
             "No seed options found for solver '%s'. Returning empty options.",
-            solver_name_val,
+            solver_name,
         )
         return dict()
 
 
 def set_solver_options(
-    solver_name_val: str, variant_highs: str, hipo_block_size_val: int
+    solver_name: str, highs_variant: str, hipo_block_size: int
 ) -> dict[str, int | str]:
     """
     Sets solver-specific options for reproducibility.
@@ -137,12 +137,12 @@ def set_solver_options(
 
     Parameters
     ----------
-    solver_name_val : str
+    solver_name: str
         Name of the optimization solver. Supported solvers include: "highs",
         "glpk", "gurobi", "scip", "cbc", "cplex", "knitro", and "xpress".
-    variant_highs : str
+    highs_variant : str
         Solver type, used to determine specific options for HiGHS variants.
-    hipo_block_size_val : int
+    hipo_block_size : int
         Block size value for HiPO variant of HiGHS.
         This parameter is only relevant if the solver is HiGHS
         and the variant is a HiPO variant.
@@ -154,41 +154,41 @@ def set_solver_options(
         Returns an empty dictionary if the solver name is not recognized.
     """
 
-    if solver_name_val == "highs":
-        if variant_highs == HighsSolverVariants.HIPO:
+    if solver_name == "highs":
+        if highs_variant == HighsSolverVariants.HIPO:
             return {
-                "hipo_block_size": hipo_block_size_val,
+                "hipo_block_size": hipo_block_size,
                 "solver": "hipo",
                 "run_crossover": "choose",
             }
-        elif variant_highs in (
+        elif highs_variant in (
             HighsSolverVariants.IPM,
             HighsSolverVariants.IPX,
             HighsSolverVariants.PDLP,
             HighsSolverVariants.SIMPLEX
         ):
-            return {"solver": variant_highs}
+            return {"solver": highs_variant}
     else:
         logger.info(
             "No specific options found for solver '%s'. Returning empty options.",
-            solver_name_val,
+            solver_name,
         )
         return dict()
 
 
 def get_solver(
-    name_solver: str, variant_highs: str, hipo_block_size_val: int
+    solver_name: str, highs_variant: str, hipo_block_size: int
 ) -> linopy.solvers:
     """
     Instantiate and configure a solver object based on the specified solver name and options.
 
     Parameters
     ----------
-    name_solver : str
+    solver_name : str
         Name of the optimization solver (e.g., "highs", "glpk", "gurobi").
-    variant_highs : str
+    highs_variant : str
         Variant of HiGHS to use. Only relevant if `name_solver` is "highs".
-    hipo_block_size_val : int
+    hipo_block_size : int
         Block size for the HiPO variant of HiGHS. Only relevant if `variant_highs` is "hipo".
 
     Returns
@@ -196,15 +196,15 @@ def get_solver(
     Any
         An instance of the solver class, configured with the appropriate options.
     """
-    solver_enum = SolverName(name_solver)
+    solver_enum = SolverName(solver_name)
 
     solver_class = getattr(linopy.solvers, solver_enum.name)
 
     # Get seed options
-    seed_options = set_seed_options(name_solver)
+    seed_options = set_seed_options(solver_name)
 
     # Get other solver options if needed (e.g., for HiGHS variants)
-    solver_options = set_solver_options(name_solver, variant_highs, hipo_block_size_val)
+    solver_options = set_solver_options(solver_name, highs_variant, hipo_block_size)
 
     kwargs = {}
     if seed_options:
@@ -215,7 +215,7 @@ def get_solver(
     return solver_class(**kwargs)
 
 
-def is_mip_problem(solver_model: Any, solver_name_val: str) -> bool:
+def is_mip_problem(solver_model: Any, solver_name: str) -> bool:
     """
     Determine if the given solver model is a Mixed Integer Programming (MIP) problem.
 
@@ -223,7 +223,7 @@ def is_mip_problem(solver_model: Any, solver_name_val: str) -> bool:
     ----------
     solver_model : Any
         The solver's Python object or model instance.
-    solver_name_val : str
+    solver_name : str
         Name of the solver (e.g., "highs", "scip", "cbc", "gurobi", "cplex", "xpress", "glpk", "knitro").
 
     Returns
@@ -231,31 +231,31 @@ def is_mip_problem(solver_model: Any, solver_name_val: str) -> bool:
     bool
         True if the problem is a MIP, False otherwise.
     """
-    if solver_name_val == "scip":
+    if solver_name == "scip":
         if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
             return True
         return False
-    elif solver_name_val == "gurobi":
+    elif solver_name == "gurobi":
         return solver_model.IsMIP
-    elif solver_name_val == "highs":
+    elif solver_name == "highs":
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
-    elif solver_name_val == "cplex":
+    elif solver_name == "cplex":
         # Check if any variables are integer or binary
         var_types = solver_model.variables.get_types()
         return any(t in ("I", "B") for t in var_types)
-    elif solver_name_val == "xpress":
+    elif solver_name == "xpress":
         return solver_model.getAttrib("mipents") > 0
-    elif solver_name_val in {"glpk", "cbc"}:
+    elif solver_name in {"glpk", "cbc"}:
         # These solvers do not provide a solver model in the solver result,
         # so MIP problem detection is not possible.
         # TODO preprocess benchmarks and add this info to metadata
         return False
-    elif solver_name_val == "knitro":
+    elif solver_name == "knitro":
         # Knitro is not designed for MILP problems
         return False
     else:
-        raise NotImplementedError(f"The solver '{solver_name_val}' is not supported.")
+        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
 def calculate_integrality_violation(
@@ -271,7 +271,7 @@ def calculate_integrality_violation(
     return max((p - p.round()).abs())
 
 
-def get_duality_gap(solver_model: Any, solver_name_val: str) -> float | None:
+def get_duality_gap(solver_model: Any, solver_name: str) -> float | None:
     """
     Retrieve the duality gap for the given solver model, if available.
 
@@ -279,7 +279,7 @@ def get_duality_gap(solver_model: Any, solver_name_val: str) -> float | None:
     ----------
     solver_model : Any
         The solver's Python object or model instance.
-    solver_name_val : str
+    solver_name : str
         Name of the solver (e.g., "highs", "scip", "cbc", "gurobi", "cplex", "xpress", "glpk", "knitro").
 
     Returns
@@ -287,40 +287,40 @@ def get_duality_gap(solver_model: Any, solver_name_val: str) -> float | None:
     float or None
         The duality gap if available, otherwise None.
     """
-    if solver_name_val == "scip":
+    if solver_name == "scip":
         return solver_model.getGap()
-    elif solver_name_val == "gurobi":
+    elif solver_name == "gurobi":
         return solver_model.MIPGap
-    elif solver_name_val == "highs":
+    elif solver_name == "highs":
         return getattr(solver_model.getInfo(), "mip_gap", None)
-    elif solver_name_val == "cbc":
+    elif solver_name == "cbc":
         return getattr(solver_model, "mip_gap", None)
-    elif solver_name_val == "glpk":
+    elif solver_name == "glpk":
         # GLPK does not have a way to retrieve the duality gap from python
         return None
-    elif solver_name_val == "cplex":
+    elif solver_name == "cplex":
         return solver_model.solution.MIP.get_mip_relative_gap()
-    elif solver_name_val == "xpress":
+    elif solver_name == "xpress":
         return solver_model.controls.miprelgapnotify
-    elif solver_name_val == "knitro":
+    elif solver_name == "knitro":
         # Knitro duality gap retrieval not implemented yet
         return None
     else:
-        logger.info(f"The solver '{solver_name_val}' is not supported.")
+        logger.info(f"The solver '{solver_name}' is not supported.")
         return None
 
 
 def get_milp_metrics(
-    input_file_path: Path, solver_name_val: str, solver_result: Any
+    input_file: Path, solver_name: str, solver_result: Any
 ) -> tuple[float | None, float | None]:
     """
     Compute MILP metrics (duality gap and max integrality violation) using HiGHS.
 
     Parameters
     ----------
-    input_file_path : Path
+    input_file : Path
         Path to the input problem file.
-    solver_name_val : str
+    solver_name : str
         Name of the solver (e.g., "highs", "scip", "cbc", "gurobi", "cplex", "xpress", "glpk", "knitro").
     solver_result : Any
         The solver result object containing the solver model and solution.
@@ -334,7 +334,7 @@ def get_milp_metrics(
     try:
         if highspy is not None:
             h = highspy.Highs()
-            h.readModel(input_file_path.as_posix())
+            h.readModel(input_file.as_posix())
             integer_vars = {
                 h.variableName(i)
                 for i in range(h.numVariables)
@@ -342,7 +342,7 @@ def get_milp_metrics(
             }
             if integer_vars:
                 duality_gap = get_duality_gap(
-                    solver_result.solver_model, solver_name_val
+                    solver_result.solver_model, solver_name
                 )
                 max_integrality_violation = calculate_integrality_violation(
                     integer_vars, solver_result.solution.primal
@@ -350,18 +350,18 @@ def get_milp_metrics(
                 return duality_gap, max_integrality_violation
     except ValueError:
         raise ValueError(
-            f"ERROR obtaining milp metrics for {input_file_path}: {format_exc()}",
+            f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
         )
     return None, None
 
 
-def get_reported_runtime(solver_name_val: str, solver_model: Any) -> float | None:
+def get_reported_runtime(solver_name: str, solver_model: Any) -> float | None:
     """
     Get the solving runtime as reported by the solver from the solver's Python object.
 
     Parameters
     ----------
-    solver_name_val : str
+    solver_name : str
         Name of the solver (e.g., "highs", "scip", "cbc", "gurobi", "cplex", "xpress", "knitro").
     solver_model : Any
         The linopy Model instance containing runtime information.
@@ -371,7 +371,7 @@ def get_reported_runtime(solver_name_val: str, solver_model: Any) -> float | Non
     float or None
         The reported runtime in seconds, or None if not available.
     """
-    match solver_name_val:
+    match solver_name:
         case "highs":
             return solver_model.getRunTime()
         case "scip":
@@ -388,32 +388,32 @@ def get_reported_runtime(solver_name_val: str, solver_model: Any) -> float | Non
             return solver_model.reported_runtime
         case _:
             logger.info(
-                f"WARNING: cannot obtain reported runtime for {solver_name_val}"
+                f"WARNING: cannot obtain reported runtime for {solver_name}"
             )
             return None
 
 
 def main(
-    solver_name_val: str,
-    input_file_name: str,
-    solver_version_val: str,
-    highs_solver_variant_val: str,
-    hipo_block_size_val: int,
+    solver_name: str,
+    input_file: str,
+    solver_version: str,
+    highs_solver_variant: str,
+    hipo_block_size: int,
 ) -> None:
     """
     Run the specified solver on the given input file and collect results.
 
     Parameters
     ----------
-    solver_name_val : str
+    solver_name: str
         Name of the solver to run (e.g., "highs", "glpk", "gurobi").
-    input_file_name : str
+    input_file : str
         Name to the input problem file.
-    solver_version_val : str
+    solver_version : str
         Version of the solver to use.
-    highs_solver_variant_val : str
+    highs_solver_variant : str
         Variant of HiGHS to run (only applicable if solver_name_val is "highs").
-    hipo_block_size_val : int
+    hipo_block_size : int
         Block size for HiPO variant of HiGHS
         (only applicable if solver_name_val is "highs"
          and highs_solver_variant_val is "hipo").
@@ -422,9 +422,9 @@ def main(
     -------
     None
     """
-    problem_file = Path(input_file_name)
+    problem_file = Path(input_file)
 
-    solver = get_solver(solver_name_val, highs_solver_variant_val, hipo_block_size_val)
+    solver = get_solver(solver_name, highs_solver_variant, hipo_block_size)
 
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -433,7 +433,7 @@ def main(
     logs_dir.mkdir(parents=True, exist_ok=True)
 
     output_filename = (
-        f"{Path(input_file_name).stem}-{solver_name_val}-{solver_version_val}"
+        f"{Path(input_file).stem}-{solver_name}-{solver_version}"
     )
 
     solution_fn = solution_dir / f"{output_filename}.sol"
@@ -457,13 +457,13 @@ def main(
     )
     runtime = perf_counter() - start_time
     duality_gap, max_integrality_violation = get_milp_metrics(
-        problem_file, solver_name_val, solver_result
+        problem_file, solver_name, solver_result
     )
     results.update(
         {
             "runtime": runtime,
             "reported_runtime": get_reported_runtime(
-                solver_name_val, solver_result.solver_model
+                solver_name, solver_result.solver_model
             ),
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
@@ -528,9 +528,4 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
-    solver_name = args.solver_name
-    input_file = args.input_file
-    solver_version = args.solver_version
-    highs_solver_variant = args.highs_solver_variant
-    hipo_block_size = args.hipo_block_size
-    main(solver_name, input_file, solver_version, highs_solver_variant, hipo_block_size)
+    main(args.solver_name, args.input_file, args.solver_version, args.highs_solver_variant, args.hipo_block_size)
