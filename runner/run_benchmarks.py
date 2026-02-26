@@ -17,6 +17,8 @@ import psutil
 import requests
 import yaml
 
+from runner.utils import HighsSolverVariants
+
 
 def get_conda_package_versions(solvers, env_name=None):
     try:
@@ -44,14 +46,8 @@ def get_conda_package_versions(solvers, env_name=None):
         name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            # Handle highs-hipo variants as special cases - not conda packages
-            if solver in [
-                variant.value for variant in HighsSolverVariants:
-            ]:  # For py3.10 compatibility
-                solver_versions[solver] = get_highs_hipo_version()
-            else:
-                package = name_to_pkg.get(solver, solver)
-                solver_versions[solver] = installed_packages.get(package, None)
+            package = name_to_pkg.get(solver, solver)
+            solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -602,7 +598,7 @@ def main(
 
             # Restrict highs-hipo variants to 2025 and LPs only
             if solver in [
-                variant.value for variant in HighsVariant
+                variant.value for variant in HighsSolverVariants
             ] and (  # For py3.10 compatibility
                 year != "2025" or benchmark["class"] != "LP"
             ):

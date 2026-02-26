@@ -165,7 +165,7 @@ def set_solver_options(
             HighsSolverVariants.IPM,
             HighsSolverVariants.IPX,
             HighsSolverVariants.PDLP,
-            HighsSolverVariants.SIMPLEX
+            HighsSolverVariants.SIMPLEX,
         ):
             return {"solver": highs_variant}
     else:
@@ -341,9 +341,7 @@ def get_milp_metrics(
                 if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
             }
             if integer_vars:
-                duality_gap = get_duality_gap(
-                    solver_result.solver_model, solver_name
-                )
+                duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
                 max_integrality_violation = calculate_integrality_violation(
                     integer_vars, solver_result.solution.primal
                 )
@@ -387,9 +385,7 @@ def get_reported_runtime(solver_name: str, solver_model: Any) -> float | None:
         case "knitro":
             return solver_model.reported_runtime
         case _:
-            logger.info(
-                f"WARNING: cannot obtain reported runtime for {solver_name}"
-            )
+            logger.info(f"WARNING: cannot obtain reported runtime for {solver_name}")
             return None
 
 
@@ -432,9 +428,7 @@ def main(
     logs_dir = Path(__file__).parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    output_filename = (
-        f"{Path(input_file).stem}-{solver_name}-{solver_version}"
-    )
+    output_filename = f"{Path(input_file).stem}-{solver_name}-{solver_version}"
 
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
@@ -528,4 +522,10 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.solver_name, args.input_file, args.solver_version, args.highs_solver_variant, args.hipo_block_size)
+    main(
+        args.solver_name,
+        args.input_file,
+        args.solver_version,
+        args.highs_solver_variant,
+        args.hipo_block_size,
+    )
