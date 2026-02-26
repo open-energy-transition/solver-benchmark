@@ -395,6 +395,15 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 6123937
       Num. variables: 2879645
+    - Name: 2-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_2_1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 2 nodes
+      Realistic: TODO
+      Realistic motivation:
+      Num. constraints: 779581
+      Num. variables: 1585600
     - Name: 3-1h
       Size: M
       Temporal resolution: 1 hour
