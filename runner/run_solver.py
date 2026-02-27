@@ -445,27 +445,30 @@ def main(
 
     # We measure runtime here and not of this entire script because lines like
     # `import linopy` take a long (and varying) amount of time
-    start_time = perf_counter()
-    solver_result = solver.solve_problem(
-        problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
-    )
-    runtime = perf_counter() - start_time
-    duality_gap, max_integrality_violation = get_milp_metrics(
-        problem_file, solver_name, solver_result
-    )
-    results.update(
-        {
-            "runtime": runtime,
-            "reported_runtime": get_reported_runtime(
-                solver_name, solver_result.solver_model
-            ),
-            "status": solver_result.status.status.value,
-            "condition": solver_result.status.termination_condition.value,
-            "objective": solver_result.solution.objective,
-            "duality_gap": duality_gap,
-            "max_integrality_violation": max_integrality_violation,
-        }
-    )
+    try:
+        start_time = perf_counter()
+        solver_result = solver.solve_problem(
+            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
+        )
+        runtime = perf_counter() - start_time
+        duality_gap, max_integrality_violation = get_milp_metrics(
+            problem_file, solver_name, solver_result
+        )
+        results.update(
+            {
+                "runtime": runtime,
+                "reported_runtime": get_reported_runtime(
+                    solver_name, solver_result.solver_model
+                ),
+                "status": solver_result.status.status.value,
+                "condition": solver_result.status.termination_condition.value,
+                "objective": solver_result.solution.objective,
+                "duality_gap": duality_gap,
+                "max_integrality_violation": max_integrality_violation,
+            }
+        )
+    except Exception as e:
+        logger.error(f"Error running solver: {e}")
     print(json.dumps(results))
 
 
