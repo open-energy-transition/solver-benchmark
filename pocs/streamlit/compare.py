@@ -6,7 +6,7 @@ from components.filter import display_filter_status, generate_filtered_metadata
 from packaging.version import parse
 from utils.file_utils import load_benchmark_data, load_metadata
 
-from website.utils.filters import filter_data
+from pocs.streamlit.utils.filters import filter_data
 
 metadata = load_metadata("results/metadata.yaml")
 

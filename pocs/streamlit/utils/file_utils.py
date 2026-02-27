@@ -21,7 +21,7 @@ def load_benchmark_data(file_path="results/benchmark_results.csv"):
         pd.DataFrame: Loaded data as a pandas DataFrame.
     """
     # Construct the absolute file path
-    absolute_file_path = Path(__file__).parent.parent.parent / file_path
+    absolute_file_path = Path(__file__).parent.parent.parent.parent / file_path
 
     try:
         # Load and return the data
