@@ -21,6 +21,8 @@ jobs:
       NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
 
       - uses: actions/setup-python@v5
         with:
@@ -29,14 +31,14 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip pre-commit
-          pip install -r website/requirements.txt
+          pip install -r pocs/streamlit/requirements.txt
           # For validation scripts (TODO collect these in a requirements.txt file?)
           pip install ruamel.yaml
 
       - name: Check code formatting
         run: |
           pre-commit install
-          pre-commit run --all-files
+          pre-commit run --from-ref origin/main --to-ref HEAD
 
       - name: Check benchmark metadata and results
         run: |
@@ -62,7 +64,7 @@ jobs:
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
-            app-path: website/app.py
+            app-path: pocs/streamlit/app.py
 
       - name: Set FORK_PR environment variable
         if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
@@ -71,8 +73,8 @@ jobs:
       - name: Check Next.js build
         run: |
           echo "Checking Next.js build..."
-          if [ -d "website-nextjs" ] && [ -f "website-nextjs/package.json" ]; then
-            cd website-nextjs
+          if [ -d "website" ] && [ -f "website/package.json" ]; then
+            cd website
 
             # Check if reCAPTCHA key is set
             if [ "$FORK_PR" != "true" ]; then
@@ -89,7 +91,7 @@ jobs:
             npm run build
             cd ..
           else
-            echo "Next.js project not found at website-nextjs/package.json. Skipping build check."
+            echo "Next.js project not found at website/package.json. Skipping build check."
           fi
 
       - name: Setup Conda for benchmark runner
@@ -124,23 +126,23 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd website-nextjs
+          cd website
           npm install
 
       - name: Build Next.js
         run: |
-          cd website-nextjs
+          cd website
           npm run build
 
       - name: Install browser-driver-manager and sync Chrome/ChromeDriver
         run: |
-          cd website-nextjs
+          cd website
           npm install --no-save browser-driver-manager
           npx browser-driver-manager install chrome
 
       - name: Start Next.js server in background
         run: |
-          cd website-nextjs
+          cd website
           npm start &
           echo "Waiting for server to start..."
           sleep 15
@@ -151,12 +153,12 @@ jobs:
 
       - name: Extract URLs from sitemap
         run: |
-          cd website-nextjs
+          cd website
           npm run axe:extract
 
       - name: Run axe-core accessibility tests on all pages
         run: |
-          cd website-nextjs
+          cd website
           npm run axe:test
 
       - name: Upload accessibility report
@@ -164,4 +166,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: accessibility-report
-          path: website-nextjs/axe-results.json
+          path: website/axe-results.json
