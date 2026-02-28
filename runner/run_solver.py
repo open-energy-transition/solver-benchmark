@@ -104,16 +104,13 @@ def set_seed_options(solver_name: str) -> dict[str, int | float]:
         "cplex": {
             "randomseed": 0,
             "mip.tolerances.mipgap": mip_gap,
-            "solutiontype": 2,
         },
         "knitro": {
             "ms_seed": 1066,
-            "bar_maxcrossit": 0,
         },
         "xpress": {
             "miprelgapnotify": mip_gap,
             "randomseed": 0,
-            "crossover": 0,
         },
     }
     if solver_name in seed_options.keys():
@@ -379,7 +376,7 @@ def get_reported_runtime(solver_name: str, solver_model: Any) -> float | None:
         case "gurobi":
             return solver_model.Runtime
         case "cplex":
-            return None
+            return solver_model.get_time()
         case "xpress":
             return solver_model.getAttrib("time")
         case "knitro":
