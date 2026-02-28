@@ -48,7 +48,7 @@ def get_conda_package_versions(solvers, env_name=None):
             "highs-hipo": "highspy",
             "highs-ipm": "highspy",
             "cbc": "coin-or-cbc",
-            "scip": "pyscipopt"
+            "scip": "pyscipopt",
         }
         solver_versions = {}
         for solver in solvers:
