@@ -16,7 +16,8 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
-from run_solver import HighsVariant
+
+from runner.utils import HighsSolverVariants
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -42,17 +43,17 @@ def get_conda_package_versions(solvers, env_name=None):
                 installed_packages[parts[0]] = parts[1]
 
         # Map solver names to their conda package names
-        name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
+        name_to_pkg = {
+            "highs": "highspy",
+            "highs-hipo": "highspy",
+            "highs-ipm": "highspy",
+            "cbc": "coin-or-cbc",
+            "scip": "pyscipopt",
+        }
         solver_versions = {}
         for solver in solvers:
-            # Handle highs-hipo variants as special cases - not conda packages
-            if solver in [
-                variant.value for variant in HighsVariant
-            ]:  # For py3.10 compatibility
-                solver_versions[solver] = get_highs_hipo_version()
-            else:
-                package = name_to_pkg.get(solver, solver)
-                solver_versions[solver] = installed_packages.get(package, None)
+            package = name_to_pkg.get(solver, solver)
+            solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -254,9 +255,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             f"{timeout}s",
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
-            solver_name,
-            input_file,
-            solver_version,
+            "--solver_name {}".format(solver_name),
+            "--input_file {}".format(input_file),
+            "--solver_version {}".format(solver_version),
         ]
     )
 
@@ -603,7 +604,7 @@ def main(
 
             # Restrict highs-hipo variants to 2025 and LPs only
             if solver in [
-                variant.value for variant in HighsVariant
+                variant.value for variant in HighsSolverVariants
             ] and (  # For py3.10 compatibility
                 year != "2025" or benchmark["class"] != "LP"
             ):

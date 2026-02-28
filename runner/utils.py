@@ -1,6 +1,8 @@
+import collections
 import re
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from enum import Enum
 from pathlib import Path
 
 import matplotlib.colors as mcolors
@@ -11,6 +13,69 @@ import yaml
 from humanize import naturaldelta
 from IPython.display import display
 from matplotlib.patches import Patch
+
+
+class HighsSolverVariants(str, Enum):
+    """
+    Enumeration of supported HiGHS solver variants.
+    The solver variants are available at
+    https://ergo-code.github.io/HiGHS/stable/options/definitions/#option-solver.
+
+    Attributes
+    ----------
+    HIPO : str
+        HiPO variant of HiGHS.
+    IPM : str
+       IPM variant of HiGHS.
+    IPX : str
+       IPX variant of HiGHS.
+    PDLP : str
+        PDLP variant of HiGHS.
+    SIMPLEX : str
+        SIMPLEX variant of HiGHS.
+    """
+
+    HIPO = "hipo"
+    IPM = "ipm"
+    IPX = "ipx"
+    PDLP = "pdlp"
+    SIMPLEX = "simplex"
+
+
+class HighsVariant(str, Enum):
+    HIPO = "highs-hipo"
+    HIPO_32 = "highs-hipo-32"
+    HIPO_64 = "highs-hipo-64"
+    HIPO_128 = "highs-hipo-128"
+    HIPO_IPM = "highs-ipm"
+
+    # cli args returns a list of command line arguments for the HiGHS binary.
+    def cli_args(self) -> collections.abc.Iterable[str]:
+        args = {
+            "solver": "hipo",
+            "run_crossover": "choose",
+        }
+        if self == HighsVariant.HIPO_IPM:
+            args["solver"] = "ipx"
+
+        return [f"--{k}={v}" for k, v in args.items()]
+
+    # options returns the contents for the HiGHS options file.
+    # passed to the HiGHS binary via --options_file=<file>
+    def options(self) -> str:
+        options = {}
+        match self:
+            case HighsVariant.HIPO_32:
+                options["hipo_block_size"] = 32
+            case HighsVariant.HIPO_64:
+                options["hipo_block_size"] = 64
+            case HighsVariant.HIPO_128:
+                options["hipo_block_size"] = 128
+            case HighsVariant.HIPO:
+                options["hipo_block_size"] = 64
+                options["hipo_metis_no2hop"] = "true"
+        return "\n".join(f"{k} = {v}" for k, v in options.items())
+
 
 # ---------- Monitor in-progress runs ----------
 
