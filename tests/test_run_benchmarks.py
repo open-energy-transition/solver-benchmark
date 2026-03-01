@@ -1,11 +1,11 @@
 """Unit tests for the run_benchmarks module."""
+
 from unittest.mock import MagicMock, patch
 
 from runner.run_benchmarks import get_conda_package_versions
 
 
 class TestRunBenchmarks:
-
     def test_get_conda_package_versions(self) -> None:
         """Test the get_conda_package_versions function."""
         solvers_list = ["highs", "highs-hipo", "highs-ipm", "cbc", "scip"]
@@ -28,7 +28,7 @@ class TestRunBenchmarks:
             "highs-hipo": "1.13.2.dev1",
             "highs-ipm": "1.13.2.dev1",
             "cbc": "2.10.12",
-            "scip": "5.7.1"
+            "scip": "5.7.1",
         }
 
         with patch("subprocess.run", return_value=mock_result):
