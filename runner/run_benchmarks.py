@@ -3,6 +3,7 @@ import csv
 import datetime
 import gzip
 import json
+import logging
 import os
 import re
 import shutil
@@ -19,8 +20,30 @@ import yaml
 
 from runner.utils import HighsSolverVariants
 
+logger = logging.getLogger(__name__)
 
-def get_conda_package_versions(solvers, env_name=None):
+
+def get_conda_package_versions(solvers: list[str], env_name=None) -> dict[str, str]:
+    """
+    Get the installed version of specified solver packages in a conda environment.
+
+    Parameters
+    ----------
+    solvers : list of str
+        List of solver names to query for package versions.
+    env_name : str, optional
+        Name of the conda environment to query. If None, uses the current active environment.
+
+    Returns
+    -------
+    solver_versions : dict
+        Dictionary mapping each solver name to its installed version string in the specified conda environment.
+
+    Raises
+    ------
+    ValueError
+        If the conda command fails to execute.
+    """
     try:
         # List packages in the conda environment
         cmd = "conda list"
@@ -61,11 +84,23 @@ def get_conda_package_versions(solvers, env_name=None):
         raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
 
 
-def download_benchmark_file(url, dest_path: Path):
-    """Download a file from url and save it locally in the specified folder if it doesn't already exist.
+def download_benchmark_file(url: str, dest_path: Path) -> None:
+    """
+    Download a file from a URL and save it locally, unzipping if necessary.
 
-    If the URL is on GCS (starting gs://), then this uses `gsutil` to download the file (requires authentication).
-    If the file is gzipped (.gz), it will be unzipped after downloading.
+    Parameters
+    ----------
+    url : str
+        The URL of the file to download. If the URL starts with 'gs://', `gsutil` is used for downloading.
+    dest_path : pathlib.Path
+        The local path where the downloaded file will be saved. If the file is gzipped (.gz), it will be unzipped after download.
+
+    Notes
+    -----
+    - If the file already exists at the destination (uncompressed), the download is skipped.
+    - For Google Cloud Storage URLs, requires `gsutil` and authentication.
+    - Automatically unzips `.gz` files after download and removes the compressed file.
+    - Creates the destination directory if it does not exist.
     """
     # Ensure the destination folder exists
     os.makedirs(dest_path.parent, exist_ok=True)
@@ -77,36 +112,62 @@ def download_benchmark_file(url, dest_path: Path):
         uncompressed_dest_path = dest_path
 
     if os.path.exists(uncompressed_dest_path):
-        print(f"File already exists at {uncompressed_dest_path}. Skipping download.")
+        logger.info(
+            "File already exists at {}. Skipping download.".format(
+                uncompressed_dest_path
+            )
+        )
         return
 
     if url.startswith("gs://"):
         # GCS file, so download using gsutil
-        print(f"Downloading {url} to {dest_path} using gsutil...", end="")
+        logger.info("Downloading {} to {} using gsutil...".format(url, dest_path))
         cmd = ["gsutil", "cp", url, dest_path]
         _result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        print("done.")
+        logger.info("done.")
     else:
         # Perform the download with streaming to handle large files
-        print(f"Downloading {url} to {dest_path}...", end="")
+        logger.info("Downloading {} to {}...".format(url, dest_path))
         with requests.get(url, stream=True) as response:
             response.raise_for_status()
             with open(dest_path, "wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
-        print("done.")
+        logger.info("done.")
 
     if dest_path.suffix == ".gz":
-        print(f"Unzipping {dest_path}...")
+        logger.info("Unzipping {}...".format(dest_path))
         with gzip.open(dest_path, "rb") as gz_file:
             uncompressed_file_path = dest_path.with_suffix("")
             with open(uncompressed_file_path, "wb") as uncompressed_file:
                 shutil.copyfileobj(gz_file, uncompressed_file)
         os.remove(dest_path)
-        print(f"Unzipped to {uncompressed_file_path}.")
+        logger.info("Unzipped to {}.".format(uncompressed_file_path))
 
 
-def parse_memory(output):
+def parse_memory(output: str) -> float:
+    """
+    Parse the maximum resident set size (memory usage) from subprocess output.
+
+    Parameters
+    ----------
+    output : str
+        The output string from a subprocess, expected to contain a line with 'MaxResidentSetSizeKB='.
+
+    Returns
+    -------
+    memory_mb : float
+        The maximum resident set size in megabytes (MB).
+
+    Raises
+    ------
+    ValueError
+        If the memory usage line is not found in the output.
+
+    Notes
+    -----
+    - Assumes the memory usage is reported in kilobytes (KB) and converts it to megabytes (MB).
+    """
     line = output.splitlines()[-1]
     if "MaxResidentSetSizeKB=" in line:
         parts = line.strip().split("=")
@@ -236,7 +297,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     available_memory_bytes = psutil.virtual_memory().available
     memory_limit_bytes = int(available_memory_bytes * 0.95)
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
-    print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
+    logger.info(
+        "Setting memory limit to {:.2f} MB (95% of available memory)".format(
+            memory_limit_mb
+        )
+    )
 
     command = ["systemd-run"]
 
@@ -246,13 +311,15 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     command.extend(
         [
             "--scope",
-            f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
+            "--property=MemoryMax={}".format(
+                memory_limit_bytes
+            ),  # Set resident memory limit
             "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
             "/usr/bin/time",
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
-            f"{timeout}s",
+            "{}s".format(timeout),
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
             "--solver_name {}".format(solver_name),
@@ -597,8 +664,10 @@ def main(
                     year == "2024" and solver == "cbc"
                 )  # Latest CBC release is in 2024
             ):
-                print(
-                    f"WARNING: skipping {solver} in {year} because this benchmark instance is size L"
+                logger.info(
+                    "WARNING: skipping {} in {} because this benchmark instance is size L".format(
+                        solver, year
+                    )
                 )
                 continue
 
@@ -608,15 +677,16 @@ def main(
             ] and (  # For py3.10 compatibility
                 year != "2025" or benchmark["class"] != "LP"
             ):
-                print(
-                    f"Solver {solver} is only available for LP benchmarks and year 2025."
-                    f" Current year: {year}, problem class: {benchmark['class']}. Skipping."
+                logger.info(
+                    "Solver {} is only available for LP benchmarks and year 2025. Current year: {}, problem class: {}. Skipping.".format(
+                        solver, year, benchmark["class"]
+                    )
                 )
                 continue
 
             solver_version = solvers_versions.get(solver)
             if not solver_version:
-                print(f"Solver {solver} is not available. Skipping.")
+                logger.info("Solver {} is not available. Skipping.".format(solver))
                 continue
 
             metrics = {}
@@ -743,7 +813,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs variants are available: highs-hipo, highs-ipm, highs-hipo-32, highs-hipo-64, highs-hipo-128.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs variants are available: highs-hipo, highs-ipm.",
     )
     parser.add_argument(
         "--append",
@@ -773,4 +843,4 @@ if __name__ == "__main__":
         run_id=args.run_id,
     )
     # Print a message indicating completion
-    print("Benchmarking complete.")
+    logger.info("Benchmarking complete.")
