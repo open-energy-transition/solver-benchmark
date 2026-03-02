@@ -30,6 +30,21 @@
   p {
     @apply text-[15px] sm:text-sm font-lato font-normal sm:leading-1.5 tracking-normal text-navy my-1;
   }
+
+  /*
+    Don't apply the global `p` utilities inside containers using
+    the Tailwind Typography plugin (`.prose`, `.prose-lg`)
+  */
+  .prose p,
+  .prose-lg p {
+    font-family: revert;
+    font-weight: revert;
+    font-size: revert;
+    line-height: revert;
+    letter-spacing: revert;
+    color: revert;
+    margin: revert;
+  }
   .tag-line-lg {
     @apply text-base sm:text-lg font-lato font-medium sm:leading-1.1 tracking-normal;
   }

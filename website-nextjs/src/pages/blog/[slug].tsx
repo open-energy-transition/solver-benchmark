@@ -38,7 +38,7 @@ export default function Post({ meta, contentHtml }: Props) {
                 {meta.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs bg-gray-200 px-2 py-1 rounded"
+                    className="text-sm bg-gray-200 px-2 py-1 rounded"
                   >
                     {tag}
                   </span>
