@@ -40,6 +40,7 @@ See the function `parse_args()` for more details on arguments.
 import argparse
 import json
 import logging
+from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -48,9 +49,36 @@ from typing import Any
 import linopy
 import pandas as pd
 from linopy.solvers import SolverName
-from utils import HighsSolverVariants
 
 logger = logging.getLogger(__name__)
+
+
+class HighsSolverVariants(str, Enum):
+    """
+    Enumeration of supported HiGHS solver variants.
+    The solver variants are available at
+    https://ergo-code.github.io/HiGHS/stable/options/definitions/#option-solver.
+
+    Attributes
+    ----------
+    HIPO : str
+        HiPO variant of HiGHS.
+    IPM : str
+       IPM variant of HiGHS.
+    IPX : str
+       IPX variant of HiGHS.
+    PDLP : str
+        PDLP variant of HiGHS.
+    SIMPLEX : str
+        SIMPLEX variant of HiGHS.
+    """
+
+    HIPO = "hipo"
+    IPM = "ipm"
+    IPX = "ipx"
+    PDLP = "pdlp"
+    SIMPLEX = "simplex"
+
 
 # HiGHS is not available in the 2020 environment that we use to run GLPK
 try:

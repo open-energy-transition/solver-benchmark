@@ -53,7 +53,6 @@ import gzip
 import json
 import logging
 import os
-import re
 import shutil
 import statistics
 import subprocess
@@ -65,8 +64,6 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
-
-from runner.utils import HighsSolverVariants
 
 logger = logging.getLogger(__name__)
 
@@ -342,21 +339,27 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
 
 
 def benchmark_solver(
-    input_file: str, solver_name: str, timeout: int, solver_version: str
+    input_file: Path,
+    solver_name: str,
+    timeout: int,
+    solver_version: str,
+    reference_benchmark=False,
 ) -> dict[str, object]:
     """
     Run a solver on a benchmark problem file with resource limits and collect metrics.
 
     Parameters
     ----------
-    input_file : str
+    input_file : Path
         Path to the benchmark problem file.
     solver_name : str
-        Name of the solver to run (e.g., "highs", "scip", "cbc", "gurobi", "glpk").
+        Name of the solver to run (e.g.,  "gurobi", "highs-hipo", "highs-ipm", "highs", "scip", "cbc" or "glpk").
     timeout : int
         Maximum allowed runtime for the solver in seconds.
     solver_version : str
         Version of the solver to use.
+    reference_benchmark : bool, optional
+        Whether this is a reference benchmark run (default: False). If True, run the reference benchmark.
 
     Returns
     -------
@@ -410,10 +413,13 @@ def benchmark_solver(
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
             "--solver_name {}".format(solver_name),
-            "--input_file {}".format(input_file),
+            "--input_file {}".format(input_file.as_posix()),
             "--solver_version {}".format(solver_version),
         ]
     )
+
+    if reference_benchmark:
+        command.extend(["--highs_solver_variant {}".format("hipo")])
 
     # Run the command and capture the output
     result = subprocess.run(
@@ -497,110 +503,6 @@ def benchmark_solver(
     return metrics
 
 
-def get_highs_binary_version():
-    """Get the version of the HiGHS binary from the --version command"""
-    highs_binary = "/opt/highs/bin/highs"
-
-    try:
-        result = subprocess.run(
-            [highs_binary, "--version"],
-            capture_output=True,
-            text=True,
-            check=True,
-            encoding="utf-8",
-        )
-
-        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
-        if version_match:
-            return version_match.group(1)
-
-        return "unknown"
-    except Exception as e:
-        print(f"Error getting HiGHS binary version: {str(e)}")
-        return "unknown"
-
-
-def get_highs_hipo_version():
-    """Get the version of the HiGHS-HiPO binary from the --version command"""
-    if os.geteuid() != 0:
-        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
-    else:
-        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
-
-    try:
-        result = subprocess.run(
-            [highs_hipo_binary, "--version"],
-            capture_output=True,
-            text=True,
-            check=True,
-            encoding="utf-8",
-        )
-
-        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
-        if version_match:
-            return version_match.group(1) + "-hipo"
-
-        return "unknown-hipo"
-    except Exception as e:
-        print(f"Error getting HiGHS-HiPO binary version: {str(e)}")
-        return "unknown-hipo"
-
-
-def benchmark_highs_binary():
-    """
-    Run a reference benchmark using the pre-installed HiGHS binary
-    """
-    reference_model = "/benchmark-test-model.lp"
-    highs_binary = "/opt/highs/bin/highs"
-
-    command = [
-        highs_binary,
-        reference_model,
-    ]
-
-    # Run the command and capture the output
-    start_time = time.perf_counter()
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-        check=False,
-        encoding="utf-8",
-    )
-    runtime = time.perf_counter() - start_time
-    if result.returncode != 0:
-        print(f"ERROR running solver. Return code:\n{result.returncode}")
-        metrics = {
-            "status": "ER",
-            "condition": "Error",
-            "objective": None,
-            "runtime": runtime,
-            "duality_gap": None,
-            "max_integrality_violation": None,
-        }
-    else:
-        # Parse HiGHS output to extract objective value
-        objective = None
-        for line in result.stdout.splitlines():
-            if "Objective value" in line:
-                try:
-                    objective = float(line.split(":")[-1].strip())
-                except (ValueError, IndexError):
-                    pass
-
-        metrics = {
-            "status": "OK",
-            "condition": "Optimal",
-            "objective": objective,
-            "runtime": runtime,
-            "memory": "N/A",
-            "duality_gap": None,  # Not available from command line output
-            "max_integrality_violation": None,  # Not available from command line output
-        }
-
-    return metrics
-
-
 def main(
     benchmark_yaml_path,
     solvers,
@@ -680,7 +582,11 @@ def main(
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
 
+    # Get solver versions from the conda environment to include in the results
     solvers_versions = get_conda_package_versions(solvers, f"benchmark-{year}")
+
+    # Get the path of the reference benchmark
+    reference_benchmark_path = Path(benchmarks_folder, "benchmark-test-model.lp")
 
     # Preprocess the sizes and make a list of individual benchmark files to run on
     processed_benchmarks = []
@@ -732,10 +638,6 @@ def main(
         + ("" if size_categories is None else f" matching {size_categories}")
     )
 
-    reference_solver_version = ""
-    if reference_interval > 0:
-        reference_solver_version = get_highs_binary_version()
-
     for benchmark in processed_benchmarks:
         # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 24h for L)
         timeout = benchmark.get("timeout_seconds") or (
@@ -759,9 +661,7 @@ def main(
                 continue
 
             # Restrict highs-hipo variants to 2025 and LPs only
-            if solver in [
-                variant.value for variant in HighsSolverVariants
-            ] and (  # For py3.10 compatibility
+            if solver == "highs-hipo" and (  # For py3.10 compatibility
                 year != "2025" or benchmark["class"] != "LP"
             ):
                 logger.info(
@@ -846,18 +746,16 @@ def main(
                     reference_interval
                 ):
                     print(
-                        f"Running reference benchmark with HiGHS binary (interval: {reference_interval}s)...",
+                        f"Running reference benchmark with HiGHS HiPO (interval: {reference_interval}s)...",
                         flush=True,
                     )
-                    reference_metrics = benchmark_highs_binary()
-
-                    # Add required fields to reference metrics
-                    reference_metrics["size"] = "reference"
-                    reference_metrics["solver"] = "highs-binary"
-                    reference_metrics["solver_version"] = reference_solver_version
-                    reference_metrics["solver_release_year"] = "N/A"
-                    reference_metrics["reported_runtime"] = None
-                    reference_metrics["timeout"] = None
+                    reference_metrics = benchmark_solver(
+                        reference_benchmark_path,
+                        solver_name="highs-hipo",
+                        timeout=24 * 60 * 60,
+                        solver_version=solvers_versions.get("highs-hipo"),
+                        reference_benchmark=True,
+                    )
 
                     # Record reference benchmark results
                     reference_timestamp = datetime.datetime.now().strftime(
