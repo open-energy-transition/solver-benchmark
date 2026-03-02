@@ -1,10 +1,11 @@
 """Unit tests for the run_benchmarks module."""
+
 import os
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from runner import run_benchmarks
-from runner.run_benchmarks import get_conda_package_versions, build_solver_command
+from runner.run_benchmarks import build_solver_command, get_conda_package_versions
 
 
 class TestRunBenchmarks:
@@ -37,7 +38,9 @@ class TestRunBenchmarks:
             versions = get_conda_package_versions(solvers_list, env_name)
             assert versions == expected_dict
 
-    def test_build_command_non_root_includes_user_and_reference_flag(self, monkeypatch: MagicMock) -> None:
+    def test_build_command_non_root_includes_user_and_reference_flag(
+        self, monkeypatch: MagicMock
+    ) -> None:
         """Test that the command includes --user and --highs_solver_variant hipo when not running as root."""
         monkeypatch.setattr(os, "geteuid", lambda: 1000)  # non-root
         input_file = Path("/tmp/example_problem.lp")
@@ -66,7 +69,9 @@ class TestRunBenchmarks:
         assert f"--solver_version {solver_version}" in cmd
         assert "--highs_solver_variant hipo" in cmd
 
-    def test_build_command_as_root_no_user_and_no_reference(self, monkeypatch: MagicMock) -> None:
+    def test_build_command_as_root_no_user_and_no_reference(
+        self, monkeypatch: MagicMock
+    ) -> None:
         """Test that the command does not include --user and --highs_solver_variant hipo"""
         monkeypatch.setattr(os, "geteuid", lambda: 0)  # root
         input_file = Path("/tmp/another.lp")
