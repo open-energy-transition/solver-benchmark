@@ -448,7 +448,7 @@ def return_failure_metrics(
 
 def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> dict:
     """
-    Interpret a subprocess \`CompletedProcess\` from a solver run and produce a metrics dictionary.
+    Interpret a subprocess `CompletedProcess` from a solver run and produce a metrics dictionary.
 
     Parameters
     ----------
