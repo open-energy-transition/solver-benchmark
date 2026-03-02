@@ -347,6 +347,31 @@ def build_solver_command(
     memory_limit_bytes: int,
     reference_benchmark: bool,
 ) -> list[str]:
+    """
+    Build the shell command to run a solver with resource limits.
+
+    Parameters
+    ----------
+    input_file : Path
+        Path to the benchmark problem file to be solved.
+    solver_name : str
+        Name of the solver to run (e.g., "highs", "gurobi", "scip", "cbc", "glpk").
+    timeout : int
+        Maximum allowed runtime for the solver in seconds.
+    solver_version : str
+        Version string of the solver, passed to the solver script.
+    memory_limit_bytes : int
+        Maximum memory the solver process is allowed to use, in bytes.
+    reference_benchmark : bool
+        If True, appends the ``--highs_solver_variant hipo`` flag to run
+        the HiGHS HiPO variant on a reference instance.
+
+    Returns
+    -------
+    command : list of str
+        The command as a list of strings, suitable for passing to
+        ``subprocess.run``.
+    """
     command = ["systemd-run"]
     if os.geteuid() != 0:
         command.append("--user")
@@ -376,8 +401,39 @@ def build_solver_command(
 
 
 def return_failure_metrics(
-    status: str, condition: str, runtime
+    status: str, condition: str, runtime: int | float | str
 ) -> dict[str, typing.Any]:
+    """
+    Build a metrics dictionary for solver failure cases.
+
+    Parameters
+    ----------
+    status : str
+        Short status code for the run (e.g., ``"TO"``, ``"OOM"``, ``"ER"``).
+    condition : str
+        Human-readable termination condition (e.g., ``"Timeout"``, ``"Out of Memory"``, ``"Error"``).
+    runtime : int, float, or str
+        Runtime to record in seconds, or a sentinel (e.g., ``"N/A"``) when not applicable.
+
+    Returns
+    -------
+    metrics : dict
+        Dictionary with the following keys:
+        - ``status`` : str
+            The provided short status code.
+        - ``condition`` : str
+            The provided termination condition.
+        - ``objective`` : None
+            Always ``None`` for failure cases.
+        - ``runtime`` : int, float, or str
+            The provided runtime value.
+        - ``reported_runtime`` : float or None
+            The numeric runtime if ``runtime`` is an ``int`` or ``float``, otherwise ``None``.
+        - ``duality_gap`` : None
+            Always ``None`` for failure cases.
+        - ``max_integrality_violation`` : None
+            Always ``None`` for failure cases.
+    """
     reported_runtime = runtime if isinstance(runtime, (int, float)) else None
     return {
         "status": status,
@@ -391,6 +447,31 @@ def return_failure_metrics(
 
 
 def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> dict:
+    """
+    Interpret a subprocess \`CompletedProcess\` from a solver run and produce a metrics dictionary.
+
+    Parameters
+    ----------
+    result : subprocess.CompletedProcess
+        The result returned by ``subprocess.run`` when executing the solver wrapper.
+    timeout : int
+        Timeout value (in seconds) that was enforced for the solver run. Used for timeout/error metrics.
+
+    Returns
+    -------
+    metrics : dict
+        A metrics dictionary describing the solver outcome. For successful runs this is the JSON-parsed
+        metrics object produced by the solver wrapper (parsed from the last line of ``result.stdout``).
+        For failure cases a dictionary produced by ``return_failure_metrics`` is returned with keys:
+        ``status``, ``condition``, ``objective`` (None), ``runtime``, ``reported_runtime``,
+        ``duality_gap`` (None), and ``max_integrality_violation`` (None).
+
+    Raises
+    ------
+    ValueError
+        Not raised by this function directly, but callers should be aware that JSON parsing may raise
+        exceptions if ``result.stdout`` does not contain valid JSON on the final line.
+    """
     if result.returncode == 124:
         print("TIMEOUT")
         return return_failure_metrics("TO", "Timeout", timeout)
