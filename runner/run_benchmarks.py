@@ -57,6 +57,7 @@ import shutil
 import statistics
 import subprocess
 import time
+import typing
 from collections import OrderedDict
 from pathlib import Path
 from socket import gethostname
@@ -338,6 +339,81 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
         )
 
 
+def build_solver_command(
+    input_file: Path,
+    solver_name: str,
+    timeout: int,
+    solver_version: str,
+    memory_limit_bytes: int,
+    reference_benchmark: bool,
+) -> list[str]:
+    command = ["systemd-run"]
+    if os.geteuid() != 0:
+        command.append("--user")
+
+    command.extend(
+        [
+            "--scope",
+            "--property=MemoryMax={}".format(memory_limit_bytes),
+            "--property=MemorySwapMax=0",
+            "/usr/bin/time",
+            "--format",
+            "MaxResidentSetSizeKB=%M",
+            "timeout",
+            "{}s".format(timeout),
+            "python",
+            str(Path(__file__).parent / "run_solver.py"),
+            "--solver_name {}".format(solver_name),
+            "--input_file {}".format(input_file.as_posix()),
+            "--solver_version {}".format(solver_version),
+        ]
+    )
+
+    if reference_benchmark:
+        command.append("--highs_solver_variant hipo")
+
+    return command
+
+
+def return_failure_metrics(
+    status: str, condition: str, runtime
+) -> dict[str, typing.Any]:
+    reported_runtime = runtime if isinstance(runtime, (int, float)) else None
+    return {
+        "status": status,
+        "condition": condition,
+        "objective": None,
+        "runtime": runtime,
+        "reported_runtime": reported_runtime,
+        "duality_gap": None,
+        "max_integrality_violation": None,
+    }
+
+
+def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> dict:
+    if result.returncode == 124:
+        print("TIMEOUT")
+        return return_failure_metrics("TO", "Timeout", timeout)
+
+    # systemd-run uses sigkill (9) or sigterm (15) to terminate
+    # the process and returns 128 + signal exit code
+    # subprocess returns -<signal> for signals
+    # these things don't seem very portable
+    if result.returncode in (137, 143, -9, -15):
+        print("OUT OF MEMORY")
+        return return_failure_metrics("OOM", "Out of Memory", "N/A")
+
+    if result.returncode != 0:
+        print(
+            f"ERROR running solver. Return code: {result.returncode}\n"
+            f"Stdout:\n{result.stdout}\n"
+            f"Stderr:\n{result.stderr}\n"
+        )
+        return return_failure_metrics("ER", "Error", timeout)
+
+    return json.loads(result.stdout.splitlines()[-1])
+
+
 def benchmark_solver(
     input_file: Path,
     solver_name: str,
@@ -393,33 +469,14 @@ def benchmark_solver(
         )
     )
 
-    command = ["systemd-run"]
-
-    if os.geteuid() != 0:
-        command.append("--user")
-
-    command.extend(
-        [
-            "--scope",
-            "--property=MemoryMax={}".format(
-                memory_limit_bytes
-            ),  # Set resident memory limit
-            "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
-            "/usr/bin/time",
-            "--format",
-            "MaxResidentSetSizeKB=%M",
-            "timeout",
-            "{}s".format(timeout),
-            "python",
-            f"{Path(__file__).parent / 'run_solver.py'}",
-            "--solver_name {}".format(solver_name),
-            "--input_file {}".format(input_file.as_posix()),
-            "--solver_version {}".format(solver_version),
-        ]
+    command = build_solver_command(
+        input_file,
+        solver_name,
+        timeout,
+        solver_version,
+        memory_limit_bytes,
+        reference_benchmark,
     )
-
-    if reference_benchmark:
-        command.extend(["--highs_solver_variant {}".format("hipo")])
 
     # Run the command and capture the output
     result = subprocess.run(
@@ -436,7 +493,7 @@ def benchmark_solver(
         / "logs"
         / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
     )
-    if log_file.exists:
+    if log_file.exists():
         with open(log_file, "a") as f:
             f.write("\nSTDERR:\n")
             f.write(result.stderr)
@@ -449,50 +506,7 @@ def benchmark_solver(
     except ValueError:
         print("Failed to parse memory usage from stderr")
 
-    if result.returncode == 124:
-        print("TIMEOUT")
-        metrics = {
-            "status": "TO",
-            "condition": "Timeout",
-            "objective": None,
-            "runtime": timeout,
-            "reported_runtime": timeout,
-            "duality_gap": None,
-            "max_integrality_violation": None,
-        }
-    # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
-    # subprocess returns -<signal> for signals
-    # these things don't seem very portable
-    elif result.returncode in (137, 143, -9, -15):
-        print("OUT OF MEMORY")
-        metrics = {
-            "status": "OOM",
-            "condition": "Out of Memory",
-            "objective": None,
-            "runtime": "N/A",
-            "reported_runtime": None,
-            "duality_gap": None,
-            "max_integrality_violation": None,
-        }
-    elif result.returncode != 0:
-        print(
-            f"ERROR running solver. Return code: {result.returncode}\n",
-            f"Stdout:\n{result.stdout}\n",
-            f"Stderr:\n{result.stderr}\n",
-        )
-        # Errors are also said to have run for `timeout`s, so that they appear
-        # along with timeouts in charts
-        metrics = {
-            "status": "ER",
-            "condition": "Error",
-            "objective": None,
-            "runtime": timeout,
-            "reported_runtime": timeout,
-            "duality_gap": None,
-            "max_integrality_violation": None,
-        }
-    else:
-        metrics = json.loads(result.stdout.splitlines()[-1])
+    metrics = parse_solver_result(result, timeout)
 
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
         print(f"WARNING: unknown solver status: {metrics['status']}")
