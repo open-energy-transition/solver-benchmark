@@ -1,3 +1,51 @@
+"""
+Benchmark Runner Script
+=======================
+
+This script automates the benchmarking of multiple optimization solvers
+(e.g., HiGHS, GLPK, Gurobi, SCIP, CBC) on a set of
+benchmark problem instances defined in a YAML configuration file. It manages
+downloading benchmark files, running solvers in isolated environments with
+resource limits, collecting metrics (runtime, memory, status, objective, etc.),
+and writing results to CSV files for further analysis.
+
+Features
+--------
+- Supports running multiple solvers and benchmark instances in series.
+- Handles solver-specific environment setup and version detection.
+- Enforces memory and runtime limits for solver runs.
+- Collects and records detailed metrics, including runtime, memory usage,
+  status, objective value, duality gap, and integrality violation.
+- Outputs results and summary statistics to CSV files.
+
+Example Usage
+-------------
+Run the script from the command line:
+
+    python runner/run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
+
+Arguments
+---------
+benchmark_yaml : str
+    Path to the benchmark configuration YAML file (e.g., ../results/metadata.yaml).
+year : str
+    Solver release year (e.g., 2020-2025).
+--solvers : list of str, optional
+    Space-separated list of solvers to run. Defaults to all supported solvers.
+--append : bool, optional
+    Append to the results CSV file instead of overwriting. Default is False.
+--ref_bench_interval : int, optional
+    Interval in seconds to run a reference benchmark with the HiGHS binary.
+--run_id : str, optional
+    Unique identifier for this benchmark run.
+
+Outputs
+-------
+- Results for each solver/benchmark instance are written to `results/benchmark_results.csv`.
+- Summary statistics (mean, stddev) are written to `results/benchmark_results_mean_stddev.csv`.
+- Logs and solution files are saved in the `runner/logs/` and `runner/solutions/` directories.
+"""
+
 import argparse
 import csv
 import datetime
@@ -293,7 +341,46 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout, solver_version):
+def benchmark_solver(
+    input_file: str, solver_name: str, timeout: int, solver_version: str
+) -> dict[str, object]:
+    """
+    Run a solver on a benchmark problem file with resource limits and collect metrics.
+
+    Parameters
+    ----------
+    input_file : str
+        Path to the benchmark problem file.
+    solver_name : str
+        Name of the solver to run (e.g., "highs", "scip", "cbc", "gurobi", "glpk").
+    timeout : int
+        Maximum allowed runtime for the solver in seconds.
+    solver_version : str
+        Version of the solver to use.
+
+    Returns
+    -------
+    metrics : dict
+        Dictionary containing benchmark metrics:
+        - status : str
+            Solver status ("ok", "TO", "ER", "OOM").
+        - condition : str
+            Termination condition ("Optimal", "Timeout", "Error", "Out of Memory").
+        - objective : float or None
+            Objective value if available.
+        - runtime : float or str
+            Actual runtime in seconds or "N/A".
+        - reported_runtime : float or None
+            Runtime reported by the solver, if available.
+        - duality_gap : float or None
+            Duality gap for MILP problems, if available.
+        - max_integrality_violation : float or None
+            Maximum integrality violation for MILP problems, if available.
+        - memory : float or None
+            Maximum resident set size in MB.
+        - timeout : int
+            Timeout value in seconds.
+    """
     available_memory_bytes = psutil.virtual_memory().available
     memory_limit_bytes = int(available_memory_bytes * 0.95)
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
