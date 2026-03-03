@@ -9,12 +9,14 @@ interface TableOfContentsProps {
   items: TOCItem[];
   currentSection: string | null;
   title?: string;
+  isBlogPage?: boolean;
 }
 
 export const TableOfContents: React.FC<TableOfContentsProps> = ({
   items,
   currentSection = "",
   title = "",
+  isBlogPage = false,
 }) => {
   const getLinkStyle = (hash: string) => {
     return `tag-line text-[#006D97] p-2 lg:pl-4 ${
@@ -26,8 +28,20 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
 
   return (
     <div className="lg:sticky lg:top-[134px] h-max">
-      <h3 className="py-4.5 font-bold w-max">{title}</h3>
-      <div className="w-full lg:w-[min(212px,14.72vw)] py-2 lg:py-8 px-2 lg:px-0 bg-[#FAFAFACC] bg-opacity-80 h-max rounded-xl lg:mb-0">
+      <h3
+        className={`${
+          isBlogPage
+            ? "lg:bg-[#F5F4F4] lg:w-[100vw] lg:absolute lg:top-0 lg:left-0 w-full"
+            : "w-max"
+        } py-4.5 font-bold`}
+      >
+        {title}
+      </h3>
+      <div
+        className={`${
+          isBlogPage ? "lg:mt-[84px]" : ""
+        } w-full lg:w-[min(212px,14.72vw)] py-2 lg:py-8 px-2 lg:px-0 bg-[#FAFAFACC] bg-opacity-80 h-max rounded-xl lg:mb-0`}
+      >
         <div className="px-2 sm:px-4">
           <h2 className="border-b border-[#D8E3F2] leading-snug">
             On this page

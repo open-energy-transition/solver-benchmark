@@ -36,15 +36,24 @@
     the Tailwind Typography plugin (`.prose`, `.prose-lg`)
   */
   .prose p,
-  .prose-lg p {
-    font-family: revert;
-    font-weight: revert;
-    font-size: revert;
-    line-height: revert;
-    letter-spacing: revert;
-    color: revert;
-    margin: revert;
+  .prose-lg p,
+  .prose-lg li {
+    @apply my-1 text-base;
   }
+ .prose h2,
+ .prose h3,
+ .prose h4,
+ .prose h5,
+ .prose h6 {
+  @apply mb-0 mt-6;
+ }
+ .prose ul,
+ .prose ol,
+ .prose pre,
+ .prose li {
+  @apply my-1;
+ }
+
   .tag-line-lg {
     @apply text-base sm:text-lg font-lato font-medium sm:leading-1.1 tracking-normal;
   }

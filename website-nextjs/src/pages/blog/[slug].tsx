@@ -1,40 +1,139 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { getPostSlugs, getPostBySlug, PostMeta } from "../../lib/posts";
-import { FooterLandingPage, Header } from "@/components/shared";
+import {
+  PageLayout,
+  TableOfContents,
+  ContentSection,
+} from "@/components/info-pages";
+import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { remark } from "remark";
 import html from "remark-html";
+
+type TocItem = {
+  hash: string;
+  label: string;
+};
 
 type Props = {
   meta: PostMeta;
   contentHtml: string;
+  tocItems: TocItem[];
 };
 
-export default function Post({ meta, contentHtml }: Props) {
+function slugify(text: string) {
   return (
-    <>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/<[^>]*>/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "section"
+  );
+}
+
+function extractTocAndInjectIds(htmlString: string) {
+  const toc: TocItem[] = [];
+  // Replace <h2 ...>...</h2> with <h2 id="slug">...</h2>
+  const newHtml = htmlString.replace(
+    /<h2([^>]*)>(.*?)<\/h2>/gi,
+    (match, attrs = "", inner) => {
+      const label = inner.replace(/<[^>]+>/g, "").trim();
+      const slug = slugify(label);
+      const hash = `#${slug}`;
+      toc.push({ hash, label });
+
+      // Normalize any React `className` to `class` and merge/apply
+      // a scroll-margin-top utility so anchor links land below fixed headers.
+      let outAttrs = attrs;
+
+      if (/\bclass(Name)?=/i.test(outAttrs)) {
+        // convert className -> class
+        outAttrs = outAttrs.replace(/className=/gi, "class=");
+        // append our utility to existing class attribute (double-quote case)
+        outAttrs = outAttrs.replace(
+          /class=\"([^\"]*)\"/,
+          (_m: any, g1: any) => `class="${g1} scroll-mt-[250px]"`,
+        );
+        // append for single-quoted case
+        outAttrs = outAttrs.replace(
+          /class='([^']*)'/,
+          (_m: any, g1: any) => `class='${g1} scroll-mt-[250px]'`,
+        );
+      } else {
+        // attrs may include a leading space; insert our class attribute
+        outAttrs = ` class=\"scroll-mt-[250px]\"${attrs}`;
+      }
+
+      return `<h2 id="${slug}"${outAttrs}>${inner}</h2>`;
+    },
+  );
+
+  return { contentHtml: newHtml, tocItems: toc };
+}
+
+export default function Post({ meta, contentHtml, tocItems }: Props) {
+  const mappedItems = tocItems.map((t) => ({ ...t, threshold: 0.5 }));
+  const visibilities = useSectionsVisibility(mappedItems);
+  const scrollDirection = useScrollDirection();
+  const [currentSection, setCurrentSection] = useState<string | null>(null);
+  const initialSelectionDone = useRef(false);
+
+  useEffect(() => {
+    // If any observed section is visible, pick the first visible one (lowest index).
+    const anyVisible = visibilities.some((v) => v);
+    if (anyVisible) {
+      const firstIdx = visibilities.findIndex((v) => v);
+      if (firstIdx !== -1 && mappedItems[firstIdx]) {
+        const hash = mappedItems[firstIdx].hash;
+        if (hash !== currentSection) {
+          window.history.replaceState(null, "", hash);
+          setCurrentSection(hash);
+        }
+        initialSelectionDone.current = true;
+      }
+      return;
+    }
+
+    // No headings observed as visible. If page is at top and we haven't
+    // performed the initial selection yet, highlight the first item.
+    if (
+      !initialSelectionDone.current &&
+      typeof window !== "undefined" &&
+      window.scrollY === 0
+    ) {
+      if (mappedItems.length > 0) {
+        window.history.replaceState(null, "", mappedItems[0].hash);
+        setCurrentSection(mappedItems[0].hash);
+      }
+      initialSelectionDone.current = true;
+    }
+  }, [visibilities, scrollDirection]);
+
+  return (
+    <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
       <Head>
         <title>{meta.title} - Open Energy Benchmark</title>
         <meta name="description" content={meta.excerpt || meta.title} />
       </Head>
-      <Header />
-      <main className="bg-white min-h-screen">
-        <div className="container mx-auto px-4 lg:px-8 py-16">
-          <Link
-            href="/blog"
-            className="text-green hover:text-navy transition-colors mb-6 inline-block"
-          >
-            ← Back to blog
-          </Link>
-          <article>
-            <h1 className="text-4xl lg:text-5xl font-bold text-navy mb-4">
-              {meta.title}
-            </h1>
-            <div className="text-sm text-dark-grey mb-6">{meta.date}</div>
+
+      <TableOfContents
+        title={meta.title}
+        currentSection={currentSection}
+        items={tocItems.map((t) => ({ hash: t.hash, label: t.label }))}
+        isBlogPage={true}
+      />
+
+      <ContentSection>
+        <div className="info-pages-content">
+          <article className="info-pages-section">
             {meta.tags && meta.tags.length > 0 && (
-              <div className="mb-6 flex gap-2">
+              <div className="mb-6 flex gap-2 mt-4">
+                <div className="text-sm bg-gray-200 px-2 py-1 rounded">
+                  {meta.date}
+                </div>
                 {meta.tags.map((tag) => (
                   <span
                     key={tag}
@@ -45,15 +144,15 @@ export default function Post({ meta, contentHtml }: Props) {
                 ))}
               </div>
             )}
+
             <div
               dangerouslySetInnerHTML={{ __html: contentHtml }}
               className="prose prose-lg max-w-none"
             />
           </article>
         </div>
-      </main>
-      <FooterLandingPage />
-    </>
+      </ContentSection>
+    </PageLayout>
   );
 }
 
@@ -67,11 +166,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = (params?.slug as string) + ".md";
   const { meta, content } = getPostBySlug(slug);
   const processed = await remark().use(html).process(content);
-  const contentHtml = processed.toString();
+  const rawHtml = processed.toString();
+
+  const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
+
   return {
     props: {
       meta,
       contentHtml,
+      tocItems,
     },
   };
 };
