@@ -24,11 +24,11 @@ Run the script from the command line:
 
     python runner/run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
 
-Arguments
----------
-benchmark_yaml : str
+Parameters
+------------
+--benchmark_yaml_path : str
     Path to the benchmark configuration YAML file (e.g., ../results/metadata.yaml).
-year : str
+--year : str
     Solver release year (e.g., 2020-2025).
 --solvers : list of str, optional
     Space-separated list of solvers to run. Defaults to all supported solvers.
@@ -39,8 +39,8 @@ year : str
 --run_id : str, optional
     Unique identifier for this benchmark run.
 
-Outputs
--------
+Returns
+--------
 - Results for each solver/benchmark instance are written to `results/benchmark_results.csv`.
 - Summary statistics (mean, stddev) are written to `results/benchmark_results_mean_stddev.csv`.
 - Logs and solution files are saved in the `runner/logs/` and `runner/solutions/` directories.
@@ -53,6 +53,7 @@ import gzip
 import json
 import logging
 import os
+import re
 import shutil
 import statistics
 import subprocess
@@ -130,6 +131,63 @@ def get_conda_package_versions(solvers: list[str], env_name=None) -> dict[str, s
         raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
 
 
+def _download_via_requests(url: str, dest: Path, chunk_size: int = 8192) -> None:
+    """
+    Download a file over HTTP(S) using HTTP/HTTPS requests..
+
+    Parameters
+    ----------
+    url : str
+        HTTP or HTTPS URL to download.
+    dest : pathlib.Path
+        Local destination path where the downloaded file will be written.
+    chunk_size : int, optional
+        Size in bytes of chunks to read from the response stream (default: 8192).
+    """
+    tmp = dest.with_suffix(dest.suffix + ".tmp")
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(tmp, "wb") as f:
+            for chunk in r.iter_content(chunk_size=chunk_size):
+                if chunk:
+                    f.write(chunk)
+    os.replace(tmp, dest)
+    logger.info("Downloaded {} to {} via requests".format(url, dest))
+
+
+def _download_via_gsutil(url: str, dest: Path) -> None:
+    """
+    Download a file from Google Cloud Storage using the gsutil command.
+
+    Parameters
+    ----------
+    url : str
+        GCS URL to download. Must start with ``gs://``.
+    dest : pathlib.Path
+        Local destination path where the downloaded file will be written.
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the `gsutil` command exits with a non-zero status.
+    """
+    subprocess.run(
+        ["gsutil", "cp", url, str(dest)], check=True, capture_output=True, text=True
+    )
+    logger.info("Downloaded %s to %s via gsutil", url, dest)
+
+
+def _unzip_gz(path: Path) -> Path:
+    if path.suffix != ".gz":
+        return path
+    uncompressed = path.with_suffix("")
+    with gzip.open(path, "rb") as gz_f, open(uncompressed, "wb") as out_f:
+        shutil.copyfileobj(gz_f, out_f)
+    os.remove(path)
+    logger.info("Unzipped %s -> %s", path, uncompressed)
+    return uncompressed
+
+
 def download_benchmark_file(url: str, dest_path: Path) -> None:
     """
     Download a file from a URL and save it locally, unzipping if necessary.
@@ -148,47 +206,26 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
     - Automatically unzips `.gz` files after download and removes the compressed file.
     - Creates the destination directory if it does not exist.
     """
-    # Ensure the destination folder exists
-    os.makedirs(dest_path.parent, exist_ok=True)
+    dest_path = Path(dest_path)
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
 
-    # If dest_path ends with .gz, prepare for the uncompressed version
-    if dest_path.suffix == ".gz":
-        uncompressed_dest_path = dest_path.with_suffix("")
-    else:
-        uncompressed_dest_path = dest_path
-
-    if os.path.exists(uncompressed_dest_path):
-        logger.info(
-            "File already exists at {}. Skipping download.".format(
-                uncompressed_dest_path
-            )
-        )
+    # determine the final uncompressed path to check for existing file
+    final_uncompressed = (
+        dest_path.with_suffix("") if dest_path.suffix == ".gz" else dest_path
+    )
+    if final_uncompressed.exists():
+        logger.info("File already exists at %s. Skipping download.", final_uncompressed)
         return
 
+    # download to dest_path (compressed or not)
     if url.startswith("gs://"):
-        # GCS file, so download using gsutil
-        logger.info("Downloading {} to {} using gsutil...".format(url, dest_path))
-        cmd = ["gsutil", "cp", url, dest_path]
-        _result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        logger.info("done.")
+        _download_via_gsutil(url, dest_path)
     else:
-        # Perform the download with streaming to handle large files
-        logger.info("Downloading {} to {}...".format(url, dest_path))
-        with requests.get(url, stream=True) as response:
-            response.raise_for_status()
-            with open(dest_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-        logger.info("done.")
+        _download_via_requests(url, dest_path)
 
+    # if compressed, unzip and remove the .gz
     if dest_path.suffix == ".gz":
-        logger.info("Unzipping {}...".format(dest_path))
-        with gzip.open(dest_path, "rb") as gz_file:
-            uncompressed_file_path = dest_path.with_suffix("")
-            with open(uncompressed_file_path, "wb") as uncompressed_file:
-                shutil.copyfileobj(gz_file, uncompressed_file)
-        os.remove(dest_path)
-        logger.info("Unzipped to {}.".format(uncompressed_file_path))
+        _unzip_gz(dest_path)
 
 
 def parse_memory(output: str) -> float:
@@ -338,6 +375,16 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
             ]
         )
 
+def _split_highs_solver_name(solver_name: str) -> tuple[str, str | None]:
+    """
+    Split solver names like 'highs-hipo', 'highs ipm' or 'highs' into
+    (base_solver, variant). Returns (solver_name, None) for non-highs names.
+    """
+    m = re.match(r'^(highs)(?:[-\s](?P<variant>[\w-]+))?$', solver_name.lower())
+    if m:
+        return m.group(1), m.group('variant')
+    return solver_name, None
+
 
 def build_solver_command(
     input_file: Path,
@@ -372,6 +419,8 @@ def build_solver_command(
         The command as a list of strings, suitable for passing to
         ``subprocess.run``.
     """
+    base_solver, variant = _split_highs_solver_name(solver_name)
+
     command = ["systemd-run"]
     if os.geteuid() != 0:
         command.append("--user")
@@ -394,7 +443,9 @@ def build_solver_command(
         ]
     )
 
-    if reference_benchmark:
+    if variant:
+        command.append(f"--highs_solver_variant {variant}")
+    elif reference_benchmark and base_solver.lower() == "highs":
         command.append("--highs_solver_variant hipo")
 
     return command
@@ -550,6 +601,8 @@ def benchmark_solver(
         )
     )
 
+
+
     command = build_solver_command(
         input_file,
         solver_name,
@@ -702,7 +755,7 @@ def main(
                 # TODO share this code with validate_urls.py
                 gz = instance["URL"].endswith(".gz")
                 base = instance["URL"][:-3] if gz else instance["URL"]
-                ext = base[base.rfind(".") :]
+                ext = base[base.rfind("."):]
                 # If no dot was found, ext will be the full string; make it empty instead
                 if "." not in ext:
                     ext = ""
@@ -869,7 +922,8 @@ def main(
                     last_reference_run = current_time
                 else:
                     print(
-                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)",
+                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago,"
+                        f" interval: {reference_interval}s)",
                         flush=True,
                     )
 
@@ -881,10 +935,10 @@ if __name__ == "__main__":
         description="Run the benchmarks specified in the given file."
     )
     parser.add_argument(
-        "benchmark_yaml_path", type=str, help="Path to the benchmarks YAML file."
+        "--benchmark_yaml_path", type=str, help="Path to the benchmarks YAML file."
     )
     parser.add_argument(
-        "year",
+        "--year",
         type=str,
         help="Denote the benchmarks as having been run on solvers from given year.",
     )
@@ -893,7 +947,8 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs variants are available: highs-hipo, highs-ipm.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. "
+             "For 2025, highs variants are available: highs-hipo, highs-ipm.",
     )
     parser.add_argument(
         "--append",
