@@ -87,7 +87,7 @@ After submission, the benchmark team will review your contribution and validate 
 
 ## Licensing
 
-All benchmark instances are distributed under the open **CC BY 4.0** license. Note that this license applies only to the optimization problem (the LP/MPS file itself), not to the model code or underlying data used to generate it. See the FAQs below for more details.
+All benchmark instances are distributed under the open [CC BY 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. Note that this license applies only to the optimization problem (the LP/MPS file itself), not to the model code or underlying data used to generate it. See the FAQs below for more details.
 
 ## FAQs
 
