@@ -105,7 +105,7 @@ While the code used to create a benchmark model instance or the input data sourc
 
 The LP/MPS files are LP/MILP problems represented as a set of canonicalized mathematical equations (i.e., all variables are of the form x1, x2, …). While confidential data (e.g., generator capacities) is present in the equations as constants, it is difficult to reverse-engineer the model and figure out which constant corresponds to which real-world asset or property. This means the risk of sensitive data leakage is lower compared to releasing the input datasets directly.
 
-Obfuscation of variable and constraint names can be done using the Python library pyscipopt with a script that looks something like:
+Obfuscation of variable and constraint names can be done using the Python library `pyscipopt` with a script that looks something like:
 ```python
 from pyscipopt import Model
 scip = Model()
