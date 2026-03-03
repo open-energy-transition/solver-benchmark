@@ -77,10 +77,7 @@ If you are comfortable with GitHub, follow the steps below to submit via pull re
    - The files do not need to be committed to the repository; a stable download URL is sufficient. The benchmark team will transfer the submitted benchmark to our hosting service
 
 4. **Open a Pull Request**
-   - Add the metadata YAML file under
-     ```
-     benchmarks/<model-framework-or-source>/
-     ```
+   - Add the metadata YAML file under `benchmarks/<model-framework-or-source>/`
    - Complete the PR submission template, confirming:
      - Consent to release the benchmark instances under **CC BY 4.0**
      - Compliance with benchmark and size-instance naming conventions
