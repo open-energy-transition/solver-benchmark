@@ -138,6 +138,14 @@ jobs:
           npm install --no-save browser-driver-manager
           npx browser-driver-manager install chrome
 
+      - name: Install Google Chrome (for headless accessibility tests)
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Set CHROME_BIN env
+        run: echo "CHROME_BIN=/usr/bin/google-chrome-stable" >> $GITHUB_ENV
+
       - name: Start Next.js server in background
         run: |
           cd website-nextjs
@@ -155,9 +163,14 @@ jobs:
           npm run axe:extract
 
       - name: Run axe-core accessibility tests on all pages
+        env:
+          CHROME_BIN: /usr/bin/google-chrome-stable
+          # Common Chrome flags for CI environments
+          CHROMEFLAGS: "--no-sandbox --disable-dev-shm-usage --disable-setuid-sandbox --headless=new"
         run: |
           cd website-nextjs
-          npm run axe:test
+          # pass flags via env; tests should pick up CHROME_BIN/CHROMEFLAGS when launching Chrome
+          CHROME_BIN="$CHROME_BIN" CHROMEFLAGS="$CHROMEFLAGS" npm run axe:test
 
       - name: Upload accessibility report
         if: always()
