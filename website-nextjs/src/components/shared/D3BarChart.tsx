@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { createD3Tooltip } from "@/utils/chart";
+import DirectionalIndicator, {
+  Direction,
+} from "@/components/shared/DirectionalIndicator";
 
 interface DataPoint {
   category: string;
@@ -17,6 +20,7 @@ interface ID3BarChart {
   tooltipFormat?: (d: DataPoint) => string;
   yAxisLabel?: string;
   xAxisLabel?: string;
+  directionalIndicator?: Direction;
 }
 
 const D3BarChart = ({
@@ -28,6 +32,7 @@ const D3BarChart = ({
   tooltipFormat,
   yAxisLabel = "",
   xAxisLabel = "",
+  directionalIndicator = undefined,
 }: ID3BarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -171,8 +176,13 @@ const D3BarChart = ({
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="text-xs text-center pb-2 ml-4 font-bold text-dark-grey">
-        {title}
+      <div className="flex items-center justify-between gap-2 pb-2 ml-4">
+        <div className="text-xs text-center font-bold text-dark-grey">
+          {title}
+        </div>
+        {directionalIndicator && (
+          <DirectionalIndicator direction={directionalIndicator} size="sm" />
+        )}
       </div>
       {/* Legend */}
       <div className="flex gap-2 ml-4">

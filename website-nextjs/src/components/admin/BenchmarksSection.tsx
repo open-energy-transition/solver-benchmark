@@ -111,6 +111,8 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
         xAxisLabel="Log Runtime (s)"
         domainPadding={0.5}
         customTooltip={getTooltip}
+        xAxisDirection="lower"
+        yAxisDirection="lower"
         onPointClick={(result) => {
           router.push(
             PATH_DASHBOARD.benchmarkSet.one.replace("{name}", result.benchmark),

@@ -181,6 +181,7 @@ const RuntimeComparison = () => {
           return Number(d.value);
         }}
         useLogScale={true}
+        directionalIndicator="lower"
       />
     </div>
   );
