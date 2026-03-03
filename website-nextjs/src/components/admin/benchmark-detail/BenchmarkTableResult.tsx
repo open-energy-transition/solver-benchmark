@@ -119,7 +119,6 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           (s: { url?: string }) => s.url,
         );
         const url = sizeWithUrl?.url;
-        console.log("url", url);
         if (!url) {
           console.warn(`No download URL found for ${benchmark.name}`);
           alert(`No download URL found for ${benchmark.name}. Skipping...`);

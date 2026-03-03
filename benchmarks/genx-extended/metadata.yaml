@@ -22,6 +22,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11832658
       Num. variables: 13777226
+      Num. nonzeros: 41476545
   genx-elec_trex_co2:
     Modelling framework: GenX
     Short description: This is a one-year example which contains 15 zones. This example includes transmission expansion, a CO2 emissions constraint.
@@ -66,6 +67,7 @@ benchmarks:
 #      N. of continuous variables:
 #      N. of integer variables:
 #      N. of binary variables:
+      Num. nonzeros: 43263428
   genx-elec_trex_uc:
     Short description: This is 30 days example which contains 15 zones. This example includes transmission expansion and unit commitment for conventional generators.
     Modelling framework: GenX
@@ -91,6 +93,7 @@ benchmarks:
       Num. variables: 2551346
       Num. continuous variables: 2062938
       Num. integer variables: 488408
+      Num. nonzeros: 12519873
   genx-elec_co2:
     Short description: This is a one-year example which contains 15 zones. This example includes a CO2 emissions constraint.
     Modelling framework: GenX
@@ -156,3 +159,4 @@ benchmarks:
 #     N. of continuous variables: 13897912
 #     N. of integer variables: 3417368
 #     N. of binary variables: 120960
+      Num. nonzeros: 42847400
