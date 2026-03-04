@@ -375,14 +375,46 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
             ]
         )
 
+
 def _split_highs_solver_name(solver_name: str) -> tuple[str, str | None]:
     """
-    Split solver names like 'highs-hipo', 'highs ipm' or 'highs' into
-    (base_solver, variant). Returns (solver_name, None) for non-highs names.
+    Split solver names into base solver and variant components.
+
+    Parses solver names like 'highs-hipo', 'highs ipm', or 'highs' into
+    their base solver and variant parts. For non-highs solvers, returns
+    the original name with no variant.
+
+    Parameters
+    ----------
+    solver_name : str
+        The solver name to split. Can be a highs variant like 'highs-hipo',
+        'highs ipm', 'highs', or any other solver name.
+
+    Returns
+    -------
+    tuple[str, str | None]
+        A tuple containing:
+        - base_solver : str
+            The base solver name ('highs' for highs variants, otherwise
+            the original solver_name).
+        - variant : str or None
+            The variant suffix if present (e.g., 'hipo', 'ipm'), or None
+            if no variant is found.
+
+    Examples
+    --------
+    >>> _split_highs_solver_name("highs-hipo")
+    ('highs', 'hipo')
+
+    >>> _split_highs_solver_name("highs")
+    ('highs', None)
+
+    >>> _split_highs_solver_name("glpk")
+    ('glpk', None)
     """
-    m = re.match(r'^(highs)(?:[-\s](?P<variant>[\w-]+))?$', solver_name.lower())
+    m = re.match(r"^(highs)(?:[-\s](?P<variant>[\w-]+))?$", solver_name.lower())
     if m:
-        return m.group(1), m.group('variant')
+        return m.group(1), m.group("variant")
     return solver_name, None
 
 
@@ -601,8 +633,6 @@ def benchmark_solver(
         )
     )
 
-
-
     command = build_solver_command(
         input_file,
         solver_name,
@@ -755,7 +785,7 @@ def main(
                 # TODO share this code with validate_urls.py
                 gz = instance["URL"].endswith(".gz")
                 base = instance["URL"][:-3] if gz else instance["URL"]
-                ext = base[base.rfind("."):]
+                ext = base[base.rfind(".") :]
                 # If no dot was found, ext will be the full string; make it empty instead
                 if "." not in ext:
                     ext = ""
@@ -948,7 +978,7 @@ if __name__ == "__main__":
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
         help="The list of solvers to run. Solvers not present in the active environment will be skipped. "
-             "For 2025, highs variants are available: highs-hipo, highs-ipm.",
+        "For 2025, highs variants are available: highs-hipo, highs-ipm.",
     )
     parser.add_argument(
         "--append",

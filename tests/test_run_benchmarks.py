@@ -11,6 +11,7 @@ import requests
 
 from runner import run_benchmarks
 from runner.run_benchmarks import (
+    _split_highs_solver_name,
     build_solver_command,
     download_benchmark_file,
     get_conda_package_versions,
@@ -286,3 +287,23 @@ class TestRunBenchmarks:
 
             assert dest_path.exists()
             assert dest_path.stat().st_size == 0
+
+    @pytest.mark.parametrize(
+        "input_name, expected_base, expected_variant",
+        [
+            ("highs", "highs", None),
+            ("highs-hipo", "highs", "hipo"),
+            ("highs-ipm", "highs", "ipm"),
+            ("Highs-IPX", "highs", "ipx"),
+            ("HIGHS-SIMPLEX", "highs", "simplex"),
+            ("cbc", "cbc", None),
+            ("scip", "scip", None),
+        ],
+    )
+    def test_split_highs_solver_name_variants_parametrized(
+        self, input_name: str, expected_base: str, expected_variant: str | None
+    ) -> None:
+        """Test the _split_highs_solver_name function with various input formats."""
+        base, variant = _split_highs_solver_name(input_name)
+        assert base == expected_base
+        assert variant == expected_variant
