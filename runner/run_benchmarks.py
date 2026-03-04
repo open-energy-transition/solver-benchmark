@@ -469,7 +469,7 @@ def build_solver_command(
             "{}s".format(timeout),
             "python",
             str(Path(__file__).parent / "run_solver.py"),
-            "--solver_name {}".format(solver_name),
+            "--solver_name {}".format(base_solver),
             "--input_file {}".format(input_file.as_posix()),
             "--solver_version {}".format(solver_version),
         ]
