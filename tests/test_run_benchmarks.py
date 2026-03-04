@@ -11,10 +11,10 @@ import requests
 
 from runner import run_benchmarks
 from runner.run_benchmarks import (
-    _split_highs_solver_name,
     build_solver_command,
     download_benchmark_file,
     get_conda_package_versions,
+    get_solver_name_and_version,
 )
 
 
@@ -304,6 +304,6 @@ class TestRunBenchmarks:
         self, input_name: str, expected_base: str, expected_variant: str | None
     ) -> None:
         """Test the _split_highs_solver_name function with various input formats."""
-        base, variant = _split_highs_solver_name(input_name)
+        base, variant = get_solver_name_and_version(input_name)
         assert base == expected_base
         assert variant == expected_variant

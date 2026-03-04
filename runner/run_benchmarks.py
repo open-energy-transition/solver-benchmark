@@ -376,7 +376,7 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
         )
 
 
-def _split_highs_solver_name(solver_name: str) -> tuple[str, str | None]:
+def get_solver_name_and_version(solver_name: str) -> tuple[str, str | None]:
     """
     Split solver names into base solver and variant components.
 
@@ -403,13 +403,13 @@ def _split_highs_solver_name(solver_name: str) -> tuple[str, str | None]:
 
     Examples
     --------
-    >>> _split_highs_solver_name("highs-hipo")
+    >>> get_solver_name_and_version("highs-hipo")
     ('highs', 'hipo')
 
-    >>> _split_highs_solver_name("highs")
+    >>> get_solver_name_and_version("highs")
     ('highs', None)
 
-    >>> _split_highs_solver_name("glpk")
+    >>> _get_solver_name_and_version("glpk")
     ('glpk', None)
     """
     m = re.match(r"^(highs)(?:[-\s](?P<variant>[\w-]+))?$", solver_name.lower())
@@ -451,7 +451,7 @@ def build_solver_command(
         The command as a list of strings, suitable for passing to
         ``subprocess.run``.
     """
-    base_solver, variant = _split_highs_solver_name(solver_name)
+    base_solver, variant = get_solver_name_and_version(solver_name)
 
     command = ["systemd-run"]
     if os.geteuid() != 0:
