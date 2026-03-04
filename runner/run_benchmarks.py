@@ -457,18 +457,18 @@ def build_solver_command(
     command.extend(
         [
             "--scope",
-            "--property=MemoryMax={}".format(memory_limit_bytes),
+            f"--property=MemoryMax={memory_limit_bytes}",
             "--property=MemorySwapMax=0",
             "/usr/bin/time",
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
-            "{}s".format(timeout),
+            f"{timeout}s",
             "python",
             str(Path(__file__).parent / "run_solver.py"),
-            "--solver_name {}".format(base_solver),
-            "--input_file {}".format(input_file.as_posix()),
-            "--solver_version {}".format(solver_version),
+            f"--solver_name {base_solver}",
+            f"--input_file {input_file.as_posix()}",
+            f"--solver_version {solver_version}",
         ]
     )
 
