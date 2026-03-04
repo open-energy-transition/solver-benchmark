@@ -152,7 +152,7 @@ def _download_via_requests(url: str, dest: Path, chunk_size: int = 8192) -> None
                 if chunk:
                     f.write(chunk)
     os.replace(tmp, dest)
-    logger.info("Downloaded {} to {} via requests".format(url, dest))
+    logger.info(f"Downloaded {url} to {dest} via requests")
 
 
 def _download_via_gsutil(url: str, dest: Path) -> None:
@@ -174,7 +174,7 @@ def _download_via_gsutil(url: str, dest: Path) -> None:
     subprocess.run(
         ["gsutil", "cp", url, str(dest)], check=True, capture_output=True, text=True
     )
-    logger.info("Downloaded %s to %s via gsutil", url, dest)
+    logger.info(f"Downloaded {url} to {dest} via gsutil")
 
 
 def _unzip_gz(path: Path) -> Path:
@@ -184,7 +184,7 @@ def _unzip_gz(path: Path) -> Path:
     with gzip.open(path, "rb") as gz_f, open(uncompressed, "wb") as out_f:
         shutil.copyfileobj(gz_f, out_f)
     os.remove(path)
-    logger.info("Unzipped %s -> %s", path, uncompressed)
+    logger.info(f"Unzipped {path} -> {uncompressed}")
     return uncompressed
 
 
@@ -214,7 +214,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
         dest_path.with_suffix("") if dest_path.suffix == ".gz" else dest_path
     )
     if final_uncompressed.exists():
-        logger.info("File already exists at %s. Skipping download.", final_uncompressed)
+        logger.info(f"File already exists at {final_uncompressed}. Skipping download.")
         return
 
     # download to dest_path (compressed or not)
@@ -556,7 +556,7 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
         exceptions if ``result.stdout`` does not contain valid JSON on the final line.
     """
     if result.returncode == 124:
-        print("TIMEOUT")
+        logger.info("TIMEOUT")
         return return_failure_metrics("TO", "Timeout", timeout)
 
     # systemd-run uses sigkill (9) or sigterm (15) to terminate
@@ -564,11 +564,11 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
     # subprocess returns -<signal> for signals
     # these things don't seem very portable
     if result.returncode in (137, 143, -9, -15):
-        print("OUT OF MEMORY")
+        logger.info("OUT OF MEMORY")
         return return_failure_metrics("OOM", "Out of Memory", "N/A")
 
     if result.returncode != 0:
-        print(
+        logger.info(
             f"ERROR running solver. Return code: {result.returncode}\n"
             f"Stdout:\n{result.stdout}\n"
             f"Stderr:\n{result.stderr}\n"
@@ -628,9 +628,7 @@ def benchmark_solver(
     memory_limit_bytes = int(available_memory_bytes * 0.95)
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
     logger.info(
-        "Setting memory limit to {:.2f} MB (95% of available memory)".format(
-            memory_limit_mb
-        )
+        f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)."
     )
 
     command = build_solver_command(
@@ -662,18 +660,18 @@ def benchmark_solver(
             f.write("\nSTDERR:\n")
             f.write(result.stderr)
     else:
-        print(f"ERROR: couldn't find log file {log_file}")
+        logger.info(f"ERROR: couldn't find log file {log_file}")
 
     memory = None
     try:
         memory = parse_memory(result.stderr)
     except ValueError:
-        print("Failed to parse memory usage from stderr")
+        logger.error("Failed to parse memory usage from stderr")
 
     metrics = parse_solver_result(result, timeout)
 
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
-        print(f"WARNING: unknown solver status: {metrics['status']}")
+        logger.info(f"WARNING: unknown solver status: {metrics['status']}")
 
     metrics["memory"] = memory
     metrics["timeout"] = timeout
@@ -704,7 +702,7 @@ def main(
             -1
         ]  # the api will return a response like projects/319823961160/machineTypes/c4-highmem-8
     except Exception as e:
-        print(f"Error getting VM instance type: {e}")
+        logger.error(f"Error getting VM instance type: {e}")
         environment_metadata["vm_instance_type"] = "unknown"
 
     try:
@@ -714,7 +712,7 @@ def main(
             text=True,
         ).stdout.strip()
     except Exception as e:
-        print(f"Error getting git commit hash: {e}")
+        logger.error(f"Error getting git commit hash: {e}")
         environment_metadata["solver_benchmark_version"] = "unknown"
 
     try:
@@ -724,14 +722,14 @@ def main(
             headers={"Metadata-Flavor": "Google"},
         ).text.split("/")[-1]
     except Exception as e:
-        print(f"Error getting VM zone: {e}")
+        logger.error(f"Error getting VM zone: {e}")
         environment_metadata["vm_zone"] = "unknown"
 
     if run_id is None:
         run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
-        print(f"Generated run_id: {run_id}")
+        logger.info(f"Generated run_id: {run_id}")
     else:
-        print(f"Using provided run_id: {run_id}")
+        logger.info(f"Using provided run_id: {run_id}")
 
     size_categories = None  # TODO add this to CLI args
     results = {}
@@ -811,7 +809,7 @@ def main(
                 }
             )
 
-    print(
+    logger.info(
         f"Found {len(processed_benchmarks)} benchmark instances"
         + ("" if size_categories is None else f" matching {size_categories}")
     )
@@ -832,9 +830,7 @@ def main(
                 )  # Latest CBC release is in 2024
             ):
                 logger.info(
-                    "WARNING: skipping {} in {} because this benchmark instance is size L".format(
-                        solver, year
-                    )
+                    f"WARNING: skipping {solver} in {year} because this benchmark instance is size L."
                 )
                 continue
 
@@ -843,15 +839,14 @@ def main(
                 year != "2025" or benchmark["class"] != "LP"
             ):
                 logger.info(
-                    "Solver {} is only available for LP benchmarks and year 2025. Current year: {}, problem class: {}. Skipping.".format(
-                        solver, year, benchmark["class"]
-                    )
+                    f"Solver {solver} is only available for LP benchmarks and year 2025."
+                    f" Current year: {year}, problem class: {benchmark['class']}. Skipping."
                 )
                 continue
 
             solver_version = solvers_versions.get(solver)
             if not solver_version:
-                logger.info("Solver {} is not available. Skipping.".format(solver))
+                logger.info(f"Solver {solver} is not available. Skipping.")
                 continue
 
             metrics = {}
@@ -859,9 +854,8 @@ def main(
             memory_usages = []
 
             for i in range(iterations):
-                print(
-                    f"Running solver {solver} (version {solver_version}) on {benchmark['path']} ({i})...",
-                    flush=True,
+                logger.info(
+                    f"Running solver {solver} (version {solver_version}) on {benchmark['path']} ({i})..."
                 )
 
                 # Record timestamp before running the solver
@@ -923,9 +917,8 @@ def main(
                 if last_reference_run == 0 or time_since_last_run >= int(
                     reference_interval
                 ):
-                    print(
-                        f"Running reference benchmark with HiGHS HiPO (interval: {reference_interval}s)...",
-                        flush=True,
+                    logger.info(
+                        f"Running reference benchmark with HiGHS HiPO (interval: {reference_interval}s)..."
                     )
                     reference_metrics = benchmark_solver(
                         reference_benchmark_path,
@@ -951,10 +944,8 @@ def main(
                     # Update the last reference run time
                     last_reference_run = current_time
                 else:
-                    print(
-                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago,"
-                        f" interval: {reference_interval}s)",
-                        flush=True,
+                    logger.info(
+                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)"
                     )
 
     return results
@@ -965,10 +956,10 @@ if __name__ == "__main__":
         description="Run the benchmarks specified in the given file."
     )
     parser.add_argument(
-        "--benchmark_yaml_path", type=str, help="Path to the benchmarks YAML file."
+        "benchmark_yaml_path", type=str, help="Path to the benchmarks YAML file."
     )
     parser.add_argument(
-        "--year",
+        "year",
         type=str,
         help="Denote the benchmarks as having been run on solvers from given year.",
     )
@@ -977,8 +968,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped. "
-        "For 2025, highs variants are available: highs-hipo, highs-ipm.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs variants are available: highs-hipo, highs-ipm, highs-hipo-32, highs-hipo-64, highs-hipo-128.",
     )
     parser.add_argument(
         "--append",
