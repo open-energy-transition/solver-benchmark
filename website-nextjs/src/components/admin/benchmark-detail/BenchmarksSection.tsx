@@ -60,7 +60,13 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
           this benchmark.
         </span>
       </div>
-      <D3PlotChart startFrom={0} chartData={chartData} domainPadding={100} />
+      <D3PlotChart
+        startFrom={0}
+        chartData={chartData}
+        domainPadding={100}
+        xAxisDirection="lower"
+        yAxisDirection="lower"
+      />
       <div className="pt-1.5 pb-3 pl-3">
         <p className="flex gap-1 items-center text-dark-grey text-sm">
           <CloseIcon className="size-3" />

@@ -4,6 +4,7 @@ import { CircleIcon } from "@/assets/icons";
 import { ID3StackedBarChart } from "@/types/chart";
 import { createD3Tooltip } from "@/utils/chart";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 
 const D3StackedBarChart = ({
   title,
@@ -17,6 +18,7 @@ const D3StackedBarChart = ({
   yAxisLabel = "Value",
   rotateXAxisLabels = false,
   showXaxisLabel = true,
+  directionalIndicator = undefined,
 }: ID3StackedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -163,8 +165,13 @@ const D3StackedBarChart = ({
   return (
     <div className={`bg-white rounded-xl ${className}`}>
       <div className="flex justify-between items-center">
-        <div className="tag-line-xs text-center text-dark-grey">
-          {typeof title === "string" ? title : title}
+        <div className="flex items-center gap-2">
+          <div className="tag-line-xs text-center text-dark-grey">
+            {typeof title === "string" ? title : title}
+          </div>
+          {directionalIndicator && (
+            <DirectionalIndicator direction={directionalIndicator} size="sm" />
+          )}
         </div>
         <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
           {Object.keys(colors).map((solverKey) => (

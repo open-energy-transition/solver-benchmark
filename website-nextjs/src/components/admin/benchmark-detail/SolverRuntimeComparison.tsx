@@ -178,7 +178,7 @@ const SolverRuntimeComparison = ({
     },
     [benchmarkLatestResults, benchmarkName],
   );
-
+  console.log("directionalIndicator", "lower");
   return (
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
@@ -201,6 +201,7 @@ const SolverRuntimeComparison = ({
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
         useLogScale={true}
+        directionalIndicator="lower"
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);

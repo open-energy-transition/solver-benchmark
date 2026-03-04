@@ -5,6 +5,7 @@ import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
 import { formatDecimal } from "@/utils/number";
+import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 
 type PerformanceData = {
   benchmark: string;
@@ -577,15 +578,23 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             <p>🔻/🔺: base / other solver failed to solve in time limit</p>
             <p>❌ : both solvers failed to solve in time limit</p>
           </div>
-          <div className="lg:mr-24">
-            <p className="flex gap-1 items-center">
-              <CircleIcon className="size-3" />
-              base solver solved successfully
-            </p>
-            <p className="flex gap-1 items-center">
-              <CloseIcon className="size-3" />
-              base solver failed to solve in time limit
-            </p>
+          <div className="lg:mr-24 flex flex-col gap-2">
+            <div>
+              <p className="flex gap-1 items-center">
+                <CircleIcon className="size-3" />
+                base solver solved successfully
+              </p>
+              <p className="flex gap-1 items-center">
+                <CloseIcon className="size-3" />
+                base solver failed to solve in time limit
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
+              <DirectionalIndicator direction="lower" size="sm" />
+              <span className="text-xs text-dark-grey/70">
+                (for performance factor)
+              </span>
+            </div>
           </div>
         </div>
       </div>
