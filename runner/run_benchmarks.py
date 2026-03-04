@@ -466,16 +466,19 @@ def build_solver_command(
             f"{timeout}s",
             "python",
             str(Path(__file__).parent / "run_solver.py"),
-            f"--solver_name {base_solver}",
-            f"--input_file {input_file.as_posix()}",
-            f"--solver_version {solver_version}",
+            "--solver_name",
+            base_solver,
+            "--input_file",
+            input_file.as_posix(),
+            "--solver_version",
+            solver_version,
         ]
     )
 
     if variant:
-        command.append(f"--highs_solver_variant {variant}")
+        command.extend(["--highs_solver_variant", variant])
     elif reference_benchmark and base_solver.lower() == "highs":
-        command.append("--highs_solver_variant hipo")
+        command.extend(["--highs_solver_variant", "hipo"])
 
     return command
 

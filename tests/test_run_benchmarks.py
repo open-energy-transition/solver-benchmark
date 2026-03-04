@@ -74,10 +74,14 @@ class TestRunBenchmarks:
         assert f"{timeout}s" in cmd
         expected_wrapper = str(Path(run_benchmarks.__file__).parent / "run_solver.py")
         assert expected_wrapper in cmd
-        assert f"--solver_name {solver_name}" in cmd
-        assert f"--input_file {input_file.as_posix()}" in cmd
-        assert f"--solver_version {solver_version}" in cmd
-        assert "--highs_solver_variant hipo" in cmd
+        assert "--solver_name" in cmd
+        assert cmd[cmd.index("--solver_name") + 1] == solver_name
+        assert "--input_file" in cmd
+        assert cmd[cmd.index("--input_file") + 1] == input_file.as_posix()
+        assert "--solver_version" in cmd
+        assert cmd[cmd.index("--solver_version") + 1] == solver_version
+        assert "--highs_solver_variant" in cmd
+        assert cmd[cmd.index("--highs_solver_variant") + 1] == "hipo"
 
     def test_build_command_as_root_no_user_and_no_reference(
         self, monkeypatch: MagicMock
@@ -93,13 +97,15 @@ class TestRunBenchmarks:
         cmd = build_solver_command(
             input_file, solver_name, timeout, solver_version, memory_limit_bytes, False
         )
-
         assert "--user" not in cmd
         assert f"--property=MemoryMax={memory_limit_bytes}" in cmd
         assert f"{timeout}s" in cmd
-        assert f"--solver_name {solver_name}" in cmd
-        assert f"--input_file {input_file.as_posix()}" in cmd
-        assert f"--solver_version {solver_version}" in cmd
+        assert "--solver_name" in cmd
+        assert cmd[cmd.index("--solver_name") + 1] == solver_name
+        assert "--input_file" in cmd
+        assert cmd[cmd.index("--input_file") + 1] == input_file.as_posix()
+        assert "--solver_version" in cmd
+        assert cmd[cmd.index("--solver_version") + 1] == solver_version
         assert not any(el == "--highs_solver_variant hipo" for el in cmd)
 
     def test_download_regular_file_http(self, tmp_path: Path) -> None:
