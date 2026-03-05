@@ -130,7 +130,7 @@ def get_conda_package_versions(solvers: list[str], env_name=None) -> dict[str, s
 
 def _download_via_requests(url: str, dest: Path, chunk_size: int = 8192) -> None:
     """
-    Download a file over HTTP(S) using HTTP/HTTPS requests..
+    Download a file over HTTP(S) requests.
 
     Parameters
     ----------
@@ -175,6 +175,26 @@ def _download_via_gsutil(url: str, dest: Path) -> None:
 
 
 def _unzip_gz(path: Path) -> Path:
+    """
+    Decompress a gzip file and remove the original compressed file.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the file to decompress. If the file does not have a `.gz`
+        extension, it is returned unchanged.
+
+    Returns
+    -------
+    Path
+        Path to the decompressed file. If the input file was not gzipped,
+        returns the input path unchanged.
+
+    Notes
+    -----
+    This function removes the original `.gz` file after successful
+    decompression and prints a message to stdout indicating the operation.
+    """
     if path.suffix != ".gz":
         return path
     uncompressed = path.with_suffix("")
