@@ -56,6 +56,7 @@ import re
 import shutil
 import statistics
 import subprocess
+import sys
 import time
 import typing
 from collections import OrderedDict
@@ -248,9 +249,8 @@ def parse_memory(output: str) -> float:
     -----
     - Assumes the memory usage is reported in kilobytes (KB) and converts it to megabytes (MB).
     """
-    line = output.splitlines()[-1]
-    if "MaxResidentSetSizeKB=" in line:
-        parts = line.strip().split("=")
+    if "MaxResidentSetSizeKB=" in output:
+        parts = output.strip().split("=")
         max_resident_set_size = parts[-1]
         return float(max_resident_set_size) / 1000  # Convert to MB
     raise ValueError(f"Could not find memory usage in subprocess output:\n{output}")
@@ -450,36 +450,81 @@ def build_solver_command(
     """
     base_solver, variant = get_solver_name_and_version(solver_name)
 
-    command = ["systemd-run"]
-    if os.geteuid() != 0:
-        command.append("--user")
-
-    command.extend(
-        [
-            "--scope",
-            f"--property=MemoryMax={memory_limit_bytes}",
-            "--property=MemorySwapMax=0",
-            "/usr/bin/time",
-            "--format",
-            "MaxResidentSetSizeKB=%M",
-            "timeout",
-            f"{timeout}s",
-            "python",
-            str(Path(__file__).parent / "run_solver.py"),
-            "--solver_name",
-            base_solver,
-            "--input_file",
-            input_file.as_posix(),
-            "--solver_version",
-            solver_version,
-        ]
+    # Detect available helper binaries
+    sysd = shutil.which("systemd-run")
+    prlimit = shutil.which("prlimit")
+    timeout_cmd = shutil.which("timeout")
+    # Use GNU /usr/bin/time only on Linux where format is supported
+    time_cmd = (
+        "/usr/bin/time"
+        if (sys.platform.startswith("linux") and shutil.which("/usr/bin/time"))
+        else None
     )
 
-    if variant:
-        command.extend(["--highs_solver_variant", variant])
-    elif reference_benchmark and base_solver.lower() == "highs":
-        command.extend(["--highs_solver_variant", "hipo"])
+    # Common solver invocation
+    solver_invocation = [
+        "python",
+        str(Path(__file__).parent / "run_solver.py"),
+        "--solver_name",
+        base_solver,
+        "--input_file",
+        input_file.as_posix(),
+        "--solver_version",
+        solver_version,
+    ]
 
+    if variant:
+        solver_invocation.extend(["--highs_solver_variant", variant])
+    elif reference_benchmark and base_solver.lower() == "highs":
+        solver_invocation.extend(["--highs_solver_variant", "hipo"])
+
+    # If systemd-run is available prefer it (provides MemoryMax)
+    if sysd:
+        print("systemd-run detected")
+        command = [sysd]
+        if os.geteuid() != 0:
+            command.append("--user")
+        command.extend(
+            [
+                "--scope",
+                f"--property=MemoryMax={memory_limit_bytes}",
+                "--property=MemorySwapMax=0",
+            ]
+        )
+        # prepend /usr/bin/time if available on the platform
+        if time_cmd:
+            command.extend([time_cmd, "--format", "MaxResidentSetSizeKB=%M"])
+        # prepend timeout if available
+        if timeout_cmd:
+            command.extend([timeout_cmd, f"{timeout}s"])
+        command.extend(solver_invocation)
+        return command
+
+    # If prlimit exists, use it to set resource limits (Linux)
+    if prlimit:
+        print("prlimit detected")
+        command = [
+            prlimit,
+            f"--as={memory_limit_bytes}",
+            f"--rss={memory_limit_bytes}",
+            "--",
+        ]  # "--" marks end of prlimit args
+        # add time and timeout if available
+        if time_cmd:
+            command.extend([time_cmd, "--format", "MaxResidentSetSizeKB=%M"])
+        if timeout_cmd:
+            command.extend([timeout_cmd, f"{timeout}s"])
+        command.extend(solver_invocation)
+        return command
+
+    # Fallback: no system-level memory enforcement available. Run directly,
+    # optionally wrapped with time/timeout if present.
+    command = []
+    if time_cmd:
+        command.extend([time_cmd, "--format", "MaxResidentSetSizeKB=%M"])
+    if timeout_cmd:
+        command.extend([timeout_cmd, f"{timeout}s"])
+    command.extend(solver_invocation)
     return command
 
 
@@ -656,12 +701,12 @@ def benchmark_solver(
         / "logs"
         / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
     )
-    if log_file.exists():
-        with open(log_file, "a") as f:
-            f.write("\nSTDERR:\n")
-            f.write(result.stderr)
-    else:
-        print(f"ERROR: couldn't find log file {log_file}")
+    if not log_file.exists():
+        print(f"Creating missing log file {log_file}")
+        log_file.touch()
+    with open(log_file, "a") as f:
+        f.write("\nSTDERR:\n")
+        f.write(result.stderr)
 
     memory = None
     try:
