@@ -39,7 +39,6 @@ const D3SolverEvolutionChart = ({
   const svgRef = useRef(null);
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
   const windowWidth = useDebouncedWindowWidth(200);
-
   useEffect(() => {
     if (data.length === 0) return;
 
