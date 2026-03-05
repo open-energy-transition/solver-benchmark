@@ -9,7 +9,7 @@ dependencies:
 - pip
 - psutil>=5.9
 - requests>=2.32
-- linopy>=0.6.4
+- linopy>=0.6.0
 - coin-or-cbc==2.10.12
 - scip==10.0.0
 - pyscipopt==6.1.0
