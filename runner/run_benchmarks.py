@@ -584,7 +584,7 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
             flush=True,
         )
         metrics = return_failure_metrics("ER", "Error", timeout)
-    print("---> metrics",metrics, flush=True)
+    print("---> metrics", metrics, flush=True)
     print("---> result.stdout", result.stdout, flush=True)
     return metrics
 

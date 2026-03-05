@@ -458,16 +458,6 @@ def main(
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
 
-    results = {
-        "runtime": None,
-        "reported_runtime": None,
-        "status": "ER",
-        "condition": None,
-        "objective": None,
-        "duality_gap": None,
-        "max_integrality_violation": None,
-    }
-
     # We measure runtime here and not of this entire script because lines like
     # `import linopy` take a long (and varying) amount of time
     try:
@@ -479,21 +469,28 @@ def main(
         duality_gap, max_integrality_violation = get_milp_metrics(
             problem_file, solver_name, solver_result
         )
-        results.update(
-            {
-                "runtime": runtime,
-                "reported_runtime": get_reported_runtime(
-                    solver_name, solver_result.solver_model
-                ),
-                "status": solver_result.status.status.value,
-                "condition": solver_result.status.termination_condition.value,
-                "objective": solver_result.solution.objective,
-                "duality_gap": duality_gap,
-                "max_integrality_violation": max_integrality_violation,
-            }
-        )
+        results = {
+            "runtime": runtime,
+            "reported_runtime": get_reported_runtime(
+                solver_name, solver_result.solver_model
+            ),
+            "status": solver_result.status.status.value,
+            "condition": solver_result.status.termination_condition.value,
+            "objective": solver_result.solution.objective,
+            "duality_gap": duality_gap,
+            "max_integrality_violation": max_integrality_violation,
+        }
     except Exception as e:
         logger.error(f"Error running solver: {e}")
+        results = {
+            "runtime": None,
+            "reported_runtime": None,
+            "status": "ER",
+            "condition": None,
+            "objective": None,
+            "duality_gap": None,
+            "max_integrality_violation": None,
+        }
     print(json.dumps(results))
 
 
