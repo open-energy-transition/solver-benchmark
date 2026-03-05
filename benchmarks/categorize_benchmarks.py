@@ -1,365 +1,939 @@
 #!/usr/bin/env python3
 """
-Script to scan for metadata YAML files in benchmark folders,
-download benchmark models from GCS URLs, analyze them with highspy,
-and update Size values based on the number of variables.
+Download, analyze benchmark models, and update benchmark metadata.
+
+The script scans metadata YAML files under a benchmark folder, downloads
+benchmark models from URLs, analyzes them using HiGHS (highspy), and
+updates the corresponding YAML entries with model statistics and a size
+category.
+
+Design goals:
+- Modular functions with single responsibilities.
+- Type hints everywhere to support static analysis.
+- NumPy-style docstrings for public functions.
 """
+
+from __future__ import annotations
 
 import argparse
 import gzip
-import os
-import shutil
 import sys
+import tempfile
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Iterable, MutableMapping, Optional
 from urllib.parse import urlparse
 
 import highspy
 import requests
 from ruamel.yaml import YAML
 
+YamlMap = MutableMapping[str, Any]
 
-def determine_size_category(num_variables):
+
+@dataclass(frozen=True)
+class ModelStats:
+    """Container for model statistics extracted from HiGHS."""
+
+    num_constraints: int
+    num_variables: int
+    num_nonzeros: int
+    size_category: str
+    num_continuous_variables: Optional[int] = None
+    num_integer_variables: Optional[int] = None
+
+
+@dataclass
+class ProcessingSummary:
+    """Counters for tracking progress and failures."""
+
+    total_files: int = 0
+    successful_downloads: int = 0
+    successful_analyses: int = 0
+    successful_updates: int = 0
+    failed_tasks: int = 0
+
+
+def determine_size_category(num_variables: int) -> str:
     """
-    Determine the size category based on the number of variables.
+    Determine a size category based on the number of variables.
 
-    Args:
-        num_variables (int): Number of variables in the model
+    Parameters
+    ----------
+    num_variables : int
+        Number of variables in the model.
 
-    Returns:
-        str: Size category (S, M, or L)
+    Returns
+    -------
+    str
+        Size category ("S", "M", or "L").
     """
-    if num_variables < 1e4:
+    if num_variables < 10_000:
         return "S"
-    elif num_variables < 1e6:
+    if num_variables < 1_000_000:
         return "M"
-    else:
-        return "L"
+    return "L"
 
 
-def analyze_model_file(file_path, is_milp: bool):
+def create_yaml() -> YAML:
     """
-    Analyze a model file using highspy to extract the number of variables.
+    Create a configured YAML loader/dumper.
 
-    Args:
-        file_path (Path): Path to the model file
+    Returns
+    -------
+    ruamel.yaml.YAML
+        YAML instance configured to preserve quotes and avoid wrapping.
+    """
+    yaml = YAML()
+    yaml.preserve_quotes = True
+    yaml.width = float("inf")
+    return yaml
 
-    Returns:
-        dict: Dictionary containing model statistics or None if analysis failed
+
+def iter_metadata_files(root: Path) -> Iterable[Path]:
+    """
+    Yield metadata YAML files under a directory.
+
+    Parameters
+    ----------
+    root : Path
+        Root directory to scan.
+
+    Yields
+    ------
+    Path
+        Paths matching `[Mm]etadata*.yaml`.
+    """
+    yield from sorted(root.rglob("[Mm]etadata*.yaml"))
+
+
+def read_text_file(path: Path) -> str:
+    """
+    Read a UTF-8 text file.
+
+    Parameters
+    ----------
+    path : Path
+        Path to file.
+
+    Returns
+    -------
+    str
+        File contents.
+    """
+    return path.read_text(encoding="utf-8")
+
+
+def write_yaml_file(path: Path, yaml_obj: YAML, data: Any) -> None:
+    """
+    Write YAML data to disk.
+
+    Parameters
+    ----------
+    path : Path
+        Destination path.
+    yaml_obj : ruamel.yaml.YAML
+        YAML instance used to dump data.
+    data : Any
+        YAML-serializable object.
+    """
+    with open(path, "w", encoding="utf-8") as f:
+        yaml_obj.dump(data, f)
+
+
+def is_http_url(url: str) -> bool:
+    """
+    Check whether a URL is an HTTP(S) URL.
+
+    Parameters
+    ----------
+    url : str
+        Candidate URL string.
+
+    Returns
+    -------
+    bool
+        True if the URL looks like HTTP(S).
+    """
+    if not url:
+        return False
+    u = url.strip().lower()
+    return u.startswith("http://") or u.startswith("https://")
+
+
+def get_extension(url_path: str) -> str:
+    """
+    Return a recognized extension from a URL path.
+
+    Parameters
+    ----------
+    url_path : str
+        URL path component.
+
+    Returns
+    -------
+    str
+        Extension token: "lp", "lp.gz", "mps", or "mps.gz".
+
+    Raises
+    ------
+    ValueError
+        If the URL path does not end with a supported extension.
+    """
+    known = {
+        ".lp.gz": "lp.gz",
+        ".mps.gz": "mps.gz",
+        ".lp": "lp",
+        ".mps": "mps",
+    }
+    for suffix, token in known.items():
+        if url_path.endswith(suffix):
+            return token
+    raise ValueError(f"Unknown URL extension {url_path}")
+
+
+def download_stream_to_file(url: str, dest: Path, timeout_s: int = 60) -> None:
+    """
+    Download a URL to a local file path.
+
+    Parameters
+    ----------
+    url : str
+        Source URL.
+    dest : Path
+        Destination file path.
+    timeout_s : int, optional
+        Request timeout in seconds. Default is 60.
+
+    Notes
+    -----
+    A timeout is used to avoid hanging CI/HPC jobs indefinitely.
+    """
+    response = requests.get(url, stream=True, timeout=timeout_s)
+    response.raise_for_status()
+
+    with open(dest, "wb") as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                f.write(chunk)
+
+
+def decompress_gzip_file(
+    compressed_path: Path,
+    output_path: Path,
+) -> None:
+    """
+    Decompress a gzip file to an output path.
+
+    Parameters
+    ----------
+    compressed_path : Path
+        Path to `.gz` file.
+    output_path : Path
+        Destination path for decompressed bytes.
+    """
+    with gzip.open(compressed_path, "rb") as gz_file:
+        with open(output_path, "wb") as out:
+            out.write(gz_file.read())
+
+
+def get_cached_paths(
+    url: str,
+    cache_dir: Path,
+) -> tuple[Path, Optional[Path]]:
+    """
+    Compute cache paths for a URL.
+
+    Parameters
+    ----------
+    url : str
+        Source URL.
+    cache_dir : Path
+        Cache directory.
+
+    Returns
+    -------
+    tuple[Path, Optional[Path]]
+        (download_target, uncompressed_target_or_None)
+    """
+    parsed = urlparse(url)
+    filename = Path(parsed.path).name
+    extension = get_extension(parsed.path)
+
+    download_target = cache_dir / filename
+
+    if extension.endswith(".gz"):
+        # For "foo.mps.gz", ruamel's with_suffix would drop only ".gz".
+        # We prefer "foo.mps" / "foo.lp" explicitly.
+        if extension == "mps.gz":
+            uncompressed = cache_dir / filename.removesuffix(".gz")
+        elif extension == "lp.gz":
+            uncompressed = cache_dir / filename.removesuffix(".gz")
+        else:
+            raise ValueError(f"Unsupported gz extension: {extension}")
+        return download_target, uncompressed
+
+    return download_target, None
+
+
+def download_benchmark_file(
+    url: str,
+    use_cache: bool,
+    cache_dir: Optional[Path] = None,
+) -> Optional[Path]:
+    """
+    Download a benchmark model file and return its local path.
+
+    Parameters
+    ----------
+    url : str
+        Model URL (HTTP/S).
+    use_cache : bool
+        If True, downloads are stored in `cache_dir` and reused.
+    cache_dir : Path, optional
+        Cache directory when `use_cache=True`.
+
+    Returns
+    -------
+    Path or None
+        Local path to the decompressed model file, or None on failure.
     """
     try:
-        print(f"Analyzing model: {file_path}")
+        if not is_http_url(url):
+            raise ValueError(f"Invalid URL: {url}")
+
+        parsed = urlparse(url)
+        extension = get_extension(parsed.path)
+
+        if use_cache:
+            if cache_dir is None:
+                raise ValueError("cache_dir must be set when use_cache=True")
+            cache_dir.mkdir(parents=True, exist_ok=True)
+
+            download_path, uncompressed_path = get_cached_paths(url, cache_dir)
+
+            # Reuse already decompressed file to avoid repeated work.
+            if uncompressed_path is not None and uncompressed_path.exists():
+                return uncompressed_path
+
+            if uncompressed_path is None and download_path.exists():
+                return download_path
+
+            print(f"Downloading {url}")
+            download_stream_to_file(url, download_path)
+
+            if extension.endswith(".gz"):
+                assert uncompressed_path is not None
+                decompress_gzip_file(download_path, uncompressed_path)
+                download_path.unlink(missing_ok=True)
+                return uncompressed_path
+
+            return download_path
+
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}")
+        tmp_path = Path(tmp.name)
+        tmp.close()
+        print(f"Downloading {url}")
+        download_stream_to_file(url, tmp_path)
+
+        if not extension.endswith(".gz"):
+            return tmp_path
+
+        if extension == "lp.gz":
+            suffix = ".lp"
+        elif extension == "mps.gz":
+            suffix = ".mps"
+        else:
+            raise ValueError(f"Unsupported gz extension: {extension}")
+
+        out_tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+        out_path = Path(out_tmp.name)
+        out_tmp.close()
+
+        decompress_gzip_file(tmp_path, out_path)
+        tmp_path.unlink(missing_ok=True)
+
+        return out_path
+
+    except Exception as exc:
+        print(f"Error processing {url}: {exc}", file=sys.stderr)
+        return None
+
+
+def safe_unlink(path: Optional[Path]) -> None:
+    """
+    Remove a file path if it exists.
+
+    Parameters
+    ----------
+    path : Path, optional
+        Path to remove.
+    """
+    if path is None:
+        return
+    try:
+        path.unlink(missing_ok=True)
+    except Exception:
+        # Best-effort cleanup only.
+        return
+
+
+def analyze_model_file(file_path: Path, is_milp: bool) -> Optional[ModelStats]:
+    """
+    Analyze a model file using HiGHS and return statistics.
+
+    Parameters
+    ----------
+    file_path : Path
+        Path to the model file (.lp or .mps).
+    is_milp : bool
+        If True, additional integer/continuous counts are computed.
+
+    Returns
+    -------
+    ModelStats or None
+        Parsed statistics, or None if analysis fails.
+    """
+    try:
         highs = highspy.Highs()
         highs.readModel(str(file_path))
 
-        # Extract key information
         num_variables = highs.getNumCol()
-        assert num_variables == highs.numVariables
+        if num_variables == 0:
+            raise RuntimeError("Model loaded but has zero variables")
+
+        num_constraints = highs.getNumRow()
+
+        try:
+            num_nonzeros = highs.getNumNz()
+        except AttributeError:
+            num_nonzeros = highs.getNumNonzeros()
+
         size_category = determine_size_category(num_variables)
-        model_stats = {
-            "num_constraints": highs.numConstrs,
-            "num_variables": num_variables,
-            "size_category": size_category,
-        }
 
-        if is_milp:
-            num_cont, num_int = 0, 0
-            for i in range(num_variables):
-                match highs.getColIntegrality(i)[1]:
-                    case highspy.HighsVarType.kInteger:
-                        num_int += 1
-                    case highspy.HighsVarType.kContinuous:
-                        num_cont += 1
+        # LP branch
+        if not is_milp:
+            stats = ModelStats(
+                num_constraints=num_constraints,
+                num_variables=num_variables,
+                num_nonzeros=num_nonzeros,
+                size_category=size_category,
+            )
 
-            model_stats["num_continuous_variables"] = num_cont
-            model_stats["num_integer_variables"] = num_int
+            print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
+            return stats
 
-        print(f"Analysis complete for {file_path}. Stats:\n  {model_stats}")
-        return model_stats
+        # MILP branch
+        num_cont, num_int = count_variable_types(highs, num_variables)
 
-    except Exception as e:
-        print(f"Error analyzing {file_path}: {e}", file=sys.stderr)
+        stats = ModelStats(
+            num_constraints=num_constraints,
+            num_variables=num_variables,
+            num_nonzeros=num_nonzeros,
+            size_category=size_category,
+            num_continuous_variables=num_cont,
+            num_integer_variables=num_int,
+        )
+
+        print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
+        return stats
+
+    except Exception as exc:
+        print(f"Error analyzing {file_path}: {exc}", file=sys.stderr)
         return None
 
 
-def download_benchmark_file(url: str, target_path: Path) -> Path | None:
+def count_variable_types(highs: highspy.Highs, num_variables: int) -> tuple[int, int]:
     """
-    Download a file from the given URL to the target path.
+    Count continuous and integer variables in a HiGHS model.
 
-    Args:
-        url (str): URL to download from
-        target_path (Path): Path where the file should be saved
+    Parameters
+    ----------
+    highs : highspy.Highs
+        HiGHS instance with a model loaded.
+    num_variables : int
+        Number of columns.
+
+    Returns
+    -------
+    tuple[int, int]
+        (num_continuous, num_integer)
     """
-    # TODO this is mostly a copy of the function in run_benchmarks.py. Refactor!
+    num_cont, num_int = 0, 0
+    for i in range(num_variables):
+        var_type = highs.getColIntegrality(i)[1]
+        if var_type == highspy.HighsVarType.kInteger:
+            num_int += 1
+        elif var_type == highspy.HighsVarType.kContinuous:
+            num_cont += 1
+    return num_cont, num_int
+
+
+def is_milp_problem_class(model_info: YamlMap) -> bool:
+    """
+    Check if model problem class indicates MILP.
+
+    Parameters
+    ----------
+    model_info : dict
+        Benchmark model metadata entry.
+
+    Returns
+    -------
+    bool
+        True if Problem class is "MILP".
+    """
+    return str(model_info.get("Problem class", "")).strip().upper() == "MILP"
+
+
+def iter_size_entries(model_info: YamlMap) -> Iterable[YamlMap]:
+    """
+    Yield size entries from a model info entry.
+
+    Parameters
+    ----------
+    model_info : dict
+        Benchmark model metadata entry.
+
+    Yields
+    ------
+    dict
+        Size entry mappings.
+    """
+    sizes = model_info.get("Sizes", [])
+    if not isinstance(sizes, list):
+        return
+    for entry in sizes:
+        if isinstance(entry, dict):
+            yield entry
+
+
+def get_size_entry_identity(size_entry: YamlMap) -> Optional[tuple[str, str]]:
+    """
+    Extract (name, url) from a size entry if available.
+
+    Parameters
+    ----------
+    size_entry : dict
+        Size entry mapping.
+
+    Returns
+    -------
+    tuple[str, str] or None
+        (size_name, url) if present and valid.
+    """
+    name = size_entry.get("Name")
+    url = size_entry.get("URL")
+
+    if not isinstance(name, str) or not name.strip():
+        return None
+    if not isinstance(url, str) or not url.strip():
+        return None
+    if not is_http_url(url):
+        return None
+
+    return name.strip(), url.strip()
+
+
+def required_stat_fields(is_milp: bool) -> list[str]:
+    """
+    Return the required metadata fields for considering stats complete.
+
+    Parameters
+    ----------
+    is_milp : bool
+        Whether MILP-specific fields are required.
+
+    Returns
+    -------
+    list[str]
+        Required field names.
+    """
+    fields = ["Num. constraints", "Num. variables", "Num. nonzeros"]
+    if is_milp:
+        fields.extend(
+            ["Num. continuous variables", "Num. integer variables"],
+        )
+    return fields
+
+
+def stats_are_complete_and_valid(size_entry: YamlMap, is_milp: bool) -> bool:
+    """
+    Check whether a size entry already has complete, valid statistics.
+
+    Parameters
+    ----------
+    size_entry : dict
+        Size entry mapping.
+    is_milp : bool
+        If True, MILP-specific fields are required.
+
+    Returns
+    -------
+    bool
+        True if fields exist and are positive.
+    """
+    fields = required_stat_fields(is_milp)
+
+    for field in fields:
+        if size_entry.get(field) is None:
+            return False
+
     try:
-        # Check if the URL is valid
-        if not url or url.lower() == "none" or "http" not in url.lower():
-            raise ValueError(f"Invalid URL: {url}")
-
-        # Create parent directories if they don't exist
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-
-        # If target_path ends with .gz, prepare for the uncompressed version
-        if target_path.suffix == ".gz":
-            uncompressed_target_path = target_path.with_suffix("")
-        else:
-            uncompressed_target_path = target_path
-
-        # Check if file already exists
-        file_exists = uncompressed_target_path.exists()
-        if file_exists:
-            print(f"File already exists: {target_path}")
-            return uncompressed_target_path
-
-        print(f"Downloading {url} to {target_path}")
-
-        # Perform the download with streaming to handle large files
-        with requests.get(url, stream=True) as response:
-            response.raise_for_status()
-            with open(target_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-        print(f"Download complete: {target_path}")
-
-        # Unzip if necessary
-        if target_path.suffix == ".gz":
-            print(f"Unzipping {target_path}...")
-            with gzip.open(target_path, "rb") as gz_file:
-                with open(uncompressed_target_path, "wb") as uncompressed_file:
-                    shutil.copyfileobj(gz_file, uncompressed_file)
-            os.remove(target_path)
-            print(f"Unzipped to {uncompressed_target_path}.")
-        return uncompressed_target_path
-
-    except Exception as e:
-        print(f"Error processing {url}: {e}", file=sys.stderr)
-        # Remove partial downloads
-        if not file_exists and target_path.exists():
-            target_path.unlink()
-        return None
+        return (
+            int(size_entry.get("Num. variables", 0)) > 0
+            and int(size_entry.get("Num. constraints", 0)) > 0
+            and int(size_entry.get("Num. nonzeros", 0)) > 0
+        )
+    except Exception:
+        return False
 
 
-def update_size_in_yaml(yaml_data, model_name, size_name, model_stats):
+def update_size_entry(size_entry: YamlMap, stats: ModelStats, is_milp: bool) -> None:
     """
-    Update the Size field in the YAML data structure.
+    Update a size entry in-place with model statistics.
 
-    Args:
-        yaml_data (dict): YAML data structure
-        model_name (str): Name of the model
-        size_name (str): Name of the size entry
-        model_stats (dict): Stats about the model (num vars, etc)
+    Parameters
+    ----------
+    size_entry : dict
+        Size entry mapping to update.
+    stats : ModelStats
+        Statistics extracted from the model.
+    is_milp : bool
+        Whether MILP fields should be written.
 
-    Returns:
-        bool: True if update was successful, False otherwise
+    Notes
+    -----
+    We insert "Num. nonzeros" immediately after "Num. variables" when
+    the key does not exist, to keep YAML ordering stable and readable.
     """
-    # try:
-    model_info = yaml_data["benchmarks"][model_name]
-    for size in model_info["Sizes"]:
-        if size["Name"] == size_name:
-            size["Size"] = model_stats["size_category"]
-            size["Num. constraints"] = model_stats["num_constraints"]
-            size["Num. variables"] = model_stats["num_variables"]
-            if model_info["Problem class"] == "MILP":
-                size["Num. continuous variables"] = model_stats[
-                    "num_continuous_variables"
-                ]
-                size["Num. integer variables"] = model_stats["num_integer_variables"]
+    size_entry["Size"] = stats.size_category
+    size_entry["Num. constraints"] = stats.num_constraints
+    size_entry["Num. variables"] = stats.num_variables
+
+    if "Num. nonzeros" in size_entry:
+        size_entry["Num. nonzeros"] = stats.num_nonzeros
+    else:
+        keys = list(size_entry.keys())
+        try:
+            insert_index = keys.index("Num. variables") + 1
+        except ValueError:
+            insert_index = len(keys)
+        size_entry.insert(insert_index, "Num. nonzeros", stats.num_nonzeros)
+
+    if is_milp:
+        size_entry["Num. continuous variables"] = stats.num_continuous_variables
+        size_entry["Num. integer variables"] = stats.num_integer_variables
+
+
+def update_size_in_yaml(
+    yaml_data: YamlMap,
+    model_name: str,
+    size_name: str,
+    stats: ModelStats,
+) -> bool:
+    """
+    Update the matching size entry for a model in the YAML structure.
+
+    Parameters
+    ----------
+    yaml_data : dict
+        Parsed YAML root.
+    model_name : str
+        Benchmark model key.
+    size_name : str
+        Size entry name (e.g., "S", "M", "L", or custom).
+    stats : ModelStats
+        Statistics extracted from the model.
+
+    Returns
+    -------
+    bool
+        True if the entry was found and updated.
+    """
+    benchmarks = yaml_data.get("benchmarks")
+    if not isinstance(benchmarks, dict):
+        return False
+
+    model_info = benchmarks.get(model_name)
+    if not isinstance(model_info, dict):
+        return False
+
+    milp = is_milp_problem_class(model_info)
+
+    for size_entry in iter_size_entries(model_info):
+        if size_entry.get("Name") == size_name:
+            update_size_entry(size_entry, stats, milp)
             return True
 
     return False
 
 
-def get_extension(url_path: str) -> str:
-    """Returns the file extension (e.g. `mps.gz`) from a URL's path."""
-    known_extensions = {
-        ".lp": "lp",
-        ".lp.gz": "lp.gz",
-        ".mps": "mps",
-        ".mps.gz": "mps.gz",
-    }
-    for ext, res in known_extensions.items():
-        if url_path.endswith(ext):
-            return res
-    raise ValueError(f"Unknown URL extension {url_path}")
-
-
-def process_metadata_files(benchmark_folder, output_folder):
+def process_size_entry(
+    yaml_data: YamlMap,
+    file_path: Path,
+    model_name: str,
+    model_info: YamlMap,
+    size_entry: YamlMap,
+    use_cache: bool,
+    cache_dir: Path,
+    yaml_obj: YAML,
+    summary: ProcessingSummary,
+) -> None:
     """
-    Process all metadata YAML files, download benchmark models, analyze them,
-    and update size values.
+    Process a single size entry (download, analyze, update, write-back).
 
-    Args:
-        benchmark_folder (str): Path to benchmark folder containing metadata files
-        output_folder (str): Path where downloaded files should be stored
+    Parameters
+    ----------
+    yaml_data : dict
+        Parsed YAML root.
+    file_path : Path
+        Source metadata YAML file.
+    model_name : str
+        Benchmark model key.
+    model_info : dict
+        Benchmark model metadata entry.
+    size_entry : dict
+        Size entry mapping.
+    use_cache : bool
+        Whether to cache downloads.
+    cache_dir : Path
+        Cache directory for downloads.
+    yaml_obj : ruamel.yaml.YAML
+        YAML dumper used for writing back.
+    summary : ProcessingSummary
+        Counters updated in-place.
+    """
+    identity = get_size_entry_identity(size_entry)
+    if identity is None:
+        return
+
+    size_name, url = identity
+    summary.total_files += 1
+
+    milp = is_milp_problem_class(model_info)
+
+    if stats_are_complete_and_valid(size_entry, milp):
+        # We skip analysis to keep runs fast when YAML is already filled.
+        return
+
+    model_path = download_benchmark_file(
+        url,
+        use_cache=use_cache,
+        cache_dir=cache_dir if use_cache else None,
+    )
+    if model_path is None:
+        summary.failed_tasks += 1
+        return
+
+    summary.successful_downloads += 1
+
+    stats = analyze_model_file(model_path, milp)
+
+    if not use_cache:
+        safe_unlink(model_path)
+
+    if stats is None:
+        summary.failed_tasks += 1
+        return
+
+    summary.successful_analyses += 1
+
+    updated = update_size_in_yaml(yaml_data, model_name, size_name, stats)
+    if not updated:
+        summary.failed_tasks += 1
+        return
+
+    summary.successful_updates += 1
+    write_yaml_file(file_path, yaml_obj, yaml_data)
+    print(f"Updated {model_name} with model stats")
+
+
+def process_metadata_file(
+    file_path: Path,
+    use_cache: bool,
+    cache_dir: Path,
+    yaml_obj: YAML,
+    summary: ProcessingSummary,
+) -> None:
+    """
+    Process a single metadata YAML file.
+
+    Parameters
+    ----------
+    file_path : Path
+        Path to a metadata YAML file.
+    use_cache : bool
+        Whether to cache downloads.
+    cache_dir : Path
+        Cache directory for downloads.
+    yaml_obj : ruamel.yaml.YAML
+        YAML loader/dumper.
+    summary : ProcessingSummary
+        Counters updated in-place.
+    """
+    if file_path.stat().st_size == 0:
+        return
+
+    content = read_text_file(file_path)
+    if not content.strip():
+        return
+
+    yaml_data = yaml_obj.load(content)
+    if not isinstance(yaml_data, dict):
+        return
+
+    benchmarks = yaml_data.get("benchmarks")
+    if not isinstance(benchmarks, dict):
+        return
+
+    for model_name, model_info in benchmarks.items():
+        if model_info is None:
+            continue
+        if not isinstance(model_info, dict):
+            continue
+
+        for size_entry in iter_size_entries(model_info):
+            process_size_entry(
+                yaml_data=yaml_data,
+                file_path=file_path,
+                model_name=str(model_name),
+                model_info=model_info,
+                size_entry=size_entry,
+                use_cache=use_cache,
+                cache_dir=cache_dir,
+                yaml_obj=yaml_obj,
+                summary=summary,
+            )
+
+
+def process_metadata_files(
+    benchmark_folder: str,
+    output_folder: str,
+    use_cache: bool,
+) -> ProcessingSummary:
+    """
+    Process all metadata YAML files under a benchmark directory.
+
+    Parameters
+    ----------
+    benchmark_folder : str
+        Path to benchmark folder that contains metadata YAML files.
+    output_folder : str
+        Directory used for cached downloads when cache is enabled.
+    use_cache : bool
+        If True, downloads are cached under `output_folder`.
+
+    Returns
+    -------
+    ProcessingSummary
+        Summary counters.
     """
     benchmarks_dir = Path(benchmark_folder)
-    output_dir = Path(output_folder)
+    cache_dir = Path(output_folder)
 
-    total_files = 0
-    successful_downloads = 0
-    successful_analyses = 0
-    successful_updates = 0
-    failed_tasks = 0
+    yaml_obj = create_yaml()
+    summary = ProcessingSummary()
 
-    yaml = YAML()
-    yaml.preserve_quotes = True
-    yaml.width = float("inf")  # Prevent line wrapping
-
-    # Find all metadata files recursively
-    for file_path in sorted(benchmarks_dir.rglob("[Mm]etadata*.yaml")):
+    for file_path in iter_metadata_files(benchmarks_dir):
         try:
-            if os.path.getsize(file_path) == 0:
-                continue
+            process_metadata_file(
+                file_path=file_path,
+                use_cache=use_cache,
+                cache_dir=cache_dir,
+                yaml_obj=yaml_obj,
+                summary=summary,
+            )
+        except Exception as exc:
+            print(f"Error processing {file_path}: {exc}", file=sys.stderr)
+            summary.failed_tasks += 1
 
-            # Read the file contents as a string first to preserve exact formatting
-            with open(file_path, "r") as file:
-                file_content = file.read()
+    return summary
 
-            if not file_content.strip():
-                continue
 
-            yaml_parser = YAML()
-            yaml_parser.preserve_quotes = True
-            yaml_parser.width = float("inf")  # Prevent line wrapping
-            yaml_data = yaml_parser.load(file_content)
+def print_summary(summary: ProcessingSummary) -> None:
+    """
+    Print a processing summary.
 
-            if not yaml_data or "benchmarks" not in yaml_data:
-                continue
-
-            for model_name, model_info in yaml_data["benchmarks"].items():
-                # Skip None values (commented out entries)
-                if model_info is None:
-                    continue
-
-                if "Sizes" in model_info and model_info["Sizes"]:
-                    for size in model_info["Sizes"]:
-                        if "URL" in size and size["URL"] and "Name" in size:
-                            url = size["URL"]
-                            size_name = size["Name"]
-
-                            parsed_url = urlparse(url)
-                            extension = get_extension(parsed_url.path)
-                            filename = f"{model_name}-{size_name}.{extension}"
-
-                            target_path = output_dir / filename
-
-                            total_files += 1
-                            model_path = download_benchmark_file(url, target_path)
-
-                            if model_path is not None:
-                                successful_downloads += 1
-
-                                # Skip time consuming analysis if metadata already contains stats
-                                if size.get("Num. variables") is not None:
-                                    print(
-                                        f"Skipping analysis for {model_name} size {size_name}"
-                                    )
-                                    continue
-
-                                model_stats = analyze_model_file(
-                                    model_path, model_info["Problem class"] == "MILP"
-                                )
-
-                                if model_stats:
-                                    successful_analyses += 1
-
-                                    if update_size_in_yaml(
-                                        yaml_data, model_name, size_name, model_stats
-                                    ):
-                                        successful_updates += 1
-                                        # Write to file immediately after successful update
-                                        with open(file_path, "w") as file:
-                                            yaml_writer = YAML()
-                                            yaml_writer.preserve_quotes = True
-                                            yaml_writer.width = float("inf")
-                                            yaml_writer.dump(yaml_data, file)
-                                        print(f"Updated {model_name} with model stats")
-                            else:
-                                failed_tasks += 1
-
-        except Exception as e:
-            print(f"Error processing {file_path}: {e}", file=sys.stderr)
-            failed_tasks += 1
-
-    # Print summary
+    Parameters
+    ----------
+    summary : ProcessingSummary
+        Summary counters.
+    """
     print("\nProcessing Summary:")
-    print(f"Total files found: {total_files}")
-    print(f"Successfully downloaded: {successful_downloads}")
-    print(f"Successfully analyzed: {successful_analyses}")
-    print(f"Successfully updated: {successful_updates}")
-    print(f"Failed tasks: {failed_tasks}")
-    print(f"Files stored in: {output_dir}")
+    print(f"Total files found: {summary.total_files}")
+    print(f"Successfully downloaded: {summary.successful_downloads}")
+    print(f"Successfully analyzed: {summary.successful_analyses}")
+    print(f"Successfully updated: {summary.successful_updates}")
+    print(f"Failed tasks: {summary.failed_tasks}")
 
 
-def cleanup_metadata_files(benchmark_folder):
+def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     """
-    Go through metadata files and remove old manually-computed size stats.
+    Parse CLI arguments.
 
-    Args:
-        benchmark_folder (str): Path to benchmark folder containing metadata files
+    Parameters
+    ----------
+    argv : list[str], optional
+        Command-line arguments. Defaults to sys.argv parsing.
+
+    Returns
+    -------
+    argparse.Namespace
+        Parsed args.
     """
-    benchmarks_dir = Path(benchmark_folder)
-
-    yaml = YAML()
-    yaml.preserve_quotes = True
-    yaml.width = float("inf")  # Prevent line wrapping
-
-    # Find all metadata files recursively
-    for file_path in sorted(benchmarks_dir.rglob("[Mm]etadata*.yaml")):
-        if os.path.getsize(file_path) == 0:
-            continue
-
-        # Read the file contents as a string first to preserve exact formatting
-        with open(file_path, "r") as file:
-            file_content = file.read()
-
-        if not file_content.strip():
-            continue
-
-        yaml_parser = YAML()
-        yaml_parser.preserve_quotes = True
-        yaml_parser.width = float("inf")  # Prevent line wrapping
-        yaml_data = yaml_parser.load(file_content)
-
-        if not yaml_data or "benchmarks" not in yaml_data:
-            continue
-
-        for _benchmark_name, benchmark_info in yaml_data["benchmarks"].items():
-            for size in benchmark_info["Sizes"]:
-                keys_to_remove = [k for k in size if k.startswith("N. of ")]
-                for k in keys_to_remove:
-                    del size[k]
-
-        with open(file_path, "w") as file:
-            # Use the same YAML parser with infinite width to preserve formatting
-            yaml_writer = YAML()
-            yaml_writer.preserve_quotes = True
-            yaml_writer.width = float("inf")  # Prevent line wrapping
-            yaml_writer.dump(yaml_data, file)
-        print(f"Updated YAML file: {file_path}")
-
-
-def main():
-    """Main function to parse arguments and call the processing function."""
     parser = argparse.ArgumentParser(
-        description="Download, analyze benchmark models, and update size values in metadata YAML files."
+        description="Download, analyze benchmark models, and update metadata.",
     )
     parser.add_argument(
         "--folder",
         type=str,
         default="./benchmarks",
-        help="Path to the benchmark folder with metadata files (default: ./benchmarks)",
+        help="Path to the benchmark folder (default: ./benchmarks)",
     )
     parser.add_argument(
         "--output_folder",
         type=str,
         default="./runner/benchmarks",
-        help="Path to store the downloaded LP/MPS files (default: ./runner/benchmarks)",
+        help=(
+            "Path for cached LP/MPS files when caching is enabled "
+            "(default: ./runner/benchmarks)"
+        ),
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Download to temporary storage instead of using cache dir",
+    )
+    return parser.parse_args(argv)
 
-    process_metadata_files(args.folder, args.output_folder)
+
+def main(argv: Optional[list[str]] = None) -> int:
+    """
+    CLI entry point.
+
+    Parameters
+    ----------
+    argv : list[str], optional
+        Command-line arguments.
+
+    Returns
+    -------
+    int
+        Exit code.
+    """
+    args = parse_args(argv)
+
+    summary = process_metadata_files(
+        benchmark_folder=args.folder,
+        output_folder=args.output_folder,
+        use_cache=not args.no_cache,
+    )
+    print_summary(summary)
+
+    # Return non-zero if there were any failed tasks to make CI strict.
+    return 0 if summary.failed_tasks == 0 else 1
 
 
 if __name__ == "__main__":
-    main()
-    # cleanup_metadata_files("./benchmarks")
+    raise SystemExit(main())
