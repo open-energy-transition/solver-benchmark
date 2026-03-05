@@ -49,20 +49,25 @@ jobs:
             exit 1
           fi
           python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
+          PY_EXIT=${PIPESTATUS[0]}
+
+          if [ $PY_EXIT -ne 0 ]; then
+              echo "ERROR: merge_metadata.py failed"
+              exit 1
+          fi
+
           if grep -i "warning" merge_metadata.log; then
               echo "ERROR: merge_metadata.py produced warnings"
               exit 1
           fi
-          if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-              echo "ERROR: merge_metadata.py failed"
-              exit 1
-          fi
+
           if git diff --quiet; then
             echo "git diff is empty, metadata must be up to date"
           else
-            git diff
-            printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
-            exit 1
+              git diff
+              echo "ERROR: git diff non empty, metadata needs updating, please run the following command:"
+              echo "python benchmarks/merge_metadata.py"
+              exit 1
           fi
           python tests/validate_urls_exist.py results/metadata.yaml
           python tests/validate_results.py
