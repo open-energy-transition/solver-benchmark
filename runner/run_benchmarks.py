@@ -56,7 +56,6 @@ import re
 import shutil
 import statistics
 import subprocess
-import sys
 import time
 import typing
 from collections import OrderedDict
@@ -450,81 +449,36 @@ def build_solver_command(
     """
     base_solver, variant = get_solver_name_and_version(solver_name)
 
-    # Detect available helper binaries
-    sysd = shutil.which("systemd-run")
-    prlimit = shutil.which("prlimit")
-    timeout_cmd = shutil.which("timeout")
-    # Use GNU /usr/bin/time only on Linux where format is supported
-    time_cmd = (
-        "/usr/bin/time"
-        if (sys.platform.startswith("linux") and shutil.which("/usr/bin/time"))
-        else None
+    command = ["systemd-run"]
+    if os.geteuid() != 0:
+        command.append("--user")
+
+    command.extend(
+        [
+            "--scope",
+            f"--property=MemoryMax={memory_limit_bytes}",
+            "--property=MemorySwapMax=0",
+            "/usr/bin/time",
+            "--format",
+            "MaxResidentSetSizeKB=%M",
+            "timeout",
+            f"{timeout}s",
+            "python",
+            str(Path(__file__).parent / "run_solver.py"),
+            "--solver_name",
+            base_solver,
+            "--input_file",
+            input_file.as_posix(),
+            "--solver_version",
+            solver_version,
+        ]
     )
 
-    # Common solver invocation
-    solver_invocation = [
-        "python",
-        str(Path(__file__).parent / "run_solver.py"),
-        "--solver_name",
-        base_solver,
-        "--input_file",
-        input_file.as_posix(),
-        "--solver_version",
-        solver_version,
-    ]
-
     if variant:
-        solver_invocation.extend(["--highs_solver_variant", variant])
+        command.extend(["--highs_solver_variant", variant])
     elif reference_benchmark and base_solver.lower() == "highs":
-        solver_invocation.extend(["--highs_solver_variant", "hipo"])
+        command.extend(["--highs_solver_variant", "hipo"])
 
-    # If systemd-run is available prefer it (provides MemoryMax)
-    if sysd:
-        print("systemd-run detected")
-        command = [sysd]
-        if os.geteuid() != 0:
-            command.append("--user")
-        command.extend(
-            [
-                "--scope",
-                f"--property=MemoryMax={memory_limit_bytes}",
-                "--property=MemorySwapMax=0",
-            ]
-        )
-        # prepend /usr/bin/time if available on the platform
-        if time_cmd:
-            command.extend([time_cmd, "--format", "MaxResidentSetSizeKB=%M"])
-        # prepend timeout if available
-        if timeout_cmd:
-            command.extend([timeout_cmd, f"{timeout}s"])
-        command.extend(solver_invocation)
-        return command
-
-    # If prlimit exists, use it to set resource limits (Linux)
-    if prlimit:
-        print("prlimit detected")
-        command = [
-            prlimit,
-            f"--as={memory_limit_bytes}",
-            f"--rss={memory_limit_bytes}",
-            "--",
-        ]  # "--" marks end of prlimit args
-        # add time and timeout if available
-        if time_cmd:
-            command.extend([time_cmd, "--format", "MaxResidentSetSizeKB=%M"])
-        if timeout_cmd:
-            command.extend([timeout_cmd, f"{timeout}s"])
-        command.extend(solver_invocation)
-        return command
-
-    # Fallback: no system-level memory enforcement available. Run directly,
-    # optionally wrapped with time/timeout if present.
-    command = []
-    if time_cmd:
-        command.extend([time_cmd, "--format", "MaxResidentSetSizeKB=%M"])
-    if timeout_cmd:
-        command.extend([timeout_cmd, f"{timeout}s"])
-    command.extend(solver_invocation)
     return command
 
 
@@ -601,25 +555,32 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
         exceptions if ``result.stdout`` does not contain valid JSON on the final line.
     """
 
+    print(
+        "Enter parse_solver_result with returncode:",
+        result.returncode,
+        flush=True,
+    )
+
     if result.returncode == 0:
         # Successful run; parse the JSON metrics from the last line of stdout
         return json.loads(result.stdout.splitlines()[-1])
     elif result.returncode == 124:
         # 124 is the exit code used by the `timeout` command to indicate a timeout
-        print("TIMEOUT")
+        print("TIMEOUT", flush=True)
         return return_failure_metrics("TO", "Timeout", timeout)
     elif result.returncode in (137, 143, -9, -15):
         # systemd-run uses sigkill (9) or sigterm (15) to terminate
         # the process and returns 128 + signal exit code
         # subprocess returns -<signal> for signals
         # these things don't seem very portable
-        print("OUT OF MEMORY")
+        print("OUT OF MEMORY", flush=True)
         return return_failure_metrics("OOM", "Out of Memory", "N/A")
     else:
         print(
             f"ERROR running solver. Return code: {result.returncode}\n"
             f"Stdout:\n{result.stdout}\n"
-            f"Stderr:\n{result.stderr}\n"
+            f"Stderr:\n{result.stderr}\n",
+            flush=True,
         )
         return return_failure_metrics("ER", "Error", timeout)
 
