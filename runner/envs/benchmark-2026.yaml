@@ -1,0 +1,19 @@
+name: benchmark-2026
+channels:
+- conda-forge/label/dev
+- conda-forge
+- https://conda.anaconda.org/gurobi
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.6.4
+- coin-or-cbc==2.10.12
+- scip==10.0.0
+- pyscipopt==5.7.1
+- gurobi==13.0.0
+
+# Install highspy from conda-forge dev label
+- highspy==1.13.2.dev1
