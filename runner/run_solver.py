@@ -36,6 +36,7 @@ class HighsVariant(str, Enum):
     # passed to the HiGHS binary via --options_file=<file>
     def options(self) -> str:
         options = {}
+        options["user_bound_scale"] = -14
         match self:
             case HighsVariant.HIPO_32:
                 options["hipo_block_size"] = 32
