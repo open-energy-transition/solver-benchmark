@@ -563,18 +563,18 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
 
     if result.returncode == 0:
         # Successful run; parse the JSON metrics from the last line of stdout
-        return json.loads(result.stdout.splitlines()[-1])
+        metrics = json.loads(result.stdout.splitlines()[-1])
     elif result.returncode == 124:
         # 124 is the exit code used by the `timeout` command to indicate a timeout
         print("TIMEOUT", flush=True)
-        return return_failure_metrics("TO", "Timeout", timeout)
+        metrics = return_failure_metrics("TO", "Timeout", timeout)
     elif result.returncode in (137, 143, -9, -15):
         # systemd-run uses sigkill (9) or sigterm (15) to terminate
         # the process and returns 128 + signal exit code
         # subprocess returns -<signal> for signals
         # these things don't seem very portable
         print("OUT OF MEMORY", flush=True)
-        return return_failure_metrics("OOM", "Out of Memory", "N/A")
+        metrics = return_failure_metrics("OOM", "Out of Memory", "N/A")
     else:
         print(
             f"ERROR running solver. Return code: {result.returncode}\n"
@@ -582,7 +582,9 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
             f"Stderr:\n{result.stderr}\n",
             flush=True,
         )
-        return return_failure_metrics("ER", "Error", timeout)
+        metrics = return_failure_metrics("ER", "Error", timeout)
+    print(metrics, flush=True)
+    return metrics
 
 
 def benchmark_solver(
@@ -682,6 +684,8 @@ def benchmark_solver(
 
     metrics["memory"] = memory
     metrics["timeout"] = timeout
+
+    print("Finished benchmark_solver with metrics:", metrics, flush=True)
 
     return metrics
 
