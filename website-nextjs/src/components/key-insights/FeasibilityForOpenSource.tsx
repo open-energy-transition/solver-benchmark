@@ -3,6 +3,7 @@ import ProblemClassTable from "./charts/ProblemClassTable";
 import Note from "../shared/Note";
 import Link from "next/link";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "what-is-feasible-for-open-source-solvers";
 const FeasibilityForOpenSource = () => {
@@ -34,23 +35,25 @@ const FeasibilityForOpenSource = () => {
       </p>
       <ProblemClassTable problemClass="LP" />
       <Note>
-        There are some important caveats to keep in mind when comparing spatial
-        and temporal resolutions across different modelling frameworks.
-        Concerning spatial resolution, regions and number of nodes do not
-        represent the same entity and cannot be compared; in general, some
-        models use nodes to disaggregate the spatial scale due to a larger
-        detail needed on power sector analysis and/or on the feedback of other
-        sectors on the electrical grid, while regions are used to ease data
-        aggregation from energy use statistics and for analysis with a broader
-        focus on the system itself rather than on the physical structure of the
-        (electricity, but not only) network. Furthermore, some nodal models can
-        use a hybrid approach to also aggregate nodes to reflect a regional
-        focus. Regarding temporal resolution, time slices are aggregations of
-        time frames with similar energy production/consumption features.
-        Therefore, to give and idea of the correspondence with a 1 hour
-        resolution-model, a model adopting time slices should consider 8760 time
-        slices per year, with different data (and thus results) associated to
-        each of them.
+        There are several important caveats to consider when comparing spatial
+        and temporal resolutions across different modelling frameworks. With
+        respect to spatial resolution, regions and nodes do not represent the
+        same concept and therefore cannot be directly compared. In general, some
+        models use nodes to disaggregate the spatial scale when a higher level
+        of detail is required, particularly for power sector analyses and for
+        capturing feedbacks from other sectors on the electricity grid. By
+        contrast, regions are often employed to facilitate data aggregation from
+        energy-use statistics and to support analyses with a broader
+        system-level focus, rather than on the physical structure of the
+        (electricity, and more broadly energy) network. Moreover, some nodal
+        models adopt hybrid approaches in which nodes are partially aggregated
+        to reflect a regional perspective. Regarding temporal resolution, time
+        slices represent aggregations of time periods with similar energy
+        production and consumption characteristics. Consequently, to establish
+        an equivalence with a model operating at an hourly resolution, a
+        time-slice-based model would, in principle, require 8,760 time slices
+        per year, each associated with distinct input data and, therefore,
+        potentially different results.
       </Note>
       <p>
         Given the limitations of our benchmark set, the strongest observable
@@ -65,16 +68,22 @@ const FeasibilityForOpenSource = () => {
         problem like{" "}
         <Link
           className="font-bold"
-          href="/dashboard/benchmark-set/temoa-US_9R_TS_SP"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "temoa-US_9R_TS_SP",
+          )}
         >
           temoa-US_9R_TS_SP (9-12)
         </Link>{" "}
         does not have similar runtime to the largest solved TIMES-based model,{" "}
         <Link
           className="font-bold"
-          href="dashboard/benchmark-set/times-ireland-noco2-counties"
+          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+            "{name}",
+            "times-ireland-noco2-counties",
+          )}
         >
-          Times-Ireland-noco2-counties (26-1ts)
+          times-ireland-noco2-counties (26-1ts)
         </Link>
         , despite both having &gt; 1e6 variables.
       </p>
