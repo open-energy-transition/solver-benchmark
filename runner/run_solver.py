@@ -251,26 +251,24 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
         ]
 
         # Run the command and capture the output
-        start_time = time.perf_counter()
         try:
             print(f"running command {command}")
-            result = subprocess.run(
-                command,
-                capture_output=True,
-                text=True,
-                check=False,
-                encoding="utf-8",
-            )
-            runtime = time.perf_counter() - start_time
-
-            # Write stdout and stderr to log file
             with open(log_fn, "w") as f:
                 f.write(f"Command: {' '.join(command)}\n")
-                f.write(f"Return code: {result.returncode}\n\n")
-                f.write("STDOUT:\n")
-                f.write(result.stdout)
-                f.write("\n\nSTDERR:\n")
-                f.write(result.stderr)
+                start_time = time.perf_counter()
+                result = subprocess.run(
+                    command,
+                    stdout=f,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    check=False,
+                    encoding="utf-8",
+                )
+                runtime = time.perf_counter() - start_time
+
+            # Read back the log file for parsing
+            with open(log_fn, "r") as f:
+                output = f.read()
 
             if result.returncode != 0:
                 return {
@@ -286,7 +284,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                 # Parse HiGHS output to extract objective value
                 objective = None
                 model_status = "ER"
-                for line in reversed(result.stdout.splitlines()):
+                for line in reversed(output.splitlines()):
                     if objective is None:
                         # Old format:
                         if "Objective value" in line and ":" in line:

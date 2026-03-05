@@ -16,6 +16,7 @@ import Link from "next/link";
 import { ArrowToRightIcon, QuestionLineIcon } from "@/assets/icons";
 import SortIcon from "@/components/shared/tables/SortIcon";
 import InfoPopup from "@/components/common/InfoPopup";
+import { formatInteger } from "@/utils/number";
 
 type RowData = {
   instance: string;
@@ -144,12 +145,14 @@ const InstancesTableResult = ({
       {
         header: "No. VARIABLES",
         accessorKey: "nOfVariables",
-        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) =>
+          formatInteger(info.getValue()),
       },
       {
         header: "No. CONSTRAINTS",
         accessorKey: "nOfConstraints",
-        cell: (info: CellContext<RowData, unknown>) => info.getValue(),
+        cell: (info: CellContext<RowData, unknown>) =>
+          formatInteger(info.getValue()),
       },
     ];
 
@@ -158,12 +161,14 @@ const InstancesTableResult = ({
         {
           header: "No. CONTINUOUS VARIABLES",
           accessorKey: "nOfContinuousVariables",
-          cell: (info: CellContext<RowData, unknown>) => info.getValue(),
+          cell: (info: CellContext<RowData, unknown>) =>
+            formatInteger(info.getValue()),
         },
         {
           header: "No. INTEGER VARIABLES",
           accessorKey: "nOfIntegerVariables",
-          cell: (info: CellContext<RowData, unknown>) => info.getValue(),
+          cell: (info: CellContext<RowData, unknown>) =>
+            formatInteger(info.getValue()),
         },
       );
     }
@@ -226,7 +231,9 @@ const InstancesTableResult = ({
     return baseColumns;
   }, [isMILP]);
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "nOfVariables", desc: false },
+  ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const tableData = useMemo(

@@ -24,6 +24,7 @@ benchmarks:
       Num. variables: 127530
       Num. continuous variables: 107199
       Num. integer variables: 20331
+      Num. nonzeros: 559798
   genx-2_three_zones_w_electrolyzer:
     Short description: This is a one-year example with hourly resolution which contains three zones representing Massachusetts, Connecticut, and Maine. It is designed to show the electrolyzer feature in GenX. The sixteen represented resources include natural gas, solar PV, wind, electrolyzer and lithium-ion battery storage.
     Modelling framework: GenX
@@ -48,6 +49,7 @@ benchmarks:
       Num. variables: 177437
       Num. continuous variables: 157106
       Num. integer variables: 20331
+      Num. nonzeros: 683576
   genx-3_three_zones_w_co2_capture:
     Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. This example shows the usage of CO2, biomass, and piecewise fuel usage related functions of GenX.
     Modelling framework: GenX
@@ -72,6 +74,7 @@ benchmarks:
       Num. variables: 127530
       Num. continuous variables: 107199
       Num. integer variables: 20331
+      Num. nonzeros: 559791
   genx-4_three_zones_w_policies_slack:
     Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to use slack variables to meet a policy constraint if it cannot be met cost-effectively by normal means. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage. It additionally contains example input files (inside the policies folder) establishing slack variables for policy constraints (e.g. the Capacity Reserve Margin, CO2 Cap, etc.). These slack variables allow the relevant constraints to be violated at the cost of a specified objective function penalty, which can be used to either identify problematic constraints without causing infeasibilities in GenX, or to set price caps beyond which policies are no longer enforced. These slack variables will only be created if the relevant input data (Capacity_reserve_margin_slack.csv, CO2_cap_slack.csv, Energy_share_requirement_slack.csv, or the PriceCap column in Minimum_capacity_requirement.csv and Maximum_capacity_requirement.csv) are present. If any of these inputs are not present, GenX will instantiate the relevant policy as a hard constraint, which will throw an infeasibility error if violated.
     Modelling framework: GenX
@@ -96,6 +99,7 @@ benchmarks:
       Num. variables: 146016
       Num. continuous variables: 125685
       Num. integer variables: 20331
+      Num. nonzeros: 681442
   genx-5_three_zones_w_piecewise_fuel:
     Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage and biomass with carbon capture and storage. For natural gas ccs generator, we provide picewise fuel usage (PWFU) parameters to represent the fuel consumption at differernt load point. Please refer to the documentation for more details on PWFU parameters and corresponding data requirements. When settings[\"UCommit\"] >= 1 and PWFU parameters are provided in Thermal.csv, the standard heat rate (i.e., Heat_Rate_MMBTU_per_MWh) will not be used. Instead, the heat rate will be calculated based on the PWFU parameters.
     Modelling framework: GenX
@@ -120,6 +124,7 @@ benchmarks:
       Num. variables: 140466
       Num. continuous variables: 120135
       Num. integer variables: 20331
+      Num. nonzeros: 679844
   genx-6_three_zones_w_multistage:
     Short description: This is a toy multi-stage example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. It is designed to show how to run multi-stage investment planning models. The ten represented resources include natural gas, solar PV, wind, and lithium-ion battery storage.
     Modelling framework: GenX
@@ -144,6 +149,7 @@ benchmarks:
       Num. variables: 127636
       Num. continuous variables: 107302
       Num. integer variables: 20334
+      Num. nonzeros: 670453
   genx-7_three_zones_w_colocated_VRE_storage:
     Short description: This example system shows the functionalities of the colocated VRE+storage module of GenX. It runs a three-zone, 24-hour continental US model, with a carbon constraint and with a long duration energy storage resource that the model can choose to co-locate with either solar or wind. In this case, the storage resource is forced in via minimum and maximum capacity requirement constraints, but these constraints could be easily removed (although the storage resource has a cost of zero in this case so a cost would have to be added). Unit commitment is linearized.
     Modelling framework: GenX
@@ -166,6 +172,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 4325
       Num. variables: 4260
+      Num. nonzeros: 17181
   genx-8_three_zones_w_colocated_VRE_storage_electrolyzers:
     Short description: Three zones (Continental US) GenX infrastructure run considering a time horizon of 1680 hours with 168 hours resolution. This example system shows the functionalities of the colocated VRE+storage+electrolyzer module of GenX (the model can choose to co-locate a long duration-energy storage resource with either solar or wind). Unit commitment is linearized and a carbon constraint is applied.
     Modelling framework: GenX
@@ -188,6 +195,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 302449
       Num. variables: 257129
+      Num. nonzeros: 996931
   genx-9_three_zones_w_retrofit:
     Short description: This is a one-year example with hourly resolution which contains zones representing Massachusetts, Connecticut, and Maine. The twenty-two represented resources include natural gas, solar PV, wind, lithium-ion battery, and coal power plants. This example shows the usage of the retrofit module of GenX, and the model will be allowed to retire as well as retrofit the existing coal power plants and replacing the coal with blue ammonia with 85% efficiency. Unit commitment is linearized.
     Modelling framework: GenX
@@ -210,6 +218,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 438008
       Num. variables: 260604
+      Num. nonzeros: 1513322
   genx-10_IEEE_9_bus_DC_OPF:
     Short description: This example shows the usage of DC_OPF related functions of GenX. The IEEE 9-bus system is a standard test case for power system optimization problems. In this example, there are three thermal generators and three loads.
     Modelling framework: GenX
@@ -235,3 +244,4 @@ benchmarks:
       Num. variables: 639483
       Num. continuous variables: 560640
       Num. integer variables: 78843
+      Num. nonzeros: 2706846

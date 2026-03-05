@@ -7,7 +7,7 @@ import { IResultState } from "@/types/state";
 import { CellContext } from "@tanstack/react-table";
 import { ProblemClass } from "@/constants";
 import Link from "next/link";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal, formatScientific, roundNumber } from "@/utils/number";
 import { isNullorUndefined } from "@/utils/calculations";
 import { filterNumber } from "@/utils/table";
 
@@ -135,9 +135,8 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         },
         filterFn: filterNumber,
         size: 150,
-        cell: (info: CellContext<TableData, "runtime">) => (
-          <div className="text-end">{String(info.getValue())}</div>
-        ),
+        cell: (info: CellContext<TableData, unknown>) =>
+          formatDecimal({ value: info.getValue() as number }),
       },
       {
         header: "Memory (MB)",
@@ -147,9 +146,8 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         },
         filterFn: filterNumber,
         size: 170,
-        cell: (info: CellContext<TableData, "memoryUsage">) => (
-          <div className="text-end">{String(info.getValue())}</div>
-        ),
+        cell: (info: CellContext<TableData, unknown>) =>
+          formatDecimal({ value: info.getValue() as number }),
       },
       {
         header: "Objective Value",
@@ -159,9 +157,8 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        cell: (info: CellContext<TableData, "objectiveValue">) => (
-          <div className="text-end">{String(info.getValue())}</div>
-        ),
+        cell: (info: CellContext<TableData, unknown>) =>
+          formatScientific(info.getValue() as number, ""),
       },
       {
         header: "Max Integrality Violation",
@@ -171,9 +168,8 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        cell: (info: CellContext<TableData, "maxIntegralityViolation">) => (
-          <div className="text-end">{String(info.getValue())}</div>
-        ),
+        cell: (info: CellContext<TableData, unknown>) =>
+          formatScientific(info.getValue() as number, ""),
       },
       {
         header: "Duality Gap",
@@ -182,9 +178,8 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
         },
         filterFn: filterNumber,
         accessorKey: "dualityGap",
-        cell: (info: CellContext<TableData, "dualityGap">) => (
-          <div className="text-end">{String(info.getValue())}</div>
-        ),
+        cell: (info: CellContext<TableData, unknown>) =>
+          formatScientific(info.getValue() as number, ""),
       },
       {
         header: "Log",
