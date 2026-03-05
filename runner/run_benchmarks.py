@@ -555,13 +555,6 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
         exceptions if ``result.stdout`` does not contain valid JSON on the final line.
     """
 
-    print(
-        "Enter parse_solver_result with returncode:",
-        result.returncode,
-        type(result.returncode),
-        flush=True,
-    )
-
     if result.returncode == 0:
         # Successful run; parse the JSON metrics from the last line of stdout
         metrics = json.loads(result.stdout.splitlines()[-1])
@@ -584,8 +577,6 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
             flush=True,
         )
         metrics = return_failure_metrics("ER", "Error", timeout)
-    print("---> metrics", metrics, flush=True)
-    print("---> result.stdout", result.stdout, flush=True)
     return metrics
 
 
