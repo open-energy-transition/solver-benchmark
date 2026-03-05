@@ -555,27 +555,28 @@ def parse_solver_result(result: subprocess.CompletedProcess, timeout: int) -> di
         Not raised by this function directly, but callers should be aware that JSON parsing may raise
         exceptions if ``result.stdout`` does not contain valid JSON on the final line.
     """
-    if result.returncode == 124:
+
+    if result.returncode == 0:
+        # Successful run; parse the JSON metrics from the last line of stdout
+        return json.loads(result.stdout.splitlines()[-1])
+    elif result.returncode == 124:
+        # 124 is the exit code used by the `timeout` command to indicate a timeout
         print("TIMEOUT")
         return return_failure_metrics("TO", "Timeout", timeout)
-
-    # systemd-run uses sigkill (9) or sigterm (15) to terminate
-    # the process and returns 128 + signal exit code
-    # subprocess returns -<signal> for signals
-    # these things don't seem very portable
-    if result.returncode in (137, 143, -9, -15):
+    elif result.returncode in (137, 143, -9, -15):
+        # systemd-run uses sigkill (9) or sigterm (15) to terminate
+        # the process and returns 128 + signal exit code
+        # subprocess returns -<signal> for signals
+        # these things don't seem very portable
         print("OUT OF MEMORY")
         return return_failure_metrics("OOM", "Out of Memory", "N/A")
-
-    if result.returncode != 0:
+    else:
         print(
             f"ERROR running solver. Return code: {result.returncode}\n"
             f"Stdout:\n{result.stdout}\n"
             f"Stderr:\n{result.stderr}\n"
         )
         return return_failure_metrics("ER", "Error", timeout)
-
-    return json.loads(result.stdout.splitlines()[-1])
 
 
 def benchmark_solver(
