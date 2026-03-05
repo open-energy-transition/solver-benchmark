@@ -119,7 +119,6 @@ def set_seed_options(solver_name: str) -> dict[str, int | float]:
         Returns an empty dictionary if the solver name is not recognized.
     """
     mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
-    # TODO: remove extra configs that came from the K PR.
     seed_options = {
         "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
         "glpk": {"seed": 0, "mipgap": mip_gap},
