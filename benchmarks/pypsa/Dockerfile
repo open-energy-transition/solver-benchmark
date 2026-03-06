@@ -14,7 +14,7 @@ FROM pypsa_benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
     && git checkout 2739717
-    # This is the last commit of PyPSA-Eur on Feb 11, 2026
+    # This is the last commit of PyPSA-Eur on Dec 2, 2025
 
 FROM repo_clone AS pixi_env
 RUN wget -qO- https://pixi.sh/install.sh | sh
