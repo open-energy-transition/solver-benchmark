@@ -747,15 +747,7 @@ benchmarks:
       Realistic motivation:
       Num. constraints: 15111557
       Num. variables: 7096020
-    - Name: 41-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_41_1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 41 nodes
-      Realistic: TODO
-      Realistic motivation:
-      Num. constraints: 23862730
-      Num. variables: 11352412
+      Num. nonzeros: 29512278
     - Name: 42-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_42_1h.mps.gz
@@ -763,17 +755,9 @@ benchmarks:
       Spatial resolution: 42 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints: 24291986
-      Num. variables: 11580185
-    - Name: 43-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_43_1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 43 nodes
-      Realistic: TODO
-      Realistic motivation:
-      Num. constraints: 25124202
-      Num. variables: 11983069
+      Num. constraints: 15768587
+      Num. variables: 7411402
+      Num. nonzeros: 30574634
     - Name: 44-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_44_1h.mps.gz
@@ -781,17 +765,9 @@ benchmarks:
       Spatial resolution: 44 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints: 25570974
-      Num. variables: 12184560
-    - Name: 45-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_45_1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 45 nodes
-      Realistic: TODO
-      Realistic motivation:
-      Num. constraints: 26079069
-      Num. variables: 12421137
+      Num. constraints: 16416849
+      Num. variables: 7726780
+      Num. nonzeros: 31482914
     - Name: 46-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_46_1h.mps.gz
@@ -799,17 +775,9 @@ benchmarks:
       Spatial resolution: 46 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints: 26376913
-      Num. variables: 12543786
-    - Name: 47-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_47_1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 47 nodes
-      Realistic: TODO
-      Realistic motivation:
-      Num. constraints: 26911290
-      Num. variables: 12806601
+      Num. constraints: 17135203
+      Num. variables: 8050924
+      Num. nonzeros: 33060560
     - Name: 48-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_48_1h.mps.gz
@@ -817,17 +785,9 @@ benchmarks:
       Spatial resolution: 48 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints: 27182854
-      Num. variables: 12903014
-    - Name: 49-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_49_1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 49 nodes
-      Realistic: TODO
-      Realistic motivation:
-      Num. constraints: 27909951
-      Num. variables: 13279705
+      Num. constraints: 17792225
+      Num. variables: 8348782
+      Num. nonzeros: 34448220
     - Name: 50-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_50_1h.mps.gz
@@ -835,9 +795,9 @@ benchmarks:
       Spatial resolution: 50 nodes
       Realistic: TODO
       Realistic motivation:
-      Num. constraints: 18370417
-      Num. variables: 8637885  # TODO why is this smaller than 49-1h? Is the file/URL correct?
-      Num. nonzeros: 35860746
+      Num. constraints: 18458019
+      Num. variables: 8672926
+      Num. nonzeros: 35789890
     - Name: 50-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-3h.mps.gz
