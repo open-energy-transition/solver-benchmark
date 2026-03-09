@@ -2,23 +2,18 @@ import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
-import { formatSolverWithVersion, HIPO_SOLVERS } from "@/utils/solvers";
+import { formatSolverWithVersion } from "@/utils/solvers";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
-import { formatDecimal, roundNumber } from "@/utils/number";
+import { formatDecimal } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
 
 const SolverSelection = () => {
-  const allSolvers = useSelector((state: { results: IResultState }) => {
+  const solversData = useSelector((state: { results: IResultState }) => {
     return state.results.solversData;
   });
-
-  const solversData = useMemo(
-    () => allSolvers.filter((s) => !HIPO_SOLVERS.includes(s.solver)),
-    [allSolvers],
-  );
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults;

@@ -406,6 +406,9 @@ const ChartCompare = ({
           text-[#8c8c8c]
           text-xs
           bottom-0
+          w-full
+          text-center
+          ml-4
           "
       >
         {title.xaxis}
