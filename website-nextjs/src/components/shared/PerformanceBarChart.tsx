@@ -5,6 +5,7 @@ import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
 import { formatDecimal } from "@/utils/number";
+import BasicVsFeasible from "./BasicVsFeasible";
 
 type PerformanceData = {
   benchmark: string;
@@ -592,6 +593,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
       </div>
+      {/* TODO Jacek: could you please add some padding above the below box? And perhaps we can move the "Instances sorted by solving time of .." label a little higher to be close to the plot. */}
+      <BasicVsFeasible />
     </div>
   );
 };
