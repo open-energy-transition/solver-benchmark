@@ -109,7 +109,9 @@ const SolverSection = () => {
 
     // Get base solver data points (these will show as factor = 0)
     const baseData = benchmarkLatestResults
-      .filter((result) => result.solver === selectedSolver)
+      .filter((result) => {
+        return result.solver === selectedSolver;
+      })
       .map((result) => ({
         benchmark: result.benchmark,
         solver: result.solver,

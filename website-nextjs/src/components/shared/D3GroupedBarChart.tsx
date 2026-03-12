@@ -5,6 +5,7 @@ import { CircleIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 import { createD3Tooltip, wrapTextByPosition } from "@/utils/chart";
+import { getSolverLabel } from "@/utils/solvers";
 
 const D3GroupedBarChart = ({
   title,
@@ -511,7 +512,7 @@ const D3GroupedBarChart = ({
               }}
               className="size-2"
             />
-            {solverKey}
+            {getSolverLabel(solverKey)}
           </div>
         ))}
     </div>

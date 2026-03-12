@@ -6,6 +6,7 @@ import { TIMEOUT_VALUES } from "@/constants/filter";
 import { SolverStatusType } from "@/types/benchmark";
 import { formatDecimal } from "@/utils/number";
 import BasicVsFeasible from "./BasicVsFeasible";
+import { getSolverLabel } from "@/utils/solvers";
 
 type PerformanceData = {
   benchmark: string;
@@ -474,7 +475,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     svg
       .append("text")
       .attr("x", width / 2)
-      .attr("y", height - 10)
+      .attr("y", height - 60)
       .attr("text-anchor", "middle")
       .style("fill", "rgb(79 78 78)")
       .text(`Instances sorted by solving time of ${baseSolver}`);
@@ -550,7 +551,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 style={{ backgroundColor: solverColors[baseSolver] }}
               />
             </div>
-            <span className="text-sm text-navy">{baseSolver}</span>
+            <span className="text-sm text-navy">
+              {getSolverLabel(baseSolver)}
+            </span>
           </div>
 
           {/* Other solvers legend (squares) */}
@@ -569,7 +572,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                     opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
                   }}
                 />
-                <span className="text-sm text-navy">{solver}</span>
+                <span className="text-sm text-navy">
+                  {getSolverLabel(solver)}
+                </span>
               </div>
             ))}
         </div>
@@ -593,7 +598,6 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       <div ref={containerRef}>
         <svg ref={svgRef}></svg>
       </div>
-      {/* TODO Jacek: could you please add some padding above the below box? And perhaps we can move the "Instances sorted by solving time of .." label a little higher to be close to the plot. */}
       <BasicVsFeasible />
     </div>
   );
