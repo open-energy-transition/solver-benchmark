@@ -667,7 +667,7 @@ benchmarks:
     Sizes:
     - Name: 1-3h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1n-3h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1-3h.mps.gz
       Temporal resolution: 2920 time slices
       Spatial resolution: 1 node
       Realistic: true
@@ -676,7 +676,7 @@ benchmarks:
       Num. variables: 493813
     - Name: 1-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1n-1h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1-1h.mps.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 1 node
       Realistic: true
@@ -685,7 +685,7 @@ benchmarks:
       Num. variables: 1107013
     - Name: 10-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10n-1h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-1h.mps.gz
       Temporal resolution: 8760 time slices
       Spatial resolution: 10 nodes
       Realistic: true
@@ -694,7 +694,7 @@ benchmarks:
       Num. variables: 9661524
     - Name: 5-3h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-5n-3h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-5-3h.mps.gz
       Temporal resolution: 2920 time slices
       Spatial resolution: 5 nodes
       Realistic: true
@@ -703,7 +703,7 @@ benchmarks:
       Num. variables: 12077880
     - Name: 10-3h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10n-3h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-3h.mps.gz
       Temporal resolution: 2920 time slices
       Spatial resolution: 10 nodes
       Realistic: true
@@ -712,7 +712,7 @@ benchmarks:
       Num. variables: 5672804
     - Name: 20-3h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-20n-3h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-20-3h.mps.gz
       Temporal resolution: 2920 time slices
       Spatial resolution: 20 nodes
       Realistic: true
@@ -721,7 +721,7 @@ benchmarks:
       Num. variables: 20319294
     - Name: 25-3h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-25n-3h-1y.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-25-3h.mps.gz
       Temporal resolution: 2920 time slices
       Spatial resolution: 25 nodes
       Realistic: true
