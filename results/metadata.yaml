@@ -2784,6 +2784,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 135086
       Num. variables: 65037
+      Num. nonzeros: 273793
     - Name: 100-12h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-100-12h.mps.gz
@@ -2794,6 +2795,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3517891
       Num. variables: 1681180
+      Num. nonzeros: 7220251
   pypsa-eur-elec-trex_copt:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with cost-optimal transmission expansion.
@@ -2817,6 +2819,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 135086
       Num. variables: 65037
+      Num. nonzeros: 273793
     - Name: 100-12h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-100-12h.mps.gz
@@ -2827,6 +2830,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3517891
       Num. variables: 1681180
+      Num. nonzeros: 7220251
   pypsa-eur-elec-dfp:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing and without transmission expansion.
@@ -3080,6 +3084,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1165120
       Num. variables: 569341
+      Num. nonzeros: 2133907
     - Name: 3-1h
       Size: M
       Temporal resolution: 1 hour
@@ -3088,6 +3093,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_3_1h.mps.gz
       Num. constraints: 1533052
       Num. variables: 727118
+      Num. nonzeros: 2859964
     - Name: 4-1h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_4_1h.mps.gz
@@ -3096,6 +3102,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2041145
       Num. variables: 963648
+      Num. nonzeros: 3812907
     - Name: 5-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_5_1h.mps.gz
@@ -3104,6 +3111,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2575524
       Num. variables: 1208941
+      Num. nonzeros: 4817602
     - Name: 6-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_6_1h.mps.gz
@@ -3112,6 +3120,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2943457
       Num. variables: 1384151
+      Num. nonzeros: 5498751
     - Name: 7-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_7_1h.mps.gz
@@ -3120,6 +3129,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 3285110
       Num. variables: 1550601
+      Num. nonzeros: 6127108
     - Name: 8-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_8_1h.mps.gz
@@ -3128,6 +3138,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 3731883
       Num. variables: 1752091
+      Num. nonzeros: 6956950
     - Name: 9-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_9_1h.mps.gz
@@ -3136,6 +3147,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 4082296
       Num. variables: 1918541
+      Num. nonzeros: 7629449
     - Name: 10-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_10_1h.mps.gz
@@ -3144,6 +3156,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 4502789
       Num. variables: 2111271
+      Num. nonzeros: 8442185
     - Name: 11-1h
       Size: L
       Temporal resolution: 1 hour
@@ -3152,6 +3165,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_11_1h.mps.gz
       Num. constraints: 4835682
       Num. variables: 2268961
+      Num. nonzeros: 9070231
     - Name: 12-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_12_1h.mps.gz
@@ -3160,6 +3174,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 5221135
       Num. variables: 2444171
+      Num. nonzeros: 9778117
     - Name: 13-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_13_1h.mps.gz
@@ -3168,6 +3183,7 @@ benchmarks:
       Spatial resolution: 13 nodes
       Realistic: false
       Num. variables: 2601861
+      Num. nonzeros: 10397638
     - Name: 14-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_14_1h.mps.gz
@@ -3176,6 +3192,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 6053365
       Num. variables: 2838393
+      Num. nonzeros: 11376001
     - Name: 15-1h
       Size: L
       Temporal resolution: 1 hour
@@ -3184,6 +3201,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_15_1h.mps.gz
       Num. constraints: 6359974
       Num. variables: 2978561
+      Num. nonzeros: 11934995
     - Name: 16-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_16_1h.mps.gz
@@ -3192,6 +3210,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 6754193
       Num. variables: 3171294
+      Num. nonzeros: 12684994
     - Name: 17-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_17_1h.mps.gz
@@ -3200,6 +3219,7 @@ benchmarks:
       Spatial resolution: 17 nodes
       Realistic: false
       Num. variables: 3364024
+      Num. nonzeros: 13550014
     - Name: 18-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_18_1h.mps.gz
@@ -3208,6 +3228,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 7568897
       Num. variables: 3539233
+      Num. nonzeros: 14248409
     - Name: 19-1h
       Size: L
       Temporal resolution: 1 hour
@@ -3216,6 +3237,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_19_1h.mps.gz
       Num. constraints: 7928072
       Num. variables: 3714444
+      Num. nonzeros: 14956181
     - Name: 20-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_20_1h.mps.gz
@@ -3237,6 +3259,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
       Num. variables: 4108664
+      Num. nonzeros: 16763529
     - Name: 22-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_22_1h.mps.gz
@@ -3247,6 +3270,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9066911
       Num. variables: 4240074
+      Num. nonzeros: 17322007
     - Name: 23-1h
       Size: L
       Temporal resolution: 1 hour
@@ -3257,6 +3281,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_23_1h.mps.gz
       Num. constraints: 9434848
       Num. variables: 4415286
+      Num. nonzeros: 18132555
     - Name: 24-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_24_1h.mps.gz
@@ -3267,6 +3292,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9802781
       Num. variables: 4581736
+      Num. nonzeros: 18700792
     - Name: 25-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_25_1h.mps.gz
@@ -3277,6 +3303,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
       Num. variables: 4739425
+      Num. nonzeros: 19354461
     - Name: 26-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_26_1h.mps.gz
@@ -3287,6 +3314,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 10459811
       Num. variables: 4897118
+      Num. nonzeros: 19922369
     - Name: 27-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_27_1h.mps.gz
@@ -3297,6 +3325,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 10775184
       Num. variables: 5054808
+      Num. nonzeros: 20567343
     - Name: 28-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_28_1h.mps.gz
@@ -3307,6 +3336,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11134357
       Num. variables: 5212498
+      Num. nonzeros: 21598028
     - Name: 29-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_29_1h.mps.gz
@@ -3317,6 +3347,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11589892
       Num. variables: 5413989
+      Num. nonzeros: 22253091
     - Name: 30-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_30_1h.mps.gz
@@ -3327,6 +3358,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11843941
       Num. variables: 5554157
+      Num. nonzeros: 22592234
     - Name: 31-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_31_1h.mps.gz
@@ -3337,6 +3369,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 12001636
       Num. variables: 5641768
+      Num. nonzeros: 23055356
     - Name: 32-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_32_1h.mps.gz
@@ -3347,6 +3380,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 12404607
       Num. variables: 5825737
+      Num. nonzeros: 23726812
     - Name: 33-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_33_1h.mps.gz
@@ -3357,6 +3391,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 12719982
       Num. variables: 5974668
+      Num. nonzeros: 24530912
     - Name: 34-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_34_1h.mps.gz
@@ -3367,6 +3402,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 12991559
       Num. variables: 6106080
+      Num. nonzeros: 25044646
     - Name: 35-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_35_1h.mps.gz
@@ -3377,6 +3413,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 13534692
       Num. variables: 6351370
+      Num. nonzeros: 25945319
     - Name: 36-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_36_1h.mps.gz
@@ -3387,6 +3424,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 13718665
       Num. variables: 6438980
+      Num. nonzeros: 26676672
     - Name: 37-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_37_1h.mps.gz
@@ -3397,6 +3435,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 13911394
       Num. variables: 6552868
+      Num. nonzeros: 27050356
     - Name: 38-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_38_1h.mps.gz
@@ -3407,6 +3446,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 14410731
       Num. variables: 6771880
+      Num. nonzeros: 27800922
     - Name: 39-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_39_1h.mps.gz
@@ -3417,6 +3457,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 14612224
       Num. variables: 6868250
+      Num. nonzeros: 27877704
     - Name: 40-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec_40_1h.mps.gz
@@ -3604,6 +3645,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 18370653
       Num. variables: 8638003
+      Num. nonzeros: 37770662
     - Name: 50-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-50-24h.mps.gz
@@ -3612,6 +3654,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 766338
       Num. variables: 360533
+      Num. nonzeros: 1596484
   pypsa-de-elec-trex_copt:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany with cost-optimal
       transmission expansion.
@@ -3669,6 +3712,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 2736437
       Num. variables: 1285070
+      Num. nonzeros: 5467383
     - Name: 50-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-1h.mps.gz
@@ -3766,6 +3810,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 6123937
       Num. variables: 2879645
+      Num. nonzeros: 11971163
     - Name: 50-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-24h.mps.gz
@@ -3840,6 +3885,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 18370653
       Num. variables: 8638003
+      Num. nonzeros: 37770662
     - Name: 50-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-50-24h.mps.gz
@@ -3948,6 +3994,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 142147
       Num. variables: 67416
+      Num. nonzeros: 332009
     - Name: 20-12h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-20-12h.mps.gz
@@ -3999,6 +4046,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 3798134
       Num. variables: 1791085
+      Num. nonzeros: 9016077
     - Name: 50-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-50-1h.mps.gz
@@ -4009,6 +4057,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 111090778
       Num. variables: 52371864
+      Num. nonzeros: 264794044
     - Name: 50-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-50-168h.mps.gz
