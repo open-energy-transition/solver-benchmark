@@ -122,8 +122,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .scaleLog()
       .domain([
         Math.min(
-          0.01,
-          d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.01,
+          0.3,
+          d3.min(data, (d) => Math.min(d.runtime, d.baseSolverRuntime)) || 0.3,
         ),
         d3.max(data, (d) => Math.max(d.runtime, d.baseSolverRuntime)) || 100,
       ])

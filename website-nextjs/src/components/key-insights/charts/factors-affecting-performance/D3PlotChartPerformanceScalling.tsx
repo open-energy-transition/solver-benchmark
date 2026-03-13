@@ -58,7 +58,10 @@ const D3PlotChartPerformanceScaling = ({
 
     const yScale = d3
       .scaleLog()
-      .domain([minYaxis || d3.min(chartData, (d) => d.runtime) || 0, 1e6])
+      .domain([
+        Math.min(0.3, minYaxis || d3.min(chartData, (d) => d.runtime) || 0.3),
+        1e6,
+      ])
       .range([height - margin.bottom, margin.top]);
 
     // Add timeout lines
