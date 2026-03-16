@@ -177,6 +177,23 @@ def load_results(folder: str | list[str]):
     print(
         f"Found {len(results)} records, {len(results['bench-size'].unique())} benchmark instances"
     )
+
+    # Find the Run IDs and Hostnames for each bench-size instance and drop all but the latest
+    # NOTE: assumes all Run IDs begin with YYYYMMDD-
+    runs_grouped = results.groupby("bench-size")[["Run ID", "Hostname"]]
+    to_drop = set()
+    for bench_size, group in runs_grouped:
+        unique_runs = group[["Run ID", "Hostname"]].drop_duplicates()
+        if len(unique_runs) > 1:
+            sorted_runs = sorted(unique_runs.itertuples(index=False))
+            to_drop.update([(*run, bench_size) for run in sorted_runs[:-1]])
+
+    print("Dropping superceeded results from these runs:", sorted(to_drop))
+    keys = pd.MultiIndex.from_frame(results[["Run ID", "Hostname", "bench-size"]])
+    results = results.loc[~keys.isin(to_drop)].copy()
+    print(
+        f"After dropping: {len(results)} records, {len(results['bench-size'].unique())} benchmark instances"
+    )
     return results, variability
 
 
