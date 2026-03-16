@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { SolverStatusType } from "@/types/benchmark";
 import { applyTooltipStyles, getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
+import { formatInteger } from "@/utils/number";
 import { TIMEOUT_VALUES } from "@/constants/filter";
 
 type ChartData = {
@@ -57,7 +58,10 @@ const D3PlotChartPerformanceScaling = ({
 
     const yScale = d3
       .scaleLog()
-      .domain([minYaxis || d3.min(chartData, (d) => d.runtime) || 0, 1e6])
+      .domain([
+        Math.min(0.3, minYaxis || d3.min(chartData, (d) => d.runtime) || 0.3),
+        1e6,
+      ])
       .range([height - margin.bottom, margin.top]);
 
     // Add timeout lines
@@ -176,7 +180,7 @@ const D3PlotChartPerformanceScaling = ({
         .html(
           `Benchmark: ${d.benchmark.replace(" ", "<br/> Size: ")}
           <br/>Runtime: ${formatRuntime(d.runtime)}
-          <br/>Number of Variables: ${d.numVariables}`,
+          <br/>Number of Variables: ${formatInteger(d.numVariables)}`,
         )
         .style("left", `${event.offsetX + 10}px`)
         .style("top", `${event.offsetY - 10}px`)

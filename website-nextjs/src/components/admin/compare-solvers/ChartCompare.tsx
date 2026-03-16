@@ -5,7 +5,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal, roundNumber } from "@/utils/number";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type ChartData = {
@@ -49,14 +49,18 @@ const defaultTooltipTemplate = (
   <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
-    <strong>Runtime of ${solver1.replace("--", " (")}):</strong> ${roundNumber(
-      d.d1.runtime,
-      2,
-    )}s (${d.d1.status})<br>
-    <strong>Runtime of ${solver2.replace("--", " (")}):</strong> ${roundNumber(
-      d.d2.runtime,
-      2,
-    )}s (${d.d2.status})<br>
+    <strong>Runtime of ${solver1.replace(
+      "--",
+      " (",
+    )}):</strong> ${formatDecimal({ value: d.d1.runtime })}s (${
+      d.d1.status
+    })<br>
+    <strong>Runtime of ${solver2.replace(
+      "--",
+      " (",
+    )}):</strong> ${formatDecimal({ value: d.d2.runtime })}s (${
+      d.d2.status
+    })<br>
   </div>
 `;
 
@@ -74,7 +78,6 @@ const ChartCompare = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
-
   useEffect(() => {
     const data = chartData;
 
@@ -171,7 +174,12 @@ const ChartCompare = ({
             .range([height - margin.bottom, margin.top]);
 
     // Axes
+    const useExponential = scaleType === "log" && scaleRange.max > 1000;
     const formatTick = (d: number) => {
+      if (useExponential) {
+        // Return empty string - we'll format with tspan after
+        return "";
+      }
       if (d < 1) {
         return d3.format(".1f")(d); // Show 1 decimal place for numbers < 1
       }
@@ -211,7 +219,20 @@ const ChartCompare = ({
         g.selectAll("line").attr("stroke", "#A1A9BC");
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
-          .attr("class", "font-lato text-xs");
+          .attr("class", "font-lato text-xs")
+          .each(function (d) {
+            if (useExponential && typeof d === "number" && d > 0) {
+              const exponent = Math.round(Math.log10(d));
+              d3.select(this)
+                .html("") // Clear existing text
+                .append("tspan")
+                .text("10")
+                .append("tspan")
+                .attr("dy", "-5")
+                .attr("font-size", "8px")
+                .text(exponent.toString());
+            }
+          });
       });
     svg
       .append("g")
@@ -222,7 +243,20 @@ const ChartCompare = ({
         g.selectAll("line").attr("stroke", "#A1A9BC");
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
-          .attr("class", "font-lato text-xs");
+          .attr("class", "font-lato text-xs")
+          .each(function (d) {
+            if (useExponential && typeof d === "number" && d > 0) {
+              const exponent = Math.round(Math.log10(d));
+              d3.select(this)
+                .html("") // Clear existing text
+                .append("tspan")
+                .text("10")
+                .append("tspan")
+                .attr("dy", "-5")
+                .attr("font-size", "8px")
+                .text(exponent.toString());
+            }
+          });
       });
     // Scatter points
     svg
@@ -403,6 +437,9 @@ const ChartCompare = ({
           text-[#8c8c8c]
           text-xs
           bottom-0
+          w-full
+          text-center
+          pl-4
           "
       >
         {title.xaxis}

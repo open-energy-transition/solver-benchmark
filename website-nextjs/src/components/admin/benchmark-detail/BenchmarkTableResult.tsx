@@ -8,6 +8,7 @@ import { filterSelect } from "@/utils/table";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { FilterIcon } from "@/assets/icons";
 import InfoPopup from "@/components/common/InfoPopup";
+import { RealisticOption } from "@/types/state";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -38,10 +39,14 @@ declare global {
 
 interface BenchmarkTableResultProps {
   metaData: Record<string, MetaDataEntry>;
+  problemSizeFilter?: string[];
+  realisticFilter?: string[];
 }
 
 const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   metaData,
+  problemSizeFilter = [],
+  realisticFilter = [],
 }) => {
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedBenchmarks, setSelectedBenchmarks] = useState<Set<string>>(
@@ -111,29 +116,78 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: "",
       });
 
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const benchmark = selectedFiles[i];
+      // Collect all files to download (multiple sizes per benchmark if filters match)
+      const filesToDownload: Array<{
+        benchmark: string;
+        url: string;
+        filename: string;
+      }> = [];
 
-        // Find the first size with a valid URL
-        const sizeWithUrl = benchmark.sizes?.find(
-          (s: { url?: string }) => s.url,
-        );
-        const url = sizeWithUrl?.url;
-        console.log("url", url);
-        if (!url) {
-          console.warn(`No download URL found for ${benchmark.name}`);
-          alert(`No download URL found for ${benchmark.name}. Skipping...`);
+      for (const benchmark of selectedFiles) {
+        // Find ALL sizes with valid URLs that match the filters
+        const matchingSizes =
+          benchmark.sizes?.filter(
+            (s: { url?: string; size: string; realistic?: boolean }) => {
+              const hasUrl = !!s.url;
+              const matchesFilter =
+                problemSizeFilter.length === 0 ||
+                problemSizeFilter.includes(s.size);
+
+              if (realisticFilter.length > 0) {
+                if (
+                  s.realistic === true &&
+                  realisticFilter.includes(RealisticOption.Realistic)
+                ) {
+                  return hasUrl && matchesFilter;
+                }
+                if (
+                  (s.realistic === false || s.realistic === undefined) &&
+                  realisticFilter.includes(RealisticOption.Other)
+                ) {
+                  return hasUrl && matchesFilter;
+                }
+                return false;
+              }
+              return hasUrl && matchesFilter;
+            },
+          ) || [];
+
+        if (matchingSizes.length === 0) {
+          console.warn(
+            `No download URLs found for ${benchmark.name} matching filters`,
+          );
+          alert(
+            `No download URLs found for ${benchmark.name} matching filters. Skipping...`,
+          );
           continue;
         }
 
-        // Extract filename from URL or use benchmark name
-        const urlParts = url.split("/");
-        const filename =
-          urlParts[urlParts.length - 1] || `${benchmark.name}.lp`;
+        // Add all matching sizes to download list
+        for (const size of matchingSizes) {
+          const urlParts = size.url!.split("/");
+          const filename =
+            urlParts[urlParts.length - 1] || `${benchmark.name}.lp`;
+          filesToDownload.push({
+            benchmark: benchmark.name,
+            url: size.url!,
+            filename,
+          });
+        }
+      }
+
+      setDownloadProgress({
+        current: 0,
+        total: filesToDownload.length,
+        currentFile: "",
+      });
+
+      // Download all files
+      for (let i = 0; i < filesToDownload.length; i++) {
+        const { benchmark, url, filename } = filesToDownload[i];
 
         setDownloadProgress({
           current: i + 1,
-          total: selectedFiles.length,
+          total: filesToDownload.length,
           currentFile: filename,
         });
 

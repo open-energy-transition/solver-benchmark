@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { useCallback } from "react";
 
 import { IResultState } from "@/types/state";
@@ -7,6 +6,8 @@ import { getSolverColor } from "@/utils/chart";
 import { MetaDataEntry } from "@/types/meta-data";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
+import { formatDecimal } from "@/utils/number";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 
 interface ISolverRuntimeComparison {
   benchmarkName: string;
@@ -17,11 +18,7 @@ const SolverRuntimeComparison = ({
   benchmarkName,
   benchmarkDetail,
 }: ISolverRuntimeComparison) => {
-  const benchmarkLatestResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults;
-    },
-  ).filter((result) => result.benchmark === benchmarkName);
+  const benchmarkLatestResults = useBenchmarkResults();
 
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
@@ -35,20 +32,32 @@ const SolverRuntimeComparison = ({
     [benchmarkLatestResults, benchmarkName],
   );
 
-  const chartData = benchmarkDetail.sizes.map((s) => {
-    const data = benchmarkLatestResults.filter(
-      (result) => result.size === s.name && result.benchmark === benchmarkName,
-    );
+  const chartData = benchmarkDetail.sizes
+    .slice() // Create a copy to avoid mutating original
+    .sort((a, b) => {
+      // Sort by number of variables ascending
+      const aVars = a.numVariables ?? 0;
+      const bVars = b.numVariables ?? 0;
+      return aVars - bVars;
+    })
+    .map((s) => {
+      const data = benchmarkLatestResults.filter(
+        (result) =>
+          result.size === s.name && result.benchmark === benchmarkName,
+      );
 
-    const res: { [solver: string]: number } = {};
-    data.forEach((d) => {
-      res[d.solver] = d.runtime;
+      const res: { [solver: string]: number } = {};
+      data.forEach((d) => {
+        res[d.solver] = d.runtime;
+      });
+      return {
+        size: s.name,
+        ...res,
+      };
+    })
+    .filter((d) => {
+      return Object.keys(d).length > 2; // Filter out sizes with no solver data
     });
-    return {
-      size: s.name,
-      ...res,
-    };
-  });
 
   // Calculate the maximum ratio across all non-OK bars
   const maxNonOkRatio = Math.max(
@@ -114,7 +123,9 @@ const SolverRuntimeComparison = ({
       const benchmarkData = findBenchmarkData(d.key, d.category);
       return `Solver: ${d.key} v${benchmarkData?.solverVersion}<br/>
               Runtime: ${humanizeSeconds(benchmarkData?.runtime ?? 0)} <br/>
-              Memory: ${benchmarkData?.memoryUsage} MB <br/>
+              Memory: ${formatDecimal({
+                value: benchmarkData?.memoryUsage as number,
+              })} MB <br/>
               Status: ${benchmarkData?.status} <br/>`;
     },
     [findBenchmarkData],
@@ -169,7 +180,7 @@ const SolverRuntimeComparison = ({
           return getSolverColor(d.key);
         }}
         xAxisLabel=""
-        yAxisLabel="Relative runtime (normalized)"
+        yAxisLabel="Relative runtime (normalized, log scale)"
         chartHeight={400}
         extraCategoryLengthMargin={-50}
         rotateXAxisLabels={false}
@@ -180,6 +191,7 @@ const SolverRuntimeComparison = ({
         sortByValue
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
+        useLogScale={true}
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
@@ -6,14 +6,17 @@ import { formatSolverWithVersion } from "@/utils/solvers";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
-import { roundNumber } from "@/utils/number";
+import { formatDecimal } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
+import Link from "next/link";
+import BasicVsFeasible from "@/components/shared/BasicVsFeasible";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
     return state.results.solversData;
   });
+
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults;
   });
@@ -101,14 +104,12 @@ const SolverSelection = () => {
   <div class="text-sm">
     <strong>Name:</strong> ${d.benchmark}<br>
     <strong>Size:</strong> ${d.size}<br>
-    <strong>${solver1.replace("--", " (")}):</strong> ${roundNumber(
-      d.d1.memoryUsage,
-      2,
-    )} MB (${d.d1.status})<br>
-    <strong>${solver2.replace("--", " (")}):</strong> ${roundNumber(
-      d.d2.memoryUsage,
-      2,
-    )} MB (${d.d2.status})<br>
+    <strong>${solver1.replace("--", " (")}):</strong> ${formatDecimal({
+      value: d.d1.memoryUsage,
+    })} MB (${d.d1.status})<br>
+    <strong>${solver2.replace("--", " (")}):</strong> ${formatDecimal({
+      value: d.d2.memoryUsage,
+    })} MB (${d.d2.status})<br>
   </div>
 `;
 
@@ -153,13 +154,24 @@ const SolverSelection = () => {
           />
         </div>
       </div>
+      <BasicVsFeasible />
       <div className="py-2">
         <h6>Comparison</h6>
         <p className="mb-6 mt-4 max-w-screen-lg">
           The benchmarks on the upper triangle of each graph are those where
           Solver 1 performs better, and those in the lower triangle are those
-          where Solver 2 performs better. Click on any point in this graph to
-          see details of that benchmark instance.
+          where Solver 2 performs better. Note that we ran benchmarks with two
+          different timeout values: smaller benchmarks (S and M) were run with a
+          timeout of 1h, while larger benchmarks (L) were run with a timeout of
+          24h.{" "}
+          <div className="inline-flex gap-1 items-start">
+            Thus, the
+            <CloseIcon className="size-3 mt-1.5" />s in the graph below might
+            appear at 2 different time values. Click on any point in this graph
+            to see details of that benchmark instance.
+          </div>
+        </p>
+        <p className="mb-6 mt-4 max-w-screen-lg">
           <p className="flex-col gap-1 items-center text-navy text-sm">
             <div className="inline-flex gap-1 items-start">
               <CloseIcon className="size-3 mt-1.5" />
