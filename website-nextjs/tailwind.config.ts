@@ -13,7 +13,7 @@ export default {
     "hover:bg-lavender",
     "bg-[#F0F4F2]",
     "hover:bg-[#F0F4F2]",
-    "scroll-mt-[250px]",
+    "scroll-mt-[240px]",
   ],
   theme: {
     container: {

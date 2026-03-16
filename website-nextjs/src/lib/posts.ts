@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { getTsxPostMetas } from "./tsx-posts-registry";
 
 export type PostMeta = {
   title: string;
@@ -8,6 +9,8 @@ export type PostMeta = {
   tags?: string[];
   excerpt?: string;
   slug: string;
+  /** 'md' for markdown files, 'tsx' for registered React component pages */
+  type?: "md" | "tsx";
 };
 
 const POSTS_PATH = path.join(process.cwd(), "src", "data", "posts");
@@ -33,11 +36,12 @@ export function getPostBySlug(slugFilename: string) {
 }
 
 export function getAllPostsMeta(): PostMeta[] {
-  const slugs = getPostSlugs();
-  const posts = slugs.map((s) => {
+  const mdPosts = getPostSlugs().map((s) => {
     const { meta } = getPostBySlug(s);
-    return meta;
+    return { ...meta, type: "md" as const };
   });
+  const tsxPosts = getTsxPostMetas();
+  const posts: PostMeta[] = [...mdPosts, ...tsxPosts];
   // sort by date desc
   posts.sort((a, b) => (a.date < b.date ? 1 : -1));
   return posts;
