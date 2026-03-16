@@ -1588,3 +1588,38 @@ benchmarks:
       Num. variables: 6122815
       Num. continuous variables: 4467175
       Num. integer variables: 1655640
+    - Name: 2-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-eur-elec-uc_2_3h_2050.mps.gz
+      Temporal resolution: 3 hour
+      Spatial resolution: 2 nodes
+      Realistic:
+      Realistic motivation:
+    - Name: 4-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-eur-elec-uc_4_3h_2050.mps.gz
+      Temporal resolution: 3 hour
+      Spatial resolution: 4 nodes
+      Realistic:
+      Realistic motivation:
+    - Name: 6-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-eur-elec-uc_6_3h_2050.mps.gz
+      Temporal resolution: 3 hour
+      Spatial resolution: 6 nodes
+      Realistic:
+      Realistic motivation:
+    - Name: 8-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-eur-elec-uc_8_3h_2050.mps.gz
+      Temporal resolution: 3 hour
+      Spatial resolution: 8 nodes
+      Realistic:
+      Realistic motivation:
+    - Name: 10-3h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-eur-elec-uc_10_3h_2050.mps.gz
+      Temporal resolution: 3 hour
+      Spatial resolution: 10 nodes
+      Realistic:
+      Realistic motivation:
