@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { useCallback } from "react";
 
 import { IResultState } from "@/types/state";
@@ -8,7 +7,7 @@ import { MetaDataEntry } from "@/types/meta-data";
 import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { formatDecimal } from "@/utils/number";
-import { HIPO_SOLVERS } from "@/utils/solvers";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 
 interface ISolverRuntimeComparison {
   benchmarkName: string;
@@ -19,15 +18,7 @@ const SolverRuntimeComparison = ({
   benchmarkName,
   benchmarkDetail,
 }: ISolverRuntimeComparison) => {
-  const benchmarkLatestResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults;
-    },
-  ).filter(
-    (result) =>
-      result.benchmark === benchmarkName &&
-      !HIPO_SOLVERS.includes(result.solver),
-  );
+  const benchmarkLatestResults = useBenchmarkResults();
 
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {

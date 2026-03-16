@@ -2,23 +2,20 @@ import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
-import { formatSolverWithVersion, HIPO_SOLVERS } from "@/utils/solvers";
+import { formatSolverWithVersion } from "@/utils/solvers";
 import { CircleIcon, CloseIcon } from "@/assets/icons";
 import { getLogScale } from "@/utils/logscale";
 import { SolverMetrics } from "@/types/compare-solver";
-import { formatDecimal, roundNumber } from "@/utils/number";
+import { formatDecimal } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
+import Link from "next/link";
+import BasicVsFeasible from "@/components/shared/BasicVsFeasible";
 
 const SolverSelection = () => {
-  const allSolvers = useSelector((state: { results: IResultState }) => {
+  const solversData = useSelector((state: { results: IResultState }) => {
     return state.results.solversData;
   });
-
-  const solversData = useMemo(
-    () => allSolvers.filter((s) => !HIPO_SOLVERS.includes(s.solver)),
-    [allSolvers],
-  );
 
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults;
@@ -157,6 +154,7 @@ const SolverSelection = () => {
           />
         </div>
       </div>
+      <BasicVsFeasible />
       <div className="py-2">
         <h6>Comparison</h6>
         <p className="mb-6 mt-4 max-w-screen-lg">
@@ -172,6 +170,8 @@ const SolverSelection = () => {
             appear at 2 different time values. Click on any point in this graph
             to see details of that benchmark instance.
           </div>
+        </p>
+        <p className="mb-6 mt-4 max-w-screen-lg">
           <p className="flex-col gap-1 items-center text-navy text-sm">
             <div className="inline-flex gap-1 items-start">
               <CloseIcon className="size-3 mt-1.5" />

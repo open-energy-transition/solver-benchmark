@@ -9,6 +9,7 @@ import { CircleIcon } from "@/assets/icons";
 import { formatInteger } from "@/utils/number";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
+import { getSolverLabel } from "@/utils/solvers";
 
 interface IRuntimeOfFastestSolver {
   benchmarkList?: string[];
@@ -185,7 +186,7 @@ const RuntimeOfFastestSolver = ({
             }}
             className="size-2"
           />
-          {solverKey}
+          {getSolverLabel(solverKey)}
         </div>
       ))}
     </div>

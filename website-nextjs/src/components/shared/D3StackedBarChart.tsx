@@ -4,6 +4,7 @@ import { CircleIcon } from "@/assets/icons";
 import { ID3StackedBarChart } from "@/types/chart";
 import { createD3Tooltip } from "@/utils/chart";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { getSolverLabel } from "@/utils/solvers";
 
 const D3StackedBarChart = ({
   title,
@@ -176,7 +177,7 @@ const D3StackedBarChart = ({
                 style={{ color: colors[solverKey] }}
                 className={"size-2"}
               />
-              {solverKey}
+              {getSolverLabel(solverKey)}
             </div>
           ))}
         </div>
