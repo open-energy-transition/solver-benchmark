@@ -18,6 +18,7 @@ import { IResultState } from "@/types/state";
 import DataTable from "@/components/admin/benchmark-detail/DataTable";
 import SolverRuntimeComparison from "@/components/admin/benchmark-detail/SolverRuntimeComparison";
 import InfoPopup from "@/components/common/InfoPopup";
+import BasicVsFeasible from "@/components/shared/BasicVsFeasible";
 
 const PageBenchmarkDetail = () => {
   const router = useRouter();
@@ -204,6 +205,7 @@ const PageBenchmarkDetail = () => {
               )}
             </>
           )}
+          <BasicVsFeasible />
         </ContentWrapper>
         <Footer />
       </div>

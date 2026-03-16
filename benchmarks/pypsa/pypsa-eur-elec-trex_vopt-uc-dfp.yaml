@@ -1,0 +1,18 @@
+electricity:
+  extendable_carriers:
+    Generator:
+    - solar
+    - "solar-hsat"
+    - onwind
+    - "offwind-ac"
+    - "offwind-dc"
+    - "offwind-float"
+  transmission_limit: vopt
+
+conventional:
+  unit_commitment: true
+  dynamic_fuel_price: true
+
+solving:
+  options:
+    linearized_unit_commitment: false
