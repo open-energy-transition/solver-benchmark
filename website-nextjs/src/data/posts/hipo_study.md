@@ -37,7 +37,6 @@ The benchmark results show that at smaller scales, solver choice matters little;
 
 In terms of solver reliability (Figure 2), HiPO achieves a 85.4% success rate on problems from 100k to 1 million variables (5% more than HiGHS-IPX and 46.5% more than HiGHS-simplex) and maintains a 58.5% success rate on problems from 1 to 10 million variables (**4% more** than HiGHS-IPX and 41% more than HiGHS-simplex). Beyond this extreme-scale threshold, open-source solvers hit hard computational limits and effectively stop working.
 
-![][image2]
 ![Figure 2](/notebook/figure2.png)
 
 ***Figure 2**: Percentage of successfully solved problems within time and memory limits across different problem sizes (number of variables). Panel (a) shows the absolute number of linear programming problems in each size bin, while panel (b) displays the success rate of each solver configuration. Note that while HiGHS-simplex and Gurobi guarantee a basic solution, in our setup HiGHS-IPX and HiGHS-HiPO dynamically choose whether to run crossover and may return a feasible (non-basic) solution (see the Appendix for details).*
@@ -67,7 +66,7 @@ To that end, we want to issue a call to action to the broader open solver develo
 If you would like to explore these models or test them with your own solver configurations, you can access the problem files below:
 
 * [Link](https://openenergybenchmark.org/dashboard/benchmark-set/pypsa-de-elec) to the pypsa-de-elec instances used in the section “What is the largest PyPSA model…”
-* [Link](https://openenergybenchmark.org/dashboard/benchmark-set) to the complete set of benchmark instances used in the section “How does HiPO perform…”.
+* [Link](https://openenergybenchmark.org/dashboard/benchmark-set?sectoralFocus=Sector-coupled%3BPower-only%3BWater%20supply%3BHeating-only&sectors=Supply%3BElectric%3BPower%3BHeating%3BTransport%3BGas%3BWater%3BHydrogen%3BCommercial%3BResidential%3BIndustrial%3BIndustry%3BBiomass%3BAgriculture%3BOther&problemClass=LP&application=Infrastructure%20%26%20Capacity%20Expansion%3B%20Operational%3BInfrastructure%20%26%20Capacity%20Expansion%3BDC%20Optimal%20Power%20Flow%3BSteady-state%20Optimal%20Power%20Flow%3BInfrastructure%3BOperational%3BResource%20Adequacy&modellingFramework=ETHOS.FINE%3BGenX%3BIESA-Opt%3BPowerModels%3BSienna%3BTulipa%3BOEMOF%3BPyPSA%3BDCOPF%3BSWITCH%3BTEMOA%3BTIMES%3BZEN-garden&problemSize=L%3BM%3BS&realistic=Realistic%3BOther) to the complete set of benchmark instances used in the section “How does HiPO perform…”.
 * List of links to the extreme-scale (\>10 million variables) problems:
   * [genx-elec\_co2](https://openenergybenchmark.org/dashboard/benchmark-set/genx-elec_co2) (15-168h)
   * [genx-elec\_trex](https://openenergybenchmark.org/dashboard/benchmark-set/genx-elec_trex) (15-168h)
@@ -89,6 +88,10 @@ The results presented in the section “How does HiPO perform…” are from the
 ## Where does HiGHS go next and how can we support it?
 
 Following the release of HiPO, the HiGHS development team will now analyze its behavior on this benchmark problem set to guide ongoing performance enhancements. The Open Energy Benchmark will actively support this effort by benchmarking future versions, continuing a highly successful feedback loop between energy modelers and solver developers. The wider modeling community can directly contribute to this process by [submitting](https://openenergybenchmark.org/blog/open_call) new benchmark problems—especially extremely large or mathematically challenging ones—to help stress-test the solver at its limits. Finally, because these critical open-source advancements rely heavily on community funding, we strongly encourage users and institutions to support the HiGHS team financially via their [GitHub Sponsors page](https://github.com/sponsors/ERGO-Code) or the [Linux Foundation](https://crowdfunding.lfx.linuxfoundation.org/projects/highs).
+
+## Thanks
+
+This investigation and analysis was performed by a team from Open Energy Transition: Enrico Antonini, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Siddharth Krishna, Daniele Lerede, and Madhukar Mishra. We are grateful to the HiGHS team for their support with installing and configuring HiPO. We also thank the following collaborators for their thoughtful review and feedback: Oscar Dowson, Ivet Galabova, Julian Hall, Lennart Lahrs, Matthias Miltenberger, Maximillian Parzen, and Mark Turner.
 
 ## Appendix
 
