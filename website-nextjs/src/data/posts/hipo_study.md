@@ -1,5 +1,5 @@
 ---
-title: "Can open-source solvers be used for large-scale energy system modelling"
+title: "Can open-source solvers be used for large-scale energy system modelling?"
 date: "2026-03-12"
 excerpt: "Can open-source solvers be used for large-scale energy system modelling?"
 tags: ["announcement", "hipo"]
