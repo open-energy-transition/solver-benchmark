@@ -6,6 +6,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 import { createD3Tooltip, wrapTextByPosition } from "@/utils/chart";
 import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
+import { getSolverLabel } from "@/utils/solvers";
 
 const D3GroupedBarChart = ({
   title,
@@ -155,8 +156,8 @@ const D3GroupedBarChart = ({
       : 0;
 
     // For log scale, extend domain to next power of 10 for cleaner visualization
-    // Always start from 0.1 for log scale, 0 for linear scale
-    const domainMin = useLogScale ? 0.1 : 0;
+    // Always start from 0.3 for log scale to bring 1-value line closer to x-axis, 0 for linear scale
+    const domainMin = useLogScale ? 0.3 : 0;
     const domainMax = useLogScale
       ? Math.pow(10, Math.ceil(Math.log10(maxValue)))
       : maxValue;
@@ -424,13 +425,23 @@ const D3GroupedBarChart = ({
           for (let i = minLog; i <= maxLog; i++) {
             tickValues.push(Math.pow(10, i));
           }
+          // Use exponential format when max > 1000
+          const useExponential = domainMax > 1000;
           return d3
             .axisLeft(yScale)
             .tickValues(tickValues)
-            .tickFormat((d) => d3.format(",")(d as number));
+            .tickFormat((d) => {
+              const value = d as number;
+              if (useExponential) {
+                // Return placeholder for exponential format - will be replaced with tspan
+                return "";
+              }
+              return d3.format(",")(value);
+            });
         })()
       : d3.axisLeft(yScale).ticks(10);
 
+    const useExponential = useLogScale && domainMax > 1000;
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
@@ -440,7 +451,21 @@ const D3GroupedBarChart = ({
           .attr("stroke", "currentColor")
           .attr("d", `M0,${height - margin.bottom}V${margin.top}`);
 
-        g.selectAll("text").attr("fill", "#666");
+        g.selectAll("text")
+          .attr("fill", "#666")
+          .each(function (d) {
+            if (useExponential && typeof d === "number" && d > 0) {
+              const exponent = Math.round(Math.log10(d));
+              d3.select(this)
+                .html("") // Clear existing text
+                .append("tspan")
+                .text("10")
+                .append("tspan")
+                .attr("dy", "-5")
+                .attr("font-size", "8px")
+                .text(exponent.toString());
+            }
+          });
       });
 
     // Update axis labels position
@@ -513,7 +538,7 @@ const D3GroupedBarChart = ({
               }}
               className="size-2"
             />
-            {solverKey}
+            {getSolverLabel(solverKey)}
           </div>
         ))}
     </div>

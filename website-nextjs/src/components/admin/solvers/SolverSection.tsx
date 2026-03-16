@@ -1,13 +1,12 @@
 import { useEffect, useState, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { IResultState } from "@/types/state";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
 import { SolverStatusType } from "@/types/benchmark";
 import CustomDropdown from "@/components/common/CustomDropdown";
-import { HIPO_SOLVERS } from "@/utils/solvers";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
+import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
 
 const SOLVES_DATA = [
   {
@@ -49,21 +48,8 @@ const SOLVES_DATA = [
 const SolverSection = () => {
   const router = useRouter();
 
-  const allSolvers = useSelector(
-    (state: { results: IResultState }) => state.results.availableSolvers,
-  );
-
-  const availableSolvers = useMemo(
-    () => allSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
-    [allSolvers],
-  );
-
-  const rawBenchmarkLatestResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.benchmarkLatestResults;
-    },
-  ).filter((result) => !HIPO_SOLVERS.includes(result.solver));
-
+  const availableSolvers = useAvailableSolvers();
+  const rawBenchmarkLatestResults = useBenchmarkResults();
   const benchmarkSuccessMap = new Map<string, number>();
 
   // Count successful solves for each benchmark
@@ -123,7 +109,9 @@ const SolverSection = () => {
 
     // Get base solver data points (these will show as factor = 0)
     const baseData = benchmarkLatestResults
-      .filter((result) => result.solver === selectedSolver)
+      .filter((result) => {
+        return result.solver === selectedSolver;
+      })
       .map((result) => ({
         benchmark: result.benchmark,
         solver: result.solver,

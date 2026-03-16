@@ -5,6 +5,7 @@ import { ID3StackedBarChart } from "@/types/chart";
 import { createD3Tooltip } from "@/utils/chart";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
+import { getSolverLabel } from "@/utils/solvers";
 
 const D3StackedBarChart = ({
   title,
@@ -183,7 +184,7 @@ const D3StackedBarChart = ({
                 style={{ color: colors[solverKey] }}
                 className={"size-2"}
               />
-              {solverKey}
+              {getSolverLabel(solverKey)}
             </div>
           ))}
         </div>

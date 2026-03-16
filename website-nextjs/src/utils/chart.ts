@@ -47,7 +47,7 @@ export const calculateScaleRangeAndTicks = (
 ) => {
   if (data.length === 0) {
     return {
-      scaleRange: { min: 1, max: 10000 },
+      scaleRange: { min: 0.3, max: 10000 },
       tickValues: [1, 10, 100, 1000, 10000],
     };
   }
@@ -61,8 +61,8 @@ export const calculateScaleRangeAndTicks = (
   const minOrder = Math.floor(Math.log10(minValue));
   const maxOrder = Math.ceil(Math.log10(maxValue));
 
-  // Generate scale range
-  const scaleMin = Math.pow(10, minOrder);
+  // Generate scale range - use 0.3 as minimum for log scale to bring 1-value line closer to x-axis
+  const scaleMin = 0.3;
   const scaleMax = Math.pow(10, maxOrder);
 
   // Generate tick values
