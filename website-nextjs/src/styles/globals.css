@@ -54,6 +54,10 @@
   @apply my-1;
  }
 
+ .prose h4 {
+  @apply text-[1.25rem]
+ }
+
   .tag-line-lg {
     @apply text-base sm:text-lg font-lato font-medium sm:leading-1.1 tracking-normal;
   }
