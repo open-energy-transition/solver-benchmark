@@ -376,12 +376,16 @@ const D3SolverEvolutionChart = ({
 
         {/* Left indicator: Lower is better */}
         <div className="absolute left-2 scale-75 lg:scale-100 lg:left-[18px] top-1/2 -translate-y-1/2 pointer-events-none">
-          <DirectionalIndicator direction="lower" size="md" />
+          <DirectionalIndicator
+            color={solverColor}
+            direction="lower"
+            size="md"
+          />
         </div>
 
         {/* Right indicator: Higher is better */}
         <div className="absolute right-2 scale-75 lg:scale-100 lg:right-[18px] top-1/2 -translate-y-1/2 pointer-events-none">
-          <DirectionalIndicator direction="higher" size="md" />
+          <DirectionalIndicator color="#dc2626" direction="higher" size="md" />
         </div>
       </div>
     </div>

@@ -6,12 +6,14 @@ interface DirectionalIndicatorProps {
   direction: Direction;
   className?: string;
   size?: "sm" | "md" | "lg";
+  color?: string;
 }
 
 const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
   direction,
   className = "",
   size = "sm",
+  color = "black",
 }) => {
   const id = useId();
 
@@ -38,8 +40,8 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
 
   return (
     <div
-      className={`inline-flex flex-col items-center -rotate-90 text-black ${sizeClasses[size]} ${className}`}
-      style={{ display: "inline-flex" }}
+      className={`inline-flex flex-col items-center -rotate-90 ${sizeClasses[size]} ${className}`}
+      style={{ display: "inline-flex", color }}
     >
       <svg
         width="100%"
