@@ -236,6 +236,8 @@ const SolverSelection = () => {
             }}
             solver1={solver1}
             solver2={solver2}
+            safeAxes={false}
+            showSolverFasterLabels={false}
             tooltipTemplate={memoryUsageTooltipTemplate}
             scaleType="log"
             scaleRange={memoryUsageLogScale.scaleRange}

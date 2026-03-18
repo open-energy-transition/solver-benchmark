@@ -5,7 +5,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
-import { formatDecimal, roundNumber } from "@/utils/number";
+import { formatDecimal } from "@/utils/number";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 type ChartData = {
@@ -39,6 +39,10 @@ interface D3ChartProps {
   };
   tickValues?: number[];
   tooltipTemplate?: (d: ChartData, solver1: string, solver2: string) => string;
+  /** If true, force linear axes to include 0 and log axes to include smallest positive datapoint */
+  safeAxes?: boolean;
+  /** If true, render textual helper labels on the plot corners */
+  showSolverFasterLabels?: boolean;
 }
 
 const defaultTooltipTemplate = (
@@ -74,6 +78,8 @@ const ChartCompare = ({
   scaleType = "linear",
   scaleRange = { min: 1, max: 100000 },
   tickValues = [1, 10, 100, 1000, 10000, 100000],
+  safeAxes = true,
+  showSolverFasterLabels = true,
 }: D3ChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -149,16 +155,74 @@ const ChartCompare = ({
     const tooltip = createD3Tooltip();
 
     // Scales
+    // Optionally ensure axes include zero for linear scales and include the smallest
+    // positive data point for log scales so points don't fall outside the plot.
+    const minPositiveX = d3.min(data, (d) =>
+      d.xaxis > 0 ? d.xaxis : undefined,
+    );
+    const minPositiveY = d3.min(data, (d) =>
+      d.yaxis > 0 ? d.yaxis : undefined,
+    );
+    const minPositive = Math.min(
+      ...([minPositiveX, minPositiveY].filter(
+        (v) => typeof v === "number",
+      ) as number[]),
+    );
+
+    const safeMinPositive =
+      typeof minPositive === "number" && isFinite(minPositive)
+        ? Math.max(minPositive, 1e-3)
+        : scaleRange.min;
+
+    const xDomain: number[] = (() => {
+      if (scaleType === "log") {
+        if (safeAxes) {
+          return [
+            Math.min(scaleRange.min, safeMinPositive),
+            Math.max(scaleRange.max, maxValue || scaleRange.max),
+          ];
+        }
+        return [
+          Math.min(scaleRange.min, minValue || scaleRange.min),
+          Math.max(scaleRange.max, maxValue || scaleRange.max),
+        ];
+      }
+      // linear
+      if (safeAxes) {
+        return [0, maxValue === minValue ? maxValue + 1 : maxValue];
+      }
+      return [minValue, maxValue === minValue ? maxValue + 1 : maxValue];
+    })();
+
+    const yDomain: number[] = (() => {
+      if (scaleType === "log") {
+        if (safeAxes) {
+          return [
+            Math.min(scaleRange.min, safeMinPositive),
+            Math.max(scaleRange.max, maxValue || scaleRange.max),
+          ];
+        }
+        return [
+          Math.min(scaleRange.min, minValue || scaleRange.min),
+          Math.max(scaleRange.max, maxValue || scaleRange.max),
+        ];
+      }
+      if (safeAxes) {
+        return [0, maxValue === minValue ? maxValue + 1 : maxValue];
+      }
+      return [minValue, maxValue === minValue ? maxValue + 1 : maxValue];
+    })();
+
     const xScale =
       scaleType === "log"
         ? d3
             .scaleLog()
             .base(10)
-            .domain([scaleRange.min, scaleRange.max])
+            .domain(xDomain)
             .range([margin.left, width - margin.right])
         : d3
             .scaleLinear()
-            .domain([minValue, maxValue])
+            .domain(xDomain)
             .range([margin.left, width - margin.right]);
 
     const yScale =
@@ -166,11 +230,11 @@ const ChartCompare = ({
         ? d3
             .scaleLog()
             .base(10)
-            .domain([scaleRange.min, scaleRange.max])
+            .domain(yDomain)
             .range([height - margin.bottom, margin.top])
         : d3
             .scaleLinear()
-            .domain([minValue, maxValue])
+            .domain(yDomain)
             .range([height - margin.bottom, margin.top]);
 
     // Axes
@@ -328,6 +392,37 @@ const ChartCompare = ({
       .attr("y2", yScale(lineEnd))
       .attr("stroke", "#8B8B8B")
       .attr("stroke-width", 2);
+
+    // Add helper labels: top-left = solver1 is faster, bottom-right = solver2 is faster
+    if (showSolverFasterLabels) {
+      try {
+        const solver1Info = parseSolverInfo(solver1);
+        const solver2Info = parseSolverInfo(solver2);
+
+        // Top-left: solver1 is faster
+        svg
+          .append("text")
+          .attr("x", margin.left + 12)
+          .attr("y", margin.top - 4)
+          .attr("fill", "#6B7280")
+          .attr("class", "font-lato")
+          .attr("font-size", isMobile ? "10px" : "12px")
+          .text(`${solver1Info.name} is faster`);
+
+        // Bottom-right: solver2 is faster
+        svg
+          .append("text")
+          .attr("x", width - margin.right - 12)
+          .attr("y", height - margin.bottom - (isMobile ? 8 : 6))
+          .attr("fill", "#6B7280")
+          .attr("text-anchor", "end")
+          .attr("class", "font-lato")
+          .attr("font-size", isMobile ? "10px" : "12px")
+          .text(`${solver2Info.name} is faster`);
+      } catch (e) {
+        // ignore parsing errors and don't render labels
+      }
+    }
 
     // Grid
     const gridValues = scaleType === "log" ? tickValues : xScale.ticks();

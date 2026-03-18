@@ -22,14 +22,19 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
   };
 
   const svgHeights: Record<string, number> = {
-    sm: 8,
-    md: 10,
-    lg: 12,
+    sm: 10,
+    md: 12,
+    lg: 14,
   };
 
   const text = direction === "lower" ? "Lower is better" : "Higher is better";
 
-  const headOffset = size === "sm" ? 6 : size === "md" ? 7 : 9;
+  const headOffset = size === "sm" ? 6 : size === "md" ? 8 : 10;
+  const strokeWidths: Record<string, number> = {
+    sm: 2.5,
+    md: 3,
+    lg: 4,
+  };
 
   return (
     <div
@@ -52,7 +57,7 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
           x2="113"
           y2="6"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth={strokeWidths[size]}
           strokeLinecap="round"
         />
         {/* Triangle head (tip, top-base, bottom-base) - shifted to new tip */}
@@ -61,6 +66,8 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
             6 - Math.round(headOffset * 0.8)
           } ${115 - headOffset},${6 + Math.round(headOffset * 0.8)}`}
           fill="currentColor"
+          stroke="currentColor"
+          strokeWidth={Math.max(1, strokeWidths[size] - 1)}
         />
       </svg>
       <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
