@@ -5,6 +5,7 @@ import { CircleIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 import { createD3Tooltip, wrapTextByPosition } from "@/utils/chart";
+import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 import { getSolverLabel } from "@/utils/solvers";
 
 const D3GroupedBarChart = ({
@@ -35,6 +36,7 @@ const D3GroupedBarChart = ({
   sortByValue = false,
   showLineAtY1 = true,
   useLogScale = false,
+  directionalIndicator = undefined,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -541,13 +543,19 @@ const D3GroupedBarChart = ({
         ))}
     </div>
   );
-
   return (
     <div className="relative bg-[#F4F6FA] rounded-2xl p-2">
+      {directionalIndicator && (
+        <div className="absolute -right-4 top-1/2 transform -translate-y-1/2">
+          <DirectionalIndicator direction={directionalIndicator} size="sm" />
+        </div>
+      )}
       <div className="bg-white rounded-2xl p-1">
         <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
           {/* Title */}
-          <div className="text-sm text-center text-dark-grey ">{title}</div>
+          <div className="flex items-center gap-2">
+            <div className="text-sm text-center text-dark-grey ">{title}</div>
+          </div>
           {/* Legend */}
           {customLegend
             ? customLegend({ chartData, categoryKey })

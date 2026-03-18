@@ -8,6 +8,9 @@ import { IResultState } from "@/types/state";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { isNullorUndefined } from "@/utils/calculations";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import DirectionalIndicator, {
+  Direction,
+} from "@/components/shared/DirectionalIndicator";
 
 type ChartData = {
   runtime: number;
@@ -28,6 +31,8 @@ interface D3PlotChartProps {
   customTooltip?: (d: ChartData) => string;
   domainPadding?: number;
   startFrom?: number;
+  xAxisDirection?: Direction;
+  yAxisDirection?: Direction;
 }
 
 const D3PlotChart = ({
@@ -38,6 +43,8 @@ const D3PlotChart = ({
   customTooltip,
   domainPadding = 5,
   startFrom = undefined,
+  xAxisDirection = "lower",
+  yAxisDirection = "lower",
 }: D3PlotChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -383,19 +390,36 @@ const D3PlotChart = ({
   return (
     <div className="relative">
       {/* Legend */}
-      <div className="flex px-5 text-navy flex-wrap gap-2 mb-4">
-        {Object.keys(solverColors).map((solverKey) => (
-          <div
-            key={solverKey}
-            className="border-[#CAD9EF] border py-1 px-2 sm:px-5 uppercase bg-white text-[9px] flex items-center gap-1 rounded-md h-max w-max"
-          >
-            <CircleIcon
-              style={{ color: solverColors[solverKey] }}
-              className={"size-2"}
-            />
-            {solverKey}
-          </div>
-        ))}
+      <div className="flex px-5 text-navy flex-wrap gap-2 mb-4 items-center justify-between">
+        <div className="flex flex-wrap gap-2">
+          {Object.keys(solverColors).map((solverKey) => (
+            <div
+              key={solverKey}
+              className="border-[#CAD9EF] border py-1 px-2 sm:px-5 uppercase bg-white text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+            >
+              <CircleIcon
+                style={{ color: solverColors[solverKey] }}
+                className={"size-2"}
+              />
+              {solverKey}
+            </div>
+          ))}
+        </div>
+        {/* Directional indicators */}
+        <div className="flex flex-col gap-1 text-[10px]">
+          {xAxisDirection && (
+            <div className="flex items-center gap-1">
+              <span className="text-dark-grey/60">X-axis:</span>
+              <DirectionalIndicator direction={xAxisDirection} size="sm" />
+            </div>
+          )}
+          {yAxisDirection && (
+            <div className="flex items-center gap-1">
+              <span className="text-dark-grey/60">Y-axis:</span>
+              <DirectionalIndicator direction={yAxisDirection} size="sm" />
+            </div>
+          )}
+        </div>
       </div>
       <div className="bg-[#F4F6FA] rounded-2xl p-2">
         <div className="bg-white rounded-2xl p-1">

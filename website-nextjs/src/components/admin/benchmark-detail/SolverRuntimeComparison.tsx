@@ -192,6 +192,7 @@ const SolverRuntimeComparison = ({
         xAxisTickFormat={getXAxisTickFormat}
         xAxisBarTextClassName="text-[8px] fill-dark-grey"
         useLogScale={true}
+        directionalIndicator="lower"
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const benchmarkData = findBenchmarkData(d.key, d.category);

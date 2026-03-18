@@ -132,17 +132,60 @@ jobs:
           cd website-nextjs
           npm run build
 
-      - name: Install matching Chrome + ChromeDriver via browser-driver-manager
+      - name: Install Google Chrome (for ChromeDriver matching)
+        run: |
+          # Install Chrome so any driver manager can detect the browser version
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg ca-certificates
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          # Attempt to install Chrome 145.x (pin major version). If unavailable, fall back to stable.
+          CHROME_MAJOR=145
+          if sudo apt-get install -y "google-chrome-stable=${CHROME_MAJOR}*"; then
+            echo "Installed Google Chrome matching major ${CHROME_MAJOR}"
+          else
+            echo "Requested Chrome ${CHROME_MAJOR} not available via apt; installing stable instead"
+            sudo apt-get install -y google-chrome-stable
+          fi
+          # Print version for debugging
+          google-chrome --version || which google-chrome-stable || true
+
+      - name: Install matching ChromeDriver for apt Chrome via browser-driver-manager
         run: |
           cd website-nextjs
           npm install --no-save browser-driver-manager
-          # Installs Chrome *and* the exactly matching ChromeDriver together
-          npx browser-driver-manager install chrome
-          # Resolve the chromedriver binary — try the bdm path command first,
-          # fall back to `which chromedriver` in case bdm added it to PATH.
+          # Detect the apt-installed Chrome version and ask bdm to install the matching chromedriver
+          CHROME_VER=$(google-chrome --version 2>/dev/null | awk '{print $3}' || true)
+          echo "Detected Chrome version: $CHROME_VER"
+          if [ -n "$CHROME_VER" ]; then
+            # Try to install the chromedriver matching the full Chrome version first
+            if npx browser-driver-manager install chromedriver --chromedriver-version="$CHROME_VER"; then
+              echo "Installed chromedriver matching $CHROME_VER"
+            else
+              # Fall back to installing chromedriver for the major version
+              CHROME_MAJOR=$(echo "$CHROME_VER" | cut -d'.' -f1)
+              echo "Falling back to chromedriver for major version: $CHROME_MAJOR"
+              npx browser-driver-manager install chromedriver --chromedriver-version="$CHROME_MAJOR" || true
+            fi
+          else
+            echo "Could not detect apt chrome version; installing chromedriver latest as fallback"
+            npx browser-driver-manager install chromedriver || true
+          fi
+          # Resolve the chromedriver binary and export for later steps
           CHROMEDRIVER_PATH=$(npx browser-driver-manager path chromedriver 2>/dev/null || which chromedriver 2>/dev/null || echo "")
           echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH" >> $GITHUB_ENV
           echo "Installed ChromeDriver at: $CHROMEDRIVER_PATH"
+          # Also expose Chrome binary path for tests
+          CHROME_BIN_PATH=$(which google-chrome-stable || which google-chrome || echo "")
+          echo "CHROME_BIN_PATH=$CHROME_BIN_PATH" >> $GITHUB_ENV
+          echo "Chrome binary: $CHROME_BIN_PATH"
+          if [ -n "$CHROME_BIN_PATH" ]; then
+            $CHROME_BIN_PATH --version || true
+          fi
+          if [ -n "$CHROMEDRIVER_PATH" ]; then
+            $CHROMEDRIVER_PATH --version || true
+          fi
 
       - name: Start Next.js server in background
         run: |
@@ -160,12 +203,14 @@ jobs:
 
       - name: Run axe-core accessibility tests on all pages
         env:
-          # CHROMEDRIVER_PATH is set by the install step above via GITHUB_ENV
-          # No-sandbox flags are required for Chrome inside GitHub Actions runners
+          # AXE flags
           AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
           AXE_LOAD_DELAY: "5000"
         run: |
           cd website-nextjs
+          # CHROME_BIN_PATH is set earlier into GITHUB_ENV; export it for the test
+          export CHROME_BIN="$CHROME_BIN_PATH"
+          echo "Using CHROME_BIN=$CHROME_BIN"
           npm run axe:test
 
       - name: Upload accessibility report

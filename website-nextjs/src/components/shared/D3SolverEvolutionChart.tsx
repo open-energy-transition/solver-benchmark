@@ -5,6 +5,7 @@ import {
   getSolverColor,
   roundUpToNearest,
 } from "@/utils/chart";
+import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 
 interface SolverEvolutionData {
@@ -147,6 +148,9 @@ const D3SolverEvolutionChart = ({
         g.selectAll(".tick line").attr("display", "none");
         g.selectAll("text").attr("fill", "#DC2626").attr("class", "text-xs");
       });
+
+    // Directional indicators are rendered as React components positioned
+    // alongside the SVG (handled in JSX) instead of drawing them via D3.
 
     // Grid lines
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
@@ -367,8 +371,22 @@ const D3SolverEvolutionChart = ({
           </div>
         </div>
       </div>
-      <div ref={containerRef}>
+      <div ref={containerRef} className="relative">
         <svg ref={svgRef}></svg>
+
+        {/* Left indicator: Lower is better */}
+        <div className="absolute left-2 scale-75 lg:scale-100 lg:left-[18px] top-1/2 -translate-y-1/2 pointer-events-none">
+          <DirectionalIndicator
+            color={solverColor}
+            direction="lower"
+            size="md"
+          />
+        </div>
+
+        {/* Right indicator: Higher is better */}
+        <div className="absolute right-2 scale-75 lg:scale-100 lg:right-[18px] top-1/2 -translate-y-1/2 pointer-events-none">
+          <DirectionalIndicator color="#dc2626" direction="higher" size="md" />
+        </div>
       </div>
     </div>
   );

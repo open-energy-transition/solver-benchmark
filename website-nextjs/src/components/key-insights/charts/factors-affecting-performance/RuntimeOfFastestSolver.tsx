@@ -218,6 +218,7 @@ const RuntimeOfFastestSolver = ({
         <D3GroupedBarChart
           title="Runtime of fastest solver"
           chartData={chartData}
+          directionalIndicator="lower"
           normalize={false}
           categoryKey="benchmark"
           colors={(d) => {

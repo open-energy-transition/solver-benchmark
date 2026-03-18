@@ -274,6 +274,7 @@ const RealisticRuntimeComparison = ({
         xAxisLabelWrapLength={xAxisLabelWrapLength}
         splitter={splitter}
         rotateXAxisLabels={rotateXAxisLabels}
+        directionalIndicator="lower"
       />
     </div>
   );
