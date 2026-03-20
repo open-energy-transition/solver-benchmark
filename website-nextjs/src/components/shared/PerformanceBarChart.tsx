@@ -7,6 +7,7 @@ import { SolverStatusType } from "@/types/benchmark";
 import { formatDecimal } from "@/utils/number";
 import BasicVsFeasible from "./BasicVsFeasible";
 import { getSolverLabel } from "@/utils/solvers";
+import DirectionalIndicator from "./DirectionalIndicator";
 
 type PerformanceData = {
   benchmark: string;
@@ -24,6 +25,8 @@ interface Props {
   baseSolver: string;
   availableSolvers: string[];
 }
+
+const chartMargin = { top: 40, right: 100, bottom: 100, left: 60 };
 
 const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +48,11 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     );
   }, [availableSolvers]);
 
+  const baseSolverColor = useMemo(
+    () => getSolverColor(baseSolver),
+    [baseSolver],
+  );
+
   const toggleSolver = (solver: string) => {
     setVisibleSolvers((prev) => {
       const next = new Set(prev);
@@ -61,12 +69,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   useEffect(() => {
     const width = containerRef.current?.clientWidth || 800;
 
-    const margin = {
-      top: 40,
-      right: 100,
-      bottom: 100,
-      left: 60,
-    };
+    const margin = chartMargin;
     const height = 600 + (margin.bottom - 100);
 
     d3.select(svgRef.current).selectAll("*").remove();
@@ -195,6 +198,11 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxisRatio);
+
+    // Add up/down arrows with explanatory labels on both sides of the left y-axis
+    const arrowOffsetX = 36; // horizontal distance from axis
+    const arrowTopY = margin.top + 8;
+    const arrowBottomY = height - margin.bottom - 8;
 
     // Add secondary y-axis (runtime)
     svg
@@ -484,8 +492,8 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -(height / 2) + 50)
-      .attr("y", 15)
+      .attr("x", -(height / 2) + 40)
+      .attr("y", 10)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "rgb(79 78 78)")
@@ -577,27 +585,58 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 </span>
               </div>
             ))}
+          <div className="text-sm">
+            (click a solver to toggle showing it on the plot)
+          </div>
         </div>
         <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4">
           <div>
             <p>🔻/🔺: base / other solver failed to solve in time limit</p>
             <p>❌ : both solvers failed to solve in time limit</p>
           </div>
-          <div className="lg:mr-24 flex flex-col gap-2">
-            <div>
-              <p className="flex gap-1 items-center">
-                <CircleIcon className="size-3" />
-                base solver solved successfully
-              </p>
-              <p className="flex gap-1 items-center">
-                <CloseIcon className="size-3" />
-                base solver failed to solve in time limit
-              </p>
-            </div>
+          <div className="lg:mr-24">
+            <p className="flex gap-1 items-center">
+              <CircleIcon fill={baseSolverColor} className="size-3" />
+              base solver solved successfully
+            </p>
+            <p className="flex gap-1 items-center">
+              <CloseIcon fill={baseSolverColor} className="size-3" />
+              base solver failed to solve in time limit
+            </p>
           </div>
         </div>
       </div>
-      <div ref={containerRef}>
+      <div ref={containerRef} className="relative">
+        <div
+          className="absolute"
+          style={{
+            left: "8px",
+            top: `${chartMargin.top + 30}px`,
+            transform: "translateX(-50%)",
+          }}
+        >
+          <DirectionalIndicator
+            direction="higher"
+            label={`${baseSolver} better than other solver`}
+            size="sm"
+            color="rgb(79,78,78)"
+          />
+        </div>
+        <div
+          className="absolute"
+          style={{
+            left: "8px",
+            bottom: "150px",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <DirectionalIndicator
+            direction="lower"
+            label={`other solver better than ${baseSolver}`}
+            size="sm"
+            color="rgb(79,78,78)"
+          />
+        </div>
         <svg ref={svgRef}></svg>
       </div>
       <BasicVsFeasible />
