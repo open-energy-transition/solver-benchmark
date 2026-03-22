@@ -48,9 +48,11 @@ def filter_data(df, filtered_metadata):
 
     # Combine conditions based on highs_run_time
     runtime_condition = df["highs_run_time"].apply(
-        lambda runtime: any(size_conditions[size](runtime) for size in selected_sizes)
-        if runtime is not None
-        else False
+        lambda runtime: (
+            any(size_conditions[size](runtime) for size in selected_sizes)
+            if runtime is not None
+            else False
+        )
     )
 
     # Filter df to include only rows meeting the runtime condition and filtered benchmarks
