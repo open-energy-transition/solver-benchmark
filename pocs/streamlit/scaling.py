@@ -3,9 +3,12 @@ import plotly.express as px
 import streamlit as st
 from packaging.version import parse
 
-from website.components.filter import display_filter_status, generate_filtered_metadata
-from website.utils.file_utils import load_benchmark_data, load_metadata
-from website.utils.filters import filter_data
+from pocs.streamlit.components.filter import (
+    display_filter_status,
+    generate_filtered_metadata,
+)
+from pocs.streamlit.utils.file_utils import load_benchmark_data, load_metadata
+from pocs.streamlit.utils.filters import filter_data
 
 
 def create_subplots(data, y_metric):
