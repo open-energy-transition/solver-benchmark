@@ -1,7 +1,5 @@
 benchmarks: map(include('benchmark'), key=str())
 
----
-
 benchmark:
   Short description: str()
   Modelling framework: str()
