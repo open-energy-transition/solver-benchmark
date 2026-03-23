@@ -48,6 +48,7 @@ jobs:
             printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npython tests/validate_urls.py"
             exit 1
           fi
+          yamale -s benchmarks/metadata_schema.yaml benchmarks/*/metadata.yaml
           python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
           PY_EXIT=${PIPESTATUS[0]}
 

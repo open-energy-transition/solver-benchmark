@@ -1,0 +1,35 @@
+benchmarks: map(include('benchmark'), key=str())
+
+---
+
+benchmark:
+  Short description: str()
+  Modelling framework: str()
+  Model name: str()
+  Version: str(required=False)
+  Contributor(s)/Source: str()
+  Problem class: str()
+  Application: str()
+  Sectoral focus: str()
+  Sectors: str()
+  Time horizon: str()
+  MILP features: str()
+  License: str(required=False)
+  Notes: str(required=False)
+  Sizes: list(include('size'))
+
+size:
+  Name: str()
+  URL: str()
+  Temporal resolution: str()
+  Spatial resolution: str()
+  Realistic: bool()
+  Realistic motivation: str(required=False)
+
+  Size: str(required=False)
+  Num. variables: int(required=False)
+  Num. constraints: int(required=False)
+  Num. nonzeros: int(required=False)
+  Num. integer variables: int(required=False)
+  Num. continuous variables: int(required=False)
+  Skip because: str(required=False)
