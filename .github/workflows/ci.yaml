@@ -31,7 +31,7 @@ jobs:
           pip install --upgrade pip pre-commit
           pip install -r website/requirements.txt
           # For validation scripts (TODO collect these in a requirements.txt file?)
-          pip install ruamel.yaml
+          pip install ruamel.yaml yamale
 
       - name: Check code formatting
         run: |
