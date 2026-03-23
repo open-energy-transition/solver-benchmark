@@ -219,7 +219,11 @@ const PageBenchmarkDetail = () => {
                 </div>
                 <div className="w-full overflow-auto">
                   <div className="space-y-4 sm:space-y-6">
-                    <BenchmarkTableResult metaData={filteredMetaData} />
+                    <BenchmarkTableResult
+                      metaData={filteredMetaData}
+                      problemSizeFilter={localFilters.problemSize}
+                      realisticFilter={localFilters.realistic}
+                    />
                   </div>
                 </div>
               </div>

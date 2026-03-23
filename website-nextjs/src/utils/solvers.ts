@@ -4,16 +4,18 @@ const solverLabels = new Map<string, string>([
   ["highs", "HiGHS"],
 ]);
 
+const HIPO_SOLVERS = ["highs-hipo", "highs-ipx"];
+
 function getSolverLabel(solverName: string): string {
-  const normalizedSolverName = solverName.toLowerCase();
-  return solverLabels.get(normalizedSolverName) || "Unknown Solver";
+  if (HIPO_SOLVERS.includes(solverName)) {
+    return `${solverName}*`;
+  }
+  return solverName;
 }
 
 function formatSolverWithVersion(solverWithVersion: string) {
   const [solver, version] = solverWithVersion.split("--");
-  return `${solver} v${version}`;
+  return `${getSolverLabel(solver)} v${version}`;
 }
-
-const HIPO_SOLVERS = ["highs-hipo", "highs-ipx"];
 
 export { getSolverLabel, formatSolverWithVersion, HIPO_SOLVERS };

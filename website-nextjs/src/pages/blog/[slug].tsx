@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { getPostSlugs, getPostBySlug, PostMeta } from "../../lib/posts";
+import { getTsxPost, getTsxPostSlugs } from "../../lib/tsx-posts-registry";
 import {
   PageLayout,
   TableOfContents,
@@ -21,6 +22,7 @@ type Props = {
   meta: PostMeta;
   contentHtml: string;
   tocItems: TocItem[];
+  isTsx: boolean;
 };
 
 function slugify(text: string) {
@@ -55,16 +57,16 @@ function extractTocAndInjectIds(htmlString: string) {
         // append our utility to existing class attribute (double-quote case)
         outAttrs = outAttrs.replace(
           /class=\"([^\"]*)\"/,
-          (_m: any, g1: any) => `class="${g1} scroll-mt-[250px]"`,
+          (_m: any, g1: any) => `class="${g1} scroll-mt-[240px]"`,
         );
         // append for single-quoted case
         outAttrs = outAttrs.replace(
           /class='([^']*)'/,
-          (_m: any, g1: any) => `class='${g1} scroll-mt-[250px]'`,
+          (_m: any, g1: any) => `class='${g1} scroll-mt-[240px]'`,
         );
       } else {
         // attrs may include a leading space; insert our class attribute
-        outAttrs = ` class=\"scroll-mt-[250px]\"${attrs}`;
+        outAttrs = ` class=\"scroll-mt-[240px]\"${attrs}`;
       }
 
       return `<h2 id="${slug}"${outAttrs}>${inner}</h2>`;
@@ -74,7 +76,25 @@ function extractTocAndInjectIds(htmlString: string) {
   return { contentHtml: newHtml, tocItems: toc };
 }
 
-export default function Post({ meta, contentHtml, tocItems }: Props) {
+export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
+  // For TSX posts, look up and render the registered component directly.
+  if (isTsx) {
+    const entry = getTsxPost(meta.slug);
+    if (entry) {
+      const { Component } = entry;
+      return (
+        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
+          <Head>
+            <title>{meta.title} - Open Energy Benchmark</title>
+            <meta name="description" content={meta.excerpt || meta.title} />
+          </Head>
+          <ContentSection>
+            <Component />
+          </ContentSection>
+        </PageLayout>
+      );
+    }
+  }
   const mappedItems = tocItems.map((t) => ({ ...t, threshold: 0.5 }));
   const visibilities = useSectionsVisibility(mappedItems);
   const scrollDirection = useScrollDirection();
@@ -157,24 +177,42 @@ export default function Post({ meta, contentHtml, tocItems }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = getPostSlugs().map((f) => f.replace(/\.md$/, ""));
-  const paths = slugs.map((slug) => ({ params: { slug } }));
+  const mdSlugs = getPostSlugs().map((f) => f.replace(/\.md$/, ""));
+  const tsxSlugs = getTsxPostSlugs();
+  const paths = [...mdSlugs, ...tsxSlugs].map((slug) => ({
+    params: { slug },
+  }));
   return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const slug = (params?.slug as string) + ".md";
-  const { meta, content } = getPostBySlug(slug);
+  const slug = params?.slug as string;
+
+  // Check if this is a registered TSX post.
+  const entry = getTsxPost(slug);
+  if (entry) {
+    return {
+      props: {
+        meta: { ...entry.meta, type: "tsx" },
+        contentHtml: "",
+        tocItems: [],
+        isTsx: true,
+      },
+    };
+  }
+
+  // Otherwise treat as a markdown post.
+  const { meta, content } = getPostBySlug(slug + ".md");
   const processed = await remark().use(html).process(content);
   const rawHtml = processed.toString();
-
   const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
 
   return {
     props: {
-      meta,
+      meta: { ...meta, type: "md" },
       contentHtml,
       tocItems,
+      isTsx: false,
     },
   };
 };

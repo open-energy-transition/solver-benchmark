@@ -148,22 +148,26 @@ jobs:
           cd website-nextjs
           npm run build
 
-      - name: Install browser-driver-manager and sync Chrome/ChromeDriver
+      - name: Install matching Chrome + ChromeDriver via browser-driver-manager
         run: |
           cd website-nextjs
           npm install --no-save browser-driver-manager
+          # Installs Chrome *and* the exactly matching ChromeDriver together
           npx browser-driver-manager install chrome
+          # Resolve the chromedriver binary — try the bdm path command first,
+          # fall back to `which chromedriver` in case bdm added it to PATH.
+          CHROMEDRIVER_PATH=$(npx browser-driver-manager path chromedriver 2>/dev/null || which chromedriver 2>/dev/null || echo "")
+          echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH" >> $GITHUB_ENV
+          echo "Installed ChromeDriver at: $CHROMEDRIVER_PATH"
 
       - name: Start Next.js server in background
         run: |
           cd website-nextjs
           npm start &
-          echo "Waiting for server to start..."
-          sleep 15
 
       - name: Wait for server to be ready
         run: |
-          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done' || exit 1
+          timeout 90 bash -c 'until curl -sf http://localhost:3000 > /dev/null; do sleep 2; done' || exit 1
 
       - name: Extract URLs from sitemap
         run: |
@@ -171,6 +175,11 @@ jobs:
           npm run axe:extract
 
       - name: Run axe-core accessibility tests on all pages
+        env:
+          # CHROMEDRIVER_PATH is set by the install step above via GITHUB_ENV
+          # No-sandbox flags are required for Chrome inside GitHub Actions runners
+          AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
+          AXE_LOAD_DELAY: "5000"
         run: |
           cd website-nextjs
           npm run axe:test
