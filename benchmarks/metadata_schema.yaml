@@ -1,4 +1,4 @@
-benchmarks: map(include('benchmark'), key=str())
+benchmarks: {}
 
 benchmark:
   Short description: str()
