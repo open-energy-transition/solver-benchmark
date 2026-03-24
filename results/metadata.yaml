@@ -4513,6 +4513,126 @@ benchmarks:
       Num. nonzeros: 4548359
       Num. continuous variables: 697980
       Num. integer variables: 236520
+    - Name: 2-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_2_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 2 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 53331
+      Num. variables: 27400
+      Num. nonzeros: 132345
+      Num. continuous variables: 19735
+      Num. integer variables: 7665
+    - Name: 4-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_4_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 4 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 108111
+      Num. variables: 54428
+      Num. nonzeros: 266481
+      Num. continuous variables: 40193
+      Num. integer variables: 14235
+    - Name: 6-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_6_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 6 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 154864
+      Num. variables: 77444
+      Num. nonzeros: 378742
+      Num. continuous variables: 57734
+      Num. integer variables: 19710
+    - Name: 8-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_8_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 8 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 196866
+      Num. variables: 98267
+      Num. nonzeros: 481527
+      Num. continuous variables: 73082
+      Num. integer variables: 25185
+    - Name: 10-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_10_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 10 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 234485
+      Num. variables: 116900
+      Num. nonzeros: 571917
+      Num. continuous variables: 87335
+      Num. integer variables: 29565
+    - Name: 12-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_12_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 12 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 272833
+      Num. variables: 135533
+      Num. nonzeros: 658690
+      Num. continuous variables: 102683
+      Num. integer variables: 32850
+    - Name: 14-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_14_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 14 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 310086
+      Num. variables: 153436
+      Num. nonzeros: 742937
+      Num. continuous variables: 117301
+      Num. integer variables: 36135
+    - Name: 16-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_16_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 16 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 348805
+      Num. variables: 172437
+      Num. nonzeros: 829709
+      Num. continuous variables: 133017
+      Num. integer variables: 39420
+    - Name: 18-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_18_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 18 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 383138
+      Num. variables: 189610
+      Num. nonzeros: 903358
+      Num. continuous variables: 146905
+      Num. integer variables: 42705
+    - Name: 20-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_20_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 20 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 421853
+      Num. variables: 208243
+      Num. nonzeros: 1000706
+      Num. continuous variables: 162253
+      Num. integer variables: 45990
   DCOPF-Carolinas_2M:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a two-month horizon with hourly resolution, using 2021 as the
