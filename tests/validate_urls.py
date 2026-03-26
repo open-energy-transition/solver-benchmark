@@ -20,7 +20,9 @@ from urllib.parse import quote, unquote, urlparse, urlunparse
 from ruamel.yaml import YAML
 
 FILE_PATTERN = "[Mm]etadata*.yaml"
-GCS_HOST = "storage.googleapis.com"
+
+GCS_HOSTS = ["storage.googleapis.com", "storage.cloud.google.com"]
+GITHUB_HOSTS = ["raw.githubusercontent.com"]
 
 # Define the directory paths relative to the script location (tests/)
 project_root_dir = Path(__file__).parent.parent
@@ -60,20 +62,66 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
     if not data or "benchmarks" not in data:
         return []
 
+    seen_bench_names = set()
+    seen_urls = set()
     to_mv = []
     to_gzip = []
+
     for bench_name, bench_info in (data.get("benchmarks") or {}).items():
+        # Benchmark name uniqueness
+        if bench_name in seen_bench_names:
+            print(f"ERROR: Duplicate benchmark name found: {bench_name}")
+            if not dry_run:
+                exit(1)
+        else:
+            seen_bench_names.add(bench_name)
+
         sizes = bench_info.get("Sizes") or []
+        seen_size_names_per_bench = set()
+
         for size_entry in sizes:
             if not isinstance(size_entry, dict):
                 continue
+
             url = size_entry.get("URL")
             size_name = size_entry.get("Name")
             if not url or not size_name:
                 continue
 
+            # Size name uniqueness per benchmark
+            if size_name in seen_size_names_per_bench:
+                print(
+                    f"ERROR: Duplicate size name '{size_name}' in benchmark '{bench_name}'"
+                )
+                if not dry_run:
+                    exit(1)
+            else:
+                seen_size_names_per_bench.add(size_name)
+
+            # URL uniqueness globally
+            if url in seen_urls:
+                print(f"ERROR: Duplicate URL found: {url}")
+                if not dry_run:
+                    exit(1)
+            else:
+                seen_urls.add(url)
+
+            # Validate host
             parsed = urlparse(url)
-            if parsed.netloc != GCS_HOST:
+            host = parsed.netloc.lower()
+
+            # Normalize old cloud URLs to storage.googleapis.com
+            if host == "storage.cloud.google.com":
+                parsed = parsed._replace(netloc="storage.googleapis.com")
+                host = "storage.googleapis.com"
+
+            # Validate host
+            if host not in GCS_HOSTS + GITHUB_HOSTS:
+                print(
+                    f"ERROR: URL uses invalid host {parsed.netloc}, must be one of {GCS_HOSTS + GITHUB_HOSTS}: {url}"
+                )
+                if not dry_run:
+                    exit(1)
                 continue
             gs_path = unquote("/".join(parsed.path.split("/")[1:]))
 
@@ -82,9 +130,18 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
             expected = derive_expected_filename(bench_name, size_name, decoded_filename)
             encoded_expected = quote(expected, safe="")
 
-            new_path_segments = ["", "solver-benchmarks", "instances", encoded_expected]
-            new_url = urlunparse(parsed._replace(path="/".join(new_path_segments)))
-            size_entry["URL"] = new_url
+            if host in GCS_HOSTS:
+                new_path_segments = [
+                    "",
+                    "solver-benchmarks",
+                    "instances",
+                    encoded_expected,
+                ]
+                new_url = urlunparse(parsed._replace(path="/".join(new_path_segments)))
+                size_entry["URL"] = new_url
+            else:
+                # For GitHub URLs, keep as-is
+                new_url = url
 
             # If it needs gzipping:
             if not raw_filename.endswith(".gz"):

@@ -1,0 +1,373 @@
+benchmarks:
+  FINE-2-node-electricity-supply-system:
+    Short description: A simple 2-region energy supply system built using the ETHOS.FINE
+      framework, illustrating the creation of an energy system model and the addition
+      of sources, converters, storage, transmission, and sinks.
+    Modelling framework: ETHOS.FINE
+    Model name: 2_node_electricity_supply_system
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/00_Tutorial
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 2-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-2-node-electricity-supply-system-2-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 11597
+      Num. variables: 8152
+      Num. nonzeros: 32236
+  FINE-1-node-energy-system-workflow:
+    Short description: A single-region energy system model built using the ETHOS.FINE
+      framework, demonstrating the use of all major component classes, including sources,
+      converters, storage, and sinks.
+    Modelling framework: ETHOS.FINE
+    Model name: 1_node_energy_system_workflow
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/01_1node_Energy_System_Workflow
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 1-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-1-node-energy-system-workflow-1-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 8339
+      Num. variables: 4892
+      Num. nonzeros: 22821
+  FINE-water-supply-system:
+    Short description: A clean water supply system for a small mountain village, modeled
+      using the ETHOS.FINE framework, including water demand, river water supply,
+      water treatment, storage, and transmission infrastructure.
+    Modelling framework: ETHOS.FINE
+    Model name: water_supply_system
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/06_Water_Supply_System
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Water supply
+    Sectors: Water
+    Time horizon: Single-stage
+    MILP features: Binary investment decisions
+    Sizes:
+    - Name: 12-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-water-supply-system-12-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 12 nodes
+      Realistic: false
+      Num. constraints: 6461
+      Num. variables: 4701
+      Num. continuous variables: 4679
+      Num. integer variables: 22
+      Num. nonzeros: 22120
+  FINE-spatial-aggregation-of-energy-system-model:
+    Short description: Demonstrates the spatial aggregation of an energy system model,
+      merging similar regions to reduce the number of model nodes while preserving
+      system characteristics.
+    Modelling framework: ETHOS.FINE
+    Model name: spatial_aggregation_of_energy_system_model
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/blob/develop/examples/08_Spatial_and_technology_aggregation/08a_Spatial_aggregation_of_energy_system_model.ipynb
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Gas
+    Time horizon: Single-stage
+    MILP features: None
+    Sizes:
+    - Name: 8-8760ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-spatial-aggregation-of-energy-system-model-8-8760ts.lp.gz
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 15898
+      Num. variables: 8034
+      Num. nonzeros: 46787
+  FINE-hydrogen-partload:
+    Short description: A hydrogen system modeled using the ETHOS.FINE framework, considering
+      part-load behavior of the electrolyzer and demonstrating sources, converters,
+      storage, and sinks.
+    Modelling framework: ETHOS.FINE
+    Model name: hydrogen_partload
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/FZJ-IEK3-VSA/FINE/tree/develop/examples/11_Partload
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Electric, Hydrogen
+    Time horizon: Single-stage
+    MILP features: Binary investment decisions; Piecewise efficiency
+    Sizes:
+    - Name: 1-168ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/FINE-hydrogen-partload-1-168ts.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 1 node
+      Realistic: false
+      Num. constraints: 3883
+      Num. variables: 2707
+      Num. continuous variables: 2370
+      Num. integer variables: 337
+      Num. nonzeros: 10620
+  SWITCH-3-zone-tiny:
+    Short description: A minimal 3-zone SWITCH tutorial model demonstrating core SWITCH
+      functionality and several custom modules.
+    Modelling framework: SWITCH
+    Model name: 3_zone_tiny
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch_tutorial/tree/master/3_zone_tiny
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-3-zone-tiny-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 795
+      Num. variables: 582
+      Num. continuous variables: 580
+      Num. integer variables: 2
+      Num. nonzeros: 2000
+  SWITCH-3-zone-toy:
+    Short description: A 3-zone SWITCH toy model with two investment periods, where
+      the first period has higher temporal resolution. Demonstrates core SWITCH functionality
+      and selected custom modules.
+    Modelling framework: SWITCH
+    Model name: 3zone_toy
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Notes: This toy example illustrates how SWITCH can be used to construct and run
+      a multi-period, multi-zone capacity expansion model. Results have not been fully
+      evaluated.
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-3-zone-toy-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 775
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+      Num. nonzeros: 2108
+  SWITCH-3zone-toy-stochastic-PySP:
+    Short description: A 3-zone stochastic SWITCH model constructed using PySP, illustrating
+      scenario-based stochastic optimization in a multi-period power system context.
+    Modelling framework: SWITCH
+    Model name: 3zone_toy_stochastic_PySP
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/3zone_toy_stochastic_PySP
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-3zone-toy-stochastic-PySP-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 716
+      Num. variables: 580
+      Num. continuous variables: 578
+      Num. integer variables: 2
+      Num. nonzeros: 1925
+  SWITCH-carbon-cap:
+    Short description: "A carbon-constrained variant of the 3-zone toy SWITCH model,\
+      \ where a system-wide CO\u2082 cap is imposed and the minimum nuclear build\
+      \ constraint is relaxed to enable meaningful dual values on the carbon cost\
+      \ constraint."
+    Modelling framework: SWITCH
+    Model name: carbon_cap
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/carbon_cap
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: None
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-carbon-cap-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 773
+      Num. variables: 616
+      Num. nonzeros: 2174
+  SWITCH-hydrogen:
+    Short description: "A hydrogen-enabled variant of the 3-zone carbon cap model\
+      \ featuring a near-zero CO\u2082 cap, expanded hydrogen production and storage\
+      \ pathways, and dual-fuel natural-gas/hydrogen power plants."
+    Modelling framework: SWITCH
+    Model name: hydrogen
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/hydrogen
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: None
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-hydrogen-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 863
+      Num. variables: 733
+      Num. nonzeros: 2564
+  SWITCH-planning-reserves:
+    Short description: A planning-reserve variant of the 3-zone toy model with lower
+      solar costs to place solar on the margin and distributed solar registered as
+      a DER for better accounting of distribution losses.
+    Modelling framework: SWITCH
+    Model name: planning_reserves
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/planning_reserves
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-planning-reserves-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 784
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+      Num. nonzeros: 2619
+  SWITCH-retrofits:
+    Short description: A retrofit-enabled variant of the 3-zone toy model
+    Modelling framework: SWITCH
+    Model name: retrofits
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/retrofits
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-retrofits-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 1597
+      Num. variables: 1310
+      Num. continuous variables: 1308
+      Num. integer variables: 2
+      Num. nonzeros: 4208
+  SWITCH-rps-simple:
+    Short description: A 3-zone SWITCH toy example implementing a simple Renewable
+      Portfolio Standard (RPS) policy.
+    Modelling framework: SWITCH
+    Model name: rps_simple
+    Version:
+    Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch/tree/master/examples/rps_simple
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Multi-stage (2 stages)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 3-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-rps-simple-3-6ts.lp.gz
+      Temporal resolution: 6 time slices (first investment period), 1 time slice (second
+        investment period)
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 777
+      Num. variables: 618
+      Num. continuous variables: 616
+      Num. integer variables: 2
+      Num. nonzeros: 2257
+  temoa-utopia:
+    Short description: Single-region test system infrastructure model considering
+      4 future years and 6 time slices (day/night, intermediate/summer/winter).
+    Modelling framework: TEMOA
+    Model name: TEMOA-Utopia
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/https://github.com/TemoaProject/temoacloud
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Time horizon: Multi-stage (4 years)
+    MILP features: None
+    Sizes:
+    - Name: 1-6ts
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/temoa-utopia-1-6ts.lp.gz
+      Temporal resolution: 6 time slices (3 seasons, 2 times of day)
+      Spatial resolution: 1 region
+      Realistic: false
+      Num. constraints: 1505
+      Num. variables: 990
+      Num. nonzeros: 4295
