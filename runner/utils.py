@@ -177,6 +177,23 @@ def load_results(folder: str | list[str]):
     print(
         f"Found {len(results)} records, {len(results['bench-size'].unique())} benchmark instances"
     )
+
+    # Find the Run IDs and Hostnames for each bench-size instance and drop all but the latest
+    # NOTE: assumes all Run IDs begin with YYYYMMDD-
+    runs_grouped = results.groupby("bench-size")[["Run ID", "Hostname"]]
+    to_drop = set()
+    for bench_size, group in runs_grouped:
+        unique_runs = group[["Run ID", "Hostname"]].drop_duplicates()
+        if len(unique_runs) > 1:
+            sorted_runs = sorted(unique_runs.itertuples(index=False))
+            to_drop.update([(*run, bench_size) for run in sorted_runs[:-1]])
+
+    print("Dropping superceeded results from these runs:", sorted(to_drop))
+    keys = pd.MultiIndex.from_frame(results[["Run ID", "Hostname", "bench-size"]])
+    results = results.loc[~keys.isin(to_drop)].copy()
+    print(
+        f"After dropping: {len(results)} records, {len(results['bench-size'].unique())} benchmark instances"
+    )
     return results, variability
 
 
@@ -233,6 +250,7 @@ def allocate_benchmarks(
     zone: str = "us-central1-a",
     solvers: str | None = None,
     timeout_seconds: int | None = None,
+    years: list[int] = [2020, 2022, 2023, 2024, 2025],
 ) -> list[dict]:
     allocation, _ = allocate_vms_greedy(
         benchmarks_df.index, benchmarks_df[weight_col], num_vms
@@ -259,6 +277,7 @@ def allocate_benchmarks(
             {
                 "machine-type": machine_type,
                 "zone": zone,  # Default cheapest zone, can be overwritten
+                "years": years,
                 "benchmarks": vm_benchmarks,
             }
         )
@@ -269,13 +288,20 @@ def allocate_benchmarks(
     return vm_yamls
 
 
-def create_benchmark_campaign(batch_id: str, vm_prefix: str, vm_yamls: list[dict]):
-    tfvars = f'''project_id = "compute-app-427709"
-    enable_gcs_upload = true
-    auto_destroy_vm = true
-    benchmarks_dir = "benchmarks/{batch_id}"
-    run_id = "{batch_id}"
-    '''
+def create_benchmark_campaign(
+    batch_id: str,
+    vm_prefix: str,
+    vm_yamls: list[dict],
+):
+    tfvars = "\n".join(
+        [
+            'project_id = "compute-app-427709"',
+            "enable_gcs_upload = true",
+            "auto_destroy_vm = true",
+            f'benchmarks_dir = "benchmarks/{batch_id}"',
+            f'run_id = "{batch_id}"',
+        ]
+    )
 
     # Create a campaign folder ../infrastructure/benchmarks/{batch_id}
     bench_dir = Path(f"../infrastructure/benchmarks/{batch_id}")
@@ -372,26 +398,30 @@ def display_speedups(results, new_pypsa_benchs):
 
     # Calculate speedups relative to ipm-time, but use status if not "ok"
     speedup_df["ipm-speedup"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        != "ok"
-        else row["highs"] / row["highs-ipm"],
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            != "ok"
+            else row["highs"] / row["highs-ipm"]
+        ),
         axis=1,
     )
 
     speedup_df["hipo-speedup"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        != "ok"
-        else row["highs"] / row["highs-hipo"],
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            != "ok"
+            else row["highs"] / row["highs-hipo"]
+        ),
         axis=1,
     )
 
@@ -424,38 +454,44 @@ def display_speedups(results, new_pypsa_benchs):
     display_df["num-vars"] = speedup_df["num-vars"]
 
     display_df["simplex-time"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs"
-        ].values[0]
-        if status_df.loc[status_df["bench-size"] == row["bench-size"], "highs"].values[
-            0
-        ]
-        != "ok"
-        else naturaldelta(row["simplex-time"]),
+        lambda row: (
+            status_df.loc[status_df["bench-size"] == row["bench-size"], "highs"].values[
+                0
+            ]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs"
+            ].values[0]
+            != "ok"
+            else naturaldelta(row["simplex-time"])
+        ),
         axis=1,
     )
 
     display_df["ipm-time"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-ipm"
-        ].values[0]
-        != "ok"
-        else naturaldelta(row["ipm-time"]),
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-ipm"
+            ].values[0]
+            != "ok"
+            else naturaldelta(row["ipm-time"])
+        ),
         axis=1,
     )
 
     display_df["hipo-time"] = speedup_df.apply(
-        lambda row: status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        if status_df.loc[
-            status_df["bench-size"] == row["bench-size"], "highs-hipo"
-        ].values[0]
-        != "ok"
-        else naturaldelta(row["hipo-time"]),
+        lambda row: (
+            status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            if status_df.loc[
+                status_df["bench-size"] == row["bench-size"], "highs-hipo"
+            ].values[0]
+            != "ok"
+            else naturaldelta(row["hipo-time"])
+        ),
         axis=1,
     )
 
@@ -600,9 +636,11 @@ def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
     )
     lp_summary["Status"] = "ok"
     lp_summary["Solver"] = lp_summary["Solver"].apply(
-        lambda s: re.match(r"^([a-z\-]+?)(?:-\d)", s).group(1)
-        if re.match(r"^([a-z\-]+?)(?:-\d)", s)
-        else s
+        lambda s: (
+            re.match(r"^([a-z\-]+?)(?:-\d)", s).group(1)
+            if re.match(r"^([a-z\-]+?)(?:-\d)", s)
+            else s
+        )
     )
     lp_summary["Timeout"] = None  # Irrelevant, it's only used if Status != ok
     plot_runtime_slowdowns(
