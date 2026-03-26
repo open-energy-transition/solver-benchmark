@@ -27,12 +27,15 @@ if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
   });
 }
 
-function App({ Component, pageProps }: AppProps) {
+type InnerAppProps = {
+  Component: AppProps["Component"];
+  props: AppProps["pageProps"];
+  router: ReturnType<typeof useRouter>;
+};
+
+function InnerApp({ Component, props, router }: InnerAppProps) {
   const dispatch = useDispatch();
   const initialized = useRef(false);
-  const router = useRouter();
-
-  const { store, props } = wrapper.useWrappedStore(pageProps);
 
   // Meta tag configuration
   const siteConfig = {
@@ -300,10 +303,21 @@ function App({ Component, pageProps }: AppProps) {
           }}
         />
       </Head>
-      <Provider store={store}>{renderLayout()}</Provider>
+      {renderLayout()}
       <div id="re-captcha"></div>
     </>
   );
 }
 
-export default wrapper.withRedux(App);
+function App({ Component, pageProps }: AppProps) {
+  const { store, props } = wrapper.useWrappedStore(pageProps);
+  const router = useRouter();
+
+  return (
+    <Provider store={store}>
+      <InnerApp Component={Component} props={props} router={router} />
+    </Provider>
+  );
+}
+
+export default App;
