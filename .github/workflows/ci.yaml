@@ -21,6 +21,8 @@ jobs:
       NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
 
       - uses: actions/setup-python@v5
         with:
@@ -29,14 +31,14 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip pre-commit
-          pip install -r website/requirements.txt
+          pip install -r pocs/streamlit/requirements.txt
           # For validation scripts (TODO collect these in a requirements.txt file?)
           pip install ruamel.yaml
 
       - name: Check code formatting
         run: |
           pre-commit install
-          pre-commit run --all-files
+          pre-commit run --from-ref origin/main --to-ref HEAD
 
       - name: Check benchmark metadata and results
         run: |
@@ -56,12 +58,13 @@ jobs:
             printf "ERROR: git diff non empty, metadata needs updating, please run the following command:\npython benchmarks/merge_metadata.py"
             exit 1
           fi
+          python tests/validate_urls_exist.py results/metadata.yaml
           python tests/validate_results.py
 
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
-            app-path: website/app.py
+            app-path: pocs/streamlit/app.py
 
       - name: Set FORK_PR environment variable
         if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
@@ -70,8 +73,8 @@ jobs:
       - name: Check Next.js build
         run: |
           echo "Checking Next.js build..."
-          if [ -d "website-nextjs" ] && [ -f "website-nextjs/package.json" ]; then
-            cd website-nextjs
+          if [ -d "website" ] && [ -f "website/package.json" ]; then
+            cd website
 
             # Check if reCAPTCHA key is set
             if [ "$FORK_PR" != "true" ]; then
@@ -88,7 +91,7 @@ jobs:
             npm run build
             cd ..
           else
-            echo "Next.js project not found at website-nextjs/package.json. Skipping build check."
+            echo "Next.js project not found at website/package.json. Skipping build check."
           fi
 
       - name: Setup Conda for benchmark runner
@@ -110,3 +113,66 @@ jobs:
             echo "Some benchmarks did not complete successfully."
             exit 1
           fi
+
+  accessibility-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd website
+          npm install
+
+      - name: Build Next.js
+        run: |
+          cd website
+          npm run build
+
+      - name: Install matching Chrome + ChromeDriver via browser-driver-manager
+        run: |
+          cd website
+          npm install --no-save browser-driver-manager
+          # Installs Chrome *and* the exactly matching ChromeDriver together
+          npx browser-driver-manager install chrome
+          # Resolve the chromedriver binary — try the bdm path command first,
+          # fall back to `which chromedriver` in case bdm added it to PATH.
+          CHROMEDRIVER_PATH=$(npx browser-driver-manager path chromedriver 2>/dev/null || which chromedriver 2>/dev/null || echo "")
+          echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH" >> $GITHUB_ENV
+          echo "Installed ChromeDriver at: $CHROMEDRIVER_PATH"
+
+      - name: Start Next.js server in background
+        run: |
+          cd website
+          npm start &
+
+      - name: Wait for server to be ready
+        run: |
+          timeout 90 bash -c 'until curl -sf http://localhost:3000 > /dev/null; do sleep 2; done' || exit 1
+
+      - name: Extract URLs from sitemap
+        run: |
+          cd website
+          npm run axe:extract
+
+      - name: Run axe-core accessibility tests on all pages
+        env:
+          # CHROMEDRIVER_PATH is set by the install step above via GITHUB_ENV
+          # No-sandbox flags are required for Chrome inside GitHub Actions runners
+          AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
+          AXE_LOAD_DELAY: "5000"
+        run: |
+          cd website
+          npm run axe:test
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: website/axe-results.json

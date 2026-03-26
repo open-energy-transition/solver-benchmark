@@ -60,7 +60,7 @@ dependencies:
   - libxcrypt=4.4.36=hd590300_1
   - libxml2=2.12.7=hc051c1a_1
   - libzlib=1.2.13=h4ab18f5_6
-  - linopy=0.5.2=pyhd8ed1ab_0
+  # - linopy=0.5.8=pyhd8ed1ab_0
   - locket=1.0.0=pyhd8ed1ab_0
   - metis=5.1.0=hd0bcaf9_1007
   - mumps-include=5.2.1=ha770c72_14
@@ -77,7 +77,6 @@ dependencies:
   - polars=1.29.0=py39h441220d_0
   - psutil=7.0.0=py310ha75aee5_0
   - pycparser=2.22=pyh29332c3_1
-  - pyscipopt=4.3.0=py310heca2aa9_0
   - pysocks=1.7.1=pyha55dd90_7
   - python=3.10.14=hd12c33a_0_cpython
   - python-dateutil=2.9.0.post0=pyhff2d567_1
@@ -110,7 +109,10 @@ dependencies:
   - zlib=1.2.13=h4ab18f5_6
   - zstandard=0.23.0=py310ha75aee5_2
   - pip:
+      - pyscipopt==5.7.1
       - highspy==1.5.0.dev0
       - ply==3.11
       - pybind11==2.13.6
       - pyomo==6.9.2
+      # Use branch until old solver support is merged and released
+      - git+https://github.com/PyPSA/linopy@sid/old-solver-support

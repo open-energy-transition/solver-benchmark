@@ -24,6 +24,7 @@ benchmarks:
       Num. variables: 742
       Num. continuous variables: 458
       Num. integer variables: 284
+      Num. nonzeros: 5693
   pglib_opf_case1803_snem:
     Short description: Steady-state optimal power flow run for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork adopting transmission switching.
     Modelling framework: PowerModels
@@ -46,6 +47,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 18574
       Num. variables: 7623
+      Num. nonzeros: 56119
   pglib_opf_case1951_rte:
     Short description: Steady-state optimal power flow run with 1951 nodes adopting transmission switching.
     Modelling framework: PowerModels
@@ -70,6 +72,7 @@ benchmarks:
       Num. variables: 7509
       Num. continuous variables: 4913
       Num. integer variables: 2596
+      Num. nonzeros: 52287
   pglib_opf_case2848:
     Short description: Steady-state optimal power flow run with 2848 nodes adopting transmission switching.
     Modelling framework: PowerModels
@@ -94,6 +97,7 @@ benchmarks:
       Num. variables: 10911
       Num. continuous variables: 7135
       Num. integer variables: 3776
+      Num. nonzeros: 76032
   pglib_opf_case2868:
     Short description: Steady-state optimal power flow run with 2868 nodes adopting transmission switching.
     Modelling framework: PowerModels
@@ -118,3 +122,4 @@ benchmarks:
       Num. variables: 11045
       Num. continuous variables: 7237
       Num. integer variables: 3808
+      Num. nonzeros: 76722

@@ -5,13 +5,14 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+        exclude: ^benchmarks/pypsa/solve_network\.patch$
       - id: check-merge-conflict
       - id: mixed-line-ending
       - id: check-added-large-files
         args: ["--maxkb=2000"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.9
+    rev: v0.15.6
     hooks:
       - id: ruff
         types_or: [python, pyi, jupyter]
