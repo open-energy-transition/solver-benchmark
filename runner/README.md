@@ -85,24 +85,38 @@ python run_benchmarks.py ../results/metadata.yaml 2024 --run_id "debug-run-001"
 Use `run_solver.py` to test a single solver on a single benchmark problem. This is useful for debugging:
 
 ```bash
-python run_solver.py <solver_name> <input_file> <solver_version>
+python runner/run_solver.py \
+    --solver_name <solver_name> \
+    --solver_version <solver_version> \
+    --input_file <input_file> \
+    --highs_solver_variant <highs_solver_variant> \
+    --hipo_block_size <hipo_block_size>
 ```
 
 **Arguments:**
-- `solver_name` - Solver name (highs, scip, cbc, gurobi, glpk)
-- `input_file` - Path to benchmark problem file (.lp or .mps)
-- `solver_version` - Solver version string (e.g., 1.10.0)
+- `solver_name` - Name of the solver to run (e.g., `highs`, `glpk`, `gurobi`, `scip`, `cbc`, `cplex`, `knitro`, `xpress`).
+- `solver_version` -  Version of the solver to use.
+- `input_file` - Path to the input problem file (e.g., `.mps`, `.lp`).
+- `highs_solver_variant` - Variant of HiGHS to run (`hipo`, `ipm`, `ipx`, `pdlp`, `simplex` - default: `simplex`). Only for HiGHS.
+- `hipo_block_size` - Block size for HiPO variant of HiGHS (default: `128`). Only for HiGHS with `hipo` solver variant.
 
 **Examples:**
 
 ```bash
-# Test HiGHS
-conda activate benchmark-2024
-python run_solver.py highs ./benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+# Test HiGHS (simplex variant)
+conda activate benchmark-2025
+python runner/run_solver.py \
+    --solver_name highs \
+    --solver_version 1.13.2.dev1 \
+    --input_file ./benchmarks/pypsa-eur-elec-op-2-1h.lp \
+    --highs_solver_variant simplex
 
 # Test SCIP
-conda activate benchmark-2024
-python run_solver.py scip ./benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+conda activate benchmark-2025
+python runner/run_solver.py \
+    --solver_name scip \
+    --solver_version 9.2.2 \
+    --input_file ./benchmarks/pypsa-eur-elec-op-2-1h.lp
 ```
 
 **Output:**
