@@ -1836,3 +1836,28 @@ benchmarks:
       Num. nonzeros: 99178
       Num. continuous variables: 15416
       Num. integer variables: 6042
+  pypsa-eur-elec-uc:
+    Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) without transmission expansion and including unit commitment.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (2050)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 50-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/milp_commercial_tests/pypsa-eur-elec-uc_50_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 173914
+      Num. variables: 87784
+      Num. nonzeros: 408597
+      Num. continuous variables: 69817
+      Num. integer variables: 17967
