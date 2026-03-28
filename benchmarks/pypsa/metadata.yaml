@@ -1363,6 +1363,32 @@ benchmarks:
       Num. constraints: 677311
       Num. variables: 321418
       Num. nonzeros: 1616084
+  pypsa-de-elec-uc:
+    Short description:
+    Modelling framework: PyPSA
+    Model name:
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: MILP
+    Application:
+    Sectoral focus:
+    Sectors: Electric
+    Time horizon:
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 2-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_2_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 2 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 53331
+      Num. variables: 27400
+      Num. nonzeros: 132345
+      Num. continuous variables: 19735
+      Num. integer variables: 7665
   pypsa-eur-elec-uc:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) without transmission expansion and including unit commitment.
     Modelling framework: PyPSA
