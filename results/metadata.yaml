@@ -2769,6 +2769,16 @@ benchmarks:
     Time horizon: Single period (2050)
     MILP features: None
     Sizes:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered
+        time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 22137355
+      Num. variables: 10626468
     - Name: 50-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-3h.mps.gz
@@ -4199,6 +4209,58 @@ benchmarks:
       Num. constraints: 677311
       Num. variables: 321418
       Num. nonzeros: 1616084
+  pypsa-de-elec-uc:
+    Short description:
+    Modelling framework: PyPSA
+    Model name:
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: MILP
+    Application:
+    Sectoral focus:
+    Sectors: Electric
+    Time horizon:
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 2-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_2_24H.mps.gz
+      Temporal resolution: 24 hour
+      Spatial resolution: 2 nodes
+      Realistic:
+      Realistic motivation:
+      Num. constraints: 53331
+      Num. variables: 27400
+      Num. nonzeros: 132345
+      Num. continuous variables: 19735
+      Num. integer variables: 7665
+  pypsa-eur-elec-uc:
+    Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
+      2050) without transmission expansion and including unit commitment.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (2050)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 50-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/milp_commercial_tests/pypsa-eur-elec-uc_50_168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 173914
+      Num. variables: 87784
+      Num. nonzeros: 408597
+      Num. continuous variables: 69817
+      Num. integer variables: 17967
   DCOPF-Carolinas_2M:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a two-month horizon with hourly resolution, using 2021 as the

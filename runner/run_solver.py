@@ -62,27 +62,61 @@ def get_solver(solver_name):
 
     solver_class = getattr(solvers, solver_enum.name)
 
+    # Fix a random seed, and set tolerances as similar as possible
     mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
-    seed_options = {
-        "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
+    lp_tol = 1e-6  # Tolerance for LPs
+    solver_options = {
         "glpk": {"seed": 0, "mipgap": mip_gap},
-        "gurobi": {"seed": 0, "MIPGap": mip_gap},
         "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
         "cbc": {
             "randomCbcSeed": 1,  # 0 indicates time of day
             "ratioGap": mip_gap,
         },
+        # TODO also set BarConvTol for all solvers?
+        "highs": {
+            "random_seed": 4,
+            "mip_rel_gap": mip_gap,
+            # LP tolerances
+            "primal_feasibility_tolerance": lp_tol,
+            "dual_feasibility_tolerance": lp_tol,
+            "run_crossover": "choose",  # Basic solutions not needed
+        },
+        "gurobi": {
+            "seed": 4,
+            "MIPGap": mip_gap,
+            # LP tolerances
+            "FeasibilityTol": lp_tol,
+            "OptimalityTol": lp_tol,
+            # "BarConvTol": lp_tol,
+            "SolutionTarget": 1,  # Basic solutions not needed
+        },
         "cplex": {
-            "randomseed": 0,
+            "randomseed": 4,
             "mip.tolerances.mipgap": mip_gap,
+            # LP tolerances
+            "simplex.tolerances.feasibility": lp_tol,
+            "simplex.tolerances.optimality": lp_tol,
+            "solutiontype": 2,  # Basic solutions not needed
         },
         "knitro": {
-            "KN_PARAM_MS_SEED": 1066,
+            "ms_seed": 4,
+            "mip_opt_gap_rel": mip_gap,
+            # LP tolerances
+            "feastol": lp_tol,
+            "opttol": lp_tol,
+            "bar_maxcrossit": 0,  # Basic solutions not needed (no way to say choose)
         },
-        "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
+        "xpress": {
+            "randomseed": 4,
+            "miprelstop": mip_gap,
+            # LP tolerances
+            "FEASTOL": lp_tol,
+            "OPTIMALITYTOL": lp_tol,
+            "crossover": -1,  # Basic solutions not needed (crossover=choose)
+        },
     }
 
-    return solver_class(**seed_options.get(solver_name, {}))
+    return solver_class(**solver_options.get(solver_name, {}))
 
 
 def is_mip_problem(solver_model, solver_name):
@@ -193,7 +227,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "cplex":
-                return None
+                return solver_model.get_time()
             case "xpress":
                 return solver_model.getAttrib("time")
             case "knitro":
