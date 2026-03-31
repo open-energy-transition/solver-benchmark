@@ -45,14 +45,8 @@ def get_conda_package_versions(solvers, env_name=None):
         name_to_pkg = {"highs": "highspy", "cbc": "coin-or-cbc"}
         solver_versions = {}
         for solver in solvers:
-            # Handle highs-hipo variants as special cases - not conda packages
-            if solver in [
-                variant.value for variant in HighsVariant
-            ]:  # For py3.10 compatibility
-                solver_versions[solver] = get_highs_hipo_version()
-            else:
-                package = name_to_pkg.get(solver, solver)
-                solver_versions[solver] = installed_packages.get(package, None)
+            package = name_to_pkg.get(solver, solver)
+            solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -363,32 +357,6 @@ def get_highs_binary_version():
     except Exception as e:
         print(f"Error getting HiGHS binary version: {str(e)}")
         return "unknown"
-
-
-def get_highs_hipo_version():
-    """Get the version of the HiGHS-HiPO binary from the --version command"""
-    if os.geteuid() != 0:
-        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
-    else:
-        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
-
-    try:
-        result = subprocess.run(
-            [highs_hipo_binary, "--version"],
-            capture_output=True,
-            text=True,
-            check=True,
-            encoding="utf-8",
-        )
-
-        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
-        if version_match:
-            return version_match.group(1) + "-hipo"
-
-        return "unknown-hipo"
-    except Exception as e:
-        print(f"Error getting HiGHS-HiPO binary version: {str(e)}")
-        return "unknown-hipo"
 
 
 def benchmark_highs_binary():
