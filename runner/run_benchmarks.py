@@ -16,6 +16,7 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
+from run_solver import HighsVariant
 
 
 def get_conda_package_versions(solvers, env_name=None):
@@ -568,6 +569,18 @@ def main(
                 )
                 continue
 
+            # Restrict highs-hipo variants to 2025 and LPs only
+            if solver in [
+                variant.value for variant in HighsVariant
+            ] and (  # For py3.10 compatibility
+                year != "2025" or benchmark["class"] != "LP"
+            ):
+                print(
+                    f"Solver {solver} is only available for LP benchmarks and year 2025."
+                    f" Current year: {year}, problem class: {benchmark['class']}. Skipping."
+                )
+                continue
+
             solver_version = solvers_versions.get(solver)
             if not solver_version:
                 print(f"Solver {solver} is not available. Skipping.")
@@ -697,7 +710,7 @@ if __name__ == "__main__":
         type=str,
         nargs="+",
         default=["highs", "scip", "cbc", "gurobi", "glpk"],
-        help="The list of solvers to run. Solvers not present in the active environment will be skipped.",
+        help="The list of solvers to run. Solvers not present in the active environment will be skipped. For 2025, highs variants are available: highs-hipo, highs-ipm, highs-hipo-32, highs-hipo-64, highs-hipo-128.",
     )
     parser.add_argument(
         "--append",

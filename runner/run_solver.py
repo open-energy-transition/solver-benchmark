@@ -1,5 +1,6 @@
 import json
 import sys
+from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -8,6 +9,38 @@ import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
 
+
+class HighsVariant(str, Enum):
+    HIPO = "highs-hipo"
+    HIPO_32 = "highs-hipo-32"
+    HIPO_64 = "highs-hipo-64"
+    HIPO_128 = "highs-hipo-128"
+    HIPO_IPM = "highs-ipm"
+
+    # options returns the contents for the HiGHS options file.
+    # passed to the HiGHS binary via --options_file=<file>
+    def options(self) -> dict[str, str | int]:
+        base = {
+            "run_crossover": "choose",
+            "random_seed": 0,
+            "mip_rel_gap": 1e-4,
+        }
+        match self:
+            case HighsVariant.HIPO_IPM:
+                variant = {"solver": "ipx"}
+            case HighsVariant.HIPO_32:
+                variant = {"solver": "hipo", "hipo_block_size": 32}
+            case HighsVariant.HIPO_64:
+                variant = {"solver": "hipo", "hipo_block_size": 64}
+            case HighsVariant.HIPO_128:
+                variant = {"solver": "hipo", "hipo_block_size": 128}
+            case HighsVariant.HIPO:
+                variant = {"solver": "hipo", "hipo_block_size": 64, "hipo_metis_no2hop": "true"}
+            case _:
+                raise ValueError(f"Unknown HighsVariant: {self}")
+        return {**base, **variant}
+
+
 # HiGHS is not available in the 2020 environment that we use to run GLPK
 try:
     import highspy
@@ -15,7 +48,7 @@ except ModuleNotFoundError:
     highspy = None
 
 
-def get_solver(solver_name):
+def get_solver(solver_name, highs_variant=None):
     solver_name = solver_name.lower()
     solver_enum = SolverName(solver_name)
 
@@ -41,7 +74,15 @@ def get_solver(solver_name):
         "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
     }
 
-    return solver_class(**seed_options.get(solver_name, {}))
+    kwargs = {}
+    if highs_variant:
+        kwargs.update(highs_variant.options())
+    else:
+        kwargs.update(seed_options.get(solver_name))
+
+    print(solver_name, highs_variant, kwargs)
+
+    return solver_class(**kwargs)
 
 
 def is_mip_problem(solver_model, solver_name):
@@ -167,8 +208,22 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
 
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
+    highs_variant = None
 
-    solver = get_solver(solver_name)
+    # Handle highs-hipo solver variants separately
+    try:
+        highs_variant = HighsVariant(solver_name.lower())
+    except ValueError as e:
+        # re-raise the error if it isn't expected.
+        # we want to continue only if the error is about invalid HighsVariant
+        if "is not a valid HighsVariant" not in str(e):
+            raise e
+
+    if highs_variant:
+        solver_name = "highs"
+        solver = get_solver(solver_name, highs_variant)
+    else:
+        solver = get_solver(solver_name)
 
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
