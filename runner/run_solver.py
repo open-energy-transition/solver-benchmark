@@ -35,7 +35,11 @@ class HighsVariant(str, Enum):
             case HighsVariant.HIPO_128:
                 variant = {"solver": "hipo", "hipo_block_size": 128}
             case HighsVariant.HIPO:
-                variant = {"solver": "hipo", "hipo_block_size": 64, "hipo_metis_no2hop": "true"}
+                variant = {
+                    "solver": "hipo",
+                    "hipo_block_size": 64,
+                    "hipo_metis_no2hop": "true",
+                }
             case _:
                 raise ValueError(f"Unknown HighsVariant: {self}")
         return {**base, **variant}
