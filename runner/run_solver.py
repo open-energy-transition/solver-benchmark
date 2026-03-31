@@ -1,10 +1,5 @@
-import collections.abc
 import json
-import os
-import subprocess
 import sys
-import time
-from enum import Enum
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -12,7 +7,6 @@ from traceback import format_exc
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
-
 
 # HiGHS is not available in the 2020 environment that we use to run GLPK
 try:
@@ -169,6 +163,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
     return None
+
 
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
