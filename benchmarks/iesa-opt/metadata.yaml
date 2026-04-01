@@ -24,6 +24,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 793714
       Num. variables: 493813
+      Num. nonzeros: 4114762
     - Name: 1-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1-1h.mps.gz
@@ -33,6 +34,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 1967554
       Num. variables: 1107013
+      Num. nonzeros: 11011671
     - Name: 10-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-1h.mps.gz
