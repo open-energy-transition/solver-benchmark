@@ -674,6 +674,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 793714
       Num. variables: 493813
+      Num. nonzeros: 4114762
     - Name: 1-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1-1h.mps.gz
@@ -683,6 +684,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 1967554
       Num. variables: 1107013
+      Num. nonzeros: 11011671
     - Name: 10-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-1h.mps.gz
@@ -4681,6 +4683,39 @@ benchmarks:
       Num. nonzeros: 99178
       Num. continuous variables: 15416
       Num. integer variables: 6042
+    - Name: 20-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_20_168h.mps.gz
+      Temporal resolution: 168 hour
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 71014
+      Num. variables: 37238
+      Num. nonzeros: 168132
+      Num. continuous variables: 27221
+      Num. integer variables: 10017
+    - Name: 50-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_50_168h.mps.gz
+      Temporal resolution: 168 hour
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 156576
+      Num. variables: 82247
+      Num. nonzeros: 370792
+      Num. continuous variables: 60464
+      Num. integer variables: 21783
+    - Name: 100-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_100_168h.mps.gz
+      Temporal resolution: 168 hour
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 283572
+      Num. variables: 149432
+      Num. nonzeros: 667792
+      Num. continuous variables: 110159
+      Num. integer variables: 39273
   pypsa-eur-elec-uc:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion and including unit commitment.
