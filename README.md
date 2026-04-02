@@ -47,7 +47,7 @@ solver-benchmark/
 │   ├── pypsa/                  # PyPSA-generated energy models
 │   ├── jump_highs_platform/    # JuMP/HiGHS benchmark metadata
 │   └── *_metadata.yaml         # Problem definitions and details
-├── website-nextjs/             # Next.js website for viewing results
+├── website/             # Next.js website for viewing results
 ├── infrastructure/             # GCP VM deployment scripts (for running benchmarks at scale)
 ├── results/                    # Output directory for benchmark results
     ├── benchmark_results.csv   # Main results file
@@ -149,10 +149,10 @@ To run either our benchmarks, or your own (see the previous section), on a solve
 
 ## Running the Website
 
-The website code is under `website-nextjs/`. To run the website locally, you need a recent version of `node` and `npm` installed. Then, run the following commands:
+The website code is under `website/`. To run the website locally, you need a recent version of `node` and `npm` installed. Then, run the following commands:
 
 ```sh
-cd website-nextjs/
+cd website/
 npm install
 npm run build && npm run dev
 ```
