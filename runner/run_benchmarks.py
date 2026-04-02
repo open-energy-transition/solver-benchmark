@@ -588,16 +588,17 @@ def main(
         )
 
         for solver in solvers:
-            # TODO a hack to run only the latest version per solver on Ls
-            if (
-                benchmark["size_category"] == "L"
-                and year != "2025"
-                and not (
-                    year == "2024" and solver == "cbc"
-                )  # Latest CBC release is in 2024
-            ):
+            # TODO temporary hack:
+            # run only CBC in 2024, and only non-CBC solvers in 2025.
+            if year == "2024" and solver != "cbc":
                 print(
-                    f"WARNING: skipping {solver} in {year} because this benchmark instance is size L"
+                    f"WARNING: skipping {solver} in {year}; only CBC should run in 2024"
+                )
+                continue
+
+            if year == "2025" and solver == "cbc":
+                print(
+                    f"WARNING: skipping {solver} in {year}; CBC should run only in 2024"
                 )
                 continue
 
