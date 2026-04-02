@@ -694,6 +694,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 15230366
       Num. variables: 9661524
+      Num. nonzeros: 76484517
     - Name: 5-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-5-3h.mps.gz
@@ -703,6 +704,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 15025409
       Num. variables: 12077880
+      Num. nonzeros: 61521715
     - Name: 10-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-3h.mps.gz
@@ -712,6 +714,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 7603326
       Num. variables: 5672804
+      Num. nonzeros: 33382648
     - Name: 20-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-20-3h.mps.gz
@@ -721,6 +724,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 24282926
       Num. variables: 20319294
+      Num. nonzeros: 94953769
     - Name: 25-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-25-3h.mps.gz
@@ -730,6 +734,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 35769573
       Num. variables: 30798564
+      Num. nonzeros: 134955169
   genx-1_three_zones:
     Short description: Three Zones, a one-year example with hourly resolution, contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -4635,13 +4640,89 @@ benchmarks:
       Num. nonzeros: 1000706
       Num. continuous variables: 162253
       Num. integer variables: 45990
+    - Name: 2-48h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 8997
+      Num. variables: 4742
+      Num. nonzeros: 21482
+      Num. continuous variables: 3470
+      Num. integer variables: 1272
+    - Name: 4-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_4_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 4 nodes
+      Realistic: false
+      Num. constraints: 62837
+      Num. variables: 32800
+      Num. nonzeros: 151586
+      Num. continuous variables: 24016
+      Num. integer variables: 8784
+    - Name: 6-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_6_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 91968
+      Num. variables: 48010
+      Num. nonzeros: 223164
+      Num. continuous variables: 34834
+      Num. integer variables: 13176
+    - Name: 8-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_8_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints: 115778
+      Num. variables: 60471
+      Num. nonzeros: 278340
+      Num. continuous variables: 44001
+      Num. integer variables: 16470
+    - Name: 10-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_10_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 141243
+      Num. variables: 73848
+      Num. nonzeros: 344054
+      Num. continuous variables: 52986
+      Num. integer variables: 20862
+    - Name: 20-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_20_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 20 nodes
+      Realistic: false
+      Num. constraints: 244564
+      Num. variables: 128108
+      Num. nonzeros: 582592
+      Num. continuous variables: 93521
+      Num. integer variables: 34587
+    - Name: 50-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_50_48h.mps.gz
+      Temporal resolution: 48 hour
+      Spatial resolution: 50 nodes
+      Realistic: false
+      Num. constraints: 539166
+      Num. variables: 282837
+      Num. nonzeros: 1283717
+      Num. continuous variables: 207624
+      Num. integer variables: 75213
     - Name: 2-168h
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_168h.mps.gz
       Temporal resolution: 168 hour
       Spatial resolution: 2 nodes
-      Realistic:
-      Realistic motivation:
+      Realistic: false
       Num. constraints: 8997
       Num. variables: 4742
       Num. nonzeros: 21482
@@ -4652,20 +4733,29 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_4_168h.mps.gz
       Temporal resolution: 168 hour
       Spatial resolution: 4 nodes
-      Realistic:
-      Realistic motivation:
+      Realistic: false
       Num. constraints: 18247
       Num. variables: 9530
       Num. nonzeros: 43694
       Num. continuous variables: 6986
       Num. integer variables: 2544
+    - Name: 6-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_6_168h.mps.gz
+      Temporal resolution: 168 hour
+      Spatial resolution: 4 nodes
+      Realistic: false
+      Num. constraints: 26708
+      Num. variables: 13950
+      Num. nonzeros: 64322
+      Num. continuous variables: 10134
+      Num. integer variables: 3816
     - Name: 8-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_8_168h.mps.gz
       Temporal resolution: 168 hour
       Spatial resolution: 8 nodes
-      Realistic:
-      Realistic motivation:
+      Realistic: false
       Num. constraints: 33618
       Num. variables: 17571
       Num. nonzeros: 80252
@@ -4676,8 +4766,7 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_10_168h.mps.gz
       Temporal resolution: 168 hour
       Spatial resolution: 10 nodes
-      Realistic:
-      Realistic motivation:
+      Realistic: false
       Num. constraints: 41013
       Num. variables: 21458
       Num. nonzeros: 99178
