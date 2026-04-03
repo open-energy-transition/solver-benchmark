@@ -21,10 +21,11 @@ const DetailsOfTheRunner = () => {
       </p>
       <ul className="list-disc list-outside ml-6 text-base leading-relaxed">
         <li className="mb-2">
-          The benchmark LP/MPS files are downloaded from a Google Cloud bucket
+          The benchmark instances in LP/MPS format are downloaded from a Google
+          Cloud bucket
         </li>
         <li className="mb-2">
-          For each benchmark and solver combination, the runner calls
+          For each benchmark instance and solver combination, the runner calls
           <code>runner/run_solver.py</code>, which imports the input file into
           linopy and calls <code>linopy.Model.solve()</code> with the chosen
           solver
@@ -57,14 +58,14 @@ const DetailsOfTheRunner = () => {
         </li>
         <li className="mb-2">
           If the solver errors in any iteration, then the{" "}
-          <code>(benchmark, solver)</code> combination is marked with status{" "}
-          <code>ER</code> and no further iterations are performed
+          <code>(benchmark instance, solver)</code> combination is marked with
+          status <code>ER</code> and no further iterations are performed
         </li>
         <li className="mb-2">
           If the solver takes longer than <MathJax inline>{"$T$"}</MathJax> in
           any iteration, then the
-          <code>(benchmark, solver)</code> combination is marked with status{" "}
-          <code>TO</code> and no further iterations are performed
+          <code>(benchmark instance, solver)</code> combination is marked with
+          status <code>TO</code> and no further iterations are performed
         </li>
       </ul>
       <p>Future improvements:</p>
