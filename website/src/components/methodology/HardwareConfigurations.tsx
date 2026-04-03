@@ -13,7 +13,8 @@ const HardwareConfigurations = () => {
         Hardware Configurations
       </div>
       <p>
-        We run benchmarks on the following machine configurations and timeouts:
+        We run benchmark instances on the following machine configurations and
+        timeouts:
       </p>
       <ol className="list-decimal list-outside ml-6 text-base leading-relaxed">
         <li className="mb-2">
