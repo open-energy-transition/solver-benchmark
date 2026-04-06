@@ -31,9 +31,17 @@ const chartMargin = { top: 40, right: 100, bottom: 100, left: 60 };
 const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
-  const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(
-    new Set([baseSolver, ...availableSolvers.filter((s) => s !== baseSolver)]),
-  );
+  const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(() => {
+    const others = availableSolvers.filter((s) => s !== baseSolver);
+    return new Set([baseSolver, ...(others.length > 0 ? [others[0]] : [])]);
+  });
+
+  useEffect(() => {
+    const others = availableSolvers.filter((s) => s !== baseSolver);
+    setVisibleSolvers(
+      new Set([baseSolver, ...(others.length > 0 ? [others[0]] : [])]),
+    );
+  }, [baseSolver]);
 
   const maxDataRuntime =
     d3.max(data, (d) => Math.max(d.runtime, d.baseSolverRuntime)) || 0;
@@ -559,7 +567,13 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 style={{ backgroundColor: solverColors[baseSolver] }}
               />
             </div>
-            <span className="text-sm text-navy">
+            <span
+              className={`text-sm transition-colors ${
+                visibleSolvers.has(baseSolver)
+                  ? "text-navy font-medium"
+                  : "text-dark-grey opacity-50"
+              }`}
+            >
               {getSolverLabel(baseSolver)}
             </span>
           </div>
@@ -580,7 +594,13 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                     opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
                   }}
                 />
-                <span className="text-sm text-navy">
+                <span
+                  className={`text-sm transition-colors ${
+                    visibleSolvers.has(solver)
+                      ? "text-navy font-medium"
+                      : "text-dark-grey opacity-50"
+                  }`}
+                >
                   {getSolverLabel(solver)}
                 </span>
               </div>
