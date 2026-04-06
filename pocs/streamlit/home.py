@@ -6,8 +6,8 @@ from components.home_chart import render_benchmark_scatter_plot
 from packaging.version import parse
 from utils.file_utils import load_benchmark_data, load_metadata
 
-from website.utils.calculations import calculate_sgm
-from website.utils.filters import filter_data
+from pocs.streamlit.utils.calculations import calculate_sgm
+from pocs.streamlit.utils.filters import filter_data
 
 metadata = load_metadata("results/metadata.yaml")
 

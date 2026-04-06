@@ -292,11 +292,16 @@ const ChartCompare = ({
                 .append("tspan")
                 .text("10")
                 .append("tspan")
-                .attr("dy", "-5")
+                .attr("baseline-shift", "super")
                 .attr("font-size", "8px")
                 .text(exponent.toString());
             }
           });
+        // Hide the leftmost tick label to prevent overlap with y-axis labels
+        g.selectAll(".tick")
+          .filter((d, i) => i === 0)
+          .select("text")
+          .attr("visibility", "hidden");
       });
     svg
       .append("g")
@@ -316,12 +321,131 @@ const ChartCompare = ({
                 .append("tspan")
                 .text("10")
                 .append("tspan")
-                .attr("dy", "-5")
+                .attr("baseline-shift", "super")
                 .attr("font-size", "8px")
                 .text(exponent.toString());
             }
           });
       });
+
+    // Draw comparison arrows before scatter points so data points render on top
+    if (showSolverFasterLabels) {
+      try {
+        const solver1Info = parseSolverInfo(solver1);
+        const solver2Info = parseSolverInfo(solver2);
+
+        const plotLeft = margin.left;
+        const plotRight = width - margin.right;
+        const plotTop = margin.top;
+        const plotBottom = height - margin.bottom;
+        const plotW = plotRight - plotLeft;
+        const plotH = plotBottom - plotTop;
+
+        const arrowLen = isMobile ? 36 : 50;
+        const color1 = "#F59E0B";
+        const color2 = "#3B82F6";
+        const labelFontSize = isMobile ? 9 : 11;
+
+        // Arrowhead markers
+        const defs = svg.append("defs");
+        defs
+          .append("marker")
+          .attr("id", "arrowhead-s1")
+          .attr("viewBox", "0 -5 10 10")
+          .attr("refX", 9)
+          .attr("refY", 0)
+          .attr("markerWidth", 5)
+          .attr("markerHeight", 5)
+          .attr("orient", "auto")
+          .append("path")
+          .attr("d", "M0,-4L10,0L0,4Z")
+          .attr("fill", color1);
+        defs
+          .append("marker")
+          .attr("id", "arrowhead-s2")
+          .attr("viewBox", "0 -5 10 10")
+          .attr("refX", 9)
+          .attr("refY", 0)
+          .attr("markerWidth", 5)
+          .attr("markerHeight", 5)
+          .attr("orient", "auto")
+          .append("path")
+          .attr("d", "M0,-4L10,0L0,4Z")
+          .attr("fill", color2);
+
+        // 45-degree half-components for arrow endpoints
+        const c = (arrowLen / 2) * Math.SQRT1_2;
+        // Gap between the arrow line and the text label (px)
+        const po = (isMobile ? 6 : 9) * Math.SQRT1_2;
+
+        // Perpendicular unit vectors from the diagonal
+        // (diagonal runs from bottom-left to top-right in SVG coords)
+        const diagLen = Math.sqrt(plotW * plotW + plotH * plotH);
+        const perpULX = -plotH / diagLen; // upper-left direction
+        const perpULY = -plotW / diagLen;
+        const perpLRX = plotH / diagLen; // lower-right direction
+        const perpLRY = plotW / diagLen;
+        // How many px to offset label/arrow center from the diagonal
+        const diagOffset = isMobile ? 30 : 22;
+
+        // Solver 1 better — center at t=0.4 along diagonal, shifted upper-left
+        const t1 = 0.4;
+        const c1x = plotLeft + t1 * plotW + diagOffset * perpULX;
+        const c1y = plotBottom - t1 * plotH + diagOffset * perpULY;
+        const c1xText = c1x - 50;
+        const c1yText = c1y - 5;
+        svg
+          .append("line")
+          .attr("x1", c1x + c - po)
+          .attr("y1", c1y + c + po)
+          .attr("x2", c1x - c - po)
+          .attr("y2", c1y - c + po)
+          .attr("stroke", color1)
+          .attr("stroke-width", 1.5)
+          .attr("marker-end", "url(#arrowhead-s1)");
+        svg
+          .append("text")
+          .attr("x", c1xText)
+          .attr("y", c1yText)
+          .attr("text-anchor", "middle")
+          .attr("transform", `rotate(0, ${c1xText}, ${c1yText})`)
+          .attr("fill", color1)
+          .attr("font-size", `${labelFontSize + 3}px`)
+          .attr("class", "font-lato")
+          .attr("dy", "-7")
+          .text(`${solver1Info.name} is better`);
+
+        // Solver 2 better — center at t=0.6 along diagonal, shifted lower-right
+        const t2 = 0.6;
+        const c2x = plotLeft + t2 * plotW + diagOffset * perpLRX;
+        const c2y = plotBottom - t2 * plotH + diagOffset * perpLRY;
+        const c2xText = c2x + 45;
+        const c2yText = c2y + 15;
+        svg
+          .append("line")
+          .attr("x1", c2x - c - po)
+          .attr("y1", c2y - c + po)
+          .attr("x2", c2x + c - po)
+          .attr("y2", c2y + c + po)
+          .attr("stroke", color2)
+          .attr("stroke-width", 1.5)
+          .attr("marker-end", "url(#arrowhead-s2)");
+        svg
+          .append("text")
+          .attr("x", c2xText)
+          .attr("y", c2yText)
+          .attr("text-anchor", "middle")
+          .attr("transform", `rotate(0, ${c2xText}, ${c2yText})`)
+          .attr("fill", color2)
+          .attr("font-size", `${labelFontSize + 3}px`)
+          .attr("class", "font-lato")
+          .attr("dy", "15")
+          .text(`${solver2Info.name} is better`);
+      } catch (e) {
+        // ignore parsing errors
+      }
+    }
+
     // Scatter points
     svg
       .selectAll(".dot")
@@ -381,8 +505,9 @@ const ChartCompare = ({
       });
 
     // Draw x = y line with appropriate scale values
-    const lineStart = scaleType === "log" ? scaleRange.min : minValue;
-    const lineEnd = scaleType === "log" ? scaleRange.max : maxValue;
+    // Use the actual computed domain boundaries so the line always spans the full plot area
+    const lineStart = scaleType === "log" ? xDomain[0] : minValue;
+    const lineEnd = scaleType === "log" ? xDomain[1] : maxValue;
 
     svg
       .append("line")
@@ -392,37 +517,6 @@ const ChartCompare = ({
       .attr("y2", yScale(lineEnd))
       .attr("stroke", "#8B8B8B")
       .attr("stroke-width", 2);
-
-    // Add helper labels: top-left = solver1 is faster, bottom-right = solver2 is faster
-    if (showSolverFasterLabels) {
-      try {
-        const solver1Info = parseSolverInfo(solver1);
-        const solver2Info = parseSolverInfo(solver2);
-
-        // Top-left: solver1 is faster
-        svg
-          .append("text")
-          .attr("x", margin.left + 12)
-          .attr("y", margin.top - 4)
-          .attr("fill", "#6B7280")
-          .attr("class", "font-lato")
-          .attr("font-size", isMobile ? "10px" : "12px")
-          .text(`${solver1Info.name} is faster`);
-
-        // Bottom-right: solver2 is faster
-        svg
-          .append("text")
-          .attr("x", width - margin.right - 12)
-          .attr("y", height - margin.bottom - (isMobile ? 8 : 6))
-          .attr("fill", "#6B7280")
-          .attr("text-anchor", "end")
-          .attr("class", "font-lato")
-          .attr("font-size", isMobile ? "10px" : "12px")
-          .text(`${solver2Info.name} is faster`);
-      } catch (e) {
-        // ignore parsing errors and don't render labels
-      }
-    }
 
     // Grid
     const gridValues = scaleType === "log" ? tickValues : xScale.ticks();
