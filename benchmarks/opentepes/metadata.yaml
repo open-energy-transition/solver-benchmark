@@ -4,7 +4,7 @@ benchmarks:
     Short description: Iberian electricity system model with a detailed representation of a hydro basin and unit commitment on hydro generators.
     Modelling framework: openTEPES
     Model name: openTEPES-Spain/Portugal
-    Version: 
+    Version:
     Contributor(s)/Source: Andres Ramos, [Universidad Pontificia Comillas](https://pascua.iit.comillas.edu/aramos/Ramos_CV.htm)
     Problem class: MILP
     Application: Operational
