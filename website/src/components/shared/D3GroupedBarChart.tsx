@@ -546,7 +546,7 @@ const D3GroupedBarChart = ({
   return (
     <div className="relative bg-[#F4F6FA] rounded-2xl p-2">
       {directionalIndicator && (
-        <div className="absolute -right-4 top-1/2 transform -translate-y-1/2">
+        <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2">
           <DirectionalIndicator direction={directionalIndicator} size="sm" />
         </div>
       )}
