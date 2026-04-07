@@ -1953,17 +1953,6 @@ benchmarks:
       Num. nonzeros: 133399
       Num. continuous variables: 21132
       Num. integer variables: 8109
-    - Name: 20-168h
-      Size:
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_20_168h.mps.gz
-      Temporal resolution: 168 hour
-      Spatial resolution: 5 nodes
-      Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
-      Num. continuous variables:
-      Num. integer variables:
     - Name: 25-168h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_25_168h.mps.gz
