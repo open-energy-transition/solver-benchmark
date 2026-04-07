@@ -1,6 +1,6 @@
 # https://github.com/IIT-EnergySystemModels/openTEPES
 benchmarks:
-  openTEPES-spain_portugal:
+  openTEPES-spain_portugal-elec-uc:
     Short description: Iberian electricity system model with a detailed representation of a hydro basin and unit commitment on hydro generators.
     Modelling framework: openTEPES
     Model name: openTEPES-Spain/Portugal
@@ -15,7 +15,7 @@ benchmarks:
     MILP features: Unit commitment
     Sizes:
     - Name: 8-2h
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/openTEPES-spain_portugal-elec-uc-8_2h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/openTEPES-spain_portugal-elec-uc-8-2h.mps.gz
       Temporal resolution: 2 hours
       Spatial resolution: 8 nodes
       Realistic: true
