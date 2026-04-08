@@ -24,7 +24,7 @@ const TableResult = () => {
   const columns = useMemo<ColumnDef<BenchmarkResult>[]>(
     () => [
       {
-        header: "Benchmark",
+        header: "Model - Scenario",
         accessorKey: "benchmark",
         filterFn: filterSelect,
         size: 230,
@@ -53,7 +53,7 @@ const TableResult = () => {
         ),
       },
       {
-        header: "Instance",
+        header: "Resolution",
         accessorKey: "size",
         filterFn: filterSelect,
         size: 150,
