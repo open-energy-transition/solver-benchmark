@@ -674,6 +674,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 793714
       Num. variables: 493813
+      Num. nonzeros: 4114762
     - Name: 1-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-1-1h.mps.gz
@@ -683,6 +684,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 1967554
       Num. variables: 1107013
+      Num. nonzeros: 11011671
     - Name: 10-1h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-1h.mps.gz
@@ -692,6 +694,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 15230366
       Num. variables: 9661524
+      Num. nonzeros: 76484517
     - Name: 5-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-5-3h.mps.gz
@@ -701,6 +704,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 15025409
       Num. variables: 12077880
+      Num. nonzeros: 61521715
     - Name: 10-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-10-3h.mps.gz
@@ -710,6 +714,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 7603326
       Num. variables: 5672804
+      Num. nonzeros: 33382648
     - Name: 20-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-20-3h.mps.gz
@@ -719,6 +724,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 24282926
       Num. variables: 20319294
+      Num. nonzeros: 94953769
     - Name: 25-3h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/IESA-Opt-NL-25-3h.mps.gz
@@ -728,6 +734,7 @@ benchmarks:
       Realistic motivation: Designed for long-term energy planning and policy advice
       Num. constraints: 35769573
       Num. variables: 30798564
+      Num. nonzeros: 134955169
   genx-1_three_zones:
     Short description: Three Zones, a one-year example with hourly resolution, contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented
@@ -2493,6 +2500,38 @@ benchmarks:
       Num. constraints: 78851
       Num. variables: 78851
       Num. nonzeros: 214320
+  openTEPES-spain_portugal-elec-uc:
+    Short description: Iberian electricity system model with a detailed representation
+      of a hydro basin and unit commitment on hydro generators.
+    Modelling framework: openTEPES
+    Model name: openTEPES-Spain/Portugal
+    Version:
+    Contributor(s)/Source: Andres Ramos, [Universidad Pontificia Comillas](https://pascua.iit.comillas.edu/aramos/Ramos_CV.htm)
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Operational
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (2025)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 8-2h
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/openTEPES-spain_portugal-elec-uc-8-2h.mps.gz
+      Temporal resolution: 2 hours
+      Spatial resolution: 8 nodes
+      Realistic: true
+      Realistic motivation: Used in the national research project "Hydro generation
+        advanced systems modeling, control, and optimized integration to the system
+        (AVANHID)", developed for the Ministry of Science and Innovation/State Research
+        Agency (MICIN/AEI/10.13039/501100011033) under the program Public-Private
+        Partnerships with NextGenerationEU/PRTR funds (CPP2021-009114). October 2022
+        - November 2025.
+      Size: L
+      Num. constraints: 1727170
+      Num. variables: 2913989
+      Num. nonzeros: 7860707
+      Num. continuous variables: 2193272
+      Num. integer variables: 720717
   pypsa-power+ely:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model for a single year-time horizon.
