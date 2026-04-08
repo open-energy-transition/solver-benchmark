@@ -12,6 +12,7 @@ export interface IBenchmarkModelCases {
   TIMES: string;
   Tulipa: string;
   "ZEN-garden": string;
+  OpenTEPES: string;
   [key: string]: string;
 }
 
@@ -30,6 +31,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "",
     Tulipa: "",
     "ZEN-garden": "",
+    OpenTEPES: "",
   },
   {
     header: "LP",
@@ -45,6 +47,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "true",
     Tulipa: "false",
     "ZEN-garden": "true",
+    OpenTEPES: "false",
   },
   {
     header: "MILP",
@@ -60,6 +63,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "true",
     "ZEN-garden": "false",
+    OpenTEPES: "true",
   },
   {
     header: "Applications",
@@ -75,6 +79,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "",
     Tulipa: "",
     "ZEN-garden": "",
+    OpenTEPES: "",
   },
 
   {
@@ -91,6 +96,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "true",
     Tulipa: "false",
     "ZEN-garden": "true",
+    OpenTEPES: "false",
   },
   {
     header: "Operational",
@@ -106,6 +112,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "true",
   },
   {
     header: "Production cost modelling",
@@ -121,6 +128,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "DC Optimal Power Flow",
@@ -136,6 +144,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Steady-state Optimal Power Flow",
@@ -151,6 +160,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Resource Adequacy",
@@ -166,6 +176,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "MILP Features",
@@ -181,6 +192,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "",
     Tulipa: "",
     "ZEN-garden": "",
+    OpenTEPES: "",
   },
   {
     header: "None",
@@ -196,6 +208,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "true",
     Tulipa: "false",
     "ZEN-garden": "true",
+    OpenTEPES: "false",
   },
   {
     header: "Unit commitment",
@@ -211,6 +224,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "true",
     "ZEN-garden": "false",
+    OpenTEPES: "true",
   },
   {
     header: "Transmission switching",
@@ -226,6 +240,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Modularity",
@@ -241,6 +256,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "true",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Binary transmission investment decisions",
@@ -256,6 +272,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Piecewise fuel usage",
@@ -271,6 +288,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Piecewise-linear part-load efficiency modeling",
@@ -286,6 +304,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Piecewise efficiency",
@@ -301,6 +320,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Modelling of fixed costs",
@@ -316,6 +336,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "NonConvex operation",
@@ -331,6 +352,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "false",
     Tulipa: "false",
     "ZEN-garden": "false",
+    OpenTEPES: "false",
   },
   {
     header: "Realistic",
@@ -346,6 +368,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "",
     Tulipa: "",
     "ZEN-garden": "",
+    OpenTEPES: "",
   },
   {
     header: "Realistic",
@@ -361,5 +384,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     TIMES: "true",
     Tulipa: "true",
     "ZEN-garden": "true",
+    OpenTEPES: "true",
   },
 ];
