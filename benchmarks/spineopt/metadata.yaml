@@ -16,7 +16,7 @@ benchmarks:
     Sizes:
       - Name: 30-1h
         Size: L
-        URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu_30-1h.gz
+        URL: https://storage.googleapis.com/solver-benchmarks/instances/spineopt-eu-pathway-planning-30-1h.mps.gz
         Temporal resolution: 1 hour
         Spatial resolution: 30 nodes
         Realistic: true
