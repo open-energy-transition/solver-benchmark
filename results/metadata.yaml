@@ -5014,17 +5014,6 @@ benchmarks:
       Num. nonzeros: 297601
       Num. continuous variables: 47473
       Num. integer variables: 17520
-    - Name: 2-24h
-      Size:
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_24h.mps.gz
-      Temporal resolution: 24 hours
-      Spatial resolution: 2 nodes
-      Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
-      Num. continuous variables:
-      Num. integer variables:
     - Name: 2-36h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_36h.mps.gz
