@@ -1,7 +1,7 @@
 ---
 title: "Can open-source solvers be used for large-scale energy system modelling?"
 date: "2026-03-12"
-excerpt: "Can open-source solvers be used for large-scale energy system modelling?"
+excerpt: "An investigation of the performance of HiPO, a new interior point method implementation within the open-source HiGHS solver."
 tags: ["announcement", "hipo"]
 ---
 
