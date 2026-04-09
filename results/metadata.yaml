@@ -4527,11 +4527,11 @@ benchmarks:
       Spatial resolution: 2 nodes
       Realistic:
       Realistic motivation:
-      Num. constraints: 53331
-      Num. variables: 27400
-      Num. nonzeros: 132345
-      Num. continuous variables: 19735
-      Num. integer variables: 7665
+      Num. constraints: 61725
+      Num. variables: 32510
+      Num. nonzeros: 148762
+      Num. continuous variables: 23750
+      Num. integer variables: 8760
     - Name: 4-24h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/pypsa-de-tests/pypsa-de-elec-uc_4_24H.mps.gz
@@ -4981,6 +4981,72 @@ benchmarks:
       Num. nonzeros: 667792
       Num. continuous variables: 110159
       Num. integer variables: 39273
+    - Name: 2-5h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_5h.mps.gz
+      Temporal resolution: 5 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 296128
+      Num. variables: 155943
+      Num. nonzeros: 711397
+      Num. continuous variables: 113895
+      Num. integer variables: 42048
+    - Name: 2-8h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_8h.mps.gz
+      Temporal resolution: 8 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 185095
+      Num. variables: 97476
+      Num. nonzeros: 445244
+      Num. continuous variables: 71196
+      Num. integer variables: 26280
+    - Name: 2-12h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_12h.mps.gz
+      Temporal resolution: 12 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 123410
+      Num. variables: 64993
+      Num. nonzeros: 297601
+      Num. continuous variables: 47473
+      Num. integer variables: 17520
+    - Name: 2-24h
+      Size:
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+      Num. continuous variables:
+      Num. integer variables:
+    - Name: 2-36h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_36h.mps.gz
+      Temporal resolution: 36 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 41276
+      Num. variables: 21741
+      Num. nonzeros: 99408
+      Num. continuous variables: 15885
+      Num. integer variables: 5856
+    - Name: 2-84h
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc_2_84h.mps.gz
+      Temporal resolution: 84 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 17785
+      Num. variables: 9370
+      Num. nonzeros: 42698
+      Num. continuous variables: 6850
+      Num. integer variables: 2520
   pypsa-eur-elec-uc:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion and including unit commitment.
