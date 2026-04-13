@@ -4415,6 +4415,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints:
       Num. variables:
+      Num. nonzeros:
     - Name: 10-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-10-433ts.lp.gz
@@ -4425,6 +4426,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints:
       Num. variables:
+      Num. nonzeros:
     - Name: 15-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-15-433ts.lp.gz
@@ -4435,6 +4437,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints:
       Num. variables:
+      Num. nonzeros:
     - Name: 32-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
