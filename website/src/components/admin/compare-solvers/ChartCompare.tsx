@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { createD3Tooltip, getChartColor } from "@/utils/chart";
+import { createD3Tooltip, getSolverColor } from "@/utils/chart";
 import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { formatDecimal } from "@/utils/number";
@@ -45,6 +45,11 @@ interface D3ChartProps {
   showSolverFasterLabels?: boolean;
 }
 
+const getColorForSolver = (solver: string): string => {
+  if (solver === "cbc") return "orange";
+  return getSolverColor(solver);
+};
+
 const defaultTooltipTemplate = (
   d: ChartData,
   solver1: string,
@@ -84,15 +89,26 @@ const ChartCompare = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
+  // Solver colors (match other dashboards)
+  console.log("solver2", solver2, solver1);
+  const solverColor1 = getColorForSolver(solver1.split("--")[0]);
+  const solverColor2 = getColorForSolver(solver2.split("--")[0]);
+
+  // Cross/failure colors (choose colors distinct from solver palette)
+  const crossColors: Record<string, string> = {
+    "ok-TO": "#EF4444", // solver2 failed
+    "TO-ok": "#3cfb52", // solver1 failed
+    "TO-TO": "#6B7280", // both failed
+  };
   useEffect(() => {
     const data = chartData;
 
     // Solvers with colors
     const statusColor = {
       "ok-ok": "#4C5C51",
-      "TO-TO": getChartColor(2),
-      "ok-TO": getChartColor(3),
-      "TO-ok": getChartColor(0),
+      "TO-TO": crossColors["TO-TO"],
+      "ok-TO": crossColors["ok-TO"],
+      "TO-ok": crossColors["TO-ok"],
     };
 
     // Dimensions
@@ -287,21 +303,34 @@ const ChartCompare = ({
           .each(function (d) {
             if (useExponential && typeof d === "number" && d > 0) {
               const exponent = Math.round(Math.log10(d));
-              d3.select(this)
-                .html("") // Clear existing text
-                .append("tspan")
-                .text("10")
-                .append("tspan")
-                .attr("baseline-shift", "super")
-                .attr("font-size", "8px")
-                .text(exponent.toString());
+              // Hide 10^-2 and 10^-3 ticks (and their tick lines) when using exponential formatting
+              if (exponent === -2 || exponent === -3) {
+                d3.select(this).attr("visibility", "hidden");
+                const parent = (this as Element).parentNode as Element | null;
+                if (parent)
+                  d3.select(parent).select("line").attr("display", "none");
+              } else {
+                d3.select(this)
+                  .html("") // Clear existing text
+                  .append("tspan")
+                  .text("10")
+                  .append("tspan")
+                  .attr("baseline-shift", "super")
+                  .attr("font-size", "8px")
+                  .text(exponent.toString());
+              }
             }
           });
-        // Hide the leftmost tick label to prevent overlap with y-axis labels
-        g.selectAll(".tick")
-          .filter((d, i) => i === 0)
-          .select("text")
-          .attr("visibility", "hidden");
+        // Hide tick labels that fall at or left of the left plot margin
+        // (protect against accidentally hiding a large-value tick like 10^4)
+        g.selectAll(".tick").each(function () {
+          const t = d3.select(this).attr("transform") || "";
+          const m = t.match(/translate\(([^,]+),?/);
+          const tx = m ? parseFloat(m[1]) : NaN;
+          if (!isNaN(tx) && tx <= margin.left + 1) {
+            d3.select(this).select("text").attr("visibility", "hidden");
+          }
+        });
       });
     svg
       .append("g")
@@ -316,14 +345,21 @@ const ChartCompare = ({
           .each(function (d) {
             if (useExponential && typeof d === "number" && d > 0) {
               const exponent = Math.round(Math.log10(d));
-              d3.select(this)
-                .html("") // Clear existing text
-                .append("tspan")
-                .text("10")
-                .append("tspan")
-                .attr("baseline-shift", "super")
-                .attr("font-size", "8px")
-                .text(exponent.toString());
+              if (exponent === -2 || exponent === -3) {
+                d3.select(this).attr("visibility", "hidden");
+                const parent = (this as Element).parentNode as Element | null;
+                if (parent)
+                  d3.select(parent).select("line").attr("display", "none");
+              } else {
+                d3.select(this)
+                  .html("") // Clear existing text
+                  .append("tspan")
+                  .text("10")
+                  .append("tspan")
+                  .attr("baseline-shift", "super")
+                  .attr("font-size", "8px")
+                  .text(exponent.toString());
+              }
             }
           });
       });
@@ -342,8 +378,8 @@ const ChartCompare = ({
         const plotH = plotBottom - plotTop;
 
         const arrowLen = isMobile ? 36 : 50;
-        const color1 = "#F59E0B";
-        const color2 = "#3B82F6";
+        const color1 = solverColor1;
+        const color2 = solverColor2;
         const labelFontSize = isMobile ? 9 : 11;
 
         // Arrowhead markers
@@ -520,6 +556,13 @@ const ChartCompare = ({
 
     // Grid
     const gridValues = scaleType === "log" ? tickValues : xScale.ticks();
+    const filteredGridValues = gridValues.filter((d) => {
+      return !(
+        useExponential &&
+        typeof d === "number" &&
+        (Math.round(Math.log10(d)) === -2 || Math.round(Math.log10(d)) === -3)
+      );
+    });
     const grid = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
         .attr("stroke", "currentColor")
@@ -528,7 +571,7 @@ const ChartCompare = ({
           g
             .append("g")
             .selectAll("line")
-            .data(gridValues)
+            .data(filteredGridValues)
             .join("line")
             .attr("x1", (d) => 0.5 + xScale(d))
             .attr("x2", (d) => 0.5 + xScale(d))
@@ -540,7 +583,7 @@ const ChartCompare = ({
           g
             .append("g")
             .selectAll("line")
-            .data(gridValues)
+            .data(filteredGridValues)
             .join("line")
             .attr("y1", (d) => 0.5 + yScale(d))
             .attr("y2", (d) => 0.5 + yScale(d))
@@ -592,15 +635,15 @@ const ChartCompare = ({
           {formatLegend("ok-ok")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon fill={getChartColor(3)} className="size-2" />
+          <XIcon fill={crossColors["ok-TO"]} className="size-2" />
           {formatLegend("ok-fail")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon fill={getChartColor(0)} className="size-2" />
+          <XIcon fill={crossColors["TO-ok"]} className="size-2" />
           {formatLegend("fail-ok")}
         </div>
         <div className="py-1 px-2 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max">
-          <XIcon fill={getChartColor(2)} className="size-2" />
+          <XIcon fill={crossColors["TO-TO"]} className="size-2" />
           {formatLegend("fail-fail")}
         </div>
       </div>
