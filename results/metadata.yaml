@@ -4415,6 +4415,7 @@ benchmarks:
         time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 14588407
       Num. variables: 13338520
+      Num. nonzeros:
   SWITCH-USA-PG:
     Short description: A capacity-expansion and operational power-system model of
       the United States built on the Switch framework and parameterized with PowerGenome
@@ -4441,6 +4442,7 @@ benchmarks:
       Realistic: false
       Num. constraints:
       Num. variables:
+      Num. nonzeros:
     - Name: 10-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-10-168h.lp.gz
@@ -4449,6 +4451,7 @@ benchmarks:
       Realistic: false
       Num. constraints:
       Num. variables:
+      Num. nonzeros:
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-15-168h.lp.gz
@@ -4457,6 +4460,7 @@ benchmarks:
       Realistic: false
       Num. constraints:
       Num. variables:
+      Num. nonzeros:
     - Name: 26-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
