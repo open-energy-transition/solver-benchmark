@@ -7,10 +7,12 @@ interface DirectionalIndicatorProps {
   className?: string;
   size?: "sm" | "md" | "lg";
   color?: string;
+  label?: string;
 }
 
 const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
   direction,
+  label = "",
   className = "",
   size = "sm",
   color = "black",
@@ -73,7 +75,7 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
         />
       </svg>
       <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
-        {text}
+        {label ? label : text}
       </span>
     </div>
   );
