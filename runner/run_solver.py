@@ -249,8 +249,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "knitro":
                 return solver_model.reported_runtime
             case "mosek":
-                # TODO: implement once the exact MOSEK solver_model API used by Linopy is verified
-                return None
+                return solver_model.getdouinf(mosek.dinfitem.optimizer_time)
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None
