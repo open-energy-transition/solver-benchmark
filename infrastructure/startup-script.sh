@@ -43,6 +43,12 @@ chmod a+x /usr/local/bin/yq
 mkdir -p /opt/gurobi
 gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
+# Download MOSEK license
+echo "Downloading MOSEK license..."
+mkdir -p /opt/mosek
+gsutil cp gs://solver-benchmarks-restricted/mosek_evaluation_unrestricted.lic /opt/mosek/mosek.lic
+chmod 644 /opt/mosek/mosek.lic
+
 # Download Knitro license
 echo "Downloading Knitro license..."
 mkdir -p /opt/knitro
@@ -230,6 +236,7 @@ export ARTELYS_LICENSE=/opt/knitro/knitro-license.txt
 export XPRESS=/opt/xpress/license.xpr
 export CPLEX_STUDIO_DIR2212=/opt/ibm/ILOG/CPLEX_Studio2212
 export LD_LIBRARY_PATH=/root/miniconda3/envs/benchmark-2025/lib/python3.12/site-packages/knitro/lib:/opt/ibm/ILOG/CPLEX_Studio2212/cplex/bin/x86-64_linux${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export MOSEKLM_LICENSE_FILE=/opt/mosek/mosek.lic
 
 # Run the benchmark_all.sh script with our years and the run_id
 echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"

@@ -9,6 +9,7 @@ from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
 
+import mosek
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
@@ -114,6 +115,14 @@ def get_solver(solver_name):
             "OPTIMALITYTOL": lp_tol,
             "crossover": -1,  # Basic solutions not needed (crossover=choose)
         },
+        "mosek": {
+            "MSK_IPAR_MIO_SEED": 4,
+            "MSK_IPAR_INTPNT_BASIS": "MSK_BI_NEVER",
+            "MSK_DPAR_MIO_TOL_REL_GAP": mip_gap,
+            # LP tolerances
+            "MSK_DPAR_INTPNT_TOL_PFEAS": lp_tol,
+            "MSK_DPAR_INTPNT_TOL_DFEAS": lp_tol,
+        },
     }
 
     return solver_class(**solver_options.get(solver_name, {}))
@@ -123,6 +132,8 @@ def is_mip_problem(solver_model, solver_name):
     """
     Determines if a given solver model is a Mixed Integer Programming (MIP) problem.
     """
+    if solver_model is None:
+        return False
     if solver_name == "scip":
         if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
             return True
@@ -133,11 +144,12 @@ def is_mip_problem(solver_model, solver_name):
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
     elif solver_name == "cplex":
-        # Check if any variables are integer or binary
         var_types = solver_model.variables.get_types()
         return any(t in ("I", "B") for t in var_types)
     elif solver_name == "xpress":
         return solver_model.getAttrib("mipents") > 0
+    elif solver_name == "mosek":
+        return solver_model.getnumintvar() > 0
     elif solver_name in {"glpk", "cbc"}:
         # These solvers do not provide a solver model in the solver result,
         # so MIP problem detection is not possible.
@@ -183,11 +195,15 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "knitro":
         # Knitro duality gap retrieval not implemented yet
         return None
+    elif solver_name == "mosek":
+        if is_mip_problem(solver_model, solver_name):
+            return solver_model.getdouinf(mosek.dinfitem.mio_obj_rel_gap)
+        return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def get_milp_metrics(input_file, solver_result):
+def get_milp_metrics(input_file, solver_result, solver_name):
     """Uses HiGHS to read the problem file and compute max integrality violation and
     duality gap.
     """
@@ -232,6 +248,9 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return solver_model.getAttrib("time")
             case "knitro":
                 return solver_model.reported_runtime
+            case "mosek":
+                # TODO: implement once the exact MOSEK solver_model API used by Linopy is verified
+                return None
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None
@@ -437,9 +456,13 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result
-        )
+        if is_mip_problem(solver_result.solver_model, solver_name):
+            duality_gap, max_integrality_violation = get_milp_metrics(
+                input_file, solver_result, solver_name
+            )
+        else:
+            duality_gap = None
+            max_integrality_violation = None
 
         results = {
             "runtime": runtime,

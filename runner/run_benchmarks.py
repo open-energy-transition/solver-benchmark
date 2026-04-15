@@ -48,6 +48,7 @@ def get_conda_package_versions(solvers, env_name=None):
             "cplex": "cplex",
             "knitro": "knitro",
             "xpress": "xpress",
+            "mosek": "mosek",
         }
         solver_versions = {}
         for solver in solvers:
@@ -248,7 +249,12 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     if os.geteuid() != 0:
         command.append("--user")
 
-    for env_var in ["ARTELYS_LICENSE", "XPRESS", "LD_LIBRARY_PATH"]:
+    for env_var in [
+        "ARTELYS_LICENSE",
+        "XPRESS",
+        "LD_LIBRARY_PATH",
+        "MOSEKLM_LICENSE_FILE",
+    ]:
         val = os.environ.get(env_var)
         if val:
             command.append(f"--setenv={env_var}={val}")

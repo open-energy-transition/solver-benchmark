@@ -339,6 +339,7 @@ color_map = {
     "cplex": "#F9CD5A",  # yellow
     "xpress": "#7C3AED",  # purple
     "knitro": "#3B82F6",  # blue
+    "mosek": "#FE7D00",  # orange
 }
 
 

@@ -150,4 +150,5 @@ dependencies:
       - docplex==2.31.254
       - highspy==1.10.0
       - knitro==15.1.0
-      - linopy==0.6.4
+      - mosek==11.1.10
+      - linopy==0.6.6

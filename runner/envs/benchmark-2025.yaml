@@ -29,3 +29,4 @@ dependencies:
   - cplex==22.1.2.0
   - docplex  # required by cplex
   - knitro
+  - mosek==11.1.10
