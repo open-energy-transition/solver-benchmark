@@ -172,7 +172,7 @@ def main():
 
     mv_commands = []
     gzip_commands = []
-    for file_path in sorted(benchmarks_dir.rglob(FILE_PATTERN)):
+    for file_path in sorted(benchmarks_dir.rglob("metadata.yaml")):
         to_mv, to_gzip = process_file(file_path, yaml, args.dry_run)
         for gs_path, filename in to_mv:
             mv_commands.append(
