@@ -1,4 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { IResultState } from "@/types/state";
 import { useRouter } from "next/router";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
@@ -7,6 +9,7 @@ import { SolverStatusType } from "@/types/benchmark";
 import CustomDropdown from "@/components/common/CustomDropdown";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
+import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const SOLVES_DATA = [
   {
@@ -52,16 +55,23 @@ const SolverSection = () => {
   const rawBenchmarkLatestResults = useBenchmarkResults();
   const benchmarkSuccessMap = new Map<string, number>();
 
+  const fullMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.fullMetaData;
+  });
+
   // Count successful solves for each benchmark
   rawBenchmarkLatestResults.forEach((result) => {
     const key = `${result.benchmark}-${result.size}`;
     benchmarkSuccessMap.set(key, (benchmarkSuccessMap.get(key) || 0) + 1);
   });
 
-  // Filter results where all solvers succeeded
-  const benchmarkLatestResults = rawBenchmarkLatestResults;
-
   const [selectedSolver, setSelectedSolver] = useState("");
+
+  const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
+    return HIPO_SOLVERS.includes(selectedSolver)
+      ? fullMetaData[result.benchmark]?.problemClass === "LP"
+      : true;
+  });
 
   const [solverOptions, setSolverOptions] = useState<string[]>([]);
 
