@@ -406,9 +406,15 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result, solver_name
-        )
+        if solver_result.solver_model is not None and is_mip_problem(
+            solver_result.solver_model, solver_name
+        ):
+            duality_gap, max_integrality_violation = get_milp_metrics(
+                input_file, solver_result, solver_name
+            )
+        else:
+            duality_gap = None
+            max_integrality_violation = None
 
         results = {
             "runtime": runtime,
