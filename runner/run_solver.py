@@ -182,6 +182,9 @@ def get_milp_metrics(input_file, solver_result, solver_name):
 
 def get_reported_runtime(solver_name, solver_model) -> float | None:
     """Get the solving runtime as reported by the solver from the solver's Python object."""
+    if solver_model is None:
+        return None
+
     try:
         match solver_name:
             case "highs":
@@ -203,7 +206,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return None
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
-    return None
+        return None
 
 
 def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVariant):
