@@ -157,21 +157,24 @@ def get_milp_metrics(input_file, solver_result, solver_name):
     """Uses HiGHS to read the problem file and compute max integrality violation and
     duality gap.
     """
+    solver_model = solver_result.solver_model
+    if solver_model is None or highspy is None:
+        return None, None
+
     try:
-        if highspy is not None:
-            h = highspy.Highs()
-            h.readModel(input_file)
-            integer_vars = {
-                h.variableName(i)
-                for i in range(h.numVariables)
-                if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-            }
-            if integer_vars:
-                duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
-                max_integrality_violation = calculate_integrality_violation(
-                    integer_vars, solver_result.solution.primal
-                )
-                return duality_gap, max_integrality_violation
+        h = highspy.Highs()
+        h.readModel(input_file)
+        integer_vars = {
+            h.variableName(i)
+            for i in range(h.numVariables)
+            if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+        }
+        if integer_vars:
+            duality_gap = get_duality_gap(solver_model, solver_name)
+            max_integrality_violation = calculate_integrality_violation(
+                integer_vars, solver_result.solution.primal
+            )
+            return duality_gap, max_integrality_violation
     except Exception:
         print(
             f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
