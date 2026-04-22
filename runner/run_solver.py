@@ -153,7 +153,7 @@ def get_duality_gap(solver_model, solver_name: str):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def get_milp_metrics(input_file, solver_result):
+def get_milp_metrics(input_file, solver_result, solver_name):
     """Uses HiGHS to read the problem file and compute max integrality violation and
     duality gap.
     """
@@ -404,7 +404,7 @@ def main(solver_name, input_file, solver_version):
         runtime = perf_counter() - start_time
 
         duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result
+            input_file, solver_result, solver_name
         )
 
         results = {
