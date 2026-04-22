@@ -1,4 +1,5 @@
 import React from "react";
+import { Direction } from "@/components/shared/DirectionalIndicator";
 
 export interface StackedBarData {
   [key: string]: number | string;
@@ -35,6 +36,7 @@ export interface ID3GroupedBarChart {
   sortByValue?: boolean;
   showLineAtY1?: boolean;
   useLogScale?: boolean;
+  directionalIndicator?: Direction;
   colors:
     | {
         [key: string]: string;
@@ -60,4 +62,5 @@ export interface ID3StackedBarChart {
   yAxisLabel?: string;
   rotateXAxisLabels?: boolean;
   showXaxisLabel?: boolean;
+  directionalIndicator?: Direction;
 }
