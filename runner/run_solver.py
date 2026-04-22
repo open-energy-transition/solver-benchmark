@@ -406,6 +406,17 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
+        solver_model = solver_result.solver_model
+        raw_status = solver_result.status.status.value
+        termination_condition = solver_result.status.termination_condition.value
+        objective = solver_result.solution.objective
+
+        status_value = raw_status
+
+        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+            status_value = "ER"
+            objective = None
+
         if solver_result.solver_model is not None and is_mip_problem(
             solver_result.solver_model, solver_name
         ):
@@ -418,12 +429,10 @@ def main(solver_name, input_file, solver_version):
 
         results = {
             "runtime": runtime,
-            "reported_runtime": get_reported_runtime(
-                solver_name, solver_result.solver_model
-            ),
-            "status": solver_result.status.status.value,
-            "condition": solver_result.status.termination_condition.value,
-            "objective": solver_result.solution.objective,
+            "reported_runtime": get_reported_runtime(solver_name, solver_model),
+            "status": status_value,
+            "condition": termination_condition,
+            "objective": objective,
             "duality_gap": duality_gap,
             "max_integrality_violation": max_integrality_violation,
         }
