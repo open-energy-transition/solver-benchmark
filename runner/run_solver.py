@@ -416,6 +416,8 @@ def main(solver_name, input_file, solver_version):
         if termination_condition in {"unknown", "error", "failed", "aborted"}:
             status_value = "ER"
             objective = None
+        elif raw_status == "warning" and objective is None:
+            status_value = "ER"
 
         if solver_result.solver_model is not None and is_mip_problem(
             solver_result.solver_model, solver_name
