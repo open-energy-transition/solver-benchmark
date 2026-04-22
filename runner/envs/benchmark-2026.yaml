@@ -2,6 +2,7 @@ name: benchmark-2025
 channels:
 - conda-forge
 - https://conda.anaconda.org/gurobi
+- conda-forge/label/dev
 - nodefaults
 dependencies:
 - python>=3.12
@@ -19,7 +20,7 @@ dependencies:
 
 - gurobi==13.0.0
 
-- highspy==1.12.0
+- highspy==1.13.2.dev1
 
 - pip:
   - pyscipopt==5.7.1
