@@ -89,6 +89,8 @@ def is_mip_problem(solver_model, solver_name):
     """
     Determines if a given solver model is a Mixed Integer Programming (MIP) problem.
     """
+    if solver_model is None:
+        return False
     if solver_name == "scip":
         if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
             return True
