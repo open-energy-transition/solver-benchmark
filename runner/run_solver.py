@@ -131,6 +131,8 @@ def calculate_integrality_violation(
 
 def get_duality_gap(solver_model, solver_name: str):
     """Retrieve the duality gap for the given solver model, if available."""
+    if solver_model is None:
+        return None
     if solver_name == "scip":
         return solver_model.getGap()
     elif solver_name == "gurobi":
