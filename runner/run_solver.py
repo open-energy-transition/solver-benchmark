@@ -216,7 +216,9 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
         return None
 
 
-def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVariant):
+def run_highs_hipo_solver(
+    input_file, solver_name, solver_version, highs_variant: HighsVariant
+):
     """
     Run the HiGHS-HiPO solver directly using the binary with variant-specific arguments
     """
@@ -382,7 +384,9 @@ def main(solver_name, input_file, solver_version):
     # Handle highs-hipo solver variants separately
     try:
         highs_variant = HighsVariant(solver_name.lower())
-        results = run_highs_hipo_solver(input_file, solver_version, highs_variant)
+        results = run_highs_hipo_solver(
+            input_file, solver_name, solver_version, highs_variant
+        )
         print(json.dumps(results))
         return
     except ValueError as e:
@@ -426,9 +430,7 @@ def main(solver_name, input_file, solver_version):
         elif raw_status == "warning" and objective is None:
             status_value = "ER"
 
-        if solver_result.solver_model is not None and is_mip_problem(
-            solver_result.solver_model, solver_name
-        ):
+        if solver_model is not None and is_mip_problem(solver_model, solver_name):
             duality_gap, max_integrality_violation = get_milp_metrics(
                 input_file, solver_result, solver_name
             )
