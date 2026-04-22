@@ -232,6 +232,8 @@ def get_milp_metrics(input_file, solver_result, solver_name):
 
 def get_reported_runtime(solver_name, solver_model) -> float | None:
     """Get the solving runtime as reported by the solver from the solver's Python object."""
+    if solver_model is None:
+        return None
     try:
         match solver_name:
             case "highs":
@@ -255,7 +257,7 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return None
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
-    return None
+        return None
 
 
 def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVariant):
@@ -428,10 +430,9 @@ def main(solver_name, input_file, solver_version):
         print(json.dumps(results))
         return
     except ValueError as e:
-        # re-raise the error if it isn't expected.
-        # we want to continue only if the error is about invalid HighsVariant
+        # Re-raise the error if it isn't the expected invalid HighsVariant case
         if "is not a valid HighsVariant" not in str(e):
-            raise e
+            raise
 
     solver = get_solver(solver_name)
 
@@ -447,15 +448,26 @@ def main(solver_name, input_file, solver_version):
     log_fn = logs_dir / f"{output_filename}.log"
 
     try:
-        # We measure runtime here and not of this entire script because lines like
-        # `import linopy` take a long (and varying) amount of time
+        # Measure only solver execution time, excluding import overhead
         start_time = perf_counter()
         solver_result = solver.solve_problem(
-            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
+            problem_fn=problem_file,
+            solution_fn=solution_fn,
+            log_fn=log_fn,
         )
         runtime = perf_counter() - start_time
 
-        if is_mip_problem(solver_result.solver_model, solver_name):
+        solver_model = solver_result.solver_model
+        termination_condition = solver_result.status.termination_condition.value
+        status_value = solver_result.status.status.value
+        objective = solver_result.solution.objective
+
+        # Treat unclear termination conditions as failed/invalid runs
+        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+            status_value = "ER"
+            objective = None
+
+        if is_mip_problem(solver_model, solver_name):
             duality_gap, max_integrality_violation = get_milp_metrics(
                 input_file, solver_result, solver_name
             )
@@ -465,12 +477,10 @@ def main(solver_name, input_file, solver_version):
 
         results = {
             "runtime": runtime,
-            "reported_runtime": get_reported_runtime(
-                solver_name, solver_result.solver_model
-            ),
-            "status": solver_result.status.status.value,
-            "condition": solver_result.status.termination_condition.value,
-            "objective": solver_result.solution.objective,
+            "reported_runtime": get_reported_runtime(solver_name, solver_model),
+            "status": status_value,
+            "condition": termination_condition,
+            "objective": objective,
             "duality_gap": duality_gap,
             "max_integrality_violation": max_integrality_violation,
         }
