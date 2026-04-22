@@ -569,11 +569,11 @@ def main(
                 )
                 continue
 
-            # Restrict highs-hipo variants to 2025 and LPs only
+            # Restrict highs-hipo variants to 2026 and LPs only
             if solver in [
                 variant.value for variant in HighsVariant
             ] and (  # For py3.10 compatibility
-                year != "2025" or benchmark["class"] != "LP"
+                year != "2026" or benchmark["class"] != "LP"
             ):
                 print(
                     f"Solver {solver} is only available for LP benchmarks and year 2025."
