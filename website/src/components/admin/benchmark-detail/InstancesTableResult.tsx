@@ -154,6 +154,16 @@ const InstancesTableResult = ({
         cell: (info: CellContext<RowData, unknown>) =>
           formatInteger(info.getValue()),
       },
+      {
+        header: "No. NON-ZEROS",
+        accessorKey: "nOfNonzeros",
+        cell: (info: CellContext<RowData, unknown>) =>
+          formatInteger(info.getValue()),
+        meta: {
+          headerClassName:
+            "flex gap-2 items-center tag-line-xs font-extrabold w-20",
+        },
+      },
     ];
 
     if (isMILP) {
@@ -228,7 +238,17 @@ const InstancesTableResult = ({
       },
     );
 
-    return baseColumns;
+    const defaultHeaderClass =
+      "flex gap-2 items-center tag-line-xs font-extrabold";
+
+    return baseColumns.map((col) => ({
+      ...col,
+      meta: {
+        ...(col.meta as any),
+        headerClassName:
+          (col.meta as any)?.headerClassName || defaultHeaderClass,
+      },
+    }));
   }, [isMILP]);
 
   const [sorting, setSorting] = useState<SortingState>([
@@ -243,6 +263,7 @@ const InstancesTableResult = ({
         temporalResolution: sizeData.temporalResolution,
         nOfVariables: sizeData.numVariables,
         nOfConstraints: sizeData.numConstraints,
+        nOfNonzeros: sizeData.numNonzeros,
         nOfContinuousVariables: sizeData.numContinuousVariables,
         nOfIntegerVariables: sizeData.numIntegerVariables,
         instance: sizeData.name,
@@ -300,7 +321,11 @@ const InstancesTableResult = ({
                     className="text-start text-navy py-4 px-6 cursor-pointer"
                   >
                     <div
-                      className="flex gap-2 items-center tag-line-xs font-extrabold"
+                      className={
+                        (header.column.columnDef.meta as any)
+                          ?.headerClassName ||
+                        "flex gap-2 items-center tag-line-xs font-extrabold"
+                      }
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {flexRender(
