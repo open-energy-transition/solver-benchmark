@@ -9,7 +9,6 @@ import { SolverMetrics } from "@/types/compare-solver";
 import { formatDecimal } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
-import Link from "next/link";
 import BasicVsFeasible from "@/components/shared/BasicVsFeasible";
 
 const SolverSelection = () => {
@@ -127,6 +126,11 @@ const SolverSelection = () => {
     })),
   );
 
+  const compareBackground = {
+    upper: "#F0F4F2",
+    lower: "#E1E5F2",
+  };
+
   return (
     <div>
       <div className="flex flex-row gap-2 sm:gap-0 mb-4">
@@ -201,10 +205,7 @@ const SolverSelection = () => {
               xaxis: `Runtime (s) of ${solver1.replace("--", " (")})`,
               yaxis: `Runtime (s) of ${solver2.replace("--", " (")})`,
             }}
-            backgroundColor={{
-              upper: "#F0F4F2",
-              lower: "#E1E5F2",
-            }}
+            backgroundColor={compareBackground}
             solver1={solver1}
             solver2={solver2}
             scaleType="log"
@@ -230,12 +231,11 @@ const SolverSelection = () => {
               xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
               yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
             }}
-            backgroundColor={{
-              upper: "#F0F4F2",
-              lower: "#E1E5F2",
-            }}
+            backgroundColor={compareBackground}
             solver1={solver1}
             solver2={solver2}
+            safeAxes={false}
+            showSolverFasterLabels={true}
             tooltipTemplate={memoryUsageTooltipTemplate}
             scaleType="log"
             scaleRange={memoryUsageLogScale.scaleRange}
