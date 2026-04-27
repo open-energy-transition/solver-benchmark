@@ -63,7 +63,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
         return []
 
     seen_bench_names = set()
-    seen_urls = set()
+    seen_urls = []
     to_mv = []
     to_gzip = []
 
@@ -104,7 +104,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
                 if not dry_run:
                     exit(1)
             else:
-                seen_urls.add(url)
+                seen_urls.append(url)
 
             # Validate host
             parsed = urlparse(url)

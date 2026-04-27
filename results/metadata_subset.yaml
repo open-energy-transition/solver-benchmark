@@ -371,3 +371,13 @@ benchmarks:
       Num. constraints: 1505
       Num. variables: 990
       Num. nonzeros: 4295
+  sample_lp:
+    Sizes:
+    - Name: ""
+      Size: XS
+      Path: tests/sample_benchmarks/sample_lp.lp
+  sample_mip:
+    Sizes:
+    - Name: ""
+      Size: XS
+      Path: tests/sample_benchmarks/sample_mip.lp

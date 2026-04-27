@@ -33,7 +33,7 @@ jobs:
           pip install --upgrade pip pre-commit
           pip install -r pocs/streamlit/requirements.txt
           # For validation scripts (TODO collect these in a requirements.txt file?)
-          pip install ruamel.yaml
+          pip install ruamel.yaml yamale
 
       - name: Check code formatting
         run: |
@@ -73,6 +73,9 @@ jobs:
           fi
           python tests/validate_urls_exist.py results/metadata.yaml
           python tests/validate_results.py
+
+      - name: Validate metadata schema
+        run: yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
 
       - name: Run Streamlit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
@@ -117,7 +120,6 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" tests/sample_benchmarks_metadata.yaml
           ./runner/benchmark_all.sh -y "tests" results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
