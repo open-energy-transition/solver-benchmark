@@ -10,12 +10,12 @@ import {
 } from "@/assets/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import navbarActions from "@/redux/theme/actions";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useEffect } from "react";
 import debounce from "lodash/debounce";
 import InfoPopup from "../common/InfoPopup";
 
@@ -30,34 +30,52 @@ const Navbar = () => {
     {
       label: "Main Results",
       route: PATH_DASHBOARD.home,
+      sectionId: "main-results",
       icon: <AlignLeftJustifyIcon />,
     },
     {
       label: "Benchmark Set",
       route: PATH_DASHBOARD.benchmarkSet.list,
+      sectionId: "benchmark-set",
       icon: <ChartBarIcon />,
     },
     {
       label: "Solvers",
       route: PATH_DASHBOARD.solvers,
+      sectionId: "solvers",
       icon: <VectorSquareIcon />,
     },
     {
       label: "Compare Solvers",
       route: PATH_DASHBOARD.compareSolvers,
+      sectionId: "compare-solvers",
       icon: <BalanceScaleIcon />,
     },
     {
       label: "Performance History",
       route: PATH_DASHBOARD.performanceHistory,
+      sectionId: "performance-history",
       icon: <ChartLineIcon />,
     },
     {
       label: "Full Results",
       route: PATH_DASHBOARD.fullResults,
+      sectionId: "full-results",
       icon: <WindowIcon />,
     },
   ];
+
+  const isDashboard = router.pathname === "/dashboard";
+  const [activeSection, setActiveSection] = useState<string>("main-results");
+
+  useEffect(() => {
+    const updateSection = () => {
+      setActiveSection(window.location.hash.slice(1) || "main-results");
+    };
+    updateSection();
+    window.addEventListener("hashchange", updateSection);
+    return () => window.removeEventListener("hashchange", updateSection);
+  }, []);
 
   const dispatch = useDispatch();
   const isNavExpanded = useSelector(
@@ -199,13 +217,13 @@ const Navbar = () => {
                         }}
                         scroll={false}
                         replace
-                        href={navData.route}
+                        href={`/dashboard#${navData.sectionId}`}
                         aria-label={navData.label}
                         className={`
                           flex items-center h-[55px] text-lavender font-normal
                           hover:bg-white hover:bg-opacity-10
                           ${
-                            currentRoute === navData.route
+                            isDashboard && activeSection === navData.sectionId
                               ? "bg-white bg-opacity-30"
                               : ""
                           }
