@@ -58,7 +58,7 @@ benchmarks:
     Modelling framework: SWITCH
     Model name: SWITCH-USA-PG
     Version:
-    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/Switch-USA-PG
     License: CC BY 4.0
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
@@ -67,6 +67,33 @@ benchmarks:
     Time horizon: Single period (1 year)
     MILP features: None
     Sizes:
+    - Name: 3-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-3-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 3 nodes
+      Realistic: false
+      Num. constraints: 441668
+      Num. variables: 433332
+      Num. nonzeros: 3561670
+    - Name: 10-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-10-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 10 nodes
+      Realistic: false
+      Num. constraints: 1675156
+      Num. variables: 1650134
+      Num. nonzeros: 12483237
+    - Name: 15-168h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-15-168h.lp.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 15 nodes
+      Realistic: false
+      Num. constraints: 2370817
+      Num. variables: 2330755
+      Num. nonzeros: 17126637
     - Name: 26-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
