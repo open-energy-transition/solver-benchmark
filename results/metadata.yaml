@@ -4388,6 +4388,7 @@ benchmarks:
         as Realistic.
       Num. constraints: 18422757
       Num. variables: 13134385
+      Num. nonzeros: 41956094
       Num. non-zeros: 41956094
   SWITCH-China-open-model:
     Short description: A large-scale national energy system model of China built using
@@ -4413,9 +4414,9 @@ benchmarks:
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 2038564
+      Num. variables: 1870405
+      Num. nonzeros: 6356586
     - Name: 10-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-10-433ts.lp.gz
@@ -4424,9 +4425,9 @@ benchmarks:
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 4203046
+      Num. variables: 3849728
+      Num. nonzeros: 13195430
     - Name: 15-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-15-433ts.lp.gz
@@ -4435,9 +4436,9 @@ benchmarks:
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered
         time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 6491422
+      Num. variables: 5953263
+      Num. nonzeros: 20521431
     - Name: 32-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz

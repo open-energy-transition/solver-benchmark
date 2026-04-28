@@ -20,9 +20,9 @@ benchmarks:
       Spatial resolution: 5 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 2038564
+      Num. variables: 1870405
+      Num. nonzeros: 6356586
     - Name: 10-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-10-433ts.lp.gz
@@ -30,9 +30,9 @@ benchmarks:
       Spatial resolution: 10 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 4203046
+      Num. variables: 3849728
+      Num. nonzeros: 13195430
     - Name: 15-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-15-433ts.lp.gz
@@ -40,9 +40,9 @@ benchmarks:
       Spatial resolution: 15 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 6491422
+      Num. variables: 5953263
+      Num. nonzeros: 20521431
     - Name: 32-433ts
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-China-open-model-32-433ts.lp.gz
