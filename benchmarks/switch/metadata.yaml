@@ -52,18 +52,18 @@ benchmarks:
       Temporal resolution: 168 hours
       Spatial resolution: 10 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 1675156
+      Num. variables: 1650134
+      Num. nonzeros: 12483237
     - Name: 15-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-15-168h.lp.gz
       Temporal resolution: 168 hours
       Spatial resolution: 15 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
+      Num. constraints: 2370817
+      Num. variables: 2330755
+      Num. nonzeros: 17126637
     - Name: 26-168h
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/SWITCH-USA-PG-26-168h.lp.gz
