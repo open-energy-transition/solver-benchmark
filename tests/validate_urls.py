@@ -62,7 +62,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
     if not data or "benchmarks" not in data:
         return []
 
-    seen_bench_names = set()
+    seen_bench_names = []
     seen_urls = []
     to_mv = []
     to_gzip = []
@@ -74,10 +74,10 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
             if not dry_run:
                 exit(1)
         else:
-            seen_bench_names.add(bench_name)
+            seen_bench_names.append(bench_name)
 
         sizes = bench_info.get("Sizes") or []
-        seen_size_names_per_bench = set()
+        seen_size_names_per_bench = []
 
         for size_entry in sizes:
             if not isinstance(size_entry, dict):
@@ -96,7 +96,7 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
                 if not dry_run:
                     exit(1)
             else:
-                seen_size_names_per_bench.add(size_name)
+                seen_size_names_per_bench.append(size_name)
 
             # URL uniqueness globally
             if url in seen_urls:
