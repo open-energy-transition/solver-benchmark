@@ -89,7 +89,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         ),
       },
       {
-        header: "Num. nonzeros",
+        header: "Num. non-zeros",
         accessorKey: "numNonzeros",
         enableColumnFilter: false,
         enableSorting: true,
