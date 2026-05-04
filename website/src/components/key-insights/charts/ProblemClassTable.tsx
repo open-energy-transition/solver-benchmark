@@ -89,6 +89,18 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         ),
       },
       {
+        header: "Num. non-zeros",
+        accessorKey: "numNonzeros",
+        enableColumnFilter: false,
+        enableSorting: true,
+        size: 180,
+        cell: (info) => (
+          <div className="text-right">
+            {formatNumberWithCommas(info.getValue() as number)}
+          </div>
+        ),
+      },
+      {
         header: "Spatial resolution",
         accessorKey: "spatialResolution",
         enableColumnFilter: false,
@@ -226,12 +238,12 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
           current.runtime < best.runtime ? current : best,
         { runtime: Infinity, solver: "", solverVersion: "", details: "" },
       );
-
       return {
         modelName: modellingFramework,
         problemClass: `${maxEntry.key} ${maxSize.name}`,
         numVariables: maxSize.numVariables,
         constraints: maxSize.numConstraints,
+        numNonzeros: maxSize.numNonzeros,
         spatialResolution: maxSize.spatialResolution?.toString() ?? "",
         modellingFramework: modellingFramework as string,
         temporalResolution: maxSize.temporalResolution?.toString() ?? "",
