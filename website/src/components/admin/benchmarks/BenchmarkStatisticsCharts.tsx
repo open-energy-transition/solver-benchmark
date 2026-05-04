@@ -30,7 +30,7 @@ const BenchmarkStatisticsCharts = ({
     );
   }, [metaData]);
 
-  const availabletimeHorizons = ["single", "multi"];
+  const availabletimeHorizons = ["single", "multi", "n/a"];
   const summary = availableModellingFrameworks.map((framework) => {
     const problemClassesMap = new Map<string, number>();
     const applicationsMap = new Map<string, number>();
@@ -83,6 +83,13 @@ const BenchmarkStatisticsCharts = ({
             updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
+        if (
+          !availabletimeHorizons.some((time) =>
+            metaData[key].timeHorizon.toLowerCase().includes(time),
+          )
+        ) {
+          updateData(timeHorizonsMap, "n/a" as string);
+        }
         if (metaData[key].sizes.some((instance) => instance.realistic)) {
           if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
@@ -97,6 +104,7 @@ const BenchmarkStatisticsCharts = ({
     if (timeHorizonsMap.size === 0) {
       timeHorizonsMap.set("single", -1);
       timeHorizonsMap.set("multi", -1);
+      timeHorizonsMap.set("n/a", -1);
     }
     return {
       modellingFramework: framework,
@@ -131,6 +139,7 @@ const BenchmarkStatisticsCharts = ({
       modellingFramework: data.modellingFramework,
       single: data.timeHorizons.get("single") || 0,
       multi: data.timeHorizons.get("multi") || 0,
+      na: data.timeHorizons.get("n/a") || 0,
     }));
 
   const sizeChartData = useMemo(() => {
@@ -235,7 +244,7 @@ const BenchmarkStatisticsCharts = ({
             xAxisLabel="Modelling Framework"
             yAxisLabel=""
             categoryKey="modellingFramework"
-            colors={{ single: "#004B69", multi: "#6B9080" }}
+            colors={{ single: "#004B69", multi: "#6B9080", na: "#A0A0A0" }}
             rotateXAxisLabels={true}
             title={timeHorizonTitleWithTooltip}
             showXaxisLabel={false}

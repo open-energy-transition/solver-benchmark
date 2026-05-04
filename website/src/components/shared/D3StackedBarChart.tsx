@@ -89,7 +89,7 @@ const D3StackedBarChart = ({
           .style("opacity", 1)
           .html(
             `<strong>${xAxisLabel}:</strong> ${d.data[categoryKey]}<br>
-             <strong>Category:</strong> ${key}<br>
+             <strong>Category:</strong> ${getSolverLabel(key)}<br>
              <strong>Value:</strong> ${
                xAxisTooltipFormat ? xAxisTooltipFormat(value) : value
              }`,
