@@ -87,12 +87,47 @@ const BenchmarkModelCasesTable = () => {
 
   return (
     <div className="my-4 mt-8 rounded-xl">
-      <TanStackTable
-        data={benchmarkModelCasesData}
-        headerClassName="text-center text-navy p-2 cursor-pointer"
-        columns={columns as any}
-        showPagination={false}
-      />
+      {/* Desktop / tablet: original table */}
+      <div className="hidden md:block">
+        <TanStackTable
+          data={benchmarkModelCasesData}
+          headerClassName="text-center text-navy p-2 cursor-pointer"
+          columns={columns as any}
+          showPagination={false}
+        />
+      </div>
+
+      {/* Mobile: show a card per framework to avoid horizontal scroll */}
+      <div className="md:hidden space-y-4">
+        {availableModellingFrameworks.map((framework) => {
+          const key = framework.replaceAll(".", "_");
+          return (
+            <div key={framework} className="bg-white rounded-xl p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="font-bold tag-line-sm truncate">
+                  {framework}
+                </div>
+              </div>
+
+              <div className="mt-3 space-y-2">
+                {benchmarkModelCasesData.map((row) => (
+                  <div
+                    key={row.header}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="tag-line-xs text-navy text-opacity-60">
+                      {row.header}
+                    </div>
+                    <div className="ml-2">
+                      {renderModelData((row as any)[key])}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
