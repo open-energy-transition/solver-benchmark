@@ -290,49 +290,132 @@ const InstancesTableResult = ({
         realistic.
       </div>
       <div className="rounded-xl max-h-[280px] overflow-auto">
-        <table className="table-auto bg-white w-full">
-          <thead className="sticky top-0 bg-white">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="text-start text-navy py-4 px-6 cursor-pointer"
-                  >
-                    <div
-                      className="flex gap-2 items-center tag-line-xs font-extrabold"
-                      onClick={header.column.getToggleSortingHandler()}
+        {/* Desktop / Tablet: keep existing table */}
+        <div className="hidden sm:block">
+          <table className="table-auto bg-white w-full">
+            <thead className="sticky top-0 bg-white">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="text-start text-navy py-4 px-6 cursor-pointer"
+                    >
+                      <div
+                        className="flex gap-2 items-center tag-line-xs font-extrabold"
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        <SortIcon
+                          canSort={header.column.getCanSort()}
+                          sortDirection={header.column.getIsSorted()}
+                        />
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="text-navy text-start py-2 px-6 tag-line-sm"
                     >
                       {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
                       )}
-                      {/* Sort */}
-                      <SortIcon
-                        canSort={header.column.getCanSort()}
-                        sortDirection={header.column.getIsSorted()}
-                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile: render as cards */}
+        <div className="block sm:hidden p-2 space-y-3">
+          {table.getRowModel().rows.map((row) => {
+            const r = row.original as RowData;
+
+            return (
+              <div
+                key={row.id}
+                className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm"
+              >
+                <div className="flex justify-between items-start gap-2">
+                  <div className="text-navy font-extrabold tag-line-sm">
+                    {r.instance}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RealisticTooltip
+                      isRealistic={r.realistic}
+                      motivation={r.realisticMotivation}
+                    />
+                    <Link
+                      href={r.url}
+                      className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-3 py-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Download
+                      <ArrowToRightIcon className="w-3 h-3 rotate-90" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="mt-2 grid grid-cols-2 gap-2 text-navy text-sm">
+                  <div>
+                    <div className="font-semibold">Spatial</div>
+                    <div className="tag-line-sm">{r.spatialResolution}</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Temporal</div>
+                    <div className="tag-line-sm">{r.temporalResolution}</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Variables</div>
+                    <div className="tag-line-sm">
+                      {formatInteger(r.nOfVariables)}
                     </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-[#BFD8C71A] odd:bg-opacity-10">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-navy text-start py-2 px-6 tag-line-sm"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Constraints</div>
+                    <div className="tag-line-sm">
+                      {formatInteger(r.nOfConstraints)}
+                    </div>
+                  </div>
+
+                  {isMILP && (
+                    <>
+                      <div>
+                        <div className="font-semibold">Continuous</div>
+                        <div className="tag-line-sm">
+                          {formatInteger(r.nOfContinuousVariables)}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-semibold">Integer</div>
+                        <div className="tag-line-sm">
+                          {formatInteger(r.nOfIntegerVariables)}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
