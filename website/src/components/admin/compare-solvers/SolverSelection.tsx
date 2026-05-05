@@ -168,11 +168,17 @@ const SolverSelection = () => {
           different timeout values: smaller benchmarks (S and M) were run with a
           timeout of 1h, while larger benchmarks (L) were run with a timeout of
           24h.{" "}
-          <div className="inline-flex gap-1 items-start">
-            Thus, the
-            <CloseIcon className="size-3 mt-1.5" />s in the graph below might
-            appear at 2 different time values. Click on any point in this graph
-            to see details of that benchmark instance.
+          <div className="">
+            Thus, the{" "}
+            <span className="mt-1 relative">
+              <span className="text-lg opacity-0">×</span>
+              <span className="text-lg absolute top-[-5px] left-0">
+                <CloseIcon className="size-3 mt-[9px]" />
+              </span>
+            </span>{" "}
+            s in the graph below might appear at 2 different time values. Click
+            on any point in this graph to see details of that benchmark
+            instance.
           </div>
         </p>
         <p className="mb-6 mt-4 max-w-screen-lg">
