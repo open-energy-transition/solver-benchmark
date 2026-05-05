@@ -629,7 +629,7 @@ const ChartCompare = ({
           font-lato
           left-6
           origin-[0]
-          text-[#8c8c8c]
+          text-[#575757]
           text-xs
           top-3/4
           "
@@ -674,7 +674,7 @@ const ChartCompare = ({
           absolute
           font-lato
           left-1/2
-          text-[#8c8c8c]
+          text-[#575757]
           text-xs
           bottom-0
           w-full
