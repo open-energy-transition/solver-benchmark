@@ -45,6 +45,7 @@ const PageBenchmarkDetail = () => {
       problemClass,
       application,
       modellingFramework,
+      milpFeatures,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
     sectors.split(",").forEach((sector) => {
@@ -53,7 +54,9 @@ const PageBenchmarkDetail = () => {
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.modellingFrameworks.add(modellingFramework);
-    uniqueValues.milpFeatures.add(fullMetaData[key].milpFeatures || "None");
+    milpFeatures.split(",").forEach((feature) => {
+      uniqueValues.milpFeatures.add(feature.trim());
+    });
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
