@@ -29,6 +29,7 @@ interface IBenchmarkDetailFilterSectionProps {
   availableApplications: string[];
   availableProblemSizes: string[];
   availableModellingFrameworks: string[];
+  availableMilpFeatures: string[];
 }
 
 const FilterGroupWithTooltip = ({
@@ -104,6 +105,7 @@ const BenchmarkDetailFilterSection = ({
   availableApplications,
   availableProblemSizes,
   availableModellingFrameworks,
+  availableMilpFeatures,
 }: IBenchmarkDetailFilterSectionProps) => {
   const router = useRouter();
 
@@ -164,6 +166,7 @@ const BenchmarkDetailFilterSection = ({
       application: availableApplications,
       modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
+      milpFeatures: availableMilpFeatures,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
     }[category] as string[];
 
@@ -184,6 +187,7 @@ const BenchmarkDetailFilterSection = ({
     application: availableApplications.length,
     problemSize: availableProblemSizes.length,
     modellingFramework: availableModellingFrameworks.length,
+    milpFeatures: availableMilpFeatures.length,
     realistic: [RealisticOption.Realistic, RealisticOption.Other].length,
   };
 
@@ -263,6 +267,7 @@ const BenchmarkDetailFilterSection = ({
         modellingFramework: availableModellingFrameworks,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
+        milpFeatures: availableMilpFeatures,
       });
     }
     setIsInit(true);
@@ -308,6 +313,7 @@ const BenchmarkDetailFilterSection = ({
         modellingFramework: availableModellingFrameworks,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
+        milpFeatures: availableMilpFeatures,
       };
 
       setLocalFilters(resetFilters);
@@ -341,6 +347,7 @@ const BenchmarkDetailFilterSection = ({
       modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
+      milpFeatures: availableMilpFeatures,
     };
 
     return Object.entries(allAvailableFilters).some(
@@ -566,6 +573,29 @@ const BenchmarkDetailFilterSection = ({
               handleCheckboxChange({ category: "sectors", value, only: true })
             }
             onSelectAll={() => handleSelectAll({ category: "sectors" })}
+            className="w-full"
+            itemClassName=""
+            gridClassName="!flex flex-wrap gap-0"
+            uppercase={false}
+          />
+          {/* Milp Features */}
+          <FilterGroupWithTooltip
+            title="MILP Features"
+            tooltipText="Indicates the presence of specific features that are common in MILP energy models, such as binary variables for on/off decisions, or integer variables for investment choices."
+            icon={<BrightIcon className="w-5 h-5" />}
+            items={availableMilpFeatures}
+            selectedItems={localFilters?.milpFeatures}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "milpFeatures", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "milpFeatures",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "milpFeatures" })}
             className="w-full"
             itemClassName=""
             gridClassName="!flex flex-wrap gap-0"
