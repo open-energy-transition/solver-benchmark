@@ -336,6 +336,10 @@ color_map = {
     "highs-hipo": "#F759B8",  # magenta
     "highs-ipm": "#6D712E",  # green-brown
     "scip": "#3B82F6",  # blue
+    "cplex": "#F9CD5A",  # yellow
+    "xpress": "#7C3AED",  # purple
+    "knitro": "#3B82F6",  # blue
+    "mosek": "#FE7D00",  # orange
 }
 
 
@@ -518,6 +522,7 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
 
     Expects df to have columns: Benchmark, Solver, Runtime (s), Status, Timeout
     """
+    df = df.copy()
 
     # --- Solver display names (presentation only) ---
     solver_label_map = {
