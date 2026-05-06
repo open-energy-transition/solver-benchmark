@@ -30,7 +30,7 @@ export default {
         "columnbia-blue": "#BFDBF7",
         "dark-green": "#4C5C51",
         "dark-grey": "#4F4E4E",
-        "green-pop": "#6B9080",
+        "green-pop": "#465D56",
         grey: "#E4E2DF",
         gunmetal: "#022B3A",
         lavender: "#E1E5F2",
