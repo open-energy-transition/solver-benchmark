@@ -1,0 +1,13 @@
+name: benchmark-highs-2022
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.9
+- pip
+- psutil>=5.9
+- requests>=2.32
+- pip:
+  - highspy==1.5.0.dev0
+  # Use branch until old solver support is merged and released
+  - git+https://github.com/PyPSA/linopy@sid/old-solver-support
