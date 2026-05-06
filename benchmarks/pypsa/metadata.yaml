@@ -1262,6 +1262,96 @@ benchmarks:
       Num. constraints: 677039
       Num. variables: 321282
       Num. nonzeros: 1603304
+    - Name: 2-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-2-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 4-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-4-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 4 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 6-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-6-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 6 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 8-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-8-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 8 nodes
+      Realistic: false
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 10-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-10-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 10 nodes
+      Realistic: true
+      Num. constraints: 23328888
+      Num. variables: 10994701
+      Num. nonzeros: 54427819
+    - Name: 12-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-12-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 12 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 14-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-14-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 14 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 16-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-16-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 16 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 18-1h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-18-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 18 nodes
+      Realistic: true
+      Num. constraints:
+      Num. variables:
+      Num. nonzeros:
+    - Name: 20-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-20-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 20 nodes
+      Realistic: true
+      Num. constraints: 45553984
+      Num. variables: 21472540
+      Num. nonzeros: 106717276
   pypsa-de-sec-trex_copt:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with cost-optimal transmission expansion.
     Modelling framework: PyPSA

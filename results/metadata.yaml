@@ -4098,49 +4098,6 @@ benchmarks:
       Num. constraints: 766338
       Num. variables: 360533
       Num. nonzeros: 1596484
-  pypsa-de-sec:
-    Short description: Sector-coupled PyPSA-Eur runs for Germany without transmission
-      expansion.
-    Modelling framework: PyPSA
-    Model name: PyPSA-Eur
-    Version:
-    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; Fabrizio Finozzi,
-      Open Energy Transition
-    License: CC BY 4.0
-    Problem class: LP
-    Application: Infrastructure & Capacity Expansion
-    Sectoral focus: Sector-coupled
-    Sectors: Electric, Heating, Transport, Industry, Hydrogen, Biomass
-    Time horizon: Single period (2050)
-    MILP features: None
-    Sizes:
-    - Name: 10-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-10-168h.mps.gz
-      Temporal resolution: 168 hours
-      Spatial resolution: 10 nodes
-      Realistic: false
-      Num. constraints: 142147
-      Num. variables: 67416
-      Num. nonzeros: 332009
-    - Name: 20-12h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-20-12h.mps.gz
-      Temporal resolution: 12 hours
-      Spatial resolution: 20 nodes
-      Realistic: false
-      Num. constraints: 3797984
-      Num. variables: 1791010
-      Num. nonzeros: 8932707
-    - Name: 50-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-50-168h.mps.gz
-      Temporal resolution: 168 hours
-      Spatial resolution: 50 nodes
-      Realistic: false
-      Num. constraints: 677039
-      Num. variables: 321282
-      Num. nonzeros: 1603304
   pypsa-de-sec-trex_copt:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with cost-optimal
       transmission expansion.
