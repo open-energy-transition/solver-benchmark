@@ -31,6 +31,7 @@ const chartMargin = { top: 40, right: 100, bottom: 100, left: 60 };
 const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(() => {
     const others = availableSolvers.filter((s) => s !== baseSolver);
     return new Set([baseSolver, ...(others.length > 0 ? [others[0]] : [])]);
@@ -74,8 +75,29 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     });
   };
 
+  // Observe container width changes to make the chart responsive
   useEffect(() => {
-    const width = containerRef.current?.clientWidth || 800;
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    // set initial width
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const width = containerWidth || containerRef.current?.clientWidth || 800;
 
     const margin = chartMargin;
     const height = 600 + (margin.bottom - 100);

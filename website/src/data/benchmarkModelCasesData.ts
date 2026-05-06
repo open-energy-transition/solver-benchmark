@@ -211,7 +211,7 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
     PowerModels: "",
     PyPSA: "",
     Sienna: "",
-    SpineOpt: "false",
+    SpineOpt: "",
     SWITCH: "",
     TEMOA: "",
     TIMES: "",

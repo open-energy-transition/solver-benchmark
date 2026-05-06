@@ -29,6 +29,7 @@ const BenchmarkSetContent = () => {
     applications: new Set<string>(),
     models: new Set<string>(),
     modellingFrameworks: new Set<string>(),
+    milpFeatures: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
@@ -46,6 +47,7 @@ const BenchmarkSetContent = () => {
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.modellingFrameworks.add(modellingFramework);
+    uniqueValues.milpFeatures.add(fullMetaData[key].milpFeatures || "None");
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -60,6 +62,7 @@ const BenchmarkSetContent = () => {
   const availableModellingFrameworks = Array.from(
     uniqueValues.modellingFrameworks,
   );
+  const availableMilpFeatures = Array.from(uniqueValues.milpFeatures);
 
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectoralFocus: availableSectoralFocus,
@@ -69,6 +72,7 @@ const BenchmarkSetContent = () => {
     problemSize: availableProblemSizes,
     modellingFramework: availableModellingFrameworks,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
+    milpFeatures: availableMilpFeatures,
   });
 
   const filteredMetaData = useMemo(() => {
@@ -81,6 +85,7 @@ const BenchmarkSetContent = () => {
         problemSize,
         realistic,
         modellingFramework,
+        milpFeatures,
       } = localFilters;
 
       const isSectoralFocusMatch =
@@ -123,7 +128,9 @@ const BenchmarkSetContent = () => {
             }
             return false;
           }));
-
+      const isMilpFeaturesMatch =
+        milpFeatures.length === 0 ||
+        (value.milpFeatures && milpFeatures.includes(value.milpFeatures));
       return (
         isSectoralFocusMatch &&
         isSectorsMatch &&
@@ -131,7 +138,8 @@ const BenchmarkSetContent = () => {
         isApplicationMatch &&
         isProblemSizeMatch &&
         isRealisticMatch &&
-        isModellingFrameworkMatch
+        isModellingFrameworkMatch &&
+        isMilpFeaturesMatch
       );
     });
     return Object.fromEntries(filteredEntries);
@@ -174,6 +182,7 @@ const BenchmarkSetContent = () => {
               availableApplications={availableApplications}
               availableProblemSizes={availableProblemSizes}
               availableModellingFrameworks={availableModellingFrameworks}
+              availableMilpFeatures={availableMilpFeatures}
             />
           </div>
           <div className="w-full overflow-auto">

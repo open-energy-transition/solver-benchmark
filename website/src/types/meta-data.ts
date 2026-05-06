@@ -5,6 +5,7 @@ type Size = {
   numConstraints: number;
   numVariables: number | null;
   numContinuousVariables: number | null;
+  numNonzeros: number | null;
   numIntegerVariables: number | null;
   size: string;
   url: string;

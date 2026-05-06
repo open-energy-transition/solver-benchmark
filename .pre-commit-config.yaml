@@ -3,6 +3,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-yaml
+        exclude: benchmarks/metadata_schema.yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
         exclude: ^benchmarks/pypsa/solve_network\.patch$
