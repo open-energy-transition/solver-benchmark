@@ -117,7 +117,6 @@ const PageBenchmarkDetail = () => {
         problemSize.length === 0 ||
         (value.sizes &&
           value.sizes.some((size) => problemSize.includes(size.size)));
-
       const isRealisticMatch =
         realistic.length === 0 ||
         (value.sizes &&
@@ -136,10 +135,15 @@ const PageBenchmarkDetail = () => {
             }
             return false;
           }));
-
       const isMilpFeaturesMatch =
         milpFeatures.length === 0 ||
-        (value.milpFeatures && milpFeatures.includes(value.milpFeatures));
+        (value.milpFeatures &&
+          milpFeatures.some((selectedFeature) => {
+            const valueFeatures = value.milpFeatures
+              .split(",")
+              .map((f) => f.trim());
+            return valueFeatures.includes(selectedFeature);
+          }));
 
       return (
         isSectoralFocusMatch &&

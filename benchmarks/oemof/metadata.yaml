@@ -134,7 +134,8 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation, Binary investment decisions, Unit commitment, Piecewise efficiency
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment,
+      Piecewise efficiency
     Sizes:
     - Name: 1-8760ts
       Size: S
