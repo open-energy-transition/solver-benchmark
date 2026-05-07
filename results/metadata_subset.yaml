@@ -115,7 +115,7 @@ benchmarks:
     Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
-    MILP features: Binary investment decisions; Piecewise efficiency
+    MILP features: Binary investment decisions, Piecewise efficiency
     Sizes:
     - Name: 1-168ts
       Size: S
@@ -358,7 +358,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (4 years)
     MILP features: None
     Sizes:

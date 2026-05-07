@@ -9,7 +9,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (13 periods)
     MILP features: None
     Sizes:
@@ -33,7 +33,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (13 periods)
     MILP features: None
     Sizes:
@@ -249,7 +249,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry, Agriculture
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
@@ -281,7 +281,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry, Agriculture
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -304,7 +304,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Other
+    Sectors: Supply, Electric, Transport, Industry, Other
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -328,7 +328,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Other
+    Sectors: Supply, Electric, Transport, Industry, Other
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -352,7 +352,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Sectors: Supply, Electric, Transport, Industry, Residential, Commercial
     Time horizon: Multi-stage (8 stages)
     MILP features: None
     Sizes:
@@ -402,7 +402,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion; Operational
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Sectors: Supply, Electric, Transport, Industry, Residential, Commercial
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
