@@ -101,6 +101,7 @@ const BenchmarkModelInsightsTable = () => {
                     style={{
                       lineHeight: "1.5",
                     }}
+                    aira-label={`Navigate to benchmark detail page for ${e} model`}
                   >
                     {e}
                   </Link>

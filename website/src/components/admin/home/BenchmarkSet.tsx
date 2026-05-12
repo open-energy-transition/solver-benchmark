@@ -71,18 +71,20 @@ const BenchmarkSet = () => {
     <div className="pl-1 pb-1 pr-3 bg-[#F4F6FA] rounded-xl">
       <div className="lg:flex items-center justify-between gap-2 py-4 px-2 md:px-0 md:ml-5 md:mr-7">
         <div className="text-navy">
-          <h5>Benchmark Set</h5>
+          <h1 className="h5">Benchmark Set</h1>
         </div>
         <div className="grid sm:flex justify-between items-center gap-2">
           <Link
             className="tag-line-xs w-max text-[#50634e] border border-green-pop bg-white px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer hover:bg-green-pop hover:text-white transition-colors"
             href={PATH_DASHBOARD.benchmarkSet.list}
+            aria-label={`Navigate to benchmark set list`}
           >
             Benchmark Set
           </Link>
           <Link
             className="tag-line-xs w-max text-white bg-green-pop px-3 py-2 rounded-lg flex gap-1 items-center cursor-pointer"
             href={PATH_DASHBOARD.featureDistribution}
+            aria-label={`Navigate to feature distribution page`}
           >
             More details
             <ArrowWhiteIcon

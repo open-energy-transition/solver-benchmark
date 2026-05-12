@@ -324,6 +324,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               "{name}",
               info.row.original.name,
             )}
+            aria-label="bench-mark-link"
           >
             <InfoPopup
               disabled={((info.getValue() as string) || "").length <= 30}

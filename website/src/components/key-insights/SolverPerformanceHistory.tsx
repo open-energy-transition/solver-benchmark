@@ -191,7 +191,11 @@ const SolverPerformanceHistory = () => {
         <p>
           More detailed statistics regarding performance evolution of solvers
           can be seen in our{" "}
-          <Link className="font-bold" href={PATH_DASHBOARD.performanceHistory}>
+          <Link
+            className="font-bold"
+            href={PATH_DASHBOARD.performanceHistory}
+            aria-label="Navigate to solver performance history dashboard"
+          >
             Performance History
           </Link>{" "}
           dashboard, which also allows calculating performance statistics on any

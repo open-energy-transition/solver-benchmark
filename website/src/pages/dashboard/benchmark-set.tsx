@@ -195,7 +195,7 @@ const PageBenchmarkDetail = () => {
               </AdminHeader>
               <div className="md:flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h5>Benchmark Set</h5>
+                  <h1 className="h5">Benchmark Set</h1>
                   <p className="mb-6 mt-4 max-w-screen-lg">
                     On this page you can see a list of all the benchmark
                     problems on our platform. Click on a benchmark problem name
@@ -205,6 +205,7 @@ const PageBenchmarkDetail = () => {
                 </div>
                 <Link
                   href={PATH_DASHBOARD.featureDistribution}
+                  aria-label={`Navigate to feature distribution page`}
                   className="text-white bg-navy px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap mt-1"
                 >
                   Feature Distribution
@@ -212,7 +213,7 @@ const PageBenchmarkDetail = () => {
               </div>
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
-              <h6 className="py-4 pl-3.5">List of All Benchmarks</h6>
+              <div className="py-4 pl-3.5 h6">List of All Benchmarks</div>
               <div className="block md:flex overflow-hidden rounded-xl gap-5">
                 <div className="bg-[#F4F6FA] md:max-w-[255px] rounded-xl h-max">
                   <BenchmarkDetailFilterSection

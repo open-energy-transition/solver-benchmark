@@ -55,7 +55,7 @@ const LandingPage = () => {
   const Caveats = () => {
     return (
       <div className="pt-1.5 pb-3 px-2 md:px-5" id="caveats">
-        <h6>Caveats</h6>
+        <div className="h6">Caveats</div>
         <div className="text-navy tag-line-xs leading-1.4 block items-center">
           <span>
             Here are some key points to keep in mind when interpreting these
@@ -67,7 +67,11 @@ const LandingPage = () => {
                 resources means there is some error in our runtime measurements,
                 which we estimate as a coefficient of variation of no larger
                 than 6%. More details on this{" "}
-                <Link className="font-bold" href="/methodology">
+                <Link
+                  className="font-bold"
+                  href="/methodology"
+                  aria-label="Navigate to methodology page"
+                >
                   here
                 </Link>
                 .
@@ -88,6 +92,7 @@ const LandingPage = () => {
                 use reported or measured runtime{" "}
                 <Link
                   className="font-bold"
+                  aria-label="Navigate to [RFC] Should we use measured or reported solver runtimes? issue on GitHub"
                   href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
                 >
                   here
@@ -99,6 +104,7 @@ const LandingPage = () => {
                 instances. For more details, please see the{" "}
                 <Link
                   className="font-bold"
+                  aria-label="Navigate to Errors in the v2 benchmark run issue on GitHub"
                   href="https://github.com/open-energy-transition/solver-benchmark/issues/437"
                 >
                   tracking issue
@@ -109,6 +115,7 @@ const LandingPage = () => {
             For more details, please see our{" "}
             <Link
               href="/methodology"
+              aria-label="Navigate to methodology page"
               className="hover:underline underline-offset-4 font-bold"
             >
               Methodology
@@ -179,7 +186,7 @@ const LandingPage = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Main Results</h5>
+              <h1 className="h5">Main Results</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
@@ -247,9 +254,9 @@ const LandingPage = () => {
                           />
                         </svg>
                         <div>
-                          <h6 className="font-semibold mb-1">
+                          <div className="font-semibold mb-1 h6">
                             No benchmark instances match the selected filters.
-                          </h6>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -263,6 +270,7 @@ const LandingPage = () => {
                         <span className="hover:underline underline-offset-4  font-bold">
                           <Link
                             className="font-bold"
+                            arai-label="Navigate to our scripts for running benchmarks on your own problems"
                             href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks"
                           >
                             our scripts
@@ -272,6 +280,7 @@ const LandingPage = () => {
                         solver. See also the section on{" "}
                         <Link
                           href="#caveats"
+                          aria-label="Navigate to caveats section on this page"
                           className="hover:underline underline-offset-4 font-bold"
                         >
                           Caveats

@@ -8,7 +8,11 @@ const BasicVsFeasible = ({}) => {
         only feasible solutions, not necessarily basic, while gurobi and highs
         always return basic solutions by default. See our{" "}
         <span className="hover:underline underline-offset-4 font-bold">
-          <Link className="font-bold" href="/blog/hipo_study">
+          <Link
+            className="font-bold"
+            href="/blog/hipo_study"
+            aria-label="Navigate to blog page"
+          >
             blog post
           </Link>
         </span>{" "}
