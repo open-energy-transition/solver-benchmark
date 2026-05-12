@@ -90,7 +90,6 @@ const ChartCompare = ({
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
   // Solver colors (match other dashboards)
-  console.log("solver2", solver2, solver1);
   const solverColor1 = getColorForSolver(solver1.split("--")[0]);
   const solverColor2 = getColorForSolver(solver2.split("--")[0]);
 
