@@ -26,11 +26,17 @@ type Props = {
 };
 
 function slugify(text: string) {
+  let sanitized = text;
+  let previous: string;
+  do {
+    previous = sanitized;
+    sanitized = sanitized.replace(/<[^>]*>/g, "");
+  } while (sanitized !== previous);
+
   return (
-    text
+    sanitized
       .toLowerCase()
       .trim()
-      .replace(/<[^>]*>/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "section"
   );
@@ -42,7 +48,10 @@ function extractTocAndInjectIds(htmlString: string) {
   const newHtml = htmlString.replace(
     /<h2([^>]*)>(.*?)<\/h2>/gi,
     (match, attrs = "", inner) => {
-      const label = inner.replace(/<[^>]+>/g, "").trim();
+      const label = inner
+        .replace(/<[^>]*>/g, "") // remove complete tags
+        .replace(/<[^>]*/g, "") // remove unclosed tags (e.g. <script without >)
+        .trim();
       const slug = slugify(label);
       const hash = `#${slug}`;
       toc.push({ hash, label });

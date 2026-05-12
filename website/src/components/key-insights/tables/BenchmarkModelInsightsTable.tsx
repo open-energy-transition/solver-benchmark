@@ -184,12 +184,67 @@ const BenchmarkModelInsightsTable = () => {
 
   return (
     <div className="my-4 mt-8 rounded-xl">
-      <TanStackTable
-        data={tableData}
-        headerClassName="text-center text-navy p-2 cursor-pointer"
-        columns={columns as any}
-        showPagination={false}
-      />
+      {/* Desktop / tablet: keep table */}
+      <div className="hidden md:block">
+        <TanStackTable
+          data={tableData}
+          headerClassName="text-center text-navy p-2 cursor-pointer"
+          columns={columns as any}
+          showPagination={false}
+        />
+      </div>
+
+      {/* Mobile: card UI per framework */}
+      <div className="md:hidden space-y-4">
+        {tableData.map((item: any, idx: number) => (
+          <div
+            key={`${item.framework}-${idx}`}
+            className="bg-white rounded-xl p-4 shadow-sm"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <div className="font-bold tag-line-sm truncate">
+                  {item.framework}
+                </div>
+                <div className="tag-line-xs text-navy text-opacity-60 mt-1 truncate">
+                  <span className="font-semibold">{item.problemClass}</span>
+                  <span className="mx-1">—</span>
+                  <span>{item.application}</span>
+                </div>
+              </div>
+
+              <div className="text-right shrink-0">
+                <div className="tag-line-xs font-extrabold">
+                  {item.milpFeatures}
+                </div>
+                <div className="tag-line-xs text-navy text-opacity-60 mt-1">
+                  {String(item.realistic) === "Realistic" ? "Yes" : "No"}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <div className="text-navy text-opacity-60 text-sm">Examples</div>
+              <div className="mt-2 space-y-1">
+                {Array.isArray(item.example) ? (
+                  item.example.map((e: string) => (
+                    <div key={e} className="truncate">
+                      <Link
+                        href={getBenchmarksetLink(e)}
+                        className="font-medium text-navy"
+                      >
+                        {e}
+                      </Link>
+                    </div>
+                  ))
+                ) : (
+                  <div className="font-medium">{String(item.example)}</div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

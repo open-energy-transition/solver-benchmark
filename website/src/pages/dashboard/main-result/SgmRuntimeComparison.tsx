@@ -83,6 +83,7 @@ const SgmRuntimeComparison = ({
         tooltipFormat={tooltipFormat}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
+        directionalIndicator="lower"
         useLogScale={true}
       />
     </div>
