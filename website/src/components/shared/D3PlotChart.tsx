@@ -294,7 +294,7 @@ const D3PlotChart = ({
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text(xAxisLabel)
       .attr("class", "text-xs font-lato");
 
@@ -302,7 +302,7 @@ const D3PlotChart = ({
       .append("text")
       .attr("x", -height / 2)
       .attr("y", -50)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text("Peak Memory Usage (MB)")
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")

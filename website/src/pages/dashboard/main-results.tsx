@@ -55,7 +55,7 @@ const LandingPage = () => {
   const Caveats = () => {
     return (
       <div className="pt-1.5 pb-3 px-2 md:px-5" id="caveats">
-        <h6>Caveats</h6>
+        <div className="h6">Caveats</div>
         <div className="text-navy tag-line-xs leading-1.4 block items-center">
           <span>
             Here are some key points to keep in mind when interpreting these
@@ -179,7 +179,7 @@ const LandingPage = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Main Results</h5>
+              <h1 className="h5">Main Results</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
@@ -247,9 +247,9 @@ const LandingPage = () => {
                           />
                         </svg>
                         <div>
-                          <h6 className="font-semibold mb-1">
+                          <div className="font-semibold mb-1 h6">
                             No benchmark instances match the selected filters.
-                          </h6>
+                          </div>
                         </div>
                       </div>
                     )}
