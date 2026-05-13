@@ -1956,7 +1956,7 @@ benchmarks:
       Num. integer variables: 39273
     - Name: 2-3h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc-2-3h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-3h.mps.gz
       Temporal resolution: 3 hours
       Spatial resolution: 2 nodes
       Realistic: false
@@ -1968,7 +1968,7 @@ benchmarks:
       Skip because: TO
     - Name: 2-5h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc-2-5h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-5h.mps.gz
       Temporal resolution: 5 hours
       Spatial resolution: 2 nodes
       Realistic: false
@@ -1979,7 +1979,7 @@ benchmarks:
       Num. integer variables: 42048
     - Name: 2-8h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc-2-8h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-8h.mps.gz
       Temporal resolution: 8 hours
       Spatial resolution: 2 nodes
       Realistic: false
@@ -1990,7 +1990,7 @@ benchmarks:
       Num. integer variables: 26280
     - Name: 2-12h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc-2-12h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-12h.mps.gz
       Temporal resolution: 12 hours
       Spatial resolution: 2 nodes
       Realistic: false
@@ -2001,7 +2001,7 @@ benchmarks:
       Num. integer variables: 17520
     - Name: 2-36h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc-2-36h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-36h.mps.gz
       Temporal resolution: 36 hours
       Spatial resolution: 2 nodes
       Realistic: false
@@ -2012,7 +2012,7 @@ benchmarks:
       Num. integer variables: 5856
     - Name: 2-84h
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/tests/pypsa-de-milp-scaling/pypsa-de-elec-uc-2-84h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-84h.mps.gz
       Temporal resolution: 84 hours
       Spatial resolution: 2 nodes
       Realistic: false
