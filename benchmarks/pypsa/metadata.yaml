@@ -409,6 +409,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 51869560
       Num. variables: 26044544
+      Num. nonzeros: 120588241
       Num. continuous variables: 20972504
       Num. integer variables: 5072040
     - Name: 100-3h
@@ -420,6 +421,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 17290920
       Num. variables: 8682224
+      Num. nonzeros: 40226481
       Num. continuous variables: 6991544
       Num. integer variables: 1690680
     - Name: 100-24h
@@ -430,6 +432,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2162765
       Num. variables: 1086209
+      Num. nonzeros: 5063992
       Num. continuous variables: 874874
       Num. integer variables: 211335
     - Name: 100-168h
@@ -440,6 +443,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 315413
       Num. variables: 158633
+      Num. nonzeros: 732787
       Num. continuous variables: 127946
       Num. integer variables: 30687
   pypsa-eur-elec-trex_vopt-uc:
@@ -465,6 +469,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 28602269
       Num. variables: 14419506
+      Num. nonzeros: 67396325
       Num. continuous variables: 11449866
       Num. integer variables: 2969640
     - Name: 50-3h
@@ -476,6 +481,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9534669
       Num. variables: 4806866
+      Num. nonzeros: 22479908
       Num. continuous variables: 3816986
       Num. integer variables: 989880
     - Name: 50-24h
@@ -486,6 +492,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1192594
       Num. variables: 601336
+      Num. nonzeros: 2827078
       Num. continuous variables: 477601
       Num. integer variables: 123735
     - Name: 50-168h
@@ -496,6 +503,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 173914
       Num. variables: 87784
+      Num. nonzeros: 408597
       Num. continuous variables: 69817
       Num. integer variables: 17967
     - Name: 100-1h
@@ -507,6 +515,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 51869560
       Num. variables: 26044544
+      Num. nonzeros: 120588241
       Num. continuous variables: 20972504
       Num. integer variables: 5072040
     - Name: 100-3h
@@ -518,6 +527,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 17290920
       Num. variables: 8682224
+      Num. nonzeros: 40226481
       Num. continuous variables: 6991544
       Num. integer variables: 1690680
     - Name: 100-24h
@@ -528,6 +538,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2162765
       Num. variables: 1086209
+      Num. nonzeros: 5063992
       Num. continuous variables: 874874
       Num. integer variables: 211335
     - Name: 100-168h
@@ -538,6 +549,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 315413
       Num. variables: 158633
+      Num. nonzeros: 732787
       Num. continuous variables: 127946
       Num. integer variables: 30687
   pypsa-eur-elec-trex_copt-uc:
@@ -563,6 +575,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 28602597
       Num. variables: 14419670
+      Num. nonzeros: 69972093
       Num. continuous variables: 11450030
       Num. integer variables: 2969640
     - Name: 50-3h
@@ -574,6 +587,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9534997
       Num. variables: 4807030
+      Num. nonzeros: 23338716
       Num. continuous variables: 3817150
       Num. integer variables: 989880
     - Name: 50-24h
@@ -584,6 +598,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1192922
       Num. variables: 601500
+      Num. nonzeros: 2934716
       Num. continuous variables: 477765
       Num. integer variables: 123735
     - Name: 50-168h
@@ -594,6 +609,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 174242
       Num. variables: 87948
+      Num. nonzeros: 424507
       Num. continuous variables: 69981
       Num. integer variables: 17967
     - Name: 100-1h
@@ -605,6 +621,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 51870114
       Num. variables: 26044821
+      Num. nonzeros: 125117715
       Num. continuous variables: 20972781
       Num. integer variables: 5072040
     - Name: 100-3h
@@ -616,6 +633,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 17291474
       Num. variables: 8682501
+      Num. nonzeros: 41736675
       Num. continuous variables: 6991821
       Num. integer variables: 1690680
     - Name: 100-24h
@@ -626,6 +644,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2163319
       Num. variables: 1086486
+      Num. nonzeros: 5253251
       Num. continuous variables: 875151
       Num. integer variables: 211335
     - Name: 100-168h
@@ -636,6 +655,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 315967
       Num. variables: 158910
+      Num. nonzeros: 760742
       Num. continuous variables: 128223
       Num. integer variables: 30687
   pypsa-eur-elec-uc-dfp:
@@ -661,6 +681,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 28602269
       Num. variables: 14419506
+      Num. nonzeros: 67396325
       Num. continuous variables: 11449866
       Num. integer variables: 2969640
     - Name: 50-3h
@@ -672,6 +693,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9534669
       Num. variables: 4806866
+      Num. nonzeros: 22479908
       Num. continuous variables: 3816986
       Num. integer variables: 989880
     - Name: 50-24h
@@ -682,6 +704,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1192594
       Num. variables: 601336
+      Num. nonzeros: 2827078
       Num. continuous variables: 477601
       Num. integer variables: 123735
     - Name: 50-168h
@@ -692,6 +715,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 173914
       Num. variables: 87784
+      Num. nonzeros: 408597
       Num. continuous variables: 69817
       Num. integer variables: 17967
     - Name: 100-1h
@@ -703,6 +727,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 51869560
       Num. variables: 26044544
+      Num. nonzeros: 120588241
       Num. continuous variables: 20972504
       Num. integer variables: 5072040
     - Name: 100-3h
@@ -714,6 +739,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 17290920
       Num. variables: 8682224
+      Num. nonzeros: 40226481
       Num. continuous variables: 6991544
       Num. integer variables: 1690680
     - Name: 100-24h
@@ -724,6 +750,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2162765
       Num. variables: 1086209
+      Num. nonzeros: 5063992
       Num. continuous variables: 874874
       Num. integer variables: 211335
     - Name: 100-168h
@@ -734,6 +761,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 315413
       Num. variables: 158633
+      Num. nonzeros: 732787
       Num. continuous variables: 127946
       Num. integer variables: 30687
   pypsa-eur-elec-trex_vopt-uc-dfp:
@@ -759,6 +787,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 28602597
       Num. variables: 14419670
+      Num. nonzeros: 69972093
       Num. continuous variables: 11450030
       Num. integer variables: 2969640
     - Name: 50-3h
@@ -770,6 +799,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9534997
       Num. variables: 4807030
+      Num. nonzeros: 23338716
       Num. continuous variables: 3817150
       Num. integer variables: 989880
     - Name: 50-24h
@@ -780,6 +810,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1192922
       Num. variables: 601500
+      Num. nonzeros: 2934716
       Num. continuous variables: 477765
       Num. integer variables: 123735
     - Name: 50-168h
@@ -790,6 +821,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 174242
       Num. variables: 87948
+      Num. nonzeros: 424507
       Num. continuous variables: 69981
       Num. integer variables: 17967
     - Name: 100-1h
@@ -801,6 +833,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 51870114
       Num. variables: 26044821
+      Num. nonzeros: 125117715
       Num. continuous variables: 20972781
       Num. integer variables: 5072040
     - Name: 100-3h
@@ -812,6 +845,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 17291474
       Num. variables: 8682501
+      Num. nonzeros: 41736675
       Num. continuous variables: 6991821
       Num. integer variables: 1690680
     - Name: 100-24h
@@ -822,6 +856,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2163319
       Num. variables: 1086486
+      Num. nonzeros: 5253251
       Num. continuous variables: 875151
       Num. integer variables: 211335
     - Name: 100-168h
@@ -832,6 +867,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 315967
       Num. variables: 158910
+      Num. nonzeros: 760742
       Num. continuous variables: 128223
       Num. integer variables: 30687
   pypsa-eur-elec-trex_copt-uc-dfp:
@@ -857,6 +893,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 28602597
       Num. variables: 14419670
+      Num. nonzeros: 69972093
       Num. continuous variables: 11450030
       Num. integer variables: 2969640
     - Name: 50-3h
@@ -868,6 +905,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9534997
       Num. variables: 4807030
+      Num. nonzeros: 23338716
       Num. continuous variables: 3817150
       Num. integer variables: 989880
     - Name: 50-24h
@@ -878,6 +916,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1192922
       Num. variables: 601500
+      Num. nonzeros: 2934716
       Num. continuous variables: 477765
       Num. integer variables: 123735
     - Name: 50-168h
@@ -888,6 +927,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 174242
       Num. variables: 87948
+      Num. nonzeros: 424507
       Num. continuous variables: 69981
       Num. integer variables: 17967
     - Name: 100-1h
@@ -899,6 +939,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 51870114
       Num. variables: 26044821
+      Num. nonzeros: 125117715
       Num. continuous variables: 20972781
       Num. integer variables: 5072040
     - Name: 100-3h
@@ -910,6 +951,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 17291474
       Num. variables: 8682501
+      Num. nonzeros: 41736675
       Num. continuous variables: 6991821
       Num. integer variables: 1690680
     - Name: 100-24h
@@ -920,6 +962,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 2163319
       Num. variables: 1086486
+      Num. nonzeros: 5253251
       Num. continuous variables: 875151
       Num. integer variables: 211335
     - Name: 100-168h
@@ -1765,6 +1808,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 677311
       Num. variables: 321418
+      Num. nonzeros: 1616084
   pypsa-de-elec-uc:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050) without transmission expansion and including unit commitment.
     Modelling framework: PyPSA
@@ -1788,6 +1832,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 6754110
       Num. variables: 3529983
+      Num. nonzeros: 16394847
       Num. continuous variables: 2531343
       Num. integer variables: 998640
     - Name: 10-3h
@@ -1799,6 +1844,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 2251470
       Num. variables: 1176760
+      Num. nonzeros: 5467835
       Num. continuous variables: 843880
       Num. integer variables: 332880
     - Name: 10-24h
@@ -1809,6 +1855,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 281565
       Num. variables: 147193
+      Num. nonzeros: 686752
       Num. continuous variables: 105583
       Num. integer variables: 41610
     - Name: 10-168h
@@ -1819,6 +1866,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 41013
       Num. variables: 21458
+      Num. nonzeros: 99178
       Num. continuous variables: 15416
       Num. integer variables: 6042
     - Name: 20-1h
@@ -1830,6 +1878,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11694859
       Num. variables: 6122815
+      Num. nonzeros: 27714822
       Num. continuous variables: 4467175
       Num. integer variables: 1655640
       Skip because: TO
@@ -1842,6 +1891,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3898459
       Num. variables: 2041117
+      Num. nonzeros: 9244348
       Num. continuous variables: 1489237
       Num. integer variables: 551880
     - Name: 20-24h
@@ -1852,6 +1902,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 487534
       Num. variables: 255325
+      Num. nonzeros: 1162574
       Num. continuous variables: 186340
       Num. integer variables: 68985
     - Name: 20-168h
@@ -1862,6 +1913,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 71014
       Num. variables: 37238
+      Num. nonzeros: 168132
       Num. continuous variables: 27221
       Num. integer variables: 10017
     - Name: 50-1h
@@ -1873,6 +1925,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 25781277
       Num. variables: 13516004
+      Num. nonzeros: 60976098
       Num. continuous variables: 9915644
       Num. integer variables: 3600360
       Skip because: TO
@@ -1885,6 +1938,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 8594157
       Num. variables: 4505738
+      Num. nonzeros: 20341458
       Num. continuous variables: 3305618
       Num. integer variables: 1200120
       Skip because: TO
@@ -1896,6 +1950,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1074792
       Num. variables: 563657
+      Num. nonzeros: 2560928
       Num. continuous variables: 413642
       Num. integer variables: 150015
       Skip because: TO
@@ -1907,6 +1962,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 156576
       Num. variables: 82247
+      Num. nonzeros: 370792
       Num. continuous variables: 60464
       Num. integer variables: 21783
     - Name: 100-1h
@@ -1918,6 +1974,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 46683175
       Num. variables: 24544950
+      Num. nonzeros: 109602873
       Num. continuous variables: 18053790
       Num. integer variables: 6491160
       Skip because: TO
@@ -1930,6 +1987,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 15561815
       Num. variables: 8182388
+      Num. nonzeros: 36567903
       Num. continuous variables: 6018668
       Num. integer variables: 2163720
       Skip because: TO
@@ -1941,6 +1999,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1946220
       Num. variables: 1023645
+      Num. nonzeros: 4608334
       Num. continuous variables: 753180
       Num. integer variables: 270465
       Skip because: TO
@@ -1952,6 +2011,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 283572
       Num. variables: 149432
+      Num. nonzeros: 667792
       Num. continuous variables: 110159
       Num. integer variables: 39273
     - Name: 2-3h
@@ -1960,11 +2020,11 @@ benchmarks:
       Temporal resolution: 3 hours
       Spatial resolution: 2 nodes
       Realistic: false
-      Num. constraints:
-      Num. variables:
-      Num. nonzeros:
-      Num. continuous variables:
-      Num. integer variables:
+      Num. constraints: 426361
+      Num. variables: 219025
+      Num. nonzeros: 1053656
+      Num. continuous variables: 157705
+      Num. integer variables: 61320
       Skip because: TO
     - Name: 2-5h
       Size: M
@@ -2044,6 +2104,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 6754110
       Num. variables: 3529983
+      Num. nonzeros: 16394847
       Num. continuous variables: 2531343
       Num. integer variables: 998640
     - Name: 10-3h
@@ -2055,6 +2116,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 2251470
       Num. variables: 1176760
+      Num. nonzeros: 5467835
       Num. continuous variables: 843880
       Num. integer variables: 332880
     - Name: 10-24h
@@ -2065,6 +2127,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 281565
       Num. variables: 147193
+      Num. nonzeros: 686752
       Num. continuous variables: 105583
       Num. integer variables: 41610
     - Name: 10-168h
@@ -2075,6 +2138,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 41013
       Num. variables: 21458
+      Num. nonzeros: 99178
       Num. continuous variables: 15416
       Num. integer variables: 6042
     - Name: 20-1h
@@ -2086,6 +2150,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 11694859
       Num. variables: 6122815
+      Num. nonzeros: 27714822
       Num. continuous variables: 4467175
       Num. integer variables: 1655640
       Skip because: TO
@@ -2098,6 +2163,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 3898459
       Num. variables: 2041117
+      Num. nonzeros: 9244348
       Num. continuous variables: 1489237
       Num. integer variables: 551880
     - Name: 20-24h
@@ -2108,6 +2174,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 487534
       Num. variables: 255325
+      Num. nonzeros: 1162574
       Num. continuous variables: 186340
       Num. integer variables: 68985
     - Name: 20-168h
@@ -2118,6 +2185,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 71014
       Num. variables: 37238
+      Num. nonzeros: 168132
       Num. continuous variables: 27221
       Num. integer variables: 10017
     - Name: 50-1h
@@ -2129,6 +2197,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 25781277
       Num. variables: 13516004
+      Num. nonzeros: 60976098
       Num. continuous variables: 9915644
       Num. integer variables: 3600360
       Skip because: TO
@@ -2141,6 +2210,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 8594157
       Num. variables: 4505738
+      Num. nonzeros: 20341458
       Num. continuous variables: 3305618
       Num. integer variables: 1200120
       Skip because: TO
@@ -2152,6 +2222,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1074792
       Num. variables: 563657
+      Num. nonzeros: 2560928
       Num. continuous variables: 413642
       Num. integer variables: 150015
     - Name: 50-168h
@@ -2162,6 +2233,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 156576
       Num. variables: 82247
+      Num. nonzeros: 370792
       Num. continuous variables: 60464
       Num. integer variables: 21783
     - Name: 100-1h
@@ -2173,6 +2245,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 46683175
       Num. variables: 24544950
+      Num. nonzeros: 109602873
       Num. continuous variables: 18053790
       Num. integer variables: 6491160
       Skip because: TO
@@ -2185,6 +2258,7 @@ benchmarks:
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 15561815
       Num. variables: 8182388
+      Num. nonzeros: 36567903
       Num. continuous variables: 6018668
       Num. integer variables: 2163720
       Skip because: TO
@@ -2196,6 +2270,7 @@ benchmarks:
       Realistic: false
       Num. constraints: 1946220
       Num. variables: 1023645
+      Num. nonzeros: 4608334
       Num. continuous variables: 753180
       Num. integer variables: 270465
       Skip because: TO
@@ -2207,5 +2282,6 @@ benchmarks:
       Realistic: false
       Num. constraints: 283572
       Num. variables: 149432
+      Num. nonzeros: 667792
       Num. continuous variables: 110159
       Num. integer variables: 39273
