@@ -1,8 +1,6 @@
 # Top-level schema
 benchmarks: map(include('benchmark'), key=str())
 
----
-
 # Benchmark definition
 benchmark:
   Short description: str()
@@ -19,8 +17,6 @@ benchmark:
   MILP features: str()
   Notes: str(required=False)
   Sizes: list(include('size'))
-
----
 
 # Size definition
 size:
