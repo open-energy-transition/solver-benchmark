@@ -9,7 +9,7 @@ import {
 interface SolverEvolutionData {
   year: number;
   version: string;
-  unsolvedCount: number;
+  solvedCount: number;
   speedUp: number;
   sgmRuntime: number;
 }
@@ -27,7 +27,7 @@ const SolverEvolutionSection = ({
   numSolvedBenchMark,
   totalBenchmarks,
   title = "Individual Solver Performance Evolution",
-  description = "The chart below shows the performance evolution for the selected solver. The bars represent the number of unsolved problems in the benchmark set, while the red line shows the SGM runtime speed-up relative to the first version we have data for (higher values indicate better performance).",
+  description = "The chart below shows the performance evolution for the selected solver. The bars represent the number of solved problems in the benchmark set, while the red line shows the SGM runtime speed-up relative to the first version we have data for (higher values indicate better performance).",
 }: ISolverEvolutionSection) => {
   const router = useRouter();
   const [selectedSolver, setSelectedSolver] = useState("");
@@ -75,7 +75,6 @@ const SolverEvolutionSection = ({
           (item) => item.year === year,
         );
         const solvedCount = solvedData?.value || 0;
-        const unsolvedCount = Math.max(0, totalBenchmarks - solvedCount);
 
         // Calculate speed-up relative to first year (higher = better)
         const speedUp = firstYearSgmRuntime / sgmRuntime;
@@ -83,7 +82,7 @@ const SolverEvolutionSection = ({
         solverData.push({
           year,
           version: yearData.version,
-          unsolvedCount,
+          solvedCount,
           speedUp,
           sgmRuntime,
         });
