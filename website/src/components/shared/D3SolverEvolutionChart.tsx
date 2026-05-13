@@ -303,7 +303,7 @@ const D3SolverEvolutionChart = ({
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .attr("font-size", "12px")
       .text("Version");
 
