@@ -71,7 +71,7 @@ const BenchmarkSet = () => {
     <div className="pl-1 pb-1 pr-3 bg-[#F4F6FA] rounded-xl">
       <div className="lg:flex items-center justify-between gap-2 py-4 px-2 md:px-0 md:ml-5 md:mr-7">
         <div className="text-navy">
-          <h5>Benchmark Set</h5>
+          <h1 className="h5">Benchmark Set</h1>
         </div>
         <div className="grid sm:flex justify-between items-center gap-2">
           <Link

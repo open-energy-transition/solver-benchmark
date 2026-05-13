@@ -192,7 +192,7 @@ const PagePerformanceHistory = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Performance History</h5>
+              <h1 className="h5">Performance History</h1>
               <p className="mt-4 max-w-screen-lg">
                 This page tracks the performance of different solvers over time.
                 This can be used to see which solvers are improving, and on what
@@ -217,7 +217,7 @@ const PagePerformanceHistory = () => {
             totalBenchmarks={commonInstances.length}
           />
           <div className="pt-1.5 pb-3 px-5">
-            <h6>Caveats</h6>
+            <div className="h6">Caveats</div>
             <p className="text-navy block items-center mt-2">
               <span>
                 {" "}

@@ -128,9 +128,9 @@ const PageBenchmarkDetail = () => {
             </Link>
             <InfoPopup
               trigger={() => (
-                <h5 className="text-ellipsis overflow-hidden pl-1.5">
+                <h1 className="text-ellipsis overflow-hidden pl-1.5 h5">
                   {benchmarkName}
-                </h5>
+                </h1>
               )}
               position="top center"
               closeOnDocumentClick

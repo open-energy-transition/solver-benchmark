@@ -42,7 +42,7 @@ const PageBenchmarkDetail = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Feature Distribution</h5>
+              <h1 className="h5">Feature Distribution</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 Distribution of Model Features in Benchmark Set
               </p>
