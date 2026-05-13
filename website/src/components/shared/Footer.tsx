@@ -11,7 +11,7 @@ const Footer = () => {
           <span>© 2025</span>
           <Link
             href="https://openenergytransition.org"
-            className="text-red-600 font-semibold"
+            className="text-red-800 font-semibold"
           >
             <span className="underline">Open Energy Transition</span>.
           </Link>
