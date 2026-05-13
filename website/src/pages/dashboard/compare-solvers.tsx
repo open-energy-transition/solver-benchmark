@@ -42,7 +42,7 @@ const PageCompareSolvers = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Compare Solvers</h5>
+              <h1 className="h5">Compare Solvers</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 This page lets you compare any two solvers (including versions)
                 on any subset of the benchmarks. This can be used to find

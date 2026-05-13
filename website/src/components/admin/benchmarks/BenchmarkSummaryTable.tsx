@@ -144,8 +144,12 @@ const BenchmarkSummaryTable = () => {
           <table className="min-w-full  -gray-200">
             <thead>
               <tr className="bg-[#F4F6FA]">
-                <th className=" p-2 text-left tag-line-xs font-extrabold"></th>
-                <th className=" p-2 text-left tag-line-xs font-extrabold"></th>
+                <th className=" p-2 text-left tag-line-xs font-extrabold opacity-0">
+                  label
+                </th>
+                <th className=" p-2 text-left tag-line-xs font-extrabold opacity-0">
+                  title
+                </th>
                 {availableModellingFrameworks.map((framework, frameworkIdx) => (
                   <th
                     key={frameworkIdx}
