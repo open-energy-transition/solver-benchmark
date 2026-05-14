@@ -142,8 +142,6 @@ const BenchmarkModelInsightsTable = () => {
         "pypsa-eur-elec-trex_vopt",
         "pypsa-eur-elec-trex_copt",
         "pypsa-eur-elec-uc",
-        "pypsa-eur-elec-trex_vopt-uc",
-        "pypsa-eur-elec-trex_copt-uc",
         "pypsa-eur-sec",
       ],
     },
