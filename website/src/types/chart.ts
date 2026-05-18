@@ -37,6 +37,9 @@ export interface ID3GroupedBarChart {
   showLineAtY1?: boolean;
   useLogScale?: boolean;
   directionalIndicator?: Direction;
+  yAxisMax?: number;
+  hideLegend?: boolean;
+  hideTitle?: boolean;
   colors:
     | {
         [key: string]: string;

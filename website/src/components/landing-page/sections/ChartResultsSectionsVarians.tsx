@@ -5,7 +5,6 @@ import { calculateSgm } from "@/utils/calculations";
 import { formatDecimal, roundNumber } from "@/utils/number";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
-import { getLatestBenchmarkResult } from "@/utils/results";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 import SgmRuntimeChart from "./SgmRuntimeChart";
 
@@ -25,9 +24,11 @@ export type TableRowType = {
 
 const ChartResultsSectionsVarians = ({
   problemClass = "LP",
+  hideLegend = false,
 }: {
   problemClass?: string;
   title?: string;
+  hideLegend?: boolean;
 }) => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData;
@@ -252,49 +253,36 @@ const ChartResultsSectionsVarians = ({
     );
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
 
-  const rawBenchmarkResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.rawBenchmarkResults;
-    },
-  );
+  // Build grouped chart data: % of problems solved by timeout
+  const uniqueTimeouts = useMemo(() => {
+    return Array.from(
+      new Set(benchmarkLatestResultsAll.map((r) => r.timeout)),
+    ).sort((a, b) => Number(a) - Number(b));
+  }, [benchmarkLatestResultsAll]);
 
-  // Build grouped chart data by variable-size categories (<1M vars / >=1M vars)
   const groupedChartData = useMemo(() => {
     const data: any[] = [];
 
-    const categories = ["Less than 1M variables", "More than 1M variables"];
-
-    categories.forEach((cat) => {
-      const resultsForCat = applySgmModeTo(
-        benchmarkLatestResultsAll.filter((r) => {
-          const sizes = metaData?.[r.benchmark]?.sizes || [];
-          const sizeEntry = sizes.find(
-            (s: any) => String(s.name) === String(r.size),
-          );
-          const numVars = Number(sizeEntry?.numVariables ?? null);
-          if (isNaN(numVars)) {
-            return false;
-          }
-          return cat === "Less than 1M variables"
-            ? numVars < 1e6
-            : numVars >= 1e6;
-        }),
+    uniqueTimeouts.forEach((t) => {
+      const resultsForT = benchmarkLatestResultsAll.filter(
+        (r) => r.timeout === t,
       );
 
-      const entry: any = {
-        variables: cat,
-      };
+      const entry: any = { timeout: t };
 
       solverList.forEach((solver) => {
         const highestVersion = getHighestVersion(solverVersions[solver]);
-        const values = resultsForCat
-          .filter(
-            (r) => r.solver === solver && r.solverVersion === highestVersion,
-          )
-          .map((r) => r.runtime);
-        const sgm = values && values.length ? calculateSgm(values) : undefined;
-        if (sgm !== undefined && Number.isFinite(sgm)) {
-          entry[solver] = sgm;
+        const solverResultsForT = resultsForT.filter(
+          (r) => r.solver === solver && r.solverVersion === highestVersion,
+        );
+        const solvedCount = solverResultsForT.filter(
+          (r) => r.status === "ok",
+        ).length;
+        const totalForSolver = new Set(
+          solverResultsForT.map((r) => `${r.benchmark}-${r.size}`),
+        ).size;
+        if (totalForSolver > 0) {
+          entry[solver] = (solvedCount / totalForSolver) * 100;
         }
       });
 
@@ -302,13 +290,7 @@ const ChartResultsSectionsVarians = ({
     });
 
     return data;
-  }, [
-    solverList,
-    solverVersions,
-    benchmarkLatestResultsAll,
-    applySgmModeTo,
-    metaData,
-  ]);
+  }, [uniqueTimeouts, solverList, solverVersions, benchmarkLatestResultsAll]);
   return (
     <div>
       <SgmRuntimeChart
@@ -318,10 +300,13 @@ const ChartResultsSectionsVarians = ({
             : "Mixed-integer linear programming problems"
         }
         chartData={groupedChartData}
-        categoryKey="variables"
+        categoryKey="timeout"
         sgmData={tableData}
         uniqueBenchmarkCount={uniqueBenchmarkCount}
         uniqueLatestBenchmarkCount={uniqueBenchmarkCount}
+        mode="solved-pct"
+        yAxisMax={100}
+        hideLegend={hideLegend}
       />
     </div>
   );

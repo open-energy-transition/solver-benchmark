@@ -171,7 +171,7 @@ const SolverRuntimeComparison = ({
   );
 
   return (
-    <div className="my-4 mt-8 rounded-xl">
+    <div className="my-4 mt- rounded-xl">
       <D3GroupedBarChart
         title="Solver Runtime Comparison"
         chartData={chartData}

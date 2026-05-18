@@ -37,6 +37,9 @@ const D3GroupedBarChart = ({
   showLineAtY1 = true,
   useLogScale = false,
   directionalIndicator = undefined,
+  yAxisMax = undefined,
+  hideLegend = false,
+  hideTitle = false,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -158,9 +161,12 @@ const D3GroupedBarChart = ({
     // For log scale, extend domain to next power of 10 for cleaner visualization
     // Always start from 0.3 for log scale to bring 1-value line closer to x-axis, 0 for linear scale
     const domainMin = useLogScale ? 0.3 : 0;
-    const domainMax = useLogScale
-      ? Math.pow(10, Math.ceil(Math.log10(maxValue)))
-      : maxValue;
+    const domainMax =
+      yAxisMax !== undefined
+        ? yAxisMax
+        : useLogScale
+          ? Math.pow(10, Math.ceil(Math.log10(maxValue)))
+          : maxValue;
 
     const yScale = useLogScale
       ? d3
@@ -170,7 +176,7 @@ const D3GroupedBarChart = ({
           .clamp(true)
       : d3
           .scaleLinear()
-          .domain([0, maxValue])
+          .domain([0, yAxisMax !== undefined ? yAxisMax : maxValue])
           .nice()
           .range([height - margin.bottom, margin.top]);
 
@@ -182,7 +188,8 @@ const D3GroupedBarChart = ({
       const tickValues = useLogScale
         ? (() => {
             const minLog = Math.floor(Math.log10(minValue));
-            const maxLog = Math.ceil(Math.log10(maxValue));
+            const effectiveMax = yAxisMax !== undefined ? yAxisMax : maxValue;
+            const maxLog = Math.floor(Math.log10(effectiveMax));
             const values = [];
             for (let i = minLog; i <= maxLog; i++) {
               values.push(Math.pow(10, i));
@@ -420,7 +427,8 @@ const D3GroupedBarChart = ({
       ? (() => {
           // Generate tick values at powers of 10 only
           const minLog = Math.floor(Math.log10(minValue));
-          const maxLog = Math.ceil(Math.log10(maxValue));
+          const effectiveMax = yAxisMax !== undefined ? yAxisMax : maxValue;
+          const maxLog = Math.floor(Math.log10(effectiveMax));
           const tickValues = [];
           for (let i = minLog; i <= maxLog; i++) {
             tickValues.push(Math.pow(10, i));
@@ -551,16 +559,23 @@ const D3GroupedBarChart = ({
         </div>
       )}
       <div className="bg-white rounded-2xl p-1">
-        <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
-          {/* Title */}
-          <div className="flex items-center gap-2">
-            <div className="text-sm text-center text-dark-grey ">{title}</div>
+        {(!hideTitle || !hideLegend) && (
+          <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
+            {/* Title */}
+            {!hideTitle && (
+              <div className="flex items-center gap-2">
+                <div className="text-sm text-center text-dark-grey ">
+                  {title}
+                </div>
+              </div>
+            )}
+            {/* Legend */}
+            {!hideLegend &&
+              (customLegend
+                ? customLegend({ chartData, categoryKey })
+                : defaultLegend())}
           </div>
-          {/* Legend */}
-          {customLegend
-            ? customLegend({ chartData, categoryKey })
-            : defaultLegend()}
-        </div>
+        )}
         <div className="">
           <div ref={containerRef} className="overflow-hidden min-h-[300px]">
             <svg ref={svgRef}></svg>

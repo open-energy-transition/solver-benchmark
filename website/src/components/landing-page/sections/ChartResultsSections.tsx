@@ -43,8 +43,10 @@ export type TableRowType = {
 
 const ChartResultsSections = ({
   problemClass = "LP",
+  hideLegend = false,
 }: {
   problemClass?: string;
+  hideLegend?: boolean;
 }) => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData;
@@ -333,6 +335,9 @@ const ChartResultsSections = ({
         sgmData={tableData}
         uniqueBenchmarkCount={uniqueBenchmarkCount}
         uniqueLatestBenchmarkCount={uniqueBenchmarkCount}
+        mode="slowdown"
+        yAxisMax={300}
+        hideLegend={hideLegend}
       />
     </div>
   );

@@ -16,6 +16,9 @@ interface ISolverRuntimeComparison {
   chartData?: StackedBarData[];
   categoryKey?: string;
   title?: string;
+  mode?: "slowdown" | "solved-pct";
+  yAxisMax?: number;
+  hideLegend?: boolean;
 }
 
 const SgmRuntimeChart = ({
@@ -26,6 +29,9 @@ const SgmRuntimeChart = ({
   chartData,
   categoryKey = "size",
   title = "SGM Runtime Comparison",
+  mode = "slowdown",
+  yAxisMax,
+  hideLegend = false,
 }: ISolverRuntimeComparison) => {
   const rawBenchmarkResults = useBenchmarkResults({ useRawResults: true });
 
@@ -55,22 +61,29 @@ const SgmRuntimeChart = ({
   const tooltipFormat = useCallback(
     (d: ID3GroupedBarChartData) => {
       const solver = solverResults.find((s) => s.solver === d.key);
-
+      if (mode === "solved-pct") {
+        return `Solver: ${d.key} v${solver?.version}<br/>
+                Timeout: ${humanizeSeconds(Number(d.category))}<br/>
+                Problems solved: ${Number(d.value).toFixed(1)}%`;
+      }
       return `Solver: ${d.key} v${solver?.version}<br/>
               Average runtime: ${humanizeSeconds(
                 solver?.unnormalizedData.runtime ?? 0,
               )} <br/>
               Benchmarks solved: ${solver?.solvedBenchmarks} <br/>`;
     },
-    [solverResults],
+    [solverResults, mode],
   );
 
   const getAxisLabelTitle = useCallback(
     (d: { key: string; value: unknown }) => {
       const valueNum = typeof d.value === "number" ? d.value : Number(d.value);
+      if (mode === "solved-pct") {
+        return `${isNaN(valueNum) ? "-" : valueNum.toFixed(0)}%`;
+      }
       return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x`;
     },
-    [],
+    [mode],
   );
 
   const getXAxisTickFormat = useCallback(
@@ -83,6 +96,19 @@ const SgmRuntimeChart = ({
           (d) => String(d[categoryKey]) === String(category),
         );
         const uniqueCount = point?.uniqueBenchmarkCount ?? uniqueBenchmarkCount;
+
+        if (mode === "solved-pct") {
+          const lines = [
+            `${uniqueCount ?? totalBenchmarks} benchmark problems`,
+          ];
+          if (isNumericCategory) {
+            lines.push(`Timeout: ${humanizeSeconds(Number(category))}`);
+          } else {
+            lines.push(String(category));
+          }
+          return lines.join("\n");
+        }
+
         const solverKeys = Object.keys(point || {}).filter(
           (k) => k !== categoryKey,
         );
@@ -130,11 +156,12 @@ const SgmRuntimeChart = ({
       uniqueLatestBenchmarkCount,
       timeout,
       totalBenchmarks,
+      mode,
     ],
   );
 
   return (
-    <div className="my-4 mt-8 rounded-xl">
+    <div className="my-4 mt-0 rounded-xl">
       <D3GroupedBarChart
         title={title}
         chartData={computedChartData}
@@ -150,8 +177,13 @@ const SgmRuntimeChart = ({
         tooltipFormat={tooltipFormat}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
-        directionalIndicator="lower"
-        useLogScale={true}
+        directionalIndicator={mode === "solved-pct" ? "higher" : "lower"}
+        useLogScale={mode !== "solved-pct"}
+        normalize={mode !== "solved-pct"}
+        showLineAtY1={mode !== "solved-pct"}
+        yAxisMax={yAxisMax}
+        hideLegend={hideLegend}
+        hideTitle={hideLegend}
       />
     </div>
   );
