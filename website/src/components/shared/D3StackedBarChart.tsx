@@ -133,7 +133,7 @@ const D3StackedBarChart = ({
         .attr("x", width / 2)
         .attr("y", height - 5)
         .attr("text-anchor", "middle")
-        .attr("fill", "#8C8C8C")
+        .attr("fill", "#575757")
         .style("font-size", "12px")
         .text(xAxisLabel);
     }
@@ -141,7 +141,7 @@ const D3StackedBarChart = ({
       .append("text")
       .attr("x", -height / 2)
       .attr("y", margin.left - 60)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
       .style("font-size", "12px")

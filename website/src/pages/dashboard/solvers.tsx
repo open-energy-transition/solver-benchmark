@@ -38,7 +38,7 @@ const PageSolvers = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Solvers</h5>
+              <h1 className="h5">Solvers</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 This page shows details of each solver available on this
                 platform, along with a relative performance plot that lets you

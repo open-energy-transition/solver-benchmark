@@ -123,7 +123,7 @@ export function TanStackTable<T>({
             ${title ? "justify-between" : "justify-end"}
           `}
         >
-          {title && <h6>{title}</h6>}
+          {title && <div className="h6">{title}</div>}
           <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             {enableColumnSelector && (
               <button
