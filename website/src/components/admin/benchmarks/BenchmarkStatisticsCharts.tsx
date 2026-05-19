@@ -23,7 +23,6 @@ const BenchmarkStatisticsCharts = ({
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
-
   const availableMilpFeatures = useMemo(() => {
     return Array.from(
       new Set(Object.keys(metaData).map((key) => metaData[key].milpFeatures)),
@@ -41,8 +40,12 @@ const BenchmarkStatisticsCharts = ({
     const realSizesMap = new Map<string, number>();
     const nOfProblemsMap = new Map<string, number>();
 
-    function updateData(data: Map<string, number>, key: string) {
-      data.set(key, (data.get(key) || 0) + 1);
+    function updateData(
+      data: Map<string, number>,
+      key: string,
+      amount: number = 1,
+    ) {
+      data.set(key, (data.get(key) || 0) + amount);
     }
 
     Object.keys(metaData).forEach((key) => {
@@ -55,7 +58,11 @@ const BenchmarkStatisticsCharts = ({
 
         availableProblemClasses.forEach((problemClass) => {
           if (metaData[key].problemClass === problemClass) {
-            updateData(problemClassesMap, problemClass);
+            updateData(
+              problemClassesMap,
+              problemClass,
+              metaData[key].sizes.length,
+            );
           }
         });
         availableApplications.forEach((application) => {
@@ -80,7 +87,11 @@ const BenchmarkStatisticsCharts = ({
         });
         availabletimeHorizons.forEach((timeHorizon) => {
           if (metaData[key].timeHorizon.toLowerCase().includes(timeHorizon)) {
-            updateData(timeHorizonsMap, timeHorizon as string);
+            updateData(
+              timeHorizonsMap,
+              timeHorizon as string,
+              metaData[key].sizes.length,
+            );
           }
         });
         if (
@@ -118,7 +129,6 @@ const BenchmarkStatisticsCharts = ({
       nOfProblems: nOfProblemsMap,
     };
   });
-
   const problemClassesChartData = summary
     .filter(
       (data) =>
@@ -170,10 +180,9 @@ const BenchmarkStatisticsCharts = ({
       };
     });
   }, [metaData, availableProblemSizes]);
-
   const timeHorizonTitleWithTooltip = (
     <div className="flex items-center gap-1">
-      <span>By Time Horizon</span>
+      <span>By Modeling Framework and Time Horizon</span>
       <InfoPopup
         trigger={() => (
           <span className="flex items-baseline my-auto cursor-pointer">
@@ -232,7 +241,7 @@ const BenchmarkStatisticsCharts = ({
             yAxisLabel=""
             categoryKey="modellingFramework"
             colors={{ LP: "#004B69", MILP: "#6B9080" }}
-            title="By Modelling Framework"
+            title="By Modeling Framework and Problem Class"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
           />
