@@ -60,7 +60,7 @@ const BenchmarkSet = () => {
   const availableApplications = Array.from(uniqueValues.applications);
   const availableModellingFrameworks = Array.from(
     uniqueValues.modellingFrameworks,
-  );
+  ).sort((a, b) => a.localeCompare(b));
   const SIZE_ORDER = ["S", "M", "L"];
   const availableProblemSizes = Array.from(
     new Set(
