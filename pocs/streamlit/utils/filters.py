@@ -1,4 +1,4 @@
-from packaging.version import parse
+from pocs.streamlit.utils.calculations import safe_parse_version
 
 
 def filter_data(df, filtered_metadata):
@@ -24,7 +24,7 @@ def filter_data(df, filtered_metadata):
 
         # Parse solver versions, handling invalid or missing values
         highs_df["Solver Version"] = highs_df["Solver Version"].apply(
-            lambda x: parse(x) if x and x.lower() != "nan" else None
+            lambda x: safe_parse_version(x) if x and x.lower() != "nan" else None
         )
 
         # Sort by Solver, Solver Version (descending), and remove duplicates
