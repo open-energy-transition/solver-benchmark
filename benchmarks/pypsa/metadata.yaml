@@ -340,7 +340,7 @@ benchmarks:
       Num. constraints: 690537
       Num. variables: 328924
       Num. nonzeros: 1624296
-  pypsa-eur-elec-uc:
+  pypsa-eur-elec-uc:  # None of these problems have been used either for the scaling study in the State of Solvers report or for the website, but can be used for run v3
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) without transmission expansion and including unit commitment.
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
