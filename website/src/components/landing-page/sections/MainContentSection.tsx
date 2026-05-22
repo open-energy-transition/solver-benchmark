@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const MainContent = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-[#F4F6FA]">
       <div className="pb-8 pt-8 md:pt-10 mx-auto max-w-8xl px-4 lg:px-[70px]">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">

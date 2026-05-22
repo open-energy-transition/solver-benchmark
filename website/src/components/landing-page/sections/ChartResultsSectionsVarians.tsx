@@ -291,6 +291,15 @@ const ChartResultsSectionsVarians = ({
 
     return data;
   }, [uniqueTimeouts, solverList, solverVersions, benchmarkLatestResultsAll]);
+  function formatBenchmarkSolved({
+    solved,
+    total,
+  }: {
+    solved: number;
+    total: number;
+  }) {
+    return `${solved}/${total} for ${problemClass} problems in the S+M size`;
+  }
   return (
     <div>
       <SgmRuntimeChart
@@ -307,6 +316,9 @@ const ChartResultsSectionsVarians = ({
         mode="solved-pct"
         yAxisMax={100}
         hideLegend={hideLegend}
+        categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
+        formatBenchmarkSolved={formatBenchmarkSolved}
+        categoryMemoryLabels={["Memory: 7 GiB", "Memory: 124 GiB"]}
       />
     </div>
   );

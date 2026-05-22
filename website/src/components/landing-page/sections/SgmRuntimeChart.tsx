@@ -7,6 +7,7 @@ import { TableRowType } from "@/components/admin/ResultsSections";
 import { ID3GroupedBarChartData, StackedBarData } from "@/types/chart";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getLatestBenchmarkResult } from "@/utils/results";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 interface ISolverRuntimeComparison {
   sgmData?: TableRowType[];
@@ -19,6 +20,15 @@ interface ISolverRuntimeComparison {
   mode?: "slowdown" | "solved-pct";
   yAxisMax?: number;
   hideLegend?: boolean;
+  categoryBenchmarkCounts?: number[];
+  categoryMemoryLabels?: string[];
+  showBarTopLabels?: boolean;
+  sizeAnnotations?: string[];
+  formatBenchmarkSolved?: (params: {
+    solved: number;
+    total: number;
+    timeout?: number;
+  }) => string;
 }
 
 const SgmRuntimeChart = ({
@@ -32,6 +42,11 @@ const SgmRuntimeChart = ({
   mode = "slowdown",
   yAxisMax,
   hideLegend = false,
+  formatBenchmarkSolved = () => "",
+  categoryBenchmarkCounts,
+  categoryMemoryLabels,
+  showBarTopLabels = false,
+  sizeAnnotations,
 }: ISolverRuntimeComparison) => {
   const rawBenchmarkResults = useBenchmarkResults({ useRawResults: true });
 
@@ -88,64 +103,78 @@ const SgmRuntimeChart = ({
 
   const getXAxisTickFormat = useCallback(
     (category?: string, data?: any) => {
-      // If grouped chart data is provided, try to extract per-category info
       const isNumericCategory =
         category !== undefined && !isNaN(Number(category));
+
+      // Find the sorted index of this category among all unique timeouts
+      const uniqueTimeoutsSorted = Array.from(
+        new Set(computedChartData.map((d) => String(d[categoryKey]))),
+      ).sort((a, b) => Number(a) - Number(b));
+      const idx = uniqueTimeoutsSorted.findIndex(
+        (t) => String(t) === String(category),
+      );
+
+      const fixedCount =
+        categoryBenchmarkCounts && idx >= 0
+          ? categoryBenchmarkCounts[idx]
+          : undefined;
+      const memoryLabel =
+        categoryMemoryLabels && idx >= 0
+          ? categoryMemoryLabels[idx]
+          : undefined;
+
       if (computedChartData && computedChartData.length && category) {
         const point = computedChartData.find(
           (d) => String(d[categoryKey]) === String(category),
         );
-        const uniqueCount = point?.uniqueBenchmarkCount ?? uniqueBenchmarkCount;
+        const dynamicCount =
+          point?.uniqueBenchmarkCount ?? uniqueBenchmarkCount;
+        const countDisplay =
+          fixedCount !== undefined ? fixedCount : dynamicCount;
 
         if (mode === "solved-pct") {
           const lines = [
-            `${uniqueCount ?? totalBenchmarks} benchmark problems`,
+            formatBenchmarkSolved({
+              solved: Number(countDisplay ?? totalBenchmarks),
+              total: totalBenchmarks,
+              timeout: Number(category),
+            }),
           ];
           if (isNumericCategory) {
             lines.push(`Timeout: ${humanizeSeconds(Number(category))}`);
           } else {
             lines.push(String(category));
           }
+          if (memoryLabel) lines.push(memoryLabel);
           return lines.join("\n");
         }
 
-        const solverKeys = Object.keys(point || {}).filter(
-          (k) => k !== categoryKey,
-        );
-        const values = solverKeys.map(
-          (k) => Number((point as StackedBarData)[k]) || Infinity,
-        );
-        const fastest = Math.min(...values);
-
+        // slowdown mode — removed "Fastest solver's average runtime" line
         const lines = [
-          `${uniqueCount}/${totalBenchmarks} benchmark problems `,
-          `Fastest solver's average runtime: ${humanizeSeconds(
-            isFinite(fastest)
-              ? fastest
-              : Math.min(
-                  ...solverResults.map((s) => s.unnormalizedData.runtime),
-                ),
-          )} `,
+          formatBenchmarkSolved({
+            solved: Number(countDisplay ?? totalBenchmarks),
+            total: totalBenchmarks,
+            timeout: Number(category),
+          }),
         ];
-
         if (isNumericCategory) {
-          lines.push(`Timeout: ${humanizeSeconds(Number(category))} `);
+          lines.push(`Timeout: ${humanizeSeconds(Number(category))}`);
         } else {
-          // For non-numeric categories (e.g. variable buckets), show the category label instead
           lines.push(String(category));
         }
-
+        if (memoryLabel) lines.push(memoryLabel);
         return lines.join("\n");
       }
 
+      // Fallback (no chart data)
+      const countDisplay =
+        fixedCount !== undefined ? fixedCount : uniqueBenchmarkCount;
       const baseLines = [
-        `${uniqueBenchmarkCount}/${totalBenchmarks} benchmark problems `,
-        `Fastest solver's average runtime: ${humanizeSeconds(
-          Math.min(...solverResults.map((s) => s.unnormalizedData.runtime)),
-        )} `,
+        `${countDisplay}/${totalBenchmarks} benchmark problems`,
       ];
       if (isNumericCategory)
-        baseLines.push(`Timeout: ${humanizeSeconds(timeout ?? 0)} `);
+        baseLines.push(`Timeout: ${humanizeSeconds(timeout ?? 0)}`);
+      if (memoryLabel) baseLines.push(memoryLabel);
       return baseLines.join("\n");
     },
     [
@@ -157,12 +186,18 @@ const SgmRuntimeChart = ({
       timeout,
       totalBenchmarks,
       mode,
+      categoryBenchmarkCounts,
+      categoryMemoryLabels,
+      formatBenchmarkSolved,
     ],
   );
 
   return (
-    <div className="my-4 mt-0 rounded-xl">
+    <div className="my-4 rounded-xl">
       <D3GroupedBarChart
+        sizeAnnotationTextColor="#022B3B"
+        cardBgClassName="bg-soft-gray"
+        cardTextClassName="text-navy"
         title={title}
         chartData={computedChartData}
         categoryKey={categoryKey}
@@ -184,6 +219,8 @@ const SgmRuntimeChart = ({
         yAxisMax={yAxisMax}
         hideLegend={hideLegend}
         hideTitle={hideLegend}
+        showBarTopLabels={showBarTopLabels}
+        sizeAnnotations={sizeAnnotations}
       />
     </div>
   );

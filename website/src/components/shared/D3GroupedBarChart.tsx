@@ -40,6 +40,11 @@ const D3GroupedBarChart = ({
   yAxisMax = undefined,
   hideLegend = false,
   hideTitle = false,
+  showBarTopLabels = false,
+  sizeAnnotations,
+  cardBgClassName,
+  cardTextClassName,
+  sizeAnnotationTextColor,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -63,6 +68,7 @@ const D3GroupedBarChart = ({
   useEffect(() => {
     const data = chartData.map((d) => ({ ...d }));
     if (!data.length) return;
+    const firstCategory = data.length > 0 ? String(data[0][categoryKey]) : null;
 
     // Find minimum value for normalization
     if (normalize) {
@@ -81,15 +87,17 @@ const D3GroupedBarChart = ({
     }
 
     const width = containerRef.current?.clientWidth || 400;
+    const hasTopAnnotations =
+      (sizeAnnotations && sizeAnnotations.length > 0) || showBarTopLabels;
     const margin = {
-      top: 30,
+      top: hasTopAnnotations ? 70 : 30,
       right: 30,
       bottom: isMobile
         ? 110 +
           (extraCategoryLengthMargin
             ? extraCategoryLengthMargin
             : categoryLengths)
-        : 90,
+        : 100,
       left: 60,
     };
 
@@ -100,7 +108,7 @@ const D3GroupedBarChart = ({
       .select(svgRef.current)
       .attr("width", width)
       .attr("height", height)
-      .style("background", "white")
+      .style("background", "transparent")
       .style("overflow", "visible");
 
     const keys = Object.keys(data[0])
@@ -330,6 +338,24 @@ const D3GroupedBarChart = ({
             .attr("fill", i === 1 ? "#999" : "#000") // Light grey for second line (percentage)
             .text(line);
         });
+        // Solver name label at top of each bar (top-left panel only) — render only for first category
+        if (
+          showBarTopLabels &&
+          firstCategory &&
+          String(d.category) === firstCategory
+        ) {
+          const nameY = yPos - lines.length * 12 - 4;
+          const solverColor =
+            typeof colors === "function" ? colors(d) : colors[d.key];
+          group
+            .append("text")
+            .attr("text-anchor", "start")
+            .attr("transform", `translate(${xPos}, ${nameY}) rotate(-90)`)
+            .attr("fill", solverColor)
+            .style("font-size", "16px")
+            .classed("font-bold", true)
+            .text(getSolverLabel(d.key));
+        }
       })
       .on("mouseover", function (event, d) {
         tooltip
@@ -410,6 +436,27 @@ const D3GroupedBarChart = ({
             });
           });
       });
+    // Size-group annotations above each category group (top-left panel only)
+    if (sizeAnnotations && sizeAnnotations.length > 0) {
+      const sortedKeys = data.map((d) => d[categoryKey].toString());
+      sizeAnnotations.forEach((annotation, i) => {
+        const cat = sortedKeys[i];
+        if (!cat || xScale(cat) === undefined) return;
+        const x = xScale(cat)! + xScale.bandwidth() / 2;
+        const lineY = margin.top - 14;
+        const textY = margin.top - 20;
+        // Annotation text
+        svg
+          .append("text")
+          .attr("x", x)
+          .attr("y", textY)
+          .attr("text-anchor", "middle")
+          .attr("fill", sizeAnnotationTextColor ?? "#555")
+          .style("font-size", "16px")
+          .style("font-weight", "bold")
+          .text(annotation);
+      });
+    }
     // Add reference line at y = 1
     showLineAtY1 &&
       svg
@@ -513,6 +560,8 @@ const D3GroupedBarChart = ({
     rotateXAxisLabels,
     xAxisBarTextClassName,
     windowWidth,
+    showBarTopLabels,
+    sizeAnnotations,
   ]);
 
   const defaultLegend = () => (
@@ -552,13 +601,20 @@ const D3GroupedBarChart = ({
     </div>
   );
   return (
-    <div className="relative bg-[#F4F6FA] rounded-2xl p-2">
+    <div
+      className="relative bg-[#F4F6FA] rounded-2xl p-2"
+      style={{ background: "#F4F6FA" }}
+    >
       {directionalIndicator && (
         <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2">
           <DirectionalIndicator direction={directionalIndicator} size="sm" />
         </div>
       )}
-      <div className="bg-white rounded-2xl p-1">
+      <div
+        className={`${cardBgClassName ?? "bg-white"} rounded-2xl p-1 ${
+          cardTextClassName ?? ""
+        }`}
+      >
         {(!hideTitle || !hideLegend) && (
           <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
             {/* Title */}

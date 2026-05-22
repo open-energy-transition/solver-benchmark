@@ -5,7 +5,7 @@ const HowDoWeBenchmarkSection = () => {
   return (
     <div
       id="methodology"
-      className="text-navy bg-[#F5F4F4] py-5 scroll-mt-[6rem]"
+      className="text-navy bg-soft-gray py-5 scroll-mt-[6rem]"
     >
       <div
         className="

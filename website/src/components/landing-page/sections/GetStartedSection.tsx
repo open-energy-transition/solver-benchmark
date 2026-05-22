@@ -34,7 +34,7 @@ const GetStarted = () => {
   return (
     <div
       id="benchmarks"
-      className="text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-soft-gray scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="

@@ -51,6 +51,14 @@ export interface ID3GroupedBarChart {
     chartData: StackedBarData[];
     categoryKey: string;
   }) => React.ReactNode;
+  /** Optional Tailwind class to apply to the inner card background (e.g. 'bg-white' or 'bg-off-white') */
+  cardBgClassName?: string;
+  /** Optional Tailwind class to apply to text color inside the inner card (e.g. 'text-dark-grey') */
+  cardTextClassName?: string;
+  /** Color used for size annotation text (hex or CSS color). Defaults to '#555' if not provided. */
+  sizeAnnotationTextColor?: string;
+  showBarTopLabels?: boolean;
+  sizeAnnotations?: string[];
 }
 
 export interface ID3StackedBarChart {

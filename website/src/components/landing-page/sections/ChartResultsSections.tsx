@@ -10,6 +10,7 @@ import { getLatestBenchmarkResult } from "@/utils/results";
 import { getSolverColor } from "@/utils/chart";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 import SgmRuntimeChart from "./SgmRuntimeChart";
+import { TIMEOUT_VALUES } from "@/constants/filter";
 
 type ColumnType = {
   name: string;
@@ -44,9 +45,13 @@ export type TableRowType = {
 const ChartResultsSections = ({
   problemClass = "LP",
   hideLegend = false,
+  showBarTopLabels = false,
+  sizeAnnotations,
 }: {
   problemClass?: string;
   hideLegend?: boolean;
+  showBarTopLabels?: boolean;
+  sizeAnnotations?: string[];
 }) => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData;
@@ -322,6 +327,19 @@ const ChartResultsSections = ({
     benchmarkLatestResultsAll,
     applySgmModeTo,
   ]);
+  function formatBenchmarkSolved({
+    solved,
+    total,
+    timeout,
+  }: {
+    solved: number;
+    total: number;
+    timeout?: number;
+  }) {
+    return `${solved}/${total} for ${problemClass} problems in the ${
+      timeout === TIMEOUT_VALUES.SHORT ? "S+M" : "L"
+    } size`;
+  }
   return (
     <div>
       <SgmRuntimeChart
@@ -338,6 +356,11 @@ const ChartResultsSections = ({
         mode="slowdown"
         yAxisMax={300}
         hideLegend={hideLegend}
+        categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
+        formatBenchmarkSolved={formatBenchmarkSolved}
+        categoryMemoryLabels={["Memory: 7 GiB", "Memory: 124 GiB"]}
+        showBarTopLabels={showBarTopLabels}
+        sizeAnnotations={sizeAnnotations}
       />
     </div>
   );
