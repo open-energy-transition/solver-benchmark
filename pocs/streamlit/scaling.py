@@ -1,12 +1,12 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from packaging.version import parse
 
 from pocs.streamlit.components.filter import (
     display_filter_status,
     generate_filtered_metadata,
 )
+from pocs.streamlit.utils.calculations import safe_parse_version
 from pocs.streamlit.utils.file_utils import load_benchmark_data, load_metadata
 from pocs.streamlit.utils.filters import filter_data
 
@@ -89,7 +89,7 @@ if filtered_metadata.empty:
 df = raw_df
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:
-    df["Solver Version"] = df["Solver Version"].apply(parse)
+    df["Solver Version"] = df["Solver Version"].apply(safe_parse_version)
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
     df = df.drop_duplicates(subset=["Solver", "Benchmark", "Size"], keep="first")
 

@@ -60,12 +60,22 @@ const BenchmarkSet = () => {
   const availableApplications = Array.from(uniqueValues.applications);
   const availableModellingFrameworks = Array.from(
     uniqueValues.modellingFrameworks,
-  );
+  ).sort((a, b) => a.localeCompare(b));
+  const SIZE_ORDER = ["S", "M", "L"];
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
     ),
-  ).filter((size) => size !== undefined && size !== null);
+  )
+    .filter((size) => size !== undefined && size !== null)
+    .map((s) => String(s).trim())
+    .sort((a, b) => {
+      const idx = (v: string) => {
+        const i = SIZE_ORDER.indexOf(v.toUpperCase());
+        return i === -1 ? SIZE_ORDER.length : i;
+      };
+      return idx(a) - idx(b) || a.localeCompare(b);
+    });
 
   return (
     <div className="pl-1 pb-1 pr-3 bg-[#F4F6FA] rounded-xl">
