@@ -467,7 +467,13 @@ def main(solver_name, input_file, solver_version):
             status_value = "ER"
             objective = None
 
-        if is_mip_problem(solver_model, solver_name):
+        try:
+            is_mip = is_mip_problem(solver_model, solver_name)
+        except Exception:
+            print(f"ERROR checking MIP status: {format_exc()}", file=sys.stderr)
+            is_mip = False
+
+        if is_mip:
             duality_gap, max_integrality_violation = get_milp_metrics(
                 input_file, solver_result, solver_name
             )
