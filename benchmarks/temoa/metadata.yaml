@@ -10,7 +10,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (4 years)
     MILP features: None
     Sizes:
@@ -34,7 +34,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -58,7 +58,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -82,7 +82,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -106,7 +106,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -130,7 +130,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (5 years)
     MILP features: None
     Sizes:

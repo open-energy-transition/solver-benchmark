@@ -9,7 +9,7 @@ benchmarks:
     Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric
     Time horizon: Single-stage (1 year)
@@ -37,7 +37,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Supply, Power
     Time horizon: Single period (1 year)
@@ -65,7 +65,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Supply, Power
     Time horizon: 1 year
@@ -92,7 +92,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
@@ -117,7 +117,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
@@ -351,7 +351,7 @@ benchmarks:
     Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
-    MILP features: Binary investment decisions; Piecewise efficiency
+    MILP features: Binary investment decisions, Piecewise efficiency
     Sizes:
     - Name: 1-168ts
       Size: S
@@ -633,7 +633,7 @@ benchmarks:
       Daniele Lerede, Open Energy Transition
     License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: LP
-    Application: DC Optimal Power Flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -660,7 +660,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industry
     Time horizon: Single period (1 year)
     MILP features: None
     License: CC BY 4.0
@@ -1019,7 +1019,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
     Problem class: MILP
-    Application: DC Optimal Power Flow
+    Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (1 year)
@@ -2185,7 +2185,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment
     Sizes:
     - Name: 1-240ts
       Size: S
@@ -2238,7 +2238,7 @@ benchmarks:
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
@@ -2265,7 +2265,7 @@ benchmarks:
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
@@ -2315,7 +2315,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment;
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment,
       Piecewise efficiency
     Sizes:
     - Name: 1-8760ts
@@ -2672,7 +2672,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
-    MILP features: Unit commitment; Modularity
+    MILP features: Unit commitment, Modularity
     Sizes:
     - Name: 1-1h
       Size: M
@@ -2752,7 +2752,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
-    MILP features: Unit commitment; Modularity
+    MILP features: Unit commitment, Modularity
     Sizes:
     - Name: 1-1h
       Size: M
@@ -5349,9 +5349,9 @@ benchmarks:
     Contributor(s)/Source: Alvaro Porras and Diego Tejada; https://github.com/aporrasc/Mopo_HandsOn_Tutorial
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (12 representative days)
     MILP features: None
     Sizes:
@@ -5377,7 +5377,7 @@ benchmarks:
     Contributor(s)/Source: Vamsi Priya Goli, Open Energy Transition; https://github.com/switch-model/switch-china-open-model
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Multi-stage
@@ -5711,7 +5711,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (4 years)
     MILP features: None
     Sizes:
@@ -5735,7 +5735,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -5761,7 +5761,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -5787,7 +5787,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -5813,7 +5813,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (8 years)
     MILP features: None
     Sizes:
@@ -5839,7 +5839,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (5 years)
     MILP features: None
     Sizes:
@@ -5864,7 +5864,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (13 periods)
     MILP features: None
     Sizes:
@@ -5889,7 +5889,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (13 periods)
     MILP features: None
     Sizes:
@@ -6117,7 +6117,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry, Agriculture
     Time horizon: Single-stage (1 year)
     MILP features: None
     Sizes:
@@ -6149,7 +6149,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Commercial, Residential, Industrial, Agriculture
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry, Agriculture
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -6173,7 +6173,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Other
+    Sectors: Supply, Electric, Transport, Industry, Other
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -6198,7 +6198,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Other
+    Sectors: Supply, Electric, Transport, Industry, Other
     Time horizon: Single-stage
     MILP features: None
     Sizes:
@@ -6225,7 +6225,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Sectors: Supply, Electric, Transport, Industry, Residential, Commercial
     Time horizon: Multi-stage (8 stages)
     MILP features: None
     Sizes:
@@ -6250,7 +6250,7 @@ benchmarks:
     Contributor(s)/Source: Kannan Ramachandran, UC Berkeley
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Hydrogen
     Time horizon: Single-stage
@@ -6282,9 +6282,9 @@ benchmarks:
     Contributor(s)/Source: Evangelos Panos, Paul Scherrer Institut
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Transport, Industrial, Residential, Commercial
+    Sectors: Supply, Electric, Transport, Industry, Residential, Commercial
     Time horizon: Multi-stage
     MILP features: None
     Sizes:
