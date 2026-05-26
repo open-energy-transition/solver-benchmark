@@ -145,20 +145,23 @@ const InstancesTableResult = ({
       {
         header: "No. VARIABLES",
         accessorKey: "nOfVariables",
-        cell: (info: CellContext<RowData, unknown>) =>
-          formatInteger(info.getValue()),
+        cell: (
+          info: CellContext<RowData, string | number | null | undefined>,
+        ) => formatInteger(info.getValue()),
       },
       {
         header: "No. CONSTRAINTS",
         accessorKey: "nOfConstraints",
-        cell: (info: CellContext<RowData, unknown>) =>
-          formatInteger(info.getValue()),
+        cell: (
+          info: CellContext<RowData, string | number | null | undefined>,
+        ) => formatInteger(info.getValue()),
       },
       {
         header: "No. NON-ZEROS",
         accessorKey: "nOfNonzeros",
-        cell: (info: CellContext<RowData, unknown>) =>
-          formatInteger(info.getValue()),
+        cell: (
+          info: CellContext<RowData, string | number | null | undefined>,
+        ) => formatInteger(info.getValue()),
         meta: {
           headerClassName:
             "flex gap-2 items-center tag-line-xs font-extrabold w-20",
@@ -171,14 +174,16 @@ const InstancesTableResult = ({
         {
           header: "No. CONTINUOUS VARIABLES",
           accessorKey: "nOfContinuousVariables",
-          cell: (info: CellContext<RowData, unknown>) =>
-            formatInteger(info.getValue()),
+          cell: (
+            info: CellContext<RowData, string | number | null | undefined>,
+          ) => formatInteger(info.getValue()),
         },
         {
           header: "No. INTEGER VARIABLES",
           accessorKey: "nOfIntegerVariables",
-          cell: (info: CellContext<RowData, unknown>) =>
-            formatInteger(info.getValue()),
+          cell: (
+            info: CellContext<RowData, string | number | null | undefined>,
+          ) => formatInteger(info.getValue()),
         },
       );
     }
@@ -244,9 +249,10 @@ const InstancesTableResult = ({
     return baseColumns.map((col) => ({
       ...col,
       meta: {
-        ...(col.meta as any),
+        ...(col.meta as Record<string, unknown>),
         headerClassName:
-          (col.meta as any)?.headerClassName || defaultHeaderClass,
+          (col.meta as Record<string, unknown>)?.headerClassName ||
+          defaultHeaderClass,
       },
     }));
   }, [isMILP]);

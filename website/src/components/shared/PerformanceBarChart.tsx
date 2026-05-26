@@ -230,10 +230,6 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .call(yAxisRatio);
 
     // Add up/down arrows with explanatory labels on both sides of the left y-axis
-    const arrowOffsetX = 36; // horizontal distance from axis
-    const arrowTopY = margin.top + 8;
-    const arrowBottomY = height - margin.bottom - 8;
-
     // Add secondary y-axis (runtime)
     svg
       .append("g")

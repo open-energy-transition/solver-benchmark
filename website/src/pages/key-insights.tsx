@@ -71,7 +71,7 @@ const KeyInsightsPage = () => {
   useEffect(() => {
     savedFiltersRef.current = currentFilters;
 
-    (dispatch as any)(filterActions.resetFilters());
+    dispatch(filterActions.resetFilters());
 
     return () => {
       if (savedFiltersRef.current) {

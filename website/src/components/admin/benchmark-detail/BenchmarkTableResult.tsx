@@ -183,7 +183,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
       // Download all files
       for (let i = 0; i < filesToDownload.length; i++) {
-        const { benchmark, url, filename } = filesToDownload[i];
+        const { benchmark: _benchmark, url, filename } = filesToDownload[i];
 
         setDownloadProgress({
           current: i + 1,
