@@ -58,7 +58,11 @@ const BenchmarkModelCases = () => {
         </li>
       </ul>
       <p>
-        <Link className="font-bold" href="/#contact">
+        <Link
+          className="font-bold"
+          href="/#contact"
+          aria-label="navigate to contact section"
+        >
           Reach out
         </Link>{" "}
         to us if you&apos;d like to contribute any benchmark problems that can

@@ -33,6 +33,7 @@ export default function BlogIndex({ posts }: Props) {
                 <li key={p.slug} className="border-b border-gray-200 pb-6">
                   <Link
                     href={`/blog/${p.slug}`}
+                    aria-label={`Navigate to blog post titled ${p.title}`}
                     className="text-2xl font-semibold text-navy hover:text-green transition-colors"
                   >
                     {p.title}

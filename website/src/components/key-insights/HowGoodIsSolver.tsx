@@ -46,7 +46,11 @@ const HowGoodIsSolver = () => {
           timed out or errored is assumed to have a runtime equal to the timeout
           with which it was run. (More details, and other ways to handle time
           outs and errors, can be found on our{" "}
-          <Link className="font-bold" href="/dashboard/main-results">
+          <Link
+            className="font-bold"
+            href="/dashboard/main-results"
+            aria-label="Navigate to main results page on the dashboard"
+          >
             main dashboard
           </Link>
           ). We group our set of problems according to problem size
@@ -129,7 +133,11 @@ const HowGoodIsSolver = () => {
             to benchmark solvers on their own problems before picking a solver,
             and also encourage modellers to contribute problems that can help us
             make our benchmark set more representative and diverse.{" "}
-            <Link className="font-bold" href="/#contact">
+            <Link
+              className="font-bold"
+              href="/#contact"
+              aria-label="navigate to contact section"
+            >
               Reach out
             </Link>{" "}
             to us if you&apos;d like to contribute!
