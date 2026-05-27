@@ -16,7 +16,6 @@ const MainContent = () => {
             backdropFilter: "blur(3.2px)",
             filter: "blur(3.2px)",
           }}
-          quality={100}
         />
       </div>
 
@@ -32,13 +31,19 @@ const MainContent = () => {
             <div className="font-light text-grey text-lg sm:text-2xl font-lato sm:leading-1.4 tracking-normal">
               Built by{" "}
               <span className="font-bold">
-                <Link href="https://openenergytransition.org/">
+                <Link
+                  href="https://openenergytransition.org/"
+                  aria-label={`Navigate to Open Energy Transition website`}
+                >
                   Open Energy Transition
                 </Link>
               </span>
               , with funding from{" "}
               <span className="font-bold">
-                <Link href="https://www.breakthroughenergy.org/">
+                <Link
+                  href="https://www.breakthroughenergy.org/"
+                  aria-label="Navigate to Breakthrough Energy website"
+                >
                   Breakthrough Energy
                 </Link>
               </span>
@@ -66,6 +71,7 @@ const MainContent = () => {
                   text-teal
                   transition-all
                 "
+              aria-label="Navigate to key-ingisht page"
             >
               KEY INSIGHTS
             </Link>
@@ -88,6 +94,7 @@ const MainContent = () => {
                 text-lg
                 text-white
                 "
+              aria-label="Navigate to detail results page"
             >
               <span>DETAILED RESULTS</span>
               <ArrowUpIcon className="ml-3 text-white rotate-90 size-6" />
