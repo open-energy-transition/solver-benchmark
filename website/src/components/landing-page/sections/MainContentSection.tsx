@@ -7,8 +7,7 @@ const MainContent = () => {
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
             <h1 className="inline text-navy box-decoration-clone">
-              An open-source benchmark of optimization solvers on representative
-              problems from the energy planning domain.
+              Open benchmark of solvers for energy planning
             </h1>
           </div>
           <div className="mt-4 text-navy text-2xl font-light">

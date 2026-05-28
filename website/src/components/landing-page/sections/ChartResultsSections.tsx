@@ -336,9 +336,7 @@ const ChartResultsSections = ({
     total: number;
     timeout?: number;
   }) {
-    return `${solved}/${total} for ${problemClass} problems in the ${
-      timeout === TIMEOUT_VALUES.SHORT ? "S+M" : "L"
-    } size`;
+    return `${solved}/${total} problems`;
   }
   return (
     <div>
@@ -356,6 +354,8 @@ const ChartResultsSections = ({
         mode="slowdown"
         yAxisMax={300}
         hideLegend={hideLegend}
+        hideTitle={false}
+        titlePosition="bottom-center"
         categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
         formatBenchmarkSolved={formatBenchmarkSolved}
         categoryMemoryLabels={["Memory: 7 GiB", "Memory: 124 GiB"]}

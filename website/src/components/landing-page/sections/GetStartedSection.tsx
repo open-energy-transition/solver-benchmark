@@ -34,7 +34,7 @@ const GetStarted = () => {
   return (
     <div
       id="benchmarks"
-      className="text-navy bg-soft-gray scroll-mt-16 lg:scroll-mt-28"
+      className="text-soft-gray bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
@@ -60,7 +60,7 @@ const GetStarted = () => {
           >
             BENCHMARKS
           </div>
-          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-navy">
+          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-soft-gray">
             WHAT DO WE HAVE?
           </div>
         </div>

@@ -42,6 +42,7 @@ export default {
         teal: "#1F7A8C",
         white: "#ffffff",
         "soft-gray": "#F5F4F4",
+        "page-bg": "#F4F6FA",
         "light-blue": "#F5F7FA",
         "light-grey": "#E4E7E9",
         "lime-green": "#E5EEEB",

@@ -20,6 +20,8 @@ interface ISolverRuntimeComparison {
   mode?: "slowdown" | "solved-pct";
   yAxisMax?: number;
   hideLegend?: boolean;
+  hideTitle?: boolean;
+  titlePosition?: "top" | "bottom-center";
   categoryBenchmarkCounts?: number[];
   categoryMemoryLabels?: string[];
   showBarTopLabels?: boolean;
@@ -42,6 +44,8 @@ const SgmRuntimeChart = ({
   mode = "slowdown",
   yAxisMax,
   hideLegend = false,
+  hideTitle = false,
+  titlePosition = "top" as const,
   formatBenchmarkSolved = () => "",
   categoryBenchmarkCounts,
   categoryMemoryLabels,
@@ -193,10 +197,10 @@ const SgmRuntimeChart = ({
   );
 
   return (
-    <div className="my-4 rounded-xl">
+    <div className="my-4 rounded-2xl border-8 border-[#E6ECF5]">
       <D3GroupedBarChart
         sizeAnnotationTextColor="#022B3B"
-        cardBgClassName="bg-soft-gray"
+        cardBgClassName="bg-page-bg"
         cardTextClassName="text-navy"
         title={title}
         chartData={computedChartData}
@@ -218,7 +222,8 @@ const SgmRuntimeChart = ({
         showLineAtY1={mode !== "solved-pct"}
         yAxisMax={yAxisMax}
         hideLegend={hideLegend}
-        hideTitle={hideLegend}
+        hideTitle={hideTitle}
+        titlePosition={titlePosition}
         showBarTopLabels={showBarTopLabels}
         sizeAnnotations={sizeAnnotations}
       />

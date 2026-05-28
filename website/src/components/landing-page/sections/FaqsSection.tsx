@@ -4,7 +4,7 @@ const Contribute = () => {
   return (
     <div
       id="faq"
-      className="py-5 text-navy bg-soft-gray scroll-mt-16 lg:scroll-mt-28"
+      className="py-5 text-white bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="

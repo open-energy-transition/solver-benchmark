@@ -59,6 +59,8 @@ export interface ID3GroupedBarChart {
   sizeAnnotationTextColor?: string;
   showBarTopLabels?: boolean;
   sizeAnnotations?: string[];
+  /** Position of the chart title. Defaults to 'top' (current behavior). Use 'bottom-center' to place it centered below the chart. */
+  titlePosition?: "top" | "bottom-center";
 }
 
 export interface ID3StackedBarChart {

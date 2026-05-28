@@ -42,7 +42,7 @@ const Contribute = () => {
   return (
     <div
       id="contribution"
-      className="py-5 text-[#F0ECE4] bg-navy scroll-mt-16 lg:scroll-mt-28"
+      className="py-5 text-navy bg-white scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
@@ -94,59 +94,59 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <UserIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
                     {loading
                       ? "..."
                       : stats.contributors.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">
+                <p className="text-base/1.5 text-navy text-left mt-2">
                   Contributors
                 </p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <CircleOutlineIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.issues.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">
+                <p className="text-base/1.5 text-navy text-left mt-2">
                   Issues
                 </p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <StarIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.stars.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">Stars</p>
+                <p className="text-base/1.5 text-navy text-left mt-2">Stars</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <ForkIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">Forks</p>
+                <p className="text-base/1.5 text-navy text-left mt-2">Forks</p>
               </div>
             </div>
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
-              className="w-max bg-[#F0ECE4] items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
+              className="w-max bg-navy items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
               target="_blank"
               aria-label="GitHub repository"
             >
-              <div className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase">
+              <div className="flex items-center gap-1 font-bold text-white font-lato text-lg uppercase">
                 <GithubIcon className="mr-2" />
                 <div className="hover:underline underline-offset-4">
                   Contribute now
                 </div>
               </div>
-              <LinkOutlineIcon className="text-navy size-5 ml-3 mr-4" />
+              <LinkOutlineIcon className="text-white size-5 ml-3 mr-4" />
             </Link>
           </div>
           <Image

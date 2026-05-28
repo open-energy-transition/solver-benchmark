@@ -298,7 +298,7 @@ const ChartResultsSectionsVarians = ({
     solved: number;
     total: number;
   }) {
-    return `${solved}/${total} for ${problemClass} problems in the S+M size`;
+    return `${solved}/${total} problems`;
   }
   return (
     <div>
@@ -315,6 +315,7 @@ const ChartResultsSectionsVarians = ({
         uniqueLatestBenchmarkCount={uniqueBenchmarkCount}
         mode="solved-pct"
         yAxisMax={100}
+        titlePosition="bottom-center"
         hideLegend={hideLegend}
         categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
         formatBenchmarkSolved={formatBenchmarkSolved}

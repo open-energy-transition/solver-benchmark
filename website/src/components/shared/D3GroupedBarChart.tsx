@@ -45,6 +45,7 @@ const D3GroupedBarChart = ({
   cardBgClassName,
   cardTextClassName,
   sizeAnnotationTextColor,
+  titlePosition = "top",
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -315,9 +316,9 @@ const D3GroupedBarChart = ({
       .attr("class", "bar-text")
       .each(function (d) {
         const group = d3.select(this);
-        const labelText = axisLabelTitle ? axisLabelTitle(d) : String(d.value);
+        const labelText = getSolverLabel(axisLabelTitle ? axisLabelTitle(d) : String(d.value));
         const lines = labelText.split("\n");
-        const xPos = d.xScale(d.key)! + d.xScale.bandwidth() / 2;
+        const xPos = d.xScale(d.key)! + xScaleInner.bandwidth() / 2;
         const barValue = transformHeightValue
           ? transformHeightValue(d)
           : Number(d.value);
@@ -350,6 +351,7 @@ const D3GroupedBarChart = ({
           group
             .append("text")
             .attr("text-anchor", "start")
+            .attr("dominant-baseline", "central")
             .attr("transform", `translate(${xPos}, ${nameY}) rotate(-90)`)
             .attr("fill", solverColor)
             .style("font-size", "16px")
@@ -615,10 +617,10 @@ const D3GroupedBarChart = ({
           cardTextClassName ?? ""
         }`}
       >
-        {(!hideTitle || !hideLegend) && (
+        {(!hideTitle && titlePosition === "top" || !hideLegend) && (
           <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
-            {/* Title */}
-            {!hideTitle && (
+            {/* Title (top position) */}
+            {!hideTitle && titlePosition === "top" && (
               <div className="flex items-center gap-2">
                 <div className="text-sm text-center text-dark-grey ">
                   {title}
@@ -637,6 +639,12 @@ const D3GroupedBarChart = ({
             <svg ref={svgRef}></svg>
           </div>
         </div>
+        {/* Title (bottom-center position) */}
+        {!hideTitle && titlePosition === "bottom-center" && (
+          <div className={` text-center mt-1 mb-1 ${titlePosition === "bottom-center" ? "-mt-8 text-navy text-lg font-bold" : "text-sm text-dark-grey"}`}>
+            {title}
+          </div>
+        )}
       </div>
     </div>
   );
