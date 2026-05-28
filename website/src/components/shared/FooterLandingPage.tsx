@@ -9,7 +9,7 @@ interface FooterProps {
 }
 
 const Footer = ({
-  wrapperClassName = "",
+  wrapperClassName = "bg-navy",
   textClassName = "text-white",
   descriptionTextClassName = "text-white",
   theme = "light",
