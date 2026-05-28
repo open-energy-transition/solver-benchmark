@@ -78,6 +78,7 @@ const FactorsAffectingPerformanceInsights = () => {
             "{name}",
             "genx-10_IEEE_9_bus_DC_OPF",
           )}
+          aria-label={`Navigate to benchmark detail page for genx-10_IEEE_9_bus_DC_OPF model`}
         >
           genx-10_IEEE_9_bus_DC_OPF (9-1h)
         </Link>{" "}
@@ -89,6 +90,7 @@ const FactorsAffectingPerformanceInsights = () => {
             "{name}",
             "genx-10_IEEE_9_bus_DC_OPF-no_uc",
           )}
+          aria-label={`Navigate to benchmark detail page for genx-10_IEEE_9_bus_DC_OPF-no_uc model`}
         >
           genx-10_IEEE_9_bus_DC_OPF-no_uc (9-1h)
         </Link>{" "}
@@ -121,6 +123,7 @@ const FactorsAffectingPerformanceInsights = () => {
             "{name}",
             "pypsa-power+ely-ucgas",
           )}
+          aria-label={`Navigate to benchmark detail page for pypsa-power+ely-ucgas model`}
         >
           pypsa-power+ely-ucgas (1-1h)
         </Link>{" "}
@@ -132,6 +135,7 @@ const FactorsAffectingPerformanceInsights = () => {
             "{name}",
             "pypsa-power+ely",
           )}
+          aria-label={`Navigate to benchmark detail page for pypsa-power+ely model`}
         >
           pypsa-power+ely (1-1h)
         </Link>{" "}

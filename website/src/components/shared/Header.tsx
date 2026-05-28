@@ -102,6 +102,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to home page"
           >
             HOME
           </Link>
@@ -112,6 +113,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to key insight page"
           >
             KEY INSIGHTS
           </Link>
@@ -122,6 +124,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to defailt results page"
           >
             DETAILED RESULTS
           </Link>
@@ -132,6 +135,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to defailt methodology page"
           >
             METHODOLOGY
           </Link>
@@ -142,6 +146,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to blog page"
           >
             BLOG
           </Link>
@@ -175,6 +180,7 @@ const Header = () => {
               text-base
               w-max
             "
+            aria-label="Navigate to Open Energy Transition page"
           >
             <Image
               src="/logo/logo-light.svg"
@@ -245,6 +251,7 @@ const Header = () => {
                           : {})}
                         className={`-mx-3 flex item-center gap-2 rounded-lg px-3 py-2 text-base/7 font-semibold text-white
                           ${isActive ? "bg-white bg-opacity-30" : ""}`}
+                        aria-label={`Navigate to ${link.label} page`}
                       >
                         {link.label}
                         {link.external && <OutIcon className="mt-2 size-3" />}

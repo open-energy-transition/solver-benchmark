@@ -50,6 +50,7 @@ const HowDoWeBenchmarkSection = () => {
           <div>
             <Link
               href={ROOT_PATH.methodology}
+              aria-label={`Navigate to methodology page`}
               className="bg-white mt-6 xl:ml-4 uppercase w-max flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 font-bold items-center md:text-xl px-8 py-4 rounded-2xl shadow-sm text-lg text-navy "
             >
               Methodology

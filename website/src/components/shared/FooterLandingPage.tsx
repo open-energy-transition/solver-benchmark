@@ -22,7 +22,11 @@ const Footer = ({
         <div>
           <div className="md:flex gap-1 py-[1.375rem] justify-between text-white text-xs">
             <div>
-              <Link href="https://openenergytransition.org/" target="_blank">
+              <Link
+                href="https://openenergytransition.org/"
+                target="_blank"
+                aria-label="Navigate to Open Energy Transition website"
+              >
                 <Image
                   width={127}
                   height={57}
@@ -46,6 +50,7 @@ const Footer = ({
                 <Link
                   href="https://www.breakthroughenergy.org/"
                   target="_blank"
+                  aria-label="Navigate to Breakthrough Energy website"
                 >
                   <Image
                     className="mt-4 p-1 bg-white rounded-xl"
@@ -148,6 +153,7 @@ const Footer = ({
                 href="https://opensource.org/license/MIT"
                 target="_blank"
                 className="hover:underline underline-offset-4"
+                aria-label="Navigate to MIT License page"
               >
                 MIT License
               </Link>

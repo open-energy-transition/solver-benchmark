@@ -354,7 +354,7 @@ const D3SolverEvolutionChart = ({
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           {solverName} Performance Evolution
         </h3>
-        <div className="flex gap-4 text-sm">
+        <div className="sm:flex gap-4 text-sm">
           <div className="flex items-center gap-2">
             <div
               className="w-4 h-3 opacity-80"

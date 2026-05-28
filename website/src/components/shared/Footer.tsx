@@ -12,6 +12,7 @@ const Footer = () => {
           <Link
             href="https://openenergytransition.org"
             className="text-red-800 font-semibold"
+            aria-label="Navigate to Open Energy Transition wbesite"
           >
             <span className="underline">Open Energy Transition</span>.
           </Link>
@@ -20,6 +21,7 @@ const Footer = () => {
             <Link
               href="https://www.breakthroughenergy.org/"
               className="font-bold hover:underline underline-offset-4"
+              aria-label="Navigate to Breakthrough Energy website"
             >
               Breakthrough Energy
             </Link>
@@ -30,6 +32,7 @@ const Footer = () => {
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
               className="hover:underline underline-offset-4"
+              aria-label="Navigate to solver benchmark github repository"
             >
               open source community
             </Link>

@@ -14,13 +14,19 @@ const MainContent = () => {
             <div className="font-light text-navy text-lg sm:text-2xl font-lato sm:leading-1.4 tracking-normal">
               Built by{" "}
               <span className="font-bold">
-                <Link href="https://openenergytransition.org/">
+                <Link
+                  href="https://openenergytransition.org/"
+                  aria-label={`Navigate to Open Energy Transition website`}
+                >
                   Open Energy Transition
                 </Link>
               </span>
               , with funding from{" "}
               <span className="font-bold">
-                <Link href="https://www.breakthroughenergy.org/">
+                <Link
+                  href="https://www.breakthroughenergy.org/"
+                  aria-label="Navigate to Breakthrough Energy website"
+                >
                   Breakthrough Energy
                 </Link>
               </span>

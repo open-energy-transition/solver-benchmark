@@ -56,6 +56,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
                 href={getBenchmarksetLink(fullValue)}
                 className="font-bold inline-block"
                 style={{ lineHeight: "1.5" }}
+                aria-label={`Navigate to ${benchmarkName} benchmark detail page`}
               >
                 {benchmarkName}
               </Link>

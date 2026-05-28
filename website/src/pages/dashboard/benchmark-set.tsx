@@ -212,6 +212,7 @@ const PageBenchmarkDetail = () => {
                 </div>
                 <Link
                   href={PATH_DASHBOARD.featureDistribution}
+                  aria-label={`Navigate to feature distribution page`}
                   className="text-white bg-navy px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap mt-1"
                 >
                   Feature Distribution
