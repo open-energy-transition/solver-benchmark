@@ -47,11 +47,15 @@ const ChartResultsSections = ({
   hideLegend = false,
   showBarTopLabels = false,
   sizeAnnotations,
+  rightmostGroupNote,
+  rightmostGroupOpacity,
 }: {
   problemClass?: string;
   hideLegend?: boolean;
   showBarTopLabels?: boolean;
   sizeAnnotations?: string[];
+  rightmostGroupNote?: React.ReactNode;
+  rightmostGroupOpacity?: number;
 }) => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData;
@@ -361,6 +365,8 @@ const ChartResultsSections = ({
         categoryMemoryLabels={["Memory: 7 GiB", "Memory: 124 GiB"]}
         showBarTopLabels={showBarTopLabels}
         sizeAnnotations={sizeAnnotations}
+        rightmostGroupNote={rightmostGroupNote}
+        rightmostGroupOpacity={rightmostGroupOpacity}
       />
     </div>
   );

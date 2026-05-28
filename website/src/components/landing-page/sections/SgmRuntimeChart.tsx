@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
@@ -31,6 +31,8 @@ interface ISolverRuntimeComparison {
     total: number;
     timeout?: number;
   }) => string;
+  rightmostGroupNote?: React.ReactNode;
+  rightmostGroupOpacity?: number;
 }
 
 const SgmRuntimeChart = ({
@@ -51,6 +53,8 @@ const SgmRuntimeChart = ({
   categoryMemoryLabels,
   showBarTopLabels = false,
   sizeAnnotations,
+  rightmostGroupNote,
+  rightmostGroupOpacity,
 }: ISolverRuntimeComparison) => {
   const rawBenchmarkResults = useBenchmarkResults({ useRawResults: true });
 
@@ -76,6 +80,17 @@ const SgmRuntimeChart = ({
       },
     ];
   }, [chartData, solverResults, categoryKey]);
+
+  const rightmostCategory = useMemo(() => {
+    if (!computedChartData.length) return null;
+    return String(computedChartData[computedChartData.length - 1][categoryKey]);
+  }, [computedChartData, categoryKey]);
+
+  const barOpacity = useMemo(() => {
+    if (rightmostGroupOpacity === undefined) return undefined;
+    return (d: ID3GroupedBarChartData) =>
+      String(d.category) === rightmostCategory ? rightmostGroupOpacity : 1;
+  }, [rightmostCategory, rightmostGroupOpacity]);
 
   const tooltipFormat = useCallback(
     (d: ID3GroupedBarChartData) => {
@@ -226,6 +241,8 @@ const SgmRuntimeChart = ({
         titlePosition={titlePosition}
         showBarTopLabels={showBarTopLabels}
         sizeAnnotations={sizeAnnotations}
+        rightmostGroupNote={rightmostGroupNote}
+        barOpacity={barOpacity}
       />
     </div>
   );

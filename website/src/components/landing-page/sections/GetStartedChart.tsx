@@ -12,6 +12,22 @@ const LATERAL_LABEL_CLASS = "text-2xl font-bold"
 // Stable constant — avoids recreating the array on every render
 const LP_SIZE_ANNOTATIONS = ["Less than 1M variables", "More than 1M variables"]
 
+const MILP_NOTE = (
+  <p className="text-[11px] leading-snug text-navy">
+    We only have two problems in this category, and we are looking for more.
+    Please submit your problems following these{" "}
+    <Link
+      href="/blog/open_call"
+      className="underline font-medium text-teal hover:opacity-80"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      guidelines
+    </Link>
+    .
+  </p>
+)
+
 const GetStartedChart = () => {
   const benchmarkLatestResultsRaw = useSelector(
     (state: { results: IResultState }) => state.results.benchmarkLatestResults,
@@ -49,7 +65,7 @@ const GetStartedChart = () => {
           <p className="text-center text-sm font-semibold text-navy/70 mb-3">
             Slowdown relative to the fastest solver
           </p>
-          <ChartResultsSections problemClass="MILP" hideLegend />
+          <ChartResultsSections problemClass="MILP" hideLegend rightmostGroupNote={MILP_NOTE} rightmostGroupOpacity={0.4} />
           <p className="text-center text-sm font-semibold text-navy/70 mt-6 mb-3">
             Problems solved within time and memory limits (%)
           </p>
@@ -79,7 +95,7 @@ const GetStartedChart = () => {
             <div className={`xl:hidden text-center ${LATERAL_LABEL_CLASS}`}>
               Linear programming problems
             </div>
-            <ChartResultsSections problemClass="MILP" hideLegend />
+            <ChartResultsSections problemClass="MILP" hideLegend rightmostGroupNote={MILP_NOTE} rightmostGroupOpacity={0.4} />
           </div>
         </div>
         {/* Bottom row: solved% panels */}

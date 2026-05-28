@@ -46,11 +46,13 @@ const D3GroupedBarChart = ({
   cardTextClassName,
   sizeAnnotationTextColor,
   titlePosition = "top",
+  rightmostGroupNote,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const isMobile = useIsMobile();
   const [height, setHeight] = useState(chartHeight);
+  const [rightmostNoteX, setRightmostNoteX] = useState<number | null>(null);
   const windowWidth = useDebouncedWindowWidth(200);
   const categoryLengths = chartData.reduce((acc, d) => {
     const length = String(d[categoryKey] || "").length;
@@ -129,6 +131,12 @@ const D3GroupedBarChart = ({
       .domain(data.map((d) => d[categoryKey].toString()))
       .range([margin.left, width - margin.right])
       .padding(0.2);
+
+    // Track the rightmost bar group centre for the optional overlay note
+    if (rightmostGroupNote && data.length > 0) {
+      const lastCat = data[data.length - 1][categoryKey].toString();
+      setRightmostNoteX((xScale(lastCat) ?? 0) + xScale.bandwidth() / 2);
+    }
 
     const xScaleInner = d3
       .scaleBand()
@@ -602,11 +610,28 @@ const D3GroupedBarChart = ({
         ))}
     </div>
   );
+  const hasTopAnnotations =
+    (sizeAnnotations && sizeAnnotations.length > 0) || showBarTopLabels;
+  const marginTop = hasTopAnnotations ? 70 : 30;
+
   return (
     <div
       className="relative bg-[#F4F6FA] rounded-2xl p-2"
       style={{ background: "#F4F6FA" }}
     >
+      {/* Rightmost bar group callout note */}
+      {rightmostGroupNote && rightmostNoteX !== null && (
+        <div
+          className="absolute z-10 max-w-[200px] bg-white/95 border border-navy/20 rounded-lg p-2 shadow-sm pointer-events-auto"
+          style={{
+            left: rightmostNoteX + 12, // 12px = p-2(8) + p-1(4) padding before SVG
+            top: marginTop + 100,
+            transform: "translateX(-50%)",
+          }}
+        >
+          {rightmostGroupNote}
+        </div>
+      )}
       {directionalIndicator && (
         <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2">
           <DirectionalIndicator direction={directionalIndicator} size="sm" />
@@ -641,7 +666,7 @@ const D3GroupedBarChart = ({
         </div>
         {/* Title (bottom-center position) */}
         {!hideTitle && titlePosition === "bottom-center" && (
-          <div className={` text-center mt-1 mb-1 ${titlePosition === "bottom-center" ? "-mt-8 text-navy text-lg font-bold" : "text-sm text-dark-grey"}`}>
+          <div className={` text-center mb-1 ${titlePosition === "bottom-center" ? "-mt-8 text-navy text-lg font-bold" : "mt-1 text-sm text-dark-grey"}`}>
             {title}
           </div>
         )}
