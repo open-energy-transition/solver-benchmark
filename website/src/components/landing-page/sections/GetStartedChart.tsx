@@ -1,16 +1,19 @@
-import { useMemo } from "react"
-import { useSelector } from "react-redux"
-import Link from "next/link"
-import ChartResultsSections from "./ChartResultsSections"
-import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians"
-import { IResultState } from "@/types/state"
-import { ArrowUpIcon } from "@/assets/icons"
-import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path"
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import Link from "next/link";
+import ChartResultsSections from "./ChartResultsSections";
+import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians";
+import { IResultState } from "@/types/state";
+import { ArrowUpIcon } from "@/assets/icons";
+import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 
-const LATERAL_LABEL_CLASS = "text-2xl font-bold"
+const LATERAL_LABEL_CLASS = "text-2xl font-bold";
 
 // Stable constant — avoids recreating the array on every render
-const LP_SIZE_ANNOTATIONS = ["Less than 1M variables", "More than 1M variables"]
+const LP_SIZE_ANNOTATIONS = [
+  "Less than 1M variables",
+  "More than 1M variables",
+];
 
 const MILP_NOTE = (
   <p className="text-[11px] leading-snug text-navy">
@@ -26,16 +29,15 @@ const MILP_NOTE = (
     </Link>
     .
   </p>
-)
+);
 
 const GetStartedChart = () => {
   const benchmarkLatestResultsRaw = useSelector(
     (state: { results: IResultState }) => state.results.benchmarkLatestResults,
-  )
+  );
 
   return (
     <div className="bg-[#F4F6FA] text-navy w-full mx-auto max-w-8xl py-4 px-6 md:px-12">
-
       {/* ── MOBILE LAYOUT ── */}
       <div className="flex flex-col gap-6 md:hidden">
         {/* LP section */}
@@ -65,7 +67,12 @@ const GetStartedChart = () => {
           <p className="text-center text-sm font-semibold text-navy/70 mb-3">
             Slowdown relative to the fastest solver
           </p>
-          <ChartResultsSections problemClass="MILP" hideLegend rightmostGroupNote={MILP_NOTE} rightmostGroupOpacity={0.4} />
+          <ChartResultsSections
+            problemClass="MILP"
+            hideLegend
+            rightmostGroupNote={MILP_NOTE}
+            rightmostGroupOpacity={0.4}
+          />
           <p className="text-center text-sm font-semibold text-navy/70 mt-6 mb-3">
             Problems solved within time and memory limits (%)
           </p>
@@ -79,9 +86,7 @@ const GetStartedChart = () => {
         <div className="text-center gap-0 mt-1">
           <div className="shrink-0 relative">
             <div className="">
-              <span
-                className={LATERAL_LABEL_CLASS}
-              >
+              <span className={LATERAL_LABEL_CLASS}>
                 Slowdown relative to the fastest solver
               </span>
             </div>
@@ -95,23 +100,25 @@ const GetStartedChart = () => {
             <div className={`xl:hidden text-center ${LATERAL_LABEL_CLASS}`}>
               Linear programming problems
             </div>
-            <ChartResultsSections problemClass="MILP" hideLegend rightmostGroupNote={MILP_NOTE} rightmostGroupOpacity={0.4} />
+            <ChartResultsSections
+              problemClass="MILP"
+              hideLegend
+              rightmostGroupNote={MILP_NOTE}
+              rightmostGroupOpacity={0.4}
+            />
           </div>
         </div>
         {/* Bottom row: solved% panels */}
         <div className="">
-            <div className="text-center">
-              <span
-                className={LATERAL_LABEL_CLASS}
-              >
-                Problems solved within time and memory limits (%)
-              </span>
-            </div>
+          <div className="text-center">
+            <span className={LATERAL_LABEL_CLASS}>
+              Problems solved within time and memory limits (%)
+            </span>
+          </div>
           <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
             <ChartResultsSectionsVarians hideLegend />
             <ChartResultsSectionsVarians problemClass="MILP" hideLegend />
           </div>
-        
         </div>
       </div>
 
@@ -167,7 +174,7 @@ const GetStartedChart = () => {
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GetStartedChart
+export default GetStartedChart;

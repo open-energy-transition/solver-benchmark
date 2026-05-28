@@ -111,9 +111,7 @@ const Contribute = () => {
                     {loading ? "..." : stats.issues.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-navy text-left mt-2">
-                  Issues
-                </p>
+                <p className="text-base/1.5 text-navy text-left mt-2">Issues</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">

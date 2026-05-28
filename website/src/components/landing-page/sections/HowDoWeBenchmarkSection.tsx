@@ -3,10 +3,7 @@ import { ROOT_PATH } from "@/constants/path";
 
 const HowDoWeBenchmarkSection = () => {
   return (
-    <div
-      id="methodology"
-      className="text-white bg-navy py-5 scroll-mt-[6rem]"
-    >
+    <div id="methodology" className="text-white bg-navy py-5 scroll-mt-[6rem]">
       <div
         className="
           xl:flex

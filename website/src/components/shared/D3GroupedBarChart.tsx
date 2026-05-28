@@ -324,7 +324,9 @@ const D3GroupedBarChart = ({
       .attr("class", "bar-text")
       .each(function (d) {
         const group = d3.select(this);
-        const labelText = getSolverLabel(axisLabelTitle ? axisLabelTitle(d) : String(d.value));
+        const labelText = getSolverLabel(
+          axisLabelTitle ? axisLabelTitle(d) : String(d.value),
+        );
         const lines = labelText.split("\n");
         const xPos = d.xScale(d.key)! + xScaleInner.bandwidth() / 2;
         const barValue = transformHeightValue
@@ -642,7 +644,7 @@ const D3GroupedBarChart = ({
           cardTextClassName ?? ""
         }`}
       >
-        {(!hideTitle && titlePosition === "top" || !hideLegend) && (
+        {((!hideTitle && titlePosition === "top") || !hideLegend) && (
           <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
             {/* Title (top position) */}
             {!hideTitle && titlePosition === "top" && (
@@ -666,7 +668,13 @@ const D3GroupedBarChart = ({
         </div>
         {/* Title (bottom-center position) */}
         {!hideTitle && titlePosition === "bottom-center" && (
-          <div className={` text-center mb-1 ${titlePosition === "bottom-center" ? "-mt-8 text-navy text-lg font-bold" : "mt-1 text-sm text-dark-grey"}`}>
+          <div
+            className={` text-center mb-1 ${
+              titlePosition === "bottom-center"
+                ? "-mt-8 text-navy text-lg font-bold"
+                : "mt-1 text-sm text-dark-grey"
+            }`}
+          >
             {title}
           </div>
         )}
