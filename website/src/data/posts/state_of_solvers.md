@@ -5,33 +5,28 @@ excerpt: "The State of Solvers for Energy Planning"
 tags: ["report", "solvers", "benchmarks"]
 ---
 
-> The complete report, benchmark instances, and metadata are available on Zenodo:
-> https://zenodo.org/records/20429905
+> **Authors:** Enrico Antonini, Siddharth Krishna, Daniele Lerede
+>
+> **Contributors:** Heba Badawy, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Priya Goli Vamsi, Madhukar Mishra, Maximillian Parzen, and Luis Prieto
+>
+> **Funder:** Breakthrough Energy
+>
+> **Resources**:
+> The complete report, benchmark instances, and metadata are available on [Zenodo](https://zenodo.org/records/20429905)
 
-## Authors
 
-Enrico Antonini, Siddharth Krishna, Daniele Lerede
-
-## Contributors
-
-Heba Badawy, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Priya Goli Vamsi, Madhukar Mishra, Maximillian Parzen, and Luis Prieto.
-
-## Funder
-
-Breakthrough Energy
-
-# Abstract
+## Abstract
 
 This report presents the 2025 results of the Open Energy Benchmark initiative, a transparent and reproducible benchmarking effort evaluating optimization solvers on realistic, community-contributed energy system models. The benchmark compares four open-source solvers (CBC, GLPK, HiGHS, and SCIP) and a proprietary baseline (Gurobi) across a diverse set of LP and MILP problems originating from 13 modeling frameworks. Using 213 benchmark problems, the report evaluates solver performance in terms of runtime, success rate, and scalability under standardized computational settings. The analysis highlights how solver capabilities vary depending on problem class, model formulation, and problem scale, while also exploring the evolution of solver performance over time and the computational challenges associated with increasingly large and complex energy planning models. The purpose of this report is not to identify a single "best" solver or produce a universal ranking of solver packages. Solver performance depends strongly on the characteristics of the optimization problem, modeling framework, configuration choices, and user requirements. Instead, the benchmark is intended as an educational and diagnostic resource that helps energy modelers better understand solver behavior, helps solver developers identify opportunities for improvement, and helps funding organizations identify areas where investments in open-source optimization software can have the greatest impact.
 
-# Key Findings
+## Key Findings
 
 * Open-source optimization solvers for energy system modeling continue to improve in both runtime and reliability, but substantial performance gaps remain compared to proprietary solvers, particularly for large and complex models.
 * Large-scale MILP problems remain especially challenging for open-source solvers, with significant scalability limitations and frequent timeouts at higher problem sizes.
 * Solver performance depends strongly not only on problem size, but also on mathematical formulation, modeling framework, and algorithm selection.
 * Open and reproducible benchmarking provides valuable domain-specific feedback for both energy modelers and solver developers and can help accelerate improvements in open-source and proprietary optimization tools.
 
-# Introduction
+## Introduction
 
 The transition toward decarbonized energy systems relies on advanced computational models to plan capacity expansion and optimize operational dispatch. As modelers strive to integrate emerging technologies across both supply and demand, enable faster decision-making for short-term operations and long-term planning, and account for the impacts of climate change and socio-economic development, the scale and complexity of the underlying mathematical optimization problems have grown substantially. These models predominantly take the form of Linear Programming (LP) and Mixed-Integer Linear Programming (MILP) problems, often containing millions of variables and constraints.
 
@@ -45,9 +40,9 @@ The purpose of this report is not to identify a universally "best" solver or pro
 
 The next sections present an overview of the benchmarking results while details on the problems, solvers, and computational infrastructure are available in the “Benchmark details” section at the end.
 
-# Results
+## Results
 
-## Results by problem class and number of variables
+### Results by problem class and number of variables
 
 The benchmark suite is divided between LP and MILP problems, reflecting the different mathematical requirements of models with capacity expansion (LP) and discrete operational or investment decisions (MILP). As shown in the size distribution (Figure 1, panels (a) and (b)), LP problems constitute the bulk of the largest cases in our benchmark suite with almost 60 problems in the 10<sup>6</sup> to 10<sup>8</sup> variable range. In contrast, MILP problems are generally smaller in scale. The majority of MILP problems in our benchmark suite fall within the 10<sup>4</sup> to 10<sup>5</sup> variable range, with just 2 exceeding 10<sup>6</sup> variables. It should also be noted that not all solver packages are equally suited for both problem types (e.g., SCIP specializes in MILPs while GLPK struggles with large-scale MILPs), an inherent specialization that should be considered when comparing aggregate performance metrics across the suite.
 
@@ -69,7 +64,7 @@ To quantify this runtime difference, we also analyze the relative speed of the s
 
 ***Figure 2: Average computational runtime and relative slowdown across varying problem sizes. Panels (a) and (b) display the absolute average runtime for LP and MILP problems, calculated as the shifted geometric mean with a penalty of twice the timeout threshold for unsolved problems. Panels (c) and (d) illustrate the relative computational slowdown of each solver compared to the fastest solver in that specific size category.***
 
-## Results by modeling framework
+### Results by modeling framework
 
 The benchmark problems originate from 13 modeling frameworks, and these differences in model origin may influence their underlying mathematical structure, including problem size, sparsity patterns, numerical conditioning, and the balance between continuous and discrete decisions. To understand this impact, we evaluated solver performance across these distinct frameworks, analyzing both the structural characteristics of their typical models and the resulting computational outcomes. However, because the available benchmark problems are community-contributed, they may not perfectly represent the entire spectrum of models each framework is capable of generating; therefore, these results offer indicative trends rather than universal conclusions.
 
@@ -83,7 +78,7 @@ This sensitivity is also apparent when examining average runtime. While all solv
 
 ***Figure 3: Solver performance and problem characteristics categorized by modeling framework. Frameworks on the x-axis are sorted in ascending order by the median number of variables. Panel (a) shows the number of benchmark problems contributed by each framework. Panel (b) displays the distribution of problem sizes, with the green line indicating the median. Panel (c) illustrates the percentage of problems successfully solved within time and memory limits, and panel (d) shows the average runtime, calculated as the shifted geometric mean with a penalty of twice the timeout threshold for unsolved problems. The “Others” category groups modeling frameworks contributing five or fewer problems, which are DCOPF, IESA-Opt, PowerModels, and ZEN-garden.***
 
-## Solver performance evolution
+### Solver performance evolution
 
 We analyzed the historical performance of solver packages by benchmarking successive software releases across our standardized problem set from 2022 to 2025. Both CBC and GLPK are omitted from this historical analysis. CBC is removed due to a lack of sufficient historical data, as only two years (2023 and 2024) of releases were available to track. GLPK is also excluded because its most recent major update occurred in 2020, meaning its performance has remained static during this period.
 
@@ -97,7 +92,7 @@ The most noticeable evolution in open-source solver packages is observed in HiGH
 
 ***Figure 4: Evolution of solver performance over time (2022–2025) on benchmark problems with fewer than 1 million variables. The left panels display the percentage point change in the fraction of successfully solved problems relative to the first tracked version of each solver. The right panels show the percentage change in average computational runtime relative to the first tracked version. CBC is removed from the analysis due to a lack of sufficient historical data, as only two years (2023 and 2024) of releases were available to track. GLPK is also excluded from this figure as it is only available in a single version from 2020.***
 
-## Scaling barriers in a PyPSA electricity model
+### Scaling barriers in a PyPSA electricity model
 
 To illustrate how solver runtime changes with increasing spatial and temporal resolution, Figure 5 presents results for a case study of Germany’s electricity system built using [PyPSA-Eur](https://github.com/open-energy-transition/pypsa-eur), modeling overnight capacity expansion to 2050 without transmission expansion optimization. We consider cases without unit commitment (panel a), which result in LP problems, and cases with unit commitment applied to conventional generators (panel b), which lead to MILP problems.
 
@@ -113,7 +108,7 @@ It is important to note that this case study may not be fully representative of 
 
 ***Figure 5: Solver runtimes and problem size for a PyPSA electricity-only case study for Germany with a zero-emissions 2050 target. Panel (a) and (b) show the runtime for the LP (without unit commitment) and MILP (with unit commitment) formulations, respectively. Panels (c) and (d) show how the number of variables grows with spatial and temporal resolution, respectively.***
 
-## Solver algorithm selection and the HiPO interior-point method
+### Solver algorithm selection and the HiPO interior-point method
 
 Beyond comparing default solver configurations, we performed a [complementary study](https://openenergybenchmark.org/blog/hipo_study) on how algorithm selection can influence solver performance on large-scale energy system models. The study, which is briefly summarized here, evaluated a new implementation of the interior-point method (HiPO) in HiGHS on LP benchmark problems. Its performance was compared against the existing HiGHS algorithms, namely the previous implementation of the interior-point method (IPX) and the dual simplex solver. The results of Gurobi using its default configuration from the benchmark run presented above was used as a proprietary baseline.
 
@@ -127,7 +122,7 @@ Figure 6 illustrates these findings for the same representative LP problems as f
 
 The study also highlighted the importance of crossover behavior and the distinction between feasible and basic solutions (additional details are included in the referenced study). Simplex methods naturally return basic solutions, while interior-point methods typically return feasible interior solutions unless an additional crossover phase is performed to recover a simplex basis. Note that in the referenced HiPO study we evaluated Gurobi using its default configuration, which runs multiple algorithms in parallel, including simplex and barrier interior-point methods with crossover, taking advantage of all available CPU cores and always returning a basic solution. By contrast, the HiPO and IPX runs in HiGHS were performed with an optional crossover, meaning that they returned feasible interior solutions that were not always basic. As a result, the interior-point results from Gurobi and HiGHS should not be interpreted as directly comparable. A more comparable configuration in Gurobi would require setting “SolutionTarget=1”, which removes the requirement for a basic solution and allows crossover to be skipped if the interior-point solution meets the solution accuracy thresholds.
 
-# Conclusions
+## Conclusions
 
 The benchmarking of 213 energy system optimization models reveals a detailed picture of current solver capabilities, highlighting both the progress of open-source tools and the remaining performance gaps compared to proprietary alternatives. Based on the Open Energy Benchmark data, the key findings are:
 
@@ -137,9 +132,9 @@ The benchmarking of 213 energy system optimization models reveals a detailed pic
 * **Ongoing Progress in Open-Source Solvers**: The performance evolution study demonstrates some progress by open-source tools, notably HiGHS, on our benchmark set. Because we only tested historical solver versions on the problems with fewer than 10<sup>6</sup> variables, advances on large problems were not measured. Recent developments such as HiPO are also not captured because our methodology runs solvers with default configurations. However, the complementary HiPO study demonstrates that new algorithmic developments can yield substantially larger performance gains, such as a 7% increase in the number of energy planning problems solvable by open-source tools and up to 15 times faster runtimes for models with millions of variables.
 Ultimately, while proprietary solvers remain necessary for the largest energy models, the active development of tools like HiGHS proves that the frontier of open-source capabilities is steadily expanding. Advancing this frontier requires continuous feedback between modelers and solver developers. The Open Energy Benchmark platform facilitates this by providing a diagnostic space where solver developers can identify specific weaknesses and target improvements for upcoming releases. To keep this resource comprehensive, Open Energy Transition invites the modeling community to contribute additional LP and MILP problems following the guidelines available at the [Open Energy Benchmark website](https://openenergybenchmark.org/blog/open_call). By submitting models from underrepresented frameworks or large-scale instances specifically designed to stress-test algorithms, the community can directly help shape and accelerate open-source solver development.
 
-# Benchmark details
+## Benchmark details
 
-## Number and types of problems
+### Number and types of problems
 
 The benchmark draws on a broad collection of energy system optimization problems available through the Open Energy Benchmark platform. Each problem is generated by a given combination of model framework, scenario, and resolution.​ The model framework is the software and mathematical framework used to formulate optimization problems. The scenario specifies the system under study and its assumptions, such as geographic scope, temporal scope, sectoral scope, available technologies, technology costs, policy constraints, and other boundary conditions. The resolution describes the spatial and temporal granularity used in the scenario.
 
@@ -173,7 +168,7 @@ To evaluate solver performance across this diverse dataset, problems are categor
 
 ***Figure 7: Relationship between problem scale characteristics across the benchmark suite. Panel (a) shows the number of non-zero elements scaling nearly linearly with the number of variables. Panel (b) illustrates a similar linear scaling between the number of constraints and the number of variables.***
 
-## Solver packages
+### Solver packages
 
 To provide a comprehensive assessment of the optimization landscape, the benchmark evaluates one proprietary solver package (Gurobi) alongside four open-source alternatives (CBC, GLPK, HiGHS, and SCIP), all listed in Table 2. GLPK is only available in a single version from 2020 and is included to represent legacy open-source capabilities, as it has not received major updates since that time. Conversely, Gurobi, HiGHS, and SCIP have maintained active development cycles, allowing the benchmark to capture their annual progress from 2022 through 2025.
 
@@ -184,27 +179,29 @@ It should be noted that not all solver packages are equally suited for both LP a
 While the present report focuses on default settings, we performed a [separate study](https://openenergybenchmark.org/blog/hipo_study) evaluating different solver variants and configurations for the HiGHS solver package, specifically focusing on a new implementation of interior-point method (HiPO).
 
 | Solver package | Licensing model | Version | Release Year |
-| --- | --- | --- | --- |
+|---|---|---|---:|
 | CBC | Open source | 2.10.11 | 2023 |
-|  |  | 2.10.12 | 2024 |
+| CBC | Open source | 2.10.12 | 2024 |
 | GLPK | Open source | 5.0 | 2020 |
 | Gurobi | Proprietary | 10.0.0 | 2022 |
-|  |  | 11.0.0 | 2023 |
-|  |  | 12.0.0 | 2024 |
-|  |  | 13.0.0 | 2025 |
+| Gurobi | Proprietary | 11.0.0 | 2023 |
+| Gurobi | Proprietary | 12.0.0 | 2024 |
+| Gurobi | Proprietary | 13.0.0 | 2025 |
 | HiGHS | Open source | 1.5.0.dev0 | 2022 |
-|  |  | 1.6.0.dev0 | 2023 |
-|  |  | 1.9.0 | 2024 |
-|  |  | 1.12.0 | 2025 |
+| HiGHS | Open source | 1.6.0.dev0 | 2023 |
+| HiGHS | Open source | 1.9.0 | 2024 |
+| HiGHS | Open source | 1.12.0 | 2025 |
 | SCIP | Open source | 8.0.3 | 2022 |
-|  |  | 8.1.0 | 2023 |
-|  |  | 9.2.0 | 2024 |
-|  |  | 10.0.0 | 2025 |
+| SCIP | Open source | 8.1.0 | 2023 |
+| SCIP | Open source | 9.2.0 | 2024 |
+| SCIP | Open source | 10.0.0 | 2025 |
 
 ***Table 2: Overview of the solver packages evaluated, including the specific versions and release years tracked in the benchmark.***
 
-|  | Gurobi | HiGHS | SCIP | CBC | GLPK |
-| --- | --- | --- | --- | --- | --- |
+<div class="table-scroll">
+
+| Option | Gurobi | HiGHS | SCIP | CBC | GLPK |
+|---|---|---|---|---|---|
 | Algorithm selection | Auto (Primal/Dual simplex, Barrier interior-point) | Auto (Primal/Dual simplex, IPX interior-point) | Branch-and-cut + LP solver (SoPlex, typically dual simplex) | Branch-and-cut (CLP simplex for LP relaxations) | Branch-and-bound + simplex |
 | Solution type (LP) | Basic (or basic after crossover) | Basic (simplex) or non-basic (IPM) | Basic (SoPlex) | Basic (CLP) | Basic |
 | Crossover | Auto (enabled if barrier) | Auto (`run_crossover = choose`) | N/A | N/A | N/A |
@@ -214,11 +211,13 @@ While the present report focuses on default settings, we performed a [separate s
 | Threads | All available cores | All available cores | 1 | 1 | 1 |
 | MIP gap | 1e-4 | 1e-4 | 1e-4 (default = 0) | 1e-4 (default = 0) | 1e-4 (default = 0) |
 | Random seed | 0 | 0 (default = not fixed) | 0 | 0 (default = time-based) | 0 (default = not fixed) |
-| Notes | Uses branch-and-cut for MILPs with simplex (typically dual) for node relaxations; barrier uses crossover by default | Uses branch-and-cut for MILPs with simplex (typically dual) for node relaxations; IPM may skip crossover | MILP-focused solver; LP handled by SoPlex; limited parallelism | Limited cut generation and parallelism; relies on CLP for LP solves | Legacy solver; limited performance on large-scale MILPs |
+| Notes | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; barrier uses crossover by default | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; IPM may skip crossover | MILP-focused solver; LP handled by SoPlex; limited parallelism | Limited cut generation and parallelism; relies on CLP for LP solves | Legacy solver; limited performance on large-scale MILPs |
+
+</div>
 
 ***Table 3: Overview of the solver options adopted in the benchmarking process. Parameters modified from their native default values are highlighted in orange; all other listed options represent the standard default settings.***
 
-## Benchmark execution
+### Benchmark execution
 
 All benchmark runs were carried out on Google Cloud virtual machines using a custom benchmarking infrastructure developed with Python and OpenTofu for the Open Energy Benchmark, designed to be open, transparent, and reproducible. Running the benchmark on publicly available cloud virtual machines allows parallelization of solver jobs, significantly reduces costs, and mirrors the standard working environment of most energy modelers. All data, problems, and execution code are openly available on [GitHub](https://github.com/open-energy-transition/solver-benchmark).
 
