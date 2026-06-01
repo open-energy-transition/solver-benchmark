@@ -202,16 +202,16 @@ While the present report focuses on default settings, we performed a [separate s
 
 | Option | Gurobi | HiGHS | SCIP | CBC | GLPK |
 |---|---|---|---|---|---|
-| Algorithm selection | Auto (Primal/Dual simplex, Barrier interior-point) | Auto (Primal/Dual simplex, IPX interior-point) | Branch-and-cut + LP solver (SoPlex, typically dual simplex) | Branch-and-cut (CLP simplex for LP relaxations) | Branch-and-bound + simplex |
-| Solution type (LP) | Basic (or basic after crossover) | Basic (simplex) or non-basic (IPM) | Basic (SoPlex) | Basic (CLP) | Basic |
-| Crossover | Auto (enabled if barrier) | Auto (`run_crossover = choose`) | N/A | N/A | N/A |
-| Barrier/IPM tolerance | 1e-8 | 1e-8 | N/A | N/A | N/A |
-| Primal feasibility tolerance | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
-| Dual feasibility tolerance | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
-| Threads | All available cores | All available cores | 1 | 1 | 1 |
-| MIP gap | 1e-4 | 1e-4 | 1e-4 (default = 0) | 1e-4 (default = 0) | 1e-4 (default = 0) |
-| Random seed | 0 | 0 (default = not fixed) | 0 | 0 (default = time-based) | 0 (default = not fixed) |
-| Notes | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; barrier uses crossover by default | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; IPM may skip crossover | MILP-focused solver; LP handled by SoPlex; limited parallelism | Limited cut generation and parallelism; relies on CLP for LP solves | Legacy solver; limited performance on large-scale MILPs |
+| **Algorithm selection** | Auto (Primal/Dual simplex, Barrier interior-point) | Auto (Primal/Dual simplex, IPX interior-point) | Branch-and-cut + LP solver (SoPlex, typically dual simplex) | Branch-and-cut (CLP simplex for LP relaxations) | Branch-and-bound + simplex |
+| **Solution type (LP)** | Basic (or basic after crossover) | Basic (simplex) or non-basic (IPM) | Basic (SoPlex) | Basic (CLP) | Basic |
+| **Crossover** | Auto (enabled if barrier) | Auto (`run_crossover = choose`) | N/A | N/A | N/A |
+| **Barrier/IPM tolerance** | 1e-8 | 1e-8 | N/A | N/A | N/A |
+| **Primal feasibility tolerance** | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
+| **Dual feasibility tolerance** | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
+| **Threads** | All available cores | All available cores | 1 | 1 | 1 |
+| **MIP gap** | 1e-4 | 1e-4 | *1e-4 (default = 0)* | *1e-4 (default = 0)* | *1e-4 (default = 0)* |
+| **Random seed** | 0 | *0 (default = not fixed)* | 0 | *0 (default = time-based)* | *0 (default = not fixed)* |
+| **Notes** | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; barrier uses crossover by default | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; IPM may skip crossover | MILP-focused solver; LP handled by SoPlex; limited parallelism | Limited cut generation and parallelism; relies on CLP for LP solves | Legacy solver; limited performance on large-scale MILPs |
 
 </div>
 
