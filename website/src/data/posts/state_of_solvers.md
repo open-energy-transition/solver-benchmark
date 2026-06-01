@@ -5,7 +5,7 @@ excerpt: "The results of the 2025 Open Energy Benchmark"
 tags: ["report", "solvers", "benchmarks"]
 ---
 
-> **Authors:** Enrico Antonini, Siddharth Krishna, Daniele Lerede
+> **Authors:** (in alphabetical order) Enrico Antonini, Siddharth Krishna, Daniele Lerede
 >
 > **Contributors:** Heba Badawy, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Priya Goli Vamsi, Madhukar Mishra, Maximillian Parzen, and Luis Prieto
 >
