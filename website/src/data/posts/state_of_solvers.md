@@ -1,7 +1,7 @@
 ---
 title: "The State of Solvers for Energy Planning"
 date: "2026-03-29"
-excerpt: "The State of Solvers for Energy Planning"
+excerpt: "The results of the 2025 Open Energy Benchmark"
 tags: ["report", "solvers", "benchmarks"]
 ---
 
