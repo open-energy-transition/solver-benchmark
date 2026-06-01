@@ -12,7 +12,7 @@ tags: ["report", "solvers", "benchmarks"]
 > **Funder:** Breakthrough Energy
 >
 > **Acknowledgements:** The authors would like to thank the following individuals for their valuable feedback during the preparation of this report (listed alphabetically): Oscar Dowson (JuMP), Ivet Galabova (HiGHS), Julian Hall (HiGHS), Lennart Lahrs (Gurobi), Matthias Miltenberger (Gurobi), Mark Turner (MIPLIB), and Filippo Zanetti (HiGHS).
-> 
+>
 > **Resources**:
 > The complete report, benchmark instances, and metadata are available on [Zenodo](https://zenodo.org/records/20429905)
 
