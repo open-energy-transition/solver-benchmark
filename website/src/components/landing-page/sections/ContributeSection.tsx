@@ -154,6 +154,7 @@ const Contribute = () => {
             className="absolute hidden lg:block  w-[341px] h-[361px] top-0 right-0 lg:-right-8 rounded-[48px]"
             src="/landing_page/contribution.png"
             alt="Contribution image"
+            loading="lazy"
             width={341}
             height={361}
           />

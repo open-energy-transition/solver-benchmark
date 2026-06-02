@@ -190,6 +190,7 @@ const Header = () => {
               width={47}
               height={22}
               className="hidden lg:block"
+              loading="lazy"
             />
             <ArrowUpLeftIcon className="rotate-90 text-white" />
           </Link>
@@ -210,6 +211,7 @@ const Header = () => {
                     alt="Contribution image"
                     width={43}
                     height={43}
+                    loading="lazy"
                   />
                 </div>
               </a>

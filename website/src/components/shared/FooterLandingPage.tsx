@@ -33,6 +33,7 @@ const Footer = ({
                   height={57}
                   src="/logo/oet.png"
                   alt="oet-logo"
+                  loading="lazy"
                 />
               </Link>
               <div
@@ -62,6 +63,7 @@ const Footer = ({
                     alt="be-logo"
                     width={215}
                     height={29}
+                    loading="lazy"
                   />
                 </Link>
               </div>
