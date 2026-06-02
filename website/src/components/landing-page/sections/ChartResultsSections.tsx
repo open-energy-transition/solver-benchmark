@@ -362,7 +362,7 @@ const ChartResultsSections = ({
         titlePosition="bottom-center"
         categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
         formatBenchmarkSolved={formatBenchmarkSolved}
-        categoryMemoryLabels={["Memory: 7 GiB", "Memory: 124 GiB"]}
+        categoryMemoryLabels={["2 vCPUs, 7GB memory", "16 vCPUs, 124GB memory"]}
         showBarTopLabels={showBarTopLabels}
         sizeAnnotations={sizeAnnotations}
         rightmostGroupNote={rightmostGroupNote}

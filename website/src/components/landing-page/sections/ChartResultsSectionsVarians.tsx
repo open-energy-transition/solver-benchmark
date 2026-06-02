@@ -25,10 +25,14 @@ export type TableRowType = {
 const ChartResultsSectionsVarians = ({
   problemClass = "LP",
   hideLegend = false,
+  sizeAnnotations,
+  rightmostGroupOpacity,
 }: {
   problemClass?: string;
   title?: string;
   hideLegend?: boolean;
+  sizeAnnotations?: string[];
+  rightmostGroupOpacity?: number;
 }) => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData;
@@ -319,7 +323,9 @@ const ChartResultsSectionsVarians = ({
         hideLegend={hideLegend}
         categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
         formatBenchmarkSolved={formatBenchmarkSolved}
-        categoryMemoryLabels={["Memory: 7 GiB", "Memory: 124 GiB"]}
+        categoryMemoryLabels={["2 vCPUs, 7GB memory", "16 vCPUs, 124GB memory"]}
+        sizeAnnotations={sizeAnnotations}
+        rightmostGroupOpacity={rightmostGroupOpacity}
       />
     </div>
   );

@@ -13,7 +13,7 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
     <div className="w-full">
       <div
         className={`${
-          isOpen ? "bg-[#E6EFE3] " : "bg-white "
+          isOpen ? "bg-[#DCE8FB] " : "bg-[#EEF5FF] "
         } w-full rounded-3xl shadow`}
       >
         <div
@@ -57,7 +57,7 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
           className={`overflow-hidden transition-all duration-150 ease-in-out px-8 pb-4`}
           style={{ maxHeight: isOpen ? "100vh" : "0" }}
         >
-          <div className="text-lg max-w-[1152px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2">
+          <div className="text-lg max-w-[1152px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2 text-navy">
             {answer}
           </div>
         </div>

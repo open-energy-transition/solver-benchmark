@@ -11,7 +11,7 @@ const MainContent = () => {
             </h1>
           </div>
           <div className="mt-4 text-navy text-2xl font-light">
-            <div className="font-light text-navy text-lg sm:text-2xl font-lato sm:leading-1.4 tracking-normal">
+            <div className="font-light text-navy text-sm sm:text-base font-lato sm:leading-1.4 tracking-normal">
               Built by{" "}
               <span className="font-bold">
                 <Link

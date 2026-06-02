@@ -7,6 +7,39 @@ import { IResultState } from "@/types/state";
 import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 
+const NOTE_BOX = (
+  <div className="px-4 py-3 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl max-w-xl text-left">
+    <p className="text-xs leading-relaxed">
+      <b>Note:</b> benchmark results are indicative of general performance and
+      feasibility, but if you want to pick a solver for your particular
+      application, we recommend using{" "}
+      <Link
+        href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks"
+        className="font-bold underline underline-offset-2 hover:opacity-75"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        our scripts
+      </Link>{" "}
+      to benchmark on your own problems. See the{" "}
+      <Link
+        href="/dashboard/main-results#caveats"
+        className="font-bold underline underline-offset-2 hover:opacity-75"
+      >
+        Caveats
+      </Link>
+      , and full{" "}
+      <Link
+        href="/methodology"
+        className="font-bold underline underline-offset-2 hover:opacity-75"
+      >
+        Methodology
+      </Link>{" "}
+      for more information.
+    </p>
+  </div>
+);
+
 const LATERAL_LABEL_CLASS = "text-2xl font-bold";
 
 // Stable constant — avoids recreating the array on every render
@@ -72,11 +105,17 @@ const GetStartedChart = () => {
             hideLegend
             rightmostGroupNote={MILP_NOTE}
             rightmostGroupOpacity={0.4}
+            sizeAnnotations={LP_SIZE_ANNOTATIONS}
           />
           <p className="text-center text-sm font-semibold text-navy/70 mt-6 mb-3">
             Problems solved within time and memory limits (%)
           </p>
-          <ChartResultsSectionsVarians problemClass="MILP" hideLegend />
+          <ChartResultsSectionsVarians
+            problemClass="MILP"
+            hideLegend
+            sizeAnnotations={LP_SIZE_ANNOTATIONS}
+            rightmostGroupOpacity={0.4}
+          />
         </div>
       </div>
 
@@ -105,6 +144,7 @@ const GetStartedChart = () => {
               hideLegend
               rightmostGroupNote={MILP_NOTE}
               rightmostGroupOpacity={0.4}
+              sizeAnnotations={LP_SIZE_ANNOTATIONS}
             />
           </div>
         </div>
@@ -117,12 +157,17 @@ const GetStartedChart = () => {
           </div>
           <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
             <ChartResultsSectionsVarians hideLegend />
-            <ChartResultsSectionsVarians problemClass="MILP" hideLegend />
+            <ChartResultsSectionsVarians
+              problemClass="MILP"
+              hideLegend
+              sizeAnnotations={LP_SIZE_ANNOTATIONS}
+              rightmostGroupOpacity={0.4}
+            />
           </div>
         </div>
       </div>
 
-      {/* Buttons below the figure */}
+      {/* Buttons + Note below the figure */}
       <div className="mt-10 flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center">
         <Link
           href={ROOT_PATH.keyInsights}
@@ -172,6 +217,7 @@ const GetStartedChart = () => {
           <span>DETAILED RESULTS</span>
           <ArrowUpIcon className="ml-3 text-white rotate-90 size-6" />
         </Link>
+        {NOTE_BOX}
       </div>
     </div>
   );
