@@ -89,7 +89,7 @@ const D3StackedBarChart = ({
           .style("opacity", 1)
           .html(
             `<strong>${xAxisLabel}:</strong> ${d.data[categoryKey]}<br>
-             <strong>Category:</strong> ${key}<br>
+             <strong>Category:</strong> ${getSolverLabel(key)}<br>
              <strong>Value:</strong> ${
                xAxisTooltipFormat ? xAxisTooltipFormat(value) : value
              }`,
@@ -165,7 +165,7 @@ const D3StackedBarChart = ({
 
   return (
     <div className={`bg-white rounded-xl ${className}`}>
-      <div className="flex justify-between items-center">
+      <div className="">
         <div className="flex items-center gap-2">
           <div className="tag-line-xs text-center text-dark-grey">
             {typeof title === "string" ? title : title}
@@ -174,7 +174,7 @@ const D3StackedBarChart = ({
             <DirectionalIndicator direction={directionalIndicator} size="sm" />
           )}
         </div>
-        <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
+        <div className="w-max flex gap-2 border border-stroke rounded-xl px-2 py-1 ml-auto mt-2">
           {Object.keys(colors).map((solverKey) => (
             <div
               key={solverKey}

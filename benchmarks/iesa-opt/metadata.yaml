@@ -10,7 +10,7 @@ benchmarks:
     Problem class: LP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industry
     Time horizon: Single period (1 year)
     MILP features: None
     License: CC BY 4.0

@@ -8,9 +8,9 @@ benchmarks:
     Contributor(s)/Source: Alvaro Porras and Diego Tejada; https://github.com/aporrasc/Mopo_HandsOn_Tutorial
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity expansion
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
-    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industrial
+    Sectors: Supply, Electric, Heating, Transport, Commercial, Residential, Industry
     Time horizon: Multi-stage (12 representative days)
     MILP features: None
     Sizes:
