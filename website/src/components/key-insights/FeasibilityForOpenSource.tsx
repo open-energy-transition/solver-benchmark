@@ -72,6 +72,7 @@ const FeasibilityForOpenSource = () => {
             "{name}",
             "temoa-US_9R_TS_SP",
           )}
+          aria-label={`Navigate to benchmark detail page for temoa-US_9R_TS_SP model`}
         >
           temoa-US_9R_TS_SP (9-12)
         </Link>{" "}
@@ -82,6 +83,7 @@ const FeasibilityForOpenSource = () => {
             "{name}",
             "times-ireland-noco2-counties",
           )}
+          aria-label={`Navigate to benchmark detail page for times-ireland-noco2-counties model`}
         >
           times-ireland-noco2-counties (26-1ts)
         </Link>

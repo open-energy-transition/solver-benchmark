@@ -12,6 +12,7 @@ import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { remark } from "remark";
 import html from "remark-html";
+import remarkGfm from "remark-gfm";
 
 type TocItem = {
   hash: string;
@@ -217,7 +218,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Otherwise treat as a markdown post.
   const { meta, content } = getPostBySlug(slug + ".md");
-  const processed = await remark().use(html).process(content);
+  const processed = await remark().use(remarkGfm).use(html).process(content);
   const rawHtml = processed.toString();
   const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
 

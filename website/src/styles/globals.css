@@ -71,7 +71,7 @@
     @apply text-sm font-lato font-normal sm:leading-none tracking-normal;
   }
   .tag-line-xxs {
-    @apply text-[8px] sm:text-[10px] font-lato font-normal sm:leading-none tracking-normal;
+    @apply text-[10px] font-lato font-normal sm:leading-none tracking-normal;
   }
   .text-medium-normal {
     @apply text-base sm:text-lg/1.5 font-medium sm:tracking-normal;

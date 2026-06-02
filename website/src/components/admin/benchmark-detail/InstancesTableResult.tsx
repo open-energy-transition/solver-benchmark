@@ -235,6 +235,7 @@ const InstancesTableResult = ({
             className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-4 py-2"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Download ${info.row.original.instance} instance file`}
           >
             Download
             <ArrowToRightIcon className="w-4 h-4 rotate-90" />
@@ -393,6 +394,7 @@ const InstancesTableResult = ({
                       className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-3 py-1"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="Download"
                     >
                       Download
                       <ArrowToRightIcon className="w-3 h-3 rotate-90" />

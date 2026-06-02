@@ -45,6 +45,7 @@ const PageBenchmarkDetail = () => {
       problemClass,
       application,
       modellingFramework,
+      milpFeatures,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
     sectors.split(",").forEach((sector) => {
@@ -53,7 +54,9 @@ const PageBenchmarkDetail = () => {
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.modellingFrameworks.add(modellingFramework);
-    uniqueValues.milpFeatures.add(fullMetaData[key].milpFeatures || "None");
+    milpFeatures.split(",").forEach((feature) => {
+      uniqueValues.milpFeatures.add(feature.trim());
+    });
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -114,7 +117,6 @@ const PageBenchmarkDetail = () => {
         problemSize.length === 0 ||
         (value.sizes &&
           value.sizes.some((size) => problemSize.includes(size.size)));
-
       const isRealisticMatch =
         realistic.length === 0 ||
         (value.sizes &&
@@ -133,10 +135,15 @@ const PageBenchmarkDetail = () => {
             }
             return false;
           }));
-
       const isMilpFeaturesMatch =
         milpFeatures.length === 0 ||
-        (value.milpFeatures && milpFeatures.includes(value.milpFeatures));
+        (value.milpFeatures &&
+          milpFeatures.some((selectedFeature) => {
+            const valueFeatures = value.milpFeatures
+              .split(",")
+              .map((f) => f.trim());
+            return valueFeatures.includes(selectedFeature);
+          }));
 
       return (
         isSectoralFocusMatch &&
@@ -205,6 +212,7 @@ const PageBenchmarkDetail = () => {
                 </div>
                 <Link
                   href={PATH_DASHBOARD.featureDistribution}
+                  aria-label={`Navigate to feature distribution page`}
                   className="text-white bg-navy px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap mt-1"
                 >
                   Feature Distribution

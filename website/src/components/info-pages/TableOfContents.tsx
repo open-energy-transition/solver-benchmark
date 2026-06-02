@@ -33,7 +33,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
           isBlogPage
             ? "lg:bg-[#F5F4F4] lg:w-[100vw] lg:absolute lg:top-0 lg:left-0 w-full"
             : "w-max"
-        } py-4.5 font-bold`}
+        } py-4.5 font-bold text-3xl xl:text-[40px]`}
       >
         {title}
       </h3>
