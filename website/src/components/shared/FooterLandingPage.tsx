@@ -25,6 +25,7 @@ const Footer = ({
               <Link
                 href="https://openenergytransition.org/"
                 target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Navigate to Open Energy Transition website"
               >
                 <Image
@@ -52,6 +53,7 @@ const Footer = ({
                 <Link
                   href="https://www.breakthroughenergy.org/"
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="Navigate to Breakthrough Energy website"
                 >
                   <Image
@@ -154,6 +156,7 @@ const Footer = ({
               <Link
                 href="https://opensource.org/license/MIT"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="hover:underline underline-offset-4"
                 aria-label="Navigate to MIT License page"
               >
