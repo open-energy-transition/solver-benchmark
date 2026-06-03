@@ -404,7 +404,7 @@ const D3GroupedBarChart = ({
           });
       });
     // Add reference line at y = 1
-    showLineAtY1 &&
+    if (showLineAtY1) {
       svg
         .append("line")
         .attr("x1", margin.left)
@@ -414,6 +414,7 @@ const D3GroupedBarChart = ({
         .attr("stroke", "#666")
         .attr("stroke-width", 1)
         .attr("stroke-dasharray", "4,4");
+    }
 
     // Y-axis
     const yAxis = useLogScale

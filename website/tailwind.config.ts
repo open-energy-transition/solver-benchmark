@@ -87,11 +87,12 @@ export default {
     },
   },
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@tailwindcss/typography"),
     function ({
       addUtilities,
     }: {
-      addUtilities: (utilities: Record<string, any>) => void;
+      addUtilities: (utilities: Record<string, unknown>) => void;
     }) {
       addUtilities({
         ".box-decoration-clone": {
