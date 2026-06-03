@@ -9,14 +9,13 @@ export default function Filter<T>({ column }: { column: Column<T, unknown> }) {
 
   const columnFilterValue = column.getFilterValue();
 
+  const facetedUniqueValues = column.getFacetedUniqueValues();
   const sortedUniqueValues = useMemo(
     () =>
       filterVariant === "range"
         ? []
-        : Array.from(column.getFacetedUniqueValues().keys())
-            .sort()
-            .slice(0, 5000),
-    [column.getFacetedUniqueValues(), filterVariant],
+        : Array.from(facetedUniqueValues.keys()).sort().slice(0, 5000),
+    [facetedUniqueValues, filterVariant],
   );
 
   return filterVariant === "range" ? (

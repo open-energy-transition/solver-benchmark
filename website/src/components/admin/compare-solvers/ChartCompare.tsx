@@ -599,7 +599,7 @@ const ChartCompare = ({
           .attr("dy", "15")
           .attr("pointer-events", "none")
           .text(`${solver2Info.name} is better`);
-      } catch (e) {
+      } catch {
         // ignore parsing errors
       }
     }

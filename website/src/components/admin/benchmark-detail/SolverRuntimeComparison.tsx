@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { MetaDataEntry } from "@/types/meta-data";

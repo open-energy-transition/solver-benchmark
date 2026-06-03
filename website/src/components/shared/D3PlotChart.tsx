@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverStatusType, SolverType } from "@/types/benchmark";
-import { formatDecimal, roundNumber } from "@/utils/number";
+import { formatDecimal } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { isNullorUndefined } from "@/utils/calculations";
