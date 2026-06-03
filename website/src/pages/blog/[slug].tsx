@@ -67,12 +67,12 @@ function extractTocAndInjectIds(htmlString: string) {
         // append our utility to existing class attribute (double-quote case)
         outAttrs = outAttrs.replace(
           /class=\"([^\"]*)\"/,
-          (_m: any, g1: any) => `class="${g1} scroll-mt-[240px]"`,
+          (_m: string, g1: string) => `class="${g1} scroll-mt-[240px]"`,
         );
         // append for single-quoted case
         outAttrs = outAttrs.replace(
           /class='([^']*)'/,
-          (_m: any, g1: any) => `class='${g1} scroll-mt-[240px]'`,
+          (_m: string, g1: string) => `class='${g1} scroll-mt-[240px]'`,
         );
       } else {
         // attrs may include a leading space; insert our class attribute
@@ -86,37 +86,7 @@ function extractTocAndInjectIds(htmlString: string) {
   return { contentHtml: newHtml, tocItems: toc };
 }
 
-export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
-  // For TSX posts, look up and render the registered component directly.
-  if (isTsx) {
-    const entry = getTsxPost(meta.slug);
-    if (entry) {
-      const { Component } = entry;
-      return (
-        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
-          <Head>
-            <title>{meta.title} - Open Energy Benchmark</title>
-            <meta name="description" content={meta.excerpt || meta.title} />
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content={meta.title} />
-            <meta property="og:description" content={meta.excerpt} />
-            <meta
-              property="og:image"
-              content={`https://openenergybenchmark.org${meta.image}`}
-            />
-            <meta property="article:published_time" content={meta.date} />
-            <link
-              rel="canonical"
-              href={`https://openenergybenchmark.org/blog/${slug}`}
-            />
-          </Head>
-          <ContentSection>
-            <Component />
-          </ContentSection>
-        </PageLayout>
-      );
-    }
-  }
+function MarkdownPost({ meta, contentHtml, tocItems }: Omit<Props, "isTsx">) {
   const mappedItems = tocItems.map((t) => ({ ...t, threshold: 0.5 }));
   const visibilities = useSectionsVisibility(mappedItems);
   const scrollDirection = useScrollDirection();
@@ -207,6 +177,41 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
         </div>
       </ContentSection>
     </PageLayout>
+  );
+}
+
+export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
+  if (isTsx) {
+    const entry = getTsxPost(meta.slug);
+    if (entry) {
+      const { Component } = entry;
+      return (
+        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
+          <Head>
+            <title>{meta.title} - Open Energy Benchmark</title>
+            <meta name="description" content={meta.excerpt || meta.title} />
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content={meta.title} />
+            <meta property="og:description" content={meta.excerpt} />
+            <meta
+              property="og:image"
+              content={`https://openenergybenchmark.org${meta.image}`}
+            />
+            <meta property="article:published_time" content={meta.date} />
+            <link
+              rel="canonical"
+              href={`https://openenergybenchmark.org/blog/${meta.slug}`}
+            />
+          </Head>
+          <ContentSection>
+            <Component />
+          </ContentSection>
+        </PageLayout>
+      );
+    }
+  }
+  return (
+    <MarkdownPost meta={meta} contentHtml={contentHtml} tocItems={tocItems} />
   );
 }
 
