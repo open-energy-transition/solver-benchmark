@@ -97,6 +97,18 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
           <Head>
             <title>{meta.title} - Open Energy Benchmark</title>
             <meta name="description" content={meta.excerpt || meta.title} />
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content={meta.title} />
+            <meta property="og:description" content={meta.excerpt} />
+            <meta
+              property="og:image"
+              content={`https://openenergybenchmark.org${meta.image}`}
+            />
+            <meta property="article:published_time" content={meta.date} />
+            <link
+              rel="canonical"
+              href={`https://openenergybenchmark.org/blog/${slug}`}
+            />
           </Head>
           <ContentSection>
             <Component />
@@ -147,6 +159,18 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
       <Head>
         <title>{meta.title} - Open Energy Benchmark</title>
         <meta name="description" content={meta.excerpt || meta.title} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.excerpt} />
+        <meta
+          property="og:image"
+          content={`https://openenergybenchmark.org${meta.image}`}
+        />
+        <meta property="article:published_time" content={meta.date} />
+        <link
+          rel="canonical"
+          href={`https://openenergybenchmark.org/blog/${meta.slug}`}
+        />
       </Head>
 
       <TableOfContents
@@ -212,7 +236,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   // Otherwise treat as a markdown post.
-  const { meta, content } = getPostBySlug(slug + ".md");
+  let meta: PostMeta;
+  let content: string;
+  try {
+    const post = getPostBySlug(slug + ".md");
+    meta = post.meta;
+    content = post.content;
+  } catch {
+    return { notFound: true };
+  }
   const processed = await remark().use(remarkGfm).use(html).process(content);
   const rawHtml = processed.toString();
   const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
@@ -224,5 +256,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       tocItems,
       isTsx: false,
     },
+    revalidate: 3600,
   };
 };
