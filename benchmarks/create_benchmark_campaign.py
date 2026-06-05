@@ -181,7 +181,7 @@ def allocate_campaign_vms(
     zone: str,
     timeout_seconds: int | None,
     years: list[int],
-    solver: str | None,
+    solver: list[str] | None,
 ) -> list[dict]:
     """Allocate selected benchmark instances to VM YAML dictionaries."""
     if weight_col not in selected.columns:
@@ -411,9 +411,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     allocation.add_argument(
         "--solver",
-        help="Optional solver override passed to the generated VM YAML files.",
+        nargs="+",
+        default=["gurobi", "highs", "scip", "cbc", "glpk"],
+        help=("Solvers to benchmark. Default: gurobi highs scip cbc glpk."),
     )
-
     parser.add_argument(
         "--force",
         action="store_true",
@@ -492,7 +493,7 @@ def main() -> None:
         zone=args.zone,
         timeout_seconds=timeout_seconds,
         years=args.years,
-        solver=args.solver,
+        solver=" ".join(args.solver),
     )
 
     # create_benchmark_campaign uses relative paths like ../infrastructure.
