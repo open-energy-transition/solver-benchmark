@@ -217,11 +217,12 @@ python benchmarks/create_benchmark_campaign.py   --campaign packed-test   --all 
 
 ## Machine settings
 
-Default machine type:
+By default, benchmark instances are assigned to VM profiles automatically based on their metadata size class:
 
-```text
-c4-standard-2
-```
+| Size class | Machine profile | GCP machine type | Timeout |
+|------------|----------------|------------------|----------|
+| S, M | short | c4-standard-2 | 1 hour |
+| L | long | c4-highmem-16 | 24 hours |
 
 Default zone:
 
@@ -229,11 +230,17 @@ Default zone:
 us-central1-a
 ```
 
-Override them with:
+Override the automatic machine profile selection:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign custom-machine   --all   --machine-type c4-standard-4   --zone us-central1-b
+python benchmarks/create_benchmark_campaign.py  --campaign short-test --all --machine-type short
 ```
+
+```bash
+python benchmarks/create_benchmark_campaign.py --campaign long-test --all --machine-type long
+```
+
+When `--machine-type` is specified, all selected benchmark instances use the chosen profile regardless of their size classification.
 
 ## Timeout policy
 
