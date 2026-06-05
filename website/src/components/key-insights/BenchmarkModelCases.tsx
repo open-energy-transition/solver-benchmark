@@ -46,7 +46,7 @@ const BenchmarkModelCases = () => {
           “Realistic”: Realistic problems are missing for PowerModels and Sienna
         </li>
         <li>
-          Large problem instances are also missing for many model frameworks,
+          Large benchmark instances are also missing for many model frameworks,
           see the section{" "}
           <a
             className="font-bold"
