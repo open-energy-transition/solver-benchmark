@@ -98,14 +98,11 @@ def validate_selection_args(args: argparse.Namespace) -> None:
     if selection_modes != 1:
         raise ValueError("Select exactly one mode: --all, --benchmark, or --instance.")
 
+    if args.name and not args.benchmark:
+        raise ValueError("--name can only be used together with --benchmark.")
+
     if args.size and not args.benchmark:
         raise ValueError("--size can only be used together with --benchmark.")
-
-    if args.size and len(args.benchmark) != 1:
-        raise ValueError(
-            "--size is only allowed with a single --benchmark. "
-            "Use repeated --instance '<benchmark>:<instance>' values for mixed selections."
-        )
 
 
 def format_available_instances(df: pd.DataFrame, benchmark: str | None = None) -> str:
@@ -136,7 +133,12 @@ def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFram
         selected = selected.loc[selected["Benchmark"].isin(args.benchmark)].copy()
 
         if args.size:
-            selected = selected.loc[selected["Instance"].isin(args.size)].copy()
+            selected = selected.loc[selected["Size"].isin(args.size)].copy()
+
+        if args.name:
+            selected = selected.loc[
+                selected["Instance"].astype(str).isin(args.name)
+            ].copy()
     elif args.instance:
         requested = {(item.benchmark, item.instance) for item in args.instance}
         selected = selected.loc[
@@ -334,15 +336,20 @@ def build_parser() -> argparse.ArgumentParser:
         nargs="+",
         help=(
             "Select all instances of one or more benchmarks. "
-            "Can be combined with --size only when a single benchmark is selected."
+            "Can be combined with --size and --name filters."
         ),
     )
     selection.add_argument(
         "--size",
         nargs="+",
+        help="Filter benchmark instances by metadata Size field, e.g. S M L.",
+    )
+    selection.add_argument(
+        "--name",
+        nargs="+",
         help=(
-            "Select one or more instances of a single benchmark. "
-            "This filters the metadata 'Instance' column."
+            "Filter benchmark instances by metadata Name field. "
+            "This corresponds to the Instance column in the flattened metadata."
         ),
     )
     selection.add_argument(
