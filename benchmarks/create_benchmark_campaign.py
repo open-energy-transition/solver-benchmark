@@ -25,6 +25,17 @@ RUNNER_DIR = REPO_ROOT / "runner"
 METADATA_FILE = REPO_ROOT / "results" / "metadata.yaml"
 INFRASTRUCTURE_DIR = REPO_ROOT / "infrastructure"
 
+MACHINE_PROFILES = {
+    "short": {
+        "machine_type": "c4-standard-2",
+        "timeout_seconds": 60 * 60,
+    },
+    "long": {
+        "machine_type": "c4-highmem-16",
+        "timeout_seconds": 24 * 60 * 60,
+    },
+}
+
 
 @dataclass(frozen=True)
 class InstanceSelection:
@@ -177,11 +188,11 @@ def allocate_campaign_vms(
     *,
     num_vms: int | None,
     weight_col: str,
-    machine_type: str,
+    machine_profile: str | None,
     zone: str,
     timeout_seconds: int | None,
     years: list[int],
-    solver: list[str] | None,
+    solver: str | None,
 ) -> list[dict]:
     """Allocate selected benchmark instances to VM YAML dictionaries."""
     if weight_col not in selected.columns:
@@ -197,7 +208,11 @@ def allocate_campaign_vms(
             f"{missing.to_string(index=False)}"
         )
 
-    def allocate_group(group: pd.DataFrame, group_timeout_seconds: int) -> list[dict]:
+    def allocate_group(
+        group: pd.DataFrame,
+        profile: str,
+        group_timeout_seconds: int,
+    ) -> list[dict]:
         vm_count = num_vms or len(group)
 
         if vm_count < 1:
@@ -207,15 +222,18 @@ def allocate_campaign_vms(
             group,
             weight_col,
             vm_count,
-            machine_type=machine_type,
+            machine_type=MACHINE_PROFILES[profile]["machine_type"],
             zone=zone,
             solvers=solver,
             timeout_seconds=group_timeout_seconds,
             years=years,
         )
 
-    if timeout_seconds is not None:
-        return allocate_group(selected, timeout_seconds)
+    if machine_profile is not None:
+        profile_timeout_seconds = (
+            timeout_seconds or MACHINE_PROFILES[machine_profile]["timeout_seconds"]
+        )
+        return allocate_group(selected, machine_profile, profile_timeout_seconds)
 
     vm_yamls = []
 
@@ -224,10 +242,16 @@ def allocate_campaign_vms(
     other = selected.loc[~selected["Size"].isin(["S", "M", "L"])].copy()
 
     if not small_medium.empty:
-        vm_yamls.extend(allocate_group(small_medium, 60 * 60))
+        sm_timeout_seconds = (
+            timeout_seconds or MACHINE_PROFILES["short"]["timeout_seconds"]
+        )
+        vm_yamls.extend(allocate_group(small_medium, "short", sm_timeout_seconds))
 
     if not large.empty:
-        vm_yamls.extend(allocate_group(large, 24 * 60 * 60))
+        large_timeout_seconds = (
+            timeout_seconds or MACHINE_PROFILES["long"]["timeout_seconds"]
+        )
+        vm_yamls.extend(allocate_group(large, "long", large_timeout_seconds))
 
     if not other.empty:
         raise ValueError(
@@ -246,6 +270,7 @@ def print_campaign_summary(
     vm_yamls: list[dict],
     years: list[int],
     timeout_seconds: int | None,
+    machine_profile: str | None,
 ) -> None:
     """Print a concise summary and the next OpenTofu command."""
     campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
@@ -258,6 +283,10 @@ def print_campaign_summary(
     print(f"Run ID:              {run_id}")
     print(f"VM prefix:           {vm_prefix}")
     print(f"Years:               {', '.join(map(str, years))}")
+    if machine_profile is None:
+        print("Machine policy:      S/M = short, L = long")
+    else:
+        print(f"Machine override:    {machine_profile}")
     if timeout_seconds is None:
         print("Timeout policy:      S/M = 1h (3600 s), L = 24h (86400 s)")
     else:
@@ -386,8 +415,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     allocation.add_argument(
         "--machine-type",
-        default="c4-standard-2",
-        help="GCP machine type for generated VM YAML files.",
+        choices=sorted(MACHINE_PROFILES),
+        help=(
+            "Override the automatic machine profile selection. "
+            "Use 'short' for c4-standard-2 with 1h timeout, or "
+            "'long' for c4-highmem-16 with 24h timeout. "
+            "If omitted, S/M instances use short and L instances use long."
+        ),
     )
     allocation.add_argument(
         "--zone",
@@ -489,7 +523,7 @@ def main() -> None:
         allocate_benchmarks,
         num_vms=args.num_vms,
         weight_col=args.weight_col,
-        machine_type=args.machine_type,
+        machine_profile=args.machine_type,
         zone=args.zone,
         timeout_seconds=timeout_seconds,
         years=args.years,
@@ -514,6 +548,7 @@ def main() -> None:
         vm_yamls=vm_yamls,
         years=args.years,
         timeout_seconds=timeout_seconds,
+        machine_profile=args.machine_type,
     )
 
 

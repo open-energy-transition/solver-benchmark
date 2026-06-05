@@ -123,6 +123,174 @@ To set up comprehensive benchmark campaigns, like the one available on the websi
 1. Use `notebooks/allocate-benchmarks-to-vms.ipynb` to create the benchmark campaign.
 2. Run `notebooks/run-and-observe-benchmarks.ipynb` to observe the benchmark campaign progress.
 
+Alternatively, the benchmark campaign generation can be performed from the command line using the tools described below.
+
+# Benchmark campaign creation
+
+This directory contains tooling to create cloud benchmark campaigns from the
+benchmark metadata.
+
+The main entry point is:
+
+```bash
+python benchmarks/create_benchmark_campaign.py
+```
+
+The script prepares benchmark metadata, selects benchmark instances, allocates
+them across VM configuration files, and creates an OpenTofu campaign directory
+under:
+
+```text
+infrastructure/benchmarks/<run-id>/
+```
+
+It does **not** launch cloud resources. It stops before `tofu apply`.
+
+## Basic usage
+
+Create a campaign for all benchmark instances:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign my-test   --all
+```
+
+This creates a run ID of the form:
+
+```text
+YYYYMMDD-my-test
+```
+
+and writes files such as:
+
+```text
+infrastructure/benchmarks/YYYYMMDD-my-test/run.tfvars
+infrastructure/benchmarks/YYYYMMDD-my-test/benchmark-instance-my-test-00.yaml
+```
+
+## Select benchmarks
+
+Select all instances of one benchmark:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-test   --benchmark pypsa-eur
+```
+
+Select benchmark instances by size class:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-small-medium   --benchmark pypsa-eur-elec   --size S M
+```
+
+Select benchmark instances by metadata name, for example specific spatial or temporal resolutions (field `Name` in the metadata:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-resolution-test   --benchmark pypsa-eur-elec   --name 2-1h 3-2h
+```
+
+Combine size and name filters:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-filtered   --benchmark pypsa-eur-elec   --size S M   --name 2-1h 3-2h
+```
+
+Select mixed benchmark instances explicitly:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign mixed-test   --instance pypsa-eur:2-1h   --instance pypsa-earth:3-2h
+```
+
+Include metadata entries marked as skipped (due to known TO or memory issues):
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign clean-test   --all   --include-to-skip
+```
+
+## VM allocation
+
+By default, the script creates one VM per selected benchmark instance.
+
+Use a custom number of VMs with:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign packed-test   --all   --num-vms 5
+```
+
+## Machine settings
+
+Default machine type:
+
+```text
+c4-standard-2
+```
+
+Default zone:
+
+```text
+us-central1-a
+```
+
+Override them with:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign custom-machine   --all   --machine-type c4-standard-4   --zone us-central1-b
+```
+
+## Timeout policy
+
+If no timeout is provided, the script applies the default timeout policy:
+
+```text
+S/M instances: 1 hour
+L instances:   24 hours
+```
+
+Override the timeout for all generated VM files:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign timeout-test   --all   --timeout-hours 6
+```
+
+## Solver and year selection
+
+By default, the generated VM YAML files benchmark all the following solvers:
+
+```text
+gurobi highs scip cbc glpk
+```
+
+The default solver year is:
+
+```text
+2025
+```
+
+Run specific solvers for one or more years:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign year-test   --all  --solver cbc highs --years 2024 2025
+```
+
+## Existing campaign directories
+
+The script fails if the target campaign directory already exists.
+
+Use a different campaign name, remove the existing directory, or overwrite it:
+
+```bash
+python benchmarks/create_benchmark_campaign.py   --campaign my-test   --all   --force
+```
+
+## Launching the campaign
+
+After reviewing the generated files, launch the campaign from the infrastructure
+directory:
+
+```bash
+cd infrastructure
+
+tofu apply   -var-file benchmarks/<run-id>/run.tfvars   -state=states/<run-id>.tfstate
+```
+
 ### Running your own benchmarks
 
 To run your own benchmark problems, either locally or on the cloud, follow the steps in the appropriate section above but using a `benchmarks.yaml` file of your own that gives the details (metadata) and URL/path of your benchmark problems.
