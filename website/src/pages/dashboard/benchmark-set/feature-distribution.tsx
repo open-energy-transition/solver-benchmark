@@ -30,7 +30,10 @@ const PageBenchmarkDetail = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
 
-                    <Link href={PATH_DASHBOARD.benchmarkSet.list}>
+                    <Link
+                      href={PATH_DASHBOARD.benchmarkSet.list}
+                      aria-label="Navigate to benchmark set list page"
+                    >
                       <span className="self-center font-semibold whitespace-nowrap text-gray-600">
                         Benchmark Set
                       </span>

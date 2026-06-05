@@ -35,6 +35,7 @@ const MissionCard = ({
       <Link
         href={linkHref}
         className={`mt-6 px-3 pt-7 pb-1 relative flex justify-between`}
+        aria-label={`Navigate to ${title} page`}
       >
         <div className="font-normal text-base font-lato text-[#e2e2e2] hover:underline underline-offset-4">
           {linkText}

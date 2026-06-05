@@ -12,6 +12,7 @@ import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { remark } from "remark";
 import html from "remark-html";
+import remarkGfm from "remark-gfm";
 
 type TocItem = {
   hash: string;
@@ -66,12 +67,12 @@ function extractTocAndInjectIds(htmlString: string) {
         // append our utility to existing class attribute (double-quote case)
         outAttrs = outAttrs.replace(
           /class=\"([^\"]*)\"/,
-          (_m: any, g1: any) => `class="${g1} scroll-mt-[240px]"`,
+          (_m: string, g1: string) => `class="${g1} scroll-mt-[240px]"`,
         );
         // append for single-quoted case
         outAttrs = outAttrs.replace(
           /class='([^']*)'/,
-          (_m: any, g1: any) => `class='${g1} scroll-mt-[240px]'`,
+          (_m: string, g1: string) => `class='${g1} scroll-mt-[240px]'`,
         );
       } else {
         // attrs may include a leading space; insert our class attribute
@@ -85,25 +86,7 @@ function extractTocAndInjectIds(htmlString: string) {
   return { contentHtml: newHtml, tocItems: toc };
 }
 
-export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
-  // For TSX posts, look up and render the registered component directly.
-  if (isTsx) {
-    const entry = getTsxPost(meta.slug);
-    if (entry) {
-      const { Component } = entry;
-      return (
-        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
-          <Head>
-            <title>{meta.title} - Open Energy Benchmark</title>
-            <meta name="description" content={meta.excerpt || meta.title} />
-          </Head>
-          <ContentSection>
-            <Component />
-          </ContentSection>
-        </PageLayout>
-      );
-    }
-  }
+function MarkdownPost({ meta, contentHtml, tocItems }: Omit<Props, "isTsx">) {
   const mappedItems = tocItems.map((t) => ({ ...t, threshold: 0.5 }));
   const visibilities = useSectionsVisibility(mappedItems);
   const scrollDirection = useScrollDirection();
@@ -185,6 +168,29 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
   );
 }
 
+export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
+  if (isTsx) {
+    const entry = getTsxPost(meta.slug);
+    if (entry) {
+      const { Component } = entry;
+      return (
+        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
+          <Head>
+            <title>{meta.title} - Open Energy Benchmark</title>
+            <meta name="description" content={meta.excerpt || meta.title} />
+          </Head>
+          <ContentSection>
+            <Component />
+          </ContentSection>
+        </PageLayout>
+      );
+    }
+  }
+  return (
+    <MarkdownPost meta={meta} contentHtml={contentHtml} tocItems={tocItems} />
+  );
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const mdSlugs = getPostSlugs().map((f) => f.replace(/\.md$/, ""));
   const tsxSlugs = getTsxPostSlugs();
@@ -212,7 +218,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Otherwise treat as a markdown post.
   const { meta, content } = getPostBySlug(slug + ".md");
-  const processed = await remark().use(html).process(content);
+  const processed = await remark().use(remarkGfm).use(html).process(content);
   const rawHtml = processed.toString();
   const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
 

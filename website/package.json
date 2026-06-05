@@ -7,7 +7,7 @@
     "move-results": "mkdir -p public/results && cp ../results/benchmark_results.csv public/results/ && cp ../results/metadata.yaml public/results/",
     "build": "npm run move-results && next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "axe": "axe http://localhost:3000 --tags wcag2a,wcag2aa --exit",
     "axe:extract": "node scripts/extract-sitemap-urls.mjs",
     "axe:test": "node scripts/run-a11y-tests.mjs",
@@ -44,6 +44,7 @@
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
     "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
     "yaml": ">=2.8.3"
   },

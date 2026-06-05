@@ -145,20 +145,23 @@ const InstancesTableResult = ({
       {
         header: "No. VARIABLES",
         accessorKey: "nOfVariables",
-        cell: (info: CellContext<RowData, unknown>) =>
-          formatInteger(info.getValue()),
+        cell: (
+          info: CellContext<RowData, string | number | null | undefined>,
+        ) => formatInteger(info.getValue()),
       },
       {
         header: "No. CONSTRAINTS",
         accessorKey: "nOfConstraints",
-        cell: (info: CellContext<RowData, unknown>) =>
-          formatInteger(info.getValue()),
+        cell: (
+          info: CellContext<RowData, string | number | null | undefined>,
+        ) => formatInteger(info.getValue()),
       },
       {
         header: "No. NON-ZEROS",
         accessorKey: "nOfNonzeros",
-        cell: (info: CellContext<RowData, unknown>) =>
-          formatInteger(info.getValue()),
+        cell: (
+          info: CellContext<RowData, string | number | null | undefined>,
+        ) => formatInteger(info.getValue()),
         meta: {
           headerClassName:
             "flex gap-2 items-center tag-line-xs font-extrabold w-20",
@@ -171,14 +174,16 @@ const InstancesTableResult = ({
         {
           header: "No. CONTINUOUS VARIABLES",
           accessorKey: "nOfContinuousVariables",
-          cell: (info: CellContext<RowData, unknown>) =>
-            formatInteger(info.getValue()),
+          cell: (
+            info: CellContext<RowData, string | number | null | undefined>,
+          ) => formatInteger(info.getValue()),
         },
         {
           header: "No. INTEGER VARIABLES",
           accessorKey: "nOfIntegerVariables",
-          cell: (info: CellContext<RowData, unknown>) =>
-            formatInteger(info.getValue()),
+          cell: (
+            info: CellContext<RowData, string | number | null | undefined>,
+          ) => formatInteger(info.getValue()),
         },
       );
     }
@@ -230,6 +235,7 @@ const InstancesTableResult = ({
             className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-4 py-2"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Download ${info.row.original.instance} instance file`}
           >
             Download
             <ArrowToRightIcon className="w-4 h-4 rotate-90" />
@@ -244,9 +250,10 @@ const InstancesTableResult = ({
     return baseColumns.map((col) => ({
       ...col,
       meta: {
-        ...(col.meta as any),
+        ...(col.meta as Record<string, unknown>),
         headerClassName:
-          (col.meta as any)?.headerClassName || defaultHeaderClass,
+          (col.meta as Record<string, unknown>)?.headerClassName ||
+          defaultHeaderClass,
       },
     }));
   }, [isMILP]);
@@ -387,6 +394,7 @@ const InstancesTableResult = ({
                       className="text-white bg-green-pop rounded-lg flex gap-1 items-center w-max px-3 py-1"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="Download"
                     >
                       Download
                       <ArrowToRightIcon className="w-3 h-3 rotate-90" />
