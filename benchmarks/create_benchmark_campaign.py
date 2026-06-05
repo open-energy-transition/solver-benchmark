@@ -366,8 +366,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--include-to-skip",
         action="store_true",
         help=(
-            "Include benchmark instances marked with "
-            "'Skip because: TO' in the metadata."
+            "Include benchmark instances marked with 'Skip because:' in the metadata."
         ),
     )
 
