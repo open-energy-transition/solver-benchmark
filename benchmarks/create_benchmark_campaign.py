@@ -158,14 +158,15 @@ def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFram
             msg += format_available_instances(df)
         raise ValueError(msg)
 
-    if args.exclude_skipped and "Skip because" in selected.columns:
-        selected = selected.loc[selected["Skip because"].isna()].copy()
+    if not args.include_to_skip and "Skip because" in selected.columns:
+        before_skip_filter = len(selected)
+        selected = selected.loc[selected["Skip because"].fillna("").eq("")].copy()
 
-    if selected.empty:
-        raise ValueError(
-            "The selection only contains skipped benchmark instances. "
-            "Re-run without --exclude-skipped if this is intentional."
-        )
+        if selected.empty and before_skip_filter > 0:
+            raise ValueError(
+                "All selected benchmark instances are marked in the "
+                "'Skip because' field. Re-run with --include-to-skip if this is intentional."
+            )
 
     return selected
 
@@ -362,9 +363,12 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     selection.add_argument(
-        "--exclude-skipped",
+        "--include-to-skip",
         action="store_true",
-        help="Exclude instances where metadata has 'Skip because' set.",
+        help=(
+            "Include benchmark instances marked with "
+            "'Skip because: TO' in the metadata."
+        ),
     )
 
     allocation = parser.add_argument_group("allocation")
