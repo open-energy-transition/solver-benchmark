@@ -608,7 +608,7 @@ const D3GroupedBarChart = ({
               }}
               className="size-2"
             />
-            {getSolverLabel(solverKey)}
+            <span className="font-bold">{getSolverLabel(solverKey)}</span>
           </div>
         ))}
     </div>

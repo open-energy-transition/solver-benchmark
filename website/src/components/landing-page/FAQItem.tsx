@@ -11,11 +11,7 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
 
   return (
     <div className="w-full">
-      <div
-        className={`${
-          isOpen ? "bg-[#DCE8FB] " : "bg-[#EEF5FF] "
-        } w-full rounded-3xl shadow`}
-      >
+      <div className="bg-[#EEF5FF] w-full rounded-3xl shadow">
         <div
           className="py-4 lg:py-[34px] px-8 font-lato cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
