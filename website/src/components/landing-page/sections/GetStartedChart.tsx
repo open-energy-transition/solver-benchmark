@@ -8,11 +8,16 @@ import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 
 const NOTE_BOX = (
-  <div className="px-4 py-3 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl max-w-xl text-left">
-    <p className="text-xs leading-relaxed">
-      <b>Note:</b> benchmark results are indicative of general performance and
-      feasibility, but if you want to pick a solver for your particular
-      application, we recommend using{" "}
+  <div className="px-6 py-5 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl w-full text-left">
+    <p className="text-sm leading-relaxed">
+      <b>Note:</b> The benchmark is not intended to identify a single
+      &ldquo;best&rdquo; solver or provide a universal ranking. Solver
+      performance depends on the characteristics of the optimization problem,
+      modeling framework, solver configuration, and user requirements. Instead,
+      the benchmark is intended as an educational and diagnostic resource. The
+      results provide indicative insights into solver performance and
+      feasibility across a diverse set of energy system models. If you want to
+      pick a solver for your particular application, we recommend using{" "}
       <Link
         href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks"
         className="font-bold underline underline-offset-2 hover:opacity-75"
@@ -27,8 +32,8 @@ const NOTE_BOX = (
         className="font-bold underline underline-offset-2 hover:opacity-75"
       >
         Caveats
-      </Link>
-      , and full{" "}
+      </Link>{" "}
+      and full{" "}
       <Link
         href="/methodology"
         className="font-bold underline underline-offset-2 hover:opacity-75"
@@ -89,7 +94,10 @@ const GetStartedChart = () => {
           <p className="text-center text-sm font-semibold text-navy/70 mt-6 mb-3">
             Problems solved within time and memory limits (%)
           </p>
-          <ChartResultsSectionsVarians hideLegend />
+          <ChartResultsSectionsVarians
+            hideLegend
+            sizeAnnotations={LP_SIZE_ANNOTATIONS}
+          />
         </div>
 
         {/* MILP section */}
@@ -149,14 +157,17 @@ const GetStartedChart = () => {
           </div>
         </div>
         {/* Bottom row: solved% panels */}
-        <div className="">
+        <div className="mt-6">
           <div className="text-center">
             <span className={LATERAL_LABEL_CLASS}>
               Problems solved within time and memory limits (%)
             </span>
           </div>
           <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
-            <ChartResultsSectionsVarians hideLegend />
+            <ChartResultsSectionsVarians
+              hideLegend
+              sizeAnnotations={LP_SIZE_ANNOTATIONS}
+            />
             <ChartResultsSectionsVarians
               problemClass="MILP"
               hideLegend
@@ -167,8 +178,11 @@ const GetStartedChart = () => {
         </div>
       </div>
 
-      {/* Buttons + Note below the figure */}
-      <div className="mt-10 flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center">
+      {/* Note below the figure, full width */}
+      <div className="mt-8 mb-4">{NOTE_BOX}</div>
+
+      {/* Buttons below the figure */}
+      <div className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center">
         <Link
           href={ROOT_PATH.keyInsights}
           className="
@@ -217,7 +231,6 @@ const GetStartedChart = () => {
           <span>DETAILED RESULTS</span>
           <ArrowUpIcon className="ml-3 text-white rotate-90 size-6" />
         </Link>
-        {NOTE_BOX}
       </div>
     </div>
   );

@@ -98,7 +98,7 @@ const ContactForm = () => {
         <span className="absolute top-1/2 -translate-y-1/2 left-8">Email:</span>
         <input
           id="contact-email"
-          className="bg-navy text-white placeholder-white rounded-[18px] px-8 pl-[5.5rem] py-5 w-full"
+          className="bg-[#285277] text-white placeholder-white rounded-[18px] px-8 pl-[5.5rem] py-5 w-full"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -112,7 +112,7 @@ const ContactForm = () => {
         <span className="absolute font-semibold top-6 left-8">Message</span>
         <textarea
           id="contact-message"
-          className="bg-navy text-white placeholder-white rounded-[18px] font-normal leading-[110%] px-8 py-8 pt-10 w-full mt-4"
+          className="bg-[#285277] text-white placeholder-white rounded-[18px] font-normal leading-[110%] px-8 py-8 pt-10 w-full mt-4"
           rows={3}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -122,7 +122,7 @@ const ContactForm = () => {
       <div className="flex justify-end lg:justify-start mt-6">
         <button
           type="submit"
-          className={`rounded-2xl px-12 py-4 text-base text-navy font-bold bg-[#1E7A8C] cursor-pointer
+          className={`rounded-2xl px-12 py-4 text-base text-white font-bold bg-[#1E7A8C] cursor-pointer
             ${isSubmitting || !isFormValid ? "bg-opacity-50" : "bg-opacity-100"}
             shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max md:w-52
             transition-colors duration-200 flex items-center justify-center gap-2`}
