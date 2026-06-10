@@ -1,9 +1,6 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import Link from "next/link";
 import ChartResultsSections from "./ChartResultsSections";
 import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians";
-import { IResultState } from "@/types/state";
 import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 
@@ -70,10 +67,6 @@ const MILP_NOTE = (
 );
 
 const GetStartedChart = () => {
-  const benchmarkLatestResultsRaw = useSelector(
-    (state: { results: IResultState }) => state.results.benchmarkLatestResults,
-  );
-
   return (
     <div className="bg-[#F4F6FA] text-navy w-full mx-auto max-w-8xl py-4 px-6 md:px-12">
       {/* ── MOBILE LAYOUT ── */}

@@ -4,30 +4,11 @@ import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { formatDecimal, roundNumber } from "@/utils/number";
 import { IFilterState, IResultState } from "@/types/state";
+import { BenchmarkResult } from "@/types/benchmark";
+import { StackedBarData } from "@/types/chart";
 import { SgmMode } from "@/constants/sgm";
-import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
-import { getLatestBenchmarkResult } from "@/utils/results";
-import { getSolverColor } from "@/utils/chart";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 import SgmRuntimeChart from "./SgmRuntimeChart";
-import { TIMEOUT_VALUES } from "@/constants/filter";
-
-type ColumnType = {
-  name: string;
-  field: string;
-  width: string;
-  header?: {
-    bgStyle?: string;
-    textStyle?: string;
-  };
-  row?: {
-    bgStyle?: string;
-    textStyle?: string;
-  };
-  sort?: boolean;
-  headerContent?: (header: string) => React.ReactNode;
-  sortFunc?: (a: TableRowType, b: TableRowType) => number;
-};
 
 export type TableRowType = {
   rank: number;
@@ -92,7 +73,7 @@ const ChartResultsSections = ({
   });
 
   const applySgmModeTo = useCallback(
-    (results: any[]) => {
+    (results: BenchmarkResult[]) => {
       switch (sgmMode) {
         case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS: {
           const benchmarkSuccessMap = new Map<string, number>();
@@ -137,11 +118,6 @@ const ChartResultsSections = ({
     return applySgmModeTo(benchmarkLatestResultsAll);
   }, [applySgmModeTo, benchmarkLatestResultsAll, selectedFilters]);
   const [tableData, setTableData] = useState<TableRowType[]>([]);
-  const [sortConfig, setSortConfig] = useState<{
-    field: string;
-    direction: "asc" | "desc";
-  }>({ field: "runtime", direction: "asc" });
-
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
     [benchmarkResults],
@@ -284,12 +260,6 @@ const ChartResultsSections = ({
     );
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
 
-  const rawBenchmarkResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.rawBenchmarkResults;
-    },
-  );
-
   // Build grouped chart data by timeout
   const uniqueTimeouts = useMemo(() => {
     return Array.from(
@@ -298,13 +268,13 @@ const ChartResultsSections = ({
   }, [benchmarkLatestResultsAll]);
 
   const groupedChartData = useMemo(() => {
-    const data: any[] = [];
+    const data: StackedBarData[] = [];
     uniqueTimeouts.forEach((t) => {
       const resultsForT = applySgmModeTo(
         benchmarkLatestResultsAll.filter((r) => r.timeout === t),
       );
 
-      const entry: any = {
+      const entry: StackedBarData = {
         timeout: t,
       };
 
@@ -334,11 +304,9 @@ const ChartResultsSections = ({
   function formatBenchmarkSolved({
     solved,
     total,
-    timeout,
   }: {
     solved: number;
     total: number;
-    timeout?: number;
   }) {
     return `${solved}/${total} problems`;
   }
