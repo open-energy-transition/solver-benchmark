@@ -72,7 +72,7 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
           strokeWidth={Math.max(1, strokeWidths[size] - 1)}
         />
       </svg>
-      <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+      <span className="font-bold inline-block whitespace-nowrap">
         {label ? label : text}
       </span>
     </div>

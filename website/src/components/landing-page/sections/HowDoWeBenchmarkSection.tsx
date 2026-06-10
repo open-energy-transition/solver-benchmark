@@ -3,10 +3,7 @@ import { ROOT_PATH } from "@/constants/path";
 
 const HowDoWeBenchmarkSection = () => {
   return (
-    <div
-      id="methodology"
-      className="text-navy bg-[#F5F4F4] py-5 scroll-mt-[6rem]"
-    >
+    <div id="methodology" className="text-white bg-navy py-5 scroll-mt-[6rem]">
       <div
         className="
           xl:flex
@@ -51,7 +48,7 @@ const HowDoWeBenchmarkSection = () => {
             <Link
               href={ROOT_PATH.methodology}
               aria-label={`Navigate to methodology page`}
-              className="bg-navy mt-6 xl:ml-4 uppercase w-max flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 font-bold items-center md:text-xl px-8 py-4 rounded-2xl shadow-sm text-lg text-white "
+              className="bg-white mt-6 xl:ml-4 uppercase w-max flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 font-bold items-center md:text-xl px-8 py-4 rounded-2xl shadow-sm text-lg text-navy "
             >
               Methodology
             </Link>

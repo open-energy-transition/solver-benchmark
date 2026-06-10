@@ -6,7 +6,7 @@ const MissionStart = () => {
   return (
     <div
       id="mission"
-      className="text-white bg-navy pt-24 pb-16 scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-page-bg pt-24 pb-16 scroll-mt-16 lg:scroll-mt-28"
     >
       <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
         <div className="grid sm:flex">
@@ -14,16 +14,16 @@ const MissionStart = () => {
             <div className="tag-line-lg uppercase font-league mb-4">
               Mission
             </div>
-            <div className="mb-8 text-stroke text-2xl sm:text-[40px] font-lato font-extrabold sm:leading-1.2 ">
+            <div className="mb-8 text-navy text-2xl sm:text-[40px] font-lato font-extrabold sm:leading-1.2 ">
               WHO IS IT FOR?
             </div>
           </div>
-          <div className="text-stroke leading-1.4 tag-line-lg my-2 mb-14 w-full sm:w-2/3 font-lato">
+          <div className="text-navy leading-1.4 tag-line-lg my-2 mb-14 w-full sm:w-2/3 font-lato">
             This website is geared towards providing data and insights to all
             participants in the green energy transition.
           </div>
         </div>
-        <div className="grid gap-8 lg:flex justify-between text-stroke">
+        <div className="grid gap-8 lg:flex justify-between text-navy">
           <MissionCard
             Icon={SoftwareDevIcon}
             title="Solver Developers"
