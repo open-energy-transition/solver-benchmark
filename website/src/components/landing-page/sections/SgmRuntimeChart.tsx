@@ -7,7 +7,6 @@ import { TableRowType } from "@/components/admin/ResultsSections";
 import { ID3GroupedBarChartData, StackedBarData } from "@/types/chart";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getLatestBenchmarkResult } from "@/utils/results";
-import { TIMEOUT_VALUES } from "@/constants/filter";
 
 interface ISolverRuntimeComparison {
   sgmData?: TableRowType[];
@@ -121,7 +120,7 @@ const SgmRuntimeChart = ({
   );
 
   const getXAxisTickFormat = useCallback(
-    (category?: string, data?: any) => {
+    (category?: string, _data?: unknown) => {
       const isNumericCategory =
         category !== undefined && !isNaN(Number(category));
 
