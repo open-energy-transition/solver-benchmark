@@ -3,6 +3,35 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async headers() {
+    const isDev = process.env.NODE_ENV === "development";
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              `script-src 'self' 'unsafe-inline'${
+                isDev ? " 'unsafe-eval'" : ""
+              } https://cloud.umami.is https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/`,
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https:",
+              "connect-src 'self' https://api.emailjs.com https://gateway.umami.is https://api.github.com",
+              "frame-src https://www.google.com/recaptcha/",
+            ].join("; "),
+          },
+        ],
+      },
+    ];
+  },
   webpack(config) {
     // Validate the benchmark data before proceeding with the build.
     validateData();
