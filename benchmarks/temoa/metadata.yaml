@@ -144,3 +144,76 @@ benchmarks:
       Num. constraints: 665474
       Num. variables: 708899
       Num. nonzeros: 3225685
+# https://github.com/CANOE
+  canoe_national_16d_high:
+    Short description: CANOE national high
+    Modelling framework: TEMOA
+    Model name: CANOE
+    Version:
+    Contributor(s)/Source: David Elder, University of Toronto
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
+    Time horizon: Single-stage (16 representative days)
+    MILP features: None
+    Sizes:
+    - Name: 10-16rd
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_national_16d_high.lp.gz
+      Temporal resolution: 16 representative days
+      Spatial resolution: 10 provinces
+      Realistic: true
+      Realistic motivation: Designed for comprehensive CA scenario analyses (https://github.com/CANOE).
+      Num. constraints: 12268242
+      Num. variables: 3630932
+      Num. nonzeros: 34988087
+  canoe_ontario_16d_high:
+    Short description: Ontario with endogenous demand technology choices, 16 representative days
+    Modelling framework: TEMOA
+    Model name: CANOE
+    Version:
+    Contributor(s)/Source: David Elder, University of Toronto
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
+    Time horizon: Single-stage (16 representative days)
+    MILP features: None
+    Sizes:
+    - Name: 1-16rd
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_ontario_16d_high.lp.gz
+      Temporal resolution: 16 representative days
+      Spatial resolution: 1 province
+      Realistic: true
+      Realistic motivation: Designed for comprehensive CA scenario analyses (https://github.com/CANOE).
+      Num. constraints: 1379771
+      Num. variables: 424528
+      Num. nonzeros: 4034937
+  canoe_ontario_16d_low:
+    Short description: Ontario with exogenous energy demands, 16 representative days
+    Modelling framework: TEMOA
+    Model name: CANOE
+    Version:
+    Contributor(s)/Source: David Elder, University of Toronto
+    License: CC BY 4.0
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Sector-coupled
+    Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
+    Time horizon: Single-stage (16 representative days)
+    MILP features: None
+    Sizes:
+    - Name: 1-16rd
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_ontario_16d_low.lp.gz
+      Temporal resolution: 16 representative days
+      Spatial resolution: 1 province
+      Realistic: false
+      Realistic motivation: Designed for comprehensive CA scenario analyses (https://github.com/CANOE).
+      Num. constraints: 385847
+      Num. variables: 374134
+      Num. nonzeros: 1689205
