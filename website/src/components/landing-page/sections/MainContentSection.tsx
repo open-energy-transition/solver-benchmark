@@ -9,6 +9,7 @@ const MainContent = () => {
       <div className="absolute inset-0 -my-2">
         <Image
           src="/landing_page/main_bg.png"
+          loading="lazy"
           alt="Background"
           fill
           style={{

@@ -138,6 +138,7 @@ const Contribute = () => {
               href="https://github.com/open-energy-transition/solver-benchmark"
               className="w-max bg-[#F0ECE4] items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
               target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub repository"
             >
               <div className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase">
@@ -153,6 +154,7 @@ const Contribute = () => {
             className="absolute hidden lg:block  w-[341px] h-[361px] top-0 right-0 lg:-right-8 rounded-[48px]"
             src="/landing_page/contribution.png"
             alt="Contribution image"
+            loading="lazy"
             width={341}
             height={361}
           />

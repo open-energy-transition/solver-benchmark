@@ -25,6 +25,7 @@ const Footer = ({
               <Link
                 href="https://openenergytransition.org/"
                 target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Navigate to Open Energy Transition website"
               >
                 <Image
@@ -32,6 +33,7 @@ const Footer = ({
                   height={57}
                   src="/logo/oet.png"
                   alt="oet-logo"
+                  loading="lazy"
                 />
               </Link>
               <div
@@ -52,6 +54,7 @@ const Footer = ({
                 <Link
                   href="https://www.breakthroughenergy.org/"
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="Navigate to Breakthrough Energy website"
                 >
                   <Image
@@ -60,6 +63,7 @@ const Footer = ({
                     alt="be-logo"
                     width={215}
                     height={29}
+                    loading="lazy"
                   />
                 </Link>
               </div>
@@ -154,6 +158,7 @@ const Footer = ({
               <Link
                 href="https://opensource.org/license/MIT"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="hover:underline underline-offset-4"
                 aria-label="Navigate to MIT License page"
               >

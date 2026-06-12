@@ -155,6 +155,7 @@ const Header = () => {
           <Link
             href="https://github.com/open-energy-transition/solver-benchmark"
             target="_blank"
+            rel="noopener noreferrer"
             aria-label="GitHub repository"
             className="mr-8"
           >
@@ -163,6 +164,7 @@ const Header = () => {
           <Link
             href="https://openenergytransition.org/"
             target="_blank"
+            rel="noopener noreferrer"
             className="
               border
               border-[#EBEFF24D]
@@ -188,6 +190,7 @@ const Header = () => {
               width={47}
               height={22}
               className="hidden lg:block"
+              loading="lazy"
             />
             <ArrowUpLeftIcon className="rotate-90 text-white" />
           </Link>
@@ -208,6 +211,7 @@ const Header = () => {
                     alt="Contribution image"
                     width={43}
                     height={43}
+                    loading="lazy"
                   />
                 </div>
               </a>
