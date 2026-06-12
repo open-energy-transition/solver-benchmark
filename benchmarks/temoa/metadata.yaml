@@ -183,7 +183,7 @@ benchmarks:
     Time horizon: Single-stage (16 representative days)
     MILP features: None
     Sizes:
-    - Name: 1-16rd
+    - Name: 10-16rd
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_ontario_16d_high.lp.gz
       Temporal resolution: 16 representative days
@@ -207,7 +207,7 @@ benchmarks:
     Time horizon: Single-stage (16 representative days)
     MILP features: None
     Sizes:
-    - Name: 1-16rd
+    - Name: 10-16rd
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_ontario_16d_low.lp.gz
       Temporal resolution: 16 representative days
