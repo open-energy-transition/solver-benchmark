@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   ArrowUpLeftIcon,
@@ -16,6 +16,17 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const currentRoute = router.pathname;
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
@@ -89,7 +100,9 @@ const Header = () => {
             name="open-menu"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 pt-2 lg:pt-0"
-            aria-label="Open menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-haspopup="menu"
           >
             <MenuIcon className="text-white h-6 w-6" />
           </button>
