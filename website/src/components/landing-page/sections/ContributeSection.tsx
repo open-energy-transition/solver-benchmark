@@ -50,8 +50,7 @@ const Contribute = () => {
           mx-auto
           max-w-8xl
           px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          md:px-12
           pt-[67px]
           pb-16
           justify-between
@@ -82,7 +81,7 @@ const Contribute = () => {
             CHECK OUT OUR CODE, JOIN THE EFFORT!
           </div>
         </div>
-        <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative">
+        <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative flex justify-between">
           <div className="font-lato text-xl/1.4 max-w-[541px]">
             <div className="font-medium">
               We accept community contributions for new benchmarks, new /
@@ -148,7 +147,7 @@ const Contribute = () => {
             </Link>
           </div>
           <Image
-            className="absolute hidden lg:block  w-[341px] h-[361px] top-0 right-0 lg:-right-8 rounded-[48px]"
+            className=" hidden lg:block top-0 right-0 lg:-right-8 rounded-[48px]"
             src="/landing_page/contribution.png"
             alt="Contribution image"
             width={341}

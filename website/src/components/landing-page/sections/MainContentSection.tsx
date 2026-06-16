@@ -3,7 +3,7 @@ import Link from "next/link";
 const MainContent = () => {
   return (
     <div className="bg-[#F4F6FA]">
-      <div className="pb-8 pt-8 md:pt-10 mx-auto max-w-8xl px-4 lg:px-[70px]">
+      <div className="pb-8 pt-8 md:pt-10 mx-auto max-w-8xl px-4 md:px-12">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
             <h1 className="inline text-navy box-decoration-clone">

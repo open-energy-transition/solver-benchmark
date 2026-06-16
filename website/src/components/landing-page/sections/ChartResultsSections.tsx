@@ -5,29 +5,8 @@ import { calculateSgm } from "@/utils/calculations";
 import { formatDecimal, roundNumber } from "@/utils/number";
 import { IFilterState, IResultState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
-import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
-import { getLatestBenchmarkResult } from "@/utils/results";
-import { getSolverColor } from "@/utils/chart";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 import SgmRuntimeChart from "./SgmRuntimeChart";
-import { TIMEOUT_VALUES } from "@/constants/filter";
-
-type ColumnType = {
-  name: string;
-  field: string;
-  width: string;
-  header?: {
-    bgStyle?: string;
-    textStyle?: string;
-  };
-  row?: {
-    bgStyle?: string;
-    textStyle?: string;
-  };
-  sort?: boolean;
-  headerContent?: (header: string) => React.ReactNode;
-  sortFunc?: (a: TableRowType, b: TableRowType) => number;
-};
 
 export type TableRowType = {
   rank: number;
@@ -137,11 +116,6 @@ const ChartResultsSections = ({
     return applySgmModeTo(benchmarkLatestResultsAll);
   }, [applySgmModeTo, benchmarkLatestResultsAll, selectedFilters]);
   const [tableData, setTableData] = useState<TableRowType[]>([]);
-  const [sortConfig, setSortConfig] = useState<{
-    field: string;
-    direction: "asc" | "desc";
-  }>({ field: "runtime", direction: "asc" });
-
   const solverList = useMemo(
     () => Array.from(new Set(benchmarkResults.map((result) => result.solver))),
     [benchmarkResults],
@@ -283,12 +257,6 @@ const ChartResultsSections = ({
       }),
     );
   }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
-
-  const rawBenchmarkResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.rawBenchmarkResults;
-    },
-  );
 
   // Build grouped chart data by timeout
   const uniqueTimeouts = useMemo(() => {

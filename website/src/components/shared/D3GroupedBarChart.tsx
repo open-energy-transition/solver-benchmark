@@ -27,7 +27,7 @@ const D3GroupedBarChart = ({
   showXaxisLabel = true,
   transformHeightValue,
   diagonalXAxisLabelsOnMobile = false,
-  xAxisBarTextClassName = "text-xs fill-dark-grey",
+  xAxisBarTextClassName = "text-[10px] lg:text-xs fill-dark-grey",
   normalize = true,
   xAxisLabelRotation = -45,
   xAxisLabelWrapLength = undefined,
@@ -464,8 +464,8 @@ const D3GroupedBarChart = ({
           .attr("y", textY)
           .attr("text-anchor", "middle")
           .attr("fill", sizeAnnotationTextColor ?? "#555")
-          .style("font-size", "16px")
           .style("font-weight", "bold")
+          .classed("text-[10px] lg:text-base", true)
           .text(annotation);
       });
     }

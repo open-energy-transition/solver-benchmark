@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between py-2 lg:pt-11 lg:pb-10 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
+        className="flex items-center justify-between py-2 lg:pt-11 lg:pb-10 mx-auto max-w-8xl w-full px-4 md:px-12"
         aria-label="Global"
       >
         <div className="flex w-max">
