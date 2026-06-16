@@ -364,8 +364,7 @@ const D3GroupedBarChart = ({
             .attr("dominant-baseline", "central")
             .attr("transform", `translate(${xPos}, ${nameY}) rotate(-90)`)
             .attr("fill", solverColor)
-            .style("font-size", "16px")
-            .classed("font-bold", true)
+            .classed("font-bold text-[12px] sm:text-base", true)
             .text(getSolverLabel(d.key));
         }
       })
@@ -636,7 +635,8 @@ const D3GroupedBarChart = ({
         </div>
       )}
       {directionalIndicator && (
-        <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2">
+        // <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2">
+        <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2 w-[80px]">
           <DirectionalIndicator direction={directionalIndicator} size="sm" />
         </div>
       )}
