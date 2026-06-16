@@ -34,16 +34,15 @@ const GetStarted = () => {
   return (
     <div
       id="benchmarks"
-      className="text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+      className="text-soft-gray bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
           xl:flex
           mx-auto
           max-w-8xl
-          px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          px-6
+          md:px-12
           pt-[67px]
           pb-16
           justify-between
@@ -60,7 +59,7 @@ const GetStarted = () => {
           >
             BENCHMARKS
           </div>
-          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-navy">
+          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-soft-gray">
             WHAT DO WE HAVE?
           </div>
         </div>
