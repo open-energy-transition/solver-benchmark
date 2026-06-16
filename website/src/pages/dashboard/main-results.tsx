@@ -152,6 +152,10 @@ const LandingPage = () => {
     <>
       <Head>
         <title>Main Results | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="View main benchmark results for short and long run configurations, with solver performance summaries, technical specifications, and caveats for interpreting results."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
