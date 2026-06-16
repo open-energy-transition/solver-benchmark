@@ -37,6 +37,9 @@ export interface ID3GroupedBarChart {
   showLineAtY1?: boolean;
   useLogScale?: boolean;
   directionalIndicator?: Direction;
+  yAxisMax?: number;
+  hideLegend?: boolean;
+  hideTitle?: boolean;
   colors:
     | {
         [key: string]: string;
@@ -48,6 +51,18 @@ export interface ID3GroupedBarChart {
     chartData: StackedBarData[];
     categoryKey: string;
   }) => React.ReactNode;
+  /** Optional Tailwind class to apply to the inner card background (e.g. 'bg-white' or 'bg-off-white') */
+  cardBgClassName?: string;
+  /** Optional Tailwind class to apply to text color inside the inner card (e.g. 'text-dark-grey') */
+  cardTextClassName?: string;
+  /** Color used for size annotation text (hex or CSS color). Defaults to '#555' if not provided. */
+  sizeAnnotationTextColor?: string;
+  showBarTopLabels?: boolean;
+  sizeAnnotations?: string[];
+  /** Position of the chart title. Defaults to 'top' (current behavior). Use 'bottom-center' to place it centered below the chart. */
+  titlePosition?: "top" | "bottom-center";
+  /** Optional overlay rendered above the rightmost bar group (e.g. a callout note). */
+  rightmostGroupNote?: React.ReactNode;
 }
 
 export interface ID3StackedBarChart {

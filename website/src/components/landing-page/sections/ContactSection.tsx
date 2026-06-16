@@ -81,38 +81,38 @@ const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       {showSuccess && (
-        <div className="mb-4 p-3 bg-teal text-white rounded-lg">
+        <div className="mb-4 p-3 bg-teal text-navy rounded-lg">
           Thank you! Your message has been sent successfully.
         </div>
       )}
 
       {errorMessage && (
-        <div className="mb-4 p-3 bg-red-500 text-white rounded-lg">
+        <div className="mb-4 p-3 bg-red-500 text-navy rounded-lg">
           {errorMessage}
         </div>
       )}
-      <div className="relative font-league font-medium text-lg text-dark-grey">
+      <div className="relative font-league font-medium text-lg text-white">
         <label htmlFor="contact-email" className="sr-only">
           Email
         </label>
         <span className="absolute top-1/2 -translate-y-1/2 left-8">Email:</span>
         <input
           id="contact-email"
-          className="rounded-[18px] px-8 pl-[5.5rem] py-5 w-full"
+          className="bg-[#285277] text-white placeholder-white rounded-[18px] px-8 pl-[5.5rem] py-5 w-full"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
-      <div className="relative text-dark-grey font-league text-base">
+      <div className="relative text-white font-league text-base">
         <label htmlFor="contact-message" className="sr-only">
           Message
         </label>
         <span className="absolute font-semibold top-6 left-8">Message</span>
         <textarea
           id="contact-message"
-          className="rounded-[18px] font-normal leading-[110%] px-8 py-8 pt-10 w-full mt-4"
+          className="bg-[#285277] text-white placeholder-white rounded-[18px] font-normal leading-[110%] px-8 py-8 pt-10 w-full mt-4"
           rows={3}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -122,7 +122,7 @@ const ContactForm = () => {
       <div className="flex justify-end lg:justify-start mt-6">
         <button
           type="submit"
-          className={`rounded-2xl px-12 py-4 text-base text-white font-bold bg-[#1E7A8C]
+          className={`rounded-2xl px-12 py-4 text-base text-white font-bold bg-[#1E7A8C] cursor-pointer
             ${isSubmitting || !isFormValid ? "bg-opacity-50" : "bg-opacity-100"}
             shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 w-max md:w-52
             transition-colors duration-200 flex items-center justify-center gap-2`}
@@ -140,9 +140,9 @@ const ContactSection = () => {
   return (
     <div
       id="contact"
-      className="text-white bg-navy pt-[105px] pb-[73px] scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-white pt-[105px] pb-[73px] scroll-mt-16 lg:scroll-mt-28"
     >
-      <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
+      <div className="mx-auto max-w-8xl px-4 md:px-12">
         <div className="grid md:flex">
           <div className="w-full md:w-1/2">
             <div
@@ -155,10 +155,10 @@ const ContactSection = () => {
             >
               contact
             </div>
-            <div className="leading-1.4 text-white text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal">
+            <div className="leading-1.4 text-navy text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal">
               GET IN TOUCH
             </div>
-            <div className="text-lavender font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
+            <div className="text-navy font-lato text-base/1.5 max-w-[381px] font-normal md:w-3/4">
               If you are a developer or are familiar with GitHub, please open an
               issue for all feedback and suggestions!
               <br /> Otherwise, you can write to us using this form.
