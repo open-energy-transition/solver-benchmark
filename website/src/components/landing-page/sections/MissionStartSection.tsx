@@ -8,7 +8,7 @@ const MissionStart = () => {
       id="mission"
       className="text-navy bg-page-bg pt-24 pb-16 scroll-mt-16 lg:scroll-mt-28"
     >
-      <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
+      <div className="mx-auto max-w-8xl px-4 lg:px-12">
         <div className="grid sm:flex">
           <div className="w-full sm:w-1/2 lg:w-1/3">
             <div className="tag-line-lg uppercase font-league mb-4">

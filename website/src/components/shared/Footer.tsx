@@ -7,7 +7,13 @@ const Footer = () => {
       <div className="h-1 w-full border-b border-[#e5e7eb] mx-auto pt-10"></div>
       <div>
         <div className="grid px-4 md:flex gap-1 pt-6 pb-24 lg:pb-6 justify-start md:justify-center items-center text-navy text-xs">
-          <Image width={54} height={25} src="/logo/oet.png" alt="oet-logo" />
+          <Image
+            width={54}
+            height={25}
+            src="/logo/oet.png"
+            alt="oet-logo"
+            loading="lazy"
+          />
           <span>© 2025</span>
           <Link
             href="https://openenergytransition.org"

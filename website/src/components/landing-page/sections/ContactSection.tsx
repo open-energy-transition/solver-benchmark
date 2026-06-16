@@ -142,7 +142,7 @@ const ContactSection = () => {
       id="contact"
       className="text-navy bg-white pt-[105px] pb-[73px] scroll-mt-16 lg:scroll-mt-28"
     >
-      <div className="mx-auto max-w-8xl px-4 lg:px-[70px]">
+      <div className="mx-auto max-w-8xl px-4 md:px-12">
         <div className="grid md:flex">
           <div className="w-full md:w-1/2">
             <div

@@ -23,6 +23,10 @@ const PageCompareSolvers = () => {
     <>
       <Head>
         <title>Compare Solvers | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="Compare any two solvers side by side on any subset of benchmarks to identify performance differences and find where one solver outperforms another."
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />

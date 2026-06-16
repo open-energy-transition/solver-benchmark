@@ -10,8 +10,7 @@ const HowDoWeBenchmarkSection = () => {
           mx-auto
           max-w-8xl
           px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          md:px-12
           pt-[67px]
           pb-16
           justify-between
@@ -32,7 +31,7 @@ const HowDoWeBenchmarkSection = () => {
             HOW DO WE BENCHMARK?
           </div>
         </div>
-        <div className="w-full xl:w-[67.42%] xl:pr-32">
+        <div className="w-full xl:w-[67.42%]">
           <div className="text-medium-normal max-w-4xl mb-2.5 xl:pl-4.5 mt-10">
             We run the benchmarks on cloud virtual machines (VMs) for efficiency
             and cost reasons, and have validated that the measured runtimes have

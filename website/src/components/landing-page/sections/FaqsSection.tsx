@@ -11,8 +11,7 @@ const Contribute = () => {
           mx-auto
           max-w-8xl
           px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          md:px-12
           pt-[67px]
           pb-16
         "
