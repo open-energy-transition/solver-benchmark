@@ -304,11 +304,9 @@ const ChartResultsSections = ({
   function formatBenchmarkSolved({
     solved,
     total,
-    timeout,
   }: {
     solved: number;
     total: number;
-    timeout?: number;
   }) {
     return `${solved}/${total} problems`;
   }
