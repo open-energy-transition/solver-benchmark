@@ -618,6 +618,7 @@ const D3GroupedBarChart = ({
 
   return (
     <div
+      key={windowWidth}
       className="relative bg-[#F4F6FA] rounded-2xl p-2"
       style={{ background: "#F4F6FA" }}
     >
