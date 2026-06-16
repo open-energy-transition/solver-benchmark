@@ -173,6 +173,10 @@ const PagePerformanceHistory = () => {
     <>
       <Head>
         <title>Performance History | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="Explore solver performance over time, including number of benchmarks solved, normalized performance metrics, and solver evolution across yearly releases."
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
