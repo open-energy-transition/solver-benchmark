@@ -231,6 +231,7 @@ const SgmRuntimeChart = ({
         tooltipFormat={tooltipFormat}
         axisLabelTitle={getAxisLabelTitle}
         xAxisTickFormat={getXAxisTickFormat}
+        xAxisBarTextClassName="text-[9px] sm:text-[10px] lg:text-xs fill-dark-grey"
         directionalIndicator={mode === "solved-pct" ? "higher" : "lower"}
         useLogScale={mode !== "solved-pct"}
         normalize={mode !== "solved-pct"}

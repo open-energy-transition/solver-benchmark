@@ -45,7 +45,7 @@ const NOTE_BOX = (
   </div>
 );
 
-const LATERAL_LABEL_CLASS = "text-2xl font-bold";
+const LATERAL_LABEL_CLASS = "text-[22px] lg:text-2xl font-bold";
 
 // Stable constant — avoids recreating the array on every render
 const LP_SIZE_ANNOTATIONS = [
@@ -76,59 +76,8 @@ const GetStartedChart = () => {
 
   return (
     <div className="bg-[#F4F6FA] text-navy w-full mx-auto max-w-8xl py-4 px-6 md:px-12">
-      {/* ── MOBILE LAYOUT ── */}
-      <div className="flex flex-col gap-6 md:hidden">
-        {/* LP section */}
-        <div>
-          <p className={`text-center mb-1 ${LATERAL_LABEL_CLASS}`}>
-            Linear programming problems
-          </p>
-          <p className="text-center text-sm font-semibold text-navy/70 mb-3">
-            Slowdown relative to the fastest solver
-          </p>
-          <ChartResultsSections
-            hideLegend
-            showBarTopLabels
-            sizeAnnotations={LP_SIZE_ANNOTATIONS}
-          />
-          <p className="text-center text-sm font-semibold text-navy/70 mt-6 mb-3">
-            Problems solved within time and memory limits (%)
-          </p>
-          <ChartResultsSectionsVarians
-            hideLegend
-            sizeAnnotations={LP_SIZE_ANNOTATIONS}
-          />
-        </div>
-
-        {/* MILP section */}
-        <div>
-          <p className={`text-center mb-1 ${LATERAL_LABEL_CLASS}`}>
-            Mixed-integer linear programming problems
-          </p>
-          <p className="text-center text-sm font-semibold text-navy/70 mb-3">
-            Slowdown relative to the fastest solver
-          </p>
-          <ChartResultsSections
-            problemClass="MILP"
-            hideLegend
-            rightmostGroupNote={MILP_NOTE}
-            rightmostGroupOpacity={0.4}
-            sizeAnnotations={LP_SIZE_ANNOTATIONS}
-          />
-          <p className="text-center text-sm font-semibold text-navy/70 mt-6 mb-3">
-            Problems solved within time and memory limits (%)
-          </p>
-          <ChartResultsSectionsVarians
-            problemClass="MILP"
-            hideLegend
-            sizeAnnotations={LP_SIZE_ANNOTATIONS}
-            rightmostGroupOpacity={0.4}
-          />
-        </div>
-      </div>
-
       {/* ── DESKTOP LAYOUT ── */}
-      <div className="hidden md:block">
+      <div className=" md:block">
         {/* Top row: slowdown panels */}
         <div className="text-center gap-0 mt-1">
           <div className="shrink-0 relative">
@@ -144,9 +93,6 @@ const GetStartedChart = () => {
               showBarTopLabels
               sizeAnnotations={LP_SIZE_ANNOTATIONS}
             />
-            <div className={`xl:hidden text-center ${LATERAL_LABEL_CLASS}`}>
-              Linear programming problems
-            </div>
             <ChartResultsSections
               problemClass="MILP"
               hideLegend
