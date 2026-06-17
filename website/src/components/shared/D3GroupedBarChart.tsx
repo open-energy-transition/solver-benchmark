@@ -454,7 +454,6 @@ const D3GroupedBarChart = ({
         const cat = sortedKeys[i];
         if (!cat || xScale(cat) === undefined) return;
         const x = xScale(cat)! + xScale.bandwidth() / 2;
-        const lineY = margin.top - 14;
         const textY = margin.top - 20;
         // Annotation text
         svg

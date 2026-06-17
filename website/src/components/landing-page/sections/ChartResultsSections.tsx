@@ -4,6 +4,8 @@ import { getHighestVersion } from "@/utils/versions";
 import { calculateSgm } from "@/utils/calculations";
 import { formatDecimal, roundNumber } from "@/utils/number";
 import { IFilterState, IResultState } from "@/types/state";
+import { BenchmarkResult } from "@/types/benchmark";
+import { StackedBarData } from "@/types/chart";
 import { SgmMode } from "@/constants/sgm";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 import SgmRuntimeChart from "./SgmRuntimeChart";
@@ -71,7 +73,7 @@ const ChartResultsSections = ({
   });
 
   const applySgmModeTo = useCallback(
-    (results: any[]) => {
+    (results: BenchmarkResult[]) => {
       switch (sgmMode) {
         case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS: {
           const benchmarkSuccessMap = new Map<string, number>();
@@ -266,13 +268,13 @@ const ChartResultsSections = ({
   }, [benchmarkLatestResultsAll]);
 
   const groupedChartData = useMemo(() => {
-    const data: any[] = [];
+    const data: StackedBarData[] = [];
     uniqueTimeouts.forEach((t) => {
       const resultsForT = applySgmModeTo(
         benchmarkLatestResultsAll.filter((r) => r.timeout === t),
       );
 
-      const entry: any = {
+      const entry: StackedBarData = {
         timeout: t,
       };
 
@@ -302,11 +304,9 @@ const ChartResultsSections = ({
   function formatBenchmarkSolved({
     solved,
     total,
-    timeout,
   }: {
     solved: number;
     total: number;
-    timeout?: number;
   }) {
     return `${solved}/${total} problems`;
   }
