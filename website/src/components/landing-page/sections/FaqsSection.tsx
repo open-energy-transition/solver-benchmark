@@ -22,7 +22,7 @@ const Contribute = () => {
                 tag-line-lg
                 uppercase
                 font-league
-                text-navy
+                text-white
                 mb-4
               "
           >
