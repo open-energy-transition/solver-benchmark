@@ -1,9 +1,21 @@
 import Link from "next/link";
 import { ROOT_PATH } from "@/constants/path";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const HowDoWeBenchmarkSection = () => {
+  const sectionRef = useScrollReveal<HTMLDivElement>({
+    y: 70,
+    scale: 0.93,
+    duration: 1,
+    ease: "power4.out",
+  });
+
   return (
-    <div id="methodology" className="text-white bg-navy py-5 scroll-mt-[6rem]">
+    <div
+      ref={sectionRef}
+      id="methodology"
+      className="text-white bg-navy py-5 scroll-mt-[6rem]"
+    >
       <div
         className="
           xl:flex

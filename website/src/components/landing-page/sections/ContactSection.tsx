@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
@@ -6,6 +6,7 @@ import {
 import emailjs from "@emailjs/browser";
 import { env } from "@/config/environment";
 import { SendIcon } from "@/assets/icons";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const ContactForm = () => {
   const [email, setEmail] = useState("");
@@ -137,6 +138,14 @@ const ContactForm = () => {
 };
 
 const ContactSection = () => {
+  const textRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.8 });
+  const formRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    scale: 0.96,
+    delay: 0.2,
+    duration: 0.9,
+  });
+
   return (
     <div
       id="contact"
@@ -144,7 +153,7 @@ const ContactSection = () => {
     >
       <div className="mx-auto max-w-8xl px-4 md:px-12">
         <div className="grid md:flex">
-          <div className="w-full md:w-1/2">
+          <div ref={textRef} className="w-full md:w-1/2">
             <div
               className="
                 tag-line-lg
@@ -164,7 +173,7 @@ const ContactSection = () => {
               <br /> Otherwise, you can write to us using this form.
             </div>
           </div>
-          <div className="w-full md:w-1/2 grid gap-4 pt-12">
+          <div ref={formRef} className="w-full md:w-1/2 grid gap-4 pt-12">
             <GoogleReCaptchaProvider
               reCaptchaKey={env.recaptcha.siteKey}
               scriptProps={{

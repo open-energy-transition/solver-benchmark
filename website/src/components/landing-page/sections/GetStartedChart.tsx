@@ -6,6 +6,7 @@ import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians";
 import { IResultState } from "@/types/state";
 import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const NOTE_BOX = (
   <div className="px-6 py-5 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl w-full text-left">
@@ -74,6 +75,30 @@ const GetStartedChart = () => {
     (state: { results: IResultState }) => state.results.benchmarkLatestResults,
   );
 
+  const slowdownChartsRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    scale: 0.96,
+    duration: 0.9,
+    ease: "power3.out",
+  });
+  const solvedChartsRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    scale: 0.96,
+    duration: 0.9,
+    ease: "power3.out",
+    delay: 0.15,
+  });
+  const noteRef = useScrollReveal<HTMLDivElement>({
+    y: 30,
+    delay: 0.3,
+    duration: 0.8,
+  });
+  const buttonsRef = useScrollReveal<HTMLDivElement>({
+    y: 30,
+    delay: 0.4,
+    duration: 0.8,
+  });
+
   return (
     <div className="bg-[#F4F6FA] text-navy w-full mx-auto max-w-8xl py-4 px-6 md:px-12">
       {/* ── DESKTOP LAYOUT ── */}
@@ -87,7 +112,10 @@ const GetStartedChart = () => {
               </span>
             </div>
           </div>
-          <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
+          <div
+            ref={slowdownChartsRef}
+            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4"
+          >
             <ChartResultsSections
               hideLegend
               showBarTopLabels
@@ -109,7 +137,10 @@ const GetStartedChart = () => {
               Problems solved within time and memory limits (%)
             </span>
           </div>
-          <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
+          <div
+            ref={solvedChartsRef}
+            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4"
+          >
             <ChartResultsSectionsVarians
               hideLegend
               sizeAnnotations={LP_SIZE_ANNOTATIONS}
@@ -125,10 +156,15 @@ const GetStartedChart = () => {
       </div>
 
       {/* Note below the figure, full width */}
-      <div className="mt-8 mb-4">{NOTE_BOX}</div>
+      <div ref={noteRef} className="mt-8 mb-4">
+        {NOTE_BOX}
+      </div>
 
       {/* Buttons below the figure */}
-      <div className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center">
+      <div
+        ref={buttonsRef}
+        className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center"
+      >
         <Link
           href={ROOT_PATH.keyInsights}
           className="

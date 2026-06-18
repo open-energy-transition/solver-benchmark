@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { IResultState } from "@/types/state";
 import StatsBox from "@/components/common/StatsBox";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const GetStarted = () => {
   const rawMetaData = useSelector((state: { results: IResultState }) => {
@@ -31,8 +32,16 @@ const GetStarted = () => {
     },
   );
 
+  const sectionRef = useScrollReveal<HTMLDivElement>({
+    scale: 0.92,
+    y: 60,
+    blur: true,
+    duration: 1,
+  });
+
   return (
     <div
+      ref={sectionRef}
       id="benchmarks"
       className="text-soft-gray bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
