@@ -145,6 +145,7 @@ const ContactSection = () => {
     delay: 0.2,
     duration: 0.9,
   });
+  const isDev = process.env.NODE_ENV === "development";
 
   return (
     <div
@@ -181,12 +182,14 @@ const ContactSection = () => {
                 defer: true,
                 appendTo: "head",
               }}
-              container={{
-                element: "re-captcha",
-                parameters: {
-                  badge: "bottomleft",
-                },
-              }}
+              {...(isDev
+                ? {}
+                : {
+                    container: {
+                      element: "re-captcha",
+                      parameters: { badge: "bottomleft" },
+                    },
+                  })}
             >
               <ContactForm />
             </GoogleReCaptchaProvider>

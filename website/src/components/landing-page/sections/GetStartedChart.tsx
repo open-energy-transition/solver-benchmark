@@ -1,9 +1,6 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import Link from "next/link";
 import ChartResultsSections from "./ChartResultsSections";
 import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians";
-import { IResultState } from "@/types/state";
 import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 import { useScrollReveal } from "@/hooks/useGsapAnimation";
@@ -71,10 +68,6 @@ const MILP_NOTE = (
 );
 
 const GetStartedChart = () => {
-  const benchmarkLatestResultsRaw = useSelector(
-    (state: { results: IResultState }) => state.results.benchmarkLatestResults,
-  );
-
   const slowdownChartsRef = useScrollReveal<HTMLDivElement>({
     y: 40,
     scale: 0.96,

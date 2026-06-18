@@ -5,6 +5,17 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   async headers() {
     const isDev = process.env.NODE_ENV === "development";
+
+    const scriptSources = [
+      "'self'",
+      "'unsafe-inline'",
+      ...(isDev ? ["'unsafe-eval'"] : []),
+      "https://cloud.umami.is",
+      "https://www.google.com/recaptcha/",
+      "https://www.gstatic.com/recaptcha/",
+      "https://cdnjs.cloudflare.com",
+    ];
+
     return [
       {
         source: "/:path*",
@@ -19,9 +30,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              `script-src 'self' 'unsafe-inline'${
-                isDev ? " 'unsafe-eval'" : ""
-              } https://cloud.umami.is https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/`,
+              `script-src ${scriptSources.join(" ")}`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "connect-src 'self' https://api.emailjs.com https://gateway.umami.is https://api.github.com",
