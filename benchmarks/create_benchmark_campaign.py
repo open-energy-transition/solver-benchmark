@@ -11,11 +11,12 @@ It intentionally stops before running `tofu apply`.
 from __future__ import annotations
 
 import argparse
+import getpass
 import re
 import subprocess
 import sys
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -616,6 +617,91 @@ def flatten_config(config: dict) -> dict:
     return flat
 
 
+def write_campaign_summary_csv(
+    *,
+    run_id: str,
+    selected: pd.DataFrame,
+    args: argparse.Namespace,
+    timeout_seconds: int | None,
+    machine_profile: str | None,
+) -> None:
+    """
+    Write a CSV summary of the generated benchmark campaign.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    selected : pandas.DataFrame
+        Selected benchmark instances after applying all filters.
+    args : argparse.Namespace
+        Parsed command-line arguments after config file defaults and CLI
+        overrides have been merged.
+    timeout_seconds : int | None
+        Solver timeout in seconds. If ``None``, the automatic timeout policy is
+        used.
+    machine_profile : str | None
+        Machine profile override. If ``None``, the automatic size-based policy
+        is used.
+    """
+    campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
+    created_at = datetime.now().isoformat(timespec="seconds")
+    created_by = getpass.getuser()
+
+    rows = selected.copy().reset_index(drop=True)
+
+    def effective_machine_profile(size: str) -> str:
+        if machine_profile is not None:
+            return machine_profile
+        if size in ["S", "M"]:
+            return "short"
+        if size == "L":
+            return "long"
+        return "unknown"
+
+    def effective_machine_type(size: str) -> str:
+        profile = effective_machine_profile(size)
+        if profile in MACHINE_PROFILES:
+            return MACHINE_PROFILES[profile]["machine_type"]
+        return "unknown"
+
+    def effective_timeout_seconds(size: str) -> int | None:
+        if timeout_seconds is not None:
+            return timeout_seconds
+        profile = effective_machine_profile(size)
+        if profile in MACHINE_PROFILES:
+            return MACHINE_PROFILES[profile]["timeout_seconds"]
+        return None
+
+    summary = pd.DataFrame(
+        {
+            "Run ID": run_id,
+            "Created at": created_at,
+            "Created by": created_by,
+            "Config file": args.configfile,
+            "Benchmark": rows["Benchmark"],
+            "Instance": rows["Instance"],
+            "Size": rows["Size"],
+            "Problem class": rows["Problem class"],
+            "Num. variables": rows.get("Num. variables"),
+            "Num. constraints": rows.get("Num. constraints"),
+            "Num. nonzeros": rows.get("Num. nonzeros"),
+            "URL": rows.get("URL"),
+            "Solvers": " ".join(args.solver),
+            "Years": " ".join(map(str, args.years)),
+            "Num VMs": args.num_vms if args.num_vms is not None else len(selected),
+            "Weight column": args.weight_col,
+            "Machine profile": rows["Size"].apply(effective_machine_profile),
+            "Machine type": rows["Size"].apply(effective_machine_type),
+            "Zone": args.zone,
+            "Timeout seconds": rows["Size"].apply(effective_timeout_seconds),
+            "Skipped instances included": args.do_not_skip,
+        }
+    )
+
+    summary.to_csv(campaign_dir / "campaign_summary.csv", index=False)
+
+
 def main() -> None:
     config_parser = argparse.ArgumentParser(add_help=False)
     config_parser.add_argument("--configfile")
@@ -676,6 +762,14 @@ def main() -> None:
         create_benchmark_campaign(run_id, vm_prefix, vm_yamls)
     finally:
         os.chdir(old_cwd)
+
+    write_campaign_summary_csv(
+        run_id=run_id,
+        selected=selected,
+        args=args,
+        timeout_seconds=timeout_seconds,
+        machine_profile=args.machine_type,
+    )
 
     print_campaign_summary(
         run_id=run_id,
