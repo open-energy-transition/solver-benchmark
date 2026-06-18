@@ -148,10 +148,12 @@ It does **not** launch cloud resources. It stops before `tofu apply`.
 
 ## Basic usage
 
-Create a campaign for all benchmark instances:
+Create a campaign for all benchmark instances (please do this only if strictly necessary):
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign my-test   --all
+python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test \
+  --all
 ```
 
 This creates a run ID of the form:
@@ -167,42 +169,102 @@ infrastructure/benchmarks/YYYYMMDD-my-test/run.tfvars
 infrastructure/benchmarks/YYYYMMDD-my-test/benchmark-instance-my-test-00.yaml
 ```
 
+## Configuration files
+
+Campaigns can also be defined through a YAML configuration file.
+
+A complete template is provided in:
+
+```text
+benchmarks/config.campaign.default.yaml
+```
+
+Run a campaign directly from a configuration file:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml
+```
+
+Command-line arguments always override values defined in the configuration file.
+
+For example:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml \
+  --campaign my-test \
+  --timeout-hours 6
+```
+
+uses the configuration file defaults while overriding the campaign name and timeout.
+
 ## Select benchmarks
 
 Select all instances of one benchmark:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-test   --benchmark pypsa-eur
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-test \
+  --benchmark pypsa-eur
 ```
 
 Select benchmark instances by size class:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-small-medium   --benchmark pypsa-eur-elec   --size S M
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-small-medium \
+  --benchmark pypsa-eur-elec \
+  --size S M
 ```
 
-Select benchmark instances by metadata name, for example specific spatial or temporal resolutions (field `Name` in the metadata:
+Select benchmark instances by metadata name, for example specific spatial or temporal resolutions (field `Name` in the metadata):
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-resolution-test   --benchmark pypsa-eur-elec   --name 2-1h 3-2h
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-resolution-test \
+  --benchmark pypsa-eur-elec \
+  --name 2-1h 3-2h
 ```
 
 Combine size and name filters:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign pypsa-eur-filtered   --benchmark pypsa-eur-elec   --size S M   --name 2-1h 3-2h
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-filtered \
+  --benchmark pypsa-eur-elec \
+  --size S M \
+  --name 2-1h 3-2h
 ```
 
 Select mixed benchmark instances explicitly:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign mixed-test   --instance pypsa-eur:2-1h   --instance pypsa-earth:3-2h
+python benchmarks/create_benchmark_campaign.py \
+  --campaign mixed-test \
+  --instance pypsa-eur:2-1h \
+  --instance pypsa-earth:3-2h
 ```
 
-Include metadata entries marked as skipped (due to known TO or memory issues):
+The instance selector uses the format:
+
+```text
+<benchmark-name>:<instance-name>
+```
+
+For example:
+
+```text
+PyPSA-DE:10-1h
+```
+
+Include metadata entries marked as skipped (due to known timeout or memory issues):
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign clean-test   --all   --include-to-skip
+python benchmarks/create_benchmark_campaign.py \
+  --campaign clean-test \
+  --all \
+  --do-not-skip
 ```
 
 ## VM allocation
@@ -212,17 +274,20 @@ By default, the script creates one VM per selected benchmark instance.
 Use a custom number of VMs with:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign packed-test   --all   --num-vms 5
+python benchmarks/create_benchmark_campaign.py \
+  --campaign packed-test \
+  --all \
+  --num-vms 5
 ```
 
 ## Machine settings
 
 By default, benchmark instances are assigned to VM profiles automatically based on their metadata size class:
 
-| Size class | Machine profile | GCP machine type | Timeout |
-|------------|----------------|------------------|----------|
-| S, M | short | c4-standard-2 | 1 hour |
-| L | long | c4-highmem-16 | 24 hours |
+| Size class | Machine profile | GCP machine type | Timeout  |
+| ---------- | --------------- | ---------------- | -------- |
+| S, M       | short           | c4-standard-2    | 1 hour   |
+| L          | long            | c4-highmem-16    | 24 hours |
 
 Default zone:
 
@@ -233,11 +298,17 @@ us-central1-a
 Override the automatic machine profile selection:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py  --campaign short-test --all --machine-type short
+python benchmarks/create_benchmark_campaign.py \
+  --campaign short-test \
+  --all \
+  --machine-type short
 ```
 
 ```bash
-python benchmarks/create_benchmark_campaign.py --campaign long-test --all --machine-type long
+python benchmarks/create_benchmark_campaign.py \
+  --campaign long-test \
+  --all \
+  --machine-type long
 ```
 
 When `--machine-type` is specified, all selected benchmark instances use the chosen profile regardless of their size classification.
@@ -254,7 +325,10 @@ L instances:   24 hours
 Override the timeout for all generated VM files:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign timeout-test   --all   --timeout-hours 6
+python benchmarks/create_benchmark_campaign.py \
+  --campaign timeout-test \
+  --all \
+  --timeout-hours 6
 ```
 
 ## Solver and year selection
@@ -271,10 +345,26 @@ The default solver year is:
 2025
 ```
 
+The year corresponds to the benchmark conda environment:
+
+```text
+benchmark-<year>
+```
+
+For example:
+
+```text
+2025 -> benchmark-2025
+```
+
 Run specific solvers for one or more years:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign year-test   --all  --solver cbc highs --years 2024 2025
+python benchmarks/create_benchmark_campaign.py \
+  --campaign year-test \
+  --all \
+  --solver cbc highs \
+  --years 2024 2025
 ```
 
 ## Existing campaign directories
@@ -284,18 +374,36 @@ The script fails if the target campaign directory already exists.
 Use a different campaign name, remove the existing directory, or overwrite it:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py   --campaign my-test   --all   --force
+python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test \
+  --all \
+  --force
 ```
 
 ## Launching the campaign
 
-After reviewing the generated files, launch the campaign from the infrastructure
-directory:
+After reviewing the generated files, launch the campaign from the infrastructure directory:
 
 ```bash
 cd infrastructure
 
-tofu apply   -var-file benchmarks/<run-id>/run.tfvars   -state=states/<run-id>.tfstate
+tofu apply \
+  -var-file benchmarks/<run-id>/run.tfvars \
+  -state=states/<run-id>.tfstate
+```
+
+## Example workflow
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml \
+  --campaign pypsa-de-scaling
+
+cd infrastructure
+
+tofu apply \
+  -var-file benchmarks/<run-id>/run.tfvars \
+  -state=states/<run-id>.tfstate
 ```
 
 ### Running your own benchmarks
