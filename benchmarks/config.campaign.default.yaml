@@ -1,0 +1,52 @@
+# Default configuration for create_benchmark_campaign.py.
+# Explicit CLI arguments override values defined here.
+#
+# Example:
+#
+# python benchmarks/create_benchmark_campaign.py \
+#     --configfile benchmarks/config.campaign.default.yaml \
+#     --campaign YYYYMMDD-my-campaign-2-3h
+
+
+campaign: YYYYMMDD-benchmark-details # Rename with an insightful name to avoid confusion in the generation of the campaign/results.
+
+selection:
+  # Exactly one of:
+  # - all
+  # - benchmark
+  # - instance
+  # should be active after CLI/config merge.
+  all: false # `true` runs all the benchmarks in `results/metadata.yaml`
+
+  benchmark:
+    - benchmark  # example: IESA-Opt-NL / PyPSA-DE
+
+  size: null # Valid values include: S / M / L
+  name: null # Optional filter on benchmark instance names. Example: 10-1h (`name` field in `results/metadata.yaml`)
+
+  # Select specific benchmark instances
+  instance: null # Set to `null` to disable, otherwise a typical example would be `PyPSA-DE:10-1h`, i.e. `benchmark-name`
+
+  include_to_skip: false
+
+allocation:
+  num_vms: null # default: if `null` one VM is created per selected benchmark instance
+  weight_col: "Num. variables" # default: "Num. variables", but an alternative choice is "Num. constraints"
+
+  # null = automatic:
+  #   S/M -> short
+  #   L   -> long
+  machine_type: null # default: if `null` S/M -> short, L -> long
+
+  zone: us-central1-a
+  timeout_hours: null # default: if `null`  S/M -> 1 hour, L -> 24 hours
+
+  years:
+    - 2025 # corresponds to benchmark-<year> conda environment used to run the benchmark(s)
+
+  solver:
+    - gurobi
+    - highs
+    - scip
+    - cbc
+    - glpk
