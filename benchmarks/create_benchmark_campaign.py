@@ -176,7 +176,7 @@ def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFram
         if selected.empty and before_skip_filter > 0:
             raise ValueError(
                 "All selected benchmark instances are marked in the "
-                "'Skip because' field. Re-run with --include-to-skip if this is intentional."
+                "'Skip because' field. Re-run with --do-not-skip if this is intentional."
             )
 
     return selected
@@ -392,7 +392,7 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     selection.add_argument(
-        "--include-to-skip",
+        "--do-not-skip",
         action="store_true",
         help=(
             "Include benchmark instances marked with 'Skip because:' in the metadata."
