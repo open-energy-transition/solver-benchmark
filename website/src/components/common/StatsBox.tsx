@@ -21,8 +21,8 @@ const StatsBox = ({ value, label }: StatsBoxProps) => {
     >
       <div
         className="
-          bg-navy flex font-extrabold items-center mx-auto justify-center rounded-full
-          size-16 md:size-[5.5rem]  text-white text-3xl md:text-4xl
+          bg-white flex font-extrabold items-center mx-auto justify-center rounded-full
+          size-16 md:size-[5.5rem]  text-navy text-3xl md:text-4xl
         "
       >
         {value}

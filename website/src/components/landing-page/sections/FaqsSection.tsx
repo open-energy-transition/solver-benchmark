@@ -4,15 +4,14 @@ const Contribute = () => {
   return (
     <div
       id="faq"
-      className="py-5 text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+      className="py-5 text-white bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
           mx-auto
           max-w-8xl
           px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          md:px-12
           pt-[67px]
           pb-16
         "
@@ -23,7 +22,7 @@ const Contribute = () => {
                 tag-line-lg
                 uppercase
                 font-league
-                text-navy
+                text-white
                 mb-4
               "
           >

@@ -8,6 +8,7 @@ export type PostMeta = {
   date: string;
   tags?: string[];
   excerpt?: string;
+  image?: string;
   slug: string;
   /** 'md' for markdown files, 'tsx' for registered React component pages */
   type?: "md" | "tsx";
@@ -30,6 +31,7 @@ export function getPostBySlug(slugFilename: string) {
     date: data.date || "",
     tags: data.tags || [],
     excerpt: data.excerpt || "",
+    image: data.image || "",
     slug,
   };
   return { meta, content };

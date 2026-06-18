@@ -2,6 +2,8 @@ const solverLabels = new Map<string, string>([
   ["glpk", "GLPK"],
   ["scip", "SCIP"],
   ["highs", "HiGHS"],
+  ["cbc", "CBC"],
+  ["gurobi", "Gurobi"],
   ["na", "N/A"],
   ["single", "Single"],
   ["multi", "Multi"],

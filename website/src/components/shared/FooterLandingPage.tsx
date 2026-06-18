@@ -9,22 +9,23 @@ interface FooterProps {
 }
 
 const Footer = ({
-  wrapperClassName = "",
-  textClassName = "text-black",
-  descriptionTextClassName = "text-dark-grey",
+  wrapperClassName = "bg-navy",
+  textClassName = "text-white",
+  descriptionTextClassName = "text-white",
   theme = "light",
 }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className={wrapperClassName}>
-      <div className="max-w-8xl px-4 lg:px-[70px] mx-auto pb-16 lg:pb-0">
+      <div className="max-w-8xl px-4 lg:px-[70px] mx-auto pb-16 lg:pb-0 bg-navy">
         <div>
-          <div className="md:flex gap-1 py-[1.375rem] justify-between text-navy text-xs">
+          <div className="md:flex gap-1 py-[1.375rem] justify-between text-white text-xs">
             <div>
               <Link
                 href="https://openenergytransition.org/"
                 target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Navigate to Open Energy Transition website"
               >
                 <Image
@@ -32,6 +33,7 @@ const Footer = ({
                   height={57}
                   src="/logo/oet.png"
                   alt="oet-logo"
+                  loading="lazy"
                 />
               </Link>
               <div
@@ -42,24 +44,22 @@ const Footer = ({
                 collaboration and efficiency in the energy sector.
               </div>
               <div className="gap-2 items-center">
-                <div
-                  className={`font-lato w-full md:w-max uppercase font-bold text-sm/1.1 tracking-normal ${
-                    theme === "light" ? "text-dark-grey" : "text-white"
-                  }`}
-                >
+                <div className="font-lato w-full md:w-max uppercase font-bold text-sm/1.1 tracking-normal text-white">
                   Supported by
                 </div>
                 <Link
                   href="https://www.breakthroughenergy.org/"
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="Navigate to Breakthrough Energy website"
                 >
                   <Image
-                    className="mt-4"
+                    className="mt-4 p-1 bg-white rounded-xl"
                     src={`/landing_page/BE_logo_${theme}.png`}
                     alt="be-logo"
                     width={215}
                     height={29}
+                    loading="lazy"
                   />
                 </Link>
               </div>
@@ -149,11 +149,12 @@ const Footer = ({
           <div
             className={`py-9 mx-2 md:mx-20 text-center border-t border-stroke font-normal font-lato text-xs leading-[110%] tracking-normal`}
           >
-            <p className={theme === "light" ? "text-dark-grey" : "text-white"}>
+            <p className="text-white">
               © {currentYear} Open Energy Transition. Licensed under the{" "}
               <Link
                 href="https://opensource.org/license/MIT"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="hover:underline underline-offset-4"
                 aria-label="Navigate to MIT License page"
               >

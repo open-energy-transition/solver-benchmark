@@ -16,6 +16,10 @@ const PageSolvers = () => {
     <>
       <Head>
         <title>Solvers | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="Browse details of each solver on the Open Energy Benchmark platform, including relative performance plots comparing each solver against all others."
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
