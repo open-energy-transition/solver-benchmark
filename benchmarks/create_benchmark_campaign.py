@@ -19,6 +19,7 @@ from datetime import date
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RUNNER_DIR = REPO_ROOT / "runner"
@@ -169,7 +170,7 @@ def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFram
             msg += format_available_instances(df)
         raise ValueError(msg)
 
-    if not args.include_to_skip and "Skip because" in selected.columns:
+    if not args.do_not_skip and "Skip because" in selected.columns:
         before_skip_filter = len(selected)
         selected = selected.loc[selected["Skip because"].fillna("").eq("")].copy()
 
@@ -344,14 +345,38 @@ def print_campaign_summary(
     )
 
 
-def build_parser() -> argparse.ArgumentParser:
+def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
+    """
+    Build the command-line argument parser.
+
+    Parameters
+    ----------
+    defaults : dict | None, optional
+        Default argument values, typically loaded from a campaign config file.
+        Explicit CLI arguments override these values.
+
+    Returns
+    -------
+    argparse.ArgumentParser
+        Configured argument parser.
+    """
+    defaults = defaults or {}
     parser = argparse.ArgumentParser(
         description="Create an OpenTofu benchmark campaign from metadata."
     )
 
+    parser.set_defaults(**defaults)
+
+    parser.add_argument(
+        "--configfile",
+        help=(
+            "YAML campaign configuration file. "
+            "Explicit CLI arguments override values from the config file."
+        ),
+    )
+
     parser.add_argument(
         "--campaign",
-        required=True,
         help="Short campaign name. The run ID is generated as YYYYMMDD-<campaign>.",
     )
 
@@ -393,6 +418,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     selection.add_argument(
         "--do-not-skip",
+        dest="do_not_skip",
         action="store_true",
         help=(
             "Include benchmark instances marked with 'Skip because:' in the metadata."
@@ -471,7 +497,21 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def validate_campaign_directory(run_id: str, force: bool) -> None:
-    """Fail if the campaign directory already exists, unless --force is used."""
+    """
+    Validate that the campaign output directory can be created.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    force : bool
+        Whether to allow overwriting an existing campaign directory.
+
+    Raises
+    ------
+    FileExistsError
+        If the campaign directory already exists and ``force`` is ``False``.
+    """
     campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
 
     if not campaign_dir.exists():
@@ -493,9 +533,105 @@ def validate_campaign_directory(run_id: str, force: bool) -> None:
     )
 
 
+def load_configfile(path: str | None) -> dict:
+    """
+    Load campaign configuration from a YAML file.
+
+    Parameters
+    ----------
+    path : str | None
+        Path to the YAML configuration file. If ``None``, an empty
+        configuration dictionary is returned.
+
+    Returns
+    -------
+    dict
+        Parsed configuration dictionary.
+
+    Raises
+    ------
+    ValueError
+        If the YAML root object is not a mapping.
+    """
+    if path is None:
+        return {}
+
+    config_path = Path(path)
+
+    with config_path.open("r", encoding="utf-8") as f:
+        config = yaml.safe_load(f) or {}
+
+    if not isinstance(config, dict):
+        raise ValueError(f"Config file must contain a YAML mapping: {config_path}")
+
+    return config
+
+
+def flatten_config(config: dict) -> dict:
+    """
+    Convert nested campaign configuration into argparse defaults.
+
+    Parameters
+    ----------
+    config : dict
+        Campaign configuration loaded from YAML. Supported top-level sections
+        are ``campaign``, ``selection``, and ``allocation``.
+
+    Returns
+    -------
+    dict
+        Flat dictionary suitable for ``argparse.ArgumentParser.set_defaults``.
+    """
+    flat = {}
+
+    if "campaign" in config:
+        flat["campaign"] = config["campaign"]
+
+    selection = config.get("selection", {}) or {}
+    allocation = config.get("allocation", {}) or {}
+
+    for key in [
+        "all",
+        "benchmark",
+        "size",
+        "name",
+        "instance",
+        "do_not_skip",
+    ]:
+        if key in selection:
+            flat[key] = selection[key]
+
+    for key in [
+        "num_vms",
+        "weight_col",
+        "machine_type",
+        "zone",
+        "timeout_hours",
+        "years",
+        "solver",
+    ]:
+        if key in allocation:
+            flat[key] = allocation[key]
+
+    return flat
+
+
 def main() -> None:
-    parser = build_parser()
+    config_parser = argparse.ArgumentParser(add_help=False)
+    config_parser.add_argument("--configfile")
+    config_args, _ = config_parser.parse_known_args()
+
+    config = load_configfile(config_args.configfile)
+    defaults = flatten_config(config)
+
+    parser = build_parser(defaults)
     args = parser.parse_args()
+
+    if not args.campaign:
+        parser.error("--campaign is required unless provided in --configfile")
+
+    if args.instance and isinstance(args.instance[0], str):
+        args.instance = [parse_instance(value) for value in args.instance]
 
     campaign_slug = slugify_campaign_name(args.campaign)
     run_id = f"{date.today():%Y%m%d}-{campaign_slug}"

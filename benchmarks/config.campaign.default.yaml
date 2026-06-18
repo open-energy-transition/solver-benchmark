@@ -8,7 +8,7 @@
 #     --campaign YYYYMMDD-my-campaign-2-3h
 
 
-campaign: YYYYMMDD-benchmark-details # Rename with an insightful name to avoid confusion in the generation of the campaign/results.
+campaign: benchmark-details # Rename with an insightful name to avoid confusion in the generation of the campaign/results (the date is added automatically).
 
 selection:
   # Exactly one of:
@@ -25,9 +25,9 @@ selection:
   name: null # Optional filter on benchmark instance names. Example: 10-1h (`name` field in `results/metadata.yaml`)
 
   # Select specific benchmark instances
-  instance: null # Set to `null` to disable, otherwise a typical example would be `PyPSA-DE:10-1h`, i.e. `benchmark-name`
+  instance: null # Set to `null` to disable, otherwise example: ["PyPSA-DE:10-1h"], i.e. "benchmark-name:instance-name"
 
-  include_to_skip: false
+  do_not_skip: false # default: `false` automatically excludes benchmark instances marked with 'Skip because:' in the metadata
 
 allocation:
   num_vms: null # default: if `null` one VM is created per selected benchmark instance
