@@ -8,7 +8,11 @@
 #     --campaign YYYYMMDD-my-campaign-2-3h
 
 
-campaign: benchmark-details # Rename with an insightful name to avoid confusion in the generation of the campaign/results (the date is added automatically).
+campaign: test-pypsa # Rename with an insightful name to avoid confusion in the generation of the campaign/results (the date is added automatically).
+
+# Execution target.
+#
+target: local # `cloud`: generates OpenTofu campaign files under infrastructure/benchmarks/<run-id>/, `local`: generates local benchmark files under infrastructure/local/benchmarks/<run-id>/ and ignores specifications about the VMs
 
 selection:
   # Exactly one of:
@@ -19,10 +23,11 @@ selection:
   all: false # `true` runs all the benchmarks in `results/metadata.yaml`
 
   benchmark:
-    - benchmark  # example: IESA-Opt-NL / PyPSA-DE
+    - pypsa-de-elec  # example: IESA-Opt-NL / PyPSA-DE
 
   size: null # Valid values include: S / M / L
-  name: null # Optional filter on benchmark instance names. Example: 10-1h (`name` field in `results/metadata.yaml`)
+  name:
+    - 2-1h # Optional filter on benchmark instance names. Example: 10-1h (`name` field in `results/metadata.yaml`)
 
   # Select specific benchmark instances
   instance: null # Set to `null` to disable, otherwise example: ["PyPSA-DE:10-1h"], i.e. "benchmark-name:instance-name"
