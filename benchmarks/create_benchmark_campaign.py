@@ -72,7 +72,20 @@ def prepare_metadata() -> None:
 
 
 def import_runner_utils():
-    """Import runner utilities after ensuring repo paths are importable."""
+    def import_runner_utils():
+        """
+        Import runner utilities used for benchmark allocation and campaign creation.
+
+        Returns
+        -------
+        tuple
+            Tuple containing:
+
+            - allocate_benchmarks
+            - create_benchmark_campaign
+            - load_benchmark_metadata
+        """
+
     sys.path.insert(0, str(REPO_ROOT))
     from runner.utils import (  # pylint: disable=import-outside-toplevel
         allocate_benchmarks,
@@ -200,7 +213,46 @@ def allocate_campaign_vms(
     years: list[int],
     solver: str | None,
 ) -> list[dict]:
-    """Allocate selected benchmark instances to VM YAML dictionaries."""
+    """
+    Allocate selected benchmark instances to VM campaign definitions.
+
+    Parameters
+    ----------
+    selected : pandas.DataFrame
+        Selected benchmark instances after applying all campaign filters.
+    allocate_benchmarks : callable
+        Allocation function imported from ``runner.utils``.
+    num_vms : int | None
+        Number of VMs to allocate. If ``None``, one VM is created per
+        selected benchmark instance.
+    weight_col : str
+        Metadata column used for greedy workload balancing across VMs.
+    machine_profile : str | None
+        Machine profile override (``short`` or ``long``). If ``None``,
+        benchmark instances are split automatically according to their
+        metadata size class.
+    zone : str
+        GCP zone assigned to generated VM definitions.
+    timeout_seconds : int | None
+        Solver timeout applied to generated benchmark runs. If ``None``,
+        size-based defaults are used.
+    years : list[int]
+        Benchmark environment years to execute.
+    solver : str | None
+        Space-separated solver list stored in generated VM YAML files.
+
+    Returns
+    -------
+    list[dict]
+        VM configuration dictionaries ready to be passed to
+        ``create_benchmark_campaign``.
+
+    Raises
+    ------
+    ValueError
+        If the requested weight column does not exist, contains missing
+        values, or if benchmark instances contain unsupported size classes.
+    """
     if weight_col not in selected.columns:
         raise ValueError(
             f"Weight column {weight_col!r} not found. "
