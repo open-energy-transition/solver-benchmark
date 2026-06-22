@@ -5854,7 +5854,7 @@ benchmarks:
       Num. variables: 708899
       Num. nonzeros: 3225685
   canoe_national_16d_high:
-    Short description: CANOE national high
+    Short description: A national capacity expansion model for Canada (except territories) with high resolution technology choices for both energy supply and end use demands.
     Modelling framework: TEMOA
     Model name: CANOE
     Version:
@@ -5864,22 +5864,21 @@ benchmarks:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
-    Time horizon: Single-stage (16 representative days)
+    Time horizon: Multi-stage (5 periods, 2025-2050)
     MILP features: None
     Sizes:
     - Name: 10-16rd
       Size: L
       URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_national_16d_high.lp.gz
-      Temporal resolution: 16 representative days
+      Temporal resolution: 16 representative days, hourly time steps
       Spatial resolution: 10 provinces
       Realistic: true
-      Realistic motivation: Designed for comprehensive CA scenario analyses (https://github.com/CANOE).
+      Realistic motivation: Designed for diagnostic analysis of the Canadian energy system (https://github.com/CANOE).
       Num. constraints: 12268242
       Num. variables: 3630932
       Num. nonzeros: 34988087
   canoe_ontario_16d_high:
-    Short description: Ontario with endogenous demand technology choices, 16 representative
-      days
+    Short description: A provincial capacity expansion model for Ontario, Canada, with high resolution technology choices for both energy supply and end use demands.
     Modelling framework: TEMOA
     Model name: CANOE
     Version:
@@ -5889,7 +5888,7 @@ benchmarks:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
-    Time horizon: Single-stage (16 representative days)
+    Time horizon: Multi-stage (5 periods, 2025-2050)
     MILP features: None
     Sizes:
     - Name: 10-16rd
@@ -5898,12 +5897,12 @@ benchmarks:
       Temporal resolution: 16 representative days
       Spatial resolution: 1 province
       Realistic: true
-      Realistic motivation: Designed for comprehensive CA scenario analyses (https://github.com/CANOE).
+      Realistic motivation: Designed for diagnostic analysis of the Canadian energy system (https://github.com/CANOE).
       Num. constraints: 1379771
       Num. variables: 424528
       Num. nonzeros: 4034937
   canoe_ontario_16d_low:
-    Short description: Ontario with exogenous energy demands, 16 representative days
+    Short description: A provincial capacity expansion model for Ontario, Canada, with exogenous energy demands and high resolution technology choices for energy supply.
     Modelling framework: TEMOA
     Model name: CANOE
     Version:
@@ -5913,7 +5912,7 @@ benchmarks:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Transport, Commercial, Residential, Industry
-    Time horizon: Single-stage (16 representative days)
+    Time horizon: Multi-stage (5 periods, 2025-2050)
     MILP features: None
     Sizes:
     - Name: 10-16rd
@@ -5922,7 +5921,7 @@ benchmarks:
       Temporal resolution: 16 representative days
       Spatial resolution: 1 province
       Realistic: false
-      Realistic motivation: Designed for comprehensive CA scenario analyses (https://github.com/CANOE).
+      Realistic motivation: Designed for diagnostic analysis of the Canadian energy system (https://github.com/CANOE).
       Num. constraints: 385847
       Num. variables: 374134
       Num. nonzeros: 1689205
