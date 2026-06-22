@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { ROOT_PATH } from "@/constants/path";
-import { useScrollReveal } from "@/hooks/useGsapAnimation";
+import { useStaggerReveal } from "@/hooks/useGsapAnimation";
 
 const HowDoWeBenchmarkSection = () => {
-  const sectionRef = useScrollReveal<HTMLDivElement>({
-    y: 70,
-    scale: 0.93,
-    duration: 1,
-    ease: "power4.out",
+  const sectionRef = useStaggerReveal<HTMLDivElement>(":scope .xl\\:flex > *", {
+    fromDirection: "left",
+    stagger: 0.5,
   });
 
   return (

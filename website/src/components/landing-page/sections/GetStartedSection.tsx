@@ -3,7 +3,10 @@ import { useMemo } from "react";
 import { IResultState } from "@/types/state";
 import StatsBox from "@/components/common/StatsBox";
 import { HIPO_SOLVERS } from "@/utils/solvers";
-import { useScrollReveal } from "@/hooks/useGsapAnimation";
+import {
+  useStaggerReveal,
+  useEntranceAnimation,
+} from "@/hooks/useGsapAnimation";
 
 const GetStarted = () => {
   const rawMetaData = useSelector((state: { results: IResultState }) => {
@@ -32,11 +35,16 @@ const GetStarted = () => {
     },
   );
 
-  const sectionRef = useScrollReveal<HTMLDivElement>({
-    scale: 0.92,
-    y: 60,
-    blur: true,
+  const sectionRef = useStaggerReveal<HTMLDivElement>(":scope .md\\:flex > *", {
+    fromDirection: "bottom",
+    y: 40,
+    stagger: 0.15,
+  });
+
+  const headingRef = useEntranceAnimation<HTMLDivElement>({
+    y: 30,
     duration: 1,
+    delay: 0.1,
   });
 
   return (
@@ -68,7 +76,10 @@ const GetStarted = () => {
           >
             BENCHMARKS
           </div>
-          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-soft-gray">
+          <div
+            ref={headingRef}
+            className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-soft-gray"
+          >
             WHAT DO WE HAVE?
           </div>
         </div>
