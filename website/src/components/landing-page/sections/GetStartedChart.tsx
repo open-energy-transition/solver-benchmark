@@ -68,6 +68,17 @@ const MILP_NOTE = (
 );
 
 const GetStartedChart = () => {
+  const slowdownLabelRef = useScrollReveal<HTMLSpanElement>({
+    y: 20,
+    duration: 0.6,
+    ease: "power3.out",
+  });
+  const solvedLabelRef = useScrollReveal<HTMLSpanElement>({
+    y: 20,
+    duration: 0.6,
+    ease: "power3.out",
+    delay: 0.5,
+  });
   const slowdownChartsRef = useScrollReveal<HTMLDivElement>({
     y: 40,
     scale: 0.96,
@@ -100,7 +111,10 @@ const GetStartedChart = () => {
         <div className="text-center gap-0 mt-1">
           <div className="shrink-0 relative">
             <div className="">
-              <span className={LATERAL_LABEL_CLASS}>
+              <span
+                ref={slowdownLabelRef}
+                className={`${LATERAL_LABEL_CLASS} opacity-0`}
+              >
                 Slowdown relative to the fastest solver
               </span>
             </div>
@@ -126,7 +140,10 @@ const GetStartedChart = () => {
         {/* Bottom row: solved% panels */}
         <div className="mt-6">
           <div className="text-center">
-            <span className={LATERAL_LABEL_CLASS}>
+            <span
+              ref={solvedLabelRef}
+              className={`${LATERAL_LABEL_CLASS} opacity-0`}
+            >
               Problems solved within time and memory limits (%)
             </span>
           </div>
