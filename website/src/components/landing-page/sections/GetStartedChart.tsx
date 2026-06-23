@@ -70,14 +70,15 @@ const MILP_NOTE = (
 const GetStartedChart = () => {
   const slowdownLabelRef = useScrollReveal<HTMLSpanElement>({
     y: 20,
-    duration: 0.6,
+    duration: 0.5,
     ease: "power3.out",
+    delay: 0.25,
   });
   const solvedLabelRef = useScrollReveal<HTMLSpanElement>({
     y: 20,
-    duration: 0.6,
+    duration: 0.5,
     ease: "power3.out",
-    delay: 0.5,
+    delay: 0.25,
   });
   const slowdownChartsRef = useScrollReveal<HTMLDivElement>({
     y: 40,
