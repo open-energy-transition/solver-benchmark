@@ -122,7 +122,7 @@ const GetStartedChart = () => {
           </div>
           <div
             ref={slowdownChartsRef}
-            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4"
+            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4 opacity-0"
           >
             <ChartResultsSections
               hideLegend
@@ -150,7 +150,7 @@ const GetStartedChart = () => {
           </div>
           <div
             ref={solvedChartsRef}
-            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4"
+            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4 opacity-0"
           >
             <ChartResultsSectionsVarians
               hideLegend
@@ -167,14 +167,14 @@ const GetStartedChart = () => {
       </div>
 
       {/* Note below the figure, full width */}
-      <div ref={noteRef} className="mt-8 mb-4">
+      <div ref={noteRef} className="mt-8 mb-4 opacity-0">
         {NOTE_BOX}
       </div>
 
       {/* Buttons below the figure */}
       <div
         ref={buttonsRef}
-        className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center"
+        className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center opacity-0"
       >
         <Link
           href={ROOT_PATH.keyInsights}
