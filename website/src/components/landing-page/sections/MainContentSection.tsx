@@ -1,17 +1,19 @@
 import Link from "next/link";
-import { useEntranceAnimation } from "@/hooks/useGsapAnimation";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const MainContent = () => {
-  const headingRef = useEntranceAnimation<HTMLHeadingElement>({
-    y: 60,
+  const headingRef = useScrollReveal<HTMLHeadingElement>({
+    y: 40,
     duration: 1,
     ease: "power4.out",
+    threshold: 0,
   });
-  const subtitleRef = useEntranceAnimation<HTMLDivElement>({
-    y: 30,
-    duration: 0.8,
-    delay: 0.5,
-    ease: "power3.out",
+  const subtitleRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    blur: true,
+    duration: 1,
+    ease: "power4.out",
+    threshold: 0,
   });
 
   return (
@@ -21,12 +23,15 @@ const MainContent = () => {
           <div className="max-w-screen-lg">
             <h1
               ref={headingRef}
-              className="inline text-navy box-decoration-clone"
+              className="inline text-navy box-decoration-clone opacity-0"
             >
               Open benchmark of solvers for energy planning
             </h1>
           </div>
-          <div ref={subtitleRef} className="mt-4 text-navy text-2xl font-light">
+          <div
+            ref={subtitleRef}
+            className="mt-4 text-navy text-2xl font-light opacity-0"
+          >
             <div className="font-light text-navy text-sm sm:text-base font-lato sm:leading-1.4 tracking-normal">
               Built by{" "}
               <span className="font-bold">
