@@ -5,7 +5,7 @@ import { useStaggerReveal } from "@/hooks/useGsapAnimation";
 const HowDoWeBenchmarkSection = () => {
   const sectionRef = useStaggerReveal<HTMLDivElement>(":scope .xl\\:flex > *", {
     fromDirection: "left",
-    stagger: 0.5,
+    stagger: 1,
   });
 
   return (
