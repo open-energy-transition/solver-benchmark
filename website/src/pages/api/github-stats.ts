@@ -31,10 +31,7 @@ export default async function handler(
 
   const safeOwner = encodeURIComponent(owner);
   const safeRepo = encodeURIComponent(repo);
-  const issuesQuery = new URLSearchParams({
-    q: `repo:${owner}/${repo}+is:issue`,
-  }).toString();
-
+  const issuesQuery = `q=repo:${owner}/${repo}+is:issue`;
   // Return cached data if still fresh
   if (cachedStats && Date.now() - cacheTimestamp < CACHE_TTL) {
     return res.status(200).json(cachedStats);
