@@ -22,6 +22,19 @@ export default async function handler(
     return res.status(400).json({ error: "owner and repo are required" });
   }
 
+  const ownerPattern = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/;
+  const repoPattern = /^[A-Za-z0-9._-]{1,100}$/;
+
+  if (!ownerPattern.test(owner) || !repoPattern.test(repo)) {
+    return res.status(400).json({ error: "invalid owner or repo" });
+  }
+
+  const safeOwner = encodeURIComponent(owner);
+  const safeRepo = encodeURIComponent(repo);
+  const issuesQuery = new URLSearchParams({
+    q: `repo:${owner}/${repo}+is:issue`,
+  }).toString();
+
   // Return cached data if still fresh
   if (cachedStats && Date.now() - cacheTimestamp < CACHE_TTL) {
     return res.status(200).json(cachedStats);
@@ -29,10 +42,8 @@ export default async function handler(
 
   try {
     const [repoResponse, issuesResponse] = await Promise.all([
-      fetch(`https://api.github.com/repos/${owner}/${repo}`),
-      fetch(
-        `https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue`,
-      ),
+      fetch(`https://api.github.com/repos/${safeOwner}/${safeRepo}`),
+      fetch(`https://api.github.com/search/issues?${issuesQuery}`),
     ]);
 
     if (!repoResponse.ok || !issuesResponse.ok) {
@@ -44,7 +55,7 @@ export default async function handler(
 
     // Fetch contributors count (extract last page from Link header)
     const contributorsResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=1&anon=1`,
+      `https://api.github.com/repos/${safeOwner}/${safeRepo}/contributors?per_page=1&anon=1`,
     );
     const linkHeader = contributorsResponse.headers.get("Link") || "";
     const match = linkHeader.match(/page=(\d+)>; rel="last"/);
