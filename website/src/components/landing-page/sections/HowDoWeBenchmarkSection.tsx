@@ -1,9 +1,19 @@
 import Link from "next/link";
 import { ROOT_PATH } from "@/constants/path";
+import { useStaggerReveal } from "@/hooks/useGsapAnimation";
 
 const HowDoWeBenchmarkSection = () => {
+  const sectionRef = useStaggerReveal<HTMLDivElement>(":scope .xl\\:flex > *", {
+    fromDirection: "left",
+    stagger: 0.5,
+  });
+
   return (
-    <div id="methodology" className="text-white bg-navy py-5 scroll-mt-[6rem]">
+    <div
+      ref={sectionRef}
+      id="methodology"
+      className="text-white bg-navy py-5 scroll-mt-[6rem]"
+    >
       <div
         className="
           xl:flex
