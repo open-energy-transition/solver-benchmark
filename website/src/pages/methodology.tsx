@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   PageLayout,
   TableOfContents,
@@ -12,6 +12,8 @@ import HardwareConfigurations from "@/components/methodology/HardwareConfigurati
 import DetailsOfTheRunner from "@/components/methodology/DetailsOfTheRunner";
 import MethodologySection from "@/components/methodology/MethodologySection";
 import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
+import { useStaggerReveal } from "@/hooks/useGsapAnimation";
+import gsap from "gsap";
 
 const Methodology = () => {
   const config = {
@@ -56,6 +58,30 @@ const Methodology = () => {
   ];
 
   const visibilities = useSectionsVisibility(tocItems);
+
+  const tocRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const el = tocRef.current;
+    if (!el) return;
+    gsap.set(el, { opacity: 0, x: -40 });
+    gsap.to(el, {
+      opacity: 1,
+      x: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      delay: 0.2,
+    });
+  }, []);
+
+  const contentRef = useStaggerReveal<HTMLDivElement>(".info-pages-section", {
+    fromDirection: "bottom",
+    y: 30,
+    stagger: 0.12,
+    duration: 0.8,
+    threshold: 0.05,
+  });
+
   const [currentSection, setCurrentSection] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,15 +103,20 @@ const Methodology = () => {
         :global(.info-pages-content p) {
           font-size: 16px;
         }
+        .info-pages-section {
+          opacity: 0;
+        }
       `}</style>
-      <TableOfContents
-        title="Methodology"
-        currentSection={currentSection}
-        items={tocItems}
-      />
+      <div ref={tocRef} className="opacity-0">
+        <TableOfContents
+          title="Methodology"
+          currentSection={currentSection}
+          items={tocItems}
+        />
+      </div>
       <ContentSection>
         <MathJaxContext config={config}>
-          <div className="info-pages-content">
+          <div ref={contentRef} className="info-pages-content">
             <div className="info-pages-section">
               <Metrics />
             </div>
