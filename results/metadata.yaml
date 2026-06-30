@@ -5919,7 +5919,8 @@ benchmarks:
       URL: https://storage.googleapis.com/solver-benchmarks/instances/canoe_ontario_16d_low.lp.gz
       Temporal resolution: 16 representative days
       Spatial resolution: 1 province
-      Realistic: false
+      Realistic: true
+      Realistic motivation: Designed for diagnostic analysis of the Canadian energy system (https://github.com/CANOE).
       Num. constraints: 385847
       Num. variables: 374134
       Num. nonzeros: 1689205
