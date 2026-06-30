@@ -1,0 +1,15 @@
+name: benchmark-scip-2023
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- scip==8.1.0
+- cxx-compiler
+- pip:
+  - pyscipopt==5.7.1
+  # Use branch until old solver support is merged and released
+  - git+https://github.com/PyPSA/linopy@sid/old-solver-support

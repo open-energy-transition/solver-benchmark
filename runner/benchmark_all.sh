@@ -56,19 +56,56 @@ idx=0
 source "$(conda info --base)/etc/profile.d/conda.sh"  # Ensure conda is initialized
 
 for year in "${years[@]}"; do
-    env_name="benchmark-$year"
-
-    # Reuse conda env for year if it already exists, create otherwise
-    if conda env list | grep "$env_name"; then
-        echo "Conda env $env_name already exists; using this env for $year's benchmarks"
+    if [ "$year" = "tests" ]; then
+        env_name="benchmark-tests"
+        if conda env list | grep -q "$env_name"; then
+            echo "Conda env $env_name already exists; using this env for tests"
+        else
+            echo "Creating conda env $env_name..."
+            time conda env create -q -f ./runner/envs/benchmark-tests-fixed.yaml -y
+        fi
+        conda activate "$env_name"
     else
-        echo "Creating conda env $env_name..."
-        time conda env create -q -f ./runner/envs/benchmark-$year-fixed.yaml -y
+        solver_envs=$(python3 -c "
+import yaml
+config = yaml.safe_load(open('./runner/solvers.yaml'))
+for solver, versions in config['solvers'].items():
+    for ver, entry in versions.items():
+        if str(entry['year']) == '$year':
+            print(entry['env'])
+" | sort -u)
+
+        for env_name in $solver_envs; do
+            if conda env list | grep -q "$env_name"; then
+                echo "Conda env $env_name already exists; reusing"
+            else
+                fixed_yaml="./runner/envs/${env_name}-fixed.yaml"
+                loose_yaml="./runner/envs/${env_name}.yaml"
+                if [ -f "$fixed_yaml" ]; then
+                    echo "Creating conda env $env_name from fixed YAML..."
+                    time conda env create -q -f "$fixed_yaml" -y || echo "WARNING: Failed to create env $env_name, skipping"
+                elif [ -f "$loose_yaml" ]; then
+                    echo "Creating conda env $env_name from loose YAML..."
+                    time conda env create -q -f "$loose_yaml" -y || echo "WARNING: Failed to create env $env_name, skipping"
+                else
+                    echo "WARNING: No YAML found for env $env_name, skipping"
+                fi
+            fi
+        done
+
+        # Activate any solver env so run_benchmarks.py has its dependencies (psutil, requests, etc.)
+        # The script switches to the correct per-solver env internally for each solver invocation.
+        first_env=$(echo "$solver_envs" | head -1)
+        if [ -n "$first_env" ]; then
+            conda activate "$first_env"
+        else
+            echo "WARNING: No solver envs found for year $year, skipping"
+            continue
+        fi
     fi
 
     # Run the benchmark script for the year
     echo "Running benchmarks for the year: $year"
-    conda activate "$env_name"
 
     # If --solvers flag was provided, use it; otherwise use year-specific defaults
     if [ -n "${solvers_override}" ]; then
