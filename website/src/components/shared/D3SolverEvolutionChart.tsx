@@ -11,7 +11,7 @@ import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 interface SolverEvolutionData {
   year: number;
   version: string;
-  unsolvedCount: number;
+  solvedCount: number;
   speedUp: number;
   sgmRuntime: number;
 }
@@ -69,7 +69,7 @@ const D3SolverEvolutionChart = ({
       .range([margin.left, width - margin.right])
       .padding(0.3);
 
-    // Left Y-axis (unsolved count)
+    // Left Y-axis (solved count)
     const yLeftScale = d3
       .scaleLinear()
       .domain([0, roundUpToNearest(totalBenchmarks)])
@@ -125,7 +125,7 @@ const D3SolverEvolutionChart = ({
           .style("text-anchor", "middle");
       });
 
-    // Left Y-axis (unsolved)
+    // Left Y-axis (solved)
     const yLeftAxis = d3.axisLeft(yLeftScale).ticks(10).tickSizeOuter(0);
     svg
       .append("g")
@@ -171,7 +171,7 @@ const D3SolverEvolutionChart = ({
         );
     svg.append("g").call(grid);
 
-    // Colored bars (unsolved count) - use sorted data
+    // Colored bars (solved count) - use sorted data
     svg
       .selectAll(".bar")
       .data(sortedData)
@@ -179,12 +179,9 @@ const D3SolverEvolutionChart = ({
       .append("rect")
       .attr("class", "bar")
       .attr("x", (d) => xScale(d.version) ?? 0)
-      .attr("y", (d) => yLeftScale(d.unsolvedCount))
+      .attr("y", (d) => yLeftScale(d.solvedCount))
       .attr("width", xScale.bandwidth())
-      .attr(
-        "height",
-        (d) => height - margin.bottom - yLeftScale(d.unsolvedCount),
-      )
+      .attr("height", (d) => height - margin.bottom - yLeftScale(d.solvedCount))
       .attr("fill", solverColor)
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
@@ -193,7 +190,7 @@ const D3SolverEvolutionChart = ({
           .html(
             `<strong>Version:</strong> ${d.version}<br>
              <strong>Year:</strong> ${d.year}<br>
-             <strong>Unsolved:</strong> ${d.unsolvedCount}<br>
+             <strong>Solved:</strong> ${d.solvedCount}<br>
              <strong>Speed-up:</strong> ${
                isNaN(d.speedUp) ? "N/A" : d.speedUp.toFixed(2) + "x"
              }<br>
@@ -221,12 +218,12 @@ const D3SolverEvolutionChart = ({
       .append("text")
       .attr("class", "bar-label")
       .attr("x", (d) => (xScale(d.version) ?? 0) + xScale.bandwidth() / 2)
-      .attr("y", (d) => yLeftScale(d.unsolvedCount) - 2)
+      .attr("y", (d) => yLeftScale(d.solvedCount) - 2)
       .attr("text-anchor", "middle")
       .attr("fill", solverColor)
       .attr("font-size", "10px")
       .attr("font-weight", "500")
-      .text((d) => d.unsolvedCount);
+      .text((d) => d.solvedCount);
 
     // Red line (speed-up) - use sorted data and filter valid values
     const validSpeedUpData = sortedData.filter(
@@ -265,7 +262,7 @@ const D3SolverEvolutionChart = ({
           .html(
             `<strong>Version:</strong> ${d.version}<br>
              <strong>Year:</strong> ${d.year}<br>
-             <strong>Unsolved:</strong> ${d.unsolvedCount}<br>
+             <strong>Solved:</strong> ${d.solvedCount}<br>
              <strong>Speed-up:</strong> ${
                isNaN(d.speedUp) ? "N/A" : d.speedUp.toFixed(2) + "x"
              }<br>
@@ -306,7 +303,7 @@ const D3SolverEvolutionChart = ({
       .attr("x", width / 2)
       .attr("y", height - 10)
       .attr("text-anchor", "middle")
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .attr("font-size", "12px")
       .text("Version");
 
@@ -316,7 +313,7 @@ const D3SolverEvolutionChart = ({
       .attr("fill", solverColor)
       .attr("font-size", "12px")
       .attr("transform", `translate(20, ${height / 2}) rotate(-90)`)
-      .text("Unsolved Problems");
+      .text("Solved Problems");
 
     svg
       .append("text")
@@ -339,12 +336,12 @@ const D3SolverEvolutionChart = ({
     svg
       .append("text")
       .attr("x", margin.left + 50)
-      .attr("y", yLeftScale(totalBenchmarks + 2))
+      .attr("y", yLeftScale(totalBenchmarks) - 5)
       .attr("text-anchor", "end")
       .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
-      .text(`Max: ${totalBenchmarks}`);
+      .text(`All: ${totalBenchmarks}`);
 
     return () => {
       tooltip.remove();
@@ -357,13 +354,13 @@ const D3SolverEvolutionChart = ({
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           {solverName} Performance Evolution
         </h3>
-        <div className="flex gap-4 text-sm">
+        <div className="sm:flex gap-4 text-sm">
           <div className="flex items-center gap-2">
             <div
               className="w-4 h-3 opacity-80"
               style={{ backgroundColor: solverColor }}
             ></div>
-            <span className="text-gray-600">Unsolved Problems</span>
+            <span className="text-gray-600">Solved Problems</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-0.5 bg-red-600"></div>

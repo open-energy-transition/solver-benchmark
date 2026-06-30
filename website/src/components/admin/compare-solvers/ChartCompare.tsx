@@ -90,7 +90,6 @@ const ChartCompare = ({
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
   // Solver colors (match other dashboards)
-  console.log("solver2", solver2, solver1);
   const solverColor1 = getColorForSolver(solver1.split("--")[0]);
   const solverColor2 = getColorForSolver(solver2.split("--")[0]);
 
@@ -600,7 +599,7 @@ const ChartCompare = ({
           .attr("dy", "15")
           .attr("pointer-events", "none")
           .text(`${solver2Info.name} is better`);
-      } catch (e) {
+      } catch {
         // ignore parsing errors
       }
     }
@@ -629,7 +628,7 @@ const ChartCompare = ({
           font-lato
           left-6
           origin-[0]
-          text-[#8c8c8c]
+          text-[#575757]
           text-xs
           top-3/4
           "
@@ -674,7 +673,7 @@ const ChartCompare = ({
           absolute
           font-lato
           left-1/2
-          text-[#8c8c8c]
+          text-[#575757]
           text-xs
           bottom-0
           w-full

@@ -7,11 +7,18 @@ const Footer = () => {
       <div className="h-1 w-full border-b border-[#e5e7eb] mx-auto pt-10"></div>
       <div>
         <div className="grid px-4 md:flex gap-1 pt-6 pb-24 lg:pb-6 justify-start md:justify-center items-center text-navy text-xs">
-          <Image width={54} height={25} src="/logo/oet.png" alt="oet-logo" />
+          <Image
+            width={54}
+            height={25}
+            src="/logo/oet.png"
+            alt="oet-logo"
+            loading="lazy"
+          />
           <span>© 2025</span>
           <Link
             href="https://openenergytransition.org"
-            className="text-red-600 font-semibold"
+            className="text-red-800 font-semibold"
+            aria-label="Navigate to Open Energy Transition wbesite"
           >
             <span className="underline">Open Energy Transition</span>.
           </Link>
@@ -20,6 +27,7 @@ const Footer = () => {
             <Link
               href="https://www.breakthroughenergy.org/"
               className="font-bold hover:underline underline-offset-4"
+              aria-label="Navigate to Breakthrough Energy website"
             >
               Breakthrough Energy
             </Link>
@@ -30,6 +38,7 @@ const Footer = () => {
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
               className="hover:underline underline-offset-4"
+              aria-label="Navigate to solver benchmark github repository"
             >
               open source community
             </Link>

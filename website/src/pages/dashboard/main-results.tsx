@@ -15,6 +15,81 @@ import { TIMEOUT_VALUES } from "@/constants/filter";
 import BenchmarkSet from "@/components/admin/home/BenchmarkSet";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+const Caveats = () => {
+  return (
+    <div className="pt-1.5 pb-3 px-2 md:px-5" id="caveats">
+      <div className="h6">Caveats</div>
+      <div className="text-navy tag-line-xs leading-1.4 block items-center">
+        <span>
+          Here are some key points to keep in mind when interpreting these
+          results:
+          <ul className="list-disc pl-5">
+            <li>
+              We run benchmarks on commercial cloud virtual machines (VMs) for
+              efficiency and cost reasons. The shared nature of cloud resources
+              means there is some error in our runtime measurements, which we
+              estimate as a coefficient of variation of no larger than 6%. More
+              details on this{" "}
+              <Link
+                className="font-bold"
+                href="/methodology"
+                aria-label="Navigate to methodology page"
+              >
+                here
+              </Link>
+              .
+            </li>
+            <li>
+              All solvers are run with their default options, except for the
+              duality gap tolerance for mixed integer benchmarks (MILPs), which
+              we set to 1e-4. You can check the duality gaps for each solver in
+              the benchmark details page corresponding to each benchmark
+              instance.
+            </li>
+            <li>
+              All results on this website use the runtime measured by our
+              benchmarking script. This may not be the same as the runtime of
+              the solving algorithm as reported by the solver, and it may
+              include things like time for input file parsing and license
+              checks. See more details and join the discussion on whether to use
+              reported or measured runtime{" "}
+              <Link
+                className="font-bold"
+                aria-label="Navigate to [RFC] Should we use measured or reported solver runtimes? issue on GitHub"
+                href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
+              >
+                here
+              </Link>
+              .
+            </li>
+            <li>
+              Some solvers returned errors when running on some benchmark
+              instances. For more details, please see the{" "}
+              <Link
+                className="font-bold"
+                aria-label="Navigate to Errors in the v2 benchmark run issue on GitHub"
+                href="https://github.com/open-energy-transition/solver-benchmark/issues/437"
+              >
+                tracking issue
+              </Link>
+              .
+            </li>
+          </ul>
+          For more details, please see our{" "}
+          <Link
+            href="/methodology"
+            aria-label="Navigate to methodology page"
+            className="hover:underline underline-offset-4 font-bold"
+          >
+            Methodology
+          </Link>{" "}
+          page.
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const LandingPage = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
@@ -52,74 +127,6 @@ const LandingPage = () => {
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
 
-  const Caveats = () => {
-    return (
-      <div className="pt-1.5 pb-3 px-2 md:px-5" id="caveats">
-        <h6>Caveats</h6>
-        <div className="text-navy tag-line-xs leading-1.4 block items-center">
-          <span>
-            Here are some key points to keep in mind when interpreting these
-            results:
-            <ul className="list-disc pl-5">
-              <li>
-                We run benchmarks on commercial cloud virtual machines (VMs) for
-                efficiency and cost reasons. The shared nature of cloud
-                resources means there is some error in our runtime measurements,
-                which we estimate as a coefficient of variation of no larger
-                than 6%. More details on this{" "}
-                <Link className="font-bold" href="/methodology">
-                  here
-                </Link>
-                .
-              </li>
-              <li>
-                All solvers are run with their default options, except for the
-                duality gap tolerance for mixed integer benchmarks (MILPs),
-                which we set to 1e-4. You can check the duality gaps for each
-                solver in the benchmark details page corresponding to each
-                benchmark instance.
-              </li>
-              <li>
-                All results on this website use the runtime measured by our
-                benchmarking script. This may not be the same as the runtime of
-                the solving algorithm as reported by the solver, and it may
-                include things like time for input file parsing and license
-                checks. See more details and join the discussion on whether to
-                use reported or measured runtime{" "}
-                <Link
-                  className="font-bold"
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/159"
-                >
-                  here
-                </Link>
-                .
-              </li>
-              <li>
-                Some solvers returned errors when running on some benchmark
-                instances. For more details, please see the{" "}
-                <Link
-                  className="font-bold"
-                  href="https://github.com/open-energy-transition/solver-benchmark/issues/437"
-                >
-                  tracking issue
-                </Link>
-                .
-              </li>
-            </ul>
-            For more details, please see our{" "}
-            <Link
-              href="/methodology"
-              className="hover:underline underline-offset-4 font-bold"
-            >
-              Methodology
-            </Link>{" "}
-            page.
-          </span>
-        </div>
-      </div>
-    );
-  };
-
   useEffect(() => {
     const updateHeight = () => {
       if (contentRef.current) {
@@ -145,6 +152,10 @@ const LandingPage = () => {
     <>
       <Head>
         <title>Main Results | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="View main benchmark results for short and long run configurations, with solver performance summaries, technical specifications, and caveats for interpreting results."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
@@ -179,7 +190,7 @@ const LandingPage = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Main Results</h5>
+              <h1 className="h5">Main Results</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 We run our benchmarks on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
@@ -247,9 +258,9 @@ const LandingPage = () => {
                           />
                         </svg>
                         <div>
-                          <h6 className="font-semibold mb-1">
+                          <div className="font-semibold mb-1 h6">
                             No benchmark instances match the selected filters.
-                          </h6>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -263,6 +274,7 @@ const LandingPage = () => {
                         <span className="hover:underline underline-offset-4  font-bold">
                           <Link
                             className="font-bold"
+                            arai-label="Navigate to our scripts for running benchmarks on your own problems"
                             href="https://github.com/open-energy-transition/solver-benchmark/?tab=readme-ov-file#running-benchmarks"
                           >
                             our scripts
@@ -272,6 +284,7 @@ const LandingPage = () => {
                         solver. See also the section on{" "}
                         <Link
                           href="#caveats"
+                          aria-label="Navigate to caveats section on this page"
                           className="hover:underline underline-offset-4 font-bold"
                         >
                           Caveats

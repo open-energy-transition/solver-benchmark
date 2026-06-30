@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { SolverStatusType, SolverType } from "@/types/benchmark";
-import { formatDecimal, roundNumber } from "@/utils/number";
+import { formatDecimal } from "@/utils/number";
 import { IResultState } from "@/types/state";
 import { createD3Tooltip, getChartColor } from "@/utils/chart";
 import { isNullorUndefined } from "@/utils/calculations";
@@ -294,7 +294,7 @@ const D3PlotChart = ({
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text(xAxisLabel)
       .attr("class", "text-xs font-lato");
 
@@ -302,7 +302,7 @@ const D3PlotChart = ({
       .append("text")
       .attr("x", -height / 2)
       .attr("y", -50)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text("Peak Memory Usage (MB)")
       .attr("transform", "rotate(-90)")
       .attr("text-anchor", "middle")
