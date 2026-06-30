@@ -23,14 +23,14 @@ const RankingSolvers = () => {
       <ol className="list-decimal list-outside ml-6">
         <li className="mb-2">SGM runtime</li>
         <li className="mb-2">SGM peak memory consumption</li>
-        <li className="mb-2">Number of benchmarks solved</li>
+        <li className="mb-2">Number of benchmark instances solved</li>
       </ol>
       <p>
         SGM above stands for (normalized) shifted geometric mean, and is a more
         robust summary metric compared to the arithmetic mean (AM) or geometric
         mean (GM). Given a set of measured values{" "}
         <MathJax inline>{"$t_1, \\ldots, t_n$"}</MathJax>, e.g. runtimes of a
-        solver on a set of benchmarks, the SGM value is defined as:
+        solver on a set of benchmark instances, the SGM value is defined as:
       </p>
       <MathJax className="my-4">
         {
