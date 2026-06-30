@@ -21,7 +21,6 @@ benchmarks:
       Temporal resolution: 720 time slices
       Spatial resolution: 175 nodes
       Realistic: false
-      Realistic motivation:
       Num. constraints: 9230938
       Num. variables: 8141182
       Skip because: TO (needs special solver options)
@@ -5921,7 +5920,6 @@ benchmarks:
       Temporal resolution: 16 representative days
       Spatial resolution: 1 province
       Realistic: false
-      Realistic motivation: Designed for diagnostic analysis of the Canadian energy system (https://github.com/CANOE).
       Num. constraints: 385847
       Num. variables: 374134
       Num. nonzeros: 1689205
