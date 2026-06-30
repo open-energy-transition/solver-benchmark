@@ -1,15 +1,46 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { GetStaticProps } from "next";
 import { getAllPostsMeta, PostMeta } from "../../lib/posts";
 import { FooterLandingPage, Header } from "@/components/shared";
+import { useScrollReveal, useStaggerReveal } from "@/hooks/useGsapAnimation";
+import gsap from "gsap";
 
 type Props = {
   posts: PostMeta[];
 };
 
 export default function BlogIndex({ posts }: Props) {
+  const headingRef = useScrollReveal<HTMLHeadingElement>({
+    y: 30,
+    duration: 0.8,
+    threshold: 0.1,
+  });
+
+  const headerRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    gsap.set(el, { opacity: 0, y: -20 });
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      delay: 0.1,
+    });
+  }, []);
+
+  const listRef = useStaggerReveal<HTMLUListElement>("li", {
+    fromDirection: "bottom",
+    y: 20,
+    stagger: 0.1,
+    duration: 0.6,
+    threshold: 0.05,
+  });
+
   return (
     <>
       <Head>
@@ -19,16 +50,21 @@ export default function BlogIndex({ posts }: Props) {
           content="Latest updates and insights from Open Energy Benchmark"
         />
       </Head>
-      <Header />
+      <div ref={headerRef}>
+        <Header />
+      </div>
       <main className="bg-white min-h-screen">
         <div className="max-w-8xl mx-auto px-4 lg:px-[70px] py-16">
-          <h1 className="text-4xl lg:text-5xl font-bold text-navy mb-8">
+          <h1
+            ref={headingRef}
+            className="text-4xl lg:text-5xl font-bold text-navy mb-8"
+          >
             Blog
           </h1>
           {posts.length === 0 ? (
             <p className="text-gray-600">No blog posts yet.</p>
           ) : (
-            <ul className="space-y-8">
+            <ul ref={listRef} className="space-y-8">
               {posts.map((p) => (
                 <li key={p.slug} className="border-b border-gray-200 pb-6">
                   <Link
