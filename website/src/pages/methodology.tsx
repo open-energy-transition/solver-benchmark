@@ -112,6 +112,7 @@ const Methodology = () => {
           title="Methodology"
           currentSection={currentSection}
           items={tocItems}
+          enableAnimation={false}
         />
       </div>
       <ContentSection>
