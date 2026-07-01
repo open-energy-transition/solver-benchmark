@@ -10,6 +10,7 @@ import {
 } from "@/components/info-pages";
 import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
+import gsap from "gsap";
 import { remark } from "remark";
 import html from "remark-html";
 import remarkGfm from "remark-gfm";
@@ -92,6 +93,27 @@ function MarkdownPost({ meta, contentHtml, tocItems }: Omit<Props, "isTsx">) {
   const scrollDirection = useScrollDirection();
   const [currentSection, setCurrentSection] = useState<string | null>(null);
   const initialSelectionDone = useRef(false);
+  const articleRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const el = articleRef.current;
+    if (!el) return;
+    const children = el.querySelectorAll(":scope > *");
+    if (!children.length) return;
+    gsap.fromTo(
+      children,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
+        delay: 0.15,
+        overwrite: "auto",
+      },
+    );
+  }, []);
 
   useEffect(() => {
     // If any observed section is visible, pick the first visible one (lowest index).
@@ -151,8 +173,8 @@ function MarkdownPost({ meta, contentHtml, tocItems }: Omit<Props, "isTsx">) {
       />
 
       <ContentSection>
-        <div className="info-pages-content">
-          <article className="info-pages-section">
+        <div className="info-pages-content z-10">
+          <article ref={articleRef} className="info-pages-section">
             {meta.tags && meta.tags.length > 0 && (
               <div className="mb-6 flex gap-2 mt-4">
                 <div className="text-sm bg-gray-200 px-2 py-1 rounded">
