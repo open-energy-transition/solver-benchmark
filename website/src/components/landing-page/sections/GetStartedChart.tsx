@@ -3,6 +3,7 @@ import ChartResultsSections from "./ChartResultsSections";
 import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians";
 import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const NOTE_BOX = (
   <div className="px-6 py-5 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl w-full text-left">
@@ -67,6 +68,42 @@ const MILP_NOTE = (
 );
 
 const GetStartedChart = () => {
+  const slowdownLabelRef = useScrollReveal<HTMLSpanElement>({
+    y: 20,
+    duration: 0.5,
+    ease: "power3.out",
+    delay: 0.25,
+  });
+  const solvedLabelRef = useScrollReveal<HTMLSpanElement>({
+    y: 20,
+    duration: 0.5,
+    ease: "power3.out",
+    delay: 0.25,
+  });
+  const slowdownChartsRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    scale: 0.96,
+    duration: 0.9,
+    ease: "power3.out",
+  });
+  const solvedChartsRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    scale: 0.96,
+    duration: 0.9,
+    ease: "power3.out",
+    delay: 0.15,
+  });
+  const noteRef = useScrollReveal<HTMLDivElement>({
+    y: 30,
+    delay: 0.3,
+    duration: 0.8,
+  });
+  const buttonsRef = useScrollReveal<HTMLDivElement>({
+    y: 30,
+    delay: 0.4,
+    duration: 0.8,
+  });
+
   return (
     <div className="bg-[#F4F6FA] text-navy w-full mx-auto max-w-8xl py-4 px-6 md:px-12">
       {/* ── DESKTOP LAYOUT ── */}
@@ -75,12 +112,18 @@ const GetStartedChart = () => {
         <div className="text-center gap-0 mt-1">
           <div className="shrink-0 relative">
             <div className="">
-              <span className={LATERAL_LABEL_CLASS}>
+              <span
+                ref={slowdownLabelRef}
+                className={`${LATERAL_LABEL_CLASS} opacity-0`}
+              >
                 Slowdown relative to the fastest solver
               </span>
             </div>
           </div>
-          <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
+          <div
+            ref={slowdownChartsRef}
+            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4 opacity-0"
+          >
             <ChartResultsSections
               hideLegend
               showBarTopLabels
@@ -98,11 +141,17 @@ const GetStartedChart = () => {
         {/* Bottom row: solved% panels */}
         <div className="mt-6">
           <div className="text-center">
-            <span className={LATERAL_LABEL_CLASS}>
+            <span
+              ref={solvedLabelRef}
+              className={`${LATERAL_LABEL_CLASS} opacity-0`}
+            >
               Problems solved within time and memory limits (%)
             </span>
           </div>
-          <div className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4">
+          <div
+            ref={solvedChartsRef}
+            className="flex-1 grid md:grid-cols-1 xl:grid-cols-2 gap-4 opacity-0"
+          >
             <ChartResultsSectionsVarians
               hideLegend
               sizeAnnotations={LP_SIZE_ANNOTATIONS}
@@ -118,10 +167,15 @@ const GetStartedChart = () => {
       </div>
 
       {/* Note below the figure, full width */}
-      <div className="mt-8 mb-4">{NOTE_BOX}</div>
+      <div ref={noteRef} className="mt-8 mb-4 opacity-0">
+        {NOTE_BOX}
+      </div>
 
       {/* Buttons below the figure */}
-      <div className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center">
+      <div
+        ref={buttonsRef}
+        className="flex flex-wrap items-center justify-center md:justify-start pb-8 gap-4 md:gap-6 text-center opacity-0"
+      >
         <Link
           href={ROOT_PATH.keyInsights}
           className="

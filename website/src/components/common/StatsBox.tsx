@@ -5,7 +5,11 @@ interface StatsBoxProps {
   isLast?: boolean;
 }
 
+import { useCountUp } from "@/hooks/useGsapAnimation";
+
 const StatsBox = ({ value, label }: StatsBoxProps) => {
+  const countRef = useCountUp<HTMLDivElement>(value);
+
   return (
     <div
       className="
@@ -20,6 +24,7 @@ const StatsBox = ({ value, label }: StatsBoxProps) => {
         "
     >
       <div
+        ref={countRef}
         className="
           bg-white flex font-extrabold items-center mx-auto justify-center rounded-full
           size-16 md:size-[5.5rem]  text-navy text-3xl md:text-4xl
