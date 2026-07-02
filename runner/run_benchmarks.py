@@ -127,6 +127,7 @@ def csv_record(check=False, **kwargs):
             ("Runtime (s)", kwargs.get("runtime")),
             ("Memory Usage (MB)", kwargs.get("memory")),
             ("Objective Value", kwargs.get("objective")),
+            ("MIP Gap", kwargs.get("mip_gap")),
             ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
             ("Duality Gap", kwargs.get("duality_gap")),
             ("Reported Runtime (s)", kwargs.get("reported_runtime")),
@@ -336,6 +337,9 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
     if metrics["status"] not in {"ok", "TO", "ER", "OOM"}:
         print(f"WARNING: unknown solver status: {metrics['status']}")
 
+    metrics.setdefault("mip_gap", None)
+    metrics.setdefault("duality_gap", None)
+    metrics.setdefault("max_integrality_violation", None)
     metrics["memory"] = memory
     metrics["timeout"] = timeout
 
