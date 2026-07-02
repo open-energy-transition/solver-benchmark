@@ -1,0 +1,57 @@
+# Default configuration for create_benchmark_campaign.py.
+# Explicit CLI arguments override values defined here.
+#
+# Example:
+#
+# python benchmarks/create_benchmark_campaign.py \
+#     --configfile benchmarks/config.campaign.default.yaml \
+#     --campaign YYYYMMDD-my-campaign-2-3h
+
+
+campaign: test-pypsa # Rename with an insightful name to avoid confusion in the generation of the campaign/results (the date is added automatically).
+
+# Execution target.
+#
+target: local # `cloud`: generates OpenTofu campaign files under infrastructure/benchmarks/<run-id>/, `local`: generates local benchmark files under infrastructure/local/benchmarks/<run-id>/ and ignores specifications about the VMs
+
+selection:
+  # Exactly one of:
+  # - all
+  # - benchmark
+  # - instance
+  # should be active after CLI/config merge.
+  all: false # `true` runs all the benchmarks in `results/metadata.yaml`
+
+  benchmark:
+    - pypsa-de-elec  # example: IESA-Opt-NL / PyPSA-DE
+
+  size: null # Valid values include: S / M / L
+  name:
+    - 2-1h # Optional filter on benchmark instance names. Example: 10-1h (`name` field in `results/metadata.yaml`)
+
+  # Select specific benchmark instances
+  instance: null # Set to `null` to disable, otherwise example: ["PyPSA-DE:10-1h"], i.e. "benchmark-name:instance-name"
+
+  do_not_skip: false # default: `false` automatically excludes benchmark instances marked with 'Skip because:' in the metadata
+
+allocation:
+  num_vms: null # default: if `null` one VM is created per selected benchmark instance
+  weight_col: "Num. variables" # default: "Num. variables", but an alternative choice is "Num. constraints"
+
+  # null = automatic:
+  #   S/M -> short
+  #   L   -> long
+  machine_type: null # default: if `null` S/M -> short, L -> long
+
+  zone: us-central1-a
+  timeout_hours: null # default: if `null`  S/M -> 1 hour, L -> 24 hours
+
+  years:
+    - 2025 # corresponds to benchmark-<year> conda environment used to run the benchmark(s)
+
+  solver:
+    - gurobi
+    - highs
+    - scip
+    - cbc
+    - glpk

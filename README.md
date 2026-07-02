@@ -123,6 +123,345 @@ To set up comprehensive benchmark campaigns, like the one available on the websi
 1. Use `notebooks/allocate-benchmarks-to-vms.ipynb` to create the benchmark campaign.
 2. Run `notebooks/run-and-observe-benchmarks.ipynb` to observe the benchmark campaign progress.
 
+Alternatively, the benchmark campaign generation can be performed from the command line using the tools described below.
+
+# Benchmark campaign creation
+
+This repository contains tooling to create benchmark campaigns from the benchmark metadata.
+
+Campaigns can target either:
+
+- cloud execution using Google Cloud Platform VMs (currently allowed to maintainers only);
+- local execution using the existing benchmark runner workflow.
+
+The main entry point is:
+
+```bash
+python benchmarks/create_benchmark_campaign.py
+```
+
+The script prepares benchmark metadata, selects benchmark instances, and creates
+either:
+
+- a cloud campaign under `infrastructure/benchmarks/<run-id>/`; or
+- a local campaign under `infrastructure/local/benchmarks/<run-id>/`.
+
+## Execution targets
+
+The campaign generator supports two execution targets:
+
+| Target | Description |
+|----------|-------------|
+| `cloud` | Generates OpenTofu VM configuration files under `infrastructure/benchmarks/<run-id>/`. |
+| `local` | Generates local benchmark files under `infrastructure/local/benchmarks/<run-id>/`. |
+
+The default target is:
+
+```text
+cloud
+```
+
+Override it with:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --target local
+```
+
+to launch a benchmark campaign on your local machine.
+
+## Basic usage
+
+Create a campaign for all benchmark instances (please do this very carefully, especially if running on the cloud):
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test \
+  --all
+```
+
+This creates a run ID of the form:
+
+```text
+YYYYMMDD-my-test
+```
+
+## Configuration files
+
+Campaigns can also be defined through a YAML configuration file.
+
+A complete template is provided in:
+
+```text
+benchmarks/config.campaign.default.yaml
+```
+
+Run a campaign directly from a configuration file:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml
+```
+
+Command-line arguments always override values defined in the configuration file.
+
+For example:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml \
+  --campaign my-test \
+  --timeout-hours 6
+```
+
+
+## Select benchmarks
+
+Select all instances of one benchmark:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-test \
+  --benchmark pypsa-eur
+```
+
+Select benchmark instances by size class:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-small-medium \
+  --benchmark pypsa-eur-elec \
+  --size S M
+```
+
+Select benchmark instances by metadata name, for example specific spatial or temporal resolutions (field `Name` in the metadata):
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-resolution-test \
+  --benchmark pypsa-eur-elec \
+  --name 2-1h 3-2h
+```
+
+Combine size and name filters:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign pypsa-eur-filtered \
+  --benchmark pypsa-eur-elec \
+  --size S M \
+  --name 2-1h 3-2h
+```
+
+Select mixed benchmark instances explicitly:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign mixed-test \
+  --instance pypsa-eur:2-1h \
+  --instance pypsa-earth:3-2h
+```
+
+The instance selector uses the format:
+
+```text
+<benchmark-name>:<instance-name>
+```
+
+For example:
+
+```text
+PyPSA-DE:10-1h
+```
+
+Include metadata entries marked as skipped (due to known timeout or memory issues):
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign clean-test \
+  --all \
+  --do-not-skip
+```
+
+## Cloud VM allocation
+
+This section only applies to cloud campaigns.
+
+By default, the script creates one VM per selected benchmark instance.
+
+Use a custom number of VMs with:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign packed-test \
+  --all \
+  --num-vms 5
+```
+
+## Cloud machine settings
+
+By default, benchmark instances are assigned to VM profiles automatically based on their metadata size class:
+
+| Size class | Machine profile | GCP machine type | Timeout |
+| ---------- | --------------- | ---------------- | -------- |
+| S, M | short | c4-standard-2 | 1 hour |
+| L | long | c4-highmem-16 | 24 hours |
+
+Default zone:
+
+```text
+us-central1-a
+```
+
+When `--machine-type` is specified, all selected benchmark instances use the chosen profile regardless of their size classification.
+
+## Timeout policy
+
+If no timeout is provided, the script applies the default timeout policy:
+
+```text
+S/M instances: 1 hour
+L instances:   24 hours
+```
+
+Override the timeout:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign timeout-test \
+  --all \
+  --timeout-hours 6
+```
+
+## Solver and year selection
+
+By default, the generated campaign uses:
+
+```text
+gurobi highs scip cbc glpk
+```
+
+The default solver year is:
+
+```text
+2025
+```
+
+The year corresponds to the benchmark conda environment:
+
+```text
+benchmark-<year>
+```
+
+For example:
+
+```text
+2025 -> benchmark-2025
+```
+
+Run specific solvers for one or more years:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign year-test \
+  --all \
+  --solver cbc highs \
+  --years 2024 2025
+```
+
+## Campaign summary
+
+Every generated campaign includes a:
+
+```text
+campaign_summary.csv
+```
+
+containing the benchmark selection, campaign configuration, solver selection,
+timeout settings, allocation decisions, and metadata used to create the campaign.
+
+## Existing campaign directories
+
+The script fails if the target campaign directory already exists.
+
+Use a different campaign name, remove the existing directory, or overwrite it:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test \
+  --all \
+  --force
+```
+
+## Launching a cloud campaign
+
+After reviewing the generated files, launch the campaign from the infrastructure directory:
+
+```bash
+cd infrastructure
+
+tofu apply \
+  -var-file benchmarks/<run-id>/run.tfvars \
+  -state=states/<run-id>.tfstate
+```
+
+## Launching a local campaign
+
+Generate a local campaign:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --target local \
+  --campaign my-local-run \
+  --benchmark pypsa-de-elec
+```
+
+This creates:
+
+```text
+infrastructure/local/benchmarks/<run-id>/
+├── campaign_summary.csv
+├── local_benchmarks.yaml
+└── run_local.sh
+```
+
+By default, local campaigns ask for confirmation before execution.
+
+The generated run script can also be executed manually:
+
+```bash
+bash infrastructure/local/benchmarks/<run-id>/run_local.sh
+```
+
+Local campaigns use the existing `runner/benchmark_all.sh` workflow and execute benchmark instances sequentially.
+
+## Example workflows
+
+### Cloud campaign
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml \
+  --campaign pypsa-de-scaling
+
+cd infrastructure
+
+tofu apply \
+  -var-file benchmarks/<run-id>/run.tfvars \
+  -state=states/<run-id>.tfstate
+```
+
+### Local campaign
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml \
+  --target local \
+  --campaign pypsa-de-local
+```
+
+The campaign generator creates the local benchmark files and asks whether the benchmark run should be started immediately.
+
 ### Running your own benchmarks
 
 To run your own benchmark problems, either locally or on the cloud, follow the steps in the appropriate section above but using a `benchmarks.yaml` file of your own that gives the details (metadata) and URL/path of your benchmark problems.
