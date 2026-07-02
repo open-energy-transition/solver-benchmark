@@ -9,6 +9,7 @@ import gsap from "gsap";
 export function useScrollReveal<
   T extends HTMLElement = HTMLDivElement,
 >(options?: {
+  x?: number;
   y?: number;
   scale?: number;
   blur?: boolean;
@@ -23,6 +24,7 @@ export function useScrollReveal<
     const el = ref.current;
     if (!el) return;
 
+    const x = options?.x ?? 0;
     const y = options?.y ?? 50;
     const scale = options?.scale ?? 0.95;
     const dur = options?.duration ?? 0.9;
@@ -30,9 +32,9 @@ export function useScrollReveal<
     const blur = options?.blur ?? false;
 
     if (blur) {
-      gsap.set(el, { opacity: 0, y, scale, filter: "blur(12px)" });
+      gsap.set(el, { opacity: 0, x, y, scale, filter: "blur(12px)" });
     } else {
-      gsap.set(el, { opacity: 0, y, scale });
+      gsap.set(el, { opacity: 0, x, y, scale });
     }
 
     const observer = new IntersectionObserver(
@@ -40,6 +42,7 @@ export function useScrollReveal<
         if (entry.isIntersecting) {
           const toVars: gsap.TweenVars = {
             opacity: 1,
+            x: 0,
             y: 0,
             scale: 1,
             duration: dur,

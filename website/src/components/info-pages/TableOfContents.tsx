@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 interface TOCItem {
   hash: string;
@@ -10,6 +11,7 @@ interface TableOfContentsProps {
   currentSection: string | null;
   title?: string;
   isBlogPage?: boolean;
+  enableAnimation?: boolean;
 }
 
 export const TableOfContents: React.FC<TableOfContentsProps> = ({
@@ -17,7 +19,27 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   currentSection = "",
   title = "",
   isBlogPage = false,
+  enableAnimation = true,
 }) => {
+  const rootRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    if (!enableAnimation) return;
+    const el = rootRef.current;
+    if (!el) return;
+    gsap.fromTo(
+      el,
+      { opacity: 0, x: -40 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: 0.2,
+      },
+    );
+  }, [enableAnimation]);
+
   const getLinkStyle = (hash: string) => {
     return `tag-line text-[#006D97] p-2 lg:pl-4 ${
       currentSection === hash
@@ -27,7 +49,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   };
 
   return (
-    <div className="lg:sticky lg:top-[134px] h-max">
+    <div ref={rootRef} className="lg:sticky lg:top-[134px] h-max z-50">
       <h3
         className={`${
           isBlogPage
