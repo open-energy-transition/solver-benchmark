@@ -129,55 +129,116 @@ def calculate_integrality_violation(
     return max((p - p.round()).abs())
 
 
-def get_duality_gap(solver_model, solver_name: str):
-    """Retrieve the duality gap for the given solver model, if available."""
-    if solver_name == "scip":
-        return solver_model.getGap()
-    elif solver_name == "gurobi":
-        return solver_model.MIPGap
-    elif solver_name == "highs":
-        return getattr(solver_model.getInfo(), "mip_gap", None)
-    elif solver_name == "cbc":
-        return getattr(solver_model, "mip_gap", None)
-    elif solver_name == "glpk":
-        # GLPK does not have a way to retrieve the duality gap from python
-        return None
-    elif solver_name == "cplex":
-        return solver_model.solution.MIP.get_mip_relative_gap()
-    elif solver_name == "xpress":
-        return solver_model.controls.miprelgapnotify
-    elif solver_name == "knitro":
-        # Knitro duality gap retrieval not implemented yet
-        return None
-    else:
-        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
-
-
-def get_milp_metrics(input_file, solver_result):
-    """Uses HiGHS to read the problem file and compute max integrality violation and
-    duality gap.
-    """
+def get_mip_gap(solver_model, solver_name: str):
+    """Retrieve the final relative MIP gap, if available."""
     try:
-        if highspy is not None:
-            h = highspy.Highs()
-            h.readModel(input_file)
-            integer_vars = {
-                h.variableName(i)
-                for i in range(h.numVariables)
-                if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-            }
-            if integer_vars:
-                duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
-                max_integrality_violation = calculate_integrality_violation(
-                    integer_vars, solver_result.solution.primal
-                )
-                return duality_gap, max_integrality_violation
+        match solver_name:
+            case "scip":
+                return solver_model.getGap()
+            case "gurobi":
+                return solver_model.MIPGap
+            case "highs":
+                return getattr(solver_model.getInfo(), "mip_gap", None)
+            case "cbc":
+                return getattr(solver_model, "mip_gap", None)
+            case "glpk":
+                return None
+            case "cplex":
+                return solver_model.solution.MIP.get_mip_relative_gap()
+            case "xpress":
+                return solver_model.getAttrib("mipgap")
+            case "knitro":
+                return None
+            case _:
+                print(f"WARNING: cannot obtain MIP gap for {solver_name}")
+                return None
+    except Exception:
+        print(f"ERROR obtaining MIP gap: {format_exc()}", file=sys.stderr)
+    return None
+
+
+def get_lp_duality_gap(solver_model, solver_name: str):
+    """Retrieve the final LP duality gap, if available."""
+    try:
+        match solver_name:
+            case "highs":
+                info = solver_model.getInfo()
+                return getattr(info, "primal_dual_objective_error", None)
+            case "gurobi":
+                # Gurobi exposes barrier convergence tolerances and quality attributes,
+                # but not a single solver-independent final LP duality gap through the
+                # current linopy solver object. Do not report BarConvTol here: it is a
+                # stopping tolerance, not the realized duality gap.
+                return None
+            case "scip" | "cbc" | "glpk" | "cplex" | "xpress" | "knitro":
+                return None
+            case _:
+                print(f"WARNING: cannot obtain LP duality gap for {solver_name}")
+                return None
+    except Exception:
+        print(f"ERROR obtaining LP duality gap: {format_exc()}", file=sys.stderr)
+    return None
+
+
+def get_integer_variables(input_file):
+    """Return integer variable names from the problem file, if available."""
+    if highspy is None:
+        return None
+
+    h = highspy.Highs()
+    h.readModel(input_file)
+
+    return {
+        h.variableName(i)
+        for i in range(h.numVariables)
+        if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+    }
+
+
+def get_max_integrality_violation(input_file, primal_values):
+    """Calculate max integrality violation from the solution values."""
+    try:
+        integer_vars = get_integer_variables(input_file)
+
+        if integer_vars is None:
+            return None
+
+        if not integer_vars:
+            return 0.0
+
+        return calculate_integrality_violation(integer_vars, primal_values)
     except Exception:
         print(
-            f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
+            f"ERROR obtaining max integrality violation for {input_file}: {format_exc()}",
             file=sys.stderr,
         )
-    return None, None
+    return None
+
+
+def get_quality_metrics(input_file, solver_result, solver_name: str):
+    """Collect solver quality metrics with clear LP/MILP semantics."""
+    try:
+        mip_problem = is_mip_problem(solver_result.solver_model, solver_name)
+    except Exception:
+        print(f"ERROR detecting problem type: {format_exc()}", file=sys.stderr)
+        mip_problem = None
+
+    if mip_problem:
+        return {
+            "mip_gap": get_mip_gap(solver_result.solver_model, solver_name),
+            "duality_gap": None,
+            "max_integrality_violation": get_max_integrality_violation(
+                input_file, solver_result.solution.primal
+            ),
+        }
+
+    return {
+        "mip_gap": None,
+        "duality_gap": get_lp_duality_gap(solver_result.solver_model, solver_name),
+        "max_integrality_violation": get_max_integrality_violation(
+            input_file, solver_result.solution.primal
+        ),
+    }
 
 
 def get_reported_runtime(solver_name, solver_model) -> float | None:
@@ -277,6 +338,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                     "status": "ER",
                     "condition": "Error",
                     "objective": None,
+                    "mip_gap": None,
                     "duality_gap": None,
                     "max_integrality_violation": None,
                 }
@@ -339,6 +401,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                     "objective": objective,
                     "duality_gap": None,  # Not available from command line output
                     "max_integrality_violation": None,  # Not available from command line output
+                    "mip_gap": None,
                 }
         except Exception as e:
             runtime = time.perf_counter() - start_time
@@ -353,6 +416,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                 "status": "error",
                 "condition": "Error",
                 "objective": None,
+                "mip_gap": None,
                 "duality_gap": None,
                 "max_integrality_violation": None,
             }
@@ -403,9 +467,7 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result
-        )
+        quality_metrics = get_quality_metrics(input_file, solver_result, solver_name)
 
         results = {
             "runtime": runtime,
@@ -415,8 +477,9 @@ def main(solver_name, input_file, solver_version):
             "status": solver_result.status.status.value,
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
-            "duality_gap": duality_gap,
-            "max_integrality_violation": max_integrality_violation,
+            "mip_gap": quality_metrics["mip_gap"],
+            "duality_gap": quality_metrics["duality_gap"],
+            "max_integrality_violation": quality_metrics["max_integrality_violation"],
         }
     except Exception:
         print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
@@ -426,6 +489,7 @@ def main(solver_name, input_file, solver_version):
             "status": "ER",
             "condition": None,
             "objective": None,
+            "mip_gap": None,
             "duality_gap": None,
             "max_integrality_violation": None,
         }
