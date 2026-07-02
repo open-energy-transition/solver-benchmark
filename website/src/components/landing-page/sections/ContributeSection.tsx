@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchGitHubStats } from "@/utils/githubApi";
+import { useScrollReveal, useCountUp } from "@/hooks/useGsapAnimation";
 
 const Contribute = () => {
   const [stats, setStats] = useState({
@@ -39,8 +40,19 @@ const Contribute = () => {
     getGitHubStats();
   }, []);
 
+  const sectionRef = useScrollReveal<HTMLDivElement>({
+    y: 50,
+    scale: 0.95,
+    duration: 0.9,
+  });
+  const contributorsRef = useCountUp<HTMLDivElement>(stats.contributors);
+  const issuesRef = useCountUp<HTMLDivElement>(stats.issues);
+  const starsRef = useCountUp<HTMLDivElement>(stats.stars);
+  const forksRef = useCountUp<HTMLDivElement>(stats.forks);
+
   return (
     <div
+      ref={sectionRef}
       id="contribution"
       className="py-5 text-navy bg-white scroll-mt-16 lg:scroll-mt-28"
     >
@@ -93,7 +105,10 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <UserIcon className="mr-2" />
-                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={contributorsRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading
                       ? "..."
                       : stats.contributors.toString().padStart(2, "0")}
@@ -106,7 +121,10 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <CircleOutlineIcon className="mr-2" />
-                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={issuesRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading ? "..." : stats.issues.toString().padStart(2, "0")}
                   </div>
                 </div>
@@ -115,7 +133,10 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <StarIcon className="mr-2" />
-                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={starsRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading ? "..." : stats.stars.toString().padStart(2, "0")}
                   </div>
                 </div>
@@ -124,7 +145,10 @@ const Contribute = () => {
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <ForkIcon className="mr-2" />
-                  <div className="text-navy font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={forksRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </div>
                 </div>
