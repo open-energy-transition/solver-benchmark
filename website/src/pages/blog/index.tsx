@@ -11,7 +11,8 @@ type Props = {
 
 export default function BlogIndex({ posts }: Props) {
   const headingRef = useScrollReveal<HTMLHeadingElement>({
-    y: 30,
+    x: -80,
+    y: 0,
     duration: 0.8,
     threshold: 0.1,
   });
