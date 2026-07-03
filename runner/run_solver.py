@@ -445,7 +445,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
         #         pass
 
 
-def main(solver_name, input_file, solver_version, timeout=None):
+def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
 
     # Handle highs-hipo solver variants separately
@@ -459,6 +459,9 @@ def main(solver_name, input_file, solver_version, timeout=None):
         # we want to continue only if the error is about invalid HighsVariant
         if "is not a valid HighsVariant" not in str(e):
             raise e
+
+    timeout_seconds = os.environ.get("SOLVER_TIMEOUT_SECONDS")
+    timeout = float(timeout_seconds) if timeout_seconds else None
 
     solver = get_solver(solver_name, timeout)
 
@@ -512,16 +515,12 @@ def main(solver_name, input_file, solver_version, timeout=None):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in {4, 5}:
-        print(
-            "Usage: python run_solver.py <solver_name> <input_file> "
-            "<solver_version> [timeout_seconds]"
-        )
+    if len(sys.argv) != 4:
+        print("Usage: python run_solver.py <solver_name> <input_file> <solver_version>")
         sys.exit(1)
 
     solver_name = sys.argv[1]
     input_file = sys.argv[2]
     solver_version = sys.argv[3]
-    timeout = float(sys.argv[4]) if len(sys.argv) == 5 else None
 
-    main(solver_name, input_file, solver_version, timeout)
+    main(solver_name, input_file, solver_version)

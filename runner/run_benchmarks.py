@@ -258,9 +258,11 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             solver_name,
             input_file,
             solver_version,
-            str(timeout),
         ]
     )
+
+    env = os.environ.copy()
+    env["SOLVER_TIMEOUT_SECONDS"] = str(timeout)
 
     # Run the command and capture the output
     result = subprocess.run(
@@ -269,6 +271,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         text=True,
         check=False,
         encoding="utf-8",
+        env=env,
     )
 
     # Append the stderr to the log file
