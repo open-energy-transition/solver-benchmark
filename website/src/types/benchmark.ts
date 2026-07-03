@@ -4,6 +4,7 @@ type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 type BenchmarkResult = {
   benchmark: string;
   dualityGap: number | null;
+  mipGap: number | null;
   maxIntegralityViolation: number | null;
   memoryUsage: number;
   objectiveValue: number | null;
@@ -57,6 +58,7 @@ interface OriginBenchmarkResult {
   "Objective Value": number | null;
   "Max Integrality Violation": number | null;
   "Duality Gap": number | null;
+  "MIP Gap": number | null;
 }
 
 type IFilterBenchmarkDetails = {
