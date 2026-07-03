@@ -84,12 +84,11 @@ def get_solver(solver_name, timeout=None):
 
     timeout_options = {
         "highs": {"time_limit": timeout},
-        "glpk": {"tmlim": timeout},
         "gurobi": {"TimeLimit": timeout},
         "scip": {"limits/time": timeout},
         "cbc": {"seconds": timeout},
         "cplex": {"timelimit": timeout},
-        "xpress": {"maxtime": timeout},
+        "xpress": {"timelimit": timeout},
     }
 
     options = seed_options.get(solver_name, {}).copy()
@@ -289,6 +288,23 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
     return None
+
+
+def log_indicates_timeout(log_fn: Path) -> bool:
+    if not log_fn.exists():
+        return False
+
+    try:
+        log_text = log_fn.read_text(errors="ignore")
+    except Exception:
+        return False
+
+    timeout_markers = [
+        "Time limit reached",
+        "time limit",
+        "timelimit",
+    ]
+    return any(marker.lower() in log_text.lower() for marker in timeout_markers)
 
 
 def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVariant):
@@ -508,18 +524,40 @@ def main(solver_name, input_file, solver_version):
             "duality_gap": quality_metrics["duality_gap"],
             "max_integrality_violation": quality_metrics["max_integrality_violation"],
         }
+        condition = str(results["condition"]).lower()
+
+        if "time" in condition and "limit" in condition:
+            results["status"] = "TO"
+            results["condition"] = "Timeout"
     except Exception:
-        print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
-        results = {
-            "runtime": None,
-            "reported_runtime": None,
-            "status": "ER",
-            "condition": None,
-            "objective": None,
-            "mip_gap": None,
-            "duality_gap": None,
-            "max_integrality_violation": None,
-        }
+        if log_indicates_timeout(log_fn):
+            runtime = perf_counter() - start_time
+            print(
+                "WARNING: solver reached time limit before a solution could be parsed",
+                file=sys.stderr,
+            )
+            results = {
+                "runtime": runtime,
+                "reported_runtime": None,
+                "status": "TO",
+                "condition": "Timeout",
+                "objective": None,
+                "mip_gap": None,
+                "duality_gap": None,
+                "max_integrality_violation": None,
+            }
+        else:
+            print(f"ERROR running solver: {format_exc()}", file=sys.stderr)
+            results = {
+                "runtime": None,
+                "reported_runtime": None,
+                "status": "ER",
+                "condition": None,
+                "objective": None,
+                "mip_gap": None,
+                "duality_gap": None,
+                "max_integrality_violation": None,
+            }
     print(json.dumps(results))
 
 
