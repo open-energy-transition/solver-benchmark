@@ -203,11 +203,20 @@ def get_integer_variables(input_file):
     h = highspy.Highs()
     h.readModel(input_file)
 
-    return {
-        h.variableName(i)
-        for i in range(h.numVariables)
-        if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-    }
+    lp = h.getLp()
+    integer_vars = set()
+
+    integrality = getattr(lp, "integrality_", None)
+    col_names = getattr(lp, "col_names_", [])
+
+    if integrality is None:
+        return integer_vars
+
+    for name, var_type in zip(col_names, integrality, strict=False):
+        if var_type == highspy.HighsVarType.kInteger:
+            integer_vars.add(name)
+
+    return integer_vars
 
 
 def get_max_integrality_violation(input_file, primal_values):
