@@ -56,20 +56,20 @@ except ModuleNotFoundError:
     highspy = None
 
 
-def get_solver(solver_name):
+def get_solver(solver_name, timeout=None):
     solver_name = solver_name.lower()
     solver_enum = SolverName(solver_name)
 
     solver_class = getattr(solvers, solver_enum.name)
 
-    mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
+    mip_gap = 1e-4  # Tolerance for the relative MIP gap for MILPs.
     seed_options = {
         "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
         "glpk": {"seed": 0, "mipgap": mip_gap},
         "gurobi": {"seed": 0, "MIPGap": mip_gap},
         "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
         "cbc": {
-            "randomCbcSeed": 1,  # 0 indicates time of day
+            "randomCbcSeed": 1,  # 0 indicates time of day.
             "ratioGap": mip_gap,
         },
         "cplex": {
@@ -82,7 +82,22 @@ def get_solver(solver_name):
         "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
     }
 
-    return solver_class(**seed_options.get(solver_name, {}))
+    timeout_options = {
+        "highs": {"time_limit": timeout},
+        "glpk": {"tmlim": timeout},
+        "gurobi": {"TimeLimit": timeout},
+        "scip": {"limits/time": timeout},
+        "cbc": {"seconds": timeout},
+        "cplex": {"timelimit": timeout},
+        "xpress": {"maxtime": timeout},
+    }
+
+    options = seed_options.get(solver_name, {}).copy()
+
+    if timeout is not None:
+        options.update(timeout_options.get(solver_name, {}))
+
+    return solver_class(**options)
 
 
 def is_mip_problem(solver_model, solver_name):
@@ -430,7 +445,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
         #         pass
 
 
-def main(solver_name, input_file, solver_version):
+def main(solver_name, input_file, solver_version, timeout=None):
     problem_file = Path(input_file)
 
     # Handle highs-hipo solver variants separately
@@ -445,7 +460,7 @@ def main(solver_name, input_file, solver_version):
         if "is not a valid HighsVariant" not in str(e):
             raise e
 
-    solver = get_solver(solver_name)
+    solver = get_solver(solver_name, timeout)
 
     solution_dir = Path(__file__).parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -497,11 +512,16 @@ def main(solver_name, input_file, solver_version):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python run_solver.py <solver_name> <input_file> <solver_version>")
+    if len(sys.argv) not in {4, 5}:
+        print(
+            "Usage: python run_solver.py <solver_name> <input_file> "
+            "<solver_version> [timeout_seconds]"
+        )
         sys.exit(1)
 
     solver_name = sys.argv[1]
     input_file = sys.argv[2]
     solver_version = sys.argv[3]
-    main(solver_name, input_file, solver_version)
+    timeout = float(sys.argv[4]) if len(sys.argv) == 5 else None
+
+    main(solver_name, input_file, solver_version, timeout)

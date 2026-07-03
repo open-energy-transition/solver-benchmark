@@ -252,12 +252,13 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
-            f"{timeout}s",
+            f"{timeout + 60}s",
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
             solver_name,
             input_file,
             solver_version,
+            str(timeout),
         ]
     )
 
