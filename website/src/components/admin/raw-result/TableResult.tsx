@@ -148,6 +148,16 @@ const TableResult = () => {
         cell: (info: CellContext<BenchmarkResult, unknown>) =>
           formatScientific(info.getValue() as number, ""),
       },
+      {
+        header: "MIP Gap",
+        accessorKey: "mipGap",
+        meta: {
+          filterVariant: "range",
+        },
+        filterFn: filterNumber,
+        cell: (info: CellContext<BenchmarkResult, unknown>) =>
+          formatScientific(info.getValue() as number, ""),
+      },
     ],
     [],
   );

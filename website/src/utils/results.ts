@@ -66,6 +66,7 @@ const getBenchmarkResults = async (
     return {
       benchmark: data["Benchmark"],
       dualityGap: parseNumberOrNull(data["Duality Gap"]),
+      mipGap: parseNumberOrNull(data["MIP Gap"]),
       maxIntegralityViolation: parseNumberOrNull(
         data["Max Integrality Violation"],
       ),
