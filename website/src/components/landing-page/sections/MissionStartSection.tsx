@@ -1,15 +1,24 @@
 import { BoldAltIcon, DollarSignIcon, SoftwareDevIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import MissionCard from "@/components/common/MissionCard";
+import { useScrollReveal, useStaggerReveal } from "@/hooks/useGsapAnimation";
 
 const MissionStart = () => {
+  const headerRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const cardsRef = useStaggerReveal<HTMLDivElement>(":scope > *", {
+    fromDirection: "scale",
+    stagger: 0.3,
+    duration: 1.5,
+    ease: "back.out(1.4)",
+  });
+
   return (
     <div
       id="mission"
       className="text-navy bg-page-bg pt-24 pb-16 scroll-mt-16 lg:scroll-mt-28"
     >
       <div className="mx-auto max-w-8xl px-4 lg:px-12">
-        <div className="grid sm:flex">
+        <div ref={headerRef} className="grid sm:flex">
           <div className="w-full sm:w-1/2 lg:w-1/3">
             <div className="tag-line-lg uppercase font-league mb-4">
               Mission
@@ -23,7 +32,10 @@ const MissionStart = () => {
             participants in the green energy transition.
           </div>
         </div>
-        <div className="grid gap-8 lg:flex justify-between text-navy">
+        <div
+          ref={cardsRef}
+          className="grid gap-8 lg:flex justify-between text-navy"
+        >
           <MissionCard
             Icon={SoftwareDevIcon}
             title="Solver Developers"

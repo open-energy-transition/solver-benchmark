@@ -1,6 +1,10 @@
 import FAQItem from "../FAQItem";
+import { useScrollReveal, useStaggerReveal } from "@/hooks/useGsapAnimation";
 
 const Contribute = () => {
+  const headerRef = useScrollReveal<HTMLDivElement>();
+  const itemsRef = useStaggerReveal<HTMLDivElement>(":scope > *");
+
   return (
     <div
       id="faq"
@@ -16,13 +20,13 @@ const Contribute = () => {
           pb-16
         "
       >
-        <div className="">
+        <div ref={headerRef} className="">
           <div
             className="
                 tag-line-lg
                 uppercase
                 font-league
-                text-navy
+                text-white
                 mb-4
               "
           >
@@ -33,7 +37,7 @@ const Contribute = () => {
           </div>
         </div>
         <div>
-          <div className="mt-4 flex flex-col gap-6">
+          <div ref={itemsRef} className="mt-4 flex flex-col gap-6">
             {/* TODO allow rich text and links in FAQ answers */}
             <FAQItem
               question="Why are we building a new benchmark platform?"
