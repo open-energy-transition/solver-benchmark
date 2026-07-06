@@ -417,6 +417,14 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
+        # DEBUG
+        print("=" * 80, file=sys.stderr)
+        print(f"DEBUG solver={solver_name}", file=sys.stderr)
+        print(f"solver_result = {repr(solver_result)}", file=sys.stderr)
+        print(f"status = {solver_result.status!r}", file=sys.stderr)
+        print(f"solution = {solver_result.solution!r}", file=sys.stderr)
+        print("=" * 80, file=sys.stderr)
+
         solver_model = solver_result.solver_model
         raw_status = solver_result.status.status.value
         termination_condition = solver_result.status.termination_condition.value
