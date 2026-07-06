@@ -422,6 +422,15 @@ def main(solver_name, input_file, solver_version):
         termination_condition = solver_result.status.termination_condition.value
         objective = solver_result.solution.objective
 
+        # DEBUG
+        print(
+            f"DEBUG: solver={solver_name}, "
+            f"raw_status={raw_status}, "
+            f"termination={termination_condition}, "
+            f"objective={objective}",
+            file=sys.stderr,
+        )
+
         status_value = raw_status
 
         if termination_condition in {"unknown", "error", "failed", "aborted"}:
