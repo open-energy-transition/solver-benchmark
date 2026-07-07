@@ -146,7 +146,7 @@ benchmarks:
       Num. nonzeros: 3225685
 # https://github.com/CANOE
   canoe_national_16d_high:
-    Short description: A national capacity expansion model for Canada (except territories) with high resolution technology choices for both energy supply and end use demands.
+    Short description: A national capacity expansion model for Canada (except territories) with high resolution technology choices for both energy supply and end-use demands.
     Modelling framework: TEMOA
     Model name: CANOE
     Version:
@@ -170,7 +170,7 @@ benchmarks:
       Num. variables: 3630932
       Num. nonzeros: 34988087
   canoe_ontario_16d_high:
-    Short description: A provincial capacity expansion model for Ontario, Canada, with high resolution technology choices for both energy supply and end use demands.
+    Short description: A provincial capacity expansion model for Ontario, Canada, with high resolution technology choices for both energy supply and end-use demands.
     Modelling framework: TEMOA
     Model name: CANOE
     Version:
