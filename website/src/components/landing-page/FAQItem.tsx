@@ -11,11 +11,7 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
 
   return (
     <div className="w-full">
-      <div
-        className={`${
-          isOpen ? "bg-[#E6EFE3] " : "bg-white "
-        } w-full rounded-3xl shadow`}
-      >
+      <div className="bg-[#EEF5FF] w-full rounded-3xl shadow">
         <div
           className="py-4 lg:py-[34px] px-8 font-lato cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
@@ -55,9 +51,12 @@ const FAQItem = ({ question = "", answer }: FAQItemProps) => {
         <div
           id={`faq-answer-${question}`}
           className={`overflow-hidden transition-all duration-150 ease-in-out px-8 pb-4`}
-          style={{ maxHeight: isOpen ? "100vh" : "0" }}
+          style={{
+            maxHeight: isOpen ? "100vh" : "0",
+            display: isOpen ? "block" : "none",
+          }}
         >
-          <div className="text-lg max-w-[1152px] mt-0 lg:mt-6 text-start border-[#6D7F70] border-l-4 pl-2">
+          <div className="text-lg max-w-[1152px] mt-0 text-start border-[#6D7F70] border-l-4 pl-2 text-navy">
             {answer}
           </div>
         </div>

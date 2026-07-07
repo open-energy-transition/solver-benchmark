@@ -194,6 +194,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
             <Link
               href={info.getValue() as string}
               className="text-white bg-green-pop p-2 py-1.5 rounded-lg text-sm"
+              aria-label={`Download log for ${info.row.original.instance} solved by ${solver}`}
             >
               Download Log
             </Link>
@@ -208,6 +209,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
           <Link
             href={info.getValue() as string}
             className="text-white bg-navy p-2 py-1.5 rounded-lg text-sm"
+            aria-label={`Download solution for ${info.row.original.instance} solved by ${info.row.original.solver}`}
           >
             Download Solution
           </Link>

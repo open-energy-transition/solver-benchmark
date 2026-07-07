@@ -77,7 +77,7 @@ const D3Chart = () => {
       .append("text")
       .attr("x", -height / 2)
       .attr("y", -50)
-      .attr("fill", "#8C8C8C");
+      .attr("fill", "#575757");
 
     // Scatter points
     svg

@@ -23,7 +23,7 @@ interface MetaDataEntry {
   sectoralFocus: string;
   sectors: string;
   timeHorizon: string;
-  milpFeatures: string | null;
+  milpFeatures: string;
   contributorSSource: string | null;
   license: string | null;
   sizes: Size[];

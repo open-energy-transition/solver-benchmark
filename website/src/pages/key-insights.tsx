@@ -14,6 +14,8 @@ import HowGoodIsSolver from "@/components/key-insights/HowGoodIsSolver";
 import FeasibilityForOpenSource from "@/components/key-insights/FeasibilityForOpenSource";
 import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
+import { useStaggerReveal } from "@/hooks/useGsapAnimation";
+import gsap from "gsap";
 import filterActions from "@/redux/filters/actions";
 import { AppDispatch } from "@/redux/store";
 import { IFilterState } from "@/types/state";
@@ -66,12 +68,34 @@ const KeyInsightsPage = () => {
   ];
   const visibilities = useSectionsVisibility(tocItems);
   const scrollDirection = useScrollDirection();
+
+  const tocRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const el = tocRef.current;
+    if (!el) return;
+    gsap.set(el, { opacity: 0, x: -40 });
+    gsap.to(el, {
+      opacity: 1,
+      x: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      delay: 0.2,
+    });
+  }, []);
+  const contentRef = useStaggerReveal<HTMLDivElement>(".info-pages-section", {
+    fromDirection: "bottom",
+    y: 30,
+    stagger: 0.12,
+    duration: 0.8,
+    threshold: 0.05,
+  });
   const [currentSection, setCurrentSection] = useState<string | null>(null);
 
   useEffect(() => {
     savedFiltersRef.current = currentFilters;
 
-    (dispatch as any)(filterActions.resetFilters());
+    dispatch(filterActions.resetFilters());
 
     return () => {
       if (savedFiltersRef.current) {
@@ -98,14 +122,19 @@ const KeyInsightsPage = () => {
         :global(.info-pages-content p) {
           font-size: 16px;
         }
+        .info-pages-section {
+          opacity: 0;
+        }
       `}</style>
-      <TableOfContents
-        title="Key Insights"
-        currentSection={currentSection}
-        items={tocItems}
-      />
+      <div ref={tocRef} className="opacity-0">
+        <TableOfContents
+          title="Key Insights"
+          currentSection={currentSection}
+          items={tocItems}
+        />
+      </div>
       <ContentSection>
-        <div className="info-pages-content">
+        <div ref={contentRef} className="info-pages-content">
           <div className="info-pages-section">
             <Introduction />
           </div>

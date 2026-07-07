@@ -11,7 +11,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment
     Sizes:
     - Name: 1-240ts
       Size: S
@@ -61,7 +61,7 @@ benchmarks:
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
@@ -86,7 +86,7 @@ benchmarks:
     Sectoral focus: Heating-only
     Sectors: Heating
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment
     Sizes:
     - Name: 1-365ts
       Size: S
@@ -134,7 +134,8 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage
-    MILP features: NonConvex operation; Binary investment decisions; Unit commitment; Piecewise efficiency
+    MILP features: NonConvex operation, Binary investment decisions, Unit commitment,
+      Piecewise efficiency
     Sizes:
     - Name: 1-8760ts
       Size: S

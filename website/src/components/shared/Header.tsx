@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   ArrowUpLeftIcon,
@@ -17,10 +17,21 @@ const Header = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
 
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMenuOpen]);
+
   return (
     <header className="sticky top-0 z-50 bg-navy flex item-end">
       <nav
-        className="flex items-center justify-between py-2 lg:pt-11 lg:pb-10 mx-auto max-w-8xl w-full px-4 lg:px-[70px]"
+        className="flex items-center justify-between py-2 lg:pt-11 lg:pb-10 mx-auto max-w-8xl w-full px-4 md:px-12"
         aria-label="Global"
       >
         <div className="flex w-max">
@@ -89,7 +100,9 @@ const Header = () => {
             name="open-menu"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 pt-2 lg:pt-0"
-            aria-label="Open menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-haspopup="menu"
           >
             <MenuIcon className="text-white h-6 w-6" />
           </button>
@@ -102,6 +115,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to home page"
           >
             HOME
           </Link>
@@ -112,6 +126,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to key insight page"
           >
             KEY INSIGHTS
           </Link>
@@ -122,6 +137,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to defailt results page"
           >
             DETAILED RESULTS
           </Link>
@@ -132,6 +148,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to defailt methodology page"
           >
             METHODOLOGY
           </Link>
@@ -142,6 +159,7 @@ const Header = () => {
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
+            aria-label="Navigate to blog page"
           >
             BLOG
           </Link>
@@ -150,6 +168,7 @@ const Header = () => {
           <Link
             href="https://github.com/open-energy-transition/solver-benchmark"
             target="_blank"
+            rel="noopener noreferrer"
             aria-label="GitHub repository"
             className="mr-8"
           >
@@ -158,6 +177,7 @@ const Header = () => {
           <Link
             href="https://openenergytransition.org/"
             target="_blank"
+            rel="noopener noreferrer"
             className="
               border
               border-[#EBEFF24D]
@@ -175,6 +195,7 @@ const Header = () => {
               text-base
               w-max
             "
+            aria-label="Navigate to Open Energy Transition page"
           >
             <Image
               src="/logo/logo-light.svg"
@@ -182,6 +203,7 @@ const Header = () => {
               width={47}
               height={22}
               className="hidden lg:block"
+              loading="lazy"
             />
             <ArrowUpLeftIcon className="rotate-90 text-white" />
           </Link>
@@ -202,6 +224,7 @@ const Header = () => {
                     alt="Contribution image"
                     width={43}
                     height={43}
+                    loading="lazy"
                   />
                 </div>
               </a>
@@ -245,6 +268,7 @@ const Header = () => {
                           : {})}
                         className={`-mx-3 flex item-center gap-2 rounded-lg px-3 py-2 text-base/7 font-semibold text-white
                           ${isActive ? "bg-white bg-opacity-30" : ""}`}
+                        aria-label={`Navigate to ${link.label} page`}
                       >
                         {link.label}
                         {link.external && <OutIcon className="mt-2 size-3" />}

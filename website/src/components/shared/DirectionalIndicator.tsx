@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React from "react";
 
 export type Direction = "lower" | "higher";
 
@@ -17,8 +17,6 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
   size = "sm",
   color = "black",
 }) => {
-  const id = useId();
-
   const sizeClasses: Record<string, string> = {
     sm: "text-[10px]",
     md: "text-xs",
@@ -74,7 +72,7 @@ const DirectionalIndicator: React.FC<DirectionalIndicatorProps> = ({
           strokeWidth={Math.max(1, strokeWidths[size] - 1)}
         />
       </svg>
-      <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+      <span className="font-bold inline-block whitespace-nowrap">
         {label ? label : text}
       </span>
     </div>
