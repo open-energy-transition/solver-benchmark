@@ -34,7 +34,7 @@ def iter_strings(obj: Any) -> Iterable[str]:
             yield from iter_strings(v)
 
 
-def check_url(url: str, timeout_s: float = 10.0) -> CheckResult:
+def check_url(url: str, timeout_s: float = 60.0) -> CheckResult:
     # Create a short-lived session per thread for connection pooling within that thread.
     # (requests.Session is not guaranteed thread-safe when shared.)
     session = requests.Session()
