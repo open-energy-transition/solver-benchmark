@@ -3,6 +3,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-yaml
+        exclude: benchmarks/metadata_schema.yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
         exclude: ^benchmarks/pypsa/solve_network\.patch$
@@ -12,7 +13,7 @@ repos:
         args: ["--maxkb=2000"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.6
+    rev: v0.15.20
     hooks:
       - id: ruff
         types_or: [python, pyi, jupyter]

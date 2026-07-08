@@ -183,7 +183,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
       // Download all files
       for (let i = 0; i < filesToDownload.length; i++) {
-        const { benchmark, url, filename } = filesToDownload[i];
+        const { benchmark: _benchmark, url, filename } = filesToDownload[i];
 
         setDownloadProgress({
           current: i + 1,
@@ -324,6 +324,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               "{name}",
               info.row.original.name,
             )}
+            aria-label="bench-mark-link"
           >
             <InfoPopup
               disabled={((info.getValue() as string) || "").length <= 30}
@@ -410,8 +411,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between my-4 md:mt-0">
-        <p className="text-xs w-1/2 4xl:w-3/4">
+      <div className="sm:flex items-center justify-between my-4 md:mt-0">
+        <p className="text-xs sm:w-1/2 4xl:w-3/4">
           <span>
             To search for a particular benchmark problem by name, click the
             filter icon
@@ -422,7 +423,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           <span>on the benchmark name column and type to search</span>
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-end mt-2 sm:mt-0">
           {!isSelectMode ? (
             <button
               onClick={() => setIsSelectMode(true)}

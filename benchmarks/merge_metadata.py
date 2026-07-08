@@ -203,6 +203,8 @@ def process_yaml_file(file_path):
 
 # Process all [Mm]etadata*.yaml files recursively under benchmarks
 for file_path in sorted(benchmarks_dir.rglob("[Mm]etadata*.yaml")):
+    if file_path.name == "metadata_schema.yaml":
+        continue
     process_yaml_file(file_path)
 
 

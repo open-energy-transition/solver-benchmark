@@ -30,19 +30,22 @@ const PageBenchmarkDetail = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
 
-                    <Link href={PATH_DASHBOARD.benchmarkSet.list}>
-                      <span className="self-center font-semibold whitespace-nowrap text-opacity-70">
+                    <Link
+                      href={PATH_DASHBOARD.benchmarkSet.list}
+                      aria-label="Navigate to benchmark set list page"
+                    >
+                      <span className="self-center font-semibold whitespace-nowrap text-gray-600">
                         Benchmark Set
                       </span>
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <span className="self-center font-semibold whitespace-nowrap text-opacity-70">
+                    <span className="self-center font-semibold whitespace-nowrap text-gray-600 ">
                       Feature Distribution
                     </span>
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Feature Distribution</h5>
+              <h1 className="h5">Feature Distribution</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 Distribution of Model Features in Benchmark Set
               </p>

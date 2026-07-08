@@ -238,6 +238,7 @@ const BenchmarkRuntimeComparison = ({
         extraCategoryLengthMargin={extraCategoryLengthMargin}
         splitter={splitter}
         useLogScale={true}
+        directionalIndicator="lower"
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
           const status = benchmarkWithStatus

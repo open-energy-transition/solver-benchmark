@@ -101,12 +101,16 @@ const PageBenchmarkDetail = () => {
             <AdminHeader>
               <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                 <div className="flex flex-wrap items-center gap-1">
-                  <Link href={PATH_DASHBOARD.root}>
+                  <Link
+                    href={PATH_DASHBOARD.root}
+                    aria-label="Navigate to homep page"
+                  >
                     <HomeIcon className="w-[1.125rem] h-[1.125rem]" />
                   </Link>
                   <ArrowIcon fill="none" className="size-3 stroke-navy" />
                   <Link
                     href={PATH_DASHBOARD.benchmarkSet.list}
+                    aria-label="Navigate to benchmark set list page"
                     className="self-center font-semibold whitespace-normal md:whitespace-nowrap"
                   >
                     Benchmark Set
@@ -123,14 +127,14 @@ const PageBenchmarkDetail = () => {
         >
           {/* Content */}
           <div className="pb-2 md:py-4 md:pt-2 flex items-center">
-            <Link href={"./"}>
+            <Link href={"./"} aria-label="Navigate to benchmark set list page">
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>
             <InfoPopup
               trigger={() => (
-                <h5 className="text-ellipsis overflow-hidden pl-1.5">
+                <h1 className="text-ellipsis overflow-hidden pl-1.5 h5">
                   {benchmarkName}
-                </h5>
+                </h1>
               )}
               position="top center"
               closeOnDocumentClick
@@ -159,7 +163,7 @@ const PageBenchmarkDetail = () => {
               <span className="font-semibold">License:</span>{" "}
               {benchmarkDetail?.license ?? "None"}
             </div>
-            <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0">
+            <div className="lg:bg-[#F4F6F8] flex flex-col md:flex-row py-2.5 rounded-lg gap-2 md:gap-0 overflow-auto">
               {columns.map((col) => (
                 <div
                   key={col.name}

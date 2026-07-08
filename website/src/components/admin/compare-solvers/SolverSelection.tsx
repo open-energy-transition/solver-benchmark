@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ChartCompare from "./ChartCompare";
 import { IResultState } from "@/types/state";
@@ -9,7 +9,6 @@ import { SolverMetrics } from "@/types/compare-solver";
 import { formatDecimal } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
-import Link from "next/link";
 import BasicVsFeasible from "@/components/shared/BasicVsFeasible";
 
 const SolverSelection = () => {
@@ -127,6 +126,11 @@ const SolverSelection = () => {
     })),
   );
 
+  const compareBackground = {
+    upper: "#F0F4F2",
+    lower: "#E1E5F2",
+  };
+
   return (
     <div>
       <div className="flex flex-row gap-2 sm:gap-0 mb-4">
@@ -164,11 +168,17 @@ const SolverSelection = () => {
           different timeout values: smaller benchmarks (S and M) were run with a
           timeout of 1h, while larger benchmarks (L) were run with a timeout of
           24h.{" "}
-          <div className="inline-flex gap-1 items-start">
-            Thus, the
-            <CloseIcon className="size-3 mt-1.5" />s in the graph below might
-            appear at 2 different time values. Click on any point in this graph
-            to see details of that benchmark instance.
+          <div className="">
+            Thus, the{" "}
+            <span className="mt-1 relative">
+              <span className="text-lg opacity-0">×</span>
+              <span className="text-lg absolute top-[-5px] left-0">
+                <CloseIcon className="size-3 mt-[9px]" />
+              </span>
+            </span>{" "}
+            s in the graph below might appear at 2 different time values. Click
+            on any point in this graph to see details of that benchmark
+            instance.
           </div>
         </p>
         <p className="mb-6 mt-4 max-w-screen-lg">
@@ -201,10 +211,7 @@ const SolverSelection = () => {
               xaxis: `Runtime (s) of ${solver1.replace("--", " (")})`,
               yaxis: `Runtime (s) of ${solver2.replace("--", " (")})`,
             }}
-            backgroundColor={{
-              upper: "#F0F4F2",
-              lower: "#E1E5F2",
-            }}
+            backgroundColor={compareBackground}
             solver1={solver1}
             solver2={solver2}
             scaleType="log"
@@ -230,12 +237,11 @@ const SolverSelection = () => {
               xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
               yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
             }}
-            backgroundColor={{
-              upper: "#F0F4F2",
-              lower: "#E1E5F2",
-            }}
+            backgroundColor={compareBackground}
             solver1={solver1}
             solver2={solver2}
+            safeAxes={false}
+            showSolverFasterLabels={true}
             tooltipTemplate={memoryUsageTooltipTemplate}
             scaleType="log"
             scaleRange={memoryUsageLogScale.scaleRange}

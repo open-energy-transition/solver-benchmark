@@ -87,13 +87,6 @@ const RealisticRuntimeComparison = ({
     return [...state.results.availableSolvers, ...HIPO_SOLVERS];
   });
 
-  const findData = useCallback(
-    (key: string) => {
-      return benchmarkLatestResults.find((result) => result.solver === key);
-    },
-    [benchmarkLatestResults],
-  );
-
   const solverVersions = useMemo(() => {
     const versions: { [key: string]: string[] } = {};
     benchmarkLatestResults.forEach((benchmarkResult) => {
@@ -274,6 +267,7 @@ const RealisticRuntimeComparison = ({
         xAxisLabelWrapLength={xAxisLabelWrapLength}
         splitter={splitter}
         rotateXAxisLabels={rotateXAxisLabels}
+        directionalIndicator="lower"
       />
     </div>
   );
