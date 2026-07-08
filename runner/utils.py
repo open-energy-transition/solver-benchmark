@@ -252,9 +252,13 @@ def allocate_benchmarks(
     timeout_seconds: int | None = None,
     years: list[int] = [2020, 2022, 2023, 2024, 2025],
 ) -> list[dict]:
+    if benchmarks_df.empty:
+        return []
+
     allocation, _ = allocate_vms_greedy(
         benchmarks_df.index, benchmarks_df[weight_col], num_vms
     )
+
     vm_yamls = []
     for benchs in allocation:
         vm_benchmarks = {}
