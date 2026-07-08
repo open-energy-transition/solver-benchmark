@@ -5,14 +5,15 @@ excerpt: "The results of the 2025 Open Energy Benchmark"
 tags: ["report", "solvers", "benchmarks"]
 ---
 
-> **Authors:** Enrico Antonini, Siddharth Krishna, Daniele Lerede
->
-> **Contributors:** Heba Badawy, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Priya Goli Vamsi, Madhukar Mishra, Maximillian Parzen, and Luis Prieto
->
-> **Funder:** Breakthrough Energy
->
-> **Resources**:
-> The complete report, benchmark instances, and metadata are available on [Zenodo](https://zenodo.org/records/20429905)
+*Authors:* (in alphabetical order) Enrico Antonini, Siddharth Krishna, Daniele Lerede
+
+*Contributors:* Heba Badawy, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Priya Goli Vamsi, Madhukar Mishra, Maximillian Parzen, and Luis Prieto
+
+*Funder:* Breakthrough Energy
+
+*Acknowledgements:* The authors would like to thank the following individuals for their valuable feedback during the preparation of this report (listed alphabetically): Oscar Dowson (JuMP), Ivet Galabova (HiGHS), Julian Hall (HiGHS), Lennart Lahrs (Gurobi), Matthias Miltenberger (Gurobi), Mark Turner (MIPLIB), and Filippo Zanetti (HiGHS).
+
+*Resources*: The complete report, benchmark instances, and metadata are available on [Zenodo](https://zenodo.org/records/20429905)
 
 
 ## Abstract
@@ -130,6 +131,7 @@ The benchmarking of 213 energy system optimization models reveals a detailed pic
 * **The MILP Challenge**: The performance gap is most pronounced for MILP problems. The inclusion of discrete decisions amplifies the computational burden, causing open-source solvers to run up to 100 times slower than the proprietary baseline, or to time out entirely, even at problem sizes between 10<sup>5</sup> and 10<sup>6</sup> variables.
 * **Sensitivity to Mathematical Formulation**: Solver success is heavily dependent on the specific modeling framework used, not just the raw problem size. Open-source solvers achieve high solve rates on certain frameworks (e.g., OEMOF) but experience high failure rates on others with denser or more complex mathematical formulations (e.g., PyPSA), highlighting the importance of structural choices in model design and identifying specific formulation patterns that challenge current open-source algorithms.
 * **Ongoing Progress in Open-Source Solvers**: The performance evolution study demonstrates some progress by open-source tools, notably HiGHS, on our benchmark set. Because we only tested historical solver versions on the problems with fewer than 10<sup>6</sup> variables, advances on large problems were not measured. Recent developments such as HiPO are also not captured because our methodology runs solvers with default configurations. However, the complementary HiPO study demonstrates that new algorithmic developments can yield substantially larger performance gains, such as a 7% increase in the number of energy planning problems solvable by open-source tools and up to 15 times faster runtimes for models with millions of variables.
+
 Ultimately, while proprietary solvers remain necessary for the largest energy models, the active development of tools like HiGHS proves that the frontier of open-source capabilities is steadily expanding. Advancing this frontier requires continuous feedback between modelers and solver developers. The Open Energy Benchmark platform facilitates this by providing a diagnostic space where solver developers can identify specific weaknesses and target improvements for upcoming releases. To keep this resource comprehensive, Open Energy Transition invites the modeling community to contribute additional LP and MILP problems following the guidelines available at the [Open Energy Benchmark website](https://openenergybenchmark.org/blog/open_call). By submitting models from underrepresented frameworks or large-scale instances specifically designed to stress-test algorithms, the community can directly help shape and accelerate open-source solver development.
 
 ## Benchmark details
@@ -202,16 +204,16 @@ While the present report focuses on default settings, we performed a [separate s
 
 | Option | Gurobi | HiGHS | SCIP | CBC | GLPK |
 |---|---|---|---|---|---|
-| Algorithm selection | Auto (Primal/Dual simplex, Barrier interior-point) | Auto (Primal/Dual simplex, IPX interior-point) | Branch-and-cut + LP solver (SoPlex, typically dual simplex) | Branch-and-cut (CLP simplex for LP relaxations) | Branch-and-bound + simplex |
-| Solution type (LP) | Basic (or basic after crossover) | Basic (simplex) or non-basic (IPM) | Basic (SoPlex) | Basic (CLP) | Basic |
-| Crossover | Auto (enabled if barrier) | Auto (`run_crossover = choose`) | N/A | N/A | N/A |
-| Barrier/IPM tolerance | 1e-8 | 1e-8 | N/A | N/A | N/A |
-| Primal feasibility tolerance | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
-| Dual feasibility tolerance | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
-| Threads | All available cores | All available cores | 1 | 1 | 1 |
-| MIP gap | 1e-4 | 1e-4 | 1e-4 (default = 0) | 1e-4 (default = 0) | 1e-4 (default = 0) |
-| Random seed | 0 | 0 (default = not fixed) | 0 | 0 (default = time-based) | 0 (default = not fixed) |
-| Notes | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; barrier uses crossover by default | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; IPM may skip crossover | MILP-focused solver; LP handled by SoPlex; limited parallelism | Limited cut generation and parallelism; relies on CLP for LP solves | Legacy solver; limited performance on large-scale MILPs |
+| **Algorithm selection** | Auto (Primal/Dual simplex, Barrier interior-point) | Auto (Primal/Dual simplex, IPX interior-point) | Branch-and-cut + LP solver (SoPlex, typically dual simplex) | Branch-and-cut (CLP simplex for LP relaxations) | Branch-and-bound + simplex |
+| **Solution type (LP)** | Basic (or basic after crossover) | Basic (simplex) or non-basic (IPM) | Basic (SoPlex) | Basic (CLP) | Basic |
+| **Crossover** | Auto (enabled if barrier) | Auto (`run_crossover = choose`) | N/A | N/A | N/A |
+| **Barrier/IPM tolerance** | 1e-8 | 1e-8 | N/A | N/A | N/A |
+| **Primal feasibility tolerance** | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
+| **Dual feasibility tolerance** | 1e-6 | 1e-7 | 1e-6 | 1e-6 | 1e-6 |
+| **Threads** | All available cores | All available cores | 1 | 1 | 1 |
+| **MIP gap** | 1e-4 | 1e-4 | *1e-4 (default = 0)* | *1e-4 (default = 0)* | *1e-4 (default = 0)* |
+| **Random seed** | 0 | *0 (default = not fixed)* | 0 | *0 (default = time-based)* | *0 (default = not fixed)* |
+| **Notes** | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; barrier uses crossover by default | Uses branch-and-cut for MILPs with simplex, typically dual, for node relaxations; IPM may skip crossover | MILP-focused solver; LP handled by SoPlex; limited parallelism | Limited cut generation and parallelism; relies on CLP for LP solves | Legacy solver; limited performance on large-scale MILPs |
 
 </div>
 
@@ -225,6 +227,7 @@ To appropriately align computational resources with problem scale, we utilized t
 
 * Problems with fewer than 1 million variables were run on c4-standard-2 instances (2 vCPUs, 7 GiB RAM) with a 1-hour timeout.
 * Problems with more than 1 million variables were run on c4-highmem-16 instances (16 vCPUs, 124 GiB RAM) with a 24-hour timeout.
+
 Solver execution and measurement are handled centrally via the *linopy* Python interface. The recorded runtime reflects the exact duration of the *linopy.Model.solve()* call. This approach standardizes runtime across different solvers, which often vary in whether they include file parsing or license checks in their internal timers, and accurately reflects the wall-clock time experienced by users. Peak memory consumption is captured via the system's */usr/bin/time* utility, which reports the maximum resident set size of the process during execution. This provides a consistent, solver-agnostic measure of peak physical memory usage.
 
 ## License

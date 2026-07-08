@@ -10,6 +10,7 @@ import {
 } from "@/components/info-pages";
 import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
+import gsap from "gsap";
 import { remark } from "remark";
 import html from "remark-html";
 import remarkGfm from "remark-gfm";
@@ -67,12 +68,12 @@ function extractTocAndInjectIds(htmlString: string) {
         // append our utility to existing class attribute (double-quote case)
         outAttrs = outAttrs.replace(
           /class=\"([^\"]*)\"/,
-          (_m: any, g1: any) => `class="${g1} scroll-mt-[240px]"`,
+          (_m: string, g1: string) => `class="${g1} scroll-mt-[240px]"`,
         );
         // append for single-quoted case
         outAttrs = outAttrs.replace(
           /class='([^']*)'/,
-          (_m: any, g1: any) => `class='${g1} scroll-mt-[240px]'`,
+          (_m: string, g1: string) => `class='${g1} scroll-mt-[240px]'`,
         );
       } else {
         // attrs may include a leading space; insert our class attribute
@@ -86,30 +87,33 @@ function extractTocAndInjectIds(htmlString: string) {
   return { contentHtml: newHtml, tocItems: toc };
 }
 
-export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
-  // For TSX posts, look up and render the registered component directly.
-  if (isTsx) {
-    const entry = getTsxPost(meta.slug);
-    if (entry) {
-      const { Component } = entry;
-      return (
-        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
-          <Head>
-            <title>{meta.title} - Open Energy Benchmark</title>
-            <meta name="description" content={meta.excerpt || meta.title} />
-          </Head>
-          <ContentSection>
-            <Component />
-          </ContentSection>
-        </PageLayout>
-      );
-    }
-  }
+function MarkdownPost({ meta, contentHtml, tocItems }: Omit<Props, "isTsx">) {
   const mappedItems = tocItems.map((t) => ({ ...t, threshold: 0.5 }));
   const visibilities = useSectionsVisibility(mappedItems);
   const scrollDirection = useScrollDirection();
   const [currentSection, setCurrentSection] = useState<string | null>(null);
   const initialSelectionDone = useRef(false);
+  const articleRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const el = articleRef.current;
+    if (!el) return;
+    const children = el.querySelectorAll(":scope > *");
+    if (!children.length) return;
+    gsap.fromTo(
+      children,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
+        delay: 0.15,
+        overwrite: "auto",
+      },
+    );
+  }, []);
 
   useEffect(() => {
     // If any observed section is visible, pick the first visible one (lowest index).
@@ -147,6 +151,18 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
       <Head>
         <title>{meta.title} - Open Energy Benchmark</title>
         <meta name="description" content={meta.excerpt || meta.title} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.excerpt} />
+        <meta
+          property="og:image"
+          content={`https://openenergybenchmark.org${meta.image}`}
+        />
+        <meta property="article:published_time" content={meta.date} />
+        <link
+          rel="canonical"
+          href={`https://openenergybenchmark.org/blog/${meta.slug}`}
+        />
       </Head>
 
       <TableOfContents
@@ -157,8 +173,8 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
       />
 
       <ContentSection>
-        <div className="info-pages-content">
-          <article className="info-pages-section">
+        <div className="info-pages-content z-10">
+          <article ref={articleRef} className="info-pages-section">
             {meta.tags && meta.tags.length > 0 && (
               <div className="mb-6 flex gap-2 mt-4">
                 <div className="text-sm bg-gray-200 px-2 py-1 rounded">
@@ -183,6 +199,41 @@ export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
         </div>
       </ContentSection>
     </PageLayout>
+  );
+}
+
+export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
+  if (isTsx) {
+    const entry = getTsxPost(meta.slug);
+    if (entry) {
+      const { Component } = entry;
+      return (
+        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
+          <Head>
+            <title>{meta.title} - Open Energy Benchmark</title>
+            <meta name="description" content={meta.excerpt || meta.title} />
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content={meta.title} />
+            <meta property="og:description" content={meta.excerpt} />
+            <meta
+              property="og:image"
+              content={`https://openenergybenchmark.org${meta.image}`}
+            />
+            <meta property="article:published_time" content={meta.date} />
+            <link
+              rel="canonical"
+              href={`https://openenergybenchmark.org/blog/${meta.slug}`}
+            />
+          </Head>
+          <ContentSection>
+            <Component />
+          </ContentSection>
+        </PageLayout>
+      );
+    }
+  }
+  return (
+    <MarkdownPost meta={meta} contentHtml={contentHtml} tocItems={tocItems} />
   );
 }
 
@@ -212,7 +263,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   // Otherwise treat as a markdown post.
-  const { meta, content } = getPostBySlug(slug + ".md");
+  let meta: PostMeta;
+  let content: string;
+  try {
+    const post = getPostBySlug(slug + ".md");
+    meta = post.meta;
+    content = post.content;
+  } catch {
+    return { notFound: true };
+  }
   const processed = await remark().use(remarkGfm).use(html).process(content);
   const rawHtml = processed.toString();
   const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
@@ -224,5 +283,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       tocItems,
       isTsx: false,
     },
+    revalidate: 3600,
   };
 };

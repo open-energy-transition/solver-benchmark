@@ -16,6 +16,10 @@ const PagePerformanceHistory = () => {
     <>
       <Head>
         <title>Full Results | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="Access the full and raw set of benchmark results from the Open Energy Benchmark platform. Filter results by area of interest and download filtered data as CSV."
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />

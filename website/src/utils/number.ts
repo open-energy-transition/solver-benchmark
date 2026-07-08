@@ -21,7 +21,7 @@ const formatDecimal = ({
   fallback = "N/A",
   maximumFractionDigits = 1,
 }: {
-  value: any;
+  value: number | string | null | undefined;
   fallback?: string;
   maximumFractionDigits?: number;
 }): string => {
@@ -40,7 +40,10 @@ const formatDecimal = ({
  * Used for objective value, duality gap, max int violation
  * Example: 12345678 -> "1.235e+7"
  */
-const formatScientific = (value: any, fallback = "N/A"): string => {
+const formatScientific = (
+  value: number | string | null | undefined,
+  fallback = "N/A",
+): string => {
   const num = Number(value);
   if (isNaN(num)) {
     return fallback;
@@ -53,7 +56,10 @@ const formatScientific = (value: any, fallback = "N/A"): string => {
  * Used for number of variables and constraints
  * Example: 123456 -> "123,456"
  */
-const formatInteger = (value: any, fallback = "N/A"): string => {
+const formatInteger = (
+  value: number | string | null | undefined,
+  fallback = "N/A",
+): string => {
   const num = Number(value);
   if (isNaN(num)) {
     return fallback;

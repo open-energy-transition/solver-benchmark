@@ -1,34 +1,38 @@
-import { ArrowUpIcon } from "@/assets/icons";
-import Image from "next/image";
 import Link from "next/link";
-import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
+import { useScrollReveal } from "@/hooks/useGsapAnimation";
 
 const MainContent = () => {
-  return (
-    <div className="relative pt-4 bg-no-repeat bg-cover bg-navy bg-opacity-20 before:absolute">
-      <div className="absolute inset-0 -my-2">
-        <Image
-          src="/landing_page/main_bg.png"
-          alt="Background"
-          fill
-          style={{
-            objectFit: "cover",
-            backdropFilter: "blur(3.2px)",
-            filter: "blur(3.2px)",
-          }}
-        />
-      </div>
+  const headingRef = useScrollReveal<HTMLHeadingElement>({
+    y: 40,
+    duration: 1,
+    ease: "power4.out",
+    threshold: 0,
+  });
+  const subtitleRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    blur: true,
+    duration: 1,
+    ease: "power4.out",
+    threshold: 0,
+  });
 
-      <div className="pb-12 pt-24 md:pt-[18rem] mx-auto max-w-8xl px-4 lg:px-[70px] relative">
+  return (
+    <div className="bg-[#F4F6FA]">
+      <div className="pb-8 pt-8 md:pt-10 mx-auto max-w-8xl px-4 md:px-12">
         <div className="text-start md:w-10/12">
           <div className="max-w-screen-lg">
-            <h1 className="inline text-white box-decoration-clone">
-              An open-source benchmark of optimization solvers on representative
-              problems from the energy planning domain.
+            <h1
+              ref={headingRef}
+              className="inline text-navy box-decoration-clone opacity-0"
+            >
+              Open benchmark of solvers for energy planning
             </h1>
           </div>
-          <div className="mt-4 text-grey text-2xl font-light">
-            <div className="font-light text-grey text-lg sm:text-2xl font-lato sm:leading-1.4 tracking-normal">
+          <div
+            ref={subtitleRef}
+            className="mt-4 text-navy text-2xl font-light opacity-0"
+          >
+            <div className="font-light text-navy text-sm sm:text-base font-lato sm:leading-1.4 tracking-normal">
               Built by{" "}
               <span className="font-bold">
                 <Link
@@ -49,56 +53,6 @@ const MainContent = () => {
               </span>
               , and contributions from the community.
             </div>
-          </div>
-
-          <div className="mt-8 grid sm:flex items-center justify-start gap-2 md:gap-6 text-center">
-            <Link
-              href={ROOT_PATH.keyInsights}
-              className="
-                  bg-white
-                  cursor-pointer
-                  duration-200
-                  focus-visible:outline
-                  focus-visible:outline-2
-                  focus-visible:outline-offset-2
-                  font-bold
-                  md:text-xl
-                  px-8
-                  py-4
-                  rounded-2xl
-                  shadow-sm
-                  text-lg
-                  text-teal
-                  transition-all
-                "
-              aria-label="Navigate to key-ingisht page"
-            >
-              KEY INSIGHTS
-            </Link>
-
-            <Link
-              href={PATH_DASHBOARD.home}
-              className="
-                bg-teal
-                flex
-                focus-visible:outline
-                focus-visible:outline-2
-                focus-visible:outline-offset-2
-                font-bold
-                items-center
-                md:text-xl
-                px-8
-                py-4
-                rounded-2xl
-                shadow-sm
-                text-lg
-                text-white
-                "
-              aria-label="Navigate to detail results page"
-            >
-              <span>DETAILED RESULTS</span>
-              <ArrowUpIcon className="ml-3 text-white rotate-90 size-6" />
-            </Link>
           </div>
         </div>
       </div>

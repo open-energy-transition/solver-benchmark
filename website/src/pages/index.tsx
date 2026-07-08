@@ -6,6 +6,7 @@ import {
   MainContentSection,
   MissionStartSection,
 } from "@/components/landing-page/sections";
+import GetStartedChart from "@/components/landing-page/sections/GetStartedChart";
 import HowDoWeBenchmarkSection from "@/components/landing-page/sections/HowDoWeBenchmarkSection";
 import { FooterLandingPage, Header } from "@/components/shared";
 import Head from "next/head";
@@ -22,6 +23,8 @@ const LandingPage = () => {
         <Header />
         {/* Main Content Section */}
         <MainContentSection />
+        {/* Get Started Section */}
+        <GetStartedChart />
         {/* Get Started Section */}
         <GetStartedSection />
         {/* Mission Start Section*/}

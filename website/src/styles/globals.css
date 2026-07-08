@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .placeholder-white::placeholder {
+    color: #ffffff;
+    opacity: 1; /* Firefox lowers placeholder opacity by default */
+  }
+}
+
 @layer base {
   h1,
   .h1 {
