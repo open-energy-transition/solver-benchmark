@@ -2059,6 +2059,17 @@ benchmarks:
       Num. nonzeros: 297601
       Num. continuous variables: 47473
       Num. integer variables: 17520
+    - Name: 2-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 61725
+      Num. variables: 32510
+      Num. nonzeros: 148762
+      Num. continuous variables: 23750
+      Num. integer variables: 8760
     - Name: 2-36h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-36h.mps.gz
@@ -2070,6 +2081,17 @@ benchmarks:
       Num. nonzeros: 99408
       Num. continuous variables: 15885
       Num. integer variables: 5856
+    - Name: 2-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-48h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 30967
+      Num. variables: 16312
+      Num. nonzeros: 74521
+      Num. continuous variables: 11920
+      Num. integer variables: 4392
     - Name: 2-84h
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-84h.mps.gz
@@ -2081,6 +2103,17 @@ benchmarks:
       Num. nonzeros: 42698
       Num. continuous variables: 6850
       Num. integer variables: 2520
+    - Name: 2-168h
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 8997
+      Num. variables: 4742
+      Num. nonzeros: 21482
+      Num. continuous variables: 3470
+      Num. integer variables: 1272
   pypsa-de-elec-trex_vopt-uc:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050) with transmission expansion based on optimal volume increase and including unit commitment.
     Modelling framework: PyPSA
