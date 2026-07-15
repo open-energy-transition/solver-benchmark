@@ -272,7 +272,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   } catch {
     return { notFound: true };
   }
-  const processed = await remark().use(remarkGfm).use(html).process(content);
+  const processed = await remark()
+    .use(remarkGfm)
+    .use(html, { sanitize: false })
+    .process(content);
   const rawHtml = processed.toString();
   const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
 
