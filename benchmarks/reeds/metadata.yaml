@@ -1,0 +1,200 @@
+benchmarks:
+ReEDS-USA-CapacityExpansion:
+    Short description: 132-zone representation of contiguous USA with 416 time slices in 2050 (last solve year of sequential solve with 10 stages).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 132-416ts
+      URL: https://app.box.com/s/lc7af3wmo2tkypcoe5brn591osm1xfim 
+      Temporal resolution: 416 time slices
+      Spatial resolution: 132 regions
+      Realistic: true
+      Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
+    
+ReEDS-USA_z90-CapacityExpansion:
+    Short description: 90-zone representation of contiguous USA with 416 time slices in 2050 (last solve year of sequential solve with 10 stages).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 90-416ts
+      URL: https://app.box.com/s/1rxgu9973tlqhgcasma14ns47tzvgxiu 
+      Temporal resolution: 416 time slices
+      Spatial resolution: 90 regions
+      Realistic: true
+      Realistic motivation: The 90-zone representation and 416 time slices will be the new standard for ReEDS studies.
+
+ReEDS-USA_2MY-CapacityExpansion:
+    Short description: 132-zone representation of contiguous USA with 497 time slices in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 132-497ts
+      URL: https://app.box.com/s/flpnp4hkz18t9fgseme76p6se34c4tze
+      Temporal resolution: 497 time slices
+      Spatial resolution: 132 regions
+      Realistic: false
+      Realistic motivation:
+
+ReEDS-USA_CC-CapacityExpansion:
+    Short description: 132-zone representation of contiguous USA with 264 time slices in 2050 (last solve year of sequential solve with 10 stages) using capacity credit resource adequacy method.
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 132-264ts
+      URL: https://app.box.com/s/hv0uxwgka1rajde4vufpudxkx0uceeek
+      Temporal resolution: 264 time slices
+      Spatial resolution: 132 regions
+      Realistic: true
+      Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
+
+ReEDS-USA_fast-CapacityExpansion:
+    Short description: Simplified representation of contiguous USA with 54-zones and 300 time slices in 2050 (last solve year of sequential solve with 10 stages) for faster solve times.
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 54-300ts
+      URL: https://app.box.com/s/5kgewgg8hhryhscjk50mte0ig19b9nkn
+      Temporal resolution: 300 time slices
+      Spatial resolution: 54 regions
+      Realistic: false
+      Realistic motivation:
+
+ReEDS-USA_decarb_H2-CapacityExpansion:
+    Short description: 132-zone representation of contiguous USA with 424 time slices in 2050 (last solve year of sequential solve with 10 stages) with decarbonization constraints (no CCS, no new nuclear) and detailed H2 production.
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 132-424ts
+      URL: https://app.box.com/s/5iih7k0fuv6crh7ne1i5sfz8wis698zk
+      Temporal resolution: 424 time slices
+      Spatial resolution: 132 regions
+      Realistic: true
+      Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
+
+ReEDS-ISONE_year-CapacityExpansion:
+    Short description: 6-region representation of ISO-New England with a full year of hourly resolution in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 6-1h
+      URL: https://app.box.com/s/6t07kt7dlr6gxzsa5kmkfomp353zo00a
+      Temporal resolution: 8760 hours
+      Spatial resolution: 6 regions
+      Realistic: false
+      Realistic motivation:
+
+ReEDS-ERCOT_year-CapacityExpansion:
+    Short description: 7-region representation of ERCOT with a full year of hourly resolution in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 7-1h
+      URL: https://app.box.com/s/k3yk03va426jeqrtqpz7885dpmg3w8nh
+      Temporal resolution: 8760 hours
+      Spatial resolution: 7 regions
+      Realistic: false
+      Realistic motivation:
+
+ReEDS-ISONE_8760h-CapacityExpansion:
+    Short description: 6-region representation of ISO-New England with 8760 hourly time slices in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 6-8760ts
+      URL: https://app.box.com/s/o1y28e4t0tqvam8p5za3ik48sys6tm2z
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 6 regions
+      Realistic: false
+      Realistic motivation:
+
+ReEDS-ERCOT_8760h-CapacityExpansion:
+    Short description: 7-region representation of ERCOT with 8760 hourly time slices in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+    Modelling framework: ReEDS
+    Model name: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    Problem class: LP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    MILP features: None
+    Sizes:
+    - Name: 7-8760ts
+      URL: https://app.box.com/s/3oa3z61v7durbf1ze5ocnlv0kzh6hzxp 
+      Temporal resolution: 8760 time slices
+      Spatial resolution: 7 regions
+      Realistic: false
+      Realistic motivation:
