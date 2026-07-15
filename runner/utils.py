@@ -3,6 +3,7 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
@@ -252,9 +253,13 @@ def allocate_benchmarks(
     timeout_seconds: int | None = None,
     years: list[int] = [2020, 2022, 2023, 2024, 2025],
 ) -> list[dict]:
+    if benchmarks_df.empty:
+        return []
+
     allocation, _ = allocate_vms_greedy(
         benchmarks_df.index, benchmarks_df[weight_col], num_vms
     )
+
     vm_yamls = []
     for benchs in allocation:
         vm_benchmarks = {}
@@ -504,11 +509,21 @@ def display_speedups(results, new_pypsa_benchs):
 
     display_df = display_df.reset_index(drop=True)
 
+    display_df = display_df.rename(
+        columns={
+            "bench-size": "Benchmark",
+            "num-vars": "Num. variables",
+            "simplex-time": "Simplex time",
+            "ipm-time": "IPX time",
+            "hipo-time": "HiPO time",
+            "ipm-speedup": "IPX vs Simplex speedup",
+            "hipo-speedup": "HiPO vs Simplex speedup",
+        }
+    )
+
     return display_df.style.hide(axis="index").format(
         {
-            "num-vars": "{:,.0f}".format,
-            "ipm-speedup": "{:>s}".format,
-            "hipo-speedup": "{:>s}".format,
+            "Num. variables": "{:,.0f}".format,
         }
     )
 
@@ -611,7 +626,11 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
 
     # Labels and title
     ax.set_ylabel("Relative Runtime (normalized)")
-    ax.set_title("Solver Runtime Comparison" + (f" – {cls}" if cls else ""))
+    ax.set_title(
+        "Solver Runtime Comparison" + (f" – {cls}" if cls else ""),
+        fontsize=24,
+        fontweight="bold",
+    )
 
     # Legend with renamed solvers
     ax.legend(
@@ -625,15 +644,28 @@ def plot_runtime_slowdowns(df, cls="", figsize=(12, 6), max_num_solvers=5):
 
 
 def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
-    # TODO add percentage instances solved above/below the bars?
-    # Add the columns expected by the plotting function
+    mpl.rcParams.update(
+        {
+            "font.size": 22,
+            "axes.titlesize": 22,
+            "axes.labelsize": 22,
+            "xtick.labelsize": 22,
+            "ytick.labelsize": 22,
+            "legend.fontsize": 22,
+            "legend.title_fontsize": 22,
+            "figure.constrained_layout.use": True,
+        }
+    )
+
     lp_summary = summary_df.query(f'Class == "{cls}"').copy()
-    # TODO add num-probs and timeout to labels in a less hacky way
+
     if label_map:
         lp_summary["Category"] = lp_summary["Category"].map(label_map)
+
     lp_summary = lp_summary.rename(
         columns={"Category": "Benchmark", "SGM Runtime": "Runtime (s)"}
     )
+
     lp_summary["Status"] = "ok"
     lp_summary["Solver"] = lp_summary["Solver"].apply(
         lambda s: (
@@ -642,10 +674,14 @@ def plot_summary_results(summary_df, cls, label_map=None, max_num_solvers=5):
             else s
         )
     )
-    lp_summary["Timeout"] = None  # Irrelevant, it's only used if Status != ok
+    lp_summary["Timeout"] = None
+
     plot_runtime_slowdowns(
-        lp_summary, cls=cls, figsize=(20, 6), max_num_solvers=max_num_solvers
+        lp_summary, cls=cls, figsize=(35, 12), max_num_solvers=max_num_solvers
     )
+
+    ax = plt.gca()
+    ax.set_ylim(0, ax.get_ylim()[1] * 1.10)
 
 
 def print_sgm_tables_per_bucket(
@@ -664,6 +700,14 @@ def print_sgm_tables_per_bucket(
       - # total
       - % solved
     """
+
+    # Presentation-ready solver labels
+    solver_label_map = {
+        "highs": "HiGHS-Simplex",
+        "highs-ipm": "HiGHS-IPX",
+        "highs-hipo": "HiGHS-HiPO",
+        "gurobi": "Gurobi",
+    }
 
     def shifted_geometric_mean(x, shift=1.0):
         x = np.asarray(x)
@@ -696,7 +740,7 @@ def print_sgm_tables_per_bucket(
 
             rows.append(
                 {
-                    "Solver": solver,
+                    "Solver": solver_label_map.get(solver, solver),
                     "SGM runtime (min)": round(sgm_sec / 60, 2),
                     "# solved": n_solved,
                     "# total": n_total,
@@ -727,7 +771,7 @@ def plot_speedup_vs_variables(
     Scatter plots of speedup vs number of variables (horizontal layout):
 
       1) HiPO vs simplex
-      2) HiPO vs IPM
+      2) HiPO vs IPX
       3) HiPO vs Gurobi
 
     Speedup = runtime_reference / runtime_target
@@ -760,7 +804,7 @@ def plot_speedup_vs_variables(
     ax.axhline(1.0, linestyle="--", linewidth=1)
     ax.set_title("HiPO vs simplex", fontsize=14, fontweight="bold")
 
-    # HiPO vs IPM
+    # HiPO vs IPx
     ax = axes[1]
     m = (
         df["highs-ipm"].notna()
@@ -776,7 +820,7 @@ def plot_speedup_vs_variables(
     )
 
     ax.axhline(1.0, linestyle="--", linewidth=1)
-    ax.set_title("HiPO vs IPM", fontsize=14, fontweight="bold")
+    ax.set_title("HiPO vs IPX", fontsize=14, fontweight="bold")
 
     # HiPO vs Gurobi
     ax = axes[2]
@@ -903,7 +947,7 @@ def plot_speedup_vs_constraints(
     Scatter plots of speedup vs number of constraints (horizontal layout):
 
       1) HiPO vs simplex
-      2) HiPO vs IPM
+      2) HiPO vs IPX
       3) HiPO vs Gurobi
 
     Speedup = runtime_reference / runtime_target
@@ -952,7 +996,7 @@ def plot_speedup_vs_constraints(
     )
 
     ax.axhline(1.0, linestyle="--", linewidth=1)
-    ax.set_title("HiPO vs IPM", fontsize=14, fontweight="bold")
+    ax.set_title("HiPO vs IPX", fontsize=14, fontweight="bold")
 
     # HiPO vs Gurobi
     ax = axes[2]
