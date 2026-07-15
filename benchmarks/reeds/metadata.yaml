@@ -13,12 +13,12 @@ ReEDS-USA-CapacityExpansion:
     MILP features: None
     Sizes:
     - Name: 132-416ts
-      URL: https://app.box.com/s/lc7af3wmo2tkypcoe5brn591osm1xfim 
+      URL: https://app.box.com/s/lc7af3wmo2tkypcoe5brn591osm1xfim
       Temporal resolution: 416 time slices
       Spatial resolution: 132 regions
       Realistic: true
       Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
-    
+
 ReEDS-USA_z90-CapacityExpansion:
     Short description: 90-zone representation of contiguous USA with 416 time slices in 2050 (last solve year of sequential solve with 10 stages).
     Modelling framework: ReEDS
@@ -33,7 +33,7 @@ ReEDS-USA_z90-CapacityExpansion:
     MILP features: None
     Sizes:
     - Name: 90-416ts
-      URL: https://app.box.com/s/1rxgu9973tlqhgcasma14ns47tzvgxiu 
+      URL: https://app.box.com/s/1rxgu9973tlqhgcasma14ns47tzvgxiu
       Temporal resolution: 416 time slices
       Spatial resolution: 90 regions
       Realistic: true
@@ -193,7 +193,7 @@ ReEDS-ERCOT_8760h-CapacityExpansion:
     MILP features: None
     Sizes:
     - Name: 7-8760ts
-      URL: https://app.box.com/s/3oa3z61v7durbf1ze5ocnlv0kzh6hzxp 
+      URL: https://app.box.com/s/3oa3z61v7durbf1ze5ocnlv0kzh6hzxp
       Temporal resolution: 8760 time slices
       Spatial resolution: 7 regions
       Realistic: false
