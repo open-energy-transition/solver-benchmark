@@ -129,7 +129,6 @@ def csv_record(check=False, **kwargs):
             ("Objective Value", kwargs.get("objective")),
             ("MIP Gap", kwargs.get("mip_gap")),
             ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
-            ("Duality Gap", kwargs.get("duality_gap")),
             ("Reported Runtime (s)", kwargs.get("reported_runtime")),
             ("Timeout", kwargs.get("timeout")),
             ("Hostname", kwargs.get("hostname")),
@@ -248,6 +247,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "--scope",
             f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
             "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
+            f"--setenv=SOLVER_TIMEOUT={timeout}",
             "/usr/bin/time",
             "--format",
             "MaxResidentSetSizeKB=%M",
@@ -258,10 +258,8 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             solver_name,
             input_file,
             solver_version,
-            str(timeout),
         ]
     )
-
     # Run the command and capture the output
     result = subprocess.run(
         command,
@@ -298,7 +296,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "objective": None,
             "runtime": timeout,
             "reported_runtime": timeout,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
@@ -312,7 +310,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "objective": None,
             "runtime": "N/A",
             "reported_runtime": None,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
@@ -329,7 +327,7 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
             "objective": None,
             "runtime": timeout,
             "reported_runtime": timeout,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     else:
@@ -339,7 +337,6 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         print(f"WARNING: unknown solver status: {metrics['status']}")
 
     metrics.setdefault("mip_gap", None)
-    metrics.setdefault("duality_gap", None)
     metrics.setdefault("max_integrality_violation", None)
     metrics["memory"] = memory
     metrics["timeout"] = timeout
@@ -425,7 +422,7 @@ def benchmark_highs_binary():
             "condition": "Error",
             "objective": None,
             "runtime": runtime,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     else:
@@ -444,7 +441,7 @@ def benchmark_highs_binary():
             "objective": objective,
             "runtime": runtime,
             "memory": "N/A",
-            "duality_gap": None,  # Not available from command line output
+            "mip_gap": None,  # Not available from command line output
             "max_integrality_violation": None,  # Not available from command line output
         }
 

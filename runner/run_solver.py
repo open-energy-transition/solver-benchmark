@@ -171,29 +171,6 @@ def get_mip_gap(solver_model, solver_name: str):
     return None
 
 
-def get_lp_duality_gap(solver_model, solver_name: str):
-    """Retrieve the final LP duality gap, if available."""
-    try:
-        match solver_name:
-            case "highs":
-                info = solver_model.getInfo()
-                return getattr(info, "primal_dual_objective_error", None)
-            case "gurobi":
-                # Gurobi exposes barrier convergence tolerances and quality attributes,
-                # but not a single solver-independent final LP duality gap through the
-                # current linopy solver object. Do not report BarConvTol here: it is a
-                # stopping tolerance, not the realized duality gap.
-                return None
-            case "scip" | "cbc" | "glpk" | "cplex" | "xpress" | "knitro":
-                return None
-            case _:
-                print(f"WARNING: cannot obtain LP duality gap for {solver_name}")
-                return None
-    except Exception:
-        print(f"ERROR obtaining LP duality gap: {format_exc()}", file=sys.stderr)
-    return None
-
-
 def get_integer_variables(input_file):
     """Return integer variable names from the problem file, if available."""
     if highspy is None:
@@ -239,25 +216,21 @@ def get_max_integrality_violation(input_file, primal_values):
 
 
 def get_quality_metrics(input_file, solver_result, solver_name: str):
-    """Collect solver quality metrics with clear LP/MILP semantics."""
+    """Collect MIP solution quality metrics."""
     try:
         mip_problem = is_mip_problem(solver_result.solver_model, solver_name)
     except Exception:
         print(f"ERROR detecting problem type: {format_exc()}", file=sys.stderr)
         mip_problem = None
 
-    if mip_problem:
+    if not mip_problem:
         return {
-            "mip_gap": get_mip_gap(solver_result.solver_model, solver_name),
-            "duality_gap": None,
-            "max_integrality_violation": get_max_integrality_violation(
-                input_file, solver_result.solution.primal
-            ),
+            "mip_gap": None,
+            "max_integrality_violation": None,
         }
 
     return {
-        "mip_gap": None,
-        "duality_gap": get_lp_duality_gap(solver_result.solver_model, solver_name),
+        "mip_gap": get_mip_gap(solver_result.solver_model, solver_name),
         "max_integrality_violation": get_max_integrality_violation(
             input_file, solver_result.solution.primal
         ),
@@ -379,7 +352,6 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                     "condition": "Error",
                     "objective": None,
                     "mip_gap": None,
-                    "duality_gap": None,
                     "max_integrality_violation": None,
                 }
             else:
@@ -439,7 +411,6 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                     # Model status        : Optimal
                     "condition": model_status,
                     "objective": objective,
-                    "duality_gap": None,  # Not available from command line output
                     "max_integrality_violation": None,  # Not available from command line output
                     "mip_gap": None,
                 }
@@ -457,7 +428,6 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
                 "condition": "Error",
                 "objective": None,
                 "mip_gap": None,
-                "duality_gap": None,
                 "max_integrality_violation": None,
             }
     finally:
@@ -470,7 +440,7 @@ def run_highs_hipo_solver(input_file, solver_version, highs_variant: HighsVarian
         #         pass
 
 
-def main(solver_name, input_file, solver_version, timeout):
+def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
 
     # Handle highs-hipo solver variants separately
@@ -484,6 +454,9 @@ def main(solver_name, input_file, solver_version, timeout):
         # we want to continue only if the error is about invalid HighsVariant
         if "is not a valid HighsVariant" not in str(e):
             raise e
+
+    timeout_value = os.environ.get("SOLVER_TIMEOUT")
+    timeout = float(timeout_value) if timeout_value is not None else None
 
     solver = get_solver(solver_name, timeout)
 
@@ -518,7 +491,6 @@ def main(solver_name, input_file, solver_version, timeout):
             "condition": solver_result.status.termination_condition.value,
             "objective": solver_result.solution.objective,
             "mip_gap": quality_metrics["mip_gap"],
-            "duality_gap": quality_metrics["duality_gap"],
             "max_integrality_violation": quality_metrics["max_integrality_violation"],
         }
         condition = str(results["condition"]).lower()
@@ -540,7 +512,6 @@ def main(solver_name, input_file, solver_version, timeout):
                 "condition": "Timeout",
                 "objective": None,
                 "mip_gap": None,
-                "duality_gap": None,
                 "max_integrality_violation": None,
             }
         else:
@@ -552,7 +523,6 @@ def main(solver_name, input_file, solver_version, timeout):
                 "condition": None,
                 "objective": None,
                 "mip_gap": None,
-                "duality_gap": None,
                 "max_integrality_violation": None,
             }
     print(json.dumps(results))
