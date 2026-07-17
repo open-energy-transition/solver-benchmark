@@ -335,7 +335,7 @@ python benchmarks/create_benchmark_campaign.py \
 
 ## Solver and year selection
 
-By default, the generated campaign uses:
+By default, the generated VM YAML files benchmark all the following solvers:
 
 ```text
 gurobi highs scip cbc glpk
