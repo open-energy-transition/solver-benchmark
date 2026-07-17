@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Create a cloud benchmark campaign from benchmark metadata.
+"""Create benchmark campaigns from benchmark metadata.
 
-This command prepares benchmark metadata, selects benchmark instances, allocates
-them to VM configuration files, and creates the OpenTofu campaign directory under
-infrastructure/benchmarks/<run-id>.
+This command prepares benchmark metadata, selects benchmark instances, and
+creates either:
 
-It intentionally stops before running `tofu apply`.
+- a cloud OpenTofu campaign under infrastructure/benchmarks/<run-id>/;
+- a local benchmark campaign under infrastructure/local/benchmarks/<run-id>/.
+
+Cloud campaigns stop before running `tofu apply`. Local campaigns generate a
+local run script and ask for confirmation before executing it.
 """
 
 from __future__ import annotations
@@ -26,6 +29,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RUNNER_DIR = REPO_ROOT / "runner"
 METADATA_FILE = REPO_ROOT / "results" / "metadata.yaml"
 INFRASTRUCTURE_DIR = REPO_ROOT / "infrastructure"
+LOCAL_BENCHMARKS_DIR = INFRASTRUCTURE_DIR / "local" / "benchmarks"
 
 MACHINE_PROFILES = {
     "short": {
@@ -68,7 +72,20 @@ def prepare_metadata() -> None:
 
 
 def import_runner_utils():
-    """Import runner utilities after ensuring repo paths are importable."""
+    def import_runner_utils():
+        """
+        Import runner utilities used for benchmark allocation and campaign creation.
+
+        Returns
+        -------
+        tuple
+            Tuple containing:
+
+            - allocate_benchmarks
+            - create_benchmark_campaign
+            - load_benchmark_metadata
+        """
+
     sys.path.insert(0, str(REPO_ROOT))
     from runner.utils import (  # pylint: disable=import-outside-toplevel
         allocate_benchmarks,
@@ -196,7 +213,46 @@ def allocate_campaign_vms(
     years: list[int],
     solver: str | None,
 ) -> list[dict]:
-    """Allocate selected benchmark instances to VM YAML dictionaries."""
+    """
+    Allocate selected benchmark instances to VM campaign definitions.
+
+    Parameters
+    ----------
+    selected : pandas.DataFrame
+        Selected benchmark instances after applying all campaign filters.
+    allocate_benchmarks : callable
+        Allocation function imported from ``runner.utils``.
+    num_vms : int | None
+        Number of VMs to allocate. If ``None``, one VM is created per
+        selected benchmark instance.
+    weight_col : str
+        Metadata column used for greedy workload balancing across VMs.
+    machine_profile : str | None
+        Machine profile override (``short`` or ``long``). If ``None``,
+        benchmark instances are split automatically according to their
+        metadata size class.
+    zone : str
+        GCP zone assigned to generated VM definitions.
+    timeout_seconds : int | None
+        Solver timeout applied to generated benchmark runs. If ``None``,
+        size-based defaults are used.
+    years : list[int]
+        Benchmark environment years to execute.
+    solver : str | None
+        Space-separated solver list stored in generated VM YAML files.
+
+    Returns
+    -------
+    list[dict]
+        VM configuration dictionaries ready to be passed to
+        ``create_benchmark_campaign``.
+
+    Raises
+    ------
+    ValueError
+        If the requested weight column does not exist, contains missing
+        values, or if benchmark instances contain unsupported size classes.
+    """
     if weight_col not in selected.columns:
         raise ValueError(
             f"Weight column {weight_col!r} not found. "
@@ -366,8 +422,6 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         description="Create an OpenTofu benchmark campaign from metadata."
     )
 
-    parser.set_defaults(**defaults)
-
     parser.add_argument(
         "--configfile",
         help=(
@@ -377,7 +431,22 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        "--target",
+        choices=["cloud", "local"],
+        default=argparse.SUPPRESS,
+        help="Execution target.",
+    )
+
+    parser.add_argument(
+        "--yes",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="Skip confirmation prompt for local execution.",
+    )
+
+    parser.add_argument(
         "--campaign",
+        default=argparse.SUPPRESS,
         help="Short campaign name. The run ID is generated as YYYYMMDD-<campaign>.",
     )
 
@@ -385,11 +454,13 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     selection.add_argument(
         "--all",
         action="store_true",
+        default=argparse.SUPPRESS,
         help="Select all benchmark instances.",
     )
     selection.add_argument(
         "--benchmark",
         nargs="+",
+        default=argparse.SUPPRESS,
         help=(
             "Select all instances of one or more benchmarks. "
             "Can be combined with --size and --name filters."
@@ -398,11 +469,13 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     selection.add_argument(
         "--size",
         nargs="+",
+        default=argparse.SUPPRESS,
         help="Filter benchmark instances by metadata Size field, e.g. S M L.",
     )
     selection.add_argument(
         "--name",
         nargs="+",
+        default=argparse.SUPPRESS,
         help=(
             "Filter benchmark instances by metadata Name field. "
             "This corresponds to the Instance column in the flattened metadata."
@@ -411,6 +484,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     selection.add_argument(
         "--instance",
         action="append",
+        default=argparse.SUPPRESS,
         type=parse_instance,
         help=(
             "Select a specific benchmark instance as '<benchmark>:<instance>'. "
@@ -420,6 +494,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     selection.add_argument(
         "--do-not-skip",
         dest="do_not_skip",
+        default=argparse.SUPPRESS,
         action="store_true",
         help=(
             "Include benchmark instances marked with 'Skip because:' in the metadata."
@@ -430,6 +505,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     allocation.add_argument(
         "--num-vms",
         type=int,
+        default=argparse.SUPPRESS,
         help=(
             "Number of VMs to allocate. "
             "If omitted, one VM is created per selected benchmark instance."
@@ -437,12 +513,13 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     )
     allocation.add_argument(
         "--weight-col",
-        default="Num. variables",
+        default=argparse.SUPPRESS,
         help="Metadata column used for greedy VM allocation.",
     )
     allocation.add_argument(
         "--machine-type",
         choices=sorted(MACHINE_PROFILES),
+        default=argparse.SUPPRESS,
         help=(
             "Override the automatic machine profile selection. "
             "Use 'short' for c4-standard-2 with 1h timeout, or "
@@ -452,12 +529,13 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     )
     allocation.add_argument(
         "--zone",
-        default="us-central1-a",
+        default=argparse.SUPPRESS,
         help="GCP zone for generated VM YAML files.",
     )
     allocation.add_argument(
         "--timeout-hours",
         type=float,
+        default=argparse.SUPPRESS,
         help=(
             "Override solver timeout in hours for all generated VMs. "
             "If omitted, S/M instances use 1h and L instances use 24h."
@@ -467,22 +545,24 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         "--years",
         nargs="+",
         type=int,
-        default=[2025],
+        default=argparse.SUPPRESS,
         help="Solver environment years to benchmark (default: 2025).",
     )
     allocation.add_argument(
         "--solver",
         nargs="+",
-        default=["gurobi", "highs", "scip", "cbc", "glpk"],
+        default=argparse.SUPPRESS,
         help=("Solvers to benchmark. Default: gurobi highs scip cbc glpk."),
     )
     parser.add_argument(
         "--force",
+        default=argparse.SUPPRESS,
         action="store_true",
         help="Overwrite an existing campaign directory if it already exists.",
     )
     parser.add_argument(
         "--vm-prefix",
+        default=argparse.SUPPRESS,
         help=(
             "Prefix for generated VM YAML files. "
             "Defaults to 'benchmark-instance-<campaign>'."
@@ -490,6 +570,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--skip-prepare",
+        default=argparse.SUPPRESS,
         action="store_true",
         help="Skip merge_metadata.py and categorize_benchmarks.py.",
     )
@@ -497,14 +578,14 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
     return parser
 
 
-def validate_campaign_directory(run_id: str, force: bool) -> None:
+def validate_campaign_directory(campaign_dir: Path, force: bool) -> None:
     """
     Validate that the campaign output directory can be created.
 
     Parameters
     ----------
-    run_id : str
-        Campaign run identifier.
+    campaign_dir : pathlib.Path
+        Campaign output directory.
     force : bool
         Whether to allow overwriting an existing campaign directory.
 
@@ -513,8 +594,6 @@ def validate_campaign_directory(run_id: str, force: bool) -> None:
     FileExistsError
         If the campaign directory already exists and ``force`` is ``False``.
     """
-    campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
-
     if not campaign_dir.exists():
         return
 
@@ -585,6 +664,9 @@ def flatten_config(config: dict) -> dict:
     """
     flat = {}
 
+    if "target" in config:
+        flat["target"] = config["target"]
+
     if "campaign" in config:
         flat["campaign"] = config["campaign"]
 
@@ -617,8 +699,55 @@ def flatten_config(config: dict) -> dict:
     return flat
 
 
+def merge_cli_with_defaults(
+    cli_args: argparse.Namespace,
+    defaults: dict,
+) -> argparse.Namespace:
+    """Merge hardcoded defaults, config defaults, and explicit CLI arguments."""
+    hardcoded = {
+        "target": "cloud",
+        "campaign": None,
+        "all": False,
+        "benchmark": None,
+        "size": None,
+        "name": None,
+        "instance": None,
+        "do_not_skip": False,
+        "num_vms": None,
+        "weight_col": "Num. variables",
+        "machine_type": None,
+        "zone": "us-central1-a",
+        "timeout_hours": None,
+        "years": [2025],
+        "solver": ["gurobi", "highs", "scip", "cbc", "glpk"],
+        "force": False,
+        "vm_prefix": None,
+        "skip_prepare": False,
+        "yes": False,
+        "configfile": None,
+    }
+
+    merged = hardcoded | defaults | vars(cli_args)
+
+    cli_dict = vars(cli_args)
+
+    # Selection mode CLI arguments override selection mode from config.
+    if "all" in cli_dict:
+        merged["benchmark"] = None
+        merged["instance"] = None
+    elif "benchmark" in cli_dict:
+        merged["all"] = False
+        merged["instance"] = None
+    elif "instance" in cli_dict:
+        merged["all"] = False
+        merged["benchmark"] = None
+
+    return argparse.Namespace(**merged)
+
+
 def write_campaign_summary_csv(
     *,
+    campaign_dir: Path,
     run_id: str,
     selected: pd.DataFrame,
     args: argparse.Namespace,
@@ -644,13 +773,14 @@ def write_campaign_summary_csv(
         Machine profile override. If ``None``, the automatic size-based policy
         is used.
     """
-    campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
     created_at = datetime.now().isoformat(timespec="seconds")
     created_by = getpass.getuser()
 
     rows = selected.copy().reset_index(drop=True)
 
     def effective_machine_profile(size: str) -> str:
+        if args.target == "local":
+            return "not applicable"
         if machine_profile is not None:
             return machine_profile
         if size in ["S", "M"]:
@@ -660,6 +790,8 @@ def write_campaign_summary_csv(
         return "unknown"
 
     def effective_machine_type(size: str) -> str:
+        if args.target == "local":
+            return "not applicable"
         profile = effective_machine_profile(size)
         if profile in MACHINE_PROFILES:
             return MACHINE_PROFILES[profile]["machine_type"]
@@ -676,6 +808,7 @@ def write_campaign_summary_csv(
     summary = pd.DataFrame(
         {
             "Run ID": run_id,
+            "Target": args.target,
             "Created at": created_at,
             "Created by": created_by,
             "Config file": args.configfile,
@@ -689,17 +822,166 @@ def write_campaign_summary_csv(
             "URL": rows.get("URL"),
             "Solvers": " ".join(args.solver),
             "Years": " ".join(map(str, args.years)),
-            "Num VMs": args.num_vms if args.num_vms is not None else len(selected),
+            "Num VMs": (
+                args.num_vms
+                if args.target == "cloud" and args.num_vms is not None
+                else len(selected)
+                if args.target == "cloud"
+                else "not applicable"
+            ),
             "Weight column": args.weight_col,
             "Machine profile": rows["Size"].apply(effective_machine_profile),
             "Machine type": rows["Size"].apply(effective_machine_type),
-            "Zone": args.zone,
+            "Zone": args.zone if args.target == "cloud" else "not applicable",
             "Timeout seconds": rows["Size"].apply(effective_timeout_seconds),
             "Skipped instances included": args.do_not_skip,
         }
     )
 
     summary.to_csv(campaign_dir / "campaign_summary.csv", index=False)
+
+
+def create_local_benchmark_yaml(
+    selected: pd.DataFrame,
+    *,
+    years: list[int],
+    solvers: list[str],
+    timeout_seconds: int | None,
+) -> dict:
+    """
+    Create benchmark YAML data for local execution.
+
+    Parameters
+    ----------
+    selected : pandas.DataFrame
+        Selected benchmark instances.
+    years : list[int]
+        Benchmark environment years.
+    solvers : list[str]
+        Solvers selected for the benchmark campaign.
+    timeout_seconds : int | None
+        Solver timeout in seconds.
+
+    Returns
+    -------
+    dict
+        YAML-compatible benchmark campaign data.
+    """
+    benchmarks = {}
+
+    for _, row in selected.iterrows():
+        benchmark = row["Benchmark"]
+        size_instance = {
+            "Name": row["Instance"],
+            "Size": row["Size"],
+            "URL": row["URL"],
+        }
+
+        if benchmark not in benchmarks:
+            benchmarks[benchmark] = {
+                "Problem class": row["Problem class"],
+                "Sizes": [],
+            }
+
+        benchmarks[benchmark]["Sizes"].append(size_instance)
+
+    data = {
+        "years": years,
+        "solvers": solvers,
+        "benchmarks": benchmarks,
+    }
+
+    if timeout_seconds is not None:
+        data["timeout_seconds"] = timeout_seconds
+
+    return data
+
+
+def create_local_campaign(
+    *,
+    campaign_dir: Path,
+    run_id: str,
+    selected: pd.DataFrame,
+    args: argparse.Namespace,
+    timeout_seconds: int | None,
+) -> Path:
+    """
+    Create local benchmark campaign files.
+
+    Parameters
+    ----------
+    campaign_dir : pathlib.Path
+        Local campaign output directory.
+    run_id : str
+        Campaign run identifier.
+    selected : pandas.DataFrame
+        Selected benchmark instances.
+    args : argparse.Namespace
+        Parsed command-line arguments.
+    timeout_seconds : int | None
+        Solver timeout in seconds.
+
+    Returns
+    -------
+    pathlib.Path
+        Path to the generated local run script.
+    """
+    campaign_dir.mkdir(parents=True, exist_ok=True)
+
+    solver = " ".join(args.solver)
+    local_yaml = create_local_benchmark_yaml(
+        selected,
+        years=args.years,
+        solvers=args.solver,
+        timeout_seconds=timeout_seconds,
+    )
+
+    local_yaml_path = campaign_dir / "local_benchmarks.yaml"
+    with local_yaml_path.open("w", encoding="utf-8") as f:
+        yaml.dump(local_yaml, f, default_flow_style=False, sort_keys=False)
+
+    command_parts = [
+        "bash",
+        "runner/benchmark_all.sh",
+        "-y",
+        " ".join(map(str, args.years)),
+        "-s",
+        solver,
+        "-u",
+        run_id,
+        str(local_yaml_path.relative_to(REPO_ROOT)),
+    ]
+
+    run_script = campaign_dir / "run_local.sh"
+    with run_script.open("w", encoding="utf-8") as f:
+        f.write("#!/usr/bin/env bash\n")
+        f.write("set -euo pipefail\n\n")
+        f.write(f'cd "{REPO_ROOT}"\n\n')
+        f.write(" ".join(f'"{part}"' for part in command_parts) + "\n")
+
+    run_script.chmod(0o755)
+
+    return run_script
+
+
+def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
+    """
+    Ask whether to run the generated local benchmark campaign.
+
+    Parameters
+    ----------
+    run_script : pathlib.Path
+        Path to the generated local run script.
+    yes : bool
+        If ``True``, skip confirmation and run immediately.
+    """
+    if not yes:
+        answer = input("\nProceed with local execution? [y/N] ").strip().lower()
+        if answer != "y":
+            print("\nLocal campaign generated, execution skipped.")
+            return
+
+    subprocess.run(["bash", str(run_script)], cwd=REPO_ROOT, check=True)
 
 
 def main() -> None:
@@ -711,10 +993,14 @@ def main() -> None:
     defaults = flatten_config(config)
 
     parser = build_parser(defaults)
-    args = parser.parse_args()
+    cli_args = parser.parse_args()
+    args = merge_cli_with_defaults(cli_args, defaults)
 
     if not args.campaign:
         parser.error("--campaign is required unless provided in --configfile")
+
+    if args.yes and args.target != "local":
+        parser.error("--yes can only be used with --target local")
 
     if args.instance and isinstance(args.instance[0], str):
         args.instance = [parse_instance(value) for value in args.instance]
@@ -723,7 +1009,12 @@ def main() -> None:
     run_id = f"{date.today():%Y%m%d}-{campaign_slug}"
     vm_prefix = args.vm_prefix or f"benchmark-instance-{campaign_slug}"
 
-    validate_campaign_directory(run_id, args.force)
+    if args.target == "cloud":
+        campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
+    else:
+        campaign_dir = LOCAL_BENCHMARKS_DIR / run_id
+
+    validate_campaign_directory(campaign_dir, args.force)
 
     if not args.skip_prepare:
         prepare_metadata()
@@ -740,46 +1031,91 @@ def main() -> None:
     if args.timeout_hours is not None:
         timeout_seconds = int(args.timeout_hours * 3600)
 
-    vm_yamls = allocate_campaign_vms(
-        selected,
-        allocate_benchmarks,
-        num_vms=args.num_vms,
-        weight_col=args.weight_col,
-        machine_profile=args.machine_type,
-        zone=args.zone,
-        timeout_seconds=timeout_seconds,
-        years=args.years,
-        solver=" ".join(args.solver),
-    )
+    if args.target == "local" and timeout_seconds is None:
+        selected_profiles = selected["Size"].map(
+            lambda size: "long" if size == "L" else "short"
+        )
+        timeout_seconds = max(
+            MACHINE_PROFILES[profile]["timeout_seconds"]
+            for profile in selected_profiles
+        )
 
-    # create_benchmark_campaign uses relative paths like ../infrastructure.
-    # Run it from runner/ to preserve the existing path convention.
-    old_cwd = Path.cwd()
-    try:
-        import os
+    if args.target == "cloud":
+        vm_yamls = allocate_campaign_vms(
+            selected,
+            allocate_benchmarks,
+            num_vms=args.num_vms,
+            weight_col=args.weight_col,
+            machine_profile=args.machine_type,
+            zone=args.zone,
+            timeout_seconds=timeout_seconds,
+            years=args.years,
+            solver=" ".join(args.solver),
+        )
 
-        os.chdir(RUNNER_DIR)
-        create_benchmark_campaign(run_id, vm_prefix, vm_yamls)
-    finally:
-        os.chdir(old_cwd)
+        # create_benchmark_campaign uses relative paths like ../infrastructure.
+        # Run it from runner/ to preserve the existing path convention.
+        old_cwd = Path.cwd()
+        try:
+            import os
 
-    write_campaign_summary_csv(
-        run_id=run_id,
-        selected=selected,
-        args=args,
-        timeout_seconds=timeout_seconds,
-        machine_profile=args.machine_type,
-    )
+            os.chdir(RUNNER_DIR)
+            create_benchmark_campaign(run_id, vm_prefix, vm_yamls)
+        finally:
+            os.chdir(old_cwd)
 
-    print_campaign_summary(
-        run_id=run_id,
-        vm_prefix=vm_prefix,
-        selected=selected,
-        vm_yamls=vm_yamls,
-        years=args.years,
-        timeout_seconds=timeout_seconds,
-        machine_profile=args.machine_type,
-    )
+        write_campaign_summary_csv(
+            campaign_dir=campaign_dir,
+            run_id=run_id,
+            selected=selected,
+            args=args,
+            timeout_seconds=timeout_seconds,
+            machine_profile=args.machine_type,
+        )
+
+        print_campaign_summary(
+            run_id=run_id,
+            vm_prefix=vm_prefix,
+            selected=selected,
+            vm_yamls=vm_yamls,
+            years=args.years,
+            timeout_seconds=timeout_seconds,
+            machine_profile=args.machine_type,
+        )
+
+    else:
+        run_script = create_local_campaign(
+            campaign_dir=campaign_dir,
+            run_id=run_id,
+            selected=selected,
+            args=args,
+            timeout_seconds=timeout_seconds,
+        )
+
+        write_campaign_summary_csv(
+            campaign_dir=campaign_dir,
+            run_id=run_id,
+            selected=selected,
+            args=args,
+            timeout_seconds=timeout_seconds,
+            machine_profile=args.machine_type,
+        )
+
+        print("\nLocal campaign generated")
+        print("========================")
+        print(f"Run ID:              {run_id}")
+        print(f"Output directory:    {campaign_dir.relative_to(REPO_ROOT)}")
+        print(
+            f"Benchmark YAML:      {run_script.with_name('local_benchmarks.yaml').relative_to(REPO_ROOT)}"
+        )
+        print(f"Run script:          {run_script.relative_to(REPO_ROOT)}")
+        print(
+            f"Summary CSV:         {(campaign_dir / 'campaign_summary.csv').relative_to(REPO_ROOT)}"
+        )
+        print("\nRun locally with:")
+        print(f"  bash {run_script.relative_to(REPO_ROOT)}")
+
+        maybe_run_local_campaign(run_script, yes=args.yes)
 
 
 if __name__ == "__main__":

@@ -127,8 +127,12 @@ Alternatively, the benchmark campaign generation can be performed from the comma
 
 # Benchmark campaign creation
 
-This directory contains tooling to create cloud benchmark campaigns from the
-benchmark metadata.
+This repository contains tooling to create benchmark campaigns from the benchmark metadata.
+
+Campaigns can target either:
+
+- cloud execution using Google Cloud Platform VMs (currently allowed to maintainers only);
+- local execution using the existing benchmark runner workflow.
 
 The main entry point is:
 
@@ -136,19 +140,39 @@ The main entry point is:
 python benchmarks/create_benchmark_campaign.py
 ```
 
-The script prepares benchmark metadata, selects benchmark instances, allocates
-them across VM configuration files, and creates an OpenTofu campaign directory
-under:
+The script prepares benchmark metadata, selects benchmark instances, and creates
+either:
+
+- a cloud campaign under `infrastructure/benchmarks/<run-id>/`; or
+- a local campaign under `infrastructure/local/benchmarks/<run-id>/`.
+
+## Execution targets
+
+The campaign generator supports two execution targets:
+
+| Target | Description |
+|----------|-------------|
+| `cloud` | Generates OpenTofu VM configuration files under `infrastructure/benchmarks/<run-id>/`. |
+| `local` | Generates local benchmark files under `infrastructure/local/benchmarks/<run-id>/`. |
+
+The default target is:
 
 ```text
-infrastructure/benchmarks/<run-id>/
+cloud
 ```
 
-It does **not** launch cloud resources. It stops before `tofu apply`.
+Override it with:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --target local
+```
+
+to launch a benchmark campaign on your local machine.
 
 ## Basic usage
 
-Create a campaign for all benchmark instances (please do this only if strictly necessary):
+Create a campaign for all benchmark instances (please do this very carefully, especially if running on the cloud):
 
 ```bash
 python benchmarks/create_benchmark_campaign.py \
@@ -160,13 +184,6 @@ This creates a run ID of the form:
 
 ```text
 YYYYMMDD-my-test
-```
-
-and writes files such as:
-
-```text
-infrastructure/benchmarks/YYYYMMDD-my-test/run.tfvars
-infrastructure/benchmarks/YYYYMMDD-my-test/benchmark-instance-my-test-00.yaml
 ```
 
 ## Configuration files
@@ -197,7 +214,6 @@ python benchmarks/create_benchmark_campaign.py \
   --timeout-hours 6
 ```
 
-uses the configuration file defaults while overriding the campaign name and timeout.
 
 ## Select benchmarks
 
@@ -267,7 +283,9 @@ python benchmarks/create_benchmark_campaign.py \
   --do-not-skip
 ```
 
-## VM allocation
+## Cloud VM allocation
+
+This section only applies to cloud campaigns.
 
 By default, the script creates one VM per selected benchmark instance.
 
@@ -280,35 +298,19 @@ python benchmarks/create_benchmark_campaign.py \
   --num-vms 5
 ```
 
-## Machine settings
+## Cloud machine settings
 
 By default, benchmark instances are assigned to VM profiles automatically based on their metadata size class:
 
-| Size class | Machine profile | GCP machine type | Timeout  |
+| Size class | Machine profile | GCP machine type | Timeout |
 | ---------- | --------------- | ---------------- | -------- |
-| S, M       | short           | c4-standard-2    | 1 hour   |
-| L          | long            | c4-highmem-16    | 24 hours |
+| S, M | short | c4-standard-2 | 1 hour |
+| L | long | c4-highmem-16 | 24 hours |
 
 Default zone:
 
 ```text
 us-central1-a
-```
-
-Override the automatic machine profile selection:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign short-test \
-  --all \
-  --machine-type short
-```
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign long-test \
-  --all \
-  --machine-type long
 ```
 
 When `--machine-type` is specified, all selected benchmark instances use the chosen profile regardless of their size classification.
@@ -322,7 +324,7 @@ S/M instances: 1 hour
 L instances:   24 hours
 ```
 
-Override the timeout for all generated VM files:
+Override the timeout:
 
 ```bash
 python benchmarks/create_benchmark_campaign.py \
@@ -367,6 +369,17 @@ python benchmarks/create_benchmark_campaign.py \
   --years 2024 2025
 ```
 
+## Campaign summary
+
+Every generated campaign includes a:
+
+```text
+campaign_summary.csv
+```
+
+containing the benchmark selection, campaign configuration, solver selection,
+timeout settings, allocation decisions, and metadata used to create the campaign.
+
 ## Existing campaign directories
 
 The script fails if the target campaign directory already exists.
@@ -380,7 +393,7 @@ python benchmarks/create_benchmark_campaign.py \
   --force
 ```
 
-## Launching the campaign
+## Launching a cloud campaign
 
 After reviewing the generated files, launch the campaign from the infrastructure directory:
 
@@ -392,7 +405,39 @@ tofu apply \
   -state=states/<run-id>.tfstate
 ```
 
-## Example workflow
+## Launching a local campaign
+
+Generate a local campaign:
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --target local \
+  --campaign my-local-run \
+  --benchmark pypsa-de-elec
+```
+
+This creates:
+
+```text
+infrastructure/local/benchmarks/<run-id>/
+├── campaign_summary.csv
+├── local_benchmarks.yaml
+└── run_local.sh
+```
+
+By default, local campaigns ask for confirmation before execution.
+
+The generated run script can also be executed manually:
+
+```bash
+bash infrastructure/local/benchmarks/<run-id>/run_local.sh
+```
+
+Local campaigns use the existing `runner/benchmark_all.sh` workflow and execute benchmark instances sequentially.
+
+## Example workflows
+
+### Cloud campaign
 
 ```bash
 python benchmarks/create_benchmark_campaign.py \
@@ -405,6 +450,17 @@ tofu apply \
   -var-file benchmarks/<run-id>/run.tfvars \
   -state=states/<run-id>.tfstate
 ```
+
+### Local campaign
+
+```bash
+python benchmarks/create_benchmark_campaign.py \
+  --configfile benchmarks/config.campaign.default.yaml \
+  --target local \
+  --campaign pypsa-de-local
+```
+
+The campaign generator creates the local benchmark files and asks whether the benchmark run should be started immediately.
 
 ### Running your own benchmarks
 
