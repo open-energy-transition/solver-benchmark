@@ -8,7 +8,7 @@ benchmarks:
     Contributor(s)/Source: Philipp Dunkel, Juelich Systems Analysis (ICE-2)
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric
     Time horizon: Single-stage (1 year)
@@ -33,7 +33,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Supply, Power
     Time horizon: Single period (1 year)
@@ -58,7 +58,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: MILP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Supply, Power
     Time horizon: 1 year
@@ -83,7 +83,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
@@ -106,7 +106,7 @@ benchmarks:
     Contributor(s)/Source: https://github.com/FZJ-IEK3-VSA/FINE
     License: CC BY 4.0
     Problem class: LP
-    Application: Infrastructure & Capacity Expansion; Operational
+    Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
     Sectors: Supply, Electric, Heating, Transport
     Time horizon: 1 year
@@ -323,7 +323,7 @@ benchmarks:
     Sectoral focus: Sector-coupled
     Sectors: Electric, Hydrogen
     Time horizon: Single-stage
-    MILP features: Binary investment decisions; Piecewise efficiency
+    MILP features: Binary investment decisions, Piecewise efficiency
     Sizes:
     - Name: 1-168ts
       Size: S

@@ -14,15 +14,15 @@ def generate_filtered_metadata(metadata_df):
         )
 
         selected_technique = st.multiselect(
-            "Technique",
-            options=metadata_df["Technique"].unique(),
-            default=metadata_df["Technique"].unique(),
+            "Problem Class",
+            options=metadata_df["Problem class"].unique(),
+            default=metadata_df["Problem class"].unique(),
         )
 
         selected_problem_kind = st.multiselect(
-            "Kind of Problem",
-            options=metadata_df["Kind of problem"].unique(),
-            default=metadata_df["Kind of problem"].unique(),
+            "Application",
+            options=metadata_df["Application"].unique(),
+            default=metadata_df["Application"].unique(),
         )
 
         selected_sectors = st.multiselect(
@@ -44,12 +44,12 @@ def generate_filtered_metadata(metadata_df):
         else True
     )
     mask_technique = (
-        metadata_df["Technique"].isin(selected_technique)
+        metadata_df["Problem class"].isin(selected_technique)
         if selected_technique
         else True
     )
     mask_problem_kind = (
-        metadata_df["Kind of problem"].isin(selected_problem_kind)
+        metadata_df["Application"].isin(selected_problem_kind)
         if selected_problem_kind
         else True
     )

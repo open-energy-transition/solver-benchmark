@@ -16,6 +16,10 @@ const PagePerformanceHistory = () => {
     <>
       <Head>
         <title>Full Results | Open Energy Benchmark</title>
+        <meta
+          name="description"
+          content="Access the full and raw set of benchmark results from the Open Energy Benchmark platform. Filter results by area of interest and download filtered data as CSV."
+        />
       </Head>
       <div className="bg-light-blue">
         <Navbar />
@@ -35,7 +39,7 @@ const PagePerformanceHistory = () => {
                   </div>
                 </div>
               </AdminHeader>
-              <h5>Full Results</h5>
+              <h1 className="h5">Full Results</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 This page contains the full and raw set of benchmark results
                 from our platform. You can, as usual, filter the results to your

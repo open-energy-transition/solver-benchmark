@@ -112,7 +112,7 @@ const D3ChartLineChart = ({
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text("Year")
       .attr("class", "text-xs");
 
@@ -129,7 +129,7 @@ const D3ChartLineChart = ({
       .append("text")
       .attr("x", -height / 2)
       .attr("y", -50)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text(title)
       .attr("text-anchor", "middle")
       .attr("class", "text-xs -rotate-90");

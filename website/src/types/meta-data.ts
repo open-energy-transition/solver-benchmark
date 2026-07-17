@@ -5,6 +5,7 @@ type Size = {
   numConstraints: number;
   numVariables: number | null;
   numContinuousVariables: number | null;
+  numNonzeros: number | null;
   numIntegerVariables: number | null;
   size: string;
   url: string;
@@ -22,7 +23,7 @@ interface MetaDataEntry {
   sectoralFocus: string;
   sectors: string;
   timeHorizon: string;
-  milpFeatures: string | null;
+  milpFeatures: string;
   contributorSSource: string | null;
   license: string | null;
   sizes: Size[];

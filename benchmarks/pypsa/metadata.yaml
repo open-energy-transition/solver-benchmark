@@ -981,27 +981,30 @@ benchmarks:
     Modelling framework: PyPSA
     Model name: PyPSA-Eur
     Version:
-    Contributor(s)/Source: Daniele Lerede, Open Energy Transition; Fabrizio Finozzi, Open Energy Transition
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
     License: CC BY 4.0
-    Problem class: LP
+    Problem class: MILP
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: None
+    MILP features: Unit commitment
     Sizes:
-    - Name: 10-3h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-10-3h.mps.gz
-      Temporal resolution: 3 hours
-      Spatial resolution: 10 nodes
-      Realistic: false
-      Num. constraints: 1501029
-      Num. variables: 703831
-      Num. nonzeros: 2817460
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-1h.mps.gz
+      Temporal resolution: 1 hour
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 28602269
+      Num. variables: 14419506
+      Num. nonzeros: 67396325
+      Num. continuous variables: 11449866
+      Num. integer variables: 2969640
     - Name: 50-3h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-3h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-3h.mps.gz
       Temporal resolution: 3 hours
       Spatial resolution: 50 nodes
       Realistic: true
@@ -1065,16 +1068,28 @@ benchmarks:
       Num. nonzeros: 9778117
     - Name: 14-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-14-1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 14 nodes
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-3h.mps.gz
+      Temporal resolution: 3 hours
+      Spatial resolution: 50 nodes
+      Realistic: true
+      Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
+      Num. constraints: 9534669
+      Num. variables: 4806866
+      Num. nonzeros: 22479908
+      Num. continuous variables: 3816986
+      Num. integer variables: 989880
+    - Name: 50-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 50 nodes
       Realistic: false
       Num. constraints: 6053365
       Num. variables: 2838393
       Num. nonzeros: 11376001
     - Name: 16-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-16-1h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-1h.mps.gz
       Temporal resolution: 1 hour
       Spatial resolution: 16 nodes
       Realistic: false
@@ -1083,18 +1098,18 @@ benchmarks:
       Num. nonzeros: 12684994
     - Name: 18-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-18-1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 18 nodes
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
       Realistic: false
       Num. constraints: 7568897
       Num. variables: 3539233
       Num. nonzeros: 14248409
     - Name: 20-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-20-1h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-1h.mps.gz
       Temporal resolution: 1 hour
-      Spatial resolution: 20 nodes
+      Spatial resolution: 50 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 8208403
@@ -1102,9 +1117,9 @@ benchmarks:
       Num. nonzeros: 15540441
     - Name: 22-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-22-1h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-1h.mps.gz
       Temporal resolution: 1 hour
-      Spatial resolution: 22 nodes
+      Spatial resolution: 100 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9066911
@@ -1112,9 +1127,45 @@ benchmarks:
       Num. nonzeros: 17322007
     - Name: 24-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-24-1h.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 2163319
+      Num. variables: 1086486
+      Num. nonzeros: 5253251
+      Num. continuous variables: 875151
+      Num. integer variables: 211335
+    - Name: 100-168h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 100 nodes
+      Realistic: false
+      Num. constraints: 315967
+      Num. variables: 158910
+      Num. nonzeros: 760742
+      Num. continuous variables: 128223
+      Num. integer variables: 30687
+  pypsa-eur-elec-uc-dfp:
+    Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year 2050) with dynamic fuel pricing and including unit commitment.
+    Modelling framework: PyPSA
+    Model name: PyPSA-Eur
+    Version:
+    Contributor(s)/Source: Daniele Lerede, Open Energy Transition
+    License: CC BY 4.0
+    Problem class: MILP
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single period (2050)
+    MILP features: Unit commitment
+    Sizes:
+    - Name: 50-1h
+      Size: L
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-1h.mps.gz
       Temporal resolution: 1 hour
-      Spatial resolution: 24 nodes
+      Spatial resolution: 50 nodes
       Realistic: true
       Realistic motivation: Sufficient spatial and temporal resolution over the considered time horizon to allow the benchmark to be defined as Realistic.
       Num. constraints: 9802781
@@ -2155,6 +2206,17 @@ benchmarks:
       Num. nonzeros: 297601
       Num. continuous variables: 47473
       Num. integer variables: 17520
+    - Name: 2-24h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-24h.mps.gz
+      Temporal resolution: 24 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 61725
+      Num. variables: 32510
+      Num. nonzeros: 148762
+      Num. continuous variables: 23750
+      Num. integer variables: 8760
     - Name: 2-36h
       Size: M
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-36h.mps.gz
@@ -2166,6 +2228,17 @@ benchmarks:
       Num. nonzeros: 99408
       Num. continuous variables: 15885
       Num. integer variables: 5856
+    - Name: 2-48h
+      Size: M
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-48h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 30967
+      Num. variables: 16312
+      Num. nonzeros: 74521
+      Num. continuous variables: 11920
+      Num. integer variables: 4392
     - Name: 2-84h
       Size: S
       URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-84h.mps.gz
@@ -2177,6 +2250,17 @@ benchmarks:
       Num. nonzeros: 42698
       Num. continuous variables: 6850
       Num. integer variables: 2520
+    - Name: 2-168h
+      Size: S
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-168h.mps.gz
+      Temporal resolution: 168 hours
+      Spatial resolution: 2 nodes
+      Realistic: false
+      Num. constraints: 8997
+      Num. variables: 4742
+      Num. nonzeros: 21482
+      Num. continuous variables: 3470
+      Num. integer variables: 1272
   pypsa-de-elec-trex_vopt-uc:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050) with transmission expansion based on optimal volume increase and including unit commitment.
     Modelling framework: PyPSA

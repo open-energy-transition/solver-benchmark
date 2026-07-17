@@ -35,6 +35,7 @@ const PageBenchmarkDetail = () => {
     applications: new Set<string>(),
     models: new Set<string>(),
     modellingFrameworks: new Set<string>(),
+    milpFeatures: new Set<string>(),
   };
 
   Object.keys(fullMetaData).forEach((key) => {
@@ -44,6 +45,7 @@ const PageBenchmarkDetail = () => {
       problemClass,
       application,
       modellingFramework,
+      milpFeatures,
     } = fullMetaData[key];
     uniqueValues.sectoralFocus.add(sectoralFocus);
     sectors.split(",").forEach((sector) => {
@@ -52,6 +54,9 @@ const PageBenchmarkDetail = () => {
     uniqueValues.problemClasses.add(problemClass);
     uniqueValues.applications.add(application);
     uniqueValues.modellingFrameworks.add(modellingFramework);
+    milpFeatures.split(",").forEach((feature) => {
+      uniqueValues.milpFeatures.add(feature.trim());
+    });
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -66,7 +71,7 @@ const PageBenchmarkDetail = () => {
   const availableModellingFrameworks = Array.from(
     uniqueValues.modellingFrameworks,
   );
-
+  const availableMilpFeatures = Array.from(uniqueValues.milpFeatures);
   const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
     sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
@@ -75,6 +80,7 @@ const PageBenchmarkDetail = () => {
     problemSize: availableProblemSizes,
     modellingFramework: availableModellingFrameworks,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
+    milpFeatures: availableMilpFeatures,
   });
 
   const filteredMetaData = useMemo(() => {
@@ -87,6 +93,7 @@ const PageBenchmarkDetail = () => {
         problemSize,
         realistic,
         modellingFramework,
+        milpFeatures,
       } = localFilters;
 
       const isSectoralFocusMatch =
@@ -110,7 +117,6 @@ const PageBenchmarkDetail = () => {
         problemSize.length === 0 ||
         (value.sizes &&
           value.sizes.some((size) => problemSize.includes(size.size)));
-
       const isRealisticMatch =
         realistic.length === 0 ||
         (value.sizes &&
@@ -129,6 +135,15 @@ const PageBenchmarkDetail = () => {
             }
             return false;
           }));
+      const isMilpFeaturesMatch =
+        milpFeatures.length === 0 ||
+        (value.milpFeatures &&
+          milpFeatures.some((selectedFeature) => {
+            const valueFeatures = value.milpFeatures
+              .split(",")
+              .map((f) => f.trim());
+            return valueFeatures.includes(selectedFeature);
+          }));
 
       return (
         isSectoralFocusMatch &&
@@ -137,7 +152,8 @@ const PageBenchmarkDetail = () => {
         isApplicationMatch &&
         isProblemSizeMatch &&
         isRealisticMatch &&
-        isModellingFrameworkMatch
+        isModellingFrameworkMatch &&
+        isMilpFeaturesMatch
       );
     });
     return Object.fromEntries(filteredEntries);
@@ -186,7 +202,7 @@ const PageBenchmarkDetail = () => {
               </AdminHeader>
               <div className="md:flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h5>Benchmark Set</h5>
+                  <h1 className="h5">Benchmark Set</h1>
                   <p className="mb-6 mt-4 max-w-screen-lg">
                     On this page you can see a list of all the benchmark
                     problems on our platform. Click on a benchmark problem name
@@ -196,6 +212,7 @@ const PageBenchmarkDetail = () => {
                 </div>
                 <Link
                   href={PATH_DASHBOARD.featureDistribution}
+                  aria-label={`Navigate to feature distribution page`}
                   className="text-white bg-navy px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap mt-1"
                 >
                   Feature Distribution
@@ -203,7 +220,7 @@ const PageBenchmarkDetail = () => {
               </div>
             </div>
             <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
-              <h6 className="py-4 pl-3.5">List of All Benchmarks</h6>
+              <div className="py-4 pl-3.5 h6">List of All Benchmarks</div>
               <div className="block md:flex overflow-hidden rounded-xl gap-5">
                 <div className="bg-[#F4F6FA] md:max-w-[255px] rounded-xl h-max">
                   <BenchmarkDetailFilterSection
@@ -215,6 +232,7 @@ const PageBenchmarkDetail = () => {
                     availableApplications={availableApplications}
                     availableProblemSizes={availableProblemSizes}
                     availableModellingFrameworks={availableModellingFrameworks}
+                    availableMilpFeatures={availableMilpFeatures}
                   />
                 </div>
                 <div className="w-full overflow-auto">
