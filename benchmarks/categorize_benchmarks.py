@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
-Download, analyze benchmark models, and update benchmark metadata.
+Download, analyze benchmark instances, and update benchmark metadata.
 
 The script scans metadata YAML files under a benchmark folder, downloads
-benchmark models from URLs, analyzes them using HiGHS (highspy), and
-updates the corresponding YAML entries with model statistics and a size
-category.
+benchmark instance files from their URLs, analyzes them using HiGHS
+(highspy), and updates the corresponding YAML entries with model statistics,
+a size category, problem class, and integer-variable share. Continuous and
+integer variable counts are computed for every instance, LP or MILP: an LP
+trivially has num_continuous_variables == num_variables and
+num_integer_variables == 0.
 
 Design goals:
 - Modular functions with single responsibilities.
@@ -21,14 +24,19 @@ import sys
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, MutableMapping, Optional
+from typing import Any, Iterable, Optional
 from urllib.parse import urlparse
 
 import highspy
 import requests
 from ruamel.yaml import YAML
+from ruamel.yaml.comments import CommentedMap
 
-YamlMap = MutableMapping[str, Any]
+# Metadata entries are always loaded via ruamel.yaml's round-trip loader, which
+# returns CommentedMap (not a plain dict). CommentedMap supports ordered
+# `.insert()`, which update_instance_entry relies on to keep YAML key
+# ordering stable and readable.
+YamlMap = CommentedMap
 
 
 @dataclass(frozen=True)
@@ -38,9 +46,11 @@ class ModelStats:
     num_constraints: int
     num_variables: int
     num_nonzeros: int
+    num_continuous_variables: int
+    num_integer_variables: int
     size_category: str
-    num_continuous_variables: Optional[int] = None
-    num_integer_variables: Optional[int] = None
+    problem_class: str
+    share_integer_variables: float
 
 
 @dataclass
@@ -93,6 +103,17 @@ def create_yaml() -> YAML:
 def iter_metadata_files(root: Path) -> Iterable[Path]:
     """
     Yield benchmark metadata YAML files under a directory.
+
+    Parameters
+    ----------
+    root : Path
+        Directory to search recursively for metadata YAML files.
+
+    Yields
+    ------
+    Path
+        Metadata file paths matching "[Mm]etadata*.yaml", excluding the
+        schema definition and template files.
     """
     excluded = {
         "metadata_schema.yaml",
@@ -280,7 +301,7 @@ def download_benchmark_file(
     cache_dir: Optional[Path] = None,
 ) -> Optional[Path]:
     """
-    Download a benchmark model file and return its local path.
+    Download a benchmark instance file and return its local path.
 
     Parameters
     ----------
@@ -376,71 +397,6 @@ def safe_unlink(path: Optional[Path]) -> None:
         return
 
 
-def analyze_model_file(file_path: Path, is_milp: bool) -> Optional[ModelStats]:
-    """
-    Analyze a model file using HiGHS and return statistics.
-
-    Parameters
-    ----------
-    file_path : Path
-        Path to the model file (.lp or .mps).
-    is_milp : bool
-        If True, additional integer/continuous counts are computed.
-
-    Returns
-    -------
-    ModelStats or None
-        Parsed statistics, or None if analysis fails.
-    """
-    try:
-        highs = highspy.Highs()
-        highs.readModel(str(file_path))
-
-        num_variables = highs.getNumCol()
-        if num_variables == 0:
-            raise RuntimeError("Model loaded but has zero variables")
-
-        num_constraints = highs.getNumRow()
-
-        try:
-            num_nonzeros = highs.getNumNz()
-        except AttributeError:
-            num_nonzeros = highs.getNumNonzeros()
-
-        size_category = determine_size_category(num_variables)
-
-        # LP branch
-        if not is_milp:
-            stats = ModelStats(
-                num_constraints=num_constraints,
-                num_variables=num_variables,
-                num_nonzeros=num_nonzeros,
-                size_category=size_category,
-            )
-
-            print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
-            return stats
-
-        # MILP branch
-        num_cont, num_int = count_variable_types(highs, num_variables)
-
-        stats = ModelStats(
-            num_constraints=num_constraints,
-            num_variables=num_variables,
-            num_nonzeros=num_nonzeros,
-            size_category=size_category,
-            num_continuous_variables=num_cont,
-            num_integer_variables=num_int,
-        )
-
-        print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
-        return stats
-
-    except Exception as exc:
-        print(f"Error analyzing {file_path}: {exc}", file=sys.stderr)
-        return None
-
-
 def count_variable_types(highs: highspy.Highs, num_variables: int) -> tuple[int, int]:
     """
     Count continuous and integer variables in a HiGHS model.
@@ -467,180 +423,182 @@ def count_variable_types(highs: highspy.Highs, num_variables: int) -> tuple[int,
     return num_cont, num_int
 
 
-def is_milp_problem_class(model_info: YamlMap) -> bool:
+def analyze_model_file(file_path: Path) -> Optional[ModelStats]:
     """
-    Check if model problem class indicates MILP.
+    Analyze a model file using HiGHS and return statistics.
+
+    Problem class, size category, and integer-variable share are all
+    derived from the analyzed model rather than taken from the existing
+    metadata, since they're calculated fields, not submitted ones.
+    Continuous/integer variable counts are computed regardless of problem
+    class: an LP trivially has num_continuous_variables == num_variables
+    and num_integer_variables == 0.
 
     Parameters
     ----------
-    model_info : dict
-        Benchmark model metadata entry.
+    file_path : Path
+        Path to the model file (.lp or .mps).
 
     Returns
     -------
-    bool
-        True if Problem class is "MILP".
+    ModelStats or None
+        Parsed statistics, or None if analysis fails.
     """
-    return str(model_info.get("Problem class", "")).strip().upper() == "MILP"
+    try:
+        highs = highspy.Highs()
+        highs.readModel(str(file_path))
+
+        num_variables = highs.getNumCol()
+        if num_variables == 0:
+            raise RuntimeError("Model loaded but has zero variables")
+
+        num_constraints = highs.getNumRow()
+
+        try:
+            num_nonzeros = highs.getNumNz()
+        except AttributeError:
+            num_nonzeros = highs.getNumNonzeros()
+
+        num_cont, num_int = count_variable_types(highs, num_variables)
+
+        stats = ModelStats(
+            num_constraints=num_constraints,
+            num_variables=num_variables,
+            num_nonzeros=num_nonzeros,
+            num_continuous_variables=num_cont,
+            num_integer_variables=num_int,
+            size_category=determine_size_category(num_variables),
+            problem_class="MILP" if num_int > 0 else "LP",
+            share_integer_variables=num_int / num_variables,
+        )
+
+        print(f"Analysis complete for {file_path}. Stats:\n  {stats}")
+        return stats
+
+    except Exception as exc:
+        print(f"Error analyzing {file_path}: {exc}", file=sys.stderr)
+        return None
 
 
-def iter_size_entries(model_info: YamlMap) -> Iterable[YamlMap]:
+def get_instance_identity(
+    instance_name: str, instance_info: YamlMap
+) -> Optional[tuple[str, str]]:
     """
-    Yield size entries from a model info entry.
+    Extract (name, url) for an instance entry if available.
 
     Parameters
     ----------
-    model_info : dict
-        Benchmark model metadata entry.
-
-    Yields
-    ------
-    dict
-        Size entry mappings.
-    """
-    sizes = model_info.get("Sizes", [])
-    if not isinstance(sizes, list):
-        return
-    for entry in sizes:
-        if isinstance(entry, dict):
-            yield entry
-
-
-def get_size_entry_identity(size_entry: YamlMap) -> Optional[tuple[str, str]]:
-    """
-    Extract (name, url) from a size entry if available.
-
-    Parameters
-    ----------
-    size_entry : dict
-        Size entry mapping.
+    instance_name : str
+        Instance key (Problem ID) from the metadata mapping.
+    instance_info : dict
+        Instance metadata entry.
 
     Returns
     -------
     tuple[str, str] or None
-        (size_name, url) if present and valid.
+        (instance_name, url) if a valid HTTP(S) URL is present.
     """
-    name = size_entry.get("Name")
-    url = size_entry.get("URL")
+    url = instance_info.get("URL")
 
-    if not isinstance(name, str) or not name.strip():
-        return None
     if not isinstance(url, str) or not url.strip():
         return None
     if not is_http_url(url):
         return None
 
-    return name.strip(), url.strip()
+    return instance_name, url.strip()
 
 
-def required_stat_fields(is_milp: bool) -> list[str]:
+# Fields considered "calculated"; an instance is skipped (not re-analyzed) once
+# all of these are already present and valid.
+CALCULATED_STAT_FIELDS = [
+    "Num. constraints",
+    "Num. variables",
+    "Num. nonzeros",
+    "Num. continuous variables",
+    "Num. integer variables",
+    "Problem class",
+    "Share integer variables",
+]
+
+
+def stats_are_complete_and_valid(instance_info: YamlMap) -> bool:
     """
-    Return the required metadata fields for considering stats complete.
+    Check whether an instance entry already has complete, valid statistics.
 
     Parameters
     ----------
-    is_milp : bool
-        Whether MILP-specific fields are required.
-
-    Returns
-    -------
-    list[str]
-        Required field names.
-    """
-    fields = ["Num. constraints", "Num. variables", "Num. nonzeros"]
-    if is_milp:
-        fields.extend(
-            ["Num. continuous variables", "Num. integer variables"],
-        )
-    return fields
-
-
-def stats_are_complete_and_valid(size_entry: YamlMap, is_milp: bool) -> bool:
-    """
-    Check whether a size entry already has complete, valid statistics.
-
-    Parameters
-    ----------
-    size_entry : dict
-        Size entry mapping.
-    is_milp : bool
-        If True, MILP-specific fields are required.
+    instance_info : dict
+        Instance metadata entry.
 
     Returns
     -------
     bool
-        True if fields exist and are positive.
+        True if all calculated fields exist and the counts are positive.
     """
-    fields = required_stat_fields(is_milp)
-
-    for field in fields:
-        if size_entry.get(field) is None:
+    for field in CALCULATED_STAT_FIELDS:
+        if instance_info.get(field) is None:
             return False
 
     try:
         return (
-            int(size_entry.get("Num. variables", 0)) > 0
-            and int(size_entry.get("Num. constraints", 0)) > 0
-            and int(size_entry.get("Num. nonzeros", 0)) > 0
+            int(instance_info.get("Num. variables", 0)) > 0
+            and int(instance_info.get("Num. constraints", 0)) > 0
+            and int(instance_info.get("Num. nonzeros", 0)) > 0
         )
     except Exception:
         return False
 
 
-def update_size_entry(size_entry: YamlMap, stats: ModelStats, is_milp: bool) -> None:
+def update_instance_entry(instance_info: YamlMap, stats: ModelStats) -> None:
     """
-    Update a size entry in-place with model statistics.
+    Update an instance entry in-place with model statistics.
 
     Parameters
     ----------
-    size_entry : dict
-        Size entry mapping to update.
+    instance_info : dict
+        Instance metadata entry to update.
     stats : ModelStats
         Statistics extracted from the model.
-    is_milp : bool
-        Whether MILP fields should be written.
 
     Notes
     -----
     We insert "Num. nonzeros" immediately after "Num. variables" when
     the key does not exist, to keep YAML ordering stable and readable.
     """
-    size_entry["Size"] = stats.size_category
-    size_entry["Num. constraints"] = stats.num_constraints
-    size_entry["Num. variables"] = stats.num_variables
+    instance_info["Problem class"] = stats.problem_class
+    instance_info["Size"] = stats.size_category
+    instance_info["Num. constraints"] = stats.num_constraints
+    instance_info["Num. variables"] = stats.num_variables
 
-    if "Num. nonzeros" in size_entry:
-        size_entry["Num. nonzeros"] = stats.num_nonzeros
+    if "Num. nonzeros" in instance_info:
+        instance_info["Num. nonzeros"] = stats.num_nonzeros
     else:
-        keys = list(size_entry.keys())
+        keys = list(instance_info.keys())
         try:
             insert_index = keys.index("Num. variables") + 1
         except ValueError:
             insert_index = len(keys)
-        size_entry.insert(insert_index, "Num. nonzeros", stats.num_nonzeros)
+        instance_info.insert(insert_index, "Num. nonzeros", stats.num_nonzeros)
 
-    if is_milp:
-        size_entry["Num. continuous variables"] = stats.num_continuous_variables
-        size_entry["Num. integer variables"] = stats.num_integer_variables
+    instance_info["Num. continuous variables"] = stats.num_continuous_variables
+    instance_info["Num. integer variables"] = stats.num_integer_variables
+    instance_info["Share integer variables"] = stats.share_integer_variables
 
 
-def update_size_in_yaml(
+def update_instance_in_yaml(
     yaml_data: YamlMap,
-    model_name: str,
-    size_name: str,
+    instance_name: str,
     stats: ModelStats,
 ) -> bool:
     """
-    Update the matching size entry for a model in the YAML structure.
+    Update the matching instance entry in the YAML structure.
 
     Parameters
     ----------
     yaml_data : dict
         Parsed YAML root.
-    model_name : str
-        Benchmark model key.
-    size_name : str
-        Size entry name (e.g., "S", "M", "L", or custom).
+    instance_name : str
+        Instance key (Problem ID) to update.
     stats : ModelStats
         Statistics extracted from the model.
 
@@ -649,37 +607,30 @@ def update_size_in_yaml(
     bool
         True if the entry was found and updated.
     """
-    benchmarks = yaml_data.get("benchmarks")
-    if not isinstance(benchmarks, dict):
+    instances = yaml_data.get("instances")
+    if not isinstance(instances, dict):
         return False
 
-    model_info = benchmarks.get(model_name)
-    if not isinstance(model_info, dict):
+    instance_info = instances.get(instance_name)
+    if not isinstance(instance_info, dict):
         return False
 
-    milp = is_milp_problem_class(model_info)
-
-    for size_entry in iter_size_entries(model_info):
-        if size_entry.get("Name") == size_name:
-            update_size_entry(size_entry, stats, milp)
-            return True
-
-    return False
+    update_instance_entry(instance_info, stats)
+    return True
 
 
-def process_size_entry(
+def process_instance_entry(
     yaml_data: YamlMap,
     file_path: Path,
-    model_name: str,
-    model_info: YamlMap,
-    size_entry: YamlMap,
+    instance_name: str,
+    instance_info: YamlMap,
     use_cache: bool,
     cache_dir: Path,
     yaml_obj: YAML,
     summary: ProcessingSummary,
 ) -> None:
     """
-    Process a single size entry (download, analyze, update, write-back).
+    Process a single instance entry (download, analyze, update, write-back).
 
     Parameters
     ----------
@@ -687,12 +638,10 @@ def process_size_entry(
         Parsed YAML root.
     file_path : Path
         Source metadata YAML file.
-    model_name : str
-        Benchmark model key.
-    model_info : dict
-        Benchmark model metadata entry.
-    size_entry : dict
-        Size entry mapping.
+    instance_name : str
+        Instance key (Problem ID).
+    instance_info : dict
+        Instance metadata entry.
     use_cache : bool
         Whether to cache downloads.
     cache_dir : Path
@@ -702,16 +651,14 @@ def process_size_entry(
     summary : ProcessingSummary
         Counters updated in-place.
     """
-    identity = get_size_entry_identity(size_entry)
+    identity = get_instance_identity(instance_name, instance_info)
     if identity is None:
         return
 
-    size_name, url = identity
+    _, url = identity
     summary.total_files += 1
 
-    milp = is_milp_problem_class(model_info)
-
-    if stats_are_complete_and_valid(size_entry, milp):
+    if stats_are_complete_and_valid(instance_info):
         # We skip analysis to keep runs fast when YAML is already filled.
         return
 
@@ -726,7 +673,7 @@ def process_size_entry(
 
     summary.successful_downloads += 1
 
-    stats = analyze_model_file(model_path, milp)
+    stats = analyze_model_file(model_path)
 
     if not use_cache:
         safe_unlink(model_path)
@@ -737,14 +684,14 @@ def process_size_entry(
 
     summary.successful_analyses += 1
 
-    updated = update_size_in_yaml(yaml_data, model_name, size_name, stats)
+    updated = update_instance_in_yaml(yaml_data, instance_name, stats)
     if not updated:
         summary.failed_tasks += 1
         return
 
     summary.successful_updates += 1
     write_yaml_file(file_path, yaml_obj, yaml_data)
-    print(f"Updated {model_name} with model stats")
+    print(f"Updated {instance_name} with model stats")
 
 
 def process_metadata_file(
@@ -781,28 +728,24 @@ def process_metadata_file(
     if not isinstance(yaml_data, dict):
         return
 
-    benchmarks = yaml_data.get("benchmarks")
-    if not isinstance(benchmarks, dict):
+    instances = yaml_data.get("instances")
+    if not isinstance(instances, dict):
         return
 
-    for model_name, model_info in benchmarks.items():
-        if model_info is None:
-            continue
-        if not isinstance(model_info, dict):
+    for instance_name, instance_info in instances.items():
+        if not isinstance(instance_info, dict):
             continue
 
-        for size_entry in iter_size_entries(model_info):
-            process_size_entry(
-                yaml_data=yaml_data,
-                file_path=file_path,
-                model_name=str(model_name),
-                model_info=model_info,
-                size_entry=size_entry,
-                use_cache=use_cache,
-                cache_dir=cache_dir,
-                yaml_obj=yaml_obj,
-                summary=summary,
-            )
+        process_instance_entry(
+            yaml_data=yaml_data,
+            file_path=file_path,
+            instance_name=str(instance_name),
+            instance_info=instance_info,
+            use_cache=use_cache,
+            cache_dir=cache_dir,
+            yaml_obj=yaml_obj,
+            summary=summary,
+        )
 
 
 def process_metadata_files(
@@ -881,7 +824,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
         Parsed args.
     """
     parser = argparse.ArgumentParser(
-        description="Download, analyze benchmark models, and update metadata.",
+        description="Download, analyze benchmark instances, and update metadata.",
     )
     parser.add_argument(
         "--folder",
