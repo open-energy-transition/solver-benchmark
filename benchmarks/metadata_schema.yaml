@@ -1,39 +1,137 @@
 # Top-level schema
-benchmarks: map(include('benchmark'), key=str())
+instances: map(include('instance'), key=str())
 
 ---
 
-# Benchmark definition
-benchmark:
+# Instance definition: a single, standalone problem instance.
+instance:
+  # --- Strictly required ---
+
+  # One or two sentences describing this instance and the modelling context it comes from.
   Short description: str()
-  Modelling framework: str()
-  Model name: str()
-  Version: any(str(), int(), required=False)
+  # Person(s)/organization who contributed this instance, or the source it
+  # was adapted from.
   Contributor(s)/Source: str()
+  # License under which the model and its data are shared.
   License: str()
-  Problem class: str()
-  Application: str()
-  Sectoral focus: str()
-  Sectors: str()
-  Time horizon: str()
-  MILP features: str()
-  Notes: str(required=False)
-  Sizes: list(include('size'))
-
----
-
-# Size definition
-size:
-  Name: str()
-  Size: str()
+  # Link to the downloadable LP/MPS file for this instance.
   URL: str()
-  Temporal resolution: str()
-  Spatial resolution: str()
-  Realistic: bool()
-  Realistic motivation: str(required=False)
+
+  # --- Calculated after submission ---
+  # These fields are left blank at submission time and filled in later by a
+  # maintainer running benchmarks/categorize_benchmarks.py.
+
+  # "LP" or "MILP", derived from whether the instance has any integer variables.
+  Problem class: str(required=False)
+  # Size category derived from Num. variables: "S" (<10k), "M" (<1M), "L" (>=1M).
+  Size: str(required=False)
   Num. constraints: int(required=False)
   Num. variables: int(required=False)
+  Num. nonzeros: int(required=False)
   Num. continuous variables: int(required=False)
   Num. integer variables: int(required=False)
-  Num. nonzeros: int(required=False)
+  # Num. integer variables divided by Num. variables.
+  Share integer variables: num(required=False)
+
+  # --- Optional: model/framework info ---
+
+  # Software/framework used to build the model, e.g. PyPSA, GenX, TIMES.
+  Modelling framework: str(required=False)
+  # Version of the modelling framework or model used.
+  Version: any(str(), int(), required=False)
+  # MILP-specific modelling features present. Suggested values (illustrative,
+  # non-exhaustive):
+  #   Unit commitment, Transmission switching, Modularity, Binary transmission
+  #   investment decisions, Piecewise fuel usage, Piecewise-linear part-load
+  #   efficiency modelling, Piecewise efficiency, Modelling of fixed costs,
+  #   Non-convex operation.
+  MILP features: list(str(), required=False)
+
+  # --- Optional: geographic & spatial scope ---
+
+  # Geographic area covered by the model, e.g. Europe.
+  Geographic scope: str(required=False)
+  # Number of spatially aggregated entities (nodes/regions) modelled.
+  Spatial resolution: str(required=False)
+
+  # --- Optional: temporal scope ---
+
+  # Years or period spanned by the model, e.g. 2030-2050, or a single generic year.
+  Temporal interval: str(required=False)
+  # Time series aggregation used to reduce the number of modelled time steps,
+  # e.g. 10 representative days.
+  Temporal sampling: str(required=False)
+  # Length of each modelled time step, e.g. 1-hour time steps.
+  Temporal resolution: str(required=False)
+  # Number of sequential optimizations chained together, e.g. optimizing for
+  # 2030 first and then for 2040 using the capacities built in 2030.
+  Optimization periods: int(required=False)
+  
+  # --- Optional: energy-system taxonomy ---
+  # These four fields are free-text lists rather than schema-enforced enums,
+  # so contributors aren't blocked by a fixed vocabulary. The values below are
+  # suggested for consistency but are illustrative and non-exhaustive — add
+  # other values if none of these fit.
+
+  # Energy carriers/flows the model tracks, for example:
+  #   Electricity           - electric grids and electrons
+  #   Heat Low Temp         - residential/commercial heating or district heating
+  #   Heat High Temp        - high-temperature heat for industrial processes
+  #   Hydrogen              - pure hydrogen (gas or liquid) and its direct derivatives
+  #   CH4 Gas               - natural gas, biomethane, or synthetic methane
+  #   Liquid Fuels          - oil, diesel, gasoline, kerosene, liquid biofuels, e-fuels
+  #   Solid Biomass         - wood, pellets, agricultural residues, solid waste
+  #   Coal                  - fossil coal and its solid derivatives
+  #   CO2 Flow              - captured, stored, or reused CO2 flows
+  Energy carriers: list(str(), required=False)
+  # Final-demand sectors represented, for example:
+  #   Residential Buildings - homes (heating, cooling, appliances)
+  #   Commercial Services   - offices, hospitals, schools, shops, street lighting
+  #   Industry Heavy        - energy-intensive industry (steel, cement, chemicals, paper, glass)
+  #   Industry Light        - light manufacturing, food, textiles, assembly
+  #   Transport Road        - private cars, light/heavy commercial vehicles
+  #   Transport Rail        - passenger and freight trains
+  #   Transport Aviation    - domestic and/or international flights
+  #   Transport Maritime    - inland and ocean shipping
+  #   Agriculture Forestry  - tractors, farm machinery, irrigation, fishing
+  #   Non Energy Feedstocks - carriers used as feedstock, e.g. gas for fertilizer, oil for plastics
+  Demand sectors: list(str(), required=False)
+  # Supply/conversion technologies modelled, for example:
+  #   Renewables Variable     - solar and wind (weather-dependent hourly profiles)
+  #   Renewables Dispatchable - reservoir hydro, geothermal, biomass
+  #   Fossil Extraction       - domestic extraction of coal, oil, or gas
+  #   Nuclear                 - nuclear fission plants
+  #   Conventional Power      - classic thermal power plants (gas turbines, coal, combined cycle)
+  #   District Heating Plants - centralized boilers and CHP plants
+  #   Power To X              - electrolysers, methanation, or liquid fuel synthesis plants
+  #   Carbon Capture          - CO2 capture at the smokestack or direct air capture
+  #   External Imports        - energy entering the system as a finished product from outside the model boundary
+  Supply and transformation: list(str(), required=False)
+  # Network/storage infrastructure modelled, for example:
+  #   Power Grid                - electricity transmission/distribution lines (with losses/bottlenecks)
+  #   Gas Pipelines             - transport networks for methane or hydrogen
+  #   District Heating Networks - heat distribution piping
+  #   Short Term Storage        - batteries, flywheels, daily thermal storage
+  #   Long Term Storage         - pumped hydro, seasonal hydrogen or gas storage in caverns
+  Storage and networks: list(str(), required=False)
+
+  # --- Optional: policy, provenance & notes ---
+
+  # Exogenous policy targets or constraints enforced in the model, for example:
+  #   Net zero emissions by 2050
+  #   50% renewable generation share by 2040
+  #   Coal phase-out by 2030
+  Policy: str(required=False)
+  # Whether this instance comes from, or closely resembles, a model that was
+  # used in an actual energy modelling study.
+  Realistic: bool(required=False)
+  # Required when Realistic is true: justification for why this instance is
+  # labelled realistic.
+  Realistic motivation: str(required=False)
+  # If set, this instance is excluded from solver evaluation runs, with the
+  # reason why (e.g. a solver times out on it and needs special options).
   Skip because: str(required=False)
+  # Free-form notes that don't fit any other field — e.g. technology cost
+  # assumptions (source/vintage of capex, opex, fuel price data) or other
+  # modelling assumptions that don't have a dedicated field.
+  Notes: str(required=False)
