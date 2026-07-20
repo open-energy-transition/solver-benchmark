@@ -121,7 +121,7 @@ benchmarks:
       Num. variables: 6005534
       Num. nonzeros: 52665970
   ReEDS-USA_decarb_H2-CapacityExpansion:
-    Short description: 132-zone representation of contiguous USA with 424 time slices in 2050 (last solve year of sequential solve with 10 stages) with net zero power sector emissions by 2045 (no CCS, no new nuclear, DAC only to offset emissions from fossil+CCS) and detailed H2 production. 
+    Short description: 132-zone representation of contiguous USA with 424 time slices in 2050 (last solve year of sequential solve with 10 stages) with net zero power sector emissions by 2045 (no CCS, no new nuclear, DAC only to offset emissions from fossil+CCS) and detailed H2 production.
     Modelling framework: ReEDS
     Model name: ReEDS
     Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
