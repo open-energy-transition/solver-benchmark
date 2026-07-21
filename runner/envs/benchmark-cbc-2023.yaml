@@ -1,0 +1,12 @@
+name: benchmark-cbc-2023
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+- coin-or-cbc==2.10.11
+- highspy
