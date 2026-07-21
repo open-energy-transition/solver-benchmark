@@ -1,28 +1,32 @@
 # https://github.com/IIT-EnergySystemModels/openTEPES
-benchmarks:
-  openTEPES-spain_portugal-elec-uc:
-    Short description: Iberian electricity system model with a detailed representation of a hydro basin and unit commitment on hydro generators.
-    Modelling framework: openTEPES
-    Model name: openTEPES-Spain/Portugal
-    Version:
+instances:
+  openTEPES-spain_portugal-elec-uc-8-2h:
+    Short description: Iberian electricity system model with a detailed representation
+      of a hydro basin and unit commitment on hydro generators.
     Contributor(s)/Source: Andres Ramos, [Universidad Pontificia Comillas](https://pascua.iit.comillas.edu/aramos/Ramos_CV.htm)
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/openTEPES-spain_portugal-elec-uc-8-2h.mps.gz
     Problem class: MILP
+    Size: L
+    Num. constraints: 1727170
+    Num. variables: 2913989
+    Num. nonzeros: 7860707
+    Num. continuous variables: 2193272
+    Num. integer variables: 720717
+    MILP features:
+    - Unit commitment
+    Modelling framework: openTEPES
+    Version:
+    Spatial resolution: 8 nodes
+    Temporal resolution: 2 hours
+    Realistic: true
+    Realistic motivation: Used in the national research project "Hydro generation
+      advanced systems modeling, control, and optimized integration to the system
+      (AVANHID)", developed for the Ministry of Science and Innovation/State Research
+      Agency (MICIN/AEI/10.13039/501100011033) under the program Public-Private Partnerships
+      with NextGenerationEU/PRTR funds (CPP2021-009114). October 2022 - November 2025.
     Application: Operational
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2025)
-    MILP features: Unit commitment
-    Sizes:
-    - Name: 8-2h
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/openTEPES-spain_portugal-elec-uc-8-2h.mps.gz
-      Temporal resolution: 2 hours
-      Spatial resolution: 8 nodes
-      Realistic: true
-      Realistic motivation: Used in the national research project "Hydro generation advanced systems modeling, control, and optimized integration to the system (AVANHID)", developed for the Ministry of Science and Innovation/State Research Agency (MICIN/AEI/10.13039/501100011033) under the program Public-Private Partnerships with NextGenerationEU/PRTR funds (CPP2021-009114). October 2022 - November 2025.
-      Size: L
-      Num. constraints: 1727170
-      Num. variables: 2913989
-      Num. nonzeros: 7860707
-      Num. continuous variables: 2193272
-      Num. integer variables: 720717
+    Model name: openTEPES-Spain/Portugal

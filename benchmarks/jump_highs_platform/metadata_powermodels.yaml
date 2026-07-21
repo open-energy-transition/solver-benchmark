@@ -1,125 +1,127 @@
 ## Metadata for samples from https://github.com/jump-dev/open-energy-modeling-benchmarks/tree/main/PowerModels
-benchmarks:
-  pglib_opf_case162_ieee_dtc:
-    Short description: Steady-state optimal power flow stability study based on the IEEE 17-Generator Dynamic Test Case with 162 buses and 17 generators adopting transmission switching.
-    Modelling framework: PowerModels
-    Model name: PowerModels
-    Version:
+instances:
+  pglib_opf_case162_ieee_dtc-162-NA:
+    Short description: Steady-state optimal power flow stability study based on the
+      IEEE 17-Generator Dynamic Test Case with 162 buses and 17 generators adopting
+      transmission switching.
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
     Problem class: MILP
+    Size: S
+    Num. constraints: 1867
+    Num. variables: 742
+    Num. nonzeros: 5693
+    Num. continuous variables: 458
+    Num. integer variables: 284
+    MILP features:
+    - Transmission switching
+    Modelling framework: PowerModels
+    Version:
+    Spatial resolution: 162 nodes
+    Temporal resolution: NA
+    Realistic: false
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
-    MILP features: Transmission switching
-    Sizes:
-    - Name: 162-NA
-      Size: S
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case162_ieee_dtc.m-e44d1cc9578fe03e1568c393ab3924265857b7a2383e6384df4df1a820185c73.mps.gz
-      Temporal resolution: NA
-      Spatial resolution: 162 nodes
-      Realistic: false
-      Num. constraints: 1867
-      Num. variables: 742
-      Num. continuous variables: 458
-      Num. integer variables: 284
-      Num. nonzeros: 5693
-  pglib_opf_case1803_snem:
-    Short description: Steady-state optimal power flow run for the Synthetic National Electricity Market (SNEM) Australia - Mainland subnetwork adopting transmission switching.
-    Modelling framework: PowerModels
     Model name: PowerModels
-    Version:
+  pglib_opf_case1803_snem-1803-NA:
+    Short description: Steady-state optimal power flow run for the Synthetic National
+      Electricity Market (SNEM) Australia - Mainland subnetwork adopting transmission
+      switching.
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
     Problem class: LP
+    Size: S
+    Num. constraints: 18574
+    Num. variables: 7623
+    Num. nonzeros: 56119
+    MILP features:
+    - Transmission switching
+    Modelling framework: PowerModels
+    Version:
+    Spatial resolution: 1803 nodes
+    Temporal resolution: NA
+    Realistic: false
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
-    MILP features: Transmission switching
-    Sizes:
-    - Name: 1803-NA
-      Size: S
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
-      Temporal resolution: NA
-      Spatial resolution: 1803 nodes
-      Realistic: false
-      Num. constraints: 18574
-      Num. variables: 7623
-      Num. nonzeros: 56119
-  pglib_opf_case1951_rte:
-    Short description: Steady-state optimal power flow run with 1951 nodes adopting transmission switching.
-    Modelling framework: PowerModels
     Model name: PowerModels
-    Version:
+  pglib_opf_case1951_rte-1951-NA:
+    Short description: Steady-state optimal power flow run with 1951 nodes adopting
+      transmission switching.
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
     Problem class: MILP
+    Size: S
+    Num. constraints: 17528
+    Num. variables: 7509
+    Num. nonzeros: 52287
+    Num. continuous variables: 4913
+    Num. integer variables: 2596
+    MILP features:
+    - Transmission switching
+    Modelling framework: PowerModels
+    Version:
+    Spatial resolution: 1951 nodes
+    Temporal resolution: NA
+    Realistic: false
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
-    MILP features: Transmission switching
-    Sizes:
-    - Name: 1951-NA
-      Size: S
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1951_rte.m-96db1a2bb31ca33d4fe3ccb1fa30358f157cd3493cff87ae8f16fa8a6a3b1e48.mps.gz
-      Temporal resolution: NA
-      Spatial resolution: 1951 nodes
-      Realistic: false
-      Num. constraints: 17528
-      Num. variables: 7509
-      Num. continuous variables: 4913
-      Num. integer variables: 2596
-      Num. nonzeros: 52287
-  pglib_opf_case2848:
-    Short description: Steady-state optimal power flow run with 2848 nodes adopting transmission switching.
-    Modelling framework: PowerModels
     Model name: PowerModels
-    Version:
+  pglib_opf_case2848-2848-NA:
+    Short description: Steady-state optimal power flow run with 2848 nodes adopting
+      transmission switching.
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
     Problem class: MILP
+    Size: M
+    Num. constraints: 25505
+    Num. variables: 10911
+    Num. nonzeros: 76032
+    Num. continuous variables: 7135
+    Num. integer variables: 3776
+    MILP features:
+    - Transmission switching
+    Modelling framework: PowerModels
+    Version:
+    Spatial resolution: 2848 nodes
+    Temporal resolution: NA
+    Realistic: false
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
-    MILP features: Transmission switching
-    Sizes:
-    - Name: 2848-NA
-      Size: M
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2848_rte.m-8546f681e53f8663080268242343f948670d9ddcd40ed4b2da6ab94ec1e0fc05.mps.gz
-      Temporal resolution: NA
-      Spatial resolution: 2848 nodes
-      Realistic: false
-      Num. constraints: 25505
-      Num. variables: 10911
-      Num. continuous variables: 7135
-      Num. integer variables: 3776
-      Num. nonzeros: 76032
-  pglib_opf_case2868:
-    Short description: Steady-state optimal power flow run with 2868 nodes adopting transmission switching.
-    Modelling framework: PowerModels
     Model name: PowerModels
-    Version:
+  pglib_opf_case2868-2868-NA:
+    Short description: Steady-state optimal power flow run with 2868 nodes adopting
+      transmission switching.
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
     Problem class: MILP
+    Size: M
+    Num. constraints: 25717
+    Num. variables: 11045
+    Num. nonzeros: 76722
+    Num. continuous variables: 7237
+    Num. integer variables: 3808
+    MILP features:
+    - Transmission switching
+    Modelling framework: PowerModels
+    Version:
+    Spatial resolution: 2868 nodes
+    Temporal resolution: NA
+    Realistic: false
     Application: Steady-state Optimal Power Flow
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: N/A
-    MILP features: Transmission switching
-    Sizes:
-    - Name: 2868-NA
-      Size: M
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case2868_rte.m-bf313f2631231ef9a5301580b317b461c49901a503fd898ee35cf791f1d8bea6.mps.gz
-      Temporal resolution: NA
-      Spatial resolution: 2868 nodes
-      Realistic: false
-      Num. constraints: 25717
-      Num. variables: 11045
-      Num. continuous variables: 7237
-      Num. integer variables: 3808
-      Num. nonzeros: 76722
+    Model name: PowerModels
