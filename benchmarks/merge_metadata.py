@@ -3,8 +3,8 @@
 Merge per-contributor benchmark metadata files into results/metadata.yaml.
 
 Scans every `[Mm]etadata*.yaml` file under `benchmarks/`, validates each
-instance entry against the small set of strictly-required fields (see
-`REQUIRED_INSTANCE_FIELDS`), and writes the combined result to
+problem entry against the small set of strictly-required fields (see
+`REQUIRED_PROBLEM_FIELDS`), and writes the combined result to
 `results/metadata.yaml`. Everything beyond the required fields (calculated
 stats, optional descriptive/taxonomy fields) is passed through unchanged.
 """
@@ -19,10 +19,10 @@ import yaml
 
 YamlMap = MutableMapping[str, Any]
 
-# Fields every instance entry must have at submission time. Everything else
+# Fields every problem entry must have at submission time. Everything else
 # (calculated stats, taxonomy fields, temporal/geographic scope, etc.) is
 # optional and may be filled in later.
-REQUIRED_INSTANCE_FIELDS = [
+REQUIRED_PROBLEM_FIELDS = [
     "Short description",
     "Contributor(s)/Source",
     "License",
@@ -37,18 +37,18 @@ class BlankNoneDumper(yaml.Dumper):
         return self.represent_scalar("tag:yaml.org,2002:null", "")
 
 
-def validate_instance_entry(
-    instance_name: str, instance_info: Any, file_path: Path
+def validate_problem_entry(
+    problem_id: str, problem_info: Any, file_path: Path
 ) -> bool:
     """
-    Validate that an instance entry has all required fields.
+    Validate that a problem entry has all required fields.
 
     Parameters
     ----------
-    instance_name : str
-        Name (Problem ID) of the instance.
-    instance_info : Any
-        Parsed YAML value for the instance; expected to be a dict.
+    problem_id : str
+        Problem ID of the entry.
+    problem_info : Any
+        Parsed YAML value for the problem; expected to be a dict.
     file_path : Path
         Path to the file being processed, used for error reporting.
 
@@ -57,31 +57,31 @@ def validate_instance_entry(
     bool
         True if the entry is valid, False otherwise.
     """
-    if not isinstance(instance_info, dict):
-        print(f"ERROR in {file_path}: Instance '{instance_name}' is not a dictionary")
+    if not isinstance(problem_info, dict):
+        print(f"ERROR in {file_path}: Problem '{problem_id}' is not a dictionary")
         return False
 
     missing_fields = [
-        field for field in REQUIRED_INSTANCE_FIELDS if field not in instance_info
+        field for field in REQUIRED_PROBLEM_FIELDS if field not in problem_info
     ]
     if missing_fields:
         print(
-            f"ERROR in {file_path}: Instance '{instance_name}' missing required "
+            f"ERROR in {file_path}: Problem '{problem_id}' missing required "
             f"fields: {missing_fields}"
         )
         return False
 
-    # A "Realistic" instance must explain why it's considered realistic.
-    realistic = instance_info.get("Realistic", False)
+    # A "Realistic" problem must explain why it's considered realistic.
+    realistic = problem_info.get("Realistic", False)
     if realistic is True:
-        realistic_motivation = instance_info.get("Realistic motivation", "")
+        realistic_motivation = problem_info.get("Realistic motivation", "")
         if (
             not realistic_motivation
             or not isinstance(realistic_motivation, str)
             or realistic_motivation.strip() == ""
         ):
             print(
-                f"ERROR in {file_path}: Instance '{instance_name}' has "
+                f"ERROR in {file_path}: Problem '{problem_id}' has "
                 "Realistic=true but missing, empty, or placeholder "
                 "'Realistic motivation'"
             )
@@ -94,14 +94,14 @@ def process_yaml_file(
     file_path: Path, unified_metadata: YamlMap, skip_validation: bool
 ) -> None:
     """
-    Merge a single metadata YAML file's instances into `unified_metadata`.
+    Merge a single metadata YAML file's problems into `unified_metadata`.
 
     Parameters
     ----------
     file_path : Path
         Path to a `[Mm]etadata*.yaml` file.
     unified_metadata : dict
-        Accumulator dict, updated in place with validated instance entries.
+        Accumulator dict, updated in place with validated problem entries.
     skip_validation : bool
         If True, entries are merged without required-field validation.
     """
@@ -120,28 +120,28 @@ def process_yaml_file(
         print(f"Skipping file with no content: {file_path}")
         return
 
-    if "instances" not in yaml_data:
-        print(f"No 'instances' section found in: {file_path}")
+    if "problems" not in yaml_data:
+        print(f"No 'problems' section found in: {file_path}")
         return
 
-    for instance_name, instance_info in yaml_data["instances"].items():
-        if not skip_validation and not validate_instance_entry(
-            instance_name, instance_info, file_path
+    for problem_id, problem_info in yaml_data["problems"].items():
+        if not skip_validation and not validate_problem_entry(
+            problem_id, problem_info, file_path
         ):
-            print(f"Skipping invalid instance '{instance_name}' from {file_path}")
+            print(f"Skipping invalid problem '{problem_id}' from {file_path}")
             continue
 
-        if instance_name in unified_metadata:
+        if problem_id in unified_metadata:
             print(
-                f"WARNING: Duplicate instance name '{instance_name}' found in "
+                f"WARNING: Duplicate problem ID '{problem_id}' found in "
                 f"{file_path}. Overwriting previous entry."
             )
-        unified_metadata[instance_name] = instance_info
+        unified_metadata[problem_id] = problem_info
 
 
 def iter_metadata_files(benchmarks_dir: Path) -> list[Path]:
     """
-    List all instance metadata YAML files under `benchmarks_dir`.
+    List all problem metadata YAML files under `benchmarks_dir`.
 
     Parameters
     ----------
@@ -162,12 +162,12 @@ def iter_metadata_files(benchmarks_dir: Path) -> list[Path]:
 
 def write_merged_metadata(unified_metadata: YamlMap, results_file: Path) -> None:
     """
-    Write the unified metadata dict to `results_file` as `{"instances": ...}`.
+    Write the unified metadata dict to `results_file` as `{"problems": ...}`.
 
     Parameters
     ----------
     unified_metadata : dict
-        Combined instance entries keyed by instance name.
+        Combined problem entries keyed by Problem ID.
     results_file : Path
         Destination YAML file path.
     """
@@ -177,7 +177,7 @@ def write_merged_metadata(unified_metadata: YamlMap, results_file: Path) -> None
     results_file.parent.mkdir(parents=True, exist_ok=True)
     with open(results_file, "w") as output_file:
         yaml.dump(
-            {"instances": unified_metadata},
+            {"problems": unified_metadata},
             output_file,
             sort_keys=False,
             default_flow_style=False,
@@ -205,7 +205,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     parser.add_argument(
         "--skip-validation",
         action="store_true",
-        help="Skip validation of instance entries (default: validation enabled)",
+        help="Skip validation of problem entries (default: validation enabled)",
     )
     return parser.parse_args(argv)
 

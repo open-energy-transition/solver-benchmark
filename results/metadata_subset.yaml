@@ -1,4 +1,4 @@
-instances:
+problems:
   FINE-2-node-electricity-supply-system-2-8760ts:
     Short description: A simple 2-region energy supply system built using the ETHOS.FINE
       framework, illustrating the creation of an energy system model and the addition

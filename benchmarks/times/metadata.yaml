@@ -1,4 +1,4 @@
-instances:
+problems:
   TIMES-GEO-global-base-31-20ts:
     Short description: Global energy system model with a time scale from 2019 to 2100.
       This run considers a base scenario without decarbonization constraints.

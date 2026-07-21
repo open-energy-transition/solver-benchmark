@@ -1,6 +1,6 @@
 ## https://github.com/IESA-Opt/IESA-Opt-N
 ## papers using the model: https://www.sciencedirect.com/science/article/pii/S2666792421000354, https://www.sciencedirect.com/science/article/pii/S266679242100072X, https://www.sciencedirect.com/science/article/pii/S0140988323002487, https://www.sciencedirect.com/science/article/pii/S266679242200021X
-instances:
+problems:
   IESA-Opt-NL-1-3h:
     Short description: Energy system model of the Netherlands over one year (2050)
       with net-zero climate target.

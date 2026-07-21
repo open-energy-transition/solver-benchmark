@@ -1,5 +1,5 @@
 ## https://github.com/ZEN-universe/ZEN-garden
-instances:
+problems:
   zen-garden-eur-PI-28-2ts:
     Short description: Model of the European transition pathway for the electricity
       and heating sectors of 28 European countries from 2022 to 2050. Performs time

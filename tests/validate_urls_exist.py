@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Check that every instance URL in a metadata YAML file is reachable.
+Check that every problem URL in a metadata YAML file is reachable.
 
-Collects the "URL" field from every entry in the "instances" map and issues
+Collects the "URL" field from every entry in the "problems" map and issues
 a concurrent HEAD (falling back to a ranged GET) request against each,
 reporting any that don't resolve to a non-empty, successful response.
 """
@@ -22,7 +22,7 @@ DEFAULT_WORKERS = 32  # good CI default; adjust if you hit throttling
 
 @dataclass
 class CheckResult:
-    """Outcome of checking a single instance URL."""
+    """Outcome of checking a single problem URL."""
 
     url: str
     ok: bool
@@ -105,25 +105,25 @@ def check_url(url: str, timeout_s: float = 60.0) -> CheckResult:
 
 def collect_urls(data: dict) -> list[str]:
     """
-    Collect the unique instance URLs from parsed metadata YAML content.
+    Collect the unique problem URLs from parsed metadata YAML content.
 
     Parameters
     ----------
     data : dict
-        Parsed content of a metadata YAML file (must contain an
-        "instances" map).
+        Parsed content of a metadata YAML file (must contain a
+        "problems" map).
 
     Returns
     -------
     list[str]
         Sorted, de-duplicated list of URLs.
     """
-    return sorted({b["URL"] for b in data["instances"].values() if b.get("URL")})
+    return sorted({b["URL"] for b in data["problems"].values() if b.get("URL")})
 
 
 def main(argv: Optional[list[str]] = None) -> int:
     """
-    CLI entry point: check every instance URL in a metadata YAML file.
+    CLI entry point: check every problem URL in a metadata YAML file.
 
     Parameters
     ----------

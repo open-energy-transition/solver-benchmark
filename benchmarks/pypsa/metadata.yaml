@@ -1,4 +1,4 @@
-instances:
+problems:
   pypsa-eur-elec-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion.

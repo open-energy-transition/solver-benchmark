@@ -1,4 +1,4 @@
-instances:
+problems:
   pypsa-power+ely-1-1h:
     Short description: Simple PyPSA-based single-node gas + wind + solar + electrolyzer
       infrastructure model for a single year-time horizon.

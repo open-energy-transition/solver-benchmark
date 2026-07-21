@@ -1,5 +1,5 @@
 ## https://github.com/lprieto1409/DC-OPF-Carolinas
-instances:
+problems:
   DCOPF-Carolinas_2M-997-1h:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a two-month horizon with hourly resolution, using 2021 as the

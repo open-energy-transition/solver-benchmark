@@ -1,27 +1,27 @@
 # Top-level schema
-instances: map(include('instance'), key=str())
+problems: map(include('problem'), key=str())
 
 ---
 
-# Instance definition: a single, standalone problem instance.
-instance:
+# Problem definition: a single, standalone problem.
+problem:
   # --- Strictly required ---
 
-  # One or two sentences describing this instance and the modelling context it comes from.
+  # One or two sentences describing this problem and the modelling context it comes from.
   Short description: str()
-  # Person(s)/organization who contributed this instance, or the source it
+  # Person(s)/organization who contributed this problem, or the source it
   # was adapted from.
   Contributor(s)/Source: str()
   # License under which the model and its data are shared.
   License: str()
-  # Link to the downloadable LP/MPS file for this instance.
+  # Link to the downloadable LP/MPS file for this problem.
   URL: str()
 
   # --- Calculated after submission ---
   # These fields are left blank at submission time and filled in later by a
   # maintainer running benchmarks/categorize_benchmarks.py.
 
-  # "LP" or "MILP", derived from whether the instance has any integer variables.
+  # "LP" or "MILP", derived from whether the problem has any integer variables.
   Problem class: str(required=False)
   # Size category derived from Num. variables: "S" (<10k), "M" (<1M), "L" (>=1M).
   Size: str(required=False)
@@ -122,13 +122,13 @@ instance:
   #   50% renewable generation share by 2040
   #   Coal phase-out by 2030
   Policy: str(required=False)
-  # Whether this instance comes from, or closely resembles, a model that was
+  # Whether this problem comes from, or closely resembles, a model that was
   # used in an actual energy modelling study.
   Realistic: bool(required=False)
-  # Required when Realistic is true: justification for why this instance is
+  # Required when Realistic is true: justification for why this problem is
   # labelled realistic.
   Realistic motivation: str(required=False)
-  # If set, this instance is excluded from solver evaluation runs, with the
+  # If set, this problem is excluded from solver evaluation runs, with the
   # reason why (e.g. a solver times out on it and needs special options).
   Skip because: str(required=False)
   # Free-form notes that don't fit any other field — e.g. technology cost

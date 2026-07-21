@@ -1,4 +1,4 @@
-instances:
+problems:
   SWITCH-China-open-model-5-433ts:
     Short description: A large-scale national energy system model of China built using
       the SWITCH framework, incorporating extended China-specific modules and updated

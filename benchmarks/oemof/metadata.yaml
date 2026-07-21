@@ -1,4 +1,4 @@
-instances:
+problems:
   OEMOF-diesel-genset-nonconvex-investment-1-240ts:
     Short description: Hybrid mini-grid model combining Investment and NonConvex options
       for a diesel generator, PV, battery, and power-conversion components.

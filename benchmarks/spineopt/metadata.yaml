@@ -1,5 +1,5 @@
 ## https://github.com/spine-tools/SpineOpt.jl
-instances:
+problems:
   spineopt-eu-pathway-planning-30-1h:
     Short description: Model of the European transition pathway for the electricity
       and multiple sectors (e.g., heat, transport, residential, non residential, industry)

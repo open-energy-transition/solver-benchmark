@@ -1,5 +1,5 @@
 ## https://github.com/FZJ-IEK3-VSA/FINE
-instances:
+problems:
   ethos_fine_europe_60tp-175-720ts:
     Short description: Energy system model for Europe (EU27+UK+NO+CH) with focus on
       hydrogen infrastructure. The model uses time series aggregation by tsam with

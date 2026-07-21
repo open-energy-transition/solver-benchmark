@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Validate and fix benchmark instance URLs.
+Validate and fix benchmark problem URLs.
 
-Checks that each instance's URL filename matches the pattern
-    {instance-id}.{ext}.gz
-where ext is taken from the existing filename extension, and instance-id is
-the instance's top-level key in the "instances" map (e.g.
+Checks that each problem's URL filename matches the pattern
+    {problem-id}.{ext}.gz
+where ext is taken from the existing filename extension, and problem-id is
+the problem's top-level key in the "problems" map (e.g.
 "ethos_fine_europe_60tp-175-720ts"). Outputs the list of non-conforming
 entries and rewrites URLs to the expected filename in-place.
 
@@ -35,21 +35,21 @@ benchmarks_dir = project_root_dir / "benchmarks"
 RenameOp = tuple[str, str]
 
 
-def derive_expected_filename(instance_name: str, current_filename: str) -> str:
+def derive_expected_filename(problem_id: str, current_filename: str) -> str:
     """
-    Compute the expected gzipped filename for an instance's URL.
+    Compute the expected gzipped filename for a problem's URL.
 
     Parameters
     ----------
-    instance_name : str
-        Instance key (Problem ID) from the "instances" map.
+    problem_id : str
+        Problem ID key from the "problems" map.
     current_filename : str
-        Filename currently referenced by the instance's URL.
+        Filename currently referenced by the problem's URL.
 
     Returns
     -------
     str
-        Expected filename, "{instance_name}{ext}.gz", preserving the
+        Expected filename, "{problem_id}{ext}.gz", preserving the
         original extension.
     """
     gz = current_filename.endswith(".gz")
@@ -58,7 +58,7 @@ def derive_expected_filename(instance_name: str, current_filename: str) -> str:
     # If no dot was found, ext will be the full string; make it empty instead
     if "." not in ext:
         ext = ""
-    return f"{instance_name}{ext}.gz"
+    return f"{problem_id}{ext}.gz"
 
 
 def load_yaml(path: Path, yaml: YAML) -> Any:
@@ -116,7 +116,7 @@ def process_file(
     path: Path, yaml: YAML, dry_run: bool
 ) -> tuple[list[RenameOp], list[RenameOp]]:
     """
-    Validate and (unless dry_run) fix instance URLs in one metadata file.
+    Validate and (unless dry_run) fix problem URLs in one metadata file.
 
     Parameters
     ----------
@@ -136,27 +136,27 @@ def process_file(
         need renaming, and for files that still need gzipping, respectively.
     """
     data = load_yaml(path, yaml)
-    if not data or "instances" not in data:
+    if not data or "problems" not in data:
         return [], []
 
-    seen_instance_names: list[str] = []
+    seen_problem_ids: list[str] = []
     seen_urls: list[str] = []
     to_mv: list[RenameOp] = []
     to_gzip: list[RenameOp] = []
 
-    for instance_name, instance_info in (data.get("instances") or {}).items():
-        # Instance name uniqueness
-        if instance_name in seen_instance_names:
-            print(f"ERROR: Duplicate instance name found: {instance_name}")
+    for problem_id, problem_info in (data.get("problems") or {}).items():
+        # Problem ID uniqueness
+        if problem_id in seen_problem_ids:
+            print(f"ERROR: Duplicate problem ID found: {problem_id}")
             if not dry_run:
                 exit(1)
         else:
-            seen_instance_names.append(instance_name)
+            seen_problem_ids.append(problem_id)
 
-        if not isinstance(instance_info, dict):
+        if not isinstance(problem_info, dict):
             continue
 
-        url = instance_info.get("URL")
+        url = problem_info.get("URL")
         if not url:
             continue
 
@@ -189,7 +189,7 @@ def process_file(
 
         raw_filename = Path(parsed.path).name
         decoded_filename = unquote(raw_filename)
-        expected = derive_expected_filename(instance_name, decoded_filename)
+        expected = derive_expected_filename(problem_id, decoded_filename)
         encoded_expected = quote(expected, safe="")
 
         if host in GCS_HOSTS:
@@ -200,7 +200,7 @@ def process_file(
                 encoded_expected,
             ]
             new_url = urlunparse(parsed._replace(path="/".join(new_path_segments)))
-            instance_info["URL"] = new_url
+            problem_info["URL"] = new_url
         else:
             # For GitHub URLs, keep as-is
             new_url = url

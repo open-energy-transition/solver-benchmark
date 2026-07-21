@@ -1,4 +1,4 @@
-instances:
+problems:
   tulipa-1_EU_investment_simple-28-24h:
     Short description: European-level infrastructure model over a single year-time
       horizon considering integer investments and unit commitment variables.

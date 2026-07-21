@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Download, analyze benchmark instances, and update benchmark metadata.
+Download, analyze benchmark problems, and update benchmark metadata.
 
 The script scans metadata YAML files under a benchmark folder, downloads
-benchmark instance files from their URLs, analyzes them using HiGHS
+benchmark problem files from their URLs, analyzes them using HiGHS
 (highspy), and updates the corresponding YAML entries with model statistics,
 a size category, problem class, and integer-variable share. Continuous and
-integer variable counts are computed for every instance, LP or MILP: an LP
+integer variable counts are computed for every problem, LP or MILP: an LP
 trivially has num_continuous_variables == num_variables and
 num_integer_variables == 0.
 
@@ -34,7 +34,7 @@ from ruamel.yaml.comments import CommentedMap
 
 # Metadata entries are always loaded via ruamel.yaml's round-trip loader, which
 # returns CommentedMap (not a plain dict). CommentedMap supports ordered
-# `.insert()`, which update_instance_entry relies on to keep YAML key
+# `.insert()`, which update_problem_entry relies on to keep YAML key
 # ordering stable and readable.
 YamlMap = CommentedMap
 
@@ -301,7 +301,7 @@ def download_benchmark_file(
     cache_dir: Optional[Path] = None,
 ) -> Optional[Path]:
     """
-    Download a benchmark instance file and return its local path.
+    Download a benchmark problem file and return its local path.
 
     Parameters
     ----------
@@ -480,35 +480,35 @@ def analyze_model_file(file_path: Path) -> Optional[ModelStats]:
         return None
 
 
-def get_instance_identity(
-    instance_name: str, instance_info: YamlMap
+def get_problem_identity(
+    problem_id: str, problem_info: YamlMap
 ) -> Optional[tuple[str, str]]:
     """
-    Extract (name, url) for an instance entry if available.
+    Extract (name, url) for a problem entry if available.
 
     Parameters
     ----------
-    instance_name : str
-        Instance key (Problem ID) from the metadata mapping.
-    instance_info : dict
-        Instance metadata entry.
+    problem_id : str
+        Problem ID key from the metadata mapping.
+    problem_info : dict
+        Problem metadata entry.
 
     Returns
     -------
     tuple[str, str] or None
-        (instance_name, url) if a valid HTTP(S) URL is present.
+        (problem_id, url) if a valid HTTP(S) URL is present.
     """
-    url = instance_info.get("URL")
+    url = problem_info.get("URL")
 
     if not isinstance(url, str) or not url.strip():
         return None
     if not is_http_url(url):
         return None
 
-    return instance_name, url.strip()
+    return problem_id, url.strip()
 
 
-# Fields considered "calculated"; an instance is skipped (not re-analyzed) once
+# Fields considered "calculated"; a problem is skipped (not re-analyzed) once
 # all of these are already present and valid.
 CALCULATED_STAT_FIELDS = [
     "Num. constraints",
@@ -521,14 +521,14 @@ CALCULATED_STAT_FIELDS = [
 ]
 
 
-def stats_are_complete_and_valid(instance_info: YamlMap) -> bool:
+def stats_are_complete_and_valid(problem_info: YamlMap) -> bool:
     """
-    Check whether an instance entry already has complete, valid statistics.
+    Check whether a problem entry already has complete, valid statistics.
 
     Parameters
     ----------
-    instance_info : dict
-        Instance metadata entry.
+    problem_info : dict
+        Problem metadata entry.
 
     Returns
     -------
@@ -536,27 +536,27 @@ def stats_are_complete_and_valid(instance_info: YamlMap) -> bool:
         True if all calculated fields exist and the counts are positive.
     """
     for field in CALCULATED_STAT_FIELDS:
-        if instance_info.get(field) is None:
+        if problem_info.get(field) is None:
             return False
 
     try:
         return (
-            int(instance_info.get("Num. variables", 0)) > 0
-            and int(instance_info.get("Num. constraints", 0)) > 0
-            and int(instance_info.get("Num. nonzeros", 0)) > 0
+            int(problem_info.get("Num. variables", 0)) > 0
+            and int(problem_info.get("Num. constraints", 0)) > 0
+            and int(problem_info.get("Num. nonzeros", 0)) > 0
         )
     except Exception:
         return False
 
 
-def update_instance_entry(instance_info: YamlMap, stats: ModelStats) -> None:
+def update_problem_entry(problem_info: YamlMap, stats: ModelStats) -> None:
     """
-    Update an instance entry in-place with model statistics.
+    Update a problem entry in-place with model statistics.
 
     Parameters
     ----------
-    instance_info : dict
-        Instance metadata entry to update.
+    problem_info : dict
+        Problem metadata entry to update.
     stats : ModelStats
         Statistics extracted from the model.
 
@@ -565,40 +565,40 @@ def update_instance_entry(instance_info: YamlMap, stats: ModelStats) -> None:
     We insert "Num. nonzeros" immediately after "Num. variables" when
     the key does not exist, to keep YAML ordering stable and readable.
     """
-    instance_info["Problem class"] = stats.problem_class
-    instance_info["Size"] = stats.size_category
-    instance_info["Num. constraints"] = stats.num_constraints
-    instance_info["Num. variables"] = stats.num_variables
+    problem_info["Problem class"] = stats.problem_class
+    problem_info["Size"] = stats.size_category
+    problem_info["Num. constraints"] = stats.num_constraints
+    problem_info["Num. variables"] = stats.num_variables
 
-    if "Num. nonzeros" in instance_info:
-        instance_info["Num. nonzeros"] = stats.num_nonzeros
+    if "Num. nonzeros" in problem_info:
+        problem_info["Num. nonzeros"] = stats.num_nonzeros
     else:
-        keys = list(instance_info.keys())
+        keys = list(problem_info.keys())
         try:
             insert_index = keys.index("Num. variables") + 1
         except ValueError:
             insert_index = len(keys)
-        instance_info.insert(insert_index, "Num. nonzeros", stats.num_nonzeros)
+        problem_info.insert(insert_index, "Num. nonzeros", stats.num_nonzeros)
 
-    instance_info["Num. continuous variables"] = stats.num_continuous_variables
-    instance_info["Num. integer variables"] = stats.num_integer_variables
-    instance_info["Share integer variables"] = stats.share_integer_variables
+    problem_info["Num. continuous variables"] = stats.num_continuous_variables
+    problem_info["Num. integer variables"] = stats.num_integer_variables
+    problem_info["Share integer variables"] = stats.share_integer_variables
 
 
-def update_instance_in_yaml(
+def update_problem_in_yaml(
     yaml_data: YamlMap,
-    instance_name: str,
+    problem_id: str,
     stats: ModelStats,
 ) -> bool:
     """
-    Update the matching instance entry in the YAML structure.
+    Update the matching problem entry in the YAML structure.
 
     Parameters
     ----------
     yaml_data : dict
         Parsed YAML root.
-    instance_name : str
-        Instance key (Problem ID) to update.
+    problem_id : str
+        Problem ID key to update.
     stats : ModelStats
         Statistics extracted from the model.
 
@@ -607,30 +607,30 @@ def update_instance_in_yaml(
     bool
         True if the entry was found and updated.
     """
-    instances = yaml_data.get("instances")
-    if not isinstance(instances, dict):
+    problems = yaml_data.get("problems")
+    if not isinstance(problems, dict):
         return False
 
-    instance_info = instances.get(instance_name)
-    if not isinstance(instance_info, dict):
+    problem_info = problems.get(problem_id)
+    if not isinstance(problem_info, dict):
         return False
 
-    update_instance_entry(instance_info, stats)
+    update_problem_entry(problem_info, stats)
     return True
 
 
-def process_instance_entry(
+def process_problem_entry(
     yaml_data: YamlMap,
     file_path: Path,
-    instance_name: str,
-    instance_info: YamlMap,
+    problem_id: str,
+    problem_info: YamlMap,
     use_cache: bool,
     cache_dir: Path,
     yaml_obj: YAML,
     summary: ProcessingSummary,
 ) -> None:
     """
-    Process a single instance entry (download, analyze, update, write-back).
+    Process a single problem entry (download, analyze, update, write-back).
 
     Parameters
     ----------
@@ -638,10 +638,10 @@ def process_instance_entry(
         Parsed YAML root.
     file_path : Path
         Source metadata YAML file.
-    instance_name : str
-        Instance key (Problem ID).
-    instance_info : dict
-        Instance metadata entry.
+    problem_id : str
+        Problem ID key.
+    problem_info : dict
+        Problem metadata entry.
     use_cache : bool
         Whether to cache downloads.
     cache_dir : Path
@@ -651,14 +651,14 @@ def process_instance_entry(
     summary : ProcessingSummary
         Counters updated in-place.
     """
-    identity = get_instance_identity(instance_name, instance_info)
+    identity = get_problem_identity(problem_id, problem_info)
     if identity is None:
         return
 
     _, url = identity
     summary.total_files += 1
 
-    if stats_are_complete_and_valid(instance_info):
+    if stats_are_complete_and_valid(problem_info):
         # We skip analysis to keep runs fast when YAML is already filled.
         return
 
@@ -684,14 +684,14 @@ def process_instance_entry(
 
     summary.successful_analyses += 1
 
-    updated = update_instance_in_yaml(yaml_data, instance_name, stats)
+    updated = update_problem_in_yaml(yaml_data, problem_id, stats)
     if not updated:
         summary.failed_tasks += 1
         return
 
     summary.successful_updates += 1
     write_yaml_file(file_path, yaml_obj, yaml_data)
-    print(f"Updated {instance_name} with model stats")
+    print(f"Updated {problem_id} with model stats")
 
 
 def process_metadata_file(
@@ -728,19 +728,19 @@ def process_metadata_file(
     if not isinstance(yaml_data, dict):
         return
 
-    instances = yaml_data.get("instances")
-    if not isinstance(instances, dict):
+    problems = yaml_data.get("problems")
+    if not isinstance(problems, dict):
         return
 
-    for instance_name, instance_info in instances.items():
-        if not isinstance(instance_info, dict):
+    for problem_id, problem_info in problems.items():
+        if not isinstance(problem_info, dict):
             continue
 
-        process_instance_entry(
+        process_problem_entry(
             yaml_data=yaml_data,
             file_path=file_path,
-            instance_name=str(instance_name),
-            instance_info=instance_info,
+            problem_id=str(problem_id),
+            problem_info=problem_info,
             use_cache=use_cache,
             cache_dir=cache_dir,
             yaml_obj=yaml_obj,
@@ -824,7 +824,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
         Parsed args.
     """
     parser = argparse.ArgumentParser(
-        description="Download, analyze benchmark instances, and update metadata.",
+        description="Download, analyze benchmark problems, and update metadata.",
     )
     parser.add_argument(
         "--folder",

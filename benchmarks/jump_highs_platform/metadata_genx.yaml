@@ -1,5 +1,5 @@
 ## Metadata for samples from https://github.com/jump-dev/open-energy-modeling-benchmarks/tree/main/GenX/cases
-instances:
+problems:
   genx-1_three_zones-3-1h:
     Short description: Three Zones, a one-year example with hourly resolution, contains
       zones representing Massachusetts, Connecticut, and Maine. The ten represented

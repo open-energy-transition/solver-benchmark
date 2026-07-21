@@ -1,5 +1,5 @@
 # https://github.com/IIT-EnergySystemModels/openTEPES
-instances:
+problems:
   openTEPES-spain_portugal-elec-uc-8-2h:
     Short description: Iberian electricity system model with a detailed representation
       of a hydro basin and unit commitment on hydro generators.

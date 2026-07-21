@@ -1,6 +1,6 @@
 ## https://github.com/https://github.com/TemoaProject/oeo/temoa/blob/v2.0/data_files/temoa_utopia.sql
   ## Metadata for samples from https://github.com/https://github.com/TemoaProject/oeo/oeo
-instances:
+problems:
   temoa-utopia-1-6ts:
     Short description: Single-region test system infrastructure model considering
       4 future years and 6 time slices (day/night, intermediate/summer/winter).
