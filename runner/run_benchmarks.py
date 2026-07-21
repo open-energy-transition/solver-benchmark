@@ -269,6 +269,10 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         encoding="utf-8",
     )
 
+    # DEBUG
+    if result.stderr:
+        print(f"STDERR from {solver_name} on {input_file}:\n{result.stderr}")
+
     # Append the stderr to the log file
     log_file = (
         Path(__file__).parent
