@@ -135,3 +135,20 @@ instance:
   # assumptions (source/vintage of capex, opex, fuel price data) or other
   # modelling assumptions that don't have a dedicated field.
   Notes: str(required=False)
+
+  # --- Old categories (superseded, will be removed in a future schema version) ---
+  # These free-text fields predate the fields above (mainly the energy-system
+  # taxonomy and temporal-scope fields) and are being phased out in their
+  # favor. They're kept here, still optional, purely so existing data isn't
+  # lost while entries are gradually migrated to the new fields. Don't use
+  # these for new submissions.
+
+  # Superseded by Energy carriers / Demand sectors / Supply and
+  # transformation / Storage and networks.
+  Application: str(required=False)
+  Sectoral focus: str(required=False)
+  Sectors: str(required=False)
+  # Superseded by Temporal interval / Temporal sampling / Optimization periods.
+  Time horizon: str(required=False)
+  # Superseded by Short description / Notes.
+  Model name: str(required=False)
