@@ -4,9 +4,9 @@ We welcome contributions of new benchmark problems from the community! See [this
 
 To contribute, if you are familiar with git and GitHub, we request that you:
 
-1. Generate an MPS file (preferred; alternatively, LP files are also acceptable) for each optimization problem using your energy model framework. (The steps for how to do this depend on the framework, but reach out if you need help -- we are happy to support you through this.)
+1. Generate an MPS file (preferred; alternatively, LP files are also acceptable) for each optimization problem using your energy modelling framework. (The steps for how to do this depend on the framework, but reach out if you need help -- we are happy to support you through this.)
 
-1. Write up the details and classification of each problem you contribute in a YAML file, using this [template](benchmarks/_template_metadata.yaml) as a guide.
+1. Write up the details and classification of each problem you contribute in a YAML file, using [benchmarks/metadata_schema.yaml](benchmarks/metadata_schema.yaml) as a guide.
 
 1. Upload the MPS file to any file sharing service of your choice.
 

@@ -2,17 +2,16 @@ const BASE_PATH = "dashboard";
 
 export const PATH_DASHBOARD = {
   root: "/",
-  home: `/${BASE_PATH}/main-results`,
+  home: `/${BASE_PATH}/solver-ranking`,
   benchmarkSet: {
-    list: `/${BASE_PATH}/benchmark-set`,
-    one: `/${BASE_PATH}/benchmark-set/{name}`,
+    list: `/${BASE_PATH}/benchmark-problem-set`,
+    one: `/${BASE_PATH}/benchmark-problem-set/{name}`,
   },
   benchmarkSummary: `/${BASE_PATH}/benchmark-summary`,
-  featureDistribution: `/${BASE_PATH}/benchmark-set/feature-distribution`,
-  compareSolvers: `/${BASE_PATH}/compare-solvers`,
-  solvers: `/${BASE_PATH}/solvers`,
+  featureDistribution: `/${BASE_PATH}/benchmark-problem-set/feature-distribution`,
+  compareSolvers: `/${BASE_PATH}/solver-vs-solver`,
+  solvers: `/${BASE_PATH}/solver-vs-all`,
   performanceHistory: `/${BASE_PATH}/performance-history`,
-  fullResults: `/${BASE_PATH}/full-results`,
 };
 
 export const ROOT_PATH = {

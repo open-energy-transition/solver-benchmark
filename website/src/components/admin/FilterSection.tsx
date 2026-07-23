@@ -41,6 +41,7 @@ const FilterGroupWithTooltip = ({
   gridClassName,
   itemClassName,
   uppercase,
+  sortOrder,
 }: {
   title: string;
   tooltipText?: string;
@@ -55,6 +56,7 @@ const FilterGroupWithTooltip = ({
   gridClassName?: string;
   itemClassName?: string;
   uppercase?: boolean;
+  sortOrder?: string[];
 }) => {
   const titleWithTooltip = (
     <div className="flex items-center gap-1">
@@ -87,6 +89,7 @@ const FilterGroupWithTooltip = ({
       gridClassName={gridClassName}
       itemClassName={itemClassName}
       uppercase={uppercase}
+      sortOrder={sortOrder}
     />
   );
 };
@@ -545,31 +548,11 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             className="w-full"
             gridClassName="grid-cols-3"
             uppercase={true}
-          />
-          {/* Realistic */}
-          <FilterGroupWithTooltip
-            title="Realistic"
-            tooltipText="Benchmark instances are marked as realistic if they come from a model that was used, or is similar to a model used in an actual energy modelling study. Please note that this is a rather subjective and modelling framework-dependent definition, but is still useful when estimating solver performance on real-world energy models."
-            icon={<GlobeSearchIcon className="w-5 h-5" />}
-            items={realisticOptions}
-            selectedItems={selectedFilters?.realistic}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "realistic", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({
-                category: "realistic",
-                value,
-                only: true,
-              })
-            }
-            onSelectAll={() => handleSelectAll({ category: "realistic" })}
-            className="w-full"
-            gridClassName="grid-cols-2"
+            sortOrder={["S", "M", "L"]}
           />
           {/* Modelling Framework */}
           <FilterGroupWithTooltip
-            title="Model Framework"
+            title="Modelling Framework"
             tooltipText="A modelling framework is a set of tools, rules, methods, and structures that support the development, execution, and management of models."
             icon={<PolygonIcon className="w-5 h-5" />}
             items={availableModellingFrameworks}
@@ -654,6 +637,28 @@ const FilterSection = ({ height }: FilterSectionProps) => {
             itemClassName=""
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
+          />
+          {/* Realistic */}
+          <FilterGroupWithTooltip
+            title="Realistic"
+            tooltipText="Benchmark problems are marked as realistic if they come from a model that was used, or is similar to a model used in an actual energy modelling study. Please note that this is a rather subjective and modelling framework-dependent definition, but is still useful when estimating solver performance on real-world energy models."
+            icon={<GlobeSearchIcon className="w-5 h-5" />}
+            items={realisticOptions}
+            selectedItems={selectedFilters?.realistic}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "realistic", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "realistic",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "realistic" })}
+            className="w-full"
+            gridClassName="grid-cols-2"
+            sortOrder={[RealisticOption.Realistic, RealisticOption.Other]}
           />
         </div>
       </div>

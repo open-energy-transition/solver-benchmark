@@ -6,9 +6,16 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
-import { MetaData, Size } from "@/types/meta-data";
+import { MetaData, MetaDataEntry } from "@/types/meta-data";
 import { parseNumberOrNull } from "./number";
 import { IFilterState, RealisticOption } from "@/types/state";
+
+/**
+ * Derives the `${Benchmark}-${Size}` key (matching the CSV's `bench-size`
+ * column) used to look up a problem's metadata entry.
+ */
+const getProblemKey = (result: BenchmarkResult): string =>
+  `${result.benchmark}-${result.size}`;
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -47,11 +54,8 @@ const getMaxMemoryUsage = (
   benchmarkResult: BenchmarkResult,
   rawMetaData: MetaData,
 ): number => {
-  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
-  const benchmarkSize = benchmarkMetadata.sizes.find(
-    (size) => size.name === benchmarkResult.size,
-  );
-  if (benchmarkSize?.size === "L") {
+  const problemMetadata = rawMetaData[getProblemKey(benchmarkResult)];
+  if (problemMetadata?.size === "L") {
     return 62 * 1024;
   }
   return 7 * 1024;
@@ -117,7 +121,7 @@ const processBenchmarkResults = (
   });
 };
 
-const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
+const formatProblemName = (benchmarkResult: BenchmarkResult) => {
   return `${benchmarkResult.benchmark} ${benchmarkResult.size}`;
 };
 
@@ -151,20 +155,23 @@ const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
   });
 };
 
-// Helper function to for filtering benchmarks based on realistic options
-const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
-  return (
-    (filters.realistic.includes(RealisticOption.Realistic) && size.realistic) ||
-    (filters.realistic.includes(RealisticOption.Other) && !size.realistic)
+// Helper function to for filtering problems based on realistic options
+const checkRealisticFilter = (
+  entry: MetaDataEntry,
+  filters: IFilterState,
+): boolean => {
+  return filters.realistic.includes(
+    entry.realistic ? RealisticOption.Realistic : RealisticOption.Other,
   );
 };
 
 export {
   getBenchmarkResults,
   processBenchmarkResults,
-  formatBenchmarkName,
+  formatProblemName,
   getProblemSize,
   getLatestBenchmarkResult,
   checkRealisticFilter,
   getMaxMemoryUsage,
+  getProblemKey,
 };

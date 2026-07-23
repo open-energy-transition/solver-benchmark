@@ -44,9 +44,11 @@ const D3GroupedBarChart = ({
   sizeAnnotations,
   cardBgClassName,
   cardTextClassName,
+  outerBgClassName,
   sizeAnnotationTextColor,
   titlePosition = "top",
   rightmostGroupNote,
+  marginBottom = 100,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
@@ -100,7 +102,7 @@ const D3GroupedBarChart = ({
           (extraCategoryLengthMargin
             ? extraCategoryLengthMargin
             : categoryLengths)
-        : 100,
+        : marginBottom,
       left: 60,
     };
 
@@ -138,11 +140,27 @@ const D3GroupedBarChart = ({
       setRightmostNoteX((xScale(lastCat) ?? 0) + xScale.bandwidth() / 2);
     }
 
+    // Fixed bar width/step derived from the full solver set, so every bar has
+    // the same width regardless of how many bars a given group happens to have.
     const xScaleInner = d3
       .scaleBand()
       .domain(keys)
       .range([0, xScale.bandwidth()])
       .padding(0.05);
+    const barWidth = xScaleInner.bandwidth();
+    const barStep = xScaleInner.step();
+
+    // Centers a group's (possibly shorter) cluster of fixed-width bars within
+    // the full group bandwidth, so groups with fewer bars stay visually centered.
+    const getRowPositions = (itemKeys: string[]) => {
+      const clusterWidth = itemKeys.length
+        ? itemKeys.length * barStep - (barStep - barWidth)
+        : 0;
+      const offset = (xScale.bandwidth() - clusterWidth) / 2;
+      const positions = new Map<string, number>();
+      itemKeys.forEach((key, i) => positions.set(key, offset + i * barStep));
+      return positions;
+    };
 
     const maxValue =
       d3.max(data, (d) =>
@@ -254,28 +272,23 @@ const D3GroupedBarChart = ({
           .filter((key) => key !== categoryKey)
           .sort((a, b) => -Number(d[b]) + Number(d[a]));
 
-        // Create a separate xScale for each group
-        const groupXScale = d3
-          .scaleBand()
-          .domain(itemKeys)
-          .range([0, xScale.bandwidth()])
-          .padding(0.05);
+        const positions = getRowPositions(itemKeys);
 
         return itemKeys.map((key) => ({
           key,
           value: d[key],
           category: d[categoryKey],
-          xScale: groupXScale,
+          xPos: positions.get(key) || 0,
         }));
       })
       .join("rect")
-      .attr("x", (d) => d.xScale(d.key) || 0)
+      .attr("x", (d) => d.xPos)
       .attr("y", (d) =>
         yScale(
           transformHeightValue ? transformHeightValue(d) : Number(d.value),
         ),
       )
-      .attr("width", xScaleInner.bandwidth())
+      .attr("width", barWidth)
       .attr("height", (d) => {
         const transformedValue = transformHeightValue
           ? transformHeightValue(d)
@@ -307,17 +320,13 @@ const D3GroupedBarChart = ({
           .filter((key) => key !== categoryKey)
           .sort((a, b) => -Number(d[b]) + Number(d[a]));
 
-        const groupXScale = d3
-          .scaleBand()
-          .domain(itemKeys)
-          .range([0, xScale.bandwidth()])
-          .padding(0.05);
+        const positions = getRowPositions(itemKeys);
 
         return itemKeys.map((key) => ({
           key,
           value: d[key],
           category: d[categoryKey],
-          xScale: groupXScale,
+          xPos: positions.get(key) || 0,
         }));
       })
       .join("g")
@@ -328,7 +337,7 @@ const D3GroupedBarChart = ({
           axisLabelTitle ? axisLabelTitle(d) : String(d.value),
         );
         const lines = labelText.split("\n");
-        const xPos = d.xScale(d.key)! + xScaleInner.bandwidth() / 2;
+        const xPos = d.xPos + barWidth / 2;
         const barValue = transformHeightValue
           ? transformHeightValue(d)
           : Number(d.value);
@@ -550,7 +559,7 @@ const D3GroupedBarChart = ({
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -(height / 2))
+      .attr("x", -((margin.top + (height - margin.bottom)) / 2))
       .attr("y", 20)
       .attr("text-anchor", "middle")
       .attr("class", "text-xs fill-dark-grey")
@@ -618,8 +627,10 @@ const D3GroupedBarChart = ({
   return (
     <div
       key={windowWidth}
-      className="relative bg-[#F4F6FA] rounded-2xl p-2"
-      style={{ background: "#F4F6FA" }}
+      className={`relative ${
+        outerBgClassName ?? "bg-[#F4F6FA] p-2"
+      } rounded-2xl`}
+      style={outerBgClassName ? undefined : { background: "#F4F6FA" }}
     >
       {/* Rightmost bar group callout note */}
       {rightmostGroupNote && rightmostNoteX !== null && (

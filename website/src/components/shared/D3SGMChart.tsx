@@ -30,13 +30,16 @@ const D3SGMChart = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return excluseHipo
-      ? state.results.availableSolvers.filter(
-          (solver) => !HIPO_SOLVERS.includes(solver),
-        )
-      : state.results.availableSolvers;
-  });
+  const rawAvailableSolvers = useSelector(
+    (state: { results: IResultState }) => state.results.availableSolvers,
+  );
+  const availableSolvers = useMemo(
+    () =>
+      excluseHipo
+        ? rawAvailableSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver))
+        : rawAvailableSolvers,
+    [rawAvailableSolvers, excluseHipo],
+  );
   const windowWidth = useDebouncedWindowWidth(200);
 
   const solverColors = useMemo<Record<string, string>>(() => {
@@ -116,7 +119,7 @@ const D3SGMChart = ({
         g.selectAll("text").attr("fill", "#A1A9BC").attr("class", "text-xs");
       })
       .append("text")
-      .attr("x", width / 2)
+      .attr("x", (margin.left + (width - margin.right)) / 2)
       .attr("y", 40)
       .attr("fill", "#575757")
       .text("Year")
@@ -133,7 +136,7 @@ const D3SGMChart = ({
         g.selectAll("text").attr("fill", "#A1A9BC").attr("class", "text-xs");
       })
       .append("text")
-      .attr("x", -height / 2)
+      .attr("x", -((margin.top + (height - margin.bottom)) / 2))
       .attr("y", -50)
       .attr("fill", "#575757")
       .text(title)

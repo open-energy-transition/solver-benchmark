@@ -9,14 +9,14 @@ import {
   Navbar,
   SolverVersions,
 } from "@/components/shared";
-import NumberBenchmarksSolved from "@/components/admin/performance-history/NumberBenchmarksSolved";
+import NumberProblemsSolved from "@/components/admin/performance-history/NumberProblemsSolved";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
 import SolverEvolutionSection from "@/components/admin/performance-history/SolverEvolutionSection";
 
 import {
   buildSolverYearlyMetrics,
   generateChartData,
-  getNumSolvedBenchMark,
+  getNumSolvedProblems,
 } from "@/utils/performanceHistory";
 import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
@@ -55,8 +55,8 @@ const PagePerformanceHistory = () => {
     return state.filters.xFactor;
   });
 
-  // Get common benchmark instances across all solver versions
-  const benchmarksByInstance = rawBenchmarkResults.reduce(
+  // Get problems common across all solver versions
+  const solverVersionsByProblem = rawBenchmarkResults.reduce(
     (acc, result) => {
       const key = `${result.benchmark}-${result.size}`;
       acc[key] = acc[key] || new Set();
@@ -72,24 +72,24 @@ const PagePerformanceHistory = () => {
     ),
   );
 
-  const commonInstances: string[] = Object.entries(benchmarksByInstance)
+  const commonProblems: string[] = Object.entries(solverVersionsByProblem)
     .filter(([, results]) => {
       return results.size === availableSolverVersions.size;
     })
     .map(([name]) => name);
 
-  // Filter benchmark results to only include common instances
+  // Filter results to only include common problems
   const filteredBenchmarkResults = rawBenchmarkResults.filter((result) =>
-    commonInstances.includes(`${result.benchmark}-${result.size}`),
+    commonProblems.includes(`${result.benchmark}-${result.size}`),
   );
 
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
-        const benchmarkSuccessMap = new Map<string, number>();
+        const problemSuccessMap = new Map<string, number>();
         const yearsWithSolver = new Map<number, Set<string>>();
 
-        // Count successful solves for each benchmark
+        // Count successful solves for each problem
         filteredBenchmarkResults.forEach((result) => {
           const year = result.solverReleaseYear;
           yearsWithSolver.set(
@@ -98,10 +98,7 @@ const PagePerformanceHistory = () => {
           );
           if (result.status === "ok") {
             const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
-            benchmarkSuccessMap.set(
-              key,
-              (benchmarkSuccessMap.get(key) || 0) + 1,
-            );
+            problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           }
         });
 
@@ -110,7 +107,7 @@ const PagePerformanceHistory = () => {
           const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
           return (
             result.status === "ok" &&
-            benchmarkSuccessMap.get(key) ===
+            problemSuccessMap.get(key) ===
               yearsWithSolver.get(result.solverReleaseYear)?.size
           );
         });
@@ -162,9 +159,9 @@ const PagePerformanceHistory = () => {
     return buildSolverYearlyMetrics(benchmarkResults, years, solvers);
   }, [benchmarkResults, years, solvers]);
 
-  // Get number of solved benchmarks
-  const numSolvedBenchMark = useMemo(() => {
-    return getNumSolvedBenchMark(allSolverYearlyMetrics).sort(
+  // Get number of solved problems
+  const numSolvedProblems = useMemo(() => {
+    return getNumSolvedProblems(allSolverYearlyMetrics).sort(
       (a, b) => a.year - b.year,
     );
   }, [allSolverYearlyMetrics]);
@@ -175,7 +172,7 @@ const PagePerformanceHistory = () => {
         <title>Performance History | Open Energy Benchmark</title>
         <meta
           name="description"
-          content="Explore solver performance over time, including number of benchmarks solved, normalized performance metrics, and solver evolution across yearly releases."
+          content="Explore solver performance over time, including number of problems solved, normalized performance metrics, and solver evolution across yearly releases."
         />
       </Head>
       <div className="bg-light-blue">
@@ -200,39 +197,27 @@ const PagePerformanceHistory = () => {
               <p className="mt-4 max-w-screen-lg">
                 This page tracks the performance of different solvers over time.
                 This can be used to see which solvers are improving, and on what
-                kinds of benchmarks. Once again, you can filter the benchmark
-                set to your problems of interest and the graphs will
-                automatically re-generate to show you the performance history on
-                your chosen subset.
+                kinds of problems. Once again, you can filter the benchmark set
+                to your problems of interest and the graphs will automatically
+                re-generate to show you the performance history on your chosen
+                subset.
               </p>
               <SolverVersions />
             </div>
           }
         >
           {/* Content */}
-          <NumberBenchmarksSolved
-            numSolvedBenchMark={chartData.numSolvedBenchMark}
-            totalBenchmarks={commonInstances.length}
+          <NumberProblemsSolved
+            numSolvedProblems={chartData.numSolvedProblems}
+            totalProblems={commonProblems.length}
           />
           <NormalizedSection chartData={chartData} />
-          <SolverEvolutionSection
-            solverYearlyMetrics={allSolverYearlyMetrics}
-            numSolvedBenchMark={numSolvedBenchMark}
-            totalBenchmarks={commonInstances.length}
-          />
-          <div className="pt-1.5 pb-3 px-5">
-            <div className="h6">Caveats</div>
-            <p className="text-navy block items-center mt-2">
-              <span>
-                {" "}
-                Some solvers returned errors when running on some benchmark
-                instances. For more details, please see the{" "}
-                <a href="https://github.com/open-energy-transition/solver-benchmark/issues/193">
-                  tracking issue
-                </a>
-                .
-              </span>
-            </p>
+          <div className="-mb-6">
+            <SolverEvolutionSection
+              solverYearlyMetrics={allSolverYearlyMetrics}
+              numSolvedProblems={numSolvedProblems}
+              totalProblems={commonProblems.length}
+            />
           </div>
         </ContentWrapper>
       </div>

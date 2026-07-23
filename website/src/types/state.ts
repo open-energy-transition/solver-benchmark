@@ -4,7 +4,9 @@ import { MetaData } from "./meta-data";
 
 export enum RealisticOption {
   Realistic = "Realistic",
-  Other = "Other",
+  // Covers both an explicit `realistic: false` and the field being left
+  // unspecified — there's no meaningful distinction between the two.
+  Other = "N/A",
 }
 
 export type IFilterState = {
@@ -44,7 +46,7 @@ export interface IResultState extends IAvailableFilterData {
   rawMetaData: MetaData;
   years: number[];
   solvers: string[];
-  availableBenchmarksAndSizes: string[];
+  availableProblems: string[];
   availableBenchmarks: string[];
   availableSolvers: string[];
 

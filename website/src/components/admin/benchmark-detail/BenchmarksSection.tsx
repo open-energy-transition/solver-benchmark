@@ -6,6 +6,7 @@ import D3PlotChart from "@/components/shared/D3PlotChart";
 import { IResultState } from "@/types/state";
 import { SolverVersions } from "@/components/shared";
 import InfoPopup from "@/components/common/InfoPopup";
+import { getProblemKey } from "@/utils/results";
 
 const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
@@ -19,17 +20,15 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
   const chartData = useMemo(
     () =>
       benchmarkResults
-        .filter((result) => result.benchmark === benchmarkName)
+        .filter((result) => getProblemKey(result) === benchmarkName)
         .map((result) => {
-          const metaData = rawMetaData[result.benchmark];
+          const metaData = rawMetaData[getProblemKey(result)];
           return {
             ...result,
-            problemSize: metaData?.sizes.find(
-              (size) => size.name === result.size,
-            )?.size,
+            problemSize: metaData?.size,
           };
         }),
-    [benchmarkResults],
+    [benchmarkResults, benchmarkName, rawMetaData],
   );
 
   return (
@@ -64,7 +63,7 @@ const BenchmarksSection = ({ benchmarkName }: { benchmarkName: string }) => {
       <div className="pt-1.5 pb-3 pl-3">
         <p className="flex gap-1 items-center text-dark-grey text-sm">
           <CloseIcon className="size-3" />
-          represents benchmarks where the solver failed to solve within the time
+          represents problems where the solver failed to solve within the time
           limit, while
           <CircleIcon className="size-3" />
           indicates a successful run.

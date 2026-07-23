@@ -3,12 +3,15 @@ import { useMemo } from "react";
 
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { ColumnDef } from "@tanstack/react-table";
-import { MetaDataEntry } from "@/types/meta-data";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import InfoPopup from "@/components/common/InfoPopup";
 
-interface IColumnTable extends MetaDataEntry {
+// This table shows static illustrative example data, not the live metadata
+// pipeline, so it doesn't need to share MetaDataEntry's shape (which now
+// has array-typed `milpFeatures` and boolean `realistic`, incompatible with
+// the plain-string demo values used here).
+interface IColumnTable {
   framework: string;
   problemClass: string;
   application: string;
@@ -19,8 +22,8 @@ interface IColumnTable extends MetaDataEntry {
 }
 
 const BenchmarkModelInsightsTable = () => {
-  const getBenchmarksetLink = (benchmark: string) => {
-    return PATH_DASHBOARD.benchmarkSet.one.replace("{name}", benchmark);
+  const getProblemLink = (problemId: string) => {
+    return PATH_DASHBOARD.benchmarkSet.one.replace("{name}", problemId);
   };
 
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
@@ -28,9 +31,9 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Framework",
         accessorKey: "framework",
-        size: 180,
+        size: 150,
         enableColumnFilter: false,
-        enableSorting: true,
+        enableSorting: false,
         sortingFn: "alphanumeric",
         cell: (info) => (
           <div className="text-left">{String(info.getValue())}</div>
@@ -39,7 +42,7 @@ const BenchmarkModelInsightsTable = () => {
       {
         header: "Problem Class",
         accessorKey: "problemClass",
-        size: 230,
+        size: 120,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -47,21 +50,8 @@ const BenchmarkModelInsightsTable = () => {
         header: "Application",
         accessorKey: "application",
         enableColumnFilter: false,
-        enableSorting: true,
-        size: 230,
-        cell: (info) => (
-          <InfoPopup
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as string}
-              </div>
-            )}
-            position="top center"
-            closeOnDocumentClick
-          >
-            <div> {info.getValue() as string} </div>
-          </InfoPopup>
-        ),
+        enableSorting: false,
+        size: 280,
       },
       {
         header: "MILP Features",
@@ -92,16 +82,16 @@ const BenchmarkModelInsightsTable = () => {
           const examples = info.getValue() as string[];
 
           return (
-            <div className=" px-4 py-2 m-4 break-words">
+            <div className="break-words">
               {examples.map((e) => (
                 <div key={e} className="text-left text-ellipsis max-w-[300px]">
                   <Link
-                    href={getBenchmarksetLink(e)}
+                    href={getProblemLink(e)}
                     className="font-bold 0 inline-block"
                     style={{
                       lineHeight: "1.5",
                     }}
-                    aira-label={`Navigate to benchmark detail page for ${e} model`}
+                    aira-label={`Navigate to problem detail page for ${e} model`}
                   >
                     {e}
                   </Link>
@@ -122,7 +112,11 @@ const BenchmarkModelInsightsTable = () => {
       application: "Infrastructure & Capacity Expansion",
       milpFeatures: "None",
       realistic: "Realistic",
-      example: ["genx-elec_trex, genx-elec_trex_co2", "genx-elec_co2"],
+      example: [
+        "genx-elec_trex-15-168h",
+        "genx-elec_trex_co2-15-168h",
+        "genx-elec_co2-15-168h",
+      ],
     },
     {
       framework: "GenX",
@@ -130,7 +124,7 @@ const BenchmarkModelInsightsTable = () => {
       application: "Infrastructure & Capacity Expansion",
       milpFeatures: "Unit commitment",
       realistic: "Realistic",
-      example: ["genx-elec_trex_uc"],
+      example: ["genx-elec_trex_uc-15-24h"],
     },
     {
       framework: "PyPSA",
@@ -139,11 +133,11 @@ const BenchmarkModelInsightsTable = () => {
       milpFeatures: "None",
       realistic: "Realistic",
       example: [
-        "pypsa-eur-elec",
-        "pypsa-eur-elec-trex_vopt",
-        "pypsa-eur-elec-trex_copt",
-        "pypsa-eur-elec-uc",
-        "pypsa-eur-sec",
+        "pypsa-eur-elec-50-3h",
+        "pypsa-eur-elec-trex_vopt-50-168h",
+        "pypsa-eur-elec-trex_copt-50-168h",
+        "pypsa-eur-elec-uc-50-1h",
+        "pypsa-eur-sec-50-24h",
       ],
     },
     {
@@ -153,10 +147,10 @@ const BenchmarkModelInsightsTable = () => {
       milpFeatures: "None",
       realistic: "Realistic",
       example: [
-        "temoa-US_9R_TS",
-        "temoa-US_9R_TS_NDC",
-        "temoa-US_9R_TS_NZ",
-        "temoa-US_9R_TS_SP",
+        "temoa-US_9R_TS-9-12ts",
+        "temoa-US_9R_TS_NDC-9-12ts",
+        "temoa-US_9R_TS_NZ-9-12ts",
+        "temoa-US_9R_TS_SP-9-12ts",
       ],
     },
     {
@@ -166,9 +160,9 @@ const BenchmarkModelInsightsTable = () => {
       milpFeatures: "None",
       realistic: "Realistic",
       example: [
-        "TIMES-GEO-global-base",
-        "TIMES-GEO-global-netzero",
-        "times-nz-kea",
+        "TIMES-GEO-global-base-31-20ts",
+        "TIMES-GEO-global-netzero-31-20ts",
+        "times-nz-kea-2-24ts",
       ],
     },
     {
@@ -177,7 +171,7 @@ const BenchmarkModelInsightsTable = () => {
       application: "Infrastructure & Capacity Expansion",
       milpFeatures: "None",
       realistic: "Realistic",
-      example: ["SWITCH-China-open-model", "SWITCH-USA-PG"],
+      example: ["SWITCH-China-open-model-32-433ts", "SWITCH-USA-PG-3-168h"],
     },
   ];
 
@@ -190,6 +184,7 @@ const BenchmarkModelInsightsTable = () => {
           headerClassName="text-center text-navy p-2 cursor-pointer"
           columns={columns as any}
           showPagination={false}
+          oddRowClassName="odd:bg-[#BFD8C733]"
         />
       </div>
 
@@ -229,7 +224,7 @@ const BenchmarkModelInsightsTable = () => {
                   item.example.map((e: string) => (
                     <div key={e} className="truncate">
                       <Link
-                        href={getBenchmarksetLink(e)}
+                        href={getProblemLink(e)}
                         className="font-medium text-navy"
                       >
                         {e}

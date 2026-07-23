@@ -3,13 +3,15 @@ import { RootState } from "@/redux/store";
 import { ThunkAction } from "redux-thunk";
 import resultActions from "@/redux/results/actions";
 import { BenchmarkResult } from "@/types/benchmark";
-import { MetaData, MetaDataEntry, Size } from "@/types/meta-data";
+import { MetaData, MetaDataEntry } from "@/types/meta-data";
 import {
   checkRealisticFilter,
+  getProblemKey,
   getLatestBenchmarkResult,
 } from "@/utils/results";
 import { IFilterState } from "@/types/state";
 import { SgmMode } from "@/constants/sgm";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
 
 const toggleFilter = (category: string, value: string, only: boolean) => {
   return {
@@ -78,51 +80,44 @@ const actions = {
         Object.entries(results.rawMetaData).filter(([, _metaData]) => {
           const metaData = _metaData as MetaDataEntry;
 
+          const entrySectors = metaData.sectors;
           const isSectorsMatch =
             filters.sectors.length === 0 ||
-            (metaData.sectors &&
-              filters.sectors.some((selectedSector) => {
-                const metaDataSectors = metaData.sectors
-                  .split(",")
-                  .map((s) => s.trim());
-                return metaDataSectors.includes(selectedSector);
-              }));
+            (entrySectors
+              ? filters.sectors.some((selectedSector) => {
+                  const metaDataSectors = entrySectors
+                    .split(",")
+                    .map((s) => s.trim());
+                  return metaDataSectors.includes(selectedSector);
+                })
+              : filters.sectors.includes(UNSPECIFIED_FILTER_VALUE));
 
           return (
-            filters.application.includes(metaData.application) &&
-            filters.problemClass.includes(metaData.problemClass) &&
-            filters.sectoralFocus.includes(metaData.sectoralFocus) &&
+            filters.application.includes(
+              metaData.application ?? UNSPECIFIED_FILTER_VALUE,
+            ) &&
+            filters.problemClass.includes(metaData.problemClass ?? "") &&
+            filters.sectoralFocus.includes(
+              metaData.sectoralFocus ?? UNSPECIFIED_FILTER_VALUE,
+            ) &&
             isSectorsMatch &&
-            filters.modellingFramework.includes(metaData.modellingFramework)
+            filters.modellingFramework.includes(
+              metaData.modellingFramework ?? UNSPECIFIED_FILTER_VALUE,
+            )
           );
         }),
       );
 
-      const problemSizeResult: { [key: string]: string } = {};
-      Object.keys(metaData).forEach((metaDataKey) => {
-        if (!results.rawMetaData[metaDataKey]) {
-          console.error(`Missing: ${metaDataKey}`);
-          return;
-        }
-        results.rawMetaData[metaDataKey].sizes.forEach((s: Size) => {
-          problemSizeResult[`${metaDataKey}'-'${s.name}`] = s.size;
-        });
-      });
-
       const benchmarkResults: BenchmarkResult[] =
         results.rawBenchmarkResults.filter((benchmark: BenchmarkResult) => {
-          return (metaData[benchmark.benchmark] as MetaDataEntry)?.sizes?.find(
-            (size) => {
-              return (
-                size.name === benchmark.size &&
-                filters.problemSize.includes(
-                  problemSizeResult[
-                    `${benchmark.benchmark}'-'${benchmark.size}`
-                  ],
-                ) &&
-                checkRealisticFilter(size, filters)
-              );
-            },
+          const entry = metaData[getProblemKey(benchmark)] as
+            | MetaDataEntry
+            | undefined;
+
+          return (
+            !!entry &&
+            filters.problemSize.includes(entry.size ?? "") &&
+            checkRealisticFilter(entry, filters)
           );
         });
 

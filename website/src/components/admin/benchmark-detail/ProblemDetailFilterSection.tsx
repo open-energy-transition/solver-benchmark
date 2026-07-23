@@ -13,16 +13,14 @@ import {
 } from "@/assets/icons";
 import { useSelector } from "react-redux";
 import { IResultState, RealisticOption } from "@/types/state";
-import { IFilterBenchmarkDetails } from "@/types/benchmark";
+import { IFilterProblemDetails } from "@/types/benchmark";
 import FilterGroup from "../filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
 import InfoPopup from "@/components/common/InfoPopup";
 
-interface IBenchmarkDetailFilterSectionProps {
-  setLocalFilters: React.Dispatch<
-    React.SetStateAction<IFilterBenchmarkDetails>
-  >;
-  localFilters: IFilterBenchmarkDetails;
+interface IProblemDetailFilterSectionProps {
+  setLocalFilters: React.Dispatch<React.SetStateAction<IFilterProblemDetails>>;
+  localFilters: IFilterProblemDetails;
   availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
@@ -46,6 +44,7 @@ const FilterGroupWithTooltip = ({
   gridClassName,
   itemClassName,
   uppercase,
+  sortOrder,
 }: {
   title: string;
   tooltipText?: string;
@@ -60,6 +59,7 @@ const FilterGroupWithTooltip = ({
   gridClassName?: string;
   itemClassName?: string;
   uppercase?: boolean;
+  sortOrder?: string[];
 }) => {
   const titleWithTooltip = (
     <div className="flex items-center gap-1">
@@ -92,11 +92,12 @@ const FilterGroupWithTooltip = ({
       gridClassName={gridClassName}
       itemClassName={itemClassName}
       uppercase={uppercase}
+      sortOrder={sortOrder}
     />
   );
 };
 
-const BenchmarkDetailFilterSection = ({
+const ProblemDetailFilterSection = ({
   setLocalFilters,
   localFilters,
   availableSectoralFocus,
@@ -106,7 +107,7 @@ const BenchmarkDetailFilterSection = ({
   availableProblemSizes,
   availableModellingFrameworks,
   availableMilpFeatures,
-}: IBenchmarkDetailFilterSectionProps) => {
+}: IProblemDetailFilterSectionProps) => {
   const router = useRouter();
 
   const rawBenchmarkResults = useSelector(
@@ -132,7 +133,7 @@ const BenchmarkDetailFilterSection = ({
     setIsInit(true);
 
     setLocalFilters((prevFilters) => {
-      const categoryKey = category as keyof IFilterBenchmarkDetails;
+      const categoryKey = category as keyof IFilterProblemDetails;
       const currentFilters = Array.isArray(prevFilters[categoryKey])
         ? [...prevFilters[categoryKey]]
         : [];
@@ -158,7 +159,7 @@ const BenchmarkDetailFilterSection = ({
   };
 
   const handleSelectAll = ({ category }: { category: string }) => {
-    const categoryKey = category as keyof IFilterBenchmarkDetails;
+    const categoryKey = category as keyof IFilterProblemDetails;
     const availableItems = {
       sectoralFocus: availableSectoralFocus,
       sectors: availableSectors,
@@ -207,7 +208,7 @@ const BenchmarkDetailFilterSection = ({
 
   const applyFiltersToResults = () => {};
 
-  const updateUrlParams = (filters: IFilterBenchmarkDetails) => {
+  const updateUrlParams = (filters: IFilterProblemDetails) => {
     const queryParams = new URLSearchParams();
     Object.entries(filters).forEach(([key, values]) => {
       if (Array.isArray(values) && values.length > 0) {
@@ -226,7 +227,7 @@ const BenchmarkDetailFilterSection = ({
   };
 
   const parseUrlParams = () => {
-    const filters: Partial<IFilterBenchmarkDetails> = {};
+    const filters: Partial<IFilterProblemDetails> = {};
 
     [
       "sectoralFocus",
@@ -239,7 +240,7 @@ const BenchmarkDetailFilterSection = ({
     ].forEach((key) => {
       const value = router.query[key];
       if (typeof value === "string") {
-        filters[key as keyof IFilterBenchmarkDetails] = value
+        filters[key as keyof IFilterProblemDetails] = value
           ? (value.split(";").map(decodeValue) as string[])
           : [];
       }
@@ -467,28 +468,7 @@ const BenchmarkDetailFilterSection = ({
             className="w-full"
             gridClassName="grid-cols-3"
             uppercase={true}
-          />
-          {/* Realistic */}
-          <FilterGroupWithTooltip
-            title="Realistic"
-            tooltipText="Benchmark instances are marked as realistic if they come from a model that was used, or is similar to a model used in an actual energy modelling study. Please note that this is a rather subjective and modelling framework-dependent definition, but is still useful when estimating solver performance on real-world energy models."
-            icon={<GlobeSearchIcon className="w-5 h-5" />}
-            items={[RealisticOption.Realistic, RealisticOption.Other]}
-            selectedItems={localFilters?.realistic}
-            onItemChange={(value) =>
-              handleCheckboxChange({ category: "realistic", value })
-            }
-            onItemOnly={(value) =>
-              handleCheckboxChange({
-                category: "realistic",
-                value,
-                only: true,
-              })
-            }
-            onSelectAll={() => handleSelectAll({ category: "realistic" })}
-            className="w-full"
-            gridClassName="grid-cols-2"
-            uppercase={false}
+            sortOrder={["S", "M", "L"]}
           />
           {/* Modelling Framework */}
           <FilterGroupWithTooltip
@@ -601,10 +581,33 @@ const BenchmarkDetailFilterSection = ({
             gridClassName="!flex flex-wrap gap-0"
             uppercase={false}
           />
+          {/* Realistic */}
+          <FilterGroupWithTooltip
+            title="Realistic"
+            tooltipText="Benchmark problems are marked as realistic if they come from a model that was used, or is similar to a model used in an actual energy modelling study. Please note that this is a rather subjective and modelling framework-dependent definition, but is still useful when estimating solver performance on real-world energy models."
+            icon={<GlobeSearchIcon className="w-5 h-5" />}
+            items={[RealisticOption.Realistic, RealisticOption.Other]}
+            selectedItems={localFilters?.realistic}
+            onItemChange={(value) =>
+              handleCheckboxChange({ category: "realistic", value })
+            }
+            onItemOnly={(value) =>
+              handleCheckboxChange({
+                category: "realistic",
+                value,
+                only: true,
+              })
+            }
+            onSelectAll={() => handleSelectAll({ category: "realistic" })}
+            className="w-full"
+            gridClassName="grid-cols-2"
+            uppercase={false}
+            sortOrder={[RealisticOption.Realistic, RealisticOption.Other]}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default BenchmarkDetailFilterSection;
+export default ProblemDetailFilterSection;

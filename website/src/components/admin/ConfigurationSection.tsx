@@ -16,19 +16,19 @@ const TIMEOUT = {
 } as const;
 
 type MachineConfig = {
-  instance: string;
+  machine: string;
   vcpus: string;
   memory: string;
 };
 
 const MACHINE_CONFIGS: Record<number, MachineConfig> = {
   [TIMEOUT.STANDARD]: {
-    instance: "c4-standard-2",
+    machine: "c4-standard-2",
     vcpus: "2",
     memory: "7 GB",
   },
   [TIMEOUT.EXTENDED]: {
-    instance: "c4-highmem-16",
+    machine: "c4-highmem-16",
     vcpus: "16",
     memory: "124 GB",
   },
@@ -41,8 +41,8 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
 
   const detailData = [
     {
-      label: "Instance",
-      value: config.instance,
+      label: "Machine",
+      value: config.machine,
       icon: <InstanceIcon className="size-4 fill-navy" />,
     },
     {

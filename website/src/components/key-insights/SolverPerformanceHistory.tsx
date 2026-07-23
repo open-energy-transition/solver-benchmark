@@ -12,7 +12,7 @@ import NormalizedSGMRuntime from "../admin/performance-history/NormalizedSGMRunt
 import {
   buildSolverYearlyMetrics,
   generateChartData,
-  getNumSolvedBenchMark,
+  getNumSolvedProblems,
 } from "@/utils/performanceHistory";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 
@@ -23,19 +23,25 @@ const SolverPerformanceHistory = () => {
     hash: `#${HASH}`,
   });
 
-  const rawBenchmarkResults = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.benchmarkResults.filter(
+  const allBenchmarkResults = useSelector(
+    (state: { results: IResultState }) => state.results.benchmarkResults,
+  );
+  const rawBenchmarkResults = useMemo(
+    () =>
+      allBenchmarkResults.filter(
         (result) => !HIPO_SOLVERS.includes(result.solver),
-      );
-    },
+      ),
+    [allBenchmarkResults],
   );
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return state.results.availableSolvers.filter(
-      (solver) => !HIPO_SOLVERS.includes(solver),
-    );
-  });
+  const allAvailableSolvers = useSelector(
+    (state: { results: IResultState }) => state.results.availableSolvers,
+  );
+  const availableSolvers = useMemo(
+    () =>
+      allAvailableSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
+    [allAvailableSolvers],
+  );
   const selectedFilters = useSelector(
     (state: { filters: IFilterState }) => state.filters,
   );
@@ -47,8 +53,8 @@ const SolverPerformanceHistory = () => {
     return state.filters.xFactor;
   });
 
-  // Get common benchmark instances across all solver versions
-  const benchmarksByInstance = rawBenchmarkResults.reduce(
+  // Get problems common across all solver versions
+  const solverVersionsByProblem = rawBenchmarkResults.reduce(
     (acc, result) => {
       const key = `${result.benchmark}-${result.size}`;
       acc[key] = acc[key] || new Set();
@@ -64,24 +70,24 @@ const SolverPerformanceHistory = () => {
     ),
   );
 
-  const commonInstances: string[] = Object.entries(benchmarksByInstance)
+  const commonProblems: string[] = Object.entries(solverVersionsByProblem)
     .filter(([, results]) => {
       return results.size === availableSolverVersions.size;
     })
     .map(([name]) => name);
 
-  // Filter benchmark results to only include common instances
+  // Filter results to only include common problems
   const filteredBenchmarkResults = rawBenchmarkResults.filter((result) =>
-    commonInstances.includes(`${result.benchmark}-${result.size}`),
+    commonProblems.includes(`${result.benchmark}-${result.size}`),
   );
 
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
-        const benchmarkSuccessMap = new Map<string, number>();
+        const problemSuccessMap = new Map<string, number>();
         const yearsWithSolver = new Map<number, Set<string>>();
 
-        // Count successful solves for each benchmark
+        // Count successful solves for each problem
         filteredBenchmarkResults.forEach((result) => {
           const year = result.solverReleaseYear;
           yearsWithSolver.set(
@@ -90,10 +96,7 @@ const SolverPerformanceHistory = () => {
           );
           if (result.status === "ok") {
             const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
-            benchmarkSuccessMap.set(
-              key,
-              (benchmarkSuccessMap.get(key) || 0) + 1,
-            );
+            problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           }
         });
 
@@ -102,7 +105,7 @@ const SolverPerformanceHistory = () => {
           const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
           return (
             result.status === "ok" &&
-            benchmarkSuccessMap.get(key) ===
+            problemSuccessMap.get(key) ===
               yearsWithSolver.get(result.solverReleaseYear)?.size
           );
         });
@@ -153,9 +156,9 @@ const SolverPerformanceHistory = () => {
     return buildSolverYearlyMetrics(benchmarkResults, years, solvers);
   }, [benchmarkResults, years, solvers]);
 
-  // Get number of solved benchmarks
-  const numSolvedBenchMark = useMemo(() => {
-    return getNumSolvedBenchMark(allSolverYearlyMetrics).sort(
+  // Get number of solved problems
+  const numSolvedProblems = useMemo(() => {
+    return getNumSolvedProblems(allSolverYearlyMetrics).sort(
       (a, b) => a.year - b.year,
     );
   }, [allSolverYearlyMetrics]);
@@ -166,7 +169,7 @@ const SolverPerformanceHistory = () => {
       <p>
         This plot shows the average runtime of each year’s final-released solver
         version, relative to the best solver ever measured, over all S and M
-        size benchmarks in our set. This shows the performance evolution of
+        size problems in our set. This shows the performance evolution of
         solvers, relative to one another.
       </p>
       <NormalizedSGMRuntime
@@ -176,17 +179,17 @@ const SolverPerformanceHistory = () => {
         The plot below shows the performance evolution of the selected solver
         individually, relative to the first version of that solver that we have
         benchmarked. The bars denote the number of unsolved problems in our
-        benchmark set, so the fewer the better. The red line shows the reduction
-        in average runtime over the set relative to the first version (i.e.
-        speedup factor).
+        benchmark problem set, so the fewer the better. The red line shows the
+        reduction in average runtime over the set relative to the first version
+        (i.e. speedup factor).
       </p>
       <div>
         <SolverEvolutionSection
           title=""
           description=""
           solverYearlyMetrics={allSolverYearlyMetrics}
-          numSolvedBenchMark={numSolvedBenchMark}
-          totalBenchmarks={commonInstances.length}
+          numSolvedProblems={numSolvedProblems}
+          totalProblems={commonProblems.length}
         />
         <p>
           More detailed statistics regarding performance evolution of solvers
@@ -199,7 +202,7 @@ const SolverPerformanceHistory = () => {
             Performance History
           </Link>{" "}
           dashboard, which also allows calculating performance statistics on any
-          subset of benchmarks that are of interest.
+          subset of problems that are of interest.
         </p>
       </div>
     </div>

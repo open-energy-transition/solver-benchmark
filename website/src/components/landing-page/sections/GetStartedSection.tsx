@@ -29,11 +29,9 @@ const GetStarted = () => {
     return state.results.availableSolvers;
   });
 
-  const availableBenchmarksAndSizes = useSelector(
-    (state: { results: IResultState }) => {
-      return state.results.availableBenchmarksAndSizes;
-    },
-  );
+  const availableProblems = useSelector((state: { results: IResultState }) => {
+    return state.results.availableProblems;
+  });
 
   const sectionRef = useStaggerReveal<HTMLDivElement>(":scope .md\\:flex > *", {
     fromDirection: "bottom",
@@ -60,7 +58,7 @@ const GetStarted = () => {
           max-w-8xl
           px-6
           md:px-12
-          pt-[67px]
+          pt-16
           pb-16
           justify-between
         "
@@ -74,7 +72,7 @@ const GetStarted = () => {
               mb-4
             "
           >
-            BENCHMARKS
+            PROBLEMS
           </div>
           <div
             ref={headingRef}
@@ -98,18 +96,15 @@ const GetStarted = () => {
             problems from various energy modelling frameworks. Our open-source
             benchmarking infrastructure runs them on multiple versions of
             leading solvers on multiple hardware configurations, to gather
-            insights on how performance varies with benchmark size,
-            computational resources, and solver evolution.
+            insights on how performance varies with problem size, computational
+            resources, and solver evolution.
           </div>
           <div className="md:flex justify-between">
             <StatsBox
               value={modellingFrameworks.length}
-              label="Model Frameworks"
+              label="Modelling Frameworks"
             />
-            <StatsBox
-              value={availableBenchmarksAndSizes.length}
-              label="Benchmarks"
-            />
+            <StatsBox value={availableProblems.length} label="Problems" />
             <StatsBox
               value={availableSolvers.length - HIPO_SOLVERS.length}
               label="Solvers"

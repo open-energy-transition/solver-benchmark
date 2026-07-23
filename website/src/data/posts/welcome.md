@@ -15,7 +15,7 @@ The OET Solver Benchmark is a comprehensive platform for evaluating and comparin
 
 This blog will feature:
 
-- **Benchmark Updates**: New benchmarks, solver versions, and performance insights
+- **Benchmark Updates**: New problems, solver versions, and performance insights
 - **Technical Deep Dives**: Articles exploring optimization techniques, solver behavior, and performance analysis
 - **Community Highlights**: Contributions from the energy modeling community
 - **News & Announcements**: Project updates, events, and collaboration opportunities
@@ -24,7 +24,7 @@ This blog will feature:
 
 We welcome contributions from the community! If you'd like to:
 
-- Submit a benchmark
+- Submit a problem
 - Contribute analysis or insights
 - Report issues or suggest improvements
 

@@ -15,7 +15,7 @@ const MissionStart = () => {
   return (
     <div
       id="mission"
-      className="text-navy bg-page-bg pt-24 pb-16 scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-page-bg pt-16 pb-16 scroll-mt-16 lg:scroll-mt-28"
     >
       <div className="mx-auto max-w-8xl px-4 lg:px-12">
         <div ref={headerRef} className="grid sm:flex">
@@ -39,15 +39,15 @@ const MissionStart = () => {
           <MissionCard
             Icon={SoftwareDevIcon}
             title="Solver Developers"
-            description="Improve your solver algorithms and performance using our realistic and energy planning relevant benchmarks"
-            linkText="Benchmark Set"
+            description="Improve your solver algorithms and performance using our realistic and energy planning relevant problems"
+            linkText="Benchmark Problem Set"
             linkHref={PATH_DASHBOARD.benchmarkSet.list}
           />
           <MissionCard
             Icon={BoldAltIcon}
             title="Energy Modellers"
             description="Use our performance data to pick the best solver for your application domain, hardware constraints, and budget"
-            linkText="Compare Solvers"
+            linkText="Solver vs Solver"
             linkHref={PATH_DASHBOARD.compareSolvers}
           />
           <MissionCard

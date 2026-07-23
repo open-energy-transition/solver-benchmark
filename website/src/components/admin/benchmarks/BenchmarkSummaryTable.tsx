@@ -7,10 +7,6 @@ const BenchmarkSummaryTable = () => {
     return state.results.metaData;
   });
 
-  const nOfProblems = [
-    "Total number of benchmark problems",
-    "Total number of benchmark size instances",
-  ];
   const availableModellingFrameworks = useSelector(
     (state: { results: IResultState }) => {
       return state.results.availableModellingFrameworks;
@@ -39,9 +35,14 @@ const BenchmarkSummaryTable = () => {
     return state.results.availableSectors;
   });
 
+  // Build the set of individual MILP features across all entries.
   const availableMilpFeatures = useMemo(() => {
     return Array.from(
-      new Set(Object.keys(metaData).map((key) => metaData[key].milpFeatures)),
+      new Set(
+        Object.keys(metaData).flatMap(
+          (key) => metaData[key].milpFeatures ?? [],
+        ),
+      ),
     );
   }, [metaData]);
 
@@ -65,18 +66,14 @@ const BenchmarkSummaryTable = () => {
     const milpFeaturesMap = new Map<string, number>();
     const timeHorizonsMap = new Map<string, number>();
     const realSizesMap = new Map<string, number>();
-    const nOfProblemsMap = new Map<string, number>();
+    let nOfProblemsCount = 0;
 
     function updateData(data: Map<string, number>, key: string) {
       data.set(key, (data.get(key) || 0) + 1);
     }
     Object.keys(metaData).forEach((key) => {
       if (metaData[key].modellingFramework === framework) {
-        // Number of problems
-        updateData(nOfProblemsMap, "totalNOfDiffProblems");
-        metaData[key].sizes.forEach(() => {
-          updateData(nOfProblemsMap, "multipleSizes");
-        });
+        nOfProblemsCount += 1;
 
         availableProblemClasses.forEach((problemClass) => {
           if (metaData[key].problemClass === problemClass) {
@@ -99,16 +96,16 @@ const BenchmarkSummaryTable = () => {
           }
         });
         availableMilpFeatures.forEach((milpFeature) => {
-          if (metaData[key].milpFeatures === milpFeature) {
-            updateData(milpFeaturesMap, milpFeature as string);
+          if (metaData[key].milpFeatures?.includes(milpFeature)) {
+            updateData(milpFeaturesMap, milpFeature);
           }
         });
         availabletimeHorizons.forEach((timeHorizon) => {
-          if (metaData[key].timeHorizon.toLowerCase().includes(timeHorizon)) {
+          if (metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)) {
             updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
-        if (metaData[key].sizes.some((instance) => instance.realistic)) {
+        if (metaData[key].realistic) {
           if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
@@ -132,12 +129,31 @@ const BenchmarkSummaryTable = () => {
       sectoralFocus: sectoralFocusMap,
       sectors: sectorsMap,
       realSizes: realSizesMap,
-      nOfProblems: nOfProblemsMap,
+      nOfProblems: nOfProblemsCount,
     };
   });
 
+  // Each whole section (all its rows, plus its row-spanned label) shares one
+  // background, alternating section by section rather than row by row.
+  const TINTED_ROW_CLASS = "bg-[#BFD8C733]";
+  // A row-spanned label td must always get an explicit, opaque background —
+  // left transparent, it shows through to whatever its own (first) row's
+  // striping happens to be, which may or may not match the section's
+  // intended color. TINTED_LABEL_CLASS is the solid color that #BFD8C733
+  // (20% alpha) produces over the #F4F6FA card background; PLAIN_LABEL_CLASS
+  // is that same card background, opaque, for sections that should read as
+  // unshaded regardless of their first row's own tint.
+  const TINTED_LABEL_CLASS = "bg-[#E9F0F0]";
+  const PLAIN_LABEL_CLASS = "bg-[#F4F6FA]";
+  const nOfProblemsRowTinted = true;
+  const problemClassRowTinted = false;
+  const applicationRowTinted = true;
+  const timeHorizonRowTinted = false;
+  const milpFeaturesRowTinted = true;
+  const realisticRowTinted = false;
+
   return (
-    <div className="bg-[#F4F6FA] p-4 px-0 rounded-xl mb-6 space-y-8 w-full">
+    <div className="bg-[#F4F6FA] p-4 rounded-xl space-y-8 w-full">
       <div>
         {/* Desktop/tablet table */}
         <div className="hidden md:block overflow-x-auto" tabIndex={0}>
@@ -165,51 +181,37 @@ const BenchmarkSummaryTable = () => {
               </tr>
             </thead>
             <tbody>
-              {/* N. of problem */}
-              {nOfProblems.map((nOfProblem, nOfProblemIdx) => (
-                <tr
-                  key={nOfProblemIdx}
-                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+              {/* Number of Problems */}
+              <tr className="-b odd:bg-[#BFD8C733]">
+                <td
+                  className={`p-2 text-left tag-line-sm ${
+                    nOfProblemsRowTinted
+                      ? TINTED_LABEL_CLASS
+                      : PLAIN_LABEL_CLASS
+                  }`}
+                  colSpan={2}
                 >
-                  {nOfProblemIdx === 0 && (
-                    <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
-                      <span>N. of Problems</span>
-                    </td>
-                  )}
-
-                  <td className=" p-2 text-left tag-line-sm">{nOfProblem}</td>
-                  {summary.map((s, sIdx) => (
-                    <td key={sIdx} className=" p-2 text-left tag-line-sm">
-                      {nOfProblemIdx === 0
-                        ? s.nOfProblems.get("totalNOfDiffProblems") || 0
-                        : s.nOfProblems.get("multipleSizes")}
-                    </td>
-                  ))}
-                  <td className=" p-2 text-left tag-line-sm">
-                    {nOfProblemIdx === 0
-                      ? summary.reduce(
-                          (acc, curr) =>
-                            acc +
-                            (curr.nOfProblems.get("totalNOfDiffProblems") || 0),
-                          0,
-                        )
-                      : summary.reduce(
-                          (acc, curr) =>
-                            acc + (curr.nOfProblems.get("multipleSizes") || 0),
-                          0,
-                        )}
+                  Number of Problems
+                </td>
+                {summary.map((s, sIdx) => (
+                  <td key={sIdx} className=" p-2 text-left tag-line-sm">
+                    {s.nOfProblems}
                   </td>
-                </tr>
-              ))}
+                ))}
+                <td className=" p-2 text-left tag-line-sm">
+                  {summary.reduce((acc, curr) => acc + curr.nOfProblems, 0)}
+                </td>
+              </tr>
               {/* Problem Class */}
               {availableProblemClasses.map((problemClass, problemClassIdx) => (
-                <tr
-                  key={problemClassIdx}
-                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                >
+                <tr key={problemClassIdx} className="-b odd:bg-[#BFD8C733]">
                   {problemClassIdx === 0 && (
                     <td
-                      className=" p-2 text-left tag-line-sm"
+                      className={`p-2 text-left tag-line-sm ${
+                        problemClassRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availableProblemClasses.length}
                     >
                       Problem Class
@@ -232,13 +234,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* Application */}
               {availableApplications.map((application, applicationIdx) => (
-                <tr
-                  key={applicationIdx}
-                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                >
+                <tr key={applicationIdx} className="-b odd:bg-[#BFD8C733]">
                   {applicationIdx === 0 && (
                     <td
-                      className=" p-2 text-left tag-line-sm"
+                      className={`p-2 text-left tag-line-sm ${
+                        applicationRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availableApplications.length}
                     >
                       Application
@@ -261,13 +264,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* Time Horizon */}
               {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
-                <tr
-                  key={timeHorizonIdx}
-                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                >
+                <tr key={timeHorizonIdx} className="-b odd:bg-[#BFD8C733]">
                   {timeHorizonIdx === 0 && (
                     <td
-                      className=" p-2 text-left tag-line-sm"
+                      className={`p-2 text-left tag-line-sm ${
+                        timeHorizonRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availabletimeHorizons.length}
                     >
                       Time Horizon
@@ -298,13 +302,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* MILP Features */}
               {availableMilpFeatures.map((milpFeature, milpFeatureIdx) => (
-                <tr
-                  key={milpFeatureIdx}
-                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                >
+                <tr key={milpFeatureIdx} className="-b odd:bg-[#BFD8C733]">
                   {milpFeatureIdx === 0 && (
                     <td
-                      className=" p-2 tag-line-sm text-left"
+                      className={`p-2 tag-line-sm text-left ${
+                        milpFeaturesRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availableMilpFeatures.length}
                     >
                       MILP Features
@@ -330,12 +335,16 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* Size Features */}
               {["Real (MILP)", "Other"].map((size, sizeIdx) => (
-                <tr
-                  key={sizeIdx}
-                  className="-b odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                >
+                <tr key={sizeIdx} className="-b odd:bg-[#BFD8C733]">
                   {sizeIdx === 0 && (
-                    <td className=" p-2 text-left tag-line-sm" rowSpan={2}>
+                    <td
+                      className={`p-2 text-left tag-line-sm ${
+                        realisticRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
+                      rowSpan={2}
+                    >
                       Realistic
                     </td>
                   )}
@@ -375,57 +384,32 @@ const BenchmarkSummaryTable = () => {
 
         {/* Mobile card layout — vertical key/value, no horizontal scroll */}
         <div className="md:hidden space-y-4">
-          {/* N. of Problems */}
+          {/* Number of Problems */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
-            <h3 className="tag-line-xs font-extrabold mb-3">N. of Problems</h3>
-            {nOfProblems.map((label, idx) => {
-              const total =
-                idx === 0
-                  ? summary.reduce(
-                      (acc, curr) =>
-                        acc +
-                        (curr.nOfProblems.get("totalNOfDiffProblems") || 0),
-                      0,
-                    )
-                  : summary.reduce(
-                      (acc, curr) =>
-                        acc + (curr.nOfProblems.get("multipleSizes") || 0),
-                      0,
-                    );
-              return (
+            <h3 className="tag-line-xs font-extrabold mb-3">
+              Number of Problems
+            </h3>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+              {summary.map((s, sIdx) => (
                 <div
-                  key={idx}
-                  className={
-                    idx > 0 ? "mt-4 pt-4 border-t border-gray-100" : ""
-                  }
+                  key={sIdx}
+                  className="flex justify-between items-center py-0.5"
                 >
-                  <p className="tag-line-sm font-semibold mb-2">{label}</p>
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                    {summary.map((s, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className="flex justify-between items-center py-0.5"
-                      >
-                        <span className="tag-line-xs text-navy text-opacity-60 truncate pr-2">
-                          {s.modellingFramework}
-                        </span>
-                        <span className="tag-line-xs font-medium shrink-0">
-                          {idx === 0
-                            ? s.nOfProblems.get("totalNOfDiffProblems") || 0
-                            : s.nOfProblems.get("multipleSizes")}
-                        </span>
-                      </div>
-                    ))}
-                    <div className="col-span-2 flex justify-between items-center pt-1.5 mt-0.5 border-t border-gray-200">
-                      <span className="tag-line-xs font-extrabold">Total</span>
-                      <span className="tag-line-xs font-extrabold">
-                        {total}
-                      </span>
-                    </div>
-                  </div>
+                  <span className="tag-line-xs text-navy text-opacity-60 truncate pr-2">
+                    {s.modellingFramework}
+                  </span>
+                  <span className="tag-line-xs font-medium shrink-0">
+                    {s.nOfProblems}
+                  </span>
                 </div>
-              );
-            })}
+              ))}
+              <div className="col-span-2 flex justify-between items-center pt-1.5 mt-0.5 border-t border-gray-200">
+                <span className="tag-line-xs font-extrabold">Total</span>
+                <span className="tag-line-xs font-extrabold">
+                  {summary.reduce((acc, curr) => acc + curr.nOfProblems, 0)}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Problem Class */}

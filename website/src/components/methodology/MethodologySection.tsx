@@ -26,16 +26,16 @@ const MethodologySection = () => {
         <ol className="list-decimal list-outside ml-6 text-base leading-relaxed">
           <li className="mb-4">
             <p>
-              We run benchmarks on publicly available cloud virtual machines
-              (VMs). Why?
+              We run benchmark problems on publicly available cloud virtual
+              machines (VMs). Why?
             </p>
             <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
               <li className="mb-2">
-                It allows us to run different benchmarks in{" "}
+                It allows us to run different benchmark problems in{" "}
                 <strong>parallel</strong>, reducing the total runtime (running
-                all benchmarks and solvers as of February 2026 would take 268
-                days), and allowing us to scale to a large number of benchmarks
-                and solver versions in the future.
+                all benchmark problems and solvers as of February 2026 would
+                take 268 days), and allowing us to scale to a large number of
+                benchmark problems and solver versions in the future.
               </li>
               <li className="mb-2">
                 It is more <strong>cost-efficient</strong> compared to buying
@@ -65,11 +65,11 @@ const MethodologySection = () => {
                     experiments to estimate the error in runtime.
                   </li>
                   <li className="mb-2">
-                    We run a <strong>reference benchmark</strong> and solver
+                    We run a <strong>reference problem</strong> and solver
                     periodically on every benchmark runner and estimate the
                     coefficient of variation of the runtime of this reference
-                    benchmark for each VM. This is a unitless measure which we
-                    use to estimate how much noise is present in the runtime
+                    problem for each VM. This is a unitless measure which we use
+                    to estimate how much noise is present in the runtime
                     measurements from each VM. This{" "}
                     <a href="https://github.com/open-energy-transition/solver-benchmark/issues/393">
                       issue
@@ -126,7 +126,7 @@ const MethodologySection = () => {
             <p>
               We run all solvers using their default options, with two
               exceptions: the first is that we set a duality gap tolerance of{" "}
-              <code>1e-4</code> for all MILP instances.
+              <code>1e-4</code> for all MILP problems.
             </p>
             <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
               <li className="mb-2">
@@ -174,9 +174,10 @@ const MethodologySection = () => {
             </ul>
           </li>
           <li className="mb-2">
-            We run benchmarks on Linux only. We do not expect a huge difference
-            in solver performance on other operating systems, but adding this
-            feature could be an interesting direction of future work.
+            We run benchmark problems on Linux only. We do not expect a huge
+            difference in solver performance on other operating systems, but
+            adding this feature could be an interesting direction of future
+            work.
           </li>
         </ol>
       </div>

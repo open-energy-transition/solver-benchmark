@@ -7,13 +7,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     "",
     "/key-insights",
     "/methodology",
-    "/dashboard/main-results",
-    "/dashboard/benchmark-set",
+    "/dashboard/solver-ranking",
+    "/dashboard/benchmark-problem-set",
     "/dashboard/benchmark-summary",
-    "/dashboard/solvers",
-    "/dashboard/compare-solvers",
+    "/dashboard/solver-vs-all",
+    "/dashboard/solver-vs-solver",
     "/dashboard/performance-history",
-    "/dashboard/full-results",
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

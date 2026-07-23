@@ -39,12 +39,12 @@ const FactorsAffectingPerformanceInsights = () => {
       <h5>Effect of increasing spatial resolutions on PyPSA models</h5>
       <p>
         While only HiGHS among open solvers is able to solve the smallest
-        instance (10-1h), at a higher number of nodes Gurobi highlights the
+        problems (10-1h), at a higher number of nodes Gurobi highlights the
         expected nonlinear growth in computational effort as model size and
         complexity expand.
       </p>
       <RuntimeOfFastestSolver
-        benchmarkList={[
+        problemList={[
           "pypsa-de-elec-10-1h",
           "pypsa-de-elec-20-1h",
           "pypsa-de-elec-50-1h",
@@ -53,7 +53,7 @@ const FactorsAffectingPerformanceInsights = () => {
       />
       <h5>Effect of increasing temporal resolutions on PyPSA models</h5>
       <p>
-        Again, only HiGHS among open solvers can solve the smallest instance
+        Again, only HiGHS among open solvers can solve the smallest problems
         (50-168h). On the other hand, as temporal resolution increases (from
         168h to 24h and below), Gurobi runtime escalates dramatically: while the
         weekly aggregation solves in seconds, the daily resolution already
@@ -61,11 +61,11 @@ const FactorsAffectingPerformanceInsights = () => {
         hour).
       </p>
       <RuntimeOfFastestSolver
-        benchmarkList={[
+        problemList={[
           "pypsa-eur-elec-50-168h",
           "pypsa-eur-elec-50-24h",
           "pypsa-eur-elec-50-12h",
-          "pypsa-eur-elec 50-3h",
+          "pypsa-eur-elec-50-3h",
         ]}
         extraCategoryLengthMargin={5}
       />
@@ -76,11 +76,11 @@ const FactorsAffectingPerformanceInsights = () => {
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "genx-10_IEEE_9_bus_DC_OPF",
+            "genx-10_IEEE_9_bus_DC_OPF-9-1h",
           )}
-          aria-label={`Navigate to benchmark detail page for genx-10_IEEE_9_bus_DC_OPF model`}
+          aria-label={`Navigate to problem detail page for genx-10_IEEE_9_bus_DC_OPF-9-1h problem`}
         >
-          genx-10_IEEE_9_bus_DC_OPF (9-1h)
+          genx-10_IEEE_9_bus_DC_OPF-9-1h
         </Link>{" "}
         is an MILP problem that adds UC as an extra model constraint to the
         power sector model{" "}
@@ -88,25 +88,25 @@ const FactorsAffectingPerformanceInsights = () => {
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "genx-10_IEEE_9_bus_DC_OPF-no_uc",
+            "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
           )}
-          aria-label={`Navigate to benchmark detail page for genx-10_IEEE_9_bus_DC_OPF-no_uc model`}
+          aria-label={`Navigate to problem detail page for genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h problem`}
         >
-          genx-10_IEEE_9_bus_DC_OPF-no_uc (9-1h)
+          genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h
         </Link>{" "}
         (LP problem). Adding unit commitment (UC) transforms the LP DC-OPF into
         an MILP and fundamentally changes solver performance. In the LP case,
         runtimes are in the order of seconds with HiGHS (which also outperforms
         Gurobi in this case), while the MILP formulation introduces a dramatic
-        increase in computational effort. In this benchmark, Gurobi is the
-        fastest solver for the UC case (28 seconds), whereas the fastest
-        open-source solver (SCIP) requires around 40 minutes, illustrating the
-        substantial performance gap that can emerge once integer variables are
-        introduced. All solvers are run with default settings except for a fixed
-        relative MIP gap tolerance.
+        increase in computational effort. In this problem, Gurobi is the fastest
+        solver for the UC case (28 seconds), whereas the fastest open-source
+        solver (SCIP) requires around 40 minutes, illustrating the substantial
+        performance gap that can emerge once integer variables are introduced.
+        All solvers are run with default settings except for a fixed relative
+        MIP gap tolerance.
       </p>
       <RuntimeOfFastestSolver
-        benchmarkList={[
+        problemList={[
           "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
           "genx-10_IEEE_9_bus_DC_OPF-9-1h",
         ]}
@@ -121,11 +121,11 @@ const FactorsAffectingPerformanceInsights = () => {
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "pypsa-power+ely-ucgas",
+            "pypsa-power+ely-ucgas-1-1h",
           )}
-          aria-label={`Navigate to benchmark detail page for pypsa-power+ely-ucgas model`}
+          aria-label={`Navigate to problem detail page for pypsa-power+ely-ucgas-1-1h problem`}
         >
-          pypsa-power+ely-ucgas (1-1h)
+          pypsa-power+ely-ucgas-1-1h
         </Link>{" "}
         is an MILP problem that adds UC as an extra model constraint to the
         power-only model{" "}
@@ -133,11 +133,11 @@ const FactorsAffectingPerformanceInsights = () => {
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "pypsa-power+ely",
+            "pypsa-power+ely-1-1h",
           )}
-          aria-label={`Navigate to benchmark detail page for pypsa-power+ely model`}
+          aria-label={`Navigate to problem detail page for pypsa-power+ely-1-1h problem`}
         >
-          pypsa-power+ely (1-1h)
+          pypsa-power+ely-1-1h
         </Link>{" "}
         (LP problem). The LP version solves in a few seconds with both Gurobi
         and HiGHS, while the MILP version requires significantly more time.
@@ -147,7 +147,7 @@ const FactorsAffectingPerformanceInsights = () => {
       </p>
       {/* Chart  */}
       <RuntimeOfFastestSolver
-        benchmarkList={["pypsa-power+ely-1-1h", "pypsa-power+ely-ucgas-1-1h"]}
+        problemList={["pypsa-power+ely-1-1h", "pypsa-power+ely-ucgas-1-1h"]}
         xAxisLabelWrapLength={18}
       />
       <h5>
@@ -165,7 +165,7 @@ const FactorsAffectingPerformanceInsights = () => {
         complexity, even when the formulation remains linear.
       </p>
       <RuntimeOfFastestSolver
-        benchmarkList={[
+        problemList={[
           "genx-elec_trex-15-168h",
           "genx-elec_trex_co2-15-168h",
           "genx-elec_co2-15-168h",
@@ -181,7 +181,7 @@ const FactorsAffectingPerformanceInsights = () => {
         as constraints become more stringent.
       </p>
       <RuntimeOfFastestSolver
-        benchmarkList={[
+        problemList={[
           "temoa-US_9R_TS-9-12ts",
           "temoa-US_9R_TS_NDC-9-12ts",
           "temoa-US_9R_TS_SP-9-12ts",
