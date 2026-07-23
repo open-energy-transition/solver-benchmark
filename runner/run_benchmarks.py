@@ -504,10 +504,37 @@ def main(
     # Track the last time we ran the reference benchmark
     last_reference_run = 0
 
-    # Load benchmarks from YAML file
+    # Load benchmarks from YAML file. Supports both the flat "problems" schema
+    # (each entry is a standalone problem, e.g. results/metadata_subset.yaml)
+    # and the nested "benchmarks"/"Sizes" schema generated for VM/local runs
+    # by runner/utils.py's allocate_benchmarks and create_local_benchmark_yaml.
     with open(benchmark_yaml_path, "r") as file:
         yaml_content = yaml.safe_load(file)
-        benchmarks_info = yaml_content["benchmarks"]
+        if "problems" in yaml_content:
+            benchmarks_info = {
+                problem_id: {
+                    "Problem class": problem_data.get("Problem class"),
+                    "Sizes": [
+                        {
+                            "Name": "default",
+                            "Size": problem_data.get("Size"),
+                            **(
+                                {"URL": problem_data["URL"]}
+                                if "URL" in problem_data
+                                else {}
+                            ),
+                            **(
+                                {"Path": problem_data["Path"]}
+                                if "Path" in problem_data
+                                else {}
+                            ),
+                        }
+                    ],
+                }
+                for problem_id, problem_data in yaml_content["problems"].items()
+            }
+        else:
+            benchmarks_info = yaml_content["benchmarks"]
         # Read timeout from top-level YAML if present
         yaml_timeout_seconds = yaml_content.get("timeout_seconds")
 
