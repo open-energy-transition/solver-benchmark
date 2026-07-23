@@ -32,7 +32,7 @@ jobs:
         run: |
           pip install --upgrade pip pre-commit
           # For validation scripts (TODO collect these in a requirements.txt file?)
-          pip install ruamel.yaml yamale requests
+          pip install ruamel.yaml yamale requests pandas
 
       - name: Check code formatting
         run: |
