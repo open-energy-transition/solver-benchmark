@@ -39,11 +39,11 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
           </InfoPopup>
         </span>{" "}
         of the runtime / memory consumption each solver version on all the
-        benchmark problems in the (filtered) set that all solver versions
-        have been run on. For each year, the SGMs have been normalized so that
-        the best performing solver in that year has a value of 1.0. Therefore,
-        if a solver version has (normalized) SGM runtime of 1.25, it indicates
-        that it is on average 25% slower than the best performing solver in that
+        benchmark problems in the (filtered) set that all solver versions have
+        been run on. For each year, the SGMs have been normalized so that the
+        best performing solver in that year has a value of 1.0. Therefore, if a
+        solver version has (normalized) SGM runtime of 1.25, it indicates that
+        it is on average 25% slower than the best performing solver in that
         specific year.
       </p>
       <SgmModeSection />

@@ -47,8 +47,8 @@ const HowDoWeBenchmarkSection = () => {
             and cost reasons, and have validated that the measured runtimes have
             acceptable error margins. We use a custom built benchmarking
             infrastructure based on Python and OpenTofu that is open,
-            transparent, and fully reproducible, meaning you can also use it
-            to run your own benchmark!
+            transparent, and fully reproducible, meaning you can also use it to
+            run your own benchmark!
           </div>
           <div className="mt-6 xl:ml-4 text-medium-normal">
             Read more about our methodology, caveats, and known issues here:

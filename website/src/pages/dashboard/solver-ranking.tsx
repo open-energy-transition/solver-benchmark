@@ -24,11 +24,11 @@ const Caveats = () => {
           results:
           <ul className="list-disc pl-5">
             <li>
-              We run the benchmark on commercial cloud virtual machines (VMs) for
-              efficiency and cost reasons. The shared nature of cloud resources
-              means there is some error in our runtime measurements, which we
-              estimate as a coefficient of variation of no larger than 6%. More
-              details on this{" "}
+              We run the benchmark on commercial cloud virtual machines (VMs)
+              for efficiency and cost reasons. The shared nature of cloud
+              resources means there is some error in our runtime measurements,
+              which we estimate as a coefficient of variation of no larger than
+              6%. More details on this{" "}
               <Link
                 className="font-bold"
                 href="/methodology"
@@ -40,9 +40,9 @@ const Caveats = () => {
             </li>
             <li>
               All solvers are run with their default options, except for the
-              duality gap tolerance for mixed integer problems (MILPs), which
-              we set to 1e-4. You can check the duality gaps for each solver in
-              the problem details page corresponding to each problem.
+              duality gap tolerance for mixed integer problems (MILPs), which we
+              set to 1e-4. You can check the duality gaps for each solver in the
+              problem details page corresponding to each problem.
             </li>
             <li>
               All results on this website use the runtime measured by our
@@ -191,8 +191,8 @@ const LandingPage = () => {
               <h1 className="h5">Solver Ranking</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 We run our benchmark on 2 different configurations: The{" "}
-                <b>Short</b> tab below contains results of the smaller
-                problems (less than a million variables), run with a{" "}
+                <b>Short</b> tab below contains results of the smaller problems
+                (less than a million variables), run with a{" "}
                 {`${TIMEOUT_VALUES.SHORT / 3600} hour `}
                 timeout on a less powerful machine. The <b>Long</b> tab contains
                 larger problems (more than a million variables), run with a{" "}
@@ -264,8 +264,7 @@ const LandingPage = () => {
                     )}
                     <div className="px-2 md:px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="tag-line-xs leading-1.5">
-                        <b>Note:</b>{" "}
-                        As with all benchmarks, our results provide
+                        <b>Note:</b> As with all benchmarks, our results provide
                         only an indication of which solvers might be good for
                         your problems. We recommend using{" "}
                         <span className="hover:underline underline-offset-4  font-bold">

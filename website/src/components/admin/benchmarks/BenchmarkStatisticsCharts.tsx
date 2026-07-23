@@ -85,15 +85,13 @@ const BenchmarkStatisticsCharts = ({
           }
         });
         availabletimeHorizons.forEach((timeHorizon) => {
-          if (
-            metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)
-          ) {
+          if (metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)) {
             updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
         if (
-          !availabletimeHorizons.some((time) =>
-            metaData[key].timeHorizon?.toLowerCase().includes(time),
+          !availabletimeHorizons.some(
+            (time) => metaData[key].timeHorizon?.toLowerCase().includes(time),
           )
         ) {
           updateData(timeHorizonsMap, "n/a" as string);

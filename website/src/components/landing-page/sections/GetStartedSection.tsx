@@ -96,8 +96,8 @@ const GetStarted = () => {
             problems from various energy modelling frameworks. Our open-source
             benchmarking infrastructure runs them on multiple versions of
             leading solvers on multiple hardware configurations, to gather
-            insights on how performance varies with problem size,
-            computational resources, and solver evolution.
+            insights on how performance varies with problem size, computational
+            resources, and solver evolution.
           </div>
           <div className="md:flex justify-between">
             <StatsBox

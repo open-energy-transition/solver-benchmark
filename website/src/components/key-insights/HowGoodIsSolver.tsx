@@ -43,10 +43,10 @@ const HowGoodIsSolver = () => {
             </InfoPopup>
           </span>{" "}
           runtime of each solver, relative to the fastest solver, on all the LP
-          and MILP problems in our benchmark problem set. A problem on which a solver
-          timed out or errored is assumed to have a runtime equal to the timeout
-          with which it was run. (More details, and other ways to handle time
-          outs and errors, can be found on our{" "}
+          and MILP problems in our benchmark problem set. A problem on which a
+          solver timed out or errored is assumed to have a runtime equal to the
+          timeout with which it was run. (More details, and other ways to handle
+          time outs and errors, can be found on our{" "}
           <Link
             className="font-bold"
             href={PATH_DASHBOARD.home}
@@ -91,8 +91,8 @@ const HowGoodIsSolver = () => {
         <p>
           The next plot shows the concrete performance of each solver on a few
           representative realistic problems from a few modelling frameworks in
-          our benchmark problem set. Hover over the problem name in order to see more
-          details about the problem's features and why we consider it as
+          our benchmark problem set. Hover over the problem name in order to see
+          more details about the problem's features and why we consider it as
           representative for that modelling framework. Solvers that timed out or
           errored on a particular problem are indicated by red text above the
           corresponding bar.
@@ -115,8 +115,7 @@ const HowGoodIsSolver = () => {
         <Note>
           As with all benchmarks, our results provide only an indication of
           which solvers might be good for your problems. Our benchmark problem
-          set is not yet as diverse and comprehensive as we would like, see
-          the{" "}
+          set is not yet as diverse and comprehensive as we would like, see the{" "}
           <a
             className="font-bold"
             href="#what-benchmark-problems-do-we-have-and-what-are-missing"

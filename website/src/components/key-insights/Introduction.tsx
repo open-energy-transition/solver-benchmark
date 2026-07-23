@@ -18,9 +18,9 @@ const Introduction = () => {
       <p>
         This platform contains the results of benchmarking{" "}
         {availableSolvers.length - HIPO_SOLVERS.length} optimization solvers on{" "}
-        {availableProblems.length} problems arising from energy system
-        models. For each benchmark run, we measure runtime and memory
-        consumption of the solver, along with{" "}
+        {availableProblems.length} problems arising from energy system models.
+        For each benchmark run, we measure runtime and memory consumption of the
+        solver, along with{" "}
         <Link
           className="font-bold"
           href="/methodology/#metrics"

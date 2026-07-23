@@ -98,12 +98,12 @@ const FactorsAffectingPerformanceInsights = () => {
         an MILP and fundamentally changes solver performance. In the LP case,
         runtimes are in the order of seconds with HiGHS (which also outperforms
         Gurobi in this case), while the MILP formulation introduces a dramatic
-        increase in computational effort. In this problem, Gurobi is the
-        fastest solver for the UC case (28 seconds), whereas the fastest
-        open-source solver (SCIP) requires around 40 minutes, illustrating the
-        substantial performance gap that can emerge once integer variables are
-        introduced. All solvers are run with default settings except for a fixed
-        relative MIP gap tolerance.
+        increase in computational effort. In this problem, Gurobi is the fastest
+        solver for the UC case (28 seconds), whereas the fastest open-source
+        solver (SCIP) requires around 40 minutes, illustrating the substantial
+        performance gap that can emerge once integer variables are introduced.
+        All solvers are run with default settings except for a fixed relative
+        MIP gap tolerance.
       </p>
       <RuntimeOfFastestSolver
         problemList={[

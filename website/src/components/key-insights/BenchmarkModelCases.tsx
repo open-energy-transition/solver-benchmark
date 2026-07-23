@@ -23,8 +23,8 @@ const BenchmarkModelCases = () => {
       <p>
         {" "}
         For version 2 of our platform, we plan to have a public call for
-        problems to address the gaps above. In particular, we welcome
-        benchmark problem contributions that cover:
+        problems to address the gaps above. In particular, we welcome benchmark
+        problem contributions that cover:
       </p>
       <ul className="list-disc pl-6 space-y-2">
         <li>
@@ -46,8 +46,8 @@ const BenchmarkModelCases = () => {
           “Realistic”: Realistic problems are missing for PowerModels and Sienna
         </li>
         <li>
-          Large benchmark problems are also missing for many modelling frameworks,
-          see the section{" "}
+          Large benchmark problems are also missing for many modelling
+          frameworks, see the section{" "}
           <a
             className="font-bold"
             href="#what-is-feasible-for-open-source-solvers"

@@ -23,8 +23,8 @@ const HardwareConfigurations = () => {
           RAM)
         </li>
         <li className="mb-2">
-          Large sized benchmark problems are run with a timeout of 24 hours on
-          a GCP <code>c4-highmem-16</code> VM (8 cores (16 vCPU), 124 GB RAM)
+          Large sized benchmark problems are run with a timeout of 24 hours on a
+          GCP <code>c4-highmem-16</code> VM (8 cores (16 vCPU), 124 GB RAM)
         </li>
       </ol>
       <p>

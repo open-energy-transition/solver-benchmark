@@ -107,7 +107,7 @@ const SgmRuntimeChart = ({
       const runtime =
         typeof runtimeForCategory === "number"
           ? runtimeForCategory
-          : (solver?.unnormalizedData.runtime ?? 0);
+          : solver?.unnormalizedData.runtime ?? 0;
       return `Solver: ${d.key} v${solver?.version}<br/>
               Average runtime: ${humanizeSeconds(runtime)}`;
     },
@@ -151,8 +151,7 @@ const SgmRuntimeChart = ({
         const point = computedChartData.find(
           (d) => String(d[categoryKey]) === String(category),
         );
-        const dynamicCount =
-          point?.uniqueProblemCount ?? uniqueProblemCount;
+        const dynamicCount = point?.uniqueProblemCount ?? uniqueProblemCount;
         const countDisplay =
           fixedCount !== undefined ? fixedCount : dynamicCount;
 
@@ -193,9 +192,7 @@ const SgmRuntimeChart = ({
       // Fallback (no chart data)
       const countDisplay =
         fixedCount !== undefined ? fixedCount : uniqueProblemCount;
-      const baseLines = [
-        `${countDisplay}/${totalProblems} benchmark problems`,
-      ];
+      const baseLines = [`${countDisplay}/${totalProblems} benchmark problems`];
       if (isNumericCategory)
         baseLines.push(`Timeout: ${humanizeSeconds(timeout ?? 0)}`);
       if (memoryLabel) baseLines.push(memoryLabel);

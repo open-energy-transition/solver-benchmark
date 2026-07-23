@@ -11,7 +11,10 @@ const ProblemClassAndSize = ({
 
   return (
     <SectionCard title="Problem Class & Size" hasContent>
-      <FieldBlock label="Problem Class" value={problemDetail.problemClass ?? "-"} />
+      <FieldBlock
+        label="Problem Class"
+        value={problemDetail.problemClass ?? "-"}
+      />
       <FieldBlock label="Size" value={problemDetail.size ?? "-"} />
       <FieldBlock
         label="Num. Variables"

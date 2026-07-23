@@ -28,10 +28,10 @@ const FeasibilityForOpenSource = () => {
         problems so we can more accurately identify the boundary of feasibility.
       </p>
       <p>
-        Clicking on any benchmark problem name takes you to the problem
-        details page that contains more information on the problem itself, the
-        full results on that problem, the download link to the problem LP/MPS
-        file, the solver logs, and the solution files.
+        Clicking on any benchmark problem name takes you to the problem details
+        page that contains more information on the problem itself, the full
+        results on that problem, the download link to the problem LP/MPS file,
+        the solver logs, and the solution files.
       </p>
       <ProblemClassTable problemClass="LP" />
       <Note>
@@ -92,8 +92,8 @@ const FeasibilityForOpenSource = () => {
       <ProblemClassTable problemClass="MILP" />
       <p>
         Note that we do not yet have large problems from some modelling
-        frameworks in our benchmark problem set. We welcome contributions to fill
-        these gaps!
+        frameworks in our benchmark problem set. We welcome contributions to
+        fill these gaps!
       </p>
     </div>
   );

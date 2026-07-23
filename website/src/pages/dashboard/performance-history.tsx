@@ -98,10 +98,7 @@ const PagePerformanceHistory = () => {
           );
           if (result.status === "ok") {
             const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
-            problemSuccessMap.set(
-              key,
-              (problemSuccessMap.get(key) || 0) + 1,
-            );
+            problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           }
         });
 
@@ -200,10 +197,10 @@ const PagePerformanceHistory = () => {
               <p className="mt-4 max-w-screen-lg">
                 This page tracks the performance of different solvers over time.
                 This can be used to see which solvers are improving, and on what
-                kinds of problems. Once again, you can filter the benchmark
-                set to your problems of interest and the graphs will
-                automatically re-generate to show you the performance history on
-                your chosen subset.
+                kinds of problems. Once again, you can filter the benchmark set
+                to your problems of interest and the graphs will automatically
+                re-generate to show you the performance history on your chosen
+                subset.
               </p>
               <SolverVersions />
             </div>

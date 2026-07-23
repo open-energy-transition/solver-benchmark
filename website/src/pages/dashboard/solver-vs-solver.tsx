@@ -49,11 +49,11 @@ const PageCompareSolvers = () => {
               <h1 className="h5">Solver vs Solver</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 This page lets you compare any two solvers (including versions)
-                on any subset of the problems. This can be used to find
-                problems where one solver performs better than another. It is
-                also useful for solver developers who want to compare two
-                versions of their solver to see on which problems the
-                performance improved or degraded.
+                on any subset of the problems. This can be used to find problems
+                where one solver performs better than another. It is also useful
+                for solver developers who want to compare two versions of their
+                solver to see on which problems the performance improved or
+                degraded.
               </p>
             </div>
           }

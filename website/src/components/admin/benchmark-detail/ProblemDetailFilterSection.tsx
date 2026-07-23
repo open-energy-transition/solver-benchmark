@@ -19,9 +19,7 @@ import { decodeValue, encodeValue } from "@/utils/urls";
 import InfoPopup from "@/components/common/InfoPopup";
 
 interface IProblemDetailFilterSectionProps {
-  setLocalFilters: React.Dispatch<
-    React.SetStateAction<IFilterProblemDetails>
-  >;
+  setLocalFilters: React.Dispatch<React.SetStateAction<IFilterProblemDetails>>;
   localFilters: IFilterProblemDetails;
   availableSectoralFocus: string[];
   availableSectors: string[];

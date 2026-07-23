@@ -66,7 +66,7 @@ problem:
   # Number of sequential optimizations chained together, e.g. optimizing for
   # 2030 first and then for 2040 using the capacities built in 2030.
   Optimization periods: int(required=False)
-  
+
   # --- Optional: energy-system taxonomy ---
   # These four fields are free-text lists rather than schema-enforced enums,
   # so contributors aren't blocked by a fixed vocabulary. The values below are

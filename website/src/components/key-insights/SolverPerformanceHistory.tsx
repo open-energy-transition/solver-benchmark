@@ -38,7 +38,8 @@ const SolverPerformanceHistory = () => {
     (state: { results: IResultState }) => state.results.availableSolvers,
   );
   const availableSolvers = useMemo(
-    () => allAvailableSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
+    () =>
+      allAvailableSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver)),
     [allAvailableSolvers],
   );
   const selectedFilters = useSelector(
@@ -95,10 +96,7 @@ const SolverPerformanceHistory = () => {
           );
           if (result.status === "ok") {
             const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
-            problemSuccessMap.set(
-              key,
-              (problemSuccessMap.get(key) || 0) + 1,
-            );
+            problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           }
         });
 

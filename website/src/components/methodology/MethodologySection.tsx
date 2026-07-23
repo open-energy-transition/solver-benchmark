@@ -68,8 +68,8 @@ const MethodologySection = () => {
                     We run a <strong>reference problem</strong> and solver
                     periodically on every benchmark runner and estimate the
                     coefficient of variation of the runtime of this reference
-                    problem for each VM. This is a unitless measure which we
-                    use to estimate how much noise is present in the runtime
+                    problem for each VM. This is a unitless measure which we use
+                    to estimate how much noise is present in the runtime
                     measurements from each VM. This{" "}
                     <a href="https://github.com/open-energy-transition/solver-benchmark/issues/393">
                       issue

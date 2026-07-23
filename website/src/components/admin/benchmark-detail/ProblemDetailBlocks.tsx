@@ -97,7 +97,9 @@ const RealisticTag = ({ motivation }: { motivation?: string }) => {
       // The site's own nav sidebar is a fixed, very high z-index element,
       // so it always renders on top of anything positioned underneath it —
       // clamping to the raw viewport edge isn't enough on its own.
-      const sidebar = document.querySelector('nav[aria-label="Main navigation"]');
+      const sidebar = document.querySelector(
+        'nav[aria-label="Main navigation"]',
+      );
       const minLeft = sidebar
         ? sidebar.getBoundingClientRect().right + margin
         : margin;
@@ -152,12 +154,11 @@ const RealisticTag = ({ motivation }: { motivation?: string }) => {
         arrow={false}
       >
         <div>
-          Benchmark problems are marked as realistic if they come from a
-          model that was used, or is similar to a model used in an actual
-          energy modelling study. Please note that this is a rather
-          subjective and modelling framework-dependent definition, but is
-          still useful when estimating solver performance on real-world
-          energy models.
+          Benchmark problems are marked as realistic if they come from a model
+          that was used, or is similar to a model used in an actual energy
+          modelling study. Please note that this is a rather subjective and
+          modelling framework-dependent definition, but is still useful when
+          estimating solver performance on real-world energy models.
         </div>
       </InfoPopup>
 
@@ -244,4 +245,10 @@ const SectionCard = ({
   );
 };
 
-export { FieldBlock, TextFieldBlock, ChipFieldBlock, SectionCard, RealisticTag };
+export {
+  FieldBlock,
+  TextFieldBlock,
+  ChipFieldBlock,
+  SectionCard,
+  RealisticTag,
+};

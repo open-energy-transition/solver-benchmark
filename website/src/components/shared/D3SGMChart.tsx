@@ -36,9 +36,7 @@ const D3SGMChart = ({
   const availableSolvers = useMemo(
     () =>
       excluseHipo
-        ? rawAvailableSolvers.filter(
-            (solver) => !HIPO_SOLVERS.includes(solver),
-          )
+        ? rawAvailableSolvers.filter((solver) => !HIPO_SOLVERS.includes(solver))
         : rawAvailableSolvers,
     [rawAvailableSolvers, excluseHipo],
   );

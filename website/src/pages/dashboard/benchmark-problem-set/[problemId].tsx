@@ -8,7 +8,12 @@ import {
 } from "@/components/shared";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ArrowIcon, ArrowToRightIcon, ArrowUpIcon, HomeIcon } from "@/assets/icons";
+import {
+  ArrowIcon,
+  ArrowToRightIcon,
+  ArrowUpIcon,
+  HomeIcon,
+} from "@/assets/icons";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Color } from "@/constants/color";
 import ProblemClassAndSize from "@/components/admin/benchmark-detail/ProblemClassAndSize";
@@ -95,7 +100,10 @@ const PageProblemDetail = () => {
         >
           {/* Content */}
           <div className="pb-2 md:py-4 md:pt-2 flex items-center">
-            <Link href={"./"} aria-label="Navigate to benchmark problem set list page">
+            <Link
+              href={"./"}
+              aria-label="Navigate to benchmark problem set list page"
+            >
               <ArrowUpIcon className="-rotate-90 size-8 md:size-10 text-navy cursor-pointer" />
             </Link>
             <InfoPopup

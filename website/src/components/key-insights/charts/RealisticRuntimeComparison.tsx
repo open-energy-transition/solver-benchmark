@@ -82,7 +82,8 @@ const RealisticRuntimeComparison = ({
             (result) => !HIPO_SOLVERS.includes(result.solver),
           );
     return bySolver.filter(
-      (result) => metaData[getProblemKey(result)]?.problemClass === problemClass,
+      (result) =>
+        metaData[getProblemKey(result)]?.problemClass === problemClass,
     );
   }, [allBenchmarkLatestResults, dataSource, metaData, problemClass]);
 

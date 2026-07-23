@@ -42,9 +42,7 @@ const DataTable = ({ problemId }: DataTableProps) => {
   });
   const isMilp = useMemo(() => {
     const problemDetail = rawMetaData[problemId as string];
-    return (
-      problemDetail && problemDetail.problemClass === ProblemClass.MILP
-    );
+    return problemDetail && problemDetail.problemClass === ProblemClass.MILP;
   }, [problemId]);
 
   const getLogDownloadUrl = (row: BenchmarkResult) => {
@@ -59,9 +57,7 @@ const DataTable = ({ problemId }: DataTableProps) => {
 
   const tableData: TableData[] = useMemo(
     () =>
-      benchmarkResults.filter(
-        (result) => getProblemKey(result) === problemId,
-      ),
+      benchmarkResults.filter((result) => getProblemKey(result) === problemId),
     [benchmarkResults, problemId],
   ).map((result) => ({
     solver: result.solver,

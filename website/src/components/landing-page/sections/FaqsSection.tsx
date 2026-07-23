@@ -6,10 +6,7 @@ const Contribute = () => {
   const itemsRef = useStaggerReveal<HTMLDivElement>(":scope > *");
 
   return (
-    <div
-      id="faq"
-      className="text-white bg-navy scroll-mt-16 lg:scroll-mt-28"
-    >
+    <div id="faq" className="text-white bg-navy scroll-mt-16 lg:scroll-mt-28">
       <div
         className="
           mx-auto
@@ -43,26 +40,26 @@ const Contribute = () => {
               question="Why are we building a new benchmark platform?"
               answer={
                 <span>
-                  While there exist well-known benchmark problem sets such as the
-                  one by Mittelmann (
+                  While there exist well-known benchmark problem sets such as
+                  the one by Mittelmann (
                   <a href="https://plato.asu.edu/bench.html">
                     https://plato.asu.edu/bench.html
                   </a>
                   ) or MIPLIB (
                   <a href="https://miplib.zib.de/">https://miplib.zib.de/</a>),
                   we do not yet have a benchmark problem set that focuses on
-                  up-to-date and representative problems from the energy planning
-                  domain. This is a crucial missing piece that can enable
-                  optimization solvers to develop new algorithms and improve their
-                  performance on energy models, thereby accelerating key
-                  technologies used to plan and implement the energy transition.
-                  By building an open-source, transparent, and reproducible
-                  platform, we maximize our impact by enabling modellers to
-                  submit new benchmark problems and solver developers to
-                  reproduce and use our problems for development. Our website
-                  offers numerous interactive dashboards that allow users to
-                  perform fine-grained analysis depending on their application
-                  domain and features of interest.
+                  up-to-date and representative problems from the energy
+                  planning domain. This is a crucial missing piece that can
+                  enable optimization solvers to develop new algorithms and
+                  improve their performance on energy models, thereby
+                  accelerating key technologies used to plan and implement the
+                  energy transition. By building an open-source, transparent,
+                  and reproducible platform, we maximize our impact by enabling
+                  modellers to submit new benchmark problems and solver
+                  developers to reproduce and use our problems for development.
+                  Our website offers numerous interactive dashboards that allow
+                  users to perform fine-grained analysis depending on their
+                  application domain and features of interest.
                 </span>
               }
             />
@@ -78,7 +75,9 @@ const Contribute = () => {
               question="What do we mean by modelling framework, scenario, and problem?"
               answer={
                 <>
-                  <span>We use the following nomenclature on this platform:</span>
+                  <span>
+                    We use the following nomenclature on this platform:
+                  </span>
                   <ul className="list-disc list-outside ml-6 mt-2">
                     <li className="mb-2">
                       <strong>Modelling framework</strong>, e.g. PyPSA or TIMES,
@@ -87,22 +86,21 @@ const Contribute = () => {
                       interest.
                     </li>
                     <li className="mb-2">
-                      <strong>Scenario</strong> specifies the temporal,
-                      spatial, sectoral, and policy scope of the problem, such
-                      as geographic scope, available technologies, technology
-                      costs, and policy constraints, as well as the temporal
-                      and spatial resolution used, e.g. the number of regions
-                      or nodes represented and the duration of the time step
-                      used in the optimization problem.
+                      <strong>Scenario</strong> specifies the temporal, spatial,
+                      sectoral, and policy scope of the problem, such as
+                      geographic scope, available technologies, technology
+                      costs, and policy constraints, as well as the temporal and
+                      spatial resolution used, e.g. the number of regions or
+                      nodes represented and the duration of the time step used
+                      in the optimization problem.
                     </li>
                     <li className="mb-2">
                       <strong>Problem</strong> is defined by a combination of a
                       modelling framework and a scenario, captured as an LP or
-                      MPS file that is given as input to an optimization
-                      solver. Scenarios with the same temporal, spatial,
-                      sectoral, and policy scope but different resolutions are
-                      available for some modelling frameworks, to allow scaling
-                      analysis.
+                      MPS file that is given as input to an optimization solver.
+                      Scenarios with the same temporal, spatial, sectoral, and
+                      policy scope but different resolutions are available for
+                      some modelling frameworks, to allow scaling analysis.
                     </li>
                   </ul>
                   <span>

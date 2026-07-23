@@ -307,7 +307,8 @@ const D3SolverEvolutionChart = ({
       .attr("font-size", "12px")
       .text("Version");
 
-    const yAxisLabelCenter = margin.top + (height - margin.top - margin.bottom) / 2;
+    const yAxisLabelCenter =
+      margin.top + (height - margin.top - margin.bottom) / 2;
 
     svg
       .append("text")

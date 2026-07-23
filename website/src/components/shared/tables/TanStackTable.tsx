@@ -248,12 +248,14 @@ export function TanStackTable<T>({
                       from them. An explicit colgroup forces the browser to
                       use the same widths for header and body regardless. */}
                   <colgroup>
-                    {table.getHeaderGroups()[0]?.headers.map((header) => (
-                      <col
-                        key={header.id}
-                        style={{ width: getColumnWidth(header.column.id) }}
-                      />
-                    ))}
+                    {table
+                      .getHeaderGroups()[0]
+                      ?.headers.map((header) => (
+                        <col
+                          key={header.id}
+                          style={{ width: getColumnWidth(header.column.id) }}
+                        />
+                      ))}
                   </colgroup>
                   <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -380,12 +382,14 @@ export function TanStackTable<T>({
                   style={{ tableLayout: "fixed", width: tableWidth }}
                 >
                   <colgroup>
-                    {table.getHeaderGroups()[0]?.headers.map((header) => (
-                      <col
-                        key={header.id}
-                        style={{ width: getColumnWidth(header.column.id) }}
-                      />
-                    ))}
+                    {table
+                      .getHeaderGroups()[0]
+                      ?.headers.map((header) => (
+                        <col
+                          key={header.id}
+                          style={{ width: getColumnWidth(header.column.id) }}
+                        />
+                      ))}
                   </colgroup>
                   <thead>
                     {table.getHeaderGroups().map((headerGroup) => (

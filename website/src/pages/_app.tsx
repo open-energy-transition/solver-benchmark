@@ -111,7 +111,9 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
           modelName,
           modellingFramework,
         } = problemsMetaData[key];
-        uniqueValues.sectoralFocus.add(sectoralFocus || UNSPECIFIED_FILTER_VALUE);
+        uniqueValues.sectoralFocus.add(
+          sectoralFocus || UNSPECIFIED_FILTER_VALUE,
+        );
         if (sectors) {
           sectors.split(",").forEach((sector) => {
             uniqueValues.sectors.add(sector.trim());

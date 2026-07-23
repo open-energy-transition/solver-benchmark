@@ -87,10 +87,7 @@ const ProblemMetadataSections = ({
           <FieldBlock label="Temporal Sampling" value={temporalSampling} />
         )}
         {temporalResolution && (
-          <FieldBlock
-            label="Temporal Resolution"
-            value={temporalResolution}
-          />
+          <FieldBlock label="Temporal Resolution" value={temporalResolution} />
         )}
         {!!optimizationPeriods && (
           <FieldBlock

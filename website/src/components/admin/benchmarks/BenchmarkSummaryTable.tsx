@@ -101,9 +101,7 @@ const BenchmarkSummaryTable = () => {
           }
         });
         availabletimeHorizons.forEach((timeHorizon) => {
-          if (
-            metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)
-          ) {
+          if (metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)) {
             updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
@@ -186,7 +184,11 @@ const BenchmarkSummaryTable = () => {
               {/* Number of Problems */}
               <tr className="-b odd:bg-[#BFD8C733]">
                 <td
-                  className={`p-2 text-left tag-line-sm ${nOfProblemsRowTinted ? TINTED_LABEL_CLASS : PLAIN_LABEL_CLASS}`}
+                  className={`p-2 text-left tag-line-sm ${
+                    nOfProblemsRowTinted
+                      ? TINTED_LABEL_CLASS
+                      : PLAIN_LABEL_CLASS
+                  }`}
                   colSpan={2}
                 >
                   Number of Problems
@@ -202,13 +204,14 @@ const BenchmarkSummaryTable = () => {
               </tr>
               {/* Problem Class */}
               {availableProblemClasses.map((problemClass, problemClassIdx) => (
-                <tr
-                  key={problemClassIdx}
-                  className="-b odd:bg-[#BFD8C733]"
-                >
+                <tr key={problemClassIdx} className="-b odd:bg-[#BFD8C733]">
                   {problemClassIdx === 0 && (
                     <td
-                      className={`p-2 text-left tag-line-sm ${problemClassRowTinted ? TINTED_LABEL_CLASS : PLAIN_LABEL_CLASS}`}
+                      className={`p-2 text-left tag-line-sm ${
+                        problemClassRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availableProblemClasses.length}
                     >
                       Problem Class
@@ -231,13 +234,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* Application */}
               {availableApplications.map((application, applicationIdx) => (
-                <tr
-                  key={applicationIdx}
-                  className="-b odd:bg-[#BFD8C733]"
-                >
+                <tr key={applicationIdx} className="-b odd:bg-[#BFD8C733]">
                   {applicationIdx === 0 && (
                     <td
-                      className={`p-2 text-left tag-line-sm ${applicationRowTinted ? TINTED_LABEL_CLASS : PLAIN_LABEL_CLASS}`}
+                      className={`p-2 text-left tag-line-sm ${
+                        applicationRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availableApplications.length}
                     >
                       Application
@@ -260,13 +264,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* Time Horizon */}
               {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
-                <tr
-                  key={timeHorizonIdx}
-                  className="-b odd:bg-[#BFD8C733]"
-                >
+                <tr key={timeHorizonIdx} className="-b odd:bg-[#BFD8C733]">
                   {timeHorizonIdx === 0 && (
                     <td
-                      className={`p-2 text-left tag-line-sm ${timeHorizonRowTinted ? TINTED_LABEL_CLASS : PLAIN_LABEL_CLASS}`}
+                      className={`p-2 text-left tag-line-sm ${
+                        timeHorizonRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availabletimeHorizons.length}
                     >
                       Time Horizon
@@ -297,13 +302,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* MILP Features */}
               {availableMilpFeatures.map((milpFeature, milpFeatureIdx) => (
-                <tr
-                  key={milpFeatureIdx}
-                  className="-b odd:bg-[#BFD8C733]"
-                >
+                <tr key={milpFeatureIdx} className="-b odd:bg-[#BFD8C733]">
                   {milpFeatureIdx === 0 && (
                     <td
-                      className={`p-2 tag-line-sm text-left ${milpFeaturesRowTinted ? TINTED_LABEL_CLASS : PLAIN_LABEL_CLASS}`}
+                      className={`p-2 tag-line-sm text-left ${
+                        milpFeaturesRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={availableMilpFeatures.length}
                     >
                       MILP Features
@@ -329,13 +335,14 @@ const BenchmarkSummaryTable = () => {
               ))}
               {/* Size Features */}
               {["Real (MILP)", "Other"].map((size, sizeIdx) => (
-                <tr
-                  key={sizeIdx}
-                  className="-b odd:bg-[#BFD8C733]"
-                >
+                <tr key={sizeIdx} className="-b odd:bg-[#BFD8C733]">
                   {sizeIdx === 0 && (
                     <td
-                      className={`p-2 text-left tag-line-sm ${realisticRowTinted ? TINTED_LABEL_CLASS : PLAIN_LABEL_CLASS}`}
+                      className={`p-2 text-left tag-line-sm ${
+                        realisticRowTinted
+                          ? TINTED_LABEL_CLASS
+                          : PLAIN_LABEL_CLASS
+                      }`}
                       rowSpan={2}
                     >
                       Realistic

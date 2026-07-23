@@ -84,10 +84,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           .filter((result) => result.status === "ok")
           .forEach((result) => {
             const key = `${result.benchmark}-${result.size}`;
-            problemSuccessMap.set(
-              key,
-              (problemSuccessMap.get(key) || 0) + 1,
-            );
+            problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           });
 
         // Filter results where all solvers succeeded
@@ -525,8 +522,8 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             </span>
             <span>
               &nbsp; of runtime or memory consumption over all problems, or by
-              the number of solved problems. Click on any column header to
-              sort the results by that column.
+              the number of solved problems. Click on any column header to sort
+              the results by that column.
             </span>
           </p>
         </div>

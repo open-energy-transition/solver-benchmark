@@ -19,7 +19,10 @@ export function sortStringArray(
  */
 export function sortFilterOptions(
   items: string[],
-  { priorityOrder, lastValue }: { priorityOrder?: string[]; lastValue?: string } = {},
+  {
+    priorityOrder,
+    lastValue,
+  }: { priorityOrder?: string[]; lastValue?: string } = {},
 ): string[] {
   if (priorityOrder) {
     const indexOf = (item: string) => {

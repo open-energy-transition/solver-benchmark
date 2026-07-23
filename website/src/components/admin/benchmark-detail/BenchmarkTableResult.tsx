@@ -137,8 +137,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           ) {
             matchesFilters = true;
           } else if (
-            (problem.realistic === false ||
-              problem.realistic === undefined) &&
+            (problem.realistic === false || problem.realistic === undefined) &&
             realisticFilter.includes(RealisticOption.Other)
           ) {
             matchesFilters = true;
@@ -158,8 +157,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         }
 
         const urlParts = problem.url!.split("/");
-        const filename =
-          urlParts[urlParts.length - 1] || `${problem.name}.lp`;
+        const filename = urlParts[urlParts.length - 1] || `${problem.name}.lp`;
         filesToDownload.push({
           problemId: problem.name,
           url: problem.url!,
@@ -406,8 +404,8 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       <div className="sm:flex items-center justify-between my-4 md:mt-0">
         <p className="text-sm sm:flex-1 sm:mr-4">
           <span>
-            To search for a particular benchmark problem by ID, click the
-            filter icon
+            To search for a particular benchmark problem by ID, click the filter
+            icon
           </span>
           <span className="inline-flex gap-2">
             <FilterIcon className="size-4 shrink-0" />

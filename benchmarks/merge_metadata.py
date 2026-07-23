@@ -37,9 +37,7 @@ class BlankNoneDumper(yaml.Dumper):
         return self.represent_scalar("tag:yaml.org,2002:null", "")
 
 
-def validate_problem_entry(
-    problem_id: str, problem_info: Any, file_path: Path
-) -> bool:
+def validate_problem_entry(problem_id: str, problem_info: Any, file_path: Path) -> bool:
     """
     Validate that a problem entry has all required fields.
 
@@ -242,9 +240,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     print(f"Processed {len(unified_metadata)} entries.")
     print(
-        "Validation was skipped."
-        if args.skip_validation
-        else "Validation was enabled."
+        "Validation was skipped." if args.skip_validation else "Validation was enabled."
     )
     print(f"Unified metadata has been written to {results_file}")
     return 0

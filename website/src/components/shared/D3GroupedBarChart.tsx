@@ -627,7 +627,9 @@ const D3GroupedBarChart = ({
   return (
     <div
       key={windowWidth}
-      className={`relative ${outerBgClassName ?? "bg-[#F4F6FA] p-2"} rounded-2xl`}
+      className={`relative ${
+        outerBgClassName ?? "bg-[#F4F6FA] p-2"
+      } rounded-2xl`}
       style={outerBgClassName ? undefined : { background: "#F4F6FA" }}
     >
       {/* Rightmost bar group callout note */}

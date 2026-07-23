@@ -96,9 +96,9 @@ const Contribute = () => {
         <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative flex justify-between">
           <div className="font-lato text-xl/1.4 max-w-[541px]">
             <div className="font-medium">
-              We accept community contributions for new problems, new or
-              updated solver versions, and feedback on the benchmarking
-              methodology and metrics via our GitHub repository.
+              We accept community contributions for new problems, new or updated
+              solver versions, and feedback on the benchmarking methodology and
+              metrics via our GitHub repository.
             </div>
             <div className="justify-center flex md:justify-between max-w-lg pt-1">
               <div className="py-9 text-center flex-1">

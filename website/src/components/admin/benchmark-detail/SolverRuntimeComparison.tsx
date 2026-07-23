@@ -23,8 +23,7 @@ const SolverRuntimeComparison = ({
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
       return benchmarkLatestResults.find(
-        (result) =>
-          result.solver === key && getProblemKey(result) === category,
+        (result) => result.solver === key && getProblemKey(result) === category,
       );
     },
     [benchmarkLatestResults],

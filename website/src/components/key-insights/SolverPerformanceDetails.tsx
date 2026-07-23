@@ -16,9 +16,9 @@ const SolverPerformanceDetails = () => {
         details about the problem's features and why we consider it as
         representative for that modelling framework. Solvers that timed out or
         errored on a particular problem are indicated by red text above the
-        corresponding bar. 4 out of the 7 problems can be solved by at least
-        one open source solver, with different solvers (HiGHS or SCIP) providing
-        the best performance on different problems.
+        corresponding bar. 4 out of the 7 problems can be solved by at least one
+        open source solver, with different solvers (HiGHS or SCIP) providing the
+        best performance on different problems.
       </p>
       <div className="my-4">
         <SolverRuntimeComparison

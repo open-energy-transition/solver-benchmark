@@ -154,8 +154,8 @@ const PageBenchmarkSet = () => {
         milpFeatures.length === 0 ||
         !value.milpFeatures ||
         value.milpFeatures.length === 0 ||
-        milpFeatures.some((selectedFeature) =>
-          value.milpFeatures?.includes(selectedFeature),
+        milpFeatures.some(
+          (selectedFeature) => value.milpFeatures?.includes(selectedFeature),
         );
 
       return (

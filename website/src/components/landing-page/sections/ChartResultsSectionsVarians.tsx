@@ -80,10 +80,7 @@ const ChartResultsSectionsVarians = ({
             .filter((result) => result.status === "ok")
             .forEach((result) => {
               const key = `${result.benchmark}-${result.size}`;
-              problemSuccessMap.set(
-                key,
-                (problemSuccessMap.get(key) || 0) + 1,
-              );
+              problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
             });
 
           return results.filter((result) => {

@@ -107,11 +107,11 @@ const ResultsSgmModeDropdown = ({
               the benchmark problem (i.e. errors, times out, or runs out of
               memory) are given the time out value for runtime and maximum
               memory limit value for memory usage when calculating SGM. This may
-              produce skewed results when one solver solves a lot more
-              problems than another one. In this case, you can also choose to
-              penalize TO/OOM/ER problems by a factor, or to filter to the
-              subset of problems that are solved by all solvers, by using the
-              dropdown menu to the right.
+              produce skewed results when one solver solves a lot more problems
+              than another one. In this case, you can also choose to penalize
+              TO/OOM/ER problems by a factor, or to filter to the subset of
+              problems that are solved by all solvers, by using the dropdown
+              menu to the right.
             </div>
           </InfoPopup>
         </span>

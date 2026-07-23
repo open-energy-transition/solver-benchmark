@@ -172,9 +172,8 @@ const SolverSelection = () => {
               <CloseIcon className="size-3 mt-[9px]" />
             </span>
           </span>{" "}
-          s in the graph below might appear at 2 different time values. Click
-          on any point in this graph to see details of that benchmark
-          problem.
+          s in the graph below might appear at 2 different time values. Click on
+          any point in this graph to see details of that benchmark problem.
         </p>
         <p className="mb-1 mt-4 max-w-screen-lg">
           <p className="flex-col gap-1 items-center text-navy text-sm">
