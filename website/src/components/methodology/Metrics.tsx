@@ -14,7 +14,7 @@ const Metrics = () => {
         Metrics
       </div>
       <p>
-        We record the following metrics for each benchmark instance and solver
+        We record the following metrics for each benchmark problem and solver
         combination:
       </p>
       <ol className="list-decimal list-outside ml-6">
@@ -48,7 +48,7 @@ const Metrics = () => {
       </ol>
       <p>
         We also record the following metrics in order to verify the solution
-        quality of MILP benchmark instances:
+        quality of MILP benchmark problems:
       </p>
       <ol className="list-decimal list-outside ml-6">
         <li className="mb-2">
@@ -72,7 +72,7 @@ const Metrics = () => {
         </li>
       </ol>
       <p>
-        After running benchmark instances, we manually check any runs where the
+        After running benchmark problems, we manually check any runs where the
         above 2 metrics are above <code>1e-4</code> for errors. In our results
         so far, no solver had a max integrality violation of above{" "}
         <code>1e-5</code>.

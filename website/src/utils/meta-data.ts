@@ -33,14 +33,14 @@ const fetchYamlData = async (filePath: string) => {
   }
 };
 
-const getMetaData = async (): Promise<{ benchmarks: MetaData }> => {
+const getMetaData = async (): Promise<{ problems: MetaData }> => {
   const rawData = await fetchYamlData("/results/metadata.yaml");
 
-  const processedBenchmarks = toCamelCase(
-    (rawData as { benchmarks: MetaData }).benchmarks,
+  const processedProblems = toCamelCase(
+    (rawData as { problems: MetaData }).problems,
   );
   return {
-    benchmarks: processedBenchmarks as MetaData,
+    problems: processedProblems as MetaData,
   };
 };
 

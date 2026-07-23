@@ -23,9 +23,14 @@ const BenchmarkStatisticsCharts = ({
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
+  // Build the set of individual MILP features across all entries.
   const availableMilpFeatures = useMemo(() => {
     return Array.from(
-      new Set(Object.keys(metaData).map((key) => metaData[key].milpFeatures)),
+      new Set(
+        Object.keys(metaData).flatMap(
+          (key) => metaData[key].milpFeatures ?? [],
+        ),
+      ),
     );
   }, [metaData]);
 
@@ -50,19 +55,13 @@ const BenchmarkStatisticsCharts = ({
 
     Object.keys(metaData).forEach((key) => {
       if (metaData[key].modellingFramework === framework) {
-        // Number of problems
+        // Each entry counts as exactly one problem and one size.
         updateData(nOfProblemsMap, "totalNOfDiffProblems");
-        metaData[key].sizes.forEach(() => {
-          updateData(nOfProblemsMap, "multipleSizes");
-        });
+        updateData(nOfProblemsMap, "multipleSizes");
 
         availableProblemClasses.forEach((problemClass) => {
           if (metaData[key].problemClass === problemClass) {
-            updateData(
-              problemClassesMap,
-              problemClass,
-              metaData[key].sizes.length,
-            );
+            updateData(problemClassesMap, problemClass);
           }
         });
         availableApplications.forEach((application) => {
@@ -81,27 +80,25 @@ const BenchmarkStatisticsCharts = ({
           }
         });
         availableMilpFeatures.forEach((milpFeature) => {
-          if (metaData[key].milpFeatures === milpFeature) {
-            updateData(milpFeaturesMap, milpFeature as string);
+          if (metaData[key].milpFeatures?.includes(milpFeature)) {
+            updateData(milpFeaturesMap, milpFeature);
           }
         });
         availabletimeHorizons.forEach((timeHorizon) => {
-          if (metaData[key].timeHorizon.toLowerCase().includes(timeHorizon)) {
-            updateData(
-              timeHorizonsMap,
-              timeHorizon as string,
-              metaData[key].sizes.length,
-            );
+          if (
+            metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)
+          ) {
+            updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
         if (
           !availabletimeHorizons.some((time) =>
-            metaData[key].timeHorizon.toLowerCase().includes(time),
+            metaData[key].timeHorizon?.toLowerCase().includes(time),
           )
         ) {
           updateData(timeHorizonsMap, "n/a" as string);
         }
-        if (metaData[key].sizes.some((instance) => instance.realistic)) {
+        if (metaData[key].realistic) {
           if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
@@ -162,15 +159,14 @@ const BenchmarkStatisticsCharts = ({
       };
     });
     Object.keys(metaData).forEach((key) => {
-      metaData[key].sizes.forEach((s) => {
-        const data = sizeData.find((sd) => sd.size === s.size);
-        if (data) {
-          data.total += 1;
-          if (s.realistic) {
-            data.realistic += 1;
-          }
+      const entry = metaData[key];
+      const data = sizeData.find((sd) => sd.size === entry.size);
+      if (data) {
+        data.total += 1;
+        if (entry.realistic) {
+          data.realistic += 1;
         }
-      });
+      }
     });
     return sizeData.map((data) => {
       return {

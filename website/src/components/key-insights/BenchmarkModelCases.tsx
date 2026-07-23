@@ -14,7 +14,7 @@ const BenchmarkModelCases = () => {
       {/* Content */}
       <h4>What benchmark problems do we have (and what are missing?)</h4>
       <p>
-        This section breaks down our current benchmark set according to
+        This section breaks down our current benchmark problem set according to
         modelling framework, problem type, application domain, and model
         features. This highlights the kinds of energy models that we test
         solvers on, but is also a useful warning of the gaps in our collection.
@@ -23,7 +23,7 @@ const BenchmarkModelCases = () => {
       <p>
         {" "}
         For version 2 of our platform, we plan to have a public call for
-        benchmarks to address the gaps above. In particular, we welcome
+        problems to address the gaps above. In particular, we welcome
         benchmark problem contributions that cover:
       </p>
       <ul className="list-disc pl-6 space-y-2">
@@ -46,7 +46,7 @@ const BenchmarkModelCases = () => {
           “Realistic”: Realistic problems are missing for PowerModels and Sienna
         </li>
         <li>
-          Large benchmark instances are also missing for many model frameworks,
+          Large benchmark problems are also missing for many modelling frameworks,
           see the section{" "}
           <a
             className="font-bold"

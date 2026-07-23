@@ -49,7 +49,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   realisticFilter = [],
 }) => {
   const [isSelectMode, setIsSelectMode] = useState(false);
-  const [selectedBenchmarks, setSelectedBenchmarks] = useState<Set<string>>(
+  const [selectedProblems, setSelectedProblems] = useState<Set<string>>(
     new Set(),
   );
   const [isDownloading, setIsDownloading] = useState(false);
@@ -69,26 +69,26 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   );
 
   const handleSelectAll = () => {
-    if (selectedBenchmarks.size === memoizedMetaData.length) {
-      setSelectedBenchmarks(new Set());
+    if (selectedProblems.size === memoizedMetaData.length) {
+      setSelectedProblems(new Set());
     } else {
-      setSelectedBenchmarks(new Set(memoizedMetaData.map((b) => b.name)));
+      setSelectedProblems(new Set(memoizedMetaData.map((b) => b.name)));
     }
   };
 
   const handleToggleSelect = (name: string) => {
-    const newSelected = new Set(selectedBenchmarks);
+    const newSelected = new Set(selectedProblems);
     if (newSelected.has(name)) {
       newSelected.delete(name);
     } else {
       newSelected.add(name);
     }
-    setSelectedBenchmarks(newSelected);
+    setSelectedProblems(newSelected);
   };
 
   const handleDownloadSelected = async () => {
-    if (selectedBenchmarks.size === 0) {
-      alert("Please select at least one benchmark to download");
+    if (selectedProblems.size === 0) {
+      alert("Please select at least one problem to download");
       return;
     }
 
@@ -107,7 +107,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       const dirHandle = await window.showDirectoryPicker();
 
       const selectedFiles = memoizedMetaData.filter((b) =>
-        selectedBenchmarks.has(b.name),
+        selectedProblems.has(b.name),
       );
 
       setDownloadProgress({
@@ -116,63 +116,55 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: "",
       });
 
-      // Collect all files to download (multiple sizes per benchmark if filters match)
+      // Collect all files to download
       const filesToDownload: Array<{
-        benchmark: string;
+        problemId: string;
         url: string;
         filename: string;
       }> = [];
 
-      for (const benchmark of selectedFiles) {
-        // Find ALL sizes with valid URLs that match the filters
-        const matchingSizes =
-          benchmark.sizes?.filter(
-            (s: { url?: string; size: string; realistic?: boolean }) => {
-              const hasUrl = !!s.url;
-              const matchesFilter =
-                problemSizeFilter.length === 0 ||
-                problemSizeFilter.includes(s.size);
+      for (const problem of selectedFiles) {
+        const hasUrl = !!problem.url;
+        const matchesSizeFilter =
+          problemSizeFilter.length === 0 ||
+          (!!problem.size && problemSizeFilter.includes(problem.size));
 
-              if (realisticFilter.length > 0) {
-                if (
-                  s.realistic === true &&
-                  realisticFilter.includes(RealisticOption.Realistic)
-                ) {
-                  return hasUrl && matchesFilter;
-                }
-                if (
-                  (s.realistic === false || s.realistic === undefined) &&
-                  realisticFilter.includes(RealisticOption.Other)
-                ) {
-                  return hasUrl && matchesFilter;
-                }
-                return false;
-              }
-              return hasUrl && matchesFilter;
-            },
-          ) || [];
+        let matchesFilters = hasUrl && matchesSizeFilter;
+        if (matchesFilters && realisticFilter.length > 0) {
+          if (
+            problem.realistic === true &&
+            realisticFilter.includes(RealisticOption.Realistic)
+          ) {
+            matchesFilters = true;
+          } else if (
+            (problem.realistic === false ||
+              problem.realistic === undefined) &&
+            realisticFilter.includes(RealisticOption.Other)
+          ) {
+            matchesFilters = true;
+          } else {
+            matchesFilters = false;
+          }
+        }
 
-        if (matchingSizes.length === 0) {
+        if (!matchesFilters) {
           console.warn(
-            `No download URLs found for ${benchmark.name} matching filters`,
+            `No download URL found for ${problem.name} matching filters`,
           );
           alert(
-            `No download URLs found for ${benchmark.name} matching filters. Skipping...`,
+            `No download URL found for ${problem.name} matching filters. Skipping...`,
           );
           continue;
         }
 
-        // Add all matching sizes to download list
-        for (const size of matchingSizes) {
-          const urlParts = size.url!.split("/");
-          const filename =
-            urlParts[urlParts.length - 1] || `${benchmark.name}.lp`;
-          filesToDownload.push({
-            benchmark: benchmark.name,
-            url: size.url!,
-            filename,
-          });
-        }
+        const urlParts = problem.url!.split("/");
+        const filename =
+          urlParts[urlParts.length - 1] || `${problem.name}.lp`;
+        filesToDownload.push({
+          problemId: problem.name,
+          url: problem.url!,
+          filename,
+        });
       }
 
       setDownloadProgress({
@@ -183,7 +175,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
       // Download all files
       for (let i = 0; i < filesToDownload.length; i++) {
-        const { benchmark: _benchmark, url, filename } = filesToDownload[i];
+        const { problemId: _problemId, url, filename } = filesToDownload[i];
 
         setDownloadProgress({
           current: i + 1,
@@ -235,7 +227,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       alert("🎉 All selected files downloaded successfully!");
 
       // Clear selection and exit select mode
-      setSelectedBenchmarks(new Set());
+      setSelectedProblems(new Set());
       setIsSelectMode(false);
     } catch (error) {
       console.error("Download error:", error);
@@ -251,7 +243,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   };
 
   const handleCancelSelection = () => {
-    setSelectedBenchmarks(new Set());
+    setSelectedProblems(new Set());
     setIsSelectMode(false);
   };
 
@@ -281,12 +273,12 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                   <input
                     type="checkbox"
                     checked={
-                      selectedBenchmarks.size === memoizedMetaData.length &&
+                      selectedProblems.size === memoizedMetaData.length &&
                       memoizedMetaData.length > 0
                     }
                     onChange={handleSelectAll}
                     className="cursor-pointer w-4 h-4"
-                    aria-label="Select all benchmarks"
+                    aria-label="Select all problems"
                   />
                 </div>
               ),
@@ -294,7 +286,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                 <div>
                   <input
                     type="checkbox"
-                    checked={selectedBenchmarks.has(info.row.original.name)}
+                    checked={selectedProblems.has(info.row.original.name)}
                     onChange={() => handleToggleSelect(info.row.original.name)}
                     className="cursor-pointer w-4 h-4"
                     aria-label={`Select ${info.row.original.name}`}
@@ -311,9 +303,9 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           ]
         : []),
       {
-        header: "BENCHMARK NAME",
+        header: "PROBLEM ID",
         accessorKey: "name",
-        size: 230,
+        size: 250,
         enableSorting: true,
         filterFn: filterSelect,
         cell: (info) => (
@@ -324,7 +316,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               "{name}",
               info.row.original.name,
             )}
-            aria-label="bench-mark-link"
+            aria-label="problem-link"
           >
             <InfoPopup
               disabled={((info.getValue() as string) || "").length <= 30}
@@ -343,11 +335,11 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         ),
       },
       {
-        header: "MODEL NAME",
-        accessorKey: "modelName",
+        header: "FRAMEWORK",
+        accessorKey: "modellingFramework",
         filterFn: filterSelect,
-        cell: (info) => info.getValue(),
         size: 180,
+        cell: (info) => info.getValue(),
       },
       {
         header: "PROBLEM CLASS",
@@ -365,7 +357,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           <InfoPopup
             disabled={((info.getValue() as string) || "").length <= 30}
             trigger={() => (
-              <div className="pl-4 w-40 whitespace-nowrap text-ellipsis overflow-hidden">
+              <div className="w-40 whitespace-nowrap text-ellipsis overflow-hidden">
                 {info.getValue() as string}
               </div>
             )}
@@ -387,7 +379,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       {
         header: "SECTORS",
         accessorKey: "sectors",
-        size: 150,
+        size: 200,
         filterFn: filterSelect,
         cell: (info) => (
           <InfoPopup
@@ -406,24 +398,24 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         ),
       },
     ],
-    [isSelectMode, selectedBenchmarks, memoizedMetaData.length],
+    [isSelectMode, selectedProblems, memoizedMetaData.length],
   );
 
   return (
     <div>
       <div className="sm:flex items-center justify-between my-4 md:mt-0">
-        <p className="text-xs sm:w-1/2 4xl:w-3/4">
+        <p className="text-sm sm:flex-1 sm:mr-4">
           <span>
-            To search for a particular benchmark problem by name, click the
+            To search for a particular benchmark problem by ID, click the
             filter icon
           </span>
           <span className="inline-flex gap-2">
             <FilterIcon className="size-4 shrink-0" />
           </span>
-          <span>on the benchmark name column and type to search</span>
+          <span>on the problem ID column and type to search</span>
         </p>
 
-        <div className="flex gap-2 justify-end mt-2 sm:mt-0">
+        <div className="flex gap-2 justify-end mt-2 sm:mt-0 shrink-0">
           {!isSelectMode ? (
             <button
               onClick={() => setIsSelectMode(true)}
@@ -435,14 +427,14 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
             <>
               <button
                 onClick={handleDownloadSelected}
-                disabled={isDownloading || selectedBenchmarks.size === 0}
+                disabled={isDownloading || selectedProblems.size === 0}
                 className="px-4 py-2 bg-navy text-white rounded-lg transition-colors text-sm font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {isDownloading
                   ? `Downloading... (${downloadProgress?.current || 0}/${
                       downloadProgress?.total || 0
                     })`
-                  : `Download Selected (${selectedBenchmarks.size})`}
+                  : `Download Selected (${selectedProblems.size})`}
               </button>
               <button
                 onClick={handleCancelSelection}
@@ -483,7 +475,14 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       )}
 
       <div>
-        <TanStackTable showAllRows data={memoizedMetaData} columns={columns} />
+        <TanStackTable
+          showAllRows
+          virtualizedHeight="70vh"
+          data={memoizedMetaData}
+          columns={columns}
+          headerClassName="text-left text-navy py-4 px-6 cursor-pointer"
+          oddRowClassName="odd:bg-[#BFD8C733]"
+        />
       </div>
       <div>
         <div className="text-xs my-4">

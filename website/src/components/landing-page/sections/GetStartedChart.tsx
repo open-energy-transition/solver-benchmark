@@ -8,7 +8,8 @@ import { useScrollReveal } from "@/hooks/useGsapAnimation";
 const NOTE_BOX = (
   <div className="px-6 py-5 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl w-full text-left">
     <p className="text-sm leading-relaxed">
-      <b>Note:</b> The benchmark is not intended to identify a single
+      <b>Note:</b>{" "}
+      The benchmark is not intended to identify a single
       &ldquo;best&rdquo; solver or provide a universal ranking. Solver
       performance depends on the characteristics of the optimization problem,
       modeling framework, solver configuration, and user requirements. Instead,
@@ -26,7 +27,7 @@ const NOTE_BOX = (
       </Link>{" "}
       to benchmark on your own problems. See the{" "}
       <Link
-        href="/dashboard/main-results#caveats"
+        href={`${PATH_DASHBOARD.home}#caveats`}
         className="font-bold underline underline-offset-2 hover:opacity-75"
       >
         Caveats

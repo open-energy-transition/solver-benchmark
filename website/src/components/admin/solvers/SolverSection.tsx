@@ -10,6 +10,7 @@ import CustomDropdown from "@/components/common/CustomDropdown";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getProblemKey } from "@/utils/results";
 
 const SOLVES_DATA = [
   {
@@ -53,23 +54,23 @@ const SolverSection = () => {
 
   const availableSolvers = useAvailableSolvers();
   const rawBenchmarkLatestResults = useBenchmarkResults();
-  const benchmarkSuccessMap = new Map<string, number>();
+  const problemSuccessMap = new Map<string, number>();
 
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
 
-  // Count successful solves for each benchmark
+  // Count successful solves for each problem
   rawBenchmarkLatestResults.forEach((result) => {
     const key = `${result.benchmark}-${result.size}`;
-    benchmarkSuccessMap.set(key, (benchmarkSuccessMap.get(key) || 0) + 1);
+    problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
   });
 
   const [selectedSolver, setSelectedSolver] = useState("");
 
   const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
     return HIPO_SOLVERS.includes(selectedSolver)
-      ? fullMetaData[result.benchmark]?.problemClass === "LP"
+      ? fullMetaData[getProblemKey(result)]?.problemClass === "LP"
       : true;
   });
 
@@ -184,7 +185,7 @@ const SolverSection = () => {
         return aBaseRuntime - bBaseRuntime;
       }
 
-      // Put base solver first within each benchmark group
+      // Put base solver first within each problem group
       return a.solver === selectedSolver ? -1 : 1;
     });
   }, [selectedSolver, benchmarkLatestResults]);

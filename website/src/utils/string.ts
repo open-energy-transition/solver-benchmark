@@ -10,6 +10,36 @@ export function sortStringArray(
   }
 }
 
+/**
+ * Sorts filter options for display. With no `priorityOrder`, sorts
+ * alphabetically but always places `lastValue` (e.g. "N/A") at the end.
+ * With a `priorityOrder`, items are ordered by their position in it (e.g.
+ * Problem Size's S/M/L, or Realistic's Realistic/Other), and any item not
+ * listed falls back after it, alphabetically.
+ */
+export function sortFilterOptions(
+  items: string[],
+  { priorityOrder, lastValue }: { priorityOrder?: string[]; lastValue?: string } = {},
+): string[] {
+  if (priorityOrder) {
+    const indexOf = (item: string) => {
+      const idx = priorityOrder.indexOf(item);
+      return idx === -1 ? priorityOrder.length : idx;
+    };
+    return [...items].sort((a, b) => {
+      const diff = indexOf(a) - indexOf(b);
+      return diff !== 0 ? diff : a.localeCompare(b);
+    });
+  }
+
+  return [...items].sort((a, b) => {
+    const aIsLast = a === lastValue;
+    const bIsLast = b === lastValue;
+    if (aIsLast !== bIsLast) return aIsLast ? 1 : -1;
+    return a.localeCompare(b);
+  });
+}
+
 export const extractNumberFromFormattedString = (str: string): number => {
   const cleanStr = str.replace(/<\/?b>/g, "");
   const numMatch = cleanStr.match(/^[\d.]+/);

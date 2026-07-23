@@ -10,7 +10,7 @@ import { extractNumberFromFormattedString } from "@/utils/string";
 import { SgmMode } from "@/constants/sgm";
 import { SgmExplanation, SolverVersions } from "@/components/shared";
 import ResultsSgmModeDropdown from "./home/ResultsSgmModeDropdown";
-import SgmRuntimeComparison from "@/pages/dashboard/main-result/SgmRuntimeComparison";
+import SgmRuntimeComparison from "@/components/admin/home/SgmRuntimeComparison";
 import { getLatestBenchmarkResult } from "@/utils/results";
 import InfoPopup from "../common/InfoPopup";
 import { getSolverColor } from "@/utils/chart";
@@ -38,7 +38,7 @@ export type TableRowType = {
   solver: string;
   version: string;
   memory: string;
-  solvedBenchmarks: string;
+  solvedProblems: string;
   runtime: string;
   unnormalizedData: {
     runtime: number;
@@ -77,16 +77,16 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   const benchmarkResults = useMemo(() => {
     switch (sgmMode) {
       case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS:
-        const benchmarkSuccessMap = new Map<string, number>();
+        const problemSuccessMap = new Map<string, number>();
 
-        // Count successful solves for each benchmark
+        // Count successful solves for each problem
         benchmarkLatestResults
           .filter((result) => result.status === "ok")
           .forEach((result) => {
             const key = `${result.benchmark}-${result.size}`;
-            benchmarkSuccessMap.set(
+            problemSuccessMap.set(
               key,
-              (benchmarkSuccessMap.get(key) || 0) + 1,
+              (problemSuccessMap.get(key) || 0) + 1,
             );
           });
 
@@ -95,7 +95,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           const key = `${result.benchmark}-${result.size}`;
           return (
             result.status === "ok" &&
-            benchmarkSuccessMap.get(key) === availableSolvers.length
+            problemSuccessMap.get(key) === availableSolvers.length
           );
         });
 
@@ -169,7 +169,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     [getRelevantResults, solverList],
   );
 
-  const getNumberSolvedBenchmark = useCallback(
+  const getNumberSolvedProblems = useCallback(
     (solver: string) => {
       return benchmarkResults.filter(
         (result) => result.status === "ok" && result.solver === solver,
@@ -192,20 +192,20 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     return combinedRankList.sort((a, b) => a.score - b.score);
   };
 
-  const uniqueBenchmarkCount = new Set(
+  const uniqueProblemCount = new Set(
     benchmarkResults.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
 
-  const getSolvedBenchmarksLabel = (
+  const getSolvedProblemsLabel = (
     solver: string,
-    uniqueBenchmarkCount: number,
+    uniqueProblemCount: number,
   ) => {
-    const numberSolvedBenchmark = getNumberSolvedBenchmark(solver);
-    const percentage = (numberSolvedBenchmark * 100) / uniqueBenchmarkCount;
+    const numberSolvedProblems = getNumberSolvedProblems(solver);
+    const percentage = (numberSolvedProblems * 100) / uniqueProblemCount;
     return `${roundNumber(
       percentage,
       0,
-    )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`;
+    )} % (${numberSolvedProblems} / ${uniqueProblemCount})`;
   };
 
   const columns: ColumnType[] = useMemo(
@@ -260,8 +260,8 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         },
       },
       {
-        name: "Solved Benchmarks",
-        field: "solvedBenchmarks",
+        name: "Solved Problems",
+        field: "solvedProblems",
         width: "w-1/5",
         header: {
           bgStyle: "bg-[#F4F6FA]",
@@ -273,8 +273,8 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         sort: true,
         sortFunc: (a, b) => {
           return (
-            extractNumberFromFormattedString(a.solvedBenchmarks) -
-            extractNumberFromFormattedString(b.solvedBenchmarks)
+            extractNumberFromFormattedString(a.solvedProblems) -
+            extractNumberFromFormattedString(b.solvedProblems)
           );
         },
         headerContent: (header: string) => (
@@ -291,7 +291,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               arrow={false}
             >
               <div>
-                Solved benchmarks is the number of benchmarks where the solver
+                Solved problems is the number of problems where the solver
                 returns an &apos;ok&apos; status
               </div>
             </InfoPopup>
@@ -325,15 +325,15 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             {sgmMode === SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS && (
               <>
                 {" "}
-                on {uniqueBenchmarkCount}{" "}
-                {uniqueBenchmarkCount > 1 ? "benchmarks" : "benchmark"}
+                on {uniqueProblemCount}{" "}
+                {uniqueProblemCount > 1 ? "problems" : "problem"}
               </>
             )}
           </div>
         ),
       },
     ],
-    [sgmMode, uniqueBenchmarkCount],
+    [sgmMode, uniqueProblemCount],
   );
 
   useEffect(() => {
@@ -347,14 +347,14 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
       ),
     );
     const maxSolved = Math.max(
-      ...solverList.map((solver) => getNumberSolvedBenchmark(solver)),
+      ...solverList.map((solver) => getNumberSolvedProblems(solver)),
     );
 
     setTableData(
       solverList.map((solverData) => {
         const runtimeSgm = calculateSgmBySolver(solverData, "runtime");
         const memorySgm = calculateSgmBySolver(solverData, "memoryUsage");
-        const solvedCount = getNumberSolvedBenchmark(solverData);
+        const solvedCount = getNumberSolvedProblems(solverData);
 
         return {
           rank:
@@ -374,9 +374,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
           })} (${formatDecimal({
             value: calculateSgm(getRelevantResults(solverData, "memoryUsage")),
           })})${memorySgm === minMemory ? "</b>" : ""}`,
-          solvedBenchmarks: `${
+          solvedProblems: `${
             solvedCount === maxSolved ? "<b>" : ""
-          }${getSolvedBenchmarksLabel(solverData, uniqueBenchmarkCount)}${
+          }${getSolvedProblemsLabel(solverData, uniqueProblemCount)}${
             solvedCount === maxSolved ? "</b>" : ""
           }`,
           runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${formatDecimal({
@@ -387,7 +387,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         };
       }),
     );
-  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
+  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedProblems]);
 
   // Sorting logic
   const sortedTableData = useMemo(() => {
@@ -447,7 +447,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
 
   const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults);
 
-  const uniqueLatestBenchmarkCount = new Set(
+  const uniqueLatestProblemCount = new Set(
     latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
 
@@ -471,10 +471,10 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         <ResultsSectionsTitle
           benchmarkResults={benchmarkResults}
           latestBenchmarkResultLength={latestBenchmarkResult.length}
-          uniqueBenchmarkCount={uniqueBenchmarkCount}
-          uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
+          uniqueProblemCount={uniqueProblemCount}
+          uniqueLatestProblemCount={uniqueLatestProblemCount}
         />
-        <div className="pl-2 mt-2 max-w-screen-lg">
+        <div className="pl-2 mt-2 w-full">
           <p>
             <span>
               This table summarizes the benchmark results of the latest version
@@ -498,11 +498,11 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                 </div>
               </InfoPopup>
             </span>
-            <span> of each solver on the selected configuration.</span>
-          </p>
-          <p>
-            You can rank the solvers by the normalized shifted geometric mean
-            (SGM
+            <span>
+              {" "}
+              of each solver on the selected configuration. You can rank the
+              solvers by the normalized shifted geometric mean (SGM
+            </span>
             <span className="inline-flex gap-2">
               <InfoPopup
                 trigger={() => (
@@ -524,9 +524,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
               </InfoPopup>
             </span>
             <span>
-              &nbsp; of runtime or memory consumption over all benchmarks, or by
-              the number of solved benchmark instances. Click on any column
-              header to sort the results by that column.
+              &nbsp; of runtime or memory consumption over all problems, or by
+              the number of solved problems. Click on any column header to
+              sort the results by that column.
             </span>
           </p>
         </div>
@@ -626,8 +626,8 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
       <SgmRuntimeComparison
         timeout={timeout}
         sgmData={tableData}
-        uniqueBenchmarkCount={uniqueBenchmarkCount}
-        uniqueLatestBenchmarkCount={uniqueLatestBenchmarkCount}
+        uniqueProblemCount={uniqueProblemCount}
+        uniqueLatestProblemCount={uniqueLatestProblemCount}
       />
     </div>
   );

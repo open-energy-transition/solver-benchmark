@@ -6,13 +6,15 @@ import BenchmarkTableResult from "@/components/admin/benchmark-detail/BenchmarkT
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import BenchmarkDetailFilterSection from "@/components/admin/benchmark-detail/BenchmarkDetailFilterSection";
+import ProblemDetailFilterSection from "@/components/admin/benchmark-detail/ProblemDetailFilterSection";
 import { IResultState, RealisticOption } from "@/types/state";
 import { useMemo, useState } from "react";
-import { IFilterBenchmarkDetails } from "@/types/benchmark";
+import { IFilterProblemDetails } from "@/types/benchmark";
 import { isEmpty } from "lodash";
+import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
 
-const PageBenchmarkDetail = () => {
+const PageBenchmarkSet = () => {
   const fullMetaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
@@ -23,9 +25,10 @@ const PageBenchmarkDetail = () => {
 
   const problemSizeResult: { [key: string]: string } = {};
   Object.keys(fullMetaData).forEach((metaDataKey) => {
-    fullMetaData[metaDataKey]?.sizes?.forEach((s) => {
-      problemSizeResult[`${metaDataKey}'-'${s.name}`] = s.size;
-    });
+    const size = fullMetaData[metaDataKey]?.size;
+    if (size) {
+      problemSizeResult[metaDataKey] = size;
+    }
   });
 
   const uniqueValues = {
@@ -47,14 +50,22 @@ const PageBenchmarkDetail = () => {
       modellingFramework,
       milpFeatures,
     } = fullMetaData[key];
-    uniqueValues.sectoralFocus.add(sectoralFocus);
-    sectors.split(",").forEach((sector) => {
-      uniqueValues.sectors.add(sector.trim());
-    });
-    uniqueValues.problemClasses.add(problemClass);
-    uniqueValues.applications.add(application);
-    uniqueValues.modellingFrameworks.add(modellingFramework);
-    milpFeatures.split(",").forEach((feature) => {
+    uniqueValues.sectoralFocus.add(sectoralFocus || UNSPECIFIED_FILTER_VALUE);
+    if (sectors) {
+      sectors.split(",").forEach((sector) => {
+        uniqueValues.sectors.add(sector.trim());
+      });
+    } else {
+      uniqueValues.sectors.add(UNSPECIFIED_FILTER_VALUE);
+    }
+    if (problemClass) {
+      uniqueValues.problemClasses.add(problemClass);
+    }
+    uniqueValues.applications.add(application || UNSPECIFIED_FILTER_VALUE);
+    uniqueValues.modellingFrameworks.add(
+      modellingFramework || UNSPECIFIED_FILTER_VALUE,
+    );
+    (milpFeatures ?? []).forEach((feature) => {
       uniqueValues.milpFeatures.add(feature.trim());
     });
   });
@@ -63,16 +74,23 @@ const PageBenchmarkDetail = () => {
   const availableSectors = Array.from(uniqueValues.sectors);
   const availableProblemClasses = Array.from(uniqueValues.problemClasses);
   const availableApplications = Array.from(uniqueValues.applications);
+  const SIZE_ORDER = ["S", "M", "L"];
   const availableProblemSizes = Array.from(
     new Set(
       Object.keys(problemSizeResult).map((key) => problemSizeResult[key]),
     ),
-  );
+  ).sort((a, b) => {
+    const idx = (v: string) => {
+      const i = SIZE_ORDER.indexOf(v.toUpperCase());
+      return i === -1 ? SIZE_ORDER.length : i;
+    };
+    return idx(a) - idx(b) || a.localeCompare(b);
+  });
   const availableModellingFrameworks = Array.from(
     uniqueValues.modellingFrameworks,
   );
   const availableMilpFeatures = Array.from(uniqueValues.milpFeatures);
-  const [localFilters, setLocalFilters] = useState<IFilterBenchmarkDetails>({
+  const [localFilters, setLocalFilters] = useState<IFilterProblemDetails>({
     sectoralFocus: availableSectoralFocus,
     sectors: availableSectors,
     problemClass: availableProblemClasses,
@@ -98,52 +116,47 @@ const PageBenchmarkDetail = () => {
 
       const isSectoralFocusMatch =
         sectoralFocus.length === 0 ||
-        sectoralFocus.includes(value.sectoralFocus);
+        sectoralFocus.includes(value.sectoralFocus ?? UNSPECIFIED_FILTER_VALUE);
       const isSectorsMatch =
         sectors.length === 0 ||
-        (value.sectors &&
-          sectors.some((selectedSector) => {
-            const valueSectors = value.sectors.split(",").map((s) => s.trim());
-            return valueSectors.includes(selectedSector);
-          }));
+        (value.sectors
+          ? sectors.some((selectedSector) => {
+              const valueSectors = (value.sectors ?? "")
+                .split(",")
+                .map((s) => s.trim());
+              return valueSectors.includes(selectedSector);
+            })
+          : sectors.includes(UNSPECIFIED_FILTER_VALUE));
       const isProblemClassMatch =
-        problemClass.length === 0 || problemClass.includes(value.problemClass);
+        problemClass.length === 0 ||
+        problemClass.includes(value.problemClass ?? "");
       const isApplicationMatch =
-        application.length === 0 || application.includes(value.application);
+        application.length === 0 ||
+        application.includes(value.application ?? UNSPECIFIED_FILTER_VALUE);
       const isModellingFrameworkMatch =
         modellingFramework.length === 0 ||
-        modellingFramework.includes(value.modellingFramework);
+        modellingFramework.includes(
+          value.modellingFramework ?? UNSPECIFIED_FILTER_VALUE,
+        );
       const isProblemSizeMatch =
         problemSize.length === 0 ||
-        (value.sizes &&
-          value.sizes.some((size) => problemSize.includes(size.size)));
+        (!!value.size && problemSize.includes(value.size));
       const isRealisticMatch =
         realistic.length === 0 ||
-        (value.sizes &&
-          value.sizes.some((size) => {
-            if (
-              size.realistic === true &&
-              realistic.includes(RealisticOption.Realistic)
-            ) {
-              return true;
-            }
-            if (
-              (size.realistic === false || size.realistic === undefined) &&
-              realistic.includes(RealisticOption.Other)
-            ) {
-              return true;
-            }
-            return false;
-          }));
+        (value.realistic === true &&
+          realistic.includes(RealisticOption.Realistic)) ||
+        ((value.realistic === false || value.realistic === undefined) &&
+          realistic.includes(RealisticOption.Other));
+      // An entry with no MILP features at all (e.g. most LP problems) has
+      // nothing to filter on and should always pass, rather than being
+      // excluded just because it can never match a selected feature.
       const isMilpFeaturesMatch =
         milpFeatures.length === 0 ||
-        (value.milpFeatures &&
-          milpFeatures.some((selectedFeature) => {
-            const valueFeatures = value.milpFeatures
-              .split(",")
-              .map((f) => f.trim());
-            return valueFeatures.includes(selectedFeature);
-          }));
+        !value.milpFeatures ||
+        value.milpFeatures.length === 0 ||
+        milpFeatures.some((selectedFeature) =>
+          value.milpFeatures?.includes(selectedFeature),
+        );
 
       return (
         isSectoralFocusMatch &&
@@ -165,7 +178,7 @@ const PageBenchmarkDetail = () => {
   return (
     <>
       <Head>
-        <title>Benchmark Set | Open Energy Benchmark</title>
+        <title>Benchmark Problem Set | Open Energy Benchmark</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <div className="bg-light-blue">
@@ -179,7 +192,7 @@ const PageBenchmarkDetail = () => {
         sm:px-6
         transition-all
         text-navy
-        ${isNavExpanded ? "md:ml-64" : "md:ml-20"}
+        ${isNavExpanded ? "md:ml-72" : "md:ml-20"}
         `}
         >
           <div className="max-w-8xl mx-auto">
@@ -195,15 +208,15 @@ const PageBenchmarkDetail = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
-                      Benchmark Set
+                      Benchmark Problem Set
                     </p>
                   </div>
                 </div>
               </AdminHeader>
               <div className="md:flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h1 className="h5">Benchmark Set</h1>
-                  <p className="mb-6 mt-4 max-w-screen-lg">
+                  <h1 className="h5">Benchmark Problem Set</h1>
+                  <p className="mt-4 mb-0 max-w-screen-lg">
                     On this page you can see a list of all the benchmark
                     problems on our platform. Click on a benchmark problem name
                     to see all the details about the problem, including links to
@@ -219,32 +232,40 @@ const PageBenchmarkDetail = () => {
                 </Link>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 px-4 pb-4 mt-6 rounded-[32px]">
-              <div className="py-4 pl-3.5 h6">List of All Benchmarks</div>
-              <div className="block md:flex overflow-hidden rounded-xl gap-5">
-                <div className="bg-[#F4F6FA] md:max-w-[255px] rounded-xl h-max">
-                  <BenchmarkDetailFilterSection
-                    localFilters={localFilters}
-                    setLocalFilters={setLocalFilters}
-                    availableSectoralFocus={availableSectoralFocus}
-                    availableSectors={availableSectors}
-                    availableProblemClasses={availableProblemClasses}
-                    availableApplications={availableApplications}
-                    availableProblemSizes={availableProblemSizes}
-                    availableModellingFrameworks={availableModellingFrameworks}
-                    availableMilpFeatures={availableMilpFeatures}
+            <div className="sm:flex bg-[#E6ECF5] gap-5 border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
+              <div className="mt-4 sm:x-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl h-max">
+                <ProblemDetailFilterSection
+                  localFilters={localFilters}
+                  setLocalFilters={setLocalFilters}
+                  availableSectoralFocus={availableSectoralFocus}
+                  availableSectors={availableSectors}
+                  availableProblemClasses={availableProblemClasses}
+                  availableApplications={availableApplications}
+                  availableProblemSizes={availableProblemSizes}
+                  availableModellingFrameworks={availableModellingFrameworks}
+                  availableMilpFeatures={availableMilpFeatures}
+                />
+              </div>
+              <div className="overflow-auto w-full pr-0 pt-4">
+                <div className="h6">List of problems</div>
+                <div className="space-y-4 sm:space-y-6">
+                  <BenchmarkTableResult
+                    metaData={filteredMetaData}
+                    problemSizeFilter={localFilters.problemSize}
+                    realisticFilter={localFilters.realistic}
                   />
                 </div>
-                <div className="w-full overflow-auto">
-                  <div className="space-y-4 sm:space-y-6">
-                    <BenchmarkTableResult
-                      metaData={filteredMetaData}
-                      problemSizeFilter={localFilters.problemSize}
-                      realisticFilter={localFilters.realistic}
-                    />
-                  </div>
-                </div>
               </div>
+            </div>
+            <div className="mt-6">
+              <BenchmarkStatisticsCharts
+                availableSectoralFocus={availableSectoralFocus}
+                availableSectors={availableSectors}
+                availableProblemClasses={availableProblemClasses}
+                availableApplications={availableApplications}
+                availableModellingFrameworks={availableModellingFrameworks}
+                availableProblemSizes={availableProblemSizes}
+              />
             </div>
           </div>
         </div>
@@ -254,4 +275,4 @@ const PageBenchmarkDetail = () => {
   );
 };
 
-export default PageBenchmarkDetail;
+export default PageBenchmarkSet;

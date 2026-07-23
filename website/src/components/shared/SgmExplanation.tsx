@@ -18,7 +18,7 @@ const SgmExplanation = ({}) => {
           <br />
           Given a set of measured values{" "}
           <MathJax inline>{"$t_1, \\ldots, t_n$"}</MathJax> e.g. runtimes of a
-          solver on a set of benchmarks, the SGM value is defined as:
+          solver on a set of problems, the SGM value is defined as:
           <br />
           <MathJax className="">
             {
@@ -43,10 +43,10 @@ const SgmExplanation = ({}) => {
             </li>
             <li>Max with 1 ignores differences in runtimes of less than 1s</li>
             <li>
-              The shift is used to reduce the impact of a few benchmarks having
+              The shift is used to reduce the impact of a few problems having
               very low runtimes on the overall SGM, reducing the risk of ranking
               highly a solver that is really good on only a small handfull of
-              benchmarks
+              problems
             </li>
           </ul>
         </p>

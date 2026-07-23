@@ -6,6 +6,7 @@ import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { humanizeSeconds } from "@/utils/string";
 import { calculateSgm } from "@/utils/calculations";
+import { getProblemKey } from "@/utils/results";
 
 const PROBLEM_SIZE_FILTERS = [
   {
@@ -71,16 +72,14 @@ const RuntimeComparison = () => {
 
   const solverPerformanceBySize = PROBLEM_SIZE_FILTERS.map((filterConfig) => {
     const benchmarkDatas = benchmarkLatestResults.filter((result) => {
-      const instances = metaData[result.benchmark].sizes
-        .filter(
-          (sizeInfo) =>
-            sizeInfo.size === filterConfig.filter.size &&
-            (filterConfig.filter.realistic
-              ? sizeInfo.realistic === filterConfig.filter.realistic
-              : true),
-        )
-        .map((sizeInfo) => sizeInfo.name);
-      return instances.includes(result.size);
+      const entry = metaData[getProblemKey(result)];
+      return (
+        !!entry &&
+        entry.size === filterConfig.filter.size &&
+        (filterConfig.filter.realistic
+          ? entry.realistic === filterConfig.filter.realistic
+          : true)
+      );
     });
     const solversData = availableSolvers.map((solver) => {
       const solverResults = benchmarkDatas.filter((d) => d.solver === solver);

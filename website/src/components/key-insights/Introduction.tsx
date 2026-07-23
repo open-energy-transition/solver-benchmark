@@ -6,9 +6,8 @@ import { IResultState } from "@/types/state";
 import { HIPO_SOLVERS } from "@/utils/solvers";
 
 const Introduction = () => {
-  const availableBenchmarksAndSizes = useSelector(
-    (state: { results: IResultState }) =>
-      state.results.availableBenchmarksAndSizes,
+  const availableProblems = useSelector(
+    (state: { results: IResultState }) => state.results.availableProblems,
   );
   const availableSolvers = useSelector(
     (state: { results: IResultState }) => state.results.availableSolvers,
@@ -19,7 +18,7 @@ const Introduction = () => {
       <p>
         This platform contains the results of benchmarking{" "}
         {availableSolvers.length - HIPO_SOLVERS.length} optimization solvers on{" "}
-        {availableBenchmarksAndSizes.length} problems arising from energy system
+        {availableProblems.length} problems arising from energy system
         models. For each benchmark run, we measure runtime and memory
         consumption of the solver, along with{" "}
         <Link
@@ -48,9 +47,9 @@ const Introduction = () => {
         <Link
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.list}
-          aria-label="Navigate to benchmark set list page"
+          aria-label="Navigate to benchmark problem set list page"
         >
-          Benchmark Set
+          Benchmark Problem Set
         </Link>{" "}
         page.
       </p>

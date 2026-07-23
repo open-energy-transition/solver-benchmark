@@ -17,20 +17,20 @@ const RankingSolvers = () => {
       </div>
       <p>
         Ranking the overall performance of solvers on a (sub)set of benchmark
-        instances is a difficult problem. We offer the following methods for
-        ranking on our main dashboard:
+        problems is a difficult task. We offer the following methods for
+        ranking on our Solver Ranking dashboard:
       </p>
       <ol className="list-decimal list-outside ml-6">
         <li className="mb-2">SGM runtime</li>
         <li className="mb-2">SGM peak memory consumption</li>
-        <li className="mb-2">Number of benchmark instances solved</li>
+        <li className="mb-2">Number of benchmark problems solved</li>
       </ol>
       <p>
         SGM above stands for (normalized) shifted geometric mean, and is a more
         robust summary metric compared to the arithmetic mean (AM) or geometric
         mean (GM). Given a set of measured values{" "}
         <MathJax inline>{"$t_1, \\ldots, t_n$"}</MathJax>, e.g. runtimes of a
-        solver on a set of benchmark instances, the SGM value is defined as:
+        solver on a set of benchmark problems, the SGM value is defined as:
       </p>
       <MathJax className="my-4">
         {
@@ -54,9 +54,9 @@ const RankingSolvers = () => {
           Max with 1 ignores differences in runtimes of less than 1s
         </li>
         <li className="mb-2">
-          The shift is used to reduce the impact of a few benchmarks having very
+          The shift is used to reduce the impact of a few problems having very
           low runtimes on the overall SGM, reducing the risk of ranking highly a
-          solver that is really good on only a small handful of benchmarks
+          solver that is really good on only a small handful of problems
         </li>
       </ul>
       <p>

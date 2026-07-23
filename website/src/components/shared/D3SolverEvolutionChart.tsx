@@ -22,7 +22,7 @@ interface ID3SolverEvolutionChart {
   height?: number;
   className?: string;
   colorIndex: number;
-  totalBenchmarks: number;
+  totalProblems: number;
   yRightDomain?: [number, number];
   yRightPadding?: number; // Padding percentage for speed-up axis (default: 0.15 = 15%)
 }
@@ -31,7 +31,7 @@ const D3SolverEvolutionChart = ({
   solverName,
   data,
   height = 300,
-  totalBenchmarks = 105,
+  totalProblems = 105,
   yRightDomain,
   yRightPadding = 0.15,
   className = "",
@@ -72,7 +72,7 @@ const D3SolverEvolutionChart = ({
     // Left Y-axis (solved count)
     const yLeftScale = d3
       .scaleLinear()
-      .domain([0, roundUpToNearest(totalBenchmarks)])
+      .domain([0, roundUpToNearest(totalProblems)])
       .range([height - margin.bottom, margin.top]);
 
     // Right Y-axis (speed-up) - ensure reasonable range even for flat lines
@@ -307,12 +307,14 @@ const D3SolverEvolutionChart = ({
       .attr("font-size", "12px")
       .text("Version");
 
+    const yAxisLabelCenter = margin.top + (height - margin.top - margin.bottom) / 2;
+
     svg
       .append("text")
       .attr("text-anchor", "middle")
       .attr("fill", solverColor)
       .attr("font-size", "12px")
-      .attr("transform", `translate(20, ${height / 2}) rotate(-90)`)
+      .attr("transform", `translate(20, ${yAxisLabelCenter}) rotate(-90)`)
       .text("Solved Problems");
 
     svg
@@ -320,15 +322,18 @@ const D3SolverEvolutionChart = ({
       .attr("text-anchor", "middle")
       .attr("fill", "#DC2626")
       .attr("font-size", "12px")
-      .attr("transform", `translate(${width - 20}, ${height / 2}) rotate(90)`)
+      .attr(
+        "transform",
+        `translate(${width - 20}, ${yAxisLabelCenter}) rotate(90)`,
+      )
       .text("Speed-up");
 
     svg
       .append("line")
       .attr("x1", margin.left)
       .attr("x2", width - margin.right)
-      .attr("y1", yLeftScale(totalBenchmarks))
-      .attr("y2", yLeftScale(totalBenchmarks))
+      .attr("y1", yLeftScale(totalProblems))
+      .attr("y2", yLeftScale(totalProblems))
       .attr("stroke", "#43BF94")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "8,4")
@@ -336,12 +341,12 @@ const D3SolverEvolutionChart = ({
     svg
       .append("text")
       .attr("x", margin.left + 50)
-      .attr("y", yLeftScale(totalBenchmarks) - 5)
+      .attr("y", yLeftScale(totalProblems) - 5)
       .attr("text-anchor", "end")
       .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
-      .text(`All: ${totalBenchmarks}`);
+      .text(`All: ${totalProblems}`);
 
     return () => {
       tooltip.remove();
@@ -371,11 +376,11 @@ const D3SolverEvolutionChart = ({
       <div ref={containerRef} className="relative">
         <svg ref={svgRef}></svg>
 
-        {/* Left indicator: Lower is better */}
+        {/* Left indicator: Higher is better */}
         <div className="absolute left-2 scale-75 lg:scale-100 lg:left-[18px] top-1/2 -translate-y-1/2 pointer-events-none">
           <DirectionalIndicator
             color={solverColor}
-            direction="lower"
+            direction="higher"
             size="md"
           />
         </div>

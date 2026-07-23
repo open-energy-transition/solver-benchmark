@@ -7,6 +7,7 @@ import { QuestionLineIcon } from "@/assets/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import InfoPopup from "../common/InfoPopup";
 import { SgmExplanation } from "@/components/shared";
+import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "how-good-is-each-solver-and-for-what-cases";
 const HowGoodIsSolver = () => {
@@ -42,16 +43,16 @@ const HowGoodIsSolver = () => {
             </InfoPopup>
           </span>{" "}
           runtime of each solver, relative to the fastest solver, on all the LP
-          and MILP problems in our benchmark set. A problem on which a solver
+          and MILP problems in our benchmark problem set. A problem on which a solver
           timed out or errored is assumed to have a runtime equal to the timeout
           with which it was run. (More details, and other ways to handle time
           outs and errors, can be found on our{" "}
           <Link
             className="font-bold"
-            href="/dashboard/main-results"
-            aria-label="Navigate to main results page on the dashboard"
+            href={PATH_DASHBOARD.home}
+            aria-label="Navigate to Solver Ranking page on the dashboard"
           >
-            main dashboard
+            Solver Ranking dashboard
           </Link>
           ). We group our set of problems according to problem size
           <span className="inline-flex gap-2">
@@ -77,8 +78,8 @@ const HowGoodIsSolver = () => {
           and also categorize certain problems as realistic if they arise from,
           or have similar model features as, models used in real-world energy
           planning studies. Hovering over any bar on the plot above will show
-          you the average runtime of that solver on the subset of benchmarks,
-          along with the percentage of benchmarks it could solve in the time
+          you the average runtime of that solver on the subset of problems,
+          along with the percentage of problems it could solve in the time
           limit.
         </p>
         <div className="my-4">
@@ -90,8 +91,8 @@ const HowGoodIsSolver = () => {
         <p>
           The next plot shows the concrete performance of each solver on a few
           representative realistic problems from a few modelling frameworks in
-          our benchmark set. Hover over the problem name in order to see more
-          details about the benchmark features and why we consider it as
+          our benchmark problem set. Hover over the problem name in order to see more
+          details about the problem's features and why we consider it as
           representative for that modelling framework. Solvers that timed out or
           errored on a particular problem are indicated by red text above the
           corresponding bar.
@@ -111,38 +112,37 @@ const HowGoodIsSolver = () => {
           different problems.
         </p>
 
-        <p>
-          <Note>
-            As with all benchmarks, our results provide only an indication of
-            which solvers might be good for your problems. Our benchmark set is
-            not yet as diverse and comprehensive as we would like, see the{" "}
-            <a
-              className="font-bold"
-              href="#what-benchmark-problems-do-we-have-and-what-are-missing"
-            >
-              What benchmark problems do we have
-            </a>{" "}
-            section below to view the gaps in our benchmark set. We encourage
-            users to use{" "}
-            <a
-              className="font-bold"
-              href="https://github.com/open-energy-transition/solver-benchmark/"
-            >
-              our scripts
-            </a>{" "}
-            to benchmark solvers on their own problems before picking a solver,
-            and also encourage modellers to contribute problems that can help us
-            make our benchmark set more representative and diverse.{" "}
-            <Link
-              className="font-bold"
-              href="/#contact"
-              aria-label="navigate to contact section"
-            >
-              Reach out
-            </Link>{" "}
-            to us if you&apos;d like to contribute!
-          </Note>
-        </p>
+        <Note>
+          As with all benchmarks, our results provide only an indication of
+          which solvers might be good for your problems. Our benchmark problem
+          set is not yet as diverse and comprehensive as we would like, see
+          the{" "}
+          <a
+            className="font-bold"
+            href="#what-benchmark-problems-do-we-have-and-what-are-missing"
+          >
+            What benchmark problems do we have
+          </a>{" "}
+          section below to view the gaps in our benchmark problem set. We
+          encourage users to use{" "}
+          <a
+            className="font-bold"
+            href="https://github.com/open-energy-transition/solver-benchmark/"
+          >
+            our scripts
+          </a>{" "}
+          to benchmark solvers on their own problems before picking a solver,
+          and also encourage modellers to contribute problems that can help us
+          make our benchmark problem set more representative and diverse.{" "}
+          <Link
+            className="font-bold"
+            href="/#contact"
+            aria-label="navigate to contact section"
+          >
+            Reach out
+          </Link>{" "}
+          to us if you&apos;d like to contribute!
+        </Note>
       </div>
     </>
   );

@@ -133,7 +133,7 @@ const Header = () => {
           <Link
             href={PATH_DASHBOARD.home}
             className={`text-sm/6 font-bold hover:underline underline-offset-4 ${
-              currentRoute === "/dashboard/main-results"
+              currentRoute === PATH_DASHBOARD.home
                 ? "bg-white bg-opacity-20 px-3 py-1 rounded-lg lg:bg-transparent lg:p-0"
                 : ""
             }`}
@@ -184,6 +184,7 @@ const Header = () => {
               border-opacity-30
               rounded-2xl
               flex
+              items-center
               focus-visible:outline
               focus-visible:outline-2
               focus-visible:outline-offset-2
@@ -202,7 +203,7 @@ const Header = () => {
               alt="Open Energy Transition Logo"
               width={47}
               height={22}
-              className="hidden lg:block"
+              className="hidden lg:block w-[47px] h-[22px]"
               loading="lazy"
             />
             <ArrowUpLeftIcon className="rotate-90 text-white" />
@@ -224,6 +225,7 @@ const Header = () => {
                     alt="Contribution image"
                     width={43}
                     height={43}
+                    className="w-[43px] h-[43px]"
                     loading="lazy"
                   />
                 </div>
@@ -245,7 +247,7 @@ const Header = () => {
                     { href: "/", label: "HOME" },
                     { href: "/key-insights", label: "KEY INSIGHTS" },
                     {
-                      href: "/dashboard/main-results",
+                      href: PATH_DASHBOARD.home,
                       label: "DETAILED RESULTS",
                     },
                     { href: "/methodology", label: "METHODOLOGY" },

@@ -54,7 +54,7 @@ const Contribute = () => {
     <div
       ref={sectionRef}
       id="contribution"
-      className="py-5 text-navy bg-white scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-white scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
@@ -63,7 +63,7 @@ const Contribute = () => {
           max-w-8xl
           px-4
           md:px-12
-          pt-[67px]
+          pt-16
           pb-16
           justify-between
         "
@@ -96,11 +96,10 @@ const Contribute = () => {
         <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative flex justify-between">
           <div className="font-lato text-xl/1.4 max-w-[541px]">
             <div className="font-medium">
-              We accept community contributions for new benchmarks, new /
+              We accept community contributions for new problems, new or
               updated solver versions, and feedback on the benchmarking
-              methodology and metrics via our
+              methodology and metrics via our GitHub repository.
             </div>
-            <span className="font-bold">GitHub repository.</span>
             <div className="justify-center flex md:justify-between max-w-lg pt-1">
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
@@ -172,7 +171,7 @@ const Contribute = () => {
             </Link>
           </div>
           <Image
-            className=" hidden lg:block top-0 right-0 lg:-right-8 rounded-[48px]"
+            className=" hidden lg:block top-0 right-0 lg:-right-8 rounded-[48px] w-[341px] h-[361px]"
             src="/landing_page/contribution.png"
             alt="Contribution image"
             loading="lazy"

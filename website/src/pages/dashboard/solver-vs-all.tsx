@@ -15,7 +15,7 @@ const PageSolvers = () => {
   return (
     <>
       <Head>
-        <title>Solvers | Open Energy Benchmark</title>
+        <title>Solver vs All | Open Energy Benchmark</title>
         <meta
           name="description"
           content="Browse details of each solver on the Open Energy Benchmark platform, including relative performance plots comparing each solver against all others."
@@ -37,12 +37,12 @@ const PageSolvers = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
-                      Solvers
+                      Solver vs All
                     </p>
                   </div>
                 </div>
               </AdminHeader>
-              <h1 className="h5">Solvers</h1>
+              <h1 className="h5">Solver vs All</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 This page shows details of each solver available on this
                 platform, along with a relative performance plot that lets you

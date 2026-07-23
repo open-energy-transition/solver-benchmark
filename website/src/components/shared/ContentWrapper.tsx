@@ -26,7 +26,7 @@ const ContentWrapper = ({
         px-2
         sm:px-6
         transition-all
-        ${isNavExpanded ? "md:ml-64" : "md:ml-20"}
+        ${isNavExpanded ? "md:ml-72" : "md:ml-20"}
         `}
     >
       <div className="max-w-8xl mx-auto text-navy">

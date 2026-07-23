@@ -26,7 +26,7 @@ interface Props {
   availableSolvers: string[];
 }
 
-const chartMargin = { top: 40, right: 100, bottom: 100, left: 60 };
+const chartMargin = { top: 40, right: 100, bottom: 65, left: 100 };
 
 const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -342,7 +342,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
         tooltip
           .html(
-            `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+            `Problem: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
                 d.status
               })<br/>` +
@@ -421,7 +421,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
         tooltip
           .html(
-            `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+            `Problem: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
                 d.status
               })<br/>` +
@@ -490,7 +490,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             tooltip.transition().duration(200).style("opacity", 1);
             tooltip
               .html(
-                `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+                `Problem: ${d.benchmark}-${d.size}<br/>` +
                   `${baseSolver}: ${formatDecimal({ value: d.runtime })}s (${
                     d.status
                   })<br/>`,
@@ -509,17 +509,17 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     svg
       .append("text")
       .attr("x", width / 2)
-      .attr("y", height - 60)
+      .attr("y", height - 30)
       .attr("text-anchor", "middle")
       .style("fill", "rgb(79 78 78)")
-      .text(`Instances sorted by solving time of ${baseSolver}`);
+      .text(`Problems sorted by solving time of ${baseSolver}`);
 
     // Primary y-axis label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -(height / 2) + 40)
-      .attr("y", 10)
+      .attr("y", margin.left - 50)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "rgb(79 78 78)")
@@ -556,128 +556,134 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers]);
 
   return (
-    <div className="bg-[#F4F6FA] p-4 rounded-xl">
+    <div>
       <h6 className="mb-2">Relative performance plot</h6>
-      <p className="text-navy mb-4 max-w-screen-lg">
+      <p className="text-navy mb-6 w-full">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots
         </a>
         ) shows the runtime ratios (relative speedup factors) for each benchmark
-        instance with respect to the selected base solver&apos;s runtime. Ratios
-        above 1 (bars above the x-axis) are instances where the base solver
+        problem with respect to the selected base solver&apos;s runtime. Ratios
+        above 1 (bars above the x-axis) are problems where the base solver
         performs better, and ratios below 1 (bars below the x-axis) are those
-        where the other solver performs better. Instances are sorted by the
+        where the other solver performs better. Problems are sorted by the
         runtime of the base solver.
       </p>
-      <div>
-        <div className="flex flex-wrap gap-4 legend-container pb-4">
-          {/* Selected solver legend (circle) */}
-          <div
-            className="flex items-center gap-2 cursor-pointer select-none"
-            onClick={() => toggleSolver(baseSolver)}
-          >
-            <div className="flex items-center justify-center w-4 h-4">
-              <div
-                className={`w-4 h-4 rounded-full transition-opacity ${
-                  visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
-                }`}
-                style={{ backgroundColor: solverColors[baseSolver] }}
-              />
-            </div>
-            <span
-              className={`text-sm transition-colors ${
-                visibleSolvers.has(baseSolver)
-                  ? "text-navy font-medium"
-                  : "text-dark-grey opacity-50"
-              }`}
+      <div className="bg-[#F4F6FA] px-4 pt-4 pb-0 rounded-xl">
+        <div>
+          <div className="flex flex-wrap gap-4 legend-container pb-4 ml-4">
+            {/* Selected solver legend (circle) */}
+            <div
+              className="flex items-center gap-2 cursor-pointer select-none"
+              onClick={() => toggleSolver(baseSolver)}
             >
-              {getSolverLabel(baseSolver)}
-            </span>
-          </div>
-
-          {/* Other solvers legend (squares) */}
-          {availableSolvers
-            .filter((solver) => solver !== baseSolver)
-            .map((solver) => (
-              <div
-                key={solver}
-                className="flex items-center gap-2 cursor-pointer select-none"
-                onClick={() => toggleSolver(solver)}
-              >
+              <div className="flex items-center justify-center w-4 h-4">
                 <div
-                  className="w-4 h-4 rounded-sm transition-opacity"
-                  style={{
-                    backgroundColor: solverColors[solver],
-                    opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
-                  }}
-                />
-                <span
-                  className={`text-sm transition-colors ${
-                    visibleSolvers.has(solver)
-                      ? "text-navy font-medium"
-                      : "text-dark-grey opacity-50"
+                  className={`w-4 h-4 rounded-full transition-opacity ${
+                    visibleSolvers.has(baseSolver)
+                      ? "opacity-100"
+                      : "opacity-30"
                   }`}
-                >
-                  {getSolverLabel(solver)}
-                </span>
+                  style={{ backgroundColor: solverColors[baseSolver] }}
+                />
               </div>
-            ))}
-          <div className="text-sm">
-            (click a solver to toggle showing it on the plot)
+              <span
+                className={`text-sm transition-colors ${
+                  visibleSolvers.has(baseSolver)
+                    ? "text-navy font-medium"
+                    : "text-dark-grey opacity-50"
+                }`}
+              >
+                {getSolverLabel(baseSolver)}
+              </span>
+            </div>
+
+            {/* Other solvers legend (squares) */}
+            {availableSolvers
+              .filter((solver) => solver !== baseSolver)
+              .map((solver) => (
+                <div
+                  key={solver}
+                  className="flex items-center gap-2 cursor-pointer select-none"
+                  onClick={() => toggleSolver(solver)}
+                >
+                  <div
+                    className="w-4 h-4 rounded-sm transition-opacity"
+                    style={{
+                      backgroundColor: solverColors[solver],
+                      opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
+                    }}
+                  />
+                  <span
+                    className={`text-sm transition-colors ${
+                      visibleSolvers.has(solver)
+                        ? "text-navy font-medium"
+                        : "text-dark-grey opacity-50"
+                    }`}
+                  >
+                    {getSolverLabel(solver)}
+                  </span>
+                </div>
+              ))}
+            <div className="text-sm">
+              (click a solver to toggle showing it on the plot)
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4 ml-4">
+            <div>
+              <p>🔻/🔺: base / other solver failed to solve in time limit</p>
+              <p>❌ : both solvers failed to solve in time limit</p>
+            </div>
+            <div className="lg:mr-24">
+              <p className="flex gap-1 items-center">
+                <CircleIcon fill={baseSolverColor} className="size-3" />
+                base solver solved successfully
+              </p>
+              <p className="flex gap-1 items-center">
+                <CloseIcon fill={baseSolverColor} className="size-3" />
+                base solver failed to solve in time limit
+              </p>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4">
-          <div>
-            <p>🔻/🔺: base / other solver failed to solve in time limit</p>
-            <p>❌ : both solvers failed to solve in time limit</p>
+        <div ref={containerRef} className="relative">
+          <div
+            className="absolute"
+            style={{
+              left: `${chartMargin.left - 52}px`,
+              top: `${chartMargin.top + 30}px`,
+              transform: "translateX(-50%)",
+            }}
+          >
+            <DirectionalIndicator
+              direction="higher"
+              label={`${baseSolver} better than other solver`}
+              size="sm"
+              color="rgb(79,78,78)"
+            />
           </div>
-          <div className="lg:mr-24">
-            <p className="flex gap-1 items-center">
-              <CircleIcon fill={baseSolverColor} className="size-3" />
-              base solver solved successfully
-            </p>
-            <p className="flex gap-1 items-center">
-              <CloseIcon fill={baseSolverColor} className="size-3" />
-              base solver failed to solve in time limit
-            </p>
+          <div
+            className="absolute"
+            style={{
+              left: `${chartMargin.left - 52}px`,
+              bottom: "150px",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <DirectionalIndicator
+              direction="lower"
+              label={`other solver better than ${baseSolver}`}
+              size="sm"
+              color="rgb(79,78,78)"
+            />
           </div>
+          <svg ref={svgRef}></svg>
         </div>
       </div>
-      <div ref={containerRef} className="relative">
-        <div
-          className="absolute"
-          style={{
-            left: "8px",
-            top: `${chartMargin.top + 30}px`,
-            transform: "translateX(-50%)",
-          }}
-        >
-          <DirectionalIndicator
-            direction="higher"
-            label={`${baseSolver} better than other solver`}
-            size="sm"
-            color="rgb(79,78,78)"
-          />
-        </div>
-        <div
-          className="absolute"
-          style={{
-            left: "8px",
-            bottom: "150px",
-            transform: "translateX(-50%)",
-          }}
-        >
-          <DirectionalIndicator
-            direction="lower"
-            label={`other solver better than ${baseSolver}`}
-            size="sm"
-            color="rgb(79,78,78)"
-          />
-        </div>
-        <svg ref={svgRef}></svg>
+      <div className="mt-8">
+        <BasicVsFeasible />
       </div>
-      <BasicVsFeasible />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { SgmMode } from "@/constants/sgm";
 import { getLogScale } from "@/utils/logscale";
 import { roundNumber } from "@/utils/number";
+import { getProblemKey } from "@/utils/results";
 
 interface BenchmarksSectionProps {
   timeout: number;
@@ -42,12 +43,11 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
   }, [sgmMode, benchmarkLatestResults]);
 
   const chartData = benchmarkResults.map((result) => {
-    const metaData = rawMetaData[result.benchmark];
+    const metaData = rawMetaData[getProblemKey(result)];
 
     return {
       ...result,
-      problemSize: metaData?.sizes.find((size) => size.name === result.size)
-        ?.size,
+      problemSize: metaData?.size,
       logRuntime: getLogScale(result.runtime),
     };
   });
@@ -113,7 +113,10 @@ const BenchmarksSection = ({ timeout }: BenchmarksSectionProps) => {
         customTooltip={getTooltip}
         onPointClick={(result) => {
           router.push(
-            PATH_DASHBOARD.benchmarkSet.one.replace("{name}", result.benchmark),
+            PATH_DASHBOARD.benchmarkSet.one.replace(
+              "{name}",
+              `${result.benchmark}-${result.size}`,
+            ),
           );
         }}
       />

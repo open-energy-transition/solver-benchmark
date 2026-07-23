@@ -4,14 +4,14 @@ import { BenchmarkResult } from "@/types/benchmark";
 interface ResultsSectionsTitleProps {
   benchmarkResults: BenchmarkResult[];
   latestBenchmarkResultLength: number;
-  uniqueBenchmarkCount: number;
-  uniqueLatestBenchmarkCount: number;
+  uniqueProblemCount: number;
+  uniqueLatestProblemCount: number;
 }
 const ResultsSectionsTitle = ({
   benchmarkResults,
   latestBenchmarkResultLength,
-  uniqueBenchmarkCount,
-  uniqueLatestBenchmarkCount,
+  uniqueProblemCount,
+  uniqueLatestProblemCount,
 }: ResultsSectionsTitleProps) => {
   return (
     <div>
@@ -19,8 +19,8 @@ const ResultsSectionsTitle = ({
         <h6 className="flex">
           Ranking{" "}
           {latestBenchmarkResultLength !== benchmarkResults.length &&
-            `(filtered to ${uniqueBenchmarkCount}/${uniqueLatestBenchmarkCount}
-              benchmark instances)`}
+            `(filtered to ${uniqueProblemCount}/${uniqueLatestProblemCount}
+              problems)`}
         </h6>
       </div>
     </div>

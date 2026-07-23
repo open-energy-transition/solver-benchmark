@@ -12,7 +12,7 @@ import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getSolverLabel } from "@/utils/solvers";
 
 interface IRuntimeOfFastestSolver {
-  benchmarkList?: string[];
+  problemList?: string[];
   xAxisLabelRotation?: number;
   xAxisLabelWrapLength?: number;
   splitter?: string;
@@ -26,7 +26,7 @@ interface IDataPoint {
 }
 
 const RuntimeOfFastestSolver = ({
-  benchmarkList = [],
+  problemList = [],
   xAxisLabelRotation = -45,
   xAxisLabelWrapLength = undefined,
   splitter = "-",
@@ -55,10 +55,10 @@ const RuntimeOfFastestSolver = ({
   });
 
   const successfulResults = benchmarkResults.filter((result) => {
-    return benchmarkList.includes(`${result.benchmark}-${result.size}`);
+    return problemList.includes(`${result.benchmark}-${result.size}`);
   });
 
-  const fastestRuntimeByBenchmark = Array.from(
+  const fastestRuntimeByProblem = Array.from(
     new Set(
       successfulResults.map((result) => `${result.benchmark}-${result.size}`),
     ),
@@ -73,10 +73,10 @@ const RuntimeOfFastestSolver = ({
         benchmark: string;
       }
     >
-  >((acc, instance) => {
+  >((acc, problemId) => {
     return {
       ...acc,
-      [instance]: {
+      [problemId]: {
         runtime: Number.MAX_VALUE,
         solver: "",
         status: "unknown",
@@ -88,19 +88,19 @@ const RuntimeOfFastestSolver = ({
 
   successfulResults.forEach((result) => {
     const key = `${result.benchmark}-${result.size}`;
-    if (fastestRuntimeByBenchmark[key].runtime > result.runtime) {
-      fastestRuntimeByBenchmark[key].runtime = result.runtime;
-      fastestRuntimeByBenchmark[key].solver = result.solver;
-      fastestRuntimeByBenchmark[key].status = result.status;
-      fastestRuntimeByBenchmark[key].size = result.size;
-      fastestRuntimeByBenchmark[key].benchmark = result.benchmark;
+    if (fastestRuntimeByProblem[key].runtime > result.runtime) {
+      fastestRuntimeByProblem[key].runtime = result.runtime;
+      fastestRuntimeByProblem[key].solver = result.solver;
+      fastestRuntimeByProblem[key].status = result.status;
+      fastestRuntimeByProblem[key].size = result.size;
+      fastestRuntimeByProblem[key].benchmark = result.benchmark;
     }
   });
 
-  const chartData = benchmarkList.map((benchmark) => {
+  const chartData = problemList.map((problemId) => {
     return {
-      benchmark,
-      runtime: fastestRuntimeByBenchmark[benchmark]?.runtime || 0,
+      problem: problemId,
+      runtime: fastestRuntimeByProblem[problemId]?.runtime || 0,
     };
   });
 
@@ -109,7 +109,7 @@ const RuntimeOfFastestSolver = ({
   }
 
   const getBarTextClassName = (d: IDataPoint) => {
-    const benchmarkData = fastestRuntimeByBenchmark[d.category];
+    const benchmarkData = fastestRuntimeByProblem[d.category];
     if (benchmarkData?.status !== "ok") {
       return "text-[10px] font-extrabold fill-red-500 mb-2";
     }
@@ -117,7 +117,7 @@ const RuntimeOfFastestSolver = ({
   };
 
   const getAxisLabelTitle = (d: IDataPoint) => {
-    const benchmarkData = fastestRuntimeByBenchmark[d.category];
+    const benchmarkData = fastestRuntimeByProblem[d.category];
     if (benchmarkData?.status !== "ok") {
       return "TO";
     }
@@ -125,12 +125,14 @@ const RuntimeOfFastestSolver = ({
   };
 
   const getXAxisTooltipFormat = (d: string) => {
-    const benchmarkData = fastestRuntimeByBenchmark[d];
-    const metaDataEntry =
-      metaData[benchmarkData?.benchmark as keyof typeof metaData];
-    const sizeData = metaDataEntry?.sizes.find(
-      (s) => s.name === benchmarkData?.size,
-    );
+    const benchmarkData = fastestRuntimeByProblem[d];
+    const metaDataEntry = benchmarkData
+      ? metaData[`${benchmarkData.benchmark}-${benchmarkData.size}`]
+      : undefined;
+
+    if (!metaDataEntry) {
+      return `Problem: ${d}<br/>No metadata available`;
+    }
 
     return `
     ${metaDataEntry.shortDescription}<br/><br/>
@@ -141,27 +143,27 @@ const RuntimeOfFastestSolver = ({
     Sectoral focus: ${metaDataEntry.sectoralFocus}<br/>
     Sectors: ${metaDataEntry.sectors}<br/>
     Time horizon: ${metaDataEntry.timeHorizon}<br/>
-    MILP features: ${metaDataEntry.milpFeatures}<br/>
-    Size: ${sizeData?.name} (${sizeData?.size})<br/>
-    Temporal resolution: ${sizeData?.temporalResolution || "N/A"}<br/>
-    Spatial resolution: ${sizeData?.spatialResolution || "N/A"}<br/>
-    Realistic: ${
-      metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
+    MILP features: ${(metaDataEntry.milpFeatures ?? []).join(", ")}<br/>
+    Size: ${benchmarkData?.size} (${metaDataEntry.size})<br/>
+    Temporal resolution: ${metaDataEntry.temporalResolution || "N/A"}<br/>
+    Spatial resolution: ${metaDataEntry.spatialResolution || "N/A"}<br/>
+    Realistic: ${metaDataEntry.realistic ? "true" : "false"}<br/>
+    Num. constraints: ${
+      formatInteger(metaDataEntry.numConstraints) || "N/A"
     }<br/>
-    Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
-    Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
+    Num. variables: ${formatInteger(metaDataEntry.numVariables) || "N/A"}<br/>
             `;
   };
 
   const tooltipFormat = (d: IDataPoint) => {
-    const benchmarkData = fastestRuntimeByBenchmark[d.category];
+    const benchmarkData = fastestRuntimeByProblem[d.category];
     let solver = "";
     if (benchmarkData?.status === "ok") {
       solver = `Solver: ${benchmarkData?.solver}<br/>
             `;
     }
     return `
-    Benchmark: ${d.category}<br/>
+    Problem: ${d.category}<br/>
               Runtime: ${humanizeSeconds(Number(d.value))} <br/>
               ${solver}
               Status: ${benchmarkData?.status}<br/>
@@ -169,7 +171,6 @@ const RuntimeOfFastestSolver = ({
   };
 
   const getTransformHeightValue = (d: IDataPoint) => {
-    if (fastestRuntimeByBenchmark[d.category]?.status !== "ok") return 1;
     return Number(d.value);
   };
 
@@ -217,20 +218,22 @@ const RuntimeOfFastestSolver = ({
       <div>
         <D3GroupedBarChart
           title="Runtime of fastest solver"
+          outerBgClassName="bg-transparent"
+          marginBottom={45}
           chartData={chartData}
           directionalIndicator="lower"
           normalize={false}
-          categoryKey="benchmark"
+          categoryKey="problem"
           colors={(d) => {
             if (!d?.category) return "grey";
 
-            if (fastestRuntimeByBenchmark[d.category]?.status !== "ok") {
+            if (fastestRuntimeByProblem[d.category]?.status !== "ok") {
               return "text-dark-grey";
             }
-            return getSolverColor(fastestRuntimeByBenchmark[d.category].solver);
+            return getSolverColor(fastestRuntimeByProblem[d.category].solver);
           }}
           barOpacity={(d) => {
-            if (fastestRuntimeByBenchmark[d.category]?.status !== "ok") {
+            if (fastestRuntimeByProblem[d.category]?.status !== "ok") {
               return 0.5;
             }
             return 1;

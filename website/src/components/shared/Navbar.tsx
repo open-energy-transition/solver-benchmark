@@ -6,7 +6,6 @@ import {
   ChartLineIcon,
   CloseIcon,
   VectorSquareIcon,
-  WindowIcon,
 } from "@/assets/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -28,22 +27,17 @@ const Navbar = () => {
 
   const navConfig = [
     {
-      label: "Main Results",
+      label: "Solver Ranking",
       route: PATH_DASHBOARD.home,
-      icon: <AlignLeftJustifyIcon />,
-    },
-    {
-      label: "Benchmark Set",
-      route: PATH_DASHBOARD.benchmarkSet.list,
       icon: <ChartBarIcon />,
     },
     {
-      label: "Solvers",
+      label: "Solver vs All",
       route: PATH_DASHBOARD.solvers,
       icon: <VectorSquareIcon />,
     },
     {
-      label: "Compare Solvers",
+      label: "Solver vs Solver",
       route: PATH_DASHBOARD.compareSolvers,
       icon: <BalanceScaleIcon />,
     },
@@ -53,9 +47,9 @@ const Navbar = () => {
       icon: <ChartLineIcon />,
     },
     {
-      label: "Full Results",
-      route: PATH_DASHBOARD.fullResults,
-      icon: <WindowIcon />,
+      label: "Benchmark Problem Set",
+      route: PATH_DASHBOARD.benchmarkSet.list,
+      icon: <AlignLeftJustifyIcon />,
     },
   ];
 
@@ -84,10 +78,10 @@ const Navbar = () => {
     return () => document.removeEventListener("keydown", handleToggle);
   }, [isNavExpanded, dispatch]);
 
-  // Navigate nav items with Ctrl/Cmd + 1-6
+  // Navigate nav items with Ctrl/Cmd + 1-5
   useEffect(() => {
     const handleHotkey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key >= "1" && e.key <= "6") {
+      if ((e.metaKey || e.ctrlKey) && e.key >= "1" && e.key <= "5") {
         e.preventDefault();
         const idx = parseInt(e.key) - 1;
         const route = navConfig[idx]?.route;
@@ -129,7 +123,7 @@ const Navbar = () => {
 
       <nav
         className={`fixed z-max md:pt-0 top-0 left-0 h-screen bg-navy rounded-e-xl
-        ${isNavExpanded ? "w-[90%] md:w-64" : "w-0 md:w-20"}
+        ${isNavExpanded ? "w-[90%] md:w-72" : "w-0 md:w-20"}
         sm:translate-x-0 transition-all duration-300 ease-in-out overflow-hidden`}
         aria-label="Main navigation"
       >

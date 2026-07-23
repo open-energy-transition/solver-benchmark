@@ -8,6 +8,7 @@ import { BenchmarkResult } from "@/types/benchmark";
 import { StackedBarData } from "@/types/chart";
 import { SgmMode } from "@/constants/sgm";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getProblemKey } from "@/utils/results";
 import SgmRuntimeChart from "./SgmRuntimeChart";
 
 export type TableRowType = {
@@ -15,7 +16,7 @@ export type TableRowType = {
   solver: string;
   version: string;
   memory: string;
-  solvedBenchmarks: string;
+  solvedProblems: string;
   runtime: string;
   unnormalizedData: {
     runtime: number;
@@ -40,8 +41,8 @@ const ChartResultsSectionsVarians = ({
     return state.results.metaData;
   });
 
-  const isLP = (benchmarkname: string) => {
-    return metaData?.[benchmarkname]?.problemClass === problemClass;
+  const isLP = (result: BenchmarkResult) => {
+    return metaData?.[getProblemKey(result)]?.problemClass === problemClass;
   };
 
   const benchmarkLatestResultsRaw = useSelector(
@@ -51,8 +52,7 @@ const ChartResultsSectionsVarians = ({
   const benchmarkLatestResultsAll = useMemo(
     () =>
       benchmarkLatestResultsRaw.filter(
-        (result) =>
-          !HIPO_SOLVERS.includes(result.solver) && isLP(result.benchmark),
+        (result) => !HIPO_SOLVERS.includes(result.solver) && isLP(result),
       ),
     [benchmarkLatestResultsRaw],
   );
@@ -75,14 +75,14 @@ const ChartResultsSectionsVarians = ({
     (results: BenchmarkResult[]) => {
       switch (sgmMode) {
         case SgmMode.ONLY_ON_INTERSECTION_OF_SOLVED_BENCHMARKS: {
-          const benchmarkSuccessMap = new Map<string, number>();
+          const problemSuccessMap = new Map<string, number>();
           results
             .filter((result) => result.status === "ok")
             .forEach((result) => {
               const key = `${result.benchmark}-${result.size}`;
-              benchmarkSuccessMap.set(
+              problemSuccessMap.set(
                 key,
-                (benchmarkSuccessMap.get(key) || 0) + 1,
+                (problemSuccessMap.get(key) || 0) + 1,
               );
             });
 
@@ -90,7 +90,7 @@ const ChartResultsSectionsVarians = ({
             const key = `${result.benchmark}-${result.size}`;
             return (
               result.status === "ok" &&
-              benchmarkSuccessMap.get(key) === availableSolvers.length
+              problemSuccessMap.get(key) === availableSolvers.length
             );
           });
         }
@@ -168,7 +168,7 @@ const ChartResultsSectionsVarians = ({
     [getRelevantResults, solverList],
   );
 
-  const getNumberSolvedBenchmark = useCallback(
+  const getNumberSolvedProblems = useCallback(
     (solver: string) => {
       return benchmarkResults.filter(
         (result) => result.status === "ok" && result.solver === solver,
@@ -191,19 +191,19 @@ const ChartResultsSectionsVarians = ({
     return combinedRankList.sort((a, b) => a.score - b.score);
   };
 
-  const uniqueBenchmarkCount = new Set(
+  const uniqueProblemCount = new Set(
     benchmarkResults.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
-  const getSolvedBenchmarksLabel = (
+  const getSolvedProblemsLabel = (
     solver: string,
-    uniqueBenchmarkCount: number,
+    uniqueProblemCount: number,
   ) => {
-    const numberSolvedBenchmark = getNumberSolvedBenchmark(solver);
-    const percentage = (numberSolvedBenchmark * 100) / uniqueBenchmarkCount;
+    const numberSolvedProblems = getNumberSolvedProblems(solver);
+    const percentage = (numberSolvedProblems * 100) / uniqueProblemCount;
     return `${roundNumber(
       percentage,
       0,
-    )} % (${numberSolvedBenchmark} / ${uniqueBenchmarkCount})`;
+    )} % (${numberSolvedProblems} / ${uniqueProblemCount})`;
   };
 
   useEffect(() => {
@@ -217,14 +217,14 @@ const ChartResultsSectionsVarians = ({
       ),
     );
     const maxSolved = Math.max(
-      ...solverList.map((solver) => getNumberSolvedBenchmark(solver)),
+      ...solverList.map((solver) => getNumberSolvedProblems(solver)),
     );
 
     setTableData(
       solverList.map((solverData) => {
         const runtimeSgm = calculateSgmBySolver(solverData, "runtime");
         const memorySgm = calculateSgmBySolver(solverData, "memoryUsage");
-        const solvedCount = getNumberSolvedBenchmark(solverData);
+        const solvedCount = getNumberSolvedProblems(solverData);
 
         return {
           rank:
@@ -244,9 +244,9 @@ const ChartResultsSectionsVarians = ({
           })} (${formatDecimal({
             value: calculateSgm(getRelevantResults(solverData, "memoryUsage")),
           })})${memorySgm === minMemory ? "</b>" : ""}`,
-          solvedBenchmarks: `${
+          solvedProblems: `${
             solvedCount === maxSolved ? "<b>" : ""
-          }${getSolvedBenchmarksLabel(solverData, uniqueBenchmarkCount)}${
+          }${getSolvedProblemsLabel(solverData, uniqueProblemCount)}${
             solvedCount === maxSolved ? "</b>" : ""
           }`,
           runtime: `${runtimeSgm === minRuntime ? "<b>" : ""}${formatDecimal({
@@ -257,7 +257,7 @@ const ChartResultsSectionsVarians = ({
         };
       }),
     );
-  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedBenchmark]);
+  }, [benchmarkResults, calculateSgmBySolver, getNumberSolvedProblems]);
 
   // Build grouped chart data: % of problems solved by timeout
   const uniqueTimeouts = useMemo(() => {
@@ -297,7 +297,7 @@ const ChartResultsSectionsVarians = ({
 
     return data;
   }, [uniqueTimeouts, solverList, solverVersions, benchmarkLatestResultsAll]);
-  function formatBenchmarkSolved({
+  function formatProblemsSolved({
     solved,
     total,
   }: {
@@ -317,14 +317,14 @@ const ChartResultsSectionsVarians = ({
         chartData={groupedChartData}
         categoryKey="timeout"
         sgmData={tableData}
-        uniqueBenchmarkCount={uniqueBenchmarkCount}
-        uniqueLatestBenchmarkCount={uniqueBenchmarkCount}
+        uniqueProblemCount={uniqueProblemCount}
+        uniqueLatestProblemCount={uniqueProblemCount}
         mode="solved-pct"
         yAxisMax={100}
         titlePosition="bottom-center"
         hideLegend={hideLegend}
-        categoryBenchmarkCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
-        formatBenchmarkSolved={formatBenchmarkSolved}
+        categoryProblemCounts={problemClass === "LP" ? [74, 59] : [78, 2]}
+        formatProblemsSolved={formatProblemsSolved}
         categoryMemoryLabels={["2 vCPUs, 7GB memory", "16 vCPUs, 124GB memory"]}
         sizeAnnotations={sizeAnnotations}
         rightmostGroupOpacity={rightmostGroupOpacity}

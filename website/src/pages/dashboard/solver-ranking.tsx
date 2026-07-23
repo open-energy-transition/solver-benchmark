@@ -12,7 +12,6 @@ import { IResultState } from "@/types/state";
 import ConfigurationSection from "@/components/admin/ConfigurationSection";
 import FilterSection from "@/components/admin/FilterSection";
 import { TIMEOUT_VALUES } from "@/constants/filter";
-import BenchmarkSet from "@/components/admin/home/BenchmarkSet";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 const Caveats = () => {
@@ -25,7 +24,7 @@ const Caveats = () => {
           results:
           <ul className="list-disc pl-5">
             <li>
-              We run benchmarks on commercial cloud virtual machines (VMs) for
+              We run the benchmark on commercial cloud virtual machines (VMs) for
               efficiency and cost reasons. The shared nature of cloud resources
               means there is some error in our runtime measurements, which we
               estimate as a coefficient of variation of no larger than 6%. More
@@ -41,10 +40,9 @@ const Caveats = () => {
             </li>
             <li>
               All solvers are run with their default options, except for the
-              duality gap tolerance for mixed integer benchmarks (MILPs), which
+              duality gap tolerance for mixed integer problems (MILPs), which
               we set to 1e-4. You can check the duality gaps for each solver in
-              the benchmark details page corresponding to each benchmark
-              instance.
+              the problem details page corresponding to each problem.
             </li>
             <li>
               All results on this website use the runtime measured by our
@@ -64,7 +62,7 @@ const Caveats = () => {
             </li>
             <li>
               Some solvers returned errors when running on some benchmark
-              instances. For more details, please see the{" "}
+              problems. For more details, please see the{" "}
               <Link
                 className="font-bold"
                 aria-label="Navigate to Errors in the v2 benchmark run issue on GitHub"
@@ -151,7 +149,7 @@ const LandingPage = () => {
   return (
     <>
       <Head>
-        <title>Main Results | Open Energy Benchmark</title>
+        <title>Solver Ranking | Open Energy Benchmark</title>
         <meta
           name="description"
           content="View main benchmark results for short and long run configurations, with solver performance summaries, technical specifications, and caveats for interpreting results."
@@ -164,12 +162,12 @@ const LandingPage = () => {
           className={`
           min-h-[calc(100vh-var(--footer-height))]
           mt-16
-          md:mt-10
+          md:mt-0
           px-2
           sm:px-6
           transition-all
           text-navy
-          ${isNavExpanded ? "md:ml-64" : "md:ml-20"}
+          ${isNavExpanded ? "md:ml-72" : "md:ml-20"}
           `}
         >
           <div className="max-w-8xl mx-auto">
@@ -185,19 +183,19 @@ const LandingPage = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
-                      Main Results
+                      Solver Ranking
                     </p>
                   </div>
                 </div>
               </AdminHeader>
-              <h1 className="h5">Main Results</h1>
+              <h1 className="h5">Solver Ranking</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
-                We run our benchmarks on 2 different configurations: The{" "}
+                We run our benchmark on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller
-                benchmarks (less than a million variables), run with a{" "}
+                problems (less than a million variables), run with a{" "}
                 {`${TIMEOUT_VALUES.SHORT / 3600} hour `}
                 timeout on a less powerful machine. The <b>Long</b> tab contains
-                larger benchmarks (more than a million variables), run with a{" "}
+                larger problems (more than a million variables), run with a{" "}
                 {`${TIMEOUT_VALUES.LONG / 3600} hour `}
                 timeout on a more powerful machine. Select the desired tab to
                 view a summary of the results on that configuration, along with
@@ -226,7 +224,7 @@ const LandingPage = () => {
                 Long
               </div>
             </div>
-            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-4 rounded-r-lg">
+            <div className="gap-6 flex flex-col bg-[#E6ECF5] border border-stroke border-t-0 pb-6 px-4 rounded-tr-[32px] rounded-b-[32px]">
               <div className="pt-6">
                 <ConfigurationSection timeout={timeout} />
               </div>
@@ -259,18 +257,17 @@ const LandingPage = () => {
                         </svg>
                         <div>
                           <div className="font-semibold mb-1 h6">
-                            No benchmark instances match the selected filters.
+                            No benchmark problems match the selected filters.
                           </div>
                         </div>
                       </div>
                     )}
                     <div className="px-2 md:px-5 py-2 text-navy font-lato border border-[#CAD9EF] bg-[#F7F7F9] rounded-2xl">
                       <div className="tag-line-xs leading-1.5">
-                        <b>Note:</b> As with all benchmarks, our results provide
+                        <b>Note:</b>{" "}
+                        As with all benchmarks, our results provide
                         only an indication of which solvers might be good for
-                        your problems.
-                        <br />
-                        We recommend using{" "}
+                        your problems. We recommend using{" "}
                         <span className="hover:underline underline-offset-4  font-bold">
                           <Link
                             className="font-bold"
@@ -281,21 +278,12 @@ const LandingPage = () => {
                           </Link>
                         </span>{" "}
                         to benchmark on your own problems before picking a
-                        solver. See also the section on{" "}
-                        <Link
-                          href="#caveats"
-                          aria-label="Navigate to caveats section on this page"
-                          className="hover:underline underline-offset-4 font-bold"
-                        >
-                          Caveats
-                        </Link>{" "}
-                        below.
+                        solver. See also the section on caveats below.
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <BenchmarkSet />
               <Caveats />
             </div>
           </div>

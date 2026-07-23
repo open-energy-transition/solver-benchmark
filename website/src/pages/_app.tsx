@@ -13,17 +13,26 @@ import { wrapper } from "@/redux/store";
 import resultActions from "@/redux/results/actions";
 import filterActions from "@/redux/filters/actions";
 import AdminLayout from "@/pages/AdminLayout";
-import { getBenchmarkResults, getLatestBenchmarkResult } from "@/utils/results";
+import {
+  getBenchmarkResults,
+  getProblemKey,
+  getLatestBenchmarkResult,
+} from "@/utils/results";
 import { getMetaData } from "@/utils/meta-data";
 import { BenchmarkResult } from "@/types/benchmark";
 import { IFilterState, RealisticOption } from "@/types/state";
 import { MetaData } from "@/types/meta-data";
 import { useRouter } from "next/router";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
 
-// Initialize axe-core for accessibility testing in development
+// Initialize axe-core for accessibility testing in development.
+// Debounced 3s (rather than axe-core/react's 1s default) so scans run after
+// GSAP entrance/stagger animations settle, instead of catching elements
+// mid-fade and flagging their transient partial-opacity color as a contrast
+// violation.
 if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
   import("@axe-core/react").then((axe) => {
-    axe.default(React, ReactDOM, 1000);
+    axe.default(React, ReactDOM, 5000);
   });
 }
 
@@ -58,47 +67,30 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
       const fullmetaData = await getMetaData();
       const metaData = await getMetaData();
 
-      dispatch(resultActions.setFullMetaData(fullmetaData.benchmarks));
+      dispatch(resultActions.setFullMetaData(fullmetaData.problems));
 
-      const metaDataBenmarkKeys = Object.keys(metaData.benchmarks);
-      // Filter sizes that exist in results
-      metaDataBenmarkKeys.forEach((benchmarkKey) => {
-        const benchmark = metaData.benchmarks[benchmarkKey];
-        // Filter sizes that have matching results
-        const validSizes = benchmark.sizes.filter((size) =>
-          resultsRes.some(
-            (result) =>
-              result.benchmark === benchmarkKey && result.size === size.name,
-          ),
-        );
-
-        if (benchmark.sizes.length !== validSizes.length) {
-          benchmark.sizes = validSizes;
-        }
-      });
+      const metaDataProblemKeys = Object.keys(metaData.problems);
+      // A result matches an entry when its derived problem key
+      // (`${Benchmark}-${Size}`) exists in the metadata.
       const results = resultsRes.filter((result) => {
-        return (
-          metaDataBenmarkKeys.includes(result.benchmark) &&
-          metaData.benchmarks[result.benchmark].sizes.some(
-            (size) => size.name === result.size,
-          )
-        );
+        return metaDataProblemKeys.includes(getProblemKey(result));
       });
 
-      // Create new benchmarksMetaData with only filtered keys
-      const benchmarksMetaData = metaDataBenmarkKeys.reduce(
+      // Create new problemsMetaData with only filtered keys
+      const problemsMetaData = metaDataProblemKeys.reduce(
         (acc, key) => ({
           ...acc,
-          [key]: metaData.benchmarks[key],
+          [key]: metaData.problems[key],
         }),
         {},
       ) as MetaData;
 
       const problemSizeResult: { [key: string]: string } = {};
-      Object.keys(benchmarksMetaData).forEach((metaDataKey) => {
-        benchmarksMetaData[metaDataKey]?.sizes?.forEach((s) => {
-          problemSizeResult[`${metaDataKey}'-'${s.name}`] = s.size;
-        });
+      Object.keys(problemsMetaData).forEach((metaDataKey) => {
+        const size = problemsMetaData[metaDataKey]?.size;
+        if (size) {
+          problemSizeResult[metaDataKey] = size;
+        }
       });
 
       const uniqueValues = {
@@ -110,7 +102,7 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
         modellingFrameworks: new Set<string>(),
       };
 
-      Object.keys(benchmarksMetaData).forEach((key) => {
+      Object.keys(problemsMetaData).forEach((key) => {
         const {
           sectoralFocus,
           sectors,
@@ -118,15 +110,25 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
           application,
           modelName,
           modellingFramework,
-        } = benchmarksMetaData[key];
-        uniqueValues.sectoralFocus.add(sectoralFocus);
-        sectors.split(",").forEach((sector) => {
-          uniqueValues.sectors.add(sector.trim());
-        });
-        uniqueValues.problemClasses.add(problemClass);
-        uniqueValues.applications.add(application);
-        uniqueValues.models.add(modelName);
-        uniqueValues.modellingFrameworks.add(modellingFramework);
+        } = problemsMetaData[key];
+        uniqueValues.sectoralFocus.add(sectoralFocus || UNSPECIFIED_FILTER_VALUE);
+        if (sectors) {
+          sectors.split(",").forEach((sector) => {
+            uniqueValues.sectors.add(sector.trim());
+          });
+        } else {
+          uniqueValues.sectors.add(UNSPECIFIED_FILTER_VALUE);
+        }
+        if (problemClass) {
+          uniqueValues.problemClasses.add(problemClass);
+        }
+        uniqueValues.applications.add(application || UNSPECIFIED_FILTER_VALUE);
+        if (modelName) {
+          uniqueValues.models.add(modelName);
+        }
+        uniqueValues.modellingFrameworks.add(
+          modellingFramework || UNSPECIFIED_FILTER_VALUE,
+        );
       });
 
       const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -143,7 +145,7 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
         ),
       );
 
-      dispatch(resultActions.setMetaData(benchmarksMetaData));
+      dispatch(resultActions.setMetaData(problemsMetaData));
       dispatch(resultActions.setBenchmarkResults(results as BenchmarkResult[]));
       dispatch(
         resultActions.setBenchmarkLatestResults(
@@ -151,7 +153,7 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
         ),
       );
 
-      dispatch(resultActions.setRawMetaData(benchmarksMetaData));
+      dispatch(resultActions.setRawMetaData(problemsMetaData));
       dispatch(
         resultActions.setAvailableFilterData({
           availableSectoralFocus,

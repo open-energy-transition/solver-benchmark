@@ -56,8 +56,7 @@ const defaultTooltipTemplate = (
   solver2: string,
 ) => `
   <div class="text-sm">
-    <strong>Name:</strong> ${d.benchmark}<br>
-    <strong>Size:</strong> ${d.size}<br>
+    <strong>Problem ID:</strong> ${d.benchmark}-${d.size}<br>
     <strong>Runtime of ${solver1.replace(
       "--",
       " (",
@@ -399,7 +398,7 @@ const ChartCompare = ({
           .on("click", () => {
             window.location.href = PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
-              d.benchmark,
+              `${d.benchmark}-${d.size}`,
             );
           })
           .style("cursor", "pointer");

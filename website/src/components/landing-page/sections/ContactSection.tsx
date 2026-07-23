@@ -150,7 +150,7 @@ const ContactSection = () => {
   return (
     <div
       id="contact"
-      className="text-navy bg-white pt-[105px] pb-[73px] scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-white py-16 scroll-mt-16 lg:scroll-mt-28"
     >
       <div className="mx-auto max-w-8xl px-4 md:px-12">
         <div className="grid md:flex">

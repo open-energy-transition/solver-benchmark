@@ -28,10 +28,10 @@ const FeasibilityForOpenSource = () => {
         problems so we can more accurately identify the boundary of feasibility.
       </p>
       <p>
-        Clicking on any benchmark problem name takes you to the benchmark
-        details page that contains more information on the model scenario,
-        various size instances, full results on that problem, and download links
-        to the problem LP/MPS file and solver logs and solution files.
+        Clicking on any benchmark problem name takes you to the problem
+        details page that contains more information on the problem itself, the
+        full results on that problem, the download link to the problem LP/MPS
+        file, the solver logs, and the solution files.
       </p>
       <ProblemClassTable problemClass="LP" />
       <Note>
@@ -56,8 +56,8 @@ const FeasibilityForOpenSource = () => {
         potentially different results.
       </Note>
       <p>
-        Given the limitations of our benchmark set, the strongest observable
-        influence on runtime is model size, in terms of number of
+        Given the limitations of our benchmark problem set, the strongest
+        observable influence on runtime is model size, in terms of number of
         variables/constraints (see more details in{" "}
         <a className="font-bold" href="#what-factors-affect-solver-performance">
           What factors affect solver performance
@@ -70,30 +70,30 @@ const FeasibilityForOpenSource = () => {
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "temoa-US_9R_TS_SP",
+            "temoa-US_9R_TS_SP-9-12ts",
           )}
-          aria-label={`Navigate to benchmark detail page for temoa-US_9R_TS_SP model`}
+          aria-label={`Navigate to problem detail page for temoa-US_9R_TS_SP-9-12ts problem`}
         >
-          temoa-US_9R_TS_SP (9-12)
+          temoa-US_9R_TS_SP-9-12ts
         </Link>{" "}
         does not have similar runtime to the largest solved TIMES-based model,{" "}
         <Link
           className="font-bold"
           href={PATH_DASHBOARD.benchmarkSet.one.replace(
             "{name}",
-            "times-ireland-noco2-counties",
+            "times-ireland-noco2-counties-26-1ts",
           )}
-          aria-label={`Navigate to benchmark detail page for times-ireland-noco2-counties model`}
+          aria-label={`Navigate to problem detail page for times-ireland-noco2-counties-26-1ts problem`}
         >
-          times-ireland-noco2-counties (26-1ts)
+          times-ireland-noco2-counties-26-1ts
         </Link>
         , despite both having &gt; 1e6 variables.
       </p>
       <ProblemClassTable problemClass="MILP" />
       <p>
-        We note that we do not yet have large problem instances from some
-        modelling frameworks in our benchmark set. We welcome contributions to
-        fill these gaps!
+        Note that we do not yet have large problems from some modelling
+        frameworks in our benchmark problem set. We welcome contributions to fill
+        these gaps!
       </p>
     </div>
   );
