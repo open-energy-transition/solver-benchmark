@@ -3,7 +3,7 @@ problems: map(include('problem'), key=str())
 
 ---
 
-# Problem definition: a single, standalone problem.
+# Problem ID.
 problem:
   # --- Strictly required ---
 

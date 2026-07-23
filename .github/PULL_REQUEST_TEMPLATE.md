@@ -20,7 +20,7 @@ Please add a README with instructions on how to run the modelling framework's co
 
 **For PRs adding new benchmark instances:**
 - [ ] I consent to releasing these benchmark instance files under the CC BY 4.0 license
-- [ ] The benchmark name and size instance name follow the conventions indicated in the template
+- [ ] The benchmark name and size instance name follow the conventions indicated in [benchmarks/metadata_schema.yaml](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/metadata_schema.yaml)
 - [ ] I have tested that this model instance can be solved to optimality in [time] with [solver] solver, using [options], on a [spec] machine <!-- please indicate which solver, how much RAM memory your machine has, and what solver options were used -->
 
 For Benchmark team:

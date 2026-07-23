@@ -113,11 +113,10 @@ def iter_metadata_files(root: Path) -> Iterable[Path]:
     ------
     Path
         Metadata file paths matching "[Mm]etadata*.yaml", excluding the
-        schema definition and template files.
+        schema definition file.
     """
     excluded = {
         "metadata_schema.yaml",
-        "_template_metadata.yaml",
     }
 
     for path in sorted(root.rglob("[Mm]etadata*.yaml")):
