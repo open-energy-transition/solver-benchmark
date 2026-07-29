@@ -7,12 +7,14 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import ProblemDetailFilterSection from "@/components/admin/benchmark-detail/ProblemDetailFilterSection";
-import { IResultState, RealisticOption } from "@/types/state";
+import { IResultState, RealisticOption, SolvedOption } from "@/types/state";
 import { useMemo, useState } from "react";
 import { IFilterProblemDetails } from "@/types/benchmark";
 import { isEmpty } from "lodash";
 import BenchmarkStatisticsCharts from "@/components/admin/benchmarks/BenchmarkStatisticsCharts";
 import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
+import { getProblemKey } from "@/utils/results";
 
 const PageBenchmarkSet = () => {
   const fullMetaData = useSelector((state: { results: IResultState }) => {
@@ -21,6 +23,12 @@ const PageBenchmarkSet = () => {
 
   const isNavExpanded = useSelector(
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
+  );
+
+  const benchmarkResults = useBenchmarkResults();
+  const solvedProblemIds = useMemo(
+    () => new Set(benchmarkResults.map(getProblemKey)),
+    [benchmarkResults],
   );
 
   const problemSizeResult: { [key: string]: string } = {};
@@ -65,9 +73,13 @@ const PageBenchmarkSet = () => {
     uniqueValues.modellingFrameworks.add(
       modellingFramework || UNSPECIFIED_FILTER_VALUE,
     );
-    (milpFeatures ?? []).forEach((feature) => {
-      uniqueValues.milpFeatures.add(feature.trim());
-    });
+    if (milpFeatures && milpFeatures.length > 0) {
+      milpFeatures.forEach((feature) => {
+        uniqueValues.milpFeatures.add(feature.trim());
+      });
+    } else {
+      uniqueValues.milpFeatures.add(UNSPECIFIED_FILTER_VALUE);
+    }
   });
 
   const availableSectoralFocus = Array.from(uniqueValues.sectoralFocus);
@@ -96,81 +108,80 @@ const PageBenchmarkSet = () => {
     problemClass: availableProblemClasses,
     application: availableApplications,
     problemSize: availableProblemSizes,
+    solved: [SolvedOption.Solved, SolvedOption.NotSolved],
     modellingFramework: availableModellingFrameworks,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
     milpFeatures: availableMilpFeatures,
   });
 
   const filteredMetaData = useMemo(() => {
-    const filteredEntries = Object.entries(fullMetaData).filter(([, value]) => {
-      const {
-        sectoralFocus,
-        sectors,
-        problemClass,
-        application,
-        problemSize,
-        realistic,
-        modellingFramework,
-        milpFeatures,
-      } = localFilters;
+    const filteredEntries = Object.entries(fullMetaData).filter(
+      ([key, value]) => {
+        const {
+          sectoralFocus,
+          sectors,
+          problemClass,
+          application,
+          problemSize,
+          solved,
+          realistic,
+          modellingFramework,
+          milpFeatures,
+        } = localFilters;
 
-      const isSectoralFocusMatch =
-        sectoralFocus.length === 0 ||
-        sectoralFocus.includes(value.sectoralFocus ?? UNSPECIFIED_FILTER_VALUE);
-      const isSectorsMatch =
-        sectors.length === 0 ||
-        (value.sectors
+        const isSectoralFocusMatch = sectoralFocus.includes(
+          value.sectoralFocus ?? UNSPECIFIED_FILTER_VALUE,
+        );
+        const isSectorsMatch = value.sectors
           ? sectors.some((selectedSector) => {
               const valueSectors = (value.sectors ?? "")
                 .split(",")
                 .map((s) => s.trim());
               return valueSectors.includes(selectedSector);
             })
-          : sectors.includes(UNSPECIFIED_FILTER_VALUE));
-      const isProblemClassMatch =
-        problemClass.length === 0 ||
-        problemClass.includes(value.problemClass ?? "");
-      const isApplicationMatch =
-        application.length === 0 ||
-        application.includes(value.application ?? UNSPECIFIED_FILTER_VALUE);
-      const isModellingFrameworkMatch =
-        modellingFramework.length === 0 ||
-        modellingFramework.includes(
+          : sectors.includes(UNSPECIFIED_FILTER_VALUE);
+        const isProblemClassMatch = problemClass.includes(
+          value.problemClass ?? "",
+        );
+        const isApplicationMatch = application.includes(
+          value.application ?? UNSPECIFIED_FILTER_VALUE,
+        );
+        const isModellingFrameworkMatch = modellingFramework.includes(
           value.modellingFramework ?? UNSPECIFIED_FILTER_VALUE,
         );
-      const isProblemSizeMatch =
-        problemSize.length === 0 ||
-        (!!value.size && problemSize.includes(value.size));
-      const isRealisticMatch =
-        realistic.length === 0 ||
-        (value.realistic === true &&
-          realistic.includes(RealisticOption.Realistic)) ||
-        ((value.realistic === false || value.realistic === undefined) &&
-          realistic.includes(RealisticOption.Other));
-      // An entry with no MILP features at all (e.g. most LP problems) has
-      // nothing to filter on and should always pass, rather than being
-      // excluded just because it can never match a selected feature.
-      const isMilpFeaturesMatch =
-        milpFeatures.length === 0 ||
-        !value.milpFeatures ||
-        value.milpFeatures.length === 0 ||
-        milpFeatures.some(
-          (selectedFeature) => value.milpFeatures?.includes(selectedFeature),
-        );
+        const isProblemSizeMatch =
+          !!value.size && problemSize.includes(value.size);
+        const isSolvedMatch = solvedProblemIds.has(key)
+          ? solved.includes(SolvedOption.Solved)
+          : solved.includes(SolvedOption.NotSolved);
+        const isRealisticMatch =
+          (value.realistic === true &&
+            realistic.includes(RealisticOption.Realistic)) ||
+          ((value.realistic === false || value.realistic === undefined) &&
+            realistic.includes(RealisticOption.Other));
+        const isMilpFeaturesMatch =
+          value.milpFeatures && value.milpFeatures.length > 0
+            ? milpFeatures.some(
+                (selectedFeature) =>
+                  value.milpFeatures?.includes(selectedFeature),
+              )
+            : milpFeatures.includes(UNSPECIFIED_FILTER_VALUE);
 
-      return (
-        isSectoralFocusMatch &&
-        isSectorsMatch &&
-        isProblemClassMatch &&
-        isApplicationMatch &&
-        isProblemSizeMatch &&
-        isRealisticMatch &&
-        isModellingFrameworkMatch &&
-        isMilpFeaturesMatch
-      );
-    });
+        return (
+          isSectoralFocusMatch &&
+          isSectorsMatch &&
+          isProblemClassMatch &&
+          isApplicationMatch &&
+          isProblemSizeMatch &&
+          isSolvedMatch &&
+          isRealisticMatch &&
+          isModellingFrameworkMatch &&
+          isMilpFeaturesMatch
+        );
+      },
+    );
     return Object.fromEntries(filteredEntries);
-  }, [localFilters, fullMetaData]);
+  }, [localFilters, fullMetaData, solvedProblemIds]);
 
   if (isEmpty(fullMetaData))
     return <div className="text-center">Loading...</div>;
@@ -259,6 +270,7 @@ const PageBenchmarkSet = () => {
             </div>
             <div className="mt-6">
               <BenchmarkStatisticsCharts
+                metaData={filteredMetaData}
                 availableSectoralFocus={availableSectoralFocus}
                 availableSectors={availableSectors}
                 availableProblemClasses={availableProblemClasses}

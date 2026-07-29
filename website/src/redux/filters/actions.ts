@@ -81,16 +81,14 @@ const actions = {
           const metaData = _metaData as MetaDataEntry;
 
           const entrySectors = metaData.sectors;
-          const isSectorsMatch =
-            filters.sectors.length === 0 ||
-            (entrySectors
-              ? filters.sectors.some((selectedSector) => {
-                  const metaDataSectors = entrySectors
-                    .split(",")
-                    .map((s) => s.trim());
-                  return metaDataSectors.includes(selectedSector);
-                })
-              : filters.sectors.includes(UNSPECIFIED_FILTER_VALUE));
+          const isSectorsMatch = entrySectors
+            ? filters.sectors.some((selectedSector) => {
+                const metaDataSectors = entrySectors
+                  .split(",")
+                  .map((s) => s.trim());
+                return metaDataSectors.includes(selectedSector);
+              })
+            : filters.sectors.includes(UNSPECIFIED_FILTER_VALUE);
 
           return (
             filters.application.includes(

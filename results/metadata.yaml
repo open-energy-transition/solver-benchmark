@@ -1089,8 +1089,7 @@ problems:
     Model name: PowerModels
   pglib_opf_case1803_snem-1803-NA:
     Short description: Steady-state optimal power flow run for the Synthetic National
-      Electricity Market (SNEM) Australia - Mainland subnetwork adopting transmission
-      switching.
+      Electricity Market (SNEM) Australia - Mainland subnetwork.
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
     URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/PowerModelsOTS_pglib_opf_case1803_snem.m-43f8f35813a79b40f197737028098bf5eac73ef2776f3aa2687576ad1d439541.mps.gz
@@ -1099,8 +1098,7 @@ problems:
     Num. constraints: 18574
     Num. variables: 7623
     Num. nonzeros: 56119
-    MILP features:
-    - Transmission switching
+    MILP features: []
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 1803 nodes

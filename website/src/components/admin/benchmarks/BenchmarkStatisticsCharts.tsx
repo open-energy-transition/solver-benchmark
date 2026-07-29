@@ -1,11 +1,12 @@
 import D3StackedBarChart from "@/components/shared/D3StackedBarChart";
-import { IResultState } from "@/types/state";
+import { MetaData } from "@/types/meta-data";
 import React, { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { QuestionLineIcon } from "@/assets/icons";
 import InfoPopup from "@/components/common/InfoPopup";
+import { NoResultsMessage } from "@/components/shared";
 
 const BenchmarkStatisticsCharts = ({
+  metaData,
   availableSectoralFocus,
   availableSectors,
   availableProblemClasses,
@@ -13,6 +14,7 @@ const BenchmarkStatisticsCharts = ({
   availableModellingFrameworks,
   availableProblemSizes,
 }: {
+  metaData: MetaData;
   availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
@@ -20,9 +22,6 @@ const BenchmarkStatisticsCharts = ({
   availableModellingFrameworks: string[];
   availableProblemSizes: string[];
 }) => {
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
   // Build the set of individual MILP features across all entries.
   const availableMilpFeatures = useMemo(() => {
     return Array.from(
@@ -223,6 +222,10 @@ const BenchmarkStatisticsCharts = ({
       </InfoPopup>
     </div>
   );
+
+  if (Object.keys(metaData).length === 0) {
+    return <NoResultsMessage />;
+  }
 
   return (
     <div className="p-1 rounded-xl space-y-8 relative">

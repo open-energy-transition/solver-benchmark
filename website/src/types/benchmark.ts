@@ -65,6 +65,7 @@ type IFilterProblemDetails = {
   problemClass: string[];
   application: string[];
   problemSize: string[];
+  solved: string[];
   realistic: string[];
   modellingFramework: string[];
   milpFeatures: string[];

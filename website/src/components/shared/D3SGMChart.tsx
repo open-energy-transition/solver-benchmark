@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
@@ -29,6 +29,29 @@ const D3SGMChart = ({
 }: ID3SGMChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart
+  // stays in sync with the actual rendered container size.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
 
   const rawAvailableSolvers = useSelector(
     (state: { results: IResultState }) => state.results.availableSolvers,
@@ -71,7 +94,7 @@ const D3SGMChart = ({
     if (normalizedChartData.length === 0) return;
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
+    const width = containerWidth || containerRef.current?.clientWidth || 600;
     const margin = { top: 40, right: 20, bottom: 40, left: 85 };
 
     // Clear previous SVG
@@ -296,7 +319,7 @@ const D3SGMChart = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [normalizedChartData, solverColors, windowWidth]);
+  }, [normalizedChartData, solverColors, windowWidth, containerWidth]);
 
   return (
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>

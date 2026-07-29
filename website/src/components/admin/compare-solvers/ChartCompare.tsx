@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
@@ -88,6 +88,29 @@ const ChartCompare = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart's
+  // internal D3 coordinates stay in sync with the actual rendered box.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
   // Solver colors (match other dashboards)
   const solverColor1 = getColorForSolver(solver1.split("--")[0]);
   const solverColor2 = getColorForSolver(solver2.split("--")[0]);
@@ -110,7 +133,7 @@ const ChartCompare = ({
     };
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
+    const width = containerWidth || containerRef.current?.clientWidth || 600;
     const isMobile = width < 640; // Add mobile breakpoint check
     const height = isMobile ? 300 : 400; // Adjust height for mobile
     const margin = isMobile
@@ -607,7 +630,7 @@ const ChartCompare = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData, windowWidth]);
+  }, [chartData, windowWidth, containerWidth]);
 
   const formatLegend = (status: string): string => {
     const [status1, status2] = status.split("-");

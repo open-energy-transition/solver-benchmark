@@ -553,7 +553,14 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     return () => {
       tooltip.remove();
     };
-  }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers]);
+  }, [
+    data,
+    baseSolver,
+    solverColors,
+    visibleSolvers,
+    availableSolvers,
+    containerWidth,
+  ]);
 
   return (
     <div>

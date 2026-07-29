@@ -55,6 +55,7 @@ const D3GroupedBarChart = ({
   const isMobile = useIsMobile();
   const [height, setHeight] = useState(chartHeight);
   const [rightmostNoteX, setRightmostNoteX] = useState<number | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const windowWidth = useDebouncedWindowWidth(200);
   const categoryLengths = chartData.reduce((acc, d) => {
     const length = String(d[categoryKey] || "").length;
@@ -69,6 +70,28 @@ const D3GroupedBarChart = ({
       setHeight(chartHeight);
     }
   }, [isMobile]);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart
+  // stays in sync with the directional indicator arrow, which reflows via CSS.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const data = chartData.map((d) => ({ ...d }));
@@ -91,7 +114,7 @@ const D3GroupedBarChart = ({
       });
     }
 
-    const width = containerRef.current?.clientWidth || 400;
+    const width = containerWidth || containerRef.current?.clientWidth || 400;
     const hasTopAnnotations =
       (sizeAnnotations && sizeAnnotations.length > 0) || showBarTopLabels;
     const margin = {
@@ -580,6 +603,7 @@ const D3GroupedBarChart = ({
     rotateXAxisLabels,
     xAxisBarTextClassName,
     windowWidth,
+    containerWidth,
     showBarTopLabels,
     sizeAnnotations,
   ]);

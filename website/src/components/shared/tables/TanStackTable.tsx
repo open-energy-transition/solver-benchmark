@@ -103,7 +103,23 @@ export function TanStackTable<T>({
 
   // Set up virtualization for large datasets when showAllRows is enabled
   const { rows } = table.getRowModel();
-  const HEADER_HEIGHT = 48.8;
+
+  // Measure the real header height instead of assuming a fixed value: header
+  // styling (headerClassName) varies per caller, so a hardcoded constant
+  // drifts out of sync and leaves a sliver of spurious scrollable space.
+  const theadRef = useRef<HTMLTableSectionElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(48.8);
+
+  useEffect(() => {
+    const el = theadRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      const height = entries[0]?.contentRect.height;
+      if (height) setHeaderHeight(height);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Set up the virtualizer with dynamic row height measurement
   const rowVirtualizer = useVirtualizer({
@@ -113,6 +129,25 @@ export function TanStackTable<T>({
     overscan: 20,
     enabled: showAllRows,
   });
+
+  // Belt-and-suspenders check: rather than trusting the CSS min() height
+  // formula above to always stay in perfect sync with the virtualizer's
+  // (asynchronously corrected) measurements, directly measure the real DOM
+  // state and hard-disable vertical scrolling whenever content actually
+  // fits, regardless of any transient mismatch between the two.
+  const [canScrollVertically, setCanScrollVertically] = useState(false);
+
+  useEffect(() => {
+    if (!showAllRows) return;
+    const el = tableContainerRef.current;
+    if (!el) return;
+    const checkOverflow = () =>
+      setCanScrollVertically(el.scrollHeight > el.clientHeight + 1);
+    checkOverflow();
+    const observer = new ResizeObserver(checkOverflow);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showAllRows, rows.length, headerHeight]);
 
   // Re-render virtualizer on window resize to ensure correct calculations
   useEffect(() => {
@@ -229,9 +264,10 @@ export function TanStackTable<T>({
                   // Cap at virtualizedHeight, but shrink to fit when the
                   // (filtered) data is short enough not to need it.
                   height: `min(${virtualizedHeight}, ${
-                    rowVirtualizer.getTotalSize() + HEADER_HEIGHT
+                    rowVirtualizer.getTotalSize() + headerHeight
                   }px)`,
-                  overflow: "auto",
+                  overflowX: "auto",
+                  overflowY: canScrollVertically ? "auto" : "hidden",
                   position: "relative",
                 }}
                 className="overflow-x-auto"
@@ -257,7 +293,10 @@ export function TanStackTable<T>({
                         />
                       ))}
                   </colgroup>
-                  <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
+                  <thead
+                    ref={theadRef}
+                    className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10"
+                  >
                     {table.getHeaderGroups().map((headerGroup) => (
                       <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
@@ -316,7 +355,7 @@ export function TanStackTable<T>({
                     <tr>
                       <td
                         colSpan={table.getAllColumns().length}
-                        style={{ height: 0 }}
+                        style={{ height: 0, padding: 0, border: "none" }}
                       >
                         <div
                           style={{
@@ -333,6 +372,7 @@ export function TanStackTable<T>({
                         <tr
                           key={row.id}
                           data-index={virtualRow.index}
+                          ref={rowVirtualizer.measureElement}
                           className={
                             virtualRow.index % 2
                               ? `${oddRowClassName} !w-max`
@@ -340,10 +380,9 @@ export function TanStackTable<T>({
                           }
                           style={{
                             position: "absolute",
-                            top: HEADER_HEIGHT,
+                            top: headerHeight,
                             left: 0,
                             width: "100%",
-                            height: `${virtualRow.size}px`,
                             transform: `translateY(${virtualRow.start}px)`,
                           }}
                         >

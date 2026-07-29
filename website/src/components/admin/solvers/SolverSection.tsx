@@ -7,6 +7,7 @@ import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
 import { SolverStatusType } from "@/types/benchmark";
 import CustomDropdown from "@/components/common/CustomDropdown";
+import { NoResultsMessage } from "@/components/shared";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
 import { HIPO_SOLVERS } from "@/utils/solvers";
@@ -269,13 +270,15 @@ const SolverSection = () => {
         )}
       </div>
 
-      {chartData.length > 0 && (
+      {chartData.length > 0 ? (
         <PerformanceBarChart
           key={solverOptions.join("-")}
           data={chartData}
           baseSolver={selectedSolver.split("--")[0]}
           availableSolvers={availableSolvers}
         />
+      ) : (
+        <NoResultsMessage />
       )}
     </div>
   );

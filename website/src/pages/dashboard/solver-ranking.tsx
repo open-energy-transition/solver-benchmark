@@ -234,7 +234,7 @@ const LandingPage = () => {
                 </div>
                 <div
                   id="benchmark-results"
-                  className="3xl:mx-auto sm:w-4/5 h-max"
+                  className="3xl:mx-auto sm:flex-1 sm:min-w-0 h-max"
                   ref={contentRef}
                 >
                   <div className="space-y-4 sm:space-y-6 min-h-96">

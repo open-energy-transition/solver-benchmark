@@ -7,6 +7,7 @@ import {
   ContentWrapper,
   Footer,
   Navbar,
+  NoResultsMessage,
   SolverVersions,
 } from "@/components/shared";
 import NumberProblemsSolved from "@/components/admin/performance-history/NumberProblemsSolved";
@@ -207,18 +208,24 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
-          <NumberProblemsSolved
-            numSolvedProblems={chartData.numSolvedProblems}
-            totalProblems={commonProblems.length}
-          />
-          <NormalizedSection chartData={chartData} />
-          <div className="-mb-6">
-            <SolverEvolutionSection
-              solverYearlyMetrics={allSolverYearlyMetrics}
-              numSolvedProblems={numSolvedProblems}
-              totalProblems={commonProblems.length}
-            />
-          </div>
+          {commonProblems.length ? (
+            <>
+              <NumberProblemsSolved
+                numSolvedProblems={chartData.numSolvedProblems}
+                totalProblems={commonProblems.length}
+              />
+              <NormalizedSection chartData={chartData} />
+              <div className="-mb-6">
+                <SolverEvolutionSection
+                  solverYearlyMetrics={allSolverYearlyMetrics}
+                  numSolvedProblems={numSolvedProblems}
+                  totalProblems={commonProblems.length}
+                />
+              </div>
+            </>
+          ) : (
+            <NoResultsMessage />
+          )}
         </ContentWrapper>
       </div>
       <Footer />

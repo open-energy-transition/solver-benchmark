@@ -9,7 +9,7 @@ import { ProblemClass } from "@/constants";
 import Link from "next/link";
 import { formatDecimal, formatScientific, roundNumber } from "@/utils/number";
 import { isNullorUndefined } from "@/utils/calculations";
-import { filterNumber } from "@/utils/table";
+import { filterCheckboxIncludesSome, filterNumber } from "@/utils/table";
 import { getProblemKey } from "@/utils/results";
 
 type DataTableProps = {
@@ -85,31 +85,31 @@ const DataTable = ({ problemId }: DataTableProps) => {
       {
         header: "Size",
         accessorKey: "size",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 110,
       },
       {
         header: "Solver",
         accessorKey: "solver",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 140,
       },
       {
         header: "Solver Version",
         accessorKey: "solverVersion",
         size: 180,
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
       },
       {
         header: "Status",
         accessorKey: "status",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 140,
       },
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 220,
         cell: (info: CellContext<TableData, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import {
   createD3Tooltip,
@@ -40,11 +40,35 @@ const D3SolverEvolutionChart = ({
   const svgRef = useRef(null);
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
   const windowWidth = useDebouncedWindowWidth(200);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart
+  // stays in sync with the actual rendered container size.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     if (data.length === 0) return;
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
+    const width = containerWidth || containerRef.current?.clientWidth || 600;
     const margin = { top: 20, right: 60, bottom: 60, left: 60 };
 
     // Clear previous SVG
@@ -352,7 +376,7 @@ const D3SolverEvolutionChart = ({
     return () => {
       tooltip.remove();
     };
-  }, [data, solverColor, solverName, windowWidth]);
+  }, [data, solverColor, solverName, windowWidth, containerWidth]);
 
   return (
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>

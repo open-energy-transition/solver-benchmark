@@ -9,6 +9,13 @@ export enum RealisticOption {
   Other = "N/A",
 }
 
+export enum SolvedOption {
+  // Has at least one result recorded in benchmark_results.csv, regardless
+  // of whether that run actually succeeded, timed out, or errored.
+  Solved = "Solved",
+  NotSolved = "Not Solved",
+}
+
 export type IFilterState = {
   benchmarks: string[];
   application: string[];
