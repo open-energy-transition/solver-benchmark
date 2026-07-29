@@ -37,7 +37,7 @@ problems:
     Num. constraints: 18574
     Num. variables: 7623
     Num. nonzeros: 56119
-    MILP features: None
+    MILP features: []
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 1803 nodes
