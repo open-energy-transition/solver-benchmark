@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import JSZip from "jszip";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
@@ -140,25 +141,173 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     setSelectedProblems(newSelected);
   };
 
+  const getFilesToDownload = (selectedFiles: IColumnTable[]) => {
+    const filesToDownload: Array<{
+      problemId: string;
+      url: string;
+      filename: string;
+    }> = [];
+
+    for (const problem of selectedFiles) {
+      const hasUrl = !!problem.url;
+      const matchesSizeFilter =
+        !!problem.size && problemSizeFilter.includes(problem.size);
+      const matchesRealisticFilter =
+        (problem.realistic === true &&
+          realisticFilter.includes(RealisticOption.Realistic)) ||
+        ((problem.realistic === false || problem.realistic === undefined) &&
+          realisticFilter.includes(RealisticOption.Other));
+
+      const matchesFilters =
+        hasUrl && matchesSizeFilter && matchesRealisticFilter;
+
+      if (!matchesFilters) {
+        console.warn(
+          `No download URL found for ${problem.name} matching filters`,
+        );
+        alert(
+          `No download URL found for ${problem.name} matching filters. Skipping...`,
+        );
+        continue;
+      }
+
+      const urlParts = problem.url!.split("/");
+      const filename = urlParts[urlParts.length - 1] || `${problem.name}.lp`;
+      filesToDownload.push({
+        problemId: problem.name,
+        url: problem.url!,
+        filename,
+      });
+    }
+
+    return filesToDownload;
+  };
+
+  // Chrome/Edge path: stream each file directly into a folder the user picks,
+  // via the File System Access API.
+  const downloadToDirectory = async (
+    filesToDownload: Array<{
+      problemId: string;
+      url: string;
+      filename: string;
+    }>,
+  ) => {
+    const dirHandle = await window.showDirectoryPicker();
+
+    for (let i = 0; i < filesToDownload.length; i++) {
+      const { url, filename } = filesToDownload[i];
+
+      setDownloadProgress({
+        current: i + 1,
+        total: filesToDownload.length,
+        currentFile: filename,
+      });
+
+      try {
+        const fileHandle = await dirHandle.getFileHandle(filename, {
+          create: true,
+        });
+        const writable = await fileHandle.createWritable();
+
+        const response = await fetch(
+          `/api/download?url=${encodeURIComponent(url)}`,
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to download ${filename}: ${response.statusText}`,
+          );
+        }
+
+        const reader = response.body?.getReader();
+        if (!reader) {
+          throw new Error(`No response body for ${filename}`);
+        }
+
+        // Stream chunks directly to file on disk
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          await writable.write(value);
+        }
+
+        await writable.close();
+      } catch (error) {
+        console.error(`Error downloading ${filename}:`, error);
+        alert(`Failed to download ${filename}. Continuing with next file...`);
+      }
+    }
+
+    alert("🎉 All selected files downloaded successfully!");
+  };
+
+  // Safari/Firefox fallback: these browsers don't support the File System
+  // Access API (no folder picker), so instead fetch every file into memory,
+  // bundle them into a single zip, and trigger one ordinary browser download
+  // for that zip file.
+  const downloadAsZip = async (
+    filesToDownload: Array<{
+      problemId: string;
+      url: string;
+      filename: string;
+    }>,
+  ) => {
+    const zip = new JSZip();
+
+    for (let i = 0; i < filesToDownload.length; i++) {
+      const { url, filename } = filesToDownload[i];
+
+      setDownloadProgress({
+        current: i + 1,
+        total: filesToDownload.length,
+        currentFile: filename,
+      });
+
+      try {
+        const response = await fetch(
+          `/api/download?url=${encodeURIComponent(url)}`,
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to download ${filename}: ${response.statusText}`,
+          );
+        }
+
+        zip.file(filename, await response.blob());
+      } catch (error) {
+        console.error(`Error downloading ${filename}:`, error);
+        alert(`Failed to download ${filename}. Continuing with next file...`);
+      }
+    }
+
+    setDownloadProgress({
+      current: filesToDownload.length,
+      total: filesToDownload.length,
+      currentFile: "Creating zip file...",
+    });
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const zipUrl = URL.createObjectURL(zipBlob);
+    const a = document.createElement("a");
+    a.href = zipUrl;
+    a.download = "benchmark_problems.zip";
+    a.click();
+    URL.revokeObjectURL(zipUrl);
+
+    alert("🎉 Selected files downloaded as a zip file!");
+  };
+
   const handleDownloadSelected = async () => {
     if (selectedProblems.size === 0) {
       alert("Please select at least one problem to download");
       return;
     }
 
-    // Check if File System Access API is supported
-    if (!("showDirectoryPicker" in window)) {
-      alert(
-        "Your browser doesn't support the File System Access API. Please use Chrome, Edge, or another compatible browser.",
-      );
-      return;
-    }
+    const supportsDirectoryPicker = "showDirectoryPicker" in window;
 
     try {
       setIsDownloading(true);
-
-      // Ask user to choose destination folder once
-      const dirHandle = await window.showDirectoryPicker();
 
       const selectedFiles = memoizedMetaData.filter((b) =>
         selectedProblems.has(b.name),
@@ -170,44 +319,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: "",
       });
 
-      // Collect all files to download
-      const filesToDownload: Array<{
-        problemId: string;
-        url: string;
-        filename: string;
-      }> = [];
-
-      for (const problem of selectedFiles) {
-        const hasUrl = !!problem.url;
-        const matchesSizeFilter =
-          !!problem.size && problemSizeFilter.includes(problem.size);
-        const matchesRealisticFilter =
-          (problem.realistic === true &&
-            realisticFilter.includes(RealisticOption.Realistic)) ||
-          ((problem.realistic === false || problem.realistic === undefined) &&
-            realisticFilter.includes(RealisticOption.Other));
-
-        const matchesFilters =
-          hasUrl && matchesSizeFilter && matchesRealisticFilter;
-
-        if (!matchesFilters) {
-          console.warn(
-            `No download URL found for ${problem.name} matching filters`,
-          );
-          alert(
-            `No download URL found for ${problem.name} matching filters. Skipping...`,
-          );
-          continue;
-        }
-
-        const urlParts = problem.url!.split("/");
-        const filename = urlParts[urlParts.length - 1] || `${problem.name}.lp`;
-        filesToDownload.push({
-          problemId: problem.name,
-          url: problem.url!,
-          filename,
-        });
-      }
+      const filesToDownload = getFilesToDownload(selectedFiles);
 
       setDownloadProgress({
         current: 0,
@@ -215,58 +327,14 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: "",
       });
 
-      // Download all files
-      for (let i = 0; i < filesToDownload.length; i++) {
-        const { problemId: _problemId, url, filename } = filesToDownload[i];
-
-        setDownloadProgress({
-          current: i + 1,
-          total: filesToDownload.length,
-          currentFile: filename,
-        });
-
-        console.log(`Starting download: ${filename} from ${url}`);
-
-        try {
-          // Create or overwrite file inside selected folder
-          const fileHandle = await dirHandle.getFileHandle(filename, {
-            create: true,
-          });
-          const writable = await fileHandle.createWritable();
-
-          const response = await fetch(
-            `/api/download?url=${encodeURIComponent(url)}`,
-          );
-
-          if (!response.ok) {
-            throw new Error(
-              `Failed to download ${filename}: ${response.statusText}`,
-            );
-          }
-
-          const reader = response.body?.getReader();
-          if (!reader) {
-            throw new Error(`No response body for ${filename}`);
-          }
-
-          // Stream chunks directly to file on disk
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            await writable.write(value);
-          }
-
-          await writable.close();
-          console.log(`✅ Finished: ${filename}`);
-        } catch (error) {
-          console.error(`Error downloading ${filename}:`, error);
-          alert(`Failed to download ${filename}. Continuing with next file...`);
-        }
+      if (supportsDirectoryPicker) {
+        await downloadToDirectory(filesToDownload);
+      } else {
+        await downloadAsZip(filesToDownload);
       }
 
       setDownloadProgress(null);
       setIsDownloading(false);
-      alert("🎉 All selected files downloaded successfully!");
 
       // Clear selection and exit select mode
       setSelectedProblems(new Set());
