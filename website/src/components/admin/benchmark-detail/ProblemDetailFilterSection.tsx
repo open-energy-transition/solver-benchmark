@@ -13,7 +13,7 @@ import {
   CircleOutlineIcon,
 } from "@/assets/icons";
 import { useSelector } from "react-redux";
-import { IResultState, RealisticOption, SolvedOption } from "@/types/state";
+import { IResultState, RealisticOption, HasResultsOption } from "@/types/state";
 import { IFilterProblemDetails } from "@/types/benchmark";
 import FilterGroup from "../filters/FilterGroup";
 import { decodeValue, encodeValue } from "@/utils/urls";
@@ -170,7 +170,7 @@ const ProblemDetailFilterSection = ({
       problemSize: availableProblemSizes,
       milpFeatures: availableMilpFeatures,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
-      solved: [SolvedOption.Solved, SolvedOption.NotSolved],
+      solved: [HasResultsOption.HasResults, HasResultsOption.NoResults],
     }[category] as string[];
 
     const selectedItems = (localFilters[categoryKey] as string[]) || [];
@@ -192,7 +192,7 @@ const ProblemDetailFilterSection = ({
     modellingFramework: availableModellingFrameworks.length,
     milpFeatures: availableMilpFeatures.length,
     realistic: [RealisticOption.Realistic, RealisticOption.Other].length,
-    solved: [SolvedOption.Solved, SolvedOption.NotSolved].length,
+    solved: [HasResultsOption.HasResults, HasResultsOption.NoResults].length,
   };
 
   useEffect(() => {
@@ -272,7 +272,7 @@ const ProblemDetailFilterSection = ({
         modellingFramework: availableModellingFrameworks,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
-        solved: [SolvedOption.Solved, SolvedOption.NotSolved],
+        solved: [HasResultsOption.HasResults, HasResultsOption.NoResults],
         milpFeatures: availableMilpFeatures,
       });
     }
@@ -319,7 +319,7 @@ const ProblemDetailFilterSection = ({
         modellingFramework: availableModellingFrameworks,
         problemSize: availableProblemSizes,
         realistic: [RealisticOption.Realistic, RealisticOption.Other],
-        solved: [SolvedOption.Solved, SolvedOption.NotSolved],
+        solved: [HasResultsOption.HasResults, HasResultsOption.NoResults],
         milpFeatures: availableMilpFeatures,
       };
 
@@ -354,7 +354,7 @@ const ProblemDetailFilterSection = ({
       modellingFramework: availableModellingFrameworks,
       problemSize: availableProblemSizes,
       realistic: [RealisticOption.Realistic, RealisticOption.Other],
-      solved: [SolvedOption.Solved, SolvedOption.NotSolved],
+      solved: [HasResultsOption.HasResults, HasResultsOption.NoResults],
       milpFeatures: availableMilpFeatures,
     };
 
@@ -477,12 +477,12 @@ const ProblemDetailFilterSection = ({
             uppercase={true}
             sortOrder={["S", "M", "L"]}
           />
-          {/* Solved */}
+          {/* Has Results */}
           <FilterGroupWithTooltip
-            title="Solved"
-            tooltipText="A problem counts as Solved if it has at least one recorded result from any solver, regardless of whether that run succeeded, timed out, or errored. Not Solved means no solver has been run on it yet."
+            title="Results"
+            tooltipText="A problem counts as Has Results if it has at least one recorded result from any solver, regardless of whether that run succeeded, timed out, or errored. No Results means no solver has been run on it yet."
             icon={<CircleOutlineIcon className="w-5 h-5" />}
-            items={[SolvedOption.Solved, SolvedOption.NotSolved]}
+            items={[HasResultsOption.HasResults, HasResultsOption.NoResults]}
             selectedItems={localFilters?.solved}
             onItemChange={(value) =>
               handleCheckboxChange({ category: "solved", value })
@@ -498,7 +498,10 @@ const ProblemDetailFilterSection = ({
             className="w-full"
             gridClassName="grid-cols-2"
             uppercase={false}
-            sortOrder={[SolvedOption.Solved, SolvedOption.NotSolved]}
+            sortOrder={[
+              HasResultsOption.HasResults,
+              HasResultsOption.NoResults,
+            ]}
           />
           {/* Modelling Framework */}
           <FilterGroupWithTooltip

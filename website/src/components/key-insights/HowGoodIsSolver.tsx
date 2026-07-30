@@ -50,9 +50,9 @@ const HowGoodIsSolver = () => {
           <Link
             className="font-bold"
             href={PATH_DASHBOARD.home}
-            aria-label="Navigate to Solver Ranking page on the dashboard"
+            aria-label="Navigate to Aggregated Results page on the dashboard"
           >
-            Solver Ranking dashboard
+            Aggregated Results dashboard
           </Link>
           ). We group our set of problems according to problem size
           <span className="inline-flex gap-2">

@@ -228,9 +228,9 @@ const BenchmarkStatisticsCharts = ({
   }
 
   return (
-    <div className="p-1 rounded-xl space-y-8 relative">
-      <div className="xl:flex xl:flex-row justify-between gap-2 ">
-        <div className="flex-1 w-full xl:w-1/3">
+    <div className="rounded-xl space-y-8 relative">
+      <div className="xl:flex xl:flex-row justify-between gap-5 ">
+        <div className="flex-1 w-full min-w-0 xl:w-1/3">
           <D3StackedBarChart
             className="p-3"
             data={problemClassesChartData}
@@ -243,7 +243,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full mt-4 lg:mt-0 xl:w-1/3">
+        <div className="flex-1 w-full min-w-0 mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="p-3"
             data={timeHorizonsChartData}
@@ -256,7 +256,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full mt-4 lg:mt-0  xl:w-1/3">
+        <div className="flex-1 w-full min-w-0 mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="p-3"
             data={sizeChartData}

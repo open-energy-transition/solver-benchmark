@@ -208,7 +208,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   const columns: ColumnType[] = useMemo(
     () => [
       {
-        name: "Rank",
+        name: "#",
         field: "rank",
         width: "flex-1",
         header: {
@@ -497,7 +497,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             </span>
             <span>
               {" "}
-              of each solver on the selected configuration. You can rank the
+              of each solver on the selected configuration. You can sort the
               solvers by the normalized shifted geometric mean (SGM
             </span>
             <span className="inline-flex gap-2">

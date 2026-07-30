@@ -149,7 +149,7 @@ const LandingPage = () => {
   return (
     <>
       <Head>
-        <title>Solver Ranking | Open Energy Benchmark</title>
+        <title>Aggregated Results | Open Energy Benchmark</title>
         <meta
           name="description"
           content="View main benchmark results for short and long run configurations, with solver performance summaries, technical specifications, and caveats for interpreting results."
@@ -183,12 +183,12 @@ const LandingPage = () => {
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
-                      Solver Ranking
+                      Aggregated Results
                     </p>
                   </div>
                 </div>
               </AdminHeader>
-              <h1 className="h5">Solver Ranking</h1>
+              <h1 className="h5">Aggregated Results</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
                 We run our benchmark on 2 different configurations: The{" "}
                 <b>Short</b> tab below contains results of the smaller problems

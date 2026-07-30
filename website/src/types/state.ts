@@ -9,11 +9,11 @@ export enum RealisticOption {
   Other = "N/A",
 }
 
-export enum SolvedOption {
+export enum HasResultsOption {
   // Has at least one result recorded in benchmark_results.csv, regardless
   // of whether that run actually succeeded, timed out, or errored.
-  Solved = "Solved",
-  NotSolved = "Not Solved",
+  HasResults = "Has Results",
+  NoResults = "No Results",
 }
 
 export type IFilterState = {

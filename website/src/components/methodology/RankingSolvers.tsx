@@ -18,7 +18,7 @@ const RankingSolvers = () => {
       <p>
         Ranking the overall performance of solvers on a (sub)set of benchmark
         problems is a difficult task. We offer the following methods for ranking
-        on our Solver Ranking dashboard:
+        on our Aggregated Results dashboard:
       </p>
       <ol className="list-decimal list-outside ml-6">
         <li className="mb-2">SGM runtime</li>

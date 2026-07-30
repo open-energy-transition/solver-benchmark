@@ -7,7 +7,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     "",
     "/key-insights",
     "/methodology",
-    "/dashboard/solver-ranking",
+    "/dashboard/aggregated-results",
     "/dashboard/benchmark-problem-set",
     "/dashboard/benchmark-summary",
     "/dashboard/solver-vs-all",

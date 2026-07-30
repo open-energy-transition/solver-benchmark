@@ -6,7 +6,7 @@ import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import InfoPopup from "@/components/common/InfoPopup";
-import { RealisticOption, SolvedOption } from "@/types/state";
+import { RealisticOption, HasResultsOption } from "@/types/state";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getProblemKey } from "@/utils/results";
 
@@ -379,12 +379,12 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         cell: (info) => info.getValue(),
       },
       {
-        header: "SOLVED",
+        header: "RESULTS",
         id: "solved",
         accessorFn: (row) =>
           solvedProblemIds.has(row.name)
-            ? SolvedOption.Solved
-            : SolvedOption.NotSolved,
+            ? HasResultsOption.HasResults
+            : HasResultsOption.NoResults,
         enableColumnFilter: false,
         size: 150,
         cell: (info) => info.getValue(),

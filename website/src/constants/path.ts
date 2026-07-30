@@ -2,7 +2,7 @@ const BASE_PATH = "dashboard";
 
 export const PATH_DASHBOARD = {
   root: "/",
-  home: `/${BASE_PATH}/solver-ranking`,
+  home: `/${BASE_PATH}/aggregated-results`,
   benchmarkSet: {
     list: `/${BASE_PATH}/benchmark-problem-set`,
     one: `/${BASE_PATH}/benchmark-problem-set/{name}`,

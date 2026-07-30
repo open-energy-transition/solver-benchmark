@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const navConfig = [
     {
-      label: "Solver Ranking",
+      label: "Aggregated Results",
       route: PATH_DASHBOARD.home,
       icon: <ChartBarIcon />,
     },

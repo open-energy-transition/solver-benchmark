@@ -7,7 +7,7 @@ import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import ProblemDetailFilterSection from "@/components/admin/benchmark-detail/ProblemDetailFilterSection";
-import { IResultState, RealisticOption, SolvedOption } from "@/types/state";
+import { IResultState, RealisticOption, HasResultsOption } from "@/types/state";
 import { useMemo, useState } from "react";
 import { IFilterProblemDetails } from "@/types/benchmark";
 import { isEmpty } from "lodash";
@@ -108,7 +108,7 @@ const PageBenchmarkSet = () => {
     problemClass: availableProblemClasses,
     application: availableApplications,
     problemSize: availableProblemSizes,
-    solved: [SolvedOption.Solved, SolvedOption.NotSolved],
+    solved: [HasResultsOption.HasResults, HasResultsOption.NoResults],
     modellingFramework: availableModellingFrameworks,
     realistic: [RealisticOption.Realistic, RealisticOption.Other],
     milpFeatures: availableMilpFeatures,
@@ -152,8 +152,8 @@ const PageBenchmarkSet = () => {
         const isProblemSizeMatch =
           !!value.size && problemSize.includes(value.size);
         const isSolvedMatch = solvedProblemIds.has(key)
-          ? solved.includes(SolvedOption.Solved)
-          : solved.includes(SolvedOption.NotSolved);
+          ? solved.includes(HasResultsOption.HasResults)
+          : solved.includes(HasResultsOption.NoResults);
         const isRealisticMatch =
           (value.realistic === true &&
             realistic.includes(RealisticOption.Realistic)) ||
@@ -243,41 +243,43 @@ const PageBenchmarkSet = () => {
                 </Link>
               </div>
             </div>
-            <div className="sm:flex bg-[#E6ECF5] gap-5 border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
-              <div className="mt-4 sm:x-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl h-max">
-                <ProblemDetailFilterSection
-                  localFilters={localFilters}
-                  setLocalFilters={setLocalFilters}
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
+              <div className="sm:flex gap-5">
+                <div className="mt-4 sm:x-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl h-max">
+                  <ProblemDetailFilterSection
+                    localFilters={localFilters}
+                    setLocalFilters={setLocalFilters}
+                    availableSectoralFocus={availableSectoralFocus}
+                    availableSectors={availableSectors}
+                    availableProblemClasses={availableProblemClasses}
+                    availableApplications={availableApplications}
+                    availableProblemSizes={availableProblemSizes}
+                    availableModellingFrameworks={availableModellingFrameworks}
+                    availableMilpFeatures={availableMilpFeatures}
+                  />
+                </div>
+                <div className="overflow-auto w-full pr-0 pt-4">
+                  <div className="h6">List of problems</div>
+                  <div className="space-y-4 sm:space-y-6">
+                    <BenchmarkTableResult
+                      metaData={filteredMetaData}
+                      problemSizeFilter={localFilters.problemSize}
+                      realisticFilter={localFilters.realistic}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-5">
+                <BenchmarkStatisticsCharts
+                  metaData={filteredMetaData}
                   availableSectoralFocus={availableSectoralFocus}
                   availableSectors={availableSectors}
                   availableProblemClasses={availableProblemClasses}
                   availableApplications={availableApplications}
-                  availableProblemSizes={availableProblemSizes}
                   availableModellingFrameworks={availableModellingFrameworks}
-                  availableMilpFeatures={availableMilpFeatures}
+                  availableProblemSizes={availableProblemSizes}
                 />
               </div>
-              <div className="overflow-auto w-full pr-0 pt-4">
-                <div className="h6">List of problems</div>
-                <div className="space-y-4 sm:space-y-6">
-                  <BenchmarkTableResult
-                    metaData={filteredMetaData}
-                    problemSizeFilter={localFilters.problemSize}
-                    realisticFilter={localFilters.realistic}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="mt-6">
-              <BenchmarkStatisticsCharts
-                metaData={filteredMetaData}
-                availableSectoralFocus={availableSectoralFocus}
-                availableSectors={availableSectors}
-                availableProblemClasses={availableProblemClasses}
-                availableApplications={availableApplications}
-                availableModellingFrameworks={availableModellingFrameworks}
-                availableProblemSizes={availableProblemSizes}
-              />
             </div>
           </div>
         </div>

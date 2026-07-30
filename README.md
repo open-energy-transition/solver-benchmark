@@ -498,7 +498,7 @@ npm run build && npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
 
-To see the results from your runs, navigate to the [results page](http://localhost:3000/dashboard/solver-ranking).
+To see the results from your runs, navigate to the [results page](http://localhost:3000/dashboard/aggregated-results).
 
 ## Development
 

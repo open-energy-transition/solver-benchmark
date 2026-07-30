@@ -44,8 +44,8 @@ const SgmExplanation = ({}) => {
             <li>Max with 1 ignores differences in runtimes of less than 1s</li>
             <li>
               The shift is used to reduce the impact of a few problems having
-              very low runtimes on the overall SGM, reducing the risk of ranking
-              highly a solver that is really good on only a small handfull of
+              very low runtimes on the overall SGM, reducing the risk of rating
+              highly a solver that is really good on only a small handful of
               problems
             </li>
           </ul>
