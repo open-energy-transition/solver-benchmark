@@ -12,3 +12,9 @@ export const TIMEOUT_VALUES = {
  * (as "N/A") instead of silently disappearing whenever a filter is applied.
  */
 export const UNSPECIFIED_FILTER_VALUE = "N/A";
+
+/**
+ * Maximum number of benchmark problems that can be selected for the
+ * "Compare Problems" dashboard, which shows one bar-group per problem.
+ */
+export const MAX_COMPARE_PROBLEMS = 5;

@@ -1,15 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import JSZip from "jszip";
+import { useRouter } from "next/router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
+import { MAX_COMPARE_PROBLEMS } from "@/constants/filter";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import InfoPopup from "@/components/common/InfoPopup";
 import { RealisticOption, HasResultsOption } from "@/types/state";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getProblemKey } from "@/utils/results";
+import { encodeValue } from "@/utils/urls";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -88,6 +91,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   problemSizeFilter = [],
   realisticFilter = [],
 }) => {
+  const router = useRouter();
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedProblems, setSelectedProblems] = useState<Set<string>>(
     new Set(),
@@ -357,6 +361,18 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     setIsSelectMode(false);
   };
 
+  const handleCompareSelected = () => {
+    if (
+      selectedProblems.size === 0 ||
+      selectedProblems.size > MAX_COMPARE_PROBLEMS
+    ) {
+      return;
+    }
+
+    const problems = Array.from(selectedProblems).map(encodeValue).join(";");
+    router.push(`${PATH_DASHBOARD.compareProblems}?problems=${problems}`);
+  };
+
   // Prevent tab/window close during download
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -479,7 +495,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
               onClick={() => setIsSelectMode(true)}
               className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
             >
-              Select for Download
+              Select for Download or Comparison
             </button>
           ) : (
             <>
@@ -495,6 +511,17 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                   : `Download Selected (${selectedProblems.size})`}
               </button>
               <button
+                onClick={handleCompareSelected}
+                disabled={
+                  isDownloading ||
+                  selectedProblems.size === 0 ||
+                  selectedProblems.size > MAX_COMPARE_PROBLEMS
+                }
+                className="px-4 py-2 bg-navy text-white rounded-lg transition-colors text-sm font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {`Compare Selected (${selectedProblems.size})`}
+              </button>
+              <button
                 onClick={handleCancelSelection}
                 disabled={isDownloading}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed"
@@ -505,6 +532,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           )}
         </div>
       </div>
+
+      {isSelectMode && selectedProblems.size > MAX_COMPARE_PROBLEMS && (
+        <div className="text-right text-xs text-red-600 -mt-3 mb-3">
+          Compare Selected is limited to {MAX_COMPARE_PROBLEMS} problems —
+          deselect some to enable it.
+        </div>
+      )}
 
       {downloadProgress && (
         <div className="mb-4 p-4 bg-[#F4F6FA]  border border-[#e5e7eb] rounded-lg animate-fade-in">

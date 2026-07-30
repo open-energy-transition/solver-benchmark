@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { ID3GroupedBarChart } from "@/types/chart";
 import { CircleIcon } from "@/assets/icons";
@@ -34,6 +34,7 @@ const D3GroupedBarChart = ({
   splitter = "-",
   extraCategoryLengthMargin = undefined,
   sortByValue = false,
+  legendSortAlphabetically = false,
   showLineAtY1 = true,
   useLogScale = false,
   directionalIndicator = undefined,
@@ -61,6 +62,20 @@ const D3GroupedBarChart = ({
     const length = String(d[categoryKey] || "").length;
     return Math.max(acc, length);
   }, 0);
+
+  // Union of keys across every row, not just the first — a row (e.g. a
+  // problem with more solver results than the others) can have more/other
+  // keys than data[0], and both the bar-width scale and the legend need to
+  // account for every one of them, not just whichever happens to be first.
+  const allKeys = useMemo(() => {
+    const keySet = new Set<string>();
+    chartData.forEach((d) => {
+      Object.keys(d).forEach((key) => {
+        if (key !== categoryKey) keySet.add(key);
+      });
+    });
+    return Array.from(keySet);
+  }, [chartData, categoryKey]);
 
   useEffect(() => {
     if (!diagonalXAxisLabelsOnMobile) return;
@@ -139,16 +154,14 @@ const D3GroupedBarChart = ({
       .style("background", "transparent")
       .style("overflow", "visible");
 
-    const keys = Object.keys(data[0])
-      .filter((key) => key !== categoryKey)
-      .sort((a, b) => {
-        if (sortByValue) {
-          const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
-          const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
-          return avgA - avgB;
-        }
-        return a.localeCompare(b);
-      });
+    const keys = allKeys.slice().sort((a, b) => {
+      if (sortByValue) {
+        const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
+        const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
+        return avgA - avgB;
+      }
+      return a.localeCompare(b);
+    });
 
     // Scales for side-by-side bars
     const xScale = d3
@@ -470,12 +483,39 @@ const D3GroupedBarChart = ({
               lines = text.text().split("\n");
             }
             text.text(null);
+            // Leave a little breathing room so truncated text never quite
+            // touches a neighboring category's label.
+            const maxLabelWidth = xScale.bandwidth() * 0.95;
             lines.forEach((line) => {
-              text
+              const tspan = text
                 .append("tspan")
                 .attr("x", isMobile && rotateXAxisLabels ? "10" : "0")
                 .attr("dy", isMobile && rotateXAxisLabels ? "1.1em" : "1.2em")
                 .text(line);
+
+              // Width-aware middle-ellipsis truncation: with several
+              // categories sharing the chart's width, a long label (e.g. a
+              // long problem id) can otherwise overlap its neighbor's label.
+              // Trims from whichever side is currently longer so both a
+              // recognizable prefix and suffix survive (useful when several
+              // long labels share a common prefix).
+              const node = tspan.node();
+              if (node) {
+                let keepStart = Math.ceil(line.length / 2);
+                let keepEnd = Math.floor(line.length / 2);
+                while (
+                  keepStart + keepEnd > 3 &&
+                  node.getComputedTextLength() > maxLabelWidth
+                ) {
+                  if (keepStart > keepEnd) keepStart -= 1;
+                  else keepEnd -= 1;
+                  tspan.text(
+                    `${line.slice(0, keepStart)}…${line.slice(
+                      line.length - keepEnd,
+                    )}`,
+                  );
+                }
+              }
             });
           });
       });
@@ -593,6 +633,7 @@ const D3GroupedBarChart = ({
     };
   }, [
     chartData,
+    allKeys,
     height,
     colors,
     xAxisTooltipFormat,
@@ -610,9 +651,12 @@ const D3GroupedBarChart = ({
 
   const defaultLegend = () => (
     <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
-      {Object.keys(chartData[0] || {})
-        .filter((key) => key !== categoryKey)
+      {allKeys
+        .slice()
         .sort((a, b) => {
+          if (legendSortAlphabetically) {
+            return getSolverLabel(a).localeCompare(getSolverLabel(b));
+          }
           if (sortByValue) {
             // Sort by average values from smallest to biggest
             const avgA = d3.mean(chartData, (d) => Number(d[a])) || 0;

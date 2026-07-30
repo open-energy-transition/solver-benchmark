@@ -34,6 +34,8 @@ export interface ID3GroupedBarChart {
   xAxisLabelRotation?: number;
   splitter?: string;
   sortByValue?: boolean;
+  /** Sort the legend entries alphabetically (by display label) instead of following sortByValue. Bar order within each group is unaffected. */
+  legendSortAlphabetically?: boolean;
   showLineAtY1?: boolean;
   useLogScale?: boolean;
   directionalIndicator?: Direction;

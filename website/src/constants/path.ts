@@ -12,6 +12,7 @@ export const PATH_DASHBOARD = {
   compareSolvers: `/${BASE_PATH}/solver-vs-solver`,
   solvers: `/${BASE_PATH}/solver-vs-all`,
   performanceHistory: `/${BASE_PATH}/performance-history`,
+  compareProblems: `/${BASE_PATH}/compare-problems`,
 };
 
 export const ROOT_PATH = {
