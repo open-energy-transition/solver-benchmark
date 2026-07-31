@@ -5,6 +5,7 @@ import {
   ISolverYearlyChartData,
   ISolverYearlyMetrics,
 } from "@/types/benchmark";
+import { getSolverLabel } from "@/utils/solvers";
 
 interface SolverEvolutionData {
   year: number;
@@ -179,7 +180,7 @@ const SolverEvolutionSection = ({
             </option>
             {sortedSolverNames.map((solverName) => (
               <option key={solverName} value={solverName}>
-                {solverName.toLowerCase()}
+                {getSolverLabel(solverName)}
               </option>
             ))}
           </select>

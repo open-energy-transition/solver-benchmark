@@ -120,7 +120,7 @@ const ProblemMetadataSections = ({
 
       <SectionCard
         title="Legacy Classification"
-        infoText="These fields are being phased out in favor of a new Energy-System Taxonomy fields above, but are still shown here since they remain populated on existing problems."
+        infoText="These fields are being phased out in favor of new Energy-System Taxonomy fields above, but are still shown here since they remain populated on existing problems."
         hasContent={hasLegacyClassification}
       >
         {application && <FieldBlock label="Application" value={application} />}

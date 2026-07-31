@@ -10,7 +10,7 @@ import CustomDropdown from "@/components/common/CustomDropdown";
 import { NoResultsMessage } from "@/components/shared";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
-import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getSolverLabel, HIPO_SOLVERS } from "@/utils/solvers";
 import { getProblemKey } from "@/utils/results";
 
 const SOLVES_DATA = [
@@ -201,10 +201,11 @@ const SolverSection = () => {
     const matchingResult = benchmarkLatestResults.find(
       (result) => result.solver === solver,
     );
+    const label = getSolverLabel(solver);
     if (matchingResult && matchingResult.solverVersion) {
-      return `${solver} v${matchingResult.solverVersion}`;
+      return `${label} v${matchingResult.solverVersion}`;
     }
-    return solver;
+    return label;
   };
 
   return (

@@ -7,6 +7,7 @@ import {
 } from "@/utils/chart";
 import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { getSolverLabel } from "@/utils/solvers";
 
 interface SolverEvolutionData {
   year: number;
@@ -382,7 +383,7 @@ const D3SolverEvolutionChart = ({
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       <div className="mb-4 pl-4 lg:pl-0">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          {solverName} Performance Evolution
+          {getSolverLabel(solverName)} Performance Evolution
         </h3>
         <div className="sm:flex gap-4 text-sm">
           <div className="flex items-center gap-2">

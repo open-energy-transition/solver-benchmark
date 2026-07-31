@@ -14,7 +14,7 @@ import SgmRuntimeComparison from "@/components/admin/home/SgmRuntimeComparison";
 import { getLatestBenchmarkResult } from "@/utils/results";
 import InfoPopup from "../common/InfoPopup";
 import { getSolverColor } from "@/utils/chart";
-import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getSolverLabel, HIPO_SOLVERS } from "@/utils/solvers";
 
 type ColumnType = {
   name: string;
@@ -457,7 +457,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
                   class="w-3 h-3 rounded-full"
                   style="background-color: ${color};"
                 ></span>
-                <span>${str}</span>
+                <span>${getSolverLabel(str)}</span>
               </span>`;
     }
     return str;
@@ -542,7 +542,9 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
             >
               <div className="flex justify-between items-center mb-2">
                 <span className="font-semibold">#{item.rank}</span>
-                <span className="text-navy font-bold">{item.solver}</span>
+                <span className="text-navy font-bold">
+                  {getSolverLabel(item.solver)}
+                </span>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 {Object.keys(item)

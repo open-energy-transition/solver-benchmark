@@ -512,7 +512,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("y", height - 30)
       .attr("text-anchor", "middle")
       .style("fill", "rgb(79 78 78)")
-      .text(`Problems sorted by solving time of ${baseSolver}`);
+      .text(`Problems sorted by solving time of ${getSolverLabel(baseSolver)}`);
 
     // Primary y-axis label
     svg
@@ -534,7 +534,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "rgb(79 78 78)")
-      .text(`Runtime of ${baseSolver} (s)`);
+      .text(`Runtime of ${getSolverLabel(baseSolver)} (s)`);
 
     return () => {
       tooltip.remove();
@@ -582,9 +582,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                 />
               </div>
               <span
-                className={`text-sm transition-colors ${
+                className={`text-sm font-bold transition-colors ${
                   visibleSolvers.has(baseSolver)
-                    ? "text-navy font-medium"
+                    ? "text-navy"
                     : "text-dark-grey opacity-50"
                 }`}
               >
@@ -614,9 +614,9 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
                     }}
                   />
                   <span
-                    className={`text-sm transition-colors ${
+                    className={`text-sm font-bold transition-colors ${
                       visibleSolvers.has(solver)
-                        ? "text-navy font-medium"
+                        ? "text-navy"
                         : "text-dark-grey opacity-50"
                     }`}
                   >
@@ -656,7 +656,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           >
             <DirectionalIndicator
               direction="higher"
-              label={`${baseSolver} better than other solver`}
+              label={`${getSolverLabel(baseSolver)} better than other solver`}
               size="sm"
               color="rgb(79,78,78)"
             />
@@ -671,7 +671,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
           >
             <DirectionalIndicator
               direction="lower"
-              label={`other solver better than ${baseSolver}`}
+              label={`other solver better than ${getSolverLabel(baseSolver)}`}
               size="sm"
               color="rgb(79,78,78)"
             />
