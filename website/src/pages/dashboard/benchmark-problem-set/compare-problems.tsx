@@ -111,11 +111,10 @@ const PageCompareProblems = () => {
               {problemIds.length > 0 ? (
                 <>
                   <p className="mt-4 mb-0 max-w-screen-lg">
-                    Comparing the relative runtime of each solver on the
-                    problem{problemIds.length > 1 ? "s " : " "}you selected. For
-                    each problem, bars show every solver&apos;s runtime
-                    relative to the fastest solver on that problem (lower is
-                    better).
+                    Comparing the relative runtime of each solver on the problem
+                    {problemIds.length > 1 ? "s " : " "}you selected. For each
+                    problem, bars show every solver&apos;s runtime relative to
+                    the fastest solver on that problem (lower is better).
                   </p>
                   <ul className="list-disc pl-6 mt-2 max-w-screen-lg">
                     {problemIds.map((id) => (
