@@ -51,6 +51,11 @@ const PageCompareProblems = () => {
     [problemIds, benchmarkResults],
   );
 
+  const problemIdsWithResults = useMemo(
+    () => new Set(benchmarkResults.map(getProblemKey)),
+    [benchmarkResults],
+  );
+
   return (
     <>
       <Head>
@@ -87,6 +92,15 @@ const PageCompareProblems = () => {
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                    <Link
+                      href={PATH_DASHBOARD.benchmarkSet.list}
+                      aria-label="Navigate to benchmark problem set list page"
+                    >
+                      <span className="self-center font-semibold whitespace-nowrap text-opacity-70">
+                        Benchmark Problem Set
+                      </span>
+                    </Link>
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
                     <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
                       Compare Problems
                     </p>
@@ -95,27 +109,36 @@ const PageCompareProblems = () => {
               </AdminHeader>
               <h1 className="h5">Compare Problems</h1>
               {problemIds.length > 0 ? (
-                <p className="mt-4 mb-0 max-w-screen-lg">
-                  Comparing the relative runtime of each solver on the problem
-                  {problemIds.length > 1 ? "s" : ""} you selected:{" "}
-                  {problemIds.map((id, i) => (
-                    <span key={id}>
-                      <Link
-                        className="font-bold hover:underline underline-offset-4"
-                        href={PATH_DASHBOARD.benchmarkSet.one.replace(
-                          "{name}",
-                          id,
+                <>
+                  <p className="mt-4 mb-0 max-w-screen-lg">
+                    Comparing the relative runtime of each solver on the
+                    problem{problemIds.length > 1 ? "s " : " "}you selected. For
+                    each problem, bars show every solver&apos;s runtime
+                    relative to the fastest solver on that problem (lower is
+                    better).
+                  </p>
+                  <ul className="list-disc pl-6 mt-2 max-w-screen-lg">
+                    {problemIds.map((id) => (
+                      <li key={id}>
+                        <Link
+                          className="font-bold hover:underline underline-offset-4"
+                          href={PATH_DASHBOARD.benchmarkSet.one.replace(
+                            "{name}",
+                            id,
+                          )}
+                        >
+                          {id}
+                        </Link>
+                        {!problemIdsWithResults.has(id) && (
+                          <span className="text-red-600">
+                            {" "}
+                            (No results available)
+                          </span>
                         )}
-                      >
-                        {id}
-                      </Link>
-                      {i < problemIds.length - 1 ? ", " : ""}
-                    </span>
-                  ))}
-                  . For each problem, bars show every solver&apos;s runtime
-                  relative to the fastest solver on that problem (lower is
-                  better).
-                </p>
+                      </li>
+                    ))}
+                  </ul>
+                </>
               ) : (
                 <p className="mt-4 mb-0 max-w-screen-lg">
                   This page compares the relative runtime of solvers across a
