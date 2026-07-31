@@ -9,23 +9,26 @@ data = pd.read_csv(Path(__file__).parent / "../results/benchmark_results.csv")
 meta = yaml.safe_load(open("results/metadata.yaml"))
 
 short_TO_benchs, long_TO_benchs = set(), set()
-short_TO_solvers_LP, short_TO_solvers_MILP, long_TO_solvers_LP, long_TO_solvers_MILP = (
-    None,
-    None,
-    None,
-    None,
-)
+short_TO_solvers_LP = None
+short_TO_solvers_MILP = None
+long_TO_solvers_LP = None
+long_TO_solvers_MILP = None
+skipped_benchs = set()
+
 for n, b in meta["benchmarks"].items():
     for s in b["Sizes"]:
+        bench_size = n + "-" + s["Name"]
         if s["Size"] == "L":
-            long_TO_benchs.add(n + "-" + s["Name"])
+            long_TO_benchs.add(bench_size)
         elif s["Size"] in ["S", "M"]:
-            short_TO_benchs.add(n + "-" + s["Name"])
+            short_TO_benchs.add(bench_size)
         else:
             print(
                 f"::warning file=tests/validate_results.py::ERROR: Unknown size {s['Size']}"
             )
             raise ValueError(f"Unknown size {s['Size']}")
+        if s.get("Skip because") is not None:
+            skipped_benchs.add(bench_size)
 
 data["bench-size"] = data["Benchmark"] + "-" + data["Size"]
 data["solver-version"] = data["Solver"] + "-" + data["Solver Version"]
@@ -118,7 +121,7 @@ print(f"Solvers run on long LP benchmarks:\n{long_TO_solvers_LP}")
 print(f"Solvers run on long MILP benchmarks:\n{long_TO_solvers_MILP}")
 
 # Check that no bench-size from metadata is missing
-missing_benchs = (short_TO_benchs | long_TO_benchs) - seen_benchs
+missing_benchs = (short_TO_benchs | long_TO_benchs) - seen_benchs - skipped_benchs
 if missing_benchs:
     print(
         "::warning file=tests/validate_results.py::ERROR: couldn't find these benchs in the results:"

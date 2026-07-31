@@ -1,0 +1,135 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+
+import { TanStackTable } from "@/components/shared/tables/TanStackTable";
+import { CellContext, ColumnDef } from "@tanstack/react-table";
+import {
+  benchmarkModelCasesData,
+  IBenchmarkModelCases,
+} from "@/data/benchmarkModelCasesData";
+import { IResultState } from "@/types/state";
+
+const BenchmarkModelCasesTable = () => {
+  const renderModelData = (model: string | boolean) => {
+    switch (model) {
+      case "true":
+        return (
+          <div className="flex justify-center">
+            <svg
+              className="w-5 h-5 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+        );
+      case "false":
+        return <div className="flex justify-center">✕</div>;
+      case "N.A":
+        return <div className="flex justify-center">N.A</div>;
+      case "":
+        return <div className="flex justify-center"></div>;
+      default:
+        return <div className="flex justify-center">{String(model)}</div>;
+    }
+  };
+  const renderHeader = (header: CellContext<IBenchmarkModelCases, string>) => {
+    const isMain = Object.keys(header.row.original)
+      .filter((key) => key !== "header")
+      .every((key) => {
+        return header.row.original[key] === "";
+      });
+    return (
+      <div className={`text-left ${isMain ? "font-bold" : ""}`}>
+        {header.getValue()}
+      </div>
+    );
+  };
+
+  const availableModellingFrameworks = useSelector(
+    (state: { results: IResultState }) => {
+      return state.results.availableModellingFrameworks;
+    },
+  );
+
+  const columns = useMemo<ColumnDef<IBenchmarkModelCases>[]>(
+    () => [
+      {
+        header: "Category",
+        accessorKey: "header",
+        size: 245,
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (info: CellContext<IBenchmarkModelCases, unknown>) =>
+          renderHeader(info as CellContext<IBenchmarkModelCases, string>),
+      },
+      ...availableModellingFrameworks.map((framework) => ({
+        header: framework.replaceAll(".", "_"),
+        accessorKey: framework.replaceAll(".", "_"),
+        size: framework.length + 90,
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (info: CellContext<IBenchmarkModelCases, unknown>) => {
+          return renderModelData(info.getValue() as string | boolean);
+        },
+      })),
+    ],
+    [availableModellingFrameworks],
+  );
+
+  return (
+    <div className="my-4 mt-8 rounded-xl">
+      {/* Desktop / tablet: original table */}
+      <div className="hidden md:block">
+        <TanStackTable
+          data={benchmarkModelCasesData}
+          headerClassName="text-center text-navy p-2 cursor-pointer"
+          columns={columns as any}
+          showPagination={false}
+        />
+      </div>
+
+      {/* Mobile: show a card per framework to avoid horizontal scroll */}
+      <div className="md:hidden space-y-4">
+        {availableModellingFrameworks.map((framework) => {
+          const key = framework.replaceAll(".", "_");
+          return (
+            <div key={framework} className="bg-white rounded-xl p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="font-bold tag-line-sm truncate">
+                  {framework}
+                </div>
+              </div>
+
+              <div className="mt-3 space-y-2">
+                {benchmarkModelCasesData.map((row) => (
+                  <div
+                    key={row.header}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="tag-line-xs text-navy text-opacity-60">
+                      {row.header}
+                    </div>
+                    <div className="ml-2">
+                      {renderModelData((row as any)[key])}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default BenchmarkModelCasesTable;

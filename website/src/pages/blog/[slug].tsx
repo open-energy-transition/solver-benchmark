@@ -1,0 +1,291 @@
+import React, { useEffect, useState, useRef } from "react";
+import Head from "next/head";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { getPostSlugs, getPostBySlug, PostMeta } from "../../lib/posts";
+import { getTsxPost, getTsxPostSlugs } from "../../lib/tsx-posts-registry";
+import {
+  PageLayout,
+  TableOfContents,
+  ContentSection,
+} from "@/components/info-pages";
+import { useSectionsVisibility } from "@/hooks/useSectionsVisibility";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
+import gsap from "gsap";
+import { remark } from "remark";
+import html from "remark-html";
+import remarkGfm from "remark-gfm";
+
+type TocItem = {
+  hash: string;
+  label: string;
+};
+
+type Props = {
+  meta: PostMeta;
+  contentHtml: string;
+  tocItems: TocItem[];
+  isTsx: boolean;
+};
+
+function slugify(text: string) {
+  let sanitized = text;
+  let previous: string;
+  do {
+    previous = sanitized;
+    sanitized = sanitized.replace(/<[^>]*>/g, "");
+  } while (sanitized !== previous);
+
+  return (
+    sanitized
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "section"
+  );
+}
+
+function extractTocAndInjectIds(htmlString: string) {
+  const toc: TocItem[] = [];
+  // Replace <h2 ...>...</h2> with <h2 id="slug">...</h2>
+  const newHtml = htmlString.replace(
+    /<h2([^>]*)>(.*?)<\/h2>/gi,
+    (match, attrs = "", inner) => {
+      const label = inner
+        .replace(/<[^>]*>/g, "") // remove complete tags
+        .replace(/<[^>]*/g, "") // remove unclosed tags (e.g. <script without >)
+        .trim();
+      const slug = slugify(label);
+      const hash = `#${slug}`;
+      toc.push({ hash, label });
+
+      // Normalize any React `className` to `class` and merge/apply
+      // a scroll-margin-top utility so anchor links land below fixed headers.
+      let outAttrs = attrs;
+
+      if (/\bclass(Name)?=/i.test(outAttrs)) {
+        // convert className -> class
+        outAttrs = outAttrs.replace(/className=/gi, "class=");
+        // append our utility to existing class attribute (double-quote case)
+        outAttrs = outAttrs.replace(
+          /class=\"([^\"]*)\"/,
+          (_m: string, g1: string) => `class="${g1} scroll-mt-[240px]"`,
+        );
+        // append for single-quoted case
+        outAttrs = outAttrs.replace(
+          /class='([^']*)'/,
+          (_m: string, g1: string) => `class='${g1} scroll-mt-[240px]'`,
+        );
+      } else {
+        // attrs may include a leading space; insert our class attribute
+        outAttrs = ` class=\"scroll-mt-[240px]\"${attrs}`;
+      }
+
+      return `<h2 id="${slug}"${outAttrs}>${inner}</h2>`;
+    },
+  );
+
+  return { contentHtml: newHtml, tocItems: toc };
+}
+
+function MarkdownPost({ meta, contentHtml, tocItems }: Omit<Props, "isTsx">) {
+  const mappedItems = tocItems.map((t) => ({ ...t, threshold: 0.5 }));
+  const visibilities = useSectionsVisibility(mappedItems);
+  const scrollDirection = useScrollDirection();
+  const [currentSection, setCurrentSection] = useState<string | null>(null);
+  const initialSelectionDone = useRef(false);
+  const articleRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const el = articleRef.current;
+    if (!el) return;
+    const children = el.querySelectorAll(":scope > *");
+    if (!children.length) return;
+    gsap.fromTo(
+      children,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
+        delay: 0.15,
+        overwrite: "auto",
+      },
+    );
+  }, []);
+
+  useEffect(() => {
+    // If any observed section is visible, pick the first visible one (lowest index).
+    const anyVisible = visibilities.some((v) => v);
+    if (anyVisible) {
+      const firstIdx = visibilities.findIndex((v) => v);
+      if (firstIdx !== -1 && mappedItems[firstIdx]) {
+        const hash = mappedItems[firstIdx].hash;
+        if (hash !== currentSection) {
+          window.history.replaceState(null, "", hash);
+          setCurrentSection(hash);
+        }
+        initialSelectionDone.current = true;
+      }
+      return;
+    }
+
+    // No headings observed as visible. If page is at top and we haven't
+    // performed the initial selection yet, highlight the first item.
+    if (
+      !initialSelectionDone.current &&
+      typeof window !== "undefined" &&
+      window.scrollY === 0
+    ) {
+      if (mappedItems.length > 0) {
+        window.history.replaceState(null, "", mappedItems[0].hash);
+        setCurrentSection(mappedItems[0].hash);
+      }
+      initialSelectionDone.current = true;
+    }
+  }, [visibilities, scrollDirection]);
+
+  return (
+    <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
+      <Head>
+        <title>{meta.title} - Open Energy Benchmark</title>
+        <meta name="description" content={meta.excerpt || meta.title} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.excerpt} />
+        <meta
+          property="og:image"
+          content={`https://openenergybenchmark.org${meta.image}`}
+        />
+        <meta property="article:published_time" content={meta.date} />
+        <link
+          rel="canonical"
+          href={`https://openenergybenchmark.org/blog/${meta.slug}`}
+        />
+      </Head>
+
+      <TableOfContents
+        title={meta.title}
+        currentSection={currentSection}
+        items={tocItems.map((t) => ({ hash: t.hash, label: t.label }))}
+        isBlogPage={true}
+      />
+
+      <ContentSection>
+        <div className="info-pages-content z-10">
+          <article ref={articleRef} className="info-pages-section">
+            {meta.tags && meta.tags.length > 0 && (
+              <div className="mb-6 flex gap-2 mt-4">
+                <div className="text-sm bg-gray-200 px-2 py-1 rounded">
+                  {meta.date}
+                </div>
+                {meta.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-sm bg-gray-200 px-2 py-1 rounded"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
+              className="prose prose-lg max-w-none"
+            />
+          </article>
+        </div>
+      </ContentSection>
+    </PageLayout>
+  );
+}
+
+export default function Post({ meta, contentHtml, tocItems, isTsx }: Props) {
+  if (isTsx) {
+    const entry = getTsxPost(meta.slug);
+    if (entry) {
+      const { Component } = entry;
+      return (
+        <PageLayout title={meta.title} description={meta.excerpt || meta.title}>
+          <Head>
+            <title>{meta.title} - Open Energy Benchmark</title>
+            <meta name="description" content={meta.excerpt || meta.title} />
+            <meta property="og:type" content="article" />
+            <meta property="og:title" content={meta.title} />
+            <meta property="og:description" content={meta.excerpt} />
+            <meta
+              property="og:image"
+              content={`https://openenergybenchmark.org${meta.image}`}
+            />
+            <meta property="article:published_time" content={meta.date} />
+            <link
+              rel="canonical"
+              href={`https://openenergybenchmark.org/blog/${meta.slug}`}
+            />
+          </Head>
+          <ContentSection>
+            <Component />
+          </ContentSection>
+        </PageLayout>
+      );
+    }
+  }
+  return (
+    <MarkdownPost meta={meta} contentHtml={contentHtml} tocItems={tocItems} />
+  );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const mdSlugs = getPostSlugs().map((f) => f.replace(/\.md$/, ""));
+  const tsxSlugs = getTsxPostSlugs();
+  const paths = [...mdSlugs, ...tsxSlugs].map((slug) => ({
+    params: { slug },
+  }));
+  return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const slug = params?.slug as string;
+
+  // Check if this is a registered TSX post.
+  const entry = getTsxPost(slug);
+  if (entry) {
+    return {
+      props: {
+        meta: { ...entry.meta, type: "tsx" },
+        contentHtml: "",
+        tocItems: [],
+        isTsx: true,
+      },
+    };
+  }
+
+  // Otherwise treat as a markdown post.
+  let meta: PostMeta;
+  let content: string;
+  try {
+    const post = getPostBySlug(slug + ".md");
+    meta = post.meta;
+    content = post.content;
+  } catch {
+    return { notFound: true };
+  }
+  const processed = await remark()
+    .use(remarkGfm)
+    .use(html, { sanitize: false })
+    .process(content);
+  const rawHtml = processed.toString();
+  const { contentHtml, tocItems } = extractTocAndInjectIds(rawHtml);
+
+  return {
+    props: {
+      meta: { ...meta, type: "md" },
+      contentHtml,
+      tocItems,
+      isTsx: false,
+    },
+    revalidate: 3600,
+  };
+};

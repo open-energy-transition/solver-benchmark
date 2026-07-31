@@ -23,6 +23,7 @@ benchmarks:
       Num. variables: 7380
       Num. continuous variables: 5436
       Num. integer variables: 1944
+      Num. nonzeros: 26112
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -47,6 +48,7 @@ benchmarks:
       Num. variables: 7380
       Num. continuous variables: 5436
       Num. integer variables: 1944
+      Num. nonzeros: 26112
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon12_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -71,6 +73,7 @@ benchmarks:
       Num. variables: 7380
       Num. continuous variables: 5436
       Num. integer variables: 1944
+      Num. nonzeros: 26112
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -95,6 +98,7 @@ benchmarks:
       Num. variables: 14760
       Num. continuous variables: 10872
       Num. integer variables: 3888
+      Num. nonzeros: 54348
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -119,6 +123,7 @@ benchmarks:
       Num. variables: 14760
       Num. continuous variables: 10872
       Num. integer variables: 3888
+      Num. nonzeros: 54348
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon24_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -143,6 +148,7 @@ benchmarks:
       Num. variables: 14760
       Num. continuous variables: 10872
       Num. integer variables: 3888
+      Num. nonzeros: 54348
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day29:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -167,6 +173,7 @@ benchmarks:
       Num. variables: 29520
       Num. continuous variables: 21744
       Num. integer variables: 7776
+      Num. nonzeros: 112812
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day314:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -191,6 +198,7 @@ benchmarks:
       Num. variables: 29520
       Num. continuous variables: 21744
       Num. integer variables: 7776
+      Num. nonzeros: 112812
   Sienna_modified_RTS_GMLC_DA_sys_NetCopperPlate_Horizon48_Day332:
     Short description: Infinite capacity approximation of network flow to represent entire system with a single node.
     Modelling framework: Sienna
@@ -215,6 +223,7 @@ benchmarks:
       Num. variables: 29520
       Num. continuous variables: 21744
       Num. integer variables: 7776
+      Num. nonzeros: 112812
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day29:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -239,6 +248,7 @@ benchmarks:
       Num. variables: 9696
       Num. continuous variables: 7752
       Num. integer variables: 1944
+      Num. nonzeros: 38796
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day314:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -263,6 +273,7 @@ benchmarks:
       Num. variables: 9696
       Num. continuous variables: 7752
       Num. integer variables: 1944
+      Num. nonzeros: 38796
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon12_Day332:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -287,6 +298,7 @@ benchmarks:
       Num. variables: 9696
       Num. continuous variables: 7752
       Num. integer variables: 1944
+      Num. nonzeros: 38796
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day29:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -311,6 +323,7 @@ benchmarks:
       Num. variables: 19392
       Num. continuous variables: 15504
       Num. integer variables: 3888
+      Num. nonzeros: 79716
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day314:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -335,6 +348,7 @@ benchmarks:
       Num. variables: 19392
       Num. continuous variables: 15504
       Num. integer variables: 3888
+      Num. nonzeros: 79716
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon24_Day332:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -359,6 +373,7 @@ benchmarks:
       Num. variables: 19392
       Num. continuous variables: 15504
       Num. integer variables: 3888
+      Num. nonzeros: 79716
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day29:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -383,6 +398,7 @@ benchmarks:
       Num. variables: 38784
       Num. continuous variables: 31008
       Num. integer variables: 7776
+      Num. nonzeros: 163548
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day314:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -407,6 +423,7 @@ benchmarks:
       Num. variables: 38784
       Num. continuous variables: 31008
       Num. integer variables: 7776
+      Num. nonzeros: 163548
   Sienna_modified_RTS_GMLC_DA_sys_NetDC_Horizon48_Day332:
     Short description: Direct Current Approximation
     Modelling framework: Sienna
@@ -431,6 +448,7 @@ benchmarks:
       Num. variables: 38784
       Num. continuous variables: 31008
       Num. integer variables: 7776
+      Num. nonzeros: 163548
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -455,6 +473,7 @@ benchmarks:
       Num. variables: 8820
       Num. continuous variables: 6876
       Num. integer variables: 1944
+      Num. nonzeros: 142344
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -479,6 +498,7 @@ benchmarks:
       Num. variables: 8820
       Num. continuous variables: 6876
       Num. integer variables: 1944
+      Num. nonzeros: 142344
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon12_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -503,6 +523,7 @@ benchmarks:
       Num. variables: 8820
       Num. continuous variables: 6876
       Num. integer variables: 1944
+      Num. nonzeros: 142344
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -527,6 +548,7 @@ benchmarks:
       Num. variables: 17640
       Num. continuous variables: 13752
       Num. integer variables: 3888
+      Num. nonzeros: 286812
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -551,6 +573,7 @@ benchmarks:
       Num. variables: 17640
       Num. continuous variables: 13752
       Num. integer variables: 3888
+      Num. nonzeros: 286812
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon24_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -575,6 +598,7 @@ benchmarks:
       Num. variables: 17640
       Num. continuous variables: 13752
       Num. integer variables: 3888
+      Num. nonzeros: 286812
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day29:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -599,6 +623,7 @@ benchmarks:
       Num. variables: 35280
       Num. continuous variables: 27504
       Num. integer variables: 7776
+      Num. nonzeros: 577740
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day314:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -623,6 +648,7 @@ benchmarks:
       Num. variables: 35280
       Num. continuous variables: 27504
       Num. integer variables: 7776
+      Num. nonzeros: 577740
   Sienna_modified_RTS_GMLC_DA_sys_NetPTDF_Horizon48_Day332:
     Short description: Uses the PTDF factor matrix to compute the fraction of power transferred in the network across the branches
     Modelling framework: Sienna
@@ -647,6 +673,7 @@ benchmarks:
       Num. variables: 35280
       Num. continuous variables: 27504
       Num. integer variables: 7776
+      Num. nonzeros: 577740
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day29:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -671,6 +698,7 @@ benchmarks:
       Num. variables: 8820
       Num. continuous variables: 6876
       Num. integer variables: 1944
+      Num. nonzeros: 31872
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day314:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -695,6 +723,7 @@ benchmarks:
       Num. variables: 8820
       Num. continuous variables: 6876
       Num. integer variables: 1944
+      Num. nonzeros: 31872
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon12_Day332:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -719,6 +748,7 @@ benchmarks:
       Num. variables: 8820
       Num. continuous variables: 6876
       Num. integer variables: 1944
+      Num. nonzeros: 31872
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day29:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -743,6 +773,7 @@ benchmarks:
       Num. variables: 17640
       Num. continuous variables: 13752
       Num. integer variables: 3888
+      Num. nonzeros: 65868
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -767,6 +798,7 @@ benchmarks:
       Num. variables: 17640
       Num. continuous variables: 13752
       Num. integer variables: 3888
+      Num. nonzeros: 65868
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day332:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -791,6 +823,7 @@ benchmarks:
       Num. variables: 17640
       Num. continuous variables: 13752
       Num. integer variables: 3888
+      Num. nonzeros: 65868
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day29:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -815,6 +848,7 @@ benchmarks:
       Num. variables: 35280
       Num. continuous variables: 27504
       Num. integer variables: 7776
+      Num. nonzeros: 135852
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day314:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -839,6 +873,7 @@ benchmarks:
       Num. variables: 35280
       Num. continuous variables: 27504
       Num. integer variables: 7776
+      Num. nonzeros: 135852
   Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon48_Day332:
     Short description: Transport problem
     Modelling framework: Sienna
@@ -863,3 +898,4 @@ benchmarks:
       Num. variables: 35280
       Num. continuous variables: 27504
       Num. integer variables: 7776
+      Num. nonzeros: 135852

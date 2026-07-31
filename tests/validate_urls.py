@@ -2,7 +2,7 @@
 Validate and fix benchmark size URLs.
 
 Checks that each size URL filename matches the pattern
-    {benchmark-name}-{size-name}.{ext}[.gz]
+    {benchmark-name}-{size-name}.{ext}.gz
 where ext is taken from the existing filename extension. Outputs the list of
 non-conforming entries and rewrites URLs to the expected filename in-place.
 
@@ -20,7 +20,9 @@ from urllib.parse import quote, unquote, urlparse, urlunparse
 from ruamel.yaml import YAML
 
 FILE_PATTERN = "[Mm]etadata*.yaml"
-GCS_HOST = "storage.googleapis.com"
+
+GCS_HOSTS = ["storage.googleapis.com", "storage.cloud.google.com"]
+GITHUB_HOSTS = ["raw.githubusercontent.com"]
 
 # Define the directory paths relative to the script location (tests/)
 project_root_dir = Path(__file__).parent.parent
@@ -30,16 +32,14 @@ benchmarks_dir = project_root_dir / "benchmarks"
 def derive_expected_filename(
     benchmark_name: str, size_name: str, current_filename: str
 ) -> str:
-    """Return expected filename preserving extension and optional .gz suffix."""
+    """Return expected gzipped filename preserving extension."""
     gz = current_filename.endswith(".gz")
     base = current_filename[:-3] if gz else current_filename
     ext = base[base.rfind(".") :]
     # If no dot was found, ext will be the full string; make it empty instead
     if "." not in ext:
         ext = ""
-    expected = f"{benchmark_name}-{size_name}{ext}"
-    if gz:
-        expected += ".gz"
+    expected = f"{benchmark_name}-{size_name}{ext}.gz"
     return expected
 
 
@@ -62,40 +62,99 @@ def process_file(path: Path, yaml: YAML, dry_run: bool):
     if not data or "benchmarks" not in data:
         return []
 
-    changes = []
+    seen_bench_names = []
+    seen_urls = []
+    to_mv = []
+    to_gzip = []
+
     for bench_name, bench_info in (data.get("benchmarks") or {}).items():
+        # Benchmark name uniqueness
+        if bench_name in seen_bench_names:
+            print(f"ERROR: Duplicate benchmark name found: {bench_name}")
+            if not dry_run:
+                exit(1)
+        else:
+            seen_bench_names.append(bench_name)
+
         sizes = bench_info.get("Sizes") or []
+        seen_size_names_per_bench = []
+
         for size_entry in sizes:
             if not isinstance(size_entry, dict):
                 continue
+
             url = size_entry.get("URL")
             size_name = size_entry.get("Name")
             if not url or not size_name:
                 continue
 
+            # Size name uniqueness per benchmark
+            if size_name in seen_size_names_per_bench:
+                print(
+                    f"ERROR: Duplicate size name '{size_name}' in benchmark '{bench_name}'"
+                )
+                if not dry_run:
+                    exit(1)
+            else:
+                seen_size_names_per_bench.append(size_name)
+
+            # URL uniqueness globally
+            if url in seen_urls:
+                print(f"ERROR: Duplicate URL found: {url}")
+                if not dry_run:
+                    exit(1)
+            else:
+                seen_urls.append(url)
+
+            # Validate host
             parsed = urlparse(url)
-            if parsed.netloc != GCS_HOST:
+            host = parsed.netloc.lower()
+
+            # Normalize old cloud URLs to storage.googleapis.com
+            if host == "storage.cloud.google.com":
+                parsed = parsed._replace(netloc="storage.googleapis.com")
+                host = "storage.googleapis.com"
+
+            # Validate host
+            if host not in GCS_HOSTS + GITHUB_HOSTS:
+                print(
+                    f"ERROR: URL uses invalid host {parsed.netloc}, must be one of {GCS_HOSTS + GITHUB_HOSTS}: {url}"
+                )
+                if not dry_run:
+                    exit(1)
                 continue
+            gs_path = unquote("/".join(parsed.path.split("/")[1:]))
 
             raw_filename = Path(parsed.path).name
             decoded_filename = unquote(raw_filename)
             expected = derive_expected_filename(bench_name, size_name, decoded_filename)
             encoded_expected = quote(expected, safe="")
 
-            if raw_filename == encoded_expected:
+            if host in GCS_HOSTS:
+                new_path_segments = [
+                    "",
+                    "solver-benchmarks",
+                    "instances",
+                    encoded_expected,
+                ]
+                new_url = urlunparse(parsed._replace(path="/".join(new_path_segments)))
+                size_entry["URL"] = new_url
+            else:
+                # For GitHub URLs, keep as-is
+                new_url = url
+
+            # If it needs gzipping:
+            if not raw_filename.endswith(".gz"):
+                to_gzip.append((gs_path, expected[:-3]))
                 continue
 
-            new_path_segments = parsed.path.split("/")
-            new_path_segments[-1] = encoded_expected
-            new_path = "/".join(new_path_segments)
-            new_url = urlunparse(parsed._replace(path=new_path))
-            changes.append((bench_name, size_name, url, new_url))
-            if not dry_run:
-                size_entry["URL"] = new_url
+            # If it needs moving/renaming:
+            if url != new_url:
+                to_mv.append((gs_path, expected))
 
-    if changes and not dry_run:
+    if len(to_mv) + len(to_gzip) > 0 and not dry_run:
         save_yaml(path, data, yaml)
-    return [(path, *c) for c in changes]
+    return to_mv, to_gzip
 
 
 def main():
@@ -111,42 +170,43 @@ def main():
     yaml.indent(mapping=2, sequence=2, offset=0)
     yaml.width = 99999
 
-    all_changes = []
-    gsutil_commands = []
-    for file_path in sorted(benchmarks_dir.rglob(FILE_PATTERN)):
-        for change in process_file(file_path, yaml, args.dry_run):
-            all_changes.append(change)
-            path, bench, size, old_url, new_url = change
-            old_parsed = urlparse(old_url)
-            new_parsed = urlparse(new_url)
-            # Build gsutil mv commands using decoded object names
-            old_key = unquote(old_parsed.path.lstrip("/"))
-            new_key = unquote(new_parsed.path.lstrip("/"))
-            # Only create commands for the expected host
-            if old_parsed.netloc == GCS_HOST and new_parsed.netloc == GCS_HOST:
-                gsutil_commands.append(
-                    f"gsutil mv gs://{old_key.split('/')[0]}/{'/'.join(old_key.split('/')[1:])} gs://{new_key.split('/')[0]}/{'/'.join(new_key.split('/')[1:])}"
-                )
+    mv_commands = []
+    gzip_commands = []
+    for file_path in sorted(benchmarks_dir.rglob("metadata.yaml")):
+        to_mv, to_gzip = process_file(file_path, yaml, args.dry_run)
+        for gs_path, filename in to_mv:
+            mv_commands.append(
+                f"gsutil mv gs://{gs_path} gs://solver-benchmarks/instances/{filename}"
+            )
+        for gs_path, filename in to_gzip:
+            gzip_commands.append(
+                f"gsutil mv gs://{gs_path} /tmp/benchmarks-to-zip/{filename}"
+            )
 
-    if not all_changes:
+    if len(mv_commands) + len(gzip_commands) == 0:
         print("All URLs already conform to the naming convention.")
         return
 
-    # print("Non-conforming URLs:")
-    # for path, bench, size, old, new in all_changes:
-    #     print(f"- {path}: {bench} / {size}\n    old: {old}\n    new: {new}")
-
-    updated = [c for c in all_changes if c]
-    print(f"\nUpdated {len(updated)} URLs in metadata files")
-    if updated and gsutil_commands:
-        print("\nSuggested gsutil rename commands:\n")
-        for cmd in gsutil_commands:
+    print(f"\nUpdated {len(mv_commands) + len(gzip_commands)} URLs in metadata files")
+    print("\nPlease run these commands:\n")
+    if mv_commands:
+        for cmd in mv_commands:
             print(cmd)
+        print()
+    if gzip_commands:
+        print("mkdir -p /tmp/benchmarks-to-zip")
+        for cmd in gzip_commands:
+            print(cmd)
+        print("find /tmp/benchmarks-to-zip/ -type f | parallel gzip --best")
+        print(
+            "gsutil -m rsync /tmp/benchmarks-to-zip gs://solver-benchmarks/instances/"
+        )
+
     if args.dry_run:
         print("\nDry run; no files were modified.")
     else:
         print(
-            "\nFiles rewritten. Updated URLs above can be renamed on storage as needed."
+            "\nMetadata files rewritten. Run the above commands to rename files on bucket accordingly."
         )
 
 

@@ -1,0 +1,9 @@
+electricity:
+    transmission_limit: vopt
+
+conventional:
+  dynamic_fuel_price: true
+
+solving:
+  options:
+    linearized_unit_commitment: false
