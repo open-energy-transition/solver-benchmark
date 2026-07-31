@@ -7,6 +7,7 @@ import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { formatDecimal } from "@/utils/number";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { getSolverLabel } from "@/utils/solvers";
 
 type ChartData = {
   d1: SolverMetrics;
@@ -590,7 +591,7 @@ const ChartCompare = ({
           .attr("font-weight", "700")
           .attr("dy", "-7")
           .attr("pointer-events", "none")
-          .text(`${solver1Info.name} is better`);
+          .text(`${getSolverLabel(solver1Info.name)} is better`);
 
         // Solver 2 better — center at t=0.6 along diagonal, shifted lower-right
         const t2 = 0.6;
@@ -620,7 +621,7 @@ const ChartCompare = ({
           .attr("font-weight", "700")
           .attr("dy", "15")
           .attr("pointer-events", "none")
-          .text(`${solver2Info.name} is better`);
+          .text(`${getSolverLabel(solver2Info.name)} is better`);
       } catch {
         // ignore parsing errors
       }
@@ -637,7 +638,9 @@ const ChartCompare = ({
     const solver1Info = parseSolverInfo(solver1);
     const solver2Info = parseSolverInfo(solver2);
 
-    return `${solver1Info.name} ${status1} - ${solver2Info.name} ${status2}`;
+    return `${getSolverLabel(solver1Info.name)} ${status1} - ${getSolverLabel(
+      solver2Info.name,
+    )} ${status2}`;
   };
   return (
     <div className="bg-white py-4 p-4 sm:pl-10 rounded-xl relative">

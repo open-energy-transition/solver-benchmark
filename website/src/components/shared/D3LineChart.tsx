@@ -9,7 +9,7 @@ import {
   roundUpToNearest,
 } from "@/utils/chart";
 import { IResultState } from "@/types/state";
-import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getSolverLabel, HIPO_SOLVERS } from "@/utils/solvers";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -272,18 +272,20 @@ const D3ChartLineChart = ({
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">
-          {Object.keys(solverColors).map((solverKey) => (
-            <div
-              key={solverKey}
-              className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
-            >
-              <CircleIcon
-                style={{ color: solverColors[solverKey] }}
-                className={"size-2"}
-              />
-              {solverKey}
-            </div>
-          ))}
+          {Object.keys(solverColors)
+            .sort((a, b) => getSolverLabel(a).localeCompare(getSolverLabel(b)))
+            .map((solverKey) => (
+              <div
+                key={solverKey}
+                className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
+              >
+                <CircleIcon
+                  style={{ color: solverColors[solverKey] }}
+                  className={"size-2"}
+                />
+                {getSolverLabel(solverKey)}
+              </div>
+            ))}
         </div>
       </div>
       <div ref={containerRef}>

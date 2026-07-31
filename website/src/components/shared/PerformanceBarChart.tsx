@@ -536,20 +536,6 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("fill", "rgb(79 78 78)")
       .text(`Runtime of ${baseSolver} (s)`);
 
-    // Add a legend entry for scatter points
-    const legendContainer = d3
-      .select(containerRef.current)
-      .select(".legend-container");
-
-    legendContainer.append("div").attr("class", "flex items-center gap-2")
-      .html(`
-        <div class="flex items-center justify-center w-4 h-4">
-          <div class="w-3 h-3 rounded-full bg-white border-2"
-               style="border-color: ${solverColors[baseSolver]}"></div>
-        </div>
-        <span class="text-sm text-dark-grey">${baseSolver}</span>
-      `);
-
     return () => {
       tooltip.remove();
     };
@@ -606,9 +592,14 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
               </span>
             </div>
 
-            {/* Other solvers legend (squares) */}
+            {/* Other solvers legend (squares), alphabetical; base solver
+                stays pinned first above since this chart is specifically
+                about comparing everyone else against it. */}
             {availableSolvers
               .filter((solver) => solver !== baseSolver)
+              .sort((a, b) =>
+                getSolverLabel(a).localeCompare(getSolverLabel(b)),
+              )
               .map((solver) => (
                 <div
                   key={solver}

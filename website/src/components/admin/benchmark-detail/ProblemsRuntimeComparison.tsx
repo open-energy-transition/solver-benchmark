@@ -184,7 +184,6 @@ const ProblemsRuntimeComparison = ({
         barOpacity={getBarOpacity}
         axisLabelTitle={getAxisLabelTitle}
         sortByValue
-        legendSortAlphabetically
         xAxisTickFormat={getXAxisTickFormat}
         xAxisTooltipFormat={getXAxisTooltipFormat}
         xAxisBarTextClassName="text-[11px] fill-dark-grey"

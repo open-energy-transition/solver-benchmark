@@ -34,7 +34,6 @@ const D3GroupedBarChart = ({
   splitter = "-",
   extraCategoryLengthMargin = undefined,
   sortByValue = false,
-  legendSortAlphabetically = false,
   showLineAtY1 = true,
   useLogScale = false,
   directionalIndicator = undefined,
@@ -653,18 +652,9 @@ const D3GroupedBarChart = ({
     <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
       {allKeys
         .slice()
-        .sort((a, b) => {
-          if (legendSortAlphabetically) {
-            return getSolverLabel(a).localeCompare(getSolverLabel(b));
-          }
-          if (sortByValue) {
-            // Sort by average values from smallest to biggest
-            const avgA = d3.mean(chartData, (d) => Number(d[a])) || 0;
-            const avgB = d3.mean(chartData, (d) => Number(d[b])) || 0;
-            return avgA - avgB;
-          }
-          return a.localeCompare(b);
-        })
+        // Legend is always alphabetical by display label — independent of
+        // sortByValue, which only controls the bar order within each group.
+        .sort((a, b) => getSolverLabel(a).localeCompare(getSolverLabel(b)))
         .map((solverKey) => (
           <div
             key={solverKey}

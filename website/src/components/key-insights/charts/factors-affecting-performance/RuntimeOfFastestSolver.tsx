@@ -176,20 +176,23 @@ const RuntimeOfFastestSolver = ({
 
   const chartLegend = () => (
     <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
-      {availableSolvers.map((solverKey) => (
-        <div
-          key={solverKey}
-          className="text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
-        >
-          <CircleIcon
-            style={{
-              color: getSolverColor(solverKey),
-            }}
-            className="size-2"
-          />
-          {getSolverLabel(solverKey)}
-        </div>
-      ))}
+      {availableSolvers
+        .slice()
+        .sort((a, b) => getSolverLabel(a).localeCompare(getSolverLabel(b)))
+        .map((solverKey) => (
+          <div
+            key={solverKey}
+            className="text-navy tag-line-xs flex items-center gap-1.5 rounded-md h-max w-max"
+          >
+            <CircleIcon
+              style={{
+                color: getSolverColor(solverKey),
+              }}
+              className="size-2"
+            />
+            {getSolverLabel(solverKey)}
+          </div>
+        ))}
     </div>
   );
 
