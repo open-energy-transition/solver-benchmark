@@ -96,7 +96,7 @@ def get_solver(solver_name, timeout=None):
     if timeout is not None:
         options.update(timeout_options.get(solver_name, {}))
 
-    return solver_class(**options)
+    return solver_class(options=options)
 
 
 def is_mip_problem(solver_model, solver_name):
