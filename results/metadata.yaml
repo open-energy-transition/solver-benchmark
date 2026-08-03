@@ -2224,7 +2224,7 @@ problems:
   buildingenergy-unknown:
     Short description: Model to determine the minimum cost design and dispatch of
       a distributed generation system for a commercial building.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy-unknown.mps.gz
     Problem class: MILP
@@ -2249,7 +2249,7 @@ problems:
   dlr1-unknown:
     Short description: European energy system model for power generation and capacity
       expansion.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr1-unknown.mps.gz
     Problem class: MILP
@@ -2274,7 +2274,7 @@ problems:
   dlr2-unknown:
     Short description: European energy system model for power generation and capacity
       expansion.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr2-unknown.mps.gz
     Problem class: MILP
@@ -2298,7 +2298,7 @@ problems:
     Model name:
   gasprod1-2-unknown:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-2-unknown.mps.gz
     Problem class: MILP
@@ -2322,7 +2322,7 @@ problems:
     Model name:
   gasprod1-1-unknown:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-1-unknown.mps.gz
     Problem class: MILP
@@ -2346,7 +2346,7 @@ problems:
     Model name:
   gasprod2-2-unknown:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-2-unknown.mps.gz
     Problem class: MILP
@@ -2370,7 +2370,7 @@ problems:
     Model name:
   gasprod1-3-unknown:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-3-unknown.mps.gz
     Problem class: MILP
@@ -2394,7 +2394,7 @@ problems:
     Model name:
   gasprod2-1-unknown:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-1-unknown.mps.gz
     Problem class: MILP
@@ -2418,7 +2418,7 @@ problems:
     Model name:
   hawaiiv10-130-unknown:
     Short description: Unit commitment model.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hawaiiv10-130-unknown.mps.gz
     Problem class: MILP
@@ -2443,7 +2443,7 @@ problems:
   irish-electricity-unknown:
     Short description: Sample Unit Commitment test instance based on an Irish case
       study.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/irish-electricity-unknown.mps.gz
     Problem class: MILP
@@ -2468,7 +2468,7 @@ problems:
   maxgasflow-unknown:
     Short description: Transport momentum maximization in a capacitated gas network,
       allowing cycles.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/maxgasflow-unknown.mps.gz
     Problem class: MILP
@@ -2493,7 +2493,7 @@ problems:
   transportmoment-unknown:
     Short description: Transport momentum maximization in a capacitated gas network,
       cycles are forbidden by pseudo pressures.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/transportmoment-unknown.mps.gz
     Problem class: MILP
@@ -2518,7 +2518,7 @@ problems:
   uc720-7-4-4-8-unknown:
     Short description: Margin maximization at unit commitment for several hydropower,
       pumping and thermal units.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/uc720-7-4-4-8-unknown.mps.gz
     Problem class: MILP
@@ -2542,7 +2542,7 @@ problems:
     Model name:
   unitcal_7-unknown:
     Short description: California seven day unit commitment problem.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/unitcal_7-unknown.mps.gz
     Problem class: MILP
@@ -2566,7 +2566,7 @@ problems:
     Model name:
   hgms-det-unknown:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms-det-unknown.mps.gz
     Problem class: MILP
@@ -2590,7 +2590,7 @@ problems:
     Model name:
   hgms30-unknown:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms30-unknown.mps.gz
     Problem class: MILP
@@ -2614,7 +2614,7 @@ problems:
     Model name:
   hgms62-unknown:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms62-unknown.mps.gz
     Problem class: MILP
@@ -2638,7 +2638,7 @@ problems:
     Model name:
   ofi-unknown:
     Short description: Natural gas supply portfolio optimization.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi-unknown.mps.gz
     Problem class: MILP
@@ -2662,7 +2662,7 @@ problems:
     Model name:
   ofi2-unknown:
     Short description: Natural gas supply portfolio optimization.
-    Contributor(s)/Source:
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi2-unknown.mps.gz
     Problem class: MILP
