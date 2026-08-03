@@ -164,7 +164,7 @@ This composition gives the benchmark a wide methodological spread, but it also m
 
 ***Table 1: Summary of benchmark problems categorized by originating modeling framework.***
 
-To evaluate solver performance across this diverse dataset, problems are categorized by their scale. As illustrated in Figure 7, there is a strong, nearly linear relationship between the number of variables in a problem and both the number of non-zero elements (Panel a, R<sup>2</sup>=0.981) and the number of constraints (Panel b, R<sup>2</sup>=0.984). Because these structural dimensions scale so predictably with the variable count, grouping the benchmark problems by the number of variables serves as a robust and representative proxy for overall problem size and mathematical complexity.
+To evaluate solver performance across this diverse dataset, problems are categorized by their scale. As illustrated in Figure 7, there is a strong, nearly linear relationship between the number of variables in a problem and both the number of non-zero elements (Panel a, R<sup>2</sup>=0.980) and the number of constraints (Panel b, R<sup>2</sup>=0.984). Because these structural dimensions scale so predictably with the variable count, grouping the benchmark problems by the number of variables serves as a robust and representative proxy for overall problem size and mathematical complexity.
 
 ![Figure 7](/notebook/state_of_solvers/figure7.png)
 

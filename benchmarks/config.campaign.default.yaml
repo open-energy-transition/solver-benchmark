@@ -1,0 +1,163 @@
+# Default configuration for create_benchmark_campaign.py.
+# Explicit CLI arguments override values defined here.
+#
+# Example:
+#
+# python benchmarks/create_benchmark_campaign.py \
+#     --configfile benchmarks/config.campaign.default.yaml \
+#     --campaign YYYYMMDD-my-campaign-2-3h
+
+# Campaign name.
+#
+# The date is added automatically to create the final run ID:
+# YYYYMMDD-<campaign>
+campaign: test-pypsa
+
+# Execution target.
+#
+# Accepted values:
+# - cloud: generate OpenTofu campaign files under infrastructure/benchmarks/<run-id>/
+# - local: generate local benchmark files under infrastructure/local/benchmarks/<run-id>/
+#
+# In local mode, VM-specific settings such as num_vms, machine_type and zone are ignored.
+target: local
+
+selection:
+  # Benchmark selection mode.
+  #
+  # Exactly one of the following should be active after CLI/config merge:
+  # - all
+  # - benchmark
+  # - instance
+
+  # Select all benchmark instances in results/metadata.yaml.
+  #
+  # Accepted values:
+  # true / false
+  all: false
+
+  # Select all instances from one or more benchmarks.
+  #
+  # Accepted values:
+  # list of benchmark names, or null
+  #
+  # Examples:
+  # - pypsa-de-elec
+  # - IESA-Opt-NL
+  benchmark:
+    - pypsa-de-elec
+
+  # Optional filter on benchmark size classes.
+  #
+  # Accepted values:
+  # list containing any of S, M, L, or null
+  size: null
+
+  # Optional filter on benchmark instance names.
+  #
+  # Accepted values:
+  # list of instance names, or null
+  #
+  # Examples:
+  # - 2-1h
+  # - 10-168h
+  name:
+    - 2-1h
+
+  # Select specific benchmark instances.
+  #
+  # Accepted values:
+  # list of "<benchmark-name>:<instance-name>" strings, or null
+  #
+  # Example:
+  # - pypsa-de-elec:2-1h
+  instance: null
+
+  # Include benchmark instances marked with "Skip because" in the metadata.
+  #
+  # Accepted values:
+  # true / false
+  #
+  # If false, skipped benchmark instances are excluded automatically.
+  do_not_skip: false
+
+allocation:
+  # Number of VMs to create for cloud campaigns.
+  #
+  # Accepted values:
+  # positive integer, or null
+  #
+  # If null:
+  # one VM is created per selected benchmark instance.
+  #
+  # Ignored when target is local.
+  num_vms: null
+
+  # Metadata column used to balance benchmark instances across VMs.
+  #
+  # Accepted values:
+  # any numeric metadata column.
+  #
+  # Common values:
+  # - "Num. variables"
+  # - "Num. constraints"
+  weight_col: "Num. variables"
+
+  # VM profile for cloud campaigns.
+  #
+  # Accepted values:
+  # - short
+  # - long
+  # - null
+  #
+  # If null:
+  # S/M -> short
+  # L   -> long
+  #
+  # Ignored when target is local.
+  machine_type: null
+
+  # Google Cloud zone for cloud campaigns.
+  #
+  # Accepted values:
+  # any valid GCP zone.
+  #
+  # Ignored when target is local.
+  zone: us-central1-a
+
+  # Solver timeout in hours.
+  #
+  # Accepted values:
+  # positive number, or null
+  #
+  # If null:
+  # S/M -> 1 hour
+  # L   -> 24 hours
+  timeout_hours: null
+
+  # Solver environment years to benchmark.
+  #
+  # Accepted values:
+  # list of years with matching benchmark-<year> conda environments.
+  #
+  # Example:
+  # - 2025
+  years:
+    - 2025
+
+  # Solvers to benchmark.
+  #
+  # Accepted values depend on the selected benchmark environment.
+  #
+  # Typical values (currently included in the website):
+  # - gurobi
+  # - highs
+  # - scip
+  # - cbc
+  # - glpk
+  solver:
+    - gurobi
+    - highs
+    - scip
+    - cbc
+    - glpk
