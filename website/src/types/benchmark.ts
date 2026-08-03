@@ -67,6 +67,7 @@ type IFilterBenchmarkDetails = {
   problemSize: string[];
   realistic: string[];
   modellingFramework: string[];
+  milpFeatures: string[];
 };
 
 export type {

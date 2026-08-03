@@ -157,7 +157,7 @@ const D3BarChart = ({
       .attr("x", width / 2)
       .attr("y", height - 5)
       .attr("text-anchor", "middle")
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text(xAxisLabel);
 
     svg
@@ -166,7 +166,7 @@ const D3BarChart = ({
       .attr("x", -height / 2)
       .attr("y", 15)
       .attr("text-anchor", "middle")
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text(yAxisLabel);
 
     return () => {

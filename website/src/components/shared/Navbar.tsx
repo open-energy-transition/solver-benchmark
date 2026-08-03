@@ -64,6 +64,40 @@ const Navbar = () => {
     (state: { theme: { isNavExpanded: boolean } }) => state.theme.isNavExpanded,
   );
 
+  // Toggle sidebar on Escape (close if open, open if closed)
+  // Toggle sidebar with Ctrl/Cmd + \ (backslash)
+  useEffect(() => {
+    const handleToggle = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (isNavExpanded) {
+          dispatch(navbarActions.setNavExpanded(false));
+        } else {
+          dispatch(navbarActions.setNavExpanded(true));
+        }
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === "\\") {
+        e.preventDefault();
+        dispatch(navbarActions.toggleNav());
+      }
+    };
+    document.addEventListener("keydown", handleToggle);
+    return () => document.removeEventListener("keydown", handleToggle);
+  }, [isNavExpanded, dispatch]);
+
+  // Navigate nav items with Ctrl/Cmd + 1-6
+  useEffect(() => {
+    const handleHotkey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key >= "1" && e.key <= "6") {
+        e.preventDefault();
+        const idx = parseInt(e.key) - 1;
+        const route = navConfig[idx]?.route;
+        if (route) router.push(route);
+      }
+    };
+    document.addEventListener("keydown", handleHotkey);
+    return () => document.removeEventListener("keydown", handleHotkey);
+  }, [router]);
+
   useEffect(() => {
     const navExpanded = localStorage.getItem("navExpanded") === "true" || false;
     const handleResize = debounce(() => {
@@ -104,6 +138,8 @@ const Navbar = () => {
           <button
             onClick={() => dispatch(navbarActions.toggleNav())}
             className="delayedShow block lg:hidden fixed top-4 right-4 z-max p-2 bg-white rounded-full text-navy"
+            aria-label="Close navigation"
+            aria-expanded={isNavExpanded}
           >
             <CloseIcon className="size-6" />
           </button>
@@ -241,16 +277,18 @@ const Navbar = () => {
             isNavExpanded ? "pl-2" : ""
           }`}
         >
-          <div
+          <button
             onClick={() => {
               localStorage.setItem("navExpanded", (!isNavExpanded).toString());
               dispatch(navbarActions.toggleNav());
             }}
             className="inline-flex justify-center items-center text-[#C1C1C1] text-lg rounded cursor-pointer font-league gap-2 leading-none"
+            aria-label={isNavExpanded ? "Collapse sidebar" : "Expand sidebar"}
+            aria-expanded={isNavExpanded}
           >
             {isNavExpanded && "Collapse"}
             <ArrowToRightIcon className={isNavExpanded ? "rotate-180" : ""} />
-          </div>
+          </button>
         </div>
       </nav>
     </>

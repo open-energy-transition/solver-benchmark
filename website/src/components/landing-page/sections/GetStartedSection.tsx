@@ -3,6 +3,10 @@ import { useMemo } from "react";
 import { IResultState } from "@/types/state";
 import StatsBox from "@/components/common/StatsBox";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import {
+  useStaggerReveal,
+  useEntranceAnimation,
+} from "@/hooks/useGsapAnimation";
 
 const GetStarted = () => {
   const rawMetaData = useSelector((state: { results: IResultState }) => {
@@ -31,19 +35,31 @@ const GetStarted = () => {
     },
   );
 
+  const sectionRef = useStaggerReveal<HTMLDivElement>(":scope .md\\:flex > *", {
+    fromDirection: "bottom",
+    y: 40,
+    stagger: 0.15,
+  });
+
+  const headingRef = useEntranceAnimation<HTMLDivElement>({
+    y: 30,
+    duration: 1,
+    delay: 0.1,
+  });
+
   return (
     <div
+      ref={sectionRef}
       id="benchmarks"
-      className="text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+      className="text-soft-gray bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
           xl:flex
           mx-auto
           max-w-8xl
-          px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          px-6
+          md:px-12
           pt-[67px]
           pb-16
           justify-between
@@ -60,7 +76,10 @@ const GetStarted = () => {
           >
             BENCHMARKS
           </div>
-          <div className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-navy">
+          <div
+            ref={headingRef}
+            className="leading-1.4 mb-2 text-2xl sm:text-[40px] font-lato font-extrabold tracking-normal text-soft-gray"
+          >
             WHAT DO WE HAVE?
           </div>
         </div>

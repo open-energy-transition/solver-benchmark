@@ -113,9 +113,13 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 }`}
               >
                 <InfoPopup
-                  disabled={(item?.length ?? 0) < 32}
-                  trigger={() => <span>{item}</span>}
-                  position="top right"
+                  disabled={(item?.length ?? 0) < 30}
+                  trigger={() => (
+                    <span>
+                      {item.length > 35 ? item.slice(0, 35) + "..." : item}
+                    </span>
+                  )}
+                  position="top left"
                   closeOnDocumentClick
                   arrowStyle={{ color: "#ebeff2" }}
                 >

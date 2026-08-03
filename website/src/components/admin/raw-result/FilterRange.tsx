@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FilterIcon } from "@/assets/icons";
 import React, { useRef, useState } from "react";
 import { SelectInstance } from "react-select";

@@ -23,14 +23,13 @@ const BenchmarkStatisticsCharts = ({
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
   });
-
   const availableMilpFeatures = useMemo(() => {
     return Array.from(
       new Set(Object.keys(metaData).map((key) => metaData[key].milpFeatures)),
     );
   }, [metaData]);
 
-  const availabletimeHorizons = ["single", "multi"];
+  const availabletimeHorizons = ["single", "multi", "n/a"];
   const summary = availableModellingFrameworks.map((framework) => {
     const problemClassesMap = new Map<string, number>();
     const applicationsMap = new Map<string, number>();
@@ -41,8 +40,12 @@ const BenchmarkStatisticsCharts = ({
     const realSizesMap = new Map<string, number>();
     const nOfProblemsMap = new Map<string, number>();
 
-    function updateData(data: Map<string, number>, key: string) {
-      data.set(key, (data.get(key) || 0) + 1);
+    function updateData(
+      data: Map<string, number>,
+      key: string,
+      amount: number = 1,
+    ) {
+      data.set(key, (data.get(key) || 0) + amount);
     }
 
     Object.keys(metaData).forEach((key) => {
@@ -55,7 +58,11 @@ const BenchmarkStatisticsCharts = ({
 
         availableProblemClasses.forEach((problemClass) => {
           if (metaData[key].problemClass === problemClass) {
-            updateData(problemClassesMap, problemClass);
+            updateData(
+              problemClassesMap,
+              problemClass,
+              metaData[key].sizes.length,
+            );
           }
         });
         availableApplications.forEach((application) => {
@@ -80,9 +87,20 @@ const BenchmarkStatisticsCharts = ({
         });
         availabletimeHorizons.forEach((timeHorizon) => {
           if (metaData[key].timeHorizon.toLowerCase().includes(timeHorizon)) {
-            updateData(timeHorizonsMap, timeHorizon as string);
+            updateData(
+              timeHorizonsMap,
+              timeHorizon as string,
+              metaData[key].sizes.length,
+            );
           }
         });
+        if (
+          !availabletimeHorizons.some((time) =>
+            metaData[key].timeHorizon.toLowerCase().includes(time),
+          )
+        ) {
+          updateData(timeHorizonsMap, "n/a" as string);
+        }
         if (metaData[key].sizes.some((instance) => instance.realistic)) {
           if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
@@ -97,6 +115,7 @@ const BenchmarkStatisticsCharts = ({
     if (timeHorizonsMap.size === 0) {
       timeHorizonsMap.set("single", -1);
       timeHorizonsMap.set("multi", -1);
+      timeHorizonsMap.set("n/a", -1);
     }
     return {
       modellingFramework: framework,
@@ -110,7 +129,6 @@ const BenchmarkStatisticsCharts = ({
       nOfProblems: nOfProblemsMap,
     };
   });
-
   const problemClassesChartData = summary
     .filter(
       (data) =>
@@ -131,6 +149,7 @@ const BenchmarkStatisticsCharts = ({
       modellingFramework: data.modellingFramework,
       single: data.timeHorizons.get("single") || 0,
       multi: data.timeHorizons.get("multi") || 0,
+      na: data.timeHorizons.get("n/a") || 0,
     }));
 
   const sizeChartData = useMemo(() => {
@@ -161,10 +180,9 @@ const BenchmarkStatisticsCharts = ({
       };
     });
   }, [metaData, availableProblemSizes]);
-
   const timeHorizonTitleWithTooltip = (
     <div className="flex items-center gap-1">
-      <span>By Time Horizon</span>
+      <span>By Modeling Framework and Time Horizon</span>
       <InfoPopup
         trigger={() => (
           <span className="flex items-baseline my-auto cursor-pointer">
@@ -223,7 +241,7 @@ const BenchmarkStatisticsCharts = ({
             yAxisLabel=""
             categoryKey="modellingFramework"
             colors={{ LP: "#004B69", MILP: "#6B9080" }}
-            title="By Modelling Framework"
+            title="By Modeling Framework and Problem Class"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
           />
@@ -235,7 +253,7 @@ const BenchmarkStatisticsCharts = ({
             xAxisLabel="Modelling Framework"
             yAxisLabel=""
             categoryKey="modellingFramework"
-            colors={{ single: "#004B69", multi: "#6B9080" }}
+            colors={{ single: "#004B69", multi: "#6B9080", na: "#A0A0A0" }}
             rotateXAxisLabels={true}
             title={timeHorizonTitleWithTooltip}
             showXaxisLabel={false}

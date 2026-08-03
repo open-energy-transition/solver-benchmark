@@ -17,13 +17,10 @@ const ResultsSectionsTitle = ({
     <div>
       <div className="relative text-navy font-bold text-xl pl-2 flex justify-between items-end">
         <h6 className="flex">
-          Ranking
-          {latestBenchmarkResultLength !== benchmarkResults.length && (
-            <span className="ml-1">
-              (filtered to {uniqueBenchmarkCount}/{uniqueLatestBenchmarkCount}{" "}
-              benchmark instances)
-            </span>
-          )}
+          Ranking{" "}
+          {latestBenchmarkResultLength !== benchmarkResults.length &&
+            `(filtered to ${uniqueBenchmarkCount}/${uniqueLatestBenchmarkCount}
+              benchmark instances)`}
         </h6>
       </div>
     </div>

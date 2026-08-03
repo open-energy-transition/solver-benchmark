@@ -49,7 +49,11 @@ const SolverPerformanceDetails = () => {
           to benchmark solvers on their own problems before picking a solver,
           and also encourage modellers to contribute problems that can help us
           make our benchmark set more representative and diverse.{" "}
-          <Link className="font-bold" href="/#contact">
+          <Link
+            className="font-bold"
+            href="/#contact"
+            aria-label="Navigate to contact section"
+          >
             Reach out
           </Link>{" "}
           to us if you&apos;d like to contribute!

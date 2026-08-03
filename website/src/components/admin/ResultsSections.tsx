@@ -451,19 +451,19 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
     latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
 
-  const renderedTableData = (data: any) => {
-    availableSolvers.includes(data);
-    if (availableSolvers.includes(data)) {
-      const color = getSolverColor(data);
+  const renderedTableData = (data: string | number | object) => {
+    const str = typeof data === "object" ? JSON.stringify(data) : String(data);
+    if (availableSolvers.includes(str)) {
+      const color = getSolverColor(str);
       return `<span class="flex items-center gap-2">
                 <span
                   class="w-3 h-3 rounded-full"
                   style="background-color: ${color};"
                 ></span>
-                <span>${data}</span>
+                <span>${str}</span>
               </span>`;
     }
-    return data;
+    return str;
   };
   return (
     <div>

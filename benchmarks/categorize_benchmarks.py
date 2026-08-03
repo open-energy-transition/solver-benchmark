@@ -92,19 +92,17 @@ def create_yaml() -> YAML:
 
 def iter_metadata_files(root: Path) -> Iterable[Path]:
     """
-    Yield metadata YAML files under a directory.
-
-    Parameters
-    ----------
-    root : Path
-        Root directory to scan.
-
-    Yields
-    ------
-    Path
-        Paths matching `[Mm]etadata*.yaml`.
+    Yield benchmark metadata YAML files under a directory.
     """
-    yield from sorted(root.rglob("[Mm]etadata*.yaml"))
+    excluded = {
+        "metadata_schema.yaml",
+        "_template_metadata.yaml",
+    }
+
+    for path in sorted(root.rglob("[Mm]etadata*.yaml")):
+        if path.name in excluded:
+            continue
+        yield path
 
 
 def read_text_file(path: Path) -> str:

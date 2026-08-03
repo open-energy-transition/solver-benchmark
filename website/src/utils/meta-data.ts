@@ -2,15 +2,15 @@ import yaml from "yaml";
 import camelCase from "lodash.camelcase";
 import { MetaData } from "@/types/meta-data";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function toCamelCase(obj: any, isTopLevel = true): unknown {
+function toCamelCase(obj: unknown, isTopLevel = true): unknown {
   if (Array.isArray(obj)) {
     return obj.map((item) => toCamelCase(item, false));
   } else if (obj !== null && typeof obj === "object") {
-    return Object.keys(obj).reduce(
+    const record = obj as Record<string, unknown>;
+    return Object.keys(record).reduce(
       (result, key) => {
         const newKey = isTopLevel ? key : camelCase(key); // Leave top-level keys as is
-        result[newKey] = toCamelCase(obj[key], false);
+        result[newKey] = toCamelCase(record[key], false);
         return result;
       },
       {} as Record<string, unknown>,

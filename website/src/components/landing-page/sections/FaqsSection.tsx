@@ -1,29 +1,32 @@
 import FAQItem from "../FAQItem";
+import { useScrollReveal, useStaggerReveal } from "@/hooks/useGsapAnimation";
 
 const Contribute = () => {
+  const headerRef = useScrollReveal<HTMLDivElement>();
+  const itemsRef = useStaggerReveal<HTMLDivElement>(":scope > *");
+
   return (
     <div
       id="faq"
-      className="py-5 text-navy bg-[#F5F4F4] scroll-mt-16 lg:scroll-mt-28"
+      className="py-5 text-white bg-navy scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
           mx-auto
           max-w-8xl
           px-4
-          lg:px-[70px]
-          lg:pr-[44px]
+          md:px-12
           pt-[67px]
           pb-16
         "
       >
-        <div className="">
+        <div ref={headerRef} className="">
           <div
             className="
                 tag-line-lg
                 uppercase
                 font-league
-                text-navy
+                text-white
                 mb-4
               "
           >
@@ -34,7 +37,7 @@ const Contribute = () => {
           </div>
         </div>
         <div>
-          <div className="mt-4 flex flex-col gap-6">
+          <div ref={itemsRef} className="mt-4 flex flex-col gap-6">
             {/* TODO allow rich text and links in FAQ answers */}
             <FAQItem
               question="Why are we building a new benchmark platform?"

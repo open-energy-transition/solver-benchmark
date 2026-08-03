@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { IResultState } from "@/types/state";
 import D3GroupedBarChart from "@/components/shared/D3GroupedBarChart";
 import { getSolverColor } from "@/utils/chart";
 import { MetaDataEntry } from "@/types/meta-data";
@@ -171,7 +170,7 @@ const SolverRuntimeComparison = ({
   );
 
   return (
-    <div className="my-4 mt-8 rounded-xl">
+    <div className="my-4 mt- rounded-xl">
       <D3GroupedBarChart
         title="Solver Runtime Comparison"
         chartData={chartData}

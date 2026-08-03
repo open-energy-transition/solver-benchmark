@@ -130,7 +130,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
-    MILP features: Unit commitment; Modularity
+    MILP features: Unit commitment, Modularity
     Sizes:
     - Name: 1-1h
       Size: M
@@ -205,7 +205,7 @@ benchmarks:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: 1 year
-    MILP features: Unit commitment; Modularity
+    MILP features: Unit commitment, Modularity
     Sizes:
     - Name: 1-1h
       Size: M

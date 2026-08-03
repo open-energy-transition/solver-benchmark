@@ -36,6 +36,7 @@ const TableResult = () => {
               "{name}",
               info.row.original.benchmark,
             )}
+            aria-label={`Navigate to benchmark detail page for ${info.row.original.benchmark}`}
           >
             <InfoPopup
               trigger={() => (

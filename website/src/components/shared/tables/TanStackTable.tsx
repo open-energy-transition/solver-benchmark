@@ -123,7 +123,7 @@ export function TanStackTable<T>({
             ${title ? "justify-between" : "justify-end"}
           `}
         >
-          {title && <h6>{title}</h6>}
+          {title && <div className="h6">{title}</div>}
           <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             {enableColumnSelector && (
               <button
@@ -174,253 +174,302 @@ export function TanStackTable<T>({
         </div>
       )}
 
-      <div className="rounded-xl sm:mx-0 overflow-auto">
+      <div className="rounded-xl sm:mx-0 max-h-[50vh] sm:max-h-none overflow-auto">
         {/* Table implementation */}
         <div className="min-w-full align-middle">
-          {showAllRows ? (
-            // Virtualized table for large datasets
-            <div
-              ref={tableContainerRef}
-              style={{
-                height: data?.length > 12 ? "525px" : "auto",
-                overflow: "auto",
-                position: "relative",
-              }}
-              className="overflow-x-auto"
-              tabIndex={0}
-              role="region"
-              aria-label={tableLabel}
-            >
-              <table
-                className="bg-[#F4F6FA] w-full min-w-[800px]"
-                style={{ tableLayout: "fixed" }}
+          {/* Desktop / Tablet: table visible */}
+          <div className="hidden sm:block">
+            {showAllRows ? (
+              // Virtualized table for large datasets
+              <div
+                ref={tableContainerRef}
+                style={{
+                  height: data?.length > 12 ? "525px" : "auto",
+                  overflow: "auto",
+                  position: "relative",
+                }}
+                className="overflow-x-auto"
+                tabIndex={0}
+                role="region"
+                aria-label={tableLabel}
               >
-                <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => {
-                        const headerContent = flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        );
-                        const hasContent =
-                          headerContent && String(headerContent).trim();
+                <table
+                  className="bg-[#F4F6FA] w-full min-w-[800px]"
+                  style={{ tableLayout: "fixed" }}
+                >
+                  <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <tr key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => {
+                          const headerContent = flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          );
+                          const hasContent =
+                            headerContent && String(headerContent).trim();
 
-                        return (
-                          <th
-                            key={header.id}
-                            colSpan={header.colSpan}
-                            className={headerClassName}
-                            style={{
-                              width: header.getSize() ? header.getSize() : 200,
-                              minWidth: header.getSize()
-                                ? header.getSize()
-                                : 200,
-                              maxWidth: header.getSize()
-                                ? header.getSize()
-                                : 200,
-                            }}
-                            aria-label={
-                              !hasContent ? "Column actions" : undefined
-                            }
-                          >
-                            <div
-                              onClick={header.column.getToggleSortingHandler()}
-                              className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full"
+                          return (
+                            <th
+                              key={header.id}
+                              colSpan={header.colSpan}
+                              className={headerClassName}
+                              style={{
+                                width: header.getSize()
+                                  ? header.getSize()
+                                  : 200,
+                                minWidth: header.getSize()
+                                  ? header.getSize()
+                                  : 200,
+                                maxWidth: header.getSize()
+                                  ? header.getSize()
+                                  : 200,
+                              }}
+                              aria-label={
+                                !hasContent ? "Column actions" : undefined
+                              }
                             >
                               <div
-                                className={`${
-                                  (header.column.columnDef.meta as any)
-                                    ?.headerClassName || "truncate"
-                                } w-full`}
+                                onClick={header.column.getToggleSortingHandler()}
+                                className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full"
                               >
-                                {headerContent}
+                                <div
+                                  className={`${
+                                    (header.column.columnDef.meta as any)
+                                      ?.headerClassName || "truncate"
+                                  } w-full`}
+                                >
+                                  {headerContent}
+                                </div>
+                                <div className="flex gap-1 shrink-0">
+                                  {header.column.getCanFilter() && (
+                                    <FilterTable column={header.column} />
+                                  )}
+                                  <SortIcon
+                                    sortDirection={header.column.getIsSorted()}
+                                    canSort={header.column.getCanSort()}
+                                  />
+                                </div>
                               </div>
-                              <div className="flex gap-1 shrink-0">
-                                {header.column.getCanFilter() && (
-                                  <FilterTable column={header.column} />
-                                )}
-                                <SortIcon
-                                  sortDirection={header.column.getIsSorted()}
-                                  canSort={header.column.getCanSort()}
-                                />
-                              </div>
-                            </div>
-                          </th>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </thead>
-
-                <tbody>
-                  {/* Spacer row for total scroll height */}
-                  <tr>
-                    <td
-                      colSpan={table.getAllColumns().length}
-                      style={{ height: 0 }}
-                    >
-                      <div
-                        style={{
-                          height: `${rowVirtualizer.getTotalSize()}px`,
-                        }}
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Virtualized rows */}
-                  {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                    const row = rows[virtualRow.index];
-                    return (
-                      <tr
-                        key={row.id}
-                        data-index={virtualRow.index}
-                        className={
-                          virtualRow.index % 2
-                            ? "bg-[#BFD8C71A] bg-opacity-10 !w-max"
-                            : ""
-                        }
-                        style={{
-                          position: "absolute",
-                          top: 48.8,
-                          left: 0,
-                          width: "100%",
-                          height: `${virtualRow.size}px`,
-                          transform: `translateY(${virtualRow.start}px)`,
-                        }}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <td
-                            key={cell.id}
-                            style={{
-                              width: cell.column.getSize()
-                                ? cell.column.getSize()
-                                : 200,
-                              minWidth: cell.column.getSize()
-                                ? cell.column.getSize()
-                                : 200,
-                              maxWidth: cell.column.getSize()
-                                ? cell.column.getSize()
-                                : 200,
-                            }}
-                            className={rowClassName}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            // Standard table for smaller datasets or paginated view
-            <div
-              className="overflow-x-auto"
-              tabIndex={0}
-              role="region"
-              aria-label={tableLabel}
-            >
-              <table
-                className="bg-[#F4F6FA] w-full min-w-[800px]"
-                style={{ tableLayout: "fixed" }}
-              >
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => {
-                        const headerContent = flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        );
-                        const hasContent =
-                          headerContent && String(headerContent).trim();
-
-                        return (
-                          <th
-                            key={header.id}
-                            colSpan={header.colSpan}
-                            className={headerClassName}
-                            style={{
-                              width: header.getSize(),
-                              maxWidth: header.getSize()
-                                ? header.getSize()
-                                : 200,
-                              minWidth: header.getSize()
-                                ? header.getSize()
-                                : 150,
-                            }}
-                            aria-label={
-                              !hasContent ? "Column actions" : undefined
-                            }
-                          >
-                            <div
-                              onClick={header.column.getToggleSortingHandler()}
-                              className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
-                            >
-                              <div
-                                className={`${
-                                  (header.column.columnDef.meta as any)
-                                    ?.headerClassName || "truncate"
-                                } w-full`}
-                              >
-                                {headerContent}
-                              </div>
-                              <div className="flex gap-1 shrink-0">
-                                {header.column.getCanFilter() && (
-                                  <FilterTable column={header.column} />
-                                )}
-                                <SortIcon
-                                  sortDirection={header.column.getIsSorted()}
-                                  canSort={header.column.getCanSort()}
-                                />
-                              </div>
-                            </div>
-                          </th>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody>
-                  {table
-                    .getRowModel()
-                    .rows.slice(0, 500)
-                    .map((row) => (
-                      <tr
-                        key={row.id}
-                        className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <td
-                            key={cell.id}
-                            style={{
-                              width: cell.column.getSize(),
-                              maxWidth: cell.column.getSize()
-                                ? cell.column.getSize()
-                                : 200,
-                              minWidth: cell.column.getSize()
-                                ? cell.column.getSize()
-                                : 150,
-                            }}
-                            className={rowClassName}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </td>
-                        ))}
+                            </th>
+                          );
+                        })}
                       </tr>
                     ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {/* Spacer row for total scroll height */}
+                    <tr>
+                      <td
+                        colSpan={table.getAllColumns().length}
+                        style={{ height: 0 }}
+                      >
+                        <div
+                          style={{
+                            height: `${rowVirtualizer.getTotalSize()}px`,
+                          }}
+                        />
+                      </td>
+                    </tr>
+
+                    {/* Virtualized rows */}
+                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const row = rows[virtualRow.index];
+                      return (
+                        <tr
+                          key={row.id}
+                          data-index={virtualRow.index}
+                          className={
+                            virtualRow.index % 2
+                              ? "bg-[#BFD8C71A] bg-opacity-10 !w-max"
+                              : ""
+                          }
+                          style={{
+                            position: "absolute",
+                            top: 48.8,
+                            left: 0,
+                            width: "100%",
+                            height: `${virtualRow.size}px`,
+                            transform: `translateY(${virtualRow.start}px)`,
+                          }}
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <td
+                              key={cell.id}
+                              style={{
+                                width: cell.column.getSize()
+                                  ? cell.column.getSize()
+                                  : 200,
+                                minWidth: cell.column.getSize()
+                                  ? cell.column.getSize()
+                                  : 200,
+                                maxWidth: cell.column.getSize()
+                                  ? cell.column.getSize()
+                                  : 200,
+                              }}
+                              className={rowClassName}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              // Standard table for smaller datasets or paginated view
+              <div
+                className="overflow-x-auto"
+                tabIndex={0}
+                role="region"
+                aria-label={tableLabel}
+              >
+                <table
+                  className="bg-[#F4F6FA] w-full min-w-[800px]"
+                  style={{ tableLayout: "fixed" }}
+                >
+                  <thead>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <tr key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => {
+                          const headerContent = flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          );
+                          const hasContent =
+                            headerContent && String(headerContent).trim();
+
+                          return (
+                            <th
+                              key={header.id}
+                              colSpan={header.colSpan}
+                              className={headerClassName}
+                              style={{
+                                width: header.getSize(),
+                                maxWidth: header.getSize()
+                                  ? header.getSize()
+                                  : 200,
+                                minWidth: header.getSize()
+                                  ? header.getSize()
+                                  : 150,
+                              }}
+                              aria-label={
+                                !hasContent ? "Column actions" : undefined
+                              }
+                            >
+                              <div
+                                onClick={header.column.getToggleSortingHandler()}
+                                className="tag-line-xs leading-1.4 font-extrabold flex gap-1 items-center justify-between w-full truncate"
+                              >
+                                <div
+                                  className={`${
+                                    (header.column.columnDef.meta as any)
+                                      ?.headerClassName || "truncate"
+                                  } w-full`}
+                                >
+                                  {headerContent}
+                                </div>
+                                <div className="flex gap-1 shrink-0">
+                                  {header.column.getCanFilter() && (
+                                    <FilterTable column={header.column} />
+                                  )}
+                                  <SortIcon
+                                    sortDirection={header.column.getIsSorted()}
+                                    canSort={header.column.getCanSort()}
+                                  />
+                                </div>
+                              </div>
+                            </th>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </thead>
+                  <tbody>
+                    {table
+                      .getRowModel()
+                      .rows.slice(0, 500)
+                      .map((row) => (
+                        <tr
+                          key={row.id}
+                          className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <td
+                              key={cell.id}
+                              style={{
+                                width: cell.column.getSize(),
+                                maxWidth: cell.column.getSize()
+                                  ? cell.column.getSize()
+                                  : 200,
+                                minWidth: cell.column.getSize()
+                                  ? cell.column.getSize()
+                                  : 150,
+                              }}
+                              className={rowClassName}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile: render as cards */}
+          <div className="block sm:hidden p-2 space-y-3">
+            {rows.slice(0, 500).map((row) => {
+              const cells = row.getVisibleCells();
+              const titleCell = cells[0];
+
+              return (
+                <div
+                  key={row.id}
+                  className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm"
+                >
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="text-navy font-extrabold tag-line-sm">
+                      {titleCell
+                        ? flexRender(
+                            titleCell.column.columnDef.cell,
+                            titleCell.getContext(),
+                          )
+                        : row.id}
+                    </div>
+                  </div>
+
+                  <div className="mt-2 grid grid-cols-2 gap-2 text-navy text-sm">
+                    {cells.slice(1).map((cell) => (
+                      <div key={cell.id}>
+                        <div className="font-semibold">
+                          {typeof cell.column.columnDef.header === "string"
+                            ? cell.column.columnDef.header
+                            : cell.column.id}
+                        </div>
+                        <div className="tag-line-sm mt-2">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       {showPagination && !showAllRows && (

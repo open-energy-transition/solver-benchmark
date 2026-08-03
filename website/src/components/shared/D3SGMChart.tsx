@@ -118,7 +118,7 @@ const D3SGMChart = ({
       .append("text")
       .attr("x", width / 2)
       .attr("y", 40)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text("Year")
       .attr("class", "text-xs");
 
@@ -135,7 +135,7 @@ const D3SGMChart = ({
       .append("text")
       .attr("x", -height / 2)
       .attr("y", -50)
-      .attr("fill", "#8C8C8C")
+      .attr("fill", "#575757")
       .text(title)
       .attr("text-anchor", "middle")
       .attr("class", "text-xs -rotate-90");
@@ -299,7 +299,7 @@ const D3SGMChart = ({
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       {/* Legend */}
       <div className="flex gap-2 ml-8">
-        <span className="items-start font-semibold text-[#8C8C8C] text-xs mr-1 flex">
+        <span className="items-start font-semibold text-[#575757] text-xs mr-1 flex">
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">

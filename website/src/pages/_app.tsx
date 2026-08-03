@@ -302,6 +302,22 @@ function InnerApp({ Component, props, router }: InnerAppProps) {
             }),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Dataset",
+              name: "Open Energy Benchmark",
+              description: "Open benchmark of solvers for energy planning",
+              license: "CC-BY-4.0",
+              creator: {
+                "@type": "Organization",
+                name: "Open Energy Transition",
+              },
+            }),
+          }}
+        />
       </Head>
       {renderLayout()}
       <div id="re-captcha"></div>
