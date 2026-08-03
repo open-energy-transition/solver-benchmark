@@ -7429,490 +7429,281 @@ problems:
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
-    MILP features: Unit commitment
-    Sizes:
-    - Name: 10-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 10 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 6754110
-      Num. variables: 3529983
-      Num. nonzeros: 16394847
-      Num. continuous variables: 2531343
-      Num. integer variables: 998640
-    - Name: 10-3h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-3h.mps.gz
-      Temporal resolution: 3 hours
-      Spatial resolution: 10 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 2251470
-      Num. variables: 1176760
-      Num. nonzeros: 5467835
-      Num. continuous variables: 843880
-      Num. integer variables: 332880
-    - Name: 10-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-24h.mps.gz
-      Temporal resolution: 24 hours
-      Spatial resolution: 10 nodes
-      Realistic: false
-      Num. constraints: 281565
-      Num. variables: 147193
-      Num. nonzeros: 686752
-      Num. continuous variables: 105583
-      Num. integer variables: 41610
-    - Name: 10-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-168h.mps.gz
-      Temporal resolution: 168 hours
-      Spatial resolution: 10 nodes
-      Realistic: false
-      Num. constraints: 41013
-      Num. variables: 21458
-      Num. nonzeros: 99178
-      Num. continuous variables: 15416
-      Num. integer variables: 6042
-    - Name: 20-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 20 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 11694859
-      Num. variables: 6122815
-      Num. nonzeros: 27714822
-      Num. continuous variables: 4467175
-      Num. integer variables: 1655640
-      Skip because: TO
-    - Name: 20-3h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-3h.mps.gz
-      Temporal resolution: 3 hours
-      Spatial resolution: 20 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 3898459
-      Num. variables: 2041117
-      Num. nonzeros: 9244348
-      Num. continuous variables: 1489237
-      Num. integer variables: 551880
-    - Name: 20-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-24h.mps.gz
-      Temporal resolution: 24 hours
-      Spatial resolution: 20 nodes
-      Realistic: false
-      Num. constraints: 487534
-      Num. variables: 255325
-      Num. nonzeros: 1162574
-      Num. continuous variables: 186340
-      Num. integer variables: 68985
-    - Name: 20-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-168h.mps.gz
-      Temporal resolution: 168 hours
-      Spatial resolution: 20 nodes
-      Realistic: false
-      Num. constraints: 71014
-      Num. variables: 37238
-      Num. nonzeros: 168132
-      Num. continuous variables: 27221
-      Num. integer variables: 10017
-    - Name: 50-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 50 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 25781277
-      Num. variables: 13516004
-      Num. nonzeros: 60976098
-      Num. continuous variables: 9915644
-      Num. integer variables: 3600360
-      Skip because: TO
-    - Name: 50-3h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-3h.mps.gz
-      Temporal resolution: 3 hours
-      Spatial resolution: 50 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 8594157
-      Num. variables: 4505738
-      Num. nonzeros: 20341458
-      Num. continuous variables: 3305618
-      Num. integer variables: 1200120
-      Skip because: TO
-    - Name: 50-24h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-24h.mps.gz
-      Temporal resolution: 24 hours
-      Spatial resolution: 50 nodes
-      Realistic: false
-      Num. constraints: 1074792
-      Num. variables: 563657
-      Num. nonzeros: 2560928
-      Num. continuous variables: 413642
-      Num. integer variables: 150015
-    - Name: 50-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-168h.mps.gz
-      Temporal resolution: 168 hours
-      Spatial resolution: 50 nodes
-      Realistic: false
-      Num. constraints: 156576
-      Num. variables: 82247
-      Num. nonzeros: 370792
-      Num. continuous variables: 60464
-      Num. integer variables: 21783
-    - Name: 100-1h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-1h.mps.gz
-      Temporal resolution: 1 hour
-      Spatial resolution: 100 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 46683175
-      Num. variables: 24544950
-      Num. nonzeros: 109602873
-      Num. continuous variables: 18053790
-      Num. integer variables: 6491160
-      Skip because: TO
-    - Name: 100-3h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-3h.mps.gz
-      Temporal resolution: 3 hours
-      Spatial resolution: 100 nodes
-      Realistic: true
-      Realistic motivation: Sufficient spatial and temporal resolution over the considered
-        time horizon to allow the benchmark to be defined as Realistic.
-      Num. constraints: 15561815
-      Num. variables: 8182388
-      Num. nonzeros: 36567903
-      Num. continuous variables: 6018668
-      Num. integer variables: 2163720
-      Skip because: TO
-    - Name: 100-24h
-      Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-24h.mps.gz
-      Temporal resolution: 24 hours
-      Spatial resolution: 100 nodes
-      Realistic: false
-      Num. constraints: 1946220
-      Num. variables: 1023645
-      Num. nonzeros: 4608334
-      Num. continuous variables: 753180
-      Num. integer variables: 270465
-      Skip because: TO
-    - Name: 100-168h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-168h.mps.gz
-      Temporal resolution: 168 hours
-      Spatial resolution: 100 nodes
-      Realistic: false
-      Num. constraints: 283572
-      Num. variables: 149432
-      Num. nonzeros: 667792
-      Num. continuous variables: 110159
-      Num. integer variables: 39273
-  ReEDS-USA-CapacityExpansion:
+    Model name: PyPSA-Eur
+  ReEDS-USA-CapacityExpansion-132-416ts:
     Short description: 132-zone representation of contiguous USA with 416 time slices
       in 2050 (last solve year of sequential solve with 10 stages). Currently enacted
       state and federal policies, including emissions standards, tax incentives, renewable
       portfolio standards/clean energy standards, and technology-specific capacity
       mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA-CapacityExpansion-132-416ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 18386068
+    Num. variables: 22030185
+    Num. nonzeros: 186172783
+    Num. continuous variables: 22030185
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 416 time slices
+    Realistic: true
+    Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
+      Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 132-416ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA-CapacityExpansion-132-416ts.mps.gz
-      Temporal resolution: 416 time slices
-      Spatial resolution: 132 regions
-      Realistic: true
-      Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
-        Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
-      Size: L
-      Num. constraints: 18386068
-      Num. variables: 22030185
-      Num. nonzeros: 186172783
-  ReEDS-USA_z90-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-USA_z90-CapacityExpansion-90-416ts:
     Short description: 90-zone representation of contiguous USA with 416 time slices
       in 2050 (last solve year of sequential solve with 10 stages). Currently enacted
       state and federal policies, including emissions standards, tax incentives, renewable
       portfolio standards/clean energy standards, and technology-specific capacity
       mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_z90-CapacityExpansion-90-416ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 13720929
+    Num. variables: 16560197
+    Num. nonzeros: 137983668
+    Num. continuous variables: 16560197
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 90 regions
+    Temporal resolution: 416 time slices
+    Realistic: true
+    Realistic motivation: The 90-zone representation and 416 time slices will be the
+      new standard for ReEDS studies.
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 90-416ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_z90-CapacityExpansion-90-416ts.mps.gz
-      Temporal resolution: 416 time slices
-      Spatial resolution: 90 regions
-      Realistic: true
-      Realistic motivation: The 90-zone representation and 416 time slices will be
-        the new standard for ReEDS studies.
-      Size: L
-      Num. constraints: 13720929
-      Num. variables: 16560197
-      Num. nonzeros: 137983668
-  ReEDS-USA_2MY-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-USA_2MY-CapacityExpansion-132-497ts:
     Short description: 132-zone representation of contiguous USA with 497 time slices
       in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
       Currently enacted state and federal policies, including emissions standards,
       tax incentives, renewable portfolio standards/clean energy standards, and technology-specific
       capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_2MY-CapacityExpansion-132-497ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 5380742
+    Num. variables: 5617652
+    Num. nonzeros: 39763296
+    Num. continuous variables: 5617652
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 497 time slices
+    Realistic: false
+    Realistic motivation:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 132-497ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_2MY-CapacityExpansion-132-497ts.mps.gz
-      Temporal resolution: 497 time slices
-      Spatial resolution: 132 regions
-      Realistic: false
-      Realistic motivation:
-      Size: L
-      Num. constraints: 5380742
-      Num. variables: 5617652
-      Num. nonzeros: 39763296
-  ReEDS-USA_CC-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-USA_CC-CapacityExpansion-132-264ts:
     Short description: 132-zone representation of contiguous USA with 264 time slices
       in 2050 (last solve year of sequential solve with 10 stages) using capacity
       credit resource adequacy method. Currently enacted state and federal policies,
       including emissions standards, tax incentives, renewable portfolio standards/clean
       energy standards, and technology-specific capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_CC-CapacityExpansion-132-264ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 15995074
+    Num. variables: 20921397
+    Num. nonzeros: 202943444
+    Num. continuous variables: 20921397
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 264 time slices
+    Realistic: true
+    Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
+      Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 132-264ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_CC-CapacityExpansion-132-264ts.mps.gz
-      Temporal resolution: 264 time slices
-      Spatial resolution: 132 regions
-      Realistic: true
-      Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
-        Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
-      Size: L
-      Num. constraints: 15995074
-      Num. variables: 20921397
-      Num. nonzeros: 202943444
-  ReEDS-USA_fast-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-USA_fast-CapacityExpansion-54-300ts:
     Short description: Simplified representation of contiguous USA with 54-zones and
       300 time slices in 2050 (last solve year of sequential solve with 10 stages)
       for faster solve times. Currently enacted state and federal policies, including
       emissions standards, tax incentives, renewable portfolio standards/clean energy
       standards, and technology-specific capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_fast-CapacityExpansion-54-300ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 6171818
+    Num. variables: 6005534
+    Num. nonzeros: 52665970
+    Num. continuous variables: 6005534
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 54 regions
+    Temporal resolution: 300 time slices
+    Realistic: false
+    Realistic motivation:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 54-300ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_fast-CapacityExpansion-54-300ts.mps.gz
-      Temporal resolution: 300 time slices
-      Spatial resolution: 54 regions
-      Realistic: false
-      Realistic motivation:
-      Size: L
-      Num. constraints: 6171818
-      Num. variables: 6005534
-      Num. nonzeros: 52665970
-  ReEDS-USA_decarb_H2-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-USA_decarb_H2-CapacityExpansion-132-424ts:
     Short description: 132-zone representation of contiguous USA with 424 time slices
       in 2050 (last solve year of sequential solve with 10 stages) with net zero power
       sector emissions by 2045 (no CCS, no new nuclear, DAC only to offset emissions
       from fossil+CCS) and detailed H2 production.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_decarb_H2-CapacityExpansion-132-424ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 13363189
+    Num. variables: 16578279
+    Num. nonzeros: 124634929
+    Num. continuous variables: 16578279
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 424 time slices
+    Realistic: true
+    Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
+      Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 132-424ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_decarb_H2-CapacityExpansion-132-424ts.mps.gz
-      Temporal resolution: 424 time slices
-      Spatial resolution: 132 regions
-      Realistic: true
-      Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
-        Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
-      Size: L
-      Num. constraints: 13363189
-      Num. variables: 16578279
-      Num. nonzeros: 124634929
-  ReEDS-ISONE_year-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-ISONE_year-CapacityExpansion-6-8760ts:
     Short description: 6-region representation of ISO-New England with a full year
       of hourly resolution in 2050 (last solve year of sequential solve with 2 stages,
       2010 and 2050). Currently enacted state and federal policies, including emissions
       standards, tax incentives, renewable portfolio standards/clean energy standards,
       and technology-specific capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ISONE_year-CapacityExpansion-6-8760ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 6310453
+    Num. variables: 7177536
+    Num. nonzeros: 52651745
+    Num. continuous variables: 7177536
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 6 regions
+    Temporal resolution: 8760 hours
+    Realistic: false
+    Realistic motivation:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 6-8760ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ISONE_year-CapacityExpansion-6-8760ts.mps.gz
-      Temporal resolution: 8760 hours
-      Spatial resolution: 6 regions
-      Realistic: false
-      Realistic motivation:
-      Size: L
-      Num. constraints: 6310453
-      Num. variables: 7177536
-      Num. nonzeros: 52651745
-  ReEDS-ERCOT_year-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-ERCOT_year-CapacityExpansion-7-8760ts:
     Short description: 7-region representation of ERCOT with a full year of hourly
       resolution in 2050 (last solve year of sequential solve with 2 stages, 2010
       and 2050). Currently enacted state and federal policies, including emissions
       standards, tax incentives, renewable portfolio standards/clean energy standards,
       and technology-specific capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ERCOT_year-CapacityExpansion-7-8760ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 7589747
+    Num. variables: 8454943
+    Num. nonzeros: 66403273
+    Num. continuous variables: 8454943
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 7 regions
+    Temporal resolution: 8760 hours
+    Realistic: false
+    Realistic motivation:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 7-8760ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ERCOT_year-CapacityExpansion-7-8760ts.mps.gz
-      Temporal resolution: 8760 hours
-      Spatial resolution: 7 regions
-      Realistic: false
-      Realistic motivation:
-      Size: L
-      Num. constraints: 7589747
-      Num. variables: 8454943
-      Num. nonzeros: 66403273
-  ReEDS-ISONE_8760h-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-ISONE_8760h-CapacityExpansion-6-8760ts:
     Short description: 6-region representation of ISO-New England with 8760 hourly
       time slices in 2050 (last solve year of sequential solve with 2 stages, 2010
       and 2050). Currently enacted state and federal policies, including emissions
       standards, tax incentives, renewable portfolio standards/clean energy standards,
       and technology-specific capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ISONE_8760h-CapacityExpansion-6-8760ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 4479517
+    Num. variables: 5270022
+    Num. nonzeros: 42300195
+    Num. continuous variables: 5270022
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 6 regions
+    Temporal resolution: 8760 time slices
+    Realistic: false
+    Realistic motivation:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 6-8760ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ISONE_8760h-CapacityExpansion-6-8760ts.mps.gz
-      Temporal resolution: 8760 time slices
-      Spatial resolution: 6 regions
-      Realistic: false
-      Realistic motivation:
-      Size: L
-      Num. constraints: 4479517
-      Num. variables: 5270022
-      Num. nonzeros: 42300195
-  ReEDS-ERCOT_8760h-CapacityExpansion:
+    Model name: ReEDS
+  ReEDS-ERCOT_8760h-CapacityExpansion-7-8760ts:
     Short description: 7-region representation of ERCOT with 8760 hourly time slices
       in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
       Currently enacted state and federal policies, including emissions standards,
       tax incentives, renewable portfolio standards/clean energy standards, and technology-specific
       capacity mandates are included.
-    Modelling framework: ReEDS
-    Model name: ReEDS
-    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
     Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
     License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ERCOT_8760h-CapacityExpansion-7-8760ts.mps.gz
     Problem class: LP
+    Size: L
+    Num. constraints: 5125203
+    Num. variables: 5855750
+    Num. nonzeros: 53280367
+    Num. continuous variables: 5855750
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 7 regions
+    Temporal resolution: 8760 time slices
+    Realistic: false
+    Realistic motivation:
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single-stage (1-year)
-    MILP features: None
-    Sizes:
-    - Name: 7-8760ts
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ERCOT_8760h-CapacityExpansion-7-8760ts.mps.gz
-      Temporal resolution: 8760 time slices
-      Spatial resolution: 7 regions
-      Realistic: false
-      Realistic motivation:
-      Size: L
-      Num. constraints: 5125203
-      Num. variables: 5855750
-      Num. nonzeros: 53280367
-  DCOPF-Carolinas_2M:
+    Model name: ReEDS
+  DCOPF-Carolinas_2M-997-1h:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a two-month horizon with hourly resolution, using 2021 as the
       weather year for time series of load, solar, and wind generation. Resource adequacy
