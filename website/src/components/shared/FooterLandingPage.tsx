@@ -55,11 +55,11 @@ const Footer = ({
                   aria-label="Navigate to Breakthrough Energy website"
                 >
                   <Image
-                    className="mt-4 p-1 bg-white rounded-xl w-[215px] h-[29px]"
+                    className="mt-4 p-1 bg-white rounded-xl w-[222px] h-[30px]"
                     src={`/landing_page/BE_logo_${theme}.png`}
                     alt="be-logo"
-                    width={215}
-                    height={29}
+                    width={222}
+                    height={30}
                     loading="lazy"
                   />
                 </Link>
