@@ -4,6 +4,8 @@ const solverLabels = new Map<string, string>([
   ["highs", "HiGHS"],
   ["cbc", "CBC"],
   ["gurobi", "Gurobi"],
+  ["highs-hipo", "HiGHS-HiPO"],
+  ["highs-ipx", "HiGHS-IPX"],
   ["na", "N/A"],
   ["single", "Single"],
   ["multi", "Multi"],
@@ -14,10 +16,8 @@ const solverLabels = new Map<string, string>([
 const HIPO_SOLVERS = ["highs-hipo", "highs-ipx"];
 
 function getSolverLabel(solverName: string): string {
-  if (HIPO_SOLVERS.includes(solverName)) {
-    return `${solverName}*`;
-  }
-  return solverLabels.get(solverName) ?? solverName;
+  const label = solverLabels.get(solverName) ?? solverName;
+  return HIPO_SOLVERS.includes(solverName) ? `${label}*` : label;
 }
 
 function formatSolverWithVersion(solverWithVersion: string) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { ID3StackedBarChart } from "@/types/chart";
@@ -24,11 +24,34 @@ const D3StackedBarChart = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. gap/layout changes in the parent
+  // flex row, or the sidebar nav expanding/collapsing) so the chart's SVG
+  // width never goes stale relative to its actual rendered container size.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!data.length) return;
 
-    const width = containerRef.current?.clientWidth || 400;
+    const width = containerWidth || containerRef.current?.clientWidth || 400;
     const margin = { top: 20, right: 10, bottom: 60, left: 20 };
 
     // Clear previous SVG
@@ -161,6 +184,7 @@ const D3StackedBarChart = ({
     categoryKey,
     rotateXAxisLabels,
     windowWidth,
+    containerWidth,
   ]);
 
   return (
@@ -189,8 +213,10 @@ const D3StackedBarChart = ({
           ))}
         </div>
       </div>
-      <div ref={containerRef}>
-        <svg ref={svgRef}></svg>
+      <div className="w-full overflow-x-auto" ref={containerRef}>
+        <div className="min-w-[200px]">
+          <svg ref={svgRef}></svg>
+        </div>
       </div>
     </div>
   );
