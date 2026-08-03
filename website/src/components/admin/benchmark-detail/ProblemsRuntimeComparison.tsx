@@ -166,7 +166,7 @@ const ProblemsRuntimeComparison = ({
   );
 
   return (
-    <div className="my-4 rounded-xl">
+    <div className="rounded-xl">
       <D3GroupedBarChart
         title="Solver Runtime Comparison"
         outerBgClassName="bg-[#E6ECF5]"

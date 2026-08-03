@@ -31,7 +31,7 @@ const ContentWrapper = ({
     >
       <div className="max-w-8xl mx-auto text-navy">
         {header && <div>{header}</div>}
-        <div className="sm:flex bg-[#E6ECF5] gap-5 border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
+        <div className="sm:flex bg-[#E6ECF5] gap-5 border border-stroke border-t-0 p-4 mt-6 rounded-[32px]">
           {showFilter && (
             <div className="mt-4 sm:x-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl h-max">
               <FilterSection />

@@ -153,7 +153,7 @@ const PageCompareProblems = () => {
                 </p>
               )}
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 p-4 mt-6 rounded-[32px]">
               {hasResults ? (
                 <ProblemsRuntimeComparison
                   problemIds={problemIds}

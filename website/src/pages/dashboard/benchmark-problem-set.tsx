@@ -243,7 +243,7 @@ const PageBenchmarkSet = () => {
                 </Link>
               </div>
             </div>
-            <div className="bg-[#E6ECF5] border border-stroke border-t-0 pb-6 p-4 mt-6 rounded-[32px]">
+            <div className="bg-[#E6ECF5] border border-stroke border-t-0 p-4 mt-6 rounded-[32px]">
               <div className="sm:flex gap-5">
                 <div className="mt-4 sm:x-0 md:max-w-[255px] bg-[#F4F6FA] rounded-xl h-max">
                   <ProblemDetailFilterSection
