@@ -2221,12 +2221,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (1 year)
     Model name: Tulipa
-  buildingenergy-1-1h:
+  buildingenergy-unknown:
     Short description: Model to determine the minimum cost design and dispatch of
       a distributed generation system for a commercial building.
     Contributor(s)/Source:
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy-unknown.mps.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy1-unknown.mps.gz
     Problem class: MILP
     Size: M
     Num. constraints: 277594
@@ -2246,7 +2246,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  dlr1-1-1h:
+  dlr1-unknown:
     Short description: European energy system model for power generation and capacity
       expansion.
     Contributor(s)/Source:
@@ -2271,7 +2271,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  dlr2-1-1h:
+  dlr2-unknown:
     Short description: European energy system model for power generation and capacity
       expansion.
     Contributor(s)/Source:
@@ -2296,7 +2296,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  gasprod1-2-1-1h:
+  gasprod1-2-unknown:
     Short description: Production planning model for an industrial gas process.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2320,7 +2320,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  gasprod1-1-1-1h:
+  gasprod1-1-unknown:
     Short description: Production planning model for an industrial gas process.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2344,7 +2344,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  gasprod2-2-1-1h:
+  gasprod2-2-unknown:
     Short description: Production planning model for an industrial gas process.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2368,7 +2368,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  gasprod1-3-1-1h:
+  gasprod1-3-unknown:
     Short description: Production planning model for an industrial gas process.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2392,7 +2392,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  gasprod2-1-1-1h:
+  gasprod2-1-unknown:
     Short description: Production planning model for an industrial gas process.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2416,7 +2416,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  hawaiiv10-130-1-1h:
+  hawaiiv10-130-unknown:
     Short description: Unit commitment model.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2440,7 +2440,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  irish-electricity-1-1h:
+  irish-electricity-unknown:
     Short description: Sample Unit Commitment test instance based on an Irish case
       study.
     Contributor(s)/Source:
@@ -2465,7 +2465,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  maxgasflow-1-1h:
+  maxgasflow-unknown:
     Short description: Transport momentum maximization in a capacitated gas network,
       allowing cycles.
     Contributor(s)/Source:
@@ -2490,7 +2490,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  transportmoment-1-1h:
+  transportmoment-unknown:
     Short description: Transport momentum maximization in a capacitated gas network,
       cycles are forbidden by pseudo pressures.
     Contributor(s)/Source:
@@ -2515,7 +2515,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  uc720-7-4-4-8-1-1h:
+  uc720-7-4-4-8-unknown:
     Short description: Margin maximization at unit commitment for several hydropower,
       pumping and thermal units.
     Contributor(s)/Source:
@@ -2540,7 +2540,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  unitcal_7-1-1h:
+  unitcal_7-unknown:
     Short description: California seven day unit commitment problem.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2564,7 +2564,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  hgms-det-1-1h:
+  hgms-det-unknown:
     Short description: Maintenance scheduling of generators in hydropower systems.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2588,7 +2588,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  hgms30-1-1h:
+  hgms30-unknown:
     Short description: Maintenance scheduling of generators in hydropower systems.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2612,7 +2612,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  hgms62-1-1h:
+  hgms62-unknown:
     Short description: Maintenance scheduling of generators in hydropower systems.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2636,7 +2636,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  ofi-1-1h:
+  ofi-unknown:
     Short description: Natural gas supply portfolio optimization.
     Contributor(s)/Source:
     License: CC BY 4.0
@@ -2660,7 +2660,7 @@ problems:
     Sectors:
     Time horizon:
     Model name:
-  ofi2-1-1h:
+  ofi2-unknown:
     Short description: Natural gas supply portfolio optimization.
     Contributor(s)/Source:
     License: CC BY 4.0
