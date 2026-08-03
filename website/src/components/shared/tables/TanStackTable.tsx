@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef, useEffect, useId } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useId,
+} from "react";
 import {
   ColumnDef,
   flexRender,
@@ -135,9 +141,19 @@ export function TanStackTable<T>({
   // (asynchronously corrected) measurements, directly measure the real DOM
   // state and hard-disable vertical scrolling whenever content actually
   // fits, regardless of any transient mismatch between the two.
+  //
+  // This must run in useLayoutEffect, not useEffect: on row-count changes
+  // (e.g. typing into a filter that narrows many rows down to one),
+  // useEffect fires after the browser paints, so the old overflow:auto
+  // state briefly paints against the new (now-fitting) container height.
+  // Chrome/Firefox resolve that gap within a frame or two, imperceptibly,
+  // but Safari's slower ResizeObserver/paint timing (plus its classic,
+  // non-overlay scrollbar rendering) can make that flash visible as a
+  // lingering scrollbar. useLayoutEffect runs synchronously before paint,
+  // closing the gap regardless of browser.
   const [canScrollVertically, setCanScrollVertically] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!showAllRows) return;
     const el = tableContainerRef.current;
     if (!el) return;
