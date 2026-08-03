@@ -2189,7 +2189,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2215,7 +2215,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr1.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr1-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2241,7 +2241,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr2.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr2-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2266,7 +2266,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-2.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-2-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2291,7 +2291,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-1.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-1-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2316,7 +2316,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-2.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-2-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2341,7 +2341,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-3.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-3-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2366,7 +2366,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-1.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-1-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2391,7 +2391,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/hawaiiv10-130.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/hawaiiv10-130-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2417,7 +2417,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/irish-electricity.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/irish-electricity-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2443,7 +2443,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/maxgasflow.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/maxgasflow-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2469,7 +2469,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/transportmoment.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/transportmoment-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2495,7 +2495,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: L
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/uc720-7-4-4-8.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/uc720-7-4-4-8-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2520,7 +2520,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/unitcal_7.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/unitcal_7-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2545,7 +2545,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: S
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms-det.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms-det-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2570,7 +2570,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms30.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms30-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2595,7 +2595,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms62.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms62-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2620,7 +2620,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
@@ -2645,7 +2645,7 @@ benchmarks:
     Sizes:
     - Name: 1-1h
       Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi2.mps.gz
+      URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi2-unknown.mps.gz
       Temporal resolution:
       Spatial resolution:
       Realistic: false
