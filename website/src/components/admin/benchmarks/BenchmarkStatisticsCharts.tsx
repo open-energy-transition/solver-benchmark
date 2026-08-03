@@ -1,11 +1,12 @@
 import D3StackedBarChart from "@/components/shared/D3StackedBarChart";
-import { IResultState } from "@/types/state";
+import { MetaData } from "@/types/meta-data";
 import React, { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { QuestionLineIcon } from "@/assets/icons";
 import InfoPopup from "@/components/common/InfoPopup";
+import { NoResultsMessage } from "@/components/shared";
 
 const BenchmarkStatisticsCharts = ({
+  metaData,
   availableSectoralFocus,
   availableSectors,
   availableProblemClasses,
@@ -13,6 +14,7 @@ const BenchmarkStatisticsCharts = ({
   availableModellingFrameworks,
   availableProblemSizes,
 }: {
+  metaData: MetaData;
   availableSectoralFocus: string[];
   availableSectors: string[];
   availableProblemClasses: string[];
@@ -20,12 +22,14 @@ const BenchmarkStatisticsCharts = ({
   availableModellingFrameworks: string[];
   availableProblemSizes: string[];
 }) => {
-  const metaData = useSelector((state: { results: IResultState }) => {
-    return state.results.fullMetaData;
-  });
+  // Build the set of individual MILP features across all entries.
   const availableMilpFeatures = useMemo(() => {
     return Array.from(
-      new Set(Object.keys(metaData).map((key) => metaData[key].milpFeatures)),
+      new Set(
+        Object.keys(metaData).flatMap(
+          (key) => metaData[key].milpFeatures ?? [],
+        ),
+      ),
     );
   }, [metaData]);
 
@@ -50,19 +54,13 @@ const BenchmarkStatisticsCharts = ({
 
     Object.keys(metaData).forEach((key) => {
       if (metaData[key].modellingFramework === framework) {
-        // Number of problems
+        // Each entry counts as exactly one problem and one size.
         updateData(nOfProblemsMap, "totalNOfDiffProblems");
-        metaData[key].sizes.forEach(() => {
-          updateData(nOfProblemsMap, "multipleSizes");
-        });
+        updateData(nOfProblemsMap, "multipleSizes");
 
         availableProblemClasses.forEach((problemClass) => {
           if (metaData[key].problemClass === problemClass) {
-            updateData(
-              problemClassesMap,
-              problemClass,
-              metaData[key].sizes.length,
-            );
+            updateData(problemClassesMap, problemClass);
           }
         });
         availableApplications.forEach((application) => {
@@ -81,27 +79,23 @@ const BenchmarkStatisticsCharts = ({
           }
         });
         availableMilpFeatures.forEach((milpFeature) => {
-          if (metaData[key].milpFeatures === milpFeature) {
-            updateData(milpFeaturesMap, milpFeature as string);
+          if (metaData[key].milpFeatures?.includes(milpFeature)) {
+            updateData(milpFeaturesMap, milpFeature);
           }
         });
         availabletimeHorizons.forEach((timeHorizon) => {
-          if (metaData[key].timeHorizon.toLowerCase().includes(timeHorizon)) {
-            updateData(
-              timeHorizonsMap,
-              timeHorizon as string,
-              metaData[key].sizes.length,
-            );
+          if (metaData[key].timeHorizon?.toLowerCase().includes(timeHorizon)) {
+            updateData(timeHorizonsMap, timeHorizon as string);
           }
         });
         if (
-          !availabletimeHorizons.some((time) =>
-            metaData[key].timeHorizon.toLowerCase().includes(time),
+          !availabletimeHorizons.some(
+            (time) => metaData[key].timeHorizon?.toLowerCase().includes(time),
           )
         ) {
           updateData(timeHorizonsMap, "n/a" as string);
         }
-        if (metaData[key].sizes.some((instance) => instance.realistic)) {
+        if (metaData[key].realistic) {
           if (metaData[key].problemClass === "MILP") {
             updateData(realSizesMap, "milp" as string);
           }
@@ -162,15 +156,14 @@ const BenchmarkStatisticsCharts = ({
       };
     });
     Object.keys(metaData).forEach((key) => {
-      metaData[key].sizes.forEach((s) => {
-        const data = sizeData.find((sd) => sd.size === s.size);
-        if (data) {
-          data.total += 1;
-          if (s.realistic) {
-            data.realistic += 1;
-          }
+      const entry = metaData[key];
+      const data = sizeData.find((sd) => sd.size === entry.size);
+      if (data) {
+        data.total += 1;
+        if (entry.realistic) {
+          data.realistic += 1;
         }
-      });
+      }
     });
     return sizeData.map((data) => {
       return {
@@ -230,10 +223,14 @@ const BenchmarkStatisticsCharts = ({
     </div>
   );
 
+  if (Object.keys(metaData).length === 0) {
+    return <NoResultsMessage />;
+  }
+
   return (
-    <div className="p-1 rounded-xl space-y-8 relative">
-      <div className="xl:flex xl:flex-row justify-between gap-2 ">
-        <div className="flex-1 w-full xl:w-1/3">
+    <div className="rounded-xl space-y-8 relative">
+      <div className="xl:flex xl:flex-row justify-between gap-5 ">
+        <div className="flex-1 w-full min-w-0 xl:w-1/3">
           <D3StackedBarChart
             className="p-3"
             data={problemClassesChartData}
@@ -246,7 +243,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full mt-4 lg:mt-0 xl:w-1/3">
+        <div className="flex-1 w-full min-w-0 mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="p-3"
             data={timeHorizonsChartData}
@@ -259,7 +256,7 @@ const BenchmarkStatisticsCharts = ({
             showXaxisLabel={false}
           />
         </div>
-        <div className="flex-1 w-full mt-4 lg:mt-0  xl:w-1/3">
+        <div className="flex-1 w-full min-w-0 mt-4 lg:mt-0 xl:w-1/3">
           <D3StackedBarChart
             className="p-3"
             data={sizeChartData}

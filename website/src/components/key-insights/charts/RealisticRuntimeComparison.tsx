@@ -10,6 +10,7 @@ import { ID3GroupedBarChartData } from "@/types/chart";
 import { getHighestVersion } from "@/utils/versions";
 import { BenchmarkResult } from "@/types/benchmark";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getProblemKey } from "@/utils/results";
 
 const PROBLEM_SIZE_FILTERS = [
   {
@@ -68,24 +69,31 @@ const RealisticRuntimeComparison = ({
     return state.results.rawMetaData;
   });
 
-  const benchmarkLatestResults = useSelector(
-    (state: { results: IResultState }) => {
-      if (dataSource === "hipo") {
-        return state.results.benchmarkLatestResults.filter((result) =>
-          [...HIPO_SOLVERS, "highs"].includes(result.solver),
-        );
-      }
-      return state.results.benchmarkLatestResults.filter(
-        (result) => !HIPO_SOLVERS.includes(result.solver),
-      );
-    },
-  ).filter((result) => {
-    return metaData[result.benchmark]?.problemClass === problemClass;
-  });
+  const allBenchmarkLatestResults = useSelector(
+    (state: { results: IResultState }) => state.results.benchmarkLatestResults,
+  );
+  const benchmarkLatestResults = useMemo(() => {
+    const bySolver =
+      dataSource === "hipo"
+        ? allBenchmarkLatestResults.filter((result) =>
+            [...HIPO_SOLVERS, "highs"].includes(result.solver),
+          )
+        : allBenchmarkLatestResults.filter(
+            (result) => !HIPO_SOLVERS.includes(result.solver),
+          );
+    return bySolver.filter(
+      (result) =>
+        metaData[getProblemKey(result)]?.problemClass === problemClass,
+    );
+  }, [allBenchmarkLatestResults, dataSource, metaData, problemClass]);
 
-  const availableSolvers = useSelector((state: { results: IResultState }) => {
-    return [...state.results.availableSolvers, ...HIPO_SOLVERS];
-  });
+  const rawAvailableSolvers = useSelector(
+    (state: { results: IResultState }) => state.results.availableSolvers,
+  );
+  const availableSolvers = useMemo(
+    () => [...rawAvailableSolvers, ...HIPO_SOLVERS],
+    [rawAvailableSolvers],
+  );
 
   const solverVersions = useMemo(() => {
     const versions: { [key: string]: string[] } = {};
@@ -105,7 +113,7 @@ const RealisticRuntimeComparison = ({
     return versions;
   }, [benchmarkLatestResults]);
 
-  const getNumberSolvedBenchmark = useCallback(
+  const getNumberSolvedProblems = useCallback(
     (solver: string, categoryData: BenchmarkResult[]) => {
       return categoryData.filter(
         (result) => result.status === "ok" && result.solver === solver,
@@ -116,28 +124,26 @@ const RealisticRuntimeComparison = ({
 
   const solverPerformanceBySize = PROBLEM_SIZE_FILTERS.map((filterConfig) => {
     const benchmarkDatas = benchmarkLatestResults.filter((result) => {
-      const instances = metaData[result.benchmark].sizes
-        .filter(
-          (sizeInfo) =>
-            sizeInfo.size === filterConfig.filter.size &&
-            (filterConfig.filter.realistic
-              ? sizeInfo.realistic === filterConfig.filter.realistic
-              : true),
-        )
-        .map((sizeInfo) => sizeInfo.name);
-      return instances.includes(result.size);
+      const entry = metaData[getProblemKey(result)];
+      return (
+        !!entry &&
+        entry.size === filterConfig.filter.size &&
+        (filterConfig.filter.realistic
+          ? entry.realistic === filterConfig.filter.realistic
+          : true)
+      );
     });
 
     const solversData = availableSolvers.map((solver) => {
       const solverResults = benchmarkDatas.filter((d) => d.solver === solver);
-      const solvedCount = getNumberSolvedBenchmark(solver, benchmarkDatas);
+      const solvedCount = getNumberSolvedProblems(solver, benchmarkDatas);
       const runtimeSgm = calculateSgm(solverResults.map((d) => d.runtime));
 
       return {
         solver,
         data: runtimeSgm,
         total: solverResults.length,
-        solvedBenchmarks: solvedCount,
+        solvedProblems: solvedCount,
         version: getHighestVersion(solverVersions[solver] || []),
         unnormalizedData: {
           runtime: runtimeSgm,
@@ -165,8 +171,8 @@ const RealisticRuntimeComparison = ({
         unnormalizedData: {
           runtime: solverData.unnormalizedData.runtime,
         },
-        solvedBenchmarks: solverData.solvedBenchmarks,
-        totalBenchmarks: solverData.total,
+        solvedProblems: solverData.solvedProblems,
+        totalProblems: solverData.total,
         category: filterConfig.key,
       })),
   );
@@ -188,7 +194,7 @@ const RealisticRuntimeComparison = ({
         (s) => s.solver === d.key && s.category === d.category,
       );
       const successRate = solver
-        ? ((solver.solvedBenchmarks / solver.totalBenchmarks) * 100).toFixed(1)
+        ? ((solver.solvedProblems / solver.totalProblems) * 100).toFixed(1)
         : "0";
 
       return `Solver: ${d.key}${
@@ -197,8 +203,8 @@ const RealisticRuntimeComparison = ({
               Average runtime: ${humanizeSeconds(
                 solver?.unnormalizedData.runtime ?? 0,
               )} <br/>
-              Benchmarks solved: ${solver?.solvedBenchmarks} <br/>
-              Success rate: ${successRate}% (${solver?.solvedBenchmarks}/${solver?.totalBenchmarks}) <br/>`;
+              Problems solved: ${solver?.solvedProblems} <br/>
+              Success rate: ${successRate}% (${solver?.solvedProblems}/${solver?.totalProblems}) <br/>`;
     },
     [solverResults],
   );
@@ -210,7 +216,7 @@ const RealisticRuntimeComparison = ({
         (s) => s.solver === d.key && s.category === d.category,
       );
       const successRate = solver
-        ? ((solver.solvedBenchmarks / solver.totalBenchmarks) * 100).toFixed(0)
+        ? ((solver.solvedProblems / solver.totalProblems) * 100).toFixed(0)
         : "0";
 
       return `${isNaN(valueNum) ? "-" : valueNum.toFixed(1)}x\n${successRate}%`;
@@ -251,6 +257,8 @@ const RealisticRuntimeComparison = ({
         title={`Runtime relative to fastest solver - ${problemClass}${
           dataSource === "hipo" ? " (including HiPO)" : ""
         }`}
+        outerBgClassName="bg-transparent"
+        marginBottom={70}
         chartData={chartData}
         categoryKey="key"
         colors={(d) => {

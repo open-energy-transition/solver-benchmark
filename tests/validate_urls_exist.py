@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
+"""
+Check that every problem URL in a metadata YAML file is reachable.
+
+Collects the "URL" field from every entry in the "problems" map and issues
+a concurrent HEAD (falling back to a ranged GET) request against each,
+reporting any that don't resolve to a non-empty, successful response.
+"""
+
 from __future__ import annotations
 
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Optional
 
 import requests
 import yaml
@@ -14,27 +22,33 @@ DEFAULT_WORKERS = 32  # good CI default; adjust if you hit throttling
 
 @dataclass
 class CheckResult:
+    """Outcome of checking a single problem URL."""
+
     url: str
     ok: bool
-    status: int | None
+    status: Optional[int]
     reason: str
-    content_length: int | None = None
-    content_type: str | None = None
-
-
-def iter_strings(obj: Any) -> Iterable[str]:
-    """Yield all string leaves from nested dict/list structures."""
-    if isinstance(obj, str):
-        yield obj
-    elif isinstance(obj, dict):
-        for v in obj.values():
-            yield from iter_strings(v)
-    elif isinstance(obj, list):
-        for v in obj:
-            yield from iter_strings(v)
+    content_length: Optional[int] = None
+    content_type: Optional[str] = None
 
 
 def check_url(url: str, timeout_s: float = 60.0) -> CheckResult:
+    """
+    Check that a URL resolves to a non-empty, successful response.
+
+    Parameters
+    ----------
+    url : str
+        URL to check.
+    timeout_s : float, optional
+        Request timeout in seconds. Default is 60.
+
+    Returns
+    -------
+    CheckResult
+        Outcome of the check, including status code and content metadata
+        when available.
+    """
     # Create a short-lived session per thread for connection pooling within that thread.
     # (requests.Session is not guaranteed thread-safe when shared.)
     session = requests.Session()
@@ -89,18 +103,50 @@ def check_url(url: str, timeout_s: float = 60.0) -> CheckResult:
     )
 
 
-def main() -> int:
-    if len(sys.argv) < 2:
+def collect_urls(data: dict) -> list[str]:
+    """
+    Collect the unique problem URLs from parsed metadata YAML content.
+
+    Parameters
+    ----------
+    data : dict
+        Parsed content of a metadata YAML file (must contain a
+        "problems" map).
+
+    Returns
+    -------
+    list[str]
+        Sorted, de-duplicated list of URLs.
+    """
+    return sorted({b["URL"] for b in data["problems"].values() if b.get("URL")})
+
+
+def main(argv: Optional[list[str]] = None) -> int:
+    """
+    CLI entry point: check every problem URL in a metadata YAML file.
+
+    Parameters
+    ----------
+    argv : list[str], optional
+        Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns
+    -------
+    int
+        Exit code: 0 if all URLs validated, 1 if any failed, 2 on usage error.
+    """
+    argv = sys.argv[1:] if argv is None else argv
+    if len(argv) < 1:
         print(f"Usage: {sys.argv[0]} <file.yaml> [max_workers]", file=sys.stderr)
         return 2
 
-    path = sys.argv[1]
-    max_workers = int(sys.argv[2]) if len(sys.argv) >= 3 else DEFAULT_WORKERS
+    path = argv[0]
+    max_workers = int(argv[1]) if len(argv) >= 2 else DEFAULT_WORKERS
 
     with open(path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    urls = sorted({s["URL"] for _, b in data["benchmarks"].items() for s in b["Sizes"]})
+    urls = collect_urls(data)
     if not urls:
         print("No URLs found in yaml file.")
         return 0

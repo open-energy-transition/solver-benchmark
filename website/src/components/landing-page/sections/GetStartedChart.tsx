@@ -26,7 +26,7 @@ const NOTE_BOX = (
       </Link>{" "}
       to benchmark on your own problems. See the{" "}
       <Link
-        href="/dashboard/main-results#caveats"
+        href={`${PATH_DASHBOARD.home}#caveats`}
         className="font-bold underline underline-offset-2 hover:opacity-75"
       >
         Caveats
