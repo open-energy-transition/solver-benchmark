@@ -2226,7 +2226,7 @@ problems:
       a distributed generation system for a commercial building.
     Contributor(s)/Source:
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy1-unknown.mps.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy-unknown.mps.gz
     Problem class: MILP
     Size: M
     Num. constraints: 277594
