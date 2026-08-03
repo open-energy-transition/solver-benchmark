@@ -8,15 +8,15 @@ import { ID3GroupedBarChartData } from "@/types/chart";
 
 interface ISolverRuntimeComparison {
   sgmData: TableRowType[];
-  uniqueBenchmarkCount: number;
-  uniqueLatestBenchmarkCount: number;
+  uniqueProblemCount: number;
+  uniqueLatestProblemCount: number;
   timeout: number;
 }
 
 const SgmRuntimeComparison = ({
   sgmData = [],
-  uniqueBenchmarkCount,
-  uniqueLatestBenchmarkCount,
+  uniqueProblemCount,
+  uniqueLatestProblemCount,
   timeout,
 }: ISolverRuntimeComparison) => {
   const solverResults = sgmData;
@@ -44,7 +44,7 @@ const SgmRuntimeComparison = ({
               Average runtime: ${humanizeSeconds(
                 solver?.unnormalizedData.runtime ?? 0,
               )} <br/>
-              Benchmarks solved: ${solver?.solvedBenchmarks} <br/>`;
+              Problems solved: ${solver?.solvedProblems} <br/>`;
     },
     [solverResults],
   );
@@ -58,7 +58,7 @@ const SgmRuntimeComparison = ({
   );
 
   const getXAxisTickFormat = useCallback(() => {
-    return `${uniqueBenchmarkCount}/${uniqueLatestBenchmarkCount} benchmark problems \n
+    return `${uniqueProblemCount}/${uniqueLatestProblemCount} benchmark problems \n
     Fastest solver's average runtime: ${humanizeSeconds(
       Math.min(...solverResults.map((s) => s.unnormalizedData.runtime)),
     )} \n
@@ -70,6 +70,7 @@ const SgmRuntimeComparison = ({
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
         title="Solver Runtime Comparison"
+        marginBottom={70}
         chartData={chartData}
         categoryKey="size"
         colors={(d) => {
@@ -85,6 +86,7 @@ const SgmRuntimeComparison = ({
         xAxisTickFormat={getXAxisTickFormat}
         directionalIndicator="lower"
         useLogScale={true}
+        outerBgClassName="bg-[#E6ECF5]"
       />
     </div>
   );

@@ -30,8 +30,10 @@ interface TanStackTableProps<T> {
   initialColumnVisibility?: VisibilityState;
   showPagination?: boolean;
   showAllRows?: boolean; // Enable virtualization for large datasets
+  virtualizedHeight?: string; // Height of the scroll area when virtualized
   headerClassName?: string;
   rowClassName?: string;
+  oddRowClassName?: string;
 }
 
 export function TanStackTable<T>({
@@ -45,8 +47,10 @@ export function TanStackTable<T>({
   initialColumnVisibility = {},
   showPagination = true,
   showAllRows = false,
+  virtualizedHeight = "525px",
   headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
   rowClassName = "tag-line-sm leading-1.4 text-navy text-start py-2 px-6 truncate",
+  oddRowClassName = "odd:bg-[#BFD8C71A]",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -60,6 +64,22 @@ export function TanStackTable<T>({
 
   // Reference for the container that holds the table for virtualization
   const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  // Reference to the outermost element, used to measure the available width
+  // so the table can stretch its columns to fill it (see tableWidth below).
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width;
+      if (width) setContainerWidth(width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const table = useReactTable({
     data,
@@ -84,6 +104,23 @@ export function TanStackTable<T>({
   // Set up virtualization for large datasets when showAllRows is enabled
   const { rows } = table.getRowModel();
 
+  // Measure the real header height instead of assuming a fixed value: header
+  // styling (headerClassName) varies per caller, so a hardcoded constant
+  // drifts out of sync and leaves a sliver of spurious scrollable space.
+  const theadRef = useRef<HTMLTableSectionElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(48.8);
+
+  useEffect(() => {
+    const el = theadRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      const height = entries[0]?.contentRect.height;
+      if (height) setHeaderHeight(height);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // Set up the virtualizer with dynamic row height measurement
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
@@ -92,6 +129,25 @@ export function TanStackTable<T>({
     overscan: 20,
     enabled: showAllRows,
   });
+
+  // Belt-and-suspenders check: rather than trusting the CSS min() height
+  // formula above to always stay in perfect sync with the virtualizer's
+  // (asynchronously corrected) measurements, directly measure the real DOM
+  // state and hard-disable vertical scrolling whenever content actually
+  // fits, regardless of any transient mismatch between the two.
+  const [canScrollVertically, setCanScrollVertically] = useState(false);
+
+  useEffect(() => {
+    if (!showAllRows) return;
+    const el = tableContainerRef.current;
+    if (!el) return;
+    const checkOverflow = () =>
+      setCanScrollVertically(el.scrollHeight > el.clientHeight + 1);
+    checkOverflow();
+    const observer = new ResizeObserver(checkOverflow);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showAllRows, rows.length, headerHeight]);
 
   // Re-render virtualizer on window resize to ensure correct calculations
   useEffect(() => {
@@ -114,8 +170,29 @@ export function TanStackTable<T>({
     }
   };
 
+  // With table-layout:fixed, letting the browser stretch a table wider than
+  // the sum of its own column widths (e.g. via a "w-full" class) causes it
+  // to proportionally stretch the in-flow header cells to fill the gap,
+  // while body cells inside virtualized (position:absolute) rows ignore
+  // that redistribution, desyncing the two. Instead, we compute the target
+  // width ourselves (the greater of the available container width or the
+  // columns' own total) and scale every column's width by the same factor,
+  // then apply that identical per-column width to both header and body.
+  const headers = table.getHeaderGroups()[0]?.headers ?? [];
+  const baseTotalWidth = headers.reduce(
+    (sum, header) => sum + header.getSize(),
+    0,
+  );
+  const tableWidth = Math.max(800, containerWidth || 0, baseTotalWidth);
+  const widthScale = baseTotalWidth > 0 ? tableWidth / baseTotalWidth : 1;
+  const columnWidthById = new Map(
+    headers.map((header) => [header.column.id, header.getSize() * widthScale]),
+  );
+  const getColumnWidth = (columnId: string) =>
+    columnWidthById.get(columnId) ?? 150;
+
   return (
-    <div className="w-full">
+    <div className="w-full" ref={rootRef}>
       {(title || enableDownload || enableColumnSelector) && (
         <div
           className={`
@@ -184,8 +261,13 @@ export function TanStackTable<T>({
               <div
                 ref={tableContainerRef}
                 style={{
-                  height: data?.length > 12 ? "525px" : "auto",
-                  overflow: "auto",
+                  // Cap at virtualizedHeight, but shrink to fit when the
+                  // (filtered) data is short enough not to need it.
+                  height: `min(${virtualizedHeight}, ${
+                    rowVirtualizer.getTotalSize() + headerHeight
+                  }px)`,
+                  overflowX: "auto",
+                  overflowY: canScrollVertically ? "auto" : "hidden",
                   position: "relative",
                 }}
                 className="overflow-x-auto"
@@ -194,10 +276,27 @@ export function TanStackTable<T>({
                 aria-label={tableLabel}
               >
                 <table
-                  className="bg-[#F4F6FA] w-full min-w-[800px]"
-                  style={{ tableLayout: "fixed" }}
+                  className="bg-[#F4F6FA]"
+                  style={{ tableLayout: "fixed", width: tableWidth }}
                 >
-                  <thead className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10">
+                  {/* Virtualized rows are position:absolute (out of normal
+                      flow), so table-layout:fixed can't infer column widths
+                      from them. An explicit colgroup forces the browser to
+                      use the same widths for header and body regardless. */}
+                  <colgroup>
+                    {table
+                      .getHeaderGroups()[0]
+                      ?.headers.map((header) => (
+                        <col
+                          key={header.id}
+                          style={{ width: getColumnWidth(header.column.id) }}
+                        />
+                      ))}
+                  </colgroup>
+                  <thead
+                    ref={theadRef}
+                    className="sticky top-0 bg-[#F4F6FA] shadow-sm z-10"
+                  >
                     {table.getHeaderGroups().map((headerGroup) => (
                       <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
@@ -214,15 +313,9 @@ export function TanStackTable<T>({
                               colSpan={header.colSpan}
                               className={headerClassName}
                               style={{
-                                width: header.getSize()
-                                  ? header.getSize()
-                                  : 200,
-                                minWidth: header.getSize()
-                                  ? header.getSize()
-                                  : 200,
-                                maxWidth: header.getSize()
-                                  ? header.getSize()
-                                  : 200,
+                                width: getColumnWidth(header.column.id),
+                                minWidth: getColumnWidth(header.column.id),
+                                maxWidth: getColumnWidth(header.column.id),
                               }}
                               aria-label={
                                 !hasContent ? "Column actions" : undefined
@@ -262,7 +355,7 @@ export function TanStackTable<T>({
                     <tr>
                       <td
                         colSpan={table.getAllColumns().length}
-                        style={{ height: 0 }}
+                        style={{ height: 0, padding: 0, border: "none" }}
                       >
                         <div
                           style={{
@@ -279,17 +372,17 @@ export function TanStackTable<T>({
                         <tr
                           key={row.id}
                           data-index={virtualRow.index}
+                          ref={rowVirtualizer.measureElement}
                           className={
                             virtualRow.index % 2
-                              ? "bg-[#BFD8C71A] bg-opacity-10 !w-max"
+                              ? `${oddRowClassName} !w-max`
                               : ""
                           }
                           style={{
                             position: "absolute",
-                            top: 48.8,
+                            top: headerHeight,
                             left: 0,
                             width: "100%",
-                            height: `${virtualRow.size}px`,
                             transform: `translateY(${virtualRow.start}px)`,
                           }}
                         >
@@ -297,15 +390,9 @@ export function TanStackTable<T>({
                             <td
                               key={cell.id}
                               style={{
-                                width: cell.column.getSize()
-                                  ? cell.column.getSize()
-                                  : 200,
-                                minWidth: cell.column.getSize()
-                                  ? cell.column.getSize()
-                                  : 200,
-                                maxWidth: cell.column.getSize()
-                                  ? cell.column.getSize()
-                                  : 200,
+                                width: getColumnWidth(cell.column.id),
+                                minWidth: getColumnWidth(cell.column.id),
+                                maxWidth: getColumnWidth(cell.column.id),
                               }}
                               className={rowClassName}
                             >
@@ -330,9 +417,19 @@ export function TanStackTable<T>({
                 aria-label={tableLabel}
               >
                 <table
-                  className="bg-[#F4F6FA] w-full min-w-[800px]"
-                  style={{ tableLayout: "fixed" }}
+                  className="bg-[#F4F6FA]"
+                  style={{ tableLayout: "fixed", width: tableWidth }}
                 >
+                  <colgroup>
+                    {table
+                      .getHeaderGroups()[0]
+                      ?.headers.map((header) => (
+                        <col
+                          key={header.id}
+                          style={{ width: getColumnWidth(header.column.id) }}
+                        />
+                      ))}
+                  </colgroup>
                   <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
                       <tr key={headerGroup.id}>
@@ -350,13 +447,9 @@ export function TanStackTable<T>({
                               colSpan={header.colSpan}
                               className={headerClassName}
                               style={{
-                                width: header.getSize(),
-                                maxWidth: header.getSize()
-                                  ? header.getSize()
-                                  : 200,
-                                minWidth: header.getSize()
-                                  ? header.getSize()
-                                  : 150,
+                                width: getColumnWidth(header.column.id),
+                                maxWidth: getColumnWidth(header.column.id),
+                                minWidth: getColumnWidth(header.column.id),
                               }}
                               aria-label={
                                 !hasContent ? "Column actions" : undefined
@@ -395,21 +488,14 @@ export function TanStackTable<T>({
                       .getRowModel()
                       .rows.slice(0, 500)
                       .map((row) => (
-                        <tr
-                          key={row.id}
-                          className="odd:bg-[#BFD8C71A] odd:bg-opacity-10"
-                        >
+                        <tr key={row.id} className={oddRowClassName}>
                           {row.getVisibleCells().map((cell) => (
                             <td
                               key={cell.id}
                               style={{
-                                width: cell.column.getSize(),
-                                maxWidth: cell.column.getSize()
-                                  ? cell.column.getSize()
-                                  : 200,
-                                minWidth: cell.column.getSize()
-                                  ? cell.column.getSize()
-                                  : 150,
+                                width: getColumnWidth(cell.column.id),
+                                maxWidth: getColumnWidth(cell.column.id),
+                                minWidth: getColumnWidth(cell.column.id),
                               }}
                               className={rowClassName}
                             >

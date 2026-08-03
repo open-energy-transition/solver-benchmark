@@ -15,7 +15,7 @@ const WhenNotUseSGM = () => {
       </div>
       <p>
         The SGM runtime might be misleading in the case when one solver solves
-        more benchmarks than another but with a runtime of just under the time
+        more problems than another but with a runtime of just under the time
         limit, which will result in very similar SGM values even though the
         first solver could be much better than the second. In such cases, we
         offer the possibility of using the following alternate &quot;modes&quot;
@@ -25,17 +25,17 @@ const WhenNotUseSGM = () => {
         <li className="mb-2">
           <strong>Penalizing TO/OOM/ER by a factor of X</strong>: this mode uses
           the time-out value for runtime or the maximum available value of
-          memory, multiplied by a factor of X, for benchmark instances that
+          memory, multiplied by a factor of X, for benchmark problems that
           time-out, go out of memory, or error. By using a high factor, this
           avoids the misleading case above as the second solver will have a much
           higher SGM value.
         </li>
         <li className="mb-2">
-          <strong>Only on intersection of solved benchmarks</strong>: this mode
-          filters the benchmark instances to the subset of instances where all
+          <strong>Only on intersection of solved problems</strong>: this mode
+          filters the benchmark problems to the subset of problems where all
           solvers solve successfully. This also avoids the misleading case
           above, but at the cost of comparing solvers on a smaller subset of
-          benchmarks.
+          problems.
         </li>
       </ol>
     </div>

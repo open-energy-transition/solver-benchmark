@@ -1,31 +1,27 @@
-// local
 import {
   AdminHeader,
   ContentWrapper,
   Footer,
   Navbar,
 } from "@/components/shared";
-import TableResult from "@/components/admin/raw-result/TableResult";
 import Head from "next/head";
 import { ArrowIcon, HomeIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
+import BenchmarkSummaryTable from "@/components/admin/benchmarks/BenchmarkSummaryTable";
 
-const PagePerformanceHistory = () => {
+const PageFeatureDistribution = () => {
   return (
     <>
       <Head>
-        <title>Full Results | Open Energy Benchmark</title>
-        <meta
-          name="description"
-          content="Access the full and raw set of benchmark results from the Open Energy Benchmark platform. Filter results by area of interest and download filtered data as CSV."
-        />
+        <title>Feature Distribution</title>
       </Head>
       <div className="bg-light-blue">
         <Navbar />
         <ContentWrapper
+          showFilter={false}
           header={
-            <div className="max-w-8xl mx-auto">
+            <div>
               <AdminHeader>
                 <div className="flex text-navy text-sm text-opacity-50 items-center space-x-1">
                   <div className="flex items-center gap-1">
@@ -33,23 +29,31 @@ const PagePerformanceHistory = () => {
                       <HomeIcon className="w-[1.125rem] h-[1.125rem" />
                     </Link>
                     <ArrowIcon fill="none" className="size-3 stroke-navy" />
-                    <p className="self-center font-semibold whitespace-nowrap text-opacity-70">
-                      Full Results
-                    </p>
+
+                    <Link
+                      href={PATH_DASHBOARD.benchmarkSet.list}
+                      aria-label="Navigate to benchmark problem set list page"
+                    >
+                      <span className="self-center font-semibold whitespace-nowrap text-gray-600">
+                        Benchmark Problem Set
+                      </span>
+                    </Link>
+                    <ArrowIcon fill="none" className="size-3 stroke-navy" />
+                    <span className="self-center font-semibold whitespace-nowrap text-gray-600 ">
+                      Feature Distribution
+                    </span>
                   </div>
                 </div>
               </AdminHeader>
-              <h1 className="h5">Full Results</h1>
+              <h1 className="h5">Feature Distribution</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
-                This page contains the full and raw set of benchmark results
-                from our platform. You can, as usual, filter the results to your
-                area of interest and download the filtered data as a CSV file.
+                Distribution of features in benchmark problem set
               </p>
             </div>
           }
         >
           {/* Content */}
-          <TableResult />
+          <BenchmarkSummaryTable />
         </ContentWrapper>
         <Footer />
       </div>
@@ -57,4 +61,4 @@ const PagePerformanceHistory = () => {
   );
 };
 
-export default PagePerformanceHistory;
+export default PageFeatureDistribution;

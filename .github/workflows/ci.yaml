@@ -31,9 +31,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip pre-commit
-          pip install -r pocs/streamlit/requirements.txt
           # For validation scripts (TODO collect these in a requirements.txt file?)
-          pip install ruamel.yaml yamale
+          pip install ruamel.yaml yamale requests pandas
 
       - name: Check code formatting
         run: |
@@ -76,11 +75,6 @@ jobs:
 
       - name: Validate metadata schema
         run: yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
-
-      - name: Run Streamlit App Action
-        uses: streamlit/streamlit-app-action@v0.0.3
-        with:
-            app-path: pocs/streamlit/app.py
 
       - name: Set FORK_PR environment variable
         if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}

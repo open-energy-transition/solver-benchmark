@@ -1,10 +1,13 @@
+#!/usr/bin/env python3
 """
-Validate and fix benchmark size URLs.
+Validate and fix benchmark problem URLs.
 
-Checks that each size URL filename matches the pattern
-    {benchmark-name}-{size-name}.{ext}.gz
-where ext is taken from the existing filename extension. Outputs the list of
-non-conforming entries and rewrites URLs to the expected filename in-place.
+Checks that each problem's URL filename matches the pattern
+    {problem-id}.{ext}.gz
+where ext is taken from the existing filename extension, and problem-id is
+the problem's top-level key in the "problems" map (e.g.
+"ethos_fine_europe_60tp-175-720ts"). Outputs the list of non-conforming
+entries and rewrites URLs to the expected filename in-place.
 
 Run:
     source venv/bin/activate
@@ -15,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+from typing import Any
 from urllib.parse import quote, unquote, urlparse, urlunparse
 
 from ruamel.yaml import YAML
@@ -28,141 +32,224 @@ GITHUB_HOSTS = ["raw.githubusercontent.com"]
 project_root_dir = Path(__file__).parent.parent
 benchmarks_dir = project_root_dir / "benchmarks"
 
+RenameOp = tuple[str, str]
 
-def derive_expected_filename(
-    benchmark_name: str, size_name: str, current_filename: str
-) -> str:
-    """Return expected gzipped filename preserving extension."""
+
+def derive_expected_filename(problem_id: str, current_filename: str) -> str:
+    """
+    Compute the expected gzipped filename for a problem's URL.
+
+    Parameters
+    ----------
+    problem_id : str
+        Problem ID key from the "problems" map.
+    current_filename : str
+        Filename currently referenced by the problem's URL.
+
+    Returns
+    -------
+    str
+        Expected filename, "{problem_id}{ext}.gz", preserving the
+        original extension.
+    """
     gz = current_filename.endswith(".gz")
     base = current_filename[:-3] if gz else current_filename
     ext = base[base.rfind(".") :]
     # If no dot was found, ext will be the full string; make it empty instead
     if "." not in ext:
         ext = ""
-    expected = f"{benchmark_name}-{size_name}{ext}.gz"
-    return expected
+    return f"{problem_id}{ext}.gz"
 
 
-def load_yaml(path: Path, yaml: YAML):
+def load_yaml(path: Path, yaml: YAML) -> Any:
+    """
+    Load a YAML file's contents.
+
+    Parameters
+    ----------
+    path : Path
+        File to load.
+    yaml : ruamel.yaml.YAML
+        YAML loader/dumper.
+
+    Returns
+    -------
+    Any
+        Parsed YAML content.
+
+    Raises
+    ------
+    RuntimeError
+        If the file can't be read or parsed.
+    """
     try:
         return yaml.load(path.read_text())
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"Failed to load {path}: {exc}") from exc
 
 
-def save_yaml(path: Path, data, yaml: YAML):
+def save_yaml(path: Path, data: Any, yaml: YAML) -> None:
+    """
+    Write YAML data back to disk.
+
+    Parameters
+    ----------
+    path : Path
+        Destination file.
+    data : Any
+        YAML-serializable content.
+    yaml : ruamel.yaml.YAML
+        YAML loader/dumper.
+
+    Raises
+    ------
+    RuntimeError
+        If the file can't be written.
+    """
     try:
         yaml.dump(data, path)
     except Exception as exc:  # noqa: BLE001
         raise RuntimeError(f"Failed to write {path}: {exc}") from exc
 
 
-def process_file(path: Path, yaml: YAML, dry_run: bool):
+def process_file(
+    path: Path, yaml: YAML, dry_run: bool
+) -> tuple[list[RenameOp], list[RenameOp]]:
+    """
+    Validate and (unless dry_run) fix problem URLs in one metadata file.
+
+    Parameters
+    ----------
+    path : Path
+        Metadata YAML file to process.
+    yaml : ruamel.yaml.YAML
+        YAML loader/dumper used to read and, if needed, rewrite the file.
+    dry_run : bool
+        If True, report issues without modifying the file; duplicate
+        names/URLs and invalid hosts still exit(1) since those are ambiguous
+        to auto-fix.
+
+    Returns
+    -------
+    tuple[list[tuple[str, str]], list[tuple[str, str]]]
+        (to_mv, to_gzip): GCS (path, expected_filename) pairs for files that
+        need renaming, and for files that still need gzipping, respectively.
+    """
     data = load_yaml(path, yaml)
-    if not data or "benchmarks" not in data:
-        return []
+    if not data or "problems" not in data:
+        return [], []
 
-    seen_bench_names = []
-    seen_urls = []
-    to_mv = []
-    to_gzip = []
+    seen_problem_ids: list[str] = []
+    seen_urls: list[str] = []
+    to_mv: list[RenameOp] = []
+    to_gzip: list[RenameOp] = []
 
-    for bench_name, bench_info in (data.get("benchmarks") or {}).items():
-        # Benchmark name uniqueness
-        if bench_name in seen_bench_names:
-            print(f"ERROR: Duplicate benchmark name found: {bench_name}")
+    for problem_id, problem_info in (data.get("problems") or {}).items():
+        # Problem ID uniqueness
+        if problem_id in seen_problem_ids:
+            print(f"ERROR: Duplicate problem ID found: {problem_id}")
             if not dry_run:
                 exit(1)
         else:
-            seen_bench_names.append(bench_name)
+            seen_problem_ids.append(problem_id)
 
-        sizes = bench_info.get("Sizes") or []
-        seen_size_names_per_bench = []
+        if not isinstance(problem_info, dict):
+            continue
 
-        for size_entry in sizes:
-            if not isinstance(size_entry, dict):
-                continue
+        url = problem_info.get("URL")
+        if not url:
+            continue
 
-            url = size_entry.get("URL")
-            size_name = size_entry.get("Name")
-            if not url or not size_name:
-                continue
+        # URL uniqueness globally
+        if url in seen_urls:
+            print(f"ERROR: Duplicate URL found: {url}")
+            if not dry_run:
+                exit(1)
+        else:
+            seen_urls.append(url)
 
-            # Size name uniqueness per benchmark
-            if size_name in seen_size_names_per_bench:
-                print(
-                    f"ERROR: Duplicate size name '{size_name}' in benchmark '{bench_name}'"
-                )
-                if not dry_run:
-                    exit(1)
-            else:
-                seen_size_names_per_bench.append(size_name)
+        # Validate host
+        parsed = urlparse(url)
+        host = parsed.netloc.lower()
 
-            # URL uniqueness globally
-            if url in seen_urls:
-                print(f"ERROR: Duplicate URL found: {url}")
-                if not dry_run:
-                    exit(1)
-            else:
-                seen_urls.append(url)
+        # Normalize old cloud URLs to storage.googleapis.com
+        if host == "storage.cloud.google.com":
+            parsed = parsed._replace(netloc="storage.googleapis.com")
+            host = "storage.googleapis.com"
 
-            # Validate host
-            parsed = urlparse(url)
-            host = parsed.netloc.lower()
+        # Validate host
+        if host not in GCS_HOSTS + GITHUB_HOSTS:
+            print(
+                f"ERROR: URL uses invalid host {parsed.netloc}, must be one of {GCS_HOSTS + GITHUB_HOSTS}: {url}"
+            )
+            if not dry_run:
+                exit(1)
+            continue
+        gs_path = unquote("/".join(parsed.path.split("/")[1:]))
 
-            # Normalize old cloud URLs to storage.googleapis.com
-            if host == "storage.cloud.google.com":
-                parsed = parsed._replace(netloc="storage.googleapis.com")
-                host = "storage.googleapis.com"
+        raw_filename = Path(parsed.path).name
+        decoded_filename = unquote(raw_filename)
+        expected = derive_expected_filename(problem_id, decoded_filename)
+        encoded_expected = quote(expected, safe="")
 
-            # Validate host
-            if host not in GCS_HOSTS + GITHUB_HOSTS:
-                print(
-                    f"ERROR: URL uses invalid host {parsed.netloc}, must be one of {GCS_HOSTS + GITHUB_HOSTS}: {url}"
-                )
-                if not dry_run:
-                    exit(1)
-                continue
-            gs_path = unquote("/".join(parsed.path.split("/")[1:]))
+        if host in GCS_HOSTS:
+            new_path_segments = [
+                "",
+                "solver-benchmarks",
+                "instances",
+                encoded_expected,
+            ]
+            new_url = urlunparse(parsed._replace(path="/".join(new_path_segments)))
+            problem_info["URL"] = new_url
+        else:
+            # For GitHub URLs, keep as-is
+            new_url = url
 
-            raw_filename = Path(parsed.path).name
-            decoded_filename = unquote(raw_filename)
-            expected = derive_expected_filename(bench_name, size_name, decoded_filename)
-            encoded_expected = quote(expected, safe="")
+        # If it needs gzipping:
+        if not raw_filename.endswith(".gz"):
+            to_gzip.append((gs_path, expected[:-3]))
+            continue
 
-            if host in GCS_HOSTS:
-                new_path_segments = [
-                    "",
-                    "solver-benchmarks",
-                    "instances",
-                    encoded_expected,
-                ]
-                new_url = urlunparse(parsed._replace(path="/".join(new_path_segments)))
-                size_entry["URL"] = new_url
-            else:
-                # For GitHub URLs, keep as-is
-                new_url = url
-
-            # If it needs gzipping:
-            if not raw_filename.endswith(".gz"):
-                to_gzip.append((gs_path, expected[:-3]))
-                continue
-
-            # If it needs moving/renaming:
-            if url != new_url:
-                to_mv.append((gs_path, expected))
+        # If it needs moving/renaming:
+        if url != new_url:
+            to_mv.append((gs_path, expected))
 
     if len(to_mv) + len(to_gzip) > 0 and not dry_run:
         save_yaml(path, data, yaml)
     return to_mv, to_gzip
 
 
-def main():
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    """
+    Parse CLI arguments.
+
+    Parameters
+    ----------
+    argv : list[str], optional
+        Command-line arguments. Defaults to sys.argv parsing.
+
+    Returns
+    -------
+    argparse.Namespace
+        Parsed args.
+    """
     parser = argparse.ArgumentParser(description="Validate and fix benchmark URLs")
     parser.add_argument(
         "--dry-run", action="store_true", help="Report issues without rewriting files"
     )
-    args = parser.parse_args()
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    """
+    CLI entry point: validate/fix URLs across all benchmark metadata files.
+
+    Parameters
+    ----------
+    argv : list[str], optional
+        Command-line arguments.
+    """
+    args = parse_args(argv)
 
     yaml = YAML()
     yaml.preserve_quotes = True
@@ -170,8 +257,8 @@ def main():
     yaml.indent(mapping=2, sequence=2, offset=0)
     yaml.width = 99999
 
-    mv_commands = []
-    gzip_commands = []
+    mv_commands: list[str] = []
+    gzip_commands: list[str] = []
     for file_path in sorted(benchmarks_dir.rglob("metadata.yaml")):
         to_mv, to_gzip = process_file(file_path, yaml, args.dry_run)
         for gs_path, filename in to_mv:
