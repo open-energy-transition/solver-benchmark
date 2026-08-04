@@ -3726,7 +3726,7 @@ problems:
     Modelling framework: PyPSA
     Version:
     Spatial resolution: 50 nodes
-    Temporal resolution: 24 hours
+    Temporal resolution: 168 hours
     Realistic: false
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Sector-coupled
