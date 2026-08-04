@@ -82,7 +82,7 @@ def get_solver(solver_name):
         "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
     }
 
-    return solver_class(**seed_options.get(solver_name, {}))
+    return solver_class(options=seed_options.get(solver_name, {}))
 
 
 def is_mip_problem(solver_model, solver_name):
