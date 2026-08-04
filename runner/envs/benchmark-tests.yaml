@@ -4,7 +4,7 @@ channels:
 - https://conda.anaconda.org/gurobi
 - nodefaults
 dependencies:
-- python>=3.12
+- python>=3.12,<3.13
 - pip
 - psutil>=5.9
 
@@ -17,4 +17,4 @@ dependencies:
 
 - pip:
   - highspy==1.9.0
-  - linopy>=0.5.0
+  - linopy==0.9.0

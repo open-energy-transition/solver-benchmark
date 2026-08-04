@@ -1,12 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { IResultState } from "@/types/state";
 import { useRouter } from "next/router";
 import PerformanceBarChart from "@/components/shared/PerformanceBarChart";
 import { FaGlobe, FaGithub, FaBalanceScale } from "react-icons/fa";
 import { getLogScale } from "@/utils/logscale";
 import { SolverStatusType } from "@/types/benchmark";
 import CustomDropdown from "@/components/common/CustomDropdown";
+import { NoResultsMessage } from "@/components/shared";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { useAvailableSolvers } from "@/hooks/useAvailableSolvers";
+import { getSolverLabel, HIPO_SOLVERS } from "@/utils/solvers";
+import { getProblemKey } from "@/utils/results";
 
 const SOLVES_DATA = [
   {
@@ -50,18 +55,25 @@ const SolverSection = () => {
 
   const availableSolvers = useAvailableSolvers();
   const rawBenchmarkLatestResults = useBenchmarkResults();
-  const benchmarkSuccessMap = new Map<string, number>();
+  const problemSuccessMap = new Map<string, number>();
 
-  // Count successful solves for each benchmark
-  rawBenchmarkLatestResults.forEach((result) => {
-    const key = `${result.benchmark}-${result.size}`;
-    benchmarkSuccessMap.set(key, (benchmarkSuccessMap.get(key) || 0) + 1);
+  const fullMetaData = useSelector((state: { results: IResultState }) => {
+    return state.results.fullMetaData;
   });
 
-  // Filter results where all solvers succeeded
-  const benchmarkLatestResults = rawBenchmarkLatestResults;
+  // Count successful solves for each problem
+  rawBenchmarkLatestResults.forEach((result) => {
+    const key = `${result.benchmark}-${result.size}`;
+    problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
+  });
 
   const [selectedSolver, setSelectedSolver] = useState("");
+
+  const benchmarkLatestResults = rawBenchmarkLatestResults.filter((result) => {
+    return HIPO_SOLVERS.includes(selectedSolver)
+      ? fullMetaData[getProblemKey(result)]?.problemClass === "LP"
+      : true;
+  });
 
   const [solverOptions, setSolverOptions] = useState<string[]>([]);
 
@@ -174,7 +186,7 @@ const SolverSection = () => {
         return aBaseRuntime - bBaseRuntime;
       }
 
-      // Put base solver first within each benchmark group
+      // Put base solver first within each problem group
       return a.solver === selectedSolver ? -1 : 1;
     });
   }, [selectedSolver, benchmarkLatestResults]);
@@ -189,10 +201,11 @@ const SolverSection = () => {
     const matchingResult = benchmarkLatestResults.find(
       (result) => result.solver === solver,
     );
+    const label = getSolverLabel(solver);
     if (matchingResult && matchingResult.solverVersion) {
-      return `${solver} v${matchingResult.solverVersion}`;
+      return `${label} v${matchingResult.solverVersion}`;
     }
-    return solver;
+    return label;
   };
 
   return (
@@ -258,13 +271,15 @@ const SolverSection = () => {
         )}
       </div>
 
-      {chartData.length > 0 && (
+      {chartData.length > 0 ? (
         <PerformanceBarChart
           key={solverOptions.join("-")}
           data={chartData}
           baseSolver={selectedSolver.split("--")[0]}
           availableSolvers={availableSolvers}
         />
+      ) : (
+        <NoResultsMessage />
       )}
     </div>
   );

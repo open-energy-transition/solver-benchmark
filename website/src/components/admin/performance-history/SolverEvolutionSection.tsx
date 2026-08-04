@@ -5,29 +5,30 @@ import {
   ISolverYearlyChartData,
   ISolverYearlyMetrics,
 } from "@/types/benchmark";
+import { getSolverLabel } from "@/utils/solvers";
 
 interface SolverEvolutionData {
   year: number;
   version: string;
-  unsolvedCount: number;
+  solvedCount: number;
   speedUp: number;
   sgmRuntime: number;
 }
 
 interface ISolverEvolutionSection {
   solverYearlyMetrics: ISolverYearlyMetrics[];
-  numSolvedBenchMark: ISolverYearlyChartData[];
-  totalBenchmarks: number;
+  numSolvedProblems: ISolverYearlyChartData[];
+  totalProblems: number;
   title?: string;
   description?: string;
 }
 
 const SolverEvolutionSection = ({
   solverYearlyMetrics,
-  numSolvedBenchMark,
-  totalBenchmarks,
+  numSolvedProblems,
+  totalProblems,
   title = "Individual Solver Performance Evolution",
-  description = "The chart below shows the performance evolution for the selected solver. The bars represent the number of unsolved problems in the benchmark set, while the red line shows the SGM runtime speed-up relative to the first version we have data for (higher values indicate better performance).",
+  description = "The chart below shows the performance evolution for the selected solver. The bars represent the number of solved problems in the benchmark problem set, while the red line shows the SGM runtime speed-up relative to the first version we have data for (higher values indicate better performance).",
 }: ISolverEvolutionSection) => {
   const router = useRouter();
   const [selectedSolver, setSelectedSolver] = useState("");
@@ -39,8 +40,8 @@ const SolverEvolutionSection = ({
     solverYearlyMetrics.forEach((solverMetric) => {
       const solverName = solverMetric.solver;
 
-      // Get solved benchmark data for this solver
-      const solvedDataForSolver = numSolvedBenchMark.filter(
+      // Get solved-problem data for this solver
+      const solvedDataForSolver = numSolvedProblems.filter(
         (item) => item.solver === solverName,
       );
 
@@ -75,7 +76,6 @@ const SolverEvolutionSection = ({
           (item) => item.year === year,
         );
         const solvedCount = solvedData?.value || 0;
-        const unsolvedCount = Math.max(0, totalBenchmarks - solvedCount);
 
         // Calculate speed-up relative to first year (higher = better)
         const speedUp = firstYearSgmRuntime / sgmRuntime;
@@ -83,7 +83,7 @@ const SolverEvolutionSection = ({
         solverData.push({
           year,
           version: yearData.version,
-          unsolvedCount,
+          solvedCount,
           speedUp,
           sgmRuntime,
         });
@@ -95,7 +95,7 @@ const SolverEvolutionSection = ({
     });
 
     return result;
-  }, [solverYearlyMetrics, numSolvedBenchMark, totalBenchmarks]);
+  }, [solverYearlyMetrics, numSolvedProblems, totalProblems]);
 
   // Sort solvers by number of data points (descending), then alphabetically
   const sortedSolverNames = useMemo(() => {
@@ -157,7 +157,7 @@ const SolverEvolutionSection = ({
     <div className="mt-8 mb-6">
       <div className="mb-6">
         <div className="h4 text-xl font-bold text-gray-800 mb-2">{title}</div>
-        <p className="text-gray-600 max-w-4xl mb-4">{description}</p>
+        <p className="text-navy w-full mb-4">{description}</p>
 
         {/* Solver Dropdown */}
         <div className="lg:w-1/4 bg-[#F0F4F2] rounded-lg shadow-sm mb-6">
@@ -180,7 +180,7 @@ const SolverEvolutionSection = ({
             </option>
             {sortedSolverNames.map((solverName) => (
               <option key={solverName} value={solverName}>
-                {solverName.toLowerCase()}
+                {getSolverLabel(solverName)}
               </option>
             ))}
           </select>
@@ -191,7 +191,7 @@ const SolverEvolutionSection = ({
       {selectedSolver && selectedSolverData && (
         <D3SolverEvolutionChart
           key={selectedSolver}
-          totalBenchmarks={totalBenchmarks}
+          totalProblems={totalProblems}
           yRightDomain={domain}
           solverName={selectedSolver}
           data={selectedSolverData}

@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchGitHubStats } from "@/utils/githubApi";
+import { useScrollReveal, useCountUp } from "@/hooks/useGsapAnimation";
 
 const Contribute = () => {
   const [stats, setStats] = useState({
@@ -39,10 +40,21 @@ const Contribute = () => {
     getGitHubStats();
   }, []);
 
+  const sectionRef = useScrollReveal<HTMLDivElement>({
+    y: 50,
+    scale: 0.95,
+    duration: 0.9,
+  });
+  const contributorsRef = useCountUp<HTMLDivElement>(stats.contributors);
+  const issuesRef = useCountUp<HTMLDivElement>(stats.issues);
+  const starsRef = useCountUp<HTMLDivElement>(stats.stars);
+  const forksRef = useCountUp<HTMLDivElement>(stats.forks);
+
   return (
     <div
+      ref={sectionRef}
       id="contribution"
-      className="py-5 text-[#F0ECE4] bg-navy scroll-mt-16 lg:scroll-mt-28"
+      className="text-navy bg-white scroll-mt-16 lg:scroll-mt-28"
     >
       <div
         className="
@@ -50,9 +62,8 @@ const Contribute = () => {
           mx-auto
           max-w-8xl
           px-4
-          lg:px-[70px]
-          lg:pr-[44px]
-          pt-[67px]
+          md:px-12
+          pt-16
           pb-16
           justify-between
         "
@@ -82,77 +93,88 @@ const Contribute = () => {
             CHECK OUT OUR CODE, JOIN THE EFFORT!
           </div>
         </div>
-        <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative">
+        <div className="w-full xl:w-[67.42%] xl:pl-4.5 relative flex justify-between">
           <div className="font-lato text-xl/1.4 max-w-[541px]">
             <div className="font-medium">
-              We accept community contributions for new benchmarks, new /
-              updated solver versions, and feedback on the benchmarking
-              methodology and metrics via our
+              We accept community contributions for new problems, new or updated
+              solver versions, and feedback on the benchmarking methodology and
+              metrics via our GitHub repository.
             </div>
-            <span className="font-bold">GitHub repository.</span>
             <div className="justify-center flex md:justify-between max-w-lg pt-1">
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <UserIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={contributorsRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading
                       ? "..."
                       : stats.contributors.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">
+                <p className="text-base/1.5 text-navy text-left mt-2">
                   Contributors
                 </p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <CircleOutlineIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={issuesRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading ? "..." : stats.issues.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">
-                  Issues
-                </p>
+                <p className="text-base/1.5 text-navy text-left mt-2">Issues</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <StarIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={starsRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading ? "..." : stats.stars.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">Stars</p>
+                <p className="text-base/1.5 text-navy text-left mt-2">Stars</p>
               </div>
               <div className="py-9 text-center flex-1">
                 <div className="flex items-center">
                   <ForkIcon className="mr-2" />
-                  <div className="text-white font-bold text-2xl/1.4 font-lato">
+                  <div
+                    ref={forksRef}
+                    className="text-navy font-bold text-2xl/1.4 font-lato"
+                  >
                     {loading ? "..." : stats.forks.toString().padStart(2, "0")}
                   </div>
                 </div>
-                <p className="text-base/1.5 text-white text-left mt-2">Forks</p>
+                <p className="text-base/1.5 text-navy text-left mt-2">Forks</p>
               </div>
             </div>
             <Link
               href="https://github.com/open-energy-transition/solver-benchmark"
-              className="w-max bg-[#F0ECE4] items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
+              className="w-max bg-navy items-center rounded-2xl mt-11 px-10 py-4 relative flex justify-between"
               target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub repository"
             >
-              <div className="flex items-center gap-1 font-bold text-navy font-lato text-lg uppercase">
+              <div className="flex items-center gap-1 font-bold text-white font-lato text-lg uppercase">
                 <GithubIcon className="mr-2" />
                 <div className="hover:underline underline-offset-4">
                   Contribute now
                 </div>
               </div>
-              <LinkOutlineIcon className="text-navy size-5 ml-3 mr-4" />
+              <LinkOutlineIcon className="text-white size-5 ml-3 mr-4" />
             </Link>
           </div>
           <Image
-            className="absolute hidden lg:block  w-[341px] h-[361px] top-0 right-0 lg:-right-8 rounded-[48px]"
+            className=" hidden lg:block top-0 right-0 lg:-right-8 rounded-[48px] w-[341px] h-[361px]"
             src="/landing_page/contribution.png"
             alt="Contribution image"
+            loading="lazy"
             width={341}
             height={361}
           />

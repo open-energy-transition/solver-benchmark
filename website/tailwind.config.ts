@@ -12,6 +12,7 @@ export default {
     "grid-cols-3",
     "hover:bg-lavender",
     "bg-[#F0F4F2]",
+    "bg-soft-gray",
     "hover:bg-[#F0F4F2]",
     "scroll-mt-[240px]",
   ],
@@ -30,7 +31,7 @@ export default {
         "columnbia-blue": "#BFDBF7",
         "dark-green": "#4C5C51",
         "dark-grey": "#4F4E4E",
-        "green-pop": "#6B9080",
+        "green-pop": "#465D56",
         grey: "#E4E2DF",
         gunmetal: "#022B3A",
         lavender: "#E1E5F2",
@@ -40,6 +41,8 @@ export default {
         stroke: "#EBEFF2",
         teal: "#1F7A8C",
         white: "#ffffff",
+        "soft-gray": "#F5F4F4",
+        "page-bg": "#F4F6FA",
         "light-blue": "#F5F7FA",
         "light-grey": "#E4E7E9",
         "lime-green": "#E5EEEB",
@@ -87,11 +90,12 @@ export default {
     },
   },
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@tailwindcss/typography"),
     function ({
       addUtilities,
     }: {
-      addUtilities: (utilities: Record<string, any>) => void;
+      addUtilities: (utilities: Record<string, unknown>) => void;
     }) {
       addUtilities({
         ".box-decoration-clone": {

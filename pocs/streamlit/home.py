@@ -1,12 +1,14 @@
 import humanize
 import pandas as pd
 import streamlit as st
-from components.filter import display_filter_status, generate_filtered_metadata
-from components.home_chart import render_benchmark_scatter_plot
-from packaging.version import parse
-from utils.file_utils import load_benchmark_data, load_metadata
 
-from pocs.streamlit.utils.calculations import calculate_sgm
+from pocs.streamlit.components.filter import (
+    display_filter_status,
+    generate_filtered_metadata,
+)
+from pocs.streamlit.components.home_chart import render_benchmark_scatter_plot
+from pocs.streamlit.utils.calculations import calculate_sgm, safe_parse_version
+from pocs.streamlit.utils.file_utils import load_benchmark_data, load_metadata
 from pocs.streamlit.utils.filters import filter_data
 
 metadata = load_metadata("results/metadata.yaml")
@@ -70,7 +72,7 @@ df = df.sort_values(by=["Benchmark", "Runtime (s)"])
 
 # Ensure we plot the latest version of each solver if there are multiple versions.
 if "Solver Version" in df.columns:
-    df["Solver Version"] = df["Solver Version"].apply(parse)
+    df["Solver Version"] = df["Solver Version"].apply(safe_parse_version)
     df = df.sort_values(by=["Solver", "Solver Version"], ascending=[True, False])
     df = df.drop_duplicates(subset=["Solver", "Size", "Benchmark"], keep="first")
 

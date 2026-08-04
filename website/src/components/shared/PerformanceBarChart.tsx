@@ -7,6 +7,7 @@ import { SolverStatusType } from "@/types/benchmark";
 import { formatDecimal } from "@/utils/number";
 import BasicVsFeasible from "./BasicVsFeasible";
 import { getSolverLabel } from "@/utils/solvers";
+import DirectionalIndicator from "./DirectionalIndicator";
 
 type PerformanceData = {
   benchmark: string;
@@ -25,12 +26,23 @@ interface Props {
   availableSolvers: string[];
 }
 
+const chartMargin = { top: 40, right: 100, bottom: 65, left: 100 };
+
 const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
-  const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(
-    new Set([baseSolver, ...availableSolvers.filter((s) => s !== baseSolver)]),
-  );
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [visibleSolvers, setVisibleSolvers] = useState<Set<string>>(() => {
+    const others = availableSolvers.filter((s) => s !== baseSolver);
+    return new Set([baseSolver, ...(others.length > 0 ? [others[0]] : [])]);
+  });
+
+  useEffect(() => {
+    const others = availableSolvers.filter((s) => s !== baseSolver);
+    setVisibleSolvers(
+      new Set([baseSolver, ...(others.length > 0 ? [others[0]] : [])]),
+    );
+  }, [baseSolver]);
 
   const maxDataRuntime =
     d3.max(data, (d) => Math.max(d.runtime, d.baseSolverRuntime)) || 0;
@@ -45,6 +57,11 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     );
   }, [availableSolvers]);
 
+  const baseSolverColor = useMemo(
+    () => getSolverColor(baseSolver),
+    [baseSolver],
+  );
+
   const toggleSolver = (solver: string) => {
     setVisibleSolvers((prev) => {
       const next = new Set(prev);
@@ -58,15 +75,31 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     });
   };
 
+  // Observe container width changes to make the chart responsive
   useEffect(() => {
-    const width = containerRef.current?.clientWidth || 800;
+    const el = containerRef.current;
+    if (!el) return;
 
-    const margin = {
-      top: 40,
-      right: 100,
-      bottom: 100,
-      left: 60,
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    // set initial width
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
     };
+  }, []);
+
+  useEffect(() => {
+    const width = containerWidth || containerRef.current?.clientWidth || 800;
+
+    const margin = chartMargin;
     const height = 600 + (margin.bottom - 100);
 
     d3.select(svgRef.current).selectAll("*").remove();
@@ -196,6 +229,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("transform", `translate(${margin.left},0)`)
       .call(yAxisRatio);
 
+    // Add up/down arrows with explanatory labels on both sides of the left y-axis
     // Add secondary y-axis (runtime)
     svg
       .append("g")
@@ -308,7 +342,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
         tooltip
           .html(
-            `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+            `Problem: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
                 d.status
               })<br/>` +
@@ -387,7 +421,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
         tooltip
           .html(
-            `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+            `Problem: ${d.benchmark}-${d.size}<br/>` +
               `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
                 d.status
               })<br/>` +
@@ -456,7 +490,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             tooltip.transition().duration(200).style("opacity", 1);
             tooltip
               .html(
-                `Benchmark: ${d.benchmark}-${d.size}<br/>` +
+                `Problem: ${d.benchmark}-${d.size}<br/>` +
                   `${baseSolver}: ${formatDecimal({ value: d.runtime })}s (${
                     d.status
                   })<br/>`,
@@ -475,17 +509,17 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
     svg
       .append("text")
       .attr("x", width / 2)
-      .attr("y", height - 60)
+      .attr("y", height - 30)
       .attr("text-anchor", "middle")
       .style("fill", "rgb(79 78 78)")
-      .text(`Instances sorted by solving time of ${baseSolver}`);
+      .text(`Problems sorted by solving time of ${getSolverLabel(baseSolver)}`);
 
     // Primary y-axis label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -(height / 2) + 50)
-      .attr("y", 15)
+      .attr("x", -(height / 2) + 40)
+      .attr("y", margin.left - 50)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "rgb(79 78 78)")
@@ -500,105 +534,154 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .style("fill", "rgb(79 78 78)")
-      .text(`Runtime of ${baseSolver} (s)`);
-
-    // Add a legend entry for scatter points
-    const legendContainer = d3
-      .select(containerRef.current)
-      .select(".legend-container");
-
-    legendContainer.append("div").attr("class", "flex items-center gap-2")
-      .html(`
-        <div class="flex items-center justify-center w-4 h-4">
-          <div class="w-3 h-3 rounded-full bg-white border-2"
-               style="border-color: ${solverColors[baseSolver]}"></div>
-        </div>
-        <span class="text-sm text-dark-grey">${baseSolver}</span>
-      `);
+      .text(`Runtime of ${getSolverLabel(baseSolver)} (s)`);
 
     return () => {
       tooltip.remove();
     };
-  }, [data, baseSolver, solverColors, visibleSolvers, availableSolvers]);
+  }, [
+    data,
+    baseSolver,
+    solverColors,
+    visibleSolvers,
+    availableSolvers,
+    containerWidth,
+  ]);
 
   return (
-    <div className="bg-[#F4F6FA] p-4 rounded-xl">
+    <div>
       <h6 className="mb-2">Relative performance plot</h6>
-      <p className="text-navy mb-4 max-w-screen-lg">
+      <p className="text-navy mb-6 w-full">
         This plot (inspired by Matthias Miltenberger&apos;s{" "}
         <a href="https://mattmilten.github.io/mittelmann-plots/">
           Mittelmann plots
         </a>
         ) shows the runtime ratios (relative speedup factors) for each benchmark
-        instance with respect to the selected base solver&apos;s runtime. Ratios
-        above 1 (bars above the x-axis) are instances where the base solver
+        problem with respect to the selected base solver&apos;s runtime. Ratios
+        above 1 (bars above the x-axis) are problems where the base solver
         performs better, and ratios below 1 (bars below the x-axis) are those
-        where the other solver performs better. Instances are sorted by the
+        where the other solver performs better. Problems are sorted by the
         runtime of the base solver.
       </p>
-      <div>
-        <div className="flex flex-wrap gap-4 legend-container pb-4">
-          {/* Selected solver legend (circle) */}
-          <div
-            className="flex items-center gap-2 cursor-pointer select-none"
-            onClick={() => toggleSolver(baseSolver)}
-          >
-            <div className="flex items-center justify-center w-4 h-4">
-              <div
-                className={`w-4 h-4 rounded-full transition-opacity ${
-                  visibleSolvers.has(baseSolver) ? "opacity-100" : "opacity-30"
-                }`}
-                style={{ backgroundColor: solverColors[baseSolver] }}
-              />
-            </div>
-            <span className="text-sm text-navy">
-              {getSolverLabel(baseSolver)}
-            </span>
-          </div>
-
-          {/* Other solvers legend (squares) */}
-          {availableSolvers
-            .filter((solver) => solver !== baseSolver)
-            .map((solver) => (
-              <div
-                key={solver}
-                className="flex items-center gap-2 cursor-pointer select-none"
-                onClick={() => toggleSolver(solver)}
-              >
+      <div className="bg-[#F4F6FA] px-4 pt-4 pb-0 rounded-xl">
+        <div>
+          <div className="flex flex-wrap gap-4 legend-container pb-4 ml-4">
+            {/* Selected solver legend (circle) */}
+            <div
+              className="flex items-center gap-2 cursor-pointer select-none"
+              onClick={() => toggleSolver(baseSolver)}
+            >
+              <div className="flex items-center justify-center w-4 h-4">
                 <div
-                  className="w-4 h-4 rounded-sm transition-opacity"
-                  style={{
-                    backgroundColor: solverColors[solver],
-                    opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
-                  }}
+                  className={`w-4 h-4 rounded-full transition-opacity ${
+                    visibleSolvers.has(baseSolver)
+                      ? "opacity-100"
+                      : "opacity-30"
+                  }`}
+                  style={{ backgroundColor: solverColors[baseSolver] }}
                 />
-                <span className="text-sm text-navy">
-                  {getSolverLabel(solver)}
-                </span>
               </div>
-            ))}
+              <span
+                className={`text-sm font-bold transition-colors ${
+                  visibleSolvers.has(baseSolver)
+                    ? "text-navy"
+                    : "text-dark-grey opacity-50"
+                }`}
+              >
+                {getSolverLabel(baseSolver)}
+              </span>
+            </div>
+
+            {/* Other solvers legend (squares), alphabetical; base solver
+                stays pinned first above since this chart is specifically
+                about comparing everyone else against it. */}
+            {availableSolvers
+              .filter((solver) => solver !== baseSolver)
+              .sort((a, b) =>
+                getSolverLabel(a).localeCompare(getSolverLabel(b)),
+              )
+              .map((solver) => (
+                <div
+                  key={solver}
+                  className="flex items-center gap-2 cursor-pointer select-none"
+                  onClick={() => toggleSolver(solver)}
+                >
+                  <div
+                    className="w-4 h-4 rounded-sm transition-opacity"
+                    style={{
+                      backgroundColor: solverColors[solver],
+                      opacity: visibleSolvers.has(solver) ? 0.8 : 0.2,
+                    }}
+                  />
+                  <span
+                    className={`text-sm font-bold transition-colors ${
+                      visibleSolvers.has(solver)
+                        ? "text-navy"
+                        : "text-dark-grey opacity-50"
+                    }`}
+                  >
+                    {getSolverLabel(solver)}
+                  </span>
+                </div>
+              ))}
+            <div className="text-sm">
+              (click a solver to toggle showing it on the plot)
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4 ml-4">
+            <div>
+              <p>🔻/🔺: base / other solver failed to solve in time limit</p>
+              <p>❌ : both solvers failed to solve in time limit</p>
+            </div>
+            <div className="lg:mr-24">
+              <p className="flex gap-1 items-center">
+                <CircleIcon fill={baseSolverColor} className="size-3" />
+                base solver solved successfully
+              </p>
+              <p className="flex gap-1 items-center">
+                <CloseIcon fill={baseSolverColor} className="size-3" />
+                base solver failed to solve in time limit
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col lg:flex-row justify-between items-start text-sm mb-4">
-          <div>
-            <p>🔻/🔺: base / other solver failed to solve in time limit</p>
-            <p>❌ : both solvers failed to solve in time limit</p>
+        <div ref={containerRef} className="relative">
+          <div
+            className="absolute"
+            style={{
+              left: `${chartMargin.left - 52}px`,
+              top: `${chartMargin.top + 30}px`,
+              transform: "translateX(-50%)",
+            }}
+          >
+            <DirectionalIndicator
+              direction="higher"
+              label={`${getSolverLabel(baseSolver)} better than other solver`}
+              size="sm"
+              color="rgb(79,78,78)"
+            />
           </div>
-          <div className="lg:mr-24">
-            <p className="flex gap-1 items-center">
-              <CircleIcon className="size-3" />
-              base solver solved successfully
-            </p>
-            <p className="flex gap-1 items-center">
-              <CloseIcon className="size-3" />
-              base solver failed to solve in time limit
-            </p>
+          <div
+            className="absolute"
+            style={{
+              left: `${chartMargin.left - 52}px`,
+              bottom: "150px",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <DirectionalIndicator
+              direction="lower"
+              label={`other solver better than ${getSolverLabel(baseSolver)}`}
+              size="sm"
+              color="rgb(79,78,78)"
+            />
           </div>
+          <svg ref={svgRef}></svg>
         </div>
       </div>
-      <div ref={containerRef}>
-        <svg ref={svgRef}></svg>
+      <div className="mt-8">
+        <BasicVsFeasible />
       </div>
-      <BasicVsFeasible />
     </div>
   );
 };

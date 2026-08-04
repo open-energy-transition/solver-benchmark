@@ -11,7 +11,7 @@ interface INormalizedSection {
   chartData: {
     runtime: ISolverYearlyChartData[];
     memoryUsage: ISolverYearlyChartData[];
-    numSolvedBenchMark: ISolverYearlyChartData[];
+    numSolvedProblems: ISolverYearlyChartData[];
   };
 }
 const NormalizedSection = ({ chartData }: INormalizedSection) => {
@@ -20,7 +20,7 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
       <h4 className="text-xl font-bold text-gray-800 mb-2">
         Relative Solver Performance Evolution
       </h4>
-      <p className="max-w-screen-lg">
+      <p className="w-full">
         <span>The below graphs show the shifted geometric mean (SGM</span>
         <span className="inline-flex gap-2">
           <InfoPopup
@@ -39,11 +39,11 @@ const NormalizedSection = ({ chartData }: INormalizedSection) => {
           </InfoPopup>
         </span>{" "}
         of the runtime / memory consumption each solver version on all the
-        benchmarks in the (filtered) set of instances that all solver versions
-        have been run on. For each year, the SGMs have been normalized so that
-        the best performing solver in that year has a value of 1.0. Therefore,
-        if a solver version has (normalized) SGM runtime of 1.25, it indicates
-        that it is on average 25% slower than the best performing solver in that
+        benchmark problems in the (filtered) set that all solver versions have
+        been run on. For each year, the SGMs have been normalized so that the
+        best performing solver in that year has a value of 1.0. Therefore, if a
+        solver version has (normalized) SGM runtime of 1.25, it indicates that
+        it is on average 25% slower than the best performing solver in that
         specific year.
       </p>
       <SgmModeSection />

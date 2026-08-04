@@ -32,7 +32,7 @@ interface ISolverYearlyMetrics {
       memoryUsage: number;
       status: SolverStatusType;
     }[];
-    numSolvedBenchmark: number;
+    numSolvedProblems: number;
     version: string;
   }[];
 }
@@ -59,18 +59,20 @@ interface OriginBenchmarkResult {
   "Duality Gap": number | null;
 }
 
-type IFilterBenchmarkDetails = {
+type IFilterProblemDetails = {
   sectoralFocus: string[];
   sectors: string[];
   problemClass: string[];
   application: string[];
   problemSize: string[];
+  solved: string[];
   realistic: string[];
   modellingFramework: string[];
+  milpFeatures: string[];
 };
 
 export type {
-  IFilterBenchmarkDetails,
+  IFilterProblemDetails,
   BenchmarkResult,
   SolverStatusType,
   SolverType,

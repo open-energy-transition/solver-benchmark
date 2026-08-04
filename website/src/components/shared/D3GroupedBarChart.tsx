@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { ID3GroupedBarChart } from "@/types/chart";
 import { CircleIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
 import { createD3Tooltip, wrapTextByPosition } from "@/utils/chart";
+import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 import { getSolverLabel } from "@/utils/solvers";
 
 const D3GroupedBarChart = ({
@@ -26,7 +27,7 @@ const D3GroupedBarChart = ({
   showXaxisLabel = true,
   transformHeightValue,
   diagonalXAxisLabelsOnMobile = false,
-  xAxisBarTextClassName = "text-xs fill-dark-grey",
+  xAxisBarTextClassName = "text-[10px] lg:text-xs fill-dark-grey",
   normalize = true,
   xAxisLabelRotation = -45,
   xAxisLabelWrapLength = undefined,
@@ -35,16 +36,45 @@ const D3GroupedBarChart = ({
   sortByValue = false,
   showLineAtY1 = true,
   useLogScale = false,
+  directionalIndicator = undefined,
+  yAxisMax = undefined,
+  hideLegend = false,
+  hideTitle = false,
+  showBarTopLabels = false,
+  sizeAnnotations,
+  cardBgClassName,
+  cardTextClassName,
+  outerBgClassName,
+  sizeAnnotationTextColor,
+  titlePosition = "top",
+  rightmostGroupNote,
+  marginBottom = 100,
 }: ID3GroupedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const isMobile = useIsMobile();
   const [height, setHeight] = useState(chartHeight);
+  const [rightmostNoteX, setRightmostNoteX] = useState<number | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const windowWidth = useDebouncedWindowWidth(200);
   const categoryLengths = chartData.reduce((acc, d) => {
     const length = String(d[categoryKey] || "").length;
     return Math.max(acc, length);
   }, 0);
+
+  // Union of keys across every row, not just the first — a row (e.g. a
+  // problem with more solver results than the others) can have more/other
+  // keys than data[0], and both the bar-width scale and the legend need to
+  // account for every one of them, not just whichever happens to be first.
+  const allKeys = useMemo(() => {
+    const keySet = new Set<string>();
+    chartData.forEach((d) => {
+      Object.keys(d).forEach((key) => {
+        if (key !== categoryKey) keySet.add(key);
+      });
+    });
+    return Array.from(keySet);
+  }, [chartData, categoryKey]);
 
   useEffect(() => {
     if (!diagonalXAxisLabelsOnMobile) return;
@@ -55,9 +85,32 @@ const D3GroupedBarChart = ({
     }
   }, [isMobile]);
 
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart
+  // stays in sync with the directional indicator arrow, which reflows via CSS.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     const data = chartData.map((d) => ({ ...d }));
     if (!data.length) return;
+    const firstCategory = data.length > 0 ? String(data[0][categoryKey]) : null;
 
     // Find minimum value for normalization
     if (normalize) {
@@ -75,16 +128,18 @@ const D3GroupedBarChart = ({
       });
     }
 
-    const width = containerRef.current?.clientWidth || 400;
+    const width = containerWidth || containerRef.current?.clientWidth || 400;
+    const hasTopAnnotations =
+      (sizeAnnotations && sizeAnnotations.length > 0) || showBarTopLabels;
     const margin = {
-      top: 30,
+      top: hasTopAnnotations ? 70 : 30,
       right: 30,
       bottom: isMobile
         ? 110 +
           (extraCategoryLengthMargin
             ? extraCategoryLengthMargin
             : categoryLengths)
-        : 90,
+        : marginBottom,
       left: 60,
     };
 
@@ -95,19 +150,17 @@ const D3GroupedBarChart = ({
       .select(svgRef.current)
       .attr("width", width)
       .attr("height", height)
-      .style("background", "white")
+      .style("background", "transparent")
       .style("overflow", "visible");
 
-    const keys = Object.keys(data[0])
-      .filter((key) => key !== categoryKey)
-      .sort((a, b) => {
-        if (sortByValue) {
-          const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
-          const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
-          return avgA - avgB;
-        }
-        return a.localeCompare(b);
-      });
+    const keys = allKeys.slice().sort((a, b) => {
+      if (sortByValue) {
+        const avgA = d3.mean(data, (d) => Number(d[a])) || 0;
+        const avgB = d3.mean(data, (d) => Number(d[b])) || 0;
+        return avgA - avgB;
+      }
+      return a.localeCompare(b);
+    });
 
     // Scales for side-by-side bars
     const xScale = d3
@@ -116,11 +169,33 @@ const D3GroupedBarChart = ({
       .range([margin.left, width - margin.right])
       .padding(0.2);
 
+    // Track the rightmost bar group centre for the optional overlay note
+    if (rightmostGroupNote && data.length > 0) {
+      const lastCat = data[data.length - 1][categoryKey].toString();
+      setRightmostNoteX((xScale(lastCat) ?? 0) + xScale.bandwidth() / 2);
+    }
+
+    // Fixed bar width/step derived from the full solver set, so every bar has
+    // the same width regardless of how many bars a given group happens to have.
     const xScaleInner = d3
       .scaleBand()
       .domain(keys)
       .range([0, xScale.bandwidth()])
       .padding(0.05);
+    const barWidth = xScaleInner.bandwidth();
+    const barStep = xScaleInner.step();
+
+    // Centers a group's (possibly shorter) cluster of fixed-width bars within
+    // the full group bandwidth, so groups with fewer bars stay visually centered.
+    const getRowPositions = (itemKeys: string[]) => {
+      const clusterWidth = itemKeys.length
+        ? itemKeys.length * barStep - (barStep - barWidth)
+        : 0;
+      const offset = (xScale.bandwidth() - clusterWidth) / 2;
+      const positions = new Map<string, number>();
+      itemKeys.forEach((key, i) => positions.set(key, offset + i * barStep));
+      return positions;
+    };
 
     const maxValue =
       d3.max(data, (d) =>
@@ -156,9 +231,12 @@ const D3GroupedBarChart = ({
     // For log scale, extend domain to next power of 10 for cleaner visualization
     // Always start from 0.3 for log scale to bring 1-value line closer to x-axis, 0 for linear scale
     const domainMin = useLogScale ? 0.3 : 0;
-    const domainMax = useLogScale
-      ? Math.pow(10, Math.ceil(Math.log10(maxValue)))
-      : maxValue;
+    const domainMax =
+      yAxisMax !== undefined
+        ? yAxisMax
+        : useLogScale
+          ? Math.pow(10, Math.ceil(Math.log10(maxValue)))
+          : maxValue;
 
     const yScale = useLogScale
       ? d3
@@ -168,7 +246,7 @@ const D3GroupedBarChart = ({
           .clamp(true)
       : d3
           .scaleLinear()
-          .domain([0, maxValue])
+          .domain([0, yAxisMax !== undefined ? yAxisMax : maxValue])
           .nice()
           .range([height - margin.bottom, margin.top]);
 
@@ -180,7 +258,8 @@ const D3GroupedBarChart = ({
       const tickValues = useLogScale
         ? (() => {
             const minLog = Math.floor(Math.log10(minValue));
-            const maxLog = Math.ceil(Math.log10(maxValue));
+            const effectiveMax = yAxisMax !== undefined ? yAxisMax : maxValue;
+            const maxLog = Math.floor(Math.log10(effectiveMax));
             const values = [];
             for (let i = minLog; i <= maxLog; i++) {
               values.push(Math.pow(10, i));
@@ -228,28 +307,23 @@ const D3GroupedBarChart = ({
           .filter((key) => key !== categoryKey)
           .sort((a, b) => -Number(d[b]) + Number(d[a]));
 
-        // Create a separate xScale for each group
-        const groupXScale = d3
-          .scaleBand()
-          .domain(itemKeys)
-          .range([0, xScale.bandwidth()])
-          .padding(0.05);
+        const positions = getRowPositions(itemKeys);
 
         return itemKeys.map((key) => ({
           key,
           value: d[key],
           category: d[categoryKey],
-          xScale: groupXScale,
+          xPos: positions.get(key) || 0,
         }));
       })
       .join("rect")
-      .attr("x", (d) => d.xScale(d.key) || 0)
+      .attr("x", (d) => d.xPos)
       .attr("y", (d) =>
         yScale(
           transformHeightValue ? transformHeightValue(d) : Number(d.value),
         ),
       )
-      .attr("width", xScaleInner.bandwidth())
+      .attr("width", barWidth)
       .attr("height", (d) => {
         const transformedValue = transformHeightValue
           ? transformHeightValue(d)
@@ -281,26 +355,24 @@ const D3GroupedBarChart = ({
           .filter((key) => key !== categoryKey)
           .sort((a, b) => -Number(d[b]) + Number(d[a]));
 
-        const groupXScale = d3
-          .scaleBand()
-          .domain(itemKeys)
-          .range([0, xScale.bandwidth()])
-          .padding(0.05);
+        const positions = getRowPositions(itemKeys);
 
         return itemKeys.map((key) => ({
           key,
           value: d[key],
           category: d[categoryKey],
-          xScale: groupXScale,
+          xPos: positions.get(key) || 0,
         }));
       })
       .join("g")
       .attr("class", "bar-text")
       .each(function (d) {
         const group = d3.select(this);
-        const labelText = axisLabelTitle ? axisLabelTitle(d) : String(d.value);
+        const labelText = getSolverLabel(
+          axisLabelTitle ? axisLabelTitle(d) : String(d.value),
+        );
         const lines = labelText.split("\n");
-        const xPos = d.xScale(d.key)! + d.xScale.bandwidth() / 2;
+        const xPos = d.xPos + barWidth / 2;
         const barValue = transformHeightValue
           ? transformHeightValue(d)
           : Number(d.value);
@@ -321,6 +393,24 @@ const D3GroupedBarChart = ({
             .attr("fill", i === 1 ? "#999" : "#000") // Light grey for second line (percentage)
             .text(line);
         });
+        // Solver name label at top of each bar (top-left panel only) — render only for first category
+        if (
+          showBarTopLabels &&
+          firstCategory &&
+          String(d.category) === firstCategory
+        ) {
+          const nameY = yPos - lines.length * 12 - 4;
+          const solverColor =
+            typeof colors === "function" ? colors(d) : colors[d.key];
+          group
+            .append("text")
+            .attr("text-anchor", "start")
+            .attr("dominant-baseline", "central")
+            .attr("transform", `translate(${xPos}, ${nameY}) rotate(-90)`)
+            .attr("fill", solverColor)
+            .classed("font-bold text-[12px] sm:text-base", true)
+            .text(getSolverLabel(d.key));
+        }
       })
       .on("mouseover", function (event, d) {
         tooltip
@@ -392,17 +482,64 @@ const D3GroupedBarChart = ({
               lines = text.text().split("\n");
             }
             text.text(null);
+            // Leave a little breathing room so truncated text never quite
+            // touches a neighboring category's label.
+            const maxLabelWidth = xScale.bandwidth() * 0.95;
             lines.forEach((line) => {
-              text
+              const tspan = text
                 .append("tspan")
                 .attr("x", isMobile && rotateXAxisLabels ? "10" : "0")
                 .attr("dy", isMobile && rotateXAxisLabels ? "1.1em" : "1.2em")
                 .text(line);
+
+              // Width-aware middle-ellipsis truncation: with several
+              // categories sharing the chart's width, a long label (e.g. a
+              // long problem id) can otherwise overlap its neighbor's label.
+              // Trims from whichever side is currently longer so both a
+              // recognizable prefix and suffix survive (useful when several
+              // long labels share a common prefix).
+              const node = tspan.node();
+              if (node) {
+                let keepStart = Math.ceil(line.length / 2);
+                let keepEnd = Math.floor(line.length / 2);
+                while (
+                  keepStart + keepEnd > 3 &&
+                  node.getComputedTextLength() > maxLabelWidth
+                ) {
+                  if (keepStart > keepEnd) keepStart -= 1;
+                  else keepEnd -= 1;
+                  tspan.text(
+                    `${line.slice(0, keepStart)}…${line.slice(
+                      line.length - keepEnd,
+                    )}`,
+                  );
+                }
+              }
             });
           });
       });
+    // Size-group annotations above each category group (top-left panel only)
+    if (sizeAnnotations && sizeAnnotations.length > 0) {
+      const sortedKeys = data.map((d) => d[categoryKey].toString());
+      sizeAnnotations.forEach((annotation, i) => {
+        const cat = sortedKeys[i];
+        if (!cat || xScale(cat) === undefined) return;
+        const x = xScale(cat)! + xScale.bandwidth() / 2;
+        const textY = margin.top - 20;
+        // Annotation text
+        svg
+          .append("text")
+          .attr("x", x)
+          .attr("y", textY)
+          .attr("text-anchor", "middle")
+          .attr("fill", sizeAnnotationTextColor ?? "#555")
+          .style("font-weight", "bold")
+          .classed("text-[10px] lg:text-base", true)
+          .text(annotation);
+      });
+    }
     // Add reference line at y = 1
-    showLineAtY1 &&
+    if (showLineAtY1) {
       svg
         .append("line")
         .attr("x1", margin.left)
@@ -412,13 +549,15 @@ const D3GroupedBarChart = ({
         .attr("stroke", "#666")
         .attr("stroke-width", 1)
         .attr("stroke-dasharray", "4,4");
+    }
 
     // Y-axis
     const yAxis = useLogScale
       ? (() => {
           // Generate tick values at powers of 10 only
           const minLog = Math.floor(Math.log10(minValue));
-          const maxLog = Math.ceil(Math.log10(maxValue));
+          const effectiveMax = yAxisMax !== undefined ? yAxisMax : maxValue;
+          const maxLog = Math.floor(Math.log10(effectiveMax));
           const tickValues = [];
           for (let i = minLog; i <= maxLog; i++) {
             tickValues.push(Math.pow(10, i));
@@ -482,7 +621,7 @@ const D3GroupedBarChart = ({
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -(height / 2))
+      .attr("x", -((margin.top + (height - margin.bottom)) / 2))
       .attr("y", 20)
       .attr("text-anchor", "middle")
       .attr("class", "text-xs fill-dark-grey")
@@ -493,6 +632,7 @@ const D3GroupedBarChart = ({
     };
   }, [
     chartData,
+    allKeys,
     height,
     colors,
     xAxisTooltipFormat,
@@ -503,21 +643,18 @@ const D3GroupedBarChart = ({
     rotateXAxisLabels,
     xAxisBarTextClassName,
     windowWidth,
+    containerWidth,
+    showBarTopLabels,
+    sizeAnnotations,
   ]);
 
   const defaultLegend = () => (
     <div className="flex gap-2 border border-stroke rounded-xl px-2 py-1">
-      {Object.keys(chartData[0] || {})
-        .filter((key) => key !== categoryKey)
-        .sort((a, b) => {
-          if (sortByValue) {
-            // Sort by average values from smallest to biggest
-            const avgA = d3.mean(chartData, (d) => Number(d[a])) || 0;
-            const avgB = d3.mean(chartData, (d) => Number(d[b])) || 0;
-            return avgA - avgB;
-          }
-          return a.localeCompare(b);
-        })
+      {allKeys
+        .slice()
+        // Legend is always alphabetical by display label — independent of
+        // sortByValue, which only controls the bar order within each group.
+        .sort((a, b) => getSolverLabel(a).localeCompare(getSolverLabel(b)))
         .map((solverKey) => (
           <div
             key={solverKey}
@@ -536,28 +673,81 @@ const D3GroupedBarChart = ({
               }}
               className="size-2"
             />
-            {getSolverLabel(solverKey)}
+            <span className="font-bold">{getSolverLabel(solverKey)}</span>
           </div>
         ))}
     </div>
   );
+  const hasTopAnnotations =
+    (sizeAnnotations && sizeAnnotations.length > 0) || showBarTopLabels;
+  const marginTop = hasTopAnnotations ? 70 : 30;
 
   return (
-    <div className="relative bg-[#F4F6FA] rounded-2xl p-2">
-      <div className="bg-white rounded-2xl p-1">
-        <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
-          {/* Title */}
-          <div className="text-sm text-center text-dark-grey ">{title}</div>
-          {/* Legend */}
-          {customLegend
-            ? customLegend({ chartData, categoryKey })
-            : defaultLegend()}
+    <div
+      key={windowWidth}
+      className={`relative ${
+        outerBgClassName ?? "bg-[#F4F6FA] p-2"
+      } rounded-2xl`}
+      style={outerBgClassName ? undefined : { background: "#F4F6FA" }}
+    >
+      {/* Rightmost bar group callout note */}
+      {rightmostGroupNote && rightmostNoteX !== null && (
+        <div
+          className="absolute z-10 max-w-[200px] bg-white/95 border border-navy/20 rounded-lg p-2 shadow-sm pointer-events-auto"
+          style={{
+            left: rightmostNoteX + 12, // 12px = p-2(8) + p-1(4) padding before SVG
+            top: marginTop + 100,
+            transform: "translateX(-50%)",
+          }}
+        >
+          {rightmostGroupNote}
         </div>
+      )}
+      {directionalIndicator && (
+        // <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2">
+        <div className="absolute -right-4 xl:-right-0 top-1/2 transform -translate-y-1/2 w-[80px]">
+          <DirectionalIndicator direction={directionalIndicator} size="sm" />
+        </div>
+      )}
+      <div
+        className={`${cardBgClassName ?? "bg-white"} rounded-2xl p-1 ${
+          cardTextClassName ?? ""
+        }`}
+      >
+        {((!hideTitle && titlePosition === "top") || !hideLegend) && (
+          <div className="flex px-5 mt-2 text-dark-grey justify-between flex-wrap gap-2">
+            {/* Title (top position) */}
+            {!hideTitle && titlePosition === "top" && (
+              <div className="flex items-center gap-2">
+                <div className="text-sm text-center text-dark-grey ">
+                  {title}
+                </div>
+              </div>
+            )}
+            {/* Legend */}
+            {!hideLegend &&
+              (customLegend
+                ? customLegend({ chartData, categoryKey })
+                : defaultLegend())}
+          </div>
+        )}
         <div className="">
           <div ref={containerRef} className="overflow-hidden min-h-[300px]">
             <svg ref={svgRef}></svg>
           </div>
         </div>
+        {/* Title (bottom-center position) */}
+        {!hideTitle && titlePosition === "bottom-center" && (
+          <div
+            className={` text-center mb-1 ${
+              titlePosition === "bottom-center"
+                ? "-mt-8 text-navy text-lg font-bold"
+                : "mt-1 text-sm text-dark-grey"
+            }`}
+          >
+            {title}
+          </div>
+        )}
       </div>
     </div>
   );

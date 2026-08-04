@@ -23,9 +23,9 @@ For now, if you want to **try HiPO**, you can download the `*-apache` binary pac
 
 When building energy system models, there is a fundamental trade-off between the accuracy of the modeled results and the spatial resolution, typically represented by the number of geographic zones or nodes. Because higher spatial detail yields more reliable system insights, it is critical for modelers to understand exactly what level of resolution is practically solvable.
 
-To illustrate this, we evaluated the performance of the solvers on a classic PyPSA problem ([*pypsa-de-elec*](https://openenergybenchmark.org/dashboard/benchmark-set/pypsa-eur-elec)), scaling the spatial resolution from 2 to 60 nodes while maintaining a high temporal resolution of 1 hour. This specific model captures long-term capacity investment planning in 2050 for a Germany-scale, electricity-only system, optimizing the deployment and operation of generation assets. As the spatial resolution increases, the number of continuous variables grows from about 570k variables at 2 nodes to roughly 10.2 million variables at 60 nodes.
+To illustrate this, we evaluated the performance of the solvers on a classic PyPSA problem ([*pypsa-de-elec*](https://openenergybenchmark.org/dashboard/benchmark-problem-set/pypsa-de-elec-50-1h)), scaling the spatial resolution from 2 to 60 nodes while maintaining a high temporal resolution of 1 hour. This specific model captures long-term capacity investment planning in 2050 for a Germany-scale, electricity-only system, optimizing the deployment and operation of generation assets. As the spatial resolution increases, the number of continuous variables grows from about 570k variables at 2 nodes to roughly 10.2 million variables at 60 nodes.
 
-This increase in problem size reveals marked differences in solver capabilities (Figure 1). HiGHS-simplex hits a computational wall early, timing out at resolutions of 14 nodes and above, while HiGHS-IPX performs slightly better before consistently timing out past 18 nodes. HiGHS-HiPO, despite a few cases not successfully solved (see the Appendix for details), demonstrates remarkable resilience, remaining the only open-source solver capable of reaching solutions up to 50 nodes. Gurobi stays virtually unaffected across the entire spectrum, consistently solving every instance in well under an hour.
+This increase in problem size reveals marked differences in solver capabilities (Figure 1). HiGHS-simplex hits a computational wall early, timing out at resolutions of 14 nodes and above, while HiGHS-IPX performs slightly better before consistently timing out past 18 nodes. HiGHS-HiPO, despite a few cases not successfully solved (see the Appendix for details), demonstrates remarkable resilience, remaining the only open-source solver capable of reaching solutions up to 50 nodes. Gurobi stays virtually unaffected across the entire spectrum, consistently solving every problem in well under an hour.
 
 ![Figure 1](/notebook/figure1.png)
 
@@ -63,27 +63,27 @@ Overall, HiPO is an exciting addition to the HiGHS solver that expands the front
 
 To that end, we want to issue a call to action to the broader open solver development community: the extreme-scale models characteristic of modern energy system planning present a unique and pressing mathematical challenge. We encourage developers to use our open repository to test and improve algorithmic performance to solve those challenging problems.
 
-If you would like to explore these models or test them with your own solver configurations, you can access the problem files below:
+If you would like to explore these problems or test them with your own solver configurations, you can access the problem files below:
 
-* [Link](https://openenergybenchmark.org/dashboard/benchmark-set/pypsa-de-elec) to the pypsa-de-elec instances used in the section “What is the largest PyPSA model…”
-* [Link](https://openenergybenchmark.org/dashboard/benchmark-set?sectoralFocus=Sector-coupled%3BPower-only%3BWater%20supply%3BHeating-only&sectors=Supply%3BElectric%3BPower%3BHeating%3BTransport%3BGas%3BWater%3BHydrogen%3BCommercial%3BResidential%3BIndustrial%3BIndustry%3BBiomass%3BAgriculture%3BOther&problemClass=LP&application=Infrastructure%20%26%20Capacity%20Expansion%3B%20Operational%3BInfrastructure%20%26%20Capacity%20Expansion%3BDC%20Optimal%20Power%20Flow%3BSteady-state%20Optimal%20Power%20Flow%3BInfrastructure%3BOperational%3BResource%20Adequacy&modellingFramework=ETHOS.FINE%3BGenX%3BIESA-Opt%3BPowerModels%3BSienna%3BTulipa%3BOEMOF%3BPyPSA%3BDCOPF%3BSWITCH%3BTEMOA%3BTIMES%3BZEN-garden&problemSize=L%3BM%3BS&realistic=Realistic%3BOther) to the complete set of benchmark instances used in the section “How does HiPO perform…”.
+* Go to the [Benchmark Problem Set page](https://openenergybenchmark.org/dashboard/benchmark-problem-set) and filter the Problem ID column by typing “pypsa-de-elec” to find the problems used in the section “What is the largest PyPSA model…”
+* Go to the [Benchmark Problem Set page](https://openenergybenchmark.org/dashboard/benchmark-problem-set) and filter by Problem Class “LP” to find the problems used in the section “How does HiPO perform…”
 * List of links to the extreme-scale (\>10 million variables) problems:
-  * [genx-elec\_co2](https://openenergybenchmark.org/dashboard/benchmark-set/genx-elec_co2) (15-168h)
-  * [genx-elec\_trex](https://openenergybenchmark.org/dashboard/benchmark-set/genx-elec_trex) (15-168h)
-  * [genx-elec\_trex\_co2](https://openenergybenchmark.org/dashboard/benchmark-set/genx-elec_trex_co2) (15-168h)
-  * [pypsa-de-sec-trex\_copt](https://openenergybenchmark.org/dashboard/benchmark-set/pypsa-de-sec-trex_copt) (50-1h)
-  * [pypsa-de-sec-trex\_vopt](https://openenergybenchmark.org/dashboard/benchmark-set/pypsa-de-sec-trex_vopt) (50-1h)
-  * [SWITCH-China-open-model](https://openenergybenchmark.org/dashboard/benchmark-set/SWITCH-China-open-model) (32-433ts)
+  * [genx-elec_co2-15-168h](https://openenergybenchmark.org/dashboard/benchmark-problem-set/genx-elec_co2-15-168h)
+  * [genx-elec_trex-15-168h](https://openenergybenchmark.org/dashboard/benchmark-problem-set/genx-elec_trex-15-168h)
+  * [genx-elec_trex_co2-15-168h](https://openenergybenchmark.org/dashboard/benchmark-problem-set/genx-elec_trex_co2-15-168h)
+  * [pypsa-de-sec-trex_copt-50-1h](https://openenergybenchmark.org/dashboard/benchmark-problem-set/pypsa-de-sec-trex_copt-50-1h)
+  * [pypsa-de-sec-trex_vopt-50-1h](https://openenergybenchmark.org/dashboard/benchmark-problem-set/pypsa-de-sec-trex_vopt-50-1h)
+  * [SWITCH-China-open-model-32-433ts](https://openenergybenchmark.org/dashboard/benchmark-problem-set/SWITCH-China-open-model-32-433ts)
 
 ## Where can I learn more?
 
-The results from the section “What is the largest PyPSA model…” can be downloaded in full [here](https://github.com/open-energy-transition/solver-benchmark/blob/main/results/pypsa_de_elec_scaling.csv), and log files (except Gurobi logs that we cannot publish) are available [here](https://storage.googleapis.com/solver-benchmarks/logs/202603-pypsa_de_elec_scaling-logs.tar.gz).
+The results from the section “What is the largest PyPSA model…” can be downloaded in full [here](https://github.com/open-energy-transition/solver-benchmark/blob/main/results/benchmark_results_pypsa_de_elec_scaling.csv), and log files (except Gurobi logs that we cannot publish) are available [here](https://storage.googleapis.com/solver-benchmarks/logs/202603-pypsa_de_elec_scaling-logs.tar.gz).
 
 The results presented in the section “How does HiPO perform…” are from the full v2 benchmark dataset. If you want to dive deeper into the data or see how these solvers perform on a specific modelling framework, all results are publicly available on the Open Energy Benchmark website. Users can interactively explore the data across various dashboards, including:
 
-* [**Benchmark Set**](https://openenergybenchmark.org/dashboard/benchmark-set): Browse the full list of included problems and their characteristics, and view how solvers performed on any given instance.
-* [**Solvers**](https://openenergybenchmark.org/dashboard/solvers): Compare the relative performance of a solver to any or all other solvers on any subset of problems.
-* [**Compare Solvers**](https://openenergybenchmark.org/dashboard/compare-solvers): Compare the runtime and memory usage of any two solvers on any subset of problems.
+* [**Benchmark Problem Set**](https://openenergybenchmark.org/dashboard/benchmark-problem-set): Browse the full list of included problems and their characteristics, and view how solvers performed on any given problem.
+* [**Solvers**](https://openenergybenchmark.org/dashboard/solver-vs-all): Compare the relative performance of a solver to any or all other solvers on any subset of problems.
+* [**Compare Solvers**](https://openenergybenchmark.org/dashboard/solver-vs-solver): Compare the runtime and memory usage of any two solvers on any subset of problems.
 
 ## Where does HiGHS go next and how can we support it?
 
@@ -106,7 +106,7 @@ To evaluate the performance of HiPO, we selected different solvers and configura
 
 At present, HiPO must be explicitly enabled through the solver options. According to the HiGHS developers, an upcoming release later this year will run HiPO automatically when it is beneficial.
 
-We benchmarked these solvers configurations on 133 linear programming problems available on the [Open Energy Benchmark platform](https://openenergybenchmark.org/dashboard/benchmark-set), spanning 13 different modelling frameworks. Together, these problems cover a wide range of objective functions, spatial and temporal resolutions, sectoral scope, investment horizons, and emissions constraints, providing a realistic stress test across both model structure and scale.
+We benchmarked these solvers configurations on 133 linear programming problems available on the [Open Energy Benchmark platform](https://openenergybenchmark.org/dashboard/benchmark-problem-set), spanning 13 different modelling frameworks. Together, these problems cover a wide range of objective functions, spatial and temporal resolutions, sectoral scope, investment horizons, and emissions constraints, providing a realistic stress test across both model structure and scale.
 
 All benchmark experiments were executed on Google Cloud virtual machines:
 

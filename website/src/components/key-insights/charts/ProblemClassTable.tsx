@@ -10,6 +10,7 @@ import { humanizeSeconds } from "@/utils/string";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
+import { getProblemKey } from "@/utils/results";
 
 interface IColumnTable extends MetaDataEntry {
   constraints: number;
@@ -28,7 +29,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
   const columns = useMemo<ColumnDef<IColumnTable>[]>(
     () => [
       {
-        header: "Model Framework",
+        header: "Modelling Framework",
         accessorKey: "modelName",
         size: 180,
         enableColumnFilter: false,
@@ -39,27 +40,24 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
         ),
       },
       {
-        header: `${problemClass} Benchmark`,
+        header: `${problemClass} Problem`,
         accessorKey: "problemClass",
         size: 250,
         enableColumnFilter: false,
         enableSorting: false,
         cell: (info) => {
           const fullValue = String(info.getValue());
-          const parts = fullValue.split(" ");
-          const benchmarkName = parts[0];
-          const sizeName = parts.slice(1).join(" ");
 
           return (
             <div className="py-2 whitespace-normal break-words">
               <Link
-                href={getBenchmarksetLink(fullValue)}
+                href={getProblemLink(fullValue)}
                 className="font-bold inline-block"
                 style={{ lineHeight: "1.5" }}
+                aria-label={`Navigate to ${fullValue} problem detail page`}
               >
-                {benchmarkName}
+                {fullValue}
               </Link>
-              {sizeName && <span className="ml-1">({sizeName})</span>}
             </div>
           );
         },
@@ -79,6 +77,18 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       {
         header: "Num. constraints",
         accessorKey: "constraints",
+        enableColumnFilter: false,
+        enableSorting: true,
+        size: 180,
+        cell: (info) => (
+          <div className="text-right">
+            {formatNumberWithCommas(info.getValue() as number)}
+          </div>
+        ),
+      },
+      {
+        header: "Num. non-zeros",
+        accessorKey: "numNonzeros",
         enableColumnFilter: false,
         enableSorting: true,
         size: 180,
@@ -140,9 +150,8 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
     [],
   );
 
-  const getBenchmarksetLink = (benchmark: string) => {
-    const benchmarkName = benchmark.split(" ")[0];
-    return PATH_DASHBOARD.benchmarkSet.one.replace("{name}", benchmarkName);
+  const getProblemLink = (problemId: string) => {
+    return PATH_DASHBOARD.benchmarkSet.one.replace("{name}", problemId);
   };
 
   const benchmarkLatestResults = useBenchmarkResults({
@@ -154,13 +163,11 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
     useRawResults: true,
   }).filter((result) => result.solver !== "gurobi" && result.status === "ok");
 
-  const listSuccessBenchmark = new Set(
-    benchmarkLatestResults.map(
-      (result) => `${result.benchmark} ${result.size}`,
-    ),
+  const listSuccessfulProblems = new Set(
+    benchmarkLatestResults.map((result) => getProblemKey(result)),
   );
 
-  const listSuccessBenchmarkArray = Array.from(listSuccessBenchmark);
+  const listSuccessfulProblemsArray = Array.from(listSuccessfulProblems);
 
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.fullMetaData;
@@ -187,54 +194,48 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
       );
       let maxEntry: any = null;
       let maxNumVariables = -Infinity;
-      let maxSize: any = null;
 
       entries.forEach((curr) => {
-        curr.sizes.forEach((size) => {
-          if (
-            typeof size.numVariables === "number" &&
-            typeof size.numConstraints === "number" &&
-            listSuccessBenchmarkArray.includes(`${curr.key} ${size.name}`)
-          ) {
-            const isBetter =
-              size.numVariables > maxNumVariables ||
-              (size.numVariables === maxNumVariables &&
-                size.numConstraints > (maxSize?.numConstraints || -Infinity));
+        if (
+          typeof curr.numVariables === "number" &&
+          typeof curr.numConstraints === "number" &&
+          listSuccessfulProblemsArray.includes(curr.key)
+        ) {
+          const isBetter =
+            curr.numVariables > maxNumVariables ||
+            (curr.numVariables === maxNumVariables &&
+              curr.numConstraints > (maxEntry?.numConstraints || -Infinity));
 
-            if (isBetter) {
-              maxNumVariables = size.numVariables;
-              maxEntry = curr;
-              maxSize = size;
-            }
+          if (isBetter) {
+            maxNumVariables = curr.numVariables;
+            maxEntry = curr;
           }
-        });
+        }
       });
 
-      if (!maxEntry || !maxSize) {
+      if (!maxEntry) {
         return null;
       }
 
-      // Find the best benchmark result for this model/size
+      // Find the best benchmark result for this problem
       const benchmarkResults = rawBenchmarkResults.filter(
         (result: any) =>
-          result.benchmark === maxEntry.key &&
-          result.size === maxSize.name &&
-          result.status === "ok",
+          getProblemKey(result) === maxEntry.key && result.status === "ok",
       );
       const bestResult = benchmarkResults.reduce(
         (best: any, current: any) =>
           current.runtime < best.runtime ? current : best,
         { runtime: Infinity, solver: "", solverVersion: "", details: "" },
       );
-
       return {
         modelName: modellingFramework,
-        problemClass: `${maxEntry.key} ${maxSize.name}`,
-        numVariables: maxSize.numVariables,
-        constraints: maxSize.numConstraints,
-        spatialResolution: maxSize.spatialResolution?.toString() ?? "",
+        problemClass: maxEntry.key,
+        numVariables: maxEntry.numVariables,
+        constraints: maxEntry.numConstraints,
+        numNonzeros: maxEntry.numNonzeros,
+        spatialResolution: maxEntry.spatialResolution?.toString() ?? "",
         modellingFramework: modellingFramework as string,
-        temporalResolution: maxSize.temporalResolution?.toString() ?? "",
+        temporalResolution: maxEntry.temporalResolution?.toString() ?? "",
         solver:
           bestResult && bestResult.solver
             ? `${bestResult.solver} v${bestResult.solverVersion}`
@@ -254,13 +255,97 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
 
   return (
     <div className="my-4 mt-8 rounded-xl">
-      <TanStackTable
-        data={modelFrameworkMaxSizeData}
-        columns={columns as any}
-        showPagination={false}
-        rowClassName="tag-line-sm leading-1.4 text-navy text-start p-2 lg:px-6 truncate"
-        headerClassName="text-center text-navy p-2 lg:py-4 lg:px-6 cursor-pointer"
-      />
+      {/* Desktop / tablet: original table */}
+      <div className="hidden md:block">
+        <TanStackTable
+          data={modelFrameworkMaxSizeData}
+          columns={columns as any}
+          showPagination={false}
+          rowClassName="tag-line-sm leading-1.4 text-navy text-start p-2 lg:px-6 truncate"
+          headerClassName="text-center text-navy p-2 lg:py-4 lg:px-6 cursor-pointer"
+          oddRowClassName="bg-[#BFD8C733]"
+        />
+      </div>
+
+      {/* Mobile: card UI per framework */}
+      <div className="md:hidden space-y-4">
+        {modelFrameworkMaxSizeData.map((item: any, idx: number) => {
+          return (
+            <div
+              key={item.modelName || idx}
+              className="bg-white rounded-xl p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="font-bold tag-line-sm truncate">
+                    {item.modelName}
+                  </div>
+                  <div className="tag-line-xs text-navy text-opacity-60 mt-1 truncate">
+                    <Link
+                      href={getProblemLink(item.problemClass)}
+                      className="inline-block"
+                    >
+                      <span className="font-semibold">
+                        {String(item.problemClass)}
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="text-right shrink-0">
+                  <div className="tag-line-xs font-extrabold">
+                    <br />
+                  </div>
+                  <div className="tag-line-xs text-navy text-opacity-60">
+                    {item.solver}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
+                <div className="text-navy text-opacity-60">Runtime</div>
+                <div className="text-right font-medium">
+                  {" "}
+                  {typeof item.runtime === "number"
+                    ? humanizeSeconds(item.runtime)
+                    : item.runtime}
+                </div>
+
+                <div className="text-navy text-opacity-60">Num. variables</div>
+                <div className="text-right font-medium">
+                  {formatNumberWithCommas(item.numVariables)}
+                </div>
+
+                <div className="text-navy text-opacity-60">Num. variables</div>
+                <div className="text-right font-medium">
+                  {formatNumberWithCommas(item.numVariables)}
+                </div>
+
+                <div className="text-navy text-opacity-60">
+                  Num. constraints
+                </div>
+                <div className="text-right font-medium">
+                  {formatNumberWithCommas(item.constraints)}
+                </div>
+
+                <div className="text-navy text-opacity-60">
+                  Spatial resolution
+                </div>
+                <div className="text-right font-medium">
+                  {item.spatialResolution}
+                </div>
+
+                <div className="text-navy text-opacity-60">
+                  Temporal resolution
+                </div>
+                <div className="text-right font-medium">
+                  {item.temporalResolution}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

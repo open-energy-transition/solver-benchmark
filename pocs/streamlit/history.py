@@ -3,10 +3,12 @@ import plotly.graph_objects as go
 import streamlit as st
 
 # local
-from components.filter import display_filter_status, generate_filtered_metadata
-from utils.file_utils import load_benchmark_data, load_metadata
-
+from pocs.streamlit.components.filter import (
+    display_filter_status,
+    generate_filtered_metadata,
+)
 from pocs.streamlit.utils.calculations import calculate_sgm
+from pocs.streamlit.utils.file_utils import load_benchmark_data, load_metadata
 from pocs.streamlit.utils.filters import filter_data
 
 # Convert metadata to a DataFrame for easier filtering

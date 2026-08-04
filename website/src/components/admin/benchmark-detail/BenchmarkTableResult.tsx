@@ -1,14 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import JSZip from "jszip";
+import { useRouter } from "next/router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
 import { MetaDataEntry } from "@/types/meta-data";
 import Link from "next/link";
 import { PATH_DASHBOARD } from "@/constants/path";
-import { filterSelect } from "@/utils/table";
+import { MAX_COMPARE_PROBLEMS } from "@/constants/filter";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
-import { FilterIcon } from "@/assets/icons";
 import InfoPopup from "@/components/common/InfoPopup";
-import { RealisticOption } from "@/types/state";
+import { RealisticOption, HasResultsOption } from "@/types/state";
+import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
+import { getProblemKey } from "@/utils/results";
+import { encodeValue } from "@/utils/urls";
 
 interface IColumnTable extends MetaDataEntry {
   name: string;
@@ -43,13 +47,53 @@ interface BenchmarkTableResultProps {
   realisticFilter?: string[];
 }
 
+// Truncates to fit the actual rendered width of its container (which
+// TanStackTable resizes as the column width changes) instead of a fixed
+// character count, and only enables the hover popup when text is actually
+// being cut off.
+const TruncatedText = ({ text }: { text: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const checkOverflow = () =>
+      setIsOverflowing(el.scrollWidth > el.clientWidth);
+    checkOverflow();
+    const observer = new ResizeObserver(checkOverflow);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [text]);
+
+  return (
+    <InfoPopup
+      disabled={!isOverflowing}
+      trigger={() => (
+        <div
+          ref={ref}
+          className="w-full whitespace-nowrap text-ellipsis overflow-hidden"
+        >
+          {text}
+        </div>
+      )}
+      position="top center"
+      closeOnDocumentClick
+      arrowStyle={{ color: Color.Stroke }}
+    >
+      <div>{text}</div>
+    </InfoPopup>
+  );
+};
+
 const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   metaData,
   problemSizeFilter = [],
   realisticFilter = [],
 }) => {
+  const router = useRouter();
   const [isSelectMode, setIsSelectMode] = useState(false);
-  const [selectedBenchmarks, setSelectedBenchmarks] = useState<Set<string>>(
+  const [selectedProblems, setSelectedProblems] = useState<Set<string>>(
     new Set(),
   );
   const [isDownloading, setIsDownloading] = useState(false);
@@ -58,6 +102,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     total: number;
     currentFile: string;
   } | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const benchmarkResults = useBenchmarkResults();
+  const solvedProblemIds = useMemo(
+    () => new Set(benchmarkResults.map(getProblemKey)),
+    [benchmarkResults],
+  );
 
   const memoizedMetaData = useMemo(
     () =>
@@ -68,46 +119,202 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     [metaData],
   );
 
+  const searchedMetaData = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return memoizedMetaData;
+    return memoizedMetaData.filter((item) =>
+      item.name.toLowerCase().includes(query),
+    );
+  }, [memoizedMetaData, searchQuery]);
+
   const handleSelectAll = () => {
-    if (selectedBenchmarks.size === memoizedMetaData.length) {
-      setSelectedBenchmarks(new Set());
+    if (selectedProblems.size === searchedMetaData.length) {
+      setSelectedProblems(new Set());
     } else {
-      setSelectedBenchmarks(new Set(memoizedMetaData.map((b) => b.name)));
+      setSelectedProblems(new Set(searchedMetaData.map((b) => b.name)));
     }
   };
 
   const handleToggleSelect = (name: string) => {
-    const newSelected = new Set(selectedBenchmarks);
+    const newSelected = new Set(selectedProblems);
     if (newSelected.has(name)) {
       newSelected.delete(name);
     } else {
       newSelected.add(name);
     }
-    setSelectedBenchmarks(newSelected);
+    setSelectedProblems(newSelected);
+  };
+
+  const getFilesToDownload = (selectedFiles: IColumnTable[]) => {
+    const filesToDownload: Array<{
+      problemId: string;
+      url: string;
+      filename: string;
+    }> = [];
+
+    for (const problem of selectedFiles) {
+      const hasUrl = !!problem.url;
+      const matchesSizeFilter =
+        !!problem.size && problemSizeFilter.includes(problem.size);
+      const matchesRealisticFilter =
+        (problem.realistic === true &&
+          realisticFilter.includes(RealisticOption.Realistic)) ||
+        ((problem.realistic === false || problem.realistic === undefined) &&
+          realisticFilter.includes(RealisticOption.Other));
+
+      const matchesFilters =
+        hasUrl && matchesSizeFilter && matchesRealisticFilter;
+
+      if (!matchesFilters) {
+        console.warn(
+          `No download URL found for ${problem.name} matching filters`,
+        );
+        alert(
+          `No download URL found for ${problem.name} matching filters. Skipping...`,
+        );
+        continue;
+      }
+
+      const urlParts = problem.url!.split("/");
+      const filename = urlParts[urlParts.length - 1] || `${problem.name}.lp`;
+      filesToDownload.push({
+        problemId: problem.name,
+        url: problem.url!,
+        filename,
+      });
+    }
+
+    return filesToDownload;
+  };
+
+  // Chrome/Edge path: stream each file directly into a folder the user picks,
+  // via the File System Access API.
+  const downloadToDirectory = async (
+    filesToDownload: Array<{
+      problemId: string;
+      url: string;
+      filename: string;
+    }>,
+  ) => {
+    const dirHandle = await window.showDirectoryPicker();
+
+    for (let i = 0; i < filesToDownload.length; i++) {
+      const { url, filename } = filesToDownload[i];
+
+      setDownloadProgress({
+        current: i + 1,
+        total: filesToDownload.length,
+        currentFile: filename,
+      });
+
+      try {
+        const fileHandle = await dirHandle.getFileHandle(filename, {
+          create: true,
+        });
+        const writable = await fileHandle.createWritable();
+
+        const response = await fetch(
+          `/api/download?url=${encodeURIComponent(url)}`,
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to download ${filename}: ${response.statusText}`,
+          );
+        }
+
+        const reader = response.body?.getReader();
+        if (!reader) {
+          throw new Error(`No response body for ${filename}`);
+        }
+
+        // Stream chunks directly to file on disk
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          await writable.write(value);
+        }
+
+        await writable.close();
+      } catch (error) {
+        console.error(`Error downloading ${filename}:`, error);
+        alert(`Failed to download ${filename}. Continuing with next file...`);
+      }
+    }
+
+    alert("🎉 All selected files downloaded successfully!");
+  };
+
+  // Safari/Firefox fallback: these browsers don't support the File System
+  // Access API (no folder picker), so instead fetch every file into memory,
+  // bundle them into a single zip, and trigger one ordinary browser download
+  // for that zip file.
+  const downloadAsZip = async (
+    filesToDownload: Array<{
+      problemId: string;
+      url: string;
+      filename: string;
+    }>,
+  ) => {
+    const zip = new JSZip();
+
+    for (let i = 0; i < filesToDownload.length; i++) {
+      const { url, filename } = filesToDownload[i];
+
+      setDownloadProgress({
+        current: i + 1,
+        total: filesToDownload.length,
+        currentFile: filename,
+      });
+
+      try {
+        const response = await fetch(
+          `/api/download?url=${encodeURIComponent(url)}`,
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to download ${filename}: ${response.statusText}`,
+          );
+        }
+
+        zip.file(filename, await response.blob());
+      } catch (error) {
+        console.error(`Error downloading ${filename}:`, error);
+        alert(`Failed to download ${filename}. Continuing with next file...`);
+      }
+    }
+
+    setDownloadProgress({
+      current: filesToDownload.length,
+      total: filesToDownload.length,
+      currentFile: "Creating zip file...",
+    });
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const zipUrl = URL.createObjectURL(zipBlob);
+    const a = document.createElement("a");
+    a.href = zipUrl;
+    a.download = "benchmark_problems.zip";
+    a.click();
+    URL.revokeObjectURL(zipUrl);
+
+    alert("🎉 Selected files downloaded as a zip file!");
   };
 
   const handleDownloadSelected = async () => {
-    if (selectedBenchmarks.size === 0) {
-      alert("Please select at least one benchmark to download");
+    if (selectedProblems.size === 0) {
+      alert("Please select at least one problem to download");
       return;
     }
 
-    // Check if File System Access API is supported
-    if (!("showDirectoryPicker" in window)) {
-      alert(
-        "Your browser doesn't support the File System Access API. Please use Chrome, Edge, or another compatible browser.",
-      );
-      return;
-    }
+    const supportsDirectoryPicker = "showDirectoryPicker" in window;
 
     try {
       setIsDownloading(true);
 
-      // Ask user to choose destination folder once
-      const dirHandle = await window.showDirectoryPicker();
-
       const selectedFiles = memoizedMetaData.filter((b) =>
-        selectedBenchmarks.has(b.name),
+        selectedProblems.has(b.name),
       );
 
       setDownloadProgress({
@@ -116,64 +323,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: "",
       });
 
-      // Collect all files to download (multiple sizes per benchmark if filters match)
-      const filesToDownload: Array<{
-        benchmark: string;
-        url: string;
-        filename: string;
-      }> = [];
-
-      for (const benchmark of selectedFiles) {
-        // Find ALL sizes with valid URLs that match the filters
-        const matchingSizes =
-          benchmark.sizes?.filter(
-            (s: { url?: string; size: string; realistic?: boolean }) => {
-              const hasUrl = !!s.url;
-              const matchesFilter =
-                problemSizeFilter.length === 0 ||
-                problemSizeFilter.includes(s.size);
-
-              if (realisticFilter.length > 0) {
-                if (
-                  s.realistic === true &&
-                  realisticFilter.includes(RealisticOption.Realistic)
-                ) {
-                  return hasUrl && matchesFilter;
-                }
-                if (
-                  (s.realistic === false || s.realistic === undefined) &&
-                  realisticFilter.includes(RealisticOption.Other)
-                ) {
-                  return hasUrl && matchesFilter;
-                }
-                return false;
-              }
-              return hasUrl && matchesFilter;
-            },
-          ) || [];
-
-        if (matchingSizes.length === 0) {
-          console.warn(
-            `No download URLs found for ${benchmark.name} matching filters`,
-          );
-          alert(
-            `No download URLs found for ${benchmark.name} matching filters. Skipping...`,
-          );
-          continue;
-        }
-
-        // Add all matching sizes to download list
-        for (const size of matchingSizes) {
-          const urlParts = size.url!.split("/");
-          const filename =
-            urlParts[urlParts.length - 1] || `${benchmark.name}.lp`;
-          filesToDownload.push({
-            benchmark: benchmark.name,
-            url: size.url!,
-            filename,
-          });
-        }
-      }
+      const filesToDownload = getFilesToDownload(selectedFiles);
 
       setDownloadProgress({
         current: 0,
@@ -181,61 +331,17 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: "",
       });
 
-      // Download all files
-      for (let i = 0; i < filesToDownload.length; i++) {
-        const { benchmark, url, filename } = filesToDownload[i];
-
-        setDownloadProgress({
-          current: i + 1,
-          total: filesToDownload.length,
-          currentFile: filename,
-        });
-
-        console.log(`Starting download: ${filename} from ${url}`);
-
-        try {
-          // Create or overwrite file inside selected folder
-          const fileHandle = await dirHandle.getFileHandle(filename, {
-            create: true,
-          });
-          const writable = await fileHandle.createWritable();
-
-          const response = await fetch(
-            `/api/download?url=${encodeURIComponent(url)}`,
-          );
-
-          if (!response.ok) {
-            throw new Error(
-              `Failed to download ${filename}: ${response.statusText}`,
-            );
-          }
-
-          const reader = response.body?.getReader();
-          if (!reader) {
-            throw new Error(`No response body for ${filename}`);
-          }
-
-          // Stream chunks directly to file on disk
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            await writable.write(value);
-          }
-
-          await writable.close();
-          console.log(`✅ Finished: ${filename}`);
-        } catch (error) {
-          console.error(`Error downloading ${filename}:`, error);
-          alert(`Failed to download ${filename}. Continuing with next file...`);
-        }
+      if (supportsDirectoryPicker) {
+        await downloadToDirectory(filesToDownload);
+      } else {
+        await downloadAsZip(filesToDownload);
       }
 
       setDownloadProgress(null);
       setIsDownloading(false);
-      alert("🎉 All selected files downloaded successfully!");
 
       // Clear selection and exit select mode
-      setSelectedBenchmarks(new Set());
+      setSelectedProblems(new Set());
       setIsSelectMode(false);
     } catch (error) {
       console.error("Download error:", error);
@@ -251,8 +357,20 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   };
 
   const handleCancelSelection = () => {
-    setSelectedBenchmarks(new Set());
+    setSelectedProblems(new Set());
     setIsSelectMode(false);
+  };
+
+  const handleCompareSelected = () => {
+    if (
+      selectedProblems.size === 0 ||
+      selectedProblems.size > MAX_COMPARE_PROBLEMS
+    ) {
+      return;
+    }
+
+    const problems = Array.from(selectedProblems).map(encodeValue).join(";");
+    router.push(`${PATH_DASHBOARD.compareProblems}?problems=${problems}`);
   };
 
   // Prevent tab/window close during download
@@ -281,12 +399,12 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                   <input
                     type="checkbox"
                     checked={
-                      selectedBenchmarks.size === memoizedMetaData.length &&
-                      memoizedMetaData.length > 0
+                      selectedProblems.size === searchedMetaData.length &&
+                      searchedMetaData.length > 0
                     }
                     onChange={handleSelectAll}
                     className="cursor-pointer w-4 h-4"
-                    aria-label="Select all benchmarks"
+                    aria-label="Select all problems"
                   />
                 </div>
               ),
@@ -294,7 +412,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                 <div>
                   <input
                     type="checkbox"
-                    checked={selectedBenchmarks.has(info.row.original.name)}
+                    checked={selectedProblems.has(info.row.original.name)}
                     onChange={() => handleToggleSelect(info.row.original.name)}
                     className="cursor-pointer w-4 h-4"
                     aria-label={`Select ${info.row.original.name}`}
@@ -311,137 +429,97 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           ]
         : []),
       {
-        header: "BENCHMARK NAME",
+        header: "PROBLEM ID",
         accessorKey: "name",
-        size: 230,
+        size: 300,
         enableSorting: true,
-        filterFn: filterSelect,
+        enableColumnFilter: false,
         cell: (info) => (
           <Link
-            className="font-bold inline-block"
+            className="font-bold block w-full"
             style={{ lineHeight: "1.5" }}
             href={PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
               info.row.original.name,
             )}
+            aria-label="problem-link"
           >
-            <InfoPopup
-              disabled={((info.getValue() as string) || "").length <= 30}
-              trigger={() => (
-                <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                  {info.getValue() as string}
-                </div>
-              )}
-              position="top center"
-              closeOnDocumentClick
-              arrowStyle={{ color: Color.Stroke }}
-            >
-              <div> {info.getValue() as string} </div>
-            </InfoPopup>
+            <TruncatedText text={info.getValue() as string} />
           </Link>
         ),
       },
       {
-        header: "MODEL NAME",
-        accessorKey: "modelName",
-        filterFn: filterSelect,
-        cell: (info) => info.getValue(),
-        size: 180,
-      },
-      {
         header: "PROBLEM CLASS",
         accessorKey: "problemClass",
-        filterFn: filterSelect,
+        enableColumnFilter: false,
         size: 180,
         cell: (info) => info.getValue(),
       },
       {
-        header: "APPLICATION",
-        accessorKey: "application",
-        filterFn: filterSelect,
-        size: 200,
-        cell: (info) => (
-          <InfoPopup
-            disabled={((info.getValue() as string) || "").length <= 30}
-            trigger={() => (
-              <div className="pl-4 w-40 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as string}
-              </div>
-            )}
-            position="top center"
-            closeOnDocumentClick
-            arrowStyle={{ color: Color.Stroke }}
-          >
-            <div> {info.getValue() as string} </div>
-          </InfoPopup>
-        ),
-      },
-      {
-        header: "SECTORAL FOCUS",
-        accessorKey: "sectoralFocus",
-        size: 200,
-        filterFn: filterSelect,
+        header: "PROBLEM SIZE",
+        accessorKey: "size",
+        enableColumnFilter: false,
+        size: 150,
         cell: (info) => info.getValue(),
       },
       {
-        header: "SECTORS",
-        accessorKey: "sectors",
+        header: "RESULTS",
+        id: "solved",
+        accessorFn: (row) =>
+          solvedProblemIds.has(row.name)
+            ? HasResultsOption.HasResults
+            : HasResultsOption.NoResults,
+        enableColumnFilter: false,
         size: 150,
-        filterFn: filterSelect,
-        cell: (info) => (
-          <InfoPopup
-            trigger={() => (
-              <div className="w-52 whitespace-nowrap text-ellipsis overflow-hidden">
-                {info.getValue() as string}
-              </div>
-            )}
-            position="top center"
-            disabled={((info.getValue() as string) || "").length <= 30}
-            closeOnDocumentClick
-            arrowStyle={{ color: Color.Stroke }}
-          >
-            <div> {info.getValue() as string} </div>
-          </InfoPopup>
-        ),
+        cell: (info) => info.getValue(),
       },
     ],
-    [isSelectMode, selectedBenchmarks, memoizedMetaData.length],
+    [isSelectMode, selectedProblems, searchedMetaData.length, solvedProblemIds],
   );
 
   return (
     <div>
-      <div className="flex items-center justify-between my-4 md:mt-0">
-        <p className="text-xs w-1/2 4xl:w-3/4">
-          <span>
-            To search for a particular benchmark problem by name, click the
-            filter icon
-          </span>
-          <span className="inline-flex gap-2">
-            <FilterIcon className="size-4 shrink-0" />
-          </span>
-          <span>on the benchmark name column and type to search</span>
-        </p>
+      <div className="sm:flex items-center justify-between my-4 md:mt-0">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by problem ID..."
+          className="w-full sm:w-72 px-3 py-2 border border-stroke rounded-lg text-sm text-navy focus:outline-none focus:border-navy"
+          aria-label="Search by problem ID"
+        />
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-end mt-2 sm:mt-0 shrink-0">
           {!isSelectMode ? (
             <button
               onClick={() => setIsSelectMode(true)}
               className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
             >
-              Select for Download
+              Select for Download or Comparison
             </button>
           ) : (
             <>
               <button
                 onClick={handleDownloadSelected}
-                disabled={isDownloading || selectedBenchmarks.size === 0}
+                disabled={isDownloading || selectedProblems.size === 0}
                 className="px-4 py-2 bg-navy text-white rounded-lg transition-colors text-sm font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {isDownloading
                   ? `Downloading... (${downloadProgress?.current || 0}/${
                       downloadProgress?.total || 0
                     })`
-                  : `Download Selected (${selectedBenchmarks.size})`}
+                  : `Download Selected (${selectedProblems.size})`}
+              </button>
+              <button
+                onClick={handleCompareSelected}
+                disabled={
+                  isDownloading ||
+                  selectedProblems.size === 0 ||
+                  selectedProblems.size > MAX_COMPARE_PROBLEMS
+                }
+                className="px-4 py-2 bg-navy text-white rounded-lg transition-colors text-sm font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {`Compare Selected (${selectedProblems.size})`}
               </button>
               <button
                 onClick={handleCancelSelection}
@@ -454,6 +532,13 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           )}
         </div>
       </div>
+
+      {isSelectMode && selectedProblems.size > MAX_COMPARE_PROBLEMS && (
+        <div className="text-right text-xs text-red-600 -mt-3 mb-3">
+          Compare Selected is limited to {MAX_COMPARE_PROBLEMS} problems —
+          deselect some to enable it.
+        </div>
+      )}
 
       {downloadProgress && (
         <div className="mb-4 p-4 bg-[#F4F6FA]  border border-[#e5e7eb] rounded-lg animate-fade-in">
@@ -482,12 +567,19 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       )}
 
       <div>
-        <TanStackTable showAllRows data={memoizedMetaData} columns={columns} />
+        <TanStackTable
+          showAllRows
+          virtualizedHeight="70vh"
+          data={searchedMetaData}
+          columns={columns}
+          headerClassName="text-left text-navy py-4 px-6 cursor-pointer"
+          oddRowClassName="bg-[#BFD8C733]"
+        />
       </div>
       <div>
         <div className="text-xs my-4">
           <div className="text-dark-grey tag-line-xxs">
-            Showing {memoizedMetaData.length} benchmark problems matching the
+            Showing {searchedMetaData.length} benchmark problems matching the
             filters
           </div>
         </div>

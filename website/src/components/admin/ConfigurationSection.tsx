@@ -16,19 +16,19 @@ const TIMEOUT = {
 } as const;
 
 type MachineConfig = {
-  instance: string;
+  machine: string;
   vcpus: string;
   memory: string;
 };
 
 const MACHINE_CONFIGS: Record<number, MachineConfig> = {
   [TIMEOUT.STANDARD]: {
-    instance: "c4-standard-2",
+    machine: "c4-standard-2",
     vcpus: "2",
     memory: "7 GB",
   },
   [TIMEOUT.EXTENDED]: {
-    instance: "c4-highmem-16",
+    machine: "c4-highmem-16",
     vcpus: "16",
     memory: "124 GB",
   },
@@ -41,8 +41,8 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
 
   const detailData = [
     {
-      label: "Instance",
-      value: config.instance,
+      label: "Machine",
+      value: config.machine,
       icon: <InstanceIcon className="size-4 fill-navy" />,
     },
     {
@@ -65,7 +65,7 @@ const ConfigurationSection = ({ timeout }: ConfigurationSectionProps) => {
   return (
     <div className="bg-[#F7F7F9] rounded-xl border-stroke border border-x-0 py-3 lg:pl-8 lg:pr-4 px-2 text-navy lg:flex items-center justify-between">
       <div className="tag-line font-semibold text-dark-grey">Configuration</div>
-      <ul className="grid grid-cols-2 mt-2 lg:gap-6 gap-2 lg:mt-0 lg:flex font-inter">
+      <ul className="flex flex-wrap sm:grid sm:grid-cols-2 mt-2 lg:gap-6 gap-2 lg:mt-0 lg:flex font-inter">
         {detailData.map((data, idx) => (
           <li
             key={idx}

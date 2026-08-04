@@ -5,43 +5,57 @@ interface GitHubStats {
   forks: number;
 }
 
+const CACHE_TTL = 1000 * 60 * 60; // 1 hour
+const CACHE_KEY_PREFIX = "github_stats_";
+
+function getCachedStats(cacheKey: string): GitHubStats | null {
+  try {
+    const raw = localStorage.getItem(cacheKey);
+    if (!raw) return null;
+    const { data, timestamp } = JSON.parse(raw);
+    if (Date.now() - timestamp > CACHE_TTL) {
+      localStorage.removeItem(cacheKey);
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function setCachedStats(cacheKey: string, data: GitHubStats): void {
+  try {
+    localStorage.setItem(
+      cacheKey,
+      JSON.stringify({ data, timestamp: Date.now() }),
+    );
+  } catch {
+    // localStorage might be full or unavailable — silently ignore
+  }
+}
+
 export async function fetchGitHubStats(
   owner: string,
   repo: string,
 ): Promise<GitHubStats> {
+  const cacheKey = `${CACHE_KEY_PREFIX}${owner}/${repo}`;
+
+  // Return cached data if fresh
+  const cached = getCachedStats(cacheKey);
+  if (cached) return cached;
+
   try {
-    // Fetch stars and forks from repo info
-    const repoResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}`,
+    const response = await fetch(
+      `/api/github-stats?owner=${encodeURIComponent(
+        owner,
+      )}&repo=${encodeURIComponent(repo)}`,
     );
-    if (!repoResponse.ok) throw new Error("Failed to fetch repository data");
-    const repoData = await repoResponse.json();
+    if (!response.ok) throw new Error("Failed to fetch repository data");
+    const data: GitHubStats = await response.json();
 
-    // Fetch contributors count
-    const contributorsResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=1&anon=1`,
-    );
-    if (!contributorsResponse.ok)
-      throw new Error("Failed to fetch contributors data");
-    // Get total count from Link header
-    const linkHeader = contributorsResponse.headers.get("Link") || "";
-    const match = linkHeader.match(/page=(\d+)>; rel="last"/);
-    const contributorsCount = match ? parseInt(match[1], 10) : 1;
-
-    // Fetch open issues count
-    const issuesResponse = await fetch(
-      `https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue`,
-    );
-    if (!issuesResponse.ok) throw new Error("Failed to fetch issues data");
-    const issuesData = await issuesResponse.json();
-    const totalIssues = issuesData.total_count;
-
-    return {
-      contributors: contributorsCount,
-      issues: totalIssues,
-      stars: repoData.stargazers_count,
-      forks: repoData.forks_count,
-    };
+    // Cache before returning
+    setCachedStats(cacheKey, data);
+    return data;
   } catch (error) {
     console.error("Error fetching GitHub stats:", error);
     return {

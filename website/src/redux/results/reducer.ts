@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import actions from "./actions";
 import { BenchmarkResult } from "@/types/benchmark";
-import { formatBenchmarkName, processBenchmarkResults } from "@/utils/results";
+import { formatProblemName, processBenchmarkResults } from "@/utils/results";
 import { IResultState, RealisticOption } from "@/types/state";
 import { sortStringArray } from "@/utils/string";
 
@@ -19,7 +19,7 @@ const {
 
 const initialState: IResultState = {
   availableBenchmarks: [],
-  availableBenchmarksAndSizes: [],
+  availableProblems: [],
   availableApplications: [],
   availableModels: [],
   availableModellingFrameworks: [],
@@ -93,10 +93,10 @@ const benchmarkResultsReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         rawBenchmarkResults: action.payload.results,
-        availableBenchmarksAndSizes: Array.from(
+        availableProblems: Array.from(
           new Set(
             action.payload.results.map((result: BenchmarkResult) =>
-              formatBenchmarkName(result),
+              formatProblemName(result),
             ),
           ),
         ),

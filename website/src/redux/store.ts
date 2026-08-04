@@ -1,5 +1,5 @@
-import { createStore, applyMiddleware } from "redux";
-import { thunk } from "redux-thunk";
+import { createStore, applyMiddleware, AnyAction } from "redux";
+import { thunk, ThunkDispatch } from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import { createWrapper } from "next-redux-wrapper";
 import rootReducer from "./rootReducers";
@@ -22,4 +22,4 @@ const makeStore = () => store;
 export const wrapper = createWrapper(makeStore);
 
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
