@@ -118,7 +118,7 @@ problems:
     Num. constraints: 51174
     Num. variables: 18061
     Num. nonzeros: 129548
-    MILP features: []
+    MILP features:
     Modelling framework: OEMOF
     Version:
     Spatial resolution: 1 node

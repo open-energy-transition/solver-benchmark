@@ -82,4 +82,8 @@ export interface ID3StackedBarChart {
   rotateXAxisLabels?: boolean;
   showXaxisLabel?: boolean;
   directionalIndicator?: Direction;
+  /** Shared y-axis domain max, so multiple charts can use the same y range/ticks. Defaults to this chart's own data max. */
+  yDomainMax?: number;
+  /** Approximate number of y-axis ticks (passed to d3's .ticks()). Defaults to 4. */
+  yTickCount?: number;
 }

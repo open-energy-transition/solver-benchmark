@@ -573,7 +573,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           data={searchedMetaData}
           columns={columns}
           headerClassName="text-left text-navy py-4 px-6 cursor-pointer"
-          oddRowClassName="odd:bg-[#BFD8C733]"
+          oddRowClassName="bg-[#BFD8C733]"
         />
       </div>
       <div>

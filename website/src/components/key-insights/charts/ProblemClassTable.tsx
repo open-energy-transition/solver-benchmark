@@ -263,7 +263,7 @@ const ProblemClassTable = ({ problemClass }: ProblemClassTableProps) => {
           showPagination={false}
           rowClassName="tag-line-sm leading-1.4 text-navy text-start p-2 lg:px-6 truncate"
           headerClassName="text-center text-navy p-2 lg:py-4 lg:px-6 cursor-pointer"
-          oddRowClassName="odd:bg-[#BFD8C733]"
+          oddRowClassName="bg-[#BFD8C733]"
         />
       </div>
 

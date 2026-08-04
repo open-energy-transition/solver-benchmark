@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef, useEffect, useId } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useId,
+} from "react";
 import {
   ColumnDef,
   flexRender,
@@ -50,7 +56,10 @@ export function TanStackTable<T>({
   virtualizedHeight = "525px",
   headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
   rowClassName = "tag-line-sm leading-1.4 text-navy text-start py-2 px-6 truncate",
-  oddRowClassName = "odd:bg-[#BFD8C71A]",
+  // A plain background utility (no `odd:` variant) — applied conditionally
+  // via JS below rather than relying on :nth-child(odd), since virtualized
+  // rows share a <tbody> with a spacer row that throws off DOM position.
+  oddRowClassName = "bg-[#BFD8C71A]",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -135,9 +144,19 @@ export function TanStackTable<T>({
   // (asynchronously corrected) measurements, directly measure the real DOM
   // state and hard-disable vertical scrolling whenever content actually
   // fits, regardless of any transient mismatch between the two.
+  //
+  // This must run in useLayoutEffect, not useEffect: on row-count changes
+  // (e.g. typing into a filter that narrows many rows down to one),
+  // useEffect fires after the browser paints, so the old overflow:auto
+  // state briefly paints against the new (now-fitting) container height.
+  // Chrome/Firefox resolve that gap within a frame or two, imperceptibly,
+  // but Safari's slower ResizeObserver/paint timing (plus its classic,
+  // non-overlay scrollbar rendering) can make that flash visible as a
+  // lingering scrollbar. useLayoutEffect runs synchronously before paint,
+  // closing the gap regardless of browser.
   const [canScrollVertically, setCanScrollVertically] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!showAllRows) return;
     const el = tableContainerRef.current;
     if (!el) return;
@@ -487,8 +506,11 @@ export function TanStackTable<T>({
                     {table
                       .getRowModel()
                       .rows.slice(0, 500)
-                      .map((row) => (
-                        <tr key={row.id} className={oddRowClassName}>
+                      .map((row, idx) => (
+                        <tr
+                          key={row.id}
+                          className={idx % 2 ? oddRowClassName : ""}
+                        >
                           {row.getVisibleCells().map((cell) => (
                             <td
                               key={cell.id}

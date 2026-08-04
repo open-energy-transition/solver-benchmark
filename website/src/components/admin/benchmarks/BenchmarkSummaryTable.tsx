@@ -1,17 +1,29 @@
 import { IResultState } from "@/types/state";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
 
 const BenchmarkSummaryTable = () => {
   const metaData = useSelector((state: { results: IResultState }) => {
     return state.results.metaData;
   });
 
-  const availableModellingFrameworks = useSelector(
+  const availableModellingFrameworksRaw = useSelector(
     (state: { results: IResultState }) => {
       return state.results.availableModellingFrameworks;
     },
   );
+
+  // Push the pseudo "N/A" framework to the end (just before the Total
+  // column) rather than wherever it happens to sort alphabetically.
+  const availableModellingFrameworks = useMemo(() => {
+    const known = availableModellingFrameworksRaw.filter(
+      (framework) => framework !== UNSPECIFIED_FILTER_VALUE,
+    );
+    return availableModellingFrameworksRaw.includes(UNSPECIFIED_FILTER_VALUE)
+      ? [...known, UNSPECIFIED_FILTER_VALUE]
+      : known;
+  }, [availableModellingFrameworksRaw]);
 
   const availableProblemClasses = useSelector(
     (state: { results: IResultState }) => {
@@ -60,7 +72,9 @@ const BenchmarkSummaryTable = () => {
       data.set(key, (data.get(key) || 0) + 1);
     }
     Object.keys(metaData).forEach((key) => {
-      if (metaData[key].modellingFramework === framework) {
+      const entryFramework =
+        metaData[key].modellingFramework || UNSPECIFIED_FILTER_VALUE;
+      if (entryFramework === framework) {
         nOfProblemsCount += 1;
 
         availableProblemClasses.forEach((problemClass) => {
@@ -94,6 +108,16 @@ const BenchmarkSummaryTable = () => {
       }
     });
 
+    if (applicationsMap.size === 0) {
+      availableApplications.forEach((application) => {
+        applicationsMap.set(application, -1);
+      });
+    }
+    if (milpFeaturesMap.size === 0) {
+      availableMilpFeatures.forEach((milpFeature) => {
+        milpFeaturesMap.set(milpFeature, -1);
+      });
+    }
     if (timeHorizonsMap.size === 0) {
       timeHorizonsMap.set("single", -1);
       timeHorizonsMap.set("multi", -1);
@@ -108,6 +132,32 @@ const BenchmarkSummaryTable = () => {
       nOfProblems: nOfProblemsCount,
     };
   });
+
+  // Some category values (e.g. the pseudo "N/A" bucket for problems with an
+  // unspecified field) never end up with a real, positive count in any
+  // framework's column — rendering a row for them would just show zeros/
+  // dashes all the way across. Only render rows that have at least one real
+  // match somewhere.
+  const hasRealData = (
+    getValue: (s: (typeof summary)[number]) => number | undefined,
+  ) =>
+    summary.some((s) => {
+      const value = getValue(s);
+      return typeof value === "number" && value > 0;
+    });
+
+  const displayedProblemClasses = availableProblemClasses.filter(
+    (problemClass) => hasRealData((s) => s.problemClasses.get(problemClass)),
+  );
+  const displayedApplications = availableApplications.filter((application) =>
+    hasRealData((s) => s.applications.get(application)),
+  );
+  const displayedMilpFeatures = availableMilpFeatures.filter((milpFeature) =>
+    hasRealData((s) => s.milpFeatures.get(milpFeature)),
+  );
+  const displayedTimeHorizons = availabletimeHorizons.filter((timeHorizon) =>
+    hasRealData((s) => s.timeHorizons.get(timeHorizon)),
+  );
 
   // Each whole section (all its rows, plus its row-spanned label) shares one
   // background, alternating section by section rather than row by row.
@@ -178,7 +228,7 @@ const BenchmarkSummaryTable = () => {
                 </td>
               </tr>
               {/* Problem Class */}
-              {availableProblemClasses.map((problemClass, problemClassIdx) => (
+              {displayedProblemClasses.map((problemClass, problemClassIdx) => (
                 <tr key={problemClassIdx} className="odd:bg-[#BFD8C733]">
                   {problemClassIdx === 0 && (
                     <td
@@ -187,7 +237,7 @@ const BenchmarkSummaryTable = () => {
                           ? TINTED_LABEL_CLASS
                           : PLAIN_LABEL_CLASS
                       }`}
-                      rowSpan={availableProblemClasses.length}
+                      rowSpan={displayedProblemClasses.length}
                     >
                       Problem Class
                     </td>
@@ -208,7 +258,7 @@ const BenchmarkSummaryTable = () => {
                 </tr>
               ))}
               {/* Application */}
-              {availableApplications.map((application, applicationIdx) => (
+              {displayedApplications.map((application, applicationIdx) => (
                 <tr key={applicationIdx} className="odd:bg-[#BFD8C733]">
                   {applicationIdx === 0 && (
                     <td
@@ -217,28 +267,37 @@ const BenchmarkSummaryTable = () => {
                           ? TINTED_LABEL_CLASS
                           : PLAIN_LABEL_CLASS
                       }`}
-                      rowSpan={availableApplications.length}
+                      rowSpan={displayedApplications.length}
                     >
                       Application
                     </td>
                   )}
-                  <td className=" p-2 text-left tag-line-sm">{application}</td>
+                  <td className=" p-2 text-left tag-line-sm">
+                    {application === UNSPECIFIED_FILTER_VALUE
+                      ? "-"
+                      : application}
+                  </td>
                   {summary.map((s, sIdx) => (
                     <td key={sIdx} className=" p-2 text-left tag-line-sm">
-                      {s.applications.get(application) || 0}
+                      {s.applications.get(application) == -1
+                        ? "-"
+                        : s.applications.get(application) || 0}
                     </td>
                   ))}
                   <td className=" p-2 text-left tag-line-sm">
-                    {summary.reduce(
-                      (acc, curr) =>
-                        acc + (curr.applications.get(application) || 0),
-                      0,
-                    )}
+                    {summary.reduce((acc, curr) => {
+                      const a = acc == -1 ? 0 : acc || 0;
+                      const b =
+                        curr.applications.get(application) == -1
+                          ? 0
+                          : curr.applications.get(application) || 0;
+                      return a + b;
+                    }, 0)}
                   </td>
                 </tr>
               ))}
               {/* Time Horizon */}
-              {availabletimeHorizons.map((timeHorizon, timeHorizonIdx) => (
+              {displayedTimeHorizons.map((timeHorizon, timeHorizonIdx) => (
                 <tr key={timeHorizonIdx} className="odd:bg-[#BFD8C733]">
                   {timeHorizonIdx === 0 && (
                     <td
@@ -247,7 +306,7 @@ const BenchmarkSummaryTable = () => {
                           ? TINTED_LABEL_CLASS
                           : PLAIN_LABEL_CLASS
                       }`}
-                      rowSpan={availabletimeHorizons.length}
+                      rowSpan={displayedTimeHorizons.length}
                     >
                       Time Horizon
                     </td>
@@ -258,7 +317,7 @@ const BenchmarkSummaryTable = () => {
                   {summary.map((s, sIdx) => (
                     <td key={sIdx} className=" p-2 text-left tag-line-sm">
                       {s.timeHorizons.get(timeHorizon) == -1
-                        ? "N/A"
+                        ? "-"
                         : s.timeHorizons.get(timeHorizon) || 0}
                     </td>
                   ))}
@@ -276,7 +335,7 @@ const BenchmarkSummaryTable = () => {
                 </tr>
               ))}
               {/* MILP Features */}
-              {availableMilpFeatures.map((milpFeature, milpFeatureIdx) => (
+              {displayedMilpFeatures.map((milpFeature, milpFeatureIdx) => (
                 <tr key={milpFeatureIdx} className="odd:bg-[#BFD8C733]">
                   {milpFeatureIdx === 0 && (
                     <td
@@ -285,7 +344,7 @@ const BenchmarkSummaryTable = () => {
                           ? TINTED_LABEL_CLASS
                           : PLAIN_LABEL_CLASS
                       }`}
-                      rowSpan={availableMilpFeatures.length}
+                      rowSpan={displayedMilpFeatures.length}
                     >
                       MILP Features
                     </td>
@@ -295,15 +354,20 @@ const BenchmarkSummaryTable = () => {
                   </td>
                   {summary.map((s, sIdx) => (
                     <td key={sIdx} className=" p-2 tag-line-sm text-left">
-                      {s.milpFeatures.get(milpFeature) || 0}
+                      {s.milpFeatures.get(milpFeature) == -1
+                        ? "-"
+                        : s.milpFeatures.get(milpFeature) || 0}
                     </td>
                   ))}
                   <td className=" p-2 tag-line-sm text-left">
-                    {summary.reduce(
-                      (acc, curr) =>
-                        acc + (curr.milpFeatures.get(milpFeature) || 0),
-                      0,
-                    )}
+                    {summary.reduce((acc, curr) => {
+                      const a = acc == -1 ? 0 : acc || 0;
+                      const b =
+                        curr.milpFeatures.get(milpFeature) == -1
+                          ? 0
+                          : curr.milpFeatures.get(milpFeature) || 0;
+                      return a + b;
+                    }, 0)}
                   </td>
                 </tr>
               ))}
@@ -389,7 +453,7 @@ const BenchmarkSummaryTable = () => {
           {/* Problem Class */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <h3 className="tag-line-xs font-extrabold mb-3">Problem Class</h3>
-            {availableProblemClasses.map((problemClass, idx) => {
+            {displayedProblemClasses.map((problemClass, idx) => {
               const total = summary.reduce(
                 (acc, curr) =>
                   acc + (curr.problemClasses.get(problemClass) || 0),
@@ -434,11 +498,15 @@ const BenchmarkSummaryTable = () => {
           {/* Application */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <h3 className="tag-line-xs font-extrabold mb-3">Application</h3>
-            {availableApplications.map((application, idx) => {
-              const total = summary.reduce(
-                (acc, curr) => acc + (curr.applications.get(application) || 0),
-                0,
-              );
+            {displayedApplications.map((application, idx) => {
+              const total = summary.reduce((acc, curr) => {
+                const a = acc == -1 ? 0 : acc || 0;
+                const b =
+                  curr.applications.get(application) == -1
+                    ? 0
+                    : curr.applications.get(application) || 0;
+                return a + b;
+              }, 0);
               return (
                 <div
                   key={idx}
@@ -447,7 +515,9 @@ const BenchmarkSummaryTable = () => {
                   }
                 >
                   <p className="tag-line-sm font-semibold mb-2">
-                    {application}
+                    {application === UNSPECIFIED_FILTER_VALUE
+                      ? "-"
+                      : application}
                   </p>
                   <div className="grid grid-cols-2 gap-x-3 gap-y-1">
                     {summary.map((s, sIdx) => (
@@ -459,7 +529,9 @@ const BenchmarkSummaryTable = () => {
                           {s.modellingFramework}
                         </span>
                         <span className="tag-line-xs font-medium shrink-0">
-                          {s.applications.get(application) || 0}
+                          {s.applications.get(application) == -1
+                            ? "-"
+                            : s.applications.get(application) || 0}
                         </span>
                       </div>
                     ))}
@@ -478,7 +550,7 @@ const BenchmarkSummaryTable = () => {
           {/* Time Horizon */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <h3 className="tag-line-xs font-extrabold mb-3">Time Horizon</h3>
-            {availabletimeHorizons.map((timeHorizon, idx) => {
+            {displayedTimeHorizons.map((timeHorizon, idx) => {
               const total = summary.reduce((acc, curr) => {
                 const a = acc == -1 ? 0 : acc || 0;
                 const b =
@@ -508,7 +580,7 @@ const BenchmarkSummaryTable = () => {
                         </span>
                         <span className="tag-line-xs font-medium shrink-0">
                           {s.timeHorizons.get(timeHorizon) == -1
-                            ? "N/A"
+                            ? "-"
                             : s.timeHorizons.get(timeHorizon) || 0}
                         </span>
                       </div>
@@ -528,11 +600,15 @@ const BenchmarkSummaryTable = () => {
           {/* MILP Features */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <h3 className="tag-line-xs font-extrabold mb-3">MILP Features</h3>
-            {availableMilpFeatures.map((milpFeature, idx) => {
-              const total = summary.reduce(
-                (acc, curr) => acc + (curr.milpFeatures.get(milpFeature) || 0),
-                0,
-              );
+            {displayedMilpFeatures.map((milpFeature, idx) => {
+              const total = summary.reduce((acc, curr) => {
+                const a = acc == -1 ? 0 : acc || 0;
+                const b =
+                  curr.milpFeatures.get(milpFeature) == -1
+                    ? 0
+                    : curr.milpFeatures.get(milpFeature) || 0;
+                return a + b;
+              }, 0);
               return (
                 <div
                   key={idx}
@@ -553,7 +629,9 @@ const BenchmarkSummaryTable = () => {
                           {s.modellingFramework}
                         </span>
                         <span className="tag-line-xs font-medium shrink-0">
-                          {s.milpFeatures.get(milpFeature) || 0}
+                          {s.milpFeatures.get(milpFeature) == -1
+                            ? "-"
+                            : s.milpFeatures.get(milpFeature) || 0}
                         </span>
                       </div>
                     ))}

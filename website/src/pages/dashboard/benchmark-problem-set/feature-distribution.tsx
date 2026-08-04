@@ -47,7 +47,8 @@ const PageFeatureDistribution = () => {
               </AdminHeader>
               <h1 className="h5">Feature Distribution</h1>
               <p className="mb-6 mt-4 max-w-screen-lg">
-                Distribution of features in benchmark problem set
+                Distribution of features in the benchmark problem set by
+                modelling framework.
               </p>
             </div>
           }
