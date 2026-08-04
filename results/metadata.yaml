@@ -2224,7 +2224,7 @@ problems:
   buildingenergy:
     Short description: Model to determine the minimum cost design and dispatch of
       a distributed generation system for a commercial building.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy.mps.gz
     Problem class: MILP
@@ -2234,12 +2234,13 @@ problems:
     Num. nonzeros: 788969
     Num. continuous variables: 128691
     Num. integer variables: 26287
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2248,7 +2249,7 @@ problems:
   dlr1:
     Short description: European energy system model for power generation and capacity
       expansion.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr1.mps.gz
     Problem class: MILP
@@ -2258,12 +2259,13 @@ problems:
     Num. nonzeros: 18365107
     Num. continuous variables: 9018690
     Num. integer variables: 124217
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2272,7 +2274,7 @@ problems:
   dlr2:
     Short description: European energy system model for power generation and capacity
       expansion.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr2.mps.gz
     Problem class: MILP
@@ -2282,12 +2284,13 @@ problems:
     Num. nonzeros: 78091589
     Num. continuous variables: 38335410
     Num. integer variables: 532697
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2295,7 +2298,7 @@ problems:
     Model name:
   gasprod1-2:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-2.mps.gz
     Problem class: MILP
@@ -2305,12 +2308,13 @@ problems:
     Num. nonzeros: 200460
     Num. continuous variables: 7036
     Num. integer variables: 3716
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2318,7 +2322,7 @@ problems:
     Model name:
   gasprod1-1:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-1.mps.gz
     Problem class: MILP
@@ -2328,12 +2332,13 @@ problems:
     Num. nonzeros: 201348
     Num. continuous variables: 6867
     Num. integer variables: 4053
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2341,7 +2346,7 @@ problems:
     Model name:
   gasprod2-2:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-2.mps.gz
     Problem class: MILP
@@ -2351,12 +2356,13 @@ problems:
     Num. nonzeros: 280740
     Num. continuous variables: 22742
     Num. integer variables: 6826
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2364,7 +2370,7 @@ problems:
     Model name:
   gasprod1-3:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-3.mps.gz
     Problem class: MILP
@@ -2374,12 +2380,13 @@ problems:
     Num. nonzeros: 200463
     Num. continuous variables: 7035
     Num. integer variables: 3717
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2387,7 +2394,7 @@ problems:
     Model name:
   gasprod2-1:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-1.mps.gz
     Problem class: MILP
@@ -2397,12 +2404,13 @@ problems:
     Num. nonzeros: 282846
     Num. continuous variables: 22179
     Num. integer variables: 7389
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2410,7 +2418,7 @@ problems:
     Model name:
   hawaiiv10-130:
     Short description: Unit commitment model.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hawaiiv10-130.mps.gz
     Problem class: MILP
@@ -2420,12 +2428,13 @@ problems:
     Num. nonzeros: 183263061
     Num. continuous variables: 106686
     Num. integer variables: 578444
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2434,7 +2443,7 @@ problems:
   irish-electricity:
     Short description: Sample Unit Commitment test instance based on an Irish case
       study.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/irish-electricity.mps.gz
     Problem class: MILP
@@ -2444,12 +2453,13 @@ problems:
     Num. nonzeros: 523257
     Num. continuous variables: 51840
     Num. integer variables: 9888
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2458,7 +2468,7 @@ problems:
   maxgasflow:
     Short description: Transport momentum maximization in a capacitated gas network,
       allowing cycles.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/maxgasflow.mps.gz
     Problem class: MILP
@@ -2468,12 +2478,13 @@ problems:
     Num. nonzeros: 19717
     Num. continuous variables: 4981
     Num. integer variables: 2456
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2482,7 +2493,7 @@ problems:
   transportmoment:
     Short description: Transport momentum maximization in a capacitated gas network,
       cycles are forbidden by pseudo pressures.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/transportmoment.mps.gz
     Problem class: MILP
@@ -2492,12 +2503,13 @@ problems:
     Num. nonzeros: 29541
     Num. continuous variables: 7229
     Num. integer variables: 2456
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2506,7 +2518,7 @@ problems:
   uc720-7-4-4-8:
     Short description: Margin maximization at unit commitment for several hydropower,
       pumping and thermal units.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/uc720-7-4-4-8.mps.gz
     Problem class: MILP
@@ -2516,12 +2528,13 @@ problems:
     Num. nonzeros: 11856350
     Num. continuous variables: 1136269
     Num. integer variables: 269009
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2529,7 +2542,7 @@ problems:
     Model name:
   unitcal_7:
     Short description: California seven day unit commitment problem.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/unitcal_7.mps.gz
     Problem class: MILP
@@ -2539,12 +2552,13 @@ problems:
     Num. nonzeros: 127595
     Num. continuous variables: 22899
     Num. integer variables: 2856
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2552,7 +2566,7 @@ problems:
     Model name:
   hgms-det:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms-det.mps.gz
     Problem class: MILP
@@ -2562,12 +2576,13 @@ problems:
     Num. nonzeros: 32367
     Num. continuous variables: 775
     Num. integer variables: 547
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2575,7 +2590,7 @@ problems:
     Model name:
   hgms30:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms30.mps.gz
     Problem class: MILP
@@ -2585,12 +2600,13 @@ problems:
     Num. nonzeros: 850486
     Num. continuous variables: 23250
     Num. integer variables: 547
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2598,7 +2614,7 @@ problems:
     Model name:
   hgms62:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms62.mps.gz
     Problem class: MILP
@@ -2608,12 +2624,13 @@ problems:
     Num. nonzeros: 1753238
     Num. continuous variables: 48050
     Num. integer variables: 547
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2621,7 +2638,7 @@ problems:
     Model name:
   ofi:
     Short description: Natural gas supply portfolio optimization.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi.mps.gz
     Problem class: MILP
@@ -2631,12 +2648,13 @@ problems:
     Num. nonzeros: 1776930
     Num. continuous variables: 390729
     Num. integer variables: 29705
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -2644,7 +2662,7 @@ problems:
     Model name:
   ofi2:
     Short description: Natural gas supply portfolio optimization.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi2.mps.gz
     Problem class: MILP
@@ -2654,12 +2672,13 @@ problems:
     Num. nonzeros: 1776930
     Num. continuous variables: 390729
     Num. integer variables: 29705
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -7874,6 +7893,279 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+  ReEDS-USA-CapacityExpansion-132-416ts:
+    Short description: 132-zone representation of contiguous USA with 416 time slices
+      in 2050 (last solve year of sequential solve with 10 stages). Currently enacted
+      state and federal policies, including emissions standards, tax incentives, renewable
+      portfolio standards/clean energy standards, and technology-specific capacity
+      mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA-CapacityExpansion-132-416ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 18386068
+    Num. variables: 22030185
+    Num. nonzeros: 186172783
+    Num. continuous variables: 22030185
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 416 time slices
+    Realistic: true
+    Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
+      Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-USA_z90-CapacityExpansion-90-416ts:
+    Short description: 90-zone representation of contiguous USA with 416 time slices
+      in 2050 (last solve year of sequential solve with 10 stages). Currently enacted
+      state and federal policies, including emissions standards, tax incentives, renewable
+      portfolio standards/clean energy standards, and technology-specific capacity
+      mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_z90-CapacityExpansion-90-416ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 13720929
+    Num. variables: 16560197
+    Num. nonzeros: 137983668
+    Num. continuous variables: 16560197
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 90 regions
+    Temporal resolution: 416 time slices
+    Realistic: true
+    Realistic motivation: The 90-zone representation and 416 time slices will be the
+      new standard for ReEDS studies.
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-USA_2MY-CapacityExpansion-132-497ts:
+    Short description: 132-zone representation of contiguous USA with 497 time slices
+      in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+      Currently enacted state and federal policies, including emissions standards,
+      tax incentives, renewable portfolio standards/clean energy standards, and technology-specific
+      capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_2MY-CapacityExpansion-132-497ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 5380742
+    Num. variables: 5617652
+    Num. nonzeros: 39763296
+    Num. continuous variables: 5617652
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 497 time slices
+    Realistic: false
+    Realistic motivation:
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-USA_CC-CapacityExpansion-132-264ts:
+    Short description: 132-zone representation of contiguous USA with 264 time slices
+      in 2050 (last solve year of sequential solve with 10 stages) using capacity
+      credit resource adequacy method. Currently enacted state and federal policies,
+      including emissions standards, tax incentives, renewable portfolio standards/clean
+      energy standards, and technology-specific capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_CC-CapacityExpansion-132-264ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 15995074
+    Num. variables: 20921397
+    Num. nonzeros: 202943444
+    Num. continuous variables: 20921397
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 264 time slices
+    Realistic: true
+    Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
+      Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-USA_fast-CapacityExpansion-54-300ts:
+    Short description: Simplified representation of contiguous USA with 54-zones and
+      300 time slices in 2050 (last solve year of sequential solve with 10 stages)
+      for faster solve times. Currently enacted state and federal policies, including
+      emissions standards, tax incentives, renewable portfolio standards/clean energy
+      standards, and technology-specific capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_fast-CapacityExpansion-54-300ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 6171818
+    Num. variables: 6005534
+    Num. nonzeros: 52665970
+    Num. continuous variables: 6005534
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 54 regions
+    Temporal resolution: 300 time slices
+    Realistic: false
+    Realistic motivation:
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-USA_decarb_H2-CapacityExpansion-132-424ts:
+    Short description: 132-zone representation of contiguous USA with 424 time slices
+      in 2050 (last solve year of sequential solve with 10 stages) with net zero power
+      sector emissions by 2045 (no CCS, no new nuclear, DAC only to offset emissions
+      from fossil+CCS) and detailed H2 production.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-USA_decarb_H2-CapacityExpansion-132-424ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 13363189
+    Num. variables: 16578279
+    Num. nonzeros: 124634929
+    Num. continuous variables: 16578279
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 132 regions
+    Temporal resolution: 424 time slices
+    Realistic: true
+    Realistic motivation: This spatiotemporal resolution is used in the ReEDS Standard
+      Scenarios studies (https://docs.nlr.gov/docs/fy25osti/92256.pdf)
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-ISONE_year-CapacityExpansion-6-8760ts:
+    Short description: 6-region representation of ISO-New England with a full year
+      of hourly resolution in 2050 (last solve year of sequential solve with 2 stages,
+      2010 and 2050). Currently enacted state and federal policies, including emissions
+      standards, tax incentives, renewable portfolio standards/clean energy standards,
+      and technology-specific capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ISONE_year-CapacityExpansion-6-8760ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 6310453
+    Num. variables: 7177536
+    Num. nonzeros: 52651745
+    Num. continuous variables: 7177536
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 6 regions
+    Temporal resolution: 8760 hours
+    Realistic: false
+    Realistic motivation:
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-ERCOT_year-CapacityExpansion-7-8760ts:
+    Short description: 7-region representation of ERCOT with a full year of hourly
+      resolution in 2050 (last solve year of sequential solve with 2 stages, 2010
+      and 2050). Currently enacted state and federal policies, including emissions
+      standards, tax incentives, renewable portfolio standards/clean energy standards,
+      and technology-specific capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ERCOT_year-CapacityExpansion-7-8760ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 7589747
+    Num. variables: 8454943
+    Num. nonzeros: 66403273
+    Num. continuous variables: 8454943
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 7 regions
+    Temporal resolution: 8760 hours
+    Realistic: false
+    Realistic motivation:
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-ISONE_8760h-CapacityExpansion-6-8760ts:
+    Short description: 6-region representation of ISO-New England with 8760 hourly
+      time slices in 2050 (last solve year of sequential solve with 2 stages, 2010
+      and 2050). Currently enacted state and federal policies, including emissions
+      standards, tax incentives, renewable portfolio standards/clean energy standards,
+      and technology-specific capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ISONE_8760h-CapacityExpansion-6-8760ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 4479517
+    Num. variables: 5270022
+    Num. nonzeros: 42300195
+    Num. continuous variables: 5270022
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 6 regions
+    Temporal resolution: 8760 time slices
+    Realistic: false
+    Realistic motivation:
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
+  ReEDS-ERCOT_8760h-CapacityExpansion-7-8760ts:
+    Short description: 7-region representation of ERCOT with 8760 hourly time slices
+      in 2050 (last solve year of sequential solve with 2 stages, 2010 and 2050).
+      Currently enacted state and federal policies, including emissions standards,
+      tax incentives, renewable portfolio standards/clean energy standards, and technology-specific
+      capacity mandates are included.
+    Contributor(s)/Source: Claire Halloran, National Laboratory of the Rockies, https://github.com/ReEDS-Model/ReEDS
+    License: CC BY 4.0
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/ReEDS-ERCOT_8760h-CapacityExpansion-7-8760ts.mps.gz
+    Problem class: LP
+    Size: L
+    Num. constraints: 5125203
+    Num. variables: 5855750
+    Num. nonzeros: 53280367
+    Num. continuous variables: 5855750
+    MILP features: []
+    Modelling framework: ReEDS
+    Version: Git commit SHA c783b8bd4dc1f70c841abd7738ef27db9d89a7cb
+    Spatial resolution: 7 regions
+    Temporal resolution: 8760 time slices
+    Realistic: false
+    Realistic motivation:
+    Application: Infrastructure & Capacity Expansion
+    Sectoral focus: Power-only
+    Sectors: Electric
+    Time horizon: Single-stage (1-year)
+    Model name: ReEDS
   DCOPF-Carolinas_2M-997-1h:
     Short description: A tailored version of the DC optimal power flow (DC OPF) model
       configured for a two-month horizon with hourly resolution, using 2021 as the

@@ -1,7 +1,7 @@
 problems:
   buildingenergy:
     Short description: Model to determine the minimum cost design and dispatch of a distributed generation system for a commercial building.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/buildingenergy.mps.gz
     Problem class: MILP
@@ -11,12 +11,13 @@ problems:
     Num. nonzeros: 788969
     Num. continuous variables: 128691
     Num. integer variables: 26287
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -24,7 +25,7 @@ problems:
     Model name:
   dlr1:
     Short description: European energy system model for power generation and capacity expansion.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr1.mps.gz
     Problem class: MILP
@@ -34,12 +35,13 @@ problems:
     Num. nonzeros: 18365107
     Num. continuous variables: 9018690
     Num. integer variables: 124217
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -47,7 +49,7 @@ problems:
     Model name:
   dlr2:
     Short description: European energy system model for power generation and capacity expansion.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/dlr2.mps.gz
     Problem class: MILP
@@ -57,12 +59,13 @@ problems:
     Num. nonzeros: 78091589
     Num. continuous variables: 38335410
     Num. integer variables: 532697
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -70,7 +73,7 @@ problems:
     Model name:
   gasprod1-2:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-2.mps.gz
     Problem class: MILP
@@ -80,12 +83,13 @@ problems:
     Num. nonzeros: 200460
     Num. continuous variables: 7036
     Num. integer variables: 3716
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -93,7 +97,7 @@ problems:
     Model name:
   gasprod1-1:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-1.mps.gz
     Problem class: MILP
@@ -103,12 +107,13 @@ problems:
     Num. nonzeros: 201348
     Num. continuous variables: 6867
     Num. integer variables: 4053
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -116,7 +121,7 @@ problems:
     Model name:
   gasprod2-2:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-2.mps.gz
     Problem class: MILP
@@ -126,12 +131,13 @@ problems:
     Num. nonzeros: 280740
     Num. continuous variables: 22742
     Num. integer variables: 6826
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -139,7 +145,7 @@ problems:
     Model name:
   gasprod1-3:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod1-3.mps.gz
     Problem class: MILP
@@ -149,12 +155,13 @@ problems:
     Num. nonzeros: 200463
     Num. continuous variables: 7035
     Num. integer variables: 3717
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -162,7 +169,7 @@ problems:
     Model name:
   gasprod2-1:
     Short description: Production planning model for an industrial gas process.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/gasprod2-1.mps.gz
     Problem class: MILP
@@ -172,12 +179,13 @@ problems:
     Num. nonzeros: 282846
     Num. continuous variables: 22179
     Num. integer variables: 7389
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -185,7 +193,7 @@ problems:
     Model name:
   hawaiiv10-130:
     Short description: Unit commitment model.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hawaiiv10-130.mps.gz
     Problem class: MILP
@@ -195,12 +203,13 @@ problems:
     Num. nonzeros: 183263061
     Num. continuous variables: 106686
     Num. integer variables: 578444
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -208,7 +217,7 @@ problems:
     Model name:
   irish-electricity:
     Short description: Sample Unit Commitment test instance based on an Irish case study.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/irish-electricity.mps.gz
     Problem class: MILP
@@ -218,12 +227,13 @@ problems:
     Num. nonzeros: 523257
     Num. continuous variables: 51840
     Num. integer variables: 9888
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -231,7 +241,7 @@ problems:
     Model name:
   maxgasflow:
     Short description: Transport momentum maximization in a capacitated gas network, allowing cycles.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/maxgasflow.mps.gz
     Problem class: MILP
@@ -241,12 +251,13 @@ problems:
     Num. nonzeros: 19717
     Num. continuous variables: 4981
     Num. integer variables: 2456
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -254,7 +265,7 @@ problems:
     Model name:
   transportmoment:
     Short description: Transport momentum maximization in a capacitated gas network, cycles are forbidden by pseudo pressures.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/transportmoment.mps.gz
     Problem class: MILP
@@ -264,12 +275,13 @@ problems:
     Num. nonzeros: 29541
     Num. continuous variables: 7229
     Num. integer variables: 2456
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -277,7 +289,7 @@ problems:
     Model name:
   uc720-7-4-4-8:
     Short description: Margin maximization at unit commitment for several hydropower, pumping and thermal units.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/uc720-7-4-4-8.mps.gz
     Problem class: MILP
@@ -287,12 +299,13 @@ problems:
     Num. nonzeros: 11856350
     Num. continuous variables: 1136269
     Num. integer variables: 269009
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -300,7 +313,7 @@ problems:
     Model name:
   unitcal_7:
     Short description: California seven day unit commitment problem.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/unitcal_7.mps.gz
     Problem class: MILP
@@ -310,12 +323,13 @@ problems:
     Num. nonzeros: 127595
     Num. continuous variables: 22899
     Num. integer variables: 2856
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -323,7 +337,7 @@ problems:
     Model name:
   hgms-det:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms-det.mps.gz
     Problem class: MILP
@@ -333,12 +347,13 @@ problems:
     Num. nonzeros: 32367
     Num. continuous variables: 775
     Num. integer variables: 547
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -346,7 +361,7 @@ problems:
     Model name:
   hgms30:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms30.mps.gz
     Problem class: MILP
@@ -356,12 +371,13 @@ problems:
     Num. nonzeros: 850486
     Num. continuous variables: 23250
     Num. integer variables: 547
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -369,7 +385,7 @@ problems:
     Model name:
   hgms62:
     Short description: Maintenance scheduling of generators in hydropower systems.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/hgms62.mps.gz
     Problem class: MILP
@@ -379,12 +395,13 @@ problems:
     Num. nonzeros: 1753238
     Num. continuous variables: 48050
     Num. integer variables: 547
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -392,7 +409,7 @@ problems:
     Model name:
   ofi:
     Short description: Natural gas supply portfolio optimization.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi.mps.gz
     Problem class: MILP
@@ -402,12 +419,13 @@ problems:
     Num. nonzeros: 1776930
     Num. continuous variables: 390729
     Num. integer variables: 29705
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
@@ -415,7 +433,7 @@ problems:
     Model name:
   ofi2:
     Short description: Natural gas supply portfolio optimization.
-    Contributor(s)/Source: MIPLIB, https://miplib.zib.de/
+    Contributor(s)/Source: Mark Turner, Oscar Dowson, MIPLIB 2017, https://miplib.zib.de/
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/ofi2.mps.gz
     Problem class: MILP
@@ -425,12 +443,13 @@ problems:
     Num. nonzeros: 1776930
     Num. continuous variables: 390729
     Num. integer variables: 29705
-    MILP features:
+    MILP features: []
     Modelling framework:
     Version:
     Spatial resolution:
     Temporal resolution:
     Realistic: false
+    Realistic motivation:
     Application:
     Sectoral focus:
     Sectors:
