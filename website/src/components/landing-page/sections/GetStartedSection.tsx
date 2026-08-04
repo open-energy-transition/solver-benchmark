@@ -17,9 +17,9 @@ const GetStarted = () => {
     () =>
       Array.from(
         new Set(
-          Object.keys(rawMetaData).map((key) => {
-            return rawMetaData[key].modellingFramework;
-          }),
+          Object.keys(rawMetaData)
+            .map((key) => rawMetaData[key].modellingFramework)
+            .filter((framework): framework is string => Boolean(framework)),
         ),
       ),
     [rawMetaData],

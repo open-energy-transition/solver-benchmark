@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { QuestionLineIcon } from "@/assets/icons";
 import InfoPopup from "@/components/common/InfoPopup";
 import { NoResultsMessage } from "@/components/shared";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
 
 const BenchmarkStatisticsCharts = ({
   metaData,
@@ -53,7 +54,9 @@ const BenchmarkStatisticsCharts = ({
     }
 
     Object.keys(metaData).forEach((key) => {
-      if (metaData[key].modellingFramework === framework) {
+      const entryFramework =
+        metaData[key].modellingFramework || UNSPECIFIED_FILTER_VALUE;
+      if (entryFramework === framework) {
         // Each entry counts as exactly one problem and one size.
         updateData(nOfProblemsMap, "totalNOfDiffProblems");
         updateData(nOfProblemsMap, "multipleSizes");
@@ -173,6 +176,29 @@ const BenchmarkStatisticsCharts = ({
       };
     });
   }, [metaData, availableProblemSizes]);
+
+  // Share one y-axis range/tick set across all three charts below, so bar
+  // heights are visually comparable at a glance instead of each chart
+  // scaling to its own tallest bar.
+  const stackedMax = (
+    rows: Record<string, number | string>[],
+    keys: string[],
+  ) =>
+    rows.reduce(
+      (max, row) =>
+        Math.max(
+          max,
+          keys.reduce((sum, key) => sum + (Number(row[key]) || 0), 0),
+        ),
+      0,
+    );
+
+  const sharedYDomainMax = Math.max(
+    stackedMax(problemClassesChartData, ["LP", "MILP"]),
+    stackedMax(timeHorizonsChartData, ["single", "multi", "na"]),
+    stackedMax(sizeChartData, ["realistic", "other"]),
+  );
+  const sharedYTickCount = 5;
   const timeHorizonTitleWithTooltip = (
     <div className="flex items-center gap-1">
       <span>By Modeling Framework and Time Horizon</span>
@@ -241,6 +267,8 @@ const BenchmarkStatisticsCharts = ({
             title="By Modeling Framework and Problem Class"
             rotateXAxisLabels={true}
             showXaxisLabel={false}
+            yDomainMax={sharedYDomainMax}
+            yTickCount={sharedYTickCount}
           />
         </div>
         <div className="flex-1 w-full min-w-0 mt-4 lg:mt-0 xl:w-1/3">
@@ -254,6 +282,8 @@ const BenchmarkStatisticsCharts = ({
             rotateXAxisLabels={true}
             title={timeHorizonTitleWithTooltip}
             showXaxisLabel={false}
+            yDomainMax={sharedYDomainMax}
+            yTickCount={sharedYTickCount}
           />
         </div>
         <div className="flex-1 w-full min-w-0 mt-4 lg:mt-0 xl:w-1/3">
@@ -270,6 +300,8 @@ const BenchmarkStatisticsCharts = ({
             rotateXAxisLabels={false}
             title="By Size"
             showXaxisLabel={false}
+            yDomainMax={sharedYDomainMax}
+            yTickCount={sharedYTickCount}
           />
         </div>
       </div>

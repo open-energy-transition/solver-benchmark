@@ -184,7 +184,7 @@ const BenchmarkModelInsightsTable = () => {
           headerClassName="text-center text-navy p-2 cursor-pointer"
           columns={columns as any}
           showPagination={false}
-          oddRowClassName="odd:bg-[#BFD8C733]"
+          oddRowClassName="bg-[#BFD8C733]"
         />
       </div>
 

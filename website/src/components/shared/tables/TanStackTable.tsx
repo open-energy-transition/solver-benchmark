@@ -56,7 +56,10 @@ export function TanStackTable<T>({
   virtualizedHeight = "525px",
   headerClassName = "text-center text-navy py-4 px-6 cursor-pointer",
   rowClassName = "tag-line-sm leading-1.4 text-navy text-start py-2 px-6 truncate",
-  oddRowClassName = "odd:bg-[#BFD8C71A]",
+  // A plain background utility (no `odd:` variant) — applied conditionally
+  // via JS below rather than relying on :nth-child(odd), since virtualized
+  // rows share a <tbody> with a spacer row that throws off DOM position.
+  oddRowClassName = "bg-[#BFD8C71A]",
 }: TanStackTableProps<T>) {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
@@ -503,8 +506,11 @@ export function TanStackTable<T>({
                     {table
                       .getRowModel()
                       .rows.slice(0, 500)
-                      .map((row) => (
-                        <tr key={row.id} className={oddRowClassName}>
+                      .map((row, idx) => (
+                        <tr
+                          key={row.id}
+                          className={idx % 2 ? oddRowClassName : ""}
+                        >
                           {row.getVisibleCells().map((cell) => (
                             <td
                               key={cell.id}
