@@ -4,18 +4,15 @@ import Papa from "papaparse";
 import yaml from "js-yaml";
 
 // Type definitions
-interface RawBenchmarkEntry {
-  Sizes?: { Name: string }[];
-}
-
+// Metadata entries are keyed by `${Benchmark}-${Size}`.
 interface RawMetaData {
-  benchmarks: Record<string, RawBenchmarkEntry>;
+  problems: Record<string, unknown>;
 }
 
 interface CsvBenchmarkResult {
   Benchmark: string;
   Size: string;
-  benchmarkId: string;
+  problemId: string;
 }
 
 // Path constants
@@ -71,10 +68,8 @@ export async function validateData(): Promise<void> {
       throw new Error("Failed to load metadata");
     }
     const invalidResults = results.filter((result) => {
-      const benchmark = metaData.benchmarks[result.Benchmark];
-      return (
-        !benchmark || !benchmark.Sizes?.some((s) => s.Name === result.Size)
-      );
+      const problemKey = `${result.Benchmark}-${result.Size}`;
+      return !metaData.problems[problemKey];
     });
 
     if (invalidResults.length > 0) {

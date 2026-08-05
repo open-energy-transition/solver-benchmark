@@ -10,6 +10,7 @@ import { formatDecimal } from "@/utils/number";
 import { calculateScaleRangeAndTicks } from "@/utils/chart";
 import CustomDropdown from "@/components/common/CustomDropdown";
 import BasicVsFeasible from "@/components/shared/BasicVsFeasible";
+import { NoResultsMessage } from "@/components/shared";
 
 const SolverSelection = () => {
   const solversData = useSelector((state: { results: IResultState }) => {
@@ -65,12 +66,12 @@ const SolverSelection = () => {
     );
 
     // Find common benchmark-size pairs
-    const commonInstances = data1.filter((d1) =>
+    const commonProblems = data1.filter((d1) =>
       data2.some((d2) => d2.benchmark === d1.benchmark && d2.size === d1.size),
     );
 
     setChartData(
-      commonInstances.map((d1) => {
+      commonProblems.map((d1) => {
         const d2 = data2.find(
           (d2) => d2.benchmark === d1.benchmark && d2.size === d1.size,
         )!;
@@ -101,8 +102,7 @@ const SolverSelection = () => {
     solver2: string,
   ) => `
   <div class="text-sm">
-    <strong>Name:</strong> ${d.benchmark}<br>
-    <strong>Size:</strong> ${d.size}<br>
+    <strong>Problem ID:</strong> ${d.benchmark}-${d.size}<br>
     <strong>${solver1.replace("--", " (")}):</strong> ${formatDecimal({
       value: d.d1.memoryUsage,
     })} MB (${d.d1.status})<br>
@@ -158,100 +158,107 @@ const SolverSelection = () => {
           />
         </div>
       </div>
-      <BasicVsFeasible />
-      <div className="py-2">
-        <h6>Comparison</h6>
-        <p className="mb-6 mt-4 max-w-screen-lg">
-          The benchmarks on the upper triangle of each graph are those where
-          Solver 1 performs better, and those in the lower triangle are those
-          where Solver 2 performs better. Note that we ran benchmarks with two
-          different timeout values: smaller benchmarks (S and M) were run with a
-          timeout of 1h, while larger benchmarks (L) were run with a timeout of
-          24h.{" "}
-          <div className="">
-            Thus, the{" "}
-            <span className="mt-1 relative">
-              <span className="text-lg opacity-0">×</span>
-              <span className="text-lg absolute top-[-5px] left-0">
-                <CloseIcon className="size-3 mt-[9px]" />
-              </span>
-            </span>{" "}
-            s in the graph below might appear at 2 different time values. Click
-            on any point in this graph to see details of that benchmark
-            instance.
+      {chartData.length ? (
+        <>
+          <div className="py-2">
+            <h6>Comparison</h6>
+            <p className="mb-6 mt-4 w-full">
+              The problems on the upper triangle of each graph are those where
+              Solver 1 performs better, and those in the lower triangle are
+              those where Solver 2 performs better. Note that we ran problems
+              with two different timeout values: smaller problems (S and M) were
+              run with a timeout of 1h, while larger problems (L) were run with
+              a timeout of 24h. Thus, the{" "}
+              <span className="mt-1 relative">
+                <span className="text-lg leading-none opacity-0">×</span>
+                <span className="text-lg absolute top-[-5px] left-0">
+                  <CloseIcon className="size-3 mt-[9px]" />
+                </span>
+              </span>{" "}
+              s in the graph below might appear at 2 different time values.
+              Click on any point in this graph to see details of that benchmark
+              problem.
+            </p>
+            <p className="mb-1 mt-4 max-w-screen-lg">
+              <p className="flex-col gap-1 items-center text-navy text-sm">
+                <div className="inline-flex gap-1 items-start">
+                  <CloseIcon className="size-3 mt-1.5" />
+                  represents benchmark problems where at least one of the
+                  solvers failed to solve within the time limit, while
+                </div>
+                <div className="flex gap-1 items-center">
+                  <CircleIcon className="size-3" />
+                  indicates that both solvers ran successfully.
+                </div>
+              </p>
+            </p>
           </div>
-        </p>
-        <p className="mb-6 mt-4 max-w-screen-lg">
-          <p className="flex-col gap-1 items-center text-navy text-sm">
-            <div className="inline-flex gap-1 items-start">
-              <CloseIcon className="size-3 mt-1.5" />
-              represents benchmark instances where at least one of the solvers
-              failed to solve within the time limit, while
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="w-full lg:w-1/2">
+              <div className="w-full font-league text-navy text-center mt-4 text-medium-normal">
+                Runtime
+              </div>
+              <ChartCompare
+                chartData={chartData.map((d) => ({
+                  xaxis: d.d1.runtime,
+                  yaxis: d.d2.runtime,
+                  status: d.status,
+                  size: d.size,
+                  benchmark: d.benchmark,
+                  d1: d.d1,
+                  d2: d.d2,
+                }))}
+                title={{
+                  xaxis: `Runtime (s) of ${solver1.replace("--", " (")})`,
+                  yaxis: `Runtime (s) of ${solver2.replace("--", " (")})`,
+                }}
+                backgroundColor={compareBackground}
+                solver1={solver1}
+                solver2={solver2}
+                scaleType="log"
+                scaleRange={runtimeLogScale.scaleRange}
+                tickValues={runtimeLogScale.tickValues}
+              />
             </div>
-            <div className="flex gap-1 items-center">
-              <CircleIcon className="size-3" />
-              indicates that both solvers ran successfully.
+            <div className="w-full lg:w-1/2">
+              <div className="w-full font-league text-medium-normal text-navy text-center mt-4">
+                Memory Usage
+              </div>
+              <ChartCompare
+                chartData={chartData.map((d) => ({
+                  xaxis: d.d1.memoryUsage,
+                  yaxis: d.d2.memoryUsage,
+                  status: d.status,
+                  size: d.size,
+                  benchmark: d.benchmark,
+                  d1: d.d1,
+                  d2: d.d2,
+                }))}
+                title={{
+                  xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
+                  yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
+                }}
+                backgroundColor={compareBackground}
+                solver1={solver1}
+                solver2={solver2}
+                safeAxes={false}
+                showSolverFasterLabels={true}
+                tooltipTemplate={memoryUsageTooltipTemplate}
+                scaleType="log"
+                scaleRange={memoryUsageLogScale.scaleRange}
+                tickValues={memoryUsageLogScale.tickValues}
+              />
             </div>
-          </p>
-        </p>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="w-full lg:w-1/2">
-          <ChartCompare
-            chartData={chartData.map((d) => ({
-              xaxis: d.d1.runtime,
-              yaxis: d.d2.runtime,
-              status: d.status,
-              size: d.size,
-              benchmark: d.benchmark,
-              d1: d.d1,
-              d2: d.d2,
-            }))}
-            title={{
-              xaxis: `Runtime (s) of ${solver1.replace("--", " (")})`,
-              yaxis: `Runtime (s) of ${solver2.replace("--", " (")})`,
-            }}
-            backgroundColor={compareBackground}
-            solver1={solver1}
-            solver2={solver2}
-            scaleType="log"
-            scaleRange={runtimeLogScale.scaleRange}
-            tickValues={runtimeLogScale.tickValues}
-          />
-          <div className="w-full font-league text-navy text-center mt-4 text-medium-normal">
-            Runtime Comparison
           </div>
-        </div>
-        <div className="w-full lg:w-1/2">
-          <ChartCompare
-            chartData={chartData.map((d) => ({
-              xaxis: d.d1.memoryUsage,
-              yaxis: d.d2.memoryUsage,
-              status: d.status,
-              size: d.size,
-              benchmark: d.benchmark,
-              d1: d.d1,
-              d2: d.d2,
-            }))}
-            title={{
-              xaxis: solver1.replace("--", " (") + ") memory usage (MB)",
-              yaxis: solver2.replace("--", " (") + ") memory usage (MB)",
-            }}
-            backgroundColor={compareBackground}
-            solver1={solver1}
-            solver2={solver2}
-            safeAxes={false}
-            showSolverFasterLabels={true}
-            tooltipTemplate={memoryUsageTooltipTemplate}
-            scaleType="log"
-            scaleRange={memoryUsageLogScale.scaleRange}
-            tickValues={memoryUsageLogScale.tickValues}
-          />
-          <div className="w-full font-league text-medium-normal text-navy text-center mt-4">
-            Memory Usage Comparison
+          <div className="mt-8">
+            <BasicVsFeasible />
           </div>
+        </>
+      ) : (
+        <div className="mt-4">
+          <NoResultsMessage message="No benchmark problems match the selected filters for both solvers." />
         </div>
-      </div>
+      )}
     </div>
   );
 };

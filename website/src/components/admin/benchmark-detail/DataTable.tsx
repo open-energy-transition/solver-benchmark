@@ -9,14 +9,14 @@ import { ProblemClass } from "@/constants";
 import Link from "next/link";
 import { formatDecimal, formatScientific, roundNumber } from "@/utils/number";
 import { isNullorUndefined } from "@/utils/calculations";
-import { filterNumber } from "@/utils/table";
+import { filterCheckboxIncludesSome, filterNumber } from "@/utils/table";
+import { getProblemKey } from "@/utils/results";
 
 type DataTableProps = {
-  benchmarkName: string;
+  problemId: string;
 };
 
 type TableData = {
-  instance: string;
   size?: string;
   solver: string;
   solverVersion: string;
@@ -33,7 +33,7 @@ type TableData = {
 
 const BASE_STORAGE_URL = "https://storage.googleapis.com/solver-benchmarks";
 
-const DataTable = ({ benchmarkName }: DataTableProps) => {
+const DataTable = ({ problemId }: DataTableProps) => {
   const benchmarkResults = useSelector((state: { results: IResultState }) => {
     return state.results.benchmarkResults;
   });
@@ -41,11 +41,9 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
     return state.results.fullMetaData;
   });
   const isMilp = useMemo(() => {
-    const benchmarkDetail = rawMetaData[benchmarkName as string];
-    return (
-      benchmarkDetail && benchmarkDetail.problemClass === ProblemClass.MILP
-    );
-  }, [benchmarkName]);
+    const problemDetail = rawMetaData[problemId as string];
+    return problemDetail && problemDetail.problemClass === ProblemClass.MILP;
+  }, [problemId]);
 
   const getLogDownloadUrl = (row: BenchmarkResult) => {
     const urlPathSegment = `${row.runId}/${row.benchmark}-${row.size}-${row.solver}-${row.solverVersion}`;
@@ -59,10 +57,9 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
 
   const tableData: TableData[] = useMemo(
     () =>
-      benchmarkResults.filter((result) => result.benchmark === benchmarkName),
-    [benchmarkName],
+      benchmarkResults.filter((result) => getProblemKey(result) === problemId),
+    [benchmarkResults, problemId],
   ).map((result) => ({
-    instance: result.size,
     solver: result.solver,
     solverVersion: result.solverVersion,
     status: result.status,
@@ -80,46 +77,39 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
       : roundNumber(result.dualityGap || 0, 2),
     log: getLogDownloadUrl(result),
     solution: getSolutionDownloadUrl(result),
-    size: rawMetaData[benchmarkName as string].sizes.find(
-      (size) => size.name === result.size,
-    )?.size,
+    size: rawMetaData[getProblemKey(result)]?.size,
   }));
 
   const columns = useMemo(
     () => [
       {
-        header: "Instance",
-        accessorKey: "instance",
-        size: 140,
-      },
-      {
         header: "Size",
         accessorKey: "size",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 110,
       },
       {
         header: "Solver",
         accessorKey: "solver",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 140,
       },
       {
         header: "Solver Version",
         accessorKey: "solverVersion",
         size: 180,
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
       },
       {
         header: "Status",
         accessorKey: "status",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 140,
       },
       {
         header: "Termination Condition",
         accessorKey: "terminationCondition",
-        filterFn: "arrIncludesSome" as const,
+        filterFn: filterCheckboxIncludesSome,
         size: 220,
         cell: (info: CellContext<TableData, unknown>) => (
           <div className="w-[7.75rem] whitespace-nowrap overflow-hidden">
@@ -194,7 +184,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
             <Link
               href={info.getValue() as string}
               className="text-white bg-green-pop p-2 py-1.5 rounded-lg text-sm"
-              aria-label={`Download log for ${info.row.original.instance} solved by ${solver}`}
+              aria-label={`Download log for ${problemId} solved by ${solver}`}
             >
               Download Log
             </Link>
@@ -209,7 +199,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
           <Link
             href={info.getValue() as string}
             className="text-white bg-navy p-2 py-1.5 rounded-lg text-sm"
-            aria-label={`Download solution for ${info.row.original.instance} solved by ${info.row.original.solver}`}
+            aria-label={`Download solution for ${problemId} solved by ${info.row.original.solver}`}
           >
             Download Solution
           </Link>
@@ -248,7 +238,7 @@ const DataTable = ({ benchmarkName }: DataTableProps) => {
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${benchmarkName}_results.csv`;
+    a.download = `${problemId}_results.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

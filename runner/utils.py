@@ -199,24 +199,23 @@ def load_results(folder: str | list[str]):
 
 
 def load_benchmark_metadata(metadata_file: str = "../results/metadata.yaml"):
-    # Create a benchmark instance DF from the metadata.yaml file
+    """Create a benchmark problem DataFrame from the metadata.yaml file.
+
+    Each problem under the top-level "problems" map becomes one row. A
+    synthetic "Benchmark"/"Instance" column pair is added (set to the
+    problem ID / "default") so downstream VM-allocation code
+    (`allocate_benchmarks`) can group entries into a
+    {benchmark_name: {"Sizes": [...]}} shape for the runner.
+    """
     with open(Path(metadata_file), "r") as f:
         metadata = yaml.safe_load(f)
+    ignore_keys = {"Short description", "Realistic motivation"}
     rows = []
-    ignore_keys = {"Short description", "Realistic motivation", "Sizes", "Name"}
-    for bench_name, bench_data in metadata["benchmarks"].items():
-        common_attrs = {k: v for k, v in bench_data.items() if k not in ignore_keys}
-        for size_data in bench_data.get("Sizes", []):
-            size_attrs = {k: v for k, v in size_data.items() if k not in ignore_keys}
-            row = {
-                "Benchmark": bench_name,
-                "Instance": size_data.get("Name"),
-                **common_attrs,
-                **size_attrs,
-            }
-            rows.append(row)
+    for problem_id, problem_data in metadata["problems"].items():
+        attrs = {k: v for k, v in problem_data.items() if k not in ignore_keys}
+        rows.append({"Benchmark": problem_id, "Instance": "default", **attrs})
     benchmarks_df = pd.DataFrame(rows)
-    benchmarks_df.index = benchmarks_df["Benchmark"] + "-" + benchmarks_df["Instance"]
+    benchmarks_df.index = benchmarks_df["Benchmark"]
     return benchmarks_df
 
 

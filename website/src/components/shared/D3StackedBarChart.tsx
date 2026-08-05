@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
 import { ID3StackedBarChart } from "@/types/chart";
@@ -20,16 +20,50 @@ const D3StackedBarChart = ({
   rotateXAxisLabels = false,
   showXaxisLabel = true,
   directionalIndicator = undefined,
+  yDomainMax,
+  yTickCount = 4,
 }: ID3StackedBarChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. gap/layout changes in the parent
+  // flex row, or the sidebar nav expanding/collapsing) so the chart's SVG
+  // width never goes stale relative to its actual rendered container size.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!data.length) return;
 
-    const width = containerRef.current?.clientWidth || 400;
-    const margin = { top: 20, right: 10, bottom: 60, left: 20 };
+    const width = containerWidth || containerRef.current?.clientWidth || 400;
+    const margin = {
+      top: 20,
+      right: 10,
+      bottom: rotateXAxisLabels ? 75 : 60,
+      // Rotated labels are anchored at their end and swing up-and-left of
+      // the tick, so the first tick needs extra left margin or its label
+      // gets clipped by the container's left edge. Kept the same for
+      // non-rotated labels too, so charts placed side by side line up.
+      left: 40,
+    };
 
     // Clear previous SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -59,9 +93,31 @@ const D3StackedBarChart = ({
       .scaleLinear()
       .domain([
         0,
-        d3.max(stackedData[stackedData.length - 1], (d) => d[1]) || 0,
+        yDomainMax ??
+          d3.max(stackedData[stackedData.length - 1], (d) => d[1]) ??
+          0,
       ])
-      .range([height - margin.bottom, margin.top]);
+      .range([height - margin.bottom, margin.top])
+      // Snap the domain to "nice" round numbers for the requested tick
+      // count — without this, d3's tick-count hint is only a suggestion and
+      // can silently collapse to fewer ticks than asked for when the data
+      // max doesn't divide evenly.
+      .nice(yTickCount);
+
+    // Gridlines: very light horizontal lines at each y-tick, drawn first so
+    // bars paint on top of them.
+    svg
+      .append("g")
+      .attr("class", "grid")
+      .selectAll("line")
+      .data(yScale.ticks(yTickCount))
+      .join("line")
+      .attr("x1", margin.left)
+      .attr("x2", width - margin.right)
+      .attr("y1", (d) => yScale(d))
+      .attr("y2", (d) => yScale(d))
+      .attr("stroke", "#EEF1F6")
+      .attr("stroke-width", 1);
 
     // Tooltip
     const tooltip = createD3Tooltip();
@@ -101,7 +157,7 @@ const D3StackedBarChart = ({
 
     // Add axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale).ticks(6).tickSizeOuter(0);
+    const yAxis = d3.axisLeft(yScale).ticks(yTickCount).tickSizeOuter(0);
     // X-axis
     svg
       .append("g")
@@ -113,6 +169,8 @@ const D3StackedBarChart = ({
         g.selectAll("text")
           .attr("fill", "#A1A9BC")
           .style("text-anchor", rotateXAxisLabels ? "end" : "middle")
+          .attr("dx", rotateXAxisLabels ? "-0.6em" : null)
+          .attr("dy", rotateXAxisLabels ? "0.15em" : null)
           .attr("transform", rotateXAxisLabels ? "rotate(-45)" : "rotate(0)");
       });
 
@@ -161,6 +219,9 @@ const D3StackedBarChart = ({
     categoryKey,
     rotateXAxisLabels,
     windowWidth,
+    containerWidth,
+    yDomainMax,
+    yTickCount,
   ]);
 
   return (
@@ -189,8 +250,10 @@ const D3StackedBarChart = ({
           ))}
         </div>
       </div>
-      <div ref={containerRef}>
-        <svg ref={svgRef}></svg>
+      <div className="w-full overflow-x-auto" ref={containerRef}>
+        <div className="min-w-[200px]">
+          <svg ref={svgRef}></svg>
+        </div>
       </div>
     </div>
   );
