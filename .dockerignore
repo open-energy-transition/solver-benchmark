@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Website
+website/
+website-nextjs/
+
+# Infrastructure
+infrastructure/
+
+# Notebooks and docs
+notebooks/
+docs/
+pocs/
+
+# Large result files (results/metadata.yaml is needed, but CSV is regenerated)
+results/benchmark_results.csv
+
+# Runtime artifacts
+runner/benchmarks/
+runner/logs/
+runner/solutions/
+__pycache__/
+*.pyc
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+.DS_Store
