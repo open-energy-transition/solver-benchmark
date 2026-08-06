@@ -17,6 +17,7 @@ import yaml
 _CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
 _SOLVERS_CONFIG_PATH = _CONFIG_DIR / "solvers.yaml"
 _ELIGIBILITY_RULES_PATH = _CONFIG_DIR / "eligibility_rules.yaml"
+_SOLVER_OPTIONS_PATH = _CONFIG_DIR / "solver_options.yaml"
 
 # Comparison operators available to eligibility_rules.yaml's conditions. Each
 # takes (actual_value, expected_value_from_yaml) and returns whether it matches.
@@ -70,6 +71,56 @@ def load_eligibility_rules(
     """
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
+
+
+@functools.cache
+def load_solver_options(config_path: Path = _SOLVER_OPTIONS_PATH) -> dict[str, Any]:
+    """Load the per-solver tuning options from ``runner/config/solver_options.yaml``.
+
+    Parameters
+    ----------
+    config_path : Path, optional
+        Path to the YAML file to load. Defaults to the repo's own
+        ``runner/config/solver_options.yaml``; overridable for testing.
+
+    Returns
+    -------
+    dict[str, Any]
+        Parsed YAML with top-level keys ``shared`` (target values common to
+        multiple solvers) and ``solvers`` (each solver's own option keys,
+        some referencing ``shared`` via ``{"shared": <name>}``).
+    """
+    with open(config_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+def get_solver_options(
+    solver_name: str, config: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    """Return a solver's tuning options, with `shared` references resolved.
+
+    Parameters
+    ----------
+    solver_name : str
+        The solver's name, e.g. ``"highs"``.
+    config : dict[str, Any], optional
+        A pre-loaded solver-options config, e.g. for testing with fake
+        options. Defaults to :func:`load_solver_options`.
+
+    Returns
+    -------
+    dict[str, Any]
+        The solver's options, ready to pass to its linopy solver
+        constructor. Empty if the solver has no entry in
+        ``solver_options.yaml``.
+    """
+    config = config if config is not None else load_solver_options()
+    shared = config.get("shared", {})
+    options = config.get("solvers", {}).get(solver_name, {})
+    return {
+        key: shared[value["shared"]] if isinstance(value, dict) else value
+        for key, value in options.items()
+    }
 
 
 def get_default_solvers(config: dict[str, Any] | None = None) -> list[str]:
