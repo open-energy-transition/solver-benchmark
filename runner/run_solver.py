@@ -221,7 +221,9 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     highs_variant = None
-    output_name = solver_name  # keep the requested name (e.g. "highs-hipo") for filenames
+    output_name = (
+        solver_name  # keep the requested name (e.g. "highs-hipo") for filenames
+    )
 
     # Handle highs-hipo solver variants separately
     try:
