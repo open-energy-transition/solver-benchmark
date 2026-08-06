@@ -19,6 +19,33 @@ import yaml
 from run_solver import HighsVariant
 
 
+def load_solver_config():
+    """Load the solver registry from solvers.yaml."""
+    config_path = Path(__file__).parent / "solvers.yaml"
+    with open(config_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+def get_solver_versions_from_config(solvers, year):
+    """Look up solver versions for a given year from solvers.yaml.
+
+    Returns a dict mapping solver name to {"version": str, "env": str|None}.
+    HiGHS-HiPO variants use the same highspy package/env as plain "highs",
+    since HiPO now runs through highspy directly instead of a separate binary.
+    """
+    config = load_solver_config()
+    solver_versions = {}
+    for solver in solvers:
+        lookup_solver = "highs" if solver in [v.value for v in HighsVariant] else solver
+        solver_entries = config["solvers"].get(lookup_solver, {})
+        for version, entry in solver_entries.items():
+            if str(entry["year"]) == str(year):
+                solver_versions[solver] = {"version": version, "env": entry.get("env")}
+                break
+
+    return solver_versions
+
+
 def get_conda_package_versions(solvers, env_name=None):
     try:
         # List packages in the conda environment
@@ -52,14 +79,8 @@ def get_conda_package_versions(solvers, env_name=None):
         }
         solver_versions = {}
         for solver in solvers:
-            # Handle highs-hipo variants as special cases - not conda packages
-            if solver in [
-                variant.value for variant in HighsVariant
-            ]:  # For py3.10 compatibility
-                solver_versions[solver] = get_highs_hipo_version()
-            else:
-                package = name_to_pkg.get(solver, solver)
-                solver_versions[solver] = installed_packages.get(package, None)
+            package = name_to_pkg.get(solver, solver)
+            solver_versions[solver] = installed_packages.get(package, None)
 
         return solver_versions
 
@@ -238,37 +259,65 @@ def write_csv_summary_row(mean_stddev_csv, benchmark_name, metrics, run_id, time
         )
 
 
-def benchmark_solver(input_file, solver_name, timeout, solver_version):
+def _systemd_available():
+    """Check if systemd is running (not just installed)."""
+    return shutil.which("systemd-run") and os.path.isdir("/run/systemd/system")
+
+
+def benchmark_solver(input_file, solver_name, timeout, solver_version, env_name=None):
     available_memory_bytes = psutil.virtual_memory().available
     memory_limit_bytes = int(available_memory_bytes * 0.95)
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
-    print(f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)")
 
-    command = ["systemd-run"]
+    command = []
 
-    if os.geteuid() != 0:
-        command.append("--user")
-
-    for env_var in [
-        "ARTELYS_LICENSE",
-        "XPRESS",
-        "LD_LIBRARY_PATH",
-        "MOSEKLM_LICENSE_FILE",
-    ]:
-        val = os.environ.get(env_var)
-        if val:
-            command.append(f"--setenv={env_var}={val}")
+    if _systemd_available():
+        print(
+            f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)"
+        )
+        command.append("systemd-run")
+        if os.geteuid() != 0:
+            command.append("--user")
+        command.extend(
+            [
+                "--scope",
+                f"--property=MemoryMax={memory_limit_bytes}",
+                "--property=MemorySwapMax=0",
+            ]
+        )
+        # systemd-run doesn't inherit the caller's environment by default, so
+        # license env vars for commercial solvers must be passed explicitly.
+        # Without systemd-run, subprocess.run() below inherits them normally.
+        for env_var in [
+            "ARTELYS_LICENSE",
+            "XPRESS",
+            "LD_LIBRARY_PATH",
+            "MOSEKLM_LICENSE_FILE",
+        ]:
+            val = os.environ.get(env_var)
+            if val:
+                command.append(f"--setenv={env_var}={val}")
+    else:
+        print(
+            "WARNING: systemd not available, running without memory limit enforcement"
+        )
 
     command.extend(
         [
-            "--scope",
-            f"--property=MemoryMax={memory_limit_bytes}",  # Set resident memory limit
-            "--property=MemorySwapMax=0",  # Disable swap to ensure only physical RAM is used
             "/usr/bin/time",
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
             f"{timeout}s",
+        ]
+    )
+
+    # Use conda run to execute in the solver's env, or plain python for the current env
+    if env_name:
+        command.extend(["conda", "run", "-n", env_name])
+
+    command.extend(
+        [
             "python",
             f"{Path(__file__).parent / 'run_solver.py'}",
             solver_name,
@@ -286,13 +335,17 @@ def benchmark_solver(input_file, solver_name, timeout, solver_version):
         encoding="utf-8",
     )
 
+    # DEBUG
+    if result.stderr:
+        print(f"STDERR from {solver_name} on {input_file}:\n{result.stderr}")
+
     # Append the stderr to the log file
     log_file = (
         Path(__file__).parent
         / "logs"
         / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
     )
-    if log_file.exists:
+    if log_file.exists():
         with open(log_file, "a") as f:
             f.write("\nSTDERR:\n")
             f.write(result.stderr)
@@ -380,32 +433,6 @@ def get_highs_binary_version():
     except Exception as e:
         print(f"Error getting HiGHS binary version: {str(e)}")
         return "unknown"
-
-
-def get_highs_hipo_version():
-    """Get the version of the HiGHS-HiPO binary from the --version command"""
-    if os.geteuid() != 0:
-        highs_hipo_binary = "/home/madhukar/oet/solver-benchmark/highs-installs/highs-hipo-workspace/HiGHS/build/bin/highs"
-    else:
-        highs_hipo_binary = "/opt/highs-hipo-workspace/HiGHS/build/bin/highs"
-
-    try:
-        result = subprocess.run(
-            [highs_hipo_binary, "--version"],
-            capture_output=True,
-            text=True,
-            check=True,
-            encoding="utf-8",
-        )
-
-        version_match = re.search(r"HiGHS version (\d+\.\d+\.\d+)", result.stdout)
-        if version_match:
-            return version_match.group(1) + "-hipo"
-
-        return "unknown-hipo"
-    except Exception as e:
-        print(f"Error getting HiGHS-HiPO binary version: {str(e)}")
-        return "unknown-hipo"
 
 
 def benchmark_highs_binary():
@@ -521,10 +548,37 @@ def main(
     # Track the last time we ran the reference benchmark
     last_reference_run = 0
 
-    # Load benchmarks from YAML file
+    # Load benchmarks from YAML file. Supports both the flat "problems" schema
+    # (each entry is a standalone problem, e.g. results/metadata_subset.yaml)
+    # and the nested "benchmarks"/"Sizes" schema generated for VM/local runs
+    # by runner/utils.py's allocate_benchmarks and create_local_benchmark_yaml.
     with open(benchmark_yaml_path, "r") as file:
         yaml_content = yaml.safe_load(file)
-        benchmarks_info = yaml_content["benchmarks"]
+        if "problems" in yaml_content:
+            benchmarks_info = {
+                problem_id: {
+                    "Problem class": problem_data.get("Problem class"),
+                    "Sizes": [
+                        {
+                            "Name": "default",
+                            "Size": problem_data.get("Size"),
+                            **(
+                                {"URL": problem_data["URL"]}
+                                if "URL" in problem_data
+                                else {}
+                            ),
+                            **(
+                                {"Path": problem_data["Path"]}
+                                if "Path" in problem_data
+                                else {}
+                            ),
+                        }
+                    ],
+                }
+                for problem_id, problem_data in yaml_content["problems"].items()
+            }
+        else:
+            benchmarks_info = yaml_content["benchmarks"]
         # Read timeout from top-level YAML if present
         yaml_timeout_seconds = yaml_content.get("timeout_seconds")
 
@@ -542,7 +596,7 @@ def main(
     benchmarks_folder = Path(__file__).parent / "benchmarks/"
     os.makedirs(benchmarks_folder, exist_ok=True)
 
-    solvers_versions = get_conda_package_versions(solvers, f"benchmark-{year}")
+    solvers_versions = get_solver_versions_from_config(solvers, year)
 
     # Preprocess the sizes and make a list of individual benchmark files to run on
     processed_benchmarks = []
@@ -618,11 +672,11 @@ def main(
                 )
                 continue
 
-            # Restrict highs-hipo variants to 2025 and LPs only
+            # Restrict highs-hipo variants to 2026 and LPs only
             if solver in [
                 variant.value for variant in HighsVariant
             ] and (  # For py3.10 compatibility
-                year != "2025" or benchmark["class"] != "LP"
+                year != "2026" or benchmark["class"] != "LP"
             ):
                 print(
                     f"Solver {solver} is only available for LP benchmarks and year 2025."
@@ -630,10 +684,12 @@ def main(
                 )
                 continue
 
-            solver_version = solvers_versions.get(solver)
-            if not solver_version:
+            solver_info = solvers_versions.get(solver)
+            if not solver_info:
                 print(f"Solver {solver} is not available. Skipping.")
                 continue
+            solver_version = solver_info["version"]
+            solver_env = solver_info["env"]
 
             metrics = {}
             runtimes = []
@@ -649,7 +705,11 @@ def main(
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
                 metrics = benchmark_solver(
-                    benchmark["path"], solver, timeout, solver_version
+                    benchmark["path"],
+                    solver,
+                    timeout,
+                    solver_version,
+                    env_name=solver_env,
                 )
 
                 metrics["size"] = benchmark["size"]

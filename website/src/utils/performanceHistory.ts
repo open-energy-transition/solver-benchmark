@@ -37,7 +37,7 @@ export const buildSolverYearlyMetrics = (
           runtime: null,
           memoryUsage: null,
         },
-        numSolvedBenchmark: 0,
+        numSolvedProblems: 0,
         version:
           benchmarkResults.find(
             (result) =>
@@ -70,7 +70,7 @@ export const buildSolverYearlyMetrics = (
       d.sgm.memoryUsage = calculateSgm(
         d.benchmarkResults.map((res) => res.memoryUsage),
       );
-      d.numSolvedBenchmark = d.benchmarkResults.filter(
+      d.numSolvedProblems = d.benchmarkResults.filter(
         (res) => res.status === "ok",
       ).length;
     });
@@ -139,33 +139,33 @@ export const getSGMData = (
 };
 
 /**
- * Gets the number of solved benchmarks data
+ * Gets the number of solved problems
  * @param solverYearlyMetrics - The metrics to process
- * @returns Chart data with solved benchmark counts
+ * @returns Chart data with solved problem counts
  */
-export const getNumSolvedBenchMark = (
+export const getNumSolvedProblems = (
   solverYearlyMetrics: ISolverYearlyMetrics[],
 ): ISolverYearlyChartData[] => {
-  const numSolvedBenchMark: ISolverYearlyChartData[] = [];
+  const numSolvedProblems: ISolverYearlyChartData[] = [];
   solverYearlyMetrics.forEach((solverYearlyMetric) => {
     solverYearlyMetric.data.forEach((solverData) => {
-      if (solverData.numSolvedBenchmark > 0) {
-        numSolvedBenchMark.push({
+      if (solverData.numSolvedProblems > 0) {
+        numSolvedProblems.push({
           solver: solverYearlyMetric.solver as SolverType,
           year: solverData.year,
-          value: solverData.numSolvedBenchmark,
+          value: solverData.numSolvedProblems,
           version: solverData.version,
         });
       }
     });
   });
-  return numSolvedBenchMark;
+  return numSolvedProblems;
 };
 
 /**
  * Generates chart data with 2024-2025 combined data
  * @param solverYearlyMetrics - The metrics to process
- * @returns Chart data for runtime, memory usage, and solved benchmarks
+ * @returns Chart data for runtime, memory usage, and solved problems
  */
 export const generateChartData = (
   solverYearlyMetrics: ISolverYearlyMetrics[],
@@ -183,7 +183,7 @@ export const generateChartData = (
         year: d.year,
       }))
       .sort(yearSort),
-    numSolvedBenchMark: getNumSolvedBenchMark(solverYearlyMetrics)
+    numSolvedProblems: getNumSolvedProblems(solverYearlyMetrics)
       .map((d) => ({
         ...d,
         year: d.year,

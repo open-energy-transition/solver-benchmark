@@ -56,7 +56,7 @@ variable "enable_gcs_upload" {
 variable "gcs_bucket_name" {
   description = "Name of the GCS bucket to upload benchmark results"
   type        = string
-  default     = "solver-benchmarks-testing"
+  default     = "solver-benchmarks"
 }
 
 variable "auto_destroy_vm" {

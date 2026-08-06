@@ -101,7 +101,7 @@ fi
 
 # Clone the repository
 echo "Cloning repository..."
-git clone --depth=1 -b commercial-solvers-run https://github.com/open-energy-transition/solver-benchmark.git
+git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing reference Highs..."
@@ -110,54 +110,6 @@ gsutil cp gs://solver-benchmarks/HiGHSstatic.tar.gz ./
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
-
-# Install HiGHS-HiPO from `latest` branch by building from source
-echo "Installing HiGHS from latest branch from source..."
-
-# Set up working directory
-HIGHS_HIPO_DIR="/opt/highs-hipo-workspace"
-mkdir -p "${HIGHS_HIPO_DIR}"
-cd "${HIGHS_HIPO_DIR}"
-
-# 2. Clone METIS
-echo "Cloning METIS (patched version)..."
-git clone --depth=1 --branch 521-ts https://github.com/galabovaa/METIS.git
-
-# 3. Create installs directory
-echo "Creating installs directory..."
-mkdir -p installs
-
-# 4. Install METIS
-echo "Installing METIS..."
-pushd METIS
-cmake -S. -B build -DGKLIB_PATH="${HIGHS_HIPO_DIR}/METIS/GKlib" \
-  -DCMAKE_INSTALL_PREFIX="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
-cmake --install build
-popd
-
-# 7. Clone and build HiGHS with hipo support
-echo "Cloning HiGHS repository..."
-git clone --depth=1 https://github.com/ERGO-Code/HiGHS.git
-cd HiGHS
-
-# Checkout the latest branch as of Nov 26, 2025
-echo "Checking out branch latest..."
-HIPO_COMMIT_SHA="9e8322ac32c3e95cff3c9dfd1abd9b4a32ed925c"
-git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
-git checkout "${HIPO_COMMIT_SHA}"
-
-# 8. Configure HiGHS with HIPO enabled and dependency paths
-echo "Configuring HiGHS with HIPO support..."
-cmake -S. -B build \
-      -DHIPO=ON \
-      -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
-
-# Verify the installation
-echo "Verifying HiGHS HiPO installation..."
-"${HIGHS_HIPO_DIR}/HiGHS/build/bin/highs" --version
-echo "HiGHS HiPO installation completed"
 
 # Go back to root directory
 cd /
@@ -326,8 +278,14 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
 
         echo "Uploading ${compressed_file} to GCS bucket..."
 
-        # Check if file contains "gurobi" in the name
-        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
+        # Commercial solvers' license terms may restrict publishing benchmark
+        # comparisons, so route their logs to the restricted bucket instead.
+        if [[ "${filename}" == *"gurobi"* || "${filename}" == *"cplex"* || "${filename}" == *"mosek"* || "${filename}" == *"knitro"* || "${filename}" == *"xpress"* ]]; then
+            echo "File contains a commercial solver name, storing in restricted folder..."
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
+        else
+            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
+        fi
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded ${filename}.gz"

@@ -40,19 +40,18 @@ const PerformanceScalling = () => {
     return result.status === "ok";
   });
 
-  const successfulBenchmarkData = Array.from(
+  const successfulProblemsData = Array.from(
     new Set(
       successfulResults.map((result) => `${result.benchmark} ${result.size}`),
     ),
   ).reduce<Record<string, { runtime: number; numVariables: number }>>(
-    (acc, instance) => {
-      const [benchmark, size] = instance.split(" ");
+    (acc, problemKey) => {
+      const [benchmark, size] = problemKey.split(" ");
       const numVariables =
-        metaData[benchmark as keyof MetaData].sizes.find((s) => s.name === size)
-          ?.numVariables ?? 0;
+        metaData[`${benchmark}-${size}` as keyof MetaData]?.numVariables ?? 0;
       return {
         ...acc,
-        [instance]: {
+        [problemKey]: {
           runtime: Number.MAX_VALUE,
           numVariables: numVariables || 0,
         },
@@ -63,22 +62,22 @@ const PerformanceScalling = () => {
 
   successfulResults.forEach((result) => {
     const key = `${result.benchmark} ${result.size}`;
-    if (successfulBenchmarkData[key].runtime > result.runtime) {
-      successfulBenchmarkData[key].runtime = result.runtime;
+    if (successfulProblemsData[key].runtime > result.runtime) {
+      successfulProblemsData[key].runtime = result.runtime;
     }
   });
 
-  const benchmarkInstances = new Set(
+  const problemKeys = new Set(
     benchmarkResults.map((result) => `${result.benchmark} ${result.size}`),
   );
 
-  const timedOutBenchmarkData: {
+  const timedOutProblemsData: {
     key: string;
     numVariables: number | null | undefined;
     runtime: number | undefined;
   }[] = [];
 
-  Array.from(benchmarkInstances).forEach((key) => {
+  Array.from(problemKeys).forEach((key) => {
     const [benchmark, size] = key.split(" ");
     const statuses = benchmarkResults
       .filter((result) => {
@@ -86,11 +85,10 @@ const PerformanceScalling = () => {
       })
       .map((result) => result.status);
     if (statuses.every((status) => status === "TO")) {
-      timedOutBenchmarkData.push({
+      timedOutProblemsData.push({
         key: key,
-        numVariables: metaData[benchmark as keyof MetaData].sizes.find(
-          (s) => s.name === size,
-        )?.numVariables,
+        numVariables:
+          metaData[`${benchmark}-${size}` as keyof MetaData]?.numVariables,
         runtime: benchmarkResults.find((result) => {
           return (
             result.benchmark === benchmark &&
@@ -103,17 +101,17 @@ const PerformanceScalling = () => {
   });
 
   const chartData = [
-    ...Object.keys(successfulBenchmarkData).map((key) => {
-      const d = successfulBenchmarkData[key];
+    ...Object.keys(successfulProblemsData).map((key) => {
+      const d = successfulProblemsData[key];
       return {
-        benchmark: key,
+        problem: key,
         numVariables: d.numVariables,
         runtime: d.runtime,
         status: "ok" as SolverStatusType,
       };
     }),
-    ...timedOutBenchmarkData.map((d) => ({
-      benchmark: d.key,
+    ...timedOutProblemsData.map((d) => ({
+      problem: d.key,
       numVariables: d.numVariables ?? 0,
       runtime: d.runtime ?? 0,
       status: "TO" as SolverStatusType,
@@ -142,7 +140,7 @@ const PerformanceScalling = () => {
           <span className="text-sm text-navy">All solvers</span>
         </label>
       </div>
-      <div>
+      <div className="bg-white p-4 rounded-xl">
         <D3PlotChartPerformanceScaling
           chartData={chartData}
           minYaxis={minRuntime}

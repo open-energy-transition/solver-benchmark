@@ -1,0 +1,13 @@
+name: benchmark-knitro-2025
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+- pip:
+  # Last version released in 2025 per PyPI release history
+  - knitro==15.1.0

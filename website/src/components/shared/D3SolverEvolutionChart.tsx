@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import {
   createD3Tooltip,
@@ -7,6 +7,7 @@ import {
 } from "@/utils/chart";
 import DirectionalIndicator from "@/components/shared/DirectionalIndicator";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { getSolverLabel } from "@/utils/solvers";
 
 interface SolverEvolutionData {
   year: number;
@@ -22,7 +23,7 @@ interface ID3SolverEvolutionChart {
   height?: number;
   className?: string;
   colorIndex: number;
-  totalBenchmarks: number;
+  totalProblems: number;
   yRightDomain?: [number, number];
   yRightPadding?: number; // Padding percentage for speed-up axis (default: 0.15 = 15%)
 }
@@ -31,7 +32,7 @@ const D3SolverEvolutionChart = ({
   solverName,
   data,
   height = 300,
-  totalBenchmarks = 105,
+  totalProblems = 105,
   yRightDomain,
   yRightPadding = 0.15,
   className = "",
@@ -40,11 +41,35 @@ const D3SolverEvolutionChart = ({
   const svgRef = useRef(null);
   const solverColor = useMemo(() => getSolverColor(solverName), [solverName]);
   const windowWidth = useDebouncedWindowWidth(200);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart
+  // stays in sync with the actual rendered container size.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     if (data.length === 0) return;
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
+    const width = containerWidth || containerRef.current?.clientWidth || 600;
     const margin = { top: 20, right: 60, bottom: 60, left: 60 };
 
     // Clear previous SVG
@@ -72,7 +97,7 @@ const D3SolverEvolutionChart = ({
     // Left Y-axis (solved count)
     const yLeftScale = d3
       .scaleLinear()
-      .domain([0, roundUpToNearest(totalBenchmarks)])
+      .domain([0, roundUpToNearest(totalProblems)])
       .range([height - margin.bottom, margin.top]);
 
     // Right Y-axis (speed-up) - ensure reasonable range even for flat lines
@@ -307,12 +332,15 @@ const D3SolverEvolutionChart = ({
       .attr("font-size", "12px")
       .text("Version");
 
+    const yAxisLabelCenter =
+      margin.top + (height - margin.top - margin.bottom) / 2;
+
     svg
       .append("text")
       .attr("text-anchor", "middle")
       .attr("fill", solverColor)
       .attr("font-size", "12px")
-      .attr("transform", `translate(20, ${height / 2}) rotate(-90)`)
+      .attr("transform", `translate(20, ${yAxisLabelCenter}) rotate(-90)`)
       .text("Solved Problems");
 
     svg
@@ -320,15 +348,18 @@ const D3SolverEvolutionChart = ({
       .attr("text-anchor", "middle")
       .attr("fill", "#DC2626")
       .attr("font-size", "12px")
-      .attr("transform", `translate(${width - 20}, ${height / 2}) rotate(90)`)
+      .attr(
+        "transform",
+        `translate(${width - 20}, ${yAxisLabelCenter}) rotate(90)`,
+      )
       .text("Speed-up");
 
     svg
       .append("line")
       .attr("x1", margin.left)
       .attr("x2", width - margin.right)
-      .attr("y1", yLeftScale(totalBenchmarks))
-      .attr("y2", yLeftScale(totalBenchmarks))
+      .attr("y1", yLeftScale(totalProblems))
+      .attr("y2", yLeftScale(totalProblems))
       .attr("stroke", "#43BF94")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "8,4")
@@ -336,23 +367,23 @@ const D3SolverEvolutionChart = ({
     svg
       .append("text")
       .attr("x", margin.left + 50)
-      .attr("y", yLeftScale(totalBenchmarks) - 5)
+      .attr("y", yLeftScale(totalProblems) - 5)
       .attr("text-anchor", "end")
       .attr("fill", "#43BF94")
       .attr("font-size", "12px")
       .attr("font-weight", "bold")
-      .text(`All: ${totalBenchmarks}`);
+      .text(`All: ${totalProblems}`);
 
     return () => {
       tooltip.remove();
     };
-  }, [data, solverColor, solverName, windowWidth]);
+  }, [data, solverColor, solverName, windowWidth, containerWidth]);
 
   return (
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
       <div className="mb-4 pl-4 lg:pl-0">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          {solverName} Performance Evolution
+          {getSolverLabel(solverName)} Performance Evolution
         </h3>
         <div className="sm:flex gap-4 text-sm">
           <div className="flex items-center gap-2">
@@ -371,11 +402,11 @@ const D3SolverEvolutionChart = ({
       <div ref={containerRef} className="relative">
         <svg ref={svgRef}></svg>
 
-        {/* Left indicator: Lower is better */}
+        {/* Left indicator: Higher is better */}
         <div className="absolute left-2 scale-75 lg:scale-100 lg:left-[18px] top-1/2 -translate-y-1/2 pointer-events-none">
           <DirectionalIndicator
             color={solverColor}
-            direction="lower"
+            direction="higher"
             size="md"
           />
         </div>

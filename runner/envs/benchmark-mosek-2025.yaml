@@ -1,0 +1,14 @@
+name: benchmark-mosek-2025
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+- pip:
+  # Last stable version released in 2025 (11.1b1 is a beta from Nov 2025;
+  # first stable 11.1.x release was 11.1.2 in Jan 2026)
+  - mosek==11.0.30

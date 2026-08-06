@@ -7,97 +7,73 @@ import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { formatDecimal } from "@/utils/number";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
+import { getProblemKey } from "@/utils/results";
 
 interface ISolverRuntimeComparison {
-  benchmarkName: string;
-  benchmarkDetail: MetaDataEntry;
+  problemId: string;
+  problemDetail: MetaDataEntry;
 }
 
 const SolverRuntimeComparison = ({
-  benchmarkName,
-  benchmarkDetail,
+  problemId,
+  problemDetail,
 }: ISolverRuntimeComparison) => {
   const benchmarkLatestResults = useBenchmarkResults();
 
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
       return benchmarkLatestResults.find(
-        (result) =>
-          result.solver === key &&
-          result.benchmark === benchmarkName &&
-          result.size === category,
+        (result) => result.solver === key && getProblemKey(result) === category,
       );
     },
-    [benchmarkLatestResults, benchmarkName],
+    [benchmarkLatestResults],
   );
 
-  const chartData = benchmarkDetail.sizes
-    .slice() // Create a copy to avoid mutating original
-    .sort((a, b) => {
-      // Sort by number of variables ascending
-      const aVars = a.numVariables ?? 0;
-      const bVars = b.numVariables ?? 0;
-      return aVars - bVars;
-    })
-    .map((s) => {
-      const data = benchmarkLatestResults.filter(
-        (result) =>
-          result.size === s.name && result.benchmark === benchmarkName,
-      );
+  // The chart has a single category: this problem itself.
+  const problemResults = benchmarkLatestResults.filter(
+    (result) => getProblemKey(result) === problemId,
+  );
 
-      const res: { [solver: string]: number } = {};
-      data.forEach((d) => {
-        res[d.solver] = d.runtime;
-      });
-      return {
-        size: s.name,
-        ...res,
-      };
-    })
-    .filter((d) => {
-      return Object.keys(d).length > 2; // Filter out sizes with no solver data
+  const chartData = (() => {
+    const res: { [solver: string]: number } = {};
+    problemResults.forEach((d) => {
+      res[d.solver] = d.runtime;
     });
+    // Filter out the case where there's no solver data at all
+    return Object.keys(res).length > 0
+      ? [
+          {
+            size: problemId,
+            ...res,
+          },
+        ]
+      : [];
+  })();
+
+  const okData = problemResults.filter((r) => r.status === "ok");
+  const nonOkData = problemResults.filter((r) => r.status !== "ok");
 
   // Calculate the maximum ratio across all non-OK bars
-  const maxNonOkRatio = Math.max(
-    ...benchmarkDetail.sizes.map((size) => {
-      const categoryData = benchmarkLatestResults.filter(
-        (result) =>
-          result.size === size.name && result.benchmark === benchmarkName,
-      );
-
-      const okData = categoryData.filter((r) => r.status === "ok");
-      const nonOkData = categoryData.filter((r) => r.status !== "ok");
-
-      if (okData.length === 0 || nonOkData.length === 0) return 1.1;
-
-      const fastestOkRuntime = Math.min(...okData.map((r) => r.runtime));
-      const maxNonOkRatio = Math.max(
-        ...nonOkData.map((r) => r.runtime / fastestOkRuntime),
-      );
-
-      return maxNonOkRatio;
-    }),
-    1.1, // Ensure minimum of 1.1
-  );
+  const maxNonOkRatio =
+    okData.length === 0 || nonOkData.length === 0
+      ? 1.1
+      : Math.max(
+          ...nonOkData.map(
+            (r) => r.runtime / Math.min(...okData.map((ok) => ok.runtime)),
+          ),
+          1.1, // Ensure minimum of 1.1
+        );
 
   // Calculate the maximum normalized runtime across all OK statuses
-  const maxOkNormalizedRuntime = Math.max(
-    ...benchmarkDetail.sizes.map((size) => {
-      const data = benchmarkLatestResults.filter(
-        (result) =>
-          result.size === size.name &&
-          result.benchmark === benchmarkName &&
-          result.status === "ok",
-      );
-      if (data.length === 0) return 1.0;
-
-      const minRuntime = Math.min(...data.map((d) => d.runtime));
-      const normalizedRuntimes = data.map((d) => d.runtime / minRuntime);
-      return Math.max(...normalizedRuntimes);
-    }),
-    1.0,
-  );
+  const maxOkNormalizedRuntime =
+    okData.length === 0
+      ? 1.0
+      : Math.max(
+          ...okData.map(
+            (d) => d.runtime / Math.min(...okData.map((r) => r.runtime)),
+          ),
+          1.0,
+        );
 
   // If the non-OK ratio is too extreme (>50x), fall back to using the worst OK performance + buffer
   // This prevents charts from becoming unreadable due to extreme timeout values
@@ -155,24 +131,25 @@ const SolverRuntimeComparison = ({
   const getXAxisTickFormat = useCallback(
     (value: string) => {
       const benchmarkData = benchmarkLatestResults.filter(
-        (result) => result.size === value && result.benchmark === benchmarkName,
+        (result) => getProblemKey(result) === value,
       );
-      const modelSize = benchmarkDetail.sizes.find((s) => s.name === value)
-        ?.size;
+      const modelSize = problemDetail.size;
 
       const minRuntime = Math.min(
         ...benchmarkData.map((result) => result.runtime),
       );
-      return `Size instance: ${value} (${modelSize}) \n
+      return `Problem: ${value} (${modelSize}) \n
       Fastest solver's runtime: ${humanizeSeconds(minRuntime)}`;
     },
-    [benchmarkLatestResults, benchmarkName],
+    [benchmarkLatestResults, problemDetail],
   );
 
   return (
-    <div className="my-4 mt- rounded-xl">
+    <div className="my-4 rounded-xl">
       <D3GroupedBarChart
         title="Solver Runtime Comparison"
+        outerBgClassName="bg-[#E6ECF5]"
+        marginBottom={70}
         chartData={chartData}
         categoryKey="size"
         colors={(d) => {
@@ -189,7 +166,7 @@ const SolverRuntimeComparison = ({
         axisLabelTitle={getAxisLabelTitle}
         sortByValue
         xAxisTickFormat={getXAxisTickFormat}
-        xAxisBarTextClassName="text-[8px] fill-dark-grey"
+        xAxisBarTextClassName="text-[11px] fill-dark-grey"
         useLogScale={true}
         directionalIndicator="lower"
         transformHeightValue={(d) => {

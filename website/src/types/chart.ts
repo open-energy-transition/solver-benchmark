@@ -53,6 +53,8 @@ export interface ID3GroupedBarChart {
   }) => React.ReactNode;
   /** Optional Tailwind class to apply to the inner card background (e.g. 'bg-white' or 'bg-off-white') */
   cardBgClassName?: string;
+  /** Optional Tailwind class to apply to the outer wrapper background, overriding the default 'bg-[#F4F6FA]' (e.g. to blend into a differently-colored parent container) */
+  outerBgClassName?: string;
   /** Optional Tailwind class to apply to text color inside the inner card (e.g. 'text-dark-grey') */
   cardTextClassName?: string;
   /** Color used for size annotation text (hex or CSS color). Defaults to '#555' if not provided. */
@@ -63,6 +65,8 @@ export interface ID3GroupedBarChart {
   titlePosition?: "top" | "bottom-center";
   /** Optional overlay rendered above the rightmost bar group (e.g. a callout note). */
   rightmostGroupNote?: React.ReactNode;
+  /** Bottom margin (px) reserved for x-axis labels on desktop. Defaults to 100. */
+  marginBottom?: number;
 }
 
 export interface ID3StackedBarChart {
@@ -78,4 +82,8 @@ export interface ID3StackedBarChart {
   rotateXAxisLabels?: boolean;
   showXaxisLabel?: boolean;
   directionalIndicator?: Direction;
+  /** Shared y-axis domain max, so multiple charts can use the same y range/ticks. Defaults to this chart's own data max. */
+  yDomainMax?: number;
+  /** Approximate number of y-axis ticks (passed to d3's .ticks()). Defaults to 4. */
+  yTickCount?: number;
 }
