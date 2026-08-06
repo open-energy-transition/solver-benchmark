@@ -110,7 +110,6 @@ docker run --rm \
 ### Limitations
 
 - **No memory limit enforcement**: `systemd-run` is not available inside Docker, so OOM protection is skipped. Solvers that exceed available memory will be killed by the kernel OOM killer instead.
-- **HiGHS-HiPO**: The HiPO solver variant requires a custom build and is not available in the Docker image.
 - **Performance overhead**: Docker adds minimal overhead, but for official benchmark submissions native Linux is recommended.
 
 ## Running run_benchmarks.py

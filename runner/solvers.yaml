@@ -17,6 +17,9 @@ solvers:
     "1.12.0":
       year: 2025
       env: benchmark-highs-2025
+    "1.15.1":
+      year: 2026
+      env: benchmark-highs-2026
 
   scip:
     "8.0.3":
