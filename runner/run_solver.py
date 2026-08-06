@@ -39,7 +39,6 @@ class HighsVariant(str, Enum):
                 variant = {
                     "solver": "hipo",
                     "hipo_block_size": 64,
-                    "hipo_metis_no2hop": "true",
                 }
             case _:
                 raise ValueError(f"Unknown HighsVariant: {self}")
@@ -121,9 +120,11 @@ def get_solver(solver_name, highs_variant=None):
         },
     }
 
-    kwargs = dict(solver_options.get(solver_name, {}))
+    kwargs = {}
     if highs_variant:
         kwargs.update(highs_variant.options())
+    else:
+        kwargs.update(solver_options.get(solver_name, {}))
 
     return solver_class(options=kwargs)
 
@@ -263,6 +264,8 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
         return None
+
+
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     highs_variant = None
