@@ -9,3 +9,4 @@ dependencies:
 - requests>=2.32
 - linopy>=0.5.5
 - highspy==1.15.1
+- highspy-extras==1.15.1
