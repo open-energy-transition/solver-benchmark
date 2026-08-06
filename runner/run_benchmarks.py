@@ -16,6 +16,7 @@ from socket import gethostname
 import psutil
 import requests
 import yaml
+
 from run_solver import HighsVariant
 
 
