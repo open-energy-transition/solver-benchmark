@@ -20,9 +20,9 @@ Don't worry if you're not familiar with git or GitHub! Please write to us, or op
 
 1. The JuMP-HiGHS benchmarks in `benchmarks/jump_highs_platform/` contain only the metadata for the benchmarks that are present in https://github.com/jump-dev/open-energy-modeling-benchmarks/tree/main/instances. These are fetched automatically by the benchmark runner from GitHub.
 
-1. The metadata of all benchmarks under `benchmarks/` are collected by the following script to generate a unified `results/metadata.yaml` file, when run as follows:
+1. The metadata of all benchmarks under `benchmarks/` are collected by the following script to generate a unified `results/metadata.yaml` file, when run as follows (using the `benchmarks` [pixi](https://pixi.sh) environment defined in the root `pixi.toml`):
    ```shell
-   python benchmarks/merge_metadata.py
+   pixi run -e benchmarks python benchmarks/merge_metadata.py
    ```
 
 The unified `results/metadata.yaml` contains all details of each benchmark problem, including the download link, and is used by the benchmark runner (below).
