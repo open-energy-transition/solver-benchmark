@@ -1,3 +1,17 @@
+# Solver registry consumed by runner/utils/config.py.
+#
+# `solvers`: per solver, per version, the release year and the per-solver-year
+# conda env that provides it (extends the registry introduced by #416).
+#
+# `packages`: the conda/pip package name for each solver, where it differs from
+# the solver's own name (used to cross-check what's actually installed in an
+# env against what this file expects).
+#
+# `default_solvers`: the CLI's default `--solvers` list when none is given.
+#
+# Runtime/availability eligibility rules (which solver/year/size/class
+# combinations are actually allowed to run) live in eligibility_rules.yaml,
+# next to this file.
 solvers:
   glpk:
     "5.0":
@@ -76,3 +90,16 @@ solvers:
     "9.6.2":
       year: 2025
       env: benchmark-xpress-2025
+
+packages:
+  glpk: glpk
+  highs: highspy
+  scip: scip
+  gurobi: gurobi
+  cbc: coin-or-cbc
+  cplex: cplex
+  knitro: knitro
+  xpress: xpress
+  mosek: mosek
+
+default_solvers: [highs, scip, cbc, gurobi, glpk]

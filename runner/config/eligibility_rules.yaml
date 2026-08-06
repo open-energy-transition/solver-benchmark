@@ -1,0 +1,45 @@
+# Generic eligibility-rule engine, evaluated by runner/utils/config.py's
+# is_solver_eligible(). Matches arbitrary facts (solver/year/size_category/
+# problem_class today, but any future attribute works the same way) against
+# conditions built from comparison operators (`in`, `not_in`, `eq`, `gte`,
+# `lte`) -- adding a new guard means adding a rule below, not new code.
+#
+# Each rule's `when` says which facts it restricts (a fact missing from `when`
+# matches anything). Once triggered, eligibility requires satisfying at least
+# one of `allow_any_of`'s alternatives (each a set of required conditions, so
+# exceptions are just another alternative). Untriggered rules don't restrict
+# anything. Multiple triggered rules are AND'ed together.
+rules:
+  - name: large_problems_runtime_budget
+    when:
+      size_category: { in: ["L"] }
+    allow_any_of:
+      # From 2026 on, all solvers run on all problem sizes.
+      - year: { gte: "2026" }
+      # 2025 and earlier: only that year's solvers, plus CBC's exception
+      # (its latest release is 2024, not 2025).
+      - year: { in: ["2025"] }
+      - solver: { in: ["cbc"] }
+        year: { in: ["2024"] }
+
+  - name: highs_variant_availability
+    when:
+      solver:
+        {
+          in:
+            [
+              highs-hipo,
+              highs-hipo-32,
+              highs-hipo-64,
+              highs-hipo-128,
+              highs-ipm,
+            ],
+        }
+    allow_any_of:
+      # HiPO/IPX both ship in highspy from 2026, for LPs only. highs-ipm is
+      # kept on the same 2026+ restriction as the HiPO variants even though
+      # "ipx" appears as a documented solver option in 2025's HiGHS source --
+      # unconfirmed whether it was actually functional (vs. just declared) in
+      # that release's packaged wheel, so this stays conservative.
+      - year: { gte: "2026" }
+        problem_class: { in: ["LP"] }
