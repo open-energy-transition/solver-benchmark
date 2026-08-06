@@ -10,8 +10,8 @@ import { getLatestBenchmarkResult } from "@/utils/results";
 
 interface ISolverRuntimeComparison {
   sgmData?: TableRowType[];
-  uniqueBenchmarkCount?: number;
-  uniqueLatestBenchmarkCount?: number;
+  uniqueProblemCount?: number;
+  uniqueLatestProblemCount?: number;
   timeout?: number;
   chartData?: StackedBarData[];
   categoryKey?: string;
@@ -21,11 +21,11 @@ interface ISolverRuntimeComparison {
   hideLegend?: boolean;
   hideTitle?: boolean;
   titlePosition?: "top" | "bottom-center";
-  categoryBenchmarkCounts?: number[];
+  categoryProblemCounts?: number[];
   categoryMemoryLabels?: string[];
   showBarTopLabels?: boolean;
   sizeAnnotations?: string[];
-  formatBenchmarkSolved?: (params: {
+  formatProblemsSolved?: (params: {
     solved: number;
     total: number;
     timeout?: number;
@@ -36,8 +36,8 @@ interface ISolverRuntimeComparison {
 
 const SgmRuntimeChart = ({
   sgmData = [],
-  uniqueBenchmarkCount,
-  uniqueLatestBenchmarkCount,
+  uniqueProblemCount,
+  uniqueLatestProblemCount,
   timeout,
   chartData,
   categoryKey = "size",
@@ -47,8 +47,8 @@ const SgmRuntimeChart = ({
   hideLegend = false,
   hideTitle = false,
   titlePosition = "top" as const,
-  formatBenchmarkSolved = () => "",
-  categoryBenchmarkCounts,
+  formatProblemsSolved = () => "",
+  categoryProblemCounts,
   categoryMemoryLabels,
   showBarTopLabels = false,
   sizeAnnotations,
@@ -59,7 +59,7 @@ const SgmRuntimeChart = ({
 
   const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults);
 
-  const totalBenchmarks = new Set(
+  const totalProblems = new Set(
     latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
   ).size;
 
@@ -95,17 +95,23 @@ const SgmRuntimeChart = ({
     (d: ID3GroupedBarChartData) => {
       const solver = solverResults.find((s) => s.solver === d.key);
       if (mode === "solved-pct") {
-        return `Solver: ${d.key} v${solver?.version}<br/>
-                Timeout: ${humanizeSeconds(Number(d.category))}<br/>
-                Problems solved: ${Number(d.value).toFixed(1)}%`;
+        return `Solver: ${d.key} v${solver?.version}`;
       }
+      // Look up the runtime for this bar's own category (timeout group)
+      // rather than solver's overall aggregate, since a solver has a
+      // different average runtime in each group.
+      const categoryPoint = computedChartData.find(
+        (point) => String(point[categoryKey]) === String(d.category),
+      );
+      const runtimeForCategory = categoryPoint?.[d.key];
+      const runtime =
+        typeof runtimeForCategory === "number"
+          ? runtimeForCategory
+          : solver?.unnormalizedData.runtime ?? 0;
       return `Solver: ${d.key} v${solver?.version}<br/>
-              Average runtime: ${humanizeSeconds(
-                solver?.unnormalizedData.runtime ?? 0,
-              )} <br/>
-              Benchmarks solved: ${solver?.solvedBenchmarks} <br/>`;
+              Average runtime: ${humanizeSeconds(runtime)}`;
     },
-    [solverResults, mode],
+    [solverResults, mode, computedChartData, categoryKey],
   );
 
   const getAxisLabelTitle = useCallback(
@@ -133,8 +139,8 @@ const SgmRuntimeChart = ({
       );
 
       const fixedCount =
-        categoryBenchmarkCounts && idx >= 0
-          ? categoryBenchmarkCounts[idx]
+        categoryProblemCounts && idx >= 0
+          ? categoryProblemCounts[idx]
           : undefined;
       const memoryLabel =
         categoryMemoryLabels && idx >= 0
@@ -145,16 +151,15 @@ const SgmRuntimeChart = ({
         const point = computedChartData.find(
           (d) => String(d[categoryKey]) === String(category),
         );
-        const dynamicCount =
-          point?.uniqueBenchmarkCount ?? uniqueBenchmarkCount;
+        const dynamicCount = point?.uniqueProblemCount ?? uniqueProblemCount;
         const countDisplay =
           fixedCount !== undefined ? fixedCount : dynamicCount;
 
         if (mode === "solved-pct") {
           const lines = [
-            formatBenchmarkSolved({
-              solved: Number(countDisplay ?? totalBenchmarks),
-              total: totalBenchmarks,
+            formatProblemsSolved({
+              solved: Number(countDisplay ?? totalProblems),
+              total: totalProblems,
               timeout: Number(category),
             }),
           ];
@@ -169,9 +174,9 @@ const SgmRuntimeChart = ({
 
         // slowdown mode — removed "Fastest solver's average runtime" line
         const lines = [
-          formatBenchmarkSolved({
-            solved: Number(countDisplay ?? totalBenchmarks),
-            total: totalBenchmarks,
+          formatProblemsSolved({
+            solved: Number(countDisplay ?? totalProblems),
+            total: totalProblems,
             timeout: Number(category),
           }),
         ];
@@ -186,10 +191,8 @@ const SgmRuntimeChart = ({
 
       // Fallback (no chart data)
       const countDisplay =
-        fixedCount !== undefined ? fixedCount : uniqueBenchmarkCount;
-      const baseLines = [
-        `${countDisplay}/${totalBenchmarks} benchmark problems`,
-      ];
+        fixedCount !== undefined ? fixedCount : uniqueProblemCount;
+      const baseLines = [`${countDisplay}/${totalProblems} benchmark problems`];
       if (isNumericCategory)
         baseLines.push(`Timeout: ${humanizeSeconds(timeout ?? 0)}`);
       if (memoryLabel) baseLines.push(memoryLabel);
@@ -199,14 +202,14 @@ const SgmRuntimeChart = ({
       computedChartData,
       categoryKey,
       solverResults,
-      uniqueBenchmarkCount,
-      uniqueLatestBenchmarkCount,
+      uniqueProblemCount,
+      uniqueLatestProblemCount,
       timeout,
-      totalBenchmarks,
+      totalProblems,
       mode,
-      categoryBenchmarkCounts,
+      categoryProblemCounts,
       categoryMemoryLabels,
-      formatBenchmarkSolved,
+      formatProblemsSolved,
     ],
   );
 

@@ -8,8 +8,9 @@ import { humanizeSeconds } from "@/utils/string";
 import { ID3GroupedBarChartData } from "@/types/chart";
 import { formatDecimal, formatInteger } from "@/utils/number";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getProblemKey } from "@/utils/results";
 
-const BENCHMARKS_FILTERS = [
+const PROBLEM_FILTERS = [
   "genx-10_IEEE_9_bus_DC_OPF-no_uc-9-1h",
   // "pypsa-eur-elec-50-1h",
   // "pypsa-eur-elec-100-1h",
@@ -21,7 +22,7 @@ const BENCHMARKS_FILTERS = [
   // "ethos_fine_europe_60tp-175-720ts",
   "genx-10_IEEE_9_bus_DC_OPF-9-1h",
 ];
-const CATEGORY = "benchmark";
+const CATEGORY = "problem";
 
 interface IBenchmarkRuntimeComparison {
   xAxisLabelWrapLength?: number;
@@ -44,8 +45,8 @@ const BenchmarkRuntimeComparison = ({
     },
   ).filter((result) =>
     useHipoSolvers
-      ? BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`)
-      : BENCHMARKS_FILTERS.includes(`${result.benchmark}-${result.size}`) &&
+      ? PROBLEM_FILTERS.includes(`${result.benchmark}-${result.size}`)
+      : PROBLEM_FILTERS.includes(`${result.benchmark}-${result.size}`) &&
         !HIPO_SOLVERS.includes(result.solver),
   );
 
@@ -63,30 +64,30 @@ const BenchmarkRuntimeComparison = ({
     },
     [benchmarkLatestResults],
   );
-  const benchmarkWithStatus = BENCHMARKS_FILTERS.map((benchmark) => {
+  const problemsWithStatus = PROBLEM_FILTERS.map((problemId) => {
     const data = benchmarkLatestResults.filter(
-      (result) => `${result.benchmark}-${result.size}` === benchmark,
+      (result) => `${result.benchmark}-${result.size}` === problemId,
     );
     return {
-      benchmark,
+      problem: problemId,
       data,
     };
   });
-  const chartData = benchmarkWithStatus.map((d) => {
+  const chartData = problemsWithStatus.map((d) => {
     const res: { [solver: string]: number } = {};
     d.data.forEach((d) => {
       res[d.solver] = d.runtime;
     });
     return {
-      benchmark: d.benchmark,
+      problem: d.problem,
       ...res,
     };
   });
   const maxNormalizedRuntime = Math.max(
-    ...BENCHMARKS_FILTERS.map((benchmark) => {
+    ...PROBLEM_FILTERS.map((problemId) => {
       const data = benchmarkLatestResults.filter(
         (result) =>
-          `${result.benchmark}-${result.size}` === benchmark &&
+          `${result.benchmark}-${result.size}` === problemId &&
           result.status === "ok",
       );
       const res: { [solver: string]: number } = {};
@@ -105,17 +106,13 @@ const BenchmarkRuntimeComparison = ({
       );
 
       if (!benchmarkData) {
-        return `Benchmark: ${d}<br/>No benchmark data available`;
+        return `Problem: ${d}<br/>No result data available`;
       }
 
-      const metaDataEntry =
-        metaData[benchmarkData.benchmark as keyof typeof metaData];
-      const sizeData = metaDataEntry?.sizes.find(
-        (s) => s.name === benchmarkData.size,
-      );
+      const metaDataEntry = metaData[getProblemKey(benchmarkData)];
 
       if (!metaDataEntry) {
-        return `Benchmark: ${d}<br/>No metadata available`;
+        return `Problem: ${d}<br/>No metadata available`;
       }
 
       return `
@@ -127,15 +124,15 @@ const BenchmarkRuntimeComparison = ({
       Sectoral focus: ${metaDataEntry.sectoralFocus}<br/>
       Sectors: ${metaDataEntry.sectors}<br/>
       Time horizon: ${metaDataEntry.timeHorizon}<br/>
-      MILP features: ${metaDataEntry.milpFeatures}<br/>
-      Size: ${sizeData?.name} (${sizeData?.size})<br/>
-      Temporal resolution: ${sizeData?.temporalResolution || "N/A"}<br/>
-      Spatial resolution: ${sizeData?.spatialResolution || "N/A"}<br/>
-      Realistic: ${
-        metaDataEntry.sizes.some((s) => s.realistic) ? "true" : "false"
+      MILP features: ${(metaDataEntry.milpFeatures ?? []).join(", ")}<br/>
+      Size: ${benchmarkData.size} (${metaDataEntry.size})<br/>
+      Temporal resolution: ${metaDataEntry.temporalResolution || "N/A"}<br/>
+      Spatial resolution: ${metaDataEntry.spatialResolution || "N/A"}<br/>
+      Realistic: ${metaDataEntry.realistic ? "true" : "false"}<br/>
+      Num. constraints: ${
+        formatInteger(metaDataEntry.numConstraints) || "N/A"
       }<br/>
-      Num. constraints: ${formatInteger(sizeData?.numConstraints) || "N/A"}<br/>
-      Num. variables: ${formatInteger(sizeData?.numVariables) || "N/A"}<br/>
+      Num. variables: ${formatInteger(metaDataEntry.numVariables) || "N/A"}<br/>
               `;
     },
     [metaData, benchmarkLatestResults],
@@ -189,7 +186,7 @@ const BenchmarkRuntimeComparison = ({
 
   const getXAxisTickFormat = useCallback(
     (category: string) => {
-      const solverData = chartData.find((data) => data.benchmark === category);
+      const solverData = chartData.find((data) => data.problem === category);
       const benchmarkData = findBenchmarkData("highs", category);
 
       const minRuntime = Math.min(
@@ -202,8 +199,9 @@ const BenchmarkRuntimeComparison = ({
           }
         }),
       );
-      const metaDataEntry =
-        metaData[benchmarkData?.benchmark as keyof typeof metaData];
+      const metaDataEntry = benchmarkData
+        ? metaData[getProblemKey(benchmarkData)]
+        : undefined;
       const [] = category.split("-");
       return `${benchmarkData?.benchmark} \n
       Size: ${benchmarkData?.size} \n
@@ -217,6 +215,8 @@ const BenchmarkRuntimeComparison = ({
     <div className="my-4 mt-8 rounded-xl">
       <D3GroupedBarChart
         title="Runtime relative to fastest solver"
+        outerBgClassName="bg-transparent"
+        marginBottom={70}
         chartData={chartData}
         categoryKey={CATEGORY}
         colors={(d) => {
@@ -241,8 +241,8 @@ const BenchmarkRuntimeComparison = ({
         directionalIndicator="lower"
         transformHeightValue={(d) => {
           const dataPoint = Number(d.value);
-          const status = benchmarkWithStatus
-            .find((b) => b.benchmark === d.category)
+          const status = problemsWithStatus
+            .find((b) => b.problem === d.category)
             ?.data.find((res) => res.solver === d.key);
           const height =
             status?.status !== "ok" ? maxNormalizedRuntime : dataPoint;

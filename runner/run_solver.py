@@ -17,8 +17,8 @@ class HighsVariant(str, Enum):
     HIPO_128 = "highs-hipo-128"
     HIPO_IPM = "highs-ipm"
 
-    # options returns the contents for the HiGHS options file.
-    # passed to the HiGHS binary via --options_file=<file>
+    # options returns the HiGHS solver options for this variant, merged with the
+    # base options and passed to linopy's Highs solver constructor.
     def options(self) -> dict[str, str | int]:
         base = {
             "run_crossover": "choose",
@@ -82,17 +82,17 @@ def get_solver(solver_name, highs_variant=None):
     if highs_variant:
         kwargs.update(highs_variant.options())
     else:
-        kwargs.update(seed_options.get(solver_name))
+        kwargs.update(seed_options.get(solver_name, {}))
 
-    print(solver_name, highs_variant, kwargs)
-
-    return solver_class(**kwargs)
+    return solver_class(options=kwargs)
 
 
 def is_mip_problem(solver_model, solver_name):
     """
     Determines if a given solver model is a Mixed Integer Programming (MIP) problem.
     """
+    if solver_model is None:
+        return False
     if solver_name == "scip":
         if solver_model.getNIntVars() > 0 or solver_model.getNBinVars() > 0:
             return True
@@ -135,6 +135,8 @@ def calculate_integrality_violation(
 
 def get_duality_gap(solver_model, solver_name: str):
     """Retrieve the duality gap for the given solver model, if available."""
+    if solver_model is None:
+        return None
     if solver_name == "scip":
         return solver_model.getGap()
     elif solver_name == "gurobi":
@@ -157,25 +159,28 @@ def get_duality_gap(solver_model, solver_name: str):
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
 
-def get_milp_metrics(input_file, solver_result):
+def get_milp_metrics(input_file, solver_result, solver_name):
     """Uses HiGHS to read the problem file and compute max integrality violation and
     duality gap.
     """
+    solver_model = solver_result.solver_model
+    if solver_model is None or highspy is None:
+        return None, None
+
     try:
-        if highspy is not None:
-            h = highspy.Highs()
-            h.readModel(input_file)
-            integer_vars = {
-                h.variableName(i)
-                for i in range(h.numVariables)
-                if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-            }
-            if integer_vars:
-                duality_gap = get_duality_gap(solver_result.solver_model, solver_name)
-                max_integrality_violation = calculate_integrality_violation(
-                    integer_vars, solver_result.solution.primal
-                )
-                return duality_gap, max_integrality_violation
+        h = highspy.Highs()
+        h.readModel(input_file)
+        integer_vars = {
+            h.variableName(i)
+            for i in range(h.numVariables)
+            if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
+        }
+        if integer_vars:
+            duality_gap = get_duality_gap(solver_model, solver_name)
+            max_integrality_violation = calculate_integrality_violation(
+                integer_vars, solver_result.solution.primal
+            )
+            return duality_gap, max_integrality_violation
     except Exception:
         print(
             f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
@@ -186,6 +191,9 @@ def get_milp_metrics(input_file, solver_result):
 
 def get_reported_runtime(solver_name, solver_model) -> float | None:
     """Get the solving runtime as reported by the solver from the solver's Python object."""
+    if solver_model is None:
+        return None
+
     try:
         match solver_name:
             case "highs":
@@ -207,12 +215,13 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
                 return None
     except Exception:
         print(f"ERROR obtaining reported runtime: {format_exc()}", file=sys.stderr)
-    return None
+        return None
 
 
 def main(solver_name, input_file, solver_version):
     problem_file = Path(input_file)
     highs_variant = None
+    output_name = solver_name  # keep the requested name (e.g. "highs-hipo") for filenames
 
     # Handle highs-hipo solver variants separately
     try:
@@ -235,7 +244,7 @@ def main(solver_name, input_file, solver_version):
     logs_dir = Path(__file__).parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    output_filename = f"{Path(input_file).stem}-{solver_name}-{solver_version}"
+    output_filename = f"{Path(input_file).stem}-{output_name}-{solver_version}"
 
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
@@ -249,18 +258,33 @@ def main(solver_name, input_file, solver_version):
         )
         runtime = perf_counter() - start_time
 
-        duality_gap, max_integrality_violation = get_milp_metrics(
-            input_file, solver_result
-        )
+        solver_model = solver_result.solver_model
+        raw_status = solver_result.status.status.value
+        termination_condition = solver_result.status.termination_condition.value
+        objective = solver_result.solution.objective
+
+        status_value = raw_status
+
+        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+            status_value = "ER"
+            objective = None
+        elif raw_status == "warning" and objective is None:
+            status_value = "ER"
+
+        if solver_model is not None and is_mip_problem(solver_model, solver_name):
+            duality_gap, max_integrality_violation = get_milp_metrics(
+                input_file, solver_result, solver_name
+            )
+        else:
+            duality_gap = None
+            max_integrality_violation = None
 
         results = {
             "runtime": runtime,
-            "reported_runtime": get_reported_runtime(
-                solver_name, solver_result.solver_model
-            ),
-            "status": solver_result.status.status.value,
-            "condition": solver_result.status.termination_condition.value,
-            "objective": solver_result.solution.objective,
+            "reported_runtime": get_reported_runtime(solver_name, solver_model),
+            "status": status_value,
+            "condition": termination_condition,
+            "objective": objective,
             "duality_gap": duality_gap,
             "max_integrality_violation": max_integrality_violation,
         }

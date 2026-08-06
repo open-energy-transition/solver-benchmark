@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { CircleIcon, XIcon } from "@/assets/icons";
 import { PATH_DASHBOARD } from "@/constants/path";
@@ -7,6 +7,7 @@ import { parseSolverInfo } from "@/utils/string";
 import { SolverMetrics } from "@/types/compare-solver";
 import { formatDecimal } from "@/utils/number";
 import { useDebouncedWindowWidth } from "@/hooks/useDebouncedWindowWidth";
+import { getSolverLabel } from "@/utils/solvers";
 
 type ChartData = {
   d1: SolverMetrics;
@@ -56,8 +57,7 @@ const defaultTooltipTemplate = (
   solver2: string,
 ) => `
   <div class="text-sm">
-    <strong>Name:</strong> ${d.benchmark}<br>
-    <strong>Size:</strong> ${d.size}<br>
+    <strong>Problem ID:</strong> ${d.benchmark}-${d.size}<br>
     <strong>Runtime of ${solver1.replace(
       "--",
       " (",
@@ -89,6 +89,29 @@ const ChartCompare = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
   const windowWidth = useDebouncedWindowWidth(200);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart's
+  // internal D3 coordinates stay in sync with the actual rendered box.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
   // Solver colors (match other dashboards)
   const solverColor1 = getColorForSolver(solver1.split("--")[0]);
   const solverColor2 = getColorForSolver(solver2.split("--")[0]);
@@ -111,7 +134,7 @@ const ChartCompare = ({
     };
 
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
+    const width = containerWidth || containerRef.current?.clientWidth || 600;
     const isMobile = width < 640; // Add mobile breakpoint check
     const height = isMobile ? 300 : 400; // Adjust height for mobile
     const margin = isMobile
@@ -399,7 +422,7 @@ const ChartCompare = ({
           .on("click", () => {
             window.location.href = PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
-              d.benchmark,
+              `${d.benchmark}-${d.size}`,
             );
           })
           .style("cursor", "pointer");
@@ -568,7 +591,7 @@ const ChartCompare = ({
           .attr("font-weight", "700")
           .attr("dy", "-7")
           .attr("pointer-events", "none")
-          .text(`${solver1Info.name} is better`);
+          .text(`${getSolverLabel(solver1Info.name)} is better`);
 
         // Solver 2 better — center at t=0.6 along diagonal, shifted lower-right
         const t2 = 0.6;
@@ -598,7 +621,7 @@ const ChartCompare = ({
           .attr("font-weight", "700")
           .attr("dy", "15")
           .attr("pointer-events", "none")
-          .text(`${solver2Info.name} is better`);
+          .text(`${getSolverLabel(solver2Info.name)} is better`);
       } catch {
         // ignore parsing errors
       }
@@ -608,14 +631,16 @@ const ChartCompare = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData, windowWidth]);
+  }, [chartData, windowWidth, containerWidth]);
 
   const formatLegend = (status: string): string => {
     const [status1, status2] = status.split("-");
     const solver1Info = parseSolverInfo(solver1);
     const solver2Info = parseSolverInfo(solver2);
 
-    return `${solver1Info.name} ${status1} - ${solver2Info.name} ${status2}`;
+    return `${getSolverLabel(solver1Info.name)} ${status1} - ${getSolverLabel(
+      solver2Info.name,
+    )} ${status2}`;
   };
   return (
     <div className="bg-white py-4 p-4 sm:pl-10 rounded-xl relative">

@@ -23,16 +23,16 @@ const filterNumber = (
   return value >= Number(min) && value <= Number(max);
 };
 
-const filterSelect = (
+// Same matching behavior as TanStack Table's built-in "arrIncludesSome", but
+// without its `autoRemove` hook, which treats an empty filter selection as
+// "no filter applied" (shows every row) instead of "nothing selected"
+// (matches no rows).
+const filterCheckboxIncludesSome = (
   row: { getValue: (columnId: string) => string },
   columnId: string,
   filterValues: string[],
 ) => {
-  const status = row.getValue(columnId);
-
-  if (!filterValues?.length) return true;
-  // Check if the row's status is included in the filter values
-  return filterValues.includes(status);
+  return filterValues.some((value) => row.getValue(columnId)?.includes(value));
 };
 
-export { filterNumber, filterSelect };
+export { filterNumber, filterCheckboxIncludesSome };
