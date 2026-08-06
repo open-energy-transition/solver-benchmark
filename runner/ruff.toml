@@ -1,0 +1,9 @@
+extend = "../ruff.toml"
+
+[lint]
+extend-select = [
+    "D", # pydocstyle, numpy convention (see below) -- scoped to runner/ only
+]
+
+[lint.pydocstyle]
+convention = "numpy"

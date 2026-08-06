@@ -38,6 +38,7 @@ pip = "*"
 [feature.benchmarks.pypi-dependencies]
 highspy = "==1.9.0"
 linopy = ">=0.5.0"
+pandas = "*"
 
 [feature.dev.dependencies]
 ruff = "*"
