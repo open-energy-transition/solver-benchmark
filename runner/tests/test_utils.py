@@ -117,7 +117,7 @@ class TestAllocateVmsGreedy:
         # c(1) -> VM0 (tie, lowest index wins) [11,10].
         instances = ["a", "b", "c", "d"]
         weights = {"a": 10, "b": 9, "c": 1, "d": 1}
-        allocation, vm_weights = allocate_vms_greedy(instances, weights, num_vms=2)
+        _allocation, vm_weights = allocate_vms_greedy(instances, weights, num_vms=2)
         assert sorted(vm_weights) == [10, 11]
 
     def test_single_vm_gets_everything(self):
