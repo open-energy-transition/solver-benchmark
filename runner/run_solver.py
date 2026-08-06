@@ -5,7 +5,6 @@ from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
 
-import mosek
 import pandas as pd
 from linopy import solvers
 from linopy.solvers import SolverName
@@ -50,6 +49,12 @@ try:
     import highspy
 except ModuleNotFoundError:
     highspy = None
+
+# mosek is only installed in the mosek solver environment
+try:
+    import mosek
+except ModuleNotFoundError:
+    mosek = None
 
 
 def get_solver(solver_name, highs_variant=None):
