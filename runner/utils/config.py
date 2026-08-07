@@ -212,7 +212,8 @@ def get_default_configurations(config: dict[str, Any] | None = None) -> list[str
     list[str]
         Names of entries in ``solver_configurations.yaml``'s ``configurations``
         (e.g. ``["highs", "scip", ...]``), not necessarily raw solver package
-        names -- the CLI's `--solvers` flag takes configurations, not solvers.
+        names -- the CLI's `--solver-configurations` flag takes configurations,
+        not solvers.
     """
     config = config if config is not None else load_solver_configurations()
     return list(config.get("default_configurations", []))

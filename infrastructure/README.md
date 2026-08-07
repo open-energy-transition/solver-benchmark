@@ -41,18 +41,16 @@ machine-type: c4-standard-2
 years:
 - 2025
 solver: highs scip # solver configurations to run, runs all the default configurations in runner.benchmark if not specified
-benchmarks:
-  genx-3_three_zones_w_co2_capture-no_uc:
-    Sizes:
-    - Name: 3-1h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
-  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
-    Sizes:
-    - Name: 1-1h
-      Size: M
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
+problems:
+  genx-3_three_zones_w_co2_capture-no_uc-3-1h:
+    Size: M
+    URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
+  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-1-1h:
+    Size: M
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
 ```
+
+Each entry under `problems:` is a single, specific problem instance (see `runner/utils/metadata.py`'s `load_problems`) -- there's no separate nested list for multiple sizes of the same model; each size gets its own top-level entry with a distinct ID.
 
 ### 3. Set Up Opentofu Variables
 

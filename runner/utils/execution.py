@@ -1,5 +1,5 @@
-"""Run a single solver on a single benchmark problem as a resource-limited
-subprocess, and parse back its reported memory usage.
+"""Run a single solver on a single problem as a resource-limited subprocess,
+and parse back its reported memory usage.
 
 Actually solving happens out-of-process (via `python -m runner.utils.solver`,
 see `solver.py`'s own module docstring) so that a solver crash, timeout, or
