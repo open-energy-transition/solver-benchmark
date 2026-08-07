@@ -122,6 +122,8 @@ docker run --rm \
 
 Use `run_benchmarks.py` to run problems for a specific year with more control. Solver versions are looked up from `solvers.yaml` and each solver runs in its own conda env automatically. You need to create the per-solver conda environments first and activate any one of them (the script switches envs per solver internally).
 
+Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
+
 ```sh
 # Create the per-solver envs for a year
 conda env create -q -f ./runner/envs/benchmark-highs-2025-fixed.yaml -y
@@ -130,16 +132,16 @@ conda env create -q -f ./runner/envs/benchmark-scip-2025-fixed.yaml -y
 
 ```sh
 conda activate benchmark-highs-2025
-python run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
+python -m runner.run_benchmarks <problems_yaml> <year> [OPTIONS]
 ```
 
 **Required Arguments:**
-- `benchmark_yaml` - Path to a problems configuration file (e.g., `../results/metadata.yaml`)
+- `problems_yaml` - Path to a problems configuration file (e.g., `results/metadata.yaml`)
 - `year` - Solver release year (2020-2025)
 
 **Optional Arguments:**
 - `-a, --append` - Append to CSV results instead of overwriting
-- `--solvers SOLVERS` - Space-separated list of solvers to run
+- `--solvers SOLVERS` - Space-separated list of solver configurations to run
 - `--ref_bench_interval SECONDS` - Run reference benchmark every N seconds - This is not supported for local runs yet
 - `--run_id RUN_ID` - Custom identifier for this benchmark run
 - `-h, --help` - Show help message
@@ -149,14 +151,14 @@ python run_benchmarks.py <benchmark_yaml> <year> [OPTIONS]
 ```bash
 # Run HiGHS only for 2025
 conda activate benchmark-highs-2025
-python run_benchmarks.py ../results/metadata.yaml 2025 --solvers highs
+python -m runner.run_benchmarks results/metadata.yaml 2025 --solvers highs
 
 # Run multiple solvers for 2024 and append results
 conda activate benchmark-highs-2024
-python run_benchmarks.py ../results/metadata.yaml 2024 --solvers "highs scip cbc" -a
+python -m runner.run_benchmarks results/metadata.yaml 2024 --solvers "highs scip cbc" -a
 
 # Run with custom run ID for tracking
-python run_benchmarks.py ../results/metadata.yaml 2024 --run_id "debug-run-001"
+python -m runner.run_benchmarks results/metadata.yaml 2024 --run_id "debug-run-001"
 ```
 
 ## Running a single solver (`runner.utils.solver`)

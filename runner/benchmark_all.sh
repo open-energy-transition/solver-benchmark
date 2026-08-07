@@ -47,7 +47,6 @@ if [[ $# -ne 1 ]]; then
     exit 1
 fi
 
-BENCHMARK_SCRIPT="./runner/run_benchmarks.py"
 BENCHMARKS_FILE="$1"
 
 echo "Starting benchmark run with ID: $run_id"
@@ -118,9 +117,9 @@ for solver, versions in config['solvers'].items():
     # Overwrite results for the first year, append thereafter
     if [ "$idx" -eq 0 ]; then
         # we're running the script with -e, ignoring error with <command> || true so that execution continues if the script fails
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
+        python -m runner.run_benchmarks "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
+        python -m runner.run_benchmarks "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
     fi
     conda deactivate
 
