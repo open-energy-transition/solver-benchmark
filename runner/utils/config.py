@@ -247,10 +247,8 @@ def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
     return sorted(years)
 
 
-def get_conda_package_name(
-    solver_name: str, config: dict[str, Any] | None = None
-) -> str:
-    """Return the conda/pip package name that provides a solver.
+def get_package_name(solver_name: str, config: dict[str, Any] | None = None) -> str:
+    """Return the conda/PyPI package name that provides a solver.
 
     Parameters
     ----------
