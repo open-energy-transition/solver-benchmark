@@ -5,7 +5,7 @@
 We record the following metrics for each benchmark and solver combination:
 
 1. **Runtime**: of the `linopy.Model.solve()` call to the solver (we also record the solving runtime reported by the solver when available)
-1. **Peak memory consumption**: of the script `runner/run_solver.py` that uses linopy to call the solver, as reported by `/usr/bin/time -f %M`
+1. **Peak memory consumption**: of the `runner.utils.solver` module (run via `python -m runner.utils.solver`) that uses linopy to call the solver, as reported by `/usr/bin/time -f %M`
 1. **Status**: OK, warning, TO (timeout), OOM (out of memory), ER (error). Statuses OK and warning are as returned by linopy, TO indicates that we terminated the solver when the time limit was reached, OOM indicates cases where the solver ran out of memory (we set a bound of 95% of available system memory using `systemd-run`), and ER denotes cases where the solver returned a non-zero exit code.
 1. **Termination condition**: as returned by the solver, for example optimal, infeasible, unbounded, …
 1. **Objective value**: (a floating point value) the optimal objective value
@@ -101,9 +101,9 @@ As a reminder, we classify benchmarks into size categories based on the number o
 Given a time out `T` (seconds) and a number of iterations `N`, the benchmark runner `runner/run_benchmarks.py` operates as follows:
 
 - The benchmark LP/MPS files are downloaded from a Google Cloud bucket
-- For each benchmark and solver combination, the runner calls `runner/run_solver.py`, which imports the input file into linopy and calls `linopy.Model.solve()` with the chosen solver
-- `run_solver.py` reports the time taken for the `solve()` call, along with the status, termination condition, and objective value returned by the solver
-- The runner uses `/usr/bin/time` to measure the peak memory usage of the `run_solver.py` script
+- For each benchmark and solver combination, the runner calls `runner.utils.solver` (`python -m runner.utils.solver`), which imports the input file into linopy and calls `linopy.Model.solve()` with the chosen solver
+- `solver.main` reports the time taken for the `solve()` call, along with the status, termination condition, and objective value returned by the solver
+- The runner uses `/usr/bin/time` to measure the peak memory usage of the `runner.utils.solver` invocation
     - While this will include the memory usage of linopy, we expect this to be constant across all solvers, so it will not affect relative rankings
 - The above is repeated `N` times, and the mean and standard deviation of runtime and memory usage are computed
 - The value from the last iteration is used for other metrics such as status, termination condition, and objective value
