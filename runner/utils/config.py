@@ -17,7 +17,7 @@ import yaml
 _CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
 _SOLVERS_CONFIG_PATH = _CONFIG_DIR / "solvers.yaml"
 _ELIGIBILITY_RULES_PATH = _CONFIG_DIR / "eligibility_rules.yaml"
-_SOLVER_OPTIONS_PATH = _CONFIG_DIR / "solver_options.yaml"
+_SOLVER_CONFIGURATIONS_PATH = _CONFIG_DIR / "solver_configurations.yaml"
 
 # Comparison operators available to eligibility_rules.yaml's conditions. Each
 # takes (actual_value, expected_value_from_yaml) and returns whether it matches.
@@ -25,10 +25,12 @@ _OPERATORS: dict[str, Callable[[Any, Any], bool]] = {
     "in": lambda actual, expected: str(actual) in {str(v) for v in expected},
     "not_in": lambda actual, expected: str(actual) not in {str(v) for v in expected},
     "eq": lambda actual, expected: str(actual) == str(expected),
-    "gte": lambda actual, expected: actual is not None
-    and float(actual) >= float(expected),
-    "lte": lambda actual, expected: actual is not None
-    and float(actual) <= float(expected),
+    "gte": lambda actual, expected: (
+        actual is not None and float(actual) >= float(expected)
+    ),
+    "lte": lambda actual, expected: (
+        actual is not None and float(actual) <= float(expected)
+    ),
 }
 
 
@@ -74,53 +76,108 @@ def load_eligibility_rules(
 
 
 @functools.cache
-def load_solver_options(config_path: Path = _SOLVER_OPTIONS_PATH) -> dict[str, Any]:
-    """Load the per-solver tuning options from ``runner/config/solver_options.yaml``.
+def load_solver_configurations(
+    config_path: Path = _SOLVER_CONFIGURATIONS_PATH,
+) -> dict[str, Any]:
+    """Load the solver configurations from ``runner/config/solver_configurations.yaml``.
 
     Parameters
     ----------
     config_path : Path, optional
         Path to the YAML file to load. Defaults to the repo's own
-        ``runner/config/solver_options.yaml``; overridable for testing.
+        ``runner/config/solver_configurations.yaml``; overridable for testing.
 
     Returns
     -------
     dict[str, Any]
         Parsed YAML with top-level keys ``shared`` (target values common to
-        multiple solvers) and ``solvers`` (each solver's own option keys,
-        some referencing ``shared`` via ``{"shared": <name>}``).
+        multiple configurations) and ``configurations`` (one entry per named
+        way of running a solver, each with a ``solver`` and ``options``).
     """
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
 
 
-def get_solver_options(
-    solver_name: str, config: dict[str, Any] | None = None
-) -> dict[str, Any]:
-    """Return a solver's tuning options, with `shared` references resolved.
+def get_solver_configuration(
+    name: str, config: dict[str, Any] | None = None
+) -> dict[str, Any] | None:
+    """Look up a solver configuration (e.g. ``"highs"`` or ``"highs-hipo"``).
+
+    A configuration is requested as if it were its own solver, so it gets its
+    own row in benchmark results, but runs through -- and shares the model
+    API of -- whichever solver package it names in
+    ``solver_configurations.yaml``.
 
     Parameters
     ----------
-    solver_name : str
-        The solver's name, e.g. ``"highs"``.
+    name : str
+        The configuration's name, e.g. ``"highs"`` or ``"highs-hipo"``.
     config : dict[str, Any], optional
-        A pre-loaded solver-options config, e.g. for testing with fake
-        options. Defaults to :func:`load_solver_options`.
+        A pre-loaded solver_configurations.yaml dict, e.g. for testing with a
+        fake configuration. Defaults to :func:`load_solver_configurations`.
+
+    Returns
+    -------
+    dict[str, Any] | None
+        ``{"solver": str, "options": dict}`` (with any ``{"shared": <name>}``
+        option values resolved) if `name` is a registered configuration,
+        else None.
+    """
+    config = config if config is not None else load_solver_configurations()
+    configuration = config.get("configurations", {}).get(name.lower())
+    if configuration is None:
+        return None
+    shared = config.get("shared", {})
+    options = {
+        key: shared[value["shared"]] if isinstance(value, dict) else value
+        for key, value in configuration["options"].items()
+    }
+    return {"solver": configuration["solver"], "options": options}
+
+
+def resolve_solver_name(name: str, config: dict[str, Any] | None = None) -> str:
+    """Resolve a configuration name to the real solver package that runs it.
+
+    Parameters
+    ----------
+    name : str
+        The configuration's name, e.g. ``"highs-hipo"`` or ``"gurobi"``.
+    config : dict[str, Any], optional
+        A pre-loaded solver_configurations.yaml dict. Defaults to
+        :func:`load_solver_configurations`.
+
+    Returns
+    -------
+    str
+        The configuration's `solver` if `name` is registered, otherwise
+        `name` itself (lowercased).
+    """
+    configuration = get_solver_configuration(name, config)
+    return configuration["solver"] if configuration else name.lower()
+
+
+def get_solver_options(
+    name: str, config: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    """Return a configuration's tuning options, with `shared` references resolved.
+
+    Parameters
+    ----------
+    name : str
+        The configuration's name, e.g. ``"highs"`` or ``"highs-hipo"``.
+    config : dict[str, Any], optional
+        A pre-loaded solver_configurations.yaml dict, e.g. for testing with
+        fake options. Defaults to :func:`load_solver_configurations`.
 
     Returns
     -------
     dict[str, Any]
-        The solver's options, ready to pass to its linopy solver
-        constructor. Empty if the solver has no entry in
-        ``solver_options.yaml``.
+        The configuration's options, ready to pass to its linopy solver
+        constructor. Empty if `name` has no entry in
+        ``solver_configurations.yaml``.
     """
-    config = config if config is not None else load_solver_options()
-    shared = config.get("shared", {})
-    options = config.get("solvers", {}).get(solver_name, {})
-    return {
-        key: shared[value["shared"]] if isinstance(value, dict) else value
-        for key, value in options.items()
-    }
+    configuration = get_solver_configuration(name, config)
+    return configuration["options"] if configuration else {}
 
 
 def get_default_solvers(config: dict[str, Any] | None = None) -> list[str]:
