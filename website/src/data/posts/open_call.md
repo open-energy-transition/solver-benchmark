@@ -1,7 +1,7 @@
 ---
 title: "Open Call for Energy System Optimization Benchmarks"
 date: "2026-03-03"
-excerpt: "Invitation to submit new optimization benchmarks to the Open Energy Benchmark platform."
+excerpt: "An invitation to submit new optimization benchmarks to the Open Energy Benchmark platform."
 tags: ["announcement", "benchmarks", "community"]
 ---
 
@@ -39,12 +39,12 @@ All submissions are subject to review. We reserve the right to accept or reject 
 
 To ensure the benchmark set remains relevant and up-to-date, we prioritize instances from modelling frameworks that are actively maintained and widely used, such as those tracked by the [Open Energy Modelling Tool Tracker](https://openmod-tracker.org/). Benchmark instances from outdated or deprecated models may be removed over time, reflecting the balance between maintaining comprehensive coverage and managing infrastructure costs.
 
-## What You Need to Submit
+## What We Need from You
 
 A benchmark contribution consists of:
 
-1. One or more **LP or MPS files** (MPS preferred), either building on the same case with different sizes (e.g., varying spatial/temporal resolutions) or representing different problems (in terms of features and/or constraints).
-2. A **metadata YAML file** describing the benchmark and its size instances, following the provided [template](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/_template_metadata.yaml).
+1. One or more **LP or MPS files** (MPS preferred), either building on the same scenario with different sizes (e.g., varying spatial/temporal resolutions) or representing different scenarios (in terms of features and/or constraints).
+2. The **metadata** describing the benchmark and its size instances, following this [template](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/_template_metadata.yaml).
 
 Each benchmark entry must document:
 
@@ -58,14 +58,14 @@ The metadata template provides the required structure and naming conventions.
 
 ## How to Submit
 
-If you are comfortable with GitHub, follow the steps below to submit via pull request. Otherwise, contact us via our website's contact form or by opening a GitHub issue, and we'll guide you through the process.
+If you are comfortable with GitHub, follow the steps below to open a new issue. Otherwise, contact us via our website's contact form and we'll guide you through the process.
 
 1. **Generate the optimization instance(s)**
    - Export your model as an **MPS file** (preferred) or **LP file**
-   - Verify that the instance can be solved to optimality with at least one solver of your choice, ideally within our timeouts (1 hour for small/medium benchmarks, 24 hours for large benchmarks)
+   - Verify that the instance can be solved to optimality with at least one solver of your choice, ideally within our time limits (1 hour for problems with less than 1 million variables or 24 hours for larger problems).
 
-2. **Prepare the metadata file**
-   - Use the provided metadata template and fill in all required fields
+2. **Prepare the metadata**
+   - Gather the required metadata for the benchmark and its size instances, following this [template](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/_template_metadata.yaml)
    - The benchmark description must include:
      - Link to the model code or modelling framework repository
      - Reference to any paper describing the model and its equations (if available)
@@ -76,12 +76,9 @@ If you are comfortable with GitHub, follow the steps below to submit via pull re
    - Upload the optimization files to a file-sharing service of your choice
    - The files do not need to be committed to the repository; a stable download URL is sufficient. The benchmark team will transfer the submitted benchmark to our hosting service
 
-4. **Open a Pull Request**
-   - Add the metadata YAML file under `benchmarks/<model-framework-or-source>/`
-   - Complete the PR submission template, confirming:
-     - Consent to release the benchmark instances under **CC BY 4.0**
-     - Compliance with benchmark and size-instance naming conventions
-     - Solver used, time to optimality, solver options, and machine specifications used for testing
+4. **Open a GitHub issue**
+   - Create a new issue in the [solver-benchmark repository](https://github.com/open-energy-transition/solver-benchmark/issues/new)
+   - In the issue, provide all the required metadata and the download link to the LP/MPS files, following the template provided above. You can copy-paste the template into your issue and fill in the required information.
 
 After submission, the benchmark team will review your contribution and validate the metadata. Once accepted, the LP/MPS files will be uploaded to benchmark storage, tested, and integrated into the platform.
 
