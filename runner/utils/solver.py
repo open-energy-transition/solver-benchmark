@@ -20,9 +20,15 @@ from time import perf_counter
 from traceback import format_exc
 from typing import Any
 
-import pandas as pd
+import numpy as np
 from linopy import solvers
-from linopy.solvers import SolverName
+
+# _names_to_labels is private API: it's the exact name->label parsing linopy
+# itself uses to build Solution.primal (see get_milp_metrics's docstring for
+# why this matters), so it's more correct to reuse than to re-derive our own
+# guess at linopy's "x<label>" naming convention -- but it's not a public
+# contract, so a future linopy release could rename or remove it.
+from linopy.solvers import SolverName, _names_to_labels
 
 from . import config
 from .solvers import SOLVER_ADAPTERS
@@ -96,7 +102,7 @@ def is_mip_problem(solver_model: Any, solver_name: str) -> bool:
 
 
 def calculate_integrality_violation(
-    integer_vars: pd.Series, primal_values: pd.Series
+    integer_var_labels: np.ndarray, primal_values: np.ndarray
 ) -> float:
     """Calculate the maximum integrality violation from primal values.
 
@@ -106,10 +112,13 @@ def calculate_integrality_violation(
 
     Parameters
     ----------
-    integer_vars : pd.Series
-        Names/index of the model's integer variables.
-    primal_values : pd.Series
-        Primal solution values, indexed by variable name.
+    integer_var_labels : np.ndarray
+        Linopy labels of the model's integer variables (see
+        `get_milp_metrics`'s docstring for what a "label" is here).
+    primal_values : np.ndarray
+        Dense, label-indexed primal solution values (`primal_values[label]`
+        is that variable's value), as returned by linopy's
+        `Solution.primal`.
 
     Returns
     -------
@@ -122,8 +131,8 @@ def calculate_integrality_violation(
     Not using `solver_result.solver_model.getInfo()` because it works for
     HiGHS but not for other solvers.
     """
-    p = primal_values.loc[primal_values.index.intersection(integer_vars)]
-    return max((p - p.round()).abs())
+    p = primal_values[integer_var_labels]
+    return float(np.max(np.abs(p - np.round(p))))
 
 
 def get_duality_gap(solver_model: Any, solver_name: str) -> float | None:
@@ -175,6 +184,16 @@ def get_milp_metrics(
         `(duality_gap, max_integrality_violation)`, or `(None, None)` if the
         problem has no integer variables, `highspy` isn't installed, or
         reading/computing metrics fails.
+
+    Notes
+    -----
+    `solver_result.solution.primal` (since linopy 0.9) is a dense array
+    indexed by linopy's own integer "label" for each variable, not by
+    variable name -- linopy writes problem files with each variable named
+    `x<label>` (see `linopy.io`), so the label is recovered by stripping
+    that prefix off the same name `highspy` reports for the matching
+    column, via linopy's own `_names_to_labels` (kept in sync with whatever
+    naming convention linopy itself uses to build `primal`).
     """
     solver_model = solver_result.solver_model
     if solver_model is None or highspy is None:
@@ -183,15 +202,16 @@ def get_milp_metrics(
     try:
         h = highspy.Highs()
         h.readModel(input_file)
-        integer_vars = {
+        integer_var_names = [
             h.variableName(i)
             for i in range(h.numVariables)
             if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-        }
-        if integer_vars:
+        ]
+        if integer_var_names:
             duality_gap = get_duality_gap(solver_model, solver_name)
+            integer_var_labels = _names_to_labels(integer_var_names)
             max_integrality_violation = calculate_integrality_violation(
-                integer_vars, solver_result.solution.primal
+                integer_var_labels, solver_result.solution.primal
             )
             return duality_gap, max_integrality_violation
     except Exception:

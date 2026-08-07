@@ -4,12 +4,13 @@ accessors that delegate to `runner/utils/solvers/`'s per-solver adapters.
 
 from unittest.mock import MagicMock
 
-import pandas as pd
+import numpy as np
 import pytest
 
 from runner.utils.solver import (
     calculate_integrality_violation,
     get_duality_gap,
+    get_milp_metrics,
     get_reported_runtime,
     get_solver,
     is_mip_problem,
@@ -102,21 +103,83 @@ class TestGetReportedRuntime:
 
 class TestCalculateIntegralityViolation:
     def test_basic_violation(self):
-        integer_vars = pd.Index(["x", "y"])
-        primal_values = pd.Series({"x": 1.4, "y": 2.0, "z": 3.9})
-        # max |p - round(p)| over integer_vars only: |1.4-1|=0.4, |2.0-2|=0.0
+        # primal_values is label-indexed (see solver.py's module docstring
+        # on linopy's Solution.primal): label 2 ("z") isn't an integer var
+        # and is excluded via integer_var_labels, not via a name lookup.
+        integer_var_labels = np.array([0, 1])
+        primal_values = np.array([1.4, 2.0, 3.9])
+        # max |p - round(p)| over integer_var_labels only: |1.4-1|=0.4, |2.0-2|=0.0
         assert calculate_integrality_violation(
-            integer_vars, primal_values
+            integer_var_labels, primal_values
         ) == pytest.approx(0.4)
 
     def test_ignores_non_integer_vars(self):
-        integer_vars = pd.Index(["x"])
-        primal_values = pd.Series({"x": 1.0, "z": 3.9})
+        integer_var_labels = np.array([0])
+        primal_values = np.array([1.0, 3.9])
         assert calculate_integrality_violation(
-            integer_vars, primal_values
+            integer_var_labels, primal_values
         ) == pytest.approx(0.0)
 
     def test_zero_when_all_integral(self):
-        integer_vars = pd.Index(["x", "y"])
-        primal_values = pd.Series({"x": 1.0, "y": 2.0})
-        assert calculate_integrality_violation(integer_vars, primal_values) == 0.0
+        integer_var_labels = np.array([0, 1])
+        primal_values = np.array([1.0, 2.0])
+        assert calculate_integrality_violation(integer_var_labels, primal_values) == 0.0
+
+
+class TestGetMilpMetrics:
+    def test_maps_solver_variable_names_to_linopy_labels(self, monkeypatch):
+        # Regression test: since linopy 0.9, Solution.primal is a dense
+        # array indexed by linopy's own integer "label" per variable (parsed
+        # from each variable's "x<label>" name), not a pandas Series indexed
+        # by variable name -- get_milp_metrics must convert highspy's
+        # reported names into labels before indexing into primal, instead of
+        # trying `.loc` on what is no longer a labeled Series.
+        integrality = {
+            0: (None, "integer"),
+            1: (None, "integer"),
+            2: (None, "continuous"),
+        }
+        fake_h = MagicMock()
+        fake_h.numVariables = 3
+        fake_h.variableName.side_effect = lambda i: f"x{i}"
+        fake_h.getColIntegrality.side_effect = lambda i: integrality[i]
+
+        fake_highspy = MagicMock()
+        fake_highspy.HighsVarType.kInteger = "integer"
+        fake_highspy.Highs.return_value = fake_h
+        monkeypatch.setattr("runner.utils.solver.highspy", fake_highspy)
+
+        solver_result = MagicMock()
+        solver_result.solver_model = MagicMock()
+        # label 0 ("x0") -> 1.4, label 1 ("x1") -> 2.0, label 2 (non-integer,
+        # excluded) -> 3.9
+        solver_result.solution.primal = np.array([1.4, 2.0, 3.9])
+
+        _, max_violation = get_milp_metrics("problem.lp", solver_result, "highs")
+        assert max_violation == pytest.approx(0.4)
+
+    def test_no_integer_vars_returns_none(self, monkeypatch):
+        fake_h = MagicMock()
+        fake_h.numVariables = 2
+        fake_h.variableName.side_effect = lambda i: f"x{i}"
+        fake_h.getColIntegrality.return_value = (None, "continuous")
+
+        fake_highspy = MagicMock()
+        fake_highspy.HighsVarType.kInteger = "integer"
+        fake_highspy.Highs.return_value = fake_h
+        monkeypatch.setattr("runner.utils.solver.highspy", fake_highspy)
+
+        solver_result = MagicMock()
+        solver_result.solver_model = MagicMock()
+        solver_result.solution.primal = np.array([1.4, 2.0])
+
+        duality_gap, max_violation = get_milp_metrics(
+            "problem.lp", solver_result, "highs"
+        )
+        assert (duality_gap, max_violation) == (None, None)
+
+    def test_highspy_unavailable_returns_none(self, monkeypatch):
+        monkeypatch.setattr("runner.utils.solver.highspy", None)
+        solver_result = MagicMock()
+        solver_result.solver_model = MagicMock()
+        assert get_milp_metrics("problem.lp", solver_result, "highs") == (None, None)
