@@ -3,7 +3,10 @@ config/env/orchestrator together, replacing the old run_benchmarks.py +
 benchmark_all.sh pair.
 """
 
+import subprocess
+import sys
 import textwrap
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -13,6 +16,8 @@ from runner import benchmark
 from runner.utils import orchestrator
 
 runner_cli = CliRunner()
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 _FAKE_METRICS = {
     "status": "ok",
@@ -76,6 +81,30 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Problem"]) == ["tiny-problem"]
         assert results.iloc[0]["Solver Release Year"] == 2025
+
+    def test_tests_pseudo_year_runs_against_real_solver_registry(
+        self, problems_yaml, tmp_path
+    ):
+        # Regression test for a real bug found while building this CLI:
+        # solvers.yaml never had a "tests" year, so year="tests" resolved
+        # zero registered solvers and CI's smoke test silently ran (and
+        # "passed") with zero rows ever written. Deliberately does NOT mock
+        # the solver registry, so a future edit that breaks solvers.yaml's
+        # "tests" block again is caught here instead of only in CI.
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "tests",
+                "--solver-configurations",
+                "highs",
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Problem"]) == ["tiny-problem"]
+        assert results.iloc[0]["Solver Version"] == "1.9.0"
 
     def test_defaults_solvers_to_default_configurations(self, problems_yaml, mocker):
         mocker.patch(
@@ -194,3 +223,20 @@ class TestBenchmarkCli:
         assert "ERROR running the benchmark for year 2024" in result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
+
+
+class TestBenchmarkCliInvocation:
+    def test_dash_m_invocation_from_repo_root_shows_help(self):
+        # CI, Docker, the GCE startup script, and generated campaign scripts
+        # all invoke this exact command (`python -m runner.benchmark`, run
+        # from the repo root) -- a CliRunner test that imports
+        # `runner.benchmark` directly wouldn't catch a real packaging/import
+        # break in that `-m` resolution path, only this subprocess would.
+        result = subprocess.run(
+            [sys.executable, "-m", "runner.benchmark", "--help"],
+            cwd=_REPO_ROOT,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, result.stderr
+        assert "problems_yaml_path" in result.stdout

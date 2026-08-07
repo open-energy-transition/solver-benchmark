@@ -2,6 +2,10 @@
 configurations, and the eligibility-rule engine.
 """
 
+from pathlib import Path
+
+import yaml
+
 from runner.utils.config import (
     _condition_matches,
     get_all_registered_years,
@@ -10,6 +14,7 @@ from runner.utils.config import (
     get_solver_configuration,
     get_solver_options,
     is_solver_eligible,
+    load_solver_registry,
     resolve_solver_name,
 )
 
@@ -222,12 +227,54 @@ def test_load_functions_read_real_config_files():
     # shapes the rest of this module assumes (see individual tests above for
     # behavior); a parse error here would otherwise only surface at runtime
     # deep inside a benchmark run.
-    from runner.utils.config import (
-        load_eligibility_rules,
-        load_solver_configurations,
-        load_solver_registry,
-    )
+    from runner.utils.config import load_eligibility_rules, load_solver_configurations
 
     assert "solvers" in load_solver_registry()
     assert "configurations" in load_solver_configurations()
     assert "rules" in load_eligibility_rules()
+
+
+class TestTestsBlockMatchesBenchmarkTestsEnvFile:
+    def _parse_pinned_versions(self, env_yaml_path):
+        """Extract {package_name: version} from a conda env YAML's
+        `name==version` dependency specs (both plain and under `pip:`)."""
+        spec = yaml.safe_load(env_yaml_path.read_text())
+        versions = {}
+        for dependency in spec.get("dependencies", []):
+            if isinstance(dependency, str) and "==" in dependency:
+                name, version = dependency.split("==", 1)
+                versions[name] = version
+            elif isinstance(dependency, dict) and "pip" in dependency:
+                for pip_dependency in dependency["pip"]:
+                    if "==" in pip_dependency:
+                        name, version = pip_dependency.split("==", 1)
+                        versions[name] = version
+        return versions
+
+    def test_tests_block_versions_match_the_env_file_it_describes(self):
+        # solvers.yaml's `tests` block records the versions actually pinned
+        # in runner/envs/benchmark-tests.yaml (see solvers.yaml's own
+        # comment). If one is edited without the other, CI's "tests" smoke
+        # test would silently report a wrong "Solver Version" -- this is
+        # exactly the kind of drift that let the "tests" pseudo-year go
+        # unregistered (and unnoticed) for a long time.
+        registry = load_solver_registry()
+        tests_block = registry["tests"]
+        packages = registry["packages"]
+
+        env_yaml_path = (
+            Path(__file__).resolve().parent.parent / "envs" / "benchmark-tests.yaml"
+        )
+        pinned_versions = self._parse_pinned_versions(env_yaml_path)
+
+        for solver, entry in tests_block.items():
+            package_name = packages.get(solver, solver)
+            assert package_name in pinned_versions, (
+                f"solvers.yaml's tests block registers '{solver}' (package "
+                f"'{package_name}'), but {env_yaml_path.name} doesn't pin it"
+            )
+            assert entry["version"] == pinned_versions[package_name], (
+                f"solvers.yaml says {solver}=={entry['version']} for the "
+                f"tests env, but {env_yaml_path.name} pins "
+                f"{package_name}=={pinned_versions[package_name]}"
+            )
