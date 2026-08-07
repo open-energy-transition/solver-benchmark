@@ -79,7 +79,7 @@ def load_problems(
     -------
     list[dict[str, Any]]
         One dict per problem, each with keys `problem_id`, `size_category`,
-        `class`, `path` (a local `Path` to the problem file), and
+        `problem_class`, `path` (a local `Path` to the problem file), and
         `timeout_seconds` (from the YAML's top-level `timeout_seconds`, or
         None).
 
@@ -133,7 +133,7 @@ def load_problems(
             {
                 "problem_id": problem_id,
                 "size_category": problem_data.get("Size"),
-                "class": problem_data.get("Problem class"),
+                "problem_class": problem_data.get("Problem class"),
                 "path": problem_path,
                 "timeout_seconds": yaml_timeout_seconds,
             }
