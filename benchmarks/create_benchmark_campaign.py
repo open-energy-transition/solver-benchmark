@@ -73,9 +73,11 @@ def import_runner_utils():
         `(allocate_problems, create_benchmark_campaign, load_problem_metadata)`.
     """
     sys.path.insert(0, str(REPO_ROOT))
-    from runner.utils import (  # pylint: disable=import-outside-toplevel
+    from runner.utils.campaign import (  # pylint: disable=import-outside-toplevel
         allocate_problems,
         create_benchmark_campaign,
+    )
+    from runner.utils.metadata import (  # pylint: disable=import-outside-toplevel
         load_problem_metadata,
     )
 
