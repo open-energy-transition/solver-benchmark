@@ -1,8 +1,8 @@
 """Run a single solver on a single benchmark problem as a resource-limited
 subprocess, and parse back its reported memory usage.
 
-Actually solving happens out-of-process (via `runner/run_solver.py`, a thin
-wrapper around `solver.main`) so that a solver crash, timeout, or
+Actually solving happens out-of-process (via `python -m runner.utils.solver`,
+see `solver.py`'s own module docstring) so that a solver crash, timeout, or
 out-of-memory kill can be observed and recorded as a result rather than
 taking down the whole benchmark run.
 """
@@ -18,7 +18,13 @@ from typing import Any
 
 import psutil
 
-_RUN_SOLVER_SCRIPT = Path(__file__).resolve().parent.parent / "run_solver.py"
+# solver.py uses package-relative imports (`from . import config`), so it
+# must be run via `-m`, not as a bare script path -- PYTHONPATH (rather than
+# `cwd`) is what makes `runner` resolve as a package regardless of the
+# working directory each wrapper in the command below (systemd-run,
+# /usr/bin/time, conda run) happens to launch it from.
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+_LOGS_DIR = Path(__file__).resolve().parent.parent / "logs"
 
 
 def parse_memory(output: str) -> float:
@@ -77,8 +83,8 @@ def run_solver(
     timeout : int
         Wall-clock time budget in seconds.
     solver_version : str
-        The solver version, passed through to `run_solver.py` for its
-        output filenames and included in the returned metrics' log lookup.
+        The solver version, passed through to `solver.main` for its output
+        filenames and included in the returned metrics' log lookup.
     env_name : str, optional
         If given, run inside this conda environment via `conda run -n
         <env_name>` instead of the current one.
@@ -133,11 +139,19 @@ def run_solver(
     command.extend(
         [
             "python",
-            str(_RUN_SOLVER_SCRIPT),
+            "-m",
+            "runner.utils.solver",
             solver_name,
             str(input_file),
             solver_version,
         ]
+    )
+
+    # Prepend (not replace) PYTHONPATH so `runner` resolves as a package --
+    # see this module's docstring for why PYTHONPATH rather than `cwd`.
+    subprocess_env = dict(os.environ)
+    subprocess_env["PYTHONPATH"] = os.pathsep.join(
+        [str(_REPO_ROOT), subprocess_env.get("PYTHONPATH", "")]
     )
 
     # Run the command and capture the output
@@ -147,6 +161,7 @@ def run_solver(
         text=True,
         check=False,
         encoding="utf-8",
+        env=subprocess_env,
     )
 
     # DEBUG
@@ -154,11 +169,7 @@ def run_solver(
         print(f"STDERR from {solver_name} on {input_file}:\n{result.stderr}")
 
     # Append the stderr to the log file
-    log_file = (
-        _RUN_SOLVER_SCRIPT.parent
-        / "logs"
-        / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
-    )
+    log_file = _LOGS_DIR / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
     if log_file.exists():
         with open(log_file, "a") as f:
             f.write("\nSTDERR:\n")
