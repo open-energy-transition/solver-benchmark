@@ -6,13 +6,17 @@ Isolating this here (separate from `solver.py`'s dispatch logic) is what
 makes migrating from conda to pixi envs (a later refactor step) a
 single-file change instead of a grep-and-replace across the codebase --
 public names here describe *what* they return (installed/registered
-versions), not *how* (conda today), so that migration only changes this
-file's implementation, not its callers.
+versions) or accomplish (an env being ready to use), not *how* (conda
+today), so that migration only changes this file's implementation, not its
+callers.
 """
 
 import subprocess
+from pathlib import Path
 
 from . import config
+
+_ENVS_DIR = Path(__file__).resolve().parent.parent / "envs"
 
 
 def get_installed_solver_versions(
@@ -133,3 +137,61 @@ def get_registered_solver_versions(
                 break
 
     return registered_versions
+
+
+def _list_existing_envs() -> set[str]:
+    """List the names of every existing conda environment."""
+    result = subprocess.run(
+        ["conda", "env", "list"], capture_output=True, text=True, check=True
+    )
+    return {
+        line.split()[0]
+        for line in result.stdout.splitlines()
+        if line.strip() and not line.startswith("#")
+    }
+
+
+def ensure_solver_envs_installed(
+    registered_versions: dict[str, dict[str, str | None]],
+) -> None:
+    """Create any envs named in `registered_versions` that don't exist yet.
+
+    Each env is built from `runner/envs/<env>-fixed.yaml` (pinned versions,
+    preferred for reproducibility) or `runner/envs/<env>.yaml` (loose specs)
+    if no fixed file exists. A failed or missing env is logged and skipped
+    rather than raised, so one bad env doesn't stop every other solver from
+    running.
+
+    Parameters
+    ----------
+    registered_versions : dict[str, dict[str, str | None]]
+        As returned by `get_registered_solver_versions`; only the `env`
+        values are used here.
+    """
+    env_names = {v["env"] for v in registered_versions.values() if v.get("env")}
+    if not env_names:
+        return
+
+    existing_envs = _list_existing_envs()
+    for env_name in sorted(env_names):
+        if env_name in existing_envs:
+            print(f"Conda env {env_name} already exists; reusing")
+            continue
+
+        fixed_yaml = _ENVS_DIR / f"{env_name}-fixed.yaml"
+        loose_yaml = _ENVS_DIR / f"{env_name}.yaml"
+        env_yaml = fixed_yaml if fixed_yaml.exists() else loose_yaml
+        if not env_yaml.exists():
+            print(f"WARNING: No YAML found for env {env_name}, skipping")
+            continue
+
+        print(f"Creating conda env {env_name} from {env_yaml.name}...")
+        result = subprocess.run(
+            ["conda", "env", "create", "-q", "-f", str(env_yaml), "-y"],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            print(
+                f"WARNING: Failed to create env {env_name}, skipping\n{result.stderr}"
+            )

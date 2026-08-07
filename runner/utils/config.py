@@ -218,6 +218,35 @@ def get_default_configurations(config: dict[str, Any] | None = None) -> list[str
     return list(config.get("default_configurations", []))
 
 
+def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
+    """Return every year with at least one registered solver version.
+
+    Used as the CLI's default ``--years`` list when none is given, so a new
+    solver-version year (added to ``solvers.yaml``) is picked up
+    automatically rather than needing a matching CLI code change. Excludes
+    the ``tests`` block: that's CI's shared smoke-test env, not a real
+    release year, and shouldn't be swept into a "run everything" default.
+
+    Parameters
+    ----------
+    config : dict[str, Any], optional
+        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
+
+    Returns
+    -------
+    list[str]
+        Every distinct ``year`` value across ``solvers.yaml``'s ``solvers``
+        block, sorted ascending.
+    """
+    config = config if config is not None else load_solver_registry()
+    years = {
+        str(entry["year"])
+        for versions in config.get("solvers", {}).values()
+        for entry in versions.values()
+    }
+    return sorted(years)
+
+
 def get_conda_package_name(
     solver_name: str, config: dict[str, Any] | None = None
 ) -> str:
