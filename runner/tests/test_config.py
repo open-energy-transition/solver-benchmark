@@ -4,6 +4,7 @@ configurations, and the eligibility-rule engine.
 
 from runner.utils.config import (
     _condition_matches,
+    get_all_registered_years,
     get_conda_package_name,
     get_default_configurations,
     get_solver_configuration,
@@ -81,6 +82,28 @@ class TestGetDefaultConfigurations:
 
     def test_missing_key_returns_empty_list(self):
         assert get_default_configurations({}) == []
+
+
+class TestGetAllRegisteredYears:
+    def test_collects_unique_sorted_years_across_solvers(self):
+        registry = {
+            "solvers": {
+                "highs": {"1.9.0": {"year": 2024}, "1.12.0": {"year": 2025}},
+                "cbc": {"2.10.12": {"year": 2024}},
+                "glpk": {"5.0": {"year": 2020}},
+            }
+        }
+        assert get_all_registered_years(registry) == ["2020", "2024", "2025"]
+
+    def test_excludes_the_tests_block(self):
+        registry = {
+            "solvers": {"highs": {"1.9.0": {"year": 2024}}},
+            "tests": {"highs": {"version": "1.9.0", "env": "benchmark-tests"}},
+        }
+        assert get_all_registered_years(registry) == ["2024"]
+
+    def test_empty_registry_returns_empty_list(self):
+        assert get_all_registered_years({}) == []
 
 
 class TestGetCondaPackageName:

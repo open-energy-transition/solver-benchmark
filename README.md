@@ -342,7 +342,7 @@ Each solver configuration runs in its own per-solver-year conda env, e.g. for `h
 benchmark-highs-2025
 ```
 
-See `runner/solvers.yaml` for the full registry, and `runner/config/solver_configurations.yaml`
+See `runner/config/solvers.yaml` for the full registry, and `runner/config/solver_configurations.yaml`
 for the available named configurations (e.g. `highs-hipo`).
 
 Run specific solvers for one or more years:

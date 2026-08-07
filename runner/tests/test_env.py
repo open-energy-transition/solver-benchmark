@@ -7,6 +7,7 @@ import subprocess
 import pytest
 
 from runner.utils.env import (
+    ensure_solver_envs_installed,
     get_installed_solver_versions,
     get_registered_solver_versions,
 )
@@ -156,3 +157,119 @@ class TestGetRegisteredSolverVersions:
         )
         result = get_registered_solver_versions(["highs", "scip"], "tests")
         assert result == {"highs": {"version": "1.9.0", "env": "benchmark-tests"}}
+
+
+class TestEnsureSolverEnvsInstalled:
+    _EXISTING_ENVS_OUTPUT = (
+        "# conda environments:\n"
+        "#\n"
+        "base                  *  /opt/conda\n"
+        "benchmark-highs-2025     /opt/conda/envs/benchmark-highs-2025\n"
+    )
+
+    def test_no_envs_needed_is_a_noop(self, mocker):
+        run_mock = mocker.patch("runner.utils.env.subprocess.run")
+        ensure_solver_envs_installed({"highs": {"version": "1.12.0", "env": None}})
+        run_mock.assert_not_called()
+
+    def test_existing_env_is_reused_not_recreated(self, mocker, capsys):
+        run_mock = mocker.patch(
+            "runner.utils.env.subprocess.run",
+            return_value=subprocess.CompletedProcess(
+                args=[], returncode=0, stdout=self._EXISTING_ENVS_OUTPUT, stderr=""
+            ),
+        )
+        ensure_solver_envs_installed(
+            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
+        )
+        # Only the "conda env list" call, no "conda env create"
+        run_mock.assert_called_once()
+        assert "already exists; reusing" in capsys.readouterr().out
+
+    def test_missing_env_is_created_from_fixed_yaml_when_present(
+        self, mocker, tmp_path
+    ):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        (tmp_path / "benchmark-highs-2025-fixed.yaml").write_text(
+            "name: benchmark-highs-2025"
+        )
+        (tmp_path / "benchmark-highs-2025.yaml").write_text(
+            "name: benchmark-highs-2025"
+        )
+
+        run_mock = mocker.patch(
+            "runner.utils.env.subprocess.run",
+            side_effect=[
+                subprocess.CompletedProcess(
+                    args=[], returncode=0, stdout="# no envs\n", stderr=""
+                ),
+                subprocess.CompletedProcess(
+                    args=[], returncode=0, stdout="", stderr=""
+                ),
+            ],
+        )
+        ensure_solver_envs_installed(
+            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
+        )
+        create_cmd = run_mock.call_args_list[1][0][0]
+        assert create_cmd[:3] == ["conda", "env", "create"]
+        assert create_cmd[create_cmd.index("-f") + 1].endswith("-fixed.yaml")
+
+    def test_missing_env_falls_back_to_loose_yaml(self, mocker, tmp_path):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        (tmp_path / "benchmark-highs-2025.yaml").write_text(
+            "name: benchmark-highs-2025"
+        )
+
+        run_mock = mocker.patch(
+            "runner.utils.env.subprocess.run",
+            side_effect=[
+                subprocess.CompletedProcess(
+                    args=[], returncode=0, stdout="# no envs\n", stderr=""
+                ),
+                subprocess.CompletedProcess(
+                    args=[], returncode=0, stdout="", stderr=""
+                ),
+            ],
+        )
+        ensure_solver_envs_installed(
+            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
+        )
+        create_cmd = run_mock.call_args_list[1][0][0]
+        assert create_cmd[create_cmd.index("-f") + 1].endswith(
+            "benchmark-highs-2025.yaml"
+        )
+
+    def test_missing_env_yaml_is_skipped_with_warning(self, mocker, tmp_path, capsys):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        mocker.patch(
+            "runner.utils.env.subprocess.run",
+            return_value=subprocess.CompletedProcess(
+                args=[], returncode=0, stdout="# no envs\n", stderr=""
+            ),
+        )
+        ensure_solver_envs_installed(
+            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
+        )
+        assert "WARNING: No YAML found" in capsys.readouterr().out
+
+    def test_failed_create_is_logged_not_raised(self, mocker, tmp_path, capsys):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        (tmp_path / "benchmark-highs-2025.yaml").write_text(
+            "name: benchmark-highs-2025"
+        )
+        mocker.patch(
+            "runner.utils.env.subprocess.run",
+            side_effect=[
+                subprocess.CompletedProcess(
+                    args=[], returncode=0, stdout="# no envs\n", stderr=""
+                ),
+                subprocess.CompletedProcess(
+                    args=[], returncode=1, stdout="", stderr="boom"
+                ),
+            ],
+        )
+        ensure_solver_envs_installed(
+            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
+        )
+        assert "WARNING: Failed to create env" in capsys.readouterr().out
