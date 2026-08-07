@@ -8,24 +8,28 @@
 #     -v $(pwd)/results:/solver-benchmark/results \
 #     solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
 #
-# Per-solver-year conda environments are created at runtime by
-# runner/benchmark.py. To cache them across runs, use a named volume:
+# Per-solver-year pixi environments (runner/envs/<env>/) are installed at
+# runtime by runner/benchmark.py. To cache them across runs, use a named
+# volume:
 #   docker run --rm \
 #     -v $(pwd)/results:/solver-benchmark/results \
-#     -v solver-conda-envs:/opt/conda/envs \
+#     -v solver-pixi-envs:/solver-benchmark/runner/envs \
 #     solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
 #
 # Note: systemd is not available inside Docker, so memory limit enforcement
 # via systemd-run is skipped. The runner falls back gracefully.
 
-FROM continuumio/miniconda3
+FROM debian:bookworm-slim
 
 # Install system dependencies:
 #  - time: GNU time for detailed resource measurement
-#  - git: needed by some conda packages / pip installs
+#  - git: needed for pip git-source installs (see e.g.
+#    runner/envs/benchmark-highs-2023/pixi.toml)
 #  - coreutils: provides timeout
 #  - procps: provides ps (useful for debugging)
-#  - build-essential: C/C++ compiler needed by some solver packages (e.g. highspy)
+#  - build-essential: C/C++ compiler, in case a pip build falls back to it
+#    (per-env `cxx-compiler` pixi dependencies are normally self-contained)
+#  - ca-certificates: HTTPS access for pixi/conda/PyPI downloads
 #  - curl: needed to install pixi below
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -34,13 +38,13 @@ RUN apt-get update && \
         coreutils \
         procps \
         build-essential \
+        ca-certificates \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install pixi, which manages the runner CLI's own dependencies (pyyaml,
-# psutil, requests, pandas, typer, ...). Separate from the per-solver-year
-# conda envs runner/benchmark.py creates at runtime -- those still use
-# conda directly, since this image also needs `conda env create` available.
+# Install pixi, which manages both the runner CLI's own dependencies
+# (pyyaml, psutil, requests, pandas, typer, ...) and every per-solver-year
+# env under runner/envs/ (each its own separate pixi manifest).
 RUN curl -fsSL https://pixi.sh/install.sh | bash
 ENV PATH="/root/.pixi/bin:${PATH}"
 
