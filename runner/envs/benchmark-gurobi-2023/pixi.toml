@@ -1,0 +1,14 @@
+# Auto-translated from the old runner/envs/benchmark-gurobi-2023.yaml (conda)
+# during the conda -> pixi solver-env migration (issue #478 PR5).
+[workspace]
+name = "benchmark-gurobi-2023"
+channels = ["conda-forge", "https://conda.anaconda.org/gurobi"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = ">=3.12"
+pip = "*"
+psutil = ">=5.9"
+requests = ">=2.32"
+linopy = ">=0.5.5"
+gurobi = "==11.0.0"

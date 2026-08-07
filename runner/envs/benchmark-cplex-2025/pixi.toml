@@ -1,0 +1,20 @@
+# Auto-translated from the old runner/envs/benchmark-cplex-2025.yaml (conda)
+# during the conda -> pixi solver-env migration (issue #478 PR5).
+[workspace]
+name = "benchmark-cplex-2025"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+# cplex==22.1.2.0 has no wheel newer than cp312, so the upper bound is load-
+# bearing here, not cosmetic -- a loose ">=3.12" lets the resolver pick
+# conda-forge's newest Python (3.14) and fail to find a matching wheel.
+python = ">=3.12,<3.13"
+pip = "*"
+psutil = ">=5.9"
+requests = ">=2.32"
+linopy = ">=0.5.5"
+
+[pypi-dependencies]
+cplex = "==22.1.2.0"
+docplex = "*"  # required by cplex
