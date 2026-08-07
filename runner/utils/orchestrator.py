@@ -234,8 +234,12 @@ def run_benchmark(
                 if metrics["status"] in {"ER", "TO"}:
                     break
 
-            # Calculate mean and standard deviation
-            if iterations > 1:
+            # Calculate mean and standard deviation. Guarded by how many
+            # runtimes were actually collected, not the requested
+            # `iterations`: an error/timeout on the first iteration breaks
+            # the loop above early, leaving a single-element `runtimes`
+            # even when `iterations` > 1, and stdev requires 2+ points.
+            if len(runtimes) > 1:
                 metrics["runtime_mean"] = statistics.mean(runtimes)
                 metrics["runtime_stddev"] = statistics.stdev(runtimes)
                 metrics["memory_mean"] = statistics.mean(memory_usages)
