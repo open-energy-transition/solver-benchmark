@@ -101,7 +101,7 @@ class TestRunSolver:
         ]
         assert called_cmd[called_cmd.index("runner.utils.solver") - 1] == "-m"
 
-    def test_env_name_uses_conda_run(self, mocker):
+    def test_env_name_uses_pixi_run(self, mocker):
         cp = subprocess.CompletedProcess(
             args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
         )
@@ -117,9 +117,11 @@ class TestRunSolver:
             env_name="benchmark-highs-2025",
         )
         called_cmd = run_mock.call_args[0][0]
-        assert "conda" in called_cmd
+        assert "pixi" in called_cmd
         assert "run" in called_cmd
-        assert "benchmark-highs-2025" in called_cmd
+        assert called_cmd[called_cmd.index("--manifest-path") + 1].endswith(
+            "benchmark-highs-2025"
+        )
 
     def test_pythonpath_is_prepended_with_repo_root(self, mocker):
         cp = subprocess.CompletedProcess(

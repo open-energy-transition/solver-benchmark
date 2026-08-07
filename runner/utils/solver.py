@@ -103,7 +103,7 @@ def is_mip_problem(solver_model: Any, solver_name: str) -> bool:
 
 def calculate_integrality_violation(
     integer_var_labels: np.ndarray, primal_values: np.ndarray
-) -> float:
+) -> float | None:
     """Calculate the maximum integrality violation from primal values.
 
     Only Integer vars are considered, not SemiContinuous or SemiInteger,
@@ -122,16 +122,28 @@ def calculate_integrality_violation(
 
     Returns
     -------
-    float
+    float | None
         The largest absolute distance from an integer variable's value to
-        its nearest integer.
+        its nearest integer, or None if `primal_values` has no entry for
+        any of `integer_var_labels` (see this function's Notes).
 
     Notes
     -----
     Not using `solver_result.solver_model.getInfo()` because it works for
     HiGHS but not for other solvers.
+
+    `primal_values` can legitimately be shorter than `integer_var_labels`
+    needs: linopy's deprecated file-based solve path (`Solver.solve_problem`,
+    see this module's docstring) never initializes its internal variable
+    count, so it always builds `Solution.primal` as a zero-length array
+    regardless of the problem's real size. Labels beyond its length are
+    dropped rather than raising, since there's no primal value to check
+    them against either way.
     """
-    p = primal_values[integer_var_labels]
+    in_bounds = integer_var_labels[integer_var_labels < len(primal_values)]
+    if in_bounds.size == 0:
+        return None
+    p = primal_values[in_bounds]
     return float(np.max(np.abs(p - np.round(p))))
 
 
