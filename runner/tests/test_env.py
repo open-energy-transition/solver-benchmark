@@ -139,3 +139,20 @@ class TestGetRegisteredSolverVersions:
         )
         result = get_registered_solver_versions(["not-a-solver"], "2025")
         assert result == {}
+
+    def test_tests_pseudo_year_reads_the_tests_block_instead(self, mocker):
+        # "tests" is CI's shared smoke-test env, not a real release year, so
+        # it's looked up from the registry's separate `tests` block rather
+        # than matched against any solver's per-year `year` entries.
+        registry = {
+            **self._REGISTRY,
+            "tests": {"highs": {"version": "1.9.0", "env": "benchmark-tests"}},
+        }
+        mocker.patch(
+            "runner.utils.env.config.load_solver_registry", return_value=registry
+        )
+        mocker.patch(
+            "runner.utils.env.config.resolve_solver_name", side_effect=lambda name: name
+        )
+        result = get_registered_solver_versions(["highs", "scip"], "tests")
+        assert result == {"highs": {"version": "1.9.0", "env": "benchmark-tests"}}

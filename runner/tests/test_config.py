@@ -116,6 +116,13 @@ class TestConditionMatches:
     def test_gte_with_none_actual_is_false(self):
         assert not _condition_matches({"year": None}, {"year": {"gte": "2026"}})
 
+    def test_gte_and_lte_with_non_numeric_actual_is_false(self):
+        # `year` can be the non-numeric pseudo-year "tests" (CI's shared
+        # smoke-test env) -- it shouldn't satisfy a numeric bound, but must
+        # not crash the whole eligibility check either.
+        assert not _condition_matches({"year": "tests"}, {"year": {"gte": "2026"}})
+        assert not _condition_matches({"year": "tests"}, {"year": {"lte": "2026"}})
+
     def test_multiple_facts_are_and_ed(self):
         condition = {"solver": {"in": ["cbc"]}, "year": {"in": ["2024"]}}
         assert _condition_matches({"solver": "cbc", "year": "2024"}, condition)
@@ -174,6 +181,16 @@ class TestIsSolverEligible:
     def test_real_eligibility_rules_restrict_hipo_to_lp(self):
         assert not is_solver_eligible(
             "highs-hipo", "2026", size_category="S", problem_class="MILP"
+        )
+
+    def test_tests_pseudo_year_does_not_crash_numeric_rules(self):
+        # year="tests" (CI's smoke-test pseudo-year) doesn't satisfy any of
+        # the real rules' numeric year bounds, but must not raise either.
+        assert is_solver_eligible(
+            "highs", "tests", size_category="S", problem_class="LP"
+        )
+        assert not is_solver_eligible(
+            "highs-hipo", "tests", size_category="S", problem_class="LP"
         )
 
 

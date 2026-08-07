@@ -99,7 +99,9 @@ def get_registered_solver_versions(
         a configuration like "highs-hipo" shares its solver's version/env.
     year : str
         The release year to match against `solvers.yaml`'s per-version
-        `year` entries.
+        `year` entries, or the literal string `"tests"` to look up
+        `solvers.yaml`'s `tests` block instead (the shared conda env CI
+        smoke-tests against, not a real release year).
 
     Returns
     -------
@@ -111,6 +113,16 @@ def get_registered_solver_versions(
     registered_versions = {}
     for configuration in solver_configurations:
         resolved_solver = config.resolve_solver_name(configuration)
+
+        if str(year) == "tests":
+            entry = solver_registry.get("tests", {}).get(resolved_solver)
+            if entry:
+                registered_versions[configuration] = {
+                    "version": entry["version"],
+                    "env": entry.get("env"),
+                }
+            continue
+
         solver_entries = solver_registry["solvers"].get(resolved_solver, {})
         for version, entry in solver_entries.items():
             if str(entry["year"]) == str(year):
