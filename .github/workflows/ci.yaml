@@ -111,11 +111,15 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          pixi run -e runner python -m runner.benchmark --years tests results/metadata_subset.yaml
+          pixi run -e runner python -m runner.benchmark --years tests \
+            --solver-configurations cbc \
+            --solver-configurations highs \
+            --solver-configurations scip \
+            results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
-          if awk -F',' 'NR>1 && $2 != "glpk" {if ($5 != "ok") exit 1}' results/benchmark_results.csv; then
-            echo "All non-GLPK benchmarks ran successfully."
+          if awk -F',' 'NR>1 {if ($5 != "ok") exit 1}' results/benchmark_results.csv; then
+            echo "All benchmarks ran successfully."
           else
             echo "Some benchmarks did not complete successfully."
             exit 1
