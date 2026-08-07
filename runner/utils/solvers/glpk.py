@@ -6,7 +6,7 @@ retrieval aren't possible.
 
 from typing import Any
 
-# TODO preprocess benchmarks and add this info to metadata
+# TODO preprocess problems and add this info to metadata
 
 
 def is_mip(model: Any) -> bool:

@@ -5,6 +5,8 @@ CBC doesn't return a solver model, so MIP detection isn't possible.
 
 from typing import Any
 
+# TODO preprocess problems and add this info to metadata
+
 
 def is_mip(model: Any) -> bool:
     """Always False: CBC doesn't expose enough info to tell."""

@@ -52,7 +52,9 @@ linopy = ">=0.5.0"
 pandas = "*"
 
 [feature.dev.dependencies]
-ruff = "*"
+# Pinned to match .pre-commit-config.yaml's ruff-pre-commit rev, so
+# `pixi run -e dev ruff ...` matches what CI actually enforces.
+ruff = "==0.15.22"
 pytest = "*"
 pytest-mock = "*"
 pre-commit = "*"
