@@ -2,8 +2,8 @@
 or more solver-version years.
 
 Replaces the old `runner/run_benchmarks.py` (single-year CLI) and
-`runner/benchmark_all.sh` (multi-year loop plus per-solver conda env setup)
-with one Python entrypoint. A package module, not a bare script: invoke via
+`runner/benchmark_all.sh` (multi-year loop plus per-solver env setup) with
+one Python entrypoint. A package module, not a bare script: invoke via
 `python -m runner.benchmark`, run from the repo root.
 """
 
@@ -64,7 +64,7 @@ def run(
     """Run every problem in PROBLEMS_YAML_PATH against each solver
     configuration, once per given year.
 
-    For each year, creates any missing per-solver-year conda envs (see
+    For each year, installs any missing per-solver-year envs (see
     `runner/envs/`), then runs that year's registered and eligible solver
     configurations against every problem. A failing year is logged and
     skipped rather than aborting the remaining years.

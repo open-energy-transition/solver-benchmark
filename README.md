@@ -42,7 +42,7 @@ solver-benchmark/
 │   ├── benchmark.py            # Main entry point: Typer CLI running problems across years
 │   ├── utils/                  # Runner package: config, solver dispatch, run loop, etc.
 │   │   └── solver.py           # Individual solver runner (python -m runner.utils.solver)
-│   ├── envs/                   # Conda environment definitions for each solver year
+│   ├── envs/                   # Pixi environment manifests for each solver year
 │   └── benchmarks/             # Downloaded problem files
 ├── benchmarks/                 # Problem definitions and metadata
 │   ├── pypsa/                  # PyPSA-generated energy models
@@ -76,12 +76,12 @@ Supported Linux distributions:
 Ensure you have the following installed:
 
 - **Python 3.12+**
-- **Conda** ([install Miniconda](https://docs.conda.io/projects/miniconda/latest/miniconda-install-html.html))
+- **[pixi](https://pixi.sh)**
 - **systemd** (usually pre-installed on modern Linux distributions)
 
 #### Running Supported Solvers on Problems
 
-The benchmark runner CLI (`runner/benchmark.py`, run via `python -m runner.benchmark`) is the main entry point for running benchmarks. It takes a list of solver configurations and a list of years as arguments, and runs the problems for each solver configuration and year. It creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
+The benchmark runner CLI (`runner/benchmark.py`, run via `python -m runner.benchmark`) is the main entry point for running benchmarks. It takes a list of solver configurations and a list of years as arguments, and runs the problems for each solver configuration and year. It installs pixi environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
 
 *Quickstart:*
 
@@ -115,7 +115,7 @@ docker run --rm \
   solver-benchmark-runner results/metadata.yaml
 ```
 
-The container accepts the same flags as `runner.benchmark` (e.g. `--solver-configurations`, `--years`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, conda env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
+The container accepts the same flags as `runner.benchmark` (e.g. `--solver-configurations`, `--years`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, pixi env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
 
 ### Cloud Runs
 
@@ -333,7 +333,7 @@ The default solver year is:
 2025
 ```
 
-Each solver configuration runs in its own per-solver-year conda env, e.g. for `highs` in 2025:
+Each solver configuration runs in its own per-solver-year pixi env, e.g. for `highs` in 2025:
 
 ```text
 benchmark-highs-2025
@@ -465,7 +465,7 @@ You can quickly try running your own problem locally on our supported set of sol
 
 ### Running other solvers
 
-To run either our problems, or your own (see the previous section), on a solver that we do not yet support, you need to install it into the active conda environment, add a solver adapter module under `runner/utils/solvers/` (see any existing module there for the template), and add its tuning options to `runner/config/solver_configurations.yaml`. Please reach out to us (or open an issue) if you would like more details, or any help with this.
+To run either our problems, or your own (see the previous section), on a solver that we do not yet support, you need to add it to its per-solver-year pixi manifest(s) under `runner/envs/` (see [Updating Solver Versions](runner/SOLVERS.md#updating-solver-versions)), add a solver adapter module under `runner/utils/solvers/` (see any existing module there for the template), and add its tuning options to `runner/config/solver_configurations.yaml`. Please reach out to us (or open an issue) if you would like more details, or any help with this.
 
 ## Running the Website
 
