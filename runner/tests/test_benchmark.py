@@ -70,7 +70,7 @@ class TestBenchmarkCli:
     def test_single_year_run_writes_results(self, problems_yaml, tmp_path):
         result = runner_cli.invoke(
             benchmark.app,
-            [str(problems_yaml), "--years", "2025", "--solvers", "highs"],
+            [str(problems_yaml), "--years", "2025", "--solver-configurations", "highs"],
         )
         assert result.exit_code == 0, result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
@@ -94,10 +94,10 @@ class TestBenchmarkCli:
             return_value=["2024"],
         )
         result = runner_cli.invoke(
-            benchmark.app, [str(problems_yaml), "--solvers", "highs"]
+            benchmark.app, [str(problems_yaml), "--solver-configurations", "highs"]
         )
         assert result.exit_code == 0, result.output
-        assert "Running benchmarks for year 2024" in result.output
+        assert "Running the benchmark for year 2024" in result.output
         assert "2025" not in result.output.split("run ID")[0]
 
     def test_first_year_overwrites_subsequent_years_append(
@@ -111,7 +111,7 @@ class TestBenchmarkCli:
                 "2024",
                 "--years",
                 "2025",
-                "--solvers",
+                "--solver-configurations",
                 "highs",
                 "--run-id",
                 "multi-year",
@@ -140,7 +140,14 @@ class TestBenchmarkCli:
         )
         result = runner_cli.invoke(
             benchmark.app,
-            [str(problems_yaml), "--years", "2025", "--solvers", "highs", "--append"],
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs",
+                "--append",
+            ],
         )
         assert result.exit_code == 0, result.output
         results = pd.read_csv(results_csv)
@@ -155,7 +162,7 @@ class TestBenchmarkCli:
                 "2024",
                 "--years",
                 "2025",
-                "--solvers",
+                "--solver-configurations",
                 "highs",
             ],
         )
@@ -179,11 +186,11 @@ class TestBenchmarkCli:
                 "2024",
                 "--years",
                 "2025",
-                "--solvers",
+                "--solver-configurations",
                 "highs",
             ],
         )
         assert result.exit_code == 0, result.output
-        assert "ERROR running benchmarks for year 2024" in result.output
+        assert "ERROR running the benchmark for year 2024" in result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]

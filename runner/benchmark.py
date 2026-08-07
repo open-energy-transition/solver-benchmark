@@ -1,5 +1,5 @@
-"""Unified CLI for running benchmark problems across one or more
-solver-version years.
+"""Unified CLI for running problems against solver configurations across one
+or more solver-version years.
 
 Replaces the old `runner/run_benchmarks.py` (single-year CLI) and
 `runner/benchmark_all.sh` (multi-year loop plus per-solver conda env setup)
@@ -32,12 +32,13 @@ def run(
         "shared CI smoke-test env. Defaults to every year with a "
         "registered solver version.",
     ),
-    solvers: list[str] = typer.Option(
+    solver_configurations: list[str] = typer.Option(
         None,
-        "--solvers",
+        "--solver-configurations",
         "-s",
-        help="Solver configuration to run (repeatable). Defaults to "
-        "solver_configurations.yaml's default_configurations.",
+        help="Solver configuration to run (repeatable), e.g. `highs` or "
+        "`highs-hipo`. Defaults to solver_configurations.yaml's "
+        "default_configurations.",
     ),
     append: bool = typer.Option(
         False,
@@ -68,37 +69,39 @@ def run(
     configurations against every problem. A failing year is logged and
     skipped rather than aborting the remaining years.
     """
-    solver_configurations = (
-        list(solvers) if solvers else config.get_default_configurations()
+    resolved_solver_configurations = (
+        list(solver_configurations)
+        if solver_configurations
+        else config.get_default_configurations()
     )
     resolved_years = list(years) if years else config.get_all_registered_years()
     resolved_run_id = run_id or f"{time.strftime('%Y%m%d_%H%M%S')}_{gethostname()}"
     print(f"Using run ID: {resolved_run_id}")
 
     for index, year in enumerate(resolved_years):
-        print(f"Running benchmarks for year {year}...")
+        print(f"Running the benchmark for year {year}...")
 
         registered_versions = env.get_registered_solver_versions(
-            solver_configurations, year
+            resolved_solver_configurations, year
         )
         env.ensure_solver_envs_installed(registered_versions)
 
         try:
             run_benchmark(
                 problems_yaml_path,
-                solver_configurations,
+                resolved_solver_configurations,
                 year=year,
                 reference_interval=ref_bench_interval,
                 append=append or index > 0,
                 run_id=resolved_run_id,
             )
         except Exception as e:
-            print(f"ERROR running benchmarks for year {year}: {e}")
+            print(f"ERROR running the benchmark for year {year}: {e}")
             continue
 
-        print(f"Completed benchmarks for year {year}")
+        print(f"Completed the benchmark for year {year}")
 
-    print(f"All benchmarks completed for run ID: {resolved_run_id}")
+    print(f"All years completed for run ID: {resolved_run_id}")
 
 
 if __name__ == "__main__":

@@ -6,14 +6,14 @@
 # Run:
 #   docker run --rm \
 #     -v $(pwd)/results:/solver-benchmark/results \
-#     solver-benchmark-runner --solvers highs --years 2025 results/metadata.yaml
+#     solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
 #
 # Per-solver-year conda environments are created at runtime by
 # runner/benchmark.py. To cache them across runs, use a named volume:
 #   docker run --rm \
 #     -v $(pwd)/results:/solver-benchmark/results \
 #     -v solver-conda-envs:/opt/conda/envs \
-#     solver-benchmark-runner --solvers highs --years 2025 results/metadata.yaml
+#     solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
 #
 # Note: systemd is not available inside Docker, so memory limit enforcement
 # via systemd-run is skipped. The runner falls back gracefully.
