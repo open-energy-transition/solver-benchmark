@@ -39,8 +39,7 @@ Understanding the project layout to help you navigate and contribute:
 ```bash
 solver-benchmark/
 ├── runner/                     # Benchmark execution scripts
-│   ├── benchmark_all.sh        # Main entry point for running benchmarks
-│   ├── run_benchmarks.py       # Python script that orchestrates benchmark runs
+│   ├── benchmark.py            # Main entry point: Typer CLI running problems across years
 │   ├── utils/                  # Runner package: config, solver dispatch, run loop, etc.
 │   │   └── solver.py           # Individual solver runner (python -m runner.utils.solver)
 │   ├── envs/                   # Conda environment definitions for each solver year
@@ -82,13 +81,13 @@ Ensure you have the following installed:
 
 #### Running Supported Solvers on Problems
 
-The benchmark runner script (`runner/benchmark_all.sh`) is the main entry point for running benchmarks. It takes a list of solvers and a list of years as arguments, and runs the problems for each solver and year. It creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
+The benchmark runner CLI (`runner/benchmark.py`, run via `python -m runner.benchmark`) is the main entry point for running benchmarks. It takes a list of solver configurations and a list of years as arguments, and runs the problems for each solver configuration and year. It creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
 
 *Quickstart:*
 
 1. Run benchmarks
 ```sh
-./runner/benchmark_all.sh -s "highs scip" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
+pixi run -e runner python -m runner.benchmark --solver-configurations highs --solver-configurations scip --years 2025 infrastructure/benchmarks/sample_run/standard-00.yaml
 ```
 
 2. View logs and results
@@ -100,9 +99,7 @@ tail runner/logs/*
 
 3. View and analyze results by running the website [locally](#running-the-website)
 
-The script will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
-
-`runner/benchmark_all.sh` uses `runner/run_benchmarks.py` to run the problems by year. If you wish to run the benchmark script directly, you can set up the requisite conda env manually. [See Documentation](runner/README.md).
+The CLI will save the measured runtime and memory consumption into a CSV file in `results/` that the website will then read and display. [Running the website locally](#running-the-website) will allow you to view and analyze results in a user friendly way. It will use the results from `results/benchmark_results.csv`.
 
 ### Running with Docker
 
@@ -118,7 +115,7 @@ docker run --rm \
   solver-benchmark-runner results/metadata.yaml
 ```
 
-The container accepts the same flags as `benchmark_all.sh` (e.g. `-s`, `-y`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, conda env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
+The container accepts the same flags as `runner.benchmark` (e.g. `--solver-configurations`, `--years`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, conda env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
 
 ### Cloud Runs
 
@@ -419,7 +416,7 @@ The generated run script can also be executed manually:
 bash infrastructure/local/benchmarks/<run-id>/run_local.sh
 ```
 
-Local campaigns use the existing `runner/benchmark_all.sh` workflow and execute problems sequentially.
+Local campaigns use the existing `runner.benchmark` CLI and execute problems sequentially.
 
 ## Example workflows
 

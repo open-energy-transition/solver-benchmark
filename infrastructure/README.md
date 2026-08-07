@@ -40,7 +40,7 @@ mkdir benchmarks/sample_run
 machine-type: c4-standard-2
 years:
 - 2025
-solver: highs scip # solvers to run, runs all the default solvers in benchmark_all.sh if not specified
+solver: highs scip # solver configurations to run, runs all the default configurations in runner.benchmark if not specified
 benchmarks:
   genx-3_three_zones_w_co2_capture-no_uc:
     Sizes:

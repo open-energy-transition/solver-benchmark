@@ -111,7 +111,7 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" results/metadata_subset.yaml
+          pixi run -e runner python -m runner.benchmark --years tests results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
           if awk -F',' 'NR>1 && $3 != "glpk" {if ($6 != "ok") exit 1}' results/benchmark_results.csv; then
