@@ -30,9 +30,15 @@
 # Adding a new algorithm configuration for an existing solver (or a first one
 # for a solver that doesn't have any yet) is a new entry here, not new
 # Python code.
+#
+# `default_configurations`: the solver configurations to run when the CLI is
+# given none explicitly -- names of entries in `configurations` below (e.g.
+# could list "highs-hipo" as a default).
 shared:
   mip_gap: 1.0e-4
   lp_tolerance: 1.0e-6
+
+default_configurations: [highs, scip, cbc, gurobi, glpk]
 
 configurations:
   glpk:

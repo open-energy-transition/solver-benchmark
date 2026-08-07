@@ -1,10 +1,13 @@
-"""Solver registry and the generic problem/solver eligibility-rule engine.
+"""Solver registry, solver configurations, and the eligibility-rule engine.
 
-Backed by two data files: ``runner/config/solvers.yaml`` (versions, envs,
-package names, default solver list) and ``runner/config/eligibility_rules.yaml``
-(which solver/year/size/problem-class combinations are actually allowed to
-run). Keeping these as data, rather than inline Python conditionals, is what
-lets adding a solver version or a new runtime guard be a pure config edit.
+Backed by three data files: ``runner/config/solvers.yaml`` (per-solver
+versions, envs, package names), ``runner/config/solver_configurations.yaml``
+(tuning options per named way of running a solver, plus the CLI's default
+list), and ``runner/config/eligibility_rules.yaml`` (which solver/year/size/
+problem-class combinations are actually allowed to run). Keeping these as
+data, rather than inline Python conditionals, is what lets adding a solver
+version, a new tuning configuration, or a new runtime guard be a pure config
+edit.
 """
 
 import functools
@@ -15,7 +18,7 @@ from typing import Any
 import yaml
 
 _CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
-_SOLVERS_CONFIG_PATH = _CONFIG_DIR / "solvers.yaml"
+_SOLVER_REGISTRY_PATH = _CONFIG_DIR / "solvers.yaml"
 _ELIGIBILITY_RULES_PATH = _CONFIG_DIR / "eligibility_rules.yaml"
 _SOLVER_CONFIGURATIONS_PATH = _CONFIG_DIR / "solver_configurations.yaml"
 
@@ -35,7 +38,7 @@ _OPERATORS: dict[str, Callable[[Any, Any], bool]] = {
 
 
 @functools.cache
-def load_solver_config(config_path: Path = _SOLVERS_CONFIG_PATH) -> dict[str, Any]:
+def load_solver_registry(config_path: Path = _SOLVER_REGISTRY_PATH) -> dict[str, Any]:
     """Load the solver registry from ``runner/config/solvers.yaml``.
 
     Parameters
@@ -47,8 +50,7 @@ def load_solver_config(config_path: Path = _SOLVERS_CONFIG_PATH) -> dict[str, An
     Returns
     -------
     dict[str, Any]
-        Parsed YAML with top-level keys ``solvers``, ``packages``, and
-        ``default_solvers``.
+        Parsed YAML with top-level keys ``solvers`` and ``packages``.
     """
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
@@ -91,8 +93,10 @@ def load_solver_configurations(
     -------
     dict[str, Any]
         Parsed YAML with top-level keys ``shared`` (target values common to
-        multiple configurations) and ``configurations`` (one entry per named
-        way of running a solver, each with a ``solver`` and ``options``).
+        multiple configurations), ``default_configurations`` (names to run
+        when the CLI is given none explicitly), and ``configurations`` (one
+        entry per named way of running a solver, each with a ``solver`` and
+        ``options``).
     """
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
@@ -180,22 +184,24 @@ def get_solver_options(
     return configuration["options"] if configuration else {}
 
 
-def get_default_solvers(config: dict[str, Any] | None = None) -> list[str]:
-    """Return the CLI's default ``--solvers`` list.
+def get_default_configurations(config: dict[str, Any] | None = None) -> list[str]:
+    """Return the solver configurations to run when the CLI is given none explicitly.
 
     Parameters
     ----------
     config : dict[str, Any], optional
-        A pre-loaded solver config, e.g. for testing with a fake registry.
-        Defaults to :func:`load_solver_config`.
+        A pre-loaded solver_configurations.yaml dict, e.g. for testing with a
+        fake default list. Defaults to :func:`load_solver_configurations`.
 
     Returns
     -------
     list[str]
-        Solver names to run when none are explicitly requested.
+        Names of entries in ``solver_configurations.yaml``'s ``configurations``
+        (e.g. ``["highs", "scip", ...]``), not necessarily raw solver package
+        names -- the CLI's `--solvers` flag takes configurations, not solvers.
     """
-    config = config if config is not None else load_solver_config()
-    return list(config.get("default_solvers", []))
+    config = config if config is not None else load_solver_configurations()
+    return list(config.get("default_configurations", []))
 
 
 def get_conda_package_name(
@@ -208,7 +214,7 @@ def get_conda_package_name(
     solver_name : str
         The solver's name as used throughout the runner (e.g. ``"highs"``).
     config : dict[str, Any], optional
-        A pre-loaded solver config. Defaults to :func:`load_solver_config`.
+        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
 
     Returns
     -------
@@ -217,7 +223,7 @@ def get_conda_package_name(
         `solver_name` itself if there's no entry in ``solvers.yaml``'s
         ``packages`` map.
     """
-    config = config if config is not None else load_solver_config()
+    config = config if config is not None else load_solver_registry()
     return config.get("packages", {}).get(solver_name, solver_name)
 
 
