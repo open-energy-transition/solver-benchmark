@@ -47,7 +47,7 @@ once per given year.
 **Optional Arguments:**
 - `-a, --append` - Append to the results CSVs instead of overwriting them for the first year
 - `-y, --years YEAR` - Solver-version year to run (repeatable), or `tests` for the shared CI smoke-test env. Defaults to every year with a registered solver version
-- `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
+- `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
 - `-r, --ref-bench-interval SECONDS` - Run a reference benchmark at most once every N seconds. 0 disables it
 - `-u, --run-id RUN_ID` - Identifier shared by every row from this run. Auto-generated if not given
 - `--help` - Show this message and exit
@@ -61,7 +61,7 @@ pixi run -e runner python -m runner.benchmark --append --years 2025 --run-id "lo
 
 2. Run specific solver configurations by repeating the `-s`/`--solver-configurations` flag:
 ```shell
-pixi run -e runner python -m runner.benchmark --solver-configurations highs --solver-configurations scip --years 2025 benchmarks/sample_run/standard-00.yaml
+pixi run -e runner python -m runner.benchmark --solver-configurations highs-default --solver-configurations scip-default --years 2025 benchmarks/sample_run/standard-00.yaml
 ```
 
 3. Full run for the entire website problem set for 2025:
@@ -87,7 +87,7 @@ The container entrypoint runs `runner.benchmark`, so pass the same flags you wou
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
+  solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
 ### Caching pixi environments
@@ -98,7 +98,7 @@ Per-solver-year pixi environments are installed at runtime. To avoid recreating 
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
   -v solver-pixi-envs:/solver-benchmark/runner/envs \
-  solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
+  solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
 ### Gurobi licensing
@@ -111,7 +111,7 @@ docker run --rm \
   -v solver-pixi-envs:/solver-benchmark/runner/envs \
   -v $HOME/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
   -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
-  solver-benchmark-runner --solver-configurations gurobi --years 2025 results/metadata.yaml
+  solver-benchmark-runner --solver-configurations gurobi-default --years 2025 results/metadata.yaml
 ```
 
 ### Limitations
@@ -124,11 +124,11 @@ docker run --rm \
 Use `runner.utils.solver` to test a single solver on a single problem. This is useful for debugging. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
 
 ```bash
-python -m runner.utils.solver <solver_name> <input_file> <solver_version>
+python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>
 ```
 
 **Arguments:**
-- `solver_name` - Solver name (highs, scip, cbc, gurobi, glpk)
+- `solver_configuration` - Solver configuration name (e.g., highs-default, highs-hipo, scip-default)
 - `input_file` - Path to a problem file (.lp or .mps)
 - `solver_version` - Solver version string (e.g., 1.10.0)
 
@@ -136,10 +136,10 @@ python -m runner.utils.solver <solver_name> <input_file> <solver_version>
 
 ```bash
 # Test HiGHS (from the repo root)
-pixi run --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+pixi run --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
 
 # Test SCIP
-pixi run --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+pixi run --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
 ```
 
 **Output:**

@@ -5,7 +5,7 @@
 # version listed for a given year is the latest release of that solver
 # available in that year, not necessarily the version it was first released.
 #
-# `packages`: the conda/PyPI package name for each solver, where it differs
+# `packages`: the PyPI package name for each solver, where it differs
 # from the solver's own name (used to cross-check what's actually installed
 # in an env against what this file expects).
 #

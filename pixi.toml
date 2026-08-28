@@ -46,6 +46,9 @@ pyyaml = "*"
 "ruamel.yaml" = "*"
 requests = "*"
 pip = "*"
+matplotlib = "3.7.*"
+humanize = "*"
+ipython = "*"
 
 [feature.benchmarks.pypi-dependencies]
 highspy = "==1.9.0"

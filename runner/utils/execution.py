@@ -62,7 +62,7 @@ def _systemd_available() -> bool:
 
 def run_solver(
     input_file: str | Path,
-    solver_name: str,
+    solver_configuration: str,
     timeout: int,
     solver_version: str,
     env_name: str | None = None,
@@ -79,8 +79,8 @@ def run_solver(
     ----------
     input_file : str | Path
         Path to the problem file to solve.
-    solver_name : str
-        The solver configuration to run, e.g. `"highs"` or `"highs-hipo"`.
+    solver_configuration : str
+        The solver configuration to run, e.g. `"highs-default"` or `"highs-hipo"`.
     timeout : int
         Wall-clock time budget in seconds.
     solver_version : str
@@ -143,7 +143,7 @@ def run_solver(
             "python",
             "-m",
             "runner.utils.solver",
-            solver_name,
+            solver_configuration,
             str(input_file),
             solver_version,
         ]
@@ -168,10 +168,13 @@ def run_solver(
 
     # DEBUG
     if result.stderr:
-        print(f"STDERR from {solver_name} on {input_file}:\n{result.stderr}")
+        print(f"STDERR from {solver_configuration} on {input_file}:\n{result.stderr}")
 
     # Append the stderr to the log file
-    log_file = _LOGS_DIR / f"{Path(input_file).stem}-{solver_name}-{solver_version}.log"
+    log_file = (
+        _LOGS_DIR
+        / f"{Path(input_file).stem}-{solver_configuration}-{solver_version}.log"
+    )
     if log_file.exists():
         with open(log_file, "a") as f:
             f.write("\nSTDERR:\n")

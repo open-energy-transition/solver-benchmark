@@ -6,7 +6,7 @@
 # Run:
 #   docker run --rm \
 #     -v $(pwd)/results:/solver-benchmark/results \
-#     solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
+#     solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 #
 # Per-solver-year pixi environments (runner/envs/<env>/) are installed at
 # runtime by runner/benchmark.py. To cache them across runs, use a named
@@ -14,7 +14,7 @@
 #   docker run --rm \
 #     -v $(pwd)/results:/solver-benchmark/results \
 #     -v solver-pixi-envs:/solver-benchmark/runner/envs \
-#     solver-benchmark-runner --solver-configurations highs --years 2025 results/metadata.yaml
+#     solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 #
 # Note: systemd is not available inside Docker, so memory limit enforcement
 # via systemd-run is skipped. The runner falls back gracefully.

@@ -1,10 +1,7 @@
 """Unified CLI for running problems against solver configurations across one
 or more solver-version years.
 
-Replaces the old `runner/run_benchmarks.py` (single-year CLI) and
-`runner/benchmark_all.sh` (multi-year loop plus per-solver env setup) with
-one Python entrypoint. A package module, not a bare script: invoke via
-`python -m runner.benchmark`, run from the repo root.
+A package module invoked via `python -m runner.benchmark`, run from the repo root.
 """
 
 import time
@@ -36,8 +33,8 @@ def run(
         None,
         "--solver-configurations",
         "-s",
-        help="Solver configuration to run (repeatable), e.g. `highs` or "
-        "`highs-hipo`. Defaults to solver_configurations.yaml's "
+        help="Solver configuration to run (repeatable), e.g. `highs-default` "
+        "or `highs-hipo`. Defaults to solver_configurations.yaml's "
         "default_configurations.",
     ),
     append: bool = typer.Option(

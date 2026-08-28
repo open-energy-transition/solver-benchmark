@@ -99,13 +99,10 @@ echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 
 cd /solver-benchmark/
 
-# Extract solver from benchmark YAML content if present
-# This enables per-VM solver selection for multi-phase orchestration
-# Extract solver from benchmark YAML content if present using yq
-# This enables per-VM solver selection for multi-phase orchestration
-# Use yq to extract the 'solver' field from the benchmark YAML content.
+# Extract solver_configuration from the benchmark YAML (if present) using yq,
+# to enable per-VM solver selection for multi-phase orchestration.
 # We assume yq is available on the system.
-SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver // ""' - 2>/dev/null)
+SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver_configuration // ""' - 2>/dev/null)
 # Normalize: strip surrounding quotes and CR, then trim whitespace
 SOLVER_FROM_YAML=$(printf "%s" "${SOLVER_FROM_YAML}" | sed -e 's/^"//' -e 's/"$//' | tr -d '\r' | xargs || true)
 
@@ -117,7 +114,7 @@ if [ -n "${SOLVER_FROM_YAML}" ]; then
         SOLVER_ARGS+=(--solver-configurations "${solver}")
     done
 else
-    echo "No solver field in benchmark YAML, using default solver list for year"
+    echo "No solver_configuration field in benchmark YAML, using default solver list for year"
 fi
 
 # Run runner.benchmark with our years and the run_id

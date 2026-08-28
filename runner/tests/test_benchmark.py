@@ -65,7 +65,7 @@ def _patch_repo_paths(tmp_path, mocker):
         },
     )
     mocker.patch.object(orchestrator, "run_solver", return_value=dict(_FAKE_METRICS))
-    # Env creation talks to conda; not this CLI's concern to test again here
+    # Env creation talks to pixi; not this CLI's concern to test again here
     # (see test_env.py's TestEnsureSolverEnvsInstalled).
     mocker.patch("runner.benchmark.env.ensure_solver_envs_installed")
     return tmp_path
@@ -75,7 +75,13 @@ class TestBenchmarkCli:
     def test_single_year_run_writes_results(self, problems_yaml, tmp_path):
         result = runner_cli.invoke(
             benchmark.app,
-            [str(problems_yaml), "--years", "2025", "--solver-configurations", "highs"],
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+            ],
         )
         assert result.exit_code == 0, result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
@@ -98,7 +104,7 @@ class TestBenchmarkCli:
                 "--years",
                 "tests",
                 "--solver-configurations",
-                "highs",
+                "highs-default",
             ],
         )
         assert result.exit_code == 0, result.output
@@ -109,7 +115,7 @@ class TestBenchmarkCli:
     def test_defaults_solvers_to_default_configurations(self, problems_yaml, mocker):
         mocker.patch(
             "runner.benchmark.config.get_default_configurations",
-            return_value=["highs"],
+            return_value=["highs-default"],
         )
         result = runner_cli.invoke(
             benchmark.app, [str(problems_yaml), "--years", "2025"]
@@ -123,7 +129,8 @@ class TestBenchmarkCli:
             return_value=["2024"],
         )
         result = runner_cli.invoke(
-            benchmark.app, [str(problems_yaml), "--solver-configurations", "highs"]
+            benchmark.app,
+            [str(problems_yaml), "--solver-configurations", "highs-default"],
         )
         assert result.exit_code == 0, result.output
         assert "Running the benchmark for year 2024" in result.output
@@ -141,7 +148,7 @@ class TestBenchmarkCli:
                 "--years",
                 "2025",
                 "--solver-configurations",
-                "highs",
+                "highs-default",
                 "--run-id",
                 "multi-year",
             ],
@@ -174,7 +181,7 @@ class TestBenchmarkCli:
                 "--years",
                 "2025",
                 "--solver-configurations",
-                "highs",
+                "highs-default",
                 "--append",
             ],
         )
@@ -192,7 +199,7 @@ class TestBenchmarkCli:
                 "--years",
                 "2025",
                 "--solver-configurations",
-                "highs",
+                "highs-default",
             ],
         )
         assert result.exit_code == 0, result.output
@@ -216,7 +223,7 @@ class TestBenchmarkCli:
                 "--years",
                 "2025",
                 "--solver-configurations",
-                "highs",
+                "highs-default",
             ],
         )
         assert result.exit_code == 0, result.output

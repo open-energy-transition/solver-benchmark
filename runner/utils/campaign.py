@@ -78,7 +78,7 @@ def allocate_problems(
         Default cloud zone to record in each VM's YAML (overridable later
         per VM).
     solvers : str, optional
-        If given, recorded as each VM YAML's `solver` key.
+        If given, recorded as each VM YAML's `solver_configuration` key.
     timeout_seconds : int, optional
         If given, recorded as each VM YAML's `timeout_seconds` key.
     years : list[int], optional
@@ -91,7 +91,7 @@ def allocate_problems(
         `zone`, `years`, `problems` (problem ID to `{"Problem class", "Size",
         "URL"}`) -- the same flat schema as `results/metadata.yaml`, so
         `metadata.load_problems` reads campaign-generated and metadata files
-        identically -- plus `solver`/`timeout_seconds` if given.
+        identically -- plus `solver_configuration`/`timeout_seconds` if given.
     """
     if problems_df.empty:
         return []
@@ -119,7 +119,7 @@ def allocate_problems(
             }
         )
         if solvers:
-            vm_yamls[-1]["solver"] = solvers
+            vm_yamls[-1]["solver_configuration"] = solvers
         if timeout_seconds:
             vm_yamls[-1]["timeout_seconds"] = timeout_seconds
     return vm_yamls
