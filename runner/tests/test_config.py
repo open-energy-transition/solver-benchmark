@@ -22,21 +22,21 @@ class TestGetSolverConfiguration:
             "shared": {"mip_gap": 1e-4},
             "configurations": {
                 "highs": {
-                    "solver": "highs",
+                    "solver_package": "highs",
                     "options": {"mip_rel_gap": {"shared": "mip_gap"}, "seed": 4},
                 }
             },
         }
         result = get_solver_configuration("highs", config)
         assert result == {
-            "solver": "highs",
+            "solver_package": "highs",
             "options": {"mip_rel_gap": 1e-4, "seed": 4},
         }
 
     def test_name_lookup_is_case_insensitive(self):
         config = {
             "shared": {},
-            "configurations": {"highs": {"solver": "highs", "options": {}}},
+            "configurations": {"highs": {"solver_package": "highs", "options": {}}},
         }
         assert get_solver_configuration("HIGHS", config) is not None
 
@@ -46,7 +46,7 @@ class TestResolveSolverName:
         config = {
             "shared": {},
             "configurations": {
-                "highs-hipo": {"solver": "highs", "options": {}},
+                "highs-hipo": {"solver_package": "highs", "options": {}},
             },
         }
         assert resolve_solver_name("highs-hipo", config) == "highs"
@@ -62,7 +62,7 @@ class TestGetSolverOptions:
             "shared": {"mip_gap": 1e-4},
             "configurations": {
                 "cbc": {
-                    "solver": "cbc",
+                    "solver_package": "cbc",
                     "options": {"ratioGap": {"shared": "mip_gap"}},
                 }
             },
@@ -121,6 +121,19 @@ class TestConditionMatches:
         assert _condition_matches({"solver": "cbc", "year": "2024"}, condition)
         assert not _condition_matches({"solver": "cbc", "year": "2023"}, condition)
 
+    def test_dotted_key_reaches_into_nested_dict_fact(self):
+        facts = {"options": {"solver": "hipo"}}
+        assert _condition_matches(facts, {"options.solver": {"in": ["hipo"]}})
+        assert not _condition_matches(facts, {"options.solver": {"in": ["ipx"]}})
+
+    def test_dotted_key_missing_intermediate_dict_is_none_not_error(self):
+        assert not _condition_matches(
+            {"options": {}}, {"options.solver": {"in": ["hipo"]}}
+        )
+        assert not _condition_matches(
+            {"solver": "highs"}, {"options.solver": {"in": ["hipo"]}}
+        )
+
 
 class TestIsSolverEligible:
     _LARGE_PROBLEM_RULE = {
@@ -174,6 +187,54 @@ class TestIsSolverEligible:
     def test_real_eligibility_rules_restrict_hipo_to_lp(self):
         assert not is_solver_eligible(
             "highs-hipo", "2026", size_category="S", problem_class="MILP"
+        )
+
+    def test_options_fact_covers_new_configurations_automatically(self):
+        # The real highs_algorithm_availability rule matches on
+        # solver_package + options.solver, not an enumerated list of
+        # configuration names -- so a brand new hipo-tuned configuration is
+        # restricted without touching eligibility_rules.yaml.
+        fake_solver_configurations = {
+            "configurations": {
+                "highs-hipo-256": {
+                    "solver_package": "highs",
+                    "options": {"solver": "hipo", "hipo_block_size": 256},
+                }
+            }
+        }
+        assert not is_solver_eligible(
+            "highs-hipo-256",
+            "2025",
+            size_category="S",
+            problem_class="LP",
+            config=fake_solver_configurations,
+        )
+        assert is_solver_eligible(
+            "highs-hipo-256",
+            "2026",
+            size_category="S",
+            problem_class="LP",
+            config=fake_solver_configurations,
+        )
+
+    def test_solver_package_scopes_options_key_to_the_right_solver(self):
+        # A different solver's configuration that happens to set an option
+        # also named "solver" must not be caught by the HiGHS-scoped rule --
+        # solver_package is what scopes options.solver to HiGHS specifically.
+        fake_solver_configurations = {
+            "configurations": {
+                "other-solver": {
+                    "solver_package": "other",
+                    "options": {"solver": "hipo"},
+                }
+            }
+        }
+        assert is_solver_eligible(
+            "other-solver",
+            "2025",
+            size_category="S",
+            problem_class="LP",
+            config=fake_solver_configurations,
         )
 
 

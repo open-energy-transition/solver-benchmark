@@ -88,7 +88,7 @@ The benchmark runner script (`runner/benchmark_all.sh`) is the main entry point 
 
 1. Run benchmarks
 ```sh
-./runner/benchmark_all.sh -s "highs scip" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
+./runner/benchmark_all.sh -s "highs-default scip-default" -y "2025" infrastructure/benchmarks/sample_run/standard-00.yaml
 ```
 
 2. View logs and results
@@ -327,7 +327,7 @@ python benchmarks/create_benchmark_campaign.py \
 By default, the generated VM YAML files run all the following solver configurations:
 
 ```text
-gurobi highs scip cbc glpk
+gurobi-default highs-default scip-default cbc-default glpk-default
 ```
 
 The default solver year is:
@@ -336,7 +336,7 @@ The default solver year is:
 2025
 ```
 
-Each solver configuration runs in its own per-solver-year conda env, e.g. for `highs` in 2025:
+Each solver configuration runs in its own per-solver-year conda env, e.g. for `highs-default` in 2025:
 
 ```text
 benchmark-highs-2025
@@ -351,7 +351,7 @@ Run specific solvers for one or more years:
 python benchmarks/create_benchmark_campaign.py \
   --campaign year-test \
   --all \
-  --solver cbc highs \
+  --solver-configurations cbc-default highs-default \
   --years 2024 2025
 ```
 

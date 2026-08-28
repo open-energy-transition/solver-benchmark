@@ -193,7 +193,7 @@ def build_gurobi_hipo_comparison_tables(
     ----------
     final_with_size : pd.DataFrame
         Must have "Benchmark_clean", "Size", "Num. variables",
-        "Num. constraints", "gurobi", and "highs-hipo" columns (the latter
+        "Num. constraints", "gurobi-default", and "highs-hipo" columns (the latter
         two holding each solver's runtime in seconds, if solved).
     top_n : int, optional
         Number of problems to show per table.
@@ -215,7 +215,7 @@ def build_gurobi_hipo_comparison_tables(
     ]
 
     # Ensure numeric
-    df["gurobi"] = pd.to_numeric(df["gurobi"], errors="coerce")
+    df["gurobi-default"] = pd.to_numeric(df["gurobi-default"], errors="coerce")
     df["highs-hipo"] = pd.to_numeric(df["highs-hipo"], errors="coerce")
 
     def _display_table(df_sub: pd.DataFrame, title: str) -> None:
@@ -225,17 +225,17 @@ def build_gurobi_hipo_comparison_tables(
                 "Size",
                 "Num. variables",
                 "Num. constraints",
-                "gurobi",
+                "gurobi-default",
                 "highs-hipo",
             ]
         ].copy()
 
         table = table.rename(columns={"Benchmark_clean": "Problem"})
-        table["Gurobi time (min)"] = table["gurobi"] / 60
+        table["Gurobi time (min)"] = table["gurobi-default"] / 60
         table["HiPO time (min)"] = table["highs-hipo"] / 60
-        table["Gurobi / HiPO speedup"] = table["gurobi"] / table["highs-hipo"]
+        table["Gurobi / HiPO speedup"] = table["gurobi-default"] / table["highs-hipo"]
 
-        table = table.drop(columns=["gurobi", "highs-hipo"])
+        table = table.drop(columns=["gurobi-default", "highs-hipo"])
 
         print(f"\n{title}")
         display(
@@ -265,7 +265,7 @@ def build_gurobi_hipo_comparison_tables(
     )
 
     # Table 2 — Largest problems solved by Gurobi
-    gurobi_solved = df[df["gurobi"].notna() & (df["gurobi"] > 0)]
+    gurobi_solved = df[df["gurobi-default"].notna() & (df["gurobi-default"] > 0)]
     gurobi_largest = gurobi_solved.sort_values("Num. variables", ascending=False).head(
         top_n
     )

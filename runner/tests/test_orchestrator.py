@@ -63,13 +63,13 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["highs"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
         )
 
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Problem"]) == ["tiny-problem"]
         assert "Size" not in results.columns
-        assert results.iloc[0]["Solver"] == "highs"
+        assert results.iloc[0]["Solver"] == "highs-default"
         assert results.iloc[0]["Status"] == "ok"
 
     def test_return_value_keyed_by_problem_solver_version(self, problems_yaml, mocker):
@@ -77,9 +77,9 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         results = orchestrator.run_benchmark(
-            problems_yaml, ["highs"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
         )
-        assert set(results.keys()) == {("tiny-problem", "highs", "1.12.0")}
+        assert set(results.keys()) == {("tiny-problem", "highs-default", "1.12.0")}
 
     def test_ineligible_solver_is_skipped(self, problems_yaml, tmp_path, mocker):
         run_solver_mock = mocker.patch.object(orchestrator, "run_solver")
@@ -93,7 +93,7 @@ class TestRunBenchmark:
     def test_unregistered_solver_is_skipped(self, problems_yaml, mocker):
         run_solver_mock = mocker.patch.object(orchestrator, "run_solver")
         orchestrator.run_benchmark(
-            problems_yaml, ["highs"], year="2019", run_id="test-run"
+            problems_yaml, ["highs-default"], year="2019", run_id="test-run"
         )
         run_solver_mock.assert_not_called()
 
@@ -104,7 +104,9 @@ class TestRunBenchmark:
         mocker.patch(
             "runner.utils.orchestrator.time.strftime", return_value="20260101_000000"
         )
-        results = orchestrator.run_benchmark(problems_yaml, ["highs"], year="2025")
+        results = orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025"
+        )
         assert results
 
     def test_append_false_overwrites_existing_results(
@@ -118,7 +120,11 @@ class TestRunBenchmark:
         results_csv.write_text("stale header\nstale,row\n")
 
         orchestrator.run_benchmark(
-            problems_yaml, ["highs"], year="2025", run_id="test-run", append=False
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            append=False,
         )
         results = pd.read_csv(results_csv)
         assert "Problem" in results.columns
@@ -131,7 +137,7 @@ class TestRunBenchmark:
         )
         orchestrator.run_benchmark(
             problems_yaml,
-            ["highs"],
+            ["highs-default"],
             year="2025",
             run_id="test-run",
             iterations=2,
@@ -150,7 +156,7 @@ class TestRunBenchmark:
         )
         orchestrator.run_benchmark(
             problems_yaml,
-            ["highs"],
+            ["highs-default"],
             year="2025",
             run_id="test-run",
             iterations=3,
@@ -181,7 +187,7 @@ class TestRunBenchmark:
         )
         orchestrator.run_benchmark(
             problems_yaml,
-            ["highs"],
+            ["highs-default"],
             year="2025",
             run_id="test-run",
             reference_interval=1,

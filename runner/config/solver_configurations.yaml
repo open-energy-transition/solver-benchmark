@@ -8,13 +8,18 @@
 # `{shared: <name>}` rather than repeating the literal value everywhere.
 #
 # `configurations`: one entry per named way of running a solver package, run
-# and reported as its own row (e.g. "highs" is HiGHS with its default
-# algorithm selection, "highs-hipo" is HiGHS with HiPO selected via its own
-# "solver" option; a future "gurobi-barrier" would be Gurobi with its
-# barrier method selected via "Method"). Every entry has:
-#   - `solver`: the underlying solver package that actually runs it
-#     (linopy's solver class name) -- always present, even when it equals
-#     the configuration's own name (e.g. "highs"'s `solver` is "highs").
+# and reported as its own row (e.g. "highs-default" is HiGHS with its
+# default algorithm selection, "highs-hipo" is HiGHS with HiPO selected via
+# its own "solver" option; a future "gurobi-barrier" would be Gurobi with
+# its barrier method selected via "Method"). Every solver package has an
+# unqualified "<package>-default" configuration, even ones with no tuned
+# variant, so the name is always explicit about running with no special
+# option overrides. Every entry has:
+#   - `solver_package`: the underlying solver package that actually runs it
+#     (linopy's solver class name), e.g. "highs" for both "highs-default"
+#     and "highs-hipo". Distinct from an `options` key named "solver"
+#     (HiGHS's own algorithm-selector option, e.g. "hipo"/"ipx") -- that
+#     one is dictated by HiGHS's own option vocabulary, not ours.
 #   - `options`: that configuration's tuning options, in the solver
 #     package's own option-key vocabulary (hence the very different-looking
 #     names for the same underlying setting, e.g. HiGHS's "mip_rel_gap" vs
@@ -38,29 +43,30 @@ shared:
   mip_gap: 1.0e-4
   lp_tolerance: 1.0e-6
 
-default_configurations: [highs, scip, cbc, gurobi, glpk]
+default_configurations:
+  [highs-default, scip-default, cbc-default, gurobi-default, glpk-default]
 
 configurations:
-  glpk:
-    solver: glpk
+  glpk-default:
+    solver_package: glpk
     options:
       seed: 0
       mipgap: { shared: mip_gap }
 
-  scip:
-    solver: scip
+  scip-default:
+    solver_package: scip
     options:
       randomization/randomseedshift: 0
       limits/gap: { shared: mip_gap }
 
-  cbc:
-    solver: cbc
+  cbc-default:
+    solver_package: cbc
     options:
       randomCbcSeed: 1 # 0 indicates time of day
       ratioGap: { shared: mip_gap }
 
-  highs:
-    solver: highs
+  highs-default:
+    solver_package: highs
     options:
       random_seed: 4
       mip_rel_gap: { shared: mip_gap }
@@ -69,7 +75,7 @@ configurations:
       run_crossover: choose # Basic solutions not needed
 
   highs-hipo:
-    solver: highs
+    solver_package: highs
     options:
       solver: hipo
       hipo_block_size: 64
@@ -78,7 +84,7 @@ configurations:
       mip_rel_gap: { shared: mip_gap }
 
   highs-hipo-32:
-    solver: highs
+    solver_package: highs
     options:
       solver: hipo
       hipo_block_size: 32
@@ -87,7 +93,7 @@ configurations:
       mip_rel_gap: { shared: mip_gap }
 
   highs-hipo-64:
-    solver: highs
+    solver_package: highs
     options:
       solver: hipo
       hipo_block_size: 64
@@ -96,7 +102,7 @@ configurations:
       mip_rel_gap: { shared: mip_gap }
 
   highs-hipo-128:
-    solver: highs
+    solver_package: highs
     options:
       solver: hipo
       hipo_block_size: 128
@@ -105,15 +111,15 @@ configurations:
       mip_rel_gap: { shared: mip_gap }
 
   highs-ipm:
-    solver: highs
+    solver_package: highs
     options:
       solver: ipx
       run_crossover: choose
       random_seed: 0
       mip_rel_gap: { shared: mip_gap }
 
-  gurobi:
-    solver: gurobi
+  gurobi-default:
+    solver_package: gurobi
     options:
       seed: 4
       MIPGap: { shared: mip_gap }
@@ -122,8 +128,8 @@ configurations:
       # BarConvTol: { shared: lp_tolerance }  # TODO also set BarConvTol for all solvers?
       SolutionTarget: 1 # Basic solutions not needed
 
-  cplex:
-    solver: cplex
+  cplex-default:
+    solver_package: cplex
     options:
       randomseed: 4
       mip.tolerances.mipgap: { shared: mip_gap }
@@ -131,8 +137,8 @@ configurations:
       simplex.tolerances.optimality: { shared: lp_tolerance }
       solutiontype: 2 # Basic solutions not needed
 
-  knitro:
-    solver: knitro
+  knitro-default:
+    solver_package: knitro
     options:
       ms_seed: 4
       mip_opt_gap_rel: { shared: mip_gap }
@@ -140,8 +146,8 @@ configurations:
       opttol: { shared: lp_tolerance }
       bar_maxcrossit: 0 # Basic solutions not needed (no way to say choose)
 
-  xpress:
-    solver: xpress
+  xpress-default:
+    solver_package: xpress
     options:
       randomseed: 4
       miprelstop: { shared: mip_gap }
@@ -149,8 +155,8 @@ configurations:
       OPTIMALITYTOL: { shared: lp_tolerance }
       crossover: -1 # Basic solutions not needed (crossover=choose)
 
-  mosek:
-    solver: mosek
+  mosek-default:
+    solver_package: mosek
     options:
       MSK_IPAR_MIO_SEED: 4
       MSK_IPAR_INTPNT_BASIS: MSK_BI_NEVER

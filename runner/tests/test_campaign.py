@@ -88,9 +88,9 @@ class TestAllocateProblems:
     def test_optional_solver_and_timeout_included_when_given(self):
         df = self._make_problems_df()
         vm_yamls = allocate_problems(
-            df, "weight", num_vms=1, solvers="highs", timeout_seconds=60
+            df, "weight", num_vms=1, solvers="highs-default", timeout_seconds=60
         )
-        assert vm_yamls[0]["solver"] == "highs"
+        assert vm_yamls[0]["solver_configuration"] == "highs-default"
         assert vm_yamls[0]["timeout_seconds"] == 60
 
     def test_optional_solver_and_timeout_omitted_by_default(self):

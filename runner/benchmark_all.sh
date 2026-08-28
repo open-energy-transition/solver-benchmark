@@ -111,7 +111,7 @@ for solver, versions in config['solvers'].items():
         solver_args="--solvers ${solvers_override}"
         echo "Using solver override: ${solvers_override}"
     else
-        solver_args="--solvers gurobi highs-hipo highs-ipm highs scip cbc glpk"
+        solver_args="--solvers gurobi-default highs-hipo highs-ipm highs-default scip-default cbc-default glpk-default"
     fi
 
     # Overwrite results for the first year, append thereafter

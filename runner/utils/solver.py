@@ -10,7 +10,7 @@ solver.
 
 Keeps the `if __name__ == "__main__"` entrypoint so a single solver run can
 still be driven directly, e.g. for debugging:
-    python -m runner.utils.solver <solver_name> <input_file> <solver_version>
+    python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>
 """
 
 import json
@@ -34,38 +34,38 @@ except ModuleNotFoundError:
     highspy = None
 
 
-def get_solver(solver_name: str) -> tuple[Any, str]:
+def get_solver(solver_configuration: str) -> tuple[Any, str]:
     """Build a linopy solver instance with this project's tuning options.
 
     Parameters
     ----------
-    solver_name : str
-        The configuration to run, as requested by a caller -- either a
-        solver's default configuration (e.g. ``"highs"``) or a named
-        algorithm configuration (e.g. ``"highs-hipo"``), per
-        `config.get_solver_configuration`.
+    solver_configuration : str
+        The configuration to run, as requested by a caller (e.g. ``"highs-hipo"``).
 
     Returns
     -------
     tuple[Any, str]
-        `(solver_instance, resolved_solver_name)`. `resolved_solver_name` is
-        the real solver package to use for reading result metrics afterward
-        (e.g. ``"highs"`` for the configuration ``"highs-hipo"``), since a
-        named configuration shares its solver's model API.
+        `(solver_instance, solver_package)`. `solver_package` is the real
+        solver package to use for reading result metrics afterward (e.g.
+        ``"highs"`` for the configuration ``"highs-hipo"``), since a named
+        configuration shares its solver's model API.
     """
-    configuration = config.get_solver_configuration(solver_name)
+    configuration = config.get_solver_configuration(solver_configuration)
     if configuration is not None:
-        resolved_name, kwargs = configuration["solver"], configuration["options"]
+        solver_package, kwargs = (
+            configuration["solver_package"],
+            configuration["options"],
+        )
     else:
-        resolved_name = solver_name.lower()
+        solver_package = solver_configuration.lower()
         kwargs = {}
 
-    solver_enum = SolverName(resolved_name)
+    solver_enum = SolverName(solver_package)
     solver_class = getattr(solvers, solver_enum.name)
-    return solver_class(options=kwargs), resolved_name
+    return solver_class(options=kwargs), solver_package
 
 
-def is_mip_problem(solver_model: Any, solver_name: str) -> bool:
+def is_mip_problem(solver_model: Any, solver_package: str) -> bool:
     """Determine whether a solved model was a Mixed Integer Programming problem.
 
     Parameters
@@ -73,8 +73,8 @@ def is_mip_problem(solver_model: Any, solver_name: str) -> bool:
     solver_model : Any
         The solver's native model object (`solver_result.solver_model`), or
         None if unavailable.
-    solver_name : str
-        The solver's name.
+    solver_package : str
+        The underlying solver package, e.g. ``"highs"``.
 
     Returns
     -------
@@ -85,13 +85,13 @@ def is_mip_problem(solver_model: Any, solver_name: str) -> bool:
     Raises
     ------
     NotImplementedError
-        If `solver_name` has no registered adapter.
+        If `solver_package` has no registered adapter.
     """
     if solver_model is None:
         return False
-    adapter = SOLVER_ADAPTERS.get(solver_name)
+    adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
-        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
+        raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
     return adapter.is_mip(solver_model)
 
 
@@ -126,15 +126,15 @@ def calculate_integrality_violation(
     return max((p - p.round()).abs())
 
 
-def get_duality_gap(solver_model: Any, solver_name: str) -> float | None:
+def get_duality_gap(solver_model: Any, solver_package: str) -> float | None:
     """Retrieve the duality/MIP gap reported by the solver, if available.
 
     Parameters
     ----------
     solver_model : Any
         The solver's native model object, or None if unavailable.
-    solver_name : str
-        The solver's name.
+    solver_package : str
+        The underlying solver package, e.g. ``"highs"``.
 
     Returns
     -------
@@ -144,18 +144,18 @@ def get_duality_gap(solver_model: Any, solver_name: str) -> float | None:
     Raises
     ------
     NotImplementedError
-        If `solver_name` has no registered adapter.
+        If `solver_package` has no registered adapter.
     """
     if solver_model is None:
         return None
-    adapter = SOLVER_ADAPTERS.get(solver_name)
+    adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
-        raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
+        raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
     return adapter.duality_gap(solver_model)
 
 
 def get_milp_metrics(
-    input_file: str, solver_result: Any, solver_name: str
+    input_file: str, solver_result: Any, solver_package: str
 ) -> tuple[float | None, float | None]:
     """Use HiGHS to read the problem file and compute MILP-specific metrics.
 
@@ -166,8 +166,9 @@ def get_milp_metrics(
         variables (independent of which solver actually solved it).
     solver_result : Any
         The linopy `Result` returned by the solve.
-    solver_name : str
-        The solver's name, used to look up its duality-gap adapter.
+    solver_package : str
+        The underlying solver package, used to look up its duality-gap
+        adapter.
 
     Returns
     -------
@@ -189,7 +190,7 @@ def get_milp_metrics(
             if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
         }
         if integer_vars:
-            duality_gap = get_duality_gap(solver_model, solver_name)
+            duality_gap = get_duality_gap(solver_model, solver_package)
             max_integrality_violation = calculate_integrality_violation(
                 integer_vars, solver_result.solution.primal
             )
@@ -202,13 +203,13 @@ def get_milp_metrics(
     return None, None
 
 
-def get_reported_runtime(solver_name: str, solver_model: Any) -> float | None:
+def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None:
     """Get the solving runtime as reported by the solver's own Python object.
 
     Parameters
     ----------
-    solver_name : str
-        The solver's name.
+    solver_package : str
+        The underlying solver package, e.g. ``"highs"``.
     solver_model : Any
         The solver's native model object, or None if unavailable.
 
@@ -220,9 +221,9 @@ def get_reported_runtime(solver_name: str, solver_model: Any) -> float | None:
     """
     if solver_model is None:
         return None
-    adapter = SOLVER_ADAPTERS.get(solver_name)
+    adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
-        print(f"WARNING: cannot obtain reported runtime for {solver_name}")
+        print(f"WARNING: cannot obtain reported runtime for {solver_package}")
         return None
     try:
         return adapter.reported_runtime(solver_model)
@@ -231,13 +232,13 @@ def get_reported_runtime(solver_name: str, solver_model: Any) -> float | None:
         return None
 
 
-def main(solver_name: str, input_file: str, solver_version: str) -> None:
+def main(solver_configuration: str, input_file: str, solver_version: str) -> None:
     """Run one solver on one problem file and print the resulting metrics as JSON.
 
     Parameters
     ----------
-    solver_name : str
-        The solver (or named algorithm) to run, e.g. ``"highs"`` or
+    solver_configuration : str
+        The solver (or named algorithm) to run, e.g. ``"highs-default"`` or
         ``"highs-hipo"``.
     input_file : str
         Path to the problem file to solve.
@@ -246,11 +247,10 @@ def main(solver_name: str, input_file: str, solver_version: str) -> None:
         metrics (not otherwise used to select behavior).
     """
     problem_file = Path(input_file)
-    output_name = (
-        solver_name  # keep the requested name (e.g. "highs-hipo") for filenames
-    )
+    # keep the requested configuration name (e.g. "highs-hipo") for filenames
+    output_name = solver_configuration
 
-    solver, solver_name = get_solver(solver_name)
+    solver, solver_package = get_solver(solver_configuration)
 
     solution_dir = Path(__file__).resolve().parent.parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -288,14 +288,14 @@ def main(solver_name: str, input_file: str, solver_version: str) -> None:
             status_value = "ER"
 
         try:
-            is_mip = is_mip_problem(solver_model, solver_name)
+            is_mip = is_mip_problem(solver_model, solver_package)
         except Exception:
             print(f"ERROR checking MIP status: {format_exc()}", file=sys.stderr)
             is_mip = False
 
         if is_mip:
             duality_gap, max_integrality_violation = get_milp_metrics(
-                input_file, solver_result, solver_name
+                input_file, solver_result, solver_package
             )
         else:
             duality_gap = None
@@ -303,7 +303,7 @@ def main(solver_name: str, input_file: str, solver_version: str) -> None:
 
         results = {
             "runtime": runtime,
-            "reported_runtime": get_reported_runtime(solver_name, solver_model),
+            "reported_runtime": get_reported_runtime(solver_package, solver_model),
             "status": status_value,
             "condition": termination_condition,
             "objective": objective,
@@ -327,7 +327,7 @@ def main(solver_name: str, input_file: str, solver_version: str) -> None:
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print(
-            "Usage: python -m runner.utils.solver <solver_name> <input_file> <solver_version>"
+            "Usage: python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>"
         )
         sys.exit(1)
 

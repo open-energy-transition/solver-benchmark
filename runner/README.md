@@ -60,7 +60,7 @@ Usage examples:
 
 2. Run specific solvers by passing the `-s` flag with a space separated list of solver names.
 ```shell
-./runner/benchmark_all.sh -s "highs scip" -y "2025" benchmarks/sample_run/standard-00.yaml
+./runner/benchmark_all.sh -s "highs-default scip-default" -y "2025" benchmarks/sample_run/standard-00.yaml
 ```
 
 3. Full run for the entire website problem set for 2025
@@ -86,7 +86,7 @@ The container entrypoint is `benchmark_all.sh`, so pass the same flags you would
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  solver-benchmark-runner -s "highs" -y "2025" results/metadata.yaml
+  solver-benchmark-runner -s "highs-default" -y "2025" results/metadata.yaml
 ```
 
 ### Caching conda environments
@@ -97,7 +97,7 @@ Conda environments are created at runtime. To avoid recreating them on every run
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
   -v solver-conda-envs:/opt/conda/envs \
-  solver-benchmark-runner -s "highs" -y "2025" results/metadata.yaml
+  solver-benchmark-runner -s "highs-default" -y "2025" results/metadata.yaml
 ```
 
 ### Gurobi licensing
@@ -110,7 +110,7 @@ docker run --rm \
   -v solver-conda-envs:/opt/conda/envs \
   -v $HOME/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
   -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
-  solver-benchmark-runner -s "gurobi" -y "2025" results/metadata.yaml
+  solver-benchmark-runner -s "gurobi-default" -y "2025" results/metadata.yaml
 ```
 
 ### Limitations
@@ -151,11 +151,11 @@ python -m runner.run_benchmarks <problems_yaml> <year> [OPTIONS]
 ```bash
 # Run HiGHS only for 2025
 conda activate benchmark-highs-2025
-python -m runner.run_benchmarks results/metadata.yaml 2025 --solvers highs
+python -m runner.run_benchmarks results/metadata.yaml 2025 --solvers highs-default
 
 # Run multiple solvers for 2024 and append results
 conda activate benchmark-highs-2024
-python -m runner.run_benchmarks results/metadata.yaml 2024 --solvers "highs scip cbc" -a
+python -m runner.run_benchmarks results/metadata.yaml 2024 --solvers "highs-default scip-default cbc-default" -a
 
 # Run with custom run ID for tracking
 python -m runner.run_benchmarks results/metadata.yaml 2024 --run_id "debug-run-001"
@@ -166,11 +166,11 @@ python -m runner.run_benchmarks results/metadata.yaml 2024 --run_id "debug-run-0
 Use `runner.utils.solver` to test a single solver on a single problem. This is useful for debugging. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
 
 ```bash
-python -m runner.utils.solver <solver_name> <input_file> <solver_version>
+python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>
 ```
 
 **Arguments:**
-- `solver_name` - Solver name (highs, scip, cbc, gurobi, glpk)
+- `solver_configuration` - Solver configuration name (e.g., highs-default, highs-hipo, scip-default)
 - `input_file` - Path to a problem file (.lp or .mps)
 - `solver_version` - Solver version string (e.g., 1.10.0)
 
@@ -179,11 +179,11 @@ python -m runner.utils.solver <solver_name> <input_file> <solver_version>
 ```bash
 # Test HiGHS (from the repo root)
 conda activate benchmark-highs-2024
-python -m runner.utils.solver highs runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
 
 # Test SCIP
 conda activate benchmark-scip-2024
-python -m runner.utils.solver scip runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
 ```
 
 **Output:**
