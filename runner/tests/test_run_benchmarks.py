@@ -339,15 +339,21 @@ class TestBenchmarkSolver:
         metrics = self._run(mocker, cp)
         assert metrics["memory"] is None
 
-    def test_empty_stderr_raises_indexerror(self, mocker):
-        # Pre-existing behavior, not a design choice: parse_memory() does
-        # output.splitlines()[-1] with no guard for empty output, and
-        # benchmark_solver only catches ValueError around that call, so a
-        # completely empty stderr (e.g. /usr/bin/time never got to run)
-        # crashes with an uncaught IndexError instead of leaving memory=None.
+    @pytest.mark.xfail(
+        strict=True,
+        reason=(
+            "Known bug: parse_memory() does output.splitlines()[-1] with no "
+            "guard for empty output, and benchmark_solver only catches "
+            "ValueError around that call, so a completely empty stderr (e.g. "
+            "/usr/bin/time never got to run) crashes with an uncaught "
+            "IndexError instead of leaving memory=None. Remove this xfail "
+            "once that's fixed."
+        ),
+    )
+    def test_empty_stderr_leaves_memory_none(self, mocker):
         cp = subprocess.CompletedProcess(args=[], returncode=124, stdout="", stderr="")
-        with pytest.raises(IndexError):
-            self._run(mocker, cp)
+        metrics = self._run(mocker, cp)
+        assert metrics["memory"] is None
 
     def test_env_name_uses_conda_run(self, mocker):
         mocker.patch("run_benchmarks._systemd_available", return_value=False)
