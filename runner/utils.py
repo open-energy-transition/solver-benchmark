@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
