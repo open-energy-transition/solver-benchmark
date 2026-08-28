@@ -3,7 +3,7 @@
 HiGHS's HiPO/IPX algorithm configurations are handled generically -- see
 ``runner/config/solver_configurations.yaml`` and
 `config.get_solver_configuration` -- not by anything in this module. Every
-configuration that runs through HiGHS (plain "highs", "highs-hipo",
+configuration that runs through HiGHS ("highs-default", "highs-hipo",
 "highs-ipm", ...) shares these same result-metric accessors.
 """
 

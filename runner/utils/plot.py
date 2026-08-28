@@ -20,13 +20,13 @@ from matplotlib.patches import Patch
 
 # Color map
 color_map = {
-    "cbc": "#F9CD5A",  # yellow
-    "glpk": "#7C3AED",  # purple
-    "gurobi": "#F66C49",  # red
-    "highs": "#43BF94",  # green
+    "cbc-default": "#F9CD5A",  # yellow
+    "glpk-default": "#7C3AED",  # purple
+    "gurobi-default": "#F66C49",  # red
+    "highs-default": "#43BF94",  # green
     "highs-hipo": "#F759B8",  # magenta
     "highs-ipm": "#6D712E",  # green-brown
-    "scip": "#3B82F6",  # blue
+    "scip-default": "#3B82F6",  # blue
 }
 
 
@@ -72,7 +72,7 @@ def display_speedups(
                 status_df["Problem"] == row["Problem"], "highs-ipm"
             ].values[0]
             != "ok"
-            else row["highs"] / row["highs-ipm"]
+            else row["highs-default"] / row["highs-ipm"]
         ),
         axis=1,
     )
@@ -86,7 +86,7 @@ def display_speedups(
                 status_df["Problem"] == row["Problem"], "highs-hipo"
             ].values[0]
             != "ok"
-            else row["highs"] / row["highs-hipo"]
+            else row["highs-default"] / row["highs-hipo"]
         ),
         axis=1,
     )
@@ -94,7 +94,7 @@ def display_speedups(
     # Rename columns for clarity
     speedup_df = speedup_df.rename(
         columns={
-            "highs": "simplex-time",
+            "highs-default": "simplex-time",
             "highs-ipm": "ipm-time",
             "highs-hipo": "hipo-time",
         }
@@ -121,8 +121,12 @@ def display_speedups(
 
     display_df["simplex-time"] = speedup_df.apply(
         lambda row: (
-            status_df.loc[status_df["Problem"] == row["Problem"], "highs"].values[0]
-            if status_df.loc[status_df["Problem"] == row["Problem"], "highs"].values[0]
+            status_df.loc[
+                status_df["Problem"] == row["Problem"], "highs-default"
+            ].values[0]
+            if status_df.loc[
+                status_df["Problem"] == row["Problem"], "highs-default"
+            ].values[0]
             != "ok"
             else naturaldelta(row["simplex-time"])
         ),
@@ -205,13 +209,13 @@ def plot_runtime_slowdowns(
     """
     # --- Solver display names (presentation only) ---
     solver_label_map = {
-        "highs": "highs-simplex",
+        "highs-default": "highs-simplex",
         "highs-ipm": "highs-ipm",
         "highs-hipo": "highs-hipo",
-        "gurobi": "gurobi",
-        "cbc": "cbc",
-        "scip": "scip",
-        "glpk": "glpk",
+        "gurobi-default": "gurobi-default",
+        "cbc-default": "cbc-default",
+        "scip-default": "scip-default",
+        "glpk-default": "glpk-default",
     }
 
     # Fill NaN runtimes and non-ok statuses with TO value
@@ -369,7 +373,12 @@ def plot_summary_results(
 def print_sgm_tables_per_bucket(
     final_with_size: pd.DataFrame,
     buckets: list[dict],
-    solvers: tuple[str, ...] = ("highs", "highs-hipo", "highs-ipm", "gurobi"),
+    solvers: tuple[str, ...] = (
+        "highs-default",
+        "highs-hipo",
+        "highs-ipm",
+        "gurobi-default",
+    ),
     shift: float = 1.0,
 ) -> None:
     """Print one SGM runtime table per bucket, including solved percentage.
@@ -397,10 +406,10 @@ def print_sgm_tables_per_bucket(
     """
     # Presentation-ready solver labels
     solver_label_map = {
-        "highs": "HiGHS-Simplex",
+        "highs-default": "HiGHS-Simplex",
         "highs-ipm": "HiGHS-IPX",
         "highs-hipo": "HiGHS-HiPO",
-        "gurobi": "Gurobi",
+        "gurobi-default": "Gurobi",
     }
 
     def shifted_geometric_mean(x: np.ndarray, shift: float = 1.0) -> float:
@@ -470,8 +479,8 @@ def plot_speedup_vs_variables(
     Parameters
     ----------
     final_with_size : pd.DataFrame
-        Must have "Num. variables", "highs", "highs-hipo", "highs-ipm", and
-        "gurobi" columns (the latter four holding runtimes in seconds, if
+        Must have "Num. variables", "highs-default", "highs-hipo", "highs-ipm", and
+        "gurobi-default" columns (the latter four holding runtimes in seconds, if
         solved).
     figsize : tuple[float, float], optional
         Matplotlib figure size.
@@ -483,7 +492,7 @@ def plot_speedup_vs_variables(
     df = final_with_size.copy()
     df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
 
-    for c in ["highs", "highs-hipo", "highs-ipm", "gurobi"]:
+    for c in ["highs-default", "highs-hipo", "highs-ipm", "gurobi-default"]:
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce")
 
@@ -492,15 +501,15 @@ def plot_speedup_vs_variables(
     # HiPO vs simplex
     ax = axes[0]
     m = (
-        df["highs"].notna()
+        df["highs-default"].notna()
         & df["highs-hipo"].notna()
-        & (df["highs"] > 0)
+        & (df["highs-default"] > 0)
         & (df["highs-hipo"] > 0)
     )
 
     ax.scatter(
         df.loc[m, "Num. variables"],
-        df.loc[m, "highs"] / df.loc[m, "highs-hipo"],
+        df.loc[m, "highs-default"] / df.loc[m, "highs-hipo"],
         alpha=0.8,
     )
 
@@ -528,15 +537,15 @@ def plot_speedup_vs_variables(
     # HiPO vs Gurobi
     ax = axes[2]
     m = (
-        df["gurobi"].notna()
+        df["gurobi-default"].notna()
         & df["highs-hipo"].notna()
-        & (df["gurobi"] > 0)
+        & (df["gurobi-default"] > 0)
         & (df["highs-hipo"] > 0)
     )
 
     ax.scatter(
         df.loc[m, "Num. variables"],
-        df.loc[m, "gurobi"] / df.loc[m, "highs-hipo"],
+        df.loc[m, "gurobi-default"] / df.loc[m, "highs-hipo"],
         alpha=0.8,
     )
 
@@ -562,7 +571,12 @@ def plot_speedup_vs_variables(
 
 def plot_solver_scaling_by_bucket(
     final_with_size: pd.DataFrame,
-    solvers: tuple[str, ...] = ("gurobi", "highs", "highs-hipo", "highs-ipm"),
+    solvers: tuple[str, ...] = (
+        "gurobi-default",
+        "highs-default",
+        "highs-hipo",
+        "highs-ipm",
+    ),
     figsize: tuple[float, float] = (10, 15),
 ) -> None:
     """Scatter-plot runtime vs. problem size, with a log-log fit, per size bucket.
@@ -660,8 +674,8 @@ def plot_speedup_vs_constraints(
     Parameters
     ----------
     final_with_size : pd.DataFrame
-        Must have "Num. constraints", "highs", "highs-hipo", "highs-ipm",
-        and "gurobi" columns (the latter four holding runtimes in seconds,
+        Must have "Num. constraints", "highs-default", "highs-hipo", "highs-ipm",
+        and "gurobi-default" columns (the latter four holding runtimes in seconds,
         if solved).
     figsize : tuple[float, float], optional
         Matplotlib figure size.
@@ -673,7 +687,7 @@ def plot_speedup_vs_constraints(
     df = final_with_size.copy()
     df = df[df["Num. constraints"].notna() & (df["Num. constraints"] > 0)]
 
-    for c in ["highs", "highs-hipo", "highs-ipm", "gurobi"]:
+    for c in ["highs-default", "highs-hipo", "highs-ipm", "gurobi-default"]:
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce")
 
@@ -682,15 +696,15 @@ def plot_speedup_vs_constraints(
     # HiPO vs simplex
     ax = axes[0]
     m = (
-        df["highs"].notna()
+        df["highs-default"].notna()
         & df["highs-hipo"].notna()
-        & (df["highs"] > 0)
+        & (df["highs-default"] > 0)
         & (df["highs-hipo"] > 0)
     )
 
     ax.scatter(
         df.loc[m, "Num. constraints"],
-        df.loc[m, "highs"] / df.loc[m, "highs-hipo"],
+        df.loc[m, "highs-default"] / df.loc[m, "highs-hipo"],
         alpha=0.8,
     )
 
@@ -718,15 +732,15 @@ def plot_speedup_vs_constraints(
     # HiPO vs Gurobi
     ax = axes[2]
     m = (
-        df["gurobi"].notna()
+        df["gurobi-default"].notna()
         & df["highs-hipo"].notna()
-        & (df["gurobi"] > 0)
+        & (df["gurobi-default"] > 0)
         & (df["highs-hipo"] > 0)
     )
 
     ax.scatter(
         df.loc[m, "Num. constraints"],
-        df.loc[m, "gurobi"] / df.loc[m, "highs-hipo"],
+        df.loc[m, "gurobi-default"] / df.loc[m, "highs-hipo"],
         alpha=0.8,
     )
 
@@ -752,7 +766,12 @@ def plot_speedup_vs_constraints(
 
 def plot_solver_scaling_by_bucket_scatter_only(
     final_with_size: pd.DataFrame,
-    solvers: tuple[str, ...] = ("gurobi", "highs", "highs-hipo", "highs-ipm"),
+    solvers: tuple[str, ...] = (
+        "gurobi-default",
+        "highs-default",
+        "highs-hipo",
+        "highs-ipm",
+    ),
     figsize: tuple[float, float] = (10, 15),
 ) -> None:
     """Scatter-plot runtime vs. problem size with log-log trend lines, per bucket.

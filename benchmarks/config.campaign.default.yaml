@@ -145,19 +145,19 @@ allocation:
   years:
     - 2025
 
-  # Solvers to benchmark.
+  # Solver configurations to benchmark.
   #
   # Accepted values depend on the selected benchmark environment.
   #
   # Typical values (currently included in the website):
-  # - gurobi
-  # - highs
-  # - scip
-  # - cbc
-  # - glpk
-  solver:
-    - gurobi
-    - highs
-    - scip
-    - cbc
-    - glpk
+  # - gurobi-default
+  # - highs-default
+  # - scip-default
+  # - cbc-default
+  # - glpk-default
+  solver_configurations:
+    - gurobi-default
+    - highs-default
+    - scip-default
+    - cbc-default
+    - glpk-default

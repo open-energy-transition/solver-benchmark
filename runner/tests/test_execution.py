@@ -87,6 +87,22 @@ class TestRunSolver:
         metrics, _ = self._run(mocker, cp)
         assert metrics["memory"] is None
 
+    @pytest.mark.xfail(
+        strict=True,
+        reason=(
+            "Known bug: parse_memory() does output.splitlines()[-1] with no "
+            "guard for empty output, and run_solver only catches ValueError "
+            "around that call, so a completely empty stderr (e.g. "
+            "/usr/bin/time never got to run) crashes with an uncaught "
+            "IndexError instead of leaving memory=None. Remove this xfail "
+            "once that's fixed."
+        ),
+    )
+    def test_empty_stderr_leaves_memory_none(self, mocker):
+        cp = subprocess.CompletedProcess(args=[], returncode=124, stdout="", stderr="")
+        metrics, _ = self._run(mocker, cp)
+        assert metrics["memory"] is None
+
     def test_command_invokes_solver_module_via_dash_m(self, mocker):
         cp = subprocess.CompletedProcess(
             args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"

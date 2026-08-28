@@ -87,7 +87,7 @@ The benchmark runner CLI (`runner/benchmark.py`, run via `python -m runner.bench
 
 1. Run benchmarks
 ```sh
-pixi run -e runner python -m runner.benchmark --solver-configurations highs --solver-configurations scip --years 2025 infrastructure/benchmarks/sample_run/standard-00.yaml
+pixi run -e runner python -m runner.benchmark --solver-configurations highs-default --solver-configurations scip-default --years 2025 infrastructure/benchmarks/sample_run/standard-00.yaml
 ```
 
 2. View logs and results
@@ -324,7 +324,7 @@ python benchmarks/create_benchmark_campaign.py \
 By default, the generated VM YAML files run all the following solver configurations:
 
 ```text
-gurobi highs scip cbc glpk
+gurobi-default highs-default scip-default cbc-default glpk-default
 ```
 
 The default solver year is:
@@ -333,7 +333,7 @@ The default solver year is:
 2025
 ```
 
-Each solver configuration runs in its own per-solver-year conda env, e.g. for `highs` in 2025:
+Each solver configuration runs in its own per-solver-year conda env, e.g. for `highs-default` in 2025:
 
 ```text
 benchmark-highs-2025
@@ -348,7 +348,7 @@ Run specific solvers for one or more years:
 python benchmarks/create_benchmark_campaign.py \
   --campaign year-test \
   --all \
-  --solver cbc highs \
+  --solver-configurations cbc-default highs-default \
   --years 2024 2025
 ```
 
@@ -486,7 +486,7 @@ To see the results from your runs, navigate to the [results page](http://localho
 Python environments for this repo (the `runner/` CLI, `notebooks/`, `benchmarks/`
 scripts, and dev tooling) are managed by [pixi](https://pixi.sh) from the root
 `pixi.toml`. Install `pixi` (see the [installation instructions](https://pixi.sh/latest/installation/)),
-then run `pixi install` to set up all environments, or `pixi install -e <env>`
+then run `pixi install --all` to set up all environments, or `pixi install -e <env>`
 for just one of `runner`, `notebooks`, `benchmarks`, or `dev`.
 
 We use the [ruff](https://docs.astral.sh/ruff) code linter and formatter, and GitHub Actions runs various pre-commit checks to ensure code and files are clean.

@@ -32,11 +32,11 @@ def get_installed_solver_versions(
     Parameters
     ----------
     solver_configurations : list[str]
-        Solver configuration names to look up (e.g. `["highs-hipo", "cbc"]`);
-        each is resolved to its underlying solver via
-        `config.resolve_solver_name`, then mapped to its conda/pip package
-        name via `config.get_conda_package_name` (e.g. "highs-hipo" and
-        "highs" both map to the "highspy" package).
+        Solver configuration names to look up (e.g.
+        `["highs-hipo", "cbc-default"]`); each is resolved to its underlying
+        solver via `config.resolve_solver_name`, then mapped to its
+        conda/pip package name via `config.get_conda_package_name` (e.g.
+        "highs-hipo" and "highs-default" both map to the "highspy" package).
     env_name : str, optional
         Conda environment to inspect. Defaults to the currently active one.
 
@@ -97,10 +97,11 @@ def get_registered_solver_versions(
     Parameters
     ----------
     solver_configurations : list[str]
-        Solver configuration names to look up (e.g. `["highs-hipo", "cbc"]`);
-        each is resolved to its underlying solver via
-        `config.resolve_solver_name` before the `solvers.yaml` lookup, since
-        a configuration like "highs-hipo" shares its solver's version/env.
+        Solver configuration names to look up (e.g.
+        `["highs-hipo", "cbc-default"]`); each is resolved to its underlying
+        solver via `config.resolve_solver_name` before the `solvers.yaml`
+        lookup, since a configuration like "highs-hipo" shares its solver's
+        version/env.
     year : str
         The release year to match against `solvers.yaml`'s per-version
         `year` entries, or the literal string `"tests"` to look up

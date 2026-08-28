@@ -40,18 +40,16 @@ mkdir benchmarks/sample_run
 machine-type: c4-standard-2
 years:
 - 2025
-solver: highs scip # solver configurations to run, runs all the default configurations in runner.benchmark if not specified
-benchmarks:
-  genx-3_three_zones_w_co2_capture-no_uc:
-    Sizes:
-    - Name: 3-1h
-      Size: M
-      URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
-  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314:
-    Sizes:
-    - Name: 1-1h
-      Size: M
-      URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
+solver_configuration: highs-default scip-default # configurations to run; runs runner.benchmark's own defaults if omitted
+problems:
+  genx-3_three_zones_w_co2_capture-no_uc-3-1h:
+    Problem class: LP
+    Size: M
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp.gz
+  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-73-1h:
+    Problem class: MILP
+    Size: M
+    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
 ```
 
 ### 3. Set Up Opentofu Variables
@@ -142,8 +140,9 @@ tofu destroy -var-file benchmarks/sample_run/run.tfvars
 Each YAML file defines a benchmark with specific configuration:
 
 - `machine-type`: GCP machine type to use
-- `year`: Benchmark environment year
-- `benchmarks`: Model configurations to benchmark
+- `years`: Solver-version years to run
+- `solver_configuration`: Space-separated solver configurations to run (optional; defaults to `benchmark_all.sh`'s own defaults)
+- `problems`: Map of problem ID to `{Problem class, Size, URL}` (or `Path` instead of `URL` for a local file) -- the same flat schema as `results/metadata.yaml`
 
 ## Troubleshooting
 

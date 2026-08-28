@@ -462,10 +462,13 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         help="Solver environment years to benchmark (default: 2025).",
     )
     allocation.add_argument(
-        "--solver",
+        "--solver-configurations",
         nargs="+",
         default=argparse.SUPPRESS,
-        help=("Solvers to benchmark. Default: gurobi highs scip cbc glpk."),
+        help=(
+            "Solver configurations to benchmark. Default: gurobi-default "
+            "highs-default scip-default cbc-default glpk-default."
+        ),
     )
     parser.add_argument(
         "--force",
@@ -602,7 +605,7 @@ def flatten_config(config: dict) -> dict:
         "zone",
         "timeout_hours",
         "years",
-        "solver",
+        "solver_configurations",
     ]:
         if key in allocation:
             flat[key] = allocation[key]
@@ -628,7 +631,13 @@ def merge_cli_with_defaults(
         "zone": "us-central1-a",
         "timeout_hours": None,
         "years": [2025],
-        "solver": ["gurobi", "highs", "scip", "cbc", "glpk"],
+        "solver_configurations": [
+            "gurobi-default",
+            "highs-default",
+            "scip-default",
+            "cbc-default",
+            "glpk-default",
+        ],
         "force": False,
         "vm_prefix": None,
         "skip_prepare": False,
@@ -723,7 +732,7 @@ def write_campaign_summary_csv(
             "Num. constraints": rows.get("Num. constraints"),
             "Num. nonzeros": rows.get("Num. nonzeros"),
             "URL": rows.get("URL"),
-            "Solvers": " ".join(args.solver),
+            "Solvers": " ".join(args.solver_configurations),
             "Years": " ".join(map(str, args.years)),
             "Num VMs": (
                 args.num_vms
@@ -827,7 +836,7 @@ def create_local_campaign(
     local_yaml = create_local_benchmark_yaml(
         selected,
         years=args.years,
-        solvers=args.solver,
+        solvers=args.solver_configurations,
         timeout_seconds=timeout_seconds,
     )
 
@@ -850,7 +859,7 @@ def create_local_campaign(
         *[part for year in args.years for part in ("--years", str(year))],
         *[
             part
-            for solver in args.solver
+            for solver in args.solver_configurations
             for part in ("--solver-configurations", solver)
         ],
         "--run-id",
@@ -952,7 +961,7 @@ def main() -> None:
             zone=args.zone,
             timeout_seconds=timeout_seconds,
             years=args.years,
-            solver=" ".join(args.solver),
+            solver=" ".join(args.solver_configurations),
         )
 
         # create_benchmark_campaign uses relative paths like ../infrastructure.

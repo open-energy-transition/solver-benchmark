@@ -119,7 +119,7 @@ def load_solver_configurations(
 def get_solver_configuration(
     name: str, config: dict[str, Any] | None = None
 ) -> dict[str, Any] | None:
-    """Look up a solver configuration (e.g. ``"highs"`` or ``"highs-hipo"``).
+    """Look up a solver configuration (e.g. ``"highs-default"`` or ``"highs-hipo"``).
 
     A configuration is requested as if it were its own solver, so it gets its
     own row in benchmark results, but runs through -- and shares the model
@@ -129,7 +129,7 @@ def get_solver_configuration(
     Parameters
     ----------
     name : str
-        The configuration's name, e.g. ``"highs"`` or ``"highs-hipo"``.
+        The configuration's name, e.g. ``"highs-default"`` or ``"highs-hipo"``.
     config : dict[str, Any], optional
         A pre-loaded solver_configurations.yaml dict, e.g. for testing with a
         fake configuration. Defaults to :func:`load_solver_configurations`.
@@ -137,9 +137,9 @@ def get_solver_configuration(
     Returns
     -------
     dict[str, Any] | None
-        ``{"solver": str, "options": dict}`` (with any ``{"shared": <name>}``
-        option values resolved) if `name` is a registered configuration,
-        else None.
+        ``{"solver_package": str, "options": dict}`` (with any
+        ``{"shared": <name>}`` option values resolved) if `name` is a
+        registered configuration, else None.
     """
     config = config if config is not None else load_solver_configurations()
     configuration = config.get("configurations", {}).get(name.lower())
@@ -150,7 +150,7 @@ def get_solver_configuration(
         key: shared[value["shared"]] if isinstance(value, dict) else value
         for key, value in configuration["options"].items()
     }
-    return {"solver": configuration["solver"], "options": options}
+    return {"solver_package": configuration["solver_package"], "options": options}
 
 
 def resolve_solver_name(name: str, config: dict[str, Any] | None = None) -> str:
@@ -159,7 +159,7 @@ def resolve_solver_name(name: str, config: dict[str, Any] | None = None) -> str:
     Parameters
     ----------
     name : str
-        The configuration's name, e.g. ``"highs-hipo"`` or ``"gurobi"``.
+        The configuration's name, e.g. ``"highs-hipo"`` or ``"gurobi-default"``.
     config : dict[str, Any], optional
         A pre-loaded solver_configurations.yaml dict. Defaults to
         :func:`load_solver_configurations`.
@@ -167,11 +167,11 @@ def resolve_solver_name(name: str, config: dict[str, Any] | None = None) -> str:
     Returns
     -------
     str
-        The configuration's `solver` if `name` is registered, otherwise
-        `name` itself (lowercased).
+        The configuration's `solver_package` if `name` is registered,
+        otherwise `name` itself (lowercased).
     """
     configuration = get_solver_configuration(name, config)
-    return configuration["solver"] if configuration else name.lower()
+    return configuration["solver_package"] if configuration else name.lower()
 
 
 def get_solver_options(
@@ -182,7 +182,7 @@ def get_solver_options(
     Parameters
     ----------
     name : str
-        The configuration's name, e.g. ``"highs"`` or ``"highs-hipo"``.
+        The configuration's name, e.g. ``"highs-default"`` or ``"highs-hipo"``.
     config : dict[str, Any], optional
         A pre-loaded solver_configurations.yaml dict, e.g. for testing with
         fake options. Defaults to :func:`load_solver_configurations`.
@@ -211,8 +211,9 @@ def get_default_configurations(config: dict[str, Any] | None = None) -> list[str
     -------
     list[str]
         Names of entries in ``solver_configurations.yaml``'s ``configurations``
-        (e.g. ``["highs", "scip", ...]``), not necessarily raw solver package
-        names -- the CLI's `--solvers` flag takes configurations, not solvers.
+        (e.g. ``["highs-default", "scip-default", ...]``), not necessarily raw
+        solver package names -- the CLI's `--solvers` flag takes
+        configurations, not solvers.
     """
     config = config if config is not None else load_solver_configurations()
     return list(config.get("default_configurations", []))
@@ -248,14 +249,14 @@ def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
 
 
 def get_conda_package_name(
-    solver_name: str, config: dict[str, Any] | None = None
+    solver_package: str, config: dict[str, Any] | None = None
 ) -> str:
     """Return the conda/pip package name that provides a solver.
 
     Parameters
     ----------
-    solver_name : str
-        The solver's name as used throughout the runner (e.g. ``"highs"``).
+    solver_package : str
+        The underlying solver package, e.g. ``"highs"``.
     config : dict[str, Any], optional
         A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
 
@@ -263,11 +264,36 @@ def get_conda_package_name(
     -------
     str
         The package name, e.g. ``"highspy"`` for ``"highs"``. Falls back to
-        `solver_name` itself if there's no entry in ``solvers.yaml``'s
+        `solver_package` itself if there's no entry in ``solvers.yaml``'s
         ``packages`` map.
     """
     config = config if config is not None else load_solver_registry()
-    return config.get("packages", {}).get(solver_name, solver_name)
+    return config.get("packages", {}).get(solver_package, solver_package)
+
+
+def _resolve_fact(facts: dict[str, Any], path: str) -> Any:
+    """Look up a fact, following a dotted `path` into nested dict facts.
+
+    Parameters
+    ----------
+    facts : dict[str, Any]
+        The actual values being checked, e.g. ``{"options": {"solver": "hipo"}}``.
+    path : str
+        A fact name, optionally dotted to reach into a nested dict fact, e.g.
+        ``"year"`` or ``"options.solver"``.
+
+    Returns
+    -------
+    Any
+        The resolved value, or None if `path` isn't present (including when
+        an intermediate segment isn't a dict).
+    """
+    value: Any = facts
+    for part in path.split("."):
+        if not isinstance(value, dict):
+            return None
+        value = value.get(part)
+    return value
 
 
 def _condition_matches(
@@ -280,9 +306,9 @@ def _condition_matches(
     facts : dict[str, Any]
         The actual values being checked, e.g. ``{"year": "2026", ...}``.
     condition : dict[str, dict[str, Any]]
-        A mapping of fact name to ``{operator: expected_value}``, as found
-        under a rule's ``when`` or an ``allow_any_of`` alternative in
-        eligibility_rules.yaml.
+        A mapping of fact name (optionally dotted, see :func:`_resolve_fact`)
+        to ``{operator: expected_value}``, as found under a rule's ``when``
+        or an ``allow_any_of`` alternative in eligibility_rules.yaml.
 
     Returns
     -------
@@ -291,7 +317,7 @@ def _condition_matches(
         absent from `condition` is treated as unconstrained (always matches).
     """
     for key, op_spec in condition.items():
-        actual = facts.get(key)
+        actual = _resolve_fact(facts, key)
         for op, expected in op_spec.items():
             if not _OPERATORS[op](actual, expected):
                 return False
@@ -304,6 +330,7 @@ def is_solver_eligible(
     size_category: str | None = None,
     problem_class: str | None = None,
     rules: dict[str, Any] | None = None,
+    config: dict[str, Any] | None = None,
 ) -> bool:
     """Check whether a solver/year is eligible to run against a problem.
 
@@ -316,7 +343,7 @@ def is_solver_eligible(
     Parameters
     ----------
     solver : str
-        The solver's name, e.g. ``"highs"`` or ``"highs-hipo"``.
+        The solver's name, e.g. ``"highs-default"`` or ``"highs-hipo"``.
     year : str
         The solver-version year being considered, e.g. ``"2026"``.
     size_category : str, optional
@@ -328,18 +355,36 @@ def is_solver_eligible(
     rules : dict[str, Any], optional
         A pre-loaded rules config, e.g. for testing with fake rules. Defaults
         to :func:`load_eligibility_rules`.
+    config : dict[str, Any], optional
+        A pre-loaded solver_configurations.yaml dict, used to resolve
+        `solver`'s ``solver_package``/``options`` facts (see Notes). Defaults
+        to :func:`load_solver_configurations`.
 
     Returns
     -------
     bool
         True if the combination is eligible to run.
+
+    Notes
+    -----
+    Also exposes ``solver_package`` (the underlying package, e.g. ``"highs"``
+    for both ``"highs-default"`` and ``"highs-hipo"``) and ``options`` (that
+    configuration's resolved tuning options). A rule can dot into ``options``
+    (e.g. ``options.solver`` for HiGHS's hipo/ipx choice), scoped by
+    ``solver_package``, to restrict an underlying setting once instead of
+    enumerating every configuration name that sets it.
     """
     rules = rules if rules is not None else load_eligibility_rules()
+    configuration = get_solver_configuration(solver, config)
     facts = {
         "solver": solver,
+        "solver_package": (
+            configuration["solver_package"] if configuration else solver.lower()
+        ),
         "year": year,
         "size_category": size_category,
         "problem_class": problem_class,
+        "options": configuration.get("options", {}) if configuration else {},
     }
     for rule in rules.get("rules", []):
         if not _condition_matches(facts, rule.get("when", {})):

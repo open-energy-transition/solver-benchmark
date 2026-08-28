@@ -1,8 +1,10 @@
 # Generic eligibility-rule engine, evaluated by runner/utils/config.py's
-# is_solver_eligible(). Matches arbitrary facts (solver/year/size_category/
-# problem_class today, but any future attribute works the same way) against
-# conditions built from comparison operators (`in`, `not_in`, `eq`, `gte`,
-# `lte`) -- adding a new guard means adding a rule below, not new code.
+# is_solver_eligible(). Matches arbitrary facts (solver/solver_package/year/
+# size_category/problem_class/options today, but any future attribute works
+# the same way) against conditions built from comparison operators (`in`,
+# `not_in`, `eq`, `gte`, `lte`). A fact name may be dotted to reach into a
+# nested dict fact, e.g. `options.solver` for a specific solver's own tuning
+# options (see solver_configurations.yaml).
 #
 # Each rule's `when` says which facts it restricts (a fact missing from `when`
 # matches anything). Once triggered, eligibility requires satisfying at least
@@ -14,32 +16,23 @@ rules:
     when:
       size_category: { in: ["L"] }
     allow_any_of:
-      # From 2026 on, all solvers run on all problem sizes.
-      - year: { gte: "2026" }
-      # 2025 and earlier: only that year's solvers, plus CBC's exception
-      # (its latest release is 2024, not 2025).
-      - year: { in: ["2025"] }
-      - solver: { in: ["cbc"] }
+      # 2025 onward: all solvers run on all problem sizes.
+      - year: { gte: "2025" }
+      # CBC's latest release is 2024, not 2025, so it needs its own
+      # exception.
+      - solver_package: { in: ["cbc"] }
         year: { in: ["2024"] }
 
-  - name: highs_variant_availability
+  - name: highs_algorithm_availability
     when:
-      solver:
-        {
-          in:
-            [
-              highs-hipo,
-              highs-hipo-32,
-              highs-hipo-64,
-              highs-hipo-128,
-              highs-ipm,
-            ],
-        }
+      # Matches every configuration of HiGHS where the "solver" option is set
+      # to either "hipo" or "ipx". solver_package scopes this to HiGHS, so
+      # another solver's own "solver" option can't accidentally match.
+      solver_package: { eq: "highs" }
+      options.solver: { in: ["hipo", "ipx"] }
     allow_any_of:
-      # HiPO/IPX both ship in highspy from 2026, for LPs only. highs-ipm is
-      # kept on the same 2026+ restriction as the HiPO variants even though
-      # "ipx" appears as a documented solver option in 2025's HiGHS source --
-      # unconfirmed whether it was actually functional (vs. just declared) in
-      # that release's packaged wheel, so this stays conservative.
+      # HiPO/IPX both ship in highspy from 2026, for LPs only. ipx is kept on
+      # the same 2026+ restriction even though it appears as a documented
+      # solver option in 2025's HiGHS source.
       - year: { gte: "2026" }
         problem_class: { in: ["LP"] }

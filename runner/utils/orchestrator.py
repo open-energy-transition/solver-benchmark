@@ -92,7 +92,7 @@ def run_benchmark(
         Path to the benchmark run config YAML (see `metadata.load_problems`).
     solver_configurations : list[str]
         Solver configuration names to run against every problem (e.g.
-        `["highs", "highs-hipo", "gurobi"]`), skipping any not eligible for
+        `["highs-default", "highs-hipo", "gurobi-default"]`), skipping any not eligible for
         `year` and a given problem (see `config.is_solver_eligible`) or not
         registered for `year` at all (see `env.get_registered_solver_versions`).
     year : str, optional
