@@ -26,7 +26,7 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.10.1
         with:
-          environments: dev benchmarks
+          environments: dev benchmarks runner
 
       - name: Check code formatting
         run: |
@@ -40,7 +40,7 @@ jobs:
             echo "git diff is empty, benchmark URLs conform to expected format"
           else
             git diff
-            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npython tests/validate_urls.py"
+            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npixi run -e benchmarks python tests/validate_urls.py"
             exit 1
           fi
           pixi run -e benchmarks python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
@@ -61,7 +61,7 @@ jobs:
           else
               git diff
               echo "ERROR: git diff non empty, metadata needs updating, please run the following command:"
-              echo "python benchmarks/merge_metadata.py"
+              echo "pixi run -e benchmarks python benchmarks/merge_metadata.py"
               exit 1
           fi
           pixi run -e benchmarks python tests/validate_urls_exist.py results/metadata.yaml

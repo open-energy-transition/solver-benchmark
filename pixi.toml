@@ -13,6 +13,9 @@ psutil = "*"
 requests = "*"
 humanize = "*"
 
+[feature.runner.pypi-dependencies]
+linopy = "*"
+
 [feature.notebooks.dependencies]
 python = ">=3.14"
 
@@ -34,6 +37,9 @@ pyyaml = "*"
 "ruamel.yaml" = "*"
 requests = "*"
 pip = "*"
+matplotlib = "3.7.*"
+humanize = "*"
+ipython = "*"
 
 [feature.benchmarks.pypi-dependencies]
 highspy = "==1.9.0"
