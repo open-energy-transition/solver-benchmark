@@ -13,7 +13,7 @@ problems in the same bucket.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import pandas as pd
 import yaml
@@ -85,7 +85,7 @@ def expected_solver_count(problem_class: str, is_long_timeout: bool) -> int:
 
 
 def check_consistent_solver_set(
-    label: str, solvers_present: set[str], expected: Optional[str]
+    label: str, solvers_present: set[str], expected: str | None
 ) -> str:
     """
     Verify the solver set for one problem matches the bucket's reference set.
@@ -131,10 +131,10 @@ def main() -> None:
         meta["problems"]
     )
 
-    short_solvers_lp: Optional[str] = None
-    short_solvers_milp: Optional[str] = None
-    long_solvers_lp: Optional[str] = None
-    long_solvers_milp: Optional[str] = None
+    short_solvers_lp: str | None = None
+    short_solvers_milp: str | None = None
+    long_solvers_lp: str | None = None
+    long_solvers_milp: str | None = None
 
     data["bench-size"] = data["Benchmark"] + "-" + data["Size"]
     data["solver-version"] = data["Solver"] + "-" + data["Solver Version"]

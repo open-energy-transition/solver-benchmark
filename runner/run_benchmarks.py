@@ -112,8 +112,7 @@ def download_benchmark_file(url, dest_path: Path):
         with requests.get(url, stream=True) as response:
             response.raise_for_status()
             with open(dest_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                f.writelines(response.iter_content(chunk_size=8192))
         print("done.")
 
     if dest_path.suffix == ".gz":
@@ -412,7 +411,7 @@ def get_highs_binary_version():
 
         return "unknown"
     except Exception as e:
-        print(f"Error getting HiGHS binary version: {str(e)}")
+        print(f"Error getting HiGHS binary version: {e!s}")
         return "unknown"
 
 

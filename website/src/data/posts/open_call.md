@@ -108,6 +108,7 @@ The LP/MPS files are LP/MILP problems represented as a set of canonicalized math
 Obfuscation of variable and constraint names can be done using the Python library `pyscipopt` with a script that looks something like:
 ```python
 from pyscipopt import Model
+
 scip = Model()
 scip.readProblem("path_to_non_obfuscated_mps")
 scip.writeProblem("path_to_obfuscated_mps", genericnames=True)
