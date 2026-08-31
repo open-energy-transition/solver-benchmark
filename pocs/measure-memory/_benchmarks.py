@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # SPDX-FileCopyrightText: : 2020-2024 The PyPSA-Eur Authors
 #
 # SPDX-License-Identifier: MIT
 # This file was taken from https://github.com/PyPSA/pypsa-eur/blob/16e2286188d25e40056296fa979c59564ae45887/scripts/_benchmark.py
 """ """
-
-from __future__ import absolute_import, print_function
 
 import logging
 import os
@@ -43,7 +40,7 @@ class MemTimer(Process):
         self.timestamps = kw.pop("timestamps", True)
         self.include_children = kw.pop("include_children", True)
 
-        super(MemTimer, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
 
     def run(self):
         # get baseline memory usage
@@ -96,7 +93,7 @@ class MemTimer(Process):
         self.pipe.send(n_measurements)
 
 
-class memory_logger(object):
+class memory_logger:
     """
     Context manager for taking and reporting memory measurements at fixed
     intervals from a separate process, for the duration of a context.
@@ -185,7 +182,7 @@ class memory_logger(object):
         return False
 
 
-class timer(object):
+class timer:
     level = 0
     opened = False
 
@@ -239,7 +236,7 @@ class timer(object):
         return False
 
 
-class optional(object):
+class optional:
     def __init__(self, variable, contextman):
         self.variable = variable
         self.contextman = contextman
