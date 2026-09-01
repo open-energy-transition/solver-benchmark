@@ -15,6 +15,11 @@
 # `solvers` rather than as another per-solver version entry, since the same
 # version can legitimately appear in both a per-year env and this shared one
 # (e.g. highs 1.9.0 is both 2024's own env and this one).
+#
+# `license_env_vars`: env vars holding license info/paths that a solver
+# needs, forwarded to systemd-run's isolated scope via `--setenv=` (it
+# doesn't inherit the caller's environment by default -- see
+# `execution.run_solver`). Only solvers that need one are listed.
 solvers:
   glpk:
     "5.0":
@@ -118,3 +123,14 @@ tests:
   glpk:
     version: "5.0.0"
     env: benchmark-tests
+
+license_env_vars:
+  # Gurobi normally needs no env var: its license is placed at its own
+  # default lookup path (/opt/gurobi/gurobi.lic, see
+  # infrastructure/startup-script.sh) rather than pointed to by
+  # GRB_LICENSE_FILE. Still listed so a non-default GRB_LICENSE_FILE (see
+  # runner/README.md's Docker example) is forwarded too, if set.
+  gurobi: [GRB_LICENSE_FILE]
+  knitro: [ARTELYS_LICENSE]
+  xpress: [XPRESS, LD_LIBRARY_PATH]
+  mosek: [MOSEKLM_LICENSE_FILE]

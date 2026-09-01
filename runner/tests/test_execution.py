@@ -146,3 +146,43 @@ class TestRunSolver:
 
         subprocess_env = run_mock.call_args.kwargs["env"]
         assert str(_REPO_ROOT) in subprocess_env["PYTHONPATH"]
+
+    def test_systemd_run_forwards_set_license_env_vars(self, mocker, monkeypatch):
+        cp = subprocess.CompletedProcess(
+            args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
+        )
+        mocker.patch("runner.utils.execution._systemd_available", return_value=True)
+        mocker.patch("runner.utils.execution.os.geteuid", return_value=1000)
+        mocker.patch(
+            "runner.utils.execution.config.resolve_solver_name", return_value="mosek"
+        )
+        mocker.patch(
+            "runner.utils.execution.config.get_license_env_vars",
+            return_value=["MOSEKLM_LICENSE_FILE", "UNSET_LICENSE_VAR"],
+        )
+        monkeypatch.setenv("MOSEKLM_LICENSE_FILE", "/opt/mosek/license.lic")
+        monkeypatch.delenv("UNSET_LICENSE_VAR", raising=False)
+        run_mock = mocker.patch(
+            "runner.utils.execution.subprocess.run", return_value=cp
+        )
+        run_solver(
+            "problem.lp", "mosek-default", timeout=3600, solver_version="11.0.30"
+        )
+        called_cmd = run_mock.call_args[0][0]
+        assert "--setenv=MOSEKLM_LICENSE_FILE=/opt/mosek/license.lic" in called_cmd
+        assert not any("UNSET_LICENSE_VAR" in part for part in called_cmd)
+
+    def test_systemd_run_skips_forwarding_for_solver_with_no_license_env_vars(
+        self, mocker
+    ):
+        cp = subprocess.CompletedProcess(
+            args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
+        )
+        mocker.patch("runner.utils.execution._systemd_available", return_value=True)
+        mocker.patch("runner.utils.execution.os.geteuid", return_value=1000)
+        run_mock = mocker.patch(
+            "runner.utils.execution.subprocess.run", return_value=cp
+        )
+        run_solver("problem.lp", "highs-default", timeout=3600, solver_version="1.9.0")
+        called_cmd = run_mock.call_args[0][0]
+        assert not any("--setenv=" in part for part in called_cmd)

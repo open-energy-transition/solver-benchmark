@@ -18,6 +18,8 @@ from typing import Any
 
 import psutil
 
+from . import config
+
 # solver.py uses package-relative imports (`from . import config`), so it
 # must be run via `-m`, not as a bare script path -- PYTHONPATH (rather than
 # `cwd`) is what makes `runner` resolve as a package regardless of the
@@ -89,6 +91,14 @@ def run_solver(
         If given, run inside this conda environment via `conda run -n
         <env_name>` instead of the current one.
 
+    Notes
+    -----
+    `systemd-run` doesn't inherit the caller's environment by default, so a
+    commercial solver's license env vars (``solvers.yaml``'s
+    ``license_env_vars``, e.g. ``MOSEKLM_LICENSE_FILE``) are forwarded
+    explicitly via `--setenv=` when running under it. Without `systemd-run`,
+    `subprocess.run` below inherits the environment normally.
+
     Returns
     -------
     dict[str, Any]
@@ -117,6 +127,11 @@ def run_solver(
                 "--property=MemorySwapMax=0",
             ]
         )
+        solver_package = config.resolve_solver_name(solver_configuration)
+        for env_var in config.get_license_env_vars(solver_package):
+            value = os.environ.get(env_var)
+            if value:
+                command.append(f"--setenv={env_var}={value}")
     else:
         print(
             "WARNING: systemd not available, running without memory limit enforcement"
