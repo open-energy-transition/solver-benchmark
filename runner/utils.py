@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -704,7 +706,6 @@ def print_sgm_tables_per_bucket(
       - # total
       - % solved
     """
-
     # Presentation-ready solver labels
     solver_label_map = {
         "highs": "HiGHS-Simplex",
@@ -780,7 +781,6 @@ def plot_speedup_vs_variables(
 
     Speedup = runtime_reference / runtime_target
     """
-
     df = final_with_size.copy()
     df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
 
@@ -874,7 +874,6 @@ def plot_solver_scaling_by_bucket(
         Medium : 1e4 <= Num. variables < 1e6
         Large  : Num. variables >= 1e6
     """
-
     df = final_with_size.copy()
     df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
 
@@ -956,7 +955,6 @@ def plot_speedup_vs_constraints(
 
     Speedup = runtime_reference / runtime_target
     """
-
     df = final_with_size.copy()
     df = df[df["Num. constraints"].notna() & (df["Num. constraints"] > 0)]
 
@@ -1053,7 +1051,6 @@ def build_gurobi_hipo_comparison_tables(
       - HiPO time (min)
       - Gurobi / HiPO speedup
     """
-
     df = final_with_size.copy()
 
     # Keep only rows with valid size info
@@ -1139,7 +1136,6 @@ def plot_solver_scaling_by_bucket_scatter_only(
         Medium : 1e4 <= Num. variables < 1e6
         Large  : Num. variables >= 1e6
     """
-
     df = final_with_size.copy()
     df = df[df["Num. variables"].notna() & (df["Num. variables"] > 0)]
 

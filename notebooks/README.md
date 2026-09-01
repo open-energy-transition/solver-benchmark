@@ -1,32 +1,37 @@
 # Instructions for running the notebooks
 
-To run the notebooks in this directory, you need to create an environment with the required dependencies. The dependencies are listed in the `pyproject.toml` file. Here we use `uv` to manage the environment.
+To run the notebooks in this directory, you need to create an environment with the required dependencies. The environments for this repo (including this one) are managed by [pixi](https://pixi.sh) from the root `pixi.toml`.
 
-1. First, make sure you have `uv` installed or install it if needed (see [uv installation instructions](https://docs.astral.sh/uv/getting-started/installation/)).
+1. First, make sure you have `pixi` installed (see [pixi installation instructions](https://pixi.sh/latest/installation/)).
 
-2. Navigate to the `notebooks` directory and sync the environment.
+2. From the repo root, install the `notebooks` environment.
 
 ```bash
-cd notebooks
-uv sync
+pixi install -e notebooks
 ```
 
-3. Activate the environment.
+3. Run Jupyter (or any other command) inside the environment.
 
 ```bash
-source .venv/bin/activate
+pixi run -e notebooks jupyter lab
+```
+
+Alternatively, activate a shell in the environment so you don't need to prefix every command with `pixi run -e notebooks`:
+
+```bash
+pixi shell -e notebooks
 ```
 
 ## Downloading results from Google Cloud Storage (GCS)
 
-Notebooks that analyze results from GCS require the results to be downloaded locally. You can do this by running the following commands:
+Notebooks that analyze results from GCS require the results to be downloaded locally. You can do this by running the following commands (from the repo root):
 
 ```bash
-mkdir ../runner/logs/
-mkdir ../results/gcp-results/
-gsutil -m rsync -r gs://solver-benchmarks/logs ../runner/logs/
-gsutil -m rsync -r gs://solver-benchmarks-restricted/logs ../runner/logs/
-gsutil -m rsync -r gs://solver-benchmarks/results ../results/gcp-results/
+mkdir runner/logs/
+mkdir results/gcp-results/
+pixi run -e notebooks gsutil -m rsync -r gs://solver-benchmarks/logs runner/logs/
+pixi run -e notebooks gsutil -m rsync -r gs://solver-benchmarks-restricted/logs runner/logs/
+pixi run -e notebooks gsutil -m rsync -r gs://solver-benchmarks/results results/gcp-results/
 ```
 
 On MacOS, you may need to add the following flag to the `gsutil` commands if you experience problems with multiprocessing: `-o "GSUtil:parallel_process_count=1"`.

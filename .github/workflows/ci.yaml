@@ -24,32 +24,26 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history for all branches
 
-      - uses: actions/setup-python@v5
+      - uses: prefix-dev/setup-pixi@v0.10.1
         with:
-          python-version: ${{ env.PY_VERSION }}
-
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip pre-commit
-          # For validation scripts (TODO collect these in a requirements.txt file?)
-          pip install ruamel.yaml yamale requests pandas
+          environments: dev benchmarks runner
 
       - name: Check code formatting
         run: |
-          pre-commit install
-          pre-commit run --from-ref origin/main --to-ref HEAD
+          pixi run -e dev pre-commit install
+          pixi run -e dev pre-commit run --from-ref origin/main --to-ref HEAD
 
       - name: Check benchmark metadata and results
         run: |
-          python tests/validate_urls.py
+          pixi run -e benchmarks python tests/validate_urls.py
           if git diff --quiet; then
             echo "git diff is empty, benchmark URLs conform to expected format"
           else
             git diff
-            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npython tests/validate_urls.py"
+            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npixi run -e benchmarks python tests/validate_urls.py"
             exit 1
           fi
-          python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
+          pixi run -e benchmarks python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
           PY_EXIT=${PIPESTATUS[0]}
 
           if [ $PY_EXIT -ne 0 ]; then
@@ -67,14 +61,14 @@ jobs:
           else
               git diff
               echo "ERROR: git diff non empty, metadata needs updating, please run the following command:"
-              echo "python benchmarks/merge_metadata.py"
+              echo "pixi run -e benchmarks python benchmarks/merge_metadata.py"
               exit 1
           fi
-          python tests/validate_urls_exist.py results/metadata.yaml
-          python tests/validate_results.py
+          pixi run -e benchmarks python tests/validate_urls_exist.py results/metadata.yaml
+          pixi run -e benchmarks python tests/validate_results.py
 
       - name: Validate metadata schema
-        run: yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
+        run: pixi run -e dev yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
 
       - name: Set FORK_PR environment variable
         if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}

@@ -4,6 +4,12 @@ This folder contains the scripts used to benchmark various solvers.
 
 ## Environment Structure
 
+The orchestration tooling itself (this folder's own dependencies, e.g. `pyyaml`,
+`pandas`, `psutil`, `requests`) is managed by the `runner` [pixi](https://pixi.sh)
+environment defined in the root `pixi.toml` — install it with `pixi install -e runner`.
+This is separate from the per-solver-year conda environments described below, which
+each solver actually runs in.
+
 Each solver-version pair has its own conda environment (e.g., `benchmark-highs-2025`, `benchmark-scip-2025`), enabling running solvers independently.
 
 ### `solvers.yaml` — Solver Registry
