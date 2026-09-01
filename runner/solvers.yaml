@@ -56,3 +56,23 @@ solvers:
     "2.10.12":
       year: 2024
       env: benchmark-cbc-2024
+
+  cplex:
+    "22.1.2.0":
+      year: 2025
+      env: benchmark-cplex-2025
+
+  mosek:
+    "11.0.30":
+      year: 2025
+      env: benchmark-mosek-2025
+
+  knitro:
+    "15.1.0":
+      year: 2025
+      env: benchmark-knitro-2025
+
+  xpress:
+    "9.6.2":
+      year: 2025
+      env: benchmark-xpress-2025

@@ -50,6 +50,12 @@ try:
 except ModuleNotFoundError:
     highspy = None
 
+# mosek is only installed in the mosek solver environment
+try:
+    import mosek
+except ModuleNotFoundError:
+    mosek = None
+
 
 def get_solver(solver_name, highs_variant=None):
     solver_name = solver_name.lower()
@@ -57,31 +63,73 @@ def get_solver(solver_name, highs_variant=None):
 
     solver_class = getattr(solvers, solver_enum.name)
 
+    # Fix a random seed, and set tolerances as similar as possible
     mip_gap = 1e-4  # Tolerance for the relative duality gap for MILPs
-    seed_options = {
-        "highs": {"random_seed": 0, "mip_rel_gap": mip_gap},
+    lp_tol = 1e-6  # Tolerance for LPs
+    solver_options = {
         "glpk": {"seed": 0, "mipgap": mip_gap},
-        "gurobi": {"seed": 0, "MIPGap": mip_gap},
         "scip": {"randomization/randomseedshift": 0, "limits/gap": mip_gap},
         "cbc": {
             "randomCbcSeed": 1,  # 0 indicates time of day
             "ratioGap": mip_gap,
         },
+        # TODO also set BarConvTol for all solvers?
+        "highs": {
+            "random_seed": 4,
+            "mip_rel_gap": mip_gap,
+            # LP tolerances
+            "primal_feasibility_tolerance": lp_tol,
+            "dual_feasibility_tolerance": lp_tol,
+            "run_crossover": "choose",  # Basic solutions not needed
+        },
+        "gurobi": {
+            "seed": 4,
+            "MIPGap": mip_gap,
+            # LP tolerances
+            "FeasibilityTol": lp_tol,
+            "OptimalityTol": lp_tol,
+            # "BarConvTol": lp_tol,
+            "SolutionTarget": 1,  # Basic solutions not needed
+        },
         "cplex": {
-            "randomseed": 0,
+            "randomseed": 4,
             "mip.tolerances.mipgap": mip_gap,
+            # LP tolerances
+            "simplex.tolerances.feasibility": lp_tol,
+            "simplex.tolerances.optimality": lp_tol,
+            "solutiontype": 2,  # Basic solutions not needed
         },
         "knitro": {
-            "KN_PARAM_MS_SEED": 1066,
+            "ms_seed": 4,
+            "mip_opt_gap_rel": mip_gap,
+            # LP tolerances
+            "feastol": lp_tol,
+            "opttol": lp_tol,
+            "bar_maxcrossit": 0,  # Basic solutions not needed (no way to say choose)
         },
-        "xpress": {"miprelgapnotify": mip_gap, "randomseed": 0},
+        "xpress": {
+            "randomseed": 4,
+            "miprelstop": mip_gap,
+            # LP tolerances
+            "FEASTOL": lp_tol,
+            "OPTIMALITYTOL": lp_tol,
+            "crossover": -1,  # Basic solutions not needed (crossover=choose)
+        },
+        "mosek": {
+            "MSK_IPAR_MIO_SEED": 4,
+            "MSK_IPAR_INTPNT_BASIS": "MSK_BI_NEVER",
+            "MSK_DPAR_MIO_TOL_REL_GAP": mip_gap,
+            # LP tolerances
+            "MSK_DPAR_INTPNT_TOL_PFEAS": lp_tol,
+            "MSK_DPAR_INTPNT_TOL_DFEAS": lp_tol,
+        },
     }
 
     kwargs = {}
     if highs_variant:
         kwargs.update(highs_variant.options())
     else:
-        kwargs.update(seed_options.get(solver_name, {}))
+        kwargs.update(solver_options.get(solver_name, {}))
 
     return solver_class(options=kwargs)
 
@@ -102,11 +150,12 @@ def is_mip_problem(solver_model, solver_name):
         info = solver_model.getInfo()
         return info.mip_node_count >= 0
     elif solver_name == "cplex":
-        # Check if any variables are integer or binary
         var_types = solver_model.variables.get_types()
         return any(t in ("I", "B") for t in var_types)
     elif solver_name == "xpress":
         return solver_model.getAttrib("mipents") > 0
+    elif solver_name == "mosek":
+        return solver_model.getnumintvar() > 0
     elif solver_name in {"glpk", "cbc"}:
         # These solvers do not provide a solver model in the solver result,
         # so MIP problem detection is not possible.
@@ -154,6 +203,10 @@ def get_duality_gap(solver_model, solver_name: str):
     elif solver_name == "knitro":
         # Knitro duality gap retrieval not implemented yet
         return None
+    elif solver_name == "mosek":
+        if is_mip_problem(solver_model, solver_name):
+            return solver_model.getdouinf(mosek.dinfitem.mio_obj_rel_gap)
+        return None
     else:
         raise NotImplementedError(f"The solver '{solver_name}' is not supported.")
 
@@ -192,7 +245,6 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
     """Get the solving runtime as reported by the solver from the solver's Python object."""
     if solver_model is None:
         return None
-
     try:
         match solver_name:
             case "highs":
@@ -204,11 +256,13 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "cplex":
-                return None
+                return solver_model.get_time()
             case "xpress":
                 return solver_model.getAttrib("time")
             case "knitro":
                 return solver_model.reported_runtime
+            case "mosek":
+                return solver_model.getdouinf(mosek.dinfitem.optimizer_time)
             case _:
                 print(f"WARNING: cannot obtain reported runtime for {solver_name}")
                 return None
@@ -228,10 +282,9 @@ def main(solver_name, input_file, solver_version):
     try:
         highs_variant = HighsVariant(solver_name.lower())
     except ValueError as e:
-        # re-raise the error if it isn't expected.
-        # we want to continue only if the error is about invalid HighsVariant
+        # Re-raise the error if it isn't the expected invalid HighsVariant case
         if "is not a valid HighsVariant" not in str(e):
-            raise e
+            raise
 
     if highs_variant:
         solver_name = "highs"
@@ -251,11 +304,12 @@ def main(solver_name, input_file, solver_version):
     log_fn = logs_dir / f"{output_filename}.log"
 
     try:
-        # We measure runtime here and not of this entire script because lines like
-        # `import linopy` take a long (and varying) amount of time
+        # Measure only solver execution time, excluding import overhead
         start_time = perf_counter()
         solver_result = solver.solve_problem(
-            problem_fn=problem_file, solution_fn=solution_fn, log_fn=log_fn
+            problem_fn=problem_file,
+            solution_fn=solution_fn,
+            log_fn=log_fn,
         )
         runtime = perf_counter() - start_time
 
@@ -266,13 +320,20 @@ def main(solver_name, input_file, solver_version):
 
         status_value = raw_status
 
+        # Treat unclear termination conditions as failed/invalid runs
         if termination_condition in {"unknown", "error", "failed", "aborted"}:
             status_value = "ER"
             objective = None
         elif raw_status == "warning" and objective is None:
             status_value = "ER"
 
-        if solver_model is not None and is_mip_problem(solver_model, solver_name):
+        try:
+            is_mip = is_mip_problem(solver_model, solver_name)
+        except Exception:
+            print(f"ERROR checking MIP status: {format_exc()}", file=sys.stderr)
+            is_mip = False
+
+        if is_mip:
             duality_gap, max_integrality_violation = get_milp_metrics(
                 input_file, solver_result, solver_name
             )
