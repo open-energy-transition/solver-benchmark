@@ -44,6 +44,17 @@ def run(
         help="Append to the results CSVs instead of overwriting them for "
         "the first year.",
     ),
+    num_seeds: int = typer.Option(
+        1,
+        "--num-seeds",
+        "-n",
+        help="Number of seeds to try per (problem, solver configuration) "
+        "pair. When greater than 1, each repetition uses a different seed "
+        "(0, 1, 2, ...) instead of the configuration's own fixed seed, to "
+        "gauge the solver's sensitivity to it (see "
+        "`runner/config/solvers.yaml`'s `seed_options`). Default: 1 (the "
+        "configuration's own fixed seed, no repetition).",
+    ),
     ref_bench_interval: int = typer.Option(
         0,
         "--ref-bench-interval",
@@ -88,6 +99,7 @@ def run(
                 problems_yaml_path,
                 resolved_solver_configurations,
                 year=year,
+                num_seeds=num_seeds,
                 reference_interval=ref_bench_interval,
                 append=append or index > 0,
                 run_id=resolved_run_id,

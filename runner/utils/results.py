@@ -74,10 +74,10 @@ def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
     "Seed" is appended last (not grouped with the other solver-identifying
     columns) so adding it doesn't shift every other column's position --
     see `ensure_csv_schema` for how an existing CSV predating this column
-    is widened to include it. Empty for a single-iteration run (the
+    is widened to include it. Empty for a single-seed run (the
     configuration's own fixed seed applies); set to the actual seed used
-    when `orchestrator.run_benchmark`'s `iterations` > 1 varies it per
-    iteration.
+    when `orchestrator.run_benchmark`'s `num_seeds` > 1 varies it per
+    repetition.
     """
     record = OrderedDict(
         [
