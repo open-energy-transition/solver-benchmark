@@ -5,7 +5,9 @@ import csv
 import pytest
 
 from runner.utils.results import (
+    _MEAN_STDDEV_HEADERS,
     csv_record,
+    ensure_csv_schema,
     write_csv_headers,
     write_csv_row,
     write_csv_summary_row,
@@ -60,6 +62,7 @@ class TestCsvRecord:
             "vm_instance_type": "vm",
             "vm_zone": "z",
             "solver_benchmark_version": "abc123",
+            "seed": 4,
         }
         record = csv_record(check=True, **full_kwargs)
         assert record["Problem"] == "p"
@@ -86,6 +89,7 @@ class TestCsvRecord:
             "VM Instance Type",
             "VM Zone",
             "Solver benchmark version",
+            "Seed",
         ]
 
 
@@ -151,6 +155,7 @@ class TestCsvRoundTrip:
             "Objective Value",
             "Run ID",
             "Timestamp",
+            "Seed",
         ]
 
     def test_write_csv_summary_row(self, tmp_path):
@@ -178,3 +183,80 @@ class TestCsvRoundTrip:
             rows = list(csv.reader(f))
         assert rows[1][0] == "problem-a"
         assert rows[1][6] == "1.5"  # Runtime Mean (s)
+
+
+class TestEnsureCsvSchema:
+    def test_append_false_overwrites_existing_content(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+        results_csv.write_text("stale header\nstale,row\n")
+        mean_stddev_csv.write_text("stale header\nstale,row\n")
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=False)
+
+        assert results_csv.read_text().splitlines()[0] == ",".join(
+            csv_record(check=False).keys()
+        )
+
+    def test_append_true_missing_file_creates_headers(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        assert results_csv.exists()
+        assert mean_stddev_csv.exists()
+
+    def test_append_true_matching_schema_is_untouched(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+        write_csv_headers(results_csv, mean_stddev_csv)
+        write_csv_row(
+            results_csv,
+            problem_id="problem-a",
+            metrics={"solver": "highs", "status": "ok"},
+            run_id="run-1",
+            timestamp="t",
+            vm_instance_type="vm",
+            vm_zone="z",
+            hostname="h",
+            solver_benchmark_version="abc123",
+        )
+        before = results_csv.read_text()
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        assert results_csv.read_text() == before
+
+    def test_append_true_widens_a_csv_missing_a_newer_column(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+        # An "old" file predating the `Seed` column, with one real data row.
+        old_headers = [h for h in csv_record(check=False).keys() if h != "Seed"]
+        with open(results_csv, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(old_headers)
+            writer.writerow(["problem-a", "highs"] + [""] * (len(old_headers) - 2))
+        with open(mean_stddev_csv, "w", newline="") as f:
+            csv.writer(f).writerow(_MEAN_STDDEV_HEADERS)
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        with open(results_csv, newline="") as f:
+            rows = list(csv.reader(f))
+        assert rows[0] == list(csv_record(check=False).keys())
+        assert rows[0][-1] == "Seed"
+        assert rows[1][0] == "problem-a"  # old data preserved
+        assert rows[1][1] == "highs"
+        assert rows[1][-1] == ""  # new column, blank for the old row
+
+    def test_append_true_raises_on_unrecognized_column(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+        with open(results_csv, "w", newline="") as f:
+            csv.writer(f).writerow(["Problem", "Some Removed Column"])
+        with open(mean_stddev_csv, "w", newline="") as f:
+            csv.writer(f).writerow(_MEAN_STDDEV_HEADERS)
+
+        with pytest.raises(ValueError, match="Some Removed Column"):
+            ensure_csv_schema(results_csv, mean_stddev_csv, append=True)

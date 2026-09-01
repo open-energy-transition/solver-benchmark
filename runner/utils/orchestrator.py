@@ -19,7 +19,7 @@ import requests
 from . import config, env
 from .execution import get_highs_binary_version, run_reference_highs_binary, run_solver
 from .metadata import load_problems
-from .results import write_csv_headers, write_csv_row, write_csv_summary_row
+from .results import ensure_csv_schema, write_csv_row, write_csv_summary_row
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _PROBLEMS_FOLDER = Path(__file__).resolve().parent.parent / "benchmarks"
@@ -143,9 +143,10 @@ def run_benchmark(
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
 
-    # Write headers if overriding or file doesn't exist
-    if not append or not results_csv.exists() or not mean_stddev_csv.exists():
-        write_csv_headers(results_csv, mean_stddev_csv)
+    # Write headers if overriding or a file doesn't exist yet; otherwise
+    # widen an existing file to the current schema in place if it predates a
+    # column added since (see `ensure_csv_schema`'s own docstring).
+    ensure_csv_schema(results_csv, mean_stddev_csv, append)
     os.makedirs(_PROBLEMS_FOLDER, exist_ok=True)
 
     registered_solver_versions = env.get_registered_solver_versions(
