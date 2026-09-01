@@ -249,7 +249,13 @@ class TestGetSolver:
     def test_highs_seed_options(self, monkeypatch):
         captured = self._patch_solver_class(monkeypatch, "Highs")
         get_solver("highs")
-        assert captured["options"] == {"random_seed": 0, "mip_rel_gap": 1e-4}
+        assert captured["options"] == {
+            "random_seed": 4,
+            "mip_rel_gap": 1e-4,
+            "primal_feasibility_tolerance": 1e-6,
+            "dual_feasibility_tolerance": 1e-6,
+            "run_crossover": "choose",
+        }
 
     def test_glpk_seed_options(self, monkeypatch):
         captured = self._patch_solver_class(monkeypatch, "GLPK")
@@ -259,7 +265,57 @@ class TestGetSolver:
     def test_gurobi_seed_options(self, monkeypatch):
         captured = self._patch_solver_class(monkeypatch, "Gurobi")
         get_solver("gurobi")
-        assert captured["options"] == {"seed": 0, "MIPGap": 1e-4}
+        assert captured["options"] == {
+            "seed": 4,
+            "MIPGap": 1e-4,
+            "FeasibilityTol": 1e-6,
+            "OptimalityTol": 1e-6,
+            "SolutionTarget": 1,
+        }
+
+    def test_cplex_seed_options(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Cplex")
+        get_solver("cplex")
+        assert captured["options"] == {
+            "randomseed": 4,
+            "mip.tolerances.mipgap": 1e-4,
+            "simplex.tolerances.feasibility": 1e-6,
+            "simplex.tolerances.optimality": 1e-6,
+            "solutiontype": 2,
+        }
+
+    def test_knitro_seed_options(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Knitro")
+        get_solver("knitro")
+        assert captured["options"] == {
+            "ms_seed": 4,
+            "mip_opt_gap_rel": 1e-4,
+            "feastol": 1e-6,
+            "opttol": 1e-6,
+            "bar_maxcrossit": 0,
+        }
+
+    def test_xpress_seed_options(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Xpress")
+        get_solver("xpress")
+        assert captured["options"] == {
+            "randomseed": 4,
+            "miprelstop": 1e-4,
+            "FEASTOL": 1e-6,
+            "OPTIMALITYTOL": 1e-6,
+            "crossover": -1,
+        }
+
+    def test_mosek_seed_options(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Mosek")
+        get_solver("mosek")
+        assert captured["options"] == {
+            "MSK_IPAR_MIO_SEED": 4,
+            "MSK_IPAR_INTPNT_BASIS": "MSK_BI_NEVER",
+            "MSK_DPAR_MIO_TOL_REL_GAP": 1e-4,
+            "MSK_DPAR_INTPNT_TOL_PFEAS": 1e-6,
+            "MSK_DPAR_INTPNT_TOL_DFEAS": 1e-6,
+        }
 
     def test_scip_seed_options(self, monkeypatch):
         captured = self._patch_solver_class(monkeypatch, "SCIP")
@@ -275,11 +331,11 @@ class TestGetSolver:
         assert captured["options"] == {"randomCbcSeed": 1, "ratioGap": 1e-4}
 
     def test_unrecognized_solver_gets_no_options(self, monkeypatch):
-        # SolverName only accepts known solver strings; verify solvers with no
-        # entry in seed_options (none exist for currently-recognized solvers,
-        # but the fallback path is exercised via an empty dict lookup).
-        captured = self._patch_solver_class(monkeypatch, "Mosek")
-        get_solver("mosek")
+        # SolverName accepts some solver strings with no entry in
+        # solver_options (e.g. copt) -- verify the fallback path is exercised
+        # via an empty dict lookup.
+        captured = self._patch_solver_class(monkeypatch, "COPT")
+        get_solver("copt")
         assert captured["options"] == {}
 
     def test_highs_variant_overrides_seed_options(self, monkeypatch):
