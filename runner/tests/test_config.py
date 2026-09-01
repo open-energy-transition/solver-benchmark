@@ -6,6 +6,7 @@ from runner.utils.config import (
     _condition_matches,
     get_conda_package_name,
     get_default_configurations,
+    get_license_env_vars,
     get_solver_configuration,
     get_solver_options,
     is_solver_eligible,
@@ -91,6 +92,16 @@ class TestGetCondaPackageName:
     def test_falls_back_to_solver_name(self):
         config = {"packages": {}}
         assert get_conda_package_name("glpk", config) == "glpk"
+
+
+class TestGetLicenseEnvVars:
+    def test_looks_up_license_env_vars(self):
+        config = {"license_env_vars": {"mosek": ["MOSEKLM_LICENSE_FILE"]}}
+        assert get_license_env_vars("mosek", config) == ["MOSEKLM_LICENSE_FILE"]
+
+    def test_solver_with_no_entry_returns_empty_list(self):
+        config = {"license_env_vars": {}}
+        assert get_license_env_vars("highs", config) == []
 
 
 class TestConditionMatches:

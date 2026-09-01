@@ -228,6 +228,30 @@ def get_conda_package_name(
     return config.get("packages", {}).get(solver_package, solver_package)
 
 
+def get_license_env_vars(
+    solver_package: str, config: dict[str, Any] | None = None
+) -> list[str]:
+    """Return the env vars holding license info/paths a solver package needs.
+
+    Parameters
+    ----------
+    solver_package : str
+        The underlying solver package, e.g. ``"mosek"``.
+    config : dict[str, Any], optional
+        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
+
+    Returns
+    -------
+    list[str]
+        Env var names to forward to a solver subprocess that doesn't
+        otherwise inherit the caller's environment (see
+        `execution.run_solver`). Empty if `solver_package` has no entry in
+        ``solvers.yaml``'s ``license_env_vars`` map.
+    """
+    config = config if config is not None else load_solver_registry()
+    return list(config.get("license_env_vars", {}).get(solver_package, []))
+
+
 def _resolve_fact(facts: dict[str, Any], path: str) -> Any:
     """Look up a fact, following a dotted `path` into nested dict facts.
 
