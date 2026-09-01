@@ -98,7 +98,7 @@ As a reminder, we classify benchmarks into size categories based on the number o
 
 ### Details of the Runner
 
-Given a time out `T` (seconds) and a number of iterations `N`, the benchmark runner `runner/run_benchmarks.py` operates as follows:
+Given a time out `T` (seconds) and a number of iterations `N`, the benchmark runner `runner/benchmark.py` operates as follows:
 
 - The benchmark LP/MPS files are downloaded from a Google Cloud bucket
 - For each benchmark and solver combination, the runner calls `runner.utils.solver` (`python -m runner.utils.solver`), which imports the input file into linopy and calls `linopy.Model.solve()` with the chosen solver

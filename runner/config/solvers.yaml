@@ -9,6 +9,13 @@
 # the solver's own name (used to cross-check what's actually installed in an
 # env against what this file expects).
 #
+# `tests`: not a release year -- the versions actually pinned in
+# runner/envs/benchmark-tests.yaml, the single shared conda env CI solves
+# real problems in as a smoke test (year "tests"). Kept separate from
+# `solvers` rather than as another per-solver version entry, since the same
+# version can legitimately appear in both a per-year env and this shared one
+# (e.g. highs 1.9.0 is both 2024's own env and this one).
+#
 # `license_env_vars`: env vars holding license info/paths that a solver
 # needs, forwarded to systemd-run's isolated scope via `--setenv=` (it
 # doesn't inherit the caller's environment by default -- see
@@ -102,6 +109,20 @@ packages:
   knitro: knitro
   xpress: xpress
   mosek: mosek
+
+tests:
+  highs:
+    version: "1.9.0"
+    env: benchmark-tests
+  scip:
+    version: "9.2.1"
+    env: benchmark-tests
+  cbc:
+    version: "2.10.12"
+    env: benchmark-tests
+  glpk:
+    version: "5.0.0"
+    env: benchmark-tests
 
 license_env_vars:
   # Gurobi normally needs no env var: its license is placed at its own

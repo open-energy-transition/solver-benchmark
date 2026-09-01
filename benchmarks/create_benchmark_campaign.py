@@ -833,7 +833,6 @@ def create_local_campaign(
     """
     campaign_dir.mkdir(parents=True, exist_ok=True)
 
-    solver = " ".join(args.solver_configurations)
     local_yaml = create_local_benchmark_yaml(
         selected,
         years=args.years,
@@ -845,16 +844,26 @@ def create_local_campaign(
     with local_yaml_path.open("w", encoding="utf-8") as f:
         yaml.dump(local_yaml, f, default_flow_style=False, sort_keys=False)
 
+    # runner.benchmark's --years/--solver-configurations are repeatable
+    # flags, not a single space-separated string, so each value gets its
+    # own flag occurrence.
     command_parts = [
-        "bash",
-        "runner/benchmark_all.sh",
-        "-y",
-        " ".join(map(str, args.years)),
-        "-s",
-        solver,
-        "-u",
-        run_id,
+        "pixi",
+        "run",
+        "-e",
+        "runner",
+        "python",
+        "-m",
+        "runner.benchmark",
         str(local_yaml_path.relative_to(REPO_ROOT)),
+        *[part for year in args.years for part in ("--years", str(year))],
+        *[
+            part
+            for solver in args.solver_configurations
+            for part in ("--solver-configurations", solver)
+        ],
+        "--run-id",
+        run_id,
     ]
 
     run_script = campaign_dir / "run_local.sh"

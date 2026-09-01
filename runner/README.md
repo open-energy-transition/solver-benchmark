@@ -14,7 +14,7 @@ Each solver-version pair has its own conda environment (e.g., `benchmark-highs-2
 
 ### `solvers.yaml` — Solver Registry
 
-The source of truth for mapping solver names to version, release year, and conda env is `runner/solvers.yaml`
+The source of truth for mapping solver names to version, release year, and conda env is `runner/config/solvers.yaml`
 
 Example:
 ```yaml
@@ -34,39 +34,45 @@ Environment YAML files live in `runner/envs/`:
 
 To regenerate fixed YAMLs from loose ones on native Linux: `./runner/envs/generate_fixed_envs.sh`. For other platforms, see [Generating Fixed Environment Files](#generating-fixed-environment-files).
 
-## Running benchmark_all.sh
+## Running runner.benchmark
 
-The `benchmark_all.sh` script takes a YAML file of problems as argument and runs all the solvers in series for each problem. It creates per-solver conda environments automatically.
-
-The script has options, e.g. to run only particular years, that you can see with the `-h` flag:
+`runner/benchmark.py` is a Typer CLI that takes a YAML file of problems and runs each requested solver configuration against it, for one or more solver-version years. It creates any missing per-solver-year conda envs automatically (see `runner/envs/`), so no manual env setup is needed first. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
 
 ```shell
-$./runner/benchmark_all.sh -h
-Runs the solvers from the specified years (default all) on the problems in the given file
-Options:
-    -a    Append to the results CSV file instead of overwriting. Default: overwrite
-    -y    A space separated string of years to run. Default: 2020 2021 2022 2023 2024 2025
-    -r    Reference benchmark interval in seconds. Default: 0 (disabled)
-    -u    Unique run ID to identify this benchmark run. Default: auto-generated
-    -s    Space separated list of solvers to run. Default: year-specific default
+$ pixi run -e runner python -m runner.benchmark --help
+Usage: python -m runner.benchmark [OPTIONS] {problems_yaml_path}
+
+Run every problem in PROBLEMS_YAML_PATH against each solver configuration,
+once per given year.
 ```
+
+**Required Arguments:**
+- `problems_yaml_path` - Path to the problems YAML file
+
+**Optional Arguments:**
+- `-a, --append` - Append to the results CSVs instead of overwriting them for the first year
+- `-y, --years YEAR` - Solver-version year to run (repeatable), or `tests` for the shared CI smoke-test env. Defaults to every year with a registered solver version
+- `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
+- `-r, --ref-bench-interval SECONDS` - Run a reference benchmark at most once every N seconds. 0 disables it
+- `-u, --run-id RUN_ID` - Identifier shared by every row from this run. Auto-generated if not given
+- `--help` - Show this message and exit
 
 Usage examples:
 
-1. Add results to the results CSV file by running the script with the `-a`
+1. Add results to the results CSV files instead of overwriting them:
 ```shell
-./runner/benchmark_all.sh -a -y "2025" -u "local-run" benchmarks/sample_run/standard-00.yaml
+pixi run -e runner python -m runner.benchmark --append --years 2025 --run-id "local-run" benchmarks/sample_run/standard-00.yaml
 ```
 
-2. Run specific solvers by passing the `-s` flag with a space separated list of solver names.
+2. Run specific solver configurations by repeating the `-s`/`--solver-configurations` flag:
 ```shell
-./runner/benchmark_all.sh -s "highs-default scip-default" -y "2025" benchmarks/sample_run/standard-00.yaml
+pixi run -e runner python -m runner.benchmark --solver-configurations highs-default --solver-configurations scip-default --years 2025 benchmarks/sample_run/standard-00.yaml
 ```
 
-3. Full run for the entire website problem set for 2025
+3. Full run for the entire website problem set for 2025:
 
-```sh
-./runner/benchmark_all.sh -y "2025" results/metadata.yaml
+```shell
+pixi run -e runner python -m runner.benchmark --years 2025 results/metadata.yaml
 ```
 
 ## Running with Docker
@@ -81,23 +87,23 @@ docker build -t solver-benchmark-runner -f runner/Dockerfile .
 
 ### Run
 
-The container entrypoint is `benchmark_all.sh`, so pass the same flags you would use natively. Mount `results/` to get output on the host:
+The container entrypoint runs `runner.benchmark`, so pass the same flags you would use natively. Mount `results/` to get output on the host:
 
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  solver-benchmark-runner -s "highs-default" -y "2025" results/metadata.yaml
+  solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
 ### Caching conda environments
 
-Conda environments are created at runtime. To avoid recreating them on every run, mount a named Docker volume:
+Per-solver-year conda environments are created at runtime. To avoid recreating them on every run, mount a named Docker volume:
 
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
   -v solver-conda-envs:/opt/conda/envs \
-  solver-benchmark-runner -s "highs-default" -y "2025" results/metadata.yaml
+  solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
 ### Gurobi licensing
@@ -110,56 +116,13 @@ docker run --rm \
   -v solver-conda-envs:/opt/conda/envs \
   -v $HOME/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
   -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
-  solver-benchmark-runner -s "gurobi-default" -y "2025" results/metadata.yaml
+  solver-benchmark-runner --solver-configurations gurobi-default --years 2025 results/metadata.yaml
 ```
 
 ### Limitations
 
 - **No memory limit enforcement**: `systemd-run` is not available inside Docker, so OOM protection is skipped. Solvers that exceed available memory will be killed by the kernel OOM killer instead.
 - **Performance overhead**: Docker adds minimal overhead, but for official benchmark submissions native Linux is recommended.
-
-## Running run_benchmarks.py
-
-Use `run_benchmarks.py` to run problems for a specific year with more control. Solver versions are looked up from `solvers.yaml` and each solver runs in its own conda env automatically. You need to create the per-solver conda environments first and activate any one of them (the script switches envs per solver internally).
-
-Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
-
-```sh
-# Create the per-solver envs for a year
-conda env create -q -f ./runner/envs/benchmark-highs-2025-fixed.yaml -y
-conda env create -q -f ./runner/envs/benchmark-scip-2025-fixed.yaml -y
-```
-
-```sh
-conda activate benchmark-highs-2025
-python -m runner.run_benchmarks <problems_yaml> <year> [OPTIONS]
-```
-
-**Required Arguments:**
-- `problems_yaml` - Path to a problems configuration file (e.g., `results/metadata.yaml`)
-- `year` - Solver release year (2020-2025)
-
-**Optional Arguments:**
-- `-a, --append` - Append to CSV results instead of overwriting
-- `--solvers SOLVERS` - Space-separated list of solver configurations to run
-- `--ref_bench_interval SECONDS` - Run reference benchmark every N seconds - This is not supported for local runs yet
-- `--run_id RUN_ID` - Custom identifier for this benchmark run
-- `-h, --help` - Show help message
-
-**Examples:**
-
-```bash
-# Run HiGHS only for 2025
-conda activate benchmark-highs-2025
-python -m runner.run_benchmarks results/metadata.yaml 2025 --solvers highs-default
-
-# Run multiple solvers for 2024 and append results
-conda activate benchmark-highs-2024
-python -m runner.run_benchmarks results/metadata.yaml 2024 --solvers "highs-default scip-default cbc-default" -a
-
-# Run with custom run ID for tracking
-python -m runner.run_benchmarks results/metadata.yaml 2024 --run_id "debug-run-001"
-```
 
 ## Running a single solver (`runner.utils.solver`)
 

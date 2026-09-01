@@ -40,7 +40,7 @@ mkdir benchmarks/sample_run
 machine-type: c4-standard-2
 years:
 - 2025
-solver_configuration: highs-default scip-default # configurations to run; defaults to benchmark_all.sh's own defaults if omitted
+solver_configuration: highs-default scip-default # configurations to run; runs runner.benchmark's own defaults if omitted
 problems:
   genx-3_three_zones_w_co2_capture-no_uc-3-1h:
     Problem class: LP

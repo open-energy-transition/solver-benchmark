@@ -12,12 +12,13 @@ pandas = "*"
 psutil = "*"
 requests = "*"
 humanize = "*"
-# matplotlib/numpy/ipython/linopy are not needed by the runner CLI itself (solving
-# happens via subprocess in the per-solver-year conda envs), but runner/utils.py and
-# runner/run_benchmarks.py/run_solver.py import them at module level, so the test
-# suite needs them to import those modules. Refactor PR 3's module split should let
-# most of this shrink back out of the runner feature.
-matplotlib = "*"
+# numpy/ipython/linopy aren't needed by the CLI/orchestrator path itself
+# (solving happens via subprocess in the per-solver-year conda envs), but the
+# test suite imports analyze.py (numpy, IPython.display) and solver.py
+# (linopy) directly, so the runner env still needs them to import those
+# modules. matplotlib/humanize -- plot.py's own deps, notebook-only, never
+# imported from runner/ -- have already shrunk back out per refactor PR 3's
+# module split; humanize stays for the CLI's own future use.
 numpy = "*"
 ipython = "*"
 

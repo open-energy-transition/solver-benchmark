@@ -2,14 +2,20 @@
 configurations, and the eligibility-rule engine.
 """
 
+from pathlib import Path
+
+import yaml
+
 from runner.utils.config import (
     _condition_matches,
+    get_all_registered_years,
     get_conda_package_name,
     get_default_configurations,
     get_license_env_vars,
     get_solver_configuration,
     get_solver_options,
     is_solver_eligible,
+    load_solver_registry,
     resolve_solver_name,
 )
 
@@ -84,6 +90,28 @@ class TestGetDefaultConfigurations:
         assert get_default_configurations({}) == []
 
 
+class TestGetAllRegisteredYears:
+    def test_collects_unique_sorted_years_across_solvers(self):
+        registry = {
+            "solvers": {
+                "highs": {"1.9.0": {"year": 2024}, "1.12.0": {"year": 2025}},
+                "cbc": {"2.10.12": {"year": 2024}},
+                "glpk": {"5.0": {"year": 2020}},
+            }
+        }
+        assert get_all_registered_years(registry) == ["2020", "2024", "2025"]
+
+    def test_excludes_the_tests_block(self):
+        registry = {
+            "solvers": {"highs": {"1.9.0": {"year": 2024}}},
+            "tests": {"highs": {"version": "1.9.0", "env": "benchmark-tests"}},
+        }
+        assert get_all_registered_years(registry) == ["2024"]
+
+    def test_empty_registry_returns_empty_list(self):
+        assert get_all_registered_years({}) == []
+
+
 class TestGetCondaPackageName:
     def test_looks_up_package_name(self):
         config = {"packages": {"highs": "highspy"}}
@@ -126,6 +154,13 @@ class TestConditionMatches:
 
     def test_gte_with_none_actual_is_false(self):
         assert not _condition_matches({"year": None}, {"year": {"gte": "2026"}})
+
+    def test_gte_and_lte_with_non_numeric_actual_is_false(self):
+        # `year` can be the non-numeric pseudo-year "tests" (CI's shared
+        # smoke-test env) -- it shouldn't satisfy a numeric bound, but must
+        # not crash the whole eligibility check either.
+        assert not _condition_matches({"year": "tests"}, {"year": {"gte": "2026"}})
+        assert not _condition_matches({"year": "tests"}, {"year": {"lte": "2026"}})
 
     def test_multiple_facts_are_and_ed(self):
         condition = {"solver": {"in": ["cbc"]}, "year": {"in": ["2024"]}}
@@ -200,6 +235,16 @@ class TestIsSolverEligible:
             "highs-hipo", "2026", size_category="S", problem_class="MILP"
         )
 
+    def test_tests_pseudo_year_does_not_crash_numeric_rules(self):
+        # year="tests" (CI's smoke-test pseudo-year) doesn't satisfy any of
+        # the real rules' numeric year bounds, but must not raise either.
+        assert is_solver_eligible(
+            "highs", "tests", size_category="S", problem_class="LP"
+        )
+        assert not is_solver_eligible(
+            "highs-hipo", "tests", size_category="S", problem_class="LP"
+        )
+
     def test_options_fact_covers_new_configurations_automatically(self):
         # The real highs_algorithm_availability rule matches on
         # solver_package + options.solver, not an enumerated list of
@@ -254,12 +299,54 @@ def test_load_functions_read_real_config_files():
     # shapes the rest of this module assumes (see individual tests above for
     # behavior); a parse error here would otherwise only surface at runtime
     # deep inside a benchmark run.
-    from runner.utils.config import (
-        load_eligibility_rules,
-        load_solver_configurations,
-        load_solver_registry,
-    )
+    from runner.utils.config import load_eligibility_rules, load_solver_configurations
 
     assert "solvers" in load_solver_registry()
     assert "configurations" in load_solver_configurations()
     assert "rules" in load_eligibility_rules()
+
+
+class TestTestsBlockMatchesBenchmarkTestsEnvFile:
+    def _parse_pinned_versions(self, env_yaml_path):
+        """Extract {package_name: version} from a conda env YAML's
+        `name==version` dependency specs (both plain and under `pip:`)."""
+        spec = yaml.safe_load(env_yaml_path.read_text())
+        versions = {}
+        for dependency in spec.get("dependencies", []):
+            if isinstance(dependency, str) and "==" in dependency:
+                name, version = dependency.split("==", 1)
+                versions[name] = version
+            elif isinstance(dependency, dict) and "pip" in dependency:
+                for pip_dependency in dependency["pip"]:
+                    if "==" in pip_dependency:
+                        name, version = pip_dependency.split("==", 1)
+                        versions[name] = version
+        return versions
+
+    def test_tests_block_versions_match_the_env_file_it_describes(self):
+        # solvers.yaml's `tests` block records the versions actually pinned
+        # in runner/envs/benchmark-tests.yaml (see solvers.yaml's own
+        # comment). If one is edited without the other, CI's "tests" smoke
+        # test would silently report a wrong "Solver Version" -- this is
+        # exactly the kind of drift that let the "tests" pseudo-year go
+        # unregistered (and unnoticed) for a long time.
+        registry = load_solver_registry()
+        tests_block = registry["tests"]
+        packages = registry["packages"]
+
+        env_yaml_path = (
+            Path(__file__).resolve().parent.parent / "envs" / "benchmark-tests.yaml"
+        )
+        pinned_versions = self._parse_pinned_versions(env_yaml_path)
+
+        for solver, entry in tests_block.items():
+            package_name = packages.get(solver, solver)
+            assert package_name in pinned_versions, (
+                f"solvers.yaml's tests block registers '{solver}' (package "
+                f"'{package_name}'), but {env_yaml_path.name} doesn't pin it"
+            )
+            assert entry["version"] == pinned_versions[package_name], (
+                f"solvers.yaml says {solver}=={entry['version']} for the "
+                f"tests env, but {env_yaml_path.name} pins "
+                f"{package_name}=={pinned_versions[package_name]}"
+            )

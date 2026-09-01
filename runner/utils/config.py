@@ -22,6 +22,20 @@ _SOLVER_REGISTRY_PATH = _CONFIG_DIR / "solvers.yaml"
 _ELIGIBILITY_RULES_PATH = _CONFIG_DIR / "eligibility_rules.yaml"
 _SOLVER_CONFIGURATIONS_PATH = _CONFIG_DIR / "solver_configurations.yaml"
 
+
+def _to_float(value: Any) -> float | None:
+    """Coerce to float for `gte`/`lte`, or None if that's not possible.
+
+    `year` can be the non-numeric pseudo-year `"tests"` (see
+    `env.get_registered_solver_versions`), which should simply not match a
+    numeric bound rather than crash the whole eligibility check.
+    """
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 # Comparison operators available to eligibility_rules.yaml's conditions. Each
 # takes (actual_value, expected_value_from_yaml) and returns whether it matches.
 _OPERATORS: dict[str, Callable[[Any, Any], bool]] = {
@@ -29,10 +43,10 @@ _OPERATORS: dict[str, Callable[[Any, Any], bool]] = {
     "not_in": lambda actual, expected: str(actual) not in {str(v) for v in expected},
     "eq": lambda actual, expected: str(actual) == str(expected),
     "gte": lambda actual, expected: (
-        actual is not None and float(actual) >= float(expected)
+        _to_float(actual) is not None and _to_float(actual) >= float(expected)
     ),
     "lte": lambda actual, expected: (
-        actual is not None and float(actual) <= float(expected)
+        _to_float(actual) is not None and _to_float(actual) <= float(expected)
     ),
 }
 
@@ -203,6 +217,35 @@ def get_default_configurations(config: dict[str, Any] | None = None) -> list[str
     """
     config = config if config is not None else load_solver_configurations()
     return list(config.get("default_configurations", []))
+
+
+def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
+    """Return every year with at least one registered solver version.
+
+    Used as the CLI's default ``--years`` list when none is given, so a new
+    solver-version year (added to ``solvers.yaml``) is picked up
+    automatically rather than needing a matching CLI code change. Excludes
+    the ``tests`` block: that's CI's shared smoke-test env, not a real
+    release year, and shouldn't be swept into a "run everything" default.
+
+    Parameters
+    ----------
+    config : dict[str, Any], optional
+        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
+
+    Returns
+    -------
+    list[str]
+        Every distinct ``year`` value across ``solvers.yaml``'s ``solvers``
+        block, sorted ascending.
+    """
+    config = config if config is not None else load_solver_registry()
+    years = {
+        str(entry["year"])
+        for versions in config.get("solvers", {}).values()
+        for entry in versions.values()
+    }
+    return sorted(years)
 
 
 def get_conda_package_name(

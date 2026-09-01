@@ -1,9 +1,8 @@
 """The per-problem run loop: ties `metadata`, `config`, `env`, `execution`,
 and `results` together into an actual benchmark run.
 
-Imported by both the future `benchmark.py` CLI and, during the transition,
-the legacy `run_benchmarks.py` entrypoint. Kept importable (not inlined in
-the CLI) so it's testable without going through Typer's CLI-parsing layer.
+Imported by `runner/benchmark.py`'s Typer CLI. Kept importable (not inlined
+in the CLI) so it's testable without going through Typer's CLI-parsing layer.
 """
 
 import datetime
