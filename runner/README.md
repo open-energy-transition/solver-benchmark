@@ -48,6 +48,7 @@ once per given year.
 - `-a, --append` - Append to the results CSVs instead of overwriting them for the first year
 - `-y, --years YEAR` - Solver-version year to run (repeatable), or `tests` for the shared CI smoke-test env. Defaults to every year with a registered solver version
 - `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
+- `-n, --num-seeds N` - Number of seeds to try per (problem, solver configuration) pair. When greater than 1, each repetition uses a different seed (1, 2, 3, ...) instead of the configuration's own fixed seed, to gauge the solver's sensitivity to it. Default: 1 (no repetition, the configuration's own fixed seed applies)
 - `-r, --ref-bench-interval SECONDS` - Run a reference benchmark at most once every N seconds. 0 disables it
 - `-u, --run-id RUN_ID` - Identifier shared by every row from this run. Auto-generated if not given
 - `--help` - Show this message and exit
@@ -68,6 +69,11 @@ pixi run -e runner python -m runner.benchmark --solver-configurations highs-defa
 
 ```shell
 pixi run -e runner python -m runner.benchmark --years 2025 results/metadata.yaml
+```
+
+4. Run each problem 3 times per solver configuration, under 3 different seeds, to gauge runtime sensitivity to the seed:
+```shell
+pixi run -e runner python -m runner.benchmark --num-seeds 3 --years 2025 benchmarks/sample_run/standard-00.yaml
 ```
 
 ## Running with Docker
@@ -124,13 +130,14 @@ docker run --rm \
 Use `runner.utils.solver` to test a single solver on a single problem. This is useful for debugging. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
 
 ```bash
-python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>
+python -m runner.utils.solver <solver_configuration> <input_file> <solver_version> [--seed N]
 ```
 
 **Arguments:**
 - `solver_configuration` - Solver configuration name (e.g., highs-default, highs-hipo, scip-default)
 - `input_file` - Path to a problem file (.lp or .mps)
 - `solver_version` - Solver version string (e.g., 1.10.0)
+- `--seed N` - Optional. Overrides the configuration's own fixed seed (see `runner/config/solvers.yaml`'s `seed_options`)
 
 **Examples:**
 
@@ -140,6 +147,9 @@ pixi run --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils
 
 # Test SCIP
 pixi run --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+
+# Test HiGHS with a specific seed instead of highs-default's own fixed one
+pixi run --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0 --seed 7
 ```
 
 **Output:**

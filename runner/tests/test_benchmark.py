@@ -88,6 +88,40 @@ class TestBenchmarkCli:
         assert list(results["Problem"]) == ["tiny-problem"]
         assert results.iloc[0]["Solver Release Year"] == 2025
 
+    def test_num_seeds_flag_varies_seed_across_repetitions(
+        self, problems_yaml, tmp_path
+    ):
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+                "--num-seeds",
+                "3",
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert sorted(results["Seed"]) == [1, 2, 3]
+
+    def test_default_num_seeds_leaves_seed_column_empty(self, problems_yaml, tmp_path):
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert results["Seed"].isna().all()
+
     def test_tests_pseudo_year_runs_against_real_solver_registry(
         self, problems_yaml, tmp_path
     ):

@@ -30,7 +30,7 @@ class TestGetSolver:
         captured = self._patch_solver_class(monkeypatch, "Highs")
         _, solver_package = get_solver("highs-default")
         assert solver_package == "highs"
-        assert captured["options"]["random_seed"] == 4
+        assert captured["options"]["random_seed"] == 0
         assert captured["options"]["mip_rel_gap"] == pytest.approx(1e-4)
 
     def test_named_configuration_resolves_to_its_solver(self, monkeypatch):
@@ -46,11 +46,34 @@ class TestGetSolver:
         captured = self._patch_solver_class(monkeypatch, "Mosek")
         _, solver_package = get_solver("mosek-default")
         assert solver_package == "mosek"
-        assert captured["options"]["MSK_IPAR_MIO_SEED"] == 4
+        assert captured["options"]["MSK_IPAR_MIO_SEED"] == 0
 
     def test_unsupported_solver_name_raises(self):
         with pytest.raises(ValueError):
             get_solver("not-a-solver")
+
+    def test_seed_overrides_configurations_own_seed(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", seed=42)
+        assert captured["options"]["random_seed"] == 42
+        # Other options are untouched
+        assert captured["options"]["mip_rel_gap"] == pytest.approx(1e-4)
+
+    def test_no_seed_keeps_configurations_own_seed(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", seed=None)
+        assert captured["options"]["random_seed"] == 0
+
+    def test_seed_ignored_with_warning_when_no_seed_options_entry(
+        self, monkeypatch, capsys
+    ):
+        monkeypatch.setattr(
+            "runner.utils.solver.config.get_seed_option", lambda *_a, **_k: None
+        )
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", seed=42)
+        assert captured["options"]["random_seed"] == 0
+        assert "no seed_options entry" in capsys.readouterr().err
 
 
 class TestIsMipProblem:

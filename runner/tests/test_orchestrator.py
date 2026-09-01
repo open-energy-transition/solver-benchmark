@@ -129,7 +129,7 @@ class TestRunBenchmark:
         results = pd.read_csv(results_csv)
         assert "Problem" in results.columns
 
-    def test_multiple_iterations_computes_mean_and_stddev(
+    def test_multiple_seeds_computes_mean_and_stddev(
         self, problems_yaml, tmp_path, mocker
     ):
         mocker.patch.object(
@@ -140,16 +140,39 @@ class TestRunBenchmark:
             ["highs-default"],
             year="2025",
             run_id="test-run",
-            iterations=2,
+            num_seeds=2,
         )
         summary = pd.read_csv(
             tmp_path / "results" / "benchmark_results_mean_stddev.csv"
         )
         assert summary.iloc[0]["Runtime StdDev (s)"] == 0.0
 
-    def test_error_status_stops_further_iterations(
-        self, problems_yaml, tmp_path, mocker
-    ):
+    def test_num_seeds_greater_than_one_varies_seed(self, problems_yaml, mocker):
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            num_seeds=3,
+        )
+        seeds = [call.kwargs["seed"] for call in run_solver_mock.call_args_list]
+        assert seeds == [1, 2, 3]
+
+    def test_single_seed_passes_no_seed_override(self, problems_yaml, mocker):
+        # Backward compatibility: the default `num_seeds=1` must not
+        # override the configuration's own fixed seed.
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+        )
+        assert run_solver_mock.call_args.kwargs["seed"] is None
+
+    def test_error_status_stops_further_seeds(self, problems_yaml, tmp_path, mocker):
         error_metrics = {**_FAKE_METRICS, "status": "ER"}
         run_solver_mock = mocker.patch.object(
             orchestrator, "run_solver", return_value=error_metrics
@@ -159,7 +182,7 @@ class TestRunBenchmark:
             ["highs-default"],
             year="2025",
             run_id="test-run",
-            iterations=3,
+            num_seeds=3,
         )
         assert run_solver_mock.call_count == 1
 

@@ -19,7 +19,7 @@ import requests
 from . import config, env
 from .execution import get_highs_binary_version, run_reference_highs_binary, run_solver
 from .metadata import load_problems
-from .results import write_csv_headers, write_csv_row, write_csv_summary_row
+from .results import ensure_csv_schema, write_csv_row, write_csv_summary_row
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _PROBLEMS_FOLDER = Path(__file__).resolve().parent.parent / "benchmarks"
@@ -79,7 +79,7 @@ def run_benchmark(
     problems_yaml_path: str | Path,
     solver_configurations: list[str],
     year: str | None = None,
-    iterations: int = 1,
+    num_seeds: int = 1,
     reference_interval: int = 0,  # Default: disabled
     append: bool = False,
     run_id: str | None = None,
@@ -97,10 +97,18 @@ def run_benchmark(
         registered for `year` at all (see `env.get_registered_solver_versions`).
     year : str, optional
         The solver-version year to run, e.g. `"2025"`.
-    iterations : int, optional
-        Repetitions per (problem, solver configuration) pair. A timeout or
-        error on one iteration skips the rest. Statistics are still recorded
-        when this is 1 (mean == the single value, stddev == 0).
+    num_seeds : int, optional
+        Number of seeds to try per (problem, solver configuration) pair.
+        When greater than 1, each repetition overrides the configuration's
+        own fixed seed with 1, 2, 3, ... (see `execution.run_solver`'s
+        `seed` parameter) -- starting at 1, not 0, since CBC's own seed
+        option treats 0 as "use the time of day" rather than an actual
+        fixed seed -- so repeated runs sample the solver's actual
+        sensitivity to its seed rather than just re-measuring one
+        deterministic solve. A timeout or error on one repetition skips the
+        rest. Statistics are still recorded when this is 1 (mean == the
+        single value, stddev == 0), and the seed is left unset (the
+        configuration's own fixed seed applies).
     reference_interval : int, optional
         Minimum seconds between reference-benchmark runs (see
         `execution.run_reference_highs_binary`), interleaved between real
@@ -138,9 +146,10 @@ def run_benchmark(
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
 
-    # Write headers if overriding or file doesn't exist
-    if not append or not results_csv.exists() or not mean_stddev_csv.exists():
-        write_csv_headers(results_csv, mean_stddev_csv)
+    # Write headers if overriding or a file doesn't exist yet; otherwise
+    # widen an existing file to the current schema in place if it predates a
+    # column added since (see `ensure_csv_schema`'s own docstring).
+    ensure_csv_schema(results_csv, mean_stddev_csv, append)
     os.makedirs(_PROBLEMS_FOLDER, exist_ok=True)
 
     registered_solver_versions = env.get_registered_solver_versions(
@@ -191,10 +200,22 @@ def run_benchmark(
             memory_usages = []
             timestamp = ""
 
-            for i in range(iterations):
+            # Seeds start at 1, not 0: CBC's own seed option (randomCbcSeed)
+            # treats 0 as a sentinel meaning "use the time of day" instead of
+            # an actual fixed seed (see solver_configurations.yaml's own
+            # comment on cbc-default), which would make that repetition
+            # silently non-deterministic. No other solver here gives 0 any
+            # special meaning, so starting at 1 is safe for all of them.
+            for seed_index in range(1, num_seeds + 1):
+                # Vary the seed across repetitions so they sample the
+                # solver's actual sensitivity to it.
+                seed = seed_index if num_seeds > 1 else None
+
                 print(
                     f"Running solver {solver_configuration} (version {solver_version}) "
-                    f"on {problem['path']} ({i})...",
+                    f"on {problem['path']} ({seed_index})"
+                    + (f" with seed {seed}" if seed is not None else "")
+                    + "...",
                     flush=True,
                 )
 
@@ -207,6 +228,7 @@ def run_benchmark(
                     timeout,
                     solver_version,
                     env_name=env_name,
+                    seed=seed,
                 )
 
                 # NOTE: results.csv_record expects the kwarg "solver" (its CSV
@@ -215,6 +237,7 @@ def run_benchmark(
                 metrics["solver"] = solver_configuration
                 metrics["solver_version"] = solver_version
                 metrics["solver_release_year"] = year
+                metrics["seed"] = seed
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
@@ -229,15 +252,15 @@ def run_benchmark(
                     **environment_metadata,
                 )
 
-                # If solver errors or times out, don't run further iterations
+                # If solver errors or times out, don't try further seeds
                 if metrics["status"] in {"ER", "TO"}:
                     break
 
             # Calculate mean and standard deviation. Guarded by how many
             # runtimes were actually collected, not the requested
-            # `iterations`: an error/timeout on the first iteration breaks
+            # `num_seeds`: an error/timeout on the first repetition breaks
             # the loop above early, leaving a single-element `runtimes`
-            # even when `iterations` > 1, and stdev requires 2+ points.
+            # even when `num_seeds` > 1, and stdev requires 2+ points.
             if len(runtimes) > 1:
                 metrics["runtime_mean"] = statistics.mean(runtimes)
                 metrics["runtime_stddev"] = statistics.stdev(runtimes)

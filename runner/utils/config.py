@@ -293,6 +293,29 @@ def get_license_env_vars(
     return list(config.get("license_env_vars", {}).get(solver_package, []))
 
 
+def get_seed_option(
+    solver_package: str, config: dict[str, Any] | None = None
+) -> str | None:
+    """Return the options key that holds a solver package's random seed.
+
+    Parameters
+    ----------
+    solver_package : str
+        The underlying solver package, e.g. ``"highs"``.
+    config : dict[str, Any], optional
+        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
+
+    Returns
+    -------
+    str | None
+        The key into a configuration's ``options`` dict that holds its seed
+        (e.g. ``"random_seed"`` for ``"highs"``), or None if `solver_package`
+        has no entry in ``solvers.yaml``'s ``seed_options`` map.
+    """
+    config = config if config is not None else load_solver_registry()
+    return config.get("seed_options", {}).get(solver_package)
+
+
 def _resolve_fact(facts: dict[str, Any], path: str) -> Any:
     """Look up a fact, following a dotted `path` into nested dict facts.
 
