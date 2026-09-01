@@ -62,35 +62,14 @@ cd /
 curl -L "https://storage.googleapis.com/solver-benchmarks/instances/benchmark-test-model.lp.gz" -o benchmark-test-model.lp.gz
 gunzip benchmark-test-model.lp.gz
 
-# Install Miniconda
-echo "Installing Miniconda..."
-mkdir -p ~/miniconda3
-wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-rm ~/miniconda3/miniconda.sh
-
-# Setup conda environment
-echo "Setting up conda environment..."
-echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
-~/miniconda3/bin/conda init bash
-echo "Elapsed: $(($(date +%s)-start_time))s"
-
-# Accept Anaconda Terms of Service to avoid interactive prompts
-echo "Accepting Anaconda Terms of Service..."
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-# Accept Anaconda Terms of Service to avoid interactive prompts
-echo "Accepting Anaconda Terms of Service..."
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-# Install pixi, which manages the runner CLI's own dependencies (pyyaml,
-# psutil, requests, pandas, typer, ...) -- separate from the per-solver-year
-# conda envs runner/benchmark.py creates at runtime via `conda env create`.
+# Install pixi, which manages both the runner CLI's own dependencies
+# (pyyaml, psutil, requests, pandas, typer, ...) and every per-solver-year
+# env runner/benchmark.py installs at runtime (each its own pixi manifest
+# under runner/envs/).
 echo "Installing pixi..."
 curl -fsSL https://pixi.sh/install.sh | bash
 export PATH="$HOME/.pixi/bin:$PATH"
+echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # Get benchmark years from instance metadata
 BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
@@ -140,7 +119,6 @@ fi
 
 # Run runner.benchmark with our years and the run_id
 echo "Starting benchmarks for years: ${YEARS_ARGS[*]} with run_id: ${RUN_ID}"
-source ~/miniconda3/bin/activate
 pixi run -e runner python -m runner.benchmark \
     "${YEARS_ARGS[@]}" \
     -r "${REFERENCE_BENCHMARK_INTERVAL}" \

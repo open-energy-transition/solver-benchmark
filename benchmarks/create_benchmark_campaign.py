@@ -18,6 +18,7 @@ import getpass
 import re
 import subprocess
 import sys
+from collections.abc import Callable
 from datetime import date, datetime
 from pathlib import Path
 
@@ -43,7 +44,24 @@ MACHINE_PROFILES = {
 
 
 def slugify_campaign_name(value: str) -> str:
-    """Return a conservative campaign slug for run IDs and file paths."""
+    """Return a conservative campaign slug for run IDs and file paths.
+
+    Parameters
+    ----------
+    value : str
+        The raw campaign name, e.g. as given to ``--campaign``.
+
+    Returns
+    -------
+    str
+        `value` lowercased with runs of non-``[a-z0-9._-]`` characters
+        collapsed to a single ``-`` and stripped from both ends.
+
+    Raises
+    ------
+    ValueError
+        If `value` normalizes to an empty string.
+    """
     slug = value.strip().lower()
     slug = re.sub(r"[^a-z0-9._-]+", "-", slug)
     slug = re.sub(r"-+", "-", slug).strip("-")
@@ -53,7 +71,20 @@ def slugify_campaign_name(value: str) -> str:
 
 
 def run_command(command: list[str], cwd: Path) -> None:
-    """Run a command and fail loudly if it exits with a non-zero status."""
+    """Run a command and fail loudly if it exits with a non-zero status.
+
+    Parameters
+    ----------
+    command : list[str]
+        The command and its arguments, as passed to `subprocess.run`.
+    cwd : pathlib.Path
+        Working directory to run `command` in.
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If `command` exits with a non-zero status.
+    """
     print(f"\n$ {' '.join(command)}")
     subprocess.run(command, cwd=cwd, check=True)
 
@@ -64,12 +95,12 @@ def prepare_metadata() -> None:
     run_command([sys.executable, "benchmarks/categorize_benchmarks.py"], cwd=REPO_ROOT)
 
 
-def import_runner_utils():
+def import_runner_utils() -> tuple[Callable, Callable, Callable]:
     """Import runner utilities used for problem allocation and campaign creation.
 
     Returns
     -------
-    tuple
+    tuple[Callable, Callable, Callable]
         `(allocate_problems, create_benchmark_campaign, load_problem_metadata)`.
     """
     sys.path.insert(0, str(REPO_ROOT))
@@ -85,7 +116,18 @@ def import_runner_utils():
 
 
 def validate_selection_args(args: argparse.Namespace) -> None:
-    """Validate mutually exclusive problem selection modes."""
+    """Validate mutually exclusive problem selection modes.
+
+    Parameters
+    ----------
+    args : argparse.Namespace
+        Parsed command-line arguments; only `all` and `problem` are checked.
+
+    Raises
+    ------
+    ValueError
+        If neither or both of `--all`/`--problem` were given.
+    """
     selection_modes = sum(
         [
             bool(args.all),
@@ -98,7 +140,19 @@ def validate_selection_args(args: argparse.Namespace) -> None:
 
 
 def format_available_problems(df: pd.DataFrame) -> str:
-    """Format available problem IDs for error messages."""
+    """Format available problem IDs for error messages.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Problem metadata with a ``Problem`` column.
+
+    Returns
+    -------
+    str
+        One problem ID per line, or a "no problems found" message if `df`
+        is empty.
+    """
     available = sorted(df["Problem"].unique())
     if not available:
         return "No available problems found."
@@ -106,7 +160,27 @@ def format_available_problems(df: pd.DataFrame) -> str:
 
 
 def select_problems(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
-    """Select problems from the metadata dataframe."""
+    """Select problems from the metadata dataframe.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        All available problem metadata.
+    args : argparse.Namespace
+        Parsed command-line arguments: `all`, `problem`, `size`, and
+        `do_not_skip` drive the selection.
+
+    Returns
+    -------
+    pandas.DataFrame
+        The subset of `df` matching the requested selection.
+
+    Raises
+    ------
+    ValueError
+        If no problems match the requested selection, or if every matched
+        problem is marked "Skip because" and `--do-not-skip` wasn't given.
+    """
     validate_selection_args(args)
 
     selected = df.copy()
@@ -138,7 +212,7 @@ def select_problems(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
 
 def allocate_campaign_vms(
     selected: pd.DataFrame,
-    allocate_problems,
+    allocate_problems: Callable[..., list[dict]],
     *,
     num_vms: int | None,
     weight_col: str,
@@ -265,7 +339,27 @@ def print_campaign_summary(
     timeout_seconds: int | None,
     machine_profile: str | None,
 ) -> None:
-    """Print a concise summary and the next OpenTofu command."""
+    """Print a concise summary and the next OpenTofu command.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    vm_prefix : str
+        Prefix used to name generated VMs.
+    selected : pandas.DataFrame
+        Selected problems after applying all campaign filters.
+    vm_yamls : list[dict]
+        Generated VM configuration dictionaries, one per VM.
+    years : list[int]
+        Benchmark environment years to execute.
+    timeout_seconds : int | None
+        Solver timeout override in seconds. If ``None``, the automatic
+        size-based timeout policy is reported instead.
+    machine_profile : str | None
+        Machine profile override. If ``None``, the automatic size-based
+        machine policy is reported instead.
+    """
     campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
 
     by_size = selected["Size"].value_counts(dropna=False).sort_index()
@@ -617,7 +711,22 @@ def merge_cli_with_defaults(
     cli_args: argparse.Namespace,
     defaults: dict,
 ) -> argparse.Namespace:
-    """Merge hardcoded defaults, config defaults, and explicit CLI arguments."""
+    """Merge hardcoded defaults, config defaults, and explicit CLI arguments.
+
+    Parameters
+    ----------
+    cli_args : argparse.Namespace
+        Arguments as parsed directly from the command line.
+    defaults : dict
+        Defaults loaded from ``--configfile``, if any.
+
+    Returns
+    -------
+    argparse.Namespace
+        `cli_args` merged over `defaults` merged over this function's own
+        hardcoded defaults, with the selection-mode fields (`all`/`problem`)
+        resolved so only one mode is set.
+    """
     hardcoded = {
         "target": "cloud",
         "campaign": None,
@@ -672,6 +781,8 @@ def write_campaign_summary_csv(
 
     Parameters
     ----------
+    campaign_dir : pathlib.Path
+        Campaign output directory; the CSV is written here.
     run_id : str
         Campaign run identifier.
     selected : pandas.DataFrame
@@ -899,6 +1010,7 @@ def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
 
 
 def main() -> None:
+    """Parse CLI arguments and create the requested benchmark campaign."""
     config_parser = argparse.ArgumentParser(add_help=False)
     config_parser.add_argument("--configfile")
     config_args, _ = config_parser.parse_known_args()

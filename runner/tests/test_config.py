@@ -2,16 +2,15 @@
 configurations, and the eligibility-rule engine.
 """
 
+import tomllib
 from pathlib import Path
-
-import yaml
 
 from runner.utils.config import (
     _condition_matches,
     get_all_registered_years,
-    get_conda_package_name,
     get_default_configurations,
     get_license_env_vars,
+    get_package_name,
     get_solver_configuration,
     get_solver_options,
     is_solver_eligible,
@@ -112,14 +111,14 @@ class TestGetAllRegisteredYears:
         assert get_all_registered_years({}) == []
 
 
-class TestGetCondaPackageName:
+class TestGetPackageName:
     def test_looks_up_package_name(self):
         config = {"packages": {"highs": "highspy"}}
-        assert get_conda_package_name("highs", config) == "highspy"
+        assert get_package_name("highs", config) == "highspy"
 
     def test_falls_back_to_solver_name(self):
         config = {"packages": {}}
-        assert get_conda_package_name("glpk", config) == "glpk"
+        assert get_package_name("glpk", config) == "glpk"
 
 
 class TestGetLicenseEnvVars:
@@ -307,25 +306,21 @@ def test_load_functions_read_real_config_files():
 
 
 class TestTestsBlockMatchesBenchmarkTestsEnvFile:
-    def _parse_pinned_versions(self, env_yaml_path):
-        """Extract {package_name: version} from a conda env YAML's
-        `name==version` dependency specs (both plain and under `pip:`)."""
-        spec = yaml.safe_load(env_yaml_path.read_text())
+    def _parse_pinned_versions(self, pixi_toml_path):
+        """Extract {package_name: version} from a pixi manifest's `==version`
+        dependency specs, across both [dependencies] and
+        [pypi-dependencies]."""
+        manifest = tomllib.loads(pixi_toml_path.read_text())
         versions = {}
-        for dependency in spec.get("dependencies", []):
-            if isinstance(dependency, str) and "==" in dependency:
-                name, version = dependency.split("==", 1)
-                versions[name] = version
-            elif isinstance(dependency, dict) and "pip" in dependency:
-                for pip_dependency in dependency["pip"]:
-                    if "==" in pip_dependency:
-                        name, version = pip_dependency.split("==", 1)
-                        versions[name] = version
+        for table_name in ("dependencies", "pypi-dependencies"):
+            for name, spec in manifest.get(table_name, {}).items():
+                if isinstance(spec, str) and spec.startswith("=="):
+                    versions[name] = spec.removeprefix("==")
         return versions
 
     def test_tests_block_versions_match_the_env_file_it_describes(self):
         # solvers.yaml's `tests` block records the versions actually pinned
-        # in runner/envs/benchmark-tests.yaml (see solvers.yaml's own
+        # in runner/envs/benchmark-tests/pixi.toml (see solvers.yaml's own
         # comment). If one is edited without the other, CI's "tests" smoke
         # test would silently report a wrong "Solver Version" -- this is
         # exactly the kind of drift that let the "tests" pseudo-year go
@@ -334,19 +329,22 @@ class TestTestsBlockMatchesBenchmarkTestsEnvFile:
         tests_block = registry["tests"]
         packages = registry["packages"]
 
-        env_yaml_path = (
-            Path(__file__).resolve().parent.parent / "envs" / "benchmark-tests.yaml"
+        pixi_toml_path = (
+            Path(__file__).resolve().parent.parent
+            / "envs"
+            / "benchmark-tests"
+            / "pixi.toml"
         )
-        pinned_versions = self._parse_pinned_versions(env_yaml_path)
+        pinned_versions = self._parse_pinned_versions(pixi_toml_path)
 
         for solver, entry in tests_block.items():
             package_name = packages.get(solver, solver)
             assert package_name in pinned_versions, (
                 f"solvers.yaml's tests block registers '{solver}' (package "
-                f"'{package_name}'), but {env_yaml_path.name} doesn't pin it"
+                f"'{package_name}'), but {pixi_toml_path} doesn't pin it"
             )
             assert entry["version"] == pinned_versions[package_name], (
                 f"solvers.yaml says {solver}=={entry['version']} for the "
-                f"tests env, but {env_yaml_path.name} pins "
+                f"tests env, but {pixi_toml_path} pins "
                 f"{package_name}=={pinned_versions[package_name]}"
             )

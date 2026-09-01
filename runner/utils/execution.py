@@ -1,5 +1,5 @@
-"""Run a single solver on a single benchmark problem as a resource-limited
-subprocess, and parse back its reported memory usage.
+"""Run a single solver on a single problem as a resource-limited subprocess,
+and parse back its reported memory usage.
 
 Actually solving happens out-of-process (via `python -m runner.utils.solver`,
 see `solver.py`'s own module docstring) so that a solver crash, timeout, or
@@ -24,8 +24,9 @@ from . import config
 # must be run via `-m`, not as a bare script path -- PYTHONPATH (rather than
 # `cwd`) is what makes `runner` resolve as a package regardless of the
 # working directory each wrapper in the command below (systemd-run,
-# /usr/bin/time, conda run) happens to launch it from.
+# /usr/bin/time, pixi run) happens to launch it from.
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+_ENVS_DIR = Path(__file__).resolve().parent.parent / "envs"
 _LOGS_DIR = Path(__file__).resolve().parent.parent / "logs"
 
 
@@ -88,8 +89,9 @@ def run_solver(
         The solver version, passed through to `solver.main` for its output
         filenames and included in the returned metrics' log lookup.
     env_name : str, optional
-        If given, run inside this conda environment via `conda run -n
-        <env_name>` instead of the current one.
+        If given, run inside this env (a pixi manifest at
+        `runner/envs/<env_name>/`) via `pixi run --manifest-path` instead of
+        the current one.
 
     Notes
     -----
@@ -147,9 +149,9 @@ def run_solver(
         ]
     )
 
-    # Use conda run to execute in the solver's env, or plain python for the current env
+    # Use pixi run to execute in the solver's env, or plain python for the current env
     if env_name:
-        command.extend(["conda", "run", "-n", env_name])
+        command.extend(["pixi", "run", "--manifest-path", str(_ENVS_DIR / env_name)])
 
     command.extend(
         [

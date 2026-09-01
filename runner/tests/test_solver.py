@@ -125,6 +125,34 @@ class TestCalculateIntegralityViolation:
         primal_values = np.array([1.0, 2.0])
         assert calculate_integrality_violation(integer_var_labels, primal_values) == 0.0
 
+    def test_none_when_primal_values_is_empty(self):
+        # Regression test: linopy's deprecated file-based solve path
+        # (Solver.solve_problem) never initializes its internal variable
+        # count, so it always returns a zero-length Solution.primal
+        # regardless of the problem's real size -- confirmed against a real
+        # MILP solve, not just a hypothetical.
+        integer_var_labels = np.array([1, 2])
+        primal_values = np.array([])
+        assert (
+            calculate_integrality_violation(integer_var_labels, primal_values) is None
+        )
+
+    def test_none_when_no_label_is_in_bounds(self):
+        integer_var_labels = np.array([5, 6])
+        primal_values = np.array([1.0, 2.0])
+        assert (
+            calculate_integrality_violation(integer_var_labels, primal_values) is None
+        )
+
+    def test_out_of_range_labels_are_dropped_not_raised(self):
+        # A partially-populated primal (some in bounds, some not) still
+        # computes the violation over whatever labels it can.
+        integer_var_labels = np.array([0, 5])
+        primal_values = np.array([1.4])
+        assert calculate_integrality_violation(
+            integer_var_labels, primal_values
+        ) == pytest.approx(0.4)
+
 
 class TestGetMilpMetrics:
     def test_maps_solver_variable_names_to_linopy_labels(self, monkeypatch):
@@ -183,3 +211,27 @@ class TestGetMilpMetrics:
         solver_result = MagicMock()
         solver_result.solver_model = MagicMock()
         assert get_milp_metrics("problem.lp", solver_result, "highs") == (None, None)
+
+    def test_empty_primal_from_deprecated_solve_path_does_not_raise(self, monkeypatch):
+        # Regression test for a real bug found running an actual MILP
+        # (tests/sample_benchmarks/sample_mip.lp) through the real CLI:
+        # linopy's deprecated file-based solve path always returns a
+        # zero-length Solution.primal (see calculate_integrality_violation's
+        # docstring), which used to raise an uncaught IndexError here.
+        integrality = {0: (None, "continuous"), 1: (None, "integer")}
+        fake_h = MagicMock()
+        fake_h.numVariables = 2
+        fake_h.variableName.side_effect = lambda i: f"x{i}"
+        fake_h.getColIntegrality.side_effect = lambda i: integrality[i]
+
+        fake_highspy = MagicMock()
+        fake_highspy.HighsVarType.kInteger = "integer"
+        fake_highspy.Highs.return_value = fake_h
+        monkeypatch.setattr("runner.utils.solver.highspy", fake_highspy)
+
+        solver_result = MagicMock()
+        solver_result.solver_model = MagicMock()
+        solver_result.solution.primal = np.array([])
+
+        _, max_violation = get_milp_metrics("problem.lp", solver_result, "highs")
+        assert max_violation is None

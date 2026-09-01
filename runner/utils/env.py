@@ -1,16 +1,15 @@
 """Solver version/environment introspection: which solver package version is
-actually installed, and which per-solver-year conda env provides a given
-solver configuration for a given run.
+actually installed, and which per-solver-year env provides a given solver
+configuration for a given run.
 
-Isolating this here (separate from `solver.py`'s dispatch logic) is what
-makes migrating from conda to pixi envs (a later refactor step) a
-single-file change instead of a grep-and-replace across the codebase --
-public names here describe *what* they return (installed/registered
-versions) or accomplish (an env being ready to use), not *how* (conda
-today), so that migration only changes this file's implementation, not its
-callers.
+Each solver-year has its own pixi manifest under `runner/envs/<env>/` (its
+own `pixi.toml`/`pixi.lock`, not part of the root workspace) -- isolating
+them per directory, rather than as more environments in the root
+`pixi.toml`, keeps that file scoped to this project's own tooling and lets
+each solver-year resolve (and fail) independently of the others.
 """
 
+import json
 import subprocess
 from pathlib import Path
 
@@ -20,25 +19,26 @@ _ENVS_DIR = Path(__file__).resolve().parent.parent / "envs"
 
 
 def get_installed_solver_versions(
-    solver_configurations: list[str], env_name: str | None = None
+    solver_configurations: list[str], env_name: str
 ) -> dict[str, str | None]:
-    """Read each configuration's version as actually installed in a conda env.
+    """Read each configuration's version as actually installed in a pixi env.
 
-    Queries `conda list` directly, so this reflects the real, current state
-    of that specific conda environment -- as opposed to
-    `get_registered_solver_versions`, which reads the static `solvers.yaml`
-    registry of what's declared/expected for a given year.
+    Queries `pixi list` directly, so this reflects the real, current state
+    of that specific env -- as opposed to `get_registered_solver_versions`,
+    which reads the static `solvers.yaml` registry of what's declared/
+    expected for a given year.
 
     Parameters
     ----------
     solver_configurations : list[str]
         Solver configuration names to look up (e.g.
         `["highs-hipo", "cbc-default"]`); each is resolved to its underlying
-        solver via `config.resolve_solver_name`, then mapped to its
-        conda/pip package name via `config.get_conda_package_name` (e.g.
-        "highs-hipo" and "highs-default" both map to the "highspy" package).
-    env_name : str, optional
-        Conda environment to inspect. Defaults to the currently active one.
+        solver via `config.resolve_solver_name`, then mapped to its package
+        name via `config.get_package_name` (e.g. "highs-hipo" and
+        "highs-default" both map to the "highspy" package).
+    env_name : str
+        The env to inspect, i.e. the `runner/envs/<env_name>/` directory
+        holding its pixi manifest.
 
     Returns
     -------
@@ -50,39 +50,30 @@ def get_installed_solver_versions(
     Raises
     ------
     ValueError
-        If the `conda list` command itself fails.
+        If the `pixi list` command itself fails (e.g. the env was never
+        installed).
     """
     try:
-        # List packages in the conda environment
-        cmd = "conda list"
-        if env_name:
-            cmd += " -n " + env_name
-        cmd = ["bash", "-i", "-c", cmd]
-
-        # Run the conda list command
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-
-        # Parse the output into a dictionary of package versions
-        installed_packages = {}
-        for line in result.stdout.splitlines():
-            if not line.strip() or line.startswith(
-                "#"
-            ):  # Skip comments and empty lines
-                continue
-            parts = line.split()
-            if len(parts) >= 2:  # Ensure package name and version are present
-                installed_packages[parts[0]] = parts[1]
-
-        installed_versions = {}
-        for configuration in solver_configurations:
-            resolved_solver = config.resolve_solver_name(configuration)
-            package = config.get_conda_package_name(resolved_solver)
-            installed_versions[configuration] = installed_packages.get(package, None)
-
-        return installed_versions
-
+        result = subprocess.run(
+            ["pixi", "list", "--manifest-path", str(_ENVS_DIR / env_name), "--json"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
     except subprocess.CalledProcessError as e:
-        raise ValueError(f"Error executing conda command: {e.stderr or str(e)}")
+        raise ValueError(f"Error executing pixi list command: {e.stderr or str(e)}")
+
+    installed_packages = {
+        package["name"]: package["version"] for package in json.loads(result.stdout)
+    }
+
+    installed_versions = {}
+    for configuration in solver_configurations:
+        resolved_solver = config.resolve_solver_name(configuration)
+        package = config.get_package_name(resolved_solver)
+        installed_versions[configuration] = installed_packages.get(package, None)
+
+    return installed_versions
 
 
 def get_registered_solver_versions(
@@ -92,7 +83,7 @@ def get_registered_solver_versions(
 
     Reads the static `solvers.yaml` registry -- what's declared/expected for
     that year -- as opposed to `get_installed_solver_versions`, which
-    queries a conda environment for what's actually installed right now.
+    queries a real env for what's actually installed right now.
 
     Parameters
     ----------
@@ -105,7 +96,7 @@ def get_registered_solver_versions(
     year : str
         The release year to match against `solvers.yaml`'s per-version
         `year` entries, or the literal string `"tests"` to look up
-        `solvers.yaml`'s `tests` block instead (the shared conda env CI
+        `solvers.yaml`'s `tests` block instead (the shared env CI
         smoke-tests against, not a real release year).
 
     Returns
@@ -140,28 +131,17 @@ def get_registered_solver_versions(
     return registered_versions
 
 
-def _list_existing_envs() -> set[str]:
-    """List the names of every existing conda environment."""
-    result = subprocess.run(
-        ["conda", "env", "list"], capture_output=True, text=True, check=True
-    )
-    return {
-        line.split()[0]
-        for line in result.stdout.splitlines()
-        if line.strip() and not line.startswith("#")
-    }
-
-
 def ensure_solver_envs_installed(
     registered_versions: dict[str, dict[str, str | None]],
 ) -> None:
-    """Create any envs named in `registered_versions` that don't exist yet.
+    """Install any envs named in `registered_versions` that aren't ready yet.
 
-    Each env is built from `runner/envs/<env>-fixed.yaml` (pinned versions,
-    preferred for reproducibility) or `runner/envs/<env>.yaml` (loose specs)
-    if no fixed file exists. A failed or missing env is logged and skipped
-    rather than raised, so one bad env doesn't stop every other solver from
-    running.
+    Each env is its own pixi manifest at `runner/envs/<env>/pixi.toml`.
+    `pixi install` is idempotent and fast (a no-op check) when an env is
+    already installed and up to date with its lock file, so this always
+    invokes it rather than tracking installed state itself. A failed or
+    missing manifest is logged and skipped rather than raised, so one bad
+    env doesn't stop every other solver from running.
 
     Parameters
     ----------
@@ -170,29 +150,19 @@ def ensure_solver_envs_installed(
         values are used here.
     """
     env_names = {v["env"] for v in registered_versions.values() if v.get("env")}
-    if not env_names:
-        return
-
-    existing_envs = _list_existing_envs()
     for env_name in sorted(env_names):
-        if env_name in existing_envs:
-            print(f"Conda env {env_name} already exists; reusing")
+        env_dir = _ENVS_DIR / env_name
+        if not (env_dir / "pixi.toml").exists():
+            print(f"WARNING: No pixi manifest found for env {env_name}, skipping")
             continue
 
-        fixed_yaml = _ENVS_DIR / f"{env_name}-fixed.yaml"
-        loose_yaml = _ENVS_DIR / f"{env_name}.yaml"
-        env_yaml = fixed_yaml if fixed_yaml.exists() else loose_yaml
-        if not env_yaml.exists():
-            print(f"WARNING: No YAML found for env {env_name}, skipping")
-            continue
-
-        print(f"Creating conda env {env_name} from {env_yaml.name}...")
+        print(f"Ensuring env {env_name} is installed...")
         result = subprocess.run(
-            ["conda", "env", "create", "-q", "-f", str(env_yaml), "-y"],
+            ["pixi", "install", "--manifest-path", str(env_dir)],
             capture_output=True,
             text=True,
         )
         if result.returncode != 0:
             print(
-                f"WARNING: Failed to create env {env_name}, skipping\n{result.stderr}"
+                f"WARNING: Failed to install env {env_name}, skipping\n{result.stderr}"
             )

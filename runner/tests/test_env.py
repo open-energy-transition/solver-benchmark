@@ -2,6 +2,7 @@
 introspection.
 """
 
+import json
 import subprocess
 
 import pytest
@@ -15,27 +16,28 @@ from runner.utils.env import (
 
 class TestGetInstalledSolverVersions:
     def test_parses_package_versions(self, mocker):
-        stdout = (
-            "# packages in environment:\n"
-            "#\n"
-            "\n"
-            "highspy                  1.9.0                    pypi\n"
-            "coin-or-cbc               2.10.5                   h123\n"
+        stdout = json.dumps(
+            [
+                {"name": "highspy", "version": "1.9.0"},
+                {"name": "coin-or-cbc", "version": "2.10.5"},
+            ]
         )
         mocker.patch(
             "runner.utils.env.subprocess.run",
             return_value=subprocess.CompletedProcess(
-                args=["conda", "list"], returncode=0, stdout=stdout, stderr=""
+                args=["pixi", "list"], returncode=0, stdout=stdout, stderr=""
             ),
         )
         mocker.patch(
             "runner.utils.env.config.resolve_solver_name", side_effect=lambda name: name
         )
         mocker.patch(
-            "runner.utils.env.config.get_conda_package_name",
+            "runner.utils.env.config.get_package_name",
             side_effect={"highs": "highspy", "cbc": "coin-or-cbc"}.get,
         )
-        result = get_installed_solver_versions(["highs", "cbc", "unknown-solver"])
+        result = get_installed_solver_versions(
+            ["highs", "cbc", "unknown-solver"], env_name="benchmark-tests"
+        )
         assert result == {
             "highs": "1.9.0",
             "cbc": "2.10.5",
@@ -45,7 +47,7 @@ class TestGetInstalledSolverVersions:
     def test_resolves_configuration_name_before_package_lookup(self, mocker):
         # A configuration like "highs-hipo" shares its solver's package, so
         # the lookup must resolve through config.resolve_solver_name first.
-        stdout = "highspy                  1.9.0                    pypi\n"
+        stdout = json.dumps([{"name": "highspy", "version": "1.9.0"}])
         mocker.patch(
             "runner.utils.env.subprocess.run",
             return_value=subprocess.CompletedProcess(
@@ -57,36 +59,40 @@ class TestGetInstalledSolverVersions:
             return_value="highs",
         )
         mocker.patch(
-            "runner.utils.env.config.get_conda_package_name",
+            "runner.utils.env.config.get_package_name",
             return_value="highspy",
         )
-        result = get_installed_solver_versions(["highs-hipo"])
+        result = get_installed_solver_versions(
+            ["highs-hipo"], env_name="benchmark-highs-2025"
+        )
         assert result == {"highs-hipo": "1.9.0"}
 
-    def test_passes_env_name_to_conda_list(self, mocker):
+    def test_passes_env_name_as_manifest_path_to_pixi_list(self, mocker):
         run_mock = mocker.patch(
             "runner.utils.env.subprocess.run",
             return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout="", stderr=""
+                args=[], returncode=0, stdout="[]", stderr=""
             ),
         )
         mocker.patch(
             "runner.utils.env.config.resolve_solver_name", return_value="highs"
         )
-        mocker.patch(
-            "runner.utils.env.config.get_conda_package_name", return_value="highspy"
-        )
+        mocker.patch("runner.utils.env.config.get_package_name", return_value="highspy")
         get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
         called_cmd = run_mock.call_args[0][0]
-        assert called_cmd == ["bash", "-i", "-c", "conda list -n benchmark-highs-2025"]
+        assert called_cmd[:2] == ["pixi", "list"]
+        assert "--json" in called_cmd
+        assert called_cmd[called_cmd.index("--manifest-path") + 1].endswith(
+            "benchmark-highs-2025"
+        )
 
     def test_called_process_error_raises_value_error(self, mocker):
         mocker.patch(
             "runner.utils.env.subprocess.run",
-            side_effect=subprocess.CalledProcessError(1, "conda list", stderr="boom"),
+            side_effect=subprocess.CalledProcessError(1, "pixi list", stderr="boom"),
         )
         with pytest.raises(ValueError, match="boom"):
-            get_installed_solver_versions(["highs"])
+            get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
 
 
 class TestGetRegisteredSolverVersions:
@@ -160,116 +166,73 @@ class TestGetRegisteredSolverVersions:
 
 
 class TestEnsureSolverEnvsInstalled:
-    _EXISTING_ENVS_OUTPUT = (
-        "# conda environments:\n"
-        "#\n"
-        "base                  *  /opt/conda\n"
-        "benchmark-highs-2025     /opt/conda/envs/benchmark-highs-2025\n"
-    )
+    def _make_manifest(self, envs_dir, env_name):
+        env_dir = envs_dir / env_name
+        env_dir.mkdir()
+        (env_dir / "pixi.toml").write_text('[workspace]\nname = "x"\n')
+        return env_dir
 
     def test_no_envs_needed_is_a_noop(self, mocker):
         run_mock = mocker.patch("runner.utils.env.subprocess.run")
         ensure_solver_envs_installed({"highs": {"version": "1.12.0", "env": None}})
         run_mock.assert_not_called()
 
-    def test_existing_env_is_reused_not_recreated(self, mocker, capsys):
+    def test_installs_env_via_pixi(self, mocker, tmp_path):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        env_dir = self._make_manifest(tmp_path, "benchmark-highs-2025")
+
         run_mock = mocker.patch(
             "runner.utils.env.subprocess.run",
             return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout=self._EXISTING_ENVS_OUTPUT, stderr=""
+                args=[], returncode=0, stdout="", stderr=""
             ),
         )
         ensure_solver_envs_installed(
             {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
         )
-        # Only the "conda env list" call, no "conda env create"
         run_mock.assert_called_once()
-        assert "already exists; reusing" in capsys.readouterr().out
+        install_cmd = run_mock.call_args[0][0]
+        assert install_cmd[:2] == ["pixi", "install"]
+        assert install_cmd[install_cmd.index("--manifest-path") + 1] == str(env_dir)
 
-    def test_missing_env_is_created_from_fixed_yaml_when_present(
-        self, mocker, tmp_path
-    ):
+    def test_installs_every_distinct_env_once(self, mocker, tmp_path):
         mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
-        (tmp_path / "benchmark-highs-2025-fixed.yaml").write_text(
-            "name: benchmark-highs-2025"
-        )
-        (tmp_path / "benchmark-highs-2025.yaml").write_text(
-            "name: benchmark-highs-2025"
-        )
+        self._make_manifest(tmp_path, "benchmark-highs-2025")
+        self._make_manifest(tmp_path, "benchmark-scip-2025")
 
         run_mock = mocker.patch(
             "runner.utils.env.subprocess.run",
-            side_effect=[
-                subprocess.CompletedProcess(
-                    args=[], returncode=0, stdout="# no envs\n", stderr=""
-                ),
-                subprocess.CompletedProcess(
-                    args=[], returncode=0, stdout="", stderr=""
-                ),
-            ],
+            return_value=subprocess.CompletedProcess(
+                args=[], returncode=0, stdout="", stderr=""
+            ),
         )
+        ensure_solver_envs_installed(
+            {
+                "highs": {"version": "1.12.0", "env": "benchmark-highs-2025"},
+                "scip": {"version": "10.0.0", "env": "benchmark-scip-2025"},
+            }
+        )
+        assert run_mock.call_count == 2
+
+    def test_missing_manifest_is_skipped_with_warning(self, mocker, tmp_path, capsys):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        run_mock = mocker.patch("runner.utils.env.subprocess.run")
         ensure_solver_envs_installed(
             {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
         )
-        create_cmd = run_mock.call_args_list[1][0][0]
-        assert create_cmd[:3] == ["conda", "env", "create"]
-        assert create_cmd[create_cmd.index("-f") + 1].endswith("-fixed.yaml")
+        run_mock.assert_not_called()
+        assert "WARNING: No pixi manifest found" in capsys.readouterr().out
 
-    def test_missing_env_falls_back_to_loose_yaml(self, mocker, tmp_path):
+    def test_failed_install_is_logged_not_raised(self, mocker, tmp_path, capsys):
         mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
-        (tmp_path / "benchmark-highs-2025.yaml").write_text(
-            "name: benchmark-highs-2025"
-        )
-
-        run_mock = mocker.patch(
-            "runner.utils.env.subprocess.run",
-            side_effect=[
-                subprocess.CompletedProcess(
-                    args=[], returncode=0, stdout="# no envs\n", stderr=""
-                ),
-                subprocess.CompletedProcess(
-                    args=[], returncode=0, stdout="", stderr=""
-                ),
-            ],
-        )
-        ensure_solver_envs_installed(
-            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
-        )
-        create_cmd = run_mock.call_args_list[1][0][0]
-        assert create_cmd[create_cmd.index("-f") + 1].endswith(
-            "benchmark-highs-2025.yaml"
-        )
-
-    def test_missing_env_yaml_is_skipped_with_warning(self, mocker, tmp_path, capsys):
-        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        self._make_manifest(tmp_path, "benchmark-highs-2025")
         mocker.patch(
             "runner.utils.env.subprocess.run",
             return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout="# no envs\n", stderr=""
+                args=[], returncode=1, stdout="", stderr="boom"
             ),
         )
         ensure_solver_envs_installed(
             {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
         )
-        assert "WARNING: No YAML found" in capsys.readouterr().out
-
-    def test_failed_create_is_logged_not_raised(self, mocker, tmp_path, capsys):
-        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
-        (tmp_path / "benchmark-highs-2025.yaml").write_text(
-            "name: benchmark-highs-2025"
-        )
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            side_effect=[
-                subprocess.CompletedProcess(
-                    args=[], returncode=0, stdout="# no envs\n", stderr=""
-                ),
-                subprocess.CompletedProcess(
-                    args=[], returncode=1, stdout="", stderr="boom"
-                ),
-            ],
-        )
-        ensure_solver_envs_installed(
-            {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
-        )
-        assert "WARNING: Failed to create env" in capsys.readouterr().out
+        assert "WARNING: Failed to install env" in capsys.readouterr().out

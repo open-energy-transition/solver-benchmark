@@ -33,8 +33,8 @@ def run(
         None,
         "--solver-configurations",
         "-s",
-        help="Solver configuration to run (repeatable), e.g. `highs` or "
-        "`highs-hipo`. Defaults to solver_configurations.yaml's "
+        help="Solver configuration to run (repeatable), e.g. `highs-default` "
+        "or `highs-hipo`. Defaults to solver_configurations.yaml's "
         "default_configurations.",
     ),
     append: bool = typer.Option(
@@ -61,7 +61,7 @@ def run(
     """Run every problem in PROBLEMS_YAML_PATH against each solver
     configuration, once per given year.
 
-    For each year, creates any missing per-solver-year conda envs (see
+    For each year, installs any missing per-solver-year envs (see
     `runner/envs/`), then runs that year's registered and eligible solver
     configurations against every problem. A failing year is logged and
     skipped rather than aborting the remaining years.

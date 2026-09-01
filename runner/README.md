@@ -7,14 +7,14 @@ This folder contains the scripts used to benchmark various solvers.
 The orchestration tooling itself (this folder's own dependencies, e.g. `pyyaml`,
 `pandas`, `psutil`, `requests`) is managed by the `runner` [pixi](https://pixi.sh)
 environment defined in the root `pixi.toml` — install it with `pixi install -e runner`.
-This is separate from the per-solver-year conda environments described below, which
-each solver actually runs in.
+This is separate from the per-solver-year environments described below, which each
+solver actually runs in.
 
-Each solver-version pair has its own conda environment (e.g., `benchmark-highs-2025`, `benchmark-scip-2025`), enabling running solvers independently.
+Each solver-version pair has its own pixi environment (e.g., `benchmark-highs-2025`, `benchmark-scip-2025`), enabling running solvers independently.
 
 ### `solvers.yaml` — Solver Registry
 
-The source of truth for mapping solver names to version, release year, and conda env is `runner/config/solvers.yaml`
+The source of truth for mapping solver names to version, release year, and env is `runner/config/solvers.yaml`
 
 Example:
 ```yaml
@@ -25,18 +25,13 @@ solvers:
       env: benchmark-highs-2025
 ```
 
-### Per-solver Environment Files
+### Per-solver Environment Manifests
 
-Environment YAML files live in `runner/envs/`:
-
-- **Loose YAMLs** (`benchmark-{solver}-{year}.yaml`) — flexible dependency specs for development
-- **Fixed YAMLs** (`benchmark-{solver}-{year}-fixed.yaml`) — pinned versions for reproducibility
-
-To regenerate fixed YAMLs from loose ones on native Linux: `./runner/envs/generate_fixed_envs.sh`. For other platforms, see [Generating Fixed Environment Files](#generating-fixed-environment-files).
+Each solver-version pair has its own **self-contained pixi manifest** at `runner/envs/<env>/pixi.toml`, with its own `pixi.lock` (not part of the root workspace). Unlike the root `pixi.toml`, these aren't installed up front -- `runner.benchmark` installs whichever ones a given run actually needs, on demand (see [Updating Solver Versions](SOLVERS.md#updating-solver-versions) for how to add or change one).
 
 ## Running runner.benchmark
 
-`runner/benchmark.py` is a Typer CLI that takes a YAML file of problems and runs each requested solver configuration against it, for one or more solver-version years. It creates any missing per-solver-year conda envs automatically (see `runner/envs/`), so no manual env setup is needed first. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
+`runner/benchmark.py` is a Typer CLI that takes a YAML file of problems and runs each requested solver configuration against it, for one or more solver-version years. It installs any missing per-solver-year envs automatically (see `runner/envs/`), so no manual env setup is needed first. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
 
 ```shell
 $ pixi run -e runner python -m runner.benchmark --help
@@ -95,14 +90,14 @@ docker run --rm \
   solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
-### Caching conda environments
+### Caching pixi environments
 
-Per-solver-year conda environments are created at runtime. To avoid recreating them on every run, mount a named Docker volume:
+Per-solver-year pixi environments are installed at runtime. To avoid recreating them on every run, mount a named Docker volume over `runner/envs/`:
 
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  -v solver-conda-envs:/opt/conda/envs \
+  -v solver-pixi-envs:/solver-benchmark/runner/envs \
   solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
@@ -113,7 +108,7 @@ Gurobi requires a license file. Mount it into the container:
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  -v solver-conda-envs:/opt/conda/envs \
+  -v solver-pixi-envs:/solver-benchmark/runner/envs \
   -v $HOME/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
   -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
   solver-benchmark-runner --solver-configurations gurobi-default --years 2025 results/metadata.yaml
@@ -141,25 +136,13 @@ python -m runner.utils.solver <solver_configuration> <input_file> <solver_versio
 
 ```bash
 # Test HiGHS (from the repo root)
-conda activate benchmark-highs-2024
-python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+pixi run --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
 
 # Test SCIP
-conda activate benchmark-scip-2024
-python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+pixi run --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
 ```
 
 **Output:**
 - Solution files are saved to `runner/solutions/`
 - Detailed logs are saved to `runner/logs/`
 - JSON metrics are printed to stdout (runtime, status, objective value, etc.)
-
-## Generating Fixed Environment Files
-
-Fixed YAMLs pin exact dependency versions for reproducibility. To regenerate them from loose YAMLs, use native Linux or Docker:
-
-On native Linux you can also run the script directly: `./runner/envs/generate_fixed_envs.sh`
-
-```bash
-docker run -v $(pwd):/work -w /work continuumio/miniconda3 bash runner/envs/generate_fixed_envs.sh
-```

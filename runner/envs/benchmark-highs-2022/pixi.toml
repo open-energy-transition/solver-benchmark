@@ -1,0 +1,18 @@
+# Auto-translated from the old runner/envs/benchmark-highs-2022.yaml (conda)
+# during the conda -> pixi solver-env migration (issue #478 PR5).
+[workspace]
+name = "benchmark-highs-2022"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+# highspy==1.5.0.dev0 only ships manylinux wheels through cp310 (cp311 only
+# has macOS wheels) -- the upper bound is load-bearing here, not cosmetic.
+python = ">=3.9,<3.11"
+pip = "*"
+psutil = ">=5.9"
+requests = ">=2.32"
+
+[pypi-dependencies]
+highspy = "==1.5.0.dev0"
+linopy = { git = "https://github.com/PyPSA/linopy", branch = "sid/old-solver-support" }  # old-solver-support branch until it is merged and released

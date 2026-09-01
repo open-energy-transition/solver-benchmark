@@ -161,7 +161,7 @@ def create_benchmark_campaign(
     if any(bench_dir.glob("*.yaml")):
         print(f"WARNING: existing yaml files found in {bench_dir}")
 
-    # Add to it the allocated benchmarks
+    # Add to it the allocated problems
     for idx, yaml_data in enumerate(vm_yamls):
         with open(bench_dir / f"{vm_prefix}-{idx:02d}.yaml", "w") as f:
             yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False)

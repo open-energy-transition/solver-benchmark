@@ -212,8 +212,8 @@ def get_default_configurations(config: dict[str, Any] | None = None) -> list[str
     list[str]
         Names of entries in ``solver_configurations.yaml``'s ``configurations``
         (e.g. ``["highs-default", "scip-default", ...]``), not necessarily raw
-        solver package names -- the CLI's `--solvers` flag takes
-        configurations, not solvers.
+        solver package names -- the CLI's `--solver-configurations` flag
+        takes configurations, not solvers.
     """
     config = config if config is not None else load_solver_configurations()
     return list(config.get("default_configurations", []))
@@ -248,10 +248,8 @@ def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
     return sorted(years)
 
 
-def get_conda_package_name(
-    solver_package: str, config: dict[str, Any] | None = None
-) -> str:
-    """Return the conda/pip package name that provides a solver.
+def get_package_name(solver_package: str, config: dict[str, Any] | None = None) -> str:
+    """Return the PyPI package name that provides a solver.
 
     Parameters
     ----------
