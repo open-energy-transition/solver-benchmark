@@ -159,7 +159,7 @@ class TestRunBenchmark:
             num_seeds=3,
         )
         seeds = [call.kwargs["seed"] for call in run_solver_mock.call_args_list]
-        assert seeds == [0, 1, 2]
+        assert seeds == [1, 2, 3]
 
     def test_single_seed_passes_no_seed_override(self, problems_yaml, mocker):
         # Backward compatibility: the default `num_seeds=1` must not

@@ -48,7 +48,7 @@ once per given year.
 - `-a, --append` - Append to the results CSVs instead of overwriting them for the first year
 - `-y, --years YEAR` - Solver-version year to run (repeatable), or `tests` for the shared CI smoke-test env. Defaults to every year with a registered solver version
 - `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
-- `-n, --num-seeds N` - Number of seeds to try per (problem, solver configuration) pair. When greater than 1, each repetition uses a different seed (0, 1, 2, ...) instead of the configuration's own fixed seed, to gauge the solver's sensitivity to it. Default: 1 (no repetition, the configuration's own fixed seed applies)
+- `-n, --num-seeds N` - Number of seeds to try per (problem, solver configuration) pair. When greater than 1, each repetition uses a different seed (1, 2, 3, ...) instead of the configuration's own fixed seed, to gauge the solver's sensitivity to it. Default: 1 (no repetition, the configuration's own fixed seed applies)
 - `-r, --ref-bench-interval SECONDS` - Run a reference benchmark at most once every N seconds. 0 disables it
 - `-u, --run-id RUN_ID` - Identifier shared by every row from this run. Auto-generated if not given
 - `--help` - Show this message and exit

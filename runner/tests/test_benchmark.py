@@ -105,7 +105,7 @@ class TestBenchmarkCli:
         )
         assert result.exit_code == 0, result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
-        assert sorted(results["Seed"]) == [0, 1, 2]
+        assert sorted(results["Seed"]) == [1, 2, 3]
 
     def test_default_num_seeds_leaves_seed_column_empty(self, problems_yaml, tmp_path):
         result = runner_cli.invoke(

@@ -50,7 +50,7 @@ def run(
         "-n",
         help="Number of seeds to try per (problem, solver configuration) "
         "pair. When greater than 1, each repetition uses a different seed "
-        "(0, 1, 2, ...) instead of the configuration's own fixed seed, to "
+        "(1, 2, 3, ...) instead of the configuration's own fixed seed, to "
         "gauge the solver's sensitivity to it (see "
         "`runner/config/solvers.yaml`'s `seed_options`). Default: 1 (the "
         "configuration's own fixed seed, no repetition).",

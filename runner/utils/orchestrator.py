@@ -99,9 +99,11 @@ def run_benchmark(
         The solver-version year to run, e.g. `"2025"`.
     num_seeds : int, optional
         Number of seeds to try per (problem, solver configuration) pair.
-        When greater than 1, each repetition `i` overrides the
-        configuration's own fixed seed with `i` (see `execution.run_solver`'s
-        `seed` parameter), so repeated runs sample the solver's actual
+        When greater than 1, each repetition overrides the configuration's
+        own fixed seed with 1, 2, 3, ... (see `execution.run_solver`'s
+        `seed` parameter) -- starting at 1, not 0, since CBC's own seed
+        option treats 0 as "use the time of day" rather than an actual
+        fixed seed -- so repeated runs sample the solver's actual
         sensitivity to its seed rather than just re-measuring one
         deterministic solve. A timeout or error on one repetition skips the
         rest. Statistics are still recorded when this is 1 (mean == the
@@ -198,7 +200,13 @@ def run_benchmark(
             memory_usages = []
             timestamp = ""
 
-            for seed_index in range(num_seeds):
+            # Seeds start at 1, not 0: CBC's own seed option (randomCbcSeed)
+            # treats 0 as a sentinel meaning "use the time of day" instead of
+            # an actual fixed seed (see solver_configurations.yaml's own
+            # comment on cbc-default), which would make that repetition
+            # silently non-deterministic. No other solver here gives 0 any
+            # special meaning, so starting at 1 is safe for all of them.
+            for seed_index in range(1, num_seeds + 1):
                 # Vary the seed across repetitions so they sample the
                 # solver's actual sensitivity to it.
                 seed = seed_index if num_seeds > 1 else None
