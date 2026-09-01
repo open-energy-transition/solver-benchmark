@@ -11,6 +11,7 @@ from runner.utils.config import (
     get_default_configurations,
     get_license_env_vars,
     get_package_name,
+    get_seed_option,
     get_solver_configuration,
     get_solver_options,
     is_solver_eligible,
@@ -129,6 +130,16 @@ class TestGetLicenseEnvVars:
     def test_solver_with_no_entry_returns_empty_list(self):
         config = {"license_env_vars": {}}
         assert get_license_env_vars("highs", config) == []
+
+
+class TestGetSeedOption:
+    def test_looks_up_seed_option(self):
+        config = {"seed_options": {"highs": "random_seed"}}
+        assert get_seed_option("highs", config) == "random_seed"
+
+    def test_solver_with_no_entry_returns_none(self):
+        config = {"seed_options": {}}
+        assert get_seed_option("highs", config) is None
 
 
 class TestConditionMatches:

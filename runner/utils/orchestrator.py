@@ -98,9 +98,14 @@ def run_benchmark(
     year : str, optional
         The solver-version year to run, e.g. `"2025"`.
     iterations : int, optional
-        Repetitions per (problem, solver configuration) pair. A timeout or
+        Repetitions per (problem, solver configuration) pair. When greater
+        than 1, each iteration `i` overrides the configuration's own fixed
+        seed with `i` (see `execution.run_solver`'s `seed` parameter), so
+        repeated runs sample the solver's actual sensitivity to its seed
+        rather than just re-measuring one deterministic solve. A timeout or
         error on one iteration skips the rest. Statistics are still recorded
-        when this is 1 (mean == the single value, stddev == 0).
+        when this is 1 (mean == the single value, stddev == 0), and the seed
+        is left unset (the configuration's own fixed seed applies).
     reference_interval : int, optional
         Minimum seconds between reference-benchmark runs (see
         `execution.run_reference_highs_binary`), interleaved between real
@@ -192,9 +197,15 @@ def run_benchmark(
             timestamp = ""
 
             for i in range(iterations):
+                # Vary the seed across iterations so repeated runs sample the
+                # solver's actual sensitivity to it.
+                seed = i if iterations > 1 else None
+
                 print(
                     f"Running solver {solver_configuration} (version {solver_version}) "
-                    f"on {problem['path']} ({i})...",
+                    f"on {problem['path']} ({i})"
+                    + (f" with seed {seed}" if seed is not None else "")
+                    + "...",
                     flush=True,
                 )
 
@@ -207,6 +218,7 @@ def run_benchmark(
                     timeout,
                     solver_version,
                     env_name=env_name,
+                    seed=seed,
                 )
 
                 # NOTE: results.csv_record expects the kwarg "solver" (its CSV
@@ -215,6 +227,7 @@ def run_benchmark(
                 metrics["solver"] = solver_configuration
                 metrics["solver_version"] = solver_version
                 metrics["solver_release_year"] = year
+                metrics["seed"] = seed
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])

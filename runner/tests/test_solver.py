@@ -52,6 +52,29 @@ class TestGetSolver:
         with pytest.raises(ValueError):
             get_solver("not-a-solver")
 
+    def test_seed_overrides_configurations_own_seed(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", seed=42)
+        assert captured["options"]["random_seed"] == 42
+        # Other options are untouched
+        assert captured["options"]["mip_rel_gap"] == pytest.approx(1e-4)
+
+    def test_no_seed_keeps_configurations_own_seed(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", seed=None)
+        assert captured["options"]["random_seed"] == 4
+
+    def test_seed_ignored_with_warning_when_no_seed_options_entry(
+        self, monkeypatch, capsys
+    ):
+        monkeypatch.setattr(
+            "runner.utils.solver.config.get_seed_option", lambda *_a, **_k: None
+        )
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", seed=42)
+        assert captured["options"]["random_seed"] == 4
+        assert "no seed_options entry" in capsys.readouterr().err
+
 
 class TestIsMipProblem:
     def test_none_model_is_false(self):

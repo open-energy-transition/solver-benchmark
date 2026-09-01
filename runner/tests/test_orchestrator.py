@@ -147,6 +147,31 @@ class TestRunBenchmark:
         )
         assert summary.iloc[0]["Runtime StdDev (s)"] == 0.0
 
+    def test_iterations_greater_than_one_varies_seed(self, problems_yaml, mocker):
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            iterations=3,
+        )
+        seeds = [call.kwargs["seed"] for call in run_solver_mock.call_args_list]
+        assert seeds == [0, 1, 2]
+
+    def test_single_iteration_passes_no_seed(self, problems_yaml, mocker):
+        # Backward compatibility: the default `iterations=1` must not
+        # override the configuration's own fixed seed.
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+        )
+        assert run_solver_mock.call_args.kwargs["seed"] is None
+
     def test_error_status_stops_further_iterations(
         self, problems_yaml, tmp_path, mocker
     ):
