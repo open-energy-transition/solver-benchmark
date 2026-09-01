@@ -1,0 +1,14 @@
+name: benchmark-xpress-2025
+channels:
+- conda-forge
+- fico-xpress
+- nodefaults
+dependencies:
+- python>=3.12
+- pip
+- psutil>=5.9
+- requests>=2.32
+- linopy>=0.5.5
+# Last version released in 2025 per PyPI release history (fico-xpress conda
+# builds track the same upstream product version as the PyPI package)
+- xpress==9.6.2  # from fico-xpress channel
