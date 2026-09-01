@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
 import streamlit_shadcn_ui as ui
-
 from pocs.streamlit.components.compare_chart import create_comparison_chart
 from pocs.streamlit.components.filter import (
     display_filter_status,
