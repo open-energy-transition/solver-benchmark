@@ -320,4 +320,4 @@ You can quickly try running your own problem locally on our supported set of sol
 
 ### Running other solvers
 
-To run either our problems, or your own (see the previous section), on a solver that we do not yet support, you need to add it to its per-solver-year pixi manifest(s) under `runner/envs/` (see [Updating Solver Versions](../runner/SOLVERS.md#updating-solver-versions)), add a solver adapter module under `runner/utils/solvers/` (see any existing module there for the template), and add its tuning options to `runner/config/solver_configurations.yaml`. Please reach out to us (or open an issue) if you would like more details, or any help with this.
+To run either our problems, or your own (see the previous section), on a solver that we do not yet support, see [Adding a New Solver](../runner/SOLVERS.md#adding-a-new-solver). Please reach out to us (or open an issue) if you would like more details, or any help with this.
