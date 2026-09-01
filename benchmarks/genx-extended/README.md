@@ -5,8 +5,8 @@
     - `juliaup add 1.9` installs Julia 1.9
     - `juliaup default 1.9` sets Julia 1.9 as default version
 - Clone the [GenX](https://github.com/GenXProject/GenX.jl) repository
-- Copy the [`case_for_oet`](N.A.) benchmark folder in /GenX.jl
-- Subsitute `GenX.jl/case_for_oet/settings/genx_settings.yml` with any of the .yml at [solver-benchmark](https://github.com/open-energy-transition/solver-benchmark/tree/daniele/genx-extended-benchmarks/benchmarks/genx-extended) and rename it to `genx_settings.yml`
+- Copy the `case_for_oet` benchmark folder in /GenX.jl
+- Subsitute `GenX.jl/case_for_oet/settings/genx_settings.yml` with any of the `.yml` files in [`benchmarks/genx-extended/`](.) and rename it to `genx_settings.yml`
 - Run each case in the GenX.jl Julia project (follow instructions [here](https://genxproject.github.io/GenX.jl/dev/Getting_Started/examples_casestudies/)) using the command `include("/path-to-GenX/Run.jl")`
 
 The abovementioned workflow takes advantage of the content of the `GenX.jl/case_for_oet/TDR_Results` folder for inputs clustered according to a time resolution of 168 h (as reported in `GenX.jl/case_for_oet/settings/time_domain_reduction_settings.yml`)

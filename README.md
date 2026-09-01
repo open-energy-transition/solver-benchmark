@@ -167,7 +167,8 @@ Python environments for this repo (the `runner/` CLI, `notebooks/`, `benchmarks/
 scripts, and dev tooling) are managed by [pixi](https://pixi.sh) from the root
 `pixi.toml`. Install `pixi` (see the [installation instructions](https://pixi.sh/latest/installation/)),
 then run `pixi install --all` to set up all environments, or `pixi install -e <env>`
-for just one of `runner`, `notebooks`, `benchmarks`, or `dev`.
+for just one of `runner`, `notebooks`, `benchmarks`, or `dev`. See [notebooks/README.md](notebooks/README.md)
+for notebook-specific tips (running Jupyter, downloading results from GCS).
 
 We use the [ruff](https://docs.astral.sh/ruff) code linter and formatter, and GitHub Actions runs various pre-commit checks to ensure code and files are clean.
 

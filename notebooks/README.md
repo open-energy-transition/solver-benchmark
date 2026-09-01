@@ -1,16 +1,8 @@
 # Instructions for running the notebooks
 
-To run the notebooks in this directory, you need to create an environment with the required dependencies. The environments for this repo (including this one) are managed by [pixi](https://pixi.sh) from the root `pixi.toml`.
+The notebooks in this directory run in the `notebooks` [pixi](https://pixi.sh) environment (see the root [README's Development section](../README.md#development) for installing `pixi` and setting up environments in general).
 
-1. First, make sure you have `pixi` installed (see [pixi installation instructions](https://pixi.sh/latest/installation/)).
-
-2. From the repo root, install the `notebooks` environment.
-
-```bash
-pixi install -e notebooks
-```
-
-3. Run Jupyter (or any other command) inside the environment.
+From the repo root, run Jupyter inside the environment:
 
 ```bash
 pixi run -e notebooks jupyter lab
