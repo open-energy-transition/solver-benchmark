@@ -143,7 +143,7 @@ Each YAML file defines a benchmark with specific configuration:
 
 - `machine-type`: GCP machine type to use
 - `years`: Solver-version years to run
-- `solver_configuration`: Space-separated solver configurations to run (optional; defaults to `benchmark_all.sh`'s own defaults)
+- `solver_configuration`: Space-separated solver configurations to run (optional; defaults to `runner.benchmark`'s own defaults)
 - `problems`: Map of problem ID to `{Problem class, Size, URL}` (or `Path` instead of `URL` for a local file) -- the same flat schema as `results/metadata.yaml`
 
 ## Troubleshooting

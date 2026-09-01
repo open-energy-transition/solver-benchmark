@@ -26,3 +26,7 @@ Don't worry if you're not familiar with git or GitHub! Please write to us, or op
    ```
 
 The unified `results/metadata.yaml` contains all details of each problem, including the download link, and is used by the benchmark runner (below).
+
+### Running Benchmark Campaigns
+
+Once problems are in `results/metadata.yaml`, see [Benchmark Campaign Creation](CAMPAIGNS.md) for generating cloud or local campaigns to run them at scale.
