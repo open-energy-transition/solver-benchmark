@@ -12,8 +12,9 @@ stats, optional descriptive/taxonomy fields) is passed through unchanged.
 from __future__ import annotations
 
 import argparse
+from collections.abc import MutableMapping
 from pathlib import Path
-from typing import Any, MutableMapping, Optional
+from typing import Any
 
 import yaml
 
@@ -183,7 +184,7 @@ def write_merged_metadata(unified_metadata: YamlMap, results_file: Path) -> None
         )
 
 
-def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """
     Parse CLI arguments.
 
@@ -208,7 +209,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """
     CLI entry point: merge all benchmark metadata files into results/metadata.yaml.
 
