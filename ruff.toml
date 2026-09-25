@@ -29,6 +29,7 @@ select = [
     "PERF", # perflint
     "EXE", # flake8-executable
     "PLW", # pylint warnings
+    "PT", # flake8-pytest-style
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
