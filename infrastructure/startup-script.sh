@@ -197,7 +197,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         SEEDS_CSV=/solver-benchmark/results/benchmark_results_seeds.csv
         if [ -f "${SEEDS_CSV}" ]; then
             SEEDS_FILENAME="${INSTANCE_NAME}-result-seeds.csv"
-            if gsutil cp "${SEEDS_CSV}" "gs://${GCS_BUCKET_NAME}/results_seeds/${RUN_ID}/${SEEDS_FILENAME}"; then
+            if gcloud storage cp "${SEEDS_CSV}" "gs://${GCS_BUCKET_NAME}/results_seeds/${RUN_ID}/${SEEDS_FILENAME}"; then
                 echo "Per-seed results CSV upload successfully completed at $(date)"
             else
                 echo "Per-seed results CSV upload failed at $(date)"
