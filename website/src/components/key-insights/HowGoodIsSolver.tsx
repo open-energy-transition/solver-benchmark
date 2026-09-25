@@ -92,9 +92,9 @@ const HowGoodIsSolver = () => {
           The next plot shows the concrete performance of each solver on a few
           representative realistic problems from a few modelling frameworks in
           our benchmark problem set. Hover over the problem name in order to see
-          more details about the problem's features and why we consider it as
-          representative for that modelling framework. Solvers that timed out or
-          errored on a particular problem are indicated by red text above the
+          more details about the problem&apos;s features and why we consider it
+          as representative for that modelling framework. Solvers that timed out
+          or errored on a particular problem are indicated by red text above the
           corresponding bar.
         </p>
         <div className="my-4">
