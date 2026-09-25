@@ -55,13 +55,11 @@ const RuntimeOfFastestSolver = ({
   });
 
   const successfulResults = benchmarkResults.filter((result) => {
-    return problemList.includes(`${result.benchmark}-${result.size}`);
+    return problemList.includes(result.problemId);
   });
 
   const fastestRuntimeByProblem = Array.from(
-    new Set(
-      successfulResults.map((result) => `${result.benchmark}-${result.size}`),
-    ),
+    new Set(successfulResults.map((result) => result.problemId)),
   ).reduce<
     Record<
       string,
@@ -87,7 +85,7 @@ const RuntimeOfFastestSolver = ({
   }, {});
 
   successfulResults.forEach((result) => {
-    const key = `${result.benchmark}-${result.size}`;
+    const key = result.problemId;
     if (fastestRuntimeByProblem[key].runtime > result.runtime) {
       fastestRuntimeByProblem[key].runtime = result.runtime;
       fastestRuntimeByProblem[key].solver = result.solver;
@@ -126,9 +124,7 @@ const RuntimeOfFastestSolver = ({
 
   const getXAxisTooltipFormat = (d: string) => {
     const benchmarkData = fastestRuntimeByProblem[d];
-    const metaDataEntry = benchmarkData
-      ? metaData[`${benchmarkData.benchmark}-${benchmarkData.size}`]
-      : undefined;
+    const metaDataEntry = benchmarkData ? metaData[d] : undefined;
 
     if (!metaDataEntry) {
       return `Problem: ${d}<br/>No metadata available`;

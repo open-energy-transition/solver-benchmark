@@ -83,13 +83,13 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
         benchmarkLatestResults
           .filter((result) => result.status === "ok")
           .forEach((result) => {
-            const key = `${result.benchmark}-${result.size}`;
+            const key = result.problemId;
             problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           });
 
         // Filter results where all solvers succeeded
         return benchmarkLatestResults.filter((result) => {
-          const key = `${result.benchmark}-${result.size}`;
+          const key = result.problemId;
           return (
             result.status === "ok" &&
             problemSuccessMap.get(key) === availableSolvers.length
@@ -190,7 +190,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   };
 
   const uniqueProblemCount = new Set(
-    benchmarkResults.map((result) => `${result.benchmark}-${result.size}`),
+    benchmarkResults.map((result) => result.problemId),
   ).size;
 
   const getSolvedProblemsLabel = (
@@ -445,7 +445,7 @@ const ResultsSection = ({ timeout }: ResultsSectionProps) => {
   const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults);
 
   const uniqueLatestProblemCount = new Set(
-    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
+    latestBenchmarkResult.map((result) => result.problemId),
   ).size;
 
   const renderedTableData = (data: string | number | object) => {

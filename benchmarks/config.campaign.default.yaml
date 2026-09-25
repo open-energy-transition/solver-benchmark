@@ -23,62 +23,41 @@ campaign: test-pypsa
 target: local
 
 selection:
-  # Benchmark selection mode.
+  # Problem selection mode.
   #
   # Exactly one of the following should be active after CLI/config merge:
   # - all
-  # - benchmark
-  # - instance
+  # - problem
 
-  # Select all benchmark instances in results/metadata.yaml.
+  # Select all problems in results/metadata.yaml.
   #
   # Accepted values:
   # true / false
   all: false
 
-  # Select all instances from one or more benchmarks.
+  # Select one or more problems by their exact results/metadata.yaml ID.
   #
   # Accepted values:
-  # list of benchmark names, or null
+  # list of problem IDs, or null
   #
   # Examples:
-  # - pypsa-de-elec
-  # - IESA-Opt-NL
-  benchmark:
-    - pypsa-de-elec
+  # - pypsa-de-elec-2-1h
+  # - IESA-Opt-NL-5-3h
+  problem:
+    - pypsa-de-elec-2-1h
 
-  # Optional filter on benchmark size classes.
+  # Optional filter on the metadata Size field.
   #
   # Accepted values:
   # list containing any of S, M, L, or null
   size: null
 
-  # Optional filter on benchmark instance names.
-  #
-  # Accepted values:
-  # list of instance names, or null
-  #
-  # Examples:
-  # - 2-1h
-  # - 10-168h
-  name:
-    - 2-1h
-
-  # Select specific benchmark instances.
-  #
-  # Accepted values:
-  # list of "<benchmark-name>:<instance-name>" strings, or null
-  #
-  # Example:
-  # - pypsa-de-elec:2-1h
-  instance: null
-
-  # Include benchmark instances marked with "Skip because" in the metadata.
+  # Include problems marked with "Skip because" in the metadata.
   #
   # Accepted values:
   # true / false
   #
-  # If false, skipped benchmark instances are excluded automatically.
+  # If false, skipped problems are excluded automatically.
   do_not_skip: false
 
 allocation:
@@ -88,12 +67,12 @@ allocation:
   # positive integer, or null
   #
   # If null:
-  # one VM is created per selected benchmark instance.
+  # one VM is created per selected problem.
   #
   # Ignored when target is local.
   num_vms: null
 
-  # Metadata column used to balance benchmark instances across VMs.
+  # Metadata column used to balance problems across VMs.
   #
   # Accepted values:
   # any numeric metadata column.
@@ -138,26 +117,26 @@ allocation:
   # Solver environment years to benchmark.
   #
   # Accepted values:
-  # list of years with matching benchmark-<year> conda environments.
+  # list of years registered in runner/config/solvers.yaml.
   #
   # Example:
   # - 2025
   years:
     - 2025
 
-  # Solvers to benchmark.
+  # Solver configurations to benchmark.
   #
   # Accepted values depend on the selected benchmark environment.
   #
   # Typical values (currently included in the website):
-  # - gurobi
-  # - highs
-  # - scip
-  # - cbc
-  # - glpk
-  solver:
-    - gurobi
-    - highs
-    - scip
-    - cbc
-    - glpk
+  # - gurobi-default
+  # - highs-default
+  # - scip-default
+  # - cbc-default
+  # - glpk-default
+  solver_configurations:
+    - gurobi-default
+    - highs-default
+    - scip-default
+    - cbc-default
+    - glpk-default

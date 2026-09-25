@@ -47,7 +47,6 @@ if [[ $# -ne 1 ]]; then
     exit 1
 fi
 
-BENCHMARK_SCRIPT="./runner/run_benchmarks.py"
 BENCHMARKS_FILE="$1"
 
 echo "Starting benchmark run with ID: $run_id"
@@ -68,7 +67,7 @@ for year in "${years[@]}"; do
     else
         solver_envs=$(python3 -c "
 import yaml
-config = yaml.safe_load(open('./runner/solvers.yaml'))
+config = yaml.safe_load(open('./runner/config/solvers.yaml'))
 for solver, versions in config['solvers'].items():
     for ver, entry in versions.items():
         if str(entry['year']) == '$year':
@@ -112,15 +111,15 @@ for solver, versions in config['solvers'].items():
         solver_args="--solvers ${solvers_override}"
         echo "Using solver override: ${solvers_override}"
     else
-        solver_args="--solvers gurobi highs-hipo highs-ipm highs scip cbc glpk"
+        solver_args="--solvers gurobi-default highs-hipo highs-ipm highs-default scip-default cbc-default glpk-default"
     fi
 
     # Overwrite results for the first year, append thereafter
     if [ "$idx" -eq 0 ]; then
         # we're running the script with -e, ignoring error with <command> || true so that execution continues if the script fails
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
+        python -m runner.run_benchmarks "$BENCHMARKS_FILE" "$year" $append_results --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
     else
-        python "$BENCHMARK_SCRIPT" "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
+        python -m runner.run_benchmarks "$BENCHMARKS_FILE" "$year" --append --ref_bench_interval "$reference_interval" --run_id "$run_id" $solver_args || true
     fi
     conda deactivate
 

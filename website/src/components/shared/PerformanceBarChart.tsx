@@ -10,6 +10,7 @@ import { getSolverLabel } from "@/utils/solvers";
 import DirectionalIndicator from "./DirectionalIndicator";
 
 type PerformanceData = {
+  problemId: string;
   benchmark: string;
   factor: number;
   solver: string;
@@ -115,7 +116,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
     const xScale = d3
       .scaleBand()
-      .domain(data.map((d) => `${d.benchmark}-${d.size}`))
+      .domain(data.map((d) => d.problemId))
       .range([margin.left, width - margin.right])
       .padding(0.5);
 
@@ -288,7 +289,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("class", "bar")
       .style("cursor", "pointer")
       .attr("x", (d) => {
-        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0;
+        const groupPosition = xScale(d.problemId) || 0;
         const barPosition = xSubScale(d.solver) || 0;
         const offset = (xSubScale.bandwidth() - barWidth) / 2;
         return groupPosition + barPosition + offset;
@@ -342,7 +343,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
         tooltip
           .html(
-            `Problem: ${d.benchmark}-${d.size}<br/>` +
+            `Problem: ${d.problemId}<br/>` +
               `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
                 d.status
               })<br/>` +
@@ -377,7 +378,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("class", "failure-indicator")
       .style("cursor", "pointer")
       .attr("x", (d) => {
-        const groupPosition = xScale(`${d.benchmark}-${d.size}`) || 0;
+        const groupPosition = xScale(d.problemId) || 0;
         const barPosition = xSubScale(d.solver) || 0;
         const offset = (xSubScale.bandwidth() - barWidth) / 2;
         return groupPosition + barPosition + offset + barWidth / 2;
@@ -421,7 +422,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
 
         tooltip
           .html(
-            `Problem: ${d.benchmark}-${d.size}<br/>` +
+            `Problem: ${d.problemId}<br/>` +
               `${d.solver}: ${formatDecimal({ value: d.runtime })}s (${
                 d.status
               })<br/>` +
@@ -457,8 +458,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .style("cursor", "pointer")
       .each(function (d) {
         const element = d3.select(this);
-        const x =
-          (xScale(`${d.benchmark}-${d.size}`) || 0) + xScale.bandwidth() / 2;
+        const x = (xScale(d.problemId) || 0) + xScale.bandwidth() / 2;
         const y = yScaleRuntime(d.runtime);
 
         if (d.status !== "ok") {
@@ -490,7 +490,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
             tooltip.transition().duration(200).style("opacity", 1);
             tooltip
               .html(
-                `Problem: ${d.benchmark}-${d.size}<br/>` +
+                `Problem: ${d.problemId}<br/>` +
                   `${baseSolver}: ${formatDecimal({ value: d.runtime })}s (${
                     d.status
                   })<br/>`,
