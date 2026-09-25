@@ -100,7 +100,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
     Parameters
     ----------
     url : str
-        Where to download from. A `gs://` URL is fetched with `gsutil`
+        Where to download from. A `gs://` URL is fetched with `gcloud storage`
         (requires authentication); anything else is fetched over HTTP(S)
         with `requests`.
     dest_path : Path
@@ -128,9 +128,9 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
         return
 
     if url.startswith("gs://"):
-        # GCS file, so download using gsutil
-        print(f"Downloading {url} to {dest_path} using gsutil...", end="")
-        cmd = ["gsutil", "cp", url, dest_path]
+        # GCS file, so download using gcloud storage
+        print(f"Downloading {url} to {dest_path} using gcloud storage...", end="")
+        cmd = ["gcloud", "storage", "cp", url, dest_path]
         _result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         print("done.")
     else:
