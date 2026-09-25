@@ -42,12 +42,14 @@ requests = ">=2.33.0"
 scipy = ">=1.17.1"
 
 [feature.benchmarks.dependencies]
-python = "3.9.*"
+# Python 3.9 is end of life: conda-forge no longer builds fixed releases for
+# it, which left this env with known-vulnerable packages.
+python = "3.12.*"
 pyyaml = "*"
 "ruamel.yaml" = "*"
 requests = "*"
 pip = "*"
-matplotlib = "3.7.*"
+matplotlib = "*"
 humanize = "*"
 ipython = "*"
 

@@ -73,7 +73,7 @@ jobs:
         run: pixi run -e runner pytest runner/tests -v
 
       - name: Check campaign generator
-        # Runs in the benchmarks env (Python 3.9) with the shipped config, so
+        # Runs in the benchmarks env with the shipped config, so
         # incompatible syntax or a stale config schema fails here.
         run: |
           pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
