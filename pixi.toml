@@ -29,7 +29,6 @@ linopy = "*"
 python = ">=3.14"
 
 [feature.notebooks.pypi-dependencies]
-gsutil = ">=5.35"
 humanize = ">=4.15.0"
 ipykernel = ">=7.1.0"
 ipython = ">=9.10.0"
@@ -38,6 +37,8 @@ matplotlib = ">=3.10.8"
 numpy = ">=2.4.2"
 pandas = ">=3.0.0"
 pyyaml = ">=6.0.3"
+# runner.utils.cloud downloads benchmark files over HTTP(S)
+requests = ">=2.33.0"
 scipy = ">=1.17.1"
 
 [feature.benchmarks.dependencies]
