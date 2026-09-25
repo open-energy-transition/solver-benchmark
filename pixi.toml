@@ -12,6 +12,14 @@ pandas = "*"
 psutil = "*"
 requests = "*"
 humanize = "*"
+# matplotlib/numpy/ipython/linopy are not needed by the runner CLI itself (solving
+# happens via subprocess in the per-solver-year conda envs), but runner/utils.py and
+# runner/run_benchmarks.py/run_solver.py import them at module level, so the test
+# suite needs them to import those modules. Refactor PR 3's module split should let
+# most of this shrink back out of the runner feature.
+matplotlib = "*"
+numpy = "*"
+ipython = "*"
 
 [feature.runner.pypi-dependencies]
 linopy = "*"
@@ -49,6 +57,7 @@ pandas = "*"
 [feature.dev.dependencies]
 ruff = "*"
 pytest = "*"
+pytest-mock = "*"
 pre-commit = "*"
 mypy = "*"
 yamale = "*"
