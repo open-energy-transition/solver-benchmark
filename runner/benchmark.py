@@ -63,8 +63,10 @@ def run(
 
     For each year, installs any missing per-solver-year envs (see
     `runner/envs/`), then runs that year's registered and eligible solver
-    configurations against every problem. A failing year is logged and
-    skipped rather than aborting the remaining years.
+    configurations against every problem. A failing year, or one with no
+    registered solver version for any requested configuration, is logged
+    and skipped rather than aborting the remaining years; the command then
+    exits with status 1 once every year has been attempted.
     """
     resolved_solver_configurations = (
         list(solver_configurations)
@@ -81,6 +83,7 @@ def run(
     resolved_run_id = run_id or f"{time.strftime('%Y%m%d_%H%M%S')}_{gethostname()}"
     print(f"Using run ID: {resolved_run_id}")
 
+    failed_years = []
     for index, year in enumerate(resolved_years):
         print(f"Running the benchmark for year {year}...")
 
@@ -88,6 +91,11 @@ def run(
             registered_versions = env.get_registered_solver_versions(
                 resolved_solver_configurations, year
             )
+            if not registered_versions:
+                raise ValueError(
+                    "no registered solver version for any of "
+                    f"{', '.join(resolved_solver_configurations)}"
+                )
             env.ensure_solver_envs_installed(registered_versions)
             run_benchmark(
                 problems_yaml_path,
@@ -99,10 +107,17 @@ def run(
             )
         except Exception as e:
             print(f"ERROR running the benchmark for year {year}: {e}")
+            failed_years.append(year)
             continue
 
         print(f"Completed the benchmark for year {year}")
 
+    if failed_years:
+        print(
+            f"ERROR: the benchmark failed for year(s) {', '.join(failed_years)} "
+            f"of run ID {resolved_run_id}"
+        )
+        raise typer.Exit(code=1)
     print(f"All years completed for run ID: {resolved_run_id}")
 
 
