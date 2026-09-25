@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Group minor/patch bumps into one weekly PR per ecosystem; majors get their own PRs
+  - package-ecosystem: npm
+    directory: /website
+    schedule:
+      interval: weekly
+    groups:
+      website-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: uv
+    directory: /notebooks
+    schedule:
+      interval: weekly
+    groups:
+      notebooks-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
