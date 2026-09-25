@@ -263,11 +263,11 @@ def main(argv: list[str] | None = None) -> None:
         to_mv, to_gzip = process_file(file_path, yaml, args.dry_run)
         for gs_path, filename in to_mv:
             mv_commands.append(
-                f"gsutil mv gs://{gs_path} gs://solver-benchmarks/instances/{filename}"
+                f"gcloud storage mv gs://{gs_path} gs://solver-benchmarks/instances/{filename}"
             )
         for gs_path, filename in to_gzip:
             gzip_commands.append(
-                f"gsutil mv gs://{gs_path} /tmp/benchmarks-to-zip/{filename}"
+                f"gcloud storage mv gs://{gs_path} /tmp/benchmarks-to-zip/{filename}"
             )
 
     if len(mv_commands) + len(gzip_commands) == 0:
@@ -286,7 +286,7 @@ def main(argv: list[str] | None = None) -> None:
             print(cmd)
         print("find /tmp/benchmarks-to-zip/ -type f | parallel gzip --best")
         print(
-            "gsutil -m rsync /tmp/benchmarks-to-zip gs://solver-benchmarks/instances/"
+            "gcloud storage rsync /tmp/benchmarks-to-zip gs://solver-benchmarks/instances/"
         )
 
     if args.dry_run:

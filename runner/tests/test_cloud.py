@@ -35,7 +35,7 @@ class TestDownloadBenchmarkFile:
         assert dest.read_bytes() == b"hello world"
         response.raise_for_status.assert_called_once()
 
-    def test_gcs_download_uses_gsutil(self, tmp_path, mocker):
+    def test_gcs_download_uses_gcloud_storage(self, tmp_path, mocker):
         dest = tmp_path / "problem.lp"
         run_mock = mocker.patch(
             "runner.utils.cloud.subprocess.run",
@@ -45,7 +45,13 @@ class TestDownloadBenchmarkFile:
         download_benchmark_file("gs://solver-benchmarks/problem.lp", dest)
 
         called_cmd = run_mock.call_args[0][0]
-        assert called_cmd == ["gsutil", "cp", "gs://solver-benchmarks/problem.lp", dest]
+        assert called_cmd == [
+            "gcloud",
+            "storage",
+            "cp",
+            "gs://solver-benchmarks/problem.lp",
+            dest,
+        ]
 
     def test_gz_download_is_unzipped_and_original_removed(self, tmp_path, mocker):
         dest = tmp_path / "problem.lp.gz"
