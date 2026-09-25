@@ -20,24 +20,11 @@ from time import perf_counter
 from traceback import format_exc
 from typing import Any
 
-import numpy as np
 from linopy import solvers
-
-# _names_to_labels is private API: it's the exact name->label parsing linopy
-# itself uses to build Solution.primal (see get_milp_metrics's docstring for
-# why this matters), so it's more correct to reuse than to re-derive our own
-# guess at linopy's "x<label>" naming convention -- but it's not a public
-# contract, so a future linopy release could rename or remove it.
-from linopy.solvers import SolverName, _names_to_labels
+from linopy.solvers import SolverName
 
 from . import config
 from .solvers import SOLVER_ADAPTERS
-
-# HiGHS is not available in the 2020 environment that we use to run GLPK
-try:
-    import highspy
-except ModuleNotFoundError:
-    highspy = None
 
 
 def get_solver(solver_configuration: str) -> tuple[Any, str]:
@@ -71,7 +58,7 @@ def get_solver(solver_configuration: str) -> tuple[Any, str]:
     return solver_class(options=kwargs), solver_package
 
 
-def is_mip_problem(solver_model: Any, solver_package: str) -> bool:
+def is_mip_problem(solver_model: Any, solver_package: str) -> bool | None:
     """Determine whether a solved model was a Mixed Integer Programming problem.
 
     Parameters
@@ -84,9 +71,10 @@ def is_mip_problem(solver_model: Any, solver_package: str) -> bool:
 
     Returns
     -------
-    bool
+    bool | None
         True if the problem had integer/binary variables, per the solver's
-        own reporting.
+        own reporting, or None if that can't be told from the model (no
+        model, or a command-line solver such as CBC or GLPK).
 
     Raises
     ------
@@ -94,57 +82,38 @@ def is_mip_problem(solver_model: Any, solver_package: str) -> bool:
         If `solver_package` has no registered adapter.
     """
     if solver_model is None:
-        return False
+        return None
     adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
         raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
     return adapter.is_mip(solver_model)
 
 
-def calculate_integrality_violation(
-    integer_var_labels: np.ndarray, primal_values: np.ndarray
-) -> float | None:
+def calculate_integrality_violation(integer_values: dict[str, float]) -> float:
     """Calculate the maximum integrality violation from primal values.
 
-    Only Integer vars are considered, not SemiContinuous or SemiInteger,
-    following the code in
+    Only Integer (and binary) vars are considered, not SemiContinuous or
+    SemiInteger, following the code in
     https://github.com/ERGO-Code/HiGHS/blob/fd8665394edfd096c4f847c4a6fbc187364ef474/src/mip/HighsMipSolver.cpp#L888
 
     Parameters
     ----------
-    integer_var_labels : np.ndarray
-        Linopy labels of the model's integer variables (see
-        `get_milp_metrics`'s docstring for what a "label" is here).
-    primal_values : np.ndarray
-        Dense, label-indexed primal solution values (`primal_values[label]`
-        is that variable's value), as returned by linopy's
-        `Solution.primal`.
+    integer_values : dict[str, float]
+        Solved value of every integer variable, keyed by name, as returned
+        by the solver adapter's `integer_values`.
 
     Returns
     -------
-    float | None
+    float
         The largest absolute distance from an integer variable's value to
-        its nearest integer, or None if `primal_values` has no entry for
-        any of `integer_var_labels` (see this function's Notes).
+        its nearest integer.
 
     Notes
     -----
     Not using `solver_result.solver_model.getInfo()` because it works for
     HiGHS but not for other solvers.
-
-    `primal_values` can legitimately be shorter than `integer_var_labels`
-    needs: linopy's deprecated file-based solve path (`Solver.solve_problem`,
-    see this module's docstring) never initializes its internal variable
-    count, so it always builds `Solution.primal` as a zero-length array
-    regardless of the problem's real size. Labels beyond its length are
-    dropped rather than raising, since there's no primal value to check
-    them against either way.
     """
-    in_bounds = integer_var_labels[integer_var_labels < len(primal_values)]
-    if in_bounds.size == 0:
-        return None
-    p = primal_values[in_bounds]
-    return float(np.max(np.abs(p - np.round(p))))
+    return max(abs(value - round(value)) for value in integer_values.values())
 
 
 def get_duality_gap(solver_model: Any, solver_package: str) -> float | None:
@@ -176,63 +145,65 @@ def get_duality_gap(solver_model: Any, solver_package: str) -> float | None:
 
 
 def get_milp_metrics(
-    input_file: str, solver_result: Any, solver_package: str
+    solver_model: Any,
+    solver_package: str,
+    problem_fn: Path,
+    solution_fn: Path,
+    is_mip: bool | None,
 ) -> tuple[float | None, float | None]:
-    """Use HiGHS to read the problem file and compute MILP-specific metrics.
+    """Compute the duality gap and max integrality violation of a MILP solve.
+
+    Variable values come from the solver's own adapter (native model or
+    solution file, see `runner/utils/solvers/`), not from linopy's
+    `Solution.primal`, whose layout changes between linopy versions.
 
     Parameters
     ----------
-    input_file : str
-        Path to the problem file, re-read via `highspy` to identify integer
-        variables (independent of which solver actually solved it).
-    solver_result : Any
-        The linopy `Result` returned by the solve.
+    solver_model : Any
+        The solver's native model object, or None if unavailable.
     solver_package : str
-        The underlying solver package, used to look up its duality-gap
-        adapter.
+        The underlying solver package, used to look up its adapter.
+    problem_fn : Path
+        The problem file that was solved.
+    solution_fn : Path
+        The solution file linopy asked the solver to write.
+    is_mip : bool | None
+        `is_mip_problem`'s answer; None means the adapter's
+        `integer_values` decides.
 
     Returns
     -------
     tuple[float | None, float | None]
         `(duality_gap, max_integrality_violation)`, or `(None, None)` if the
-        problem has no integer variables, `highspy` isn't installed, or
-        reading/computing metrics fails.
-
-    Notes
-    -----
-    `solver_result.solution.primal` (since linopy 0.9) is a dense array
-    indexed by linopy's own integer "label" for each variable, not by
-    variable name -- linopy writes problem files with each variable named
-    `x<label>` (see `linopy.io`), so the label is recovered by stripping
-    that prefix off the same name `highspy` reports for the matching
-    column, via linopy's own `_names_to_labels` (kept in sync with whatever
-    naming convention linopy itself uses to build `primal`).
+        problem has no integer variables. The integrality violation is None
+        unless the value of every integer variable could be read.
     """
-    solver_model = solver_result.solver_model
-    if solver_model is None or highspy is None:
+    adapter = SOLVER_ADAPTERS.get(solver_package)
+    if adapter is None:
+        raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
+
+    try:
+        integer_values = adapter.integer_values(solver_model, problem_fn, solution_fn)
+    except Exception:
+        print(
+            f"ERROR obtaining integer variable values for {problem_fn}: {format_exc()}",
+            file=sys.stderr,
+        )
+        integer_values = None
+
+    if integer_values == {} or (is_mip is None and integer_values is None):
         return None, None
 
     try:
-        h = highspy.Highs()
-        h.readModel(input_file)
-        integer_var_names = [
-            h.variableName(i)
-            for i in range(h.numVariables)
-            if h.getColIntegrality(i)[1] == highspy.HighsVarType.kInteger
-        ]
-        if integer_var_names:
-            duality_gap = get_duality_gap(solver_model, solver_package)
-            integer_var_labels = _names_to_labels(integer_var_names)
-            max_integrality_violation = calculate_integrality_violation(
-                integer_var_labels, solver_result.solution.primal
-            )
-            return duality_gap, max_integrality_violation
+        duality_gap = get_duality_gap(solver_model, solver_package)
     except Exception:
-        print(
-            f"ERROR obtaining milp metrics for {input_file}: {format_exc()}",
-            file=sys.stderr,
-        )
-    return None, None
+        print(f"ERROR obtaining duality gap: {format_exc()}", file=sys.stderr)
+        duality_gap = None
+
+    max_integrality_violation = (
+        calculate_integrality_violation(integer_values) if integer_values else None
+    )
+    return duality_gap, max_integrality_violation
 
 
 def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None:
@@ -325,9 +296,9 @@ def main(solver_configuration: str, input_file: str, solver_version: str) -> Non
             print(f"ERROR checking MIP status: {format_exc()}", file=sys.stderr)
             is_mip = False
 
-        if is_mip:
+        if is_mip is not False:
             duality_gap, max_integrality_violation = get_milp_metrics(
-                input_file, solver_result, solver_package
+                solver_model, solver_package, problem_file, solution_fn, is_mip
             )
         else:
             duality_gap = None

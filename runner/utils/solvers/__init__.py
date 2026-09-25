@@ -1,8 +1,9 @@
 """Solver adapter registry: one plain Python module per solver, discovered
 automatically from this package's own directory.
 
-Each sibling module exports `is_mip(model)`, `duality_gap(model)`, and
-`reported_runtime(model)` for one solver (any existing module is a template).
+Each sibling module exports `is_mip(model)`, `duality_gap(model)`,
+`reported_runtime(model)`, and
+`integer_values(model, problem_fn, solution_fn)` for one solver (any existing module is a template).
 `SOLVER_ADAPTERS` is built by scanning this package's directory with
 `pkgutil.iter_modules` and importing each submodule -- a well-established
 stdlib idiom for exactly this "one adapter per plugin file" shape (the same
@@ -18,9 +19,10 @@ import importlib
 import pkgutil
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
-_REQUIRED_ATTRS = ("is_mip", "duality_gap", "reported_runtime")
+_REQUIRED_ATTRS = ("is_mip", "duality_gap", "reported_runtime", "integer_values")
 
 
 @dataclass(frozen=True)
@@ -29,20 +31,27 @@ class SolverAdapter:
 
     Attributes
     ----------
-    is_mip : Callable[[Any], bool]
+    is_mip : Callable[[Any], bool | None]
         Given the solver's native model object, return whether the problem
-        it solved was a MIP.
+        it solved was a MIP, or None if the model can't tell (see
+        `integer_values`).
     duality_gap : Callable[[Any], float | None]
         Given the native model object, return the reported duality/MIP gap,
         or None if unavailable.
     reported_runtime : Callable[[Any], float | None]
         Given the native model object, return the solver's own reported
         solving time in seconds, or None if unavailable.
+    integer_values : Callable[[Any, Path, Path], dict[str, float] | None]
+        Given the native model object, the problem file, and the solution
+        file linopy wrote, return the solved value of every integer and
+        binary variable, keyed by variable name: ``{}`` if the problem has
+        none, None if the values can't be read (e.g. no feasible solution).
     """
 
-    is_mip: Callable[[Any], bool]
+    is_mip: Callable[[Any], bool | None]
     duality_gap: Callable[[Any], float | None]
     reported_runtime: Callable[[Any], float | None]
+    integer_values: Callable[[Any, Path, Path], dict[str, float] | None]
 
 
 def _discover_adapters() -> dict[str, SolverAdapter]:
@@ -56,8 +65,8 @@ def _discover_adapters() -> dict[str, SolverAdapter]:
     Raises
     ------
     AttributeError
-        If a discovered module is missing one of `is_mip`, `duality_gap`, or
-        `reported_runtime` -- fails at import time with a clear message,
+        If a discovered module is missing one of `is_mip`, `duality_gap`,
+        `reported_runtime`, or `integer_values` -- fails at import time with a clear message,
         rather than a cryptic error deep in a benchmark run.
     """
     adapters = {}
