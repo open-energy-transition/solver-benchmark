@@ -7,6 +7,8 @@ out-of-memory kill can be observed and recorded as a result rather than
 taking down the whole benchmark run.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re

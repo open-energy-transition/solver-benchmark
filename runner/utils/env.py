@@ -9,6 +9,8 @@ them per directory, rather than as more environments in the root
 each solver-year resolve (and fail) independently of the others.
 """
 
+from __future__ import annotations
+
 import json
 import subprocess
 from pathlib import Path

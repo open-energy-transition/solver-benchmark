@@ -1,5 +1,7 @@
 """Load benchmark results from disk and compute summary statistics over them."""
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import numpy as np

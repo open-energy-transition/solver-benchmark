@@ -136,13 +136,20 @@ def main() -> None:
     long_solvers_lp: Optional[str] = None
     long_solvers_milp: Optional[str] = None
 
-    data["bench-size"] = data["Benchmark"] + "-" + data["Size"]
+    # Historical CSVs identify a problem by "Benchmark" + "Size"; current CSVs
+    # write the metadata problem ID directly in a "Problem" column.
+    if "Problem" not in data.columns:
+        data["Problem"] = data["Benchmark"] + "-" + data["Size"]
+    elif "Benchmark" in data.columns:
+        old_format = data["Problem"].isna()
+        data.loc[old_format, "Problem"] = (
+            data.loc[old_format, "Benchmark"] + "-" + data.loc[old_format, "Size"]
+        )
     data["solver-version"] = data["Solver"] + "-" + data["Solver Version"]
 
-    # Check that every bench-size problem has metadata and the same set of solvers run on it
+    # Check that every problem has metadata and the same set of solvers run on it
     seen_ids: set[str] = set()
-    for (bench, size), group in data.groupby(["Benchmark", "Size"]):
-        problem_id = bench + "-" + size
+    for problem_id, group in data.groupby("Problem"):
         solvers_present = set(sorted(group["solver-version"].unique()))
 
         if problem_id in short_timeout_ids:

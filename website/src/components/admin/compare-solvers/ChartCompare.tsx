@@ -15,6 +15,7 @@ type ChartData = {
   xaxis: number;
   yaxis: number;
   status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
+  problemId: string;
   benchmark: string;
   size: string;
 };
@@ -57,7 +58,7 @@ const defaultTooltipTemplate = (
   solver2: string,
 ) => `
   <div class="text-sm">
-    <strong>Problem ID:</strong> ${d.benchmark}-${d.size}<br>
+    <strong>Problem ID:</strong> ${d.problemId}<br>
     <strong>Runtime of ${solver1.replace(
       "--",
       " (",
@@ -422,7 +423,7 @@ const ChartCompare = ({
           .on("click", () => {
             window.location.href = PATH_DASHBOARD.benchmarkSet.one.replace(
               "{name}",
-              `${d.benchmark}-${d.size}`,
+              d.problemId,
             );
           })
           .style("cursor", "pointer");

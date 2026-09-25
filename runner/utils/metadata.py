@@ -7,6 +7,8 @@ files and campaign-generated run configs (see `load_problems`), and
 missing-file errors.
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Any
 

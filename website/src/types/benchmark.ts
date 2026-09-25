@@ -2,6 +2,7 @@ type SolverType = "glpk" | "scip" | "highs" | "gurobi" | "cbc";
 type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 
 type BenchmarkResult = {
+  problemId: string;
   benchmark: string;
   dualityGap: number | null;
   maxIntegralityViolation: number | null;
@@ -11,6 +12,8 @@ type BenchmarkResult = {
   runtime: number;
   size: string;
   solver: SolverType;
+  // The raw `Solver` CSV value, before `normalizeSolverName`
+  solverConfiguration: string;
   solverReleaseYear: number;
   solverVersion: string;
   status: SolverStatusType;

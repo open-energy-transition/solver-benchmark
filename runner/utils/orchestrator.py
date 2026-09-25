@@ -5,6 +5,8 @@ Imported by `runner/benchmark.py`'s Typer CLI. Kept importable (not inlined
 in the CLI) so it's testable without going through Typer's CLI-parsing layer.
 """
 
+from __future__ import annotations
+
 import datetime
 import os
 import statistics
