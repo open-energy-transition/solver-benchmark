@@ -34,7 +34,7 @@ color_map = {
 
 def display_speedups(
     results: pd.DataFrame, new_pypsa_benchs: pd.DataFrame
-) -> "pd.io.formats.style.Styler":
+) -> pd.io.formats.style.Styler:
     """Build a formatted table comparing HiGHS simplex/IPX/HiPO runtimes.
 
     Parameters

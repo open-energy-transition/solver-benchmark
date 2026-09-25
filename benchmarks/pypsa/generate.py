@@ -61,7 +61,7 @@ def load_yaml(path: pathlib.Path) -> dict:
     """
     y = ruamel.yaml.YAML()
     try:
-        with open(path, "r") as f:
+        with open(path) as f:
             return y.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load YAML {path}: {e}")

@@ -1,6 +1,14 @@
 target-version = "py312"
 line-length = 88
 
+# Code that also runs inside the per-solver environments (runner/envs/), some
+# of which use Python 3.10: keep rules like pyupgrade from rewriting it with
+# newer syntax.
+[per-file-target-version]
+"runner/utils/solver.py" = "py310"
+"runner/utils/config.py" = "py310"
+"runner/utils/solvers/*.py" = "py310"
+
 [lint]
 # Listed explicitly rather than extending ruff's defaults, so a ruff upgrade
 # that changes the default rule set (as 0.16 did) doesn't silently start
@@ -12,6 +20,7 @@ select = [
     "F", # pyflakes
     "I", # isort
     "TID", # tidy imports
+    "UP", # pyupgrade
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.

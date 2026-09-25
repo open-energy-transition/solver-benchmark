@@ -38,7 +38,7 @@ def load_problem_metadata(
     pd.DataFrame
         One row per problem, indexed by "Problem" (the problem ID).
     """
-    with open(Path(metadata_file), "r") as f:
+    with open(Path(metadata_file)) as f:
         metadata = yaml.safe_load(f)
     ignore_keys = {"Short description", "Realistic motivation"}
     rows = []
@@ -92,7 +92,7 @@ def load_problems(
     ValueError
         If a problem has neither a "Path" nor a "URL" entry.
     """
-    with open(problems_yaml_path, "r") as file:
+    with open(problems_yaml_path) as file:
         yaml_content = yaml.safe_load(file)
         problems_info = yaml_content["problems"]
         # Read timeout from top-level YAML if present

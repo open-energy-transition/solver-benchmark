@@ -22,9 +22,10 @@ import argparse
 import gzip
 import sys
 import tempfile
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Any
 from urllib.parse import urlparse
 
 import highspy
@@ -258,7 +259,7 @@ def decompress_gzip_file(
 def get_cached_paths(
     url: str,
     cache_dir: Path,
-) -> tuple[Path, Optional[Path]]:
+) -> tuple[Path, Path | None]:
     """
     Compute cache paths for a URL.
 
@@ -297,8 +298,8 @@ def get_cached_paths(
 def download_benchmark_file(
     url: str,
     use_cache: bool,
-    cache_dir: Optional[Path] = None,
-) -> Optional[Path]:
+    cache_dir: Path | None = None,
+) -> Path | None:
     """
     Download a benchmark problem file and return its local path.
 
@@ -378,7 +379,7 @@ def download_benchmark_file(
         return None
 
 
-def safe_unlink(path: Optional[Path]) -> None:
+def safe_unlink(path: Path | None) -> None:
     """
     Remove a file path if it exists.
 
@@ -422,7 +423,7 @@ def count_variable_types(highs: highspy.Highs, num_variables: int) -> tuple[int,
     return num_cont, num_int
 
 
-def analyze_model_file(file_path: Path) -> Optional[ModelStats]:
+def analyze_model_file(file_path: Path) -> ModelStats | None:
     """
     Analyze a model file using HiGHS and return statistics.
 
@@ -481,7 +482,7 @@ def analyze_model_file(file_path: Path) -> Optional[ModelStats]:
 
 def get_problem_identity(
     problem_id: str, problem_info: YamlMap
-) -> Optional[tuple[str, str]]:
+) -> tuple[str, str] | None:
     """
     Extract (name, url) for a problem entry if available.
 
@@ -808,7 +809,7 @@ def print_summary(summary: ProcessingSummary) -> None:
     print(f"Failed tasks: {summary.failed_tasks}")
 
 
-def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """
     Parse CLI arguments.
 
@@ -848,7 +849,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """
     CLI entry point.
 

@@ -68,7 +68,7 @@ def load_solver_registry(config_path: Path = _SOLVER_REGISTRY_PATH) -> dict[str,
     dict[str, Any]
         Parsed YAML with top-level keys ``solvers`` and ``packages``.
     """
-    with open(config_path, "r") as f:
+    with open(config_path) as f:
         return yaml.safe_load(f)
 
 
@@ -89,7 +89,7 @@ def load_eligibility_rules(
     dict[str, Any]
         Parsed YAML with a single top-level ``rules`` list.
     """
-    with open(config_path, "r") as f:
+    with open(config_path) as f:
         return yaml.safe_load(f)
 
 
@@ -114,7 +114,7 @@ def load_solver_configurations(
         entry per named way of running a solver, each with a ``solver`` and
         ``options``).
     """
-    with open(config_path, "r") as f:
+    with open(config_path) as f:
         return yaml.safe_load(f)
 
 
