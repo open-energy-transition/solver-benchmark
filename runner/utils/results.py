@@ -129,19 +129,15 @@ def write_csv_headers(
         Column names for `results_csv`. Defaults to `csv_record`'s own
         column order, so the two always stay in sync.
     """
-    with open(results_csv, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(headers)
-
-    with open(mean_stddev_csv, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(_MEAN_STDDEV_HEADERS)
+    _write_header(results_csv, list(headers))
+    _write_header(mean_stddev_csv, _MEAN_STDDEV_HEADERS)
 
 
 def ensure_csv_schema(
     results_csv: Path,
     mean_stddev_csv: Path,
     append: bool,
+    seeds_csv: Path | None = None,
 ) -> None:
     """Prepare both result CSVs for a run, without losing `--append` history.
 
@@ -162,15 +158,32 @@ def ensure_csv_schema(
     append : bool
         If False, both files are (re)created with just a header row,
         discarding any existing content -- same as `write_csv_headers`.
-        If True and both files already exist, they're widened in place if
-        their schema is out of date, and otherwise left untouched.
+        If True, each file is handled on its own: an existing one is widened
+        in place if its schema is out of date (otherwise left untouched),
+        and a missing one is created with just a header row. So one file
+        being missing never discards the other's rows.
+    seeds_csv : Path, optional
+        Per-seed results file for multi-seed runs, with the same columns as
+        `results_csv`. Handled the same way when given.
     """
-    if not append or not results_csv.exists() or not mean_stddev_csv.exists():
-        write_csv_headers(results_csv, mean_stddev_csv)
-        return
+    results_headers = list(csv_record(check=False).keys())
+    csv_files = [
+        (results_csv, results_headers),
+        (mean_stddev_csv, _MEAN_STDDEV_HEADERS),
+    ]
+    if seeds_csv is not None:
+        csv_files.append((seeds_csv, results_headers))
+    for csv_path, headers in csv_files:
+        if append and csv_path.exists():
+            _migrate_columns_if_needed(csv_path, headers)
+        else:
+            _write_header(csv_path, headers)
 
-    _migrate_columns_if_needed(results_csv, list(csv_record(check=False).keys()))
-    _migrate_columns_if_needed(mean_stddev_csv, _MEAN_STDDEV_HEADERS)
+
+def _write_header(csv_path: Path, headers: list[str]) -> None:
+    """Create (or overwrite) `csv_path` with just a header row."""
+    with open(csv_path, mode="w", newline="") as file:
+        csv.writer(file).writerow(headers)
 
 
 def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> None:

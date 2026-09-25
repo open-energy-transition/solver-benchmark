@@ -8,8 +8,10 @@ from pathlib import Path
 from runner.utils.config import (
     _condition_matches,
     get_all_registered_years,
+    get_configured_seed,
     get_default_configurations,
     get_license_env_vars,
+    get_output_stem,
     get_package_name,
     get_seed_option,
     get_solver_configuration,
@@ -359,3 +361,27 @@ class TestTestsBlockMatchesBenchmarkTestsEnvFile:
                 f"tests env, but {pixi_toml_path} pins "
                 f"{package_name}=={pinned_versions[package_name]}"
             )
+
+
+class TestConfiguredSeedAndOutputStem:
+    def test_configured_seed_comes_from_the_configuration_options(self):
+        assert get_configured_seed("cbc-default") == 1
+        assert get_configured_seed("highs-default") == 0
+
+    def test_output_stem_uses_the_configured_seed_without_an_override(self):
+        assert (
+            get_output_stem("dir/sample_mip.lp", "cbc-default", "2.10.12")
+            == "sample_mip-cbc-default-2.10.12-seed1"
+        )
+
+    def test_output_stem_uses_the_override_seed(self):
+        assert (
+            get_output_stem("sample_mip.lp", "highs-default", "1.9.0", seed=3)
+            == "sample_mip-highs-default-1.9.0-seed3"
+        )
+
+    def test_different_seeds_get_different_stems(self):
+        stems = {
+            get_output_stem("p.lp", "highs-default", "1.9.0", seed=s) for s in (1, 2, 3)
+        }
+        assert len(stems) == 3

@@ -104,10 +104,15 @@ class TestBenchmarkCli:
             ],
         )
         assert result.exit_code == 0, result.output
+        seeds = pd.read_csv(tmp_path / "results" / "benchmark_results_seeds.csv")
+        assert sorted(seeds["Seed"]) == [1, 2, 3]
+        # The main results file keeps one (combined) row per problem/solver
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
-        assert sorted(results["Seed"]) == [1, 2, 3]
+        assert len(results) == 1
 
-    def test_default_num_seeds_leaves_seed_column_empty(self, problems_yaml, tmp_path):
+    def test_default_num_seeds_records_the_configured_seed(
+        self, problems_yaml, tmp_path
+    ):
         result = runner_cli.invoke(
             benchmark.app,
             [
@@ -120,7 +125,8 @@ class TestBenchmarkCli:
         )
         assert result.exit_code == 0, result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
-        assert results["Seed"].isna().all()
+        # No seed override, so the solver used highs-default's own seed
+        assert list(results["Seed"]) == [0]
 
     def test_tests_pseudo_year_runs_against_real_solver_registry(
         self, problems_yaml, tmp_path
@@ -260,10 +266,29 @@ class TestBenchmarkCli:
                 "highs-default",
             ],
         )
-        assert result.exit_code == 0, result.output
+        # Every year is still attempted, but the failure is reported via the
+        # exit code (infrastructure/startup-script.sh relies on it).
+        assert result.exit_code == 1, result.output
         assert "ERROR running the benchmark for year 2024" in result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
+
+    def test_year_with_no_registered_solver_version_fails(
+        self, problems_yaml, tmp_path
+    ):
+        # Previously this wrote a header-only CSV and exited 0.
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "1999",
+                "--solver-configurations",
+                "highs-default",
+            ],
+        )
+        assert result.exit_code == 1, result.output
+        assert "no registered solver version" in result.output
 
 
 class TestBenchmarkCliInvocation:

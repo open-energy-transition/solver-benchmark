@@ -260,3 +260,49 @@ class TestEnsureCsvSchema:
 
         with pytest.raises(ValueError, match="Some Removed Column"):
             ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+    def _write_results_with_one_row(self, results_csv):
+        with open(results_csv, "w", newline="") as f:
+            csv.writer(f).writerow(csv_record(check=False).keys())
+        write_csv_row(
+            results_csv,
+            problem_id="problem-a",
+            metrics={"solver": "highs", "status": "ok"},
+            run_id="run-1",
+            timestamp="t",
+            vm_instance_type="vm",
+            vm_zone="z",
+            hostname="h",
+            solver_benchmark_version="abc123",
+        )
+
+    def test_append_true_missing_summary_keeps_existing_results(self, tmp_path):
+        # Regression test: only results.csv exists (as in the repo today),
+        # which used to recreate both files and erase its rows.
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+        self._write_results_with_one_row(results_csv)
+        before = results_csv.read_text()
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        assert results_csv.read_text() == before
+        assert mean_stddev_csv.read_text().splitlines() == [
+            ",".join(_MEAN_STDDEV_HEADERS)
+        ]
+
+    def test_append_true_missing_results_keeps_existing_summary(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+        with open(mean_stddev_csv, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(_MEAN_STDDEV_HEADERS)
+            writer.writerow(["problem-a"] + [""] * (len(_MEAN_STDDEV_HEADERS) - 1))
+        before = mean_stddev_csv.read_text()
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        assert mean_stddev_csv.read_text() == before
+        assert results_csv.read_text().splitlines() == [
+            ",".join(csv_record(check=False).keys())
+        ]

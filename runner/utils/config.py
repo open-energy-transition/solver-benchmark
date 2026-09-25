@@ -318,6 +318,64 @@ def get_seed_option(
     return config.get("seed_options", {}).get(solver_package)
 
 
+def get_configured_seed(solver_configuration: str) -> Any:
+    """Return the seed a configuration's own options fix, if any.
+
+    Parameters
+    ----------
+    solver_configuration : str
+        The configuration's name, e.g. ``"cbc-default"``.
+
+    Returns
+    -------
+    Any
+        The value of the configuration's seed option (see
+        :func:`get_seed_option`), e.g. ``1`` for ``"cbc-default"``, or None
+        if it has no seed option or doesn't set it.
+    """
+    seed_key = get_seed_option(resolve_solver_name(solver_configuration))
+    if seed_key is None:
+        return None
+    return get_solver_options(solver_configuration).get(seed_key)
+
+
+def get_output_stem(
+    problem_file: str | Path,
+    solver_configuration: str,
+    solver_version: str,
+    seed: int | None = None,
+) -> str:
+    """Return the file stem shared by a solver run's solution and log files.
+
+    Includes the effective seed (the override if given, otherwise the one
+    fixed in the configuration, see :func:`get_configured_seed`), so runs
+    of the same configuration with different seeds don't overwrite each
+    other's files.
+
+    Parameters
+    ----------
+    problem_file : str | Path
+        The problem file being solved.
+    solver_configuration : str
+        The configuration's name, e.g. ``"highs-default"``.
+    solver_version : str
+        The solver version.
+    seed : int, optional
+        The seed override, if any.
+
+    Returns
+    -------
+    str
+        E.g. ``"sample_mip-highs-default-1.9.0-seed0"``, or without the
+        ``-seed<N>`` suffix for a configuration with no seed option.
+    """
+    effective_seed = (
+        seed if seed is not None else get_configured_seed(solver_configuration)
+    )
+    stem = f"{Path(problem_file).stem}-{solver_configuration}-{solver_version}"
+    return stem if effective_seed is None else f"{stem}-seed{effective_seed}"
+
+
 def _resolve_fact(facts: dict[str, Any], path: str) -> Any:
     """Look up a fact, following a dotted `path` into nested dict facts.
 

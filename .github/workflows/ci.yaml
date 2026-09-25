@@ -72,6 +72,14 @@ jobs:
       - name: Run runner unit tests
         run: pixi run -e runner pytest runner/tests -v
 
+      - name: Check campaign generator
+        # Runs in the benchmarks env (Python 3.9) with the shipped config, so
+        # incompatible syntax or a stale config schema fails here.
+        run: |
+          pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+            --configfile benchmarks/config.campaign.default.yaml \
+            --campaign ci-check --skip-prepare < /dev/null
+
       - name: Set FORK_PR environment variable
         if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
         run: echo "FORK_PR=true" >> $GITHUB_ENV
@@ -103,18 +111,31 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
+          # GLPK is left out: linopy fails to parse its output for problems
+          # with long variable names (e.g. the SWITCH ones in the subset).
+          SOLVER_CONFIGURATIONS="cbc-default highs-default scip-default"
+          SOLVER_ARGS=()
+          for configuration in ${SOLVER_CONFIGURATIONS}; do
+            SOLVER_ARGS+=(--solver-configurations "${configuration}")
+          done
           pixi run -e runner python -m runner.benchmark --years tests \
-            --solver-configurations cbc-default \
-            --solver-configurations highs-default \
-            --solver-configurations scip-default \
-            results/metadata_subset.yaml
+            "${SOLVER_ARGS[@]}" results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
-          if [ "$(tail -n +2 results/benchmark_results.csv | wc -l)" -eq 0 ]; then
-            echo "No benchmarks were run."
-            exit 1
-          fi
-          if awk -F',' 'NR>1 {if ($5 != "ok") exit 1}' results/benchmark_results.csv; then
+          # Require at least one row, every row "ok" (column 5 is Status),
+          # and at least one row for each requested solver configuration.
+          if awk -F',' -v expected="${SOLVER_CONFIGURATIONS}" '
+            NR > 1 { rows++; seen[$2] = 1; if ($5 != "ok") failed = 1 }
+            END {
+              n = split(expected, configurations, " ")
+              for (i = 1; i <= n; i++) {
+                if (!(configurations[i] in seen)) {
+                  print "No results for " configurations[i]
+                  missing = 1
+                }
+              }
+              exit(rows == 0 || failed || missing)
+            }' results/benchmark_results.csv; then
             echo "All benchmarks ran successfully."
           else
             echo "Some benchmarks did not complete successfully."

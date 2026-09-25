@@ -190,6 +190,19 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
             echo "Results CSV upload failed at $(date)"
             echo "Check VM service account permissions for the GCS bucket"
         fi
+
+        # Multi-seed runs also write per-seed rows to a separate file. Upload
+        # it under its own prefix, so tools reading every CSV in results/
+        # don't mix per-seed rows into the main results.
+        SEEDS_CSV=/solver-benchmark/results/benchmark_results_seeds.csv
+        if [ -f "${SEEDS_CSV}" ]; then
+            SEEDS_FILENAME="${INSTANCE_NAME}-result-seeds.csv"
+            if gsutil cp "${SEEDS_CSV}" "gs://${GCS_BUCKET_NAME}/results_seeds/${RUN_ID}/${SEEDS_FILENAME}"; then
+                echo "Per-seed results CSV upload successfully completed at $(date)"
+            else
+                echo "Per-seed results CSV upload failed at $(date)"
+            fi
+        fi
     else
         echo "Skipping results CSV upload because benchmark failed with exit code $BENCHMARK_EXIT_CODE"
     fi

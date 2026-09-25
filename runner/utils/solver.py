@@ -276,8 +276,6 @@ def main(
         `get_solver`).
     """
     problem_file = Path(input_file)
-    # keep the requested configuration name (e.g. "highs-hipo") for filenames
-    output_name = solver_configuration
 
     solver, solver_package = get_solver(solver_configuration, seed=seed)
 
@@ -287,7 +285,10 @@ def main(
     logs_dir = Path(__file__).resolve().parent.parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    output_filename = f"{Path(input_file).stem}-{output_name}-{solver_version}"
+    # keeps the requested configuration name (e.g. "highs-hipo") and the seed
+    output_filename = config.get_output_stem(
+        input_file, solver_configuration, solver_version, seed
+    )
 
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"

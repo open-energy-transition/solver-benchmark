@@ -98,6 +98,7 @@ const getBenchmarkResults = async (
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
       runId: data["Run ID"],
+      seed: data["Seed"] ?? "",
       timeout: Number(data["Timeout"]),
     };
   });
