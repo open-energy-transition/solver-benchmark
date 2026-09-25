@@ -1,16 +1,16 @@
 # Solver registry consumed by runner/utils/config.py.
 #
 # `solvers`: per solver, per version, the release year and the per-solver-year
-# conda env that provides it. The version listed for a given year is the latest
-# release of that solver available in that year, not necessarily the version it
-# was first released.
+# env (a pixi manifest directory at runner/envs/<env>/) that provides it. The
+# version listed for a given year is the latest release of that solver
+# available in that year, not necessarily the version it was first released.
 #
-# `packages`: the conda/pip package name for each solver, where it differs from
-# the solver's own name (used to cross-check what's actually installed in an
-# env against what this file expects).
+# `packages`: the PyPI package name for each solver, where it differs
+# from the solver's own name (used to cross-check what's actually installed
+# in an env against what this file expects).
 #
 # `tests`: not a release year -- the versions actually pinned in
-# runner/envs/benchmark-tests.yaml, the single shared conda env CI solves
+# runner/envs/benchmark-tests/pixi.toml, the single shared env CI solves
 # real problems in as a smoke test (year "tests"). Kept separate from
 # `solvers` rather than as another per-solver version entry, since the same
 # version can legitimately appear in both a per-year env and this shared one

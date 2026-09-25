@@ -1,46 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Open Energy Benchmark Website
 
-## Getting Started
+The [Next.js](https://nextjs.org) website that presents the benchmark results, at https://openenergybenchmark.org/.
 
-First, run the development server:
+For how to build and run the website locally to view results from your own benchmark runs, see the root [README's Running the Website section](../README.md#running-the-website).
 
-```bash
-npm run dev
+## Environment variables
 
-```
+Copy `.env.example` to `.env.local` and fill in the values to enable the optional integrations it configures:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `NEXT_PUBLIC_EMAILJS_*`: the contact form's reCAPTCHA and [EmailJS](https://www.emailjs.com/) integration. Not needed to run the rest of the site.
+- `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`: HTTP basic auth, used to password-protect preview deployments.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` -- start the development server (auto-reloads on changes).
+- `npm run build` -- copy the latest `results/` files into `public/results/`, then build for production.
+- `npm start` -- serve the production build (run `npm run build` first).
+- `npm run lint` -- run ESLint.
+- `npm run axe` / `npm run axe:full` -- accessibility checks (WCAG 2 A/AA) via [axe](https://github.com/dequelabs/axe-core), used by CI's accessibility-check job.
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## **Building & Deployment**
-
-To prepare the app for production, run:
-
-```bash
-npm run build
-```
-
-### **Starting Production Server Locally**
-After building, start the production server with:
-
-```bash
-npm run dev
-```
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The website deploys to [Vercel](https://vercel.com) on merge to `main`, with preview deployments for pull requests.

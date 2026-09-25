@@ -42,18 +42,20 @@ solver-benchmark/
 │   ├── benchmark.py            # Main entry point: Typer CLI running problems across years
 │   ├── utils/                  # Runner package: config, solver dispatch, run loop, etc.
 │   │   └── solver.py           # Individual solver runner (python -m runner.utils.solver)
-│   ├── envs/                   # Conda environment definitions for each solver year
+│   ├── config/                 # Solver registry, tuning options, eligibility rules (YAML)
+│   ├── envs/                   # Pixi environment manifests for each solver year
 │   └── benchmarks/             # Downloaded problem files
 ├── benchmarks/                 # Problem definitions and metadata
 │   ├── pypsa/                  # PyPSA-generated energy models
 │   ├── jump_highs_platform/    # JuMP/HiGHS problem metadata
 │   └── *_metadata.yaml         # Problem definitions and details
-├── website/             # Next.js website for viewing results
+├── website/                    # Next.js website for viewing results
 ├── infrastructure/             # GCP VM deployment scripts (for running benchmarks at scale)
-├── results/                    # Output directory for benchmark results
+└── results/                    # Output directory for benchmark results
     ├── benchmark_results.csv   # Main results file
     └── metadata.yaml           # Merged metadata of all problems on the website
 ```
+
 ## Running Benchmarks
 
 ### Local Runs
@@ -76,12 +78,12 @@ Supported Linux distributions:
 Ensure you have the following installed:
 
 - **Python 3.12+**
-- **Conda** ([install Miniconda](https://docs.conda.io/projects/miniconda/latest/miniconda-install-html.html))
+- **[pixi](https://pixi.sh)**
 - **systemd** (usually pre-installed on modern Linux distributions)
 
 #### Running Supported Solvers on Problems
 
-The benchmark runner CLI (`runner/benchmark.py`, run via `python -m runner.benchmark`) is the main entry point for running benchmarks. It takes a list of solver configurations and a list of years as arguments, and runs the problems for each solver configuration and year. It creates conda environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
+The benchmark runner CLI (`runner/benchmark.py`, run via `python -m runner.benchmark`) is the main entry point for running benchmarks. It takes a list of solver configurations and a list of years as arguments, and runs the problems for each solver configuration and year. It installs pixi environments containing the solvers and other necessary prerequisites, so a virtual environment is not necessary just for running the benchmark runner. [ See README ](runner/README.md).
 
 *Quickstart:*
 
@@ -109,13 +111,13 @@ You can use Docker to run benchmarks in a Linux container that has all the requi
 # Build the runner image
 docker build -t solver-benchmark-runner -f runner/Dockerfile .
 
-# Run all solvers across all years, results are written to host via a volume mount
+# Run the default solvers across all years, results are written to host via a volume mount
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
   solver-benchmark-runner results/metadata.yaml
 ```
 
-The container accepts the same flags as `runner.benchmark` (e.g. `--solver-configurations`, `--years`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, conda env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
+The container accepts the same flags as `runner.benchmark` (e.g. `--solver-configurations`, `--years`). Memory limit enforcement via `systemd-run` is not available inside Docker and is skipped automatically. For more details on available options, pixi env caching, and Gurobi licensing, see the [runner Docker documentation](runner/README.md#running-with-docker).
 
 ### Cloud Runs
 
@@ -135,337 +137,15 @@ tofu init
 tofu apply -var-file benchmarks/sample_run/run.tfvars
 ```
 
-To set up comprehensive benchmark campaigns, like the one available on the website:
-
-1. Use `notebooks/allocate-benchmarks-to-vms.ipynb` to create the benchmark campaign.
-2. Run `notebooks/run-and-observe-benchmarks.ipynb` to observe the benchmark campaign progress.
-
-Alternatively, the benchmark campaign generation can be performed from the command line using the tools described below.
-
-# Benchmark campaign creation
-
-This repository contains tooling to create benchmark campaigns from the problem metadata.
-
-Campaigns can target either:
-
-- cloud execution using Google Cloud Platform VMs (currently allowed to maintainers only);
-- local execution using the existing benchmark runner workflow.
-
-The main entry point is:
+To set up comprehensive benchmark campaigns, like the one available on the website, generate one with:
 
 ```bash
-python benchmarks/create_benchmark_campaign.py
-```
-
-The script prepares problem metadata, selects problems, and creates
-either:
-
-- a cloud campaign under `infrastructure/benchmarks/<run-id>/`; or
-- a local campaign under `infrastructure/local/benchmarks/<run-id>/`.
-
-## Execution targets
-
-The campaign generator supports two execution targets:
-
-| Target | Description |
-|----------|-------------|
-| `cloud` | Generates OpenTofu VM configuration files under `infrastructure/benchmarks/<run-id>/`. |
-| `local` | Generates local run files under `infrastructure/local/benchmarks/<run-id>/`. |
-
-The default target is:
-
-```text
-cloud
-```
-
-Override it with:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --target local
-```
-
-to launch a benchmark campaign on your local machine.
-
-## Basic usage
-
-Create a campaign for all problems (please do this very carefully, especially if running on the cloud):
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
   --campaign my-test \
   --all
 ```
 
-This creates a run ID of the form:
-
-```text
-YYYYMMDD-my-test
-```
-
-## Configuration files
-
-Campaigns can also be defined through a YAML configuration file.
-
-A complete template is provided in:
-
-```text
-benchmarks/config.campaign.default.yaml
-```
-
-Run a campaign directly from a configuration file:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml
-```
-
-Command-line arguments always override values defined in the configuration file.
-
-For example:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml \
-  --campaign my-test \
-  --timeout-hours 6
-```
-
-
-## Select problems
-
-Select one or more problems by their exact `results/metadata.yaml` ID:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign pypsa-eur-test \
-  --problem pypsa-eur-elec-op-2-1h pypsa-eur-elec-op-3-2h
-```
-
-Select problems by size class:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign pypsa-eur-small-medium \
-  --all \
-  --size S M
-```
-
-Combine a problem list with a size filter:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign pypsa-eur-filtered \
-  --problem pypsa-eur-elec-op-2-1h pypsa-eur-elec-op-3-2h \
-  --size S M
-```
-
-Include metadata entries marked as skipped (due to known timeout or memory issues):
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign clean-test \
-  --all \
-  --do-not-skip
-```
-
-## Cloud VM allocation
-
-This section only applies to cloud campaigns.
-
-By default, the script creates one VM per selected problem.
-
-Use a custom number of VMs with:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign packed-test \
-  --all \
-  --num-vms 5
-```
-
-## Cloud machine settings
-
-By default, problems are assigned to VM profiles automatically based on their metadata size class:
-
-| Size class | Machine profile | GCP machine type | Timeout |
-| ---------- | --------------- | ---------------- | -------- |
-| S, M | short | c4-standard-2 | 1 hour |
-| L | long | c4-highmem-16 | 24 hours |
-
-Default zone:
-
-```text
-us-central1-a
-```
-
-When `--machine-type` is specified, all selected problems use the chosen profile regardless of their size classification.
-
-## Timeout policy
-
-If no timeout is provided, the script applies the default timeout policy:
-
-```text
-S/M problems: 1 hour
-L problems:   24 hours
-```
-
-Override the timeout:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign timeout-test \
-  --all \
-  --timeout-hours 6
-```
-
-## Solver and year selection
-
-By default, the generated VM YAML files run all the following solver configurations:
-
-```text
-gurobi-default highs-default scip-default cbc-default glpk-default
-```
-
-The default solver year is:
-
-```text
-2025
-```
-
-Each solver configuration runs in its own per-solver-year conda env, e.g. for `highs-default` in 2025:
-
-```text
-benchmark-highs-2025
-```
-
-See `runner/config/solvers.yaml` for the full registry, and `runner/config/solver_configurations.yaml`
-for the available named configurations (e.g. `highs-hipo`).
-
-Run specific solvers for one or more years:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign year-test \
-  --all \
-  --solver-configurations cbc-default highs-default \
-  --years 2024 2025
-```
-
-## Campaign summary
-
-Every generated campaign includes a:
-
-```text
-campaign_summary.csv
-```
-
-containing the problem selection, campaign configuration, solver selection,
-timeout settings, allocation decisions, and metadata used to create the campaign.
-
-## Existing campaign directories
-
-The script fails if the target campaign directory already exists.
-
-Use a different campaign name, remove the existing directory, or overwrite it:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --campaign my-test \
-  --all \
-  --force
-```
-
-## Launching a cloud campaign
-
-After reviewing the generated files, launch the campaign from the infrastructure directory:
-
-```bash
-cd infrastructure
-
-tofu apply \
-  -var-file benchmarks/<run-id>/run.tfvars \
-  -state=states/<run-id>.tfstate
-```
-
-## Launching a local campaign
-
-Generate a local campaign:
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --target local \
-  --campaign my-local-run \
-  --problem pypsa-de-elec-op-2-1h
-```
-
-This creates:
-
-```text
-infrastructure/local/benchmarks/<run-id>/
-├── campaign_summary.csv
-├── local_benchmarks.yaml
-└── run_local.sh
-```
-
-By default, local campaigns ask for confirmation before execution.
-
-The generated run script can also be executed manually:
-
-```bash
-bash infrastructure/local/benchmarks/<run-id>/run_local.sh
-```
-
-Local campaigns use the existing `runner.benchmark` CLI and execute problems sequentially.
-
-## Example workflows
-
-### Cloud campaign
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml \
-  --campaign pypsa-de-scaling
-
-cd infrastructure
-
-tofu apply \
-  -var-file benchmarks/<run-id>/run.tfvars \
-  -state=states/<run-id>.tfstate
-```
-
-### Local campaign
-
-```bash
-python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml \
-  --target local \
-  --campaign pypsa-de-local
-```
-
-The campaign generator creates the local benchmark files and asks whether the benchmark run should be started immediately.
-
-### Running your own problems
-
-To run your own problems, either locally or on the cloud, follow the steps in the appropriate section above but using a `problems.yaml` file of your own that gives the details (metadata) and URL/path of each problem.
-Here is a small example:
-
-```yaml
-problems:
-  genx-3_three_zones_w_co2_capture-no_uc-3-1h:
-    # Size classification
-    Size: M
-    # URL of the problem (needed for cloud runs)
-    URL: https://storage.googleapis.com/solver-benchmarks/genx-3_three_zones_w_co2_capture-no_uc.lp
-    # ALTERNATIVELY, for local runs, you can also give a local path
-    Path: tests/sample_benchmarks/sample_lp.lp
-```
-
-You can quickly try running your own problem locally on our supported set of solvers by following these [instructions](#running-supported-solvers-on-problems).
-
-### Running other solvers
-
-To run either our problems, or your own (see the previous section), on a solver that we do not yet support, you need to install it into the active conda environment, add a solver adapter module under `runner/utils/solvers/` (see any existing module there for the template), and add its tuning options to `runner/config/solver_configurations.yaml`. Please reach out to us (or open an issue) if you would like more details, or any help with this.
+This selects problems from `results/metadata.yaml`, allocates them across VMs, and writes the OpenTofu configuration under `infrastructure/benchmarks/<run-id>/` (or, with `--target local`, a local run script under `infrastructure/local/benchmarks/<run-id>/`). See [Benchmark Campaign Creation](benchmarks/CAMPAIGNS.md) for the full CLI reference (problem selection, VM/machine sizing, timeouts, solver/year selection, config files, adding your own problems or solvers), and `notebooks/benchmark-runner-quickstart.ipynb` for a worked example covering campaign creation, monitoring, and merging results into the website.
 
 ## Running the Website
 
@@ -487,7 +167,8 @@ Python environments for this repo (the `runner/` CLI, `notebooks/`, `benchmarks/
 scripts, and dev tooling) are managed by [pixi](https://pixi.sh) from the root
 `pixi.toml`. Install `pixi` (see the [installation instructions](https://pixi.sh/latest/installation/)),
 then run `pixi install --all` to set up all environments, or `pixi install -e <env>`
-for just one of `runner`, `notebooks`, `benchmarks`, or `dev`.
+for just one of `runner`, `notebooks`, `benchmarks`, or `dev`. See [notebooks/README.md](notebooks/README.md)
+for notebook-specific tips (running Jupyter, downloading results from GCS).
 
 We use the [ruff](https://docs.astral.sh/ruff) code linter and formatter, and GitHub Actions runs various pre-commit checks to ensure code and files are clean.
 

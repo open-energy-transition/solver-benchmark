@@ -1,0 +1,20 @@
+# Auto-translated from the old runner/envs/benchmark-mosek-2025.yaml (conda)
+# during the conda -> pixi solver-env migration (issue #478 PR5).
+[workspace]
+name = "benchmark-mosek-2025"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+# mosek's wheel is tagged cp39-abi3 (nominally forward-compatible with any
+# Python 3.9+), but actually importing it fails on 3.14 with a circular
+# ImportError on its native `_msk` extension -- the upper bound works around
+# that real runtime incompatibility, not just a resolver preference.
+python = ">=3.12,<3.13"
+pip = "*"
+psutil = ">=5.9"
+requests = ">=2.32"
+linopy = ">=0.5.5"
+
+[pypi-dependencies]
+mosek = "==11.0.30"  # last stable version released in 2025

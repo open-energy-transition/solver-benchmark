@@ -61,7 +61,7 @@ def run(
     """Run every problem in PROBLEMS_YAML_PATH against each solver
     configuration, once per given year.
 
-    For each year, creates any missing per-solver-year conda envs (see
+    For each year, installs any missing per-solver-year envs (see
     `runner/envs/`), then runs that year's registered and eligible solver
     configurations against every problem. A failing year, or one with no
     registered solver version for any requested configuration, is logged

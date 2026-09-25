@@ -52,6 +52,8 @@ problems:
     URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
 ```
 
+Each entry under `problems:` is a single, specific problem instance (see `runner/utils/metadata.py`'s `load_problems`) -- there's no separate nested list for multiple sizes of the same model; each size gets its own top-level entry with a distinct ID.
+
 ### 3. Set Up Opentofu Variables
 
 ### OpenTofu Variables

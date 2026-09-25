@@ -57,20 +57,22 @@ Please include along with each benchmark submission, the following metadata. Fur
 For example, here is an entry in the `benchmarks/pypsa/metadata.yaml` file:
 
 ```yaml
-pypsa-eur-sec-2-lv1-3h:
-  Short description: Sector-coupled PyPSA-Eur run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
-  Model name: PyPSA-Eur
-  Version: 0.12.0 (commit b328169)
-  Technique: LP
-  Kind of problem: Infrastructure
-  Sectors: Sector-coupled (power + heating, biomass, industry, transport)
-  Time horizon: Single period (1 year)
-  MILP features: None
-  Sizes:
-  - URL: https://todo.todo/todo.lp
+problems:
+  pypsa-eur-sec-2-lv1-3h:
+    Short description: Sector-coupled PyPSA-Eur run for Italy considering 2050 as single planning horizon (LP, lot of variables, strongly intermeshed constraints)
+    Model name: PyPSA-Eur
+    Version: 0.12.0 (commit b328169)
+    Technique: LP
+    Kind of problem: Infrastructure
+    Sectors: Sector-coupled (power + heating, biomass, industry, transport)
+    Time horizon: Single period (1 year)
+    MILP features: None
+    URL: https://todo.todo/todo.lp
     Temporal resolution: 3 hourly
     Spatial resolution: 2 nodes
 ```
+
+Each entry under `problems:` is one specific problem instance -- if your model comes in multiple sizes (e.g. varying spatial or temporal resolution), give each its own entry with a distinct ID (e.g. `pypsa-eur-sec-2-lv1-3h` vs. `pypsa-eur-sec-10-lv1-3h`), not a single entry with a nested list of sizes.
 
 ## Target modelling frameworks
 
