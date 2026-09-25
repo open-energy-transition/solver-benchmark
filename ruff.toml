@@ -1,5 +1,9 @@
 target-version = "py312"
 line-length = 88
+# Retired code, kept for reference only. force-exclude also applies this to
+# files pre-commit passes explicitly.
+extend-exclude = ["archive"]
+force-exclude = true
 
 # Code that also runs inside the per-solver environments (runner/envs/), some
 # of which use Python 3.10: keep rules like pyupgrade from rewriting it with
@@ -32,6 +36,7 @@ select = [
     "PT", # flake8-pytest-style
     "PTH", # flake8-use-pathlib
     "DTZ", # flake8-datetimez
+    "D", # pydocstyle
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
@@ -45,6 +50,14 @@ allowed-confusables = ["–"]
 [format]
 docstring-code-format = true
 
+[lint.pydocstyle]
+convention = "numpy"
+
 [lint.per-file-ignores]
-# Exploratory analysis notebooks: file handling style isn't worth enforcing
-"notebooks/**" = ["PTH"]
+# Exploratory analysis notebooks: file handling and docstrings aren't worth
+# enforcing
+"notebooks/**" = ["PTH", "D"]
+# Test names and assertions document the tests
+"runner/tests/**" = ["D"]
+# Model-generation scripts for individual benchmarks, not repo tooling
+"benchmarks/*/**" = ["D"]

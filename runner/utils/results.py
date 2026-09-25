@@ -1,5 +1,6 @@
-"""The benchmark-results CSV schema: what a result record looks like, and how
-it's written to disk.
+"""The benchmark-results CSV schema.
+
+What a result record looks like, and how it's written to disk.
 
 Kept separate from `execution.py` because "what a result record looks like"
 and "how a solver process is run" are independent concerns that change for

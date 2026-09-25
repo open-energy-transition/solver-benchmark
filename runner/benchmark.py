@@ -1,5 +1,7 @@
-"""Unified CLI for running problems against solver configurations across one
-or more solver-version years.
+"""Unified CLI for running benchmark problems.
+
+Runs problems against solver configurations across one or more
+solver-version years.
 
 A package module invoked via `python -m runner.benchmark`, run from the repo root.
 """
@@ -70,8 +72,9 @@ def run(
         "Auto-generated from the current time and hostname if not given.",
     ),
 ) -> None:
-    """Run every problem in PROBLEMS_YAML_PATH against each solver
-    configuration, once per given year.
+    """Run every problem in PROBLEMS_YAML_PATH against each solver configuration.
+
+    Runs them once per given year.
 
     For each year, installs any missing per-solver-year envs (see
     `runner/envs/`), then runs that year's registered and eligible solver

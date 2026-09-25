@@ -18,7 +18,7 @@ except ModuleNotFoundError:
 
 
 def is_mip(model: Any) -> bool | None:
-    """Always None: CBC's result object doesn't say, see `integer_values`."""
+    """Return None: CBC's result object doesn't say, see `integer_values`."""
     return None
 
 

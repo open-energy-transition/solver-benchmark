@@ -35,6 +35,7 @@ class BlankNoneDumper(yaml.Dumper):
     """YAML dumper that renders `None` values as a blank scalar instead of `null`."""
 
     def represent_none(self, _: Any) -> yaml.Node:
+        """Represent `None` as an empty null scalar."""
         return self.represent_scalar("tag:yaml.org,2002:null", "")
 
 

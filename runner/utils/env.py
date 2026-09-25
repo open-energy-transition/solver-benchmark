@@ -1,6 +1,7 @@
-"""Solver version/environment introspection: which solver package version is
-actually installed, and which per-solver-year env provides a given solver
-configuration for a given run.
+"""Solver version and environment introspection.
+
+Which solver package version is actually installed, and which
+per-solver-year env provides a given solver configuration for a given run.
 
 Each solver-year has its own pixi manifest under `runner/envs/<env>/` (its
 own `pixi.toml`/`pixi.lock`, not part of the root workspace) -- isolating

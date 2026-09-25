@@ -1,5 +1,6 @@
-"""Allocate benchmark problems across cloud VMs for a campaign, and scaffold
-the Terraform/OpenTofu files to launch it.
+"""Allocate benchmark problems across cloud VMs for a campaign.
+
+Also scaffolds the Terraform/OpenTofu files to launch it.
 
 VM/cloud campaign allocation only -- loading problem metadata now lives in
 `metadata.py`, since it's also needed by the CLI/orchestrator.

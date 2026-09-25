@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""
-Check that each benchmark problem has been run on the expected number of
-solvers, and flag any problem missing from the results entirely.
+"""Check that each benchmark problem was run on the expected number of solvers.
+
+Also flags any problem missing from the results entirely.
 
 Cross-references results/benchmark_results.csv against results/metadata.yaml:
 each metadata problem is bucketed by size category (short-timeout S/M vs.

@@ -1,5 +1,7 @@
-"""The per-problem run loop: ties `metadata`, `config`, `env`, `execution`,
-and `results` together into an actual benchmark run.
+"""The per-problem run loop of a benchmark run.
+
+Ties `metadata`, `config`, `env`, `execution`, and `results` together into
+an actual benchmark run.
 
 Imported by `runner/benchmark.py`'s Typer CLI. Kept importable (not inlined
 in the CLI) so it's testable without going through Typer's CLI-parsing layer.

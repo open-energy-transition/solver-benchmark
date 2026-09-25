@@ -1,5 +1,6 @@
-"""Move files between this machine and cloud storage/VMs: pulling
-in-progress results off benchmark VMs, and downloading benchmark problem
+"""Move files between this machine and cloud storage or VMs.
+
+Pulls in-progress results off benchmark VMs, and downloads benchmark problem
 files from GCS or plain HTTP(S) URLs.
 """
 
