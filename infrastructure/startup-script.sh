@@ -41,7 +41,7 @@ chmod a+x /usr/local/bin/yq
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
-gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
+gcloud storage cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
 # Clone the repository
 echo "Cloning repository..."
@@ -50,7 +50,7 @@ git clone --depth=1 -b main https://github.com/open-energy-transition/solver-ben
 # Install a global highs binary for reference runs
 echo "Installing reference Highs..."
 mkdir -p /opt/highs/bin
-gsutil cp gs://solver-benchmarks/HiGHSstatic.tar.gz ./
+gcloud storage cp gs://solver-benchmarks/HiGHSstatic.tar.gz ./
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
@@ -162,8 +162,8 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     # Get the instance name for file names
     INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
 
-    # Ensure gsutil is available (should be on GCP instances by default)
-    if ! command -v gsutil &> /dev/null; then
+    # Ensure gcloud is available (should be on GCP instances by default)
+    if ! command -v gcloud &> /dev/null; then
         echo "Installing Google Cloud SDK..."
         apt-get install -y apt-transport-https ca-certificates gnupg curl
         echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -181,7 +181,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         # Upload the results file to GCS bucket
         echo "Uploading results CSV to GCS bucket..."
         RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
-        gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
+        gcloud storage cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
 
         if [ $? -eq 0 ]; then
             echo "Results CSV upload successfully completed at $(date)"
@@ -208,9 +208,9 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         # Check if file contains "gurobi" in the name
         if [[ "${filename}" == *"gurobi"* ]]; then
             echo "File contains 'gurobi' in name, storing in restricted folder..."
-            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
+            gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
         else
-            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
+            gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
         fi
 
         if [ $? -eq 0 ]; then
@@ -231,7 +231,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
 
         echo "Uploading ${compressed_file} to GCS bucket..."
 
-        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}/${filename}.gz"
+        gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}/${filename}.gz"
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded ${filename}.gz"
@@ -251,7 +251,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         gzip -c "${STARTUP_LOG_FILE}" > "${COMPRESSED_STARTUP_LOG}"
 
         echo "Uploading ${COMPRESSED_STARTUP_LOG} to GCS bucket..."
-        gsutil cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${STARTUP_LOG_FILENAME}"
+        gcloud storage cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${STARTUP_LOG_FILENAME}"
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded startup script log as ${STARTUP_LOG_FILENAME}"
