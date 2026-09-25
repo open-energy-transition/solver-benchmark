@@ -32,14 +32,40 @@ const colorMap: Record<string, string> = {
   scip: "#3B82F6", // blue,
   "highs-hipo": "#ff48c2", // rose
   "highs-ipx": "#6a721d", // olive
+  "highs-hipo-32": "#fabebe", // pink
+  "highs-hipo-64": "#e6beff", // lavender
+  "highs-hipo-128": "#aa6e28", // brown
+  cplex: "#f58231", // orange
+  knitro: "#008080", // teal
+  xpress: "#f032e6", // magenta
+  mosek: "#800000", // maroon
 };
 
 export function getChartColor(index: number): string {
   return presetColors[index % presetColors.length];
 }
 
+// Preset colors not already assigned to a solver in colorMap
+const unassignedColors = presetColors.filter(
+  (color) =>
+    !Object.values(colorMap).some(
+      (assigned) => assigned.toLowerCase() === color.toLowerCase(),
+    ),
+);
+
 export function getSolverColor(solver: string): string {
-  return colorMap[solver] || getChartColor(Object.keys(colorMap).length + 1);
+  if (colorMap[solver]) {
+    return colorMap[solver];
+  }
+  // Solvers without an entry above (e.g. a configuration added to the
+  // runner later) get a color picked from their name, so it stays the same
+  // across page loads. Different names can share one; add an entry above to
+  // give a solver its own.
+  let hash = 0;
+  for (const char of solver) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }
+  return unassignedColors[hash % unassignedColors.length];
 }
 
 export const calculateScaleRangeAndTicks = (
