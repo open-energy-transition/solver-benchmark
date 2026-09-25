@@ -97,7 +97,7 @@ jobs:
             else
               echo "Skipping reCAPTCHA key check for PRs from forks or Dependabot."
             fi
-            npm install
+            npm ci
             # The build doesn't lint, so run ESLint explicitly
             npm run lint
             npm run build
@@ -140,7 +140,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd website
-          npm install
+          npm ci
 
       - name: Build Next.js
         run: |
