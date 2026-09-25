@@ -14,7 +14,7 @@ Each solver-version pair has its own conda environment (e.g., `benchmark-highs-2
 
 ### `solvers.yaml` — Solver Registry
 
-The source of truth for mapping solver names to version, release year, and conda env is `runner/solvers.yaml`
+The source of truth for mapping solver names to version, release year, and conda env is `runner/config/solvers.yaml`
 
 Example:
 ```yaml
@@ -120,7 +120,7 @@ docker run --rm \
 
 ## Running run_benchmarks.py
 
-Use `run_benchmarks.py` to run problems for a specific year with more control. Solver versions are looked up from `solvers.yaml` and each solver runs in its own conda env automatically. You need to create the per-solver conda environments first and activate any one of them (the script switches envs per solver internally).
+Use `run_benchmarks.py` to run problems for a specific year with more control. Solver versions are looked up from `runner/config/solvers.yaml` and each solver runs in its own conda env automatically. You need to create the per-solver conda environments first and activate any one of them (the script switches envs per solver internally).
 
 Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
 

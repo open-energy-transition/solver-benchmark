@@ -577,28 +577,17 @@ def flatten_config(config: dict) -> dict:
     -------
     dict
         Flat dictionary suitable for ``argparse.ArgumentParser.set_defaults``.
+
+    Raises
+    ------
+    ValueError
+        If the configuration contains a key this script doesn't know, e.g.
+        a selector left over from an older schema, which would otherwise be
+        silently ignored.
     """
-    flat = {}
-
-    if "target" in config:
-        flat["target"] = config["target"]
-
-    if "campaign" in config:
-        flat["campaign"] = config["campaign"]
-
-    selection = config.get("selection", {}) or {}
-    allocation = config.get("allocation", {}) or {}
-
-    for key in [
-        "all",
-        "problem",
-        "size",
-        "do_not_skip",
-    ]:
-        if key in selection:
-            flat[key] = selection[key]
-
-    for key in [
+    top_level_keys = ["target", "campaign", "selection", "allocation"]
+    selection_keys = ["all", "problem", "size", "do_not_skip"]
+    allocation_keys = [
         "num_vms",
         "weight_col",
         "machine_type",
@@ -606,10 +595,22 @@ def flatten_config(config: dict) -> dict:
         "timeout_hours",
         "years",
         "solver_configurations",
-    ]:
-        if key in allocation:
-            flat[key] = allocation[key]
+    ]
 
+    selection = config.get("selection", {}) or {}
+    allocation = config.get("allocation", {}) or {}
+
+    unknown_keys = (
+        [key for key in config if key not in top_level_keys]
+        + [f"selection.{key}" for key in selection if key not in selection_keys]
+        + [f"allocation.{key}" for key in allocation if key not in allocation_keys]
+    )
+    if unknown_keys:
+        raise ValueError(f"Unknown campaign config key(s): {', '.join(unknown_keys)}")
+
+    flat = {key: config[key] for key in ["target", "campaign"] if key in config}
+    flat.update({key: selection[key] for key in selection_keys if key in selection})
+    flat.update({key: allocation[key] for key in allocation_keys if key in allocation})
     return flat
 
 
@@ -881,7 +882,10 @@ def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
         If ``True``, skip confirmation and run immediately.
     """
     if not yes:
-        answer = input("\nProceed with local execution? [y/N] ").strip().lower()
+        try:
+            answer = input("\nProceed with local execution? [y/N] ").strip().lower()
+        except EOFError:  # no interactive stdin, e.g. in CI
+            answer = ""
         if answer != "y":
             print("\nLocal campaign generated, execution skipped.")
             return
