@@ -9,7 +9,7 @@ def is_mip(model: Any) -> bool:
     return any(t in ("I", "B") for t in model.variables.get_types())
 
 
-def duality_gap(model: Any) -> float:
+def duality_gap(model: Any, log_fn: Path) -> float:
     """CPLEX's own reported relative MIP gap."""
     return model.solution.MIP.get_mip_relative_gap()
 

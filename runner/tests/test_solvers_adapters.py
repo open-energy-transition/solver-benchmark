@@ -9,6 +9,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
+import pytest
+
 from runner.utils.config import load_solver_registry
 from runner.utils.solvers import SOLVER_ADAPTERS
 
@@ -161,6 +163,14 @@ class TestNativeModelIntegerValues:
         model.getnumintvar.return_value = 0
         assert mosek.integer_values(model, _P, _S) == {}
 
+    def test_knitro_mip_status_and_gap_come_from_its_result(self):
+        knitro = importlib.import_module("runner.utils.solvers.knitro")
+        result = SimpleNamespace(n_integer_vars=3, mip_rel_gap=0.002)
+        assert knitro.is_mip(result) is True
+        assert knitro.duality_gap(result, Path("k.log")) == 0.002
+        assert knitro.is_mip(SimpleNamespace(n_integer_vars=0)) is False
+        assert knitro.is_mip(SimpleNamespace()) is None
+
     def test_knitro_is_unavailable(self):
         knitro = importlib.import_module("runner.utils.solvers.knitro")
         assert knitro.integer_values(MagicMock(), _P, _S) is None
@@ -273,3 +283,87 @@ class TestGlpkIntegerValues:
         glpk = importlib.import_module("runner.utils.solvers.glpk")
         report = "Problem:\nRows:       3\nColumns:    3\nStatus:     OPTIMAL\n\n"
         assert glpk.integer_values(None, _P, self._write(tmp_path, report)) == {}
+
+
+class TestCbcDualityGap:
+    """CBC's gap comes from its log, not its rounded ``Gap:`` line."""
+
+    def _gap(self, tmp_path, log_text):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        log_fn = tmp_path / "cbc.log"
+        log_fn.write_text(log_text)
+        return cbc.duality_gap(MagicMock(mip_gap=0.0), log_fn)
+
+    def test_gap_tolerance_exit_uses_objective_and_bound(self, tmp_path):
+        # From a real CBC run on FINE-water-supply-system-12-8760ts, where
+        # CBC's own "Gap:" line rounds 0.0035 down to 0.00
+        log = (
+            "Cbc0011I Exiting as integer gap of 3.9777742 less than 1e-10 or 5%\n"
+            "Cbc0001I Search completed - best objective 1138.452576141979\n"
+            "Result - Optimal solution found (within gap tolerance)\n\n"
+            "Objective value:                1138.45257614\n"
+            "Lower bound:                    1134.475\n"
+            "Gap:                            0.00\n"
+        )
+        assert self._gap(tmp_path, log) == pytest.approx(
+            (1138.45257614 - 1134.475) / 1138.45257614
+        )
+
+    def test_completed_search_has_zero_gap(self, tmp_path):
+        log = (
+            "Cbc0001I Search completed - best objective 1444.372702107476\n"
+            "Result - Optimal solution found\n\n"
+            "Objective value:                1444.37270211\n"
+        )
+        assert self._gap(tmp_path, log) == 0.0
+
+    def test_unknown_without_a_bound_or_completed_search(self, tmp_path):
+        log = "Result - Stopped on time limit\n\nObjective value:  1.0\n"
+        assert self._gap(tmp_path, log) is None
+
+    def test_missing_log_is_unknown(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        assert cbc.duality_gap(MagicMock(), tmp_path / "missing.log") is None
+
+
+class TestGlpkRecoverResult:
+    """GLPK's status and objective, read from its report's header."""
+
+    def _recover(self, tmp_path, status, objective_line):
+        glpk = importlib.import_module("runner.utils.solvers.glpk")
+        solution_fn = tmp_path / "glpk.sol"
+        solution_fn.write_text(
+            "Problem:\n"
+            "Rows:       795\n"
+            "Columns:    582 (2 integer, 2 binary)\n"
+            f"Status:     {status}\n"
+            f"Objective:  {objective_line}\n\n"
+            "   No.   Row name        Activity     Lower bound   Upper bound\n"
+        )
+        return glpk.recover_result(_P, solution_fn)
+
+    def test_optimal_minimization_is_recovered(self, tmp_path):
+        result = self._recover(
+            tmp_path, "INTEGER OPTIMAL", "Minimize_System_Cost = 126750492.1 (MINimum)"
+        )
+        assert result == {
+            "status": "ok",
+            "condition": "optimal",
+            "objective": 126750492.1,
+        }
+
+    def test_maximization_is_not_recovered(self, tmp_path):
+        assert self._recover(tmp_path, "OPTIMAL", "obj = 5 (MAXimum)") is None
+
+    def test_non_optimal_status_is_not_recovered(self, tmp_path):
+        assert self._recover(tmp_path, "INTEGER UNDEFINED", "obj = 0 (MINimum)") is None
+
+    def test_missing_report_is_not_recovered(self, tmp_path):
+        glpk = importlib.import_module("runner.utils.solvers.glpk")
+        assert glpk.recover_result(_P, tmp_path / "missing.sol") is None
+
+    def test_only_glpk_defines_the_optional_hook(self):
+        with_hook = {
+            name for name, adapter in SOLVER_ADAPTERS.items() if adapter.recover_result
+        }
+        assert with_hook == {"glpk"}

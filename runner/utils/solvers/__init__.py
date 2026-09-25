@@ -1,7 +1,7 @@
 """Solver adapter registry: one plain Python module per solver, discovered
 automatically from this package's own directory.
 
-Each sibling module exports `is_mip(model)`, `duality_gap(model)`,
+Each sibling module exports `is_mip(model)`, `duality_gap(model, log_fn)`,
 `reported_runtime(model)`, and
 `integer_values(model, problem_fn, solution_fn)` for one solver (any existing module is a template).
 `SOLVER_ADAPTERS` is built by scanning this package's directory with
@@ -23,6 +23,8 @@ from pathlib import Path
 from typing import Any
 
 _REQUIRED_ATTRS = ("is_mip", "duality_gap", "reported_runtime", "integer_values")
+# Optional: only solvers whose output linopy can fail to parse define these
+_OPTIONAL_ATTRS = ("recover_result",)
 
 
 @dataclass(frozen=True)
@@ -35,9 +37,10 @@ class SolverAdapter:
         Given the solver's native model object, return whether the problem
         it solved was a MIP, or None if the model can't tell (see
         `integer_values`).
-    duality_gap : Callable[[Any], float | None]
-        Given the native model object, return the reported duality/MIP gap,
-        or None if unavailable.
+    duality_gap : Callable[[Any, Path], float | None]
+        Given the native model object and the log file linopy asked the
+        solver to write, return the relative duality/MIP gap, or None if
+        unavailable.
     reported_runtime : Callable[[Any], float | None]
         Given the native model object, return the solver's own reported
         solving time in seconds, or None if unavailable.
@@ -46,12 +49,19 @@ class SolverAdapter:
         file linopy wrote, return the solved value of every integer and
         binary variable, keyed by variable name: ``{}`` if the problem has
         none, None if the values can't be read (e.g. no feasible solution).
+    recover_result : Callable[[Path, Path], dict[str, Any] | None] | None
+        Optional. Given the problem and solution files, return the
+        solve's ``status``, ``condition`` and ``objective`` read straight
+        from the solver's own output, for when linopy fails to parse it;
+        None if they can't be read either. None if the solver has no such
+        fallback.
     """
 
     is_mip: Callable[[Any], bool | None]
-    duality_gap: Callable[[Any], float | None]
+    duality_gap: Callable[[Any, Path], float | None]
     reported_runtime: Callable[[Any], float | None]
     integer_values: Callable[[Any, Path, Path], dict[str, float] | None]
+    recover_result: Callable[[Path, Path], dict[str, Any] | None] | None = None
 
 
 def _discover_adapters() -> dict[str, SolverAdapter]:
@@ -79,7 +89,8 @@ def _discover_adapters() -> dict[str, SolverAdapter]:
                 f"required function(s): {', '.join(missing)}"
             )
         adapters[module_info.name] = SolverAdapter(
-            *(getattr(module, a) for a in _REQUIRED_ATTRS)
+            *(getattr(module, a) for a in _REQUIRED_ATTRS),
+            *(getattr(module, a, None) for a in _OPTIONAL_ATTRS),
         )
     return adapters
 
