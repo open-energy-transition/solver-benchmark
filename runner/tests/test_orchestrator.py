@@ -147,6 +147,12 @@ class TestRunBenchmark:
         )
         assert summary.iloc[0]["Runtime StdDev (s)"] == 0.0
 
+    def test_num_seeds_below_one_raises(self, problems_yaml):
+        with pytest.raises(ValueError, match="num_seeds must be at least 1"):
+            orchestrator.run_benchmark(
+                problems_yaml, ["highs-default"], year="2025", num_seeds=0
+            )
+
     def test_num_seeds_greater_than_one_varies_seed(self, problems_yaml, mocker):
         run_solver_mock = mocker.patch.object(
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)

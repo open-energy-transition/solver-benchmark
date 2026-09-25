@@ -48,6 +48,7 @@ def run(
         1,
         "--num-seeds",
         "-n",
+        min=1,
         help="Number of seeds to try per (problem, solver configuration) "
         "pair. When greater than 1, each repetition uses a different seed "
         "(1, 2, 3, ...) instead of the configuration's own fixed seed, to "

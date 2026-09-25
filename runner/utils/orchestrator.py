@@ -143,7 +143,8 @@ def run_benchmark(
     year : str, optional
         The solver-version year to run, e.g. `"2025"`.
     num_seeds : int, optional
-        Number of seeds to try per (problem, solver configuration) pair.
+        Number of seeds to try per (problem, solver configuration) pair;
+        must be at least 1.
         When greater than 1, each repetition overrides the configuration's
         own fixed seed with 1, 2, 3, ... (see `execution.run_solver`'s
         `seed` parameter) -- starting at 1, not 0, since CBC's own seed
@@ -175,6 +176,9 @@ def run_benchmark(
         Every solver run's metrics, keyed by `(problem_id, solver_configuration,
         solver_version)`.
     """
+    if num_seeds < 1:
+        raise ValueError(f"num_seeds must be at least 1, got {num_seeds}")
+
     environment_metadata = _gather_environment_metadata()
     hostname = environment_metadata["hostname"]
 
