@@ -260,10 +260,29 @@ class TestBenchmarkCli:
                 "highs-default",
             ],
         )
-        assert result.exit_code == 0, result.output
+        # Every year is still attempted, but the failure is reported via the
+        # exit code (infrastructure/startup-script.sh relies on it).
+        assert result.exit_code == 1, result.output
         assert "ERROR running the benchmark for year 2024" in result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
+
+    def test_year_with_no_registered_solver_version_fails(
+        self, problems_yaml, tmp_path
+    ):
+        # Previously this wrote a header-only CSV and exited 0.
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "1999",
+                "--solver-configurations",
+                "highs-default",
+            ],
+        )
+        assert result.exit_code == 1, result.output
+        assert "no registered solver version" in result.output
 
 
 class TestBenchmarkCliInvocation:
