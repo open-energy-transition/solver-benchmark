@@ -174,6 +174,7 @@ def ensure_solver_envs_installed(
             ["pixi", "install", "--locked", "--manifest-path", str(env_dir)],
             capture_output=True,
             text=True,
+            check=False,  # a failed install is logged and skipped below
         )
         if result.returncode != 0:
             print(

@@ -25,6 +25,10 @@ select = [
     "SIM", # flake8-simplify
     "C4", # flake8-comprehensions
     "RUF", # ruff-specific rules
+    "PIE", # flake8-pie
+    "PERF", # perflint
+    "EXE", # flake8-executable
+    "PLW", # pylint warnings
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.

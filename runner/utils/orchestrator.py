@@ -59,6 +59,7 @@ def _gather_environment_metadata() -> dict[str, str]:
             ["git", "rev-parse", "--short", "HEAD"],
             capture_output=True,
             text=True,
+            check=True,  # a failure is recorded as "unknown" below
         ).stdout.strip()
     except Exception as e:
         print(f"Error getting git commit hash: {e}")

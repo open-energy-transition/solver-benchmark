@@ -177,7 +177,7 @@ def is_http_url(url: str) -> bool:
     if not url:
         return False
     u = url.strip().lower()
-    return u.startswith("http://") or u.startswith("https://")
+    return u.startswith(("http://", "https://"))
 
 
 def get_extension(url_path: str) -> str:

@@ -152,11 +152,9 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"Found {len(urls)} URL(s). Checking with {max_workers} worker(s)...")
 
-    results: list[CheckResult] = []
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
         futures = {ex.submit(check_url, url): url for url in urls}
-        for fut in as_completed(futures):
-            results.append(fut.result())
+        results: list[CheckResult] = [fut.result() for fut in as_completed(futures)]
 
     # Stable output order for CI readability
     results.sort(key=lambda r: r.url)
