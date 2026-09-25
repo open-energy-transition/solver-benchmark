@@ -21,7 +21,7 @@ import requests
 from . import config, env
 from .execution import get_highs_binary_version, run_reference_highs_binary, run_solver
 from .metadata import load_problems
-from .results import write_csv_headers, write_csv_row, write_csv_summary_row
+from .results import ensure_csv_schema, write_csv_row, write_csv_summary_row
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _PROBLEMS_FOLDER = Path(__file__).resolve().parent.parent / "benchmarks"
@@ -77,11 +77,54 @@ def _gather_environment_metadata() -> dict[str, str]:
     return environment_metadata
 
 
+def _mean_and_stddev(values: list[Any]) -> tuple[float | None, float | None]:
+    """Mean and standard deviation of the numeric entries in `values`.
+
+    Non-numeric observations -- e.g. an OOM run's `"N/A"` runtime, or a
+    `None` memory reading -- are ignored rather than crashing `statistics`.
+
+    Returns
+    -------
+    tuple[float | None, float | None]
+        `(mean, stddev)`; stddev is 0 for a single observation, and both are
+        None if there are no numeric observations at all.
+    """
+    numeric = [
+        v for v in values if isinstance(v, (int, float)) and not isinstance(v, bool)
+    ]
+    if not numeric:
+        return None, None
+    if len(numeric) == 1:
+        return numeric[0], 0
+    return statistics.mean(numeric), statistics.stdev(numeric)
+
+
+def _combine_seed_metrics(last_seed_metrics: dict[str, Any]) -> dict[str, Any]:
+    """Build the one `benchmark_results.csv` row for a multi-seed run.
+
+    Runtime and memory are the means across seeds. Everything else --
+    status, termination condition, objective, gaps, and the seed itself --
+    is the last seed's. Since the seed loop stops at the first seed that
+    isn't "ok", the combined status is "ok" only if every seed was, and
+    otherwise that failing seed's status. Keeping the last seed's `seed`
+    also keeps the website's log/solution links pointing at real files.
+
+    Parameters
+    ----------
+    last_seed_metrics : dict[str, Any]
+        The last seed's metrics, with `runtime_mean` and `memory_mean` set.
+    """
+    combined = dict(last_seed_metrics)
+    combined["runtime"] = last_seed_metrics["runtime_mean"]
+    combined["memory"] = last_seed_metrics["memory_mean"]
+    return combined
+
+
 def run_benchmark(
     problems_yaml_path: str | Path,
     solver_configurations: list[str],
     year: str | None = None,
-    iterations: int = 1,
+    num_seeds: int = 1,
     reference_interval: int = 0,  # Default: disabled
     append: bool = False,
     run_id: str | None = None,
@@ -99,10 +142,23 @@ def run_benchmark(
         registered for `year` at all (see `env.get_registered_solver_versions`).
     year : str, optional
         The solver-version year to run, e.g. `"2025"`.
-    iterations : int, optional
-        Repetitions per (problem, solver configuration) pair. A timeout or
-        error on one iteration skips the rest. Statistics are still recorded
-        when this is 1 (mean == the single value, stddev == 0).
+    num_seeds : int, optional
+        Number of seeds to try per (problem, solver configuration) pair;
+        must be at least 1.
+        When greater than 1, each repetition overrides the configuration's
+        own fixed seed with 1, 2, 3, ... (see `execution.run_solver`'s
+        `seed` parameter) -- starting at 1, not 0, since CBC's own seed
+        option treats 0 as "use the time of day" rather than an actual
+        fixed seed -- so repeated runs sample the solver's actual
+        sensitivity to its seed rather than just re-measuring one
+        deterministic solve. A timeout, error or out-of-memory on one
+        repetition skips the rest. When greater than 1, each repetition's
+        row goes to `benchmark_results_seeds.csv` instead, and
+        `benchmark_results.csv` gets one combined row per pair (see
+        `_combine_seed_metrics`), so it keeps one row per problem, solver
+        configuration and version. When 1, no seed override is passed (the
+        configuration's own fixed seed applies), and the single row goes to
+        `benchmark_results.csv` as before.
     reference_interval : int, optional
         Minimum seconds between reference-benchmark runs (see
         `execution.run_reference_highs_binary`), interleaved between real
@@ -120,6 +176,9 @@ def run_benchmark(
         Every solver run's metrics, keyed by `(problem_id, solver_configuration,
         solver_version)`.
     """
+    if num_seeds < 1:
+        raise ValueError(f"num_seeds must be at least 1, got {num_seeds}")
+
     environment_metadata = _gather_environment_metadata()
     hostname = environment_metadata["hostname"]
 
@@ -139,10 +198,19 @@ def run_benchmark(
 
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
+    # Per-seed rows of multi-seed runs, kept out of the main results file
+    seeds_csv = results_folder / "benchmark_results_seeds.csv"
+    seed_rows_csv = seeds_csv if num_seeds > 1 else results_csv
 
-    # Write headers if overriding or file doesn't exist
-    if not append or not results_csv.exists() or not mean_stddev_csv.exists():
-        write_csv_headers(results_csv, mean_stddev_csv)
+    # Write headers if overriding or a file doesn't exist yet; otherwise
+    # widen an existing file to the current schema in place if it predates a
+    # column added since (see `ensure_csv_schema`'s own docstring).
+    ensure_csv_schema(
+        results_csv,
+        mean_stddev_csv,
+        append,
+        seeds_csv=seeds_csv if num_seeds > 1 else None,
+    )
     os.makedirs(_PROBLEMS_FOLDER, exist_ok=True)
 
     registered_solver_versions = env.get_registered_solver_versions(
@@ -192,16 +260,30 @@ def run_benchmark(
             runtimes = []
             memory_usages = []
             timestamp = ""
+            first_timestamp = ""
 
-            for i in range(iterations):
+            # Seeds start at 1, not 0: CBC's own seed option (randomCbcSeed)
+            # treats 0 as a sentinel meaning "use the time of day" instead of
+            # an actual fixed seed (see solver_configurations.yaml's own
+            # comment on cbc-default), which would make that repetition
+            # silently non-deterministic. No other solver here gives 0 any
+            # special meaning, so starting at 1 is safe for all of them.
+            for seed_index in range(1, num_seeds + 1):
+                # Vary the seed across repetitions so they sample the
+                # solver's actual sensitivity to it.
+                seed = seed_index if num_seeds > 1 else None
+
                 print(
                     f"Running solver {solver_configuration} (version {solver_version}) "
-                    f"on {problem['path']} ({i})...",
+                    f"on {problem['path']} ({seed_index})"
+                    + (f" with seed {seed}" if seed is not None else "")
+                    + "...",
                     flush=True,
                 )
 
                 # Record timestamp before running the solver
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+                first_timestamp = first_timestamp or timestamp
 
                 metrics = run_solver(
                     problem["path"],
@@ -209,6 +291,7 @@ def run_benchmark(
                     timeout,
                     solver_version,
                     env_name=env_name,
+                    seed=seed,
                 )
 
                 # NOTE: results.csv_record expects the kwarg "solver" (its CSV
@@ -217,13 +300,20 @@ def run_benchmark(
                 metrics["solver"] = solver_configuration
                 metrics["solver_version"] = solver_version
                 metrics["solver_release_year"] = year
+                # Record the seed actually used: the override if there is
+                # one, otherwise the one fixed in the configuration itself.
+                metrics["seed"] = (
+                    seed
+                    if seed is not None
+                    else config.get_configured_seed(solver_configuration)
+                )
 
                 runtimes.append(metrics["runtime"])
                 memory_usages.append(metrics["memory"])
 
                 # Write each result immediately after the measurement
                 write_csv_row(
-                    results_csv,
+                    seed_rows_csv,
                     problem["problem_id"],
                     metrics,
                     run_id,
@@ -231,25 +321,28 @@ def run_benchmark(
                     **environment_metadata,
                 )
 
-                # If solver errors or times out, don't run further iterations
-                if metrics["status"] in {"ER", "TO"}:
+                # If the solver errors, times out, or runs out of memory,
+                # don't try further seeds: memory use in particular barely
+                # depends on the seed, so later seeds would fail the same way.
+                if metrics["status"] in {"ER", "TO", "OOM"}:
                     break
 
-            # Calculate mean and standard deviation. Guarded by how many
-            # runtimes were actually collected, not the requested
-            # `iterations`: an error/timeout on the first iteration breaks
-            # the loop above early, leaving a single-element `runtimes`
-            # even when `iterations` > 1, and stdev requires 2+ points.
-            if len(runtimes) > 1:
-                metrics["runtime_mean"] = statistics.mean(runtimes)
-                metrics["runtime_stddev"] = statistics.stdev(runtimes)
-                metrics["memory_mean"] = statistics.mean(memory_usages)
-                metrics["memory_stddev"] = statistics.stdev(memory_usages)
-            else:
-                metrics["runtime_mean"] = runtimes[0]
-                metrics["runtime_stddev"] = 0
-                metrics["memory_mean"] = memory_usages[0]
-                metrics["memory_stddev"] = 0
+            metrics["runtime_mean"], metrics["runtime_stddev"] = _mean_and_stddev(
+                runtimes
+            )
+            metrics["memory_mean"], metrics["memory_stddev"] = _mean_and_stddev(
+                memory_usages
+            )
+
+            if num_seeds > 1:
+                write_csv_row(
+                    results_csv,
+                    problem["problem_id"],
+                    _combine_seed_metrics(metrics),
+                    run_id,
+                    first_timestamp,
+                    **environment_metadata,
+                )
 
             # Write mean and standard deviation to CSV
             # NOTE: this uses the last iteration's values for status, condition, etc

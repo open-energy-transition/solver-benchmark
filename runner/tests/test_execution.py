@@ -117,6 +117,28 @@ class TestRunSolver:
         ]
         assert called_cmd[called_cmd.index("runner.utils.solver") - 1] == "-m"
 
+    def test_seed_is_appended_to_command(self, mocker):
+        cp = subprocess.CompletedProcess(
+            args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
+        )
+        mocker.patch("runner.utils.execution._systemd_available", return_value=False)
+        run_mock = mocker.patch(
+            "runner.utils.execution.subprocess.run", return_value=cp
+        )
+        run_solver("problem.lp", "highs", timeout=3600, solver_version="1.9.0", seed=42)
+        called_cmd = run_mock.call_args[0][0]
+        assert called_cmd[-2:] == ["--seed", "42"]
+
+    def test_no_seed_omits_seed_flag(self, mocker):
+        # Backward compatibility: omitting `seed` must produce the exact
+        # same command as before this argument existed.
+        cp = subprocess.CompletedProcess(
+            args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
+        )
+        _, run_mock = self._run(mocker, cp)
+        called_cmd = run_mock.call_args[0][0]
+        assert "--seed" not in called_cmd
+
     def test_env_name_uses_pixi_run(self, mocker):
         cp = subprocess.CompletedProcess(
             args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"

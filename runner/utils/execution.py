@@ -70,6 +70,7 @@ def run_solver(
     timeout: int,
     solver_version: str,
     env_name: str | None = None,
+    seed: int | None = None,
 ) -> dict[str, Any]:
     """Run one solver configuration on one problem file, with resource limits.
 
@@ -94,6 +95,10 @@ def run_solver(
         If given, run inside this env (a pixi manifest at
         `runner/envs/<env_name>/`) via `pixi run --manifest-path` instead of
         the current one.
+    seed : int, optional
+        If given, overrides the configuration's own fixed seed (see
+        `solver.get_solver`), e.g. for running the same configuration under
+        several different seeds.
 
     Notes
     -----
@@ -168,6 +173,8 @@ def run_solver(
             solver_version,
         ]
     )
+    if seed is not None:
+        command.extend(["--seed", str(seed)])
 
     # Prepend (not replace) PYTHONPATH so `runner` resolves as a package --
     # see this module's docstring for why PYTHONPATH rather than `cwd`.
@@ -193,7 +200,7 @@ def run_solver(
     # Append the stderr to the log file
     log_file = (
         _LOGS_DIR
-        / f"{Path(input_file).stem}-{solver_configuration}-{solver_version}.log"
+        / f"{config.get_output_stem(input_file, solver_configuration, solver_version, seed)}.log"
     )
     if log_file.exists():
         with open(log_file, "a") as f:

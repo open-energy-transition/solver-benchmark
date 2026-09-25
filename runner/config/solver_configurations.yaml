@@ -24,10 +24,13 @@
 #     package's own option-key vocabulary (hence the very different-looking
 #     names for the same underlying setting, e.g. HiGHS's "mip_rel_gap" vs
 #     Gurobi's "MIPGap" vs CPLEX's "mip.tolerances.mipgap" all reference
-#     `shared.mip_gap`). Seed values are NOT unified across solvers --
-#     GLPK/SCIP default to 0, CBC to 1 (0 means "time of day" for CBC
-#     specifically), the rest to 4 -- preserved as-is rather than
-#     homogenized here. A non-default configuration's `options` entirely
+#     `shared.mip_gap`). Seed values default to 0 for every solver except
+#     CBC, whose own seed option (randomCbcSeed) treats 0 as "use the time
+#     of day" rather than an actual fixed seed -- confirmed via each
+#     solver's own option docs that 0 is an ordinary, deterministic value
+#     everywhere else (some solvers have their own *different* "auto"
+#     sentinel instead, e.g. Xpress's is -1, GLPK's is the literal string
+#     "?" -- none of them is 0). A non-default configuration's `options` entirely
 #     replace its solver's default-configuration options (rather than
 #     layering on top), matching how picking a specific algorithm is an
 #     all-or-nothing choice.
@@ -68,7 +71,7 @@ configurations:
   highs-default:
     solver_package: highs
     options:
-      random_seed: 4
+      random_seed: 0
       mip_rel_gap: { shared: mip_gap }
       primal_feasibility_tolerance: { shared: lp_tolerance }
       dual_feasibility_tolerance: { shared: lp_tolerance }
@@ -121,7 +124,7 @@ configurations:
   gurobi-default:
     solver_package: gurobi
     options:
-      seed: 4
+      seed: 0
       MIPGap: { shared: mip_gap }
       FeasibilityTol: { shared: lp_tolerance }
       OptimalityTol: { shared: lp_tolerance }
@@ -131,7 +134,7 @@ configurations:
   cplex-default:
     solver_package: cplex
     options:
-      randomseed: 4
+      randomseed: 0
       mip.tolerances.mipgap: { shared: mip_gap }
       simplex.tolerances.feasibility: { shared: lp_tolerance }
       simplex.tolerances.optimality: { shared: lp_tolerance }
@@ -140,7 +143,7 @@ configurations:
   knitro-default:
     solver_package: knitro
     options:
-      ms_seed: 4
+      ms_seed: 0
       mip_opt_gap_rel: { shared: mip_gap }
       feastol: { shared: lp_tolerance }
       opttol: { shared: lp_tolerance }
@@ -149,7 +152,7 @@ configurations:
   xpress-default:
     solver_package: xpress
     options:
-      randomseed: 4
+      randomseed: 0
       miprelstop: { shared: mip_gap }
       FEASTOL: { shared: lp_tolerance }
       OPTIMALITYTOL: { shared: lp_tolerance }
@@ -158,7 +161,7 @@ configurations:
   mosek-default:
     solver_package: mosek
     options:
-      MSK_IPAR_MIO_SEED: 4
+      MSK_IPAR_MIO_SEED: 0
       MSK_IPAR_INTPNT_BASIS: MSK_BI_NEVER
       MSK_DPAR_MIO_TOL_REL_GAP: { shared: mip_gap }
       MSK_DPAR_INTPNT_TOL_PFEAS: { shared: lp_tolerance }

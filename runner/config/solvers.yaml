@@ -20,6 +20,13 @@
 # needs, forwarded to systemd-run's isolated scope via `--setenv=` (it
 # doesn't inherit the caller's environment by default -- see
 # `execution.run_solver`). Only solvers that need one are listed.
+#
+# `seed_options`: the options key that holds a solver package's random seed,
+# in its own option vocabulary (see solver_configurations.yaml) -- lets a
+# caller override just the seed while keeping a configuration's other tuned
+# options (e.g. for running multiple seeds of the same configuration; see
+# `solver.get_solver`'s `seed` parameter). Every solver package listed in
+# `packages` above has an entry here.
 solvers:
   glpk:
     "5.0":
@@ -134,3 +141,14 @@ license_env_vars:
   knitro: [ARTELYS_LICENSE]
   xpress: [XPRESS, LD_LIBRARY_PATH]
   mosek: [MOSEKLM_LICENSE_FILE]
+
+seed_options:
+  glpk: seed
+  highs: random_seed
+  scip: randomization/randomseedshift
+  gurobi: seed
+  cbc: randomCbcSeed
+  cplex: randomseed
+  knitro: ms_seed
+  xpress: randomseed
+  mosek: MSK_IPAR_MIO_SEED

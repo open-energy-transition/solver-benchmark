@@ -88,6 +88,63 @@ class TestBenchmarkCli:
         assert list(results["Problem"]) == ["tiny-problem"]
         assert results.iloc[0]["Solver Release Year"] == 2025
 
+    def test_num_seeds_flag_varies_seed_across_repetitions(
+        self, problems_yaml, tmp_path
+    ):
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+                "--num-seeds",
+                "3",
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        seeds = pd.read_csv(tmp_path / "results" / "benchmark_results_seeds.csv")
+        assert sorted(seeds["Seed"]) == [1, 2, 3]
+        # The main results file keeps one (combined) row per problem/solver
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert len(results) == 1
+
+    @pytest.mark.parametrize("num_seeds", ["0", "-1"])
+    def test_num_seeds_below_one_is_rejected(self, problems_yaml, num_seeds):
+        # Previously no seed ran and building the summary row crashed.
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+                "--num-seeds",
+                num_seeds,
+            ],
+        )
+        assert result.exit_code == 2, result.output  # usage error
+
+    def test_default_num_seeds_records_the_configured_seed(
+        self, problems_yaml, tmp_path
+    ):
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        # No seed override, so the solver used highs-default's own seed
+        assert list(results["Seed"]) == [0]
+
     def test_tests_pseudo_year_runs_against_real_solver_registry(
         self, problems_yaml, tmp_path
     ):

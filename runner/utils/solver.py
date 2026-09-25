@@ -10,7 +10,7 @@ solver.
 
 Keeps the `if __name__ == "__main__"` entrypoint so a single solver run can
 still be driven directly, e.g. for debugging:
-    python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>
+    python -m runner.utils.solver <solver_configuration> <input_file> <solver_version> [--seed N]
 """
 
 import json
@@ -27,13 +27,20 @@ from . import config
 from .solvers import SOLVER_ADAPTERS
 
 
-def get_solver(solver_configuration: str) -> tuple[Any, str]:
+def get_solver(solver_configuration: str, seed: int | None = None) -> tuple[Any, str]:
     """Build a linopy solver instance with this project's tuning options.
 
     Parameters
     ----------
     solver_configuration : str
         The configuration to run, as requested by a caller (e.g. ``"highs-hipo"``).
+    seed : int, optional
+        If given, overrides the configuration's own fixed seed (e.g. for
+        running the same configuration under several different seeds to
+        gauge a solver's sensitivity to it -- see `solvers.yaml`'s
+        `seed_options` map for which options key holds a solver package's
+        seed). Ignored (with a warning) if `solver_package` has no entry in
+        `seed_options`.
 
     Returns
     -------
@@ -52,6 +59,17 @@ def get_solver(solver_configuration: str) -> tuple[Any, str]:
     else:
         solver_package = solver_configuration.lower()
         kwargs = {}
+
+    if seed is not None:
+        seed_key = config.get_seed_option(solver_package)
+        if seed_key is None:
+            print(
+                f"WARNING: '{solver_package}' has no seed_options entry in "
+                "solvers.yaml; --seed ignored",
+                file=sys.stderr,
+            )
+        else:
+            kwargs[seed_key] = seed
 
     solver_enum = SolverName(solver_package)
     solver_class = getattr(solvers, solver_enum.name)
@@ -267,7 +285,12 @@ def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None
         return None
 
 
-def main(solver_configuration: str, input_file: str, solver_version: str) -> None:
+def main(
+    solver_configuration: str,
+    input_file: str,
+    solver_version: str,
+    seed: int | None = None,
+) -> None:
     """Run one solver on one problem file and print the resulting metrics as JSON.
 
     Parameters
@@ -280,12 +303,13 @@ def main(solver_configuration: str, input_file: str, solver_version: str) -> Non
     solver_version : str
         The solver version, included in output filenames and the printed
         metrics (not otherwise used to select behavior).
+    seed : int, optional
+        If given, overrides the configuration's own fixed seed (see
+        `get_solver`).
     """
     problem_file = Path(input_file)
-    # keep the requested configuration name (e.g. "highs-hipo") for filenames
-    output_name = solver_configuration
 
-    solver, solver_package = get_solver(solver_configuration)
+    solver, solver_package = get_solver(solver_configuration, seed=seed)
 
     solution_dir = Path(__file__).resolve().parent.parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -293,7 +317,10 @@ def main(solver_configuration: str, input_file: str, solver_version: str) -> Non
     logs_dir = Path(__file__).resolve().parent.parent / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    output_filename = f"{Path(input_file).stem}-{output_name}-{solver_version}"
+    # keeps the requested configuration name (e.g. "highs-hipo") and the seed
+    output_filename = config.get_output_stem(
+        input_file, solver_configuration, solver_version, seed
+    )
 
     solution_fn = solution_dir / f"{output_filename}.sol"
     log_fn = logs_dir / f"{output_filename}.log"
@@ -378,10 +405,18 @@ def main(solver_configuration: str, input_file: str, solver_version: str) -> Non
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    argv = sys.argv[1:]
+    cli_seed = None
+    if "--seed" in argv:
+        seed_index = argv.index("--seed")
+        cli_seed = int(argv[seed_index + 1])
+        del argv[seed_index : seed_index + 2]
+
+    if len(argv) != 3:
         print(
-            "Usage: python -m runner.utils.solver <solver_configuration> <input_file> <solver_version>"
+            "Usage: python -m runner.utils.solver <solver_configuration> "
+            "<input_file> <solver_version> [--seed N]"
         )
         sys.exit(1)
 
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    main(argv[0], argv[1], argv[2], seed=cli_seed)

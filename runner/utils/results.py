@@ -15,6 +15,27 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
+# Single source of truth for the mean/stddev summary CSV's columns, shared by
+# `write_csv_headers` and `write_csv_summary_row` so the two can't drift
+# apart (mirrors how `csv_record` is the one source of truth for the main
+# results CSV's columns).
+_MEAN_STDDEV_HEADERS = [
+    "Problem",
+    "Solver",
+    "Solver Version",
+    "Solver Release Year",
+    "Status",
+    "Termination Condition",
+    "Runtime Mean (s)",
+    "Runtime StdDev (s)",
+    "Memory Mean (MB)",
+    "Memory StdDev (MB)",
+    "Objective Value",
+    "Run ID",
+    "Timestamp",
+    "Seed",
+]
+
 
 def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
     """Build one benchmark-results row, mapping kwargs to their CSV column names.
@@ -49,6 +70,14 @@ def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
     metadata.yaml is now one row per model+size combination already (see
     `metadata.load_problems`) -- nothing left to disambiguate. Historical
     CSVs still have it; `analyze.load_results` knows how to read those.
+
+    "Seed" is appended last (not grouped with the other solver-identifying
+    columns) so adding it doesn't shift every other column's position --
+    see `ensure_csv_schema` for how an existing CSV predating this column
+    is widened to include it. Always the seed the solver actually used:
+    the configuration's own fixed seed for a single-seed run, or the
+    per-repetition override when `orchestrator.run_benchmark`'s
+    `num_seeds` > 1 varies it (see `config.get_configured_seed`).
     """
     record = OrderedDict(
         [
@@ -71,6 +100,7 @@ def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
             ("VM Instance Type", kwargs.get("vm_instance_type")),
             ("VM Zone", kwargs.get("vm_zone")),
             ("Solver benchmark version", kwargs.get("solver_benchmark_version")),
+            ("Seed", kwargs.get("seed")),
         ]
     )
 
@@ -99,29 +129,111 @@ def write_csv_headers(
         Column names for `results_csv`. Defaults to `csv_record`'s own
         column order, so the two always stay in sync.
     """
-    with open(results_csv, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(headers)
+    _write_header(results_csv, list(headers))
+    _write_header(mean_stddev_csv, _MEAN_STDDEV_HEADERS)
 
-    with open(mean_stddev_csv, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(
-            [
-                "Problem",
-                "Solver",
-                "Solver Version",
-                "Solver Release Year",
-                "Status",
-                "Termination Condition",
-                "Runtime Mean (s)",
-                "Runtime StdDev (s)",
-                "Memory Mean (MB)",
-                "Memory StdDev (MB)",
-                "Objective Value",
-                "Run ID",
-                "Timestamp",
-            ]
-        )
+
+def ensure_csv_schema(
+    results_csv: Path,
+    mean_stddev_csv: Path,
+    append: bool,
+    seeds_csv: Path | None = None,
+) -> None:
+    """Prepare both result CSVs for a run, without losing `--append` history.
+
+    The single entry point `orchestrator.run_benchmark` should call instead
+    of `write_csv_headers` directly: it only overwrites when there's nothing
+    to preserve (`append` is False, or a file doesn't exist yet), and
+    otherwise widens an existing file to the current schema in place -- see
+    `_migrate_columns_if_needed` -- so appending to a CSV written by an older
+    version of this code (missing a column added since, e.g. `Seed`) doesn't
+    produce a ragged file that `pd.read_csv` can't parse.
+
+    Parameters
+    ----------
+    results_csv : Path
+        Per-iteration results file.
+    mean_stddev_csv : Path
+        Mean/stddev-across-iterations summary file.
+    append : bool
+        If False, both files are (re)created with just a header row,
+        discarding any existing content -- same as `write_csv_headers`.
+        If True, each file is handled on its own: an existing one is widened
+        in place if its schema is out of date (otherwise left untouched),
+        and a missing one is created with just a header row. So one file
+        being missing never discards the other's rows.
+    seeds_csv : Path, optional
+        Per-seed results file for multi-seed runs, with the same columns as
+        `results_csv`. Handled the same way when given.
+    """
+    results_headers = list(csv_record(check=False).keys())
+    csv_files = [
+        (results_csv, results_headers),
+        (mean_stddev_csv, _MEAN_STDDEV_HEADERS),
+    ]
+    if seeds_csv is not None:
+        csv_files.append((seeds_csv, results_headers))
+    for csv_path, headers in csv_files:
+        if append and csv_path.exists():
+            _migrate_columns_if_needed(csv_path, headers)
+        else:
+            _write_header(csv_path, headers)
+
+
+def _write_header(csv_path: Path, headers: list[str]) -> None:
+    """Create (or overwrite) `csv_path` with just a header row."""
+    with open(csv_path, mode="w", newline="") as file:
+        csv.writer(file).writerow(headers)
+
+
+def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> None:
+    """Widen an existing CSV to `expected_headers`, in place, preserving rows.
+
+    A no-op if `csv_path`'s header already matches `expected_headers`
+    exactly (the common case, checked cheaply before reading the rest of
+    the file). Otherwise, only ever *adds* columns: an existing row missing
+    a column that's new in `expected_headers` gets an empty cell for it,
+    and every column and value it already had is preserved as-is. Never
+    reorders or drops a column `csv_path` already has, so no existing data
+    is silently lost.
+
+    Parameters
+    ----------
+    csv_path : Path
+        The results or mean/stddev CSV to check, and migrate if needed.
+    expected_headers : list[str]
+        The column names this run's code expects, in order (see
+        `csv_record` and `_MEAN_STDDEV_HEADERS`).
+
+    Raises
+    ------
+    ValueError
+        If `csv_path` has a column not in `expected_headers` -- silently
+        dropping it would lose data, so this needs a deliberate decision
+        (e.g. renaming the column, or updating `expected_headers`) rather
+        than an automatic one.
+    """
+    with open(csv_path, newline="") as file:
+        reader = csv.DictReader(file)
+        current_headers = reader.fieldnames or []
+        if list(current_headers) == expected_headers:
+            return
+
+        unexpected = [h for h in current_headers if h not in expected_headers]
+        if unexpected:
+            raise ValueError(
+                f"{csv_path} has column(s) {unexpected} not in the current "
+                "schema -- resolve manually rather than risk silently "
+                "dropping data."
+            )
+        rows = list(reader)
+
+    added = [h for h in expected_headers if h not in current_headers]
+    print(f"Migrating {csv_path} to the current schema (adding {added})")
+    with open(csv_path, mode="w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=expected_headers, restval="")
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def write_csv_row(
@@ -211,8 +323,10 @@ def write_csv_summary_row(
 
     Notes
     -----
-    Column order must match `write_csv_headers`'s hardcoded mean/stddev
-    header list.
+    Column order must match `_MEAN_STDDEV_HEADERS` (also used by
+    `write_csv_headers`). `Seed` (like `status`/`condition`) reflects only
+    the last iteration's value, not every seed tested across iterations --
+    see `orchestrator.run_benchmark`'s own docstring.
     """
     with open(mean_stddev_csv, mode="a", newline="") as file:
         writer = csv.writer(file)
@@ -231,5 +345,6 @@ def write_csv_summary_row(
                 metrics["objective"],
                 run_id,
                 timestamp,
+                metrics.get("seed"),
             ]
         )

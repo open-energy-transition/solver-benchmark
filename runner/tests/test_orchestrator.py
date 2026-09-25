@@ -129,7 +129,7 @@ class TestRunBenchmark:
         results = pd.read_csv(results_csv)
         assert "Problem" in results.columns
 
-    def test_multiple_iterations_computes_mean_and_stddev(
+    def test_multiple_seeds_computes_mean_and_stddev(
         self, problems_yaml, tmp_path, mocker
     ):
         mocker.patch.object(
@@ -140,16 +140,45 @@ class TestRunBenchmark:
             ["highs-default"],
             year="2025",
             run_id="test-run",
-            iterations=2,
+            num_seeds=2,
         )
         summary = pd.read_csv(
             tmp_path / "results" / "benchmark_results_mean_stddev.csv"
         )
         assert summary.iloc[0]["Runtime StdDev (s)"] == 0.0
 
-    def test_error_status_stops_further_iterations(
-        self, problems_yaml, tmp_path, mocker
-    ):
+    def test_num_seeds_below_one_raises(self, problems_yaml):
+        with pytest.raises(ValueError, match="num_seeds must be at least 1"):
+            orchestrator.run_benchmark(
+                problems_yaml, ["highs-default"], year="2025", num_seeds=0
+            )
+
+    def test_num_seeds_greater_than_one_varies_seed(self, problems_yaml, mocker):
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            num_seeds=3,
+        )
+        seeds = [call.kwargs["seed"] for call in run_solver_mock.call_args_list]
+        assert seeds == [1, 2, 3]
+
+    def test_single_seed_passes_no_seed_override(self, problems_yaml, mocker):
+        # Backward compatibility: the default `num_seeds=1` must not
+        # override the configuration's own fixed seed.
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+        )
+        assert run_solver_mock.call_args.kwargs["seed"] is None
+
+    def test_error_status_stops_further_seeds(self, problems_yaml, tmp_path, mocker):
         error_metrics = {**_FAKE_METRICS, "status": "ER"}
         run_solver_mock = mocker.patch.object(
             orchestrator, "run_solver", return_value=error_metrics
@@ -159,9 +188,134 @@ class TestRunBenchmark:
             ["highs-default"],
             year="2025",
             run_id="test-run",
-            iterations=3,
+            num_seeds=3,
         )
         assert run_solver_mock.call_count == 1
+
+    def test_oom_status_stops_further_seeds(self, problems_yaml, tmp_path, mocker):
+        # An OOM run reports runtime "N/A"; carrying on used to crash the
+        # mean/stddev calculation with a TypeError.
+        oom_metrics = {**_FAKE_METRICS, "status": "OOM", "runtime": "N/A"}
+        run_solver_mock = mocker.patch.object(
+            orchestrator, "run_solver", return_value=oom_metrics
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            num_seeds=3,
+        )
+        assert run_solver_mock.call_count == 1
+        summary = pd.read_csv(
+            tmp_path / "results" / "benchmark_results_mean_stddev.csv"
+        )
+        assert pd.isna(summary.iloc[0]["Runtime Mean (s)"])
+
+    def test_non_numeric_observations_are_left_out_of_the_stats(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        mocker.patch.object(
+            orchestrator,
+            "run_solver",
+            side_effect=[
+                {**_FAKE_METRICS, "runtime": 1.0, "memory": None},
+                {**_FAKE_METRICS, "runtime": 3.0, "memory": 10.0},
+            ],
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            num_seeds=2,
+        )
+        summary = pd.read_csv(
+            tmp_path / "results" / "benchmark_results_mean_stddev.csv"
+        )
+        assert summary.iloc[0]["Runtime Mean (s)"] == 2.0
+        assert summary.iloc[0]["Memory Mean (MB)"] == 10.0
+        assert summary.iloc[0]["Memory StdDev (MB)"] == 0
+
+    def test_seed_column_records_override_or_configured_seed(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["cbc-default"], year="2024", run_id="single"
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["cbc-default"],
+            year="2024",
+            run_id="multi",
+            num_seeds=2,
+            append=True,
+        )
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        seeds = pd.read_csv(tmp_path / "results" / "benchmark_results_seeds.csv")
+        # cbc-default fixes randomCbcSeed: 1; the overrides are 1 and 2, and
+        # the multi-seed run's combined row carries the last seed
+        assert list(results["Seed"]) == [1, 2]
+        assert list(seeds["Seed"]) == [1, 2]
+
+    def test_multiple_seeds_write_one_combined_row_to_the_main_results(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        mocker.patch.object(
+            orchestrator,
+            "run_solver",
+            side_effect=[
+                {**_FAKE_METRICS, "runtime": 1.0, "memory": 10.0, "objective": 1.0},
+                {**_FAKE_METRICS, "runtime": 3.0, "memory": 30.0, "objective": 2.0},
+            ],
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            num_seeds=2,
+        )
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        seeds = pd.read_csv(tmp_path / "results" / "benchmark_results_seeds.csv")
+        assert list(seeds["Runtime (s)"]) == [1.0, 3.0]
+        assert len(results) == 1
+        combined = results.iloc[0]
+        assert combined["Runtime (s)"] == 2.0  # mean across seeds
+        assert combined["Memory Usage (MB)"] == 20.0
+        assert combined["Objective Value"] == 2.0  # the last seed's
+        assert combined["Seed"] == 2
+        assert combined["Status"] == "ok"
+
+    def test_multi_seed_status_is_the_failing_seeds(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        mocker.patch.object(
+            orchestrator,
+            "run_solver",
+            side_effect=[dict(_FAKE_METRICS), {**_FAKE_METRICS, "status": "TO"}],
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            year="2025",
+            run_id="test-run",
+            num_seeds=3,
+        )
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Status"]) == ["TO"]
+
+    def test_single_seed_writes_no_seeds_file(self, problems_yaml, tmp_path, mocker):
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+        )
+        assert not (tmp_path / "results" / "benchmark_results_seeds.csv").exists()
 
     def test_reference_interval_runs_reference_benchmark(
         self, problems_yaml, tmp_path, mocker

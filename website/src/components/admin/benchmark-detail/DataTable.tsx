@@ -45,15 +45,17 @@ const DataTable = ({ problemId }: DataTableProps) => {
     return problemDetail && problemDetail.problemClass === ProblemClass.MILP;
   }, [problemId]);
 
-  const getLogDownloadUrl = (row: BenchmarkResult) => {
-    const urlPathSegment = `${row.runId}/${row.problemId}-${row.solverConfiguration}-${row.solverVersion}`;
-    return `${BASE_STORAGE_URL}/logs/${urlPathSegment}.log.gz`;
-  };
+  // Matches runner/utils/config.py's get_output_stem: results with a seed
+  // have a `-seed<N>` suffix, historical ones (no seed) don't.
+  const getUrlPathSegment = (row: BenchmarkResult) =>
+    `${row.runId}/${row.problemId}-${row.solverConfiguration}-${row.solverVersion}` +
+    (row.seed !== "" ? `-seed${row.seed}` : "");
 
-  const getSolutionDownloadUrl = (row: BenchmarkResult) => {
-    const urlPathSegment = `${row.runId}/${row.problemId}-${row.solverConfiguration}-${row.solverVersion}`;
-    return `${BASE_STORAGE_URL}/solutions/${urlPathSegment}.sol.gz`;
-  };
+  const getLogDownloadUrl = (row: BenchmarkResult) =>
+    `${BASE_STORAGE_URL}/logs/${getUrlPathSegment(row)}.log.gz`;
+
+  const getSolutionDownloadUrl = (row: BenchmarkResult) =>
+    `${BASE_STORAGE_URL}/solutions/${getUrlPathSegment(row)}.sol.gz`;
 
   const tableData: TableData[] = useMemo(
     () =>
