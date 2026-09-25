@@ -161,7 +161,7 @@ def create_benchmark_campaign(
     # Create a campaign folder ../infrastructure/benchmarks/{batch_id}
     bench_dir = Path(f"../infrastructure/benchmarks/{batch_id}")
     bench_dir.mkdir(parents=True, exist_ok=True)
-    with open(bench_dir / "run.tfvars", "w") as f:
+    with (bench_dir / "run.tfvars").open("w") as f:
         f.write(tfvars)
 
     if any(bench_dir.glob("*.yaml")):
@@ -169,7 +169,7 @@ def create_benchmark_campaign(
 
     # Add to it the allocated problems
     for idx, yaml_data in enumerate(vm_yamls):
-        with open(bench_dir / f"{vm_prefix}-{idx:02d}.yaml", "w") as f:
+        with (bench_dir / f"{vm_prefix}-{idx:02d}.yaml").open("w") as f:
             yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False)
 
     print(f"Created directory and files in {bench_dir}")

@@ -2,6 +2,8 @@
 benchmark campaign.
 """
 
+from pathlib import Path
+
 import pandas as pd
 import yaml
 
@@ -126,7 +128,7 @@ class TestAllocateProblems:
         vm_yamls = allocate_problems(df, "weight", num_vms=1)
 
         problems_yaml = tmp_path / "vm-00.yaml"
-        with open(problems_yaml, "w") as f:
+        with Path(problems_yaml).open("w") as f:
             yaml.dump(vm_yamls[0], f)
 
         problems = load_problems(problems_yaml, tmp_path / "downloads")

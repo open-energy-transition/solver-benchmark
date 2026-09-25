@@ -1,6 +1,7 @@
 """Tests for runner/utils/results.py: the benchmark-results CSV schema."""
 
 import csv
+from pathlib import Path
 
 import pytest
 
@@ -125,7 +126,7 @@ class TestCsvRoundTrip:
             solver_benchmark_version="abc123",
         )
 
-        with open(results_csv, newline="") as f:
+        with Path(results_csv).open(newline="") as f:
             rows = list(csv.reader(f))
 
         assert rows[0] == list(csv_record(check=False).keys())
@@ -139,7 +140,7 @@ class TestCsvRoundTrip:
         results_csv = tmp_path / "results.csv"
         mean_stddev_csv = tmp_path / "mean_stddev.csv"
         write_csv_headers(results_csv, mean_stddev_csv)
-        with open(mean_stddev_csv, newline="") as f:
+        with Path(mean_stddev_csv).open(newline="") as f:
             rows = list(csv.reader(f))
         assert rows[0] == [
             "Problem",
@@ -179,7 +180,7 @@ class TestCsvRoundTrip:
             mean_stddev_csv, "problem-a", metrics, "run-1", "2024-01-01 00:00:00"
         )
 
-        with open(mean_stddev_csv, newline="") as f:
+        with Path(mean_stddev_csv).open(newline="") as f:
             rows = list(csv.reader(f))
         assert rows[1][0] == "problem-a"
         assert rows[1][6] == "1.5"  # Runtime Mean (s)
@@ -233,16 +234,16 @@ class TestEnsureCsvSchema:
         mean_stddev_csv = tmp_path / "mean_stddev.csv"
         # An "old" file predating the `Seed` column, with one real data row.
         old_headers = [h for h in csv_record(check=False) if h != "Seed"]
-        with open(results_csv, "w", newline="") as f:
+        with Path(results_csv).open("w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(old_headers)
             writer.writerow(["problem-a", "highs"] + [""] * (len(old_headers) - 2))
-        with open(mean_stddev_csv, "w", newline="") as f:
+        with Path(mean_stddev_csv).open("w", newline="") as f:
             csv.writer(f).writerow(_MEAN_STDDEV_HEADERS)
 
         ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
 
-        with open(results_csv, newline="") as f:
+        with Path(results_csv).open(newline="") as f:
             rows = list(csv.reader(f))
         assert rows[0] == list(csv_record(check=False).keys())
         assert rows[0][-1] == "Seed"
@@ -253,16 +254,16 @@ class TestEnsureCsvSchema:
     def test_append_true_raises_on_unrecognized_column(self, tmp_path):
         results_csv = tmp_path / "results.csv"
         mean_stddev_csv = tmp_path / "mean_stddev.csv"
-        with open(results_csv, "w", newline="") as f:
+        with Path(results_csv).open("w", newline="") as f:
             csv.writer(f).writerow(["Problem", "Some Removed Column"])
-        with open(mean_stddev_csv, "w", newline="") as f:
+        with Path(mean_stddev_csv).open("w", newline="") as f:
             csv.writer(f).writerow(_MEAN_STDDEV_HEADERS)
 
         with pytest.raises(ValueError, match="Some Removed Column"):
             ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
 
     def _write_results_with_one_row(self, results_csv):
-        with open(results_csv, "w", newline="") as f:
+        with Path(results_csv).open("w", newline="") as f:
             csv.writer(f).writerow(csv_record(check=False).keys())
         write_csv_row(
             results_csv,
@@ -294,7 +295,7 @@ class TestEnsureCsvSchema:
     def test_append_true_missing_results_keeps_existing_summary(self, tmp_path):
         results_csv = tmp_path / "results.csv"
         mean_stddev_csv = tmp_path / "mean_stddev.csv"
-        with open(mean_stddev_csv, "w", newline="") as f:
+        with Path(mean_stddev_csv).open("w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(_MEAN_STDDEV_HEADERS)
             writer.writerow(["problem-a"] + [""] * (len(_MEAN_STDDEV_HEADERS) - 1))

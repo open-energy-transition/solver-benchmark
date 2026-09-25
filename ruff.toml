@@ -30,6 +30,7 @@ select = [
     "EXE", # flake8-executable
     "PLW", # pylint warnings
     "PT", # flake8-pytest-style
+    "PTH", # flake8-use-pathlib
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
@@ -42,3 +43,7 @@ allowed-confusables = ["–"]
 
 [format]
 docstring-code-format = true
+
+[lint.per-file-ignores]
+# Exploratory analysis notebooks: file handling style isn't worth enforcing
+"notebooks/**" = ["PTH"]

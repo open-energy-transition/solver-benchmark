@@ -12,6 +12,7 @@ from __future__ import annotations
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
+from pathlib import Path
 
 import requests
 import yaml
@@ -142,7 +143,7 @@ def main(argv: list[str] | None = None) -> int:
     path = argv[0]
     max_workers = int(argv[1]) if len(argv) >= 2 else DEFAULT_WORKERS
 
-    with open(path, encoding="utf-8") as f:
+    with Path(path).open(encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     urls = collect_urls(data)

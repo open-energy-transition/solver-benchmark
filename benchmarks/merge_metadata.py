@@ -109,7 +109,7 @@ def process_yaml_file(
         return
 
     try:
-        with open(file_path) as file:
+        with Path(file_path).open() as file:
             yaml_data = yaml.safe_load(file)
     except yaml.YAMLError as exc:
         print(f"Error parsing YAML file {file_path}: {exc}")
@@ -174,7 +174,7 @@ def write_merged_metadata(unified_metadata: YamlMap, results_file: Path) -> None
         type(None), BlankNoneDumper.represent_none, Dumper=BlankNoneDumper
     )
     results_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(results_file, "w") as output_file:
+    with Path(results_file).open("w") as output_file:
         yaml.dump(
             {"problems": unified_metadata},
             output_file,

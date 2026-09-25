@@ -62,7 +62,7 @@ def parse_memory(output: str) -> float:
 
 def _systemd_available() -> bool:
     """Check if systemd is running (not just installed)."""
-    return bool(shutil.which("systemd-run") and os.path.isdir("/run/systemd/system"))
+    return bool(shutil.which("systemd-run") and Path("/run/systemd/system").is_dir())
 
 
 def run_solver(
@@ -204,7 +204,7 @@ def run_solver(
         / f"{config.get_output_stem(input_file, solver_configuration, solver_version, seed)}.log"
     )
     if log_file.exists():
-        with open(log_file, "a") as f:
+        with Path(log_file).open("a") as f:
             f.write("\nSTDERR:\n")
             f.write(result.stderr)
     else:

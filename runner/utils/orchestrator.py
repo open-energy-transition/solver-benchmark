@@ -8,7 +8,6 @@ in the CLI) so it's testable without going through Typer's CLI-parsing layer.
 from __future__ import annotations
 
 import datetime
-import os
 import statistics
 import subprocess
 import time
@@ -195,7 +194,7 @@ def run_benchmark(
     last_reference_run = 0.0
 
     results_folder = _REPO_ROOT / "results"
-    os.makedirs(results_folder, exist_ok=True)
+    results_folder.mkdir(parents=True, exist_ok=True)
 
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
@@ -212,7 +211,7 @@ def run_benchmark(
         append,
         seeds_csv=seeds_csv if num_seeds > 1 else None,
     )
-    os.makedirs(_PROBLEMS_FOLDER, exist_ok=True)
+    _PROBLEMS_FOLDER.mkdir(parents=True, exist_ok=True)
 
     registered_solver_versions = env.get_registered_solver_versions(
         solver_configurations, year

@@ -156,7 +156,7 @@ def write_yaml_file(path: Path, yaml_obj: YAML, data: Any) -> None:
     data : Any
         YAML-serializable object.
     """
-    with open(path, "w", encoding="utf-8") as f:
+    with Path(path).open("w", encoding="utf-8") as f:
         yaml_obj.dump(data, f)
 
 
@@ -231,7 +231,7 @@ def download_stream_to_file(url: str, dest: Path, timeout_s: int = 60) -> None:
     response = requests.get(url, stream=True, timeout=timeout_s)
     response.raise_for_status()
 
-    with open(dest, "wb") as f:
+    with Path(dest).open("wb") as f:
         for chunk in response.iter_content(chunk_size=8192):
             if chunk:
                 f.write(chunk)
@@ -251,7 +251,10 @@ def decompress_gzip_file(
     output_path : Path
         Destination path for decompressed bytes.
     """
-    with gzip.open(compressed_path, "rb") as gz_file, open(output_path, "wb") as out:
+    with (
+        gzip.open(compressed_path, "rb") as gz_file,
+        Path(output_path).open("wb") as out,
+    ):
         out.write(gz_file.read())
 
 

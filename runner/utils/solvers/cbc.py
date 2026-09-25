@@ -84,7 +84,7 @@ def integer_values(
     if not integer_names:
         return {}
 
-    with open(solution_fn) as f:
+    with Path(solution_fn).open() as f:
         # e.g. "Optimal - objective value 1.5" or "Infeasible - objective value 0"
         if "infeasible" in f.readline().lower():
             return None

@@ -41,7 +41,7 @@ def integer_values(
     Returns None if GLPK found no integer feasible solution, or not every
     integer column counted in the header could be parsed.
     """
-    with open(solution_fn) as f:
+    with Path(solution_fn).open() as f:
         lines = f.read().splitlines()
 
     header = _read_header(lines)
@@ -82,7 +82,7 @@ def recover_result(problem_fn: Path, solution_fn: Path) -> dict[str, Any] | None
     fail as before. Returns None in those cases or if the report is missing.
     """
     try:
-        with open(solution_fn) as f:
+        with Path(solution_fn).open() as f:
             header = _read_header(f.read().splitlines())
     except OSError:
         return None

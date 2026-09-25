@@ -33,6 +33,7 @@ import os
 import pathlib
 import re
 import subprocess
+from pathlib import Path
 
 import ruamel.yaml
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
@@ -61,7 +62,7 @@ def load_yaml(path: pathlib.Path) -> dict:
     """
     y = ruamel.yaml.YAML()
     try:
-        with open(path) as f:
+        with Path(path).open() as f:
             return y.load(f)
     except Exception as e:
         raise RuntimeError(f"Failed to load YAML {path}: {e}") from e
@@ -81,7 +82,7 @@ def save_yaml(path: pathlib.Path, data: dict) -> None:
     y = ruamel.yaml.YAML()
     y.preserve_quotes = True
     y.width = 4096
-    with open(path, "w") as f:
+    with Path(path).open("w") as f:
         y.dump(data, f)
 
 
