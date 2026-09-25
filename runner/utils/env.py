@@ -10,6 +10,8 @@ versions), not *how* (conda today), so that migration only changes this
 file's implementation, not its callers.
 """
 
+from __future__ import annotations
+
 import subprocess
 
 from . import config

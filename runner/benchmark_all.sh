@@ -67,7 +67,7 @@ for year in "${years[@]}"; do
     else
         solver_envs=$(python3 -c "
 import yaml
-config = yaml.safe_load(open('./runner/solvers.yaml'))
+config = yaml.safe_load(open('./runner/config/solvers.yaml'))
 for solver, versions in config['solvers'].items():
     for ver, entry in versions.items():
         if str(entry['year']) == '$year':
