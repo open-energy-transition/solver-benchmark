@@ -27,16 +27,21 @@ type Props = {
   isTsx: boolean;
 };
 
-function slugify(text: string) {
+// Remove complete and unclosed tags (e.g. `<script` without `>`), repeating
+// until nothing changes so that nested fragments cannot rebuild a tag.
+function stripTags(text: string) {
   let sanitized = text;
   let previous: string;
   do {
     previous = sanitized;
-    sanitized = sanitized.replace(/<[^>]*>/g, "");
+    sanitized = sanitized.replace(/<[^>]*>?/g, "");
   } while (sanitized !== previous);
+  return sanitized;
+}
 
+function slugify(text: string) {
   return (
-    sanitized
+    stripTags(text)
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, "-")
@@ -50,10 +55,7 @@ function extractTocAndInjectIds(htmlString: string) {
   const newHtml = htmlString.replace(
     /<h2([^>]*)>(.*?)<\/h2>/gi,
     (match, attrs = "", inner) => {
-      const label = inner
-        .replace(/<[^>]*>/g, "") // remove complete tags
-        .replace(/<[^>]*/g, "") // remove unclosed tags (e.g. <script without >)
-        .trim();
+      const label = stripTags(inner).trim();
       const slug = slugify(label);
       const hash = `#${slug}`;
       toc.push({ hash, label });
