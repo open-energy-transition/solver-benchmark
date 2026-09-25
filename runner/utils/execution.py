@@ -200,7 +200,7 @@ def run_solver(
     # Append the stderr to the log file
     log_file = (
         _LOGS_DIR
-        / f"{Path(input_file).stem}-{solver_configuration}-{solver_version}.log"
+        / f"{config.get_output_stem(input_file, solver_configuration, solver_version, seed)}.log"
     )
     if log_file.exists():
         with open(log_file, "a") as f:

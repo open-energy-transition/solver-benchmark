@@ -19,6 +19,8 @@ type BenchmarkResult = {
   status: SolverStatusType;
   terminationCondition: string;
   runId: string | null;
+  // Empty for historical results, which predate the `Seed` column
+  seed: string;
   timeout: number;
 };
 

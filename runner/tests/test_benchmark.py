@@ -104,10 +104,15 @@ class TestBenchmarkCli:
             ],
         )
         assert result.exit_code == 0, result.output
+        seeds = pd.read_csv(tmp_path / "results" / "benchmark_results_seeds.csv")
+        assert sorted(seeds["Seed"]) == [1, 2, 3]
+        # The main results file keeps one (combined) row per problem/solver
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
-        assert sorted(results["Seed"]) == [1, 2, 3]
+        assert len(results) == 1
 
-    def test_default_num_seeds_leaves_seed_column_empty(self, problems_yaml, tmp_path):
+    def test_default_num_seeds_records_the_configured_seed(
+        self, problems_yaml, tmp_path
+    ):
         result = runner_cli.invoke(
             benchmark.app,
             [
@@ -120,7 +125,8 @@ class TestBenchmarkCli:
         )
         assert result.exit_code == 0, result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
-        assert results["Seed"].isna().all()
+        # No seed override, so the solver used highs-default's own seed
+        assert list(results["Seed"]) == [0]
 
     def test_tests_pseudo_year_runs_against_real_solver_registry(
         self, problems_yaml, tmp_path
