@@ -125,7 +125,8 @@ def check_consistent_solver_set(
 def main() -> None:
     """Cross-check benchmark_results.csv against metadata.yaml and report."""
     data = pd.read_csv(Path(__file__).parent / "../results/benchmark_results.csv")
-    meta = yaml.safe_load(open("results/metadata.yaml"))
+    with open("results/metadata.yaml") as f:
+        meta = yaml.safe_load(f)
 
     short_timeout_ids, long_timeout_ids, skipped_ids = bucket_problems_by_timeout(
         meta["problems"]

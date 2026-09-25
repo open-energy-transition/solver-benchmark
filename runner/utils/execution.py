@@ -9,6 +9,7 @@ taking down the whole benchmark run.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import re
@@ -346,10 +347,8 @@ def run_reference_highs_binary() -> dict[str, Any]:
         objective = None
         for line in result.stdout.splitlines():
             if "Objective value" in line:
-                try:
+                with contextlib.suppress(ValueError, IndexError):
                     objective = float(line.split(":")[-1].strip())
-                except (ValueError, IndexError):
-                    pass
 
         metrics = {
             "status": "OK",

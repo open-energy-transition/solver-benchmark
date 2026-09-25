@@ -232,7 +232,7 @@ class TestEnsureCsvSchema:
         results_csv = tmp_path / "results.csv"
         mean_stddev_csv = tmp_path / "mean_stddev.csv"
         # An "old" file predating the `Seed` column, with one real data row.
-        old_headers = [h for h in csv_record(check=False).keys() if h != "Seed"]
+        old_headers = [h for h in csv_record(check=False) if h != "Seed"]
         with open(results_csv, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(old_headers)

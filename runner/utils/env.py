@@ -82,7 +82,7 @@ def get_installed_solver_versions(
     for configuration in solver_configurations:
         resolved_solver = config.resolve_solver_name(configuration)
         package = config.get_package_name(resolved_solver)
-        installed_versions[configuration] = installed_packages.get(package, None)
+        installed_versions[configuration] = installed_packages.get(package)
 
     return installed_versions
 

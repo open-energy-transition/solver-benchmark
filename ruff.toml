@@ -22,6 +22,7 @@ select = [
     "TID", # tidy imports
     "UP", # pyupgrade
     "B", # flake8-bugbear
+    "SIM", # flake8-simplify
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.

@@ -251,9 +251,8 @@ def decompress_gzip_file(
     output_path : Path
         Destination path for decompressed bytes.
     """
-    with gzip.open(compressed_path, "rb") as gz_file:
-        with open(output_path, "wb") as out:
-            out.write(gz_file.read())
+    with gzip.open(compressed_path, "rb") as gz_file, open(output_path, "wb") as out:
+        out.write(gz_file.read())
 
 
 def get_cached_paths(
@@ -284,9 +283,7 @@ def get_cached_paths(
     if extension.endswith(".gz"):
         # For "foo.mps.gz", ruamel's with_suffix would drop only ".gz".
         # We prefer "foo.mps" / "foo.lp" explicitly.
-        if extension == "mps.gz":
-            uncompressed = cache_dir / filename.removesuffix(".gz")
-        elif extension == "lp.gz":
+        if extension in ("mps.gz", "lp.gz"):
             uncompressed = cache_dir / filename.removesuffix(".gz")
         else:
             raise ValueError(f"Unsupported gz extension: {extension}")
@@ -349,9 +346,8 @@ def download_benchmark_file(
 
             return download_path
 
-        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}")
-        tmp_path = Path(tmp.name)
-        tmp.close()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}") as tmp:
+            tmp_path = Path(tmp.name)
         print(f"Downloading {url}")
         download_stream_to_file(url, tmp_path)
 
@@ -365,9 +361,8 @@ def download_benchmark_file(
         else:
             raise ValueError(f"Unsupported gz extension: {extension}")
 
-        out_tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
-        out_path = Path(out_tmp.name)
-        out_tmp.close()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as out_tmp:
+            out_path = Path(out_tmp.name)
 
         decompress_gzip_file(tmp_path, out_path)
         tmp_path.unlink(missing_ok=True)
