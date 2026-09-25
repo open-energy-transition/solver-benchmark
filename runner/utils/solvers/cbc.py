@@ -2,9 +2,11 @@
 
 linopy runs CBC as a command-line program, so there is no native model to
 query: `model` is linopy's small `CbcModel(mip_gap, runtime)` result, and
-variable values are read from the solution file CBC writes instead.
+the duality gap and variable values are read from the log and solution
+files CBC writes instead.
 """
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -20,9 +22,36 @@ def is_mip(model: Any) -> bool | None:
     return None
 
 
-def duality_gap(model: Any) -> float | None:
-    """CBC's reported MIP gap, if present on the result object."""
-    return getattr(model, "mip_gap", None)
+def duality_gap(model: Any, log_fn: Path) -> float | None:
+    """CBC's relative MIP gap, computed from its log.
+
+    CBC's own ``Gap:`` line (which linopy reads into `model.mip_gap`) is
+    rounded to two decimals, and is only printed when CBC stops before
+    closing the gap. So instead:
+
+    - if the log has both ``Objective value:`` and ``Lower bound:`` (CBC
+      stopped at its gap tolerance or a limit), the gap is
+      ``|objective - bound| / |objective|``;
+    - if it has neither bound nor early stop, but CBC reports an optimal
+      solution after completing its search, the tree was fully explored
+      and the gap is 0;
+    - otherwise it's unknown (None).
+    """
+    try:
+        log = Path(log_fn).read_text()
+    except OSError:
+        return None
+
+    objective = re.search(r"^Objective value:\s+(\S+)", log, re.MULTILINE)
+    bound = re.search(r"^Lower bound:\s+(\S+)", log, re.MULTILINE)
+    if objective and bound:
+        objective_value, bound_value = float(objective.group(1)), float(bound.group(1))
+        if objective_value == 0:
+            return 0.0 if bound_value == 0 else None
+        return abs(objective_value - bound_value) / abs(objective_value)
+    if "Result - Optimal solution found" in log and "Search completed" in log:
+        return 0.0
+    return None
 
 
 def reported_runtime(model: Any) -> float:

@@ -9,6 +9,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
+import pytest
+
 from runner.utils.config import load_solver_registry
 from runner.utils.solvers import SOLVER_ADAPTERS
 
@@ -273,3 +275,44 @@ class TestGlpkIntegerValues:
         glpk = importlib.import_module("runner.utils.solvers.glpk")
         report = "Problem:\nRows:       3\nColumns:    3\nStatus:     OPTIMAL\n\n"
         assert glpk.integer_values(None, _P, self._write(tmp_path, report)) == {}
+
+
+class TestCbcDualityGap:
+    """CBC's gap comes from its log, not its rounded ``Gap:`` line."""
+
+    def _gap(self, tmp_path, log_text):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        log_fn = tmp_path / "cbc.log"
+        log_fn.write_text(log_text)
+        return cbc.duality_gap(MagicMock(mip_gap=0.0), log_fn)
+
+    def test_gap_tolerance_exit_uses_objective_and_bound(self, tmp_path):
+        # From a real CBC run on FINE-water-supply-system-12-8760ts, where
+        # CBC's own "Gap:" line rounds 0.0035 down to 0.00
+        log = (
+            "Cbc0011I Exiting as integer gap of 3.9777742 less than 1e-10 or 5%\n"
+            "Cbc0001I Search completed - best objective 1138.452576141979\n"
+            "Result - Optimal solution found (within gap tolerance)\n\n"
+            "Objective value:                1138.45257614\n"
+            "Lower bound:                    1134.475\n"
+            "Gap:                            0.00\n"
+        )
+        assert self._gap(tmp_path, log) == pytest.approx(
+            (1138.45257614 - 1134.475) / 1138.45257614
+        )
+
+    def test_completed_search_has_zero_gap(self, tmp_path):
+        log = (
+            "Cbc0001I Search completed - best objective 1444.372702107476\n"
+            "Result - Optimal solution found\n\n"
+            "Objective value:                1444.37270211\n"
+        )
+        assert self._gap(tmp_path, log) == 0.0
+
+    def test_unknown_without_a_bound_or_completed_search(self, tmp_path):
+        log = "Result - Stopped on time limit\n\nObjective value:  1.0\n"
+        assert self._gap(tmp_path, log) is None
+
+    def test_missing_log_is_unknown(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        assert cbc.duality_gap(MagicMock(), tmp_path / "missing.log") is None

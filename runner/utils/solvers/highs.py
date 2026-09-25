@@ -25,7 +25,7 @@ def is_mip(model: Any) -> bool:
     return model.getInfo().mip_node_count >= 0
 
 
-def duality_gap(model: Any) -> float | None:
+def duality_gap(model: Any, log_fn: Path) -> float | None:
     """HiGHS's own reported MIP gap, if present."""
     return getattr(model.getInfo(), "mip_gap", None)
 

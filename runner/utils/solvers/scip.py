@@ -9,7 +9,7 @@ def is_mip(model: Any) -> bool:
     return any(var.vtype() in ("INTEGER", "BINARY") for var in model.getVars())
 
 
-def duality_gap(model: Any) -> float:
+def duality_gap(model: Any, log_fn: Path) -> float:
     """SCIP's own reported gap."""
     return model.getGap()
 

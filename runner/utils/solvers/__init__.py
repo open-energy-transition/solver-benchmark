@@ -1,7 +1,7 @@
 """Solver adapter registry: one plain Python module per solver, discovered
 automatically from this package's own directory.
 
-Each sibling module exports `is_mip(model)`, `duality_gap(model)`,
+Each sibling module exports `is_mip(model)`, `duality_gap(model, log_fn)`,
 `reported_runtime(model)`, and
 `integer_values(model, problem_fn, solution_fn)` for one solver (any existing module is a template).
 `SOLVER_ADAPTERS` is built by scanning this package's directory with
@@ -35,9 +35,10 @@ class SolverAdapter:
         Given the solver's native model object, return whether the problem
         it solved was a MIP, or None if the model can't tell (see
         `integer_values`).
-    duality_gap : Callable[[Any], float | None]
-        Given the native model object, return the reported duality/MIP gap,
-        or None if unavailable.
+    duality_gap : Callable[[Any, Path], float | None]
+        Given the native model object and the log file linopy asked the
+        solver to write, return the relative duality/MIP gap, or None if
+        unavailable.
     reported_runtime : Callable[[Any], float | None]
         Given the native model object, return the solver's own reported
         solving time in seconds, or None if unavailable.
@@ -49,7 +50,7 @@ class SolverAdapter:
     """
 
     is_mip: Callable[[Any], bool | None]
-    duality_gap: Callable[[Any], float | None]
+    duality_gap: Callable[[Any, Path], float | None]
     reported_runtime: Callable[[Any], float | None]
     integer_values: Callable[[Any, Path, Path], dict[str, float] | None]
 

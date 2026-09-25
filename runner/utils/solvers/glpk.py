@@ -15,7 +15,7 @@ def is_mip(model: Any) -> bool | None:
     return None
 
 
-def duality_gap(model: Any) -> float | None:
+def duality_gap(model: Any, log_fn: Path) -> float | None:
     """Always None: GLPK doesn't expose a duality gap from Python."""
     return None
 

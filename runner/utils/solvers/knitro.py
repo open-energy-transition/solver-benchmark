@@ -9,7 +9,7 @@ def is_mip(model: Any) -> bool:
     return False
 
 
-def duality_gap(model: Any) -> None:
+def duality_gap(model: Any, log_fn: Path) -> None:
     """Always None: Knitro duality gap retrieval not implemented yet."""
     return None
 
