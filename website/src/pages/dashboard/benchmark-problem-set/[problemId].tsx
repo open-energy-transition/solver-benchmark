@@ -62,6 +62,10 @@ const PageProblemDetail = () => {
 
   if (!problemDetail) return <div></div>;
 
+  // Pass the matching metadata key, not the raw query value, to links and
+  // child components
+  const problemKey = Object.keys(metaData).find((key) => key === problemId);
+
   return (
     <>
       <Head>
@@ -150,7 +154,7 @@ const PageProblemDetail = () => {
                   className="text-white bg-navy rounded-lg flex gap-1 items-center w-max px-4 py-2"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Download ${problemId} problem file`}
+                  aria-label={`Download ${problemKey} problem file`}
                 >
                   Download
                   <ArrowToRightIcon className="w-4 h-4 rotate-90" />
@@ -168,10 +172,10 @@ const PageProblemDetail = () => {
               </h5>
               {benchmarkLatestResults.length > 1 ? (
                 <>
-                  <DataTable problemId={problemId as string} />
+                  <DataTable problemId={problemKey as string} />
                   <SolverRuntimeComparison
                     problemDetail={problemDetail}
-                    problemId={problemId as string}
+                    problemId={problemKey as string}
                   />
                 </>
               ) : (
