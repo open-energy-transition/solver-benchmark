@@ -2,6 +2,7 @@
 accessors that delegate to `runner/utils/solvers/`'s per-solver adapters.
 """
 
+import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -14,6 +15,7 @@ from runner.utils.solver import (
     get_reported_runtime,
     get_solver,
     is_mip_problem,
+    main,
 )
 from runner.utils.solvers import SOLVER_ADAPTERS
 
@@ -95,16 +97,16 @@ class TestIsMipProblem:
 
 class TestGetDualityGap:
     def test_none_model_returns_none(self):
-        assert get_duality_gap(None, "highs") is None
+        assert get_duality_gap(None, "highs", Path("p.log")) is None
 
     def test_delegates_to_the_solvers_adapter(self):
         model = MagicMock()
         model.getGap.return_value = 0.01
-        assert get_duality_gap(model, "scip") == 0.01
+        assert get_duality_gap(model, "scip", Path("p.log")) == 0.01
 
     def test_unregistered_solver_raises(self):
         with pytest.raises(NotImplementedError):
-            get_duality_gap(MagicMock(), "not-a-solver")
+            get_duality_gap(MagicMock(), "not-a-solver", Path("p.log"))
 
 
 class TestGetReportedRuntime:
@@ -148,37 +150,74 @@ class TestGetMilpMetrics:
     def test_uses_the_adapters_integer_values(self, monkeypatch):
         adapter = self._patch_adapter(monkeypatch, {"x": 1.4, "y": 2.0})
         assert get_milp_metrics(
-            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), Path("p.log"), True
         ) == (0.01, pytest.approx(0.4))
         adapter.integer_values.assert_called_once()
 
     def test_no_integer_vars_returns_none(self, monkeypatch):
         self._patch_adapter(monkeypatch, {})
         assert get_milp_metrics(
-            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), Path("p.log"), True
         ) == (None, None)
 
     def test_unreadable_values_keep_the_gap_but_not_the_violation(self, monkeypatch):
         self._patch_adapter(monkeypatch, None)
         assert get_milp_metrics(
-            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), Path("p.log"), True
         ) == (0.01, None)
 
     def test_unknown_mip_status_and_unreadable_values_returns_none(self, monkeypatch):
         self._patch_adapter(monkeypatch, None)
         assert get_milp_metrics(
-            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), None
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), Path("p.log"), None
         ) == (None, None)
 
     def test_adapter_exception_is_caught(self, monkeypatch):
         adapter = self._patch_adapter(monkeypatch, None)
         adapter.integer_values.side_effect = RuntimeError("boom")
         assert get_milp_metrics(
-            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), Path("p.log"), True
         ) == (0.01, None)
 
     def test_unregistered_solver_raises(self):
         with pytest.raises(NotImplementedError):
             get_milp_metrics(
-                MagicMock(), "not-a-solver", Path("p.lp"), Path("p.sol"), True
+                MagicMock(),
+                "not-a-solver",
+                Path("p.lp"),
+                Path("p.sol"),
+                Path("p.log"),
+                True,
             )
+
+
+class TestMainRecoversFromLinopyParseFailures:
+    def _run(self, monkeypatch, capsys, recovered):
+        solver = MagicMock()
+        solver.solve_problem.side_effect = KeyError("Row name")
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver", lambda *a, **k: (solver, "fake")
+        )
+        adapter = MagicMock()
+        adapter.recover_result.return_value = recovered
+        adapter.is_mip.return_value = None
+        adapter.integer_values.return_value = {"x": 1.0}
+        adapter.duality_gap.return_value = None
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+        main("fake-default", "problem.lp", "1.0")
+        return json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+
+    def test_uses_the_adapters_result_when_linopy_fails(self, monkeypatch, capsys):
+        results = self._run(
+            monkeypatch,
+            capsys,
+            {"status": "ok", "condition": "optimal", "objective": 3.7},
+        )
+        assert results["status"] == "ok"
+        assert results["objective"] == 3.7
+        assert results["runtime"] is not None
+        assert results["max_integrality_violation"] == 0.0
+
+    def test_still_errors_without_a_recovered_result(self, monkeypatch, capsys):
+        results = self._run(monkeypatch, capsys, None)
+        assert results["status"] == "ER"

@@ -15,7 +15,7 @@ def is_mip(model: Any) -> bool:
     return model.getAttrib("mipents") > 0
 
 
-def duality_gap(model: Any) -> float:
+def duality_gap(model: Any, log_fn: Path) -> float:
     """The relative MIP gap tolerance Xpress was configured with."""
     return model.controls.miprelgapnotify
 

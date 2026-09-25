@@ -134,7 +134,9 @@ def calculate_integrality_violation(integer_values: dict[str, float]) -> float:
     return max(abs(value - round(value)) for value in integer_values.values())
 
 
-def get_duality_gap(solver_model: Any, solver_package: str) -> float | None:
+def get_duality_gap(
+    solver_model: Any, solver_package: str, log_fn: Path
+) -> float | None:
     """Retrieve the duality/MIP gap reported by the solver, if available.
 
     Parameters
@@ -143,6 +145,9 @@ def get_duality_gap(solver_model: Any, solver_package: str) -> float | None:
         The solver's native model object, or None if unavailable.
     solver_package : str
         The underlying solver package, e.g. ``"highs"``.
+    log_fn : Path
+        The log file linopy asked the solver to write (some adapters, e.g.
+        CBC's, read the gap from it).
 
     Returns
     -------
@@ -159,7 +164,7 @@ def get_duality_gap(solver_model: Any, solver_package: str) -> float | None:
     adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
         raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
-    return adapter.duality_gap(solver_model)
+    return adapter.duality_gap(solver_model, log_fn)
 
 
 def get_milp_metrics(
@@ -167,6 +172,7 @@ def get_milp_metrics(
     solver_package: str,
     problem_fn: Path,
     solution_fn: Path,
+    log_fn: Path,
     is_mip: bool | None,
 ) -> tuple[float | None, float | None]:
     """Compute the duality gap and max integrality violation of a MILP solve.
@@ -185,6 +191,8 @@ def get_milp_metrics(
         The problem file that was solved.
     solution_fn : Path
         The solution file linopy asked the solver to write.
+    log_fn : Path
+        The log file linopy asked the solver to write.
     is_mip : bool | None
         `is_mip_problem`'s answer; None means the adapter's
         `integer_values` decides.
@@ -213,7 +221,7 @@ def get_milp_metrics(
         return None, None
 
     try:
-        duality_gap = get_duality_gap(solver_model, solver_package)
+        duality_gap = get_duality_gap(solver_model, solver_package, log_fn)
     except Exception:
         print(f"ERROR obtaining duality gap: {format_exc()}", file=sys.stderr)
         duality_gap = None
@@ -222,6 +230,30 @@ def get_milp_metrics(
         calculate_integrality_violation(integer_values) if integer_values else None
     )
     return duality_gap, max_integrality_violation
+
+
+def recover_result(
+    solver_package: str, problem_fn: Path, solution_fn: Path
+) -> dict[str, Any] | None:
+    """Read a solve's status and objective from the solver's own files.
+
+    For when linopy fails to parse a solver's output. Delegates to the
+    adapter's optional `recover_result` (see `runner/utils/solvers/`).
+
+    Returns
+    -------
+    dict[str, Any] | None
+        ``status``, ``condition`` and ``objective``, or None if the adapter
+        has no such fallback or can't read them either.
+    """
+    adapter = SOLVER_ADAPTERS.get(solver_package)
+    if adapter is None or adapter.recover_result is None:
+        return None
+    try:
+        return adapter.recover_result(problem_fn, solution_fn)
+    except Exception:
+        print(f"ERROR recovering the solver result: {format_exc()}", file=sys.stderr)
+        return None
 
 
 def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None:
@@ -296,17 +328,35 @@ def main(
     try:
         # Measure only solver execution time, excluding import overhead
         start_time = perf_counter()
-        solver_result = solver.solve_problem(
-            problem_fn=problem_file,
-            solution_fn=solution_fn,
-            log_fn=log_fn,
-        )
-        runtime = perf_counter() - start_time
-
-        solver_model = solver_result.solver_model
-        raw_status = solver_result.status.status.value
-        termination_condition = solver_result.status.termination_condition.value
-        objective = solver_result.solution.objective
+        try:
+            solver_result = solver.solve_problem(
+                problem_fn=problem_file,
+                solution_fn=solution_fn,
+                log_fn=log_fn,
+            )
+        except Exception:
+            runtime = perf_counter() - start_time
+            # linopy can fail to parse a solver's output even when the solve
+            # itself succeeded (e.g. GLPK with long variable names); let the
+            # solver's adapter read the result from its own files instead.
+            recovered = recover_result(solver_package, problem_file, solution_fn)
+            if recovered is None:
+                raise
+            print(
+                "WARNING: linopy failed to read the solver's output; using "
+                f"{solver_package}'s own result files instead:\n{format_exc()}",
+                file=sys.stderr,
+            )
+            solver_model = None
+            raw_status = recovered["status"]
+            termination_condition = recovered["condition"]
+            objective = recovered["objective"]
+        else:
+            runtime = perf_counter() - start_time
+            solver_model = solver_result.solver_model
+            raw_status = solver_result.status.status.value
+            termination_condition = solver_result.status.termination_condition.value
+            objective = solver_result.solution.objective
 
         status_value = raw_status
 
@@ -325,7 +375,7 @@ def main(
 
         if is_mip is not False:
             duality_gap, max_integrality_violation = get_milp_metrics(
-                solver_model, solver_package, problem_file, solution_fn, is_mip
+                solver_model, solver_package, problem_file, solution_fn, log_fn, is_mip
             )
         else:
             duality_gap = None
