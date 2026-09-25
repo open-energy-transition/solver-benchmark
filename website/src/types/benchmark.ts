@@ -1,4 +1,11 @@
-type SolverType = "glpk" | "scip" | "highs" | "gurobi" | "cbc";
+type SolverType =
+  | "glpk"
+  | "scip"
+  | "highs"
+  | "gurobi"
+  | "cbc"
+  | "highs-hipo"
+  | "highs-ipx";
 type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 
 type BenchmarkResult = {
