@@ -2,7 +2,14 @@ target-version = "py312"
 line-length = 88
 
 [lint]
-extend-select = [
+# Listed explicitly rather than extending ruff's defaults, so a ruff upgrade
+# that changes the default rule set (as 0.16 did) doesn't silently start
+# enforcing new rules. To adopt more, add them here deliberately.
+select = [
+    "E4", # pycodestyle: imports
+    "E7", # pycodestyle: statements
+    "E9", # pycodestyle: runtime errors
+    "F", # pyflakes
     "I", # isort
     "TID", # tidy imports
 ]
