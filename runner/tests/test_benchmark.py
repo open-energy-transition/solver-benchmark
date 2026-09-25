@@ -110,6 +110,23 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert len(results) == 1
 
+    @pytest.mark.parametrize("num_seeds", ["0", "-1"])
+    def test_num_seeds_below_one_is_rejected(self, problems_yaml, num_seeds):
+        # Previously no seed ran and building the summary row crashed.
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+                "--num-seeds",
+                num_seeds,
+            ],
+        )
+        assert result.exit_code == 2, result.output  # usage error
+
     def test_default_num_seeds_records_the_configured_seed(
         self, problems_yaml, tmp_path
     ):
