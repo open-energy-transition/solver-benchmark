@@ -151,7 +151,7 @@ def main() -> None:
     # Check that every problem has metadata and the same set of solvers run on it
     seen_ids: set[str] = set()
     for problem_id, group in data.groupby("Problem"):
-        solvers_present = set(sorted(group["solver-version"].unique()))
+        solvers_present = set(group["solver-version"].unique())
 
         if problem_id in short_timeout_ids:
             problem_class = meta["problems"][problem_id].get("Problem class", "")

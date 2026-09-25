@@ -23,6 +23,7 @@ select = [
     "UP", # pyupgrade
     "B", # flake8-bugbear
     "SIM", # flake8-simplify
+    "C4", # flake8-comprehensions
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
