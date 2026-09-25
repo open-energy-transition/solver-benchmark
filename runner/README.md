@@ -90,14 +90,14 @@ docker run --rm \
   solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
-### Caching pixi environments
+### Caching pixi packages
 
-Per-solver-year pixi environments are installed at runtime. To avoid recreating them on every run, mount a named Docker volume over `runner/envs/`:
+Per-solver-year pixi environments are installed at runtime. To avoid re-downloading their packages on every run, mount a named Docker volume on pixi's package cache (`PIXI_CACHE_DIR=/opt/pixi-cache` in the image). Don't mount a volume over `runner/envs/`: it would hide the `pixi.toml`/`pixi.lock` files copied into the image.
 
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  -v solver-pixi-envs:/solver-benchmark/runner/envs \
+  -v solver-pixi-cache:/opt/pixi-cache \
   solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
@@ -108,7 +108,7 @@ Gurobi requires a license file. Mount it into the container:
 ```sh
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
-  -v solver-pixi-envs:/solver-benchmark/runner/envs \
+  -v solver-pixi-cache:/opt/pixi-cache \
   -v $HOME/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
   -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
   solver-benchmark-runner --solver-configurations gurobi-default --years 2025 results/metadata.yaml
@@ -130,16 +130,16 @@ python -m runner.utils.solver <solver_configuration> <input_file> <solver_versio
 **Arguments:**
 - `solver_configuration` - Solver configuration name (e.g., highs-default, highs-hipo, scip-default)
 - `input_file` - Path to a problem file (.lp or .mps)
-- `solver_version` - Solver version string (e.g., 1.10.0)
+- `solver_version` - Solver version string (e.g., 1.9.0)
 
 **Examples:**
 
 ```bash
 # Test HiGHS (from the repo root)
-pixi run --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.10.0
+pixi run --locked --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.9.0
 
 # Test SCIP
-pixi run --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.2
+pixi run --locked --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.0
 ```
 
 **Output:**
