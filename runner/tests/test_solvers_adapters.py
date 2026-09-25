@@ -163,6 +163,14 @@ class TestNativeModelIntegerValues:
         model.getnumintvar.return_value = 0
         assert mosek.integer_values(model, _P, _S) == {}
 
+    def test_knitro_mip_status_and_gap_come_from_its_result(self):
+        knitro = importlib.import_module("runner.utils.solvers.knitro")
+        result = SimpleNamespace(n_integer_vars=3, mip_rel_gap=0.002)
+        assert knitro.is_mip(result) is True
+        assert knitro.duality_gap(result, Path("k.log")) == 0.002
+        assert knitro.is_mip(SimpleNamespace(n_integer_vars=0)) is False
+        assert knitro.is_mip(SimpleNamespace()) is None
+
     def test_knitro_is_unavailable(self):
         knitro = importlib.import_module("runner.utils.solvers.knitro")
         assert knitro.integer_values(MagicMock(), _P, _S) is None
