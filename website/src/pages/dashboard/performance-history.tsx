@@ -59,7 +59,7 @@ const PagePerformanceHistory = () => {
   // Get problems common across all solver versions
   const solverVersionsByProblem = rawBenchmarkResults.reduce(
     (acc, result) => {
-      const key = `${result.benchmark}-${result.size}`;
+      const key = result.problemId;
       acc[key] = acc[key] || new Set();
       acc[key].add(`${result.solver}-${result.solverVersion}`);
       return acc;
@@ -81,7 +81,7 @@ const PagePerformanceHistory = () => {
 
   // Filter results to only include common problems
   const filteredBenchmarkResults = rawBenchmarkResults.filter((result) =>
-    commonProblems.includes(`${result.benchmark}-${result.size}`),
+    commonProblems.includes(result.problemId),
   );
 
   const benchmarkResults = useMemo(() => {
@@ -98,14 +98,14 @@ const PagePerformanceHistory = () => {
             (yearsWithSolver.get(year) || new Set()).add(result.solver),
           );
           if (result.status === "ok") {
-            const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
+            const key = `${result.problemId}-${result.solverReleaseYear}`;
             problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
           }
         });
 
         // Filter results where all solvers succeeded
         return filteredBenchmarkResults.filter((result) => {
-          const key = `${result.benchmark}-${result.size}-${result.solverReleaseYear}`;
+          const key = `${result.problemId}-${result.solverReleaseYear}`;
           return (
             result.status === "ok" &&
             problemSuccessMap.get(key) ===

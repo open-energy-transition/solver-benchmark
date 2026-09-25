@@ -63,7 +63,7 @@ const SolverSection = () => {
 
   // Count successful solves for each problem
   rawBenchmarkLatestResults.forEach((result) => {
-    const key = `${result.benchmark}-${result.size}`;
+    const key = result.problemId;
     problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
   });
 
@@ -125,6 +125,7 @@ const SolverSection = () => {
         return result.solver === selectedSolver;
       })
       .map((result) => ({
+        problemId: result.problemId,
         benchmark: result.benchmark,
         solver: result.solver,
         size: result.size,
@@ -141,13 +142,13 @@ const SolverSection = () => {
       .filter((result) => result.solver !== selectedSolver)
       .map((oData) => {
         const sData = baseData.find(
-          (sData) =>
-            sData.benchmark === oData.benchmark && sData.size === oData.size,
+          (sData) => sData.problemId === oData.problemId,
         );
         if (!sData) {
           // If no base solver data exists for this benchmark/size,
           // set factor to 1 to hide it in the chart
           return {
+            problemId: oData.problemId,
             benchmark: oData.benchmark,
             solver: oData.solver,
             status: oData.status,
@@ -160,6 +161,7 @@ const SolverSection = () => {
           };
         }
         return {
+          problemId: oData.problemId,
           benchmark: oData.benchmark,
           solver: oData.solver,
           status: oData.status,
@@ -172,14 +174,12 @@ const SolverSection = () => {
         };
       });
 
-    const baseRuntimes = new Map(
-      baseData.map((d) => [`${d.benchmark}-${d.size}`, d.runtime]),
-    );
+    const baseRuntimes = new Map(baseData.map((d) => [d.problemId, d.runtime]));
 
     // Combine and sort all data
     return [...baseData, ...comparisonData].sort((a, b) => {
-      const aBaseRuntime = baseRuntimes.get(`${a.benchmark}-${a.size}`) || 0;
-      const bBaseRuntime = baseRuntimes.get(`${b.benchmark}-${b.size}`) || 0;
+      const aBaseRuntime = baseRuntimes.get(a.problemId) || 0;
+      const bBaseRuntime = baseRuntimes.get(b.problemId) || 0;
 
       // Sort by base solver runtime
       if (aBaseRuntime !== bBaseRuntime) {

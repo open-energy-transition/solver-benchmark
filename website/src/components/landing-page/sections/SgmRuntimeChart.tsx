@@ -60,7 +60,7 @@ const SgmRuntimeChart = ({
   const latestBenchmarkResult = getLatestBenchmarkResult(rawBenchmarkResults);
 
   const totalProblems = new Set(
-    latestBenchmarkResult.map((result) => `${result.benchmark}-${result.size}`),
+    latestBenchmarkResult.map((result) => result.problemId),
   ).size;
 
   const solverResults = sgmData;

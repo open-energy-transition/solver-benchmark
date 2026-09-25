@@ -45,8 +45,8 @@ const BenchmarkRuntimeComparison = ({
     },
   ).filter((result) =>
     useHipoSolvers
-      ? PROBLEM_FILTERS.includes(`${result.benchmark}-${result.size}`)
-      : PROBLEM_FILTERS.includes(`${result.benchmark}-${result.size}`) &&
+      ? PROBLEM_FILTERS.includes(result.problemId)
+      : PROBLEM_FILTERS.includes(result.problemId) &&
         !HIPO_SOLVERS.includes(result.solver),
   );
 
@@ -57,16 +57,14 @@ const BenchmarkRuntimeComparison = ({
   const findBenchmarkData = useCallback(
     (key: string, category: string | number) => {
       return benchmarkLatestResults.find(
-        (result) =>
-          result.solver === key &&
-          `${result.benchmark}-${result.size}` === category,
+        (result) => result.solver === key && result.problemId === category,
       );
     },
     [benchmarkLatestResults],
   );
   const problemsWithStatus = PROBLEM_FILTERS.map((problemId) => {
     const data = benchmarkLatestResults.filter(
-      (result) => `${result.benchmark}-${result.size}` === problemId,
+      (result) => result.problemId === problemId,
     );
     return {
       problem: problemId,
@@ -86,9 +84,7 @@ const BenchmarkRuntimeComparison = ({
   const maxNormalizedRuntime = Math.max(
     ...PROBLEM_FILTERS.map((problemId) => {
       const data = benchmarkLatestResults.filter(
-        (result) =>
-          `${result.benchmark}-${result.size}` === problemId &&
-          result.status === "ok",
+        (result) => result.problemId === problemId && result.status === "ok",
       );
       const res: { [solver: string]: number } = {};
       const minRuntime = Math.min(...data.map((d) => d.runtime));
@@ -102,7 +98,7 @@ const BenchmarkRuntimeComparison = ({
   const getXAxisTooltipFormat = useCallback(
     (d: string) => {
       const benchmarkData = benchmarkLatestResults.find(
-        (result) => `${result.benchmark}-${result.size}` === d,
+        (result) => result.problemId === d,
       );
 
       if (!benchmarkData) {

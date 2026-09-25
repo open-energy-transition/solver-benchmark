@@ -79,12 +79,12 @@ const ChartResultsSectionsVarians = ({
           results
             .filter((result) => result.status === "ok")
             .forEach((result) => {
-              const key = `${result.benchmark}-${result.size}`;
+              const key = result.problemId;
               problemSuccessMap.set(key, (problemSuccessMap.get(key) || 0) + 1);
             });
 
           return results.filter((result) => {
-            const key = `${result.benchmark}-${result.size}`;
+            const key = result.problemId;
             return (
               result.status === "ok" &&
               problemSuccessMap.get(key) === availableSolvers.length
@@ -189,7 +189,7 @@ const ChartResultsSectionsVarians = ({
   };
 
   const uniqueProblemCount = new Set(
-    benchmarkResults.map((result) => `${result.benchmark}-${result.size}`),
+    benchmarkResults.map((result) => result.problemId),
   ).size;
   const getSolvedProblemsLabel = (
     solver: string,
@@ -282,7 +282,7 @@ const ChartResultsSectionsVarians = ({
           (r) => r.status === "ok",
         ).length;
         const totalForSolver = new Set(
-          solverResultsForT.map((r) => `${r.benchmark}-${r.size}`),
+          solverResultsForT.map((r) => r.problemId),
         ).size;
         if (totalForSolver > 0) {
           entry[solver] = (solvedCount / totalForSolver) * 100;

@@ -10,6 +10,8 @@ version, a new tuning configuration, or a new runtime guard be a pure config
 edit.
 """
 
+from __future__ import annotations
+
 import functools
 from collections.abc import Callable
 from pathlib import Path
