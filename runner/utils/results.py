@@ -262,7 +262,7 @@ def write_csv_row(
     run_id : str
         Identifier shared by every row from the same benchmark run.
     timestamp : str
-        When this specific solver run started.
+        When this specific solver run started, in UTC.
     vm_instance_type : str
         The machine type this ran on (or "unknown" if undetectable).
     vm_zone : str
@@ -319,7 +319,7 @@ def write_csv_summary_row(
     run_id : str
         Identifier shared by every row from the same benchmark run.
     timestamp : str
-        When the last iteration started.
+        When the last iteration started, in UTC.
 
     Notes
     -----

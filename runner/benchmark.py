@@ -92,7 +92,9 @@ def run(
                 "it will run with the solver's own defaults (no tuning options)"
             )
     resolved_years = list(years) if years else config.get_all_registered_years()
-    resolved_run_id = run_id or f"{time.strftime('%Y%m%d_%H%M%S')}_{gethostname()}"
+    resolved_run_id = (
+        run_id or f"{time.strftime('%Y%m%d_%H%M%S', time.gmtime())}_{gethostname()}"
+    )
     print(f"Using run ID: {resolved_run_id}")
 
     failed_years = []

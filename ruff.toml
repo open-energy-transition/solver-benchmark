@@ -31,6 +31,7 @@ select = [
     "PLW", # pylint warnings
     "PT", # flake8-pytest-style
     "PTH", # flake8-use-pathlib
+    "DTZ", # flake8-datetimez
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.

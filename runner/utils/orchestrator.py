@@ -183,7 +183,7 @@ def run_benchmark(
     hostname = environment_metadata["hostname"]
 
     if run_id is None:
-        run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
+        run_id = f"{time.strftime('%Y%m%d_%H%M%S', time.gmtime())}_{hostname}"
         print(f"Generated run_id: {run_id}")
     else:
         print(f"Using provided run_id: {run_id}")
@@ -281,8 +281,10 @@ def run_benchmark(
                     flush=True,
                 )
 
-                # Record timestamp before running the solver
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+                # Record timestamp (UTC) before running the solver
+                timestamp = datetime.datetime.now(datetime.UTC).strftime(
+                    "%Y-%m-%d %H:%M:%S.%f"
+                )
                 first_timestamp = first_timestamp or timestamp
 
                 metrics = run_solver(
@@ -376,7 +378,7 @@ def run_benchmark(
                     reference_metrics["timeout"] = None
 
                     # Record reference benchmark results
-                    reference_timestamp = datetime.datetime.now().strftime(
+                    reference_timestamp = datetime.datetime.now(datetime.UTC).strftime(
                         "%Y-%m-%d %H:%M:%S.%f"
                     )
                     write_csv_row(
