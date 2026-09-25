@@ -24,12 +24,16 @@ select = [
     "B", # flake8-bugbear
     "SIM", # flake8-simplify
     "C4", # flake8-comprehensions
+    "RUF", # ruff-specific rules
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
 ignore = [
     "B008", # function calls in defaults: typer.Option(...) is Typer's idiom
 ]
+
+# En dashes in chart titles and labels (e.g. "1e4–1e6") are deliberate
+allowed-confusables = ["–"]
 
 [format]
 docstring-code-format = true

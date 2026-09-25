@@ -296,7 +296,7 @@ def get_highs_binary_version() -> str:
 
         return "unknown"
     except Exception as e:
-        print(f"Error getting HiGHS binary version: {str(e)}")
+        print(f"Error getting HiGHS binary version: {e!s}")
         return "unknown"
 
 

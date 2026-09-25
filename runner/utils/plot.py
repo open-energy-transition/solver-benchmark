@@ -243,7 +243,7 @@ def plot_runtime_slowdowns(
 
     width = 1 / (max_num_solvers + 1)
 
-    fig, ax = plt.subplots(figsize=figsize, layout="constrained")
+    _fig, ax = plt.subplots(figsize=figsize, layout="constrained")
     seen_solvers = set()
 
     # Add a dotted line at y=1
@@ -498,7 +498,7 @@ def plot_speedup_vs_variables(
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce")
 
-    fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
+    _fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
 
     # HiPO vs simplex
     ax = axes[0]
@@ -609,7 +609,7 @@ def plot_solver_scaling_by_bucket(
         "L problems": df["Num. variables"] >= 1e6,
     }
 
-    fig, axes = plt.subplots(3, 1, figsize=figsize, sharex=False, sharey=True)
+    _fig, axes = plt.subplots(3, 1, figsize=figsize, sharex=False, sharey=True)
 
     for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items(), strict=True):
         dfb = df[mask_bucket]
@@ -693,7 +693,7 @@ def plot_speedup_vs_constraints(
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce")
 
-    fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
+    _fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=True)
 
     # HiPO vs simplex
     ax = axes[0]
@@ -809,7 +809,7 @@ def plot_solver_scaling_by_bucket_scatter_only(
         "Large (≥1e6)": df["Num. variables"] >= 1e6,
     }
 
-    fig, axes = plt.subplots(3, 1, figsize=figsize, sharey=True)
+    _fig, axes = plt.subplots(3, 1, figsize=figsize, sharey=True)
 
     for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items(), strict=True):
         dfb = df[mask_bucket]

@@ -4,6 +4,7 @@ configurations, and the eligibility-rule engine.
 
 import tomllib
 from pathlib import Path
+from typing import ClassVar
 
 from runner.utils.config import (
     _condition_matches,
@@ -194,7 +195,7 @@ class TestConditionMatches:
 
 
 class TestIsSolverEligible:
-    _LARGE_PROBLEM_RULE = {
+    _LARGE_PROBLEM_RULE: ClassVar[dict] = {
         "rules": [
             {
                 "name": "large_problems_runtime_budget",
