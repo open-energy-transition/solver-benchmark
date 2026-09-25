@@ -81,6 +81,7 @@ class TestGetInstalledSolverVersions:
         get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
         called_cmd = run_mock.call_args[0][0]
         assert called_cmd[:2] == ["pixi", "list"]
+        assert "--locked" in called_cmd
         assert "--json" in called_cmd
         assert called_cmd[called_cmd.index("--manifest-path") + 1].endswith(
             "benchmark-highs-2025"
@@ -193,6 +194,7 @@ class TestEnsureSolverEnvsInstalled:
         run_mock.assert_called_once()
         install_cmd = run_mock.call_args[0][0]
         assert install_cmd[:2] == ["pixi", "install"]
+        assert "--locked" in install_cmd
         assert install_cmd[install_cmd.index("--manifest-path") + 1] == str(env_dir)
 
     def test_installs_every_distinct_env_once(self, mocker, tmp_path):

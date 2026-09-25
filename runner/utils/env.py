@@ -57,7 +57,14 @@ def get_installed_solver_versions(
     """
     try:
         result = subprocess.run(
-            ["pixi", "list", "--manifest-path", str(_ENVS_DIR / env_name), "--json"],
+            [
+                "pixi",
+                "list",
+                "--locked",
+                "--manifest-path",
+                str(_ENVS_DIR / env_name),
+                "--json",
+            ],
             capture_output=True,
             text=True,
             check=True,
@@ -141,7 +148,9 @@ def ensure_solver_envs_installed(
     Each env is its own pixi manifest at `runner/envs/<env>/pixi.toml`.
     `pixi install` is idempotent and fast (a no-op check) when an env is
     already installed and up to date with its lock file, so this always
-    invokes it rather than tracking installed state itself. A failed or
+    invokes it rather than tracking installed state itself. `--locked` makes
+    a manifest/lock mismatch fail instead of silently re-resolving, so a run
+    only ever uses the committed lock file. A failed or
     missing manifest is logged and skipped rather than raised, so one bad
     env doesn't stop every other solver from running.
 
@@ -160,7 +169,7 @@ def ensure_solver_envs_installed(
 
         print(f"Ensuring env {env_name} is installed...")
         result = subprocess.run(
-            ["pixi", "install", "--manifest-path", str(env_dir)],
+            ["pixi", "install", "--locked", "--manifest-path", str(env_dir)],
             capture_output=True,
             text=True,
         )
