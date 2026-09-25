@@ -71,7 +71,7 @@ export default async function handler(
 
     res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=600");
     return res.status(200).json(stats);
-  } catch (error) {
+  } catch {
     // Serve stale cache if available, otherwise return zeros
     if (cachedStats) {
       return res.status(200).json(cachedStats);
