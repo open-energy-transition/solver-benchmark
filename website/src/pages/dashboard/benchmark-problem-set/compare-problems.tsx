@@ -35,10 +35,13 @@ const PageCompareProblems = () => {
     const raw = router.query.problems;
     if (typeof raw !== "string" || !raw) return [];
 
+    // Keep the metadata key itself so raw query values never reach links
+    const knownIds = Object.keys(fullMetaData);
     return raw
       .split(";")
       .map(decodeValue)
-      .filter((id) => !!fullMetaData[id])
+      .map((id) => knownIds.find((key) => key === id))
+      .filter((id): id is string => !!id)
       .slice(0, MAX_COMPARE_PROBLEMS);
   }, [router.query.problems, fullMetaData]);
 

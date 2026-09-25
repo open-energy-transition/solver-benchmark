@@ -5,7 +5,6 @@ import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import { ColumnDef } from "@tanstack/react-table";
 import { PATH_DASHBOARD } from "@/constants/path";
 import Link from "next/link";
-import InfoPopup from "@/components/common/InfoPopup";
 
 // This table shows static illustrative example data, not the live metadata
 // pipeline, so it doesn't need to share MetaDataEntry's shape (which now
