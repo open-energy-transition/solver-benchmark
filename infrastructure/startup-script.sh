@@ -85,13 +85,24 @@ echo "Accepting Anaconda Terms of Service..."
 ~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
 ~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
+# Install pixi, which manages the runner CLI's own dependencies (pyyaml,
+# psutil, requests, pandas, typer, ...) -- separate from the per-solver-year
+# conda envs runner/benchmark.py creates at runtime via `conda env create`.
+echo "Installing pixi..."
+curl -fsSL https://pixi.sh/install.sh | bash
+export PATH="$HOME/.pixi/bin:$PATH"
+
 # Get benchmark years from instance metadata
 BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
 echo "Retrieved benchmark years: ${BENCHMARK_YEARS_JSON}"
 
-# Parse the JSON array into a space-separated string for benchmark_all.sh
-BENCHMARK_YEARS_STR=$(echo "${BENCHMARK_YEARS_JSON}" | jq -r 'join(" ")')
-echo "Parsed benchmark years: ${BENCHMARK_YEARS_STR}"
+# Turn the JSON array into repeated --years flags for runner.benchmark
+# (its --years option is repeatable, not a single space-separated string).
+YEARS_ARGS=()
+while IFS= read -r year; do
+    YEARS_ARGS+=(--years "${year}")
+done < <(echo "${BENCHMARK_YEARS_JSON}" | jq -r '.[]')
+echo "Parsed benchmark years: ${YEARS_ARGS[*]}"
 
 # Get benchmark filename from instance metadata
 BENCHMARK_FILE=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_file")
@@ -107,9 +118,7 @@ BENCHMARK_CONTENT=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.in
 # Write the benchmark file - preserve the exact content
 echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 
-# Make benchmark_all.sh executable
 cd /solver-benchmark/
-chmod +x ./runner/benchmark_all.sh
 
 # Extract solver_configuration from the benchmark YAML (if present) using yq,
 # to enable per-VM solver selection for multi-phase orchestration.
@@ -118,20 +127,26 @@ SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver_configu
 # Normalize: strip surrounding quotes and CR, then trim whitespace
 SOLVER_FROM_YAML=$(printf "%s" "${SOLVER_FROM_YAML}" | sed -e 's/^"//' -e 's/"$//' | tr -d '\r' | xargs || true)
 
+# Turn a possibly space-separated solver list into repeated --solver-configurations flags
+SOLVER_ARGS=()
 if [ -n "${SOLVER_FROM_YAML}" ]; then
     echo "Using solver from benchmark YAML: ${SOLVER_FROM_YAML}"
+    for solver in ${SOLVER_FROM_YAML}; do
+        SOLVER_ARGS+=(--solver-configurations "${solver}")
+    done
 else
     echo "No solver_configuration field in benchmark YAML, using default solver list for year"
 fi
 
-# Run the benchmark_all.sh script with our years and the run_id
-echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"
+# Run runner.benchmark with our years and the run_id
+echo "Starting benchmarks for years: ${YEARS_ARGS[*]} with run_id: ${RUN_ID}"
 source ~/miniconda3/bin/activate
-if [ -n "${SOLVER_FROM_YAML}" ]; then
-    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" -s "${SOLVER_FROM_YAML}" ./benchmarks/"${BENCHMARK_FILE}"
-else
-    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
-fi
+pixi run -e runner python -m runner.benchmark \
+    "${YEARS_ARGS[@]}" \
+    -r "${REFERENCE_BENCHMARK_INTERVAL}" \
+    -u "${RUN_ID}" \
+    "${SOLVER_ARGS[@]}" \
+    ./benchmarks/"${BENCHMARK_FILE}"
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then

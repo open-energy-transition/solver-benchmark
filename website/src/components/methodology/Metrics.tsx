@@ -25,8 +25,8 @@ const Metrics = () => {
         </li>
         <li className="mb-2">
           <strong>Peak memory consumption</strong>: of the script{" "}
-          <code>runner/run_solver.py</code> that uses linopy to call the solver,
-          as reported by <code>/usr/bin/time -f %M</code>
+          <code>runner/utils/solver.py</code> that uses linopy to call the
+          solver, as reported by <code>/usr/bin/time -f %M</code>
         </li>
         <li className="mb-2">
           <strong>Status</strong>: OK, warning, TO (timeout), OOM (out of

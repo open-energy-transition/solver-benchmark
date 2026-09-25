@@ -121,11 +121,32 @@ jobs:
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" results/metadata_subset.yaml
+          # GLPK is left out: linopy fails to parse its output for problems
+          # with long variable names (e.g. the SWITCH ones in the subset).
+          SOLVER_CONFIGURATIONS="cbc-default highs-default scip-default"
+          SOLVER_ARGS=()
+          for configuration in ${SOLVER_CONFIGURATIONS}; do
+            SOLVER_ARGS+=(--solver-configurations "${configuration}")
+          done
+          pixi run -e runner python -m runner.benchmark --years tests \
+            "${SOLVER_ARGS[@]}" results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
-          if awk -F',' 'NR>1 && $2 != "glpk-default" {if ($5 != "ok") exit 1}' results/benchmark_results.csv; then
-            echo "All non-GLPK benchmarks ran successfully."
+          # Require at least one row, every row "ok" (column 5 is Status),
+          # and at least one row for each requested solver configuration.
+          if awk -F',' -v expected="${SOLVER_CONFIGURATIONS}" '
+            NR > 1 { rows++; seen[$2] = 1; if ($5 != "ok") failed = 1 }
+            END {
+              n = split(expected, configurations, " ")
+              for (i = 1; i <= n; i++) {
+                if (!(configurations[i] in seen)) {
+                  print "No results for " configurations[i]
+                  missing = 1
+                }
+              }
+              exit(rows == 0 || failed || missing)
+            }' results/benchmark_results.csv; then
+            echo "All benchmarks ran successfully."
           else
             echo "Some benchmarks did not complete successfully."
             exit 1
