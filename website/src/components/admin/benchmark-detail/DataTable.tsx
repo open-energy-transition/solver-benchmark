@@ -46,12 +46,12 @@ const DataTable = ({ problemId }: DataTableProps) => {
   }, [problemId]);
 
   const getLogDownloadUrl = (row: BenchmarkResult) => {
-    const urlPathSegment = `${row.runId}/${row.benchmark}-${row.size}-${row.solver}-${row.solverVersion}`;
+    const urlPathSegment = `${row.runId}/${row.problemId}-${row.solverConfiguration}-${row.solverVersion}`;
     return `${BASE_STORAGE_URL}/logs/${urlPathSegment}.log.gz`;
   };
 
   const getSolutionDownloadUrl = (row: BenchmarkResult) => {
-    const urlPathSegment = `${row.runId}/${row.benchmark}-${row.size}-${row.solver}-${row.solverVersion}`;
+    const urlPathSegment = `${row.runId}/${row.problemId}-${row.solverConfiguration}-${row.solverVersion}`;
     return `${BASE_STORAGE_URL}/solutions/${urlPathSegment}.sol.gz`;
   };
 

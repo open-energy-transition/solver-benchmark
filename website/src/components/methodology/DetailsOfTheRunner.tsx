@@ -17,7 +17,7 @@ const DetailsOfTheRunner = () => {
       <p>
         Given a time out <MathJax inline>{"$T$"}</MathJax> (seconds) and a
         number of iterations <MathJax inline>{"$N$"}</MathJax>, the benchmark
-        runner <code>runner/run_benchmarks.py</code> operates as follows:
+        runner <code>runner/benchmark.py</code> operates as follows:
       </p>
       <ul className="list-disc list-outside ml-6 text-base leading-relaxed">
         <li className="mb-2">
@@ -26,19 +26,19 @@ const DetailsOfTheRunner = () => {
         </li>
         <li className="mb-2">
           For each benchmark problem and solver combination, the runner calls
-          <code>runner/run_solver.py</code>, which imports the input file into
+          <code>runner/utils/solver.py</code>, which imports the input file into
           linopy and calls <code>linopy.Model.solve()</code> with the chosen
           solver
         </li>
         <li className="mb-2">
-          <code>run_solver.py</code> reports the time taken for the{" "}
+          <code>runner/utils/solver.py</code> reports the time taken for the{" "}
           <code>solve()</code> call, along with the status, termination
           condition, and objective value returned by the solver
         </li>
         <li className="mb-2">
           <p>
             The runner uses <code>/usr/bin/time</code> to measure the peak
-            memory usage of the <code>run_solver.py</code> script
+            memory usage of the <code>runner/utils/solver.py</code> script
           </p>
           <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">
             <li className="mb-2">

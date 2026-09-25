@@ -9,11 +9,13 @@
 #     solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 #
 # Per-solver-year pixi environments (runner/envs/<env>/) are installed at
-# runtime by runner/benchmark.py. To cache them across runs, use a named
-# volume:
+# runtime by runner/benchmark.py. To avoid re-downloading their packages on
+# every run, keep pixi's package cache in a named volume. (Mounting a volume
+# over runner/envs/ instead would hide the pixi.toml/pixi.lock files copied
+# into the image.)
 #   docker run --rm \
 #     -v $(pwd)/results:/solver-benchmark/results \
-#     -v solver-pixi-envs:/solver-benchmark/runner/envs \
+#     -v solver-pixi-cache:/opt/pixi-cache \
 #     solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 #
 # Note: systemd is not available inside Docker, so memory limit enforcement
@@ -48,6 +50,10 @@ RUN apt-get update && \
 RUN curl -fsSL https://pixi.sh/install.sh | bash
 ENV PATH="/root/.pixi/bin:${PATH}"
 
+# Keep pixi's package cache outside the repo, so it can be a named volume
+# (see "Run" above) without hiding any files copied into the image
+ENV PIXI_CACHE_DIR=/opt/pixi-cache
+
 WORKDIR /solver-benchmark
 
 # Copy the pixi workspace files first so the runner env can be installed
@@ -65,6 +71,6 @@ COPY results/metadata.yaml results/metadata.yaml
 # Copy project-level config files needed by the runner
 COPY ruff.toml pytest.ini ./
 
-RUN pixi install -e runner
+RUN pixi install --locked -e runner
 
 ENTRYPOINT ["pixi", "run", "-e", "runner", "python", "-m", "runner.benchmark"]

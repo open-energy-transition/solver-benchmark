@@ -119,7 +119,7 @@ fi
 
 # Run runner.benchmark with our years and the run_id
 echo "Starting benchmarks for years: ${YEARS_ARGS[*]} with run_id: ${RUN_ID}"
-pixi run -e runner python -m runner.benchmark \
+pixi run --locked -e runner python -m runner.benchmark \
     "${YEARS_ARGS[@]}" \
     -r "${REFERENCE_BENCHMARK_INTERVAL}" \
     -u "${RUN_ID}" \

@@ -4,15 +4,16 @@ import Papa from "papaparse";
 import yaml from "js-yaml";
 
 // Type definitions
-// Metadata entries are keyed by `${Benchmark}-${Size}`.
+// Metadata entries are keyed by problem ID: the `Problem` column in current
+// CSVs, or `${Benchmark}-${Size}` in historical ones.
 interface RawMetaData {
   problems: Record<string, unknown>;
 }
 
 interface CsvBenchmarkResult {
-  Benchmark: string;
-  Size: string;
-  problemId: string;
+  Problem?: string;
+  Benchmark?: string;
+  Size?: string;
 }
 
 // Path constants
@@ -54,6 +55,9 @@ async function getBenchmarkResults(): Promise<CsvBenchmarkResult[]> {
   }
 }
 
+const getProblemKey = (result: CsvBenchmarkResult): string =>
+  result.Problem ?? `${result.Benchmark}-${result.Size}`;
+
 /**
  * Validates that all benchmark results have corresponding metadata entries
  */
@@ -68,14 +72,13 @@ export async function validateData(): Promise<void> {
       throw new Error("Failed to load metadata");
     }
     const invalidResults = results.filter((result) => {
-      const problemKey = `${result.Benchmark}-${result.Size}`;
-      return !metaData.problems[problemKey];
+      return !metaData.problems[getProblemKey(result)];
     });
 
     if (invalidResults.length > 0) {
       invalidResults.forEach((result) => {
         console.error(
-          `Validation failed for benchmark: ${result.Benchmark} with size: ${result.Size}`,
+          `Validation failed for problem: ${getProblemKey(result)}`,
         );
       });
       throw new Error(

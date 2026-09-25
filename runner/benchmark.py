@@ -82,6 +82,12 @@ def run(
         if solver_configurations
         else config.get_default_configurations()
     )
+    for configuration in resolved_solver_configurations:
+        if config.get_solver_configuration(configuration) is None:
+            print(
+                f"WARNING: {configuration} is not in solver_configurations.yaml; "
+                "it will run with the solver's own defaults (no tuning options)"
+            )
     resolved_years = list(years) if years else config.get_all_registered_years()
     resolved_run_id = run_id or f"{time.strftime('%Y%m%d_%H%M%S')}_{gethostname()}"
     print(f"Using run ID: {resolved_run_id}")
@@ -89,12 +95,11 @@ def run(
     for index, year in enumerate(resolved_years):
         print(f"Running the benchmark for year {year}...")
 
-        registered_versions = env.get_registered_solver_versions(
-            resolved_solver_configurations, year
-        )
-        env.ensure_solver_envs_installed(registered_versions)
-
         try:
+            registered_versions = env.get_registered_solver_versions(
+                resolved_solver_configurations, year
+            )
+            env.ensure_solver_envs_installed(registered_versions)
             run_benchmark(
                 problems_yaml_path,
                 resolved_solver_configurations,

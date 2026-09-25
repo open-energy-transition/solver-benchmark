@@ -5,6 +5,8 @@ VM/cloud campaign allocation only -- loading problem metadata now lives in
 `metadata.py`, since it's also needed by the CLI/orchestrator.
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import pandas as pd

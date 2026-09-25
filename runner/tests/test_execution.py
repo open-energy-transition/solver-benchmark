@@ -157,6 +157,7 @@ class TestRunSolver:
         called_cmd = run_mock.call_args[0][0]
         assert "pixi" in called_cmd
         assert "run" in called_cmd
+        assert "--locked" in called_cmd
         assert called_cmd[called_cmd.index("--manifest-path") + 1].endswith(
             "benchmark-highs-2025"
         )

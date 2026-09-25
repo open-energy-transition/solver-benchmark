@@ -2,9 +2,9 @@
 accessors that delegate to `runner/utils/solvers/`'s per-solver adapters.
 """
 
+from pathlib import Path
 from unittest.mock import MagicMock
 
-import numpy as np
 import pytest
 
 from runner.utils.solver import (
@@ -15,6 +15,7 @@ from runner.utils.solver import (
     get_solver,
     is_mip_problem,
 )
+from runner.utils.solvers import SOLVER_ADAPTERS
 
 
 class TestGetSolver:
@@ -77,13 +78,14 @@ class TestGetSolver:
 
 
 class TestIsMipProblem:
-    def test_none_model_is_false(self):
-        assert is_mip_problem(None, "highs") is False
+    def test_none_model_is_unknown(self):
+        assert is_mip_problem(None, "highs") is None
 
     def test_delegates_to_the_solvers_adapter(self):
+        var = MagicMock()
+        var.vtype.return_value = "INTEGER"
         model = MagicMock()
-        model.getNIntVars.return_value = 1
-        model.getNBinVars.return_value = 0
+        model.getVars.return_value = [var]
         assert is_mip_problem(model, "scip") is True
 
     def test_unregistered_solver_raises(self):
@@ -126,135 +128,57 @@ class TestGetReportedRuntime:
 
 class TestCalculateIntegralityViolation:
     def test_basic_violation(self):
-        # primal_values is label-indexed (see solver.py's module docstring
-        # on linopy's Solution.primal): label 2 ("z") isn't an integer var
-        # and is excluded via integer_var_labels, not via a name lookup.
-        integer_var_labels = np.array([0, 1])
-        primal_values = np.array([1.4, 2.0, 3.9])
-        # max |p - round(p)| over integer_var_labels only: |1.4-1|=0.4, |2.0-2|=0.0
-        assert calculate_integrality_violation(
-            integer_var_labels, primal_values
-        ) == pytest.approx(0.4)
-
-    def test_ignores_non_integer_vars(self):
-        integer_var_labels = np.array([0])
-        primal_values = np.array([1.0, 3.9])
-        assert calculate_integrality_violation(
-            integer_var_labels, primal_values
-        ) == pytest.approx(0.0)
+        # max |v - round(v)|: |1.4 - 1| = 0.4, |2.0 - 2| = 0.0
+        assert calculate_integrality_violation({"x": 1.4, "y": 2.0}) == pytest.approx(
+            0.4
+        )
 
     def test_zero_when_all_integral(self):
-        integer_var_labels = np.array([0, 1])
-        primal_values = np.array([1.0, 2.0])
-        assert calculate_integrality_violation(integer_var_labels, primal_values) == 0.0
-
-    def test_none_when_primal_values_is_empty(self):
-        # Regression test: linopy's deprecated file-based solve path
-        # (Solver.solve_problem) never initializes its internal variable
-        # count, so it always returns a zero-length Solution.primal
-        # regardless of the problem's real size -- confirmed against a real
-        # MILP solve, not just a hypothetical.
-        integer_var_labels = np.array([1, 2])
-        primal_values = np.array([])
-        assert (
-            calculate_integrality_violation(integer_var_labels, primal_values) is None
-        )
-
-    def test_none_when_no_label_is_in_bounds(self):
-        integer_var_labels = np.array([5, 6])
-        primal_values = np.array([1.0, 2.0])
-        assert (
-            calculate_integrality_violation(integer_var_labels, primal_values) is None
-        )
-
-    def test_out_of_range_labels_are_dropped_not_raised(self):
-        # A partially-populated primal (some in bounds, some not) still
-        # computes the violation over whatever labels it can.
-        integer_var_labels = np.array([0, 5])
-        primal_values = np.array([1.4])
-        assert calculate_integrality_violation(
-            integer_var_labels, primal_values
-        ) == pytest.approx(0.4)
+        assert calculate_integrality_violation({"x": 1.0, "y": 2.0}) == 0.0
 
 
 class TestGetMilpMetrics:
-    def test_maps_solver_variable_names_to_linopy_labels(self, monkeypatch):
-        # Regression test: since linopy 0.9, Solution.primal is a dense
-        # array indexed by linopy's own integer "label" per variable (parsed
-        # from each variable's "x<label>" name), not a pandas Series indexed
-        # by variable name -- get_milp_metrics must convert highspy's
-        # reported names into labels before indexing into primal, instead of
-        # trying `.loc` on what is no longer a labeled Series.
-        integrality = {
-            0: (None, "integer"),
-            1: (None, "integer"),
-            2: (None, "continuous"),
-        }
-        fake_h = MagicMock()
-        fake_h.numVariables = 3
-        fake_h.variableName.side_effect = lambda i: f"x{i}"
-        fake_h.getColIntegrality.side_effect = lambda i: integrality[i]
+    def _patch_adapter(self, monkeypatch, integer_values, duality_gap=0.01):
+        adapter = MagicMock()
+        adapter.integer_values.return_value = integer_values
+        adapter.duality_gap.return_value = duality_gap
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+        return adapter
 
-        fake_highspy = MagicMock()
-        fake_highspy.HighsVarType.kInteger = "integer"
-        fake_highspy.Highs.return_value = fake_h
-        monkeypatch.setattr("runner.utils.solver.highspy", fake_highspy)
-
-        solver_result = MagicMock()
-        solver_result.solver_model = MagicMock()
-        # label 0 ("x0") -> 1.4, label 1 ("x1") -> 2.0, label 2 (non-integer,
-        # excluded) -> 3.9
-        solver_result.solution.primal = np.array([1.4, 2.0, 3.9])
-
-        _, max_violation = get_milp_metrics("problem.lp", solver_result, "highs")
-        assert max_violation == pytest.approx(0.4)
+    def test_uses_the_adapters_integer_values(self, monkeypatch):
+        adapter = self._patch_adapter(monkeypatch, {"x": 1.4, "y": 2.0})
+        assert get_milp_metrics(
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+        ) == (0.01, pytest.approx(0.4))
+        adapter.integer_values.assert_called_once()
 
     def test_no_integer_vars_returns_none(self, monkeypatch):
-        fake_h = MagicMock()
-        fake_h.numVariables = 2
-        fake_h.variableName.side_effect = lambda i: f"x{i}"
-        fake_h.getColIntegrality.return_value = (None, "continuous")
+        self._patch_adapter(monkeypatch, {})
+        assert get_milp_metrics(
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+        ) == (None, None)
 
-        fake_highspy = MagicMock()
-        fake_highspy.HighsVarType.kInteger = "integer"
-        fake_highspy.Highs.return_value = fake_h
-        monkeypatch.setattr("runner.utils.solver.highspy", fake_highspy)
+    def test_unreadable_values_keep_the_gap_but_not_the_violation(self, monkeypatch):
+        self._patch_adapter(monkeypatch, None)
+        assert get_milp_metrics(
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+        ) == (0.01, None)
 
-        solver_result = MagicMock()
-        solver_result.solver_model = MagicMock()
-        solver_result.solution.primal = np.array([1.4, 2.0])
+    def test_unknown_mip_status_and_unreadable_values_returns_none(self, monkeypatch):
+        self._patch_adapter(monkeypatch, None)
+        assert get_milp_metrics(
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), None
+        ) == (None, None)
 
-        duality_gap, max_violation = get_milp_metrics(
-            "problem.lp", solver_result, "highs"
-        )
-        assert (duality_gap, max_violation) == (None, None)
+    def test_adapter_exception_is_caught(self, monkeypatch):
+        adapter = self._patch_adapter(monkeypatch, None)
+        adapter.integer_values.side_effect = RuntimeError("boom")
+        assert get_milp_metrics(
+            MagicMock(), "fake", Path("p.lp"), Path("p.sol"), True
+        ) == (0.01, None)
 
-    def test_highspy_unavailable_returns_none(self, monkeypatch):
-        monkeypatch.setattr("runner.utils.solver.highspy", None)
-        solver_result = MagicMock()
-        solver_result.solver_model = MagicMock()
-        assert get_milp_metrics("problem.lp", solver_result, "highs") == (None, None)
-
-    def test_empty_primal_from_deprecated_solve_path_does_not_raise(self, monkeypatch):
-        # Regression test for a real bug found running an actual MILP
-        # (tests/sample_benchmarks/sample_mip.lp) through the real CLI:
-        # linopy's deprecated file-based solve path always returns a
-        # zero-length Solution.primal (see calculate_integrality_violation's
-        # docstring), which used to raise an uncaught IndexError here.
-        integrality = {0: (None, "continuous"), 1: (None, "integer")}
-        fake_h = MagicMock()
-        fake_h.numVariables = 2
-        fake_h.variableName.side_effect = lambda i: f"x{i}"
-        fake_h.getColIntegrality.side_effect = lambda i: integrality[i]
-
-        fake_highspy = MagicMock()
-        fake_highspy.HighsVarType.kInteger = "integer"
-        fake_highspy.Highs.return_value = fake_h
-        monkeypatch.setattr("runner.utils.solver.highspy", fake_highspy)
-
-        solver_result = MagicMock()
-        solver_result.solver_model = MagicMock()
-        solver_result.solution.primal = np.array([])
-
-        _, max_violation = get_milp_metrics("problem.lp", solver_result, "highs")
-        assert max_violation is None
+    def test_unregistered_solver_raises(self):
+        with pytest.raises(NotImplementedError):
+            get_milp_metrics(
+                MagicMock(), "not-a-solver", Path("p.lp"), Path("p.sol"), True
+            )

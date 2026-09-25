@@ -7,6 +7,8 @@ the equivalent column ("Benchmark") named a model family shared across
 multiple sizes rather than one specific problem.
 """
 
+from __future__ import annotations
+
 import re
 
 import matplotlib as mpl

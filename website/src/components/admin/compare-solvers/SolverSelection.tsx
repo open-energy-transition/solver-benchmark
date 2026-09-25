@@ -41,6 +41,7 @@ const SolverSelection = () => {
     d1: SolverMetrics;
     d2: SolverMetrics;
     status: "TO-TO" | "ok-ok" | "ok-TO" | "TO-ok";
+    problemId: string;
     benchmark: string;
     size: string;
   }
@@ -67,14 +68,12 @@ const SolverSelection = () => {
 
     // Find common benchmark-size pairs
     const commonProblems = data1.filter((d1) =>
-      data2.some((d2) => d2.benchmark === d1.benchmark && d2.size === d1.size),
+      data2.some((d2) => d2.problemId === d1.problemId),
     );
 
     setChartData(
       commonProblems.map((d1) => {
-        const d2 = data2.find(
-          (d2) => d2.benchmark === d1.benchmark && d2.size === d1.size,
-        )!;
+        const d2 = data2.find((d2) => d2.problemId === d1.problemId)!;
         return {
           d1: {
             runtime: d1.runtime,
@@ -89,6 +88,7 @@ const SolverSelection = () => {
             status: d2.status,
           },
           status: `${formatStatus(d1.status)}-${formatStatus(d2.status)}`,
+          problemId: d1.problemId,
           benchmark: d1.benchmark,
           size: d1.size,
         };
@@ -102,7 +102,7 @@ const SolverSelection = () => {
     solver2: string,
   ) => `
   <div class="text-sm">
-    <strong>Problem ID:</strong> ${d.benchmark}-${d.size}<br>
+    <strong>Problem ID:</strong> ${d.problemId}<br>
     <strong>${solver1.replace("--", " (")}):</strong> ${formatDecimal({
       value: d.d1.memoryUsage,
     })} MB (${d.d1.status})<br>
@@ -204,6 +204,7 @@ const SolverSelection = () => {
                   yaxis: d.d2.runtime,
                   status: d.status,
                   size: d.size,
+                  problemId: d.problemId,
                   benchmark: d.benchmark,
                   d1: d.d1,
                   d2: d.d2,
@@ -230,6 +231,7 @@ const SolverSelection = () => {
                   yaxis: d.d2.memoryUsage,
                   status: d.status,
                   size: d.size,
+                  problemId: d.problemId,
                   benchmark: d.benchmark,
                   d1: d.d1,
                   d2: d.d2,

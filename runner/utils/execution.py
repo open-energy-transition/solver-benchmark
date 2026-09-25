@@ -7,6 +7,8 @@ out-of-memory kill can be observed and recorded as a result rather than
 taking down the whole benchmark run.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -154,9 +156,12 @@ def run_solver(
         ]
     )
 
-    # Use pixi run to execute in the solver's env, or plain python for the current env
+    # Use pixi run to execute in the solver's env, or plain python for the current env.
+    # --locked: fail on a manifest/lock mismatch rather than re-resolving mid-run.
     if env_name:
-        command.extend(["pixi", "run", "--manifest-path", str(_ENVS_DIR / env_name)])
+        command.extend(
+            ["pixi", "run", "--locked", "--manifest-path", str(_ENVS_DIR / env_name)]
+        )
 
     command.extend(
         [
