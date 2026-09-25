@@ -1,3 +1,7 @@
+// The solvers the website knows (for editor autocompletion), but open to any
+// other name: results can contain any configuration from the runner's
+// solver_configurations.yaml, and the solver lists, labels and colors all
+// handle names not listed here.
 type SolverType =
   | "glpk"
   | "scip"
@@ -5,7 +9,8 @@ type SolverType =
   | "gurobi"
   | "cbc"
   | "highs-hipo"
-  | "highs-ipx";
+  | "highs-ipx"
+  | (string & {});
 type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 
 type BenchmarkResult = {
