@@ -2,6 +2,7 @@
 accessors that delegate to `runner/utils/solvers/`'s per-solver adapters.
 """
 
+import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -14,6 +15,7 @@ from runner.utils.solver import (
     get_reported_runtime,
     get_solver,
     is_mip_problem,
+    main,
 )
 from runner.utils.solvers import SOLVER_ADAPTERS
 
@@ -164,3 +166,35 @@ class TestGetMilpMetrics:
                 Path("p.log"),
                 True,
             )
+
+
+class TestMainRecoversFromLinopyParseFailures:
+    def _run(self, monkeypatch, capsys, recovered):
+        solver = MagicMock()
+        solver.solve_problem.side_effect = KeyError("Row name")
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver", lambda *a, **k: (solver, "fake")
+        )
+        adapter = MagicMock()
+        adapter.recover_result.return_value = recovered
+        adapter.is_mip.return_value = None
+        adapter.integer_values.return_value = {"x": 1.0}
+        adapter.duality_gap.return_value = None
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+        main("fake-default", "problem.lp", "1.0")
+        return json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+
+    def test_uses_the_adapters_result_when_linopy_fails(self, monkeypatch, capsys):
+        results = self._run(
+            monkeypatch,
+            capsys,
+            {"status": "ok", "condition": "optimal", "objective": 3.7},
+        )
+        assert results["status"] == "ok"
+        assert results["objective"] == 3.7
+        assert results["runtime"] is not None
+        assert results["max_integrality_violation"] == 0.0
+
+    def test_still_errors_without_a_recovered_result(self, monkeypatch, capsys):
+        results = self._run(monkeypatch, capsys, None)
+        assert results["status"] == "ER"

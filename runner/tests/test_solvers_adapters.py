@@ -324,3 +324,46 @@ class TestCbcDualityGap:
     def test_missing_log_is_unknown(self, tmp_path):
         cbc = importlib.import_module("runner.utils.solvers.cbc")
         assert cbc.duality_gap(MagicMock(), tmp_path / "missing.log") is None
+
+
+class TestGlpkRecoverResult:
+    """GLPK's status and objective, read from its report's header."""
+
+    def _recover(self, tmp_path, status, objective_line):
+        glpk = importlib.import_module("runner.utils.solvers.glpk")
+        solution_fn = tmp_path / "glpk.sol"
+        solution_fn.write_text(
+            "Problem:\n"
+            "Rows:       795\n"
+            "Columns:    582 (2 integer, 2 binary)\n"
+            f"Status:     {status}\n"
+            f"Objective:  {objective_line}\n\n"
+            "   No.   Row name        Activity     Lower bound   Upper bound\n"
+        )
+        return glpk.recover_result(_P, solution_fn)
+
+    def test_optimal_minimization_is_recovered(self, tmp_path):
+        result = self._recover(
+            tmp_path, "INTEGER OPTIMAL", "Minimize_System_Cost = 126750492.1 (MINimum)"
+        )
+        assert result == {
+            "status": "ok",
+            "condition": "optimal",
+            "objective": 126750492.1,
+        }
+
+    def test_maximization_is_not_recovered(self, tmp_path):
+        assert self._recover(tmp_path, "OPTIMAL", "obj = 5 (MAXimum)") is None
+
+    def test_non_optimal_status_is_not_recovered(self, tmp_path):
+        assert self._recover(tmp_path, "INTEGER UNDEFINED", "obj = 0 (MINimum)") is None
+
+    def test_missing_report_is_not_recovered(self, tmp_path):
+        glpk = importlib.import_module("runner.utils.solvers.glpk")
+        assert glpk.recover_result(_P, tmp_path / "missing.sol") is None
+
+    def test_only_glpk_defines_the_optional_hook(self):
+        with_hook = {
+            name for name, adapter in SOLVER_ADAPTERS.items() if adapter.recover_result
+        }
+        assert with_hook == {"glpk"}
