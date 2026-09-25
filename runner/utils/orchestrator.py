@@ -1,5 +1,7 @@
-"""The per-problem run loop: ties `metadata`, `config`, `env`, `execution`,
-and `results` together into an actual benchmark run.
+"""The per-problem run loop of a benchmark run.
+
+Ties `metadata`, `config`, `env`, `execution`, and `results` together into
+an actual benchmark run.
 
 Imported by `runner/benchmark.py`'s Typer CLI. Kept importable (not inlined
 in the CLI) so it's testable without going through Typer's CLI-parsing layer.
@@ -8,7 +10,6 @@ in the CLI) so it's testable without going through Typer's CLI-parsing layer.
 from __future__ import annotations
 
 import datetime
-import os
 import statistics
 import subprocess
 import time
@@ -59,6 +60,7 @@ def _gather_environment_metadata() -> dict[str, str]:
             ["git", "rev-parse", "--short", "HEAD"],
             capture_output=True,
             text=True,
+            check=True,  # a failure is recorded as "unknown" below
         ).stdout.strip()
     except Exception as e:
         print(f"Error getting git commit hash: {e}")
@@ -183,7 +185,7 @@ def run_benchmark(
     hostname = environment_metadata["hostname"]
 
     if run_id is None:
-        run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
+        run_id = f"{time.strftime('%Y%m%d_%H%M%S', time.gmtime())}_{hostname}"
         print(f"Generated run_id: {run_id}")
     else:
         print(f"Using provided run_id: {run_id}")
@@ -194,7 +196,7 @@ def run_benchmark(
     last_reference_run = 0.0
 
     results_folder = _REPO_ROOT / "results"
-    os.makedirs(results_folder, exist_ok=True)
+    results_folder.mkdir(parents=True, exist_ok=True)
 
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
@@ -211,7 +213,7 @@ def run_benchmark(
         append,
         seeds_csv=seeds_csv if num_seeds > 1 else None,
     )
-    os.makedirs(_PROBLEMS_FOLDER, exist_ok=True)
+    _PROBLEMS_FOLDER.mkdir(parents=True, exist_ok=True)
 
     registered_solver_versions = env.get_registered_solver_versions(
         solver_configurations, year
@@ -281,8 +283,10 @@ def run_benchmark(
                     flush=True,
                 )
 
-                # Record timestamp before running the solver
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+                # Record timestamp (UTC) before running the solver
+                timestamp = datetime.datetime.now(datetime.UTC).strftime(
+                    "%Y-%m-%d %H:%M:%S.%f"
+                )
                 first_timestamp = first_timestamp or timestamp
 
                 metrics = run_solver(
@@ -376,7 +380,7 @@ def run_benchmark(
                     reference_metrics["timeout"] = None
 
                     # Record reference benchmark results
-                    reference_timestamp = datetime.datetime.now().strftime(
+                    reference_timestamp = datetime.datetime.now(datetime.UTC).strftime(
                         "%Y-%m-%d %H:%M:%S.%f"
                     )
                     write_csv_row(

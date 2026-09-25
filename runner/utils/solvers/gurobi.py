@@ -30,5 +30,9 @@ def integer_values(
         return None
     integer_vars = [v for v in model.getVars() if v.VType in ("I", "B")]
     return dict(
-        zip(model.getAttr("VarName", integer_vars), model.getAttr("X", integer_vars))
+        zip(
+            model.getAttr("VarName", integer_vars),
+            model.getAttr("X", integer_vars),
+            strict=True,
+        )
     )

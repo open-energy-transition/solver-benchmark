@@ -11,17 +11,17 @@ from typing import Any
 
 
 def is_mip(model: Any) -> bool | None:
-    """Always None: GLPK returns no model, see `integer_values`."""
+    """Return None: GLPK returns no model, see `integer_values`."""
     return None
 
 
 def duality_gap(model: Any, log_fn: Path) -> float | None:
-    """Always None: GLPK doesn't expose a duality gap from Python."""
+    """Return None: GLPK doesn't expose a duality gap from Python."""
     return None
 
 
 def reported_runtime(model: Any) -> float | None:
-    """Always None: GLPK doesn't return a solver model to read a runtime from."""
+    """Return None: GLPK returns no solver model to read a runtime from."""
     return None
 
 
@@ -41,7 +41,7 @@ def integer_values(
     Returns None if GLPK found no integer feasible solution, or not every
     integer column counted in the header could be parsed.
     """
-    with open(solution_fn) as f:
+    with Path(solution_fn).open() as f:
         lines = f.read().splitlines()
 
     header = _read_header(lines)
@@ -82,7 +82,7 @@ def recover_result(problem_fn: Path, solution_fn: Path) -> dict[str, Any] | None
     fail as before. Returns None in those cases or if the report is missing.
     """
     try:
-        with open(solution_fn) as f:
+        with Path(solution_fn).open() as f:
             header = _read_header(f.read().splitlines())
     except OSError:
         return None
@@ -98,7 +98,7 @@ def recover_result(problem_fn: Path, solution_fn: Path) -> dict[str, Any] | None
 
 
 def _read_header(lines: list[str]) -> dict[str, str]:
-    """The ``Key: value`` lines at the top of GLPK's report, up to the first blank line."""
+    """Read the ``Key: value`` lines at the top of GLPK's report, up to a blank line."""
     header = {}
     for line in lines:
         if not line.strip():

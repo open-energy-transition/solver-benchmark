@@ -52,7 +52,7 @@ class TestGetSolver:
         assert captured["options"]["MSK_IPAR_MIO_SEED"] == 0
 
     def test_unsupported_solver_name_raises(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="not a valid SolverName"):
             get_solver("not-a-solver")
 
     def test_seed_overrides_configurations_own_seed(self, monkeypatch):

@@ -1,6 +1,7 @@
-"""Solver version/environment introspection: which solver package version is
-actually installed, and which per-solver-year env provides a given solver
-configuration for a given run.
+"""Solver version and environment introspection.
+
+Which solver package version is actually installed, and which
+per-solver-year env provides a given solver configuration for a given run.
 
 Each solver-year has its own pixi manifest under `runner/envs/<env>/` (its
 own `pixi.toml`/`pixi.lock`, not part of the root workspace) -- isolating
@@ -70,7 +71,9 @@ def get_installed_solver_versions(
             check=True,
         )
     except subprocess.CalledProcessError as e:
-        raise ValueError(f"Error executing pixi list command: {e.stderr or str(e)}")
+        raise ValueError(
+            f"Error executing pixi list command: {e.stderr or str(e)}"
+        ) from e
 
     installed_packages = {
         package["name"]: package["version"] for package in json.loads(result.stdout)
@@ -80,7 +83,7 @@ def get_installed_solver_versions(
     for configuration in solver_configurations:
         resolved_solver = config.resolve_solver_name(configuration)
         package = config.get_package_name(resolved_solver)
-        installed_versions[configuration] = installed_packages.get(package, None)
+        installed_versions[configuration] = installed_packages.get(package)
 
     return installed_versions
 
@@ -172,6 +175,7 @@ def ensure_solver_envs_installed(
             ["pixi", "install", "--locked", "--manifest-path", str(env_dir)],
             capture_output=True,
             text=True,
+            check=False,  # a failed install is logged and skipped below
         )
         if result.returncode != 0:
             print(

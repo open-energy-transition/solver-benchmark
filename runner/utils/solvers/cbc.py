@@ -18,7 +18,7 @@ except ModuleNotFoundError:
 
 
 def is_mip(model: Any) -> bool | None:
-    """Always None: CBC's result object doesn't say, see `integer_values`."""
+    """Return None: CBC's result object doesn't say, see `integer_values`."""
     return None
 
 
@@ -75,15 +75,16 @@ def integer_values(
     h.silent()
     h.readModel(str(problem_fn))
     lp = h.getLp()
+    # Not strict: HiGHS leaves `integrality_` empty for an LP, so this is empty
     integer_names = {
         name
-        for name, var_type in zip(lp.col_names_, lp.integrality_)
+        for name, var_type in zip(lp.col_names_, lp.integrality_, strict=False)
         if var_type == _highspy.HighsVarType.kInteger
     }
     if not integer_names:
         return {}
 
-    with open(solution_fn) as f:
+    with Path(solution_fn).open() as f:
         # e.g. "Optimal - objective value 1.5" or "Infeasible - objective value 0"
         if "infeasible" in f.readline().lower():
             return None

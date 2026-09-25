@@ -1,5 +1,6 @@
-"""Run a single solver on a single problem as a resource-limited subprocess,
-and parse back its reported memory usage.
+"""Run a single solver on a single problem as a resource-limited subprocess.
+
+Also parses back its reported memory usage.
 
 Actually solving happens out-of-process (via `python -m runner.utils.solver`,
 see `solver.py`'s own module docstring) so that a solver crash, timeout, or
@@ -9,6 +10,7 @@ taking down the whole benchmark run.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import re
@@ -61,7 +63,7 @@ def parse_memory(output: str) -> float:
 
 def _systemd_available() -> bool:
     """Check if systemd is running (not just installed)."""
-    return bool(shutil.which("systemd-run") and os.path.isdir("/run/systemd/system"))
+    return bool(shutil.which("systemd-run") and Path("/run/systemd/system").is_dir())
 
 
 def run_solver(
@@ -203,7 +205,7 @@ def run_solver(
         / f"{config.get_output_stem(input_file, solver_configuration, solver_version, seed)}.log"
     )
     if log_file.exists():
-        with open(log_file, "a") as f:
+        with Path(log_file).open("a") as f:
             f.write("\nSTDERR:\n")
             f.write(result.stderr)
     else:
@@ -295,7 +297,7 @@ def get_highs_binary_version() -> str:
 
         return "unknown"
     except Exception as e:
-        print(f"Error getting HiGHS binary version: {str(e)}")
+        print(f"Error getting HiGHS binary version: {e!s}")
         return "unknown"
 
 
@@ -346,10 +348,8 @@ def run_reference_highs_binary() -> dict[str, Any]:
         objective = None
         for line in result.stdout.splitlines():
             if "Objective value" in line:
-                try:
+                with contextlib.suppress(ValueError, IndexError):
                     objective = float(line.split(":")[-1].strip())
-                except (ValueError, IndexError):
-                    pass
 
         metrics = {
             "status": "OK",

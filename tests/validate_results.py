@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""
-Check that each benchmark problem has been run on the expected number of
-solvers, and flag any problem missing from the results entirely.
+"""Check that each benchmark problem was run on the expected number of solvers.
+
+Also flags any problem missing from the results entirely.
 
 Cross-references results/benchmark_results.csv against results/metadata.yaml:
 each metadata problem is bucketed by size category (short-timeout S/M vs.
@@ -13,7 +13,7 @@ problems in the same bucket.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import pandas as pd
 import yaml
@@ -85,8 +85,8 @@ def expected_solver_count(problem_class: str, is_long_timeout: bool) -> int:
 
 
 def check_consistent_solver_set(
-    label: str, solvers_present: set[str], expected: Optional[str]
-) -> str:
+    label: str, solvers_present: set[str], expected: set[str] | None
+) -> set[str]:
     """
     Verify the solver set for one problem matches the bucket's reference set.
 
@@ -96,45 +96,51 @@ def check_consistent_solver_set(
         Bucket label used in error messages (e.g. "short LP").
     solvers_present : set[str]
         Solver-version strings observed for this problem.
-    expected : str, optional
-        The reference solver set (as `str(set)`) seen so far for this
-        bucket, or None if this is the first problem checked in it.
+    expected : set[str], optional
+        The reference solver set seen so far for this bucket, or None if
+        this is the first problem checked in it.
 
     Returns
     -------
-    str
+    set[str]
         The reference solver set to carry forward (unchanged if it already
         matched).
+
+    Notes
+    -----
+    Compares the sets themselves: their string forms depend on string
+    hashing, which Python randomizes per run, so equal sets could print in a
+    different order and fail the check.
 
     Raises
     ------
     ValueError
         If `solvers_present` doesn't match a pre-existing reference set.
     """
-    observed = str(solvers_present)
     if expected is None:
-        return observed
-    if expected != observed:
+        return solvers_present
+    if expected != solvers_present:
         print(
-            f"::warning file=tests/validate_results.py::ERROR: Unexpected {label} solvers: {solvers_present}"
+            f"::warning file=tests/validate_results.py::ERROR: Unexpected {label} solvers: {sorted(solvers_present)}"
         )
-        raise ValueError(f"Unexpected {label} solvers: {solvers_present}")
+        raise ValueError(f"Unexpected {label} solvers: {sorted(solvers_present)}")
     return expected
 
 
 def main() -> None:
     """Cross-check benchmark_results.csv against metadata.yaml and report."""
     data = pd.read_csv(Path(__file__).parent / "../results/benchmark_results.csv")
-    meta = yaml.safe_load(open("results/metadata.yaml"))
+    with Path("results/metadata.yaml").open() as f:
+        meta = yaml.safe_load(f)
 
     short_timeout_ids, long_timeout_ids, skipped_ids = bucket_problems_by_timeout(
         meta["problems"]
     )
 
-    short_solvers_lp: Optional[str] = None
-    short_solvers_milp: Optional[str] = None
-    long_solvers_lp: Optional[str] = None
-    long_solvers_milp: Optional[str] = None
+    short_solvers_lp: set[str] | None = None
+    short_solvers_milp: set[str] | None = None
+    long_solvers_lp: set[str] | None = None
+    long_solvers_milp: set[str] | None = None
 
     # Historical CSVs identify a problem by "Benchmark" + "Size"; current CSVs
     # write the metadata problem ID directly in a "Problem" column.
@@ -150,7 +156,7 @@ def main() -> None:
     # Check that every problem has metadata and the same set of solvers run on it
     seen_ids: set[str] = set()
     for problem_id, group in data.groupby("Problem"):
-        solvers_present = set(sorted(group["solver-version"].unique()))
+        solvers_present = set(group["solver-version"].unique())
 
         if problem_id in short_timeout_ids:
             problem_class = meta["problems"][problem_id].get("Problem class", "")
@@ -187,10 +193,10 @@ def main() -> None:
             raise ValueError(f"Unknown benchmark {problem_id}")
         seen_ids.add(problem_id)
 
-    print(f"Solvers run on short LP benchmarks:\n{short_solvers_lp}")
-    print(f"Solvers run on short MILP benchmarks:\n{short_solvers_milp}")
-    print(f"Solvers run on long LP benchmarks:\n{long_solvers_lp}")
-    print(f"Solvers run on long MILP benchmarks:\n{long_solvers_milp}")
+    print(f"Solvers run on short LP benchmarks:\n{sorted(short_solvers_lp or [])}")
+    print(f"Solvers run on short MILP benchmarks:\n{sorted(short_solvers_milp or [])}")
+    print(f"Solvers run on long LP benchmarks:\n{sorted(long_solvers_lp or [])}")
+    print(f"Solvers run on long MILP benchmarks:\n{sorted(long_solvers_milp or [])}")
 
     # Check that no problem from metadata is missing from the results
     missing_ids = (short_timeout_ids | long_timeout_ids) - seen_ids - skipped_ids

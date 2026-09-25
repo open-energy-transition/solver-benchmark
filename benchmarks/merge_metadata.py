@@ -12,8 +12,9 @@ stats, optional descriptive/taxonomy fields) is passed through unchanged.
 from __future__ import annotations
 
 import argparse
+from collections.abc import MutableMapping
 from pathlib import Path
-from typing import Any, MutableMapping, Optional
+from typing import Any
 
 import yaml
 
@@ -34,6 +35,7 @@ class BlankNoneDumper(yaml.Dumper):
     """YAML dumper that renders `None` values as a blank scalar instead of `null`."""
 
     def represent_none(self, _: Any) -> yaml.Node:
+        """Represent `None` as an empty null scalar."""
         return self.represent_scalar("tag:yaml.org,2002:null", "")
 
 
@@ -108,7 +110,7 @@ def process_yaml_file(
         return
 
     try:
-        with open(file_path, "r") as file:
+        with Path(file_path).open() as file:
             yaml_data = yaml.safe_load(file)
     except yaml.YAMLError as exc:
         print(f"Error parsing YAML file {file_path}: {exc}")
@@ -173,7 +175,7 @@ def write_merged_metadata(unified_metadata: YamlMap, results_file: Path) -> None
         type(None), BlankNoneDumper.represent_none, Dumper=BlankNoneDumper
     )
     results_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(results_file, "w") as output_file:
+    with Path(results_file).open("w") as output_file:
         yaml.dump(
             {"problems": unified_metadata},
             output_file,
@@ -183,7 +185,7 @@ def write_merged_metadata(unified_metadata: YamlMap, results_file: Path) -> None
         )
 
 
-def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """
     Parse CLI arguments.
 
@@ -208,7 +210,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """
     CLI entry point: merge all benchmark metadata files into results/metadata.yaml.
 
