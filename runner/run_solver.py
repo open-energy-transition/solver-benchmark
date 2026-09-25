@@ -256,7 +256,14 @@ def get_reported_runtime(solver_name, solver_model) -> float | None:
             case "gurobi":
                 return solver_model.Runtime
             case "cplex":
-                return solver_model.get_time()
+                # Cplex.get_time() returns an absolute time stamp, not an elapsed
+                # duration -- it's only meaningful as the difference between two
+                # calls taken before and after an operation, and linopy gives us
+                # the Cplex object only after solve() has already returned, with
+                # no "before" reading to diff against. No released linopy version
+                # populates a real CPLEX solve time either (PyPSA/linopy#583,
+                # #636, #682). Revisit once linopy exposes one.
+                return None
             case "xpress":
                 return solver_model.getAttrib("time")
             case "knitro":

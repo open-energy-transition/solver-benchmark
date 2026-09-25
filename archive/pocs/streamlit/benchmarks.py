@@ -1,12 +1,12 @@
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from st_aggrid import AgGrid
-from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 # local
 from pocs.streamlit.utils.calculations import safe_parse_version
 from pocs.streamlit.utils.file_utils import load_benchmark_data, load_metadata
+from st_aggrid import AgGrid
+from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 df_mean_stddev = load_benchmark_data("results/benchmark_results_mean_stddev.csv")
 df_mean_stddev["Solver Version"] = df_mean_stddev["Solver Version"].apply(
