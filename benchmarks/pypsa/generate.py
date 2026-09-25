@@ -64,7 +64,7 @@ def load_yaml(path: pathlib.Path) -> dict:
         with open(path) as f:
             return y.load(f)
     except Exception as e:
-        raise RuntimeError(f"Failed to load YAML {path}: {e}")
+        raise RuntimeError(f"Failed to load YAML {path}: {e}") from e
 
 
 def save_yaml(path: pathlib.Path, data: dict) -> None:

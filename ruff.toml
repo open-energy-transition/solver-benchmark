@@ -21,10 +21,13 @@ select = [
     "I", # isort
     "TID", # tidy imports
     "UP", # pyupgrade
+    "B", # flake8-bugbear
 ]
 
 # Add specific rule codes/groups here to ignore them, or add a '#noqa' comment to the line of code to skip all checks.
-ignore = []
+ignore = [
+    "B008", # function calls in defaults: typer.Option(...) is Typer's idiom
+]
 
 [format]
 docstring-code-format = true

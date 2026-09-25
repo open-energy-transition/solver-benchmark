@@ -70,7 +70,9 @@ def get_installed_solver_versions(
             check=True,
         )
     except subprocess.CalledProcessError as e:
-        raise ValueError(f"Error executing pixi list command: {e.stderr or str(e)}")
+        raise ValueError(
+            f"Error executing pixi list command: {e.stderr or str(e)}"
+        ) from e
 
     installed_packages = {
         package["name"]: package["version"] for package in json.loads(result.stdout)

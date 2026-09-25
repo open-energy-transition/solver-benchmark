@@ -75,9 +75,10 @@ def integer_values(
     h.silent()
     h.readModel(str(problem_fn))
     lp = h.getLp()
+    # Not strict: HiGHS leaves `integrality_` empty for an LP, so this is empty
     integer_names = {
         name
-        for name, var_type in zip(lp.col_names_, lp.integrality_)
+        for name, var_type in zip(lp.col_names_, lp.integrality_, strict=False)
         if var_type == _highspy.HighsVarType.kInteger
     }
     if not integer_names:

@@ -37,6 +37,6 @@ def integer_values(
     variables = model.getVariable()
     return {
         var.name: value
-        for var, value in zip(variables, model.getSolution())
+        for var, value in zip(variables, model.getSolution(), strict=True)
         if var.vartype in (_xpress.integer, _xpress.binary)
     }

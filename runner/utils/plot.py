@@ -611,7 +611,7 @@ def plot_solver_scaling_by_bucket(
 
     fig, axes = plt.subplots(3, 1, figsize=figsize, sharex=False, sharey=True)
 
-    for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items()):
+    for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items(), strict=True):
         dfb = df[mask_bucket]
 
         for s in solvers:
@@ -811,7 +811,7 @@ def plot_solver_scaling_by_bucket_scatter_only(
 
     fig, axes = plt.subplots(3, 1, figsize=figsize, sharey=True)
 
-    for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items()):
+    for ax, (bucket_name, mask_bucket) in zip(axes, buckets.items(), strict=True):
         dfb = df[mask_bucket]
 
         for s in solvers:

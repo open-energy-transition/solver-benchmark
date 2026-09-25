@@ -59,7 +59,7 @@ def allocate_problems(
     zone: str = "us-central1-a",
     solvers: str | None = None,
     timeout_seconds: int | None = None,
-    years: list[int] = [2020, 2022, 2023, 2024, 2025],
+    years: list[int] | None = None,
 ) -> list[dict]:
     """Allocate problems across VMs and build one campaign YAML dict per VM.
 
@@ -84,7 +84,8 @@ def allocate_problems(
     timeout_seconds : int, optional
         If given, recorded as each VM YAML's `timeout_seconds` key.
     years : list[int], optional
-        Solver-version years to record in each VM's YAML.
+        Solver-version years to record in each VM's YAML. Defaults to
+        2020 and 2022-2025.
 
     Returns
     -------
@@ -95,6 +96,9 @@ def allocate_problems(
         `metadata.load_problems` reads campaign-generated and metadata files
         identically -- plus `solver_configuration`/`timeout_seconds` if given.
     """
+    if years is None:
+        years = [2020, 2022, 2023, 2024, 2025]
+
     if problems_df.empty:
         return []
 

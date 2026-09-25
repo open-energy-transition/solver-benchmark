@@ -43,6 +43,7 @@ def integer_values(
             model.variables.get_names(),
             model.solution.get_values(),
             model.variables.get_types(),
+            strict=True,
         )
         if var_type in ("I", "B")
     }

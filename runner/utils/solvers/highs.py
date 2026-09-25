@@ -47,10 +47,12 @@ def integer_values(
     if not solution.value_valid:
         return None
     lp = model.getLp()
+    # Not strict: HiGHS leaves `integrality_` empty for an LP, so zip() stops
+    # right away and the result is {} (no integer variables), as intended.
     return {
         name: value
         for name, value, var_type in zip(
-            lp.col_names_, solution.col_value, lp.integrality_
+            lp.col_names_, solution.col_value, lp.integrality_, strict=False
         )
         if var_type == _highspy.HighsVarType.kInteger
     }
