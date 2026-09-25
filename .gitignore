@@ -134,6 +134,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# pixi
+.pixi/
+
 # environment variables
 .env.local
 .env.development.local
