@@ -19,14 +19,12 @@ source .venv/bin/activate
 
 ## Downloading results from Google Cloud Storage (GCS)
 
-Notebooks that analyze results from GCS require the results to be downloaded locally. You can do this by running the following commands:
+Notebooks that analyze results from GCS require the results to be downloaded locally. This uses the [gcloud CLI](https://cloud.google.com/sdk/docs/install), which is not part of the `uv` environment. After installing it, authenticate with `gcloud auth login` and run the following commands:
 
 ```bash
 mkdir ../runner/logs/
 mkdir ../results/gcp-results/
-gsutil -m rsync -r gs://solver-benchmarks/logs ../runner/logs/
-gsutil -m rsync -r gs://solver-benchmarks-restricted/logs ../runner/logs/
-gsutil -m rsync -r gs://solver-benchmarks/results ../results/gcp-results/
+gcloud storage rsync --recursive gs://solver-benchmarks/logs ../runner/logs/
+gcloud storage rsync --recursive gs://solver-benchmarks-restricted/logs ../runner/logs/
+gcloud storage rsync --recursive gs://solver-benchmarks/results ../results/gcp-results/
 ```
-
-On MacOS, you may need to add the following flag to the `gsutil` commands if you experience problems with multiprocessing: `-o "GSUtil:parallel_process_count=1"`.

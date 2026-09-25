@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "Environment for Jupyter notebooks"
 requires-python = ">=3.14"
 dependencies = [
-    "gsutil>=5.35",
     "humanize>=4.15.0",
     "ipykernel>=7.1.0",
     "ipython>=9.10.0",
