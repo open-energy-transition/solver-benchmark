@@ -322,6 +322,71 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
 
+    def test_first_runnable_year_after_skips_overwrites_existing_results(
+        self, problems_yaml, tmp_path
+    ):
+        large_problems_yaml = tmp_path / "large-problems.yaml"
+        large_problems_yaml.write_text(
+            problems_yaml.read_text().replace("Size: S", "Size: L")
+        )
+
+        results_dir = tmp_path / "results"
+        results_dir.mkdir()
+        (results_dir / "benchmark_results.csv").write_text(
+            "Benchmark,Legacy\nold-problem,old-value\n"
+        )
+
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(large_problems_yaml),
+                "--years",
+                "2020",
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "glpk-default",
+                "--solver-configurations",
+                "scip-default",
+            ],
+        )
+
+        assert result.exit_code == 0, result.output
+        results = pd.read_csv(results_dir / "benchmark_results.csv")
+        assert list(results["Problem"]) == ["tiny-problem"]
+        assert list(results["Solver Release Year"]) == [2025]
+
+    def test_registered_but_ineligible_solver_year_is_skipped(
+        self, problems_yaml, tmp_path
+    ):
+        large_milp_yaml = tmp_path / "large-milp.yaml"
+        large_milp_yaml.write_text(
+            problems_yaml.read_text()
+            .replace("Size: S", "Size: L")
+            .replace("Problem class: LP", "Problem class: MILP")
+        )
+
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(large_milp_yaml),
+                "--years",
+                "2026",
+                "--solver-configurations",
+                "scip-default",
+                "--solver-configurations",
+                "highs-ipm",
+                "--solver-configurations",
+                "highs-hipo",
+            ],
+        )
+
+        assert result.exit_code == 0, result.output
+        assert (
+            "No requested solver configurations are eligible for year 2026. Skipping."
+            in result.output
+        )
+
     def test_year_with_no_registered_solver_version_fails(
         self, problems_yaml, tmp_path
     ):

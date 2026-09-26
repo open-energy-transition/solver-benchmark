@@ -123,13 +123,24 @@ def run(
     print(f"Using run ID: {resolved_run_id}")
 
     failed_years = []
-    for index, year in enumerate(resolved_years):
+    results_initialized = False
+
+    for year in resolved_years:
         print(f"Running the benchmark for year {year}...")
 
         try:
+            registered_versions = env.get_registered_solver_versions(
+                resolved_solver_configurations, year
+            )
+            if not registered_versions:
+                raise ValueError(
+                    "no registered solver version for any of "
+                    f"{', '.join(resolved_solver_configurations)}"
+                )
+
             eligible_configurations = _eligible_configurations_for_problems(
                 problems_yaml_path,
-                resolved_solver_configurations,
+                list(registered_versions),
                 year,
             )
             if not eligible_configurations:
@@ -139,22 +150,22 @@ def run(
                 )
                 continue
 
-            registered_versions = env.get_registered_solver_versions(
-                eligible_configurations, year
-            )
-            if not registered_versions:
-                raise ValueError(
-                    "no registered solver version for any of "
-                    f"{', '.join(resolved_solver_configurations)}"
-                )
+            registered_versions = {
+                configuration: registered_versions[configuration]
+                for configuration in eligible_configurations
+            }
             env.ensure_solver_envs_installed(registered_versions)
+
+            append_this_year = append or results_initialized
+            results_initialized = True
+
             run_benchmark(
                 problems_yaml_path,
-                resolved_solver_configurations,
+                eligible_configurations,
                 year=year,
                 num_seeds=num_seeds,
                 reference_interval=ref_bench_interval,
-                append=append or index > 0,
+                append=append_this_year,
                 run_id=resolved_run_id,
             )
         except Exception as e:
