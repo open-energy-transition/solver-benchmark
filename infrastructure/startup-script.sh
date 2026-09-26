@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# GCE metadata startup scripts may run without HOME set.
+export HOME="${HOME:-/root}"
+
 # Add timestamp to each line of output
 log_with_timestamp() {
     while IFS= read -r line; do
