@@ -132,6 +132,13 @@ def run(
                 resolved_solver_configurations,
                 year,
             )
+            if not eligible_configurations:
+                print(
+                    f"No requested solver configurations are eligible for year {year}. "
+                    "Skipping."
+                )
+                continue
+
             registered_versions = env.get_registered_solver_versions(
                 eligible_configurations, year
             )

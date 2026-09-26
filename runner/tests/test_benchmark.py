@@ -290,6 +290,38 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
 
+    def test_year_with_no_eligible_configuration_is_skipped(
+        self, problems_yaml, tmp_path
+    ):
+        large_problems_yaml = tmp_path / "large-problems.yaml"
+        large_problems_yaml.write_text(
+            problems_yaml.read_text().replace("Size: S", "Size: L")
+        )
+
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(large_problems_yaml),
+                "--years",
+                "2020",
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "glpk-default",
+                "--solver-configurations",
+                "scip-default",
+            ],
+        )
+
+        assert result.exit_code == 0, result.output
+        assert (
+            "No requested solver configurations are eligible for year 2020. Skipping."
+            in result.output
+        )
+
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Solver Release Year"]) == [2025]
+
     def test_year_with_no_registered_solver_version_fails(
         self, problems_yaml, tmp_path
     ):
