@@ -43,9 +43,12 @@ chmod a+x /usr/local/bin/yq
 mkdir -p /opt/gurobi
 gcloud storage cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
-# Clone the repository
-echo "Cloning repository..."
-git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
+# Clone the experimental solver-benchmark branch
+SOLVER_BENCHMARK_REF="experiment/v3-linopy-current-refactor"
+
+echo "Cloning solver-benchmark ref: ${SOLVER_BENCHMARK_REF}"
+git clone --depth=1 -b "${SOLVER_BENCHMARK_REF}" \
+    https://github.com/open-energy-transition/solver-benchmark.git
 
 # Install a global highs binary for reference runs
 echo "Installing reference Highs..."

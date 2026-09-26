@@ -9,11 +9,38 @@ from pathlib import Path
 from socket import gethostname
 
 import typer
+import yaml
 
 from .utils import config, env
 from .utils.orchestrator import run_benchmark
 
 app = typer.Typer(add_completion=False)
+
+
+def _eligible_configurations_for_problems(
+    problems_yaml_path: Path,
+    solver_configurations: list[str],
+    year: str,
+) -> list[str]:
+    """Return configurations eligible for at least one problem in a run."""
+    with problems_yaml_path.open() as f:
+        content = yaml.safe_load(f) or {}
+
+    problems = content.get("problems", {})
+
+    return [
+        solver_configuration
+        for solver_configuration in solver_configurations
+        if any(
+            config.is_solver_eligible(
+                solver_configuration,
+                year,
+                size_category=problem.get("Size"),
+                problem_class=problem.get("Problem class"),
+            )
+            for problem in problems.values()
+        )
+    ]
 
 
 @app.command()
@@ -100,8 +127,13 @@ def run(
         print(f"Running the benchmark for year {year}...")
 
         try:
+            eligible_configurations = _eligible_configurations_for_problems(
+                problems_yaml_path,
+                resolved_solver_configurations,
+                year,
+            )
             registered_versions = env.get_registered_solver_versions(
-                resolved_solver_configurations, year
+                eligible_configurations, year
             )
             if not registered_versions:
                 raise ValueError(
