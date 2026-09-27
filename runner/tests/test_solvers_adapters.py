@@ -229,6 +229,56 @@ class TestCbcIntegerValues:
         assert cbc.integer_values(None, _P, _S) is None
 
 
+class TestCbcRecoverResult:
+    """CBC status/objective recovery from its command-line solution file."""
+
+    def _write_solution(self, tmp_path, first_line):
+        solution_fn = tmp_path / "cbc.sol"
+        solution_fn.write_text(f"{first_line}\n")
+        return solution_fn
+
+    def test_recovers_timeout_with_incumbent(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Stopped on time - objective value 260754.20348781",
+            ),
+        )
+        assert result == {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": 260754.20348781,
+        }
+
+    def test_recovers_optimal_result(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Optimal - objective value 250234.60094885",
+            ),
+        )
+        assert result == {
+            "status": "ok",
+            "condition": "optimal",
+            "objective": 250234.60094885,
+        }
+
+    def test_unknown_status_is_not_recovered(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Infeasible - objective value 0",
+            ),
+        )
+        assert result is None
+
+
 class TestGlpkIntegerValues:
     """GLPK's values and integer markers both come from its solution report."""
 
@@ -394,8 +444,8 @@ class TestGlpkRecoverResult:
         glpk = importlib.import_module("runner.utils.solvers.glpk")
         assert glpk.recover_result(_P, tmp_path / "missing.sol") is None
 
-    def test_only_glpk_defines_the_optional_hook(self):
+    def test_expected_adapters_define_the_optional_hook(self):
         with_hook = {
             name for name, adapter in SOLVER_ADAPTERS.items() if adapter.recover_result
         }
-        assert with_hook == {"glpk"}
+        assert with_hook == {"glpk", "cbc"}

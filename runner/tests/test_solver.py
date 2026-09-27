@@ -228,6 +228,45 @@ class TestMainRecoversFromLinopyParseFailures:
         assert results["status"] == "ER"
 
 
+class TestMainRecoversUnknownTermination:
+    def test_recovers_cbc_style_timeout_with_incumbent(self, monkeypatch, capsys):
+        solver = MagicMock()
+        solver_result = MagicMock()
+        solver_result.status.status.value = "warning"
+        solver_result.status.termination_condition.value = "unknown"
+        solver_result.solution.objective = None
+        solver_result.solver_model = MagicMock()
+        solver.solve_problem.return_value = solver_result
+
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver",
+            lambda *a, **k: (solver, "fake"),
+        )
+
+        adapter = MagicMock()
+        adapter.recover_result.return_value = {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": 260754.20348781,
+        }
+        adapter.is_mip.return_value = True
+        adapter.integer_values.return_value = {"x": 1.0}
+        adapter.mip_gap.return_value = 0.110451
+        adapter.reported_runtime.return_value = 8.52
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+
+        main("fake-default", "problem.lp", "1.0", timeout=10)
+
+        result = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+
+        assert result["status"] == "TO"
+        assert result["condition"] == "Timeout"
+        assert result["objective"] == pytest.approx(260754.20348781)
+        assert result["mip_gap"] == pytest.approx(0.110451)
+        assert result["max_integrality_violation"] == 0.0
+        assert result["reported_runtime"] == pytest.approx(8.52)
+
+
 class TestMainGracefulTimeout:
     def test_preserves_incumbent_and_quality_metrics(self, monkeypatch, capsys):
         solver = MagicMock()

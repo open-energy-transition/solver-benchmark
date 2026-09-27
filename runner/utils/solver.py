@@ -374,6 +374,17 @@ def main(
             termination_condition = solver_result.status.termination_condition.value
             objective = solver_result.solution.objective
 
+        # Some command-line solvers can write a valid result even when
+        # linopy cannot classify their termination condition. Let the
+        # solver-specific adapter recover status/objective from the
+        # solver's own output before treating the run as an error.
+        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+            recovered = recover_result(solver_package, problem_file, solution_fn)
+            if recovered is not None:
+                raw_status = recovered["status"]
+                termination_condition = recovered["condition"]
+                objective = recovered["objective"]
+
         status_value = raw_status
 
         # A solver-native time limit is a valid benchmark outcome. Because

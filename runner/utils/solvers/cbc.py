@@ -96,3 +96,43 @@ def integer_values(
                 values[tokens[1]] = float(tokens[2])
     # Only report a complete set: a partial one would understate the violation
     return values if values.keys() == integer_names else None
+
+
+def recover_result(problem_fn: Path, solution_fn: Path) -> dict[str, Any] | None:
+    """Recover CBC status and objective from its solution file.
+
+    CBC's command-line solution file starts with a status line such as::
+
+        Optimal - objective value 123.4
+        Stopped on time - objective value 123.4
+
+    This provides a reliable fallback when linopy returns an unknown
+    termination condition despite CBC having written a valid incumbent.
+    """
+    try:
+        first_line = solution_fn.read_text().splitlines()[0]
+    except (OSError, IndexError):
+        return None
+
+    match = re.match(
+        r"^(Optimal|Stopped on time) - objective value\s+(\S+)",
+        first_line,
+        re.IGNORECASE,
+    )
+    if match is None:
+        return None
+
+    state, objective = match.groups()
+
+    if state.lower() == "optimal":
+        return {
+            "status": "ok",
+            "condition": "optimal",
+            "objective": float(objective),
+        }
+
+    return {
+        "status": "TO",
+        "condition": "Timeout",
+        "objective": float(objective),
+    }
