@@ -109,13 +109,47 @@ class TestRunSolver:
         )
         _, run_mock = self._run(mocker, cp)
         called_cmd = run_mock.call_args[0][0]
-        assert called_cmd[-4:] == [
+        module_index = called_cmd.index("runner.utils.solver")
+        assert called_cmd[module_index : module_index + 4] == [
             "runner.utils.solver",
             "highs",
             "problem.lp",
             "1.9.0",
         ]
-        assert called_cmd[called_cmd.index("runner.utils.solver") - 1] == "-m"
+        assert called_cmd[module_index - 1] == "-m"
+
+    def test_solver_timeout_is_passed_with_outer_watchdog_grace(self, mocker):
+        cp = subprocess.CompletedProcess(
+            args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
+        )
+        _, run_mock = self._run(mocker, cp)
+        called_cmd = run_mock.call_args[0][0]
+
+        timeout_index = called_cmd.index("timeout")
+        assert called_cmd[timeout_index + 1] == "3660s"
+
+        solver_timeout_index = called_cmd.index("--timeout")
+        assert called_cmd[solver_timeout_index + 1] == "3600"
+
+    def test_solver_without_native_timeout_keeps_exact_outer_timeout(self, mocker):
+        cp = subprocess.CompletedProcess(
+            args=[], returncode=124, stdout="", stderr="MaxResidentSetSizeKB=1000"
+        )
+        mocker.patch("runner.utils.execution._systemd_available", return_value=False)
+        run_mock = mocker.patch(
+            "runner.utils.execution.subprocess.run", return_value=cp
+        )
+
+        run_solver(
+            "problem.lp",
+            "glpk-default",
+            timeout=3600,
+            solver_version="5.0",
+        )
+
+        called_cmd = run_mock.call_args[0][0]
+        timeout_index = called_cmd.index("timeout")
+        assert called_cmd[timeout_index + 1] == "3600s"
 
     def test_seed_is_appended_to_command(self, mocker):
         cp = subprocess.CompletedProcess(

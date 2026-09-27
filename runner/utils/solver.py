@@ -27,7 +27,11 @@ from . import config
 from .solvers import SOLVER_ADAPTERS
 
 
-def get_solver(solver_configuration: str, seed: int | None = None) -> tuple[Any, str]:
+def get_solver(
+    solver_configuration: str,
+    seed: int | None = None,
+    timeout: float | None = None,
+) -> tuple[Any, str]:
     """Build a linopy solver instance with this project's tuning options.
 
     Parameters
@@ -70,6 +74,11 @@ def get_solver(solver_configuration: str, seed: int | None = None) -> tuple[Any,
             )
         else:
             kwargs[seed_key] = seed
+
+    if timeout is not None:
+        timeout_key = config.get_timeout_option(solver_package)
+        if timeout_key is not None:
+            kwargs[timeout_key] = timeout
 
     solver_enum = SolverName(solver_package)
     solver_class = getattr(solvers, solver_enum.name)
@@ -285,11 +294,18 @@ def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None
         return None
 
 
+def _is_timeout_condition(condition: Any) -> bool:
+    """Whether a structured solver termination condition means time limit."""
+    normalized = str(condition).strip().lower().replace("-", "_").replace(" ", "_")
+    return normalized in {"time_limit", "timelimit", "timeout"}
+
+
 def main(
     solver_configuration: str,
     input_file: str,
     solver_version: str,
     seed: int | None = None,
+    timeout: float | None = None,
 ) -> None:
     """Run one solver on one problem file and print the resulting metrics as JSON.
 
@@ -309,7 +325,9 @@ def main(
     """
     problem_file = Path(input_file)
 
-    solver, solver_package = get_solver(solver_configuration, seed=seed)
+    solver, solver_package = get_solver(
+        solver_configuration, seed=seed, timeout=timeout
+    )
 
     solution_dir = Path(__file__).resolve().parent.parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -360,8 +378,13 @@ def main(
 
         status_value = raw_status
 
-        # Treat unclear termination conditions as failed/invalid runs
-        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+        # A solver-native time limit is a valid benchmark outcome. Because
+        # the solver exits gracefully, keep any incumbent and quality metrics
+        # it returned instead of discarding them as an error.
+        if _is_timeout_condition(termination_condition):
+            status_value = "TO"
+            termination_condition = "Timeout"
+        elif termination_condition in {"unknown", "error", "failed", "aborted"}:
             status_value = "ER"
             objective = None
         elif raw_status == "warning" and objective is None:
@@ -412,11 +435,23 @@ if __name__ == "__main__":
         cli_seed = int(argv[seed_index + 1])
         del argv[seed_index : seed_index + 2]
 
+    cli_timeout = None
+    if "--timeout" in argv:
+        timeout_index = argv.index("--timeout")
+        cli_timeout = float(argv[timeout_index + 1])
+        del argv[timeout_index : timeout_index + 2]
+
     if len(argv) != 3:
         print(
             "Usage: python -m runner.utils.solver <solver_configuration> "
-            "<input_file> <solver_version> [--seed N]"
+            "<input_file> <solver_version> [--seed N] [--timeout SECONDS]"
         )
         sys.exit(1)
 
-    main(argv[0], argv[1], argv[2], seed=cli_seed)
+    main(
+        argv[0],
+        argv[1],
+        argv[2],
+        seed=cli_seed,
+        timeout=cli_timeout,
+    )

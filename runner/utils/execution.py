@@ -31,6 +31,10 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _ENVS_DIR = Path(__file__).resolve().parent.parent / "envs"
 _LOGS_DIR = Path(__file__).resolve().parent.parent / "logs"
 
+# A solver with a native time limit gets this much extra wall-clock time to
+# terminate gracefully, write its solution, and let linopy collect metrics.
+_SOLVER_TIMEOUT_GRACE_SECONDS = 60
+
 
 def parse_memory(output: str) -> float:
     """Extract peak memory usage from `/usr/bin/time`'s output.
@@ -122,6 +126,12 @@ def run_solver(
 
     command = []
 
+    solver_package = config.resolve_solver_name(solver_configuration)
+    has_solver_timeout = config.get_timeout_option(solver_package) is not None
+    external_timeout = (
+        timeout + _SOLVER_TIMEOUT_GRACE_SECONDS if has_solver_timeout else timeout
+    )
+
     if _systemd_available():
         print(
             f"Setting memory limit to {memory_limit_mb:.2f} MB (95% of available memory)"
@@ -136,7 +146,6 @@ def run_solver(
                 "--property=MemorySwapMax=0",
             ]
         )
-        solver_package = config.resolve_solver_name(solver_configuration)
         for env_var in config.get_license_env_vars(solver_package):
             value = os.environ.get(env_var)
             if value:
@@ -152,7 +161,7 @@ def run_solver(
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
-            f"{timeout}s",
+            f"{external_timeout}s",
         ]
     )
 
@@ -171,6 +180,8 @@ def run_solver(
             solver_configuration,
             str(input_file),
             solver_version,
+            "--timeout",
+            str(timeout),
         ]
     )
     if seed is not None:

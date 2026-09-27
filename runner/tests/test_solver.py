@@ -55,6 +55,11 @@ class TestGetSolver:
         with pytest.raises(ValueError):
             get_solver("not-a-solver")
 
+    def test_timeout_adds_solver_native_time_limit(self, monkeypatch):
+        captured = self._patch_solver_class(monkeypatch, "Highs")
+        get_solver("highs-default", timeout=123)
+        assert captured["options"]["time_limit"] == 123
+
     def test_seed_overrides_configurations_own_seed(self, monkeypatch):
         captured = self._patch_solver_class(monkeypatch, "Highs")
         get_solver("highs-default", seed=42)
@@ -221,3 +226,34 @@ class TestMainRecoversFromLinopyParseFailures:
     def test_still_errors_without_a_recovered_result(self, monkeypatch, capsys):
         results = self._run(monkeypatch, capsys, None)
         assert results["status"] == "ER"
+
+
+class TestMainGracefulTimeout:
+    def test_preserves_incumbent_and_quality_metrics(self, monkeypatch, capsys):
+        solver = MagicMock()
+        solver_result = MagicMock()
+        solver_result.status.status.value = "warning"
+        solver_result.status.termination_condition.value = "time_limit"
+        solver_result.solution.objective = 12.5
+        solver.solve_problem.return_value = solver_result
+
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver",
+            lambda *a, **k: (solver, "fake"),
+        )
+
+        adapter = MagicMock()
+        adapter.is_mip.return_value = True
+        adapter.integer_values.return_value = {"x": 1.25}
+        adapter.duality_gap.return_value = 0.2
+        adapter.reported_runtime.return_value = 59.0
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+
+        main("fake-default", "problem.lp", "1.0", timeout=60)
+
+        result = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+        assert result["status"] == "TO"
+        assert result["condition"] == "Timeout"
+        assert result["objective"] == 12.5
+        assert result["duality_gap"] == pytest.approx(0.2)
+        assert result["max_integrality_violation"] == pytest.approx(0.25)
