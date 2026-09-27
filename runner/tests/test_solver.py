@@ -10,8 +10,8 @@ import pytest
 
 from runner.utils.solver import (
     calculate_integrality_violation,
-    get_duality_gap,
     get_milp_metrics,
+    get_mip_gap,
     get_reported_runtime,
     get_solver,
     is_mip_problem,
@@ -100,18 +100,18 @@ class TestIsMipProblem:
             is_mip_problem(MagicMock(), "not-a-solver")
 
 
-class TestGetDualityGap:
+class TestGetMipGap:
     def test_none_model_returns_none(self):
-        assert get_duality_gap(None, "highs", Path("p.log")) is None
+        assert get_mip_gap(None, "highs", Path("p.log")) is None
 
     def test_delegates_to_the_solvers_adapter(self):
         model = MagicMock()
         model.getGap.return_value = 0.01
-        assert get_duality_gap(model, "scip", Path("p.log")) == 0.01
+        assert get_mip_gap(model, "scip", Path("p.log")) == 0.01
 
     def test_unregistered_solver_raises(self):
         with pytest.raises(NotImplementedError):
-            get_duality_gap(MagicMock(), "not-a-solver", Path("p.log"))
+            get_mip_gap(MagicMock(), "not-a-solver", Path("p.log"))
 
 
 class TestGetReportedRuntime:
@@ -145,10 +145,10 @@ class TestCalculateIntegralityViolation:
 
 
 class TestGetMilpMetrics:
-    def _patch_adapter(self, monkeypatch, integer_values, duality_gap=0.01):
+    def _patch_adapter(self, monkeypatch, integer_values, mip_gap=0.01):
         adapter = MagicMock()
         adapter.integer_values.return_value = integer_values
-        adapter.duality_gap.return_value = duality_gap
+        adapter.mip_gap.return_value = mip_gap
         monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
         return adapter
 
@@ -207,7 +207,7 @@ class TestMainRecoversFromLinopyParseFailures:
         adapter.recover_result.return_value = recovered
         adapter.is_mip.return_value = None
         adapter.integer_values.return_value = {"x": 1.0}
-        adapter.duality_gap.return_value = None
+        adapter.mip_gap.return_value = None
         monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
         main("fake-default", "problem.lp", "1.0")
         return json.loads(capsys.readouterr().out.strip().splitlines()[-1])
@@ -245,7 +245,7 @@ class TestMainGracefulTimeout:
         adapter = MagicMock()
         adapter.is_mip.return_value = True
         adapter.integer_values.return_value = {"x": 1.25}
-        adapter.duality_gap.return_value = 0.2
+        adapter.mip_gap.return_value = 0.2
         adapter.reported_runtime.return_value = 59.0
         monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
 
@@ -255,5 +255,5 @@ class TestMainGracefulTimeout:
         assert result["status"] == "TO"
         assert result["condition"] == "Timeout"
         assert result["objective"] == 12.5
-        assert result["duality_gap"] == pytest.approx(0.2)
+        assert result["mip_gap"] == pytest.approx(0.2)
         assert result["max_integrality_violation"] == pytest.approx(0.25)

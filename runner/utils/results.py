@@ -91,7 +91,7 @@ def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
             ("Memory Usage (MB)", kwargs.get("memory")),
             ("Objective Value", kwargs.get("objective")),
             ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
-            ("Duality Gap", kwargs.get("duality_gap")),
+            ("MIP Gap", kwargs.get("mip_gap")),
             ("Reported Runtime (s)", kwargs.get("reported_runtime")),
             ("Timeout", kwargs.get("timeout")),
             ("Hostname", kwargs.get("hostname")),
@@ -219,15 +219,30 @@ def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> N
         if list(current_headers) == expected_headers:
             return
 
-        unexpected = [h for h in current_headers if h not in expected_headers]
+        # "Duality Gap" was the historical name for the MILP optimality
+        # gap. Rename it explicitly rather than treating it as a removed
+        # column, preserving old values when appending with the new schema.
+        legacy_renames = {"Duality Gap": "MIP Gap"}
+        normalized_headers = [
+            legacy_renames.get(header, header) for header in current_headers
+        ]
+
+        unexpected = [h for h in normalized_headers if h not in expected_headers]
         if unexpected:
             raise ValueError(
                 f"{csv_path} has column(s) {unexpected} not in the current "
                 "schema -- resolve manually rather than risk silently "
                 "dropping data."
             )
-        rows = list(reader)
 
+        rows = []
+        for row in reader:
+            normalized_row = {
+                legacy_renames.get(key, key): value for key, value in row.items()
+            }
+            rows.append(normalized_row)
+
+    current_headers = normalized_headers
     added = [h for h in expected_headers if h not in current_headers]
     print(f"Migrating {csv_path} to the current schema (adding {added})")
     with open(csv_path, mode="w", newline="") as file:

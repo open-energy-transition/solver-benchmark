@@ -117,7 +117,7 @@ def run_solver(
     dict[str, Any]
         Metrics with at least `status` (one of `"ok"`, `"TO"`, `"OOM"`,
         `"ER"`), `condition`, `objective`, `runtime`, `reported_runtime`,
-        `duality_gap`, `max_integrality_violation`, `memory` (MB, or None if
+        `mip_gap`, `max_integrality_violation`, `memory` (MB, or None if
         unparseable), and `timeout` (the budget passed in, for reference).
     """
     available_memory_bytes = psutil.virtual_memory().available
@@ -234,7 +234,7 @@ def run_solver(
             "objective": None,
             "runtime": timeout,
             "reported_runtime": timeout,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
@@ -248,7 +248,7 @@ def run_solver(
             "objective": None,
             "runtime": "N/A",
             "reported_runtime": None,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
@@ -265,7 +265,7 @@ def run_solver(
             "objective": None,
             "runtime": timeout,
             "reported_runtime": timeout,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     else:
@@ -349,7 +349,7 @@ def run_reference_highs_binary() -> dict[str, Any]:
             "condition": "Error",
             "objective": None,
             "runtime": runtime,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     else:
@@ -368,7 +368,7 @@ def run_reference_highs_binary() -> dict[str, Any]:
             "objective": objective,
             "runtime": runtime,
             "memory": "N/A",
-            "duality_gap": None,  # Not available from command line output
+            "mip_gap": None,  # Not available from command line output
             "max_integrality_violation": None,  # Not available from command line output
         }
 

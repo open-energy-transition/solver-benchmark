@@ -143,10 +143,8 @@ def calculate_integrality_violation(integer_values: dict[str, float]) -> float:
     return max(abs(value - round(value)) for value in integer_values.values())
 
 
-def get_duality_gap(
-    solver_model: Any, solver_package: str, log_fn: Path
-) -> float | None:
-    """Retrieve the duality/MIP gap reported by the solver, if available.
+def get_mip_gap(solver_model: Any, solver_package: str, log_fn: Path) -> float | None:
+    """Retrieve the MIP gap reported by the solver, if available.
 
     Parameters
     ----------
@@ -161,7 +159,7 @@ def get_duality_gap(
     Returns
     -------
     float | None
-        The relative duality gap, or None if the solver doesn't expose one.
+        The relative MIP gap, or None if the solver doesn't expose one.
 
     Raises
     ------
@@ -173,7 +171,7 @@ def get_duality_gap(
     adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
         raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
-    return adapter.duality_gap(solver_model, log_fn)
+    return adapter.mip_gap(solver_model, log_fn)
 
 
 def get_milp_metrics(
@@ -184,7 +182,7 @@ def get_milp_metrics(
     log_fn: Path,
     is_mip: bool | None,
 ) -> tuple[float | None, float | None]:
-    """Compute the duality gap and max integrality violation of a MILP solve.
+    """Compute the MIP gap and max integrality violation of a MILP solve.
 
     Variable values come from the solver's own adapter (native model or
     solution file, see `runner/utils/solvers/`), not from linopy's
@@ -209,7 +207,7 @@ def get_milp_metrics(
     Returns
     -------
     tuple[float | None, float | None]
-        `(duality_gap, max_integrality_violation)`, or `(None, None)` if the
+        `(mip_gap, max_integrality_violation)`, or `(None, None)` if the
         problem has no integer variables. The integrality violation is None
         unless the value of every integer variable could be read.
     """
@@ -230,15 +228,15 @@ def get_milp_metrics(
         return None, None
 
     try:
-        duality_gap = get_duality_gap(solver_model, solver_package, log_fn)
+        mip_gap = get_mip_gap(solver_model, solver_package, log_fn)
     except Exception:
-        print(f"ERROR obtaining duality gap: {format_exc()}", file=sys.stderr)
-        duality_gap = None
+        print(f"ERROR obtaining MIP gap: {format_exc()}", file=sys.stderr)
+        mip_gap = None
 
     max_integrality_violation = (
         calculate_integrality_violation(integer_values) if integer_values else None
     )
-    return duality_gap, max_integrality_violation
+    return mip_gap, max_integrality_violation
 
 
 def recover_result(
@@ -397,11 +395,11 @@ def main(
             is_mip = False
 
         if is_mip is not False:
-            duality_gap, max_integrality_violation = get_milp_metrics(
+            mip_gap, max_integrality_violation = get_milp_metrics(
                 solver_model, solver_package, problem_file, solution_fn, log_fn, is_mip
             )
         else:
-            duality_gap = None
+            mip_gap = None
             max_integrality_violation = None
 
         results = {
@@ -410,7 +408,7 @@ def main(
             "status": status_value,
             "condition": termination_condition,
             "objective": objective,
-            "duality_gap": duality_gap,
+            "mip_gap": mip_gap,
             "max_integrality_violation": max_integrality_violation,
         }
     except Exception:
@@ -421,7 +419,7 @@ def main(
             "status": "ER",
             "condition": None,
             "objective": None,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     print(json.dumps(results))

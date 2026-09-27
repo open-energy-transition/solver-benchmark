@@ -71,7 +71,7 @@ class TestRunSolver:
             args=[],
             returncode=0,
             stdout='{"status": "ok", "condition": "optimal", "objective": 1.0, '
-            '"runtime": 12.3, "reported_runtime": 12.0, "duality_gap": null, '
+            '"runtime": 12.3, "reported_runtime": 12.0, "mip_gap": null, '
             '"max_integrality_violation": null}',
             stderr="MaxResidentSetSizeKB=2048",
         )

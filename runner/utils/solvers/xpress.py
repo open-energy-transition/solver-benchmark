@@ -15,9 +15,20 @@ def is_mip(model: Any) -> bool:
     return model.getAttrib("mipents") > 0
 
 
-def duality_gap(model: Any, log_fn: Path) -> float:
-    """The relative MIP gap tolerance Xpress was configured with."""
-    return model.controls.miprelgapnotify
+def mip_gap(model: Any, log_fn: Path) -> float | None:
+    """Return Xpress's final relative MIP gap.
+
+    Xpress exposes the incumbent objective and global best bound separately.
+    Compute the relative gap from those values rather than returning a gap
+    control/tolerance.
+    """
+    objective = model.getAttrib("mipobjval")
+    bound = model.getAttrib("bestbound")
+
+    if objective == 0:
+        return 0.0 if bound == 0 else None
+
+    return abs(objective - bound) / abs(objective)
 
 
 def reported_runtime(model: Any) -> float:

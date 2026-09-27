@@ -53,7 +53,7 @@ class TestCsvRecord:
             "memory": 10.0,
             "objective": 1.0,
             "max_integrality_violation": 0.0,
-            "duality_gap": 0.0,
+            "mip_gap": 0.0,
             "reported_runtime": 1.0,
             "timeout": 3600,
             "hostname": "h",
@@ -80,7 +80,7 @@ class TestCsvRecord:
             "Memory Usage (MB)",
             "Objective Value",
             "Max Integrality Violation",
-            "Duality Gap",
+            "MIP Gap",
             "Reported Runtime (s)",
             "Timeout",
             "Hostname",
@@ -109,7 +109,7 @@ class TestCsvRoundTrip:
             "memory": 12.3,
             "objective": 42.0,
             "max_integrality_violation": None,
-            "duality_gap": None,
+            "mip_gap": None,
             "reported_runtime": 1.4,
             "timeout": 3600,
         }
@@ -249,6 +249,33 @@ class TestEnsureCsvSchema:
         assert rows[1][0] == "problem-a"  # old data preserved
         assert rows[1][1] == "highs"
         assert rows[1][-1] == ""  # new column, blank for the old row
+
+    def test_append_true_renames_historical_duality_gap(self, tmp_path):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+
+        headers = list(csv_record(check=False).keys())
+        historical_headers = ["Duality Gap" if h == "MIP Gap" else h for h in headers]
+
+        with open(results_csv, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(historical_headers)
+            row = [""] * len(historical_headers)
+            row[historical_headers.index("Problem")] = "problem-a"
+            row[historical_headers.index("Duality Gap")] = "0.0123"
+            writer.writerow(row)
+
+        with open(mean_stddev_csv, "w", newline="") as f:
+            csv.writer(f).writerow(_MEAN_STDDEV_HEADERS)
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        with open(results_csv, newline="") as f:
+            rows = list(csv.DictReader(f))
+
+        assert "MIP Gap" in rows[0]
+        assert "Duality Gap" not in rows[0]
+        assert rows[0]["MIP Gap"] == "0.0123"
 
     def test_append_true_raises_on_unrecognized_column(self, tmp_path):
         results_csv = tmp_path / "results.csv"

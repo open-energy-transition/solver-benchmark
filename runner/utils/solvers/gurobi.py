@@ -9,7 +9,7 @@ def is_mip(model: Any) -> bool:
     return model.IsMIP
 
 
-def duality_gap(model: Any, log_fn: Path) -> float:
+def mip_gap(model: Any, log_fn: Path) -> float:
     """Gurobi's own reported MIP gap."""
     return model.MIPGap
 

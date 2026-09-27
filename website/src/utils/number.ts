@@ -37,7 +37,7 @@ const formatDecimal = ({
 
 /**
  * Format number in scientific notation with 3 significant digits
- * Used for objective value, duality gap, max int violation
+ * Used for objective value, MIP gap, max int violation
  * Example: 12345678 -> "1.235e+7"
  */
 const formatScientific = (

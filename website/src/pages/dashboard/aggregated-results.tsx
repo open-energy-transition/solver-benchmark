@@ -39,10 +39,10 @@ const Caveats = () => {
               .
             </li>
             <li>
-              All solvers are run with their default options, except for the
-              duality gap tolerance for mixed integer problems (MILPs), which we
-              set to 1e-4. You can check the duality gaps for each solver in the
-              problem details page corresponding to each problem.
+              All solvers are run with their default options, except for the MIP
+              gap tolerance for mixed integer problems (MILPs), which we set to
+              1e-4. You can check the MIP gaps for each solver in the problem
+              details page corresponding to each problem.
             </li>
             <li>
               All results on this website use the runtime measured by our

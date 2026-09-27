@@ -2,7 +2,7 @@
 
 linopy runs CBC as a command-line program, so there is no native model to
 query: `model` is linopy's small `CbcModel(mip_gap, runtime)` result, and
-the duality gap and variable values are read from the log and solution
+the MIP gap and variable values are read from the log and solution
 files CBC writes instead.
 """
 
@@ -22,7 +22,7 @@ def is_mip(model: Any) -> bool | None:
     return None
 
 
-def duality_gap(model: Any, log_fn: Path) -> float | None:
+def mip_gap(model: Any, log_fn: Path) -> float | None:
     """CBC's relative MIP gap, computed from its log.
 
     CBC's own ``Gap:`` line (which linopy reads into `model.mip_gap`) is

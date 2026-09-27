@@ -34,6 +34,16 @@ def load_results(folder: str | list[str]) -> tuple[pd.DataFrame, pd.DataFrame]:
     csv_files = [p for f in folders for p in Path(f).glob("*.csv")]
     results = pd.concat([pd.read_csv(p) for p in csv_files]).reset_index(drop=True)
 
+    # Historical result files called the MILP optimality metric "Duality Gap".
+    # New results use the more precise name "MIP Gap". Normalize both here so
+    # historical and current benchmark runs can be analyzed together.
+    if "Duality Gap" in results.columns:
+        if "MIP Gap" in results.columns:
+            results["MIP Gap"] = results["MIP Gap"].fillna(results["Duality Gap"])
+            results = results.drop(columns=["Duality Gap"])
+        else:
+            results = results.rename(columns={"Duality Gap": "MIP Gap"})
+
     if "Benchmark" in results.columns:
         # Historical CSVs identified a row by "Benchmark" (a model family
         # name shared across multiple "Size" instances of that family) plus

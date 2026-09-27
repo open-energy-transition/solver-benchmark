@@ -36,7 +36,7 @@ def test_every_configured_solver_has_an_adapter():
 def test_every_adapter_exposes_the_required_methods():
     for adapter in SOLVER_ADAPTERS.values():
         assert callable(adapter.is_mip)
-        assert callable(adapter.duality_gap)
+        assert callable(adapter.mip_gap)
         assert callable(adapter.reported_runtime)
 
 
@@ -167,7 +167,7 @@ class TestNativeModelIntegerValues:
         knitro = importlib.import_module("runner.utils.solvers.knitro")
         result = SimpleNamespace(n_integer_vars=3, mip_rel_gap=0.002)
         assert knitro.is_mip(result) is True
-        assert knitro.duality_gap(result, Path("k.log")) == 0.002
+        assert knitro.mip_gap(result, Path("k.log")) == 0.002
         assert knitro.is_mip(SimpleNamespace(n_integer_vars=0)) is False
         assert knitro.is_mip(SimpleNamespace()) is None
 
@@ -285,14 +285,46 @@ class TestGlpkIntegerValues:
         assert glpk.integer_values(None, _P, self._write(tmp_path, report)) == {}
 
 
-class TestCbcDualityGap:
+class TestXpressMipGap:
+    def test_uses_incumbent_and_best_bound(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.getAttrib.side_effect = lambda name: {
+            "mipobjval": 100.0,
+            "bestbound": 80.0,
+        }[name]
+
+        assert xpress.mip_gap(model, Path("xpress.log")) == pytest.approx(0.2)
+
+    def test_zero_objective_and_bound_has_zero_gap(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.getAttrib.side_effect = lambda name: {
+            "mipobjval": 0.0,
+            "bestbound": 0.0,
+        }[name]
+
+        assert xpress.mip_gap(model, Path("xpress.log")) == 0.0
+
+    def test_zero_objective_with_nonzero_bound_is_unknown(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.getAttrib.side_effect = lambda name: {
+            "mipobjval": 0.0,
+            "bestbound": 1.0,
+        }[name]
+
+        assert xpress.mip_gap(model, Path("xpress.log")) is None
+
+
+class TestCbcMipGap:
     """CBC's gap comes from its log, not its rounded ``Gap:`` line."""
 
     def _gap(self, tmp_path, log_text):
         cbc = importlib.import_module("runner.utils.solvers.cbc")
         log_fn = tmp_path / "cbc.log"
         log_fn.write_text(log_text)
-        return cbc.duality_gap(MagicMock(mip_gap=0.0), log_fn)
+        return cbc.mip_gap(MagicMock(mip_gap=0.0), log_fn)
 
     def test_gap_tolerance_exit_uses_objective_and_bound(self, tmp_path):
         # From a real CBC run on FINE-water-supply-system-12-8760ts, where
@@ -323,7 +355,7 @@ class TestCbcDualityGap:
 
     def test_missing_log_is_unknown(self, tmp_path):
         cbc = importlib.import_module("runner.utils.solvers.cbc")
-        assert cbc.duality_gap(MagicMock(), tmp_path / "missing.log") is None
+        assert cbc.mip_gap(MagicMock(), tmp_path / "missing.log") is None
 
 
 class TestGlpkRecoverResult:
