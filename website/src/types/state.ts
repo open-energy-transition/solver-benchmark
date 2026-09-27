@@ -4,7 +4,16 @@ import { MetaData } from "./meta-data";
 
 export enum RealisticOption {
   Realistic = "Realistic",
-  Other = "Other",
+  // Covers both an explicit `realistic: false` and the field being left
+  // unspecified — there's no meaningful distinction between the two.
+  Other = "N/A",
+}
+
+export enum HasResultsOption {
+  // Has at least one result recorded in benchmark_results.csv, regardless
+  // of whether that run actually succeeded, timed out, or errored.
+  HasResults = "Has Results",
+  NoResults = "No Results",
 }
 
 export type IFilterState = {
@@ -44,7 +53,7 @@ export interface IResultState extends IAvailableFilterData {
   rawMetaData: MetaData;
   years: number[];
   solvers: string[];
-  availableBenchmarksAndSizes: string[];
+  availableProblems: string[];
   availableBenchmarks: string[];
   availableSolvers: string[];
 

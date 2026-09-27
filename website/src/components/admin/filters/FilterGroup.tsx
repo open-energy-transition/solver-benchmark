@@ -1,6 +1,8 @@
 import { ArrowIcon } from "@/assets/icons";
 import InfoPopup from "@/components/common/InfoPopup";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
+import { sortFilterOptions } from "@/utils/string";
 import React, { useState } from "react";
 
 interface FilterGroupProps {
@@ -15,6 +17,7 @@ interface FilterGroupProps {
   gridClassName?: string;
   itemClassName?: string;
   uppercase?: boolean;
+  sortOrder?: string[];
 }
 
 const FilterGroup: React.FC<FilterGroupProps> = ({
@@ -29,6 +32,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   gridClassName = "grid-cols-1",
   itemClassName = "",
   uppercase = false,
+  sortOrder,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const isMobile = useIsMobile();
@@ -90,7 +94,10 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
       </div>
       {isExpanded && (
         <div className={`grid ${gridClassName} text-xs`}>
-          {[...items].sort().map((item) => (
+          {sortFilterOptions(items, {
+            priorityOrder: sortOrder,
+            lastValue: UNSPECIFIED_FILTER_VALUE,
+          }).map((item) => (
             <div
               className="flex items-center gap-1 p-3 px-2.5 relative group min-w-max max-w-max"
               key={item}

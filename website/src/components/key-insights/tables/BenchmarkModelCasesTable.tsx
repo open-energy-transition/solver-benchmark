@@ -9,6 +9,7 @@ import {
   IBenchmarkModelCases,
 } from "@/data/benchmarkModelCasesData";
 import { IResultState } from "@/types/state";
+import { UNSPECIFIED_FILTER_VALUE } from "@/constants/filter";
 
 const BenchmarkModelCasesTable = () => {
   const renderModelData = (model: string | boolean) => {
@@ -58,7 +59,7 @@ const BenchmarkModelCasesTable = () => {
     (state: { results: IResultState }) => {
       return state.results.availableModellingFrameworks;
     },
-  );
+  ).filter((framework) => framework !== UNSPECIFIED_FILTER_VALUE);
 
   const columns = useMemo<ColumnDef<IBenchmarkModelCases>[]>(
     () => [
@@ -94,6 +95,7 @@ const BenchmarkModelCasesTable = () => {
           headerClassName="text-center text-navy p-2 cursor-pointer"
           columns={columns as any}
           showPagination={false}
+          oddRowClassName="bg-[#BFD8C733]"
         />
       </div>
 

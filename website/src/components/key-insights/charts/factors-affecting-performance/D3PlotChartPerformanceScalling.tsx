@@ -10,12 +10,12 @@ type ChartData = {
   runtime: number;
   numVariables: number;
   status: SolverStatusType;
-  benchmark: string;
+  problem: string;
 };
 
 interface PerformanceScalingProps {
   chartData: ChartData[];
-  onPointClick?: (benchmark: ChartData) => void;
+  onPointClick?: (problem: ChartData) => void;
   solverColor: string;
   minYaxis?: number;
 }
@@ -178,7 +178,7 @@ const D3PlotChartPerformanceScaling = ({
 
       tooltip
         .html(
-          `Benchmark: ${d.benchmark.replace(" ", "<br/> Size: ")}
+          `Problem: ${d.problem.replace(" ", "<br/> Size: ")}
           <br/>Runtime: ${formatRuntime(d.runtime)}
           <br/>Number of Variables: ${formatInteger(d.numVariables)}`,
         )

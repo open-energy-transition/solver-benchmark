@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import * as d3 from "d3";
 import { CircleIcon } from "@/assets/icons";
@@ -9,7 +9,7 @@ import {
   roundUpToNearest,
 } from "@/utils/chart";
 import { IResultState } from "@/types/state";
-import { HIPO_SOLVERS } from "@/utils/solvers";
+import { getSolverLabel, HIPO_SOLVERS } from "@/utils/solvers";
 
 type SolverType = "glpk" | "scip" | "highs";
 
@@ -36,6 +36,29 @@ const D3ChartLineChart = ({
 }: ID3ChartLineChart) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Observe container width changes (e.g. the sidebar nav expanding/collapsing
+  // shifts this width without firing a window resize event) so the chart
+  // stays in sync with the actual rendered container size.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect?.width || el.clientWidth;
+        setContainerWidth(Math.floor(w));
+      }
+    });
+    ro.observe(el);
+
+    setContainerWidth(el.clientWidth || 0);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
 
   const allSolvers = useSelector((state: { results: IResultState }) => {
     return state.results.availableSolvers;
@@ -61,7 +84,7 @@ const D3ChartLineChart = ({
 
   useEffect(() => {
     // Dimensions
-    const width = containerRef.current?.clientWidth || 600;
+    const width = containerWidth || containerRef.current?.clientWidth || 600;
     const margin = { top: 20, right: 20, bottom: 40, left: 85 };
 
     // Clear previous SVG
@@ -110,7 +133,7 @@ const D3ChartLineChart = ({
         g.selectAll("text").attr("fill", "#A1A9BC").attr("class", "text-xs");
       })
       .append("text")
-      .attr("x", width / 2)
+      .attr("x", (margin.left + (width - margin.right)) / 2)
       .attr("y", 40)
       .attr("fill", "#575757")
       .text("Year")
@@ -127,7 +150,7 @@ const D3ChartLineChart = ({
         g.selectAll("text").attr("fill", "#A1A9BC").attr("class", "text-xs");
       })
       .append("text")
-      .attr("x", -height / 2)
+      .attr("x", -((margin.top + (height - margin.bottom)) / 2))
       .attr("y", -50)
       .attr("fill", "#575757")
       .text(title)
@@ -239,7 +262,7 @@ const D3ChartLineChart = ({
       // Cleanup tooltip on unmount
       tooltip.remove();
     };
-  }, [chartData, maxYValue, showMaxLine]);
+  }, [chartData, maxYValue, showMaxLine, containerWidth]);
 
   return (
     <div className={`bg-white p-4 pl-0 lg:pl-4 rounded-xl ${className}`}>
@@ -249,18 +272,20 @@ const D3ChartLineChart = ({
           Solver:
         </span>
         <div className="flex gap-2 flex-wrap">
-          {Object.keys(solverColors).map((solverKey) => (
-            <div
-              key={solverKey}
-              className="py-1 px-5 bg-stroke text-dark-grey text-[9px] flex items-center gap-1 rounded-md h-max w-max"
-            >
-              <CircleIcon
-                style={{ color: solverColors[solverKey] }}
-                className={"size-2"}
-              />
-              {solverKey}
-            </div>
-          ))}
+          {Object.keys(solverColors)
+            .sort((a, b) => getSolverLabel(a).localeCompare(getSolverLabel(b)))
+            .map((solverKey) => (
+              <div
+                key={solverKey}
+                className="py-1 px-5 bg-stroke text-dark-grey text-[9px] font-bold flex items-center gap-1 rounded-md h-max w-max"
+              >
+                <CircleIcon
+                  style={{ color: solverColors[solverKey] }}
+                  className={"size-2"}
+                />
+                {getSolverLabel(solverKey)}
+              </div>
+            ))}
         </div>
       </div>
       <div ref={containerRef}>

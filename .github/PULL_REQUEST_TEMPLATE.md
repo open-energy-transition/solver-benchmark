@@ -12,7 +12,7 @@ Please add the following information to the description field of the metadata fo
 - Data sources used in constructing the model
 - Reference to any real-world study or published paper that this model was used for
 
-Please add a README with instructions on how to run the model framework's code to reproduce benchmark generation, particularly if the code doesn't automatically generate MPS or LP files (see, for instance, this [example](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/switch/README.md)).
+Please add a README with instructions on how to run the modelling framework's code to reproduce benchmark generation, particularly if the code doesn't automatically generate MPS or LP files (see, for instance, this [example](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/switch/README.md)).
 
 ### Checklist
 
@@ -20,7 +20,7 @@ Please add a README with instructions on how to run the model framework's code t
 
 **For PRs adding new benchmark instances:**
 - [ ] I consent to releasing these benchmark instance files under the CC BY 4.0 license
-- [ ] The benchmark name and size instance name follow the conventions indicated in the template
+- [ ] The benchmark name and size instance name follow the conventions indicated in [benchmarks/metadata_schema.yaml](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/metadata_schema.yaml)
 - [ ] I have tested that this model instance can be solved to optimality in [time] with [solver] solver, using [options], on a [spec] machine <!-- please indicate which solver, how much RAM memory your machine has, and what solver options were used -->
 
 For Benchmark team:

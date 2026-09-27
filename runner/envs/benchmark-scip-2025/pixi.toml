@@ -1,0 +1,17 @@
+# Auto-translated from the old runner/envs/benchmark-scip-2025.yaml (conda)
+# during the conda -> pixi solver-env migration (issue #478 PR5).
+[workspace]
+name = "benchmark-scip-2025"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = ">=3.12"
+pip = "*"
+psutil = ">=5.9"
+requests = ">=2.32"
+linopy = ">=0.5.5"
+scip = "==10.0.0"
+
+[pypi-dependencies]
+pyscipopt = "==5.7.1"

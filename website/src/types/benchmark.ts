@@ -1,7 +1,20 @@
-type SolverType = "glpk" | "scip" | "highs" | "gurobi" | "cbc";
+// The solvers the website knows (for editor autocompletion), but open to any
+// other name: results can contain any configuration from the runner's
+// solver_configurations.yaml, and the solver lists, labels and colors all
+// handle names not listed here.
+type SolverType =
+  | "glpk"
+  | "scip"
+  | "highs"
+  | "gurobi"
+  | "cbc"
+  | "highs-hipo"
+  | "highs-ipx"
+  | (string & {});
 type SolverStatusType = "TO" | "ok" | "warning" | "ER" | "OOM";
 
 type BenchmarkResult = {
+  problemId: string;
   benchmark: string;
   dualityGap: number | null;
   maxIntegralityViolation: number | null;
@@ -11,11 +24,15 @@ type BenchmarkResult = {
   runtime: number;
   size: string;
   solver: SolverType;
+  // The raw `Solver` CSV value, before `normalizeSolverName`
+  solverConfiguration: string;
   solverReleaseYear: number;
   solverVersion: string;
   status: SolverStatusType;
   terminationCondition: string;
   runId: string | null;
+  // Empty for historical results, which predate the `Seed` column
+  seed: string;
   timeout: number;
 };
 
@@ -32,7 +49,7 @@ interface ISolverYearlyMetrics {
       memoryUsage: number;
       status: SolverStatusType;
     }[];
-    numSolvedBenchmark: number;
+    numSolvedProblems: number;
     version: string;
   }[];
 }
@@ -59,19 +76,20 @@ interface OriginBenchmarkResult {
   "Duality Gap": number | null;
 }
 
-type IFilterBenchmarkDetails = {
+type IFilterProblemDetails = {
   sectoralFocus: string[];
   sectors: string[];
   problemClass: string[];
   application: string[];
   problemSize: string[];
+  solved: string[];
   realistic: string[];
   modellingFramework: string[];
   milpFeatures: string[];
 };
 
 export type {
-  IFilterBenchmarkDetails,
+  IFilterProblemDetails,
   BenchmarkResult,
   SolverStatusType,
   SolverType,

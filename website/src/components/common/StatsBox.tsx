@@ -13,8 +13,8 @@ const StatsBox = ({ value, label }: StatsBoxProps) => {
   return (
     <div
       className="
-        py-6
-        md:py-9
+        pt-6
+        md:pt-9
         text-center
         flex-1
         md:border-r-2

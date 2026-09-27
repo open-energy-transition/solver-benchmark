@@ -1,0 +1,20 @@
+# Auto-translated from the old runner/envs/benchmark-tests.yaml (conda)
+# during the conda -> pixi solver-env migration (issue #478 PR5).
+[workspace]
+name = "benchmark-tests"
+channels = ["conda-forge", "https://conda.anaconda.org/gurobi"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = ">=3.12,<3.13"
+pip = "*"
+psutil = ">=5.9"
+requests = ">=2.32"
+coin-or-cbc = "==2.10.12"
+scip = "==9.2.1"
+pyscipopt = "==5.3.0"
+glpk = "==5.0.0"
+
+[pypi-dependencies]
+highspy = "==1.9.0"
+linopy = "==0.9.0"

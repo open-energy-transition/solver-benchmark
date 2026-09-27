@@ -6,9 +6,26 @@ import {
 } from "@/types/benchmark";
 import Papa from "papaparse";
 import { getHighestVersion } from "./versions";
-import { MetaData, Size } from "@/types/meta-data";
+import { MetaData, MetaDataEntry } from "@/types/meta-data";
 import { parseNumberOrNull } from "./number";
 import { IFilterState, RealisticOption } from "@/types/state";
+
+/**
+ * Returns the problem ID used to look up a problem's metadata entry.
+ */
+const getProblemKey = (result: BenchmarkResult): string => result.problemId;
+
+/**
+ * Maps the runner's solver configuration names (e.g. `highs-default`,
+ * `highs-ipm`) to the solver names used by historical results and the
+ * website (e.g. `highs`, `highs-ipx`).
+ */
+const normalizeSolverName = (solver: string): string => {
+  if (solver === "highs-ipm") {
+    return "highs-ipx";
+  }
+  return solver.replace(/-default$/, "");
+};
 
 /**
  * Fetches and parses a CSV file from the `public` folder
@@ -47,11 +64,8 @@ const getMaxMemoryUsage = (
   benchmarkResult: BenchmarkResult,
   rawMetaData: MetaData,
 ): number => {
-  const benchmarkMetadata = rawMetaData[benchmarkResult.benchmark];
-  const benchmarkSize = benchmarkMetadata.sizes.find(
-    (size) => size.name === benchmarkResult.size,
-  );
-  if (benchmarkSize?.size === "L") {
+  const problemMetadata = rawMetaData[getProblemKey(benchmarkResult)];
+  if (problemMetadata?.size === "L") {
     return 62 * 1024;
   }
   return 7 * 1024;
@@ -63,8 +77,12 @@ const getBenchmarkResults = async (
   const res = await fetchCsvToJson(url);
   return res.map((rawData) => {
     const data = rawData as { [key: string]: string };
+    // Historical CSVs identify a problem by `Benchmark` + `Size`; current
+    // CSVs write the metadata problem ID directly in a `Problem` column.
+    const problemId = data["Problem"] || `${data["Benchmark"]}-${data["Size"]}`;
     return {
-      benchmark: data["Benchmark"],
+      problemId,
+      benchmark: data["Benchmark"] || problemId,
       dualityGap: parseNumberOrNull(data["Duality Gap"]),
       maxIntegralityViolation: parseNumberOrNull(
         data["Max Integrality Violation"],
@@ -72,13 +90,15 @@ const getBenchmarkResults = async (
       memoryUsage: Number(data["Memory Usage (MB)"]),
       objectiveValue: parseNumberOrNull(data["Objective Value"]),
       runtime: Number(data["Runtime (s)"]),
-      size: data["Size"],
-      solver: data["Solver"] as SolverType,
+      size: data["Size"] ?? "",
+      solver: normalizeSolverName(data["Solver"]) as SolverType,
+      solverConfiguration: data["Solver"],
       solverReleaseYear: parseInt(data["Solver Release Year"], 10),
       solverVersion: data["Solver Version"],
       status: data["Status"] as SolverStatusType,
       terminationCondition: data["Termination Condition"],
       runId: data["Run ID"],
+      seed: data["Seed"] ?? "",
       timeout: Number(data["Timeout"]),
     };
   });
@@ -117,8 +137,10 @@ const processBenchmarkResults = (
   });
 };
 
-const formatBenchmarkName = (benchmarkResult: BenchmarkResult) => {
-  return `${benchmarkResult.benchmark} ${benchmarkResult.size}`;
+const formatProblemName = (benchmarkResult: BenchmarkResult) => {
+  return benchmarkResult.size
+    ? `${benchmarkResult.benchmark} ${benchmarkResult.size}`
+    : benchmarkResult.benchmark;
 };
 
 const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
@@ -151,20 +173,23 @@ const getLatestBenchmarkResult = (benchmarkResults: BenchmarkResult[] = []) => {
   });
 };
 
-// Helper function to for filtering benchmarks based on realistic options
-const checkRealisticFilter = (size: Size, filters: IFilterState): boolean => {
-  return (
-    (filters.realistic.includes(RealisticOption.Realistic) && size.realistic) ||
-    (filters.realistic.includes(RealisticOption.Other) && !size.realistic)
+// Helper function to for filtering problems based on realistic options
+const checkRealisticFilter = (
+  entry: MetaDataEntry,
+  filters: IFilterState,
+): boolean => {
+  return filters.realistic.includes(
+    entry.realistic ? RealisticOption.Realistic : RealisticOption.Other,
   );
 };
 
 export {
   getBenchmarkResults,
   processBenchmarkResults,
-  formatBenchmarkName,
+  formatProblemName,
   getProblemSize,
   getLatestBenchmarkResult,
   checkRealisticFilter,
   getMaxMemoryUsage,
+  getProblemKey,
 };

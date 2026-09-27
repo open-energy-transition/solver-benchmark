@@ -1,0 +1,75 @@
+[workspace]
+name = "solver-benchmark"
+description = "Tooling environments for the solver-benchmark repo (runner CLI, notebooks, benchmark metadata scripts, dev tools)"
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+
+[feature.runner.dependencies]
+python = ">=3.12"
+pyyaml = "*"
+typer = "*"
+pandas = "*"
+psutil = "*"
+requests = "*"
+humanize = "*"
+# numpy/ipython/linopy aren't needed by the CLI/orchestrator path itself
+# (solving happens via subprocess in the per-solver-year conda envs), but the
+# test suite imports analyze.py (numpy, IPython.display) and solver.py
+# (linopy) directly, so the runner env still needs them to import those
+# modules. matplotlib/humanize -- plot.py's own deps, notebook-only, never
+# imported from runner/ -- have already shrunk back out per refactor PR 3's
+# module split; humanize stays for the CLI's own future use.
+numpy = "*"
+ipython = "*"
+
+[feature.runner.pypi-dependencies]
+linopy = "*"
+
+[feature.notebooks.dependencies]
+python = ">=3.14"
+
+[feature.notebooks.pypi-dependencies]
+humanize = ">=4.15.0"
+ipykernel = ">=7.1.0"
+ipython = ">=9.10.0"
+jinja2 = ">=3.1.6"
+matplotlib = ">=3.10.8"
+numpy = ">=2.4.2"
+pandas = ">=3.0.0"
+pyyaml = ">=6.0.3"
+# runner.utils.cloud downloads benchmark files over HTTP(S)
+requests = ">=2.33.0"
+scipy = ">=1.17.1"
+
+[feature.benchmarks.dependencies]
+# Python 3.9 is end of life: conda-forge no longer builds fixed releases for
+# it, which left this env with known-vulnerable packages.
+python = "3.12.*"
+pyyaml = "*"
+"ruamel.yaml" = "*"
+requests = "*"
+pip = "*"
+matplotlib = "*"
+humanize = "*"
+ipython = "*"
+
+[feature.benchmarks.pypi-dependencies]
+highspy = "==1.9.0"
+linopy = ">=0.5.0"
+pandas = "*"
+
+[feature.dev.dependencies]
+# Pinned to match .pre-commit-config.yaml's ruff-pre-commit rev, so
+# `pixi run -e dev ruff ...` matches what CI actually enforces.
+ruff = "==0.15.22"
+pytest = "*"
+pytest-mock = "*"
+pre-commit = "*"
+mypy = "*"
+yamale = "*"
+
+[environments]
+runner = ["runner", "dev"]
+notebooks = ["notebooks", "dev"]
+benchmarks = ["benchmarks", "dev"]
+dev = ["dev"]

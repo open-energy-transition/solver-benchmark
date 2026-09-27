@@ -17,6 +17,7 @@ type ChartData = {
   memoryUsage: number;
   status: SolverStatusType;
   solver: SolverType;
+  problemId: string;
   benchmark: string;
   size: string;
   problemSize?: string;

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Create benchmark campaigns from benchmark metadata.
 
-This command prepares benchmark metadata, selects benchmark instances, and
-creates either:
+This command prepares benchmark metadata, selects problems, and creates
+either:
 
 - a cloud OpenTofu campaign under infrastructure/benchmarks/<run-id>/;
 - a local benchmark campaign under infrastructure/local/benchmarks/<run-id>/.
@@ -18,7 +18,7 @@ import getpass
 import re
 import subprocess
 import sys
-from dataclasses import dataclass
+from collections.abc import Callable
 from datetime import date, datetime
 from pathlib import Path
 
@@ -43,14 +43,25 @@ MACHINE_PROFILES = {
 }
 
 
-@dataclass(frozen=True)
-class InstanceSelection:
-    benchmark: str
-    instance: str
-
-
 def slugify_campaign_name(value: str) -> str:
-    """Return a conservative campaign slug for run IDs and file paths."""
+    """Return a conservative campaign slug for run IDs and file paths.
+
+    Parameters
+    ----------
+    value : str
+        The raw campaign name, e.g. as given to ``--campaign``.
+
+    Returns
+    -------
+    str
+        `value` lowercased with runs of non-``[a-z0-9._-]`` characters
+        collapsed to a single ``-`` and stripped from both ends.
+
+    Raises
+    ------
+    ValueError
+        If `value` normalizes to an empty string.
+    """
     slug = value.strip().lower()
     slug = re.sub(r"[^a-z0-9._-]+", "-", slug)
     slug = re.sub(r"-+", "-", slug).strip("-")
@@ -60,7 +71,20 @@ def slugify_campaign_name(value: str) -> str:
 
 
 def run_command(command: list[str], cwd: Path) -> None:
-    """Run a command and fail loudly if it exits with a non-zero status."""
+    """Run a command and fail loudly if it exits with a non-zero status.
+
+    Parameters
+    ----------
+    command : list[str]
+        The command and its arguments, as passed to `subprocess.run`.
+    cwd : pathlib.Path
+        Working directory to run `command` in.
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If `command` exits with a non-zero status.
+    """
     print(f"\n$ {' '.join(command)}")
     subprocess.run(command, cwd=cwd, check=True)
 
@@ -71,121 +95,106 @@ def prepare_metadata() -> None:
     run_command([sys.executable, "benchmarks/categorize_benchmarks.py"], cwd=REPO_ROOT)
 
 
-def import_runner_utils():
-    def import_runner_utils():
-        """
-        Import runner utilities used for benchmark allocation and campaign creation.
+def import_runner_utils() -> tuple[Callable, Callable, Callable]:
+    """Import runner utilities used for problem allocation and campaign creation.
 
-        Returns
-        -------
-        tuple
-            Tuple containing:
-
-            - allocate_benchmarks
-            - create_benchmark_campaign
-            - load_benchmark_metadata
-        """
-
+    Returns
+    -------
+    tuple[Callable, Callable, Callable]
+        `(allocate_problems, create_benchmark_campaign, load_problem_metadata)`.
+    """
     sys.path.insert(0, str(REPO_ROOT))
-    from runner.utils import (  # pylint: disable=import-outside-toplevel
-        allocate_benchmarks,
+    from runner.utils.campaign import (  # pylint: disable=import-outside-toplevel
+        allocate_problems,
         create_benchmark_campaign,
-        load_benchmark_metadata,
+    )
+    from runner.utils.metadata import (  # pylint: disable=import-outside-toplevel
+        load_problem_metadata,
     )
 
-    return allocate_benchmarks, create_benchmark_campaign, load_benchmark_metadata
-
-
-def parse_instance(value: str) -> InstanceSelection:
-    """Parse '<benchmark>:<instance>' CLI values."""
-    if ":" not in value:
-        raise argparse.ArgumentTypeError(
-            f"Invalid instance {value!r}. Expected format '<benchmark>:<instance>'."
-        )
-
-    benchmark, instance = value.split(":", 1)
-    benchmark = benchmark.strip()
-    instance = instance.strip()
-
-    if not benchmark or not instance:
-        raise argparse.ArgumentTypeError(
-            f"Invalid instance {value!r}. Expected format '<benchmark>:<instance>'."
-        )
-
-    return InstanceSelection(benchmark=benchmark, instance=instance)
+    return allocate_problems, create_benchmark_campaign, load_problem_metadata
 
 
 def validate_selection_args(args: argparse.Namespace) -> None:
-    """Validate mutually exclusive benchmark selection modes."""
+    """Validate mutually exclusive problem selection modes.
+
+    Parameters
+    ----------
+    args : argparse.Namespace
+        Parsed command-line arguments; only `all` and `problem` are checked.
+
+    Raises
+    ------
+    ValueError
+        If neither or both of `--all`/`--problem` were given.
+    """
     selection_modes = sum(
         [
             bool(args.all),
-            bool(args.benchmark),
-            bool(args.instance),
+            bool(args.problem),
         ]
     )
 
     if selection_modes != 1:
-        raise ValueError("Select exactly one mode: --all, --benchmark, or --instance.")
-
-    if args.name and not args.benchmark:
-        raise ValueError("--name can only be used together with --benchmark.")
-
-    if args.size and not args.benchmark:
-        raise ValueError("--size can only be used together with --benchmark.")
+        raise ValueError("Select exactly one mode: --all or --problem.")
 
 
-def format_available_instances(df: pd.DataFrame, benchmark: str | None = None) -> str:
-    """Format available benchmark instances for error messages."""
-    available = df[["Benchmark", "Instance"]].drop_duplicates()
-    if benchmark is not None:
-        available = available.loc[available["Benchmark"] == benchmark]
+def format_available_problems(df: pd.DataFrame) -> str:
+    """Format available problem IDs for error messages.
 
-    if available.empty:
-        return "No available instances found."
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Problem metadata with a ``Problem`` column.
 
-    lines = []
-    for bench_name, group in available.groupby("Benchmark", sort=True):
-        instances = ", ".join(sorted(group["Instance"].astype(str)))
-        lines.append(f"  {bench_name}: {instances}")
-    return "\n".join(lines)
+    Returns
+    -------
+    str
+        One problem ID per line, or a "no problems found" message if `df`
+        is empty.
+    """
+    available = sorted(df["Problem"].unique())
+    if not available:
+        return "No available problems found."
+    return "\n".join(f"  {problem_id}" for problem_id in available)
 
 
-def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
-    """Select benchmark instances from the flattened metadata dataframe."""
+def select_problems(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
+    """Select problems from the metadata dataframe.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        All available problem metadata.
+    args : argparse.Namespace
+        Parsed command-line arguments: `all`, `problem`, `size`, and
+        `do_not_skip` drive the selection.
+
+    Returns
+    -------
+    pandas.DataFrame
+        The subset of `df` matching the requested selection.
+
+    Raises
+    ------
+    ValueError
+        If no problems match the requested selection, or if every matched
+        problem is marked "Skip because" and `--do-not-skip` wasn't given.
+    """
     validate_selection_args(args)
 
     selected = df.copy()
 
-    if args.all:
-        pass
-    elif args.benchmark:
-        selected = selected.loc[selected["Benchmark"].isin(args.benchmark)].copy()
+    if args.problem:
+        selected = selected.loc[selected["Problem"].isin(args.problem)].copy()
 
-        if args.size:
-            selected = selected.loc[selected["Size"].isin(args.size)].copy()
-
-        if args.name:
-            selected = selected.loc[
-                selected["Instance"].astype(str).isin(args.name)
-            ].copy()
-    elif args.instance:
-        requested = {(item.benchmark, item.instance) for item in args.instance}
-        selected = selected.loc[
-            selected.apply(
-                lambda row: (row["Benchmark"], row["Instance"]) in requested,
-                axis=1,
-            )
-        ].copy()
+    if args.size:
+        selected = selected.loc[selected["Size"].isin(args.size)].copy()
 
     if selected.empty:
-        msg = "No benchmark instances matched the requested selection."
-        if args.benchmark and len(args.benchmark) == 1:
-            msg += "\n\nAvailable instances for this benchmark:\n"
-            msg += format_available_instances(df, args.benchmark[0])
-        else:
-            msg += "\n\nAvailable benchmark instances:\n"
-            msg += format_available_instances(df)
+        msg = "No problems matched the requested selection."
+        msg += "\n\nAvailable problems:\n"
+        msg += format_available_problems(df)
         raise ValueError(msg)
 
     if not args.do_not_skip and "Skip because" in selected.columns:
@@ -194,7 +203,7 @@ def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFram
 
         if selected.empty and before_skip_filter > 0:
             raise ValueError(
-                "All selected benchmark instances are marked in the "
+                "All selected problems are marked in the "
                 "'Skip because' field. Re-run with --do-not-skip if this is intentional."
             )
 
@@ -203,7 +212,7 @@ def select_benchmarks(df: pd.DataFrame, args: argparse.Namespace) -> pd.DataFram
 
 def allocate_campaign_vms(
     selected: pd.DataFrame,
-    allocate_benchmarks,
+    allocate_problems: Callable[..., list[dict]],
     *,
     num_vms: int | None,
     weight_col: str,
@@ -214,23 +223,23 @@ def allocate_campaign_vms(
     solver: str | None,
 ) -> list[dict]:
     """
-    Allocate selected benchmark instances to VM campaign definitions.
+    Allocate selected problems to VM campaign definitions.
 
     Parameters
     ----------
     selected : pandas.DataFrame
-        Selected benchmark instances after applying all campaign filters.
-    allocate_benchmarks : callable
+        Selected problems after applying all campaign filters.
+    allocate_problems : callable
         Allocation function imported from ``runner.utils``.
     num_vms : int | None
         Number of VMs to allocate. If ``None``, one VM is created per
-        selected benchmark instance.
+        selected problem.
     weight_col : str
         Metadata column used for greedy workload balancing across VMs.
     machine_profile : str | None
         Machine profile override (``short`` or ``long``). If ``None``,
-        benchmark instances are split automatically according to their
-        metadata size class.
+        problems are split automatically according to their metadata size
+        class.
     zone : str
         GCP zone assigned to generated VM definitions.
     timeout_seconds : int | None
@@ -251,7 +260,7 @@ def allocate_campaign_vms(
     ------
     ValueError
         If the requested weight column does not exist, contains missing
-        values, or if benchmark instances contain unsupported size classes.
+        values, or if problems contain unsupported size classes.
     """
     if weight_col not in selected.columns:
         raise ValueError(
@@ -260,7 +269,7 @@ def allocate_campaign_vms(
         )
 
     if selected[weight_col].isna().any():
-        missing = selected.loc[selected[weight_col].isna(), ["Benchmark", "Instance"]]
+        missing = selected.loc[selected[weight_col].isna(), ["Problem"]]
         raise ValueError(
             f"Weight column {weight_col!r} contains missing values for:\n"
             f"{missing.to_string(index=False)}"
@@ -276,7 +285,7 @@ def allocate_campaign_vms(
         if vm_count < 1:
             raise ValueError("--num-vms must be at least 1.")
 
-        return allocate_benchmarks(
+        return allocate_problems(
             group,
             weight_col,
             vm_count,
@@ -313,8 +322,8 @@ def allocate_campaign_vms(
 
     if not other.empty:
         raise ValueError(
-            "Found benchmark instances with unknown Size values:\n"
-            f"{other[['Benchmark', 'Instance', 'Size']].to_string(index=False)}"
+            "Found problems with unknown Size values:\n"
+            f"{other[['Problem', 'Size']].to_string(index=False)}"
         )
 
     return vm_yamls
@@ -330,7 +339,27 @@ def print_campaign_summary(
     timeout_seconds: int | None,
     machine_profile: str | None,
 ) -> None:
-    """Print a concise summary and the next OpenTofu command."""
+    """Print a concise summary and the next OpenTofu command.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    vm_prefix : str
+        Prefix used to name generated VMs.
+    selected : pandas.DataFrame
+        Selected problems after applying all campaign filters.
+    vm_yamls : list[dict]
+        Generated VM configuration dictionaries, one per VM.
+    years : list[int]
+        Benchmark environment years to execute.
+    timeout_seconds : int | None
+        Solver timeout override in seconds. If ``None``, the automatic
+        size-based timeout policy is reported instead.
+    machine_profile : str | None
+        Machine profile override. If ``None``, the automatic size-based
+        machine policy is reported instead.
+    """
     campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
 
     by_size = selected["Size"].value_counts(dropna=False).sort_index()
@@ -351,20 +380,19 @@ def print_campaign_summary(
         print(
             f"Timeout override:    {timeout_seconds / 3600:.0f}h ({timeout_seconds} s)"
         )
-    print(f"Selected instances:  {len(selected)}")
+    print(f"Selected problems:   {len(selected)}")
     print(f"Generated VMs:       {len(vm_yamls)}")
     print(f"Output directory:    {campaign_dir.relative_to(REPO_ROOT)}")
 
-    print("\nInstances by benchmark:")
-    for bench_name, group in selected.groupby("Benchmark", sort=True):
-        instances = ", ".join(group["Instance"].astype(str))
-        print(f"  {bench_name}: {instances}")
+    print("\nSelected problems:")
+    for problem_id in sorted(selected["Problem"]):
+        print(f"  {problem_id}")
 
-    print("\nInstances by size class:")
+    print("\nProblems by size class:")
     for size_class, count in by_size.items():
         print(f"  {size_class}: {count}")
 
-    print("\nInstances by problem class:")
+    print("\nProblems by problem class:")
     for problem_class, count in by_problem_class.items():
         print(f"  {problem_class}: {count}")
 
@@ -398,7 +426,7 @@ def print_campaign_summary(
     print(
         "  4. Inspect the generated YAML files in "
         f"infrastructure/benchmarks/{run_id}/ "
-        "and verify that they contain the expected benchmarks."
+        "and verify that they contain the expected problems."
     )
 
 
@@ -455,50 +483,29 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         "--all",
         action="store_true",
         default=argparse.SUPPRESS,
-        help="Select all benchmark instances.",
+        help="Select all problems.",
     )
     selection.add_argument(
-        "--benchmark",
+        "--problem",
         nargs="+",
         default=argparse.SUPPRESS,
         help=(
-            "Select all instances of one or more benchmarks. "
-            "Can be combined with --size and --name filters."
+            "Select one or more problems by their exact metadata.yaml ID "
+            "(e.g. pypsa-eur-elec-op-2-1h). Can be combined with --size."
         ),
     )
     selection.add_argument(
         "--size",
         nargs="+",
         default=argparse.SUPPRESS,
-        help="Filter benchmark instances by metadata Size field, e.g. S M L.",
-    )
-    selection.add_argument(
-        "--name",
-        nargs="+",
-        default=argparse.SUPPRESS,
-        help=(
-            "Filter benchmark instances by metadata Name field. "
-            "This corresponds to the Instance column in the flattened metadata."
-        ),
-    )
-    selection.add_argument(
-        "--instance",
-        action="append",
-        default=argparse.SUPPRESS,
-        type=parse_instance,
-        help=(
-            "Select a specific benchmark instance as '<benchmark>:<instance>'. "
-            "Repeat this option for mixed selections."
-        ),
+        help="Filter problems by metadata Size field, e.g. S M L.",
     )
     selection.add_argument(
         "--do-not-skip",
         dest="do_not_skip",
         default=argparse.SUPPRESS,
         action="store_true",
-        help=(
-            "Include benchmark instances marked with 'Skip because:' in the metadata."
-        ),
+        help="Include problems marked with 'Skip because:' in the metadata.",
     )
 
     allocation = parser.add_argument_group("allocation")
@@ -508,7 +515,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         default=argparse.SUPPRESS,
         help=(
             "Number of VMs to allocate. "
-            "If omitted, one VM is created per selected benchmark instance."
+            "If omitted, one VM is created per selected problem."
         ),
     )
     allocation.add_argument(
@@ -524,7 +531,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
             "Override the automatic machine profile selection. "
             "Use 'short' for c4-standard-2 with 1h timeout, or "
             "'long' for c4-highmem-16 with 24h timeout. "
-            "If omitted, S/M instances use short and L instances use long."
+            "If omitted, S/M problems use short and L problems use long."
         ),
     )
     allocation.add_argument(
@@ -538,7 +545,7 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         default=argparse.SUPPRESS,
         help=(
             "Override solver timeout in hours for all generated VMs. "
-            "If omitted, S/M instances use 1h and L instances use 24h."
+            "If omitted, S/M problems use 1h and L problems use 24h."
         ),
     )
     allocation.add_argument(
@@ -549,10 +556,13 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         help="Solver environment years to benchmark (default: 2025).",
     )
     allocation.add_argument(
-        "--solver",
+        "--solver-configurations",
         nargs="+",
         default=argparse.SUPPRESS,
-        help=("Solvers to benchmark. Default: gurobi highs scip cbc glpk."),
+        help=(
+            "Solver configurations to benchmark. Default: gurobi-default "
+            "highs-default scip-default cbc-default glpk-default."
+        ),
     )
     parser.add_argument(
         "--force",
@@ -661,41 +671,40 @@ def flatten_config(config: dict) -> dict:
     -------
     dict
         Flat dictionary suitable for ``argparse.ArgumentParser.set_defaults``.
+
+    Raises
+    ------
+    ValueError
+        If the configuration contains a key this script doesn't know, e.g.
+        a selector left over from an older schema, which would otherwise be
+        silently ignored.
     """
-    flat = {}
-
-    if "target" in config:
-        flat["target"] = config["target"]
-
-    if "campaign" in config:
-        flat["campaign"] = config["campaign"]
-
-    selection = config.get("selection", {}) or {}
-    allocation = config.get("allocation", {}) or {}
-
-    for key in [
-        "all",
-        "benchmark",
-        "size",
-        "name",
-        "instance",
-        "do_not_skip",
-    ]:
-        if key in selection:
-            flat[key] = selection[key]
-
-    for key in [
+    top_level_keys = ["target", "campaign", "selection", "allocation"]
+    selection_keys = ["all", "problem", "size", "do_not_skip"]
+    allocation_keys = [
         "num_vms",
         "weight_col",
         "machine_type",
         "zone",
         "timeout_hours",
         "years",
-        "solver",
-    ]:
-        if key in allocation:
-            flat[key] = allocation[key]
+        "solver_configurations",
+    ]
 
+    selection = config.get("selection", {}) or {}
+    allocation = config.get("allocation", {}) or {}
+
+    unknown_keys = (
+        [key for key in config if key not in top_level_keys]
+        + [f"selection.{key}" for key in selection if key not in selection_keys]
+        + [f"allocation.{key}" for key in allocation if key not in allocation_keys]
+    )
+    if unknown_keys:
+        raise ValueError(f"Unknown campaign config key(s): {', '.join(unknown_keys)}")
+
+    flat = {key: config[key] for key in ["target", "campaign"] if key in config}
+    flat.update({key: selection[key] for key in selection_keys if key in selection})
+    flat.update({key: allocation[key] for key in allocation_keys if key in allocation})
     return flat
 
 
@@ -703,15 +712,28 @@ def merge_cli_with_defaults(
     cli_args: argparse.Namespace,
     defaults: dict,
 ) -> argparse.Namespace:
-    """Merge hardcoded defaults, config defaults, and explicit CLI arguments."""
+    """Merge hardcoded defaults, config defaults, and explicit CLI arguments.
+
+    Parameters
+    ----------
+    cli_args : argparse.Namespace
+        Arguments as parsed directly from the command line.
+    defaults : dict
+        Defaults loaded from ``--configfile``, if any.
+
+    Returns
+    -------
+    argparse.Namespace
+        `cli_args` merged over `defaults` merged over this function's own
+        hardcoded defaults, with the selection-mode fields (`all`/`problem`)
+        resolved so only one mode is set.
+    """
     hardcoded = {
         "target": "cloud",
         "campaign": None,
         "all": False,
-        "benchmark": None,
+        "problem": None,
         "size": None,
-        "name": None,
-        "instance": None,
         "do_not_skip": False,
         "num_vms": None,
         "weight_col": "Num. variables",
@@ -719,7 +741,13 @@ def merge_cli_with_defaults(
         "zone": "us-central1-a",
         "timeout_hours": None,
         "years": [2025],
-        "solver": ["gurobi", "highs", "scip", "cbc", "glpk"],
+        "solver_configurations": [
+            "gurobi-default",
+            "highs-default",
+            "scip-default",
+            "cbc-default",
+            "glpk-default",
+        ],
         "force": False,
         "vm_prefix": None,
         "skip_prepare": False,
@@ -733,14 +761,9 @@ def merge_cli_with_defaults(
 
     # Selection mode CLI arguments override selection mode from config.
     if "all" in cli_dict:
-        merged["benchmark"] = None
-        merged["instance"] = None
-    elif "benchmark" in cli_dict:
+        merged["problem"] = None
+    elif "problem" in cli_dict:
         merged["all"] = False
-        merged["instance"] = None
-    elif "instance" in cli_dict:
-        merged["all"] = False
-        merged["benchmark"] = None
 
     return argparse.Namespace(**merged)
 
@@ -759,10 +782,12 @@ def write_campaign_summary_csv(
 
     Parameters
     ----------
+    campaign_dir : pathlib.Path
+        Campaign output directory; the CSV is written here.
     run_id : str
         Campaign run identifier.
     selected : pandas.DataFrame
-        Selected benchmark instances after applying all filters.
+        Selected problems after applying all filters.
     args : argparse.Namespace
         Parsed command-line arguments after config file defaults and CLI
         overrides have been merged.
@@ -812,15 +837,14 @@ def write_campaign_summary_csv(
             "Created at": created_at,
             "Created by": created_by,
             "Config file": args.configfile,
-            "Benchmark": rows["Benchmark"],
-            "Instance": rows["Instance"],
+            "Problem": rows["Problem"],
             "Size": rows["Size"],
             "Problem class": rows["Problem class"],
             "Num. variables": rows.get("Num. variables"),
             "Num. constraints": rows.get("Num. constraints"),
             "Num. nonzeros": rows.get("Num. nonzeros"),
             "URL": rows.get("URL"),
-            "Solvers": " ".join(args.solver),
+            "Solvers": " ".join(args.solver_configurations),
             "Years": " ".join(map(str, args.years)),
             "Num VMs": (
                 args.num_vms
@@ -834,7 +858,7 @@ def write_campaign_summary_csv(
             "Machine type": rows["Size"].apply(effective_machine_type),
             "Zone": args.zone if args.target == "cloud" else "not applicable",
             "Timeout seconds": rows["Size"].apply(effective_timeout_seconds),
-            "Skipped instances included": args.do_not_skip,
+            "Skipped problems included": args.do_not_skip,
         }
     )
 
@@ -854,7 +878,7 @@ def create_local_benchmark_yaml(
     Parameters
     ----------
     selected : pandas.DataFrame
-        Selected benchmark instances.
+        Selected problems.
     years : list[int]
         Benchmark environment years.
     solvers : list[str]
@@ -865,30 +889,23 @@ def create_local_benchmark_yaml(
     Returns
     -------
     dict
-        YAML-compatible benchmark campaign data.
+        YAML-compatible benchmark campaign data, in the same flat "problems"
+        schema as `results/metadata.yaml` (see `runner.utils.metadata.
+        load_problems`).
     """
-    benchmarks = {}
-
-    for _, row in selected.iterrows():
-        benchmark = row["Benchmark"]
-        size_instance = {
-            "Name": row["Instance"],
+    problems = {
+        row["Problem"]: {
+            "Problem class": row["Problem class"],
             "Size": row["Size"],
             "URL": row["URL"],
         }
-
-        if benchmark not in benchmarks:
-            benchmarks[benchmark] = {
-                "Problem class": row["Problem class"],
-                "Sizes": [],
-            }
-
-        benchmarks[benchmark]["Sizes"].append(size_instance)
+        for _, row in selected.iterrows()
+    }
 
     data = {
         "years": years,
         "solvers": solvers,
-        "benchmarks": benchmarks,
+        "problems": problems,
     }
 
     if timeout_seconds is not None:
@@ -915,7 +932,7 @@ def create_local_campaign(
     run_id : str
         Campaign run identifier.
     selected : pandas.DataFrame
-        Selected benchmark instances.
+        Selected problems.
     args : argparse.Namespace
         Parsed command-line arguments.
     timeout_seconds : int | None
@@ -928,11 +945,10 @@ def create_local_campaign(
     """
     campaign_dir.mkdir(parents=True, exist_ok=True)
 
-    solver = " ".join(args.solver)
     local_yaml = create_local_benchmark_yaml(
         selected,
         years=args.years,
-        solvers=args.solver,
+        solvers=args.solver_configurations,
         timeout_seconds=timeout_seconds,
     )
 
@@ -940,16 +956,26 @@ def create_local_campaign(
     with local_yaml_path.open("w", encoding="utf-8") as f:
         yaml.dump(local_yaml, f, default_flow_style=False, sort_keys=False)
 
+    # runner.benchmark's --years/--solver-configurations are repeatable
+    # flags, not a single space-separated string, so each value gets its
+    # own flag occurrence.
     command_parts = [
-        "bash",
-        "runner/benchmark_all.sh",
-        "-y",
-        " ".join(map(str, args.years)),
-        "-s",
-        solver,
-        "-u",
-        run_id,
+        "pixi",
+        "run",
+        "-e",
+        "runner",
+        "python",
+        "-m",
+        "runner.benchmark",
         str(local_yaml_path.relative_to(REPO_ROOT)),
+        *[part for year in args.years for part in ("--years", str(year))],
+        *[
+            part
+            for solver in args.solver_configurations
+            for part in ("--solver-configurations", solver)
+        ],
+        "--run-id",
+        run_id,
     ]
 
     run_script = campaign_dir / "run_local.sh"
@@ -976,7 +1002,10 @@ def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
         If ``True``, skip confirmation and run immediately.
     """
     if not yes:
-        answer = input("\nProceed with local execution? [y/N] ").strip().lower()
+        try:
+            answer = input("\nProceed with local execution? [y/N] ").strip().lower()
+        except EOFError:  # no interactive stdin, e.g. in CI
+            answer = ""
         if answer != "y":
             print("\nLocal campaign generated, execution skipped.")
             return
@@ -985,6 +1014,7 @@ def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
 
 
 def main() -> None:
+    """Parse CLI arguments and create the requested benchmark campaign."""
     config_parser = argparse.ArgumentParser(add_help=False)
     config_parser.add_argument("--configfile")
     config_args, _ = config_parser.parse_known_args()
@@ -1002,9 +1032,6 @@ def main() -> None:
     if args.yes and args.target != "local":
         parser.error("--yes can only be used with --target local")
 
-    if args.instance and isinstance(args.instance[0], str):
-        args.instance = [parse_instance(value) for value in args.instance]
-
     campaign_slug = slugify_campaign_name(args.campaign)
     run_id = f"{date.today():%Y%m%d}-{campaign_slug}"
     vm_prefix = args.vm_prefix or f"benchmark-instance-{campaign_slug}"
@@ -1019,12 +1046,12 @@ def main() -> None:
     if not args.skip_prepare:
         prepare_metadata()
 
-    allocate_benchmarks, create_benchmark_campaign, load_benchmark_metadata = (
+    allocate_problems, create_benchmark_campaign, load_problem_metadata = (
         import_runner_utils()
     )
 
-    benchmarks_df = load_benchmark_metadata(str(METADATA_FILE))
-    selected = select_benchmarks(benchmarks_df, args)
+    problems_df = load_problem_metadata(str(METADATA_FILE))
+    selected = select_problems(problems_df, args)
 
     timeout_seconds = None
 
@@ -1043,14 +1070,14 @@ def main() -> None:
     if args.target == "cloud":
         vm_yamls = allocate_campaign_vms(
             selected,
-            allocate_benchmarks,
+            allocate_problems,
             num_vms=args.num_vms,
             weight_col=args.weight_col,
             machine_profile=args.machine_type,
             zone=args.zone,
             timeout_seconds=timeout_seconds,
             years=args.years,
-            solver=" ".join(args.solver),
+            solver=" ".join(args.solver_configurations),
         )
 
         # create_benchmark_campaign uses relative paths like ../infrastructure.

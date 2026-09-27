@@ -41,7 +41,7 @@ chmod a+x /usr/local/bin/yq
 
 # Set up Gurobi license
 mkdir -p /opt/gurobi
-gsutil cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
+gcloud storage cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
 # Clone the repository
 echo "Cloning repository..."
@@ -50,58 +50,10 @@ git clone --depth=1 -b main https://github.com/open-energy-transition/solver-ben
 # Install a global highs binary for reference runs
 echo "Installing reference Highs..."
 mkdir -p /opt/highs/bin
-gsutil cp gs://solver-benchmarks/HiGHSstatic.tar.gz ./
+gcloud storage cp gs://solver-benchmarks/HiGHSstatic.tar.gz ./
 tar -xzf HiGHSstatic.tar.gz -C /opt/highs/
 chmod +x /opt/highs/bin/highs
 /opt/highs/bin/highs --version
-
-# Install HiGHS-HiPO from `latest` branch by building from source
-echo "Installing HiGHS from latest branch from source..."
-
-# Set up working directory
-HIGHS_HIPO_DIR="/opt/highs-hipo-workspace"
-mkdir -p "${HIGHS_HIPO_DIR}"
-cd "${HIGHS_HIPO_DIR}"
-
-# 2. Clone METIS
-echo "Cloning METIS (patched version)..."
-git clone --depth=1 --branch 521-ts https://github.com/galabovaa/METIS.git
-
-# 3. Create installs directory
-echo "Creating installs directory..."
-mkdir -p installs
-
-# 4. Install METIS
-echo "Installing METIS..."
-pushd METIS
-cmake -S. -B build -DGKLIB_PATH="${HIGHS_HIPO_DIR}/METIS/GKlib" \
-  -DCMAKE_INSTALL_PREFIX="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
-cmake --install build
-popd
-
-# 7. Clone and build HiGHS with hipo support
-echo "Cloning HiGHS repository..."
-git clone --depth=1 https://github.com/ERGO-Code/HiGHS.git
-cd HiGHS
-
-# Checkout the latest branch as of Nov 26, 2025
-echo "Checking out branch latest..."
-HIPO_COMMIT_SHA="9e8322ac32c3e95cff3c9dfd1abd9b4a32ed925c"
-git fetch --depth=1 origin "${HIPO_COMMIT_SHA}"
-git checkout "${HIPO_COMMIT_SHA}"
-
-# 8. Configure HiGHS with HIPO enabled and dependency paths
-echo "Configuring HiGHS with HIPO support..."
-cmake -S. -B build \
-      -DHIPO=ON \
-      -DMETIS_ROOT="${HIGHS_HIPO_DIR}/installs"
-cmake --build build
-
-# Verify the installation
-echo "Verifying HiGHS HiPO installation..."
-"${HIGHS_HIPO_DIR}/HiGHS/build/bin/highs" --version
-echo "HiGHS HiPO installation completed"
 
 # Go back to root directory
 cd /
@@ -110,36 +62,26 @@ cd /
 curl -L "https://storage.googleapis.com/solver-benchmarks/instances/benchmark-test-model.lp.gz" -o benchmark-test-model.lp.gz
 gunzip benchmark-test-model.lp.gz
 
-# Install Miniconda
-echo "Installing Miniconda..."
-mkdir -p ~/miniconda3
-wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-rm ~/miniconda3/miniconda.sh
-
-# Setup conda environment
-echo "Setting up conda environment..."
-echo "source ~/miniconda3/bin/activate" >> ~/.bashrc
-~/miniconda3/bin/conda init bash
+# Install pixi, which manages both the runner CLI's own dependencies
+# (pyyaml, psutil, requests, pandas, typer, ...) and every per-solver-year
+# env runner/benchmark.py installs at runtime (each its own pixi manifest
+# under runner/envs/).
+echo "Installing pixi..."
+curl -fsSL https://pixi.sh/install.sh | bash
+export PATH="$HOME/.pixi/bin:$PATH"
 echo "Elapsed: $(($(date +%s)-start_time))s"
-
-# Accept Anaconda Terms of Service to avoid interactive prompts
-echo "Accepting Anaconda Terms of Service..."
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-# Accept Anaconda Terms of Service to avoid interactive prompts
-echo "Accepting Anaconda Terms of Service..."
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-~/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 # Get benchmark years from instance metadata
 BENCHMARK_YEARS_JSON=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_years")
 echo "Retrieved benchmark years: ${BENCHMARK_YEARS_JSON}"
 
-# Parse the JSON array into a space-separated string for benchmark_all.sh
-BENCHMARK_YEARS_STR=$(echo "${BENCHMARK_YEARS_JSON}" | jq -r 'join(" ")')
-echo "Parsed benchmark years: ${BENCHMARK_YEARS_STR}"
+# Turn the JSON array into repeated --years flags for runner.benchmark
+# (its --years option is repeatable, not a single space-separated string).
+YEARS_ARGS=()
+while IFS= read -r year; do
+    YEARS_ARGS+=(--years "${year}")
+done < <(echo "${BENCHMARK_YEARS_JSON}" | jq -r '.[]')
+echo "Parsed benchmark years: ${YEARS_ARGS[*]}"
 
 # Get benchmark filename from instance metadata
 BENCHMARK_FILE=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/benchmark_file")
@@ -155,34 +97,34 @@ BENCHMARK_CONTENT=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.in
 # Write the benchmark file - preserve the exact content
 echo "${BENCHMARK_CONTENT}" > /solver-benchmark/benchmarks/${BENCHMARK_FILE}
 
-# Make benchmark_all.sh executable
 cd /solver-benchmark/
-chmod +x ./runner/benchmark_all.sh
 
-# Extract solver from benchmark YAML content if present
-# This enables per-VM solver selection for multi-phase orchestration
-# Extract solver from benchmark YAML content if present using yq
-# This enables per-VM solver selection for multi-phase orchestration
-# Use yq to extract the 'solver' field from the benchmark YAML content.
+# Extract solver_configuration from the benchmark YAML (if present) using yq,
+# to enable per-VM solver selection for multi-phase orchestration.
 # We assume yq is available on the system.
-SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver // ""' - 2>/dev/null)
+SOLVER_FROM_YAML=$(printf "%s" "${BENCHMARK_CONTENT}" | yq eval '.solver_configuration // ""' - 2>/dev/null)
 # Normalize: strip surrounding quotes and CR, then trim whitespace
 SOLVER_FROM_YAML=$(printf "%s" "${SOLVER_FROM_YAML}" | sed -e 's/^"//' -e 's/"$//' | tr -d '\r' | xargs || true)
 
+# Turn a possibly space-separated solver list into repeated --solver-configurations flags
+SOLVER_ARGS=()
 if [ -n "${SOLVER_FROM_YAML}" ]; then
     echo "Using solver from benchmark YAML: ${SOLVER_FROM_YAML}"
+    for solver in ${SOLVER_FROM_YAML}; do
+        SOLVER_ARGS+=(--solver-configurations "${solver}")
+    done
 else
-    echo "No solver field in benchmark YAML, using default solver list for year"
+    echo "No solver_configuration field in benchmark YAML, using default solver list for year"
 fi
 
-# Run the benchmark_all.sh script with our years and the run_id
-echo "Starting benchmarks for years: ${BENCHMARK_YEARS_STR} with run_id: ${RUN_ID}"
-source ~/miniconda3/bin/activate
-if [ -n "${SOLVER_FROM_YAML}" ]; then
-    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" -s "${SOLVER_FROM_YAML}" ./benchmarks/"${BENCHMARK_FILE}"
-else
-    ./runner/benchmark_all.sh -y "${BENCHMARK_YEARS_STR}" -r "${REFERENCE_BENCHMARK_INTERVAL}" -u "${RUN_ID}" ./benchmarks/"${BENCHMARK_FILE}"
-fi
+# Run runner.benchmark with our years and the run_id
+echo "Starting benchmarks for years: ${YEARS_ARGS[*]} with run_id: ${RUN_ID}"
+pixi run --locked -e runner python -m runner.benchmark \
+    "${YEARS_ARGS[@]}" \
+    -r "${REFERENCE_BENCHMARK_INTERVAL}" \
+    -u "${RUN_ID}" \
+    "${SOLVER_ARGS[@]}" \
+    ./benchmarks/"${BENCHMARK_FILE}"
 BENCHMARK_EXIT_CODE=$?
 
 if [ $BENCHMARK_EXIT_CODE -ne 0 ]; then
@@ -220,8 +162,8 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
     # Get the instance name for file names
     INSTANCE_NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")
 
-    # Ensure gsutil is available (should be on GCP instances by default)
-    if ! command -v gsutil &> /dev/null; then
+    # Ensure gcloud is available (should be on GCP instances by default)
+    if ! command -v gcloud &> /dev/null; then
         echo "Installing Google Cloud SDK..."
         apt-get install -y apt-transport-https ca-certificates gnupg curl
         echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -239,7 +181,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         # Upload the results file to GCS bucket
         echo "Uploading results CSV to GCS bucket..."
         RESULTS_FILENAME="${INSTANCE_NAME}-result.csv"
-        gsutil cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
+        gcloud storage cp "${RESULTS_COPY}" "gs://${GCS_BUCKET_NAME}/results/${RUN_ID}/${RESULTS_FILENAME}"
 
         if [ $? -eq 0 ]; then
             echo "Results CSV upload successfully completed at $(date)"
@@ -247,6 +189,19 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         else
             echo "Results CSV upload failed at $(date)"
             echo "Check VM service account permissions for the GCS bucket"
+        fi
+
+        # Multi-seed runs also write per-seed rows to a separate file. Upload
+        # it under its own prefix, so tools reading every CSV in results/
+        # don't mix per-seed rows into the main results.
+        SEEDS_CSV=/solver-benchmark/results/benchmark_results_seeds.csv
+        if [ -f "${SEEDS_CSV}" ]; then
+            SEEDS_FILENAME="${INSTANCE_NAME}-result-seeds.csv"
+            if gcloud storage cp "${SEEDS_CSV}" "gs://${GCS_BUCKET_NAME}/results_seeds/${RUN_ID}/${SEEDS_FILENAME}"; then
+                echo "Per-seed results CSV upload successfully completed at $(date)"
+            else
+                echo "Per-seed results CSV upload failed at $(date)"
+            fi
         fi
     else
         echo "Skipping results CSV upload because benchmark failed with exit code $BENCHMARK_EXIT_CODE"
@@ -266,9 +221,9 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         # Check if file contains "gurobi" in the name
         if [[ "${filename}" == *"gurobi"* ]]; then
             echo "File contains 'gurobi' in name, storing in restricted folder..."
-            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
+            gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
         else
-            gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
+            gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
         fi
 
         if [ $? -eq 0 ]; then
@@ -289,7 +244,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
 
         echo "Uploading ${compressed_file} to GCS bucket..."
 
-        gsutil cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}/${filename}.gz"
+        gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}/${filename}.gz"
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded ${filename}.gz"
@@ -309,7 +264,7 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         gzip -c "${STARTUP_LOG_FILE}" > "${COMPRESSED_STARTUP_LOG}"
 
         echo "Uploading ${COMPRESSED_STARTUP_LOG} to GCS bucket..."
-        gsutil cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${STARTUP_LOG_FILENAME}"
+        gcloud storage cp "${COMPRESSED_STARTUP_LOG}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${STARTUP_LOG_FILENAME}"
 
         if [ $? -eq 0 ]; then
             echo "Successfully uploaded startup script log as ${STARTUP_LOG_FILENAME}"

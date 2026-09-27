@@ -33,6 +33,7 @@ const Footer = ({
                   height={57}
                   src="/logo/oet.png"
                   alt="oet-logo"
+                  className="w-[127px] h-[57px]"
                   loading="lazy"
                 />
               </Link>
@@ -54,11 +55,11 @@ const Footer = ({
                   aria-label="Navigate to Breakthrough Energy website"
                 >
                   <Image
-                    className="mt-4 p-1 bg-white rounded-xl"
+                    className="mt-4 p-1 bg-white rounded-xl w-[222px] h-[30px]"
                     src={`/landing_page/BE_logo_${theme}.png`}
                     alt="be-logo"
-                    width={215}
-                    height={29}
+                    width={222}
+                    height={30}
                     loading="lazy"
                   />
                 </Link>

@@ -14,43 +14,35 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PY_VERSION: "3.12"
       NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
       NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
       NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
       NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0  # Fetch all history for all branches
 
-      - uses: actions/setup-python@v5
+      - uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          python-version: ${{ env.PY_VERSION }}
-
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip pre-commit
-          pip install -r pocs/streamlit/requirements.txt
-          # For validation scripts (TODO collect these in a requirements.txt file?)
-          pip install ruamel.yaml yamale
+          environments: dev benchmarks runner
 
       - name: Check code formatting
         run: |
-          pre-commit install
-          pre-commit run --from-ref origin/main --to-ref HEAD
+          pixi run -e dev pre-commit install
+          pixi run -e dev pre-commit run --from-ref origin/main --to-ref HEAD
 
       - name: Check benchmark metadata and results
         run: |
-          python tests/validate_urls.py
+          pixi run -e benchmarks python tests/validate_urls.py
           if git diff --quiet; then
             echo "git diff is empty, benchmark URLs conform to expected format"
           else
             git diff
-            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npython tests/validate_urls.py"
+            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npixi run -e benchmarks python tests/validate_urls.py"
             exit 1
           fi
-          python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
+          pixi run -e benchmarks python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
           PY_EXIT=${PIPESTATUS[0]}
 
           if [ $PY_EXIT -ne 0 ]; then
@@ -68,27 +60,33 @@ jobs:
           else
               git diff
               echo "ERROR: git diff non empty, metadata needs updating, please run the following command:"
-              echo "python benchmarks/merge_metadata.py"
+              echo "pixi run -e benchmarks python benchmarks/merge_metadata.py"
               exit 1
           fi
-          python tests/validate_urls_exist.py results/metadata.yaml
-          python tests/validate_results.py
+          pixi run -e benchmarks python tests/validate_urls_exist.py results/metadata.yaml
+          pixi run -e benchmarks python tests/validate_results.py
 
       - name: Validate metadata schema
-        run: yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
+        run: pixi run -e dev yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
 
-      - name: Run Streamlit App Action
-        uses: streamlit/streamlit-app-action@v0.0.3
-        with:
-            app-path: pocs/streamlit/app.py
+      - name: Run runner unit tests
+        run: pixi run -e runner pytest runner/tests -v
+
+      - name: Check campaign generator
+        # Runs in the benchmarks env with the shipped config, so
+        # incompatible syntax or a stale config schema fails here.
+        run: |
+          pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+            --configfile benchmarks/config.campaign.default.yaml \
+            --campaign ci-check --skip-prepare < /dev/null
 
       - name: Set FORK_PR environment variable
         if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
         run: echo "FORK_PR=true" >> $GITHUB_ENV
 
-      - name: Check Next.js build
+      - name: Check Next.js lint and build
         run: |
-          echo "Checking Next.js build..."
+          echo "Checking Next.js lint and build..."
           if [ -d "website" ] && [ -f "website/package.json" ]; then
             cd website
 
@@ -103,28 +101,42 @@ jobs:
             else
               echo "Skipping reCAPTCHA key check for PRs from forks or Dependabot."
             fi
-            npm install
+            npm ci
+            # The build doesn't lint, so run ESLint explicitly
+            npm run lint
             npm run build
             cd ..
           else
             echo "Next.js project not found at website/package.json. Skipping build check."
           fi
 
-      - name: Setup Conda for benchmark runner
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          python-version: ${{ env.PY_VERSION }}
-          # TODO cache conda pkgs dir
-
       - name: Run sample benchmarks
         shell: bash -el {0}
         run: |
-          ./runner/benchmark_all.sh -y "tests" results/metadata_subset.yaml
+          SOLVER_CONFIGURATIONS="cbc-default glpk-default highs-default scip-default"
+          SOLVER_ARGS=()
+          for configuration in ${SOLVER_CONFIGURATIONS}; do
+            SOLVER_ARGS+=(--solver-configurations "${configuration}")
+          done
+          pixi run -e runner python -m runner.benchmark --years tests \
+            "${SOLVER_ARGS[@]}" results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
-          if awk -F',' 'NR>1 && $3 != "glpk" {if ($6 != "ok") exit 1}' results/benchmark_results.csv; then
-            echo "All non-GLPK benchmarks ran successfully."
+          # Require at least one row, every row "ok" (column 5 is Status),
+          # and at least one row for each requested solver configuration.
+          if awk -F',' -v expected="${SOLVER_CONFIGURATIONS}" '
+            NR > 1 { rows++; seen[$2] = 1; if ($5 != "ok") failed = 1 }
+            END {
+              n = split(expected, configurations, " ")
+              for (i = 1; i <= n; i++) {
+                if (!(configurations[i] in seen)) {
+                  print "No results for " configurations[i]
+                  missing = 1
+                }
+              }
+              exit(rows == 0 || failed || missing)
+            }' results/benchmark_results.csv; then
+            echo "All benchmarks ran successfully."
           else
             echo "Some benchmarks did not complete successfully."
             exit 1
@@ -134,17 +146,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install dependencies
         run: |
           cd website
-          npm install
+          npm ci
 
       - name: Build Next.js
         run: |
@@ -234,7 +246,7 @@ jobs:
 
       - name: Upload accessibility report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: accessibility-report
           path: website/axe-results.json

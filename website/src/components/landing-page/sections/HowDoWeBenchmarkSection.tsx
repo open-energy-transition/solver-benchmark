@@ -12,7 +12,7 @@ const HowDoWeBenchmarkSection = () => {
     <div
       ref={sectionRef}
       id="methodology"
-      className="text-white bg-navy py-5 scroll-mt-[6rem]"
+      className="text-white bg-navy scroll-mt-[6rem]"
     >
       <div
         className="
@@ -21,7 +21,7 @@ const HowDoWeBenchmarkSection = () => {
           max-w-8xl
           px-4
           md:px-12
-          pt-[67px]
+          pt-16
           pb-16
           justify-between
         "
@@ -43,12 +43,12 @@ const HowDoWeBenchmarkSection = () => {
         </div>
         <div className="w-full xl:w-[67.42%]">
           <div className="text-medium-normal max-w-4xl mb-2.5 xl:pl-4.5 mt-10">
-            We run the benchmarks on cloud virtual machines (VMs) for efficiency
+            We run the benchmark on cloud virtual machines (VMs) for efficiency
             and cost reasons, and have validated that the measured runtimes have
             acceptable error margins. We use a custom built benchmarking
-            infrastructure based on Python and OpenTofu, that is open,
-            transparent, and fully reproducible -- meaning you can also use it
-            to run your own benchmarks!
+            infrastructure based on Python and OpenTofu that is open,
+            transparent, and fully reproducible, meaning you can also use it to
+            run your own benchmark!
           </div>
           <div className="mt-6 xl:ml-4 text-medium-normal">
             Read more about our methodology, caveats, and known issues here:
