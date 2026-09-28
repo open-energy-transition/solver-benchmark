@@ -304,6 +304,8 @@ jobs:
         env:
           AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
           AXE_LOAD_DELAY: "5000"
+          # Google's reCAPTCHA widget is third-party content we can't fix.
+          AXE_EXCLUDE: "iframe[title=reCAPTCHA]"
         run: |
           export CHROME_BIN="$CHROME_BIN_PATH"
           echo "Using CHROME_BIN=$CHROME_BIN"
