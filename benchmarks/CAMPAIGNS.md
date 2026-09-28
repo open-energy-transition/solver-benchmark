@@ -233,6 +233,16 @@ pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
 
 ## Launching a cloud campaign
 
+The VMs clone the repository from GitHub at the branch or tag in `run.tfvars`'s `git_ref`, which is the branch checked out when the campaign was generated (or `main` if HEAD was detached). Push that branch before launching.
+
+After generating a cloud campaign, the script checks it and exits with an error if it would fail: VM names that GCE rejects, VM YAML files missing problems, problem fields or years, unknown solver configurations, or a `git_ref` that isn't on GitHub. It warns if the local checkout differs from what the VMs will run: uncommitted or untracked changes, a different branch, or unpushed commits.
+
+Run the same check again before launching, e.g. after editing the generated files:
+
+```bash
+pixi run -e runner python -m runner.utils.campaign infrastructure/benchmarks/<run-id>
+```
+
 After reviewing the generated files, launch the campaign from the infrastructure directory:
 
 ```bash

@@ -120,6 +120,37 @@ def _combine_seed_metrics(last_seed_metrics: dict[str, Any]) -> dict[str, Any]:
     return combined
 
 
+def _run_reference_benchmark(
+    results_csv: Path,
+    run_id: str,
+    reference_solver_version: str,
+    environment_metadata: dict[str, str],
+) -> None:
+    """Run the reference benchmark and append its row to `results_csv`.
+
+    See `execution.run_reference_highs_binary`.
+    """
+    print("Running reference benchmark with HiGHS binary...", flush=True)
+    reference_metrics = run_reference_highs_binary()
+
+    # Add required fields to reference metrics
+    reference_metrics["solver"] = "highs-binary"
+    reference_metrics["solver_version"] = reference_solver_version
+    reference_metrics["solver_release_year"] = "N/A"
+    reference_metrics["reported_runtime"] = None
+    reference_metrics["timeout"] = None
+
+    reference_timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+    write_csv_row(
+        results_csv,
+        "reference-benchmark",
+        reference_metrics,
+        run_id,
+        reference_timestamp,
+        **environment_metadata,
+    )
+
+
 def run_benchmark(
     problems_yaml_path: str | Path,
     solver_configurations: list[str],
@@ -162,7 +193,8 @@ def run_benchmark(
     reference_interval : int, optional
         Minimum seconds between reference-benchmark runs (see
         `execution.run_reference_highs_binary`), interleaved between real
-        problems to gauge cross-VM hardware speed variability. 0 disables it.
+        problems to gauge cross-VM hardware speed variability. It also runs
+        before the first solve and after the last one. 0 disables it.
     append : bool, optional
         If True and the result CSVs already exist, append to them instead
         of overwriting.
@@ -190,8 +222,10 @@ def run_benchmark(
 
     size_categories = None  # TODO add this to CLI args
 
-    # Track the last time we ran the reference benchmark
+    # Track the last time we ran the reference benchmark, and whether any
+    # problem was solved since
     last_reference_run = 0.0
+    solved_since_reference = False
 
     results_folder = _REPO_ROOT / "results"
     os.makedirs(results_folder, exist_ok=True)
@@ -255,6 +289,25 @@ def run_benchmark(
                 continue
             solver_version = version_info["version"]
             env_name = version_info["env"]
+
+            # Run the reference benchmark before the first solve, then at
+            # most once per interval
+            if reference_interval > 0:
+                time_since_last_run = time.time() - last_reference_run
+                if time_since_last_run >= reference_interval:
+                    last_reference_run = time.time()
+                    _run_reference_benchmark(
+                        results_csv,
+                        run_id,
+                        reference_solver_version,
+                        environment_metadata,
+                    )
+                    solved_since_reference = False
+                else:
+                    print(
+                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)",
+                        flush=True,
+                    )
 
             metrics: dict[str, Any] = {}
             runtimes = []
@@ -354,46 +407,13 @@ def run_benchmark(
                 (problem["problem_id"], solver_configuration, solver_version)
             ] = metrics
 
-            # Check if we should run the reference benchmark based on the interval
-            if reference_interval > 0:
-                current_time = time.time()
-                time_since_last_run = current_time - last_reference_run
+            solved_since_reference = True
 
-                if last_reference_run == 0 or time_since_last_run >= int(
-                    reference_interval
-                ):
-                    print(
-                        f"Running reference benchmark with HiGHS binary (interval: {reference_interval}s)...",
-                        flush=True,
-                    )
-                    reference_metrics = run_reference_highs_binary()
-
-                    # Add required fields to reference metrics
-                    reference_metrics["solver"] = "highs-binary"
-                    reference_metrics["solver_version"] = reference_solver_version
-                    reference_metrics["solver_release_year"] = "N/A"
-                    reference_metrics["reported_runtime"] = None
-                    reference_metrics["timeout"] = None
-
-                    # Record reference benchmark results
-                    reference_timestamp = datetime.datetime.now().strftime(
-                        "%Y-%m-%d %H:%M:%S.%f"
-                    )
-                    write_csv_row(
-                        results_csv,
-                        "reference-benchmark",
-                        reference_metrics,
-                        run_id,
-                        reference_timestamp,
-                        **environment_metadata,
-                    )
-
-                    # Update the last reference run time
-                    last_reference_run = current_time
-                else:
-                    print(
-                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)",
-                        flush=True,
-                    )
+    # Run the reference benchmark once more after the last solve, so the
+    # hardware speed is also measured at the end of the run
+    if reference_interval > 0 and solved_since_reference:
+        _run_reference_benchmark(
+            results_csv, run_id, reference_solver_version, environment_metadata
+        )
 
     return run_results

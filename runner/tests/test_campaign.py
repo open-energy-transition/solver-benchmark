@@ -1,11 +1,19 @@
 """Tests for runner/utils/campaign.py: allocating problems across VMs for a
-benchmark campaign.
+benchmark campaign, and checking a campaign before launch.
 """
 
+import subprocess
+
 import pandas as pd
+import pytest
 import yaml
 
-from runner.utils.campaign import allocate_problems, allocate_vms_greedy
+from runner.utils import campaign
+from runner.utils.campaign import (
+    allocate_problems,
+    allocate_vms_greedy,
+    validate_campaign,
+)
 from runner.utils.metadata import load_problems
 
 
@@ -134,3 +142,139 @@ class TestAllocateProblems:
         download_mock.assert_called_once_with(
             "http://example.com/problem-a.lp", tmp_path / "downloads" / "problem-a.lp"
         )
+
+
+_VALID_VM_YAML = {
+    "machine-type": "c4-standard-2",
+    "years": [2025],
+    "solver_configuration": "highs-default",
+    "problems": {
+        "problem-a": {
+            "Problem class": "LP",
+            "Size": "S",
+            "URL": "http://example.com/problem-a.lp",
+        }
+    },
+}
+
+
+class TestValidateCampaign:
+    @pytest.fixture
+    def bench_dir(self, tmp_path, mocker):
+        # The git checks are tested separately
+        mocker.patch.object(campaign, "_check_git_state", return_value=([], []))
+        (tmp_path / "run.tfvars").write_text(
+            'run_id = "test-run"\ngit_ref = "main"  # a comment\n'
+        )
+        return tmp_path
+
+    def _write_vm(self, bench_dir, name, data):
+        with open(bench_dir / f"{name}.yaml", "w") as f:
+            yaml.dump(data, f)
+
+    def test_valid_campaign_passes(self, bench_dir):
+        self._write_vm(bench_dir, "test-00", _VALID_VM_YAML)
+        assert validate_campaign(bench_dir) == ([], [])
+
+    def test_missing_tfvars(self, tmp_path):
+        errors, _ = validate_campaign(tmp_path)
+        assert "run.tfvars not found" in errors[0]
+
+    def test_no_vm_files(self, bench_dir):
+        errors, _ = validate_campaign(bench_dir)
+        assert "no VM YAML files" in errors[0]
+
+    @pytest.mark.parametrize("name", ["Test_00", "test-00-", "x" * 50])
+    def test_invalid_vm_name(self, bench_dir, name):
+        # main.tf names the VM "benchmark-instance-<file stem>"
+        self._write_vm(bench_dir, name, _VALID_VM_YAML)
+        errors, _ = validate_campaign(bench_dir)
+        assert len(errors) == 1
+        assert "not a valid GCE name" in errors[0]
+
+    def test_instance_name_from_tfvars(self, bench_dir):
+        with open(bench_dir / "run.tfvars", "a") as f:
+            f.write('instance_name = "Bad_Prefix"\n')
+        self._write_vm(bench_dir, "test-00", _VALID_VM_YAML)
+        errors, _ = validate_campaign(bench_dir)
+        assert "'Bad_Prefix-test-00'" in errors[0]
+
+    def test_missing_problem_fields(self, bench_dir):
+        data = dict(_VALID_VM_YAML, problems={"problem-a": {"Size": "S"}})
+        self._write_vm(bench_dir, "test-00", data)
+        errors, _ = validate_campaign(bench_dir)
+        assert errors == [
+            "test-00.yaml: problem 'problem-a' is missing Problem class, URL"
+        ]
+
+    def test_no_problems(self, bench_dir):
+        self._write_vm(bench_dir, "test-00", dict(_VALID_VM_YAML, problems={}))
+        errors, _ = validate_campaign(bench_dir)
+        assert errors == ["test-00.yaml: no problems listed under 'problems'"]
+
+    def test_unknown_year_and_configuration(self, bench_dir):
+        data = dict(
+            _VALID_VM_YAML,
+            years=[2025, 1999],
+            solver_configuration="highs-default not-a-solver",
+        )
+        self._write_vm(bench_dir, "test-00", data)
+        errors, _ = validate_campaign(bench_dir)
+        assert errors == [
+            "test-00.yaml: no solver versions registered for year(s) 1999",
+            "test-00.yaml: unknown solver configuration(s) not-a-solver",
+        ]
+
+
+class TestCheckGitState:
+    def _fake_git(self, mocker, *, status="", branch="main", head="abc", remote=None):
+        """Patch subprocess.run to answer the git commands _check_git_state runs."""
+        if remote is None:
+            remote = (0, f"{head}\trefs/heads/main\n")
+
+        def run(command, **kwargs):
+            subcommand = command[1]
+            if subcommand == "status":
+                return subprocess.CompletedProcess(command, 0, status, "")
+            if subcommand == "rev-parse" and "--abbrev-ref" in command:
+                return subprocess.CompletedProcess(command, 0, branch + "\n", "")
+            if subcommand == "rev-parse":
+                return subprocess.CompletedProcess(command, 0, head + "\n", "")
+            if subcommand == "ls-remote":
+                return subprocess.CompletedProcess(command, remote[0], remote[1], "")
+            raise AssertionError(f"unexpected command {command}")
+
+        mocker.patch.object(campaign.subprocess, "run", side_effect=run)
+
+    def test_clean_checkout_of_pushed_ref(self, tmp_path, mocker):
+        self._fake_git(mocker)
+        assert campaign._check_git_state("main", tmp_path) == ([], [])
+
+    def test_uncommitted_changes_warn(self, tmp_path, mocker):
+        self._fake_git(mocker, status=" M runner/benchmark.py\n?? new.py\n")
+        errors, warnings = campaign._check_git_state("main", tmp_path)
+        assert errors == []
+        assert "2 uncommitted or untracked change(s)" in warnings[0]
+
+    def test_other_branch_checked_out_warns(self, tmp_path, mocker):
+        self._fake_git(mocker, branch="feature")
+        errors, warnings = campaign._check_git_state("main", tmp_path)
+        assert errors == []
+        assert "'feature' is checked out" in warnings[0]
+
+    def test_unpushed_commits_warn(self, tmp_path, mocker):
+        self._fake_git(mocker, head="local", remote=(0, "remote\trefs/heads/main\n"))
+        errors, warnings = campaign._check_git_state("main", tmp_path)
+        assert errors == []
+        assert "differs from GitHub" in warnings[0]
+
+    def test_ref_missing_on_github_is_an_error(self, tmp_path, mocker):
+        self._fake_git(mocker, remote=(2, ""))
+        errors, _ = campaign._check_git_state("main", tmp_path)
+        assert "not a branch or tag on GitHub" in errors[0]
+
+    def test_unreachable_github_warns(self, tmp_path, mocker):
+        self._fake_git(mocker, remote=(128, ""))
+        errors, warnings = campaign._check_git_state("main", tmp_path)
+        assert errors == []
+        assert "could not check 'main' on GitHub" in warnings[0]
