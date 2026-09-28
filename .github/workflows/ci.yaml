@@ -20,7 +20,7 @@ on:
   # Catches drift that no change triggers, e.g. a benchmark URL that stops
   # resolving.
   schedule:
-    - cron: "0 6 * * 1" # Mondays at 06:00 UTC
+    - cron: "0 12 * * 5" # Fridays at 12:00 UTC, same as CodeQL
   workflow_dispatch:
 
 # A new push to a PR cancels its run in progress.
