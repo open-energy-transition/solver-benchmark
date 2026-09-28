@@ -241,54 +241,16 @@ jobs:
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
         run: npm run build
 
-      - name: Install Google Chrome
-        # Pins the major version, falling back to the latest stable release.
+      - name: Install Chrome and a matching ChromeDriver
+        # Chrome for Testing with the ChromeDriver of the same version. Exports
+        # both paths for the accessibility tests.
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gnupg ca-certificates
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          CHROME_MAJOR=145
-          if sudo apt-get install -y "google-chrome-stable=${CHROME_MAJOR}*"; then
-            echo "Installed Google Chrome ${CHROME_MAJOR}."
-          else
-            echo "Google Chrome ${CHROME_MAJOR} isn't available; installing the latest stable release."
-            sudo apt-get install -y google-chrome-stable
-          fi
-          google-chrome --version || which google-chrome-stable || true
-
-      - name: Install a matching ChromeDriver
-        # Tries Chrome's exact version, then its major version, then the latest
-        # release. Exports both binaries' paths for the accessibility tests.
-        run: |
-          npm install --no-save browser-driver-manager
-          CHROME_VER=$(google-chrome --version 2>/dev/null | awk '{print $3}' || true)
-          echo "Detected Chrome version: $CHROME_VER"
-          if [ -n "$CHROME_VER" ]; then
-            if npx browser-driver-manager install chromedriver --chromedriver-version="$CHROME_VER"; then
-              echo "Installed ChromeDriver $CHROME_VER."
-            else
-              CHROME_MAJOR=$(echo "$CHROME_VER" | cut -d'.' -f1)
-              echo "Falling back to ChromeDriver for major version $CHROME_MAJOR."
-              npx browser-driver-manager install chromedriver --chromedriver-version="$CHROME_MAJOR" || true
-            fi
-          else
-            echo "Couldn't detect the Chrome version; installing the latest ChromeDriver."
-            npx browser-driver-manager install chromedriver || true
-          fi
-          CHROMEDRIVER_PATH=$(npx browser-driver-manager path chromedriver 2>/dev/null || which chromedriver 2>/dev/null || echo "")
-          echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH" >> $GITHUB_ENV
-          echo "ChromeDriver: $CHROMEDRIVER_PATH"
-          CHROME_BIN_PATH=$(which google-chrome-stable || which google-chrome || echo "")
-          echo "CHROME_BIN_PATH=$CHROME_BIN_PATH" >> $GITHUB_ENV
-          echo "Chrome: $CHROME_BIN_PATH"
-          if [ -n "$CHROME_BIN_PATH" ]; then
-            $CHROME_BIN_PATH --version || true
-          fi
-          if [ -n "$CHROMEDRIVER_PATH" ]; then
-            $CHROMEDRIVER_PATH --version || true
-          fi
+          npx --yes browser-driver-manager@2.0.1 install chrome
+          source ~/.browser-driver-manager/.env
+          echo "CHROME_BIN_PATH=${CHROME_TEST_PATH}" >> "${GITHUB_ENV}"
+          echo "CHROMEDRIVER_PATH=${CHROMEDRIVER_TEST_PATH}" >> "${GITHUB_ENV}"
+          "${CHROME_TEST_PATH}" --version
+          "${CHROMEDRIVER_TEST_PATH}" --version
 
       - name: Start Next.js server in background
         run: npm start &
