@@ -1,73 +1,148 @@
 name: CI
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
+  # Weekly full run, to catch drift that no single change triggers (e.g. a
+  # benchmark URL that stops resolving, or an upstream package change)
+  schedule:
+    - cron: "0 6 * * 1" # Mondays at 06:00 UTC
+  workflow_dispatch:
+
+# Cancel an in-progress run when a newer commit is pushed to the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+# Explicit bash also turns on pipefail, so e.g. `cmd | tee log` fails the step
+# when cmd fails
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  CI:
+  # Decide which areas a PR touches. Pushes to main, the weekly schedule and
+  # manual runs check every area.
+  changes:
     runs-on: ubuntu-latest
-
-    env:
-      NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
-      NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
-      NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
-      NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
+    outputs:
+      metadata: ${{ steps.filter.outputs.metadata }}
+      runner: ${{ steps.filter.outputs.runner }}
+      website: ${{ steps.filter.outputs.website }}
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 0  # Fetch all history for all branches
+          fetch-depth: 0
+
+      - id: filter
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${EVENT_NAME}" != "pull_request" ]; then
+            for area in metadata runner website; do
+              echo "${area}=true" >> "${GITHUB_OUTPUT}"
+            done
+            exit 0
+          fi
+
+          changed=$(git diff --name-only "${BASE_SHA}"...HEAD)
+          echo "Changed files:"
+          echo "${changed}"
+
+          # A change to the workflows themselves runs every area
+          ci='^\.github/workflows/'
+          pixi='^pixi\.(toml|lock)$'
+          matches() {
+            if echo "${changed}" | grep -qE "$1|${ci}"; then echo true; else echo false; fi
+          }
+          {
+            echo "metadata=$(matches "^benchmarks/|^results/|^tests/validate_|${pixi}")"
+            echo "runner=$(matches "^runner/|^benchmarks/[^/]+\.(py|yaml)$|^results/metadata(_subset)?\.yaml$|^tests/sample_benchmarks/|^pytest\.ini$|${pixi}")"
+            # The website reads results/ at build time
+            echo "website=$(matches "^website/|^results/")"
+          } | tee -a "${GITHUB_OUTPUT}"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # pre-commit compares against origin/main
 
       - uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          environments: dev benchmarks runner
+          environments: dev
 
-      - name: Check code formatting
+      - name: Run pre-commit
         run: |
-          pixi run -e dev pre-commit install
-          pixi run -e dev pre-commit run --from-ref origin/main --to-ref HEAD
+          # A change to the linters' own config applies to every file, so check
+          # them all; otherwise only the files this change touches.
+          if git diff --name-only origin/main...HEAD | grep -qE '^(\.pre-commit-config\.yaml|ruff\.toml)$'; then
+            pixi run -e dev pre-commit run --show-diff-on-failure --all-files
+          else
+            pixi run -e dev pre-commit run --show-diff-on-failure --from-ref origin/main --to-ref HEAD
+          fi
 
-      - name: Check benchmark metadata and results
+  metadata:
+    needs: changes
+    if: needs.changes.outputs.metadata == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          environments: dev benchmarks
+
+      - name: Check benchmark URL format
         run: |
           pixi run -e benchmarks python tests/validate_urls.py
-          if git diff --quiet; then
-            echo "git diff is empty, benchmark URLs conform to expected format"
-          else
+          if ! git diff --quiet; then
             git diff
-            printf "ERROR: benchmark URLs do not match expected format, please run the following command:\npixi run -e benchmarks python tests/validate_urls.py"
+            echo "ERROR: benchmark URLs do not match expected format, please run the following command:"
+            echo "pixi run -e benchmarks python tests/validate_urls.py"
             exit 1
           fi
+
+      - name: Check merged metadata is up to date
+        run: |
           pixi run -e benchmarks python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
-          PY_EXIT=${PIPESTATUS[0]}
-
-          if [ $PY_EXIT -ne 0 ]; then
-              echo "ERROR: merge_metadata.py failed"
-              exit 1
-          fi
-
           if grep -i "warning" merge_metadata.log; then
-              echo "ERROR: merge_metadata.py produced warnings"
-              exit 1
+            echo "ERROR: merge_metadata.py produced warnings"
+            exit 1
           fi
-
-          if git diff --quiet; then
-            echo "git diff is empty, metadata must be up to date"
-          else
-              git diff
-              echo "ERROR: git diff non empty, metadata needs updating, please run the following command:"
-              echo "pixi run -e benchmarks python benchmarks/merge_metadata.py"
-              exit 1
+          if ! git diff --quiet; then
+            git diff
+            echo "ERROR: metadata needs updating, please run the following command:"
+            echo "pixi run -e benchmarks python benchmarks/merge_metadata.py"
+            exit 1
           fi
-          pixi run -e benchmarks python tests/validate_urls_exist.py results/metadata.yaml
-          pixi run -e benchmarks python tests/validate_results.py
 
       - name: Validate metadata schema
         run: pixi run -e dev yamale -s benchmarks/metadata_schema.yaml results/metadata.yaml
+
+      - name: Check benchmark URLs exist
+        run: pixi run -e benchmarks python tests/validate_urls_exist.py results/metadata.yaml
+
+      - name: Validate results against metadata
+        run: pixi run -e benchmarks python tests/validate_results.py
+
+  runner:
+    needs: changes
+    if: needs.changes.outputs.runner == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          environments: runner benchmarks
 
       - name: Run runner unit tests
         run: pixi run -e runner pytest runner/tests -v
@@ -80,38 +155,7 @@ jobs:
             --configfile benchmarks/config.campaign.default.yaml \
             --campaign ci-check --skip-prepare < /dev/null
 
-      - name: Set FORK_PR environment variable
-        if: ${{ (github.event.pull_request.head.repo.fork == true || github.actor == 'dependabot[bot]') && github.event_name == 'pull_request' }}
-        run: echo "FORK_PR=true" >> $GITHUB_ENV
-
-      - name: Check Next.js lint and build
-        run: |
-          echo "Checking Next.js lint and build..."
-          if [ -d "website" ] && [ -f "website/package.json" ]; then
-            cd website
-
-            # Check if reCAPTCHA key is set
-            if [ "$FORK_PR" != "true" ]; then
-              if [ -z "$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" ]; then
-                echo "Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
-                exit 1
-              else
-                echo "✓ reCAPTCHA key is configured"
-              fi
-            else
-              echo "Skipping reCAPTCHA key check for PRs from forks or Dependabot."
-            fi
-            npm ci
-            # The build doesn't lint, so run ESLint explicitly
-            npm run lint
-            npm run build
-            cd ..
-          else
-            echo "Next.js project not found at website/package.json. Skipping build check."
-          fi
-
       - name: Run sample benchmarks
-        shell: bash -el {0}
         run: |
           SOLVER_CONFIGURATIONS="cbc-default glpk-default highs-default scip-default"
           SOLVER_ARGS=()
@@ -142,26 +186,48 @@ jobs:
             exit 1
           fi
 
-  accessibility-check:
+  website:
+    needs: changes
+    if: needs.changes.outputs.website == 'true'
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: website
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Check reCAPTCHA key is configured
+        # Secrets aren't available to PRs from forks or Dependabot
+        if: ${{ !(github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]')) }}
+        env:
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+        run: |
+          if [ -z "${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}" ]; then
+            echo "Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
+            exit 1
+          fi
 
       - name: Install dependencies
-        run: |
-          cd website
-          npm ci
+        run: npm ci
 
-      - name: Build Next.js
-        run: |
-          cd website
-          npm run build
+      - name: Lint
+        # The build doesn't lint, so run ESLint explicitly
+        run: npm run lint
+
+      - name: Build
+        # The only step that gets the website's secrets
+        env:
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
+        run: npm run build
 
       - name: Install Google Chrome (for ChromeDriver matching)
         run: |
@@ -184,7 +250,6 @@ jobs:
 
       - name: Install matching ChromeDriver for apt Chrome via browser-driver-manager
         run: |
-          cd website
           npm install --no-save browser-driver-manager
           # Detect the apt-installed Chrome version and ask bdm to install the matching chromedriver
           CHROME_VER=$(google-chrome --version 2>/dev/null | awk '{print $3}' || true)
@@ -219,18 +284,14 @@ jobs:
           fi
 
       - name: Start Next.js server in background
-        run: |
-          cd website
-          npm start &
+        run: npm start &
 
       - name: Wait for server to be ready
         run: |
           timeout 90 bash -c 'until curl -sf http://localhost:3000 > /dev/null; do sleep 2; done' || exit 1
 
       - name: Extract URLs from sitemap
-        run: |
-          cd website
-          npm run axe:extract
+        run: npm run axe:extract
 
       - name: Run axe-core accessibility tests on all pages
         env:
@@ -238,7 +299,6 @@ jobs:
           AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
           AXE_LOAD_DELAY: "5000"
         run: |
-          cd website
           # CHROME_BIN_PATH is set earlier into GITHUB_ENV; export it for the test
           export CHROME_BIN="$CHROME_BIN_PATH"
           echo "Using CHROME_BIN=$CHROME_BIN"
