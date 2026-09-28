@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import JSZip from "jszip";
 import { useRouter } from "next/router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
@@ -197,6 +196,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     }>,
   ) => {
     const dirHandle = await window.showDirectoryPicker();
+    let failed = 0;
 
     for (let i = 0; i < filesToDownload.length; i++) {
       const { url, filename } = filesToDownload[i];
@@ -239,25 +239,29 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       } catch (error) {
         console.error(`Error downloading ${filename}:`, error);
         alert(`Failed to download ${filename}. Continuing with next file...`);
+        failed++;
       }
     }
 
-    alert("🎉 All selected files downloaded successfully!");
+    alert(
+      failed === 0
+        ? "🎉 All selected files downloaded successfully!"
+        : `Downloaded ${filesToDownload.length - failed} of ` +
+            `${filesToDownload.length} files; ${failed} failed.`,
+    );
   };
 
-  // Safari/Firefox fallback: these browsers don't support the File System
-  // Access API (no folder picker), so instead fetch every file into memory,
-  // bundle them into a single zip, and trigger one ordinary browser download
-  // for that zip file.
-  const downloadAsZip = async (
+  // Firefox/Safari path: these browsers don't support the File System Access
+  // API, so hand each file to the browser as an ordinary download. The
+  // browser writes it straight to disk, so file size doesn't matter (building
+  // a zip in memory failed for large problems, see #582).
+  const downloadIndividually = async (
     filesToDownload: Array<{
       problemId: string;
       url: string;
       filename: string;
     }>,
   ) => {
-    const zip = new JSZip();
-
     for (let i = 0; i < filesToDownload.length; i++) {
       const { url, filename } = filesToDownload[i];
 
@@ -267,39 +271,21 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: filename,
       });
 
-      try {
-        const response = await fetch(
-          `/api/download?url=${encodeURIComponent(url)}`,
-        );
+      const link = document.createElement("a");
+      link.href = `/api/download?url=${encodeURIComponent(url)}`;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        if (!response.ok) {
-          throw new Error(
-            `Failed to download ${filename}: ${response.statusText}`,
-          );
-        }
-
-        zip.file(filename, await response.blob());
-      } catch (error) {
-        console.error(`Error downloading ${filename}:`, error);
-        alert(`Failed to download ${filename}. Continuing with next file...`);
-      }
+      // Browsers can drop downloads started in quick succession.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    setDownloadProgress({
-      current: filesToDownload.length,
-      total: filesToDownload.length,
-      currentFile: "Creating zip file...",
-    });
-
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-    const zipUrl = URL.createObjectURL(zipBlob);
-    const a = document.createElement("a");
-    a.href = zipUrl;
-    a.download = "benchmark_problems.zip";
-    a.click();
-    URL.revokeObjectURL(zipUrl);
-
-    alert("🎉 Selected files downloaded as a zip file!");
+    alert(
+      `Started ${filesToDownload.length} downloads. Your browser may ask ` +
+        "you to allow downloading multiple files.",
+    );
   };
 
   const handleDownloadSelected = async () => {
@@ -334,7 +320,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       if (supportsDirectoryPicker) {
         await downloadToDirectory(filesToDownload);
       } else {
-        await downloadAsZip(filesToDownload);
+        await downloadIndividually(filesToDownload);
       }
 
       setDownloadProgress(null);
@@ -532,6 +518,31 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           )}
         </div>
       </div>
+
+      {isSelectMode && (
+        <div className="text-right text-xs text-navy -mt-3 mb-3">
+          Downloading many or large problems? All problem files are also
+          available as a single archive on{" "}
+          <a
+            href="https://zenodo.org/records/20429905"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            Zenodo
+          </a>{" "}
+          (12 GB), and the URL of each problem file is listed in{" "}
+          <a
+            href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/metadata.yaml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            results/metadata.yaml
+          </a>
+          , for downloading with a script.
+        </div>
+      )}
 
       {isSelectMode && selectedProblems.size > MAX_COMPARE_PROBLEMS && (
         <div className="text-right text-xs text-red-600 -mt-3 mb-3">
