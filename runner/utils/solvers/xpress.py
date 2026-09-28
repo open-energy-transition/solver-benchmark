@@ -38,19 +38,18 @@ def reported_runtime(model: Any) -> float:
 def timed_out(model: Any) -> bool:
     """Whether Xpress stopped specifically because of a time limit.
 
-    Linopy maps any feasible Xpress solve stopped by a limit to the generic
-    ``terminated_by_limit`` condition. Xpress itself retains the actual stop
-    reason in ``stopstatus``, so inspect that rather than treating every
-    solver limit as a timeout.
+    Linopy maps a feasible Xpress solve stopped by a limit to the generic
+    ``terminated_by_limit`` condition. Xpress 9.6 exposes the actual stop
+    reason as the integer-valued ``stopstatus`` attribute, so compare it
+    against Xpress's native time-limit enum.
     """
-    try:
-        stop_status = model.attributes.stopstatus
-    except AttributeError:
+    if _xpress is None:
         return False
 
-    name = getattr(stop_status, "name", stop_status)
-    normalized = str(name).strip().lower().replace("_", "")
-    return "time" in normalized
+    try:
+        return model.attributes.stopstatus == _xpress.enums.StopType.TIMELIMIT
+    except AttributeError:
+        return False
 
 
 def integer_values(

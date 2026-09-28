@@ -479,16 +479,29 @@ class TestGlpkRecoverResult:
 
 
 class TestXpressTimeoutDetection:
-    def test_detects_native_time_limit(self):
+    def _patch_xpress(self, monkeypatch):
         xpress = importlib.import_module("runner.utils.solvers.xpress")
+        monkeypatch.setattr(
+            xpress,
+            "_xpress",
+            SimpleNamespace(
+                enums=SimpleNamespace(
+                    StopType=SimpleNamespace(TIMELIMIT=1),
+                )
+            ),
+        )
+        return xpress
+
+    def test_detects_native_time_limit(self, monkeypatch):
+        xpress = self._patch_xpress(monkeypatch)
         model = MagicMock()
-        model.attributes.stopstatus = SimpleNamespace(name="MAXTIME")
+        model.attributes.stopstatus = 1
 
         assert xpress.timed_out(model) is True
 
-    def test_does_not_treat_other_solver_limits_as_timeout(self):
-        xpress = importlib.import_module("runner.utils.solvers.xpress")
+    def test_does_not_treat_other_solver_limits_as_timeout(self, monkeypatch):
+        xpress = self._patch_xpress(monkeypatch)
         model = MagicMock()
-        model.attributes.stopstatus = SimpleNamespace(name="MAXNODE")
+        model.attributes.stopstatus = 2
 
         assert xpress.timed_out(model) is False
