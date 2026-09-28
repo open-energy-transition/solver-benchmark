@@ -3,6 +3,8 @@
 from pathlib import Path
 from typing import Any
 
+from . import _relative_mip_gap
+
 # xpress is only installed in the Xpress solver environment
 try:
     import xpress as _xpress
@@ -25,15 +27,30 @@ def mip_gap(model: Any, log_fn: Path) -> float | None:
     objective = model.getAttrib("mipobjval")
     bound = model.getAttrib("bestbound")
 
-    if objective == 0:
-        return 0.0 if bound == 0 else None
-
-    return abs(objective - bound) / abs(objective)
+    return _relative_mip_gap(objective, bound)
 
 
 def reported_runtime(model: Any) -> float:
     """Xpress's own reported solve time."""
     return model.getAttrib("time")
+
+
+def timed_out(model: Any) -> bool:
+    """Whether Xpress stopped specifically because of a time limit.
+
+    Linopy maps any feasible Xpress solve stopped by a limit to the generic
+    ``terminated_by_limit`` condition. Xpress itself retains the actual stop
+    reason in ``stopstatus``, so inspect that rather than treating every
+    solver limit as a timeout.
+    """
+    try:
+        stop_status = model.attributes.stopstatus
+    except AttributeError:
+        return False
+
+    name = getattr(stop_status, "name", stop_status)
+    normalized = str(name).strip().lower().replace("_", "")
+    return "time" in normalized
 
 
 def integer_values(

@@ -10,6 +10,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+from . import _relative_mip_gap
+
 # highspy is only installed in the HiGHS, CBC and tests solver environments
 try:
     import highspy as _highspy
@@ -46,9 +48,7 @@ def mip_gap(model: Any, log_fn: Path) -> float | None:
     bound = re.search(r"^Lower bound:\s+(\S+)", log, re.MULTILINE)
     if objective and bound:
         objective_value, bound_value = float(objective.group(1)), float(bound.group(1))
-        if objective_value == 0:
-            return 0.0 if bound_value == 0 else None
-        return abs(objective_value - bound_value) / abs(objective_value)
+        return _relative_mip_gap(objective_value, bound_value)
     if "Result - Optimal solution found" in log and "Search completed" in log:
         return 0.0
     return None
@@ -84,8 +84,10 @@ def integer_values(
         return {}
 
     with open(solution_fn) as f:
-        # e.g. "Optimal - objective value 1.5" or "Infeasible - objective value 0"
-        if "infeasible" in f.readline().lower():
+        # CBC may write continuous relaxation values when no integer incumbent
+        # exists. Those are not a valid MILP solution.
+        first_line = f.readline().lower()
+        if "infeasible" in first_line or "no integer solution" in first_line:
             return None
         values = {}
         for line in f:
@@ -110,9 +112,27 @@ def recover_result(problem_fn: Path, solution_fn: Path) -> dict[str, Any] | None
     termination condition despite CBC having written a valid incumbent.
     """
     try:
-        first_line = solution_fn.read_text().splitlines()[0]
-    except (OSError, IndexError):
+        with open(solution_fn) as f:
+            first_line = f.readline().strip()
+    except OSError:
         return None
+
+    if not first_line:
+        return None
+
+    # CBC writes the continuous relaxation objective when the time limit is
+    # reached before any integer incumbent exists. Classify the timeout but
+    # do not expose that relaxation value as a MILP objective.
+    if re.match(
+        r"^Stopped on time \(no integer solution\b",
+        first_line,
+        re.IGNORECASE,
+    ):
+        return {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": None,
+        }
 
     match = re.match(
         r"^(Optimal|Stopped on time) - objective value\s+(\S+)",

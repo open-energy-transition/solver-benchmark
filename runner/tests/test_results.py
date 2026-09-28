@@ -333,3 +333,44 @@ class TestEnsureCsvSchema:
         assert results_csv.read_text().splitlines() == [
             ",".join(csv_record(check=False).keys())
         ]
+
+
+class TestLegacyAndCurrentGapColumns:
+    @pytest.mark.parametrize(
+        ("mip_gap", "duality_gap", "expected"),
+        [
+            ("0.01", "0.02", "0.01"),
+            ("", "0.02", "0.02"),
+        ],
+    )
+    def test_prefers_current_gap_and_falls_back_to_legacy(
+        self, tmp_path, mip_gap, duality_gap, expected
+    ):
+        results_csv = tmp_path / "results.csv"
+        mean_stddev_csv = tmp_path / "mean_stddev.csv"
+
+        headers = list(csv_record(check=False).keys())
+        mip_index = headers.index("MIP Gap")
+        headers.insert(mip_index, "Duality Gap")
+
+        row = [""] * len(headers)
+        row[headers.index("Problem")] = "problem-a"
+        row[headers.index("Duality Gap")] = duality_gap
+        row[headers.index("MIP Gap")] = mip_gap
+
+        with open(results_csv, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(headers)
+            writer.writerow(row)
+
+        with open(mean_stddev_csv, "w", newline="") as f:
+            csv.writer(f).writerow(_MEAN_STDDEV_HEADERS)
+
+        ensure_csv_schema(results_csv, mean_stddev_csv, append=True)
+
+        with open(results_csv, newline="") as f:
+            rows = list(csv.DictReader(f))
+
+        assert list(rows[0]).count("MIP Gap") == 1
+        assert rows[0]["MIP Gap"] == expected
+        assert "Duality Gap" not in rows[0]

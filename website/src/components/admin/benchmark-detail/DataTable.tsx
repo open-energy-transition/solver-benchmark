@@ -73,10 +73,8 @@ const DataTable = ({ problemId }: DataTableProps) => {
       : roundNumber(result.objectiveValue || 0, 2),
     maxIntegralityViolation: isNullorUndefined(result.maxIntegralityViolation)
       ? ""
-      : roundNumber(result.maxIntegralityViolation || 0, 2),
-    mipGap: isNullorUndefined(result.mipGap)
-      ? ""
-      : roundNumber(result.mipGap || 0, 2),
+      : result.maxIntegralityViolation ?? 0,
+    mipGap: isNullorUndefined(result.mipGap) ? "" : result.mipGap ?? 0,
     log: getLogDownloadUrl(result),
     solution: getSolutionDownloadUrl(result),
     size: rawMetaData[getProblemKey(result)]?.size,

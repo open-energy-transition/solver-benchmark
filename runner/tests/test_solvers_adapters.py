@@ -219,6 +219,17 @@ class TestCbcIntegerValues:
         solution_fn = self._write_solution(tmp_path, "Infeasible - objective value 0")
         assert cbc.integer_values(None, _P, solution_fn) is None
 
+    def test_timeout_without_integer_solution_has_no_values(
+        self, monkeypatch, tmp_path
+    ):
+        cbc = self._patch_highspy(monkeypatch, {"x2": "integer"})
+        solution_fn = self._write_solution(
+            tmp_path,
+            "Stopped on time (no integer solution - continuous used) "
+            "- objective value 123.4",
+        )
+        assert cbc.integer_values(None, _P, solution_fn) is None
+
     def test_lp_has_no_integer_values(self, monkeypatch, tmp_path):
         cbc = self._patch_highspy(monkeypatch, {"x1": "continuous"})
         assert cbc.integer_values(None, _P, tmp_path / "unused.sol") == {}
@@ -250,6 +261,22 @@ class TestCbcRecoverResult:
             "status": "TO",
             "condition": "Timeout",
             "objective": 260754.20348781,
+        }
+
+    def test_recovers_timeout_without_incumbent(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Stopped on time (no integer solution - continuous used) "
+                "- objective value 231953.560",
+            ),
+        )
+        assert result == {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": None,
         }
 
     def test_recovers_optimal_result(self, tmp_path):
@@ -449,3 +476,19 @@ class TestGlpkRecoverResult:
             name for name, adapter in SOLVER_ADAPTERS.items() if adapter.recover_result
         }
         assert with_hook == {"glpk", "cbc"}
+
+
+class TestXpressTimeoutDetection:
+    def test_detects_native_time_limit(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.attributes.stopstatus = SimpleNamespace(name="MAXTIME")
+
+        assert xpress.timed_out(model) is True
+
+    def test_does_not_treat_other_solver_limits_as_timeout(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.attributes.stopstatus = SimpleNamespace(name="MAXNODE")
+
+        assert xpress.timed_out(model) is False

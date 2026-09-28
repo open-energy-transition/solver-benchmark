@@ -22,9 +22,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+
+def _relative_mip_gap(objective: float, bound: float) -> float | None:
+    """Compute the relative gap between an incumbent and its best bound."""
+    if objective == 0:
+        return 0.0 if bound == 0 else None
+    return abs(objective - bound) / abs(objective)
+
+
 _REQUIRED_ATTRS = ("is_mip", "mip_gap", "reported_runtime", "integer_values")
 # Optional: only solvers whose output linopy can fail to parse define these
-_OPTIONAL_ATTRS = ("recover_result",)
+_OPTIONAL_ATTRS = ("recover_result", "timed_out")
 
 
 @dataclass(frozen=True)
@@ -62,6 +70,7 @@ class SolverAdapter:
     reported_runtime: Callable[[Any], float | None]
     integer_values: Callable[[Any, Path, Path], dict[str, float] | None]
     recover_result: Callable[[Path, Path], dict[str, Any] | None] | None = None
+    timed_out: Callable[[Any], bool] | None = None
 
 
 def _discover_adapters() -> dict[str, SolverAdapter]:

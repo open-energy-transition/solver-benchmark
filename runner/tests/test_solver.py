@@ -204,6 +204,7 @@ class TestMainRecoversFromLinopyParseFailures:
             "runner.utils.solver.get_solver", lambda *a, **k: (solver, "fake")
         )
         adapter = MagicMock()
+        adapter.timed_out = None
         adapter.recover_result.return_value = recovered
         adapter.is_mip.return_value = None
         adapter.integer_values.return_value = {"x": 1.0}
@@ -244,6 +245,7 @@ class TestMainRecoversUnknownTermination:
         )
 
         adapter = MagicMock()
+        adapter.timed_out = None
         adapter.recover_result.return_value = {
             "status": "TO",
             "condition": "Timeout",
@@ -282,6 +284,7 @@ class TestMainGracefulTimeout:
         )
 
         adapter = MagicMock()
+        adapter.timed_out = None
         adapter.is_mip.return_value = True
         adapter.integer_values.return_value = {"x": 1.25}
         adapter.mip_gap.return_value = 0.2
@@ -296,3 +299,145 @@ class TestMainGracefulTimeout:
         assert result["objective"] == 12.5
         assert result["mip_gap"] == pytest.approx(0.2)
         assert result["max_integrality_violation"] == pytest.approx(0.25)
+
+
+class TestMainTimeoutClassification:
+    def _run(
+        self,
+        monkeypatch,
+        capsys,
+        *,
+        raw_status,
+        condition,
+        objective,
+        legacy_status,
+        runtime,
+        timeout=10,
+    ):
+        solver = MagicMock()
+        solver_result = MagicMock()
+        solver_result.status.status.value = raw_status
+        solver_result.status.termination_condition.value = condition
+        solver_result.status.legacy_status = legacy_status
+        solver_result.solution.objective = objective
+        solver_result.solver_model = MagicMock()
+        solver.solve_problem.return_value = solver_result
+
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver",
+            lambda *a, **k: (solver, "fake"),
+        )
+        monkeypatch.setattr(
+            "runner.utils.solver.perf_counter",
+            MagicMock(side_effect=[0.0, runtime]),
+        )
+
+        adapter = MagicMock()
+        adapter.timed_out = None
+        adapter.recover_result.return_value = None
+        adapter.is_mip.return_value = False
+        adapter.reported_runtime.return_value = runtime
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+
+        main("fake-default", "problem.lp", "1.0", timeout=timeout)
+        return json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+
+    def test_cplex_timeout_without_incumbent(self, monkeypatch, capsys):
+        result = self._run(
+            monkeypatch,
+            capsys,
+            raw_status="warning",
+            condition="infeasible",
+            objective=float("nan"),
+            legacy_status="time limit exceeded, no integer solution",
+            runtime=9.5,
+        )
+
+        assert result["status"] == "TO"
+        assert result["condition"] == "Timeout"
+        assert result["objective"] is None
+
+    def test_xpress_limit_after_wallclock_budget_preserves_incumbent(
+        self, monkeypatch, capsys
+    ):
+        result = self._run(
+            monkeypatch,
+            capsys,
+            raw_status="ok",
+            condition="terminated_by_limit",
+            objective=12.5,
+            legacy_status="FEASIBLE",
+            runtime=10.2,
+        )
+
+        assert result["status"] == "TO"
+        assert result["condition"] == "Timeout"
+        assert result["objective"] == 12.5
+
+    def test_xpress_timeout_without_incumbent(self, monkeypatch, capsys):
+        result = self._run(
+            monkeypatch,
+            capsys,
+            raw_status="unknown",
+            condition="unknown",
+            objective=float("nan"),
+            legacy_status="NOTFOUND",
+            runtime=10.2,
+        )
+
+        assert result["status"] == "TO"
+        assert result["condition"] == "Timeout"
+        assert result["objective"] is None
+
+    def test_nan_objective_is_treated_as_missing(self, monkeypatch, capsys):
+        result = self._run(
+            monkeypatch,
+            capsys,
+            raw_status="warning",
+            condition="infeasible",
+            objective=float("nan"),
+            legacy_status="infeasible",
+            runtime=1.0,
+        )
+
+        assert result["status"] == "ER"
+        assert result["objective"] is None
+
+
+class TestNativeSolverTimeoutDetection:
+    def test_xpress_native_timeout_under_wallclock_budget(self, monkeypatch, capsys):
+        solver = MagicMock()
+        solver_result = MagicMock()
+        solver_result.status.status.value = "ok"
+        solver_result.status.termination_condition.value = "terminated_by_limit"
+        solver_result.status.legacy_status = "FEASIBLE"
+        solver_result.solution.objective = 12.5
+        solver_result.solver_model = MagicMock()
+        solver.solve_problem.return_value = solver_result
+
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver",
+            lambda *a, **k: (solver, "fake"),
+        )
+        monkeypatch.setattr(
+            "runner.utils.solver.perf_counter",
+            MagicMock(side_effect=[0.0, 9.8]),
+        )
+
+        adapter = MagicMock()
+        adapter.timed_out.return_value = True
+        adapter.is_mip.return_value = True
+        adapter.integer_values.return_value = {"x": 1.0}
+        adapter.mip_gap.return_value = 0.05
+        adapter.reported_runtime.return_value = 9.7
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+
+        main("fake-default", "problem.lp", "1.0", timeout=10)
+
+        result = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+
+        assert result["runtime"] == pytest.approx(9.8)
+        assert result["status"] == "TO"
+        assert result["condition"] == "Timeout"
+        assert result["objective"] == 12.5
+        assert result["mip_gap"] == pytest.approx(0.05)

@@ -14,6 +14,7 @@ still be driven directly, e.g. for debugging:
 """
 
 import json
+import math
 import sys
 from pathlib import Path
 from time import perf_counter
@@ -292,10 +293,62 @@ def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None
         return None
 
 
-def _is_timeout_condition(condition: Any) -> bool:
-    """Whether a structured solver termination condition means time limit."""
-    normalized = str(condition).strip().lower().replace("-", "_").replace(" ", "_")
-    return normalized in {"time_limit", "timelimit", "timeout"}
+_FAILED_TERMINATION_CONDITIONS = {"unknown", "error", "failed", "aborted"}
+
+
+def _normalize_condition(condition: Any) -> str:
+    """Normalize solver status text for robust comparisons."""
+    return str(condition).strip().lower().replace("-", "_").replace(" ", "_")
+
+
+def _is_timeout_condition(
+    condition: Any,
+    legacy_status: Any = "",
+    runtime: float | None = None,
+    timeout: float | None = None,
+) -> bool:
+    """Whether a solve should be classified as exceeding the time budget.
+
+    Prefer Linopy's structured termination condition. Some solver interfaces
+    lose the distinction while mapping their native status (e.g. CPLEX and
+    Xpress), so also inspect Linopy's native legacy status. Finally enforce
+    the benchmark's wall-clock budget consistently for every solver.
+    """
+    normalized = _normalize_condition(condition)
+    normalized_legacy = _normalize_condition(legacy_status)
+
+    return (
+        normalized in {"time_limit", "timelimit", "timeout"}
+        or normalized_legacy.startswith("time_limit")
+        or (timeout is not None and runtime is not None and runtime > timeout)
+    )
+
+
+def _normalize_objective(objective: Any) -> Any:
+    """Represent an unavailable NaN objective as None."""
+    try:
+        return None if math.isnan(objective) else objective
+    except TypeError:
+        return objective
+
+
+def _solver_timed_out(solver_model: Any, solver_package: str) -> bool:
+    """Ask a solver adapter whether its native stop reason was a time limit."""
+    if solver_model is None:
+        return False
+
+    adapter = SOLVER_ADAPTERS.get(solver_package)
+    if adapter is None or adapter.timed_out is None:
+        return False
+
+    try:
+        return bool(adapter.timed_out(solver_model))
+    except Exception:
+        print(
+            f"ERROR checking native timeout status: {format_exc()}",
+            file=sys.stderr,
+        )
+        return False
 
 
 def main(
@@ -366,34 +419,43 @@ def main(
             solver_model = None
             raw_status = recovered["status"]
             termination_condition = recovered["condition"]
+            legacy_status = ""
             objective = recovered["objective"]
         else:
             runtime = perf_counter() - start_time
             solver_model = solver_result.solver_model
             raw_status = solver_result.status.status.value
             termination_condition = solver_result.status.termination_condition.value
+            legacy_status = solver_result.status.legacy_status
             objective = solver_result.solution.objective
 
         # Some command-line solvers can write a valid result even when
         # linopy cannot classify their termination condition. Let the
         # solver-specific adapter recover status/objective from the
         # solver's own output before treating the run as an error.
-        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+        if termination_condition in _FAILED_TERMINATION_CONDITIONS:
             recovered = recover_result(solver_package, problem_file, solution_fn)
             if recovered is not None:
                 raw_status = recovered["status"]
                 termination_condition = recovered["condition"]
                 objective = recovered["objective"]
 
+        objective = _normalize_objective(objective)
         status_value = raw_status
+        solver_timed_out = _solver_timed_out(solver_model, solver_package)
 
-        # A solver-native time limit is a valid benchmark outcome. Because
-        # the solver exits gracefully, keep any incumbent and quality metrics
-        # it returned instead of discarding them as an error.
-        if _is_timeout_condition(termination_condition):
+        # A time limit is a valid benchmark outcome. Preserve an incumbent
+        # and its quality metrics if one exists, while consistently enforcing
+        # the benchmark's wall-clock budget across all solvers.
+        if solver_timed_out or _is_timeout_condition(
+            termination_condition,
+            legacy_status=legacy_status,
+            runtime=runtime,
+            timeout=timeout,
+        ):
             status_value = "TO"
             termination_condition = "Timeout"
-        elif termination_condition in {"unknown", "error", "failed", "aborted"}:
+        elif termination_condition in _FAILED_TERMINATION_CONDITIONS:
             status_value = "ER"
             objective = None
         elif raw_status == "warning" and objective is None:

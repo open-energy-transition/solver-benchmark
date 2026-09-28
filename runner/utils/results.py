@@ -223,9 +223,11 @@ def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> N
         # gap. Rename it explicitly rather than treating it as a removed
         # column, preserving old values when appending with the new schema.
         legacy_renames = {"Duality Gap": "MIP Gap"}
-        normalized_headers = [
-            legacy_renames.get(header, header) for header in current_headers
-        ]
+        normalized_headers = []
+        for header in current_headers:
+            normalized = legacy_renames.get(header, header)
+            if normalized not in normalized_headers:
+                normalized_headers.append(normalized)
 
         unexpected = [h for h in normalized_headers if h not in expected_headers]
         if unexpected:
@@ -237,9 +239,20 @@ def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> N
 
         rows = []
         for row in reader:
-            normalized_row = {
-                legacy_renames.get(key, key): value for key, value in row.items()
-            }
+            normalized_row = {}
+            for key, value in row.items():
+                normalized_key = legacy_renames.get(key, key)
+
+                # If both historical and current gap columns exist, prefer a
+                # non-empty MIP Gap value, otherwise fall back to Duality Gap.
+                if normalized_key == "MIP Gap" and normalized_key in normalized_row:
+                    if key == "MIP Gap" and value != "":
+                        normalized_row[normalized_key] = value
+                    elif normalized_row[normalized_key] == "":
+                        normalized_row[normalized_key] = value
+                else:
+                    normalized_row[normalized_key] = value
+
             rows.append(normalized_row)
 
     current_headers = normalized_headers
