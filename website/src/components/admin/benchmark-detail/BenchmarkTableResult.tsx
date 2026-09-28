@@ -8,6 +8,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { MAX_COMPARE_PROBLEMS } from "@/constants/filter";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import InfoPopup from "@/components/common/InfoPopup";
+import { QuestionLineIcon } from "@/assets/icons";
 import { RealisticOption, HasResultsOption } from "@/types/state";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getProblemKey } from "@/utils/results";
@@ -479,9 +480,51 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           {!isSelectMode ? (
             <button
               onClick={() => setIsSelectMode(true)}
-              className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
+              className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
             >
               Select for Download or Comparison
+              <InfoPopup
+                trigger={() => (
+                  <span
+                    className="flex items-center cursor-pointer"
+                    aria-label="Other ways to download problem files"
+                    // Show the note without also entering select mode
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    <QuestionLineIcon className="size-4" viewBox="0 0 24 20" />
+                  </span>
+                )}
+                position="bottom center"
+                closeOnDocumentClick
+              >
+                {/* The popup renders in a portal, but React still bubbles
+                    its clicks up to the button, so stop them here too. */}
+                <div
+                  className="max-w-xs text-xs"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  Downloading many or large problems? All problem files are also
+                  available as a single archive on{" "}
+                  <a
+                    href="https://zenodo.org/records/20429905"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Zenodo
+                  </a>{" "}
+                  (12 GB), and the URL of each problem file is listed in{" "}
+                  <a
+                    href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/metadata.yaml"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    results/metadata.yaml
+                  </a>
+                  , for downloading with a script.
+                </div>
+              </InfoPopup>
             </button>
           ) : (
             <>
@@ -518,31 +561,6 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           )}
         </div>
       </div>
-
-      {isSelectMode && (
-        <div className="text-right text-xs text-navy -mt-3 mb-3">
-          Downloading many or large problems? All problem files are also
-          available as a single archive on{" "}
-          <a
-            href="https://zenodo.org/records/20429905"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            Zenodo
-          </a>{" "}
-          (12 GB), and the URL of each problem file is listed in{" "}
-          <a
-            href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/metadata.yaml"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            results/metadata.yaml
-          </a>
-          , for downloading with a script.
-        </div>
-      )}
 
       {isSelectMode && selectedProblems.size > MAX_COMPARE_PROBLEMS && (
         <div className="text-right text-xs text-red-600 -mt-3 mb-3">
