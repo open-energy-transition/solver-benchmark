@@ -15,7 +15,7 @@ _FAKE_METRICS = {
     "objective": 1.0,
     "runtime": 0.5,
     "reported_runtime": 0.4,
-    "duality_gap": 0.0,
+    "mip_gap": 0.0,
     "max_integrality_violation": 0.0,
     "memory": 12.3,
 }
@@ -335,7 +335,7 @@ class TestRunBenchmark:
                 "objective": 1.0,
                 "runtime": 0.1,
                 "memory": "N/A",
-                "duality_gap": None,
+                "mip_gap": None,
                 "max_integrality_violation": None,
             },
         )

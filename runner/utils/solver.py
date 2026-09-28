@@ -14,6 +14,7 @@ still be driven directly, e.g. for debugging:
 """
 
 import json
+import math
 import sys
 from pathlib import Path
 from time import perf_counter
@@ -27,7 +28,11 @@ from . import config
 from .solvers import SOLVER_ADAPTERS
 
 
-def get_solver(solver_configuration: str, seed: int | None = None) -> tuple[Any, str]:
+def get_solver(
+    solver_configuration: str,
+    seed: int | None = None,
+    timeout: float | None = None,
+) -> tuple[Any, str]:
     """Build a linopy solver instance with this project's tuning options.
 
     Parameters
@@ -70,6 +75,11 @@ def get_solver(solver_configuration: str, seed: int | None = None) -> tuple[Any,
             )
         else:
             kwargs[seed_key] = seed
+
+    if timeout is not None:
+        timeout_key = config.get_timeout_option(solver_package)
+        if timeout_key is not None:
+            kwargs[timeout_key] = timeout
 
     solver_enum = SolverName(solver_package)
     solver_class = getattr(solvers, solver_enum.name)
@@ -134,10 +144,8 @@ def calculate_integrality_violation(integer_values: dict[str, float]) -> float:
     return max(abs(value - round(value)) for value in integer_values.values())
 
 
-def get_duality_gap(
-    solver_model: Any, solver_package: str, log_fn: Path
-) -> float | None:
-    """Retrieve the duality/MIP gap reported by the solver, if available.
+def get_mip_gap(solver_model: Any, solver_package: str, log_fn: Path) -> float | None:
+    """Retrieve the MIP gap reported by the solver, if available.
 
     Parameters
     ----------
@@ -152,7 +160,7 @@ def get_duality_gap(
     Returns
     -------
     float | None
-        The relative duality gap, or None if the solver doesn't expose one.
+        The relative MIP gap, or None if the solver doesn't expose one.
 
     Raises
     ------
@@ -164,7 +172,7 @@ def get_duality_gap(
     adapter = SOLVER_ADAPTERS.get(solver_package)
     if adapter is None:
         raise NotImplementedError(f"The solver '{solver_package}' is not supported.")
-    return adapter.duality_gap(solver_model, log_fn)
+    return adapter.mip_gap(solver_model, log_fn)
 
 
 def get_milp_metrics(
@@ -175,7 +183,7 @@ def get_milp_metrics(
     log_fn: Path,
     is_mip: bool | None,
 ) -> tuple[float | None, float | None]:
-    """Compute the duality gap and max integrality violation of a MILP solve.
+    """Compute the MIP gap and max integrality violation of a MILP solve.
 
     Variable values come from the solver's own adapter (native model or
     solution file, see `runner/utils/solvers/`), not from linopy's
@@ -200,7 +208,7 @@ def get_milp_metrics(
     Returns
     -------
     tuple[float | None, float | None]
-        `(duality_gap, max_integrality_violation)`, or `(None, None)` if the
+        `(mip_gap, max_integrality_violation)`, or `(None, None)` if the
         problem has no integer variables. The integrality violation is None
         unless the value of every integer variable could be read.
     """
@@ -221,15 +229,15 @@ def get_milp_metrics(
         return None, None
 
     try:
-        duality_gap = get_duality_gap(solver_model, solver_package, log_fn)
+        mip_gap = get_mip_gap(solver_model, solver_package, log_fn)
     except Exception:
-        print(f"ERROR obtaining duality gap: {format_exc()}", file=sys.stderr)
-        duality_gap = None
+        print(f"ERROR obtaining MIP gap: {format_exc()}", file=sys.stderr)
+        mip_gap = None
 
     max_integrality_violation = (
         calculate_integrality_violation(integer_values) if integer_values else None
     )
-    return duality_gap, max_integrality_violation
+    return mip_gap, max_integrality_violation
 
 
 def recover_result(
@@ -285,11 +293,70 @@ def get_reported_runtime(solver_package: str, solver_model: Any) -> float | None
         return None
 
 
+_FAILED_TERMINATION_CONDITIONS = {"unknown", "error", "failed", "aborted"}
+
+
+def _normalize_condition(condition: Any) -> str:
+    """Normalize solver status text for robust comparisons."""
+    return str(condition).strip().lower().replace("-", "_").replace(" ", "_")
+
+
+def _is_timeout_condition(
+    condition: Any,
+    legacy_status: Any = "",
+    runtime: float | None = None,
+    timeout: float | None = None,
+) -> bool:
+    """Whether a solve should be classified as exceeding the time budget.
+
+    Prefer Linopy's structured termination condition. Some solver interfaces
+    lose the distinction while mapping their native status (e.g. CPLEX and
+    Xpress), so also inspect Linopy's native legacy status. Finally enforce
+    the benchmark's wall-clock budget consistently for every solver.
+    """
+    normalized = _normalize_condition(condition)
+    normalized_legacy = _normalize_condition(legacy_status)
+
+    return (
+        normalized in {"time_limit", "timelimit", "timeout"}
+        or normalized_legacy.startswith("time_limit")
+        or (timeout is not None and runtime is not None and runtime > timeout)
+    )
+
+
+def _normalize_objective(objective: Any) -> Any:
+    """Represent an unavailable NaN objective as None."""
+    try:
+        return None if math.isnan(objective) else objective
+    except TypeError:
+        return objective
+
+
+def _solver_timed_out(solver_model: Any, solver_package: str) -> bool:
+    """Ask a solver adapter whether its native stop reason was a time limit."""
+    if solver_model is None:
+        return False
+
+    adapter = SOLVER_ADAPTERS.get(solver_package)
+    if adapter is None or adapter.timed_out is None:
+        return False
+
+    try:
+        return bool(adapter.timed_out(solver_model))
+    except Exception:
+        print(
+            f"ERROR checking native timeout status: {format_exc()}",
+            file=sys.stderr,
+        )
+        return False
+
+
 def main(
     solver_configuration: str,
     input_file: str,
     solver_version: str,
     seed: int | None = None,
+    timeout: float | None = None,
 ) -> None:
     """Run one solver on one problem file and print the resulting metrics as JSON.
 
@@ -309,7 +376,9 @@ def main(
     """
     problem_file = Path(input_file)
 
-    solver, solver_package = get_solver(solver_configuration, seed=seed)
+    solver, solver_package = get_solver(
+        solver_configuration, seed=seed, timeout=timeout
+    )
 
     solution_dir = Path(__file__).resolve().parent.parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
@@ -350,18 +419,43 @@ def main(
             solver_model = None
             raw_status = recovered["status"]
             termination_condition = recovered["condition"]
+            legacy_status = ""
             objective = recovered["objective"]
         else:
             runtime = perf_counter() - start_time
             solver_model = solver_result.solver_model
             raw_status = solver_result.status.status.value
             termination_condition = solver_result.status.termination_condition.value
+            legacy_status = solver_result.status.legacy_status
             objective = solver_result.solution.objective
 
-        status_value = raw_status
+        # Some command-line solvers can write a valid result even when
+        # linopy cannot classify their termination condition. Let the
+        # solver-specific adapter recover status/objective from the
+        # solver's own output before treating the run as an error.
+        if termination_condition in _FAILED_TERMINATION_CONDITIONS:
+            recovered = recover_result(solver_package, problem_file, solution_fn)
+            if recovered is not None:
+                raw_status = recovered["status"]
+                termination_condition = recovered["condition"]
+                objective = recovered["objective"]
 
-        # Treat unclear termination conditions as failed/invalid runs
-        if termination_condition in {"unknown", "error", "failed", "aborted"}:
+        objective = _normalize_objective(objective)
+        status_value = raw_status
+        solver_timed_out = _solver_timed_out(solver_model, solver_package)
+
+        # A time limit is a valid benchmark outcome. Preserve an incumbent
+        # and its quality metrics if one exists, while consistently enforcing
+        # the benchmark's wall-clock budget across all solvers.
+        if solver_timed_out or _is_timeout_condition(
+            termination_condition,
+            legacy_status=legacy_status,
+            runtime=runtime,
+            timeout=timeout,
+        ):
+            status_value = "TO"
+            termination_condition = "Timeout"
+        elif termination_condition in _FAILED_TERMINATION_CONDITIONS:
             status_value = "ER"
             objective = None
         elif raw_status == "warning" and objective is None:
@@ -374,11 +468,11 @@ def main(
             is_mip = False
 
         if is_mip is not False:
-            duality_gap, max_integrality_violation = get_milp_metrics(
+            mip_gap, max_integrality_violation = get_milp_metrics(
                 solver_model, solver_package, problem_file, solution_fn, log_fn, is_mip
             )
         else:
-            duality_gap = None
+            mip_gap = None
             max_integrality_violation = None
 
         results = {
@@ -387,7 +481,7 @@ def main(
             "status": status_value,
             "condition": termination_condition,
             "objective": objective,
-            "duality_gap": duality_gap,
+            "mip_gap": mip_gap,
             "max_integrality_violation": max_integrality_violation,
         }
     except Exception:
@@ -398,7 +492,7 @@ def main(
             "status": "ER",
             "condition": None,
             "objective": None,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     print(json.dumps(results))
@@ -412,11 +506,23 @@ if __name__ == "__main__":
         cli_seed = int(argv[seed_index + 1])
         del argv[seed_index : seed_index + 2]
 
+    cli_timeout = None
+    if "--timeout" in argv:
+        timeout_index = argv.index("--timeout")
+        cli_timeout = float(argv[timeout_index + 1])
+        del argv[timeout_index : timeout_index + 2]
+
     if len(argv) != 3:
         print(
             "Usage: python -m runner.utils.solver <solver_configuration> "
-            "<input_file> <solver_version> [--seed N]"
+            "<input_file> <solver_version> [--seed N] [--timeout SECONDS]"
         )
         sys.exit(1)
 
-    main(argv[0], argv[1], argv[2], seed=cli_seed)
+    main(
+        argv[0],
+        argv[1],
+        argv[2],
+        seed=cli_seed,
+        timeout=cli_timeout,
+    )

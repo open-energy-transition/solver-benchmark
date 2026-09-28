@@ -26,7 +26,7 @@ type TableData = {
   memoryUsage: number;
   objectiveValue: number | string;
   maxIntegralityViolation: number | string;
-  dualityGap: number | string;
+  mipGap: number | string;
   log: string | null;
   solution: string | null;
 };
@@ -73,10 +73,8 @@ const DataTable = ({ problemId }: DataTableProps) => {
       : roundNumber(result.objectiveValue || 0, 2),
     maxIntegralityViolation: isNullorUndefined(result.maxIntegralityViolation)
       ? ""
-      : roundNumber(result.maxIntegralityViolation || 0, 2),
-    dualityGap: isNullorUndefined(result.dualityGap)
-      ? ""
-      : roundNumber(result.dualityGap || 0, 2),
+      : result.maxIntegralityViolation ?? 0,
+    mipGap: isNullorUndefined(result.mipGap) ? "" : result.mipGap ?? 0,
     log: getLogDownloadUrl(result),
     solution: getSolutionDownloadUrl(result),
     size: rawMetaData[getProblemKey(result)]?.size,
@@ -164,12 +162,12 @@ const DataTable = ({ problemId }: DataTableProps) => {
           formatScientific(info.getValue() as number, ""),
       },
       {
-        header: "Duality Gap",
+        header: "MIP Gap",
         meta: {
           filterVariant: "range",
         },
         filterFn: filterNumber,
-        accessorKey: "dualityGap",
+        accessorKey: "mipGap",
         cell: (info: CellContext<TableData, unknown>) =>
           formatScientific(info.getValue() as number, ""),
       },
@@ -213,7 +211,7 @@ const DataTable = ({ problemId }: DataTableProps) => {
 
   const columnVisibility = {
     maxIntegralityViolation: isMilp,
-    dualityGap: isMilp,
+    mipGap: isMilp,
   };
 
   const handleDownload = (filteredData: TableData[]) => {

@@ -57,9 +57,9 @@ const Metrics = () => {
           integer value
         </li>
         <li className="mb-2">
-          <strong>Duality gap</strong>: the gap between the two objective bounds
-          for MILPs, which should be below the requested tolerance (
-          <code>1e-4</code>). The duality gap can be used to judge how close the
+          <strong>MIP gap</strong>: the gap between the two objective bounds for
+          MILPs, which should be below the requested tolerance (
+          <code>1e-4</code>). The MIP gap can be used to judge how close the
           returned solution is to the optimal solution, and we set a tolerance
           in order to allow solvers to terminate in a reasonable time period
           when they have found a close-to-optimal solution. Precisely, if{" "}
@@ -67,7 +67,7 @@ const Metrics = () => {
           the incumbent objective value, which is the upper bound for
           minimization problems), and <MathJax inline>{"$d$"}</MathJax> is the
           dual objective bound (i.e., the lower bound for minimization
-          problems), then the relative duality gap is defined as{" "}
+          problems), then the relative MIP gap is defined as{" "}
           <MathJax inline>{"$|p - d| / |p|$"}</MathJax>.
         </li>
       </ol>

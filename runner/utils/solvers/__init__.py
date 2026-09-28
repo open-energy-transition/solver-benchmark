@@ -1,7 +1,7 @@
 """Solver adapter registry: one plain Python module per solver, discovered
 automatically from this package's own directory.
 
-Each sibling module exports `is_mip(model)`, `duality_gap(model, log_fn)`,
+Each sibling module exports `is_mip(model)`, `mip_gap(model, log_fn)`,
 `reported_runtime(model)`, and
 `integer_values(model, problem_fn, solution_fn)` for one solver (any existing module is a template).
 `SOLVER_ADAPTERS` is built by scanning this package's directory with
@@ -11,7 +11,7 @@ one Django/pytest use for command/plugin discovery), scoped to just this
 directory, not an arbitrary path. Adding a solver with linopy support already
 means: write a new module here, and add its tuning options to
 ``runner/config/solver_configurations.yaml`` -- nothing here, and nothing in
-`runner/utils/solver.py`'s `get_solver`/`is_mip_problem`/`get_duality_gap`/
+`runner/utils/solver.py`'s `get_solver`/`is_mip_problem`/`get_mip_gap`/
 `get_reported_runtime`, needs to change.
 """
 
@@ -22,9 +22,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-_REQUIRED_ATTRS = ("is_mip", "duality_gap", "reported_runtime", "integer_values")
+
+def _relative_mip_gap(objective: float, bound: float) -> float | None:
+    """Compute the relative gap between an incumbent and its best bound."""
+    if objective == 0:
+        return 0.0 if bound == 0 else None
+    return abs(objective - bound) / abs(objective)
+
+
+_REQUIRED_ATTRS = ("is_mip", "mip_gap", "reported_runtime", "integer_values")
 # Optional: only solvers whose output linopy can fail to parse define these
-_OPTIONAL_ATTRS = ("recover_result",)
+_OPTIONAL_ATTRS = ("recover_result", "timed_out")
 
 
 @dataclass(frozen=True)
@@ -37,9 +45,9 @@ class SolverAdapter:
         Given the solver's native model object, return whether the problem
         it solved was a MIP, or None if the model can't tell (see
         `integer_values`).
-    duality_gap : Callable[[Any, Path], float | None]
+    mip_gap : Callable[[Any, Path], float | None]
         Given the native model object and the log file linopy asked the
-        solver to write, return the relative duality/MIP gap, or None if
+        solver to write, return the relative MIP gap, or None if
         unavailable.
     reported_runtime : Callable[[Any], float | None]
         Given the native model object, return the solver's own reported
@@ -58,10 +66,11 @@ class SolverAdapter:
     """
 
     is_mip: Callable[[Any], bool | None]
-    duality_gap: Callable[[Any, Path], float | None]
+    mip_gap: Callable[[Any, Path], float | None]
     reported_runtime: Callable[[Any], float | None]
     integer_values: Callable[[Any, Path, Path], dict[str, float] | None]
     recover_result: Callable[[Path, Path], dict[str, Any] | None] | None = None
+    timed_out: Callable[[Any], bool] | None = None
 
 
 def _discover_adapters() -> dict[str, SolverAdapter]:
@@ -75,7 +84,7 @@ def _discover_adapters() -> dict[str, SolverAdapter]:
     Raises
     ------
     AttributeError
-        If a discovered module is missing one of `is_mip`, `duality_gap`,
+        If a discovered module is missing one of `is_mip`, `mip_gap`,
         `reported_runtime`, or `integer_values` -- fails at import time with a clear message,
         rather than a cryptic error deep in a benchmark run.
     """

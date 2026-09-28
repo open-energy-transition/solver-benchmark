@@ -15,7 +15,7 @@ def is_mip(model: Any) -> bool | None:
     return None if n_integer_vars is None else n_integer_vars > 0
 
 
-def duality_gap(model: Any, log_fn: Path) -> float | None:
+def mip_gap(model: Any, log_fn: Path) -> float | None:
     """Knitro's own reported relative MIP gap, if present."""
     return getattr(model, "mip_rel_gap", None)
 

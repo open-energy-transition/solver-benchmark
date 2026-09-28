@@ -318,6 +318,18 @@ def get_seed_option(
     return config.get("seed_options", {}).get(solver_package)
 
 
+def get_timeout_option(
+    solver_package: str, config: dict[str, Any] | None = None
+) -> str | None:
+    """Return the solver-native option key used to set a time limit.
+
+    Solvers without a registered key keep using only the outer process
+    timeout enforced by :mod:`runner.utils.execution`.
+    """
+    config = config if config is not None else load_solver_registry()
+    return config.get("timeout_options", {}).get(solver_package)
+
+
 def get_configured_seed(solver_configuration: str) -> Any:
     """Return the seed a configuration's own options fix, if any.
 

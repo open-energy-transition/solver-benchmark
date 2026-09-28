@@ -91,7 +91,7 @@ def csv_record(check: bool = False, **kwargs: Any) -> OrderedDict[str, Any]:
             ("Memory Usage (MB)", kwargs.get("memory")),
             ("Objective Value", kwargs.get("objective")),
             ("Max Integrality Violation", kwargs.get("max_integrality_violation")),
-            ("Duality Gap", kwargs.get("duality_gap")),
+            ("MIP Gap", kwargs.get("mip_gap")),
             ("Reported Runtime (s)", kwargs.get("reported_runtime")),
             ("Timeout", kwargs.get("timeout")),
             ("Hostname", kwargs.get("hostname")),
@@ -219,15 +219,43 @@ def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> N
         if list(current_headers) == expected_headers:
             return
 
-        unexpected = [h for h in current_headers if h not in expected_headers]
+        # "Duality Gap" was the historical name for the MILP optimality
+        # gap. Rename it explicitly rather than treating it as a removed
+        # column, preserving old values when appending with the new schema.
+        legacy_renames = {"Duality Gap": "MIP Gap"}
+        normalized_headers = []
+        for header in current_headers:
+            normalized = legacy_renames.get(header, header)
+            if normalized not in normalized_headers:
+                normalized_headers.append(normalized)
+
+        unexpected = [h for h in normalized_headers if h not in expected_headers]
         if unexpected:
             raise ValueError(
                 f"{csv_path} has column(s) {unexpected} not in the current "
                 "schema -- resolve manually rather than risk silently "
                 "dropping data."
             )
-        rows = list(reader)
 
+        rows = []
+        for row in reader:
+            normalized_row = {}
+            for key, value in row.items():
+                normalized_key = legacy_renames.get(key, key)
+
+                # If both historical and current gap columns exist, prefer a
+                # non-empty MIP Gap value, otherwise fall back to Duality Gap.
+                if normalized_key == "MIP Gap" and normalized_key in normalized_row:
+                    if key == "MIP Gap" and value != "":
+                        normalized_row[normalized_key] = value
+                    elif normalized_row[normalized_key] == "":
+                        normalized_row[normalized_key] = value
+                else:
+                    normalized_row[normalized_key] = value
+
+            rows.append(normalized_row)
+
+    current_headers = normalized_headers
     added = [h for h in expected_headers if h not in current_headers]
     print(f"Migrating {csv_path} to the current schema (adding {added})")
     with open(csv_path, mode="w", newline="") as file:

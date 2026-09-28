@@ -36,7 +36,7 @@ def test_every_configured_solver_has_an_adapter():
 def test_every_adapter_exposes_the_required_methods():
     for adapter in SOLVER_ADAPTERS.values():
         assert callable(adapter.is_mip)
-        assert callable(adapter.duality_gap)
+        assert callable(adapter.mip_gap)
         assert callable(adapter.reported_runtime)
 
 
@@ -167,7 +167,7 @@ class TestNativeModelIntegerValues:
         knitro = importlib.import_module("runner.utils.solvers.knitro")
         result = SimpleNamespace(n_integer_vars=3, mip_rel_gap=0.002)
         assert knitro.is_mip(result) is True
-        assert knitro.duality_gap(result, Path("k.log")) == 0.002
+        assert knitro.mip_gap(result, Path("k.log")) == 0.002
         assert knitro.is_mip(SimpleNamespace(n_integer_vars=0)) is False
         assert knitro.is_mip(SimpleNamespace()) is None
 
@@ -219,6 +219,17 @@ class TestCbcIntegerValues:
         solution_fn = self._write_solution(tmp_path, "Infeasible - objective value 0")
         assert cbc.integer_values(None, _P, solution_fn) is None
 
+    def test_timeout_without_integer_solution_has_no_values(
+        self, monkeypatch, tmp_path
+    ):
+        cbc = self._patch_highspy(monkeypatch, {"x2": "integer"})
+        solution_fn = self._write_solution(
+            tmp_path,
+            "Stopped on time (no integer solution - continuous used) "
+            "- objective value 123.4",
+        )
+        assert cbc.integer_values(None, _P, solution_fn) is None
+
     def test_lp_has_no_integer_values(self, monkeypatch, tmp_path):
         cbc = self._patch_highspy(monkeypatch, {"x1": "continuous"})
         assert cbc.integer_values(None, _P, tmp_path / "unused.sol") == {}
@@ -227,6 +238,72 @@ class TestCbcIntegerValues:
         cbc = importlib.import_module("runner.utils.solvers.cbc")
         monkeypatch.setattr(cbc, "_highspy", None)
         assert cbc.integer_values(None, _P, _S) is None
+
+
+class TestCbcRecoverResult:
+    """CBC status/objective recovery from its command-line solution file."""
+
+    def _write_solution(self, tmp_path, first_line):
+        solution_fn = tmp_path / "cbc.sol"
+        solution_fn.write_text(f"{first_line}\n")
+        return solution_fn
+
+    def test_recovers_timeout_with_incumbent(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Stopped on time - objective value 260754.20348781",
+            ),
+        )
+        assert result == {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": 260754.20348781,
+        }
+
+    def test_recovers_timeout_without_incumbent(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Stopped on time (no integer solution - continuous used) "
+                "- objective value 231953.560",
+            ),
+        )
+        assert result == {
+            "status": "TO",
+            "condition": "Timeout",
+            "objective": None,
+        }
+
+    def test_recovers_optimal_result(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Optimal - objective value 250234.60094885",
+            ),
+        )
+        assert result == {
+            "status": "ok",
+            "condition": "optimal",
+            "objective": 250234.60094885,
+        }
+
+    def test_unknown_status_is_not_recovered(self, tmp_path):
+        cbc = importlib.import_module("runner.utils.solvers.cbc")
+        result = cbc.recover_result(
+            _P,
+            self._write_solution(
+                tmp_path,
+                "Infeasible - objective value 0",
+            ),
+        )
+        assert result is None
 
 
 class TestGlpkIntegerValues:
@@ -285,14 +362,46 @@ class TestGlpkIntegerValues:
         assert glpk.integer_values(None, _P, self._write(tmp_path, report)) == {}
 
 
-class TestCbcDualityGap:
+class TestXpressMipGap:
+    def test_uses_incumbent_and_best_bound(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.getAttrib.side_effect = lambda name: {
+            "mipobjval": 100.0,
+            "bestbound": 80.0,
+        }[name]
+
+        assert xpress.mip_gap(model, Path("xpress.log")) == pytest.approx(0.2)
+
+    def test_zero_objective_and_bound_has_zero_gap(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.getAttrib.side_effect = lambda name: {
+            "mipobjval": 0.0,
+            "bestbound": 0.0,
+        }[name]
+
+        assert xpress.mip_gap(model, Path("xpress.log")) == 0.0
+
+    def test_zero_objective_with_nonzero_bound_is_unknown(self):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        model = MagicMock()
+        model.getAttrib.side_effect = lambda name: {
+            "mipobjval": 0.0,
+            "bestbound": 1.0,
+        }[name]
+
+        assert xpress.mip_gap(model, Path("xpress.log")) is None
+
+
+class TestCbcMipGap:
     """CBC's gap comes from its log, not its rounded ``Gap:`` line."""
 
     def _gap(self, tmp_path, log_text):
         cbc = importlib.import_module("runner.utils.solvers.cbc")
         log_fn = tmp_path / "cbc.log"
         log_fn.write_text(log_text)
-        return cbc.duality_gap(MagicMock(mip_gap=0.0), log_fn)
+        return cbc.mip_gap(MagicMock(mip_gap=0.0), log_fn)
 
     def test_gap_tolerance_exit_uses_objective_and_bound(self, tmp_path):
         # From a real CBC run on FINE-water-supply-system-12-8760ts, where
@@ -323,7 +432,7 @@ class TestCbcDualityGap:
 
     def test_missing_log_is_unknown(self, tmp_path):
         cbc = importlib.import_module("runner.utils.solvers.cbc")
-        assert cbc.duality_gap(MagicMock(), tmp_path / "missing.log") is None
+        assert cbc.mip_gap(MagicMock(), tmp_path / "missing.log") is None
 
 
 class TestGlpkRecoverResult:
@@ -362,8 +471,37 @@ class TestGlpkRecoverResult:
         glpk = importlib.import_module("runner.utils.solvers.glpk")
         assert glpk.recover_result(_P, tmp_path / "missing.sol") is None
 
-    def test_only_glpk_defines_the_optional_hook(self):
+    def test_expected_adapters_define_the_optional_hook(self):
         with_hook = {
             name for name, adapter in SOLVER_ADAPTERS.items() if adapter.recover_result
         }
-        assert with_hook == {"glpk"}
+        assert with_hook == {"glpk", "cbc"}
+
+
+class TestXpressTimeoutDetection:
+    def _patch_xpress(self, monkeypatch):
+        xpress = importlib.import_module("runner.utils.solvers.xpress")
+        monkeypatch.setattr(
+            xpress,
+            "_xpress",
+            SimpleNamespace(
+                enums=SimpleNamespace(
+                    StopType=SimpleNamespace(TIMELIMIT=1),
+                )
+            ),
+        )
+        return xpress
+
+    def test_detects_native_time_limit(self, monkeypatch):
+        xpress = self._patch_xpress(monkeypatch)
+        model = MagicMock()
+        model.attributes.stopstatus = 1
+
+        assert xpress.timed_out(model) is True
+
+    def test_does_not_treat_other_solver_limits_as_timeout(self, monkeypatch):
+        xpress = self._patch_xpress(monkeypatch)
+        model = MagicMock()
+        model.attributes.stopstatus = 2
+
+        assert xpress.timed_out(model) is False
