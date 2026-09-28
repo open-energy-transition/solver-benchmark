@@ -190,7 +190,7 @@ class TestBenchmarkCli:
             [str(problems_yaml), "--solver-configurations", "highs-default"],
         )
         assert result.exit_code == 0, result.output
-        assert "Running the benchmark for year 2024" in result.output
+        assert "Running the benchmark for year(s) 2024..." in result.output
         assert "2025" not in result.output.split("run ID")[0]
 
     def test_first_year_overwrites_subsequent_years_append(
@@ -263,9 +263,11 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert results["Run ID"].nunique() == 1
 
-    def test_a_failing_year_does_not_abort_remaining_years(
+    def test_a_crashing_solver_run_does_not_abort_the_others(
         self, problems_yaml, tmp_path, mocker
     ):
+        # Keep the run order 2024 then 2025, so the 2024 run is the one that crashes
+        mocker.patch.object(orchestrator.random, "shuffle")
         mocker.patch.object(
             orchestrator,
             "run_solver",
@@ -283,10 +285,11 @@ class TestBenchmarkCli:
                 "highs-default",
             ],
         )
-        # Every year is still attempted, but the failure is reported via the
+        # Every run is still attempted, but the failure is reported via the
         # exit code (infrastructure/startup-script.sh relies on it).
         assert result.exit_code == 1, result.output
-        assert "ERROR running the benchmark for year 2024" in result.output
+        assert "ERROR running highs-default (2024) on tiny-problem" in result.output
+        assert "1 solver run(s) failed" in result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
 

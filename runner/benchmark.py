@@ -41,8 +41,7 @@ def run(
         False,
         "--append",
         "-a",
-        help="Append to the results CSVs instead of overwriting them for "
-        "the first year.",
+        help="Append to the results CSVs instead of overwriting them.",
     ),
     num_seeds: int = typer.Option(
         1,
@@ -71,14 +70,15 @@ def run(
     ),
 ) -> None:
     """Run every problem in PROBLEMS_YAML_PATH against each solver
-    configuration, once per given year.
+    configuration, for each given year.
 
-    For each year, installs any missing per-solver-year envs (see
-    `runner/envs/`), then runs that year's registered and eligible solver
-    configurations against every problem. A failing year, or one with no
-    registered solver version for any requested configuration, is logged
-    and skipped rather than aborting the remaining years; the command then
-    exits with status 1 once every year has been attempted.
+    First installs any missing per-solver-year envs (see `runner/envs/`).
+    Then, for each problem in turn, runs every registered and eligible
+    (year, solver configuration) pair on it in a random order (see
+    `orchestrator.run_benchmark`). A year with no registered solver version
+    for any requested configuration, or a solver run that crashes, is logged
+    and skipped rather than aborting the rest of the run; the command then
+    exits with status 1 once everything else has run.
     """
     resolved_solver_configurations = (
         list(solver_configurations)
@@ -95,41 +95,42 @@ def run(
     resolved_run_id = run_id or f"{time.strftime('%Y%m%d_%H%M%S')}_{gethostname()}"
     print(f"Using run ID: {resolved_run_id}")
 
-    failed_years = []
-    for index, year in enumerate(resolved_years):
-        print(f"Running the benchmark for year {year}...")
-
-        try:
-            registered_versions = env.get_registered_solver_versions(
-                resolved_solver_configurations, year
+    failed = False
+    runnable_years = []
+    for year in resolved_years:
+        registered_versions = env.get_registered_solver_versions(
+            resolved_solver_configurations, year
+        )
+        if not registered_versions:
+            print(
+                f"ERROR: no registered solver version for any of "
+                f"{', '.join(resolved_solver_configurations)} in year {year}"
             )
-            if not registered_versions:
-                raise ValueError(
-                    "no registered solver version for any of "
-                    f"{', '.join(resolved_solver_configurations)}"
-                )
-            env.ensure_solver_envs_installed(registered_versions)
+            failed = True
+            continue
+        env.ensure_solver_envs_installed(registered_versions)
+        runnable_years.append(year)
+
+    if runnable_years:
+        print(f"Running the benchmark for year(s) {', '.join(runnable_years)}...")
+        try:
             run_benchmark(
                 problems_yaml_path,
                 resolved_solver_configurations,
-                year=year,
+                years=runnable_years,
                 num_seeds=num_seeds,
                 reference_interval=ref_bench_interval,
-                append=append or index > 0,
+                append=append,
                 run_id=resolved_run_id,
             )
+        # Including orchestrator.BenchmarkRunError, raised after the run if
+        # any solver run crashed
         except Exception as e:
-            print(f"ERROR running the benchmark for year {year}: {e}")
-            failed_years.append(year)
-            continue
+            print(f"ERROR running the benchmark: {e}")
+            failed = True
 
-        print(f"Completed the benchmark for year {year}")
-
-    if failed_years:
-        print(
-            f"ERROR: the benchmark failed for year(s) {', '.join(failed_years)} "
-            f"of run ID {resolved_run_id}"
-        )
+    if failed:
+        print(f"ERROR: the benchmark failed for run ID {resolved_run_id}")
         raise typer.Exit(code=1)
     print(f"All years completed for run ID: {resolved_run_id}")
 
