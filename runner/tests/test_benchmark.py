@@ -287,6 +287,7 @@ class TestBenchmarkCli:
         # exit code (infrastructure/startup-script.sh relies on it).
         assert result.exit_code == 1, result.output
         assert "ERROR running the benchmark for year 2024" in result.output
+        assert "BENCHMARK_ALERT status=ER year=2024" in result.output
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
 

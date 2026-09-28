@@ -135,6 +135,26 @@ to `false` in the configuration option, you can delete the whole infrastructure 
 tofu destroy -var-file benchmarks/sample_run/run.tfvars
 ```
 
+## Failure Notifications
+
+To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per GCP project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
+
+For each such run, the runner prints a line starting with `BENCHMARK_ALERT`, naming the problem, solver configuration, year, run ID and VM. The VMs send their output to Cloud Logging, and a log-based alert policy emails the recipients when it sees that line: at most one email every 5 minutes, however many runs fail.
+
+Setting it up needs permission to create Cloud Monitoring alert policies and notification channels in the project (e.g. the Monitoring Editor role):
+
+```bash
+cd alerts
+tofu init
+tofu apply -var project_id=<your-gcp-project> -var 'notification_emails=["you@example.org"]'
+```
+
+To check that emails arrive, write a test entry to Cloud Logging:
+
+```bash
+gcloud logging write solver-benchmark-alert-test "BENCHMARK_ALERT status=ER test=true" --project <your-gcp-project>
+```
+
 ## Configuration Options
 
 ### Benchmark YAML Format
