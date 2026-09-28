@@ -9,6 +9,9 @@
 # On pull requests, the `changes` job skips metadata, runner and website unless
 # the PR touches their files (see the paths in that job). All other triggers,
 # and any change to the workflows themselves, run every job.
+#
+# The final `CI` job is the one branch protection requires: it passes when
+# every other job passed or was skipped.
 
 name: CI
 
@@ -279,3 +282,21 @@ jobs:
         with:
           name: accessibility-report
           path: website/axe-results.json
+
+  ci:
+    name: CI
+    if: always()
+    needs: [changes, lint, metadata, runner, website]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the other jobs' results
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Job results: ${RESULTS}"
+          for result in ${RESULTS}; do
+            if [ "${result}" != "success" ] && [ "${result}" != "skipped" ]; then
+              echo "ERROR: a job ended with '${result}'."
+              exit 1
+            fi
+          done
