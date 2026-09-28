@@ -15,8 +15,6 @@ from typing import Any
 class GCloudError(Exception):
     """Raised when gcloud command fails."""
 
-    pass
-
 
 async def run_gcloud_command(args: list[str], timeout: int = 30) -> str:
     """
@@ -51,12 +49,10 @@ async def run_gcloud_command(args: list[str], timeout: int = 30) -> str:
 
         return stdout.decode()
 
-    except asyncio.TimeoutError:
+    except TimeoutError:
         process.kill()
         await process.wait()
-        raise asyncio.TimeoutError(
-            f"Command timed out after {timeout}s: {' '.join(cmd)}"
-        )
+        raise TimeoutError(f"Command timed out after {timeout}s: {' '.join(cmd)}")
 
 
 async def get_current_project() -> str | None:
@@ -65,7 +61,7 @@ async def get_current_project() -> str | None:
         result = await run_gcloud_command(["config", "get-value", "project"], timeout=5)
         project = result.strip()
         return project if project and project != "(unset)" else None
-    except (GCloudError, asyncio.TimeoutError):
+    except (TimeoutError, GCloudError):
         return None
 
 
@@ -279,7 +275,7 @@ async def scp_vm(
     try:
         await run_gcloud_command(args, timeout=timeout)
         return (vm_name, True, "")
-    except (GCloudError, asyncio.TimeoutError) as e:
+    except (TimeoutError, GCloudError) as e:
         return (vm_name, False, str(e))
 
 
@@ -330,7 +326,7 @@ async def ssh_exec_on_vm(
         success = process.returncode == 0
         return (vm_name, success, stdout.decode(), stderr.decode())
 
-    except asyncio.TimeoutError:
+    except TimeoutError:
         process.kill()
         await process.wait()
         return (vm_name, False, "", f"Command timed out after {timeout}s")
@@ -524,8 +520,8 @@ async def scp_on_vms(
     # Auto-detect recursive mode if not explicitly set
     if not recursive:
         # Extract the actual paths (remove 'vm:' prefix for analysis)
-        src_path = source[3:] if source.startswith("vm:") else source
-        dst_path = destination[3:] if destination.startswith("vm:") else destination
+        src_path = source.removeprefix("vm:")
+        dst_path = destination.removeprefix("vm:")
 
         # Enable recursive if:
         # 1. Source ends with / or /* (clearly a directory)

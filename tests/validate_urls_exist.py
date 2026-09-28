@@ -12,7 +12,6 @@ from __future__ import annotations
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from typing import Optional
 
 import requests
 import yaml
@@ -26,10 +25,10 @@ class CheckResult:
 
     url: str
     ok: bool
-    status: Optional[int]
+    status: int | None
     reason: str
-    content_length: Optional[int] = None
-    content_type: Optional[str] = None
+    content_length: int | None = None
+    content_type: str | None = None
 
 
 def check_url(url: str, timeout_s: float = 60.0) -> CheckResult:
@@ -121,7 +120,7 @@ def collect_urls(data: dict) -> list[str]:
     return sorted({b["URL"] for b in data["problems"].values() if b.get("URL")})
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """
     CLI entry point: check every problem URL in a metadata YAML file.
 

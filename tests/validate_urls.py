@@ -84,7 +84,7 @@ def load_yaml(path: Path, yaml: YAML) -> Any:
     """
     try:
         return yaml.load(path.read_text())
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise RuntimeError(f"Failed to load {path}: {exc}") from exc
 
 
@@ -108,7 +108,7 @@ def save_yaml(path: Path, data: Any, yaml: YAML) -> None:
     """
     try:
         yaml.dump(data, path)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise RuntimeError(f"Failed to write {path}: {exc}") from exc
 
 

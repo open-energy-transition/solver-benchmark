@@ -25,7 +25,7 @@ def reported_runtime(model: Any) -> None:
     CPLEX solve time either (PyPSA/linopy#583, #636, #682). Revisit once
     linopy exposes one.
     """
-    return None
+    return
 
 
 def integer_values(

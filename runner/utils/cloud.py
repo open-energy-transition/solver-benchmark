@@ -139,8 +139,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
         with requests.get(url, stream=True) as response:
             response.raise_for_status()
             with open(dest_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                f.writelines(response.iter_content(chunk_size=8192))
         print("done.")
 
     if dest_path.suffix == ".gz":
