@@ -1,3 +1,15 @@
+# Runs on pull requests to main, pushes to main, a weekly schedule and manual
+# runs. The jobs run in parallel:
+#
+#   lint      pre-commit, always
+#   metadata  benchmark metadata and results checks
+#   runner    runner unit tests, campaign generator and a sample benchmark run
+#   website   website lint, build and accessibility checks
+#
+# On pull requests, the `changes` job skips metadata, runner and website unless
+# the PR touches their files (see the paths in that job). All other triggers,
+# and any change to the workflows themselves, run every job.
+
 name: CI
 
 on:
@@ -5,13 +17,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  # Weekly full run, to catch drift that no single change triggers (e.g. a
-  # benchmark URL that stops resolving, or an upstream package change)
+  # Catches drift that no change triggers, e.g. a benchmark URL that stops
+  # resolving.
   schedule:
     - cron: "0 6 * * 1" # Mondays at 06:00 UTC
   workflow_dispatch:
 
-# Cancel an in-progress run when a newer commit is pushed to the same PR
+# A new push to a PR cancels its run in progress.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -19,15 +31,13 @@ concurrency:
 permissions:
   contents: read
 
-# Explicit bash also turns on pipefail, so e.g. `cmd | tee log` fails the step
-# when cmd fails
+# Setting bash explicitly also enables pipefail, so `cmd | tee log` fails the
+# step when cmd fails.
 defaults:
   run:
     shell: bash
 
 jobs:
-  # Decide which areas a PR touches. Pushes to main, the weekly schedule and
-  # manual runs check every area.
   changes:
     runs-on: ubuntu-latest
     outputs:
@@ -39,7 +49,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - id: filter
+      - name: Find the areas this change touches
+        id: filter
         env:
           EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -55,16 +66,16 @@ jobs:
           echo "Changed files:"
           echo "${changed}"
 
-          # A change to the workflows themselves runs every area
-          ci='^\.github/workflows/'
+          # Changes to the workflows match every area.
+          workflows='^\.github/workflows/'
           pixi='^pixi\.(toml|lock)$'
           matches() {
-            if echo "${changed}" | grep -qE "$1|${ci}"; then echo true; else echo false; fi
+            if echo "${changed}" | grep -qE "$1|${workflows}"; then echo true; else echo false; fi
           }
           {
             echo "metadata=$(matches "^benchmarks/|^results/|^tests/validate_|${pixi}")"
             echo "runner=$(matches "^runner/|^benchmarks/[^/]+\.(py|yaml)$|^results/metadata(_subset)?\.yaml$|^tests/sample_benchmarks/|^pytest\.ini$|${pixi}")"
-            # The website reads results/ at build time
+            # The website build reads results/.
             echo "website=$(matches "^website/|^results/")"
           } | tee -a "${GITHUB_OUTPUT}"
 
@@ -73,16 +84,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 0 # pre-commit compares against origin/main
+          fetch-depth: 0 # for comparing against origin/main
 
       - uses: prefix-dev/setup-pixi@v0.10.2
         with:
           environments: dev
 
       - name: Run pre-commit
+        # Checks only the changed files, unless the linter config changed,
+        # since that applies to every file.
         run: |
-          # A change to the linters' own config applies to every file, so check
-          # them all; otherwise only the files this change touches.
           if git diff --name-only origin/main...HEAD | grep -qE '^(\.pre-commit-config\.yaml|ruff\.toml)$'; then
             pixi run -e dev pre-commit run --show-diff-on-failure --all-files
           else
@@ -105,7 +116,7 @@ jobs:
           pixi run -e benchmarks python tests/validate_urls.py
           if ! git diff --quiet; then
             git diff
-            echo "ERROR: benchmark URLs do not match expected format, please run the following command:"
+            echo "ERROR: benchmark URLs don't match the expected format. Run:"
             echo "pixi run -e benchmarks python tests/validate_urls.py"
             exit 1
           fi
@@ -114,12 +125,12 @@ jobs:
         run: |
           pixi run -e benchmarks python benchmarks/merge_metadata.py 2>&1 | tee merge_metadata.log
           if grep -i "warning" merge_metadata.log; then
-            echo "ERROR: merge_metadata.py produced warnings"
+            echo "ERROR: merge_metadata.py produced warnings."
             exit 1
           fi
           if ! git diff --quiet; then
             git diff
-            echo "ERROR: metadata needs updating, please run the following command:"
+            echo "ERROR: results/metadata.yaml is out of date. Run:"
             echo "pixi run -e benchmarks python benchmarks/merge_metadata.py"
             exit 1
           fi
@@ -148,8 +159,8 @@ jobs:
         run: pixi run -e runner pytest runner/tests -v
 
       - name: Check campaign generator
-        # Runs in the benchmarks env with the shipped config, so
-        # incompatible syntax or a stale config schema fails here.
+        # Uses the benchmarks env and the shipped config, so incompatible
+        # syntax or a stale config schema fails here.
         run: |
           pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
             --configfile benchmarks/config.campaign.default.yaml \
@@ -166,8 +177,9 @@ jobs:
             "${SOLVER_ARGS[@]}" results/metadata_subset.yaml
           echo ""
           cat results/benchmark_results.csv
-          # Require at least one row, every row "ok" (column 5 is Status),
-          # and at least one row for each requested solver configuration.
+
+          # Require at least one row, every row "ok" (column 5 is Status), and
+          # at least one row per requested solver configuration.
           if awk -F',' -v expected="${SOLVER_CONFIGURATIONS}" '
             NR > 1 { rows++; seen[$2] = 1; if ($5 != "ok") failed = 1 }
             END {
@@ -182,7 +194,7 @@ jobs:
             }' results/benchmark_results.csv; then
             echo "All benchmarks ran successfully."
           else
-            echo "Some benchmarks did not complete successfully."
+            echo "ERROR: some benchmarks didn't complete successfully."
             exit 1
           fi
 
@@ -203,13 +215,13 @@ jobs:
           cache-dependency-path: website/package-lock.json
 
       - name: Check reCAPTCHA key is configured
-        # Secrets aren't available to PRs from forks or Dependabot
+        # Skipped for PRs from forks and Dependabot, which don't get secrets.
         if: ${{ !(github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]')) }}
         env:
           NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
         run: |
           if [ -z "${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}" ]; then
-            echo "Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
+            echo "ERROR: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set."
             exit 1
           fi
 
@@ -217,11 +229,11 @@ jobs:
         run: npm ci
 
       - name: Lint
-        # The build doesn't lint, so run ESLint explicitly
+        # The Next.js build doesn't run ESLint.
         run: npm run lint
 
       - name: Build
-        # The only step that gets the website's secrets
+        # The only step that gets the website's secrets.
         env:
           NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
           NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
@@ -229,53 +241,48 @@ jobs:
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
         run: npm run build
 
-      - name: Install Google Chrome (for ChromeDriver matching)
+      - name: Install Google Chrome
+        # Pins the major version, falling back to the latest stable release.
         run: |
-          # Install Chrome so any driver manager can detect the browser version
           sudo apt-get update
           sudo apt-get install -y wget gnupg ca-certificates
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
-          # Attempt to install Chrome 145.x (pin major version). If unavailable, fall back to stable.
           CHROME_MAJOR=145
           if sudo apt-get install -y "google-chrome-stable=${CHROME_MAJOR}*"; then
-            echo "Installed Google Chrome matching major ${CHROME_MAJOR}"
+            echo "Installed Google Chrome ${CHROME_MAJOR}."
           else
-            echo "Requested Chrome ${CHROME_MAJOR} not available via apt; installing stable instead"
+            echo "Google Chrome ${CHROME_MAJOR} isn't available; installing the latest stable release."
             sudo apt-get install -y google-chrome-stable
           fi
-          # Print version for debugging
           google-chrome --version || which google-chrome-stable || true
 
-      - name: Install matching ChromeDriver for apt Chrome via browser-driver-manager
+      - name: Install a matching ChromeDriver
+        # Tries Chrome's exact version, then its major version, then the latest
+        # release. Exports both binaries' paths for the accessibility tests.
         run: |
           npm install --no-save browser-driver-manager
-          # Detect the apt-installed Chrome version and ask bdm to install the matching chromedriver
           CHROME_VER=$(google-chrome --version 2>/dev/null | awk '{print $3}' || true)
           echo "Detected Chrome version: $CHROME_VER"
           if [ -n "$CHROME_VER" ]; then
-            # Try to install the chromedriver matching the full Chrome version first
             if npx browser-driver-manager install chromedriver --chromedriver-version="$CHROME_VER"; then
-              echo "Installed chromedriver matching $CHROME_VER"
+              echo "Installed ChromeDriver $CHROME_VER."
             else
-              # Fall back to installing chromedriver for the major version
               CHROME_MAJOR=$(echo "$CHROME_VER" | cut -d'.' -f1)
-              echo "Falling back to chromedriver for major version: $CHROME_MAJOR"
+              echo "Falling back to ChromeDriver for major version $CHROME_MAJOR."
               npx browser-driver-manager install chromedriver --chromedriver-version="$CHROME_MAJOR" || true
             fi
           else
-            echo "Could not detect apt chrome version; installing chromedriver latest as fallback"
+            echo "Couldn't detect the Chrome version; installing the latest ChromeDriver."
             npx browser-driver-manager install chromedriver || true
           fi
-          # Resolve the chromedriver binary and export for later steps
           CHROMEDRIVER_PATH=$(npx browser-driver-manager path chromedriver 2>/dev/null || which chromedriver 2>/dev/null || echo "")
           echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH" >> $GITHUB_ENV
-          echo "Installed ChromeDriver at: $CHROMEDRIVER_PATH"
-          # Also expose Chrome binary path for tests
+          echo "ChromeDriver: $CHROMEDRIVER_PATH"
           CHROME_BIN_PATH=$(which google-chrome-stable || which google-chrome || echo "")
           echo "CHROME_BIN_PATH=$CHROME_BIN_PATH" >> $GITHUB_ENV
-          echo "Chrome binary: $CHROME_BIN_PATH"
+          echo "Chrome: $CHROME_BIN_PATH"
           if [ -n "$CHROME_BIN_PATH" ]; then
             $CHROME_BIN_PATH --version || true
           fi
@@ -295,11 +302,9 @@ jobs:
 
       - name: Run axe-core accessibility tests on all pages
         env:
-          # AXE flags
           AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
           AXE_LOAD_DELAY: "5000"
         run: |
-          # CHROME_BIN_PATH is set earlier into GITHUB_ENV; export it for the test
           export CHROME_BIN="$CHROME_BIN_PATH"
           echo "Using CHROME_BIN=$CHROME_BIN"
           npm run axe:test
