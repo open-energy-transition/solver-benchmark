@@ -1,5 +1,6 @@
-"""Solver dispatch: build a tuned linopy solver, and read MIP/duality-gap/
-runtime metrics back off its result.
+"""Solver dispatch: build a tuned linopy solver and read metrics off its result.
+
+The metrics are MIP status, duality gap, integrality violation and runtime.
 
 Each solver's behavior lives in its own module under `runner/utils/solvers/`
 (see that package's docstring). Each named way of running a solver --
