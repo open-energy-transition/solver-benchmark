@@ -53,7 +53,9 @@ resource "google_monitoring_alert_policy" "benchmark_failures" {
   conditions {
     display_name = "The runner reported ER or OOM"
     condition_matched_log {
-      filter = "\"BENCHMARK_ALERT\""
+      # Audit logs of changes to this policy contain the filter text itself,
+      # so leave them out, or every change would send an alert
+      filter = "\"BENCHMARK_ALERT\" AND NOT logName:\"cloudaudit.googleapis.com\""
     }
   }
 
