@@ -1,12 +1,12 @@
 # V3 benchmark with current Linopy
 
-This benchmark campaign tests the V3 problem selection using Linopy commit
+This benchmark campaign uses Linopy commit
 `26e000d936fb679386535e47191ca0d99aa250f2`.
 
-The V3 result dataset contains 348 rows: 214 solver runs across 24 optimization
-problems, plus 134 HiGHS reference-benchmark measurements.
+The V3 dataset contains 348 rows:
 
-## Results overview
+- 214 solver runs across 24 optimization problems;
+- 134 HiGHS reference-benchmark measurements.
 
 V3 solver-run status:
 
@@ -15,21 +15,18 @@ V3 solver-run status:
 - 11 `ER`
 - 5 `OOM`
 
-For comparisons with the published V2 results, rows are matched only when all
-of the following are identical:
+## V2 comparison
+
+V2 and V3 rows are compared only when all of the following are identical:
 
 - problem;
 - solver;
 - solver version;
 - VM instance type.
 
-The plots show the absolute values stored in the result CSV. Missing values are
-not replaced by zero. Problems are shown in a fixed order grouped by modelling
-framework.
-
-HiGHS-IPM and HiGHS-HiPO are shown separately as V3-only results because the
-V3 campaign uses HiGHS 1.15.1 and there is no exact solver-version match in the
-published V2 dataset.
+The plots show the absolute values stored in the result CSVs. Missing numeric
+values are left missing and annotated where necessary. Problems use the same
+ordering in every figure, grouped by modelling framework.
 
 ## Gurobi
 
@@ -137,6 +134,9 @@ published V2 dataset.
 
 ## HiGHS V3
 
+There is no exact V2 solver-version match for HiGHS 1.15.1, so IPM and HiPO
+are compared within V3 only.
+
 ### Status
 
 ![HiGHS status](figures/v3-linopy-current/highs_v3_status.png)
@@ -161,7 +161,8 @@ published V2 dataset.
 
 ![HiGHS duality gap](figures/v3-linopy-current/highs_v3_duality_gap.png)
 
-## Reproducing the figures
+## Reproduce
 
 ```bash
 python notebooks/analyze_v3_linopy_current.py
+```
