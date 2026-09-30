@@ -1,8 +1,9 @@
-"""Allocate benchmark problems across cloud VMs for a campaign, scaffold
-the Terraform/OpenTofu files to launch it, and check them before launch.
+"""Allocate benchmark problems across cloud VMs for a campaign.
 
-Run `python -m runner.utils.campaign infrastructure/benchmarks/<run-id>` to
-check an existing campaign folder (see `validate_campaign`).
+Also scaffolds the Terraform/OpenTofu files to launch it, and checks them
+before launch: run `python -m runner.utils.campaign
+infrastructure/benchmarks/<run-id>` to check an existing campaign folder (see
+`validate_campaign`).
 
 VM/cloud campaign allocation only -- loading problem metadata now lives in
 `metadata.py`, since it's also needed by the CLI/orchestrator.
@@ -82,7 +83,7 @@ def allocate_problems(
     zone: str = "us-central1-a",
     solvers: str | None = None,
     timeout_seconds: int | None = None,
-    years: list[int] = [2020, 2022, 2023, 2024, 2025],
+    years: list[int] | None = None,
 ) -> list[dict]:
     """Allocate problems across VMs and build one campaign YAML dict per VM.
 
@@ -107,7 +108,8 @@ def allocate_problems(
     timeout_seconds : int, optional
         If given, recorded as each VM YAML's `timeout_seconds` key.
     years : list[int], optional
-        Solver-version years to record in each VM's YAML.
+        Solver-version years to record in each VM's YAML. Defaults to
+        2020 and 2022-2025.
 
     Returns
     -------
@@ -118,6 +120,9 @@ def allocate_problems(
         `metadata.load_problems` reads campaign-generated and metadata files
         identically -- plus `solver_configuration`/`timeout_seconds` if given.
     """
+    if years is None:
+        years = [2020, 2022, 2023, 2024, 2025]
+
     if problems_df.empty:
         return []
 
@@ -184,7 +189,7 @@ def create_benchmark_campaign(
     # Create a campaign folder ../infrastructure/benchmarks/{batch_id}
     bench_dir = Path(f"../infrastructure/benchmarks/{batch_id}")
     bench_dir.mkdir(parents=True, exist_ok=True)
-    with open(bench_dir / "run.tfvars", "w") as f:
+    with (bench_dir / "run.tfvars").open("w") as f:
         f.write(tfvars)
 
     if any(bench_dir.glob("*.yaml")):
@@ -192,7 +197,7 @@ def create_benchmark_campaign(
 
     # Add to it the allocated problems
     for idx, yaml_data in enumerate(vm_yamls):
-        with open(bench_dir / f"{vm_prefix}-{idx:02d}.yaml", "w") as f:
+        with (bench_dir / f"{vm_prefix}-{idx:02d}.yaml").open("w") as f:
             yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False)
 
     print(f"Created directory and files in {bench_dir}")
@@ -220,8 +225,8 @@ def current_git_branch(repo_root: Path = _REPO_ROOT) -> str | None:
 def _read_tfvars(path: Path) -> dict[str, str]:
     """Read the `key = "value"` lines of a tfvars file, ignoring comments."""
     values = {}
-    for line in path.read_text().splitlines():
-        line = line.split("#", 1)[0].strip()
+    for raw_line in path.read_text().splitlines():
+        line = raw_line.split("#", 1)[0].strip()
         if "=" in line:
             key, value = line.split("=", 1)
             values[key.strip()] = value.strip().strip('"')
@@ -308,7 +313,7 @@ def _check_git_state(git_ref: str, repo_root: Path) -> tuple[list[str], list[str
 
     def git(*args: str) -> subprocess.CompletedProcess:
         return subprocess.run(
-            ["git", *args], cwd=repo_root, capture_output=True, text=True
+            ["git", *args], cwd=repo_root, capture_output=True, text=True, check=False
         )
 
     try:

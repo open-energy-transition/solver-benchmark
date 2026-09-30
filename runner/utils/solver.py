@@ -1,5 +1,6 @@
-"""Solver dispatch: build a tuned linopy solver, and read MIP/duality-gap/
-runtime metrics back off its result.
+"""Solver dispatch: build a tuned linopy solver and read metrics off its result.
+
+The metrics are MIP status, duality gap, integrality violation and runtime.
 
 Each solver's behavior lives in its own module under `runner/utils/solvers/`
 (see that package's docstring). Each named way of running a solver --
@@ -334,7 +335,7 @@ def main(
                 solution_fn=solution_fn,
                 log_fn=log_fn,
             )
-        except Exception:
+        except Exception as e:
             runtime = perf_counter() - start_time
             # linopy can fail to parse a solver's output even when the solve
             # itself succeeded (e.g. GLPK with long variable names); let the
@@ -342,9 +343,12 @@ def main(
             recovered = recover_result(solver_package, problem_file, solution_fn)
             if recovered is None:
                 raise
+            # An expected fallback, so one line rather than a full traceback
+            # (which is still printed below if recovery fails).
             print(
-                "WARNING: linopy failed to read the solver's output; using "
-                f"{solver_package}'s own result files instead:\n{format_exc()}",
+                f"WARNING: linopy couldn't parse {solver_package}'s output "
+                f"({type(e).__name__}: {e}); using the result from "
+                f"{solver_package}'s own files instead.",
                 file=sys.stderr,
             )
             solver_model = None

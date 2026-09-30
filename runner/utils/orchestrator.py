@@ -1,5 +1,7 @@
-"""The per-problem run loop: ties `metadata`, `config`, `env`, `execution`,
-and `results` together into an actual benchmark run.
+"""The per-problem run loop of a benchmark run.
+
+Ties `metadata`, `config`, `env`, `execution`, and `results` together into
+an actual benchmark run.
 
 Imported by `runner/benchmark.py`'s Typer CLI. Kept importable (not inlined
 in the CLI) so it's testable without going through Typer's CLI-parsing layer.
@@ -8,7 +10,6 @@ in the CLI) so it's testable without going through Typer's CLI-parsing layer.
 from __future__ import annotations
 
 import datetime
-import os
 import statistics
 import subprocess
 import time
@@ -27,6 +28,51 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _PROBLEMS_FOLDER = Path(__file__).resolve().parent.parent / "benchmarks"
 
 
+_GCE_METADATA_URL = "http://metadata.google.internal/computeMetadata/v1/instance/"
+
+
+def _get_gce_metadata(attribute: str) -> str:
+    """Read one attribute of this VM from the GCE metadata server.
+
+    Parameters
+    ----------
+    attribute : str
+        The metadata path under `instance/`, e.g. ``"machine-type"`` or
+        ``"zone"``.
+
+    Returns
+    -------
+    str
+        The last path segment of the value (e.g. ``"c4-highmem-8"`` for
+        ``"projects/319823961160/machineTypes/c4-highmem-8"``), or
+        ``"unknown"`` if this isn't a GCE VM.
+
+    Notes
+    -----
+    Off GCE the request can still get an answer, e.g. an HTML error page
+    from a network proxy, which used to end up in the results CSV. Only the
+    real metadata server sends back the ``Metadata-Flavor: Google`` header,
+    so any other response is treated as "not a GCE VM".
+    """
+    try:
+        response = requests.get(
+            _GCE_METADATA_URL + attribute,
+            headers={"Metadata-Flavor": "Google"},
+            timeout=2,
+        )
+    except requests.RequestException as e:
+        print(f"Couldn't reach the GCE metadata server for {attribute}: {e}")
+        return "unknown"
+
+    if (
+        response.status_code != 200
+        or response.headers.get("Metadata-Flavor") != "Google"
+    ):
+        print(f"No GCE metadata for {attribute}; not running on a GCE VM?")
+        return "unknown"
+    return response.text.strip().split("/")[-1]
+
+
 def _gather_environment_metadata() -> dict[str, str]:
     """Collect this machine's identity for the results CSV's environment columns.
 
@@ -34,45 +80,26 @@ def _gather_environment_metadata() -> dict[str, str]:
     -------
     dict[str, str]
         `hostname`, `vm_instance_type`, `vm_zone` (each `"unknown"` if this
-        isn't a GCE VM or the metadata server is unreachable), and
+        isn't a GCE VM, see `_get_gce_metadata`), and
         `solver_benchmark_version` (this repo's short git commit hash, or
         `"unknown"` if it can't be determined).
     """
-    hostname = gethostname()
-    environment_metadata = {"hostname": hostname}
-
-    try:
-        environment_metadata["vm_instance_type"] = requests.get(
-            "http://metadata.google.internal/computeMetadata/v1/instance/machine-type",
-            headers={"Metadata-Flavor": "Google"},
-        ).text.split(
-            "/"
-        )[
-            -1
-        ]  # the api will return a response like projects/319823961160/machineTypes/c4-highmem-8
-    except Exception as e:
-        print(f"Error getting VM instance type: {e}")
-        environment_metadata["vm_instance_type"] = "unknown"
+    environment_metadata = {
+        "hostname": gethostname(),
+        "vm_instance_type": _get_gce_metadata("machine-type"),
+        "vm_zone": _get_gce_metadata("zone"),
+    }
 
     try:
         environment_metadata["solver_benchmark_version"] = subprocess.run(
             ["git", "rev-parse", "--short", "HEAD"],
             capture_output=True,
             text=True,
+            check=True,  # a failure is recorded as "unknown" below
         ).stdout.strip()
     except Exception as e:
         print(f"Error getting git commit hash: {e}")
         environment_metadata["solver_benchmark_version"] = "unknown"
-
-    try:
-        # curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone
-        environment_metadata["vm_zone"] = requests.get(
-            "http://metadata.google.internal/computeMetadata/v1/instance/zone",
-            headers={"Metadata-Flavor": "Google"},
-        ).text.split("/")[-1]
-    except Exception as e:
-        print(f"Error getting VM zone: {e}")
-        environment_metadata["vm_zone"] = "unknown"
 
     return environment_metadata
 
@@ -140,7 +167,9 @@ def _run_reference_benchmark(
     reference_metrics["reported_runtime"] = None
     reference_metrics["timeout"] = None
 
-    reference_timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+    reference_timestamp = datetime.datetime.now(datetime.UTC).strftime(
+        "%Y-%m-%d %H:%M:%S.%f"
+    )
     write_csv_row(
         results_csv,
         "reference-benchmark",
@@ -215,7 +244,7 @@ def run_benchmark(
     hostname = environment_metadata["hostname"]
 
     if run_id is None:
-        run_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{hostname}"
+        run_id = f"{time.strftime('%Y%m%d_%H%M%S', time.gmtime())}_{hostname}"
         print(f"Generated run_id: {run_id}")
     else:
         print(f"Using provided run_id: {run_id}")
@@ -228,7 +257,7 @@ def run_benchmark(
     solved_since_reference = False
 
     results_folder = _REPO_ROOT / "results"
-    os.makedirs(results_folder, exist_ok=True)
+    results_folder.mkdir(parents=True, exist_ok=True)
 
     results_csv = results_folder / "benchmark_results.csv"
     mean_stddev_csv = results_folder / "benchmark_results_mean_stddev.csv"
@@ -245,7 +274,7 @@ def run_benchmark(
         append,
         seeds_csv=seeds_csv if num_seeds > 1 else None,
     )
-    os.makedirs(_PROBLEMS_FOLDER, exist_ok=True)
+    _PROBLEMS_FOLDER.mkdir(parents=True, exist_ok=True)
 
     registered_solver_versions = env.get_registered_solver_versions(
         solver_configurations, year
@@ -334,8 +363,10 @@ def run_benchmark(
                     flush=True,
                 )
 
-                # Record timestamp before running the solver
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+                # Record timestamp (UTC) before running the solver
+                timestamp = datetime.datetime.now(datetime.UTC).strftime(
+                    "%Y-%m-%d %H:%M:%S.%f"
+                )
                 first_timestamp = first_timestamp or timestamp
 
                 metrics = run_solver(

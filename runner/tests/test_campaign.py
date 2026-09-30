@@ -3,6 +3,7 @@ benchmark campaign, and checking a campaign before launch.
 """
 
 import subprocess
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -134,7 +135,7 @@ class TestAllocateProblems:
         vm_yamls = allocate_problems(df, "weight", num_vms=1)
 
         problems_yaml = tmp_path / "vm-00.yaml"
-        with open(problems_yaml, "w") as f:
+        with Path(problems_yaml).open("w") as f:
             yaml.dump(vm_yamls[0], f)
 
         problems = load_problems(problems_yaml, tmp_path / "downloads")
@@ -169,7 +170,7 @@ class TestValidateCampaign:
         return tmp_path
 
     def _write_vm(self, bench_dir, name, data):
-        with open(bench_dir / f"{name}.yaml", "w") as f:
+        with (bench_dir / f"{name}.yaml").open("w") as f:
             yaml.dump(data, f)
 
     def test_valid_campaign_passes(self, bench_dir):
@@ -193,7 +194,7 @@ class TestValidateCampaign:
         assert "not a valid GCE name" in errors[0]
 
     def test_instance_name_from_tfvars(self, bench_dir):
-        with open(bench_dir / "run.tfvars", "a") as f:
+        with (bench_dir / "run.tfvars").open("a") as f:
             f.write('instance_name = "Bad_Prefix"\n')
         self._write_vm(bench_dir, "test-00", _VALID_VM_YAML)
         errors, _ = validate_campaign(bench_dir)
