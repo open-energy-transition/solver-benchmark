@@ -1,5 +1,6 @@
-"""Monitor in-progress cloud benchmark runs: which VMs are up, and whether
-any of them look hung.
+"""Monitor in-progress cloud benchmark runs.
+
+Which VMs are up, and whether any of them look hung.
 """
 
 import subprocess

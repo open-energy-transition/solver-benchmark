@@ -1,10 +1,10 @@
-"""Move files between this machine and cloud storage/VMs: pulling
-in-progress results off benchmark VMs, and downloading benchmark problem
+"""Move files between this machine and cloud storage or VMs.
+
+Pulls in-progress results off benchmark VMs, and downloads benchmark problem
 files from GCS or plain HTTP(S) URLs.
 """
 
 import gzip
-import os
 import shutil
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -115,7 +115,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
     exists, so repeated runs don't re-fetch the same file.
     """
     # Ensure the destination folder exists
-    os.makedirs(dest_path.parent, exist_ok=True)
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
 
     # If dest_path ends with .gz, prepare for the uncompressed version
     if dest_path.suffix == ".gz":
@@ -123,7 +123,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
     else:
         uncompressed_dest_path = dest_path
 
-    if os.path.exists(uncompressed_dest_path):
+    if uncompressed_dest_path.exists():
         print(f"File already exists at {uncompressed_dest_path}. Skipping download.")
         return
 
@@ -138,7 +138,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
         print(f"Downloading {url} to {dest_path}...", end="")
         with requests.get(url, stream=True) as response:
             response.raise_for_status()
-            with open(dest_path, "wb") as f:
+            with Path(dest_path).open("wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
         print("done.")
@@ -147,7 +147,7 @@ def download_benchmark_file(url: str, dest_path: Path) -> None:
         print(f"Unzipping {dest_path}...")
         with gzip.open(dest_path, "rb") as gz_file:
             uncompressed_file_path = dest_path.with_suffix("")
-            with open(uncompressed_file_path, "wb") as uncompressed_file:
+            with Path(uncompressed_file_path).open("wb") as uncompressed_file:
                 shutil.copyfileobj(gz_file, uncompressed_file)
-        os.remove(dest_path)
+        dest_path.unlink()
         print(f"Unzipped to {uncompressed_file_path}.")

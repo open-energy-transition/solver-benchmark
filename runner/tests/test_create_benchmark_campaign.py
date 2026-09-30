@@ -38,7 +38,7 @@ def test_shipped_config_has_a_valid_selection(default_args):
 
 
 def test_shipped_config_selects_existing_problems(default_args):
-    with open(_REPO_ROOT / "results" / "metadata.yaml") as f:
+    with (_REPO_ROOT / "results" / "metadata.yaml").open() as f:
         problems = yaml.safe_load(f)["problems"]
     assert set(default_args.problem) <= problems.keys()
 
