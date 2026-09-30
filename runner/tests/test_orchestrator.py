@@ -3,6 +3,7 @@ metadata, config, env, execution, and results together.
 """
 
 import textwrap
+from types import SimpleNamespace
 
 import pandas as pd
 import pytest
@@ -375,3 +376,47 @@ class TestRunBenchmark:
         reference_mock.assert_called_once()
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert "reference-benchmark" in set(results["Problem"])
+
+
+class TestGetGceMetadata:
+    def _patch_get(self, mocker, **response):
+        return mocker.patch.object(
+            orchestrator.requests,
+            "get",
+            return_value=SimpleNamespace(
+                status_code=response.get("status_code", 200),
+                headers=response.get("headers", {}),
+                text=response.get("text", ""),
+            ),
+        )
+
+    def test_reads_the_value_from_the_metadata_server(self, mocker):
+        get = self._patch_get(
+            mocker,
+            headers={"Metadata-Flavor": "Google"},
+            text="projects/319823961160/machineTypes/c4-highmem-8",
+        )
+        assert orchestrator._get_gce_metadata("machine-type") == "c4-highmem-8"
+        assert get.call_args.kwargs["timeout"] > 0
+
+    def test_html_page_off_gce_is_unknown(self, mocker):
+        # Regression test for #477: off GCE, a proxy answered with an HTML
+        # page and "html>\n" ended up in the results CSV.
+        self._patch_get(
+            mocker,
+            headers={"Content-Type": "text/html"},
+            text="<!DOCTYPE html>\n<html>\n...\n</html>\n",
+        )
+        assert orchestrator._get_gce_metadata("zone") == "unknown"
+
+    def test_error_status_is_unknown(self, mocker):
+        self._patch_get(mocker, status_code=404, headers={"Metadata-Flavor": "Google"})
+        assert orchestrator._get_gce_metadata("zone") == "unknown"
+
+    def test_unreachable_server_is_unknown(self, mocker):
+        mocker.patch.object(
+            orchestrator.requests,
+            "get",
+            side_effect=orchestrator.requests.ConnectionError("no route"),
+        )
+        assert orchestrator._get_gce_metadata("zone") == "unknown"

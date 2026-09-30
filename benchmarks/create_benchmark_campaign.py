@@ -19,7 +19,7 @@ import re
 import subprocess
 import sys
 from collections.abc import Callable
-from datetime import date, datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -798,7 +798,7 @@ def write_campaign_summary_csv(
         Machine profile override. If ``None``, the automatic size-based policy
         is used.
     """
-    created_at = datetime.now().isoformat(timespec="seconds")
+    created_at = datetime.now(UTC).isoformat(timespec="seconds")
     created_by = getpass.getuser()
 
     rows = selected.copy().reset_index(drop=True)
@@ -1033,7 +1033,7 @@ def main() -> None:
         parser.error("--yes can only be used with --target local")
 
     campaign_slug = slugify_campaign_name(args.campaign)
-    run_id = f"{date.today():%Y%m%d}-{campaign_slug}"
+    run_id = f"{datetime.now(UTC):%Y%m%d}-{campaign_slug}"
     vm_prefix = args.vm_prefix or f"benchmark-instance-{campaign_slug}"
 
     if args.target == "cloud":

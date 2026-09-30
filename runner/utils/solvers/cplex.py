@@ -15,7 +15,7 @@ def duality_gap(model: Any, log_fn: Path) -> float:
 
 
 def reported_runtime(model: Any) -> None:
-    """Always None.
+    """Return None, as CPLEX's solve time isn't available.
 
     Cplex.get_time() returns an absolute time stamp, not an elapsed
     duration -- it's only meaningful as the difference between two calls
@@ -43,6 +43,7 @@ def integer_values(
             model.variables.get_names(),
             model.solution.get_values(),
             model.variables.get_types(),
+            strict=True,
         )
         if var_type in ("I", "B")
     }

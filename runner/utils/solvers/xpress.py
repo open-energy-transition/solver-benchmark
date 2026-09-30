@@ -16,7 +16,7 @@ def is_mip(model: Any) -> bool:
 
 
 def duality_gap(model: Any, log_fn: Path) -> float:
-    """The relative MIP gap tolerance Xpress was configured with."""
+    """Return the relative MIP gap tolerance Xpress was configured with."""
     return model.controls.miprelgapnotify
 
 
@@ -37,6 +37,6 @@ def integer_values(
     variables = model.getVariable()
     return {
         var.name: value
-        for var, value in zip(variables, model.getSolution())
+        for var, value in zip(variables, model.getSolution(), strict=True)
         if var.vartype in (_xpress.integer, _xpress.binary)
     }
