@@ -28,5 +28,5 @@ def reported_runtime(model: Any) -> float:
 def integer_values(
     model: Any, problem_fn: Path, solution_fn: Path
 ) -> dict[str, float] | None:
-    """Always None: linopy's `KnitroResult` carries no variable values."""
+    """Return None: linopy's `KnitroResult` carries no variable values."""
     return None

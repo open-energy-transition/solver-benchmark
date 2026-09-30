@@ -1,5 +1,6 @@
-"""Solver adapter registry: one plain Python module per solver, discovered
-automatically from this package's own directory.
+"""Solver adapter registry: one plain Python module per solver.
+
+The modules are discovered automatically from this package's own directory.
 
 Each sibling module exports `is_mip(model)`, `duality_gap(model, log_fn)`,
 `reported_runtime(model)`, and
