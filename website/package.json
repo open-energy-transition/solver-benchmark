@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "@redux-devtools/extension": "^3.3.0",
+    "@redux-devtools/extension": "^4.0.0",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/typography": "^0.5.20",
     "@tanstack/react-table": "^8.20.6",
