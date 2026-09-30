@@ -7,8 +7,9 @@
 #   website   website lint, build and accessibility checks
 #
 # On pull requests, the `changes` job skips metadata, runner and website unless
-# the PR touches their files (see the paths in that job). All other triggers,
-# and any change to the workflows themselves, run every job.
+# the PR touches their files (see the paths in that job), and lint checks only
+# the changed files. All other triggers, and any change to the workflows
+# themselves, run every job, and lint checks every file.
 #
 # The final `CI` job is the one branch protection requires: it passes when
 # every other job passed or was skipped.
@@ -72,8 +73,11 @@ jobs:
           # Changes to the workflows match every area.
           workflows='^\.github/workflows/'
           pixi='^pixi\.(toml|lock)$'
+          # A here-string, not a pipe: with pipefail, `grep -q` exiting at the
+          # first match can fail a pipe from echo with SIGPIPE, so a long list
+          # of changed files would look like no match.
           matches() {
-            if echo "${changed}" | grep -qE "$1|${workflows}"; then echo true; else echo false; fi
+            if grep -qE "$1|${workflows}" <<< "${changed}"; then echo true; else echo false; fi
           }
           {
             echo "metadata=$(matches "^benchmarks/|^results/|^tests/validate_|${pixi}")"
@@ -94,10 +98,16 @@ jobs:
           environments: dev
 
       - name: Run pre-commit
-        # Checks only the changed files, unless the linter config changed,
-        # since that applies to every file.
+        # On pull requests, checks only the changed files, unless the linter
+        # config changed, since that applies to every file. Other triggers
+        # check every file: on main there is no diff to check.
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          if git diff --name-only origin/main...HEAD | grep -qE '^(\.pre-commit-config\.yaml|ruff\.toml)$'; then
+          changed=$(git diff --name-only origin/main...HEAD)
+          # A here-string, not a pipe (see the `changes` job)
+          if [ "${EVENT_NAME}" != "pull_request" ] ||
+            grep -qE '^(\.pre-commit-config\.yaml|ruff\.toml)$' <<< "${changed}"; then
             pixi run -e dev pre-commit run --show-diff-on-failure --all-files
           else
             pixi run -e dev pre-commit run --show-diff-on-failure --from-ref origin/main --to-ref HEAD
