@@ -478,31 +478,28 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
         <div className="flex gap-2 justify-end mt-2 sm:mt-0 shrink-0">
           {!isSelectMode ? (
-            <button
-              onClick={() => setIsSelectMode(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
-            >
-              Select for Download or Comparison
+            <>
+              <button
+                onClick={() => setIsSelectMode(true)}
+                className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
+              >
+                Select for Download or Comparison
+              </button>
               <InfoPopup
+                openOn={["click"]}
                 trigger={() => (
-                  <span
-                    className="flex items-center cursor-pointer"
+                  <button
+                    type="button"
+                    className="flex items-center justify-center px-3 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
                     aria-label="Other ways to download problem files"
-                    // Show the note without also entering select mode
-                    onClick={(event) => event.stopPropagation()}
                   >
                     <QuestionLineIcon className="size-4" viewBox="0 0 24 20" />
-                  </span>
+                  </button>
                 )}
                 position="bottom center"
                 closeOnDocumentClick
               >
-                {/* The popup renders in a portal, but React still bubbles
-                    its clicks up to the button, so stop them here too. */}
-                <div
-                  className="max-w-xs text-xs"
-                  onClick={(event) => event.stopPropagation()}
-                >
+                <div className="max-w-xs text-xs">
                   Downloading many or large problems? All problem files are also
                   available as a single archive on{" "}
                   <a
@@ -525,7 +522,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
                   , for downloading with a script.
                 </div>
               </InfoPopup>
-            </button>
+            </>
           ) : (
             <>
               <button
