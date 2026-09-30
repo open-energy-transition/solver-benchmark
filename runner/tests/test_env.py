@@ -4,6 +4,7 @@ introspection.
 
 import json
 import subprocess
+from typing import ClassVar
 
 import pytest
 
@@ -97,7 +98,7 @@ class TestGetInstalledSolverVersions:
 
 
 class TestGetRegisteredSolverVersions:
-    _REGISTRY = {
+    _REGISTRY: ClassVar[dict] = {
         "solvers": {
             "highs": {
                 "1.9.0": {"year": 2024, "env": "benchmark-highs-2024"},

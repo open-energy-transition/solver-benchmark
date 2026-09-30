@@ -1,5 +1,6 @@
-"""The benchmark-results CSV schema: what a result record looks like, and how
-it's written to disk.
+"""The benchmark-results CSV schema.
+
+What a result record looks like, and how it's written to disk.
 
 Kept separate from `execution.py` because "what a result record looks like"
 and "how a solver process is run" are independent concerns that change for
@@ -182,7 +183,7 @@ def ensure_csv_schema(
 
 def _write_header(csv_path: Path, headers: list[str]) -> None:
     """Create (or overwrite) `csv_path` with just a header row."""
-    with open(csv_path, mode="w", newline="") as file:
+    with Path(csv_path).open(mode="w", newline="") as file:
         csv.writer(file).writerow(headers)
 
 
@@ -213,7 +214,7 @@ def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> N
         (e.g. renaming the column, or updating `expected_headers`) rather
         than an automatic one.
     """
-    with open(csv_path, newline="") as file:
+    with Path(csv_path).open(newline="") as file:
         reader = csv.DictReader(file)
         current_headers = reader.fieldnames or []
         if list(current_headers) == expected_headers:
@@ -230,7 +231,7 @@ def _migrate_columns_if_needed(csv_path: Path, expected_headers: list[str]) -> N
 
     added = [h for h in expected_headers if h not in current_headers]
     print(f"Migrating {csv_path} to the current schema (adding {added})")
-    with open(csv_path, mode="w", newline="") as file:
+    with Path(csv_path).open(mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=expected_headers, restval="")
         writer.writeheader()
         writer.writerows(rows)
@@ -262,7 +263,7 @@ def write_csv_row(
     run_id : str
         Identifier shared by every row from the same benchmark run.
     timestamp : str
-        When this specific solver run started.
+        When this specific solver run started, in UTC.
     vm_instance_type : str
         The machine type this ran on (or "unknown" if undetectable).
     vm_zone : str
@@ -277,7 +278,7 @@ def write_csv_row(
     Column order must match `write_csv_headers`'s; both derive from
     `csv_record` so they can't drift independently.
     """
-    with open(results_csv, mode="a", newline="") as file:
+    with Path(results_csv).open(mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             csv_record(
@@ -319,7 +320,7 @@ def write_csv_summary_row(
     run_id : str
         Identifier shared by every row from the same benchmark run.
     timestamp : str
-        When the last iteration started.
+        When the last iteration started, in UTC.
 
     Notes
     -----
@@ -328,7 +329,7 @@ def write_csv_summary_row(
     the last iteration's value, not every seed tested across iterations --
     see `orchestrator.run_benchmark`'s own docstring.
     """
-    with open(mean_stddev_csv, mode="a", newline="") as file:
+    with Path(mean_stddev_csv).open(mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(
             [

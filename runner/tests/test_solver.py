@@ -52,7 +52,7 @@ class TestGetSolver:
         assert captured["options"]["MSK_IPAR_MIO_SEED"] == 0
 
     def test_unsupported_solver_name_raises(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="not a valid SolverName"):
             get_solver("not-a-solver")
 
     def test_seed_overrides_configurations_own_seed(self, monkeypatch):
@@ -217,6 +217,26 @@ class TestMainRecoversFromLinopyParseFailures:
         assert results["objective"] == 3.7
         assert results["runtime"] is not None
         assert results["max_integrality_violation"] == 0.0
+
+    def test_recovery_warning_is_one_line(self, monkeypatch, capsys):
+        solver = MagicMock()
+        solver.solve_problem.side_effect = KeyError("Row name")
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver", lambda *a, **k: (solver, "fake")
+        )
+        adapter = MagicMock()
+        adapter.recover_result.return_value = {
+            "status": "ok",
+            "condition": "optimal",
+            "objective": 3.7,
+        }
+        adapter.is_mip.return_value = None
+        adapter.integer_values.return_value = {}
+        monkeypatch.setitem(SOLVER_ADAPTERS, "fake", adapter)
+        main("fake-default", "problem.lp", "1.0")
+        err = capsys.readouterr().err
+        assert "WARNING: linopy couldn't parse fake's output (KeyError" in err
+        assert "Traceback" not in err
 
     def test_still_errors_without_a_recovered_result(self, monkeypatch, capsys):
         results = self._run(monkeypatch, capsys, None)
