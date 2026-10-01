@@ -20,7 +20,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tanstack/react-table": "^8.20.6",
     "@tanstack/react-virtual": "^3.14.13",
-    "better-react-mathjax": "^2.3.0",
+    "better-react-mathjax": "^3.0.2",
     "compare-versions": "^6.1.1",
     "d3": "^7.9.0",
     "gray-matter": "^4.0.3",
