@@ -14,7 +14,7 @@ import typer
 import yaml
 
 from .utils import alerts, config, env
-from .utils.orchestrator import run_benchmark
+from .utils.orchestrator import BenchmarkRunError, run_benchmark
 
 app = typer.Typer(add_completion=False)
 
@@ -70,8 +70,7 @@ def run(
         False,
         "--append",
         "-a",
-        help="Append to the results CSVs instead of overwriting them for "
-        "the first year.",
+        help="Append to the results CSVs instead of overwriting them.",
     ),
     num_seeds: int = typer.Option(
         1,
@@ -101,14 +100,15 @@ def run(
 ) -> None:
     """Run every problem in PROBLEMS_YAML_PATH against each solver configuration.
 
-    Runs them once per given year.
+    Runs them for each given year.
 
-    For each year, installs any missing per-solver-year envs (see
-    `runner/envs/`), then runs that year's registered and eligible solver
-    configurations against every problem. A failing year, or one with no
-    registered solver version for any requested configuration, is logged
-    and skipped rather than aborting the remaining years; the command then
-    exits with status 1 once every year has been attempted.
+    First installs any missing per-solver-year envs (see `runner/envs/`).
+    Then, for each problem in turn, runs every registered and eligible
+    (year, solver configuration) pair on it in a random order (see
+    `orchestrator.run_benchmark`). A year with no registered solver version
+    for any requested configuration, or a solver run that crashes, is logged
+    and skipped rather than aborting the rest of the run; the command then
+    exits with status 1 once everything else has run.
     """
     resolved_solver_configurations = (
         list(solver_configurations)
@@ -127,67 +127,66 @@ def run(
     )
     print(f"Using run ID: {resolved_run_id}")
 
-    failed_years = []
-    results_initialized = False
-
+    failed = False
+    runnable_years = []
     for year in resolved_years:
-        print(f"Running the benchmark for year {year}...")
-
-        try:
-            registered_versions = env.get_registered_solver_versions(
-                resolved_solver_configurations, year
+        registered_versions = env.get_registered_solver_versions(
+            resolved_solver_configurations, year
+        )
+        if not registered_versions:
+            print(
+                f"ERROR: no registered solver version for any of "
+                f"{', '.join(resolved_solver_configurations)} in year {year}"
             )
-            if not registered_versions:
-                raise ValueError(
-                    "no registered solver version for any of "
-                    f"{', '.join(resolved_solver_configurations)}"
-                )
-
-            eligible_configurations = _eligible_configurations_for_problems(
-                problems_yaml_path,
-                list(registered_versions),
-                year,
-            )
-            if not eligible_configurations:
-                print(
-                    f"No requested solver configurations are eligible for year {year}. "
-                    "Skipping."
-                )
-                continue
-
-            registered_versions = {
-                configuration: registered_versions[configuration]
-                for configuration in eligible_configurations
-            }
-            env.ensure_solver_envs_installed(registered_versions)
-
-            append_this_year = append or results_initialized
-            results_initialized = True
-
-            run_benchmark(
-                problems_yaml_path,
-                eligible_configurations,
-                year=year,
-                num_seeds=num_seeds,
-                reference_interval=ref_bench_interval,
-                append=append_this_year,
-                run_id=resolved_run_id,
-            )
-        except Exception as e:
-            print(f"ERROR running the benchmark for year {year}: {e}")
             alerts.print_alert(
                 "ER", year=year, run_id=resolved_run_id, host=gethostname()
             )
-            failed_years.append(year)
+            failed = True
             continue
 
-        print(f"Completed the benchmark for year {year}")
-
-    if failed_years:
-        print(
-            f"ERROR: the benchmark failed for year(s) {', '.join(failed_years)} "
-            f"of run ID {resolved_run_id}"
+        # A registered solver can still be ineligible for every problem in
+        # this run, e.g. by size or problem class: skip the year rather than
+        # installing its envs for nothing
+        eligible_configurations = _eligible_configurations_for_problems(
+            problems_yaml_path, list(registered_versions), year
         )
+        if not eligible_configurations:
+            print(
+                f"No requested solver configurations are eligible for year {year}. "
+                "Skipping."
+            )
+            continue
+
+        env.ensure_solver_envs_installed(
+            {
+                configuration: registered_versions[configuration]
+                for configuration in eligible_configurations
+            }
+        )
+        runnable_years.append(year)
+
+    if runnable_years:
+        print(f"Running the benchmark for year(s) {', '.join(runnable_years)}...")
+        try:
+            run_benchmark(
+                problems_yaml_path,
+                resolved_solver_configurations,
+                years=runnable_years,
+                num_seeds=num_seeds,
+                reference_interval=ref_bench_interval,
+                append=append,
+                run_id=resolved_run_id,
+            )
+        except Exception as e:
+            print(f"ERROR running the benchmark: {e}")
+            # BenchmarkRunError means some solver runs crashed, and each has
+            # already alerted (see orchestrator.py); alert for anything else
+            if not isinstance(e, BenchmarkRunError):
+                alerts.print_alert("ER", run_id=resolved_run_id, host=gethostname())
+            failed = True
+
+    if failed:
+        print(f"ERROR: the benchmark failed for run ID {resolved_run_id}")
         raise typer.Exit(code=1)
     print(f"All years completed for run ID: {resolved_run_id}")
 

@@ -64,7 +64,7 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
 
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
@@ -78,7 +78,7 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         results = orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
         assert set(results.keys()) == {("tiny-problem", "highs-default", "1.12.0")}
 
@@ -87,14 +87,14 @@ class TestRunBenchmark:
         # highs-hipo is only eligible for LP problems from 2026 on -- 2025
         # should be filtered out before run_solver is ever invoked.
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-hipo"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-hipo"], years=["2025"], run_id="test-run"
         )
         run_solver_mock.assert_not_called()
 
     def test_unregistered_solver_is_skipped(self, problems_yaml, mocker):
         run_solver_mock = mocker.patch.object(orchestrator, "run_solver")
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2019", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2019"], run_id="test-run"
         )
         run_solver_mock.assert_not_called()
 
@@ -106,7 +106,7 @@ class TestRunBenchmark:
             "runner.utils.orchestrator.time.strftime", return_value="20260101_000000"
         )
         results = orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025"
+            problems_yaml, ["highs-default"], years=["2025"]
         )
         assert results
 
@@ -123,7 +123,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             append=False,
         )
@@ -139,7 +139,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=2,
         )
@@ -151,7 +151,7 @@ class TestRunBenchmark:
     def test_num_seeds_below_one_raises(self, problems_yaml):
         with pytest.raises(ValueError, match="num_seeds must be at least 1"):
             orchestrator.run_benchmark(
-                problems_yaml, ["highs-default"], year="2025", num_seeds=0
+                problems_yaml, ["highs-default"], years=["2025"], num_seeds=0
             )
 
     def test_num_seeds_greater_than_one_varies_seed(self, problems_yaml, mocker):
@@ -161,7 +161,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=3,
         )
@@ -175,7 +175,7 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
         assert run_solver_mock.call_args.kwargs["seed"] is None
 
@@ -187,7 +187,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=3,
         )
@@ -203,7 +203,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=3,
         )
@@ -227,7 +227,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=2,
         )
@@ -245,12 +245,12 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["cbc-default"], year="2024", run_id="single"
+            problems_yaml, ["cbc-default"], years=["2024"], run_id="single"
         )
         orchestrator.run_benchmark(
             problems_yaml,
             ["cbc-default"],
-            year="2024",
+            years=["2024"],
             run_id="multi",
             num_seeds=2,
             append=True,
@@ -276,7 +276,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=2,
         )
@@ -302,7 +302,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             num_seeds=3,
         )
@@ -314,16 +314,108 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
         assert not (tmp_path / "results" / "benchmark_results_seeds.csv").exists()
+
+    @pytest.fixture
+    def two_problems_yaml(self, tmp_path):
+        problem_file = tmp_path / "problem.lp"
+        problem_file.write_text("Minimize\nobj: x\n")
+        path = tmp_path / "two-problems.yaml"
+        path.write_text(
+            textwrap.dedent(
+                f"""\
+                problems:
+                  problem-a:
+                    Path: {problem_file}
+                    Size: S
+                    Problem class: LP
+                  problem-b:
+                    Path: {problem_file}
+                    Size: S
+                    Problem class: LP
+                """
+            )
+        )
+        return path
+
+    def test_runs_every_year_and_solver_on_a_problem_before_the_next(
+        self, two_problems_yaml, tmp_path, mocker
+    ):
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            two_problems_yaml,
+            ["highs-default", "scip-default"],
+            years=["2024", "2025"],
+            run_id="test-run",
+        )
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Problem"]) == ["problem-a"] * 4 + ["problem-b"] * 4
+        for _, runs in results.groupby("Problem"):
+            assert set(
+                zip(runs["Solver"], runs["Solver Release Year"], strict=True)
+            ) == {
+                ("highs-default", 2024),
+                ("highs-default", 2025),
+                ("scip-default", 2024),
+                ("scip-default", 2025),
+            }
+
+    def test_runs_in_shuffled_order(self, problems_yaml, tmp_path, mocker):
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        shuffle_mock = mocker.patch.object(
+            orchestrator.random, "shuffle", side_effect=lambda runs: runs.reverse()
+        )
+        orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default", "scip-default"],
+            years=["2024", "2025"],
+            run_id="test-run",
+        )
+        shuffle_mock.assert_called_once()
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(
+            zip(results["Solver"], results["Solver Release Year"], strict=True)
+        ) == [
+            ("scip-default", 2025),
+            ("highs-default", 2025),
+            ("scip-default", 2024),
+            ("highs-default", 2024),
+        ]
+
+    def test_crashing_run_is_reported_after_the_others(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        mocker.patch.object(orchestrator.random, "shuffle")
+        mocker.patch.object(
+            orchestrator,
+            "run_solver",
+            side_effect=[Exception("boom"), dict(_FAKE_METRICS)],
+        )
+        with pytest.raises(
+            orchestrator.BenchmarkRunError,
+            match=r"1 solver run\(s\) failed: highs-default \(2024\) on tiny-problem",
+        ):
+            orchestrator.run_benchmark(
+                problems_yaml,
+                ["highs-default"],
+                years=["2024", "2025"],
+                run_id="test-run",
+            )
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Solver Release Year"]) == [2025]
 
     def test_failed_run_prints_an_alert(self, problems_yaml, mocker, capsys):
         mocker.patch.object(
             orchestrator, "run_solver", return_value={**_FAKE_METRICS, "status": "ER"}
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
         alert = [
             line
@@ -340,7 +432,7 @@ class TestRunBenchmark:
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         orchestrator.run_benchmark(
-            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+            problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
         assert "BENCHMARK_ALERT" not in capsys.readouterr().out
 
@@ -369,7 +461,7 @@ class TestRunBenchmark:
         orchestrator.run_benchmark(
             problems_yaml,
             ["highs-default"],
-            year="2025",
+            years=["2025"],
             run_id="test-run",
             reference_interval=3600,
         )
