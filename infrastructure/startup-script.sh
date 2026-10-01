@@ -27,6 +27,16 @@ else
     echo "Using shared run ID from Terraform: ${RUN_ID}"
 fi
 
+# Branch or tag of this repository to run, main unless set
+GIT_REF=$(curl -sf -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/git_ref" 2>/dev/null || echo "")
+GIT_REF=${GIT_REF:-main}
+
+MACHINE_TYPE=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/machine-type")
+echo "Run ID: ${RUN_ID}"
+echo "Instance: ${INSTANCE_NAME}"
+echo "Machine type: ${MACHINE_TYPE##*/}"
+echo "Git ref: ${GIT_REF}"
+
 # Update and install packages
 echo "Updating packages..."
 apt-get -qq update
@@ -44,8 +54,12 @@ mkdir -p /opt/gurobi
 gcloud storage cp gs://solver-benchmarks-restricted/gurobi-benchmark-40-session.lic /opt/gurobi/gurobi.lic
 
 # Clone the repository
-echo "Cloning repository..."
-git clone --depth=1 -b main https://github.com/open-energy-transition/solver-benchmark.git
+echo "Cloning repository at ${GIT_REF}..."
+if git clone --depth=1 -b "${GIT_REF}" https://github.com/open-energy-transition/solver-benchmark.git; then
+    echo "Commit: $(git -C solver-benchmark rev-parse HEAD)"
+else
+    echo "ERROR: could not clone ${GIT_REF}, check that it is pushed to GitHub"
+fi
 
 # Install a global highs binary for reference runs
 echo "Installing reference Highs..."
@@ -207,51 +221,29 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         echo "Skipping results CSV upload because benchmark failed with exit code $BENCHMARK_EXIT_CODE"
     fi
 
-    # Compress and upload benchmarks log files
-    echo "Processing benchmarks log files..."
-    find /solver-benchmark/runner/logs/ -type f -name "*.log" | while read log_file; do
-        filename=$(basename "${log_file}")
-        compressed_file="${COMPRESSED_DIR}/logs/${filename}.gz"
+    # Compress all log and solution files in parallel. Gurobi logs go to the
+    # restricted bucket, so keep them in their own folder.
+    echo "Compressing log and solution files..."
+    mkdir -p "${COMPRESSED_DIR}/logs-restricted"
+    find /solver-benchmark/runner/logs/ -type f -name "*.log" -exec cp -t "${COMPRESSED_DIR}/logs" {} +
+    find "${COMPRESSED_DIR}/logs" -type f -name "*gurobi*" -exec mv -t "${COMPRESSED_DIR}/logs-restricted" {} +
+    find /solver-benchmark/runner/solutions/ -type f -name "*.sol" -exec cp -t "${COMPRESSED_DIR}/solutions" {} +
+    find "${COMPRESSED_DIR}" -type f -print0 | xargs -0 -r -P "$(nproc)" -n 1 gzip
 
-        echo "Compressing ${log_file} to ${compressed_file}..."
-        gzip -c "${log_file}" > "${compressed_file}"
-
-        echo "Uploading ${compressed_file} to GCS bucket..."
-
-        # Check if file contains "gurobi" in the name
-        if [[ "${filename}" == *"gurobi"* ]]; then
-            echo "File contains 'gurobi' in name, storing in restricted folder..."
-            gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}/${filename}.gz"
+    # Upload each folder with one call, which uploads its files in parallel
+    upload_folder() {
+        local folder=$1 destination=$2
+        if [ -z "$(ls -A "${folder}")" ]; then
+            echo "No files to upload to ${destination}"
+        elif gcloud storage cp "${folder}/*" "${destination}/"; then
+            echo "Uploaded $(ls "${folder}" | wc -l) files to ${destination}"
         else
-            gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}/${filename}.gz"
+            echo "Failed to upload files to ${destination}"
         fi
-
-        if [ $? -eq 0 ]; then
-            echo "Successfully uploaded ${filename}.gz"
-        else
-            echo "Failed to upload ${filename}.gz"
-        fi
-    done
-
-    # Compress and upload solution files
-    echo "Processing solution files..."
-    find /solver-benchmark/runner/solutions/ -type f -name "*.sol" | while read sol_file; do
-        filename=$(basename "${sol_file}")
-        compressed_file="${COMPRESSED_DIR}/solutions/${filename}.gz"
-
-        echo "Compressing ${sol_file} to ${compressed_file}..."
-        gzip -c "${sol_file}" > "${compressed_file}"
-
-        echo "Uploading ${compressed_file} to GCS bucket..."
-
-        gcloud storage cp "${compressed_file}" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}/${filename}.gz"
-
-        if [ $? -eq 0 ]; then
-            echo "Successfully uploaded ${filename}.gz"
-        else
-            echo "Failed to upload ${filename}.gz"
-        fi
-    done
+    }
+    upload_folder "${COMPRESSED_DIR}/logs" "gs://${GCS_BUCKET_NAME}/logs/${RUN_ID}"
+    upload_folder "${COMPRESSED_DIR}/logs-restricted" "gs://${GCS_BUCKET_NAME}-restricted/logs/${RUN_ID}"
+    upload_folder "${COMPRESSED_DIR}/solutions" "gs://${GCS_BUCKET_NAME}/solutions/${RUN_ID}"
 
     # Compress and upload the startup script log
     echo "Processing startup script log..."

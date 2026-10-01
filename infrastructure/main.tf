@@ -77,6 +77,12 @@ variable "benchmarks_dir" {
   default     = "runtime_optimized"
 }
 
+variable "git_ref" {
+  description = "Branch or tag of this repository that the VMs clone and run"
+  type        = string
+  default     = "main"
+}
+
 variable "run_id" {
   description = "Unique identifier for this benchmark run. If not provided, each VM will generate its own. Use this to group parallel VMs into a single logical benchmark campaign."
   type        = string
@@ -144,6 +150,7 @@ resource "google_compute_instance" "benchmark_instances" {
     zone = lookup(each.value.content, "zone", var.zone)
     reference_benchmark_interval = tostring(var.reference_benchmark_interval)
     run_id = local.shared_run_id
+    git_ref = var.git_ref
   }
 
   # Add the startup script from external file
