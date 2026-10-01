@@ -11,11 +11,38 @@ from pathlib import Path
 from socket import gethostname
 
 import typer
+import yaml
 
 from .utils import alerts, config, env
 from .utils.orchestrator import run_benchmark
 
 app = typer.Typer(add_completion=False)
+
+
+def _eligible_configurations_for_problems(
+    problems_yaml_path: Path,
+    solver_configurations: list[str],
+    year: str,
+) -> list[str]:
+    """Return configurations eligible for at least one problem in a run."""
+    with problems_yaml_path.open() as f:
+        content = yaml.safe_load(f) or {}
+
+    problems = content.get("problems", {})
+
+    return [
+        solver_configuration
+        for solver_configuration in solver_configurations
+        if any(
+            config.is_solver_eligible(
+                solver_configuration,
+                year,
+                size_category=problem.get("Size"),
+                problem_class=problem.get("Problem class"),
+            )
+            for problem in problems.values()
+        )
+    ]
 
 
 @app.command()
@@ -101,7 +128,9 @@ def run(
     print(f"Using run ID: {resolved_run_id}")
 
     failed_years = []
-    for index, year in enumerate(resolved_years):
+    results_initialized = False
+
+    for year in resolved_years:
         print(f"Running the benchmark for year {year}...")
 
         try:
@@ -113,14 +142,35 @@ def run(
                     "no registered solver version for any of "
                     f"{', '.join(resolved_solver_configurations)}"
                 )
+
+            eligible_configurations = _eligible_configurations_for_problems(
+                problems_yaml_path,
+                list(registered_versions),
+                year,
+            )
+            if not eligible_configurations:
+                print(
+                    f"No requested solver configurations are eligible for year {year}. "
+                    "Skipping."
+                )
+                continue
+
+            registered_versions = {
+                configuration: registered_versions[configuration]
+                for configuration in eligible_configurations
+            }
             env.ensure_solver_envs_installed(registered_versions)
+
+            append_this_year = append or results_initialized
+            results_initialized = True
+
             run_benchmark(
                 problems_yaml_path,
-                resolved_solver_configurations,
+                eligible_configurations,
                 year=year,
                 num_seeds=num_seeds,
                 reference_interval=ref_bench_interval,
-                append=append or index > 0,
+                append=append_this_year,
                 run_id=resolved_run_id,
             )
         except Exception as e:
