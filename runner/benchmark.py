@@ -12,7 +12,7 @@ from socket import gethostname
 
 import typer
 
-from .utils import config, env
+from .utils import alerts, config, env
 from .utils.orchestrator import run_benchmark
 
 app = typer.Typer(add_completion=False)
@@ -125,6 +125,9 @@ def run(
             )
         except Exception as e:
             print(f"ERROR running the benchmark for year {year}: {e}")
+            alerts.print_alert(
+                "ER", year=year, run_id=resolved_run_id, host=gethostname()
+            )
             failed_years.append(year)
             continue
 
