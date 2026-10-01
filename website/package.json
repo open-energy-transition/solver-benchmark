@@ -35,7 +35,7 @@
     "node-fetch": "^3.3.2",
     "papaparse": "^5.7.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19.3.0",
     "react-google-recaptcha-v3": "^1.11.0",
     "react-icons": "^5.7.0",
     "react-intersection-observer": "^11.0.1",
