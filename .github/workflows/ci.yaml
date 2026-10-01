@@ -282,7 +282,6 @@ jobs:
           AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
           AXE_LOAD_DELAY: "5000"
         run: |
-          cd website
           export CHROME_BIN="$CHROME_BIN_PATH"
           npm run check:pages
 
