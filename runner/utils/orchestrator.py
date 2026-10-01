@@ -20,7 +20,7 @@ from typing import Any
 
 import requests
 
-from . import config, env
+from . import alerts, config, env
 from .execution import get_highs_binary_version, run_reference_highs_binary, run_solver
 from .metadata import load_problems
 from .results import ensure_csv_schema, write_csv_row, write_csv_summary_row
@@ -467,6 +467,16 @@ def run_benchmark(
                 write_csv_summary_row(
                     mean_stddev_csv, problem["problem_id"], metrics, run_id, timestamp
                 )
+                if metrics["status"] in alerts.ALERT_STATUSES:
+                    alerts.print_alert(
+                        metrics["status"],
+                        problem=problem["problem_id"],
+                        solver=solver_configuration,
+                        version=solver_version,
+                        year=year,
+                        run_id=run_id,
+                        host=hostname,
+                    )
 
                 run_results[
                     (problem["problem_id"], solver_configuration, solver_version)
@@ -478,6 +488,14 @@ def run_benchmark(
                 # the rest of the benchmark to one crash
                 run_name = f"{solver_configuration} ({year}) on {problem['problem_id']}"
                 print(f"ERROR running {run_name}: {e}", flush=True)
+                alerts.print_alert(
+                    "ER",
+                    problem=problem["problem_id"],
+                    solver=solver_configuration,
+                    year=year,
+                    run_id=run_id,
+                    host=hostname,
+                )
                 failed_runs.append(run_name)
 
     # Run the reference benchmark once more after the last solve, so the

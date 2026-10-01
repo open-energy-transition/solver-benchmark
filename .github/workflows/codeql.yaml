@@ -1,3 +1,10 @@
+# Scans Python, JavaScript/TypeScript and the GitHub Actions workflows
+# themselves for security issues with CodeQL. Runs on pull requests to main,
+# pushes to main and weekly.
+#
+# The main branch ruleset requires CodeQL results before a PR can merge, so
+# this runs on every PR, without path filters.
+
 name: CodeQL
 
 on:
@@ -6,34 +13,41 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 12 * * 5" # Every Friday at 12:00 UTC
+    - cron: "0 12 * * 5" # Fridays at 12:00 UTC, same as CI
+
+# A new push to a PR cancels its run in progress.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
 
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
+      security-events: write # to upload the results
       actions: read
       contents: read
 
     strategy:
       fail-fast: false
       matrix:
-        language: [python, javascript-typescript]
+        language: [actions, python, javascript-typescript]
 
     steps:
       - uses: actions/checkout@v7
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+          # None of these languages needs to be built for analysis.
+          build-mode: none
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{ matrix.language }}"

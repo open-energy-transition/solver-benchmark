@@ -11,11 +11,38 @@ from pathlib import Path
 from socket import gethostname
 
 import typer
+import yaml
 
-from .utils import config, env
-from .utils.orchestrator import run_benchmark
+from .utils import alerts, config, env
+from .utils.orchestrator import BenchmarkRunError, run_benchmark
 
 app = typer.Typer(add_completion=False)
+
+
+def _eligible_configurations_for_problems(
+    problems_yaml_path: Path,
+    solver_configurations: list[str],
+    year: str,
+) -> list[str]:
+    """Return configurations eligible for at least one problem in a run."""
+    with problems_yaml_path.open() as f:
+        content = yaml.safe_load(f) or {}
+
+    problems = content.get("problems", {})
+
+    return [
+        solver_configuration
+        for solver_configuration in solver_configurations
+        if any(
+            config.is_solver_eligible(
+                solver_configuration,
+                year,
+                size_category=problem.get("Size"),
+                problem_class=problem.get("Problem class"),
+            )
+            for problem in problems.values()
+        )
+    ]
 
 
 @app.command()
@@ -111,9 +138,31 @@ def run(
                 f"ERROR: no registered solver version for any of "
                 f"{', '.join(resolved_solver_configurations)} in year {year}"
             )
+            alerts.print_alert(
+                "ER", year=year, run_id=resolved_run_id, host=gethostname()
+            )
             failed = True
             continue
-        env.ensure_solver_envs_installed(registered_versions)
+
+        # A registered solver can still be ineligible for every problem in
+        # this run, e.g. by size or problem class: skip the year rather than
+        # installing its envs for nothing
+        eligible_configurations = _eligible_configurations_for_problems(
+            problems_yaml_path, list(registered_versions), year
+        )
+        if not eligible_configurations:
+            print(
+                f"No requested solver configurations are eligible for year {year}. "
+                "Skipping."
+            )
+            continue
+
+        env.ensure_solver_envs_installed(
+            {
+                configuration: registered_versions[configuration]
+                for configuration in eligible_configurations
+            }
+        )
         runnable_years.append(year)
 
     if runnable_years:
@@ -128,10 +177,12 @@ def run(
                 append=append,
                 run_id=resolved_run_id,
             )
-        # Including orchestrator.BenchmarkRunError, raised after the run if
-        # any solver run crashed
         except Exception as e:
             print(f"ERROR running the benchmark: {e}")
+            # BenchmarkRunError means some solver runs crashed, and each has
+            # already alerted (see orchestrator.py); alert for anything else
+            if not isinstance(e, BenchmarkRunError):
+                alerts.print_alert("ER", run_id=resolved_run_id, host=gethostname())
             failed = True
 
     if failed:
