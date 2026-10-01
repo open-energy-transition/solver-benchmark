@@ -232,6 +232,17 @@ jobs:
           cd website
           npm run axe:extract
 
+      - name: Check pages for blocked resources and formula errors
+        # The build passes either way, so only a browser catches e.g. a script
+        # or font blocked by the Content Security Policy.
+        env:
+          AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
+          AXE_LOAD_DELAY: "5000"
+        run: |
+          cd website
+          export CHROME_BIN="$CHROME_BIN_PATH"
+          npm run check:pages
+
       - name: Run axe-core accessibility tests on all pages
         env:
           # AXE flags

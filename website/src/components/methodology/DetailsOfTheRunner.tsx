@@ -1,5 +1,5 @@
 import { useScrollSpy } from "@/hooks/useScrollSpy";
-import { MathJax } from "better-react-mathjax";
+import MathFormula from "@/components/common/MathFormula";
 
 const HASH_NAME = "details-of-the-runner";
 const DetailsOfTheRunner = () => {
@@ -15,9 +15,9 @@ const DetailsOfTheRunner = () => {
         Details of the Runner
       </div>
       <p>
-        Given a time out <MathJax inline>{"$T$"}</MathJax> (seconds) and a
-        number of iterations <MathJax inline>{"$N$"}</MathJax>, the benchmark
-        runner <code>runner/benchmark.py</code> operates as follows:
+        Given a time out <MathFormula tex={"T"} /> (seconds) and a number of
+        iterations <MathFormula tex={"N"} />, the benchmark runner{" "}
+        <code>runner/benchmark.py</code> operates as follows:
       </p>
       <ul className="list-disc list-outside ml-6 text-base leading-relaxed">
         <li className="mb-2">
@@ -49,8 +49,8 @@ const DetailsOfTheRunner = () => {
           </ul>
         </li>
         <li className="mb-2">
-          The above is repeated <MathJax inline>{"$N$"}</MathJax> times, and the
-          mean and standard deviation of runtime and memory usage are computed
+          The above is repeated <MathFormula tex={"N"} /> times, and the mean
+          and standard deviation of runtime and memory usage are computed
         </li>
         <li className="mb-2">
           The value from the last iteration is used for other metrics such as
@@ -62,8 +62,8 @@ const DetailsOfTheRunner = () => {
           status <code>ER</code> and no further iterations are performed
         </li>
         <li className="mb-2">
-          If the solver takes longer than <MathJax inline>{"$T$"}</MathJax> in
-          any iteration, then the
+          If the solver takes longer than <MathFormula tex={"T"} /> in any
+          iteration, then the
           <code>(benchmark problem, solver)</code> combination is marked with
           status <code>TO</code> and no further iterations are performed
         </li>
