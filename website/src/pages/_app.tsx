@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "katex/dist/katex.min.css";
 import { useEffect, useRef } from "react";
 import Head from "next/head";
 import React from "react";
