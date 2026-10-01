@@ -318,6 +318,32 @@ class TestRunBenchmark:
         )
         assert not (tmp_path / "results" / "benchmark_results_seeds.csv").exists()
 
+    def test_failed_run_prints_an_alert(self, problems_yaml, mocker, capsys):
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value={**_FAKE_METRICS, "status": "ER"}
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+        )
+        alert = [
+            line
+            for line in capsys.readouterr().out.splitlines()
+            if line.startswith("BENCHMARK_ALERT")
+        ]
+        assert alert == [
+            "BENCHMARK_ALERT status=ER problem=tiny-problem solver=highs-default "
+            "version=1.12.0 year=2025 run_id=test-run host=h"
+        ]
+
+    def test_successful_run_prints_no_alert(self, problems_yaml, mocker, capsys):
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        orchestrator.run_benchmark(
+            problems_yaml, ["highs-default"], year="2025", run_id="test-run"
+        )
+        assert "BENCHMARK_ALERT" not in capsys.readouterr().out
+
     def test_reference_benchmark_runs_before_and_after_solves(
         self, problems_yaml, tmp_path, mocker
     ):
