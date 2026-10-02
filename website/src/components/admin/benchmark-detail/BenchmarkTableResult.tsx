@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import JSZip from "jszip";
 import { useRouter } from "next/router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
@@ -9,6 +8,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { MAX_COMPARE_PROBLEMS } from "@/constants/filter";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import InfoPopup from "@/components/common/InfoPopup";
+import { QuestionLineIcon } from "@/assets/icons";
 import { RealisticOption, HasResultsOption } from "@/types/state";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getProblemKey } from "@/utils/results";
@@ -197,6 +197,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     }>,
   ) => {
     const dirHandle = await window.showDirectoryPicker();
+    let failed = 0;
 
     for (let i = 0; i < filesToDownload.length; i++) {
       const { url, filename } = filesToDownload[i];
@@ -239,25 +240,29 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       } catch (error) {
         console.error(`Error downloading ${filename}:`, error);
         alert(`Failed to download ${filename}. Continuing with next file...`);
+        failed++;
       }
     }
 
-    alert("🎉 All selected files downloaded successfully!");
+    alert(
+      failed === 0
+        ? "🎉 All selected files downloaded successfully!"
+        : `Downloaded ${filesToDownload.length - failed} of ` +
+            `${filesToDownload.length} files; ${failed} failed.`,
+    );
   };
 
-  // Safari/Firefox fallback: these browsers don't support the File System
-  // Access API (no folder picker), so instead fetch every file into memory,
-  // bundle them into a single zip, and trigger one ordinary browser download
-  // for that zip file.
-  const downloadAsZip = async (
+  // Firefox/Safari path: these browsers don't support the File System Access
+  // API, so hand each file to the browser as an ordinary download. The
+  // browser writes it straight to disk, so file size doesn't matter (building
+  // a zip in memory failed for large problems, see #582).
+  const downloadIndividually = async (
     filesToDownload: Array<{
       problemId: string;
       url: string;
       filename: string;
     }>,
   ) => {
-    const zip = new JSZip();
-
     for (let i = 0; i < filesToDownload.length; i++) {
       const { url, filename } = filesToDownload[i];
 
@@ -267,39 +272,21 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: filename,
       });
 
-      try {
-        const response = await fetch(
-          `/api/download?url=${encodeURIComponent(url)}`,
-        );
+      const link = document.createElement("a");
+      link.href = `/api/download?url=${encodeURIComponent(url)}`;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        if (!response.ok) {
-          throw new Error(
-            `Failed to download ${filename}: ${response.statusText}`,
-          );
-        }
-
-        zip.file(filename, await response.blob());
-      } catch (error) {
-        console.error(`Error downloading ${filename}:`, error);
-        alert(`Failed to download ${filename}. Continuing with next file...`);
-      }
+      // Browsers can drop downloads started in quick succession.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    setDownloadProgress({
-      current: filesToDownload.length,
-      total: filesToDownload.length,
-      currentFile: "Creating zip file...",
-    });
-
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-    const zipUrl = URL.createObjectURL(zipBlob);
-    const a = document.createElement("a");
-    a.href = zipUrl;
-    a.download = "benchmark_problems.zip";
-    a.click();
-    URL.revokeObjectURL(zipUrl);
-
-    alert("🎉 Selected files downloaded as a zip file!");
+    alert(
+      `Started ${filesToDownload.length} downloads. Your browser may ask ` +
+        "you to allow downloading multiple files.",
+    );
   };
 
   const handleDownloadSelected = async () => {
@@ -334,7 +321,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       if (supportsDirectoryPicker) {
         await downloadToDirectory(filesToDownload);
       } else {
-        await downloadAsZip(filesToDownload);
+        await downloadIndividually(filesToDownload);
       }
 
       setDownloadProgress(null);
@@ -491,12 +478,51 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
         <div className="flex gap-2 justify-end mt-2 sm:mt-0 shrink-0">
           {!isSelectMode ? (
-            <button
-              onClick={() => setIsSelectMode(true)}
-              className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
-            >
-              Select for Download or Comparison
-            </button>
+            <>
+              <button
+                onClick={() => setIsSelectMode(true)}
+                className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
+              >
+                Select for Download or Comparison
+              </button>
+              <InfoPopup
+                openOn={["click"]}
+                trigger={() => (
+                  <button
+                    type="button"
+                    className="flex items-center justify-center px-3 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+                    aria-label="Other ways to download problem files"
+                  >
+                    <QuestionLineIcon className="size-4" viewBox="0 0 24 20" />
+                  </button>
+                )}
+                position="bottom center"
+                closeOnDocumentClick
+              >
+                <div className="max-w-xs text-xs">
+                  Downloading many or large problems? All problem files are also
+                  available as a single archive on{" "}
+                  <a
+                    href="https://zenodo.org/records/20429905"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Zenodo
+                  </a>{" "}
+                  (12 GB), and the URL of each problem file is listed in{" "}
+                  <a
+                    href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/metadata.yaml"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    results/metadata.yaml
+                  </a>
+                  , for downloading with a script.
+                </div>
+              </InfoPopup>
+            </>
           ) : (
             <>
               <button
