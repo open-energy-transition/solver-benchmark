@@ -12,6 +12,15 @@ psutil = ">=5.9"
 requests = ">=2.32"
 linopy = ">=0.5.5"
 scip = "==9.2.0"
+# To compile PySCIPOpt against the scip above (see below)
+cxx-compiler = "*"
 
+# PySCIPOpt is built from source against the scip above. The PyPI wheel
+# bundles its own SCIP (9.2.4 in 5.7.1), which silently replaced the pinned
+# version, and no conda-forge build matches SCIP 9.2.0: 5.2.1 links SCIP 9.1
+# and 5.3.0 needs SCIP 9.2.1.
 [pypi-dependencies]
-pyscipopt = "==5.7.1"
+pyscipopt = "==5.2.1"
+
+[pypi-options]
+no-binary = ["pyscipopt"]

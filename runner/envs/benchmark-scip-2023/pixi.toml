@@ -11,8 +11,11 @@ pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
 scip = "==8.1.0"
+# PySCIPOpt comes from conda-forge, built against the scip above. The PyPI
+# wheel bundles its own SCIP (9.2.4 in 5.7.1), which silently replaced the
+# pinned version.
+pyscipopt = "==4.4.0"
 cxx-compiler = "*"
 
 [pypi-dependencies]
-pyscipopt = "==5.7.1"
 linopy = { git = "https://github.com/PyPSA/linopy", branch = "sid/old-solver-support" }  # old-solver-support branch until it is merged and released
