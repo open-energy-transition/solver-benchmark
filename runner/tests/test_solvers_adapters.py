@@ -392,8 +392,7 @@ class TestPyscipopt4CompatibleModel:
 
         model = module.Model()
         assert isinstance(model, Pyscipopt4Model)
-        # linopy's old-solver-support branch asks for the original
-        # constraints, which PySCIPOpt 4.x can't return
+        # linopy asks for the original constraints, which PySCIPOpt 4.x can't return
         assert model.getConss(False) == []
         assert model.getConss() == ["transformed constraint"]
         assert model.getConss(True) == ["transformed constraint"]

@@ -20,12 +20,12 @@ def reported_runtime(model: Any) -> float:
 
 
 def use_pyscipopt_4_compatible_model() -> None:
-    """Let linopy's old-solver-support branch read results from PySCIPOpt 4.x.
+    """Let linopy read results from PySCIPOpt 4.x.
 
-    Temporary workaround, to remove once that linopy branch is fixed: see
+    Temporary workaround, to remove once linopy supports PySCIPOpt 4.x: see
     https://github.com/open-energy-transition/solver-benchmark/issues/622.
 
-    After solving, the branch reads the original constraints with
+    After solving, linopy (as of 0.9.1) reads the original constraints with
     `Model.getConss(False)`, but PySCIPOpt 4.x (the last release for SCIP 8)
     only has `getConss()`, so every SCIP 8 run ended in an error. This swaps
     in a `Model` whose `getConss(False)` returns no constraints, so linopy
