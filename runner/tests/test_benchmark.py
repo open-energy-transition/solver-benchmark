@@ -304,6 +304,38 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
 
+    def test_a_year_that_fails_to_set_up_alerts_and_the_others_run(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        # E.g. pixi failing to install 2024's envs
+        mocker.patch(
+            "runner.benchmark.env.ensure_solver_envs_installed",
+            side_effect=[FileNotFoundError("pixi"), None],
+        )
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2024",
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+            ],
+        )
+        assert result.exit_code == 1, result.output
+        assert "ERROR preparing the benchmark for year 2024: pixi" in result.output
+        alerts = [
+            line
+            for line in result.output.splitlines()
+            if line.startswith("BENCHMARK_ALERT")
+        ]
+        assert len(alerts) == 1
+        assert alerts[0].startswith("BENCHMARK_ALERT status=ER year=2024")
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Solver Release Year"]) == [2025]
+
     def test_year_with_no_eligible_configuration_is_skipped(
         self, problems_yaml, tmp_path
     ):

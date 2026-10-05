@@ -3,12 +3,14 @@ metadata, config, env, execution, and results together.
 """
 
 import textwrap
+from pathlib import Path
 from types import SimpleNamespace
+from typing import ClassVar
 
 import pandas as pd
 import pytest
 
-from runner.utils import orchestrator
+from runner.utils import config, env, orchestrator
 
 _FAKE_METRICS = {
     "status": "ok",
@@ -73,14 +75,36 @@ class TestRunBenchmark:
         assert results.iloc[0]["Solver"] == "highs-default"
         assert results.iloc[0]["Status"] == "ok"
 
-    def test_return_value_keyed_by_problem_solver_version(self, problems_yaml, mocker):
+    def test_return_value_keyed_by_problem_solver_version_year(
+        self, problems_yaml, mocker
+    ):
         mocker.patch.object(
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         results = orchestrator.run_benchmark(
             problems_yaml, ["highs-default"], years=["2025"], run_id="test-run"
         )
-        assert set(results.keys()) == {("tiny-problem", "highs-default", "1.12.0")}
+        assert set(results.keys()) == {
+            ("tiny-problem", "highs-default", "1.12.0", "2025")
+        }
+
+    def test_years_with_the_same_solver_version_are_kept_apart(
+        self, problems_yaml, mocker
+    ):
+        # The "tests" pseudo-year and 2024 both register HiGHS 1.9.0
+        mocker.patch.object(
+            orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
+        )
+        results = orchestrator.run_benchmark(
+            problems_yaml,
+            ["highs-default"],
+            years=["tests", "2024"],
+            run_id="test-run",
+        )
+        assert set(results.keys()) == {
+            ("tiny-problem", "highs-default", "1.9.0", "tests"),
+            ("tiny-problem", "highs-default", "1.9.0", "2024"),
+        }
 
     def test_ineligible_solver_is_skipped(self, problems_yaml, tmp_path, mocker):
         run_solver_mock = mocker.patch.object(orchestrator, "run_solver")
@@ -475,6 +499,109 @@ class TestRunBenchmark:
             "tiny-problem",
             "reference-benchmark",
         ]
+
+
+class TestRunOrder:
+    """Every eligible run happens exactly once, one problem at a time."""
+
+    # Mixed sizes and classes, so eligibility differs between problems:
+    # e.g. highs-hipo only runs LPs from 2026, and 2026 registers no SCIP
+    _PROBLEMS: ClassVar[dict[str, tuple[str, str]]] = {
+        "lp-small": ("S", "LP"),
+        "milp-medium": ("M", "MILP"),
+        "lp-large": ("L", "LP"),
+        "milp-small": ("S", "MILP"),
+    }
+    _CONFIGURATIONS: ClassVar[list[str]] = [
+        "highs-default",
+        "scip-default",
+        "highs-hipo",
+        "glpk-default",
+    ]
+    _YEARS: ClassVar[list[str]] = ["2024", "2025", "2026"]
+
+    @pytest.fixture
+    def mixed_problems_yaml(self, tmp_path):
+        lines = ["problems:"]
+        for problem_id, (size, problem_class) in self._PROBLEMS.items():
+            problem_file = tmp_path / f"{problem_id}.lp"
+            problem_file.write_text("Minimize\nobj: x\n")
+            lines += [
+                f"  {problem_id}:",
+                f"    Path: {problem_file}",
+                f"    Size: {size}",
+                f"    Problem class: {problem_class}",
+            ]
+        path = tmp_path / "problems.yaml"
+        path.write_text("\n".join(lines) + "\n")
+        return path
+
+    def _expected_runs(self, num_seeds):
+        expected = []
+        for problem_id, (size, problem_class) in self._PROBLEMS.items():
+            for year in self._YEARS:
+                versions = env.get_registered_solver_versions(
+                    self._CONFIGURATIONS, year
+                )
+                for configuration in self._CONFIGURATIONS:
+                    if configuration in versions and config.is_solver_eligible(
+                        configuration,
+                        year,
+                        size_category=size,
+                        problem_class=problem_class,
+                    ):
+                        expected += [
+                            (problem_id, configuration, year, seed)
+                            for seed in range(num_seeds)
+                        ]
+        return expected
+
+    @pytest.mark.parametrize("num_seeds", [1, 3])
+    @pytest.mark.parametrize("shuffle_seed", range(5))
+    def test_each_run_happens_once_and_problems_are_not_revisited(
+        self, mixed_problems_yaml, mocker, num_seeds, shuffle_seed
+    ):
+        orchestrator.random.seed(shuffle_seed)
+        runs = []
+
+        def fake_run_solver(path, configuration, timeout, version, **kwargs):
+            year = next(
+                year
+                for year in self._YEARS
+                if env.get_registered_solver_versions([configuration], year)
+                .get(configuration, {})
+                .get("env")
+                == kwargs["env_name"]
+            )
+            runs.append((Path(path).stem, configuration, year))
+            return dict(_FAKE_METRICS)
+
+        mocker.patch.object(orchestrator, "run_solver", side_effect=fake_run_solver)
+        orchestrator.run_benchmark(
+            mixed_problems_yaml,
+            self._CONFIGURATIONS,
+            years=self._YEARS,
+            num_seeds=num_seeds,
+            run_id="test-run",
+        )
+
+        # Number each (problem, configuration, year)'s repetitions, which
+        # are run back to back, to compare against the expected seeds
+        seen: dict[tuple[str, str, str], int] = {}
+        numbered_runs = []
+        for run in runs:
+            numbered_runs.append((*run, seen.get(run, 0)))
+            seen[run] = seen.get(run, 0) + 1
+        assert sorted(numbered_runs) == sorted(self._expected_runs(num_seeds))
+
+        # All of a problem's runs are contiguous
+        problem_order = [problem_id for problem_id, *_ in runs]
+        blocks = [
+            problem_id
+            for i, problem_id in enumerate(problem_order)
+            if i == 0 or problem_order[i - 1] != problem_id
+        ]
+        assert len(blocks) == len(set(blocks)) == len(self._PROBLEMS)
 
 
 class TestGetGceMetadata:

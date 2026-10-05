@@ -193,7 +193,7 @@ def run_benchmark(
     reference_interval: int = 0,  # Default: disabled
     append: bool = False,
     run_id: str | None = None,
-) -> dict[tuple[str, str, str], dict[str, Any]]:
+) -> dict[tuple[str, str, str, str], dict[str, Any]]:
     """Run a list of solver configurations and years against a set of problems.
 
     Each problem gets every (year, solver configuration) pair in a random
@@ -243,9 +243,10 @@ def run_benchmark(
 
     Returns
     -------
-    dict[tuple[str, str, str], dict[str, Any]]
+    dict[tuple[str, str, str, str], dict[str, Any]]
         Every solver run's metrics, keyed by `(problem_id, solver_configuration,
-        solver_version)`.
+        solver_version, year)`. The year is needed because two years can
+        register the same solver version.
 
     Raises
     ------
@@ -308,7 +309,7 @@ def run_benchmark(
     if reference_interval > 0:
         reference_solver_version = get_highs_binary_version()
 
-    run_results: dict[tuple[str, str, str], dict[str, Any]] = {}
+    run_results: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     failed_runs: list[str] = []
 
     for problem in problems:
@@ -479,7 +480,7 @@ def run_benchmark(
                     )
 
                 run_results[
-                    (problem["problem_id"], solver_configuration, solver_version)
+                    (problem["problem_id"], solver_configuration, solver_version, year)
                 ] = metrics
 
                 solved_since_reference = True

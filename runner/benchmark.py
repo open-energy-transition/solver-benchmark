@@ -45,6 +45,49 @@ def _eligible_configurations_for_problems(
     ]
 
 
+def _prepare_year(
+    problems_yaml_path: Path,
+    solver_configurations: list[str],
+    year: str,
+) -> bool:
+    """Install the envs a year's runs need, returning whether it has any runs.
+
+    Raises
+    ------
+    ValueError
+        If no requested configuration has a registered version for `year`.
+    """
+    registered_versions = env.get_registered_solver_versions(
+        solver_configurations, year
+    )
+    if not registered_versions:
+        raise ValueError(
+            "no registered solver version for any of "
+            f"{', '.join(solver_configurations)}"
+        )
+
+    # A registered solver can still be ineligible for every problem in this
+    # run, e.g. by size or problem class: skip the year rather than
+    # installing its envs for nothing
+    eligible_configurations = _eligible_configurations_for_problems(
+        problems_yaml_path, list(registered_versions), year
+    )
+    if not eligible_configurations:
+        print(
+            f"No requested solver configurations are eligible for year {year}. "
+            "Skipping."
+        )
+        return False
+
+    env.ensure_solver_envs_installed(
+        {
+            configuration: registered_versions[configuration]
+            for configuration in eligible_configurations
+        }
+    )
+    return True
+
+
 @app.command()
 def run(
     problems_yaml_path: Path = typer.Argument(
@@ -149,40 +192,17 @@ def run(
     failed = False
     runnable_years = []
     for year in resolved_years:
-        registered_versions = env.get_registered_solver_versions(
-            resolved_solver_configurations, year
-        )
-        if not registered_versions:
-            print(
-                f"ERROR: no registered solver version for any of "
-                f"{', '.join(resolved_solver_configurations)} in year {year}"
-            )
+        # A year that can't be set up, e.g. because its envs fail to install,
+        # alerts and is skipped, so the other years still run
+        try:
+            if _prepare_year(problems_yaml_path, resolved_solver_configurations, year):
+                runnable_years.append(year)
+        except Exception as e:
+            print(f"ERROR preparing the benchmark for year {year}: {e}")
             alerts.print_alert(
                 "ER", year=year, run_id=resolved_run_id, host=gethostname()
             )
             failed = True
-            continue
-
-        # A registered solver can still be ineligible for every problem in
-        # this run, e.g. by size or problem class: skip the year rather than
-        # installing its envs for nothing
-        eligible_configurations = _eligible_configurations_for_problems(
-            problems_yaml_path, list(registered_versions), year
-        )
-        if not eligible_configurations:
-            print(
-                f"No requested solver configurations are eligible for year {year}. "
-                "Skipping."
-            )
-            continue
-
-        env.ensure_solver_envs_installed(
-            {
-                configuration: registered_versions[configuration]
-                for configuration in eligible_configurations
-            }
-        )
-        runnable_years.append(year)
 
     if runnable_years:
         print(f"Running the benchmark for year(s) {', '.join(runnable_years)}...")
