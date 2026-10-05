@@ -26,6 +26,7 @@ from linopy.solvers import SolverName
 
 from . import config
 from .solvers import SOLVER_ADAPTERS
+from .solvers.scip import use_pyscipopt_4_compatible_model
 
 
 def get_solver(solver_configuration: str, seed: int | None = None) -> tuple[Any, str]:
@@ -311,6 +312,9 @@ def main(
     problem_file = Path(input_file)
 
     solver, solver_package = get_solver(solver_configuration, seed=seed)
+    if solver_package == "scip":
+        # Temporary, see issue #622
+        use_pyscipopt_4_compatible_model()
 
     solution_dir = Path(__file__).resolve().parent.parent / "solutions"
     solution_dir.mkdir(parents=True, exist_ok=True)
