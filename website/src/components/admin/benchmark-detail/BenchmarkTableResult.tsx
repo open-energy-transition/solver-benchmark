@@ -47,6 +47,8 @@ interface BenchmarkTableResultProps {
   realisticFilter?: string[];
 }
 
+const GCS_PROBLEMS_URL = "https://storage.googleapis.com/solver-benchmarks/";
+
 // Truncates to fit the actual rendered width of its container (which
 // TanStackTable resizes as the column width changes) instead of a fixed
 // character count, and only enables the hover popup when text is actually
@@ -256,6 +258,11 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
   // API, so hand each file to the browser as an ordinary download. The
   // browser writes it straight to disk, so file size doesn't matter (building
   // a zip in memory failed for large problems, see #582).
+  //
+  // Files on GCS are linked directly: GCS serves them with a binary content
+  // type, so the browser downloads them instead of opening them. Going
+  // through /api/download would cut large files short when the Vercel
+  // function times out. Other files are small and still go through the proxy.
   const downloadIndividually = async (
     filesToDownload: Array<{
       problemId: string;
@@ -273,7 +280,10 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       });
 
       const link = document.createElement("a");
-      link.href = `/api/download?url=${encodeURIComponent(url)}`;
+      link.href = url.startsWith(GCS_PROBLEMS_URL)
+        ? url
+        : `/api/download?url=${encodeURIComponent(url)}`;
+      // Ignored for cross-origin links, where the name comes from the URL
       link.download = filename;
       document.body.appendChild(link);
       link.click();
