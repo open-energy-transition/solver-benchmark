@@ -49,6 +49,82 @@ interface BenchmarkTableResultProps {
 
 const GCS_PROBLEMS_URL = "https://storage.googleapis.com/solver-benchmarks/";
 
+// Small enough that each part finishes before the Vercel function behind
+// /api/download times out (about 28s), even at about 1 MB/s.
+const DOWNLOAD_PART_SIZE = 16 * 1024 * 1024;
+
+// Streams a file to disk through /api/download, one Range request per part,
+// because a single request for a large file would be cut short when the
+// function times out. If a part still arrives short, the next request
+// resumes from the last byte written.
+const fetchInParts = async (
+  url: string,
+  filename: string,
+  writable: FileSystemWritableFileStream,
+) => {
+  let offset = 0;
+  let total: number | null = null;
+  let attemptsWithoutProgress = 0;
+
+  while (total === null || offset < total) {
+    const response = await fetch(
+      `/api/download?url=${encodeURIComponent(url)}`,
+      {
+        headers: {
+          Range: `bytes=${offset}-${offset + DOWNLOAD_PART_SIZE - 1}`,
+        },
+      },
+    );
+    if (!response.ok || !response.body) {
+      throw new Error(
+        `Failed to download ${filename}: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    if (response.status === 206) {
+      const match = /^bytes (\d+)-\d+\/(\d+)$/.exec(
+        response.headers.get("Content-Range") ?? "",
+      );
+      if (!match || Number(match[1]) !== offset) {
+        throw new Error(`Unexpected Content-Range for ${filename}`);
+      }
+      total = Number(match[2]);
+    } else if (offset === 0) {
+      // The server ignored Range and is sending the whole file
+      const length = response.headers.get("Content-Length");
+      total = length === null ? null : Number(length);
+    } else {
+      throw new Error(`Server stopped honouring Range for ${filename}`);
+    }
+
+    const start = offset;
+    const reader = response.body.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        await writable.write(value);
+        offset += value.length;
+      }
+    } catch (error) {
+      // A part cut off mid-stream is resumed by the next request
+      console.warn(`Part of ${filename} was cut short, resuming`, error);
+    }
+
+    if (total === null) {
+      break; // Whole file of unknown length: trust the end of the stream
+    }
+    if (offset === start) {
+      attemptsWithoutProgress++;
+      if (attemptsWithoutProgress >= 3) {
+        throw new Error(`Download of ${filename} stopped making progress`);
+      }
+    } else {
+      attemptsWithoutProgress = 0;
+    }
+  }
+};
+
 // Truncates to fit the actual rendered width of its container (which
 // TanStackTable resizes as the column width changes) instead of a fixed
 // character count, and only enables the hover popup when text is actually
@@ -178,7 +254,10 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       }
 
       const urlParts = problem.url!.split("/");
-      const filename = urlParts[urlParts.length - 1] || `${problem.name}.lp`;
+      // Decode e.g. "%2B" back to "+"
+      const filename =
+        decodeURIComponent(urlParts[urlParts.length - 1]) ||
+        `${problem.name}.lp`;
       filesToDownload.push({
         problemId: problem.name,
         url: problem.url!,
@@ -215,29 +294,12 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           create: true,
         });
         const writable = await fileHandle.createWritable();
-
-        const response = await fetch(
-          `/api/download?url=${encodeURIComponent(url)}`,
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to download ${filename}: ${response.statusText}`,
-          );
+        try {
+          await fetchInParts(url, filename, writable);
+        } catch (error) {
+          await writable.abort();
+          throw error;
         }
-
-        const reader = response.body?.getReader();
-        if (!reader) {
-          throw new Error(`No response body for ${filename}`);
-        }
-
-        // Stream chunks directly to file on disk
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          await writable.write(value);
-        }
-
         await writable.close();
       } catch (error) {
         console.error(`Error downloading ${filename}:`, error);

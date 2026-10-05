@@ -47,8 +47,14 @@ export default async function handler(
     // Use native Node.js http/https for streaming
     const fetchModule = await import("node-fetch");
     const fetch = fetchModule.default || fetchModule;
-    // Don't follow redirects, which could lead outside the allowed URLs
-    const response = await fetch(parsedUrl.href, { redirect: "error" });
+    // Don't follow redirects, which could lead outside the allowed URLs.
+    // Forward Range, so large files can be fetched in parts that each finish
+    // before the serverless function times out.
+    const range = req.headers.range;
+    const response = await fetch(parsedUrl.href, {
+      redirect: "error",
+      headers: range ? { Range: range } : {},
+    });
 
     if (!response.ok || !response.body) {
       res.status(response.status).send("Failed to fetch file");
@@ -56,6 +62,16 @@ export default async function handler(
     }
 
     // Set headers for file download
+    res.status(response.status);
+    const contentRange = response.headers.get("content-range");
+    if (contentRange) {
+      res.setHeader("Content-Range", contentRange);
+    }
+    // node-fetch decompresses encoded responses, which changes their length
+    const contentLength = response.headers.get("content-length");
+    if (contentLength && !response.headers.get("content-encoding")) {
+      res.setHeader("Content-Length", contentLength);
+    }
     res.setHeader(
       "Content-Type",
       response.headers.get("content-type") || "application/octet-stream",
