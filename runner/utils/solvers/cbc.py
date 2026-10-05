@@ -7,6 +7,7 @@ files CBC writes instead.
 """
 
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,14 @@ try:
     import highspy as _highspy
 except ModuleNotFoundError:
     _highspy = None
+
+
+def solver_version() -> str:
+    """Return the version of the `cbc` program linopy runs in this env."""
+    output = subprocess.run(
+        ["cbc", "-quit"], capture_output=True, text=True, check=True
+    ).stdout
+    return re.search(r"Version: (\S+)", output).group(1)
 
 
 def is_mip(model: Any) -> bool | None:
@@ -97,13 +106,3 @@ def integer_values(
                 values[tokens[1]] = float(tokens[2])
     # Only report a complete set: a partial one would understate the violation
     return values if values.keys() == integer_names else None
-
-
-def solver_version() -> str:
-    """Return the version of the `cbc` program linopy runs in this env."""
-    import subprocess
-
-    output = subprocess.run(
-        ["cbc", "-quit"], capture_output=True, text=True, check=True
-    ).stdout
-    return re.search(r"Version: (\S+)", output).group(1)

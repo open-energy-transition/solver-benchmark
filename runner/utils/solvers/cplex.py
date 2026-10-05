@@ -3,6 +3,17 @@
 from pathlib import Path
 from typing import Any
 
+# cplex is only installed in the CPLEX solver environment
+try:
+    import cplex as _cplex
+except ModuleNotFoundError:
+    _cplex = None
+
+
+def solver_version() -> str:
+    """Return the version of the CPLEX library this env loads."""
+    return _cplex.Cplex().get_version()
+
 
 def is_mip(model: Any) -> bool:
     """Whether any variable is integer or binary."""
@@ -47,10 +58,3 @@ def integer_values(
         )
         if var_type in ("I", "B")
     }
-
-
-def solver_version() -> str:
-    """Return the version of the CPLEX library this env loads."""
-    import cplex
-
-    return cplex.Cplex().get_version()

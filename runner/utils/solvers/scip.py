@@ -1,7 +1,37 @@
 """SCIP solver adapter: result-metric accessors."""
 
+import os
+import re
+import sys
+import tempfile
 from pathlib import Path
 from typing import Any
+
+# pyscipopt is only installed in the SCIP and tests solver environments
+try:
+    import pyscipopt as _pyscipopt
+except ModuleNotFoundError:
+    _pyscipopt = None
+
+
+def solver_version() -> str:
+    """Return the version of the SCIP library this env loads.
+
+    PySCIPOpt's `Model.version()` only gives major.minor, so this reads the
+    full version from the banner `printVersion` writes to stdout from C.
+    """
+    sys.stdout.flush()
+    with tempfile.TemporaryFile(mode="w+") as banner:
+        stdout_fd = os.dup(1)
+        os.dup2(banner.fileno(), 1)
+        try:
+            _pyscipopt.Model().printVersion()
+        finally:
+            sys.stdout.flush()
+            os.dup2(stdout_fd, 1)
+            os.close(stdout_fd)
+        banner.seek(0)
+        return re.search(r"SCIP version (\S+)", banner.read()).group(1)
 
 
 def is_mip(model: Any) -> bool:
@@ -34,30 +64,3 @@ def integer_values(
         for var in model.getVars()
         if var.vtype() in ("INTEGER", "BINARY")
     }
-
-
-def solver_version() -> str:
-    """Return the version of the SCIP library this env loads.
-
-    PySCIPOpt's `Model.version()` only gives major.minor, so this reads the
-    full version from the banner `printVersion` writes to stdout from C.
-    """
-    import os
-    import re
-    import sys
-    import tempfile
-
-    from pyscipopt import Model
-
-    sys.stdout.flush()
-    with tempfile.TemporaryFile(mode="w+") as banner:
-        stdout_fd = os.dup(1)
-        os.dup2(banner.fileno(), 1)
-        try:
-            Model().printVersion()
-        finally:
-            sys.stdout.flush()
-            os.dup2(stdout_fd, 1)
-            os.close(stdout_fd)
-        banner.seek(0)
-        return re.search(r"SCIP version (\S+)", banner.read()).group(1)
