@@ -115,17 +115,36 @@ def run(
         if solver_configurations
         else config.get_default_configurations()
     )
-    for configuration in resolved_solver_configurations:
-        if config.get_solver_configuration(configuration) is None:
-            print(
-                f"WARNING: {configuration} is not in solver_configurations.yaml; "
-                "it will run with the solver's own defaults (no tuning options)"
-            )
     resolved_years = list(years) if years else config.get_all_registered_years()
     resolved_run_id = (
         run_id or f"{time.strftime('%Y%m%d_%H%M%S', time.gmtime())}_{gethostname()}"
     )
     print(f"Using run ID: {resolved_run_id}")
+
+    # Only configurations in solver_configurations.yaml can run, as the
+    # campaign check also requires, so a typo can't silently run a solver
+    # with different options than intended
+    unknown_configurations = [
+        configuration
+        for configuration in resolved_solver_configurations
+        if config.get_solver_configuration(configuration) is None
+    ]
+    if unknown_configurations:
+        known_configurations = sorted(
+            config.load_solver_configurations().get("configurations", {})
+        )
+        print(
+            "ERROR: unknown solver configuration(s) "
+            f"{', '.join(unknown_configurations)}; the configurations in "
+            f"solver_configurations.yaml are {', '.join(known_configurations)}"
+        )
+        alerts.print_alert(
+            "ER",
+            configuration=",".join(unknown_configurations),
+            run_id=resolved_run_id,
+            host=gethostname(),
+        )
+        raise typer.Exit(code=1)
 
     failed = False
     runnable_years = []

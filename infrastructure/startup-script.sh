@@ -221,14 +221,23 @@ if [ "${ENABLE_GCS_UPLOAD}" == "true" ]; then
         echo "Skipping results CSV upload because benchmark failed with exit code $BENCHMARK_EXIT_CODE"
     fi
 
-    # Compress all log and solution files in parallel. Gurobi logs go to the
-    # restricted bucket, so keep them in their own folder.
+    # Compress all log and solution files in parallel, straight from where
+    # the runner wrote them, so the disk never holds a second uncompressed
+    # copy. Gurobi logs go to the restricted bucket, so keep them in their
+    # own folder.
     echo "Compressing log and solution files..."
     mkdir -p "${COMPRESSED_DIR}/logs-restricted"
-    find /solver-benchmark/runner/logs/ -type f -name "*.log" -exec cp -t "${COMPRESSED_DIR}/logs" {} +
-    find "${COMPRESSED_DIR}/logs" -type f -name "*gurobi*" -exec mv -t "${COMPRESSED_DIR}/logs-restricted" {} +
-    find /solver-benchmark/runner/solutions/ -type f -name "*.sol" -exec cp -t "${COMPRESSED_DIR}/solutions" {} +
-    find "${COMPRESSED_DIR}" -type f -print0 | xargs -0 -r -P "$(nproc)" -n 1 gzip
+    compress_into() {
+        local destination=$1
+        shift
+        find "$@" -type f -print0 \
+            | xargs -0 -r -P "$(nproc)" -I {} \
+                sh -c 'gzip -c "$1" > "$2/$(basename "$1").gz"' _ {} "${destination}" \
+            || echo "Failed to compress some files into ${destination}"
+    }
+    compress_into "${COMPRESSED_DIR}/logs" /solver-benchmark/runner/logs/ -name "*.log" ! -name "*gurobi*"
+    compress_into "${COMPRESSED_DIR}/logs-restricted" /solver-benchmark/runner/logs/ -name "*.log" -name "*gurobi*"
+    compress_into "${COMPRESSED_DIR}/solutions" /solver-benchmark/runner/solutions/ -name "*.sol"
 
     # Upload each folder with one call, which uploads its files in parallel
     upload_folder() {

@@ -340,7 +340,7 @@ def print_campaign_summary(
     timeout_seconds: int | None,
     machine_profile: str | None,
 ) -> None:
-    """Print a concise summary and the next OpenTofu command.
+    """Print a concise summary of the generated campaign.
 
     Parameters
     ----------
@@ -405,6 +405,15 @@ def print_campaign_summary(
     for idx in range(len(vm_yamls)):
         print(f"  {campaign_dir.relative_to(REPO_ROOT)}/{vm_prefix}-{idx:02d}.yaml")
 
+
+def print_next_steps(run_id: str) -> None:
+    """Print the checklist and OpenTofu command for launching a campaign.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    """
     print("\nNext steps:")
     print("  cd infrastructure")
     print(
@@ -1127,7 +1136,15 @@ def main() -> None:
         print("\nCampaign check")
         print("==============")
         if not print_validation(*validate_campaign(campaign_dir)):
+            print(
+                "\nThe campaign files were written but would fail as they are. "
+                "Fix the errors and regenerate with --force, or edit the files "
+                "and check them again with:\n"
+                "  pixi run -e runner python -m runner.utils.campaign "
+                f"{campaign_dir.relative_to(REPO_ROOT)}"
+            )
             sys.exit(1)
+        print_next_steps(run_id)
 
     else:
         run_script = create_local_campaign(
