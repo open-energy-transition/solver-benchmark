@@ -36,3 +36,10 @@ def integer_values(
             strict=True,
         )
     )
+
+
+def solver_version() -> str:
+    """Return the version of the Gurobi library this env loads."""
+    import gurobipy
+
+    return ".".join(str(part) for part in gurobipy.gurobi.version())

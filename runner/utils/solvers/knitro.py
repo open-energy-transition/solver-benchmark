@@ -30,3 +30,13 @@ def integer_values(
 ) -> dict[str, float] | None:
     """Return None: linopy's `KnitroResult` carries no variable values."""
     return None
+
+
+def solver_version() -> str:
+    """Return the version of the Knitro library this env loads."""
+    import re
+
+    import knitro
+
+    # e.g. "Knitro 15.1.0"
+    return re.search(r"\d+(?:\.\d+)+", knitro.KN_get_release()).group(0)

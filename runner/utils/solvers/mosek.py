@@ -45,3 +45,10 @@ def integer_values(
         for j in range(model.getnumvar())
         if model.getvartype(j) == _mosek.variabletype.type_int
     }
+
+
+def solver_version() -> str:
+    """Return the version of the MOSEK library this env loads."""
+    import mosek
+
+    return ".".join(str(part) for part in mosek.Env.getversion())

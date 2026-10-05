@@ -40,3 +40,15 @@ def integer_values(
         for var, value in zip(variables, model.getSolution(), strict=True)
         if var.vartype in (_xpress.integer, _xpress.binary)
     }
+
+
+def solver_version() -> str:
+    """Return the Xpress release this env loads.
+
+    The release number (e.g. 9.6.2) is the version of the `xpress` package,
+    which bundles its own library. `xpress.getversion()` gives the
+    optimizer's internal version instead (e.g. 45.01.03).
+    """
+    import xpress
+
+    return xpress.__version__

@@ -34,3 +34,30 @@ def integer_values(
         for var in model.getVars()
         if var.vtype() in ("INTEGER", "BINARY")
     }
+
+
+def solver_version() -> str:
+    """Return the version of the SCIP library this env loads.
+
+    PySCIPOpt's `Model.version()` only gives major.minor, so this reads the
+    full version from the banner `printVersion` writes to stdout from C.
+    """
+    import os
+    import re
+    import sys
+    import tempfile
+
+    from pyscipopt import Model
+
+    sys.stdout.flush()
+    with tempfile.TemporaryFile(mode="w+") as banner:
+        stdout_fd = os.dup(1)
+        os.dup2(banner.fileno(), 1)
+        try:
+            Model().printVersion()
+        finally:
+            sys.stdout.flush()
+            os.dup2(stdout_fd, 1)
+            os.close(stdout_fd)
+        banner.seek(0)
+        return re.search(r"SCIP version (\S+)", banner.read()).group(1)

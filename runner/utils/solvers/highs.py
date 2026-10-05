@@ -56,3 +56,17 @@ def integer_values(
         )
         if var_type == _highspy.HighsVarType.kInteger
     }
+
+
+def solver_version() -> str:
+    """Return the version of the HiGHS library this env loads."""
+    import highspy
+
+    try:
+        return highspy.Highs().version()
+    except AttributeError:
+        # highspy before 1.6 has no `version()`, only these constants
+        return ".".join(
+            str(getattr(highspy, f"HIGHS_VERSION_{part}"))
+            for part in ("MAJOR", "MINOR", "PATCH")
+        )

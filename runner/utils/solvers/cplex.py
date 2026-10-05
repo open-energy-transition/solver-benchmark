@@ -47,3 +47,10 @@ def integer_values(
         )
         if var_type in ("I", "B")
     }
+
+
+def solver_version() -> str:
+    """Return the version of the CPLEX library this env loads."""
+    import cplex
+
+    return cplex.Cplex().get_version()
