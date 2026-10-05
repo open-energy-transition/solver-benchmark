@@ -1,8 +1,8 @@
 """Solver version and environment introspection.
 
-Which solver package version is actually installed, which
-per-solver-year env provides a given solver configuration for a given run,
-and whether each env really runs the solver version registered for it.
+Which per-solver-year env provides a given solver configuration for a
+given run, and whether each env really runs the solver version registered
+for it.
 
 Each solver-year has its own pixi manifest under `runner/envs/<env>/` (its
 own `pixi.toml`/`pixi.lock`, not part of the root workspace) -- isolating
@@ -13,7 +13,6 @@ each solver-year resolve (and fail) independently of the others.
 
 from __future__ import annotations
 
-import json
 import os
 import re
 import subprocess
@@ -25,81 +24,13 @@ _ENVS_DIR = Path(__file__).resolve().parent.parent / "envs"
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
-def get_installed_solver_versions(
-    solver_configurations: list[str], env_name: str
-) -> dict[str, str | None]:
-    """Read each configuration's version as actually installed in a pixi env.
-
-    Queries `pixi list` directly, so this reflects the real, current state
-    of that specific env -- as opposed to `get_registered_solver_versions`,
-    which reads the static `solvers.yaml` registry of what's declared/
-    expected for a given year.
-
-    Parameters
-    ----------
-    solver_configurations : list[str]
-        Solver configuration names to look up (e.g.
-        `["highs-hipo", "cbc-default"]`); each is resolved to its underlying
-        solver via `config.resolve_solver_name`, then mapped to its package
-        name via `config.get_package_name` (e.g. "highs-hipo" and
-        "highs-default" both map to the "highspy" package).
-    env_name : str
-        The env to inspect, i.e. the `runner/envs/<env_name>/` directory
-        holding its pixi manifest.
-
-    Returns
-    -------
-    dict[str, str | None]
-        Configuration name to the version actually installed in that
-        environment, or None if its underlying package isn't installed
-        there at all.
-
-    Raises
-    ------
-    ValueError
-        If the `pixi list` command itself fails (e.g. the env was never
-        installed).
-    """
-    try:
-        result = subprocess.run(
-            [
-                "pixi",
-                "list",
-                "--locked",
-                "--manifest-path",
-                str(_ENVS_DIR / env_name),
-                "--json",
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-    except subprocess.CalledProcessError as e:
-        raise ValueError(
-            f"Error executing pixi list command: {e.stderr or str(e)}"
-        ) from e
-
-    installed_packages = {
-        package["name"]: package["version"] for package in json.loads(result.stdout)
-    }
-
-    installed_versions = {}
-    for configuration in solver_configurations:
-        resolved_solver = config.resolve_solver_name(configuration)
-        package = config.get_package_name(resolved_solver)
-        installed_versions[configuration] = installed_packages.get(package)
-
-    return installed_versions
-
-
 def get_registered_solver_versions(
     solver_configurations: list[str], year: str
 ) -> dict[str, dict[str, str | None]]:
     """Look up each configuration's registered version/env for a given year.
 
     Reads the static `solvers.yaml` registry -- what's declared/expected for
-    that year -- as opposed to `get_installed_solver_versions`, which
-    queries a real env for what's actually installed right now.
+    that year. `check_solver_versions` checks that an env really runs it.
 
     Parameters
     ----------

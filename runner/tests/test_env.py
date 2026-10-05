@@ -1,8 +1,7 @@
-"""Tests for runner/utils/env.py: installed vs. registered solver version
-introspection.
+"""Tests for runner/utils/env.py: registered solver versions, env
+installation and the solver version check.
 """
 
-import json
 import re
 import subprocess
 from typing import ClassVar
@@ -12,92 +11,9 @@ import pytest
 from runner.utils.env import (
     check_solver_versions,
     ensure_solver_envs_installed,
-    get_installed_solver_versions,
     get_registered_solver_versions,
     versions_match,
 )
-
-
-class TestGetInstalledSolverVersions:
-    def test_parses_package_versions(self, mocker):
-        stdout = json.dumps(
-            [
-                {"name": "highspy", "version": "1.9.0"},
-                {"name": "coin-or-cbc", "version": "2.10.5"},
-            ]
-        )
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            return_value=subprocess.CompletedProcess(
-                args=["pixi", "list"], returncode=0, stdout=stdout, stderr=""
-            ),
-        )
-        mocker.patch(
-            "runner.utils.env.config.resolve_solver_name", side_effect=lambda name: name
-        )
-        mocker.patch(
-            "runner.utils.env.config.get_package_name",
-            side_effect={"highs": "highspy", "cbc": "coin-or-cbc"}.get,
-        )
-        result = get_installed_solver_versions(
-            ["highs", "cbc", "unknown-solver"], env_name="benchmark-tests"
-        )
-        assert result == {
-            "highs": "1.9.0",
-            "cbc": "2.10.5",
-            "unknown-solver": None,
-        }
-
-    def test_resolves_configuration_name_before_package_lookup(self, mocker):
-        # A configuration like "highs-hipo" shares its solver's package, so
-        # the lookup must resolve through config.resolve_solver_name first.
-        stdout = json.dumps([{"name": "highspy", "version": "1.9.0"}])
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout=stdout, stderr=""
-            ),
-        )
-        mocker.patch(
-            "runner.utils.env.config.resolve_solver_name",
-            return_value="highs",
-        )
-        mocker.patch(
-            "runner.utils.env.config.get_package_name",
-            return_value="highspy",
-        )
-        result = get_installed_solver_versions(
-            ["highs-hipo"], env_name="benchmark-highs-2025"
-        )
-        assert result == {"highs-hipo": "1.9.0"}
-
-    def test_passes_env_name_as_manifest_path_to_pixi_list(self, mocker):
-        run_mock = mocker.patch(
-            "runner.utils.env.subprocess.run",
-            return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout="[]", stderr=""
-            ),
-        )
-        mocker.patch(
-            "runner.utils.env.config.resolve_solver_name", return_value="highs"
-        )
-        mocker.patch("runner.utils.env.config.get_package_name", return_value="highspy")
-        get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
-        called_cmd = run_mock.call_args[0][0]
-        assert called_cmd[:2] == ["pixi", "list"]
-        assert "--locked" in called_cmd
-        assert "--json" in called_cmd
-        assert called_cmd[called_cmd.index("--manifest-path") + 1].endswith(
-            "benchmark-highs-2025"
-        )
-
-    def test_called_process_error_raises_value_error(self, mocker):
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            side_effect=subprocess.CalledProcessError(1, "pixi list", stderr="boom"),
-        )
-        with pytest.raises(ValueError, match="boom"):
-            get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
 
 
 class TestGetRegisteredSolverVersions:
