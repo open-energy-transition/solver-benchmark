@@ -405,6 +405,29 @@ class TestBenchmarkCli:
         assert result.exit_code == 1, result.output
         assert "no registered solver version" in result.output
 
+    def test_unknown_solver_configuration_fails_before_running(
+        self, problems_yaml, tmp_path
+    ):
+        # A bare solver name isn't a configuration, so it must not silently
+        # run with the solver's own defaults
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+                "--solver-configurations",
+                "highs",
+            ],
+        )
+        assert result.exit_code == 1, result.output
+        assert "unknown solver configuration(s) highs;" in result.output
+        assert "BENCHMARK_ALERT status=ER" in result.output
+        assert not (tmp_path / "results" / "benchmark_results.csv").exists()
+        orchestrator.run_solver.assert_not_called()
+
 
 class TestBenchmarkCliInvocation:
     def test_dash_m_invocation_from_repo_root_shows_help(self):
