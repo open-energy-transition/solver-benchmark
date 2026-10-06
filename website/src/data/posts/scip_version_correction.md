@@ -15,6 +15,21 @@ The benchmark runs each solver version in its own software environment, which pi
 
 The benchmark labels each result with the version its environment is set up for, not the version the solver reports, so nothing flagged the difference.
 
+## When it started
+
+Until November 2025, the SCIP environments installed PySCIPOpt from conda-forge, built against the pinned SCIP. The switch to PyPI happened while preparing the 2025 benchmark, and later changes to the environments kept it:
+
+| Date                           | Change                                                                                                                                                                                        |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 25 November 2025               | The 2025 environment (SCIP 10.0.0) installs PySCIPOpt 5.7.1 from PyPI, because that release was not yet on conda-forge.                                                                       |
+| 4 December 2025                | The 2022 and 2023 environments (SCIP 8.0.3 and 8.1.0) switch from PySCIPOpt 4.3.0 and 4.4.0 on conda-forge to 5.7.1 from PyPI, together with a newer linopy.                                  |
+| 8 December 2025                | The 2024 environment (SCIP 9.2.0) is brought back with PySCIPOpt 5.7.1 from PyPI. SCIP 2024 had been left out because no PySCIPOpt build on conda-forge worked with SCIP 9.2.0.               |
+| 12 December 2025 to March 2026 | The 2025 benchmark runs, all with SCIP 9.2.4.                                                                                                                                                 |
+| 28 January and 4 February 2026 | The changes reach the main branch ([#384](https://github.com/open-energy-transition/solver-benchmark/pull/384), [#405](https://github.com/open-energy-transition/solver-benchmark/pull/405)). |
+| 5 August 2026                  | The move to one environment per solver and year keeps PySCIPOpt 5.7.1 from PyPI for all four SCIP versions ([#416](https://github.com/open-energy-transition/solver-benchmark/pull/416)).     |
+| 25 September 2026              | The move of the environments to pixi keeps it too ([#581](https://github.com/open-energy-transition/solver-benchmark/pull/581)).                                                              |
+| 5 October 2026                 | We found the problem and proposed a fix ([#623](https://github.com/open-energy-transition/solver-benchmark/pull/623)).                                                                        |
+
 ## How we confirmed it
 
 - **Code:** every version of the benchmark code used for the 2025 runs installs PySCIPOpt 5.7.1 from PyPI.
