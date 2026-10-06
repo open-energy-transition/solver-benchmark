@@ -48,11 +48,12 @@ To identify the exact version, we re-solved two of these problems with each genu
 
 We checked the other solvers too. The CBC, GLPK and HiGHS logs report the versions their results are labelled with, except HiGHS 1.9.0, which does not write its version to the log. For HiGHS 1.9.0, and for Gurobi, whose logs are not public, the environments install the labelled versions, and their results differ between versions as genuine releases do.
 
-## What we are doing
+## What we did
 
-- **Fixing the environments:** each SCIP environment will run the SCIP version it pins, by installing PySCIPOpt built against that version ([#623](https://github.com/open-energy-transition/solver-benchmark/pull/623)).
-- **Checking every run:** before solving, the benchmark will check that each solver reports the version its results are labelled with, and stop otherwise ([#624](https://github.com/open-energy-transition/solver-benchmark/pull/624)). This check would have caught the problem.
-- **A note on the website:** we will highlight these findings on the website's landing page.
-- **The v3 benchmark:** we will run the v3 benchmark at the end of 2026, with updated solver versions and these fixes.
+- **Fixed the environments:** each SCIP environment now runs the SCIP version it pins, by installing PySCIPOpt built against that version ([#623](https://github.com/open-energy-transition/solver-benchmark/pull/623)).
+- **Added a check to every run:** before solving, the benchmark now checks that each solver reports the version its results are labelled with, and stops otherwise ([#624](https://github.com/open-energy-transition/solver-benchmark/pull/624)). This check would have caught the problem.
+- **Added notes to the website:** the landing page, the key insights page and the performance history dashboard now point to this post.
 
-Until the v3 results are published, please do not use the 2025 results to compare SCIP versions with each other.
+## What comes next
+
+We will run the v3 benchmark at the end of 2026, with updated solver versions and these fixes. Until its results are published, please do not use the 2025 results to compare SCIP versions with each other.
