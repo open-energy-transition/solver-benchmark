@@ -49,7 +49,7 @@ To identify the version, we re-solved two of these problems with each genuine SC
 
 - **Fixing the environments:** each SCIP environment will run the SCIP version it pins, by installing PySCIPOpt built against that version ([#623](https://github.com/open-energy-transition/solver-benchmark/pull/623)).
 - **Checking every run:** before solving, the benchmark will check that each solver reports the version its results are labelled with, and stop otherwise ([#624](https://github.com/open-energy-transition/solver-benchmark/pull/624)). This check would have caught the problem.
-- **A note on the website:** we will add a note to the website highlighting these findings next to the affected SCIP results.
+- **A note on the website:** we will highlight these findings on the website's landing page.
 - **The v3 benchmark:** we will run the v3 benchmark at the end of 2026, with updated solver versions and these fixes.
 
 Until the v3 results are published, please do not use the 2025 results to compare SCIP versions with each other.
