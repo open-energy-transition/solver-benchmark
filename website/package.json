@@ -18,7 +18,7 @@
     "@redux-devtools/extension": "^4.0.0",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/typography": "^0.5.20",
-    "@tanstack/react-table": "^8.20.6",
+    "@tanstack/react-table": "^9.2.4",
     "@tanstack/react-virtual": "^3.14.13",
     "better-react-mathjax": "^2.3.0",
     "compare-versions": "^6.1.1",
