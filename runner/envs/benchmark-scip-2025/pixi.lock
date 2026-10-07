@@ -10,8 +10,6 @@ environments:
   default:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
-    indexes:
-    - https://pypi.org/simple
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -58,6 +56,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pandas-3.0.5-py314hb4ffadd_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/polars-runtime-32-1.43.2-py310h9585f58_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/psutil-7.2.2-py314h0f05182_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/pyscipopt-6.0.0-py314h42812f9_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.14.6-habeac84_101_cp314.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pyyaml-6.0.3-py314h67df5f8_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.3-h853b02a_0.conda
@@ -102,7 +101,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/urllib3-2.7.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/xarray-2026.7.0-pyhc364b38_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-4.1.0-pyhcf101f3_0.conda
-      - pypi: https://files.pythonhosted.org/packages/f9/74/c4663de7eb3e2463ecc8628b97a888b1cc8bf9b3e7da2248db8b581cf559/pyscipopt-5.7.1-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-7_kmp_llvm.conda
   build_number: 7
@@ -856,6 +854,22 @@ packages:
   run_exports: {}
   size: 231303
   timestamp: 1769678156552
+- conda: https://conda.anaconda.org/conda-forge/linux-64/pyscipopt-6.0.0-py314h42812f9_1.conda
+  sha256: 3b1b860b73b3e91d1350a28c346b9c62035a7c32419c35d20c90d21cc383d56a
+  md5: 65e9e3178c26a88294db3738de5c3b83
+  depends:
+  - python
+  - numpy >=1.16.0
+  - libstdcxx >=14
+  - libgcc >=14
+  - __glibc >=2.17,<3.0.a0
+  - python_abi 3.14.* *_cp314
+  - scip >=10.0.0,<11.0a0
+  license: MIT
+  license_family: MIT
+  run_exports: {}
+  size: 984345
+  timestamp: 1770284439225
 - conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.14.6-habeac84_101_cp314.conda
   build_number: 101
   sha256: ee8f2006e1724b1f2e9e0ccc5a7cfdcab973460faa2f63ac1f6e44fdad4c0344
@@ -1531,10 +1545,3 @@ packages:
   run_exports: {}
   size: 24190
   timestamp: 1779159948016
-- pypi: https://files.pythonhosted.org/packages/f9/74/c4663de7eb3e2463ecc8628b97a888b1cc8bf9b3e7da2248db8b581cf559/pyscipopt-5.7.1-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-  name: pyscipopt
-  version: 5.7.1
-  sha256: 02687f0887c3e7133a06517d734a74ab7224841a3edf2fc1915afb690f74e3a7
-  requires_dist:
-  - numpy>=1.16.0
-  requires_python: '>=3.8'

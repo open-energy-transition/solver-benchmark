@@ -4,6 +4,7 @@ files has a matching adapter module, and every adapter exposes the methods
 """
 
 import importlib
+import sys
 import textwrap
 from pathlib import Path
 from types import SimpleNamespace
@@ -367,3 +368,42 @@ class TestGlpkRecoverResult:
             name for name, adapter in SOLVER_ADAPTERS.items() if adapter.recover_result
         }
         assert with_hook == {"glpk"}
+
+
+class TestPyscipopt4CompatibleModel:
+    """Temporary workaround, see issue #622."""
+
+    @staticmethod
+    def _fake_pyscipopt(monkeypatch, model_class):
+        module = SimpleNamespace(Model=model_class)
+        monkeypatch.setitem(sys.modules, "pyscipopt", module)
+        return module
+
+    def test_pyscipopt_4_model_gets_a_get_conss_that_takes_transformed(
+        self, monkeypatch
+    ):
+        class Pyscipopt4Model:
+            def getConss(self):
+                return ["transformed constraint"]
+
+        module = self._fake_pyscipopt(monkeypatch, Pyscipopt4Model)
+        scip = importlib.import_module("runner.utils.solvers.scip")
+        scip.use_pyscipopt_4_compatible_model()
+
+        model = module.Model()
+        assert isinstance(model, Pyscipopt4Model)
+        # linopy asks for the original constraints, which PySCIPOpt 4.x can't return
+        assert model.getConss(False) == []
+        assert model.getConss() == ["transformed constraint"]
+        assert model.getConss(True) == ["transformed constraint"]
+
+    def test_newer_pyscipopt_is_left_alone(self, monkeypatch):
+        class Pyscipopt5Model:
+            def getConss(self, transformed=True):
+                return ["constraint"]
+
+        module = self._fake_pyscipopt(monkeypatch, Pyscipopt5Model)
+        scip = importlib.import_module("runner.utils.solvers.scip")
+        scip.use_pyscipopt_4_compatible_model()
+
+        assert module.Model is Pyscipopt5Model
