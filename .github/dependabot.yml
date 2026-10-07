@@ -5,6 +5,12 @@ updates:
     directory: /website
     schedule:
       interval: weekly
+    # @types/node follows the Node version the site runs on (22, see
+    # "engines" in website/package.json), so only its minor and patch
+    # updates are wanted
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     # Each package goes to the first group that matches it
     groups:
       # Packages that only work at matching versions, so their updates, majors
