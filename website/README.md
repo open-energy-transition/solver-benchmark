@@ -18,6 +18,7 @@ Copy `.env.example` to `.env.local` and fill in the values to enable the optiona
 - `npm start` -- serve the production build (run `npm run build` first).
 - `npm run lint` -- run ESLint.
 - `npm run axe` / `npm run axe:full` -- accessibility checks (WCAG 2 A/AA) via [axe](https://github.com/dequelabs/axe-core), used by CI's accessibility-check job.
+- `npm run check:pages` -- loads every page in `scripts/urls.txt` (from `npm run axe:extract`) in Chrome and opens its hover pop-ups. Fails if a page doesn't load (e.g. a 404), the Content Security Policy blocks anything, or a formula doesn't render on the page or in a pop-up. Also run by CI's accessibility-check job.
 
 ## Deployment
 
