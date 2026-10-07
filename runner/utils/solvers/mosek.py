@@ -10,6 +10,11 @@ except ModuleNotFoundError:
     _mosek = None
 
 
+def solver_version() -> str:
+    """Return the version of the MOSEK library this env loads."""
+    return ".".join(str(part) for part in _mosek.Env.getversion())
+
+
 def is_mip(model: Any) -> bool:
     """Whether the model has any integer variables."""
     return model.getnumintvar() > 0

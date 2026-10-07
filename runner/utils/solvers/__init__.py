@@ -3,8 +3,8 @@
 The modules are discovered automatically from this package's own directory.
 
 Each sibling module exports `is_mip(model)`, `duality_gap(model, log_fn)`,
-`reported_runtime(model)`, and
-`integer_values(model, problem_fn, solution_fn)` for one solver (any existing module is a template).
+`reported_runtime(model)`,
+`integer_values(model, problem_fn, solution_fn)`, and `solver_version()` for one solver (any existing module is a template).
 `SOLVER_ADAPTERS` is built by scanning this package's directory with
 `pkgutil.iter_modules` and importing each submodule -- a well-established
 stdlib idiom for exactly this "one adapter per plugin file" shape (the same
@@ -23,7 +23,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-_REQUIRED_ATTRS = ("is_mip", "duality_gap", "reported_runtime", "integer_values")
+_REQUIRED_ATTRS = (
+    "is_mip",
+    "duality_gap",
+    "reported_runtime",
+    "integer_values",
+    "solver_version",
+)
 # Optional: only solvers whose output linopy can fail to parse define these
 _OPTIONAL_ATTRS = ("recover_result",)
 
@@ -50,6 +56,10 @@ class SolverAdapter:
         file linopy wrote, return the solved value of every integer and
         binary variable, keyed by variable name: ``{}`` if the problem has
         none, None if the values can't be read (e.g. no feasible solution).
+    solver_version : Callable[[], str]
+        Return the version of the solver library (or program) the current
+        env actually loads, as the solver itself reports it, rather than the
+        version of an installed package (see `env.check_solver_versions`).
     recover_result : Callable[[Path, Path], dict[str, Any] | None] | None
         Optional. Given the problem and solution files, return the
         solve's ``status``, ``condition`` and ``objective`` read straight
@@ -62,6 +72,7 @@ class SolverAdapter:
     duality_gap: Callable[[Any, Path], float | None]
     reported_runtime: Callable[[Any], float | None]
     integer_values: Callable[[Any, Path, Path], dict[str, float] | None]
+    solver_version: Callable[[], str]
     recover_result: Callable[[Path, Path], dict[str, Any] | None] | None = None
 
 
@@ -77,11 +88,13 @@ def _discover_adapters() -> dict[str, SolverAdapter]:
     ------
     AttributeError
         If a discovered module is missing one of `is_mip`, `duality_gap`,
-        `reported_runtime`, or `integer_values` -- fails at import time with a clear message,
+        `reported_runtime`, `integer_values`, or `solver_version` -- fails at import time with a clear message,
         rather than a cryptic error deep in a benchmark run.
     """
     adapters = {}
     for module_info in pkgutil.iter_modules(__path__):
+        if module_info.name.startswith("_"):
+            continue  # not an adapter, e.g. `__main__`
         module = importlib.import_module(f".{module_info.name}", __name__)
         missing = [a for a in _REQUIRED_ATTRS if not hasattr(module, a)]
         if missing:

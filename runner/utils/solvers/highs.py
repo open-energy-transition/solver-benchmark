@@ -17,6 +17,18 @@ except ModuleNotFoundError:
     _highspy = None
 
 
+def solver_version() -> str:
+    """Return the version of the HiGHS library this env loads."""
+    try:
+        return _highspy.Highs().version()
+    except AttributeError:
+        # highspy before 1.6 has no `version()`, only these constants
+        return ".".join(
+            str(getattr(_highspy, f"HIGHS_VERSION_{part}"))
+            for part in ("MAJOR", "MINOR", "PATCH")
+        )
+
+
 def is_mip(model: Any) -> bool:
     """Whether HiGHS solved the model as a MIP.
 

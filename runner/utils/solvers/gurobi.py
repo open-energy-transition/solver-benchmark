@@ -3,6 +3,17 @@
 from pathlib import Path
 from typing import Any
 
+# gurobipy is only installed in the Gurobi solver environments
+try:
+    import gurobipy as _gurobipy
+except ModuleNotFoundError:
+    _gurobipy = None
+
+
+def solver_version() -> str:
+    """Return the version of the Gurobi library this env loads."""
+    return ".".join(str(part) for part in _gurobipy.gurobi.version())
+
 
 def is_mip(model: Any) -> bool:
     """Whether Gurobi classified the model as a MIP."""

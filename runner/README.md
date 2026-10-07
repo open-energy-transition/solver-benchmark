@@ -16,6 +16,8 @@ Each solver-version pair has its own pixi environment (e.g., `benchmark-highs-20
 
 The source of truth for mapping solver names to version, release year, and env is `runner/config/solvers.yaml`
 
+Before solving, the runner checks that each env runs the version registered for it, as reported by the solver itself (`python -m runner.utils.solvers <solver>` prints it from inside an env). A year whose env runs a different version fails with an ER alert, since its results would be labelled with the wrong version.
+
 Example:
 ```yaml
 solvers:
