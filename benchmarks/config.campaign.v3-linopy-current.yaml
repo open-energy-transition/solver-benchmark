@@ -1,0 +1,51 @@
+campaign: v3-linopy-current
+target: cloud
+selection:
+  all: false
+  problem:
+  - pypsa-eur-elec-50-168h
+  - pypsa-eur-elec-100-24h
+  - pypsa-eur-sec-50-168h
+  - pypsa-eur-elec-trex_vopt-50-168h
+  - pypsa-eur-elec-trex_vopt-uc-50-168h
+  - pypsa-eur-elec-50-3h
+  - pypsa-eur-elec-100-12h
+  - pypsa-eur-sec-50-24h
+  - pypsa-eur-elec-trex_vopt-uc-50-3h
+  - pypsa-de-elec-50-3h
+  - FINE-2-node-electricity-supply-system-2-8760ts
+  - OEMOF-diesel-genset-nonconvex-investment-1-240ts
+  - SWITCH-3-zone-tiny-3-6ts
+  - temoa-utopia-1-6ts
+  - ethos-fine-multi-regional-7tp-8-168ts
+  - IESA-Opt-NL-1-3h
+  - OEMOF-economic-results-1-8760ts
+  - DCOPF-Carolinas_uc_2M-997-1h
+  - SWITCH-USA-PG-3-168h
+  - genx-elec_trex_uc-15-24h
+  - openTEPES-spain_portugal-elec-uc-8-2h
+  - temoa-US_9R_TS-9-12ts
+  - times-etimeseu-europe-elec+heat-multi_stage-29-64ts
+  - zen-garden-eur-PI-28-10ts
+  size: null
+  do_not_skip: false
+allocation:
+  num_vms: null
+  weight_col: Num. variables
+  machine_type: null
+  zone: us-central1-a
+  timeout_hours: null
+  years:
+  - 2020
+  - 2022
+  - 2023
+  - 2024
+  - 2025
+  - 2026
+  solver_configurations:
+  - glpk-default
+  - cbc-default
+  - scip-default
+  - gurobi-default
+  - highs-ipm
+  - highs-hipo
