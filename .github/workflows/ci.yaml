@@ -93,7 +93,7 @@ jobs:
         with:
           fetch-depth: 0 # for comparing against origin/main
 
-      - uses: prefix-dev/setup-pixi@v0.10.2
+      - uses: prefix-dev/setup-pixi@v0.11.0
         with:
           environments: dev
 
@@ -120,7 +120,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: prefix-dev/setup-pixi@v0.10.2
+      - uses: prefix-dev/setup-pixi@v0.11.0
         with:
           environments: dev benchmarks
 
@@ -164,7 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: prefix-dev/setup-pixi@v0.10.2
+      - uses: prefix-dev/setup-pixi@v0.11.0
         with:
           environments: runner benchmarks
 
