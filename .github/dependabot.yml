@@ -15,6 +15,10 @@ updates:
         patterns: ["next", "eslint-config-next"]
       website-minor-patch:
         update-types: [minor, patch]
+    ignore:
+      # Keep @types/node on the Node major the site runs on (22 in CI)
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
