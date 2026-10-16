@@ -4,6 +4,7 @@ import ChartResultsSectionsVarians from "./ChartResultsSectionsVarians";
 import { ArrowUpIcon } from "@/assets/icons";
 import { PATH_DASHBOARD, ROOT_PATH } from "@/constants/path";
 import { useScrollReveal } from "@/hooks/useGsapAnimation";
+import ScipVersionNote from "@/components/shared/ScipVersionNote";
 
 const NOTE_BOX = (
   <div className="px-6 py-5 text-navy font-lato border border-[#CAD9EF] bg-white rounded-2xl w-full text-left">
@@ -169,6 +170,7 @@ const GetStartedChart = () => {
       {/* Note below the figure, full width */}
       <div ref={noteRef} className="mt-8 mb-4 opacity-0">
         {NOTE_BOX}
+        <ScipVersionNote className="mt-4" />
       </div>
 
       {/* Buttons below the figure */}
