@@ -54,6 +54,19 @@ problems:
 
 Each entry under `problems:` is a single, specific problem instance (see `runner/utils/metadata.py`'s `load_problems`) -- there's no separate nested list for multiple sizes of the same model; each size gets its own top-level entry with a distinct ID.
 
+### Cost tracking labels
+
+Each benchmark VM receives four [GCP labels](https://docs.cloud.google.com/compute/docs/labeling-resources) for filtering and grouping costs in Cloud Billing:
+
+| Label | Value |
+|-------|-------|
+| `run_id` | Shared campaign run ID, provided through `run_id` or generated automatically |
+| `benchmark` | Benchmark YAML key (the filename without `.yaml`), identifying the VM's assigned workload |
+| `machine_type` | Machine type from the YAML, or `c4-standard-2` by default |
+| `zone` | Zone from the YAML, or the `zone` variable by default |
+
+Label values are lowercased, characters outside `a-z`, `0-9`, `_`, and `-` are replaced with `-`, and values are truncated to 63 characters. The original values remain available in VM metadata.
+
 ### 3. Set Up Opentofu Variables
 
 ### OpenTofu Variables

@@ -117,6 +117,16 @@ resource "google_compute_instance" "benchmark_instances" {
   machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
   zone         = lookup(each.value.content, "zone", var.zone)
 
+  # Expose campaign and VM details in GCP billing reports.
+  labels = {
+    for key, value in {
+      run_id       = local.shared_run_id
+      benchmark    = each.key
+      machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
+      zone         = lookup(each.value.content, "zone", var.zone)
+    } : key => substr(replace(lower(value), "/[^a-z0-9_-]/", "-"), 0, 63)
+  }
+
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-13"
