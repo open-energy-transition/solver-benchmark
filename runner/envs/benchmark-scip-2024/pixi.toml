@@ -10,8 +10,8 @@ python = ">=3.12"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-linopy = ">=0.5.5"
 scip = "==9.2.0"
 
 [pypi-dependencies]
 pyscipopt = "==5.7.1"
+linopy = { git = "https://github.com/PyPSA/linopy.git", rev = "26e000d936fb679386535e47191ca0d99aa250f2" }
