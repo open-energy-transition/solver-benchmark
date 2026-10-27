@@ -1,23 +1,35 @@
+# Dependabot keeps the website's npm packages (website/) and the GitHub Actions
+# used by the workflows up to date, with weekly version updates:
+#
+# - npm: packages that only work at matching versions get their own group, so
+#   their updates, majors included, arrive in a single PR: React with its type
+#   packages, and Next.js with its ESLint config. All other minor and patch
+#   updates are grouped into one PR; other major updates arrive as separate
+#   PRs, since they may need code changes.
+# - GitHub Actions: all updates are grouped into one PR.
+#
+# Security updates (switched on in the repository settings, not here) fix
+# vulnerable dependencies, including indirect ones that version updates never
+# touch. Fixes that only need a minor or patch update are grouped into one PR
+# per ecosystem. Fixes that need a major update arrive separately, so a
+# breaking upgrade cannot hold back the others.
 version: 2
 updates:
-  # Group minor/patch bumps into one weekly PR per ecosystem; majors get their own PRs
   - package-ecosystem: npm
     directory: /website
     schedule:
       interval: weekly
     # Each package goes to the first group that matches it
     groups:
-      # Packages that only work at matching versions, so their updates, majors
-      # included, always come together in one PR
       react:
         patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
       next:
         patterns: ["next", "eslint-config-next"]
       website-minor-patch:
         update-types: [minor, patch]
-      # All security updates in one PR
       website-security:
         applies-to: security-updates
+        update-types: [minor, patch]
         patterns: ["*"]
 
   - package-ecosystem: github-actions
@@ -29,4 +41,5 @@ updates:
         patterns: ["*"]
       github-actions-security:
         applies-to: security-updates
+        update-types: [minor, patch]
         patterns: ["*"]
