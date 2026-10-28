@@ -15,7 +15,7 @@ problems:
     Num. continuous variables: 458
     Num. integer variables: 284
     MILP features:
-    - Transmission switching
+      - Transmission switching
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 162 nodes
@@ -40,7 +40,8 @@ problems:
     Num. integer variables: 2795
     Share integer variables: 0.3666535484717303
     Num. nonzeros: 56119
-    MILP features: []
+    MILP features:
+      - Transmission switching
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 1803 nodes
@@ -65,7 +66,7 @@ problems:
     Num. continuous variables: 4913
     Num. integer variables: 2596
     MILP features:
-    - Transmission switching
+      - Transmission switching
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 1951 nodes
@@ -90,7 +91,7 @@ problems:
     Num. continuous variables: 7135
     Num. integer variables: 3776
     MILP features:
-    - Transmission switching
+      - Transmission switching
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 2848 nodes
@@ -115,7 +116,7 @@ problems:
     Num. continuous variables: 7237
     Num. integer variables: 3808
     MILP features:
-    - Transmission switching
+      - Transmission switching
     Modelling framework: PowerModels
     Version:
     Spatial resolution: 2868 nodes
