@@ -158,6 +158,16 @@ def main() -> None:
     for problem_id, group in data.groupby("Problem"):
         solvers_present = set(group["solver-version"].unique())
 
+        # Historical LP runs may include LP-only solver configurations for
+        # problems subsequently reclassified as MILP. Keep these results,
+        # but exclude them from the expected MILP solver coverage.
+        if meta["problems"].get(problem_id, {}).get("Problem class") == "MILP":
+            solvers_present = {
+                solver
+                for solver in solvers_present
+                if not solver.startswith(("highs-hipo-", "highs-ipx-"))
+            }
+
         if problem_id in short_timeout_ids:
             problem_class = meta["problems"][problem_id].get("Problem class", "")
             expected = expected_solver_count(problem_class, is_long_timeout=False)
