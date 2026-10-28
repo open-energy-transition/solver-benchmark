@@ -192,10 +192,13 @@ problems:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
     URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_7_three_zones_w_colocated_VRE_storage-053eaf1f441d6cb6da75f0dfdaab95f8011afb3be0a34e3b0ae02dbd1043ee74.mps.gz
-    Problem class: LP
+    Problem class: MILP
     Size: S
     Num. constraints: 4325
     Num. variables: 4260
+    Num. continuous variables: 3993
+    Num. integer variables: 267
+    Share integer variables: 0.06267605633802817
     Num. nonzeros: 17181
     MILP features: []
     Modelling framework: GenX
@@ -218,10 +221,13 @@ problems:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
     URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_8_three_zones_w_colocated_VRE_storage_electrolyzers-5a9e9622b0df9ff8e06923ccddd72047e156022ae36bd98981ac89bfb0f83790.mps.gz
-    Problem class: LP
+    Problem class: MILP
     Size: M
     Num. constraints: 302449
     Num. variables: 257129
+    Num. continuous variables: 238646
+    Num. integer variables: 18483
+    Share integer variables: 0.07188220698559866
     Num. nonzeros: 996931
     MILP features: []
     Modelling framework: GenX
@@ -245,10 +251,13 @@ problems:
     Contributor(s)/Source: https://github.com/jump-dev/open-energy-modeling-benchmarks
     License: Model code licensed MIT, benchmark instances not licensed yet
     URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/GenX_9_three_zones_w_retrofit-8a89ca27ab8836ba9d561011fa6f8daa1481d8ff6509e371ce48f1357a3fdf47.mps.gz
-    Problem class: LP
+    Problem class: MILP
     Size: M
     Num. constraints: 438008
     Num. variables: 260604
+    Num. continuous variables: 173727
+    Num. integer variables: 86877
+    Share integer variables: 0.33336786849012295
     Num. nonzeros: 1513322
     MILP features: []
     Modelling framework: GenX
