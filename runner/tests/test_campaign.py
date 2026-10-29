@@ -181,6 +181,11 @@ class TestValidateCampaign:
         errors, _ = validate_campaign(tmp_path)
         assert "run.tfvars not found" in errors[0]
 
+    def test_invalid_tfvars(self, bench_dir):
+        (bench_dir / "run.tfvars").write_text('git_ref = "main\n')
+        errors, _ = validate_campaign(bench_dir)
+        assert "invalid tfvars" in errors[0]
+
     def test_no_vm_files(self, bench_dir):
         errors, _ = validate_campaign(bench_dir)
         assert "no VM YAML files" in errors[0]

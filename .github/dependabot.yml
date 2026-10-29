@@ -5,16 +5,15 @@ updates:
     directory: /website
     schedule:
       interval: weekly
+    # Each package goes to the first group that matches it
     groups:
+      # Packages that only work at matching versions, so their updates, majors
+      # included, always come together in one PR
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      next:
+        patterns: ["next", "eslint-config-next"]
       website-minor-patch:
-        update-types: [minor, patch]
-
-  - package-ecosystem: uv
-    directory: /notebooks
-    schedule:
-      interval: weekly
-    groups:
-      notebooks-minor-patch:
         update-types: [minor, patch]
 
   - package-ecosystem: github-actions

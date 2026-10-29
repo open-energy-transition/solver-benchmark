@@ -16,8 +16,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+import hcl2
 import pandas as pd
 import yaml
+from lark.exceptions import LarkError
 
 from . import config
 
@@ -222,15 +224,11 @@ def current_git_branch(repo_root: Path = _REPO_ROOT) -> str | None:
     return None if branch == "HEAD" else branch
 
 
-def _read_tfvars(path: Path) -> dict[str, str]:
-    """Read the `key = "value"` lines of a tfvars file, ignoring comments."""
-    values = {}
-    for raw_line in path.read_text().splitlines():
-        line = raw_line.split("#", 1)[0].strip()
-        if "=" in line:
-            key, value = line.split("=", 1)
-            values[key.strip()] = value.strip().strip('"')
-    return values
+def _read_tfvars(path: Path) -> dict:
+    """Read a tfvars file, with its strings unquoted."""
+    options = hcl2.SerializationOptions(with_comments=False, strip_string_quotes=True)
+    with path.open() as f:
+        return hcl2.load(f, serialization_options=options)
 
 
 def _check_vm_yaml(
@@ -389,7 +387,10 @@ def validate_campaign(
     if not tfvars_path.exists():
         return [f"{tfvars_path} not found"], []
 
-    tfvars = _read_tfvars(tfvars_path)
+    try:
+        tfvars = _read_tfvars(tfvars_path)
+    except LarkError as e:
+        return [f"{tfvars_path}: invalid tfvars: {e}"], []
     instance_name = tfvars.get("instance_name", _DEFAULT_INSTANCE_NAME)
     git_ref = tfvars.get("git_ref", _DEFAULT_GIT_REF)
 
