@@ -78,6 +78,42 @@ class TestGetSolver:
         assert captured["options"]["random_seed"] == 0
         assert "no seed_options entry" in capsys.readouterr().err
 
+    def test_legacy_linopy_passes_options_dict(self, monkeypatch):
+        captured = {}
+
+        monkeypatch.setattr(
+            "runner.utils.solver.signature",
+            lambda _: MagicMock(parameters={"options": object()}),
+        )
+        monkeypatch.setattr(
+            "runner.utils.solver.solvers.Highs",
+            MagicMock(
+                side_effect=lambda options: captured.setdefault("options", options)
+            ),
+        )
+
+        get_solver("highs-default")
+
+        assert captured["options"]["random_seed"] == 0
+        assert captured["options"]["mip_rel_gap"] == pytest.approx(1e-4)
+
+    def test_current_linopy_expands_options_as_kwargs(self, monkeypatch):
+        captured = {}
+
+        monkeypatch.setattr(
+            "runner.utils.solver.signature",
+            lambda _: MagicMock(parameters={}),
+        )
+        monkeypatch.setattr(
+            "runner.utils.solver.solvers.Highs",
+            MagicMock(side_effect=lambda **kwargs: captured.update(kwargs)),
+        )
+
+        get_solver("highs-default")
+
+        assert captured["random_seed"] == 0
+        assert captured["mip_rel_gap"] == pytest.approx(1e-4)
+
 
 class TestIsMipProblem:
     def test_none_model_is_unknown(self):
