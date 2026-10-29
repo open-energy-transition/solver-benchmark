@@ -13,6 +13,7 @@ problems:
     Num. nonzeros: 26112
     Num. continuous variables: 5436
     Num. integer variables: 1944
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -38,6 +39,7 @@ problems:
     Num. nonzeros: 26112
     Num. continuous variables: 5436
     Num. integer variables: 1944
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -63,6 +65,7 @@ problems:
     Num. nonzeros: 26112
     Num. continuous variables: 5436
     Num. integer variables: 1944
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -88,6 +91,7 @@ problems:
     Num. nonzeros: 54348
     Num. continuous variables: 10872
     Num. integer variables: 3888
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -113,6 +117,7 @@ problems:
     Num. nonzeros: 54348
     Num. continuous variables: 10872
     Num. integer variables: 3888
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -138,6 +143,7 @@ problems:
     Num. nonzeros: 54348
     Num. continuous variables: 10872
     Num. integer variables: 3888
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -163,6 +169,7 @@ problems:
     Num. nonzeros: 112812
     Num. continuous variables: 21744
     Num. integer variables: 7776
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -188,6 +195,7 @@ problems:
     Num. nonzeros: 112812
     Num. continuous variables: 21744
     Num. integer variables: 7776
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -213,6 +221,7 @@ problems:
     Num. nonzeros: 112812
     Num. continuous variables: 21744
     Num. integer variables: 7776
+    Share integer variables: 0.263
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -237,6 +246,7 @@ problems:
     Num. nonzeros: 38796
     Num. continuous variables: 7752
     Num. integer variables: 1944
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -261,6 +271,7 @@ problems:
     Num. nonzeros: 38796
     Num. continuous variables: 7752
     Num. integer variables: 1944
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -285,6 +296,7 @@ problems:
     Num. nonzeros: 38796
     Num. continuous variables: 7752
     Num. integer variables: 1944
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -309,6 +321,7 @@ problems:
     Num. nonzeros: 79716
     Num. continuous variables: 15504
     Num. integer variables: 3888
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -333,6 +346,7 @@ problems:
     Num. nonzeros: 79716
     Num. continuous variables: 15504
     Num. integer variables: 3888
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -357,6 +371,7 @@ problems:
     Num. nonzeros: 79716
     Num. continuous variables: 15504
     Num. integer variables: 3888
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -381,6 +396,7 @@ problems:
     Num. nonzeros: 163548
     Num. continuous variables: 31008
     Num. integer variables: 7776
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -405,6 +421,7 @@ problems:
     Num. nonzeros: 163548
     Num. continuous variables: 31008
     Num. integer variables: 7776
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -429,6 +446,7 @@ problems:
     Num. nonzeros: 163548
     Num. continuous variables: 31008
     Num. integer variables: 7776
+    Share integer variables: 0.2
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -454,6 +472,7 @@ problems:
     Num. nonzeros: 142344
     Num. continuous variables: 6876
     Num. integer variables: 1944
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -479,6 +498,7 @@ problems:
     Num. nonzeros: 142344
     Num. continuous variables: 6876
     Num. integer variables: 1944
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -504,6 +524,7 @@ problems:
     Num. nonzeros: 142344
     Num. continuous variables: 6876
     Num. integer variables: 1944
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -529,6 +550,7 @@ problems:
     Num. nonzeros: 286812
     Num. continuous variables: 13752
     Num. integer variables: 3888
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -554,6 +576,7 @@ problems:
     Num. nonzeros: 286812
     Num. continuous variables: 13752
     Num. integer variables: 3888
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -579,6 +602,7 @@ problems:
     Num. nonzeros: 286812
     Num. continuous variables: 13752
     Num. integer variables: 3888
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -604,6 +628,7 @@ problems:
     Num. nonzeros: 577740
     Num. continuous variables: 27504
     Num. integer variables: 7776
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -629,6 +654,7 @@ problems:
     Num. nonzeros: 577740
     Num. continuous variables: 27504
     Num. integer variables: 7776
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -654,6 +680,7 @@ problems:
     Num. nonzeros: 577740
     Num. continuous variables: 27504
     Num. integer variables: 7776
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -678,6 +705,7 @@ problems:
     Num. nonzeros: 31872
     Num. continuous variables: 6876
     Num. integer variables: 1944
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -702,6 +730,7 @@ problems:
     Num. nonzeros: 31872
     Num. continuous variables: 6876
     Num. integer variables: 1944
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -726,6 +755,7 @@ problems:
     Num. nonzeros: 31872
     Num. continuous variables: 6876
     Num. integer variables: 1944
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -750,6 +780,7 @@ problems:
     Num. nonzeros: 65868
     Num. continuous variables: 13752
     Num. integer variables: 3888
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -774,6 +805,7 @@ problems:
     Num. nonzeros: 65868
     Num. continuous variables: 13752
     Num. integer variables: 3888
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -798,6 +830,7 @@ problems:
     Num. nonzeros: 65868
     Num. continuous variables: 13752
     Num. integer variables: 3888
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -822,6 +855,7 @@ problems:
     Num. nonzeros: 135852
     Num. continuous variables: 27504
     Num. integer variables: 7776
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -846,6 +880,7 @@ problems:
     Num. nonzeros: 135852
     Num. continuous variables: 27504
     Num. integer variables: 7776
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna
@@ -870,6 +905,7 @@ problems:
     Num. nonzeros: 135852
     Num. continuous variables: 27504
     Num. integer variables: 7776
+    Share integer variables: 0.22
     MILP features:
     - Unit commitment
     Modelling framework: Sienna

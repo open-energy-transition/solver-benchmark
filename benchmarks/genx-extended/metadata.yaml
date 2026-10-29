@@ -126,6 +126,7 @@ problems:
     Num. nonzeros: 12519873
     Num. continuous variables: 2062938
     Num. integer variables: 488408
+    Share integer variables: 0.191
     MILP features:
     - Unit commitment
     Modelling framework: GenX
