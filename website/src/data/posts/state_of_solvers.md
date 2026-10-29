@@ -5,6 +5,8 @@ excerpt: "The results of the 2025 Open Energy Benchmark"
 tags: ["report", "solvers", "benchmark"]
 ---
 
+> **Correction:** all SCIP results in this report ran SCIP 9.2.4, whatever version they are labelled with, so the comparison of SCIP versions over time does not hold. [Read more](/blog/scip_version_correction)
+
 *Authors:* (in alphabetical order) Enrico Antonini, Siddharth Krishna, Daniele Lerede
 
 *Contributors:* Heba Badawy, Jacek Bendig, Kristijan Faust, Fabrizio Finozzi, Priya Goli Vamsi, Madhukar Mishra, Maximillian Parzen, and Luis Prieto
