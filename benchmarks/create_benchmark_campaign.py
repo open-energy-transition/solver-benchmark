@@ -333,13 +333,14 @@ def print_campaign_summary(
     *,
     run_id: str,
     vm_prefix: str,
+    git_ref: str,
     selected: pd.DataFrame,
     vm_yamls: list[dict],
     years: list[int],
     timeout_seconds: int | None,
     machine_profile: str | None,
 ) -> None:
-    """Print a concise summary and the next OpenTofu command.
+    """Print a concise summary of the generated campaign.
 
     Parameters
     ----------
@@ -347,6 +348,8 @@ def print_campaign_summary(
         Campaign run identifier.
     vm_prefix : str
         Prefix used to name generated VMs.
+    git_ref : str
+        Branch or tag of this repository that the VMs clone and run.
     selected : pandas.DataFrame
         Selected problems after applying all campaign filters.
     vm_yamls : list[dict]
@@ -369,6 +372,7 @@ def print_campaign_summary(
     print("================")
     print(f"Run ID:              {run_id}")
     print(f"VM prefix:           {vm_prefix}")
+    print(f"Git ref:             {git_ref}")
     print(f"Years:               {', '.join(map(str, years))}")
     if machine_profile is None:
         print("Machine policy:      S/M = short, L = long")
@@ -401,6 +405,15 @@ def print_campaign_summary(
     for idx in range(len(vm_yamls)):
         print(f"  {campaign_dir.relative_to(REPO_ROOT)}/{vm_prefix}-{idx:02d}.yaml")
 
+
+def print_next_steps(run_id: str) -> None:
+    """Print the checklist and OpenTofu command for launching a campaign.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    """
     print("\nNext steps:")
     print("  cd infrastructure")
     print(
@@ -1080,6 +1093,15 @@ def main() -> None:
             solver=" ".join(args.solver_configurations),
         )
 
+        from runner.utils.campaign import (  # pylint: disable=import-outside-toplevel
+            current_git_branch,
+            print_validation,
+            validate_campaign,
+        )
+
+        # The VMs run the checked-out branch, or main if HEAD is detached
+        git_ref = current_git_branch(REPO_ROOT) or "main"
+
         # create_benchmark_campaign uses relative paths like ../infrastructure.
         # Run it from runner/ to preserve the existing path convention.
         old_cwd = Path.cwd()
@@ -1087,7 +1109,7 @@ def main() -> None:
             import os
 
             os.chdir(RUNNER_DIR)
-            create_benchmark_campaign(run_id, vm_prefix, vm_yamls)
+            create_benchmark_campaign(run_id, vm_prefix, vm_yamls, git_ref)
         finally:
             os.chdir(old_cwd)
 
@@ -1103,12 +1125,26 @@ def main() -> None:
         print_campaign_summary(
             run_id=run_id,
             vm_prefix=vm_prefix,
+            git_ref=git_ref,
             selected=selected,
             vm_yamls=vm_yamls,
             years=args.years,
             timeout_seconds=timeout_seconds,
             machine_profile=args.machine_type,
         )
+
+        print("\nCampaign check")
+        print("==============")
+        if not print_validation(*validate_campaign(campaign_dir)):
+            print(
+                "\nThe campaign files were written but would fail as they are. "
+                "Fix the errors and regenerate with --force, or edit the files "
+                "and check them again with:\n"
+                "  pixi run -e runner python -m runner.utils.campaign "
+                f"{campaign_dir.relative_to(REPO_ROOT)}"
+            )
+            sys.exit(1)
+        print_next_steps(run_id)
 
     else:
         run_script = create_local_campaign(

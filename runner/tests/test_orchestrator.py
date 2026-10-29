@@ -344,10 +344,10 @@ class TestRunBenchmark:
         )
         assert "BENCHMARK_ALERT" not in capsys.readouterr().out
 
-    def test_reference_interval_runs_reference_benchmark(
+    def test_reference_benchmark_runs_before_and_after_solves(
         self, problems_yaml, tmp_path, mocker
     ):
-        mocker.patch.object(
+        solver_mock = mocker.patch.object(
             orchestrator, "run_solver", return_value=dict(_FAKE_METRICS)
         )
         mocker.patch.object(
@@ -371,11 +371,18 @@ class TestRunBenchmark:
             ["highs-default"],
             year="2025",
             run_id="test-run",
-            reference_interval=1,
+            reference_interval=3600,
         )
-        reference_mock.assert_called_once()
+        # Once before the only solve and once after it, even though the
+        # interval hasn't passed in between
+        assert reference_mock.call_count == 2
+        solver_mock.assert_called_once()
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
-        assert "reference-benchmark" in set(results["Problem"])
+        assert list(results["Problem"]) == [
+            "reference-benchmark",
+            "tiny-problem",
+            "reference-benchmark",
+        ]
 
 
 class TestGetGceMetadata:
