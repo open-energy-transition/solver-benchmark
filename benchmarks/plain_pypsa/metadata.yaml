@@ -57,6 +57,7 @@ problems:
     Num. nonzeros: 442657
     Num. continuous variables: 87605
     Num. integer variables: 26280
+    Share integer variables: 0.231
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -105,6 +106,7 @@ problems:
     Num. nonzeros: 311256
     Num. continuous variables: 61324
     Num. integer variables: 26280
+    Share integer variables: 0.3
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -131,6 +133,7 @@ problems:
     Num. nonzeros: 442665
     Num. continuous variables: 87605
     Num. integer variables: 26284
+    Share integer variables: 0.231
     MILP features:
     - Unit commitment
     - Modularity
@@ -158,6 +161,7 @@ problems:
     Num. nonzeros: 276227
     Num. continuous variables: 61325
     Num. integer variables: 4
+    Share integer variables: 6.52e-05
     MILP features:
     - Modularity
     Modelling framework: PyPSA
@@ -183,6 +187,7 @@ problems:
     Num. nonzeros: 267469
     Num. continuous variables: 61325
     Num. integer variables: 5
+    Share integer variables: 8.15e-05
     MILP features:
     - Modularity
     Modelling framework: PyPSA
@@ -209,6 +214,7 @@ problems:
     Num. nonzeros: 311262
     Num. continuous variables: 61324
     Num. integer variables: 26283
+    Share integer variables: 0.3
     MILP features:
     - Unit commitment
     - Modularity
@@ -236,6 +242,7 @@ problems:
     Num. nonzeros: 398870
     Num. continuous variables: 87606
     Num. integer variables: 5
+    Share integer variables: 5.71e-05
     MILP features:
     - Modularity
     Modelling framework: PyPSA

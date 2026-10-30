@@ -43,6 +43,7 @@ problems:
     Num. nonzeros: 471061
     Num. continuous variables: 122017
     Num. integer variables: 9261
+    Share integer variables: 0.0705
     MILP features:
     - Unit commitment
     Modelling framework: DCOPF
@@ -100,6 +101,7 @@ problems:
     Num. nonzeros: 471061
     Num. continuous variables: 122017
     Num. integer variables: 9261
+    Share integer variables: 0.0705
     MILP features:
     - Unit commitment
     Modelling framework: DCOPF

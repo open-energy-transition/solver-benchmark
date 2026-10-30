@@ -212,6 +212,7 @@ problems:
     Num. nonzeros: 2000
     Num. continuous variables: 580
     Num. integer variables: 2
+    Share integer variables: 0.00344
     MILP features:
     - Unit commitment
     Modelling framework: SWITCH
@@ -239,6 +240,7 @@ problems:
     Num. nonzeros: 2108
     Num. continuous variables: 616
     Num. integer variables: 2
+    Share integer variables: 0.00324
     MILP features:
     - Unit commitment
     Modelling framework: SWITCH
@@ -268,6 +270,7 @@ problems:
     Num. nonzeros: 1925
     Num. continuous variables: 578
     Num. integer variables: 2
+    Share integer variables: 0.00345
     MILP features:
     - Unit commitment
     Modelling framework: SWITCH
@@ -343,6 +346,7 @@ problems:
     Num. nonzeros: 2619
     Num. continuous variables: 616
     Num. integer variables: 2
+    Share integer variables: 0.00324
     MILP features:
     - Unit commitment
     Modelling framework: SWITCH
@@ -368,6 +372,7 @@ problems:
     Num. nonzeros: 4208
     Num. continuous variables: 1308
     Num. integer variables: 2
+    Share integer variables: 0.00153
     MILP features:
     - Unit commitment
     Modelling framework: SWITCH
@@ -394,6 +399,7 @@ problems:
     Num. nonzeros: 2257
     Num. continuous variables: 616
     Num. integer variables: 2
+    Share integer variables: 0.00324
     MILP features:
     - Unit commitment
     Modelling framework: SWITCH

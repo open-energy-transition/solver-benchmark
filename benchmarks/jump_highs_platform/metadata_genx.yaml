@@ -14,6 +14,7 @@ problems:
     Num. nonzeros: 559798
     Num. continuous variables: 107199
     Num. integer variables: 20331
+    Share integer variables: 0.159
     MILP features:
       - Unit commitment
     Modelling framework: GenX
@@ -41,6 +42,7 @@ problems:
     Num. nonzeros: 683576
     Num. continuous variables: 157106
     Num. integer variables: 20331
+    Share integer variables: 0.115
     MILP features:
       - Unit commitment
     Modelling framework: GenX
@@ -69,6 +71,7 @@ problems:
     Num. nonzeros: 559791
     Num. continuous variables: 107199
     Num. integer variables: 20331
+    Share integer variables: 0.159
     MILP features:
     - Piecewise fuel usage
     Modelling framework: GenX
@@ -108,6 +111,7 @@ problems:
     Num. nonzeros: 681442
     Num. continuous variables: 125685
     Num. integer variables: 20331
+    Share integer variables: 0.139
     MILP features:
       - Unit commitment
     Modelling framework: GenX
@@ -141,6 +145,7 @@ problems:
     Num. nonzeros: 679844
     Num. continuous variables: 120135
     Num. integer variables: 20331
+    Share integer variables: 0.145
     MILP features:
     - Piecewise fuel usage
     Modelling framework: GenX
@@ -168,6 +173,7 @@ problems:
     Num. nonzeros: 670453
     Num. continuous variables: 107302
     Num. integer variables: 20334
+    Share integer variables: 0.159
     MILP features:
       - Unit commitment
     Modelling framework: GenX
@@ -197,7 +203,7 @@ problems:
     Num. variables: 4260
     Num. continuous variables: 3993
     Num. integer variables: 267
-    Share integer variables: 0.06267605633802817
+    Share integer variables: 0.0627
     Num. nonzeros: 17181
     MILP features:
       - Unit commitment
@@ -227,7 +233,7 @@ problems:
     Num. variables: 257129
     Num. continuous variables: 238646
     Num. integer variables: 18483
-    Share integer variables: 0.07188220698559866
+    Share integer variables: 0.0719
     Num. nonzeros: 996931
     MILP features:
       - Unit commitment
@@ -258,7 +264,7 @@ problems:
     Num. variables: 260604
     Num. continuous variables: 173727
     Num. integer variables: 86877
-    Share integer variables: 0.33336786849012295
+    Share integer variables: 0.333
     Num. nonzeros: 1513322
     MILP features:
       - Unit commitment
@@ -286,6 +292,7 @@ problems:
     Num. nonzeros: 2706846
     Num. continuous variables: 560640
     Num. integer variables: 78843
+    Share integer variables: 0.123
     MILP features:
       - Unit commitment
     Modelling framework: GenX
