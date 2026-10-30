@@ -12,6 +12,8 @@ pandas = "*"
 psutil = "*"
 requests = "*"
 humanize = "*"
+# runner.utils.campaign reads the campaign's run.tfvars
+python-hcl2 = ">=8"
 # numpy/ipython/linopy aren't needed by the CLI/orchestrator path itself
 # (solving happens via subprocess in the per-solver-year conda envs), but the
 # test suite imports analyze.py (numpy, IPython.display) and solver.py
@@ -52,6 +54,8 @@ pip = "*"
 matplotlib = "*"
 humanize = "*"
 ipython = "*"
+# create_benchmark_campaign.py checks the campaign with runner.utils.campaign
+python-hcl2 = ">=8"
 
 [feature.benchmarks.pypi-dependencies]
 highspy = "==1.9.0"
