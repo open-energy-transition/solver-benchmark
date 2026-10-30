@@ -1,0 +1,8 @@
+# Code owners of the repository. GitHub asks them to review every pull request
+# that changes the files they own, and the ruleset on main requires an approval
+# from one of them before merging.
+#
+# The solver-benchmark-maintainers team owns everything. Add more specific
+# paths below the catch-all line to hand parts of the repository to other
+# people or teams; the last matching line wins.
+* @open-energy-transition/solver-benchmark-maintainers
