@@ -5082,7 +5082,7 @@ problems:
     Size: M
     Num. constraints: 315967
     Num. variables: 158910
-    Num. nonzeros: 1624296
+    Num. nonzeros: 760742
     Num. continuous variables: 128223
     Num. integer variables: 30687
     MILP features:
