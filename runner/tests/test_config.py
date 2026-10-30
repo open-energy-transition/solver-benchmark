@@ -13,7 +13,6 @@ from runner.utils.config import (
     get_default_configurations,
     get_license_env_vars,
     get_output_stem,
-    get_package_name,
     get_seed_option,
     get_solver_configuration,
     get_solver_options,
@@ -113,16 +112,6 @@ class TestGetAllRegisteredYears:
 
     def test_empty_registry_returns_empty_list(self):
         assert get_all_registered_years({}) == []
-
-
-class TestGetPackageName:
-    def test_looks_up_package_name(self):
-        config = {"packages": {"highs": "highspy"}}
-        assert get_package_name("highs", config) == "highspy"
-
-    def test_falls_back_to_solver_name(self):
-        config = {"packages": {}}
-        assert get_package_name("glpk", config) == "glpk"
 
 
 class TestGetLicenseEnvVars:

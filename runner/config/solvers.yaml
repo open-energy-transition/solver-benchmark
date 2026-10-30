@@ -5,9 +5,9 @@
 # version listed for a given year is the latest release of that solver
 # available in that year, not necessarily the version it was first released.
 #
-# `packages`: the PyPI package name for each solver, where it differs
-# from the solver's own name (used to cross-check what's actually installed
-# in an env against what this file expects).
+# `packages`: the package name for each solver, where it differs from the
+# solver's own name (used to check the `tests` block below against the
+# versions runner/envs/benchmark-tests/pixi.toml pins).
 #
 # `tests`: not a release year -- the versions actually pinned in
 # runner/envs/benchmark-tests/pixi.toml, the single shared env CI solves
