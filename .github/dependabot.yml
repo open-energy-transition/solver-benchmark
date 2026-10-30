@@ -19,7 +19,10 @@ updates:
     schedule:
       interval: weekly
     # Each update goes to the first group that accepts it, so the groups below
-    # website-minor-patch only receive major updates
+    # website-minor-patch only receive major updates. website-minor-patch has
+    # no patterns on purpose: it covers every package that way, while
+    # patterns: ["*"] would let the more specific react and next groups take
+    # their minor and patch updates
     groups:
       website-minor-patch:
         update-types: [minor, patch]
