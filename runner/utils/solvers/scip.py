@@ -1,7 +1,37 @@
 """SCIP solver adapter: result-metric accessors."""
 
+import os
+import re
+import sys
+import tempfile
 from pathlib import Path
 from typing import Any
+
+# pyscipopt is only installed in the SCIP and tests solver environments
+try:
+    import pyscipopt as _pyscipopt
+except ModuleNotFoundError:
+    _pyscipopt = None
+
+
+def solver_version() -> str:
+    """Return the version of the SCIP library this env loads.
+
+    PySCIPOpt's `Model.version()` only gives major.minor, so this reads the
+    full version from the banner `printVersion` writes to stdout from C.
+    """
+    sys.stdout.flush()
+    with tempfile.TemporaryFile(mode="w+") as banner:
+        stdout_fd = os.dup(1)
+        os.dup2(banner.fileno(), 1)
+        try:
+            _pyscipopt.Model().printVersion()
+        finally:
+            sys.stdout.flush()
+            os.dup2(stdout_fd, 1)
+            os.close(stdout_fd)
+        banner.seek(0)
+        return re.search(r"SCIP version (\S+)", banner.read()).group(1)
 
 
 def is_mip(model: Any) -> bool:
@@ -17,6 +47,36 @@ def duality_gap(model: Any, log_fn: Path) -> float:
 def reported_runtime(model: Any) -> float:
     """SCIP's own reported solving time."""
     return model.getSolvingTime()
+
+
+def use_pyscipopt_4_compatible_model() -> None:
+    """Let linopy read results from PySCIPOpt 4.x.
+
+    Temporary workaround, to remove once linopy supports PySCIPOpt 4.x: see
+    https://github.com/open-energy-transition/solver-benchmark/issues/622.
+
+    After solving, linopy (as of 0.9.1) reads the original constraints with
+    `Model.getConss(False)`, but PySCIPOpt 4.x (the last release for SCIP 8)
+    only has `getConss()`, so every SCIP 8 run ended in an error. This swaps
+    in a `Model` whose `getConss(False)` returns no constraints, so linopy
+    skips the dual values, which the runner doesn't use. It does nothing if
+    PySCIPOpt already accepts the argument.
+    """
+    import pyscipopt
+
+    try:
+        pyscipopt.Model().getConss(False)
+        return
+    except TypeError:
+        pass
+
+    class Pyscipopt4Model(pyscipopt.Model):
+        def getConss(self, transformed: bool = True) -> list:
+            # PySCIPOpt 4.x can't return the original constraints
+            return super().getConss() if transformed else []
+
+    # linopy looks up `pyscipopt.Model` when it builds the model
+    pyscipopt.Model = Pyscipopt4Model
 
 
 def integer_values(
