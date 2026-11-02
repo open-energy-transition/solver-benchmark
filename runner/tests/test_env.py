@@ -1,100 +1,19 @@
-"""Tests for runner/utils/env.py: installed vs. registered solver version
-introspection.
+"""Tests for runner/utils/env.py: registered solver versions, env
+installation and the solver version check.
 """
 
-import json
+import re
 import subprocess
 from typing import ClassVar
 
 import pytest
 
 from runner.utils.env import (
+    check_solver_versions,
     ensure_solver_envs_installed,
-    get_installed_solver_versions,
     get_registered_solver_versions,
+    versions_match,
 )
-
-
-class TestGetInstalledSolverVersions:
-    def test_parses_package_versions(self, mocker):
-        stdout = json.dumps(
-            [
-                {"name": "highspy", "version": "1.9.0"},
-                {"name": "coin-or-cbc", "version": "2.10.5"},
-            ]
-        )
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            return_value=subprocess.CompletedProcess(
-                args=["pixi", "list"], returncode=0, stdout=stdout, stderr=""
-            ),
-        )
-        mocker.patch(
-            "runner.utils.env.config.resolve_solver_name", side_effect=lambda name: name
-        )
-        mocker.patch(
-            "runner.utils.env.config.get_package_name",
-            side_effect={"highs": "highspy", "cbc": "coin-or-cbc"}.get,
-        )
-        result = get_installed_solver_versions(
-            ["highs", "cbc", "unknown-solver"], env_name="benchmark-tests"
-        )
-        assert result == {
-            "highs": "1.9.0",
-            "cbc": "2.10.5",
-            "unknown-solver": None,
-        }
-
-    def test_resolves_configuration_name_before_package_lookup(self, mocker):
-        # A configuration like "highs-hipo" shares its solver's package, so
-        # the lookup must resolve through config.resolve_solver_name first.
-        stdout = json.dumps([{"name": "highspy", "version": "1.9.0"}])
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout=stdout, stderr=""
-            ),
-        )
-        mocker.patch(
-            "runner.utils.env.config.resolve_solver_name",
-            return_value="highs",
-        )
-        mocker.patch(
-            "runner.utils.env.config.get_package_name",
-            return_value="highspy",
-        )
-        result = get_installed_solver_versions(
-            ["highs-hipo"], env_name="benchmark-highs-2025"
-        )
-        assert result == {"highs-hipo": "1.9.0"}
-
-    def test_passes_env_name_as_manifest_path_to_pixi_list(self, mocker):
-        run_mock = mocker.patch(
-            "runner.utils.env.subprocess.run",
-            return_value=subprocess.CompletedProcess(
-                args=[], returncode=0, stdout="[]", stderr=""
-            ),
-        )
-        mocker.patch(
-            "runner.utils.env.config.resolve_solver_name", return_value="highs"
-        )
-        mocker.patch("runner.utils.env.config.get_package_name", return_value="highspy")
-        get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
-        called_cmd = run_mock.call_args[0][0]
-        assert called_cmd[:2] == ["pixi", "list"]
-        assert "--locked" in called_cmd
-        assert "--json" in called_cmd
-        assert called_cmd[called_cmd.index("--manifest-path") + 1].endswith(
-            "benchmark-highs-2025"
-        )
-
-    def test_called_process_error_raises_value_error(self, mocker):
-        mocker.patch(
-            "runner.utils.env.subprocess.run",
-            side_effect=subprocess.CalledProcessError(1, "pixi list", stderr="boom"),
-        )
-        with pytest.raises(ValueError, match="boom"):
-            get_installed_solver_versions(["highs"], env_name="benchmark-highs-2025")
 
 
 class TestGetRegisteredSolverVersions:
@@ -168,6 +87,11 @@ class TestGetRegisteredSolverVersions:
 
 
 class TestEnsureSolverEnvsInstalled:
+    @pytest.fixture(autouse=True)
+    def check_mock(self, mocker):
+        # The version check has its own tests below
+        return mocker.patch("runner.utils.env.check_solver_versions")
+
     def _make_manifest(self, envs_dir, env_name):
         env_dir = envs_dir / env_name
         env_dir.mkdir()
@@ -239,3 +163,117 @@ class TestEnsureSolverEnvsInstalled:
             {"highs": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
         )
         assert "WARNING: Failed to install env" in capsys.readouterr().out
+
+    def test_checks_versions_of_installed_envs_only(self, mocker, tmp_path, check_mock):
+        mocker.patch("runner.utils.env._ENVS_DIR", tmp_path)
+        self._make_manifest(tmp_path, "benchmark-highs-2025")
+        self._make_manifest(tmp_path, "benchmark-scip-2025")
+        mocker.patch(
+            "runner.utils.env.subprocess.run",
+            side_effect=lambda command, **kwargs: subprocess.CompletedProcess(
+                args=command,
+                returncode=1 if command[-1].endswith("scip-2025") else 0,
+                stdout="",
+                stderr="",
+            ),
+        )
+        ensure_solver_envs_installed(
+            {
+                "highs-default": {"version": "1.12.0", "env": "benchmark-highs-2025"},
+                "scip-default": {"version": "10.0.0", "env": "benchmark-scip-2025"},
+            }
+        )
+        check_mock.assert_called_once_with(
+            {"highs-default": {"version": "1.12.0", "env": "benchmark-highs-2025"}}
+        )
+
+
+class TestVersionsMatch:
+    @pytest.mark.parametrize(
+        ("registered", "actual"),
+        [
+            ("10.0.0", "10.0.0"),
+            ("5.0", "5.0.0"),  # glpk: registered as 5.0, reported as 5.0.0
+            ("5.0.0", "5.0"),
+            ("1.5.0.dev0", "1.5.0"),  # highs 2022
+            ("22.1.2.0", "22.1.2.0"),  # cplex
+        ],
+    )
+    def test_same_release_matches(self, registered, actual):
+        assert versions_match(registered, actual)
+
+    @pytest.mark.parametrize(
+        ("registered", "actual"),
+        [
+            ("10.0.0", "9.2.4"),
+            ("9.2.0", "9.2.4"),  # a different patch release
+            ("1.12.0", "1.12.1"),
+            ("5.0", "not a version"),
+        ],
+    )
+    def test_different_release_does_not_match(self, registered, actual):
+        assert not versions_match(registered, actual)
+
+
+class TestCheckSolverVersions:
+    @staticmethod
+    def _reports(mocker, versions_by_env):
+        """Make each env's version probe print the given version."""
+        return mocker.patch(
+            "runner.utils.env.subprocess.run",
+            side_effect=lambda command, **kwargs: subprocess.CompletedProcess(
+                args=command,
+                returncode=0,
+                stdout=f"some banner\n{versions_by_env[command[4].split('/')[-1]]}\n",
+                stderr="",
+            ),
+        )
+
+    def test_passes_when_every_env_runs_its_registered_version(self, mocker, capsys):
+        run_mock = self._reports(
+            mocker,
+            {"benchmark-highs-2025": "1.12.0", "benchmark-scip-2025": "10.0.0"},
+        )
+        check_solver_versions(
+            {
+                "highs-default": {"version": "1.12.0", "env": "benchmark-highs-2025"},
+                # Shares highs-default's env and solver, so it's checked once
+                "highs-hipo": {"version": "1.12.0", "env": "benchmark-highs-2025"},
+                "scip-default": {"version": "10.0.0", "env": "benchmark-scip-2025"},
+            }
+        )
+        assert run_mock.call_count == 2
+        command = run_mock.call_args_list[0][0][0]
+        assert command[:3] == ["pixi", "run", "--locked"]
+        assert command[-4:] == ["python", "-m", "runner.utils.solvers", "highs"]
+        assert "benchmark-scip-2025 runs scip 10.0.0" in capsys.readouterr().out
+
+    def test_raises_on_a_different_version(self, mocker):
+        # A PyPI PySCIPOpt wheel loading its own SCIP instead of the env's
+        self._reports(mocker, {"benchmark-scip-2025": "9.2.4"})
+        with pytest.raises(
+            ValueError,
+            match=re.escape(
+                "benchmark-scip-2025 runs scip 9.2.4, but solvers.yaml registers 10.0.0"
+            ),
+        ):
+            check_solver_versions(
+                {"scip-default": {"version": "10.0.0", "env": "benchmark-scip-2025"}}
+            )
+
+    def test_raises_when_the_version_cannot_be_read(self, mocker):
+        mocker.patch(
+            "runner.utils.env.subprocess.run",
+            return_value=subprocess.CompletedProcess(
+                args=[], returncode=1, stdout="", stderr="ModuleNotFoundError: x"
+            ),
+        )
+        with pytest.raises(ValueError, match="couldn't read the scip version"):
+            check_solver_versions(
+                {"scip-default": {"version": "10.0.0", "env": "benchmark-scip-2025"}}
+            )
+
+    def test_envless_entries_are_not_checked(self, mocker):
+        run_mock = mocker.patch("runner.utils.env.subprocess.run")
+        check_solver_versions({"highs-default": {"version": "1.12.0", "env": None}})
+        run_mock.assert_not_called()

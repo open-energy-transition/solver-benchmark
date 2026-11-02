@@ -7,6 +7,7 @@ files CBC writes instead.
 """
 
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,14 @@ try:
     import highspy as _highspy
 except ModuleNotFoundError:
     _highspy = None
+
+
+def solver_version() -> str:
+    """Return the version of the `cbc` program linopy runs in this env."""
+    output = subprocess.run(
+        ["cbc", "-quit"], capture_output=True, text=True, check=True
+    ).stdout
+    return re.search(r"Version: (\S+)", output).group(1)
 
 
 def is_mip(model: Any) -> bool | None:

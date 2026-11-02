@@ -16,6 +16,8 @@ Each solver-version pair has its own pixi environment (e.g., `benchmark-highs-20
 
 The source of truth for mapping solver names to version, release year, and env is `runner/config/solvers.yaml`
 
+Before solving, the runner checks that each env runs the version registered for it, as reported by the solver itself (`python -m runner.utils.solvers <solver>` prints it from inside an env). A year whose env runs a different version fails with an ER alert, since its results would be labelled with the wrong version.
+
 Example:
 ```yaml
 solvers:
@@ -38,14 +40,16 @@ $ pixi run -e runner python -m runner.benchmark --help
 Usage: python -m runner.benchmark [OPTIONS] {problems_yaml_path}
 
 Run every problem in PROBLEMS_YAML_PATH against each solver configuration,
-once per given year.
+for each given year.
 ```
+
+Each problem gets every (year, solver configuration) pair, in a random order, before the next problem starts. This way a slow drift in the machine's speed during a run doesn't systematically favor the solvers or years that would otherwise always run first.
 
 **Required Arguments:**
 - `problems_yaml_path` - Path to the problems YAML file
 
 **Optional Arguments:**
-- `-a, --append` - Append to the results CSVs instead of overwriting them for the first year
+- `-a, --append` - Append to the results CSVs instead of overwriting them
 - `-y, --years YEAR` - Solver-version year to run (repeatable), or `tests` for the shared CI smoke-test env. Defaults to every year with a registered solver version
 - `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
 - `-n, --num-seeds N` - Number of seeds to try per (problem, solver configuration) pair. When greater than 1, each repetition uses a different seed (1, 2, 3, ...) instead of the configuration's own fixed seed, to gauge the solver's sensitivity to it. Each seed's row goes to `results/benchmark_results_seeds.csv`, and `results/benchmark_results.csv` gets one combined row per pair (mean runtime and memory; the last seed's status, objective and other values, so the status is `ok` only if every seed was). Default: 1 (no repetition, the configuration's own fixed seed applies)
