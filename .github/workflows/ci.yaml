@@ -267,6 +267,7 @@ jobs:
         # both paths for the accessibility tests.
         run: |
           npx --yes browser-driver-manager@2.0.1 install chrome
+          # shellcheck source=/dev/null
           source ~/.browser-driver-manager/.env
           echo "CHROME_BIN_PATH=${CHROME_TEST_PATH}" >> "${GITHUB_ENV}"
           echo "CHROMEDRIVER_PATH=${CHROMEDRIVER_TEST_PATH}" >> "${GITHUB_ENV}"
