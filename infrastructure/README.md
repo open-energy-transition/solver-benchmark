@@ -71,6 +71,7 @@ Each entry under `problems:` is a single, specific problem instance (see `runner
 | `ssh_user`                     | SSH username                                                                    | ""                                                        |
 | `ssh_key_path`                 | Path to SSH public key                                                          | ""                                                        |
 | `run_id`                       | Run ID for the benchmarking session                                             | 20251106_153156_batch (calculated from current date-time) |
+| `git_ref`                      | Branch or tag of this repository that the VMs clone and run                     | main                                                      |
 
 
 Create a `run.tfvars` file with your GCP configuration:

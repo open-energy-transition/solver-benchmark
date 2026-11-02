@@ -15,6 +15,7 @@ import {
   getNumSolvedProblems,
 } from "@/utils/performanceHistory";
 import { HIPO_SOLVERS } from "@/utils/solvers";
+import ScipVersionNote from "@/components/shared/ScipVersionNote";
 
 const HASH = "how-are-solvers-evolving-over-time";
 
@@ -166,6 +167,7 @@ const SolverPerformanceHistory = () => {
   return (
     <div ref={sectionRef} id={HASH} className="scroll-mt-[9rem]">
       <div className="h4">How are solvers evolving over time?</div>
+      <ScipVersionNote className="my-4" />
       <p>
         This plot shows the average runtime of each year’s final-released solver
         version, relative to the best solver ever measured, over all S and M
