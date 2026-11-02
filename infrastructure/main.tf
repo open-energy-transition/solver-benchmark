@@ -113,6 +113,21 @@ locals {
         content = local.yaml_validations[file]
       }
   }
+
+  # GCP labels of each VM and its boot disk, for grouping costs in Cloud
+  # Billing. Label values may only contain lowercase letters, digits, _ and -,
+  # up to 63 characters.
+  vm_labels = {
+    for name, benchmark in local.benchmarks :
+      name => {
+        for key, value in {
+          run_id       = local.shared_run_id
+          benchmark    = name
+          machine_type = lookup(benchmark.content, "machine-type", "c4-standard-2")
+          zone         = lookup(benchmark.content, "zone", var.zone)
+        } : key => substr(replace(lower(value), "/[^a-z0-9_-]/", "-"), 0, 63)
+      }
+  }
 }
 
 # Create an instance for each benchmark file
@@ -123,20 +138,13 @@ resource "google_compute_instance" "benchmark_instances" {
   machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
   zone         = lookup(each.value.content, "zone", var.zone)
 
-  # Expose campaign and VM details in GCP billing reports.
-  labels = {
-    for key, value in {
-      run_id       = local.shared_run_id
-      benchmark    = each.key
-      machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
-      zone         = lookup(each.value.content, "zone", var.zone)
-    } : key => substr(replace(lower(value), "/[^a-z0-9_-]/", "-"), 0, 63)
-  }
+  labels = local.vm_labels[each.key]
 
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-13"
       size = 50 # Size in GB
+      labels = local.vm_labels[each.key]
     }
   }
 

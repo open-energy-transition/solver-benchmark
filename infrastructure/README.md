@@ -56,7 +56,7 @@ Each entry under `problems:` is a single, specific problem instance (see `runner
 
 ### Cost tracking labels
 
-Each benchmark VM receives four [GCP labels](https://docs.cloud.google.com/compute/docs/labeling-resources) for filtering and grouping costs in Cloud Billing:
+Each benchmark VM and its boot disk get four [GCP labels](https://docs.cloud.google.com/compute/docs/labeling-resources) for filtering and grouping costs in Cloud Billing:
 
 | Label | Value |
 |-------|-------|
@@ -65,7 +65,7 @@ Each benchmark VM receives four [GCP labels](https://docs.cloud.google.com/compu
 | `machine_type` | Machine type from the YAML, or `c4-standard-2` by default |
 | `zone` | Zone from the YAML, or the `zone` variable by default |
 
-Label values are lowercased, characters outside `a-z`, `0-9`, `_`, and `-` are replaced with `-`, and values are truncated to 63 characters. The original values remain available in VM metadata.
+Label values are lowercased, characters outside `a-z`, `0-9`, `_`, and `-` are replaced with `-`, and values are truncated to 63 characters. The VM's metadata and settings keep the original values.
 
 ### 3. Set Up Opentofu Variables
 
