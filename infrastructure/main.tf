@@ -84,14 +84,14 @@ variable "git_ref" {
 }
 
 variable "run_id" {
-  description = "Unique identifier for this benchmark run. If not provided, each VM will generate its own. Use this to group parallel VMs into a single logical benchmark campaign."
+  description = "Unique identifier for this benchmark run, shared by all its VMs to group them into a single benchmark campaign. If not provided, one is generated from the current date and time."
   type        = string
   default     = ""
 }
 
 locals {
-  # Generate a shared run_id if not provided (timestamp + a random suffix)
-  # If provided, use the user's run_id
+  # The run_id provided, or else one generated from the current date and time,
+  # e.g. 20251106_153156_batch
   shared_run_id = var.run_id != "" ? var.run_id : "${formatdate("YYYYMMDD_hhmmss", timestamp())}_batch"
 
   # Get all YAML files except allocation.yaml (which is just an index file)
