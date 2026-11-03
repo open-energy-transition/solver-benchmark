@@ -10,7 +10,7 @@ python = ">=3.12"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-linopy = ">=0.5.5"
+linopy = "==0.10.1"
 
 [pypi-dependencies]
 knitro = "==15.1.0"  # last version released in 2025 per PyPI release history
