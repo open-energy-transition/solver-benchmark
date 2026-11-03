@@ -6,12 +6,13 @@ channels = ["conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
-python = ">=3.12"
+python = ">=3.12,<3.13"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
 cxx-compiler = "*"
+zlib = "*"
 
 [pypi-dependencies]
 highspy = { git = "https://github.com/ERGO-Code/HiGHS", tag = "v1.6.0" }  # 1.6.0 was never released to PyPI
-linopy = { git = "https://github.com/PyPSA/linopy", branch = "sid/old-solver-support" }  # old-solver-support branch until it is merged and released
+linopy = { git = "https://github.com/PyPSA/linopy", branch = "sid/old-solver-support" }  # Linopy 0.10.1 requires HiGHS status enums missing in 1.6.0

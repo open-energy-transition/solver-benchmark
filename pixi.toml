@@ -25,7 +25,7 @@ numpy = "*"
 ipython = "*"
 
 [feature.runner.pypi-dependencies]
-linopy = "*"
+linopy = "==0.10.1"
 
 [feature.notebooks.dependencies]
 python = ">=3.14"
@@ -59,7 +59,7 @@ python-hcl2 = ">=8"
 
 [feature.benchmarks.pypi-dependencies]
 highspy = "==1.9.0"
-linopy = ">=0.5.0"
+linopy = "==0.10.1"
 pandas = "*"
 
 [feature.dev.dependencies]
