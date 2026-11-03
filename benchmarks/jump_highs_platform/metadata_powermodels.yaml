@@ -14,6 +14,7 @@ problems:
     Num. nonzeros: 5693
     Num. continuous variables: 458
     Num. integer variables: 284
+    Share integer variables: 0.383
     MILP features:
       - Transmission switching
     Modelling framework: PowerModels
@@ -38,7 +39,7 @@ problems:
     Num. variables: 7623
     Num. continuous variables: 4828
     Num. integer variables: 2795
-    Share integer variables: 0.3666535484717303
+    Share integer variables: 0.367
     Num. nonzeros: 56119
     MILP features:
       - Transmission switching
@@ -65,6 +66,7 @@ problems:
     Num. nonzeros: 52287
     Num. continuous variables: 4913
     Num. integer variables: 2596
+    Share integer variables: 0.346
     MILP features:
       - Transmission switching
     Modelling framework: PowerModels
@@ -90,6 +92,7 @@ problems:
     Num. nonzeros: 76032
     Num. continuous variables: 7135
     Num. integer variables: 3776
+    Share integer variables: 0.346
     MILP features:
       - Transmission switching
     Modelling framework: PowerModels
@@ -115,6 +118,7 @@ problems:
     Num. nonzeros: 76722
     Num. continuous variables: 7237
     Num. integer variables: 3808
+    Share integer variables: 0.345
     MILP features:
       - Transmission switching
     Modelling framework: PowerModels
