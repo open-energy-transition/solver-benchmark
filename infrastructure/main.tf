@@ -84,14 +84,14 @@ variable "git_ref" {
 }
 
 variable "run_id" {
-  description = "Unique identifier for this benchmark run. If not provided, each VM will generate its own. Use this to group parallel VMs into a single logical benchmark campaign."
+  description = "Unique identifier for this benchmark run, shared by all its VMs to group them into a single benchmark campaign. If not provided, one is generated from the current date and time."
   type        = string
   default     = ""
 }
 
 locals {
-  # Generate a shared run_id if not provided (timestamp + a random suffix)
-  # If provided, use the user's run_id
+  # The run_id provided, or else one generated from the current date and time,
+  # e.g. 20251106_153156_batch
   shared_run_id = var.run_id != "" ? var.run_id : "${formatdate("YYYYMMDD_hhmmss", timestamp())}_batch"
 
   # Get all YAML files except allocation.yaml (which is just an index file)
@@ -113,6 +113,21 @@ locals {
         content = local.yaml_validations[file]
       }
   }
+
+  # GCP labels of each VM and its boot disk, for grouping costs in Cloud
+  # Billing. Label values may only contain lowercase letters, digits, _ and -,
+  # up to 63 characters.
+  vm_labels = {
+    for name, benchmark in local.benchmarks :
+      name => {
+        for key, value in {
+          run_id       = local.shared_run_id
+          benchmark    = name
+          machine_type = lookup(benchmark.content, "machine-type", "c4-standard-2")
+          zone         = lookup(benchmark.content, "zone", var.zone)
+        } : key => substr(replace(lower(value), "/[^a-z0-9_-]/", "-"), 0, 63)
+      }
+  }
 }
 
 # Create an instance for each benchmark file
@@ -123,10 +138,13 @@ resource "google_compute_instance" "benchmark_instances" {
   machine_type = lookup(each.value.content, "machine-type", "c4-standard-2")
   zone         = lookup(each.value.content, "zone", var.zone)
 
+  labels = local.vm_labels[each.key]
+
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-13"
       size = 50 # Size in GB
+      labels = local.vm_labels[each.key]
     }
   }
 
