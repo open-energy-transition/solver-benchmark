@@ -13,6 +13,7 @@ problems:
     Num. nonzeros: 7860707
     Num. continuous variables: 2193272
     Num. integer variables: 720717
+    Share integer variables: 0.247
     MILP features:
     - Unit commitment
     Modelling framework: openTEPES

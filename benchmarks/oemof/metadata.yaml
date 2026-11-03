@@ -12,6 +12,7 @@ problems:
     Num. nonzeros: 10451
     Num. continuous variables: 3134
     Num. integer variables: 240
+    Share integer variables: 0.0711
     MILP features:
     - NonConvex operation
     - Binary investment decisions
@@ -39,6 +40,7 @@ problems:
     Num. nonzeros: 140173
     Num. continuous variables: 61325
     Num. integer variables: 1
+    Share integer variables: 1.63e-05
     MILP features:
     - Binary investment decisions
     Modelling framework: OEMOF
@@ -65,6 +67,7 @@ problems:
     Num. nonzeros: 7232
     Num. continuous variables: 1457
     Num. integer variables: 364
+    Share integer variables: 0.2
     MILP features:
     - NonConvex operation
     - Binary investment decisions
@@ -93,6 +96,7 @@ problems:
     Num. nonzeros: 5446
     Num. continuous variables: 1822
     Num. integer variables: 362
+    Share integer variables: 0.166
     MILP features:
     - NonConvex operation
     - Binary investment decisions
@@ -142,6 +146,7 @@ problems:
     Num. nonzeros: 5312
     Num. continuous variables: 1561
     Num. integer variables: 119
+    Share integer variables: 0.0708
     MILP features:
     - NonConvex operation
     - Binary investment decisions
