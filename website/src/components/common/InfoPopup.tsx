@@ -3,6 +3,7 @@ import Popup from "reactjs-popup";
 import { QuestionLineIcon } from "@/assets/icons";
 
 interface InfoPopupProps {
+  openOn?: Array<"hover" | "click" | "focus">;
   tooltipContent?: React.ReactNode;
   tooltipText?: string;
   title?: string;
@@ -32,6 +33,7 @@ const InfoPopup = ({
   trigger = undefined,
   arrow = false,
   className = "popup-wrapper",
+  openOn = ["hover"],
   disabled = false,
   arrowStyle,
   children,
@@ -56,7 +58,7 @@ const InfoPopup = ({
 
   return (
     <Popup
-      on={["hover"]}
+      on={openOn}
       disabled={disabled}
       trigger={renderTrigger}
       position={position}

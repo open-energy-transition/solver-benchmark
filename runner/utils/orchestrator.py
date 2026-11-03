@@ -10,6 +10,7 @@ in the CLI) so it's testable without going through Typer's CLI-parsing layer.
 from __future__ import annotations
 
 import datetime
+import random
 import statistics
 import subprocess
 import time
@@ -147,16 +148,58 @@ def _combine_seed_metrics(last_seed_metrics: dict[str, Any]) -> dict[str, Any]:
     return combined
 
 
+def _run_reference_benchmark(
+    results_csv: Path,
+    run_id: str,
+    reference_solver_version: str,
+    environment_metadata: dict[str, str],
+) -> None:
+    """Run the reference benchmark and append its row to `results_csv`.
+
+    See `execution.run_reference_highs_binary`.
+    """
+    print("Running reference benchmark with HiGHS binary...", flush=True)
+    reference_metrics = run_reference_highs_binary()
+
+    # Add required fields to reference metrics
+    reference_metrics["solver"] = "highs-binary"
+    reference_metrics["solver_version"] = reference_solver_version
+    reference_metrics["solver_release_year"] = "N/A"
+    reference_metrics["reported_runtime"] = None
+    reference_metrics["timeout"] = None
+
+    reference_timestamp = datetime.datetime.now(datetime.UTC).strftime(
+        "%Y-%m-%d %H:%M:%S.%f"
+    )
+    write_csv_row(
+        results_csv,
+        "reference-benchmark",
+        reference_metrics,
+        run_id,
+        reference_timestamp,
+        **environment_metadata,
+    )
+
+
+class BenchmarkRunError(Exception):
+    """Raised by `run_benchmark` after the run if any solver run crashed."""
+
+
 def run_benchmark(
     problems_yaml_path: str | Path,
     solver_configurations: list[str],
-    year: str | None = None,
+    years: list[str],
     num_seeds: int = 1,
     reference_interval: int = 0,  # Default: disabled
     append: bool = False,
     run_id: str | None = None,
-) -> dict[tuple[str, str, str], dict[str, Any]]:
-    """Run a list of solver configurations against a set of problems.
+) -> dict[tuple[str, str, str, str], dict[str, Any]]:
+    """Run a list of solver configurations and years against a set of problems.
+
+    Each problem gets every (year, solver configuration) pair in a random
+    order before moving on to the next problem, so slow drifts in the
+    machine's speed over a run don't systematically favor the solvers or
+    years that would otherwise always run first.
 
     Parameters
     ----------
@@ -165,10 +208,10 @@ def run_benchmark(
     solver_configurations : list[str]
         Solver configuration names to run against every problem (e.g.
         `["highs-default", "highs-hipo", "gurobi-default"]`), skipping any not eligible for
-        `year` and a given problem (see `config.is_solver_eligible`) or not
-        registered for `year` at all (see `env.get_registered_solver_versions`).
-    year : str, optional
-        The solver-version year to run, e.g. `"2025"`.
+        a year and a given problem (see `config.is_solver_eligible`) or not
+        registered for a year at all (see `env.get_registered_solver_versions`).
+    years : list[str]
+        The solver-version years to run, e.g. `["2024", "2025"]`.
     num_seeds : int, optional
         Number of seeds to try per (problem, solver configuration) pair;
         must be at least 1.
@@ -189,7 +232,8 @@ def run_benchmark(
     reference_interval : int, optional
         Minimum seconds between reference-benchmark runs (see
         `execution.run_reference_highs_binary`), interleaved between real
-        problems to gauge cross-VM hardware speed variability. 0 disables it.
+        problems to gauge cross-VM hardware speed variability. It also runs
+        before the first solve and after the last one. 0 disables it.
     append : bool, optional
         If True and the result CSVs already exist, append to them instead
         of overwriting.
@@ -199,9 +243,16 @@ def run_benchmark(
 
     Returns
     -------
-    dict[tuple[str, str, str], dict[str, Any]]
+    dict[tuple[str, str, str, str], dict[str, Any]]
         Every solver run's metrics, keyed by `(problem_id, solver_configuration,
-        solver_version)`.
+        solver_version, year)`. The year is needed because two years can
+        register the same solver version.
+
+    Raises
+    ------
+    BenchmarkRunError
+        If any solver run raised an exception. It is logged and the
+        remaining runs still go ahead; this is raised once they're done.
     """
     if num_seeds < 1:
         raise ValueError(f"num_seeds must be at least 1, got {num_seeds}")
@@ -217,8 +268,10 @@ def run_benchmark(
 
     size_categories = None  # TODO add this to CLI args
 
-    # Track the last time we ran the reference benchmark
+    # Track the last time we ran the reference benchmark, and whether any
+    # problem was solved since
     last_reference_run = 0.0
+    solved_since_reference = False
 
     results_folder = _REPO_ROOT / "results"
     results_folder.mkdir(parents=True, exist_ok=True)
@@ -240,9 +293,10 @@ def run_benchmark(
     )
     _PROBLEMS_FOLDER.mkdir(parents=True, exist_ok=True)
 
-    registered_solver_versions = env.get_registered_solver_versions(
-        solver_configurations, year
-    )
+    registered_solver_versions = {
+        year: env.get_registered_solver_versions(solver_configurations, year)
+        for year in years
+    }
 
     problems = load_problems(problems_yaml_path, _PROBLEMS_FOLDER, size_categories)
 
@@ -255,7 +309,8 @@ def run_benchmark(
     if reference_interval > 0:
         reference_solver_version = get_highs_binary_version()
 
-    run_results: dict[tuple[str, str, str], dict[str, Any]] = {}
+    run_results: dict[tuple[str, str, str, str], dict[str, Any]] = {}
+    failed_runs: list[str] = []
 
     for problem in problems:
         # Set timeout from YAML if provided, otherwise use size-category defaults (1h for S/M, 24h for L)
@@ -263,7 +318,19 @@ def run_benchmark(
             24 * 60 * 60 if problem["size_category"] == "L" else 60 * 60
         )
 
-        for solver_configuration in solver_configurations:
+        solver_runs = [
+            (year, solver_configuration)
+            for year in years
+            for solver_configuration in solver_configurations
+        ]
+        random.shuffle(solver_runs)
+        print(
+            f"Running on {problem['problem_id']} in this order: "
+            + ", ".join(f"{name} ({year})" for year, name in solver_runs),
+            flush=True,
+        )
+
+        for year, solver_configuration in solver_runs:
             if not config.is_solver_eligible(
                 solver_configuration,
                 year,
@@ -276,51 +343,130 @@ def run_benchmark(
                 )
                 continue
 
-            version_info = registered_solver_versions.get(solver_configuration)
+            version_info = registered_solver_versions[year].get(solver_configuration)
             if not version_info:
-                print(f"Solver {solver_configuration} is not available. Skipping.")
+                print(
+                    f"Solver {solver_configuration} is not available for year "
+                    f"{year}. Skipping."
+                )
                 continue
             solver_version = version_info["version"]
             env_name = version_info["env"]
 
-            metrics: dict[str, Any] = {}
-            runtimes = []
-            memory_usages = []
-            timestamp = ""
-            first_timestamp = ""
+            # Run the reference benchmark before the first solve, then at
+            # most once per interval
+            if reference_interval > 0:
+                time_since_last_run = time.time() - last_reference_run
+                if time_since_last_run >= reference_interval:
+                    last_reference_run = time.time()
+                    _run_reference_benchmark(
+                        results_csv,
+                        run_id,
+                        reference_solver_version,
+                        environment_metadata,
+                    )
+                    solved_since_reference = False
+                else:
+                    print(
+                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)",
+                        flush=True,
+                    )
 
-            # Seeds start at 1, not 0: CBC's own seed option (randomCbcSeed)
-            # treats 0 as a sentinel meaning "use the time of day" instead of
-            # an actual fixed seed (see solver_configurations.yaml's own
-            # comment on cbc-default), which would make that repetition
-            # silently non-deterministic. No other solver here gives 0 any
-            # special meaning, so starting at 1 is safe for all of them.
-            for seed_index in range(1, num_seeds + 1):
-                # Vary the seed across repetitions so they sample the
-                # solver's actual sensitivity to it.
-                seed = seed_index if num_seeds > 1 else None
+            try:
+                metrics: dict[str, Any] = {}
+                runtimes = []
+                memory_usages = []
+                timestamp = ""
+                first_timestamp = ""
 
-                print(
-                    f"Running solver {solver_configuration} (version {solver_version}) "
-                    f"on {problem['path']} ({seed_index})"
-                    + (f" with seed {seed}" if seed is not None else "")
-                    + "...",
-                    flush=True,
+                # Seeds start at 1, not 0: CBC's own seed option (randomCbcSeed)
+                # treats 0 as a sentinel meaning "use the time of day" instead of
+                # an actual fixed seed (see solver_configurations.yaml's own
+                # comment on cbc-default), which would make that repetition
+                # silently non-deterministic. No other solver here gives 0 any
+                # special meaning, so starting at 1 is safe for all of them.
+                for seed_index in range(1, num_seeds + 1):
+                    # Vary the seed across repetitions so they sample the
+                    # solver's actual sensitivity to it.
+                    seed = seed_index if num_seeds > 1 else None
+
+                    print(
+                        f"Running solver {solver_configuration} (version {solver_version}) "
+                        f"on {problem['path']} ({seed_index})"
+                        + (f" with seed {seed}" if seed is not None else "")
+                        + "...",
+                        flush=True,
+                    )
+
+                    # Record timestamp (UTC) before running the solver
+                    timestamp = datetime.datetime.now(datetime.UTC).strftime(
+                        "%Y-%m-%d %H:%M:%S.%f"
+                    )
+                    first_timestamp = first_timestamp or timestamp
+
+                    metrics = run_solver(
+                        problem["path"],
+                        solver_configuration,
+                        timeout,
+                        solver_version,
+                        env_name=env_name,
+                        seed=seed,
+                    )
+
+                    # NOTE: results.csv_record expects the kwarg "solver" (its CSV
+                    # column is "Solver"), so the dict key stays "solver" even
+                    # though the value is a solver *configuration* name.
+                    metrics["solver"] = solver_configuration
+                    metrics["solver_version"] = solver_version
+                    metrics["solver_release_year"] = year
+                    # Record the seed actually used: the override if there is
+                    # one, otherwise the one fixed in the configuration itself.
+                    metrics["seed"] = (
+                        seed
+                        if seed is not None
+                        else config.get_configured_seed(solver_configuration)
+                    )
+
+                    runtimes.append(metrics["runtime"])
+                    memory_usages.append(metrics["memory"])
+
+                    # Write each result immediately after the measurement
+                    write_csv_row(
+                        seed_rows_csv,
+                        problem["problem_id"],
+                        metrics,
+                        run_id,
+                        timestamp,
+                        **environment_metadata,
+                    )
+
+                    # If the solver errors, times out, or runs out of memory,
+                    # don't try further seeds: memory use in particular barely
+                    # depends on the seed, so later seeds would fail the same way.
+                    if metrics["status"] in {"ER", "TO", "OOM"}:
+                        break
+
+                metrics["runtime_mean"], metrics["runtime_stddev"] = _mean_and_stddev(
+                    runtimes
+                )
+                metrics["memory_mean"], metrics["memory_stddev"] = _mean_and_stddev(
+                    memory_usages
                 )
 
-                # Record timestamp (UTC) before running the solver
-                timestamp = datetime.datetime.now(datetime.UTC).strftime(
-                    "%Y-%m-%d %H:%M:%S.%f"
-                )
-                first_timestamp = first_timestamp or timestamp
+                if num_seeds > 1:
+                    write_csv_row(
+                        results_csv,
+                        problem["problem_id"],
+                        _combine_seed_metrics(metrics),
+                        run_id,
+                        first_timestamp,
+                        **environment_metadata,
+                    )
 
-                metrics = run_solver(
-                    problem["path"],
-                    solver_configuration,
-                    timeout,
-                    solver_version,
-                    env_name=env_name,
-                    seed=seed,
+                # Write mean and standard deviation to CSV
+                # NOTE: this uses the last iteration's values for status, condition, etc
+                write_csv_summary_row(
+                    mean_stddev_csv, problem["problem_id"], metrics, run_id, timestamp
                 )
                 if metrics["status"] in alerts.ALERT_STATUSES:
                     alerts.print_alert(
@@ -333,106 +479,35 @@ def run_benchmark(
                         host=hostname,
                     )
 
-                # NOTE: results.csv_record expects the kwarg "solver" (its CSV
-                # column is "Solver"), so the dict key stays "solver" even
-                # though the value is a solver *configuration* name.
-                metrics["solver"] = solver_configuration
-                metrics["solver_version"] = solver_version
-                metrics["solver_release_year"] = year
-                # Record the seed actually used: the override if there is
-                # one, otherwise the one fixed in the configuration itself.
-                metrics["seed"] = (
-                    seed
-                    if seed is not None
-                    else config.get_configured_seed(solver_configuration)
+                run_results[
+                    (problem["problem_id"], solver_configuration, solver_version, year)
+                ] = metrics
+
+                solved_since_reference = True
+            except Exception as e:
+                # Log and carry on with the other runs, rather than losing
+                # the rest of the benchmark to one crash
+                run_name = f"{solver_configuration} ({year}) on {problem['problem_id']}"
+                print(f"ERROR running {run_name}: {e}", flush=True)
+                alerts.print_alert(
+                    "ER",
+                    problem=problem["problem_id"],
+                    solver=solver_configuration,
+                    year=year,
+                    run_id=run_id,
+                    host=hostname,
                 )
+                failed_runs.append(run_name)
 
-                runtimes.append(metrics["runtime"])
-                memory_usages.append(metrics["memory"])
+    # Run the reference benchmark once more after the last solve, so the
+    # hardware speed is also measured at the end of the run
+    if reference_interval > 0 and solved_since_reference:
+        _run_reference_benchmark(
+            results_csv, run_id, reference_solver_version, environment_metadata
+        )
 
-                # Write each result immediately after the measurement
-                write_csv_row(
-                    seed_rows_csv,
-                    problem["problem_id"],
-                    metrics,
-                    run_id,
-                    timestamp,
-                    **environment_metadata,
-                )
-
-                # If the solver errors, times out, or runs out of memory,
-                # don't try further seeds: memory use in particular barely
-                # depends on the seed, so later seeds would fail the same way.
-                if metrics["status"] in {"ER", "TO", "OOM"}:
-                    break
-
-            metrics["runtime_mean"], metrics["runtime_stddev"] = _mean_and_stddev(
-                runtimes
-            )
-            metrics["memory_mean"], metrics["memory_stddev"] = _mean_and_stddev(
-                memory_usages
-            )
-
-            if num_seeds > 1:
-                write_csv_row(
-                    results_csv,
-                    problem["problem_id"],
-                    _combine_seed_metrics(metrics),
-                    run_id,
-                    first_timestamp,
-                    **environment_metadata,
-                )
-
-            # Write mean and standard deviation to CSV
-            # NOTE: this uses the last iteration's values for status, condition, etc
-            write_csv_summary_row(
-                mean_stddev_csv, problem["problem_id"], metrics, run_id, timestamp
-            )
-
-            run_results[
-                (problem["problem_id"], solver_configuration, solver_version)
-            ] = metrics
-
-            # Check if we should run the reference benchmark based on the interval
-            if reference_interval > 0:
-                current_time = time.time()
-                time_since_last_run = current_time - last_reference_run
-
-                if last_reference_run == 0 or time_since_last_run >= int(
-                    reference_interval
-                ):
-                    print(
-                        f"Running reference benchmark with HiGHS binary (interval: {reference_interval}s)...",
-                        flush=True,
-                    )
-                    reference_metrics = run_reference_highs_binary()
-
-                    # Add required fields to reference metrics
-                    reference_metrics["solver"] = "highs-binary"
-                    reference_metrics["solver_version"] = reference_solver_version
-                    reference_metrics["solver_release_year"] = "N/A"
-                    reference_metrics["reported_runtime"] = None
-                    reference_metrics["timeout"] = None
-
-                    # Record reference benchmark results
-                    reference_timestamp = datetime.datetime.now(datetime.UTC).strftime(
-                        "%Y-%m-%d %H:%M:%S.%f"
-                    )
-                    write_csv_row(
-                        results_csv,
-                        "reference-benchmark",
-                        reference_metrics,
-                        run_id,
-                        reference_timestamp,
-                        **environment_metadata,
-                    )
-
-                    # Update the last reference run time
-                    last_reference_run = current_time
-                else:
-                    print(
-                        f"Skipping reference benchmark (last run {time_since_last_run:.1f}s ago, interval: {reference_interval}s)",
-                        flush=True,
-                    )
-
+    if failed_runs:
+        raise BenchmarkRunError(
+            f"{len(failed_runs)} solver run(s) failed: {', '.join(failed_runs)}"
+        )
     return run_results

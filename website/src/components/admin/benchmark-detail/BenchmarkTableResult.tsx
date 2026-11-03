@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import JSZip from "jszip";
 import { useRouter } from "next/router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Color } from "@/constants/color";
@@ -9,6 +8,7 @@ import { PATH_DASHBOARD } from "@/constants/path";
 import { MAX_COMPARE_PROBLEMS } from "@/constants/filter";
 import { TanStackTable } from "@/components/shared/tables/TanStackTable";
 import InfoPopup from "@/components/common/InfoPopup";
+import { QuestionLineIcon } from "@/assets/icons";
 import { RealisticOption, HasResultsOption } from "@/types/state";
 import { useBenchmarkResults } from "@/hooks/useBenchmarkResults";
 import { getProblemKey } from "@/utils/results";
@@ -46,6 +46,84 @@ interface BenchmarkTableResultProps {
   problemSizeFilter?: string[];
   realisticFilter?: string[];
 }
+
+const GCS_PROBLEMS_URL = "https://storage.googleapis.com/solver-benchmarks/";
+
+// Small enough that each part finishes before the Vercel function behind
+// /api/download times out (about 28s), even at about 1 MB/s.
+const DOWNLOAD_PART_SIZE = 16 * 1024 * 1024;
+
+// Streams a file to disk through /api/download, one Range request per part,
+// because a single request for a large file would be cut short when the
+// function times out. If a part still arrives short, the next request
+// resumes from the last byte written.
+const fetchInParts = async (
+  url: string,
+  filename: string,
+  writable: FileSystemWritableFileStream,
+) => {
+  let offset = 0;
+  let total: number | null = null;
+  let attemptsWithoutProgress = 0;
+
+  while (total === null || offset < total) {
+    const response = await fetch(
+      `/api/download?url=${encodeURIComponent(url)}`,
+      {
+        headers: {
+          Range: `bytes=${offset}-${offset + DOWNLOAD_PART_SIZE - 1}`,
+        },
+      },
+    );
+    if (!response.ok || !response.body) {
+      throw new Error(
+        `Failed to download ${filename}: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    if (response.status === 206) {
+      const match = /^bytes (\d+)-\d+\/(\d+)$/.exec(
+        response.headers.get("Content-Range") ?? "",
+      );
+      if (!match || Number(match[1]) !== offset) {
+        throw new Error(`Unexpected Content-Range for ${filename}`);
+      }
+      total = Number(match[2]);
+    } else if (offset === 0) {
+      // The server ignored Range and is sending the whole file
+      const length = response.headers.get("Content-Length");
+      total = length === null ? null : Number(length);
+    } else {
+      throw new Error(`Server stopped honouring Range for ${filename}`);
+    }
+
+    const start = offset;
+    const reader = response.body.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        await writable.write(value);
+        offset += value.length;
+      }
+    } catch (error) {
+      // A part cut off mid-stream is resumed by the next request
+      console.warn(`Part of ${filename} was cut short, resuming`, error);
+    }
+
+    if (total === null) {
+      break; // Whole file of unknown length: trust the end of the stream
+    }
+    if (offset === start) {
+      attemptsWithoutProgress++;
+      if (attemptsWithoutProgress >= 3) {
+        throw new Error(`Download of ${filename} stopped making progress`);
+      }
+    } else {
+      attemptsWithoutProgress = 0;
+    }
+  }
+};
 
 // Truncates to fit the actual rendered width of its container (which
 // TanStackTable resizes as the column width changes) instead of a fixed
@@ -176,7 +254,10 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       }
 
       const urlParts = problem.url!.split("/");
-      const filename = urlParts[urlParts.length - 1] || `${problem.name}.lp`;
+      // Decode e.g. "%2B" back to "+"
+      const filename =
+        decodeURIComponent(urlParts[urlParts.length - 1]) ||
+        `${problem.name}.lp`;
       filesToDownload.push({
         problemId: problem.name,
         url: problem.url!,
@@ -197,6 +278,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
     }>,
   ) => {
     const dirHandle = await window.showDirectoryPicker();
+    let failed = 0;
 
     for (let i = 0; i < filesToDownload.length; i++) {
       const { url, filename } = filesToDownload[i];
@@ -212,52 +294,44 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
           create: true,
         });
         const writable = await fileHandle.createWritable();
-
-        const response = await fetch(
-          `/api/download?url=${encodeURIComponent(url)}`,
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to download ${filename}: ${response.statusText}`,
-          );
+        try {
+          await fetchInParts(url, filename, writable);
+        } catch (error) {
+          await writable.abort();
+          throw error;
         }
-
-        const reader = response.body?.getReader();
-        if (!reader) {
-          throw new Error(`No response body for ${filename}`);
-        }
-
-        // Stream chunks directly to file on disk
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          await writable.write(value);
-        }
-
         await writable.close();
       } catch (error) {
         console.error(`Error downloading ${filename}:`, error);
         alert(`Failed to download ${filename}. Continuing with next file...`);
+        failed++;
       }
     }
 
-    alert("🎉 All selected files downloaded successfully!");
+    alert(
+      failed === 0
+        ? "🎉 All selected files downloaded successfully!"
+        : `Downloaded ${filesToDownload.length - failed} of ` +
+            `${filesToDownload.length} files; ${failed} failed.`,
+    );
   };
 
-  // Safari/Firefox fallback: these browsers don't support the File System
-  // Access API (no folder picker), so instead fetch every file into memory,
-  // bundle them into a single zip, and trigger one ordinary browser download
-  // for that zip file.
-  const downloadAsZip = async (
+  // Firefox/Safari path: these browsers don't support the File System Access
+  // API, so hand each file to the browser as an ordinary download. The
+  // browser writes it straight to disk, so file size doesn't matter (building
+  // a zip in memory failed for large problems, see #582).
+  //
+  // Files on GCS are linked directly: GCS serves them with a binary content
+  // type, so the browser downloads them instead of opening them. Going
+  // through /api/download would cut large files short when the Vercel
+  // function times out. Other files are small and still go through the proxy.
+  const downloadIndividually = async (
     filesToDownload: Array<{
       problemId: string;
       url: string;
       filename: string;
     }>,
   ) => {
-    const zip = new JSZip();
-
     for (let i = 0; i < filesToDownload.length; i++) {
       const { url, filename } = filesToDownload[i];
 
@@ -267,39 +341,24 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
         currentFile: filename,
       });
 
-      try {
-        const response = await fetch(
-          `/api/download?url=${encodeURIComponent(url)}`,
-        );
+      const link = document.createElement("a");
+      link.href = url.startsWith(GCS_PROBLEMS_URL)
+        ? url
+        : `/api/download?url=${encodeURIComponent(url)}`;
+      // Ignored for cross-origin links, where the name comes from the URL
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        if (!response.ok) {
-          throw new Error(
-            `Failed to download ${filename}: ${response.statusText}`,
-          );
-        }
-
-        zip.file(filename, await response.blob());
-      } catch (error) {
-        console.error(`Error downloading ${filename}:`, error);
-        alert(`Failed to download ${filename}. Continuing with next file...`);
-      }
+      // Browsers can drop downloads started in quick succession.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    setDownloadProgress({
-      current: filesToDownload.length,
-      total: filesToDownload.length,
-      currentFile: "Creating zip file...",
-    });
-
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-    const zipUrl = URL.createObjectURL(zipBlob);
-    const a = document.createElement("a");
-    a.href = zipUrl;
-    a.download = "benchmark_problems.zip";
-    a.click();
-    URL.revokeObjectURL(zipUrl);
-
-    alert("🎉 Selected files downloaded as a zip file!");
+    alert(
+      `Started ${filesToDownload.length} downloads. Your browser may ask ` +
+        "you to allow downloading multiple files.",
+    );
   };
 
   const handleDownloadSelected = async () => {
@@ -334,7 +393,7 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
       if (supportsDirectoryPicker) {
         await downloadToDirectory(filesToDownload);
       } else {
-        await downloadAsZip(filesToDownload);
+        await downloadIndividually(filesToDownload);
       }
 
       setDownloadProgress(null);
@@ -491,12 +550,51 @@ const BenchmarkTableResult: React.FC<BenchmarkTableResultProps> = ({
 
         <div className="flex gap-2 justify-end mt-2 sm:mt-0 shrink-0">
           {!isSelectMode ? (
-            <button
-              onClick={() => setIsSelectMode(true)}
-              className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
-            >
-              Select for Download or Comparison
-            </button>
+            <>
+              <button
+                onClick={() => setIsSelectMode(true)}
+                className="px-4 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold"
+              >
+                Select for Download or Comparison
+              </button>
+              <InfoPopup
+                openOn={["click"]}
+                trigger={() => (
+                  <button
+                    type="button"
+                    className="flex items-center justify-center px-3 py-2 bg-navy text-white rounded-lg hover:bg-opacity-90 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+                    aria-label="Other ways to download problem files"
+                  >
+                    <QuestionLineIcon className="size-4" viewBox="0 0 24 20" />
+                  </button>
+                )}
+                position="bottom center"
+                closeOnDocumentClick
+              >
+                <div className="max-w-xs text-xs">
+                  Downloading many or large problems? All problem files are also
+                  available as a single archive on{" "}
+                  <a
+                    href="https://zenodo.org/records/20429905"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Zenodo
+                  </a>{" "}
+                  (12 GB), and the URL of each problem file is listed in{" "}
+                  <a
+                    href="https://github.com/open-energy-transition/solver-benchmark/blob/main/results/metadata.yaml"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    results/metadata.yaml
+                  </a>
+                  , for downloading with a script.
+                </div>
+              </InfoPopup>
+            </>
           ) : (
             <>
               <button
