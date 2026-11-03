@@ -22,9 +22,10 @@ import argparse
 import gzip
 import sys
 import tempfile
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Any
 from urllib.parse import urlparse
 
 import highspy
@@ -155,7 +156,7 @@ def write_yaml_file(path: Path, yaml_obj: YAML, data: Any) -> None:
     data : Any
         YAML-serializable object.
     """
-    with open(path, "w", encoding="utf-8") as f:
+    with Path(path).open("w", encoding="utf-8") as f:
         yaml_obj.dump(data, f)
 
 
@@ -176,7 +177,7 @@ def is_http_url(url: str) -> bool:
     if not url:
         return False
     u = url.strip().lower()
-    return u.startswith("http://") or u.startswith("https://")
+    return u.startswith(("http://", "https://"))
 
 
 def get_extension(url_path: str) -> str:
@@ -230,7 +231,7 @@ def download_stream_to_file(url: str, dest: Path, timeout_s: int = 60) -> None:
     response = requests.get(url, stream=True, timeout=timeout_s)
     response.raise_for_status()
 
-    with open(dest, "wb") as f:
+    with Path(dest).open("wb") as f:
         for chunk in response.iter_content(chunk_size=8192):
             if chunk:
                 f.write(chunk)
@@ -250,15 +251,17 @@ def decompress_gzip_file(
     output_path : Path
         Destination path for decompressed bytes.
     """
-    with gzip.open(compressed_path, "rb") as gz_file:
-        with open(output_path, "wb") as out:
-            out.write(gz_file.read())
+    with (
+        gzip.open(compressed_path, "rb") as gz_file,
+        Path(output_path).open("wb") as out,
+    ):
+        out.write(gz_file.read())
 
 
 def get_cached_paths(
     url: str,
     cache_dir: Path,
-) -> tuple[Path, Optional[Path]]:
+) -> tuple[Path, Path | None]:
     """
     Compute cache paths for a URL.
 
@@ -283,9 +286,7 @@ def get_cached_paths(
     if extension.endswith(".gz"):
         # For "foo.mps.gz", ruamel's with_suffix would drop only ".gz".
         # We prefer "foo.mps" / "foo.lp" explicitly.
-        if extension == "mps.gz":
-            uncompressed = cache_dir / filename.removesuffix(".gz")
-        elif extension == "lp.gz":
+        if extension in ("mps.gz", "lp.gz"):
             uncompressed = cache_dir / filename.removesuffix(".gz")
         else:
             raise ValueError(f"Unsupported gz extension: {extension}")
@@ -297,8 +298,8 @@ def get_cached_paths(
 def download_benchmark_file(
     url: str,
     use_cache: bool,
-    cache_dir: Optional[Path] = None,
-) -> Optional[Path]:
+    cache_dir: Path | None = None,
+) -> Path | None:
     """
     Download a benchmark problem file and return its local path.
 
@@ -348,9 +349,8 @@ def download_benchmark_file(
 
             return download_path
 
-        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}")
-        tmp_path = Path(tmp.name)
-        tmp.close()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}") as tmp:
+            tmp_path = Path(tmp.name)
         print(f"Downloading {url}")
         download_stream_to_file(url, tmp_path)
 
@@ -364,9 +364,8 @@ def download_benchmark_file(
         else:
             raise ValueError(f"Unsupported gz extension: {extension}")
 
-        out_tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
-        out_path = Path(out_tmp.name)
-        out_tmp.close()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as out_tmp:
+            out_path = Path(out_tmp.name)
 
         decompress_gzip_file(tmp_path, out_path)
         tmp_path.unlink(missing_ok=True)
@@ -378,7 +377,7 @@ def download_benchmark_file(
         return None
 
 
-def safe_unlink(path: Optional[Path]) -> None:
+def safe_unlink(path: Path | None) -> None:
     """
     Remove a file path if it exists.
 
@@ -422,7 +421,7 @@ def count_variable_types(highs: highspy.Highs, num_variables: int) -> tuple[int,
     return num_cont, num_int
 
 
-def analyze_model_file(file_path: Path) -> Optional[ModelStats]:
+def analyze_model_file(file_path: Path) -> ModelStats | None:
     """
     Analyze a model file using HiGHS and return statistics.
 
@@ -481,7 +480,7 @@ def analyze_model_file(file_path: Path) -> Optional[ModelStats]:
 
 def get_problem_identity(
     problem_id: str, problem_info: YamlMap
-) -> Optional[tuple[str, str]]:
+) -> tuple[str, str] | None:
     """
     Extract (name, url) for a problem entry if available.
 
@@ -808,7 +807,7 @@ def print_summary(summary: ProcessingSummary) -> None:
     print(f"Failed tasks: {summary.failed_tasks}")
 
 
-def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """
     Parse CLI arguments.
 
@@ -848,7 +847,7 @@ def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """
     CLI entry point.
 

@@ -7,6 +7,7 @@ files CBC writes instead.
 """
 
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -19,8 +20,16 @@ except ModuleNotFoundError:
     _highspy = None
 
 
+def solver_version() -> str:
+    """Return the version of the `cbc` program linopy runs in this env."""
+    output = subprocess.run(
+        ["cbc", "-quit"], capture_output=True, text=True, check=True
+    ).stdout
+    return re.search(r"Version: (\S+)", output).group(1)
+
+
 def is_mip(model: Any) -> bool | None:
-    """Always None: CBC's result object doesn't say, see `integer_values`."""
+    """Return None: CBC's result object doesn't say, see `integer_values`."""
     return None
 
 
@@ -75,15 +84,16 @@ def integer_values(
     h.silent()
     h.readModel(str(problem_fn))
     lp = h.getLp()
+    # Not strict: HiGHS leaves `integrality_` empty for an LP, so this is empty
     integer_names = {
         name
-        for name, var_type in zip(lp.col_names_, lp.integrality_)
+        for name, var_type in zip(lp.col_names_, lp.integrality_, strict=False)
         if var_type == _highspy.HighsVarType.kInteger
     }
     if not integer_names:
         return {}
 
-    with open(solution_fn) as f:
+    with Path(solution_fn).open() as f:
         # CBC may write continuous relaxation values when no integer incumbent
         # exists. Those are not a valid MILP solution.
         first_line = f.readline().lower()
@@ -112,7 +122,7 @@ def recover_result(problem_fn: Path, solution_fn: Path) -> dict[str, Any] | None
     termination condition despite CBC having written a valid incumbent.
     """
     try:
-        with open(solution_fn) as f:
+        with Path(solution_fn).open() as f:
             first_line = f.readline().strip()
     except OSError:
         return None

@@ -36,6 +36,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     //   CHROMEDRIVER_PATH  – path to the matching ChromeDriver binary
     //   AXE_CHROME_OPTIONS – comma-separated Chrome args (no leading --)
     //   AXE_LOAD_DELAY     – ms to wait for the page to hydrate (default 3000)
+    //   AXE_EXCLUDE        – comma-separated CSS selectors to skip, e.g.
+    //                        third-party iframes we can't fix
     //
     // NOTE: axe-core CLI uses --chrome-options (plural) with a comma-separated list.
     //       Using the wrong flag (e.g. --chromeoption) causes Chrome to launch without
@@ -44,6 +46,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const chromedriverPath = process.env.CHROMEDRIVER_PATH || "";
     const chromeOptions = process.env.AXE_CHROME_OPTIONS || "";
     const loadDelay = process.env.AXE_LOAD_DELAY || "3000";
+    const exclude = process.env.AXE_EXCLUDE || "";
+
+    const excludeFlag = exclude ? `--exclude "${exclude}"` : "";
 
     const chromedriverFlag = chromedriverPath
       ? `--chromedriver-path "${chromedriverPath}"`
@@ -92,8 +97,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
           // --chromedriver-path: use the auto-matched ChromeDriver (avoids version
           //                      mismatch that causes "Chrome instance exited" errors)
           // --chrome-options   : comma-separated Chrome flags required in CI
+          // --exclude          : elements to skip (AXE_EXCLUDE)
           execSync(
-            `axe "${url}" --tags wcag2a,wcag2aa --load-delay ${loadDelay} --exit ${chromedriverFlag} ${chromeOptionFlags}`.trim(),
+            `axe "${url}" --tags wcag2a,wcag2aa --load-delay ${loadDelay} --exit ${chromedriverFlag} ${chromeOptionFlags} ${excludeFlag}`.trim(),
             {
               stdio: "inherit",
               encoding: "utf8",

@@ -5,8 +5,21 @@
 available.
 """
 
+import re
 from pathlib import Path
 from typing import Any
+
+# knitro is only installed in the Knitro solver environment
+try:
+    import knitro as _knitro
+except ModuleNotFoundError:
+    _knitro = None
+
+
+def solver_version() -> str:
+    """Return the version of the Knitro library this env loads."""
+    # e.g. "Knitro 15.1.0"
+    return re.search(r"\d+(?:\.\d+)+", _knitro.KN_get_release()).group(0)
 
 
 def is_mip(model: Any) -> bool | None:
@@ -28,5 +41,5 @@ def reported_runtime(model: Any) -> float:
 def integer_values(
     model: Any, problem_fn: Path, solution_fn: Path
 ) -> dict[str, float] | None:
-    """Always None: linopy's `KnitroResult` carries no variable values."""
+    """Return None: linopy's `KnitroResult` carries no variable values."""
     return None

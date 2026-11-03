@@ -3,6 +3,17 @@
 from pathlib import Path
 from typing import Any
 
+# gurobipy is only installed in the Gurobi solver environments
+try:
+    import gurobipy as _gurobipy
+except ModuleNotFoundError:
+    _gurobipy = None
+
+
+def solver_version() -> str:
+    """Return the version of the Gurobi library this env loads."""
+    return ".".join(str(part) for part in _gurobipy.gurobi.version())
+
 
 def is_mip(model: Any) -> bool:
     """Whether Gurobi classified the model as a MIP."""
@@ -30,5 +41,9 @@ def integer_values(
         return None
     integer_vars = [v for v in model.getVars() if v.VType in ("I", "B")]
     return dict(
-        zip(model.getAttr("VarName", integer_vars), model.getAttr("X", integer_vars))
+        zip(
+            model.getAttr("VarName", integer_vars),
+            model.getAttr("X", integer_vars),
+            strict=True,
+        )
     )

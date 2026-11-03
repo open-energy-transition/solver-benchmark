@@ -12,6 +12,16 @@ except ModuleNotFoundError:
     _xpress = None
 
 
+def solver_version() -> str:
+    """Return the Xpress release this env loads.
+
+    The release number (e.g. 9.6.2) is the version of the `xpress` package,
+    which bundles its own library. `xpress.getversion()` gives the
+    optimizer's internal version instead (e.g. 45.01.03).
+    """
+    return _xpress.__version__
+
+
 def is_mip(model: Any) -> bool:
     """Whether the model has any MIP entities (integer/binary variables, SOS, etc.)."""
     return model.getAttrib("mipents") > 0
@@ -64,6 +74,6 @@ def integer_values(
     variables = model.getVariable()
     return {
         var.name: value
-        for var, value in zip(variables, model.getSolution())
+        for var, value in zip(variables, model.getSolution(), strict=True)
         if var.vartype in (_xpress.integer, _xpress.binary)
     }

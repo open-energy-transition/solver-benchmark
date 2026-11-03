@@ -68,7 +68,7 @@ def load_solver_registry(config_path: Path = _SOLVER_REGISTRY_PATH) -> dict[str,
     dict[str, Any]
         Parsed YAML with top-level keys ``solvers`` and ``packages``.
     """
-    with open(config_path, "r") as f:
+    with Path(config_path).open() as f:
         return yaml.safe_load(f)
 
 
@@ -89,7 +89,7 @@ def load_eligibility_rules(
     dict[str, Any]
         Parsed YAML with a single top-level ``rules`` list.
     """
-    with open(config_path, "r") as f:
+    with Path(config_path).open() as f:
         return yaml.safe_load(f)
 
 
@@ -114,7 +114,7 @@ def load_solver_configurations(
         entry per named way of running a solver, each with a ``solver`` and
         ``options``).
     """
-    with open(config_path, "r") as f:
+    with Path(config_path).open() as f:
         return yaml.safe_load(f)
 
 
@@ -248,27 +248,6 @@ def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
         for entry in versions.values()
     }
     return sorted(years)
-
-
-def get_package_name(solver_package: str, config: dict[str, Any] | None = None) -> str:
-    """Return the PyPI package name that provides a solver.
-
-    Parameters
-    ----------
-    solver_package : str
-        The underlying solver package, e.g. ``"highs"``.
-    config : dict[str, Any], optional
-        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
-
-    Returns
-    -------
-    str
-        The package name, e.g. ``"highspy"`` for ``"highs"``. Falls back to
-        `solver_package` itself if there's no entry in ``solvers.yaml``'s
-        ``packages`` map.
-    """
-    config = config if config is not None else load_solver_registry()
-    return config.get("packages", {}).get(solver_package, solver_package)
 
 
 def get_license_env_vars(

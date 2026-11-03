@@ -4,6 +4,7 @@ configurations, and the eligibility-rule engine.
 
 import tomllib
 from pathlib import Path
+from typing import ClassVar
 
 from runner.utils.config import (
     _condition_matches,
@@ -12,7 +13,6 @@ from runner.utils.config import (
     get_default_configurations,
     get_license_env_vars,
     get_output_stem,
-    get_package_name,
     get_seed_option,
     get_solver_configuration,
     get_solver_options,
@@ -114,16 +114,6 @@ class TestGetAllRegisteredYears:
         assert get_all_registered_years({}) == []
 
 
-class TestGetPackageName:
-    def test_looks_up_package_name(self):
-        config = {"packages": {"highs": "highspy"}}
-        assert get_package_name("highs", config) == "highspy"
-
-    def test_falls_back_to_solver_name(self):
-        config = {"packages": {}}
-        assert get_package_name("glpk", config) == "glpk"
-
-
 class TestGetLicenseEnvVars:
     def test_looks_up_license_env_vars(self):
         config = {"license_env_vars": {"mosek": ["MOSEKLM_LICENSE_FILE"]}}
@@ -194,7 +184,7 @@ class TestConditionMatches:
 
 
 class TestIsSolverEligible:
-    _LARGE_PROBLEM_RULE = {
+    _LARGE_PROBLEM_RULE: ClassVar[dict] = {
         "rules": [
             {
                 "name": "large_problems_runtime_budget",
