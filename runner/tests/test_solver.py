@@ -78,7 +78,7 @@ class TestGetSolver:
         assert captured["options"]["random_seed"] == 0
         assert "no seed_options entry" in capsys.readouterr().err
 
-    def test_legacy_linopy_passes_options_dict(self, monkeypatch):
+    def test_linopy_with_options_parameter_passes_dict(self, monkeypatch):
         captured = {}
 
         monkeypatch.setattr(
@@ -97,7 +97,7 @@ class TestGetSolver:
         assert captured["options"]["random_seed"] == 0
         assert captured["options"]["mip_rel_gap"] == pytest.approx(1e-4)
 
-    def test_current_linopy_expands_options_as_kwargs(self, monkeypatch):
+    def test_linopy_without_options_parameter_expands_kwargs(self, monkeypatch):
         captured = {}
 
         monkeypatch.setattr(
