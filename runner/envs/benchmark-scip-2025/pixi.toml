@@ -10,7 +10,7 @@ python = ">=3.12"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-linopy = ">=0.5.5"
+linopy = ">=0.10.1"
 scip = "==10.0.0"
 # PySCIPOpt comes from conda-forge, built against the scip above. The PyPI
 # wheel bundles its own SCIP (9.2.4 in 5.7.1), which silently replaced the
