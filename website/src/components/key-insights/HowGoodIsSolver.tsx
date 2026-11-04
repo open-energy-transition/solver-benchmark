@@ -6,7 +6,7 @@ import SolverRuntimeComparison from "./charts/BenchmarkRuntimeComparison";
 import { QuestionLineIcon } from "@/assets/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import InfoPopup from "../common/InfoPopup";
-import { SgmExplanation } from "@/components/shared";
+import SgmExplanation from "@/components/shared/SgmExplanation";
 import { PATH_DASHBOARD } from "@/constants/path";
 
 const HASH = "how-good-is-each-solver-and-for-what-cases";

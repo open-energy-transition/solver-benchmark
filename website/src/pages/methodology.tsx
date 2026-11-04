@@ -4,7 +4,6 @@ import {
   TableOfContents,
   ContentSection,
 } from "@/components/info-pages";
-import { MathJaxContext } from "better-react-mathjax";
 import Metrics from "@/components/methodology/Metrics";
 import RankingSolvers from "@/components/methodology/RankingSolvers";
 import WhenNotUseSGM from "@/components/methodology/WhenNotUseSGM";
@@ -16,14 +15,6 @@ import { useStaggerReveal } from "@/hooks/useGsapAnimation";
 import gsap from "gsap";
 
 const Methodology = () => {
-  const config = {
-    loader: { load: ["[tex]/html"] },
-    tex: {
-      packages: { "[+]": ["html"] },
-      inlineMath: [["$", "$"]],
-    },
-  };
-
   const tocItems = [
     {
       hash: "#metrics",
@@ -116,31 +107,29 @@ const Methodology = () => {
         />
       </div>
       <ContentSection>
-        <MathJaxContext config={config}>
-          <div ref={contentRef} className="info-pages-content">
-            <div className="info-pages-section">
-              <Metrics />
-            </div>
-
-            <div className="info-pages-section">
-              <RankingSolvers />
-            </div>
-
-            <div className="info-pages-section">
-              <WhenNotUseSGM />
-            </div>
-
-            <MethodologySection />
-
-            <div className="info-pages-section">
-              <HardwareConfigurations />
-            </div>
-
-            <div className="info-pages-section">
-              <DetailsOfTheRunner />
-            </div>
+        <div ref={contentRef} className="info-pages-content">
+          <div className="info-pages-section">
+            <Metrics />
           </div>
-        </MathJaxContext>
+
+          <div className="info-pages-section">
+            <RankingSolvers />
+          </div>
+
+          <div className="info-pages-section">
+            <WhenNotUseSGM />
+          </div>
+
+          <MethodologySection />
+
+          <div className="info-pages-section">
+            <HardwareConfigurations />
+          </div>
+
+          <div className="info-pages-section">
+            <DetailsOfTheRunner />
+          </div>
+        </div>
       </ContentSection>
     </PageLayout>
   );

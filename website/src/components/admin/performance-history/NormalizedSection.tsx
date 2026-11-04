@@ -3,7 +3,7 @@ import { QuestionLineIcon } from "@/assets/icons";
 import { ISolverYearlyChartData } from "@/types/benchmark";
 import NormalizedSGMMemoryUsage from "./NormalizedSGMMemoryUsage";
 import NormalizedSGMRuntime from "./NormalizedSGMRuntime";
-import { SgmExplanation } from "@/components/shared";
+import SgmExplanation from "@/components/shared/SgmExplanation";
 import SgmModeSection from "@/components/admin/performance-history/SgmModeSection";
 import InfoPopup from "@/components/common/InfoPopup";
 
