@@ -39,6 +39,11 @@ _VM_NAME_PATTERN = re.compile(r"[a-z]([-a-z0-9]{0,61}[a-z0-9])?")
 _REQUIRED_PROBLEM_FIELDS = ("Problem class", "Size", "URL")
 
 
+def count(number: int, noun: str) -> str:
+    """Return `number` followed by `noun`, in the plural unless `number` is 1."""
+    return f"{number:,} {noun}" if number == 1 else f"{number:,} {noun}s"
+
+
 def allocate_vms_greedy(
     problem_ids: list[str],
     problem_weights: dict[str, float],
@@ -77,10 +82,13 @@ def allocate_vms_greedy(
         allocation[lightest_vm].append(p)
         weights[lightest_vm] += t
 
-    print(f"Allocated {len(problem_ids)} problems to {num_vms} VMs by {weight_name}:")
+    print(
+        f"Allocated {count(len(problem_ids), 'problem')} to {count(num_vms, 'VM')} "
+        f"by {weight_name}:"
+    )
     for i in range(num_vms):
         print(
-            f"  VM {i:02d}: {len(allocation[i])} problems, "
+            f"  VM {i:02d}: {count(len(allocation[i]), 'problem')}, "
             f"{weight_name} {weights[i]:,.0f}"
         )
     return allocation, weights

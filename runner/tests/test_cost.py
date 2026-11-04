@@ -157,4 +157,4 @@ def test_format_notes_vms_outside_the_priced_region(results_csv):
     """VMs outside the region of the prices are pointed out."""
     vm = _vm_yaml(["small-1"], zone="europe-west4-a")
     output = format_estimate(_estimate([vm], results_csv([])))
-    assert "1 VM(s) are outside us-central1" in output
+    assert "1 VM is outside us-central1" in output

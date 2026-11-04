@@ -232,8 +232,8 @@ Longest VM:          118.1 h expected, 120.5 h if every run hits its timeout
 Prices:              on-demand in us-central1, checked on 2026-11-04
 
 By machine type:
-  c4-highmem-16: 146 VM(s), 730 runs, $14,461 expected, $18,441 at most
-  c4-standard-2: 203 VM(s), 3,248 runs, $153 expected, $343 at most
+  c4-highmem-16: 146 VMs, 730 runs, $14,461 expected, $18,441 at most
+  c4-standard-2: 203 VMs, 3,248 runs, $153 expected, $343 at most
 
 Create the campaign? [y/N]
 ```

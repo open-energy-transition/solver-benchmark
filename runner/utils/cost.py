@@ -18,6 +18,7 @@ import pandas as pd
 import yaml
 
 from . import config, env
+from .campaign import count
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _VM_COSTS_PATH = _REPO_ROOT / "runner" / "config" / "vm_costs.yaml"
@@ -407,8 +408,8 @@ def format_estimate(estimate: CampaignEstimate) -> str:
             "at most"
         )
         lines.append(
-            f"  {machine_type}: {len(vms)} VM(s), "
-            f"{sum(vm.runs for vm in vms):,} runs, {cost}"
+            f"  {machine_type}: {count(len(vms), 'VM')}, "
+            f"{count(sum(vm.runs for vm in vms), 'run')}, {cost}"
         )
 
     other_regions = [
@@ -416,7 +417,8 @@ def format_estimate(estimate: CampaignEstimate) -> str:
     ]
     if other_regions:
         lines.append(
-            f"\nNOTE: {len(other_regions)} VM(s) are outside {estimate.region}; "
+            f"\nNOTE: {count(len(other_regions), 'VM')} "
+            f"{'is' if len(other_regions) == 1 else 'are'} outside {estimate.region}; "
             "prices in other regions can be up to about 20% higher."
         )
     if estimate.unpriced_machine_types:
