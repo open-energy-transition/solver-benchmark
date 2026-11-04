@@ -14,7 +14,7 @@ python = ">=3.12,<3.13"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-linopy = ">=0.5.5"
+linopy = ">=0.10.1"
 
 [pypi-dependencies]
 mosek = "==11.0.30"  # last stable version released in 2025
