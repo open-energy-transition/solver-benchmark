@@ -48,4 +48,12 @@ repos:
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.1
     hooks:
+      # Scans the staged changes, so only when committing locally
       - id: gitleaks
+      # Scans the commits not yet on main; CI runs it on pull requests
+      - id: gitleaks
+        alias: gitleaks-commits
+        name: Detect hardcoded secrets in the commits not on main
+        entry: gitleaks git --redact --verbose --log-opts=origin/main..HEAD
+        always_run: true
+        stages: [manual]

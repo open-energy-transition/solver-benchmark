@@ -1,7 +1,8 @@
 # Runs on pull requests to main, pushes to main, a weekly schedule and manual
 # runs. The jobs run in parallel:
 #
-#   lint      pre-commit, always
+#   lint      pre-commit, always, and on pull requests a scan of their commits
+#             for secrets
 #   metadata  benchmark metadata and results checks
 #   runner    runner unit tests, campaign generator and a sample benchmark run
 #   website   website lint, build and accessibility checks
@@ -114,6 +115,12 @@ jobs:
           else
             pixi run -e dev pre-commit run --show-diff-on-failure --from-ref origin/main --to-ref HEAD
           fi
+
+      - name: Scan the pull request's commits for secrets
+        # The gitleaks hook in the step above only scans staged changes, and
+        # CI has none
+        if: github.event_name == 'pull_request'
+        run: pixi run -e dev pre-commit run gitleaks-commits --hook-stage manual
 
   metadata:
     needs: changes
