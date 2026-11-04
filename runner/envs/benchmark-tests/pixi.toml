@@ -17,4 +17,4 @@ glpk = "==5.0.0"
 
 [pypi-dependencies]
 highspy = "==1.9.0"
-linopy = "==0.10.1"
+linopy = ">=0.10.1"

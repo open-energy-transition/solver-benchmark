@@ -13,7 +13,7 @@ python = ">=3.12,<3.13"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-linopy = "==0.10.1"
+linopy = ">=0.10.1"
 
 [pypi-dependencies]
 cplex = "==22.1.2.0"

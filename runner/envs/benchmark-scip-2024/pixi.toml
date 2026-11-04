@@ -10,7 +10,7 @@ python = ">=3.12"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-linopy = "==0.10.1"
+linopy = ">=0.10.1"
 scip = "==9.2.0"
 # To compile PySCIPOpt against the scip above (see below)
 cxx-compiler = "*"
