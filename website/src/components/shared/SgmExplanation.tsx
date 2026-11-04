@@ -25,23 +25,23 @@ const SgmExplanation = ({}) => {
       </p>
 
       <p>
-        The SGM differs from the geometric mean becauses it uses a <b>shift</b>{" "}
-        s and also takes max with 1 of the measured values. Some reasons for
-        using SGM are:
-        <ul className="list-disc pl-5">
-          <li>(S)GM commutes with normalization</li>
-          <li>(S)GM is influenced less by large outliers compared to AM</li>
-          <li>
-            SGM is influenced less by a small number of outliers compared to GM
-          </li>
-          <li>Max with 1 ignores differences in runtimes of less than 1s</li>
-          <li>
-            The shift is used to reduce the impact of a few problems having very
-            low runtimes on the overall SGM, reducing the risk of rating highly
-            a solver that is really good on only a small handful of problems
-          </li>
-        </ul>
+        The SGM differs from the geometric mean because it uses a <b>shift</b> s
+        and also takes max with 1 of the measured values. Some reasons for using
+        SGM are:
       </p>
+      <ul className="list-disc pl-5">
+        <li>(S)GM commutes with normalization</li>
+        <li>(S)GM is influenced less by large outliers compared to AM</li>
+        <li>
+          SGM is influenced less by a small number of outliers compared to GM
+        </li>
+        <li>Max with 1 ignores differences in runtimes of less than 1s</li>
+        <li>
+          The shift is used to reduce the impact of a few problems having very
+          low runtimes on the overall SGM, reducing the risk of rating highly a
+          solver that is really good on only a small handful of problems
+        </li>
+      </ul>
       <p>
         We use a shift of <MathFormula tex="s = 10" />, which is also the shift
         used by the{" "}

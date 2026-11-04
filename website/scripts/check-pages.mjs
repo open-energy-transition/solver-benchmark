@@ -3,15 +3,17 @@
 // Loads every page in urls.txt (see extract-sitemap-urls.mjs) in Chrome,
 // opens each of its hover pop-ups, and fails if any page:
 //   - doesn't load, e.g. returns a 404;
+//   - has a pop-up that doesn't open;
 //   - has something blocked by the site's Content Security Policy, e.g. a
 //     script, font or stylesheet from a source the policy doesn't allow;
 //   - shows a formula KaTeX couldn't render (it shows these in red instead of
 //     failing the build), on the page or in a pop-up.
 // None of these breaks the build, so only a real browser catches them.
 //
-// Pop-ups are rendered only once they open, so the check opens each one. It fails if it finds no formulas in any pop-up, since the SGM
-// explanation pop-ups contain some: that would mean the pop-ups weren't
-// opened, e.g. because their markup changed.
+// Pop-ups are rendered only once they open, so the check opens each one. It
+// also fails if it finds no formulas in any pop-up, since the SGM explanation
+// pop-ups contain some: that would mean no pop-up triggers were found, e.g.
+// because their markup changed.
 //
 // Uses the same environment variables as run-a11y-tests.mjs:
 //   CHROMEDRIVER_PATH  – path to the matching ChromeDriver binary (optional)
@@ -63,8 +65,11 @@ if (process.env.CHROMEDRIVER_PATH) {
 }
 
 // reactjs-popup gives each trigger aria-describedby="popup-<n>", the id of
-// its content while open
-const POPUP_TRIGGERS = '[aria-describedby^="popup-"]';
+// its content while open. InfoPopup marks each trigger with how its pop-up
+// opens (data-popup-on), and the triggers of disabled pop-ups, such as labels
+// short enough to show in full, which never open.
+const POPUP_TRIGGERS =
+  '[aria-describedby^="popup-"]:not([data-popup-disabled])';
 
 const loadDelay = Number(process.env.AXE_LOAD_DELAY || 3000);
 const popupDelay = Number(process.env.POPUP_OPEN_DELAY || 250);
@@ -81,39 +86,55 @@ const findKatexErrors = async (element) => {
 };
 
 // Opens every pop-up on the page and checks its formulas, returning how many
-// pop-ups opened and how many formulas they had. The hover is simulated with
-// the mouseover/mouseout events React turns into onMouseEnter/onMouseLeave,
-// on all triggers at once: moving the real mouse over each trigger in turn
-// is slow, and misses triggers covered by other elements in a small window.
+// pop-ups the page has, how many opened and how many formulas they had.
+// Hovering is simulated with the mouseover/mouseout events React turns into
+// onMouseEnter/onMouseLeave, on all hover triggers at once: moving the real
+// mouse over each trigger in turn is slow, and misses triggers covered by
+// other elements in a small window. Pop-ups that open only on click are
+// clicked open and closed one at a time.
 const checkPopups = async (problems) => {
   const results = await driver.executeAsyncScript(
     `const [selector, delay, done] = arguments;
+    const wait = () => new Promise((resolve) => setTimeout(resolve, delay));
     const triggers = [...document.querySelectorAll(selector)];
+    const clickOnly = triggers.filter(
+      (trigger) => trigger.dataset.popupOn === "click",
+    );
+    const hovered = triggers.filter((trigger) => !clickOnly.includes(trigger));
     const hover = (type) => {
-      for (const trigger of triggers) {
+      for (const trigger of hovered) {
         trigger.dispatchEvent(
           new MouseEvent(type, { bubbles: true, relatedTarget: document.body }),
         );
       }
     };
-    hover("mouseover");
-    setTimeout(() => {
-      const results = triggers.map((trigger) => {
-        const id = trigger.getAttribute("aria-describedby");
-        const content = document.getElementById(id);
-        return {
-          opened: !!content,
-          formulas: content ? content.querySelectorAll(".katex").length : 0,
-          errors: content
-            ? [...content.querySelectorAll(".katex-error")].map(
-                (error) => error.textContent,
-              )
-            : [],
-        };
-      });
+    const inspect = (trigger) => {
+      const id = trigger.getAttribute("aria-describedby");
+      const content = document.getElementById(id);
+      return {
+        opened: !!content,
+        formulas: content ? content.querySelectorAll(".katex").length : 0,
+        errors: content
+          ? [...content.querySelectorAll(".katex-error")].map(
+              (error) => error.textContent,
+            )
+          : [],
+      };
+    };
+    (async () => {
+      hover("mouseover");
+      await wait();
+      const results = hovered.map(inspect);
       hover("mouseout");
+      for (const trigger of clickOnly) {
+        trigger.click();
+        await wait();
+        results.push(inspect(trigger));
+        trigger.click();
+        await wait();
+      }
       done(results);
-    }, delay);`,
+    })();`,
     POPUP_TRIGGERS,
     popupDelay,
   );
@@ -123,6 +144,7 @@ const checkPopups = async (problems) => {
     }
   }
   return {
+    total: results.length,
     opened: results.filter(({ opened }) => opened).length,
     formulas: results.reduce((sum, { formulas }) => sum + formulas, 0),
   };
@@ -145,6 +167,13 @@ try {
     }
     const popups = await checkPopups(problems);
     popupFormulas += popups.formulas;
+    if (popups.opened < popups.total) {
+      problems.push(
+        `${popups.total - popups.opened} of ${
+          popups.total
+        } pop-up(s) didn't open`,
+      );
+    }
 
     const logs = await driver.manage().logs().get(logging.Type.BROWSER);
     for (const entry of logs) {
@@ -155,7 +184,7 @@ try {
       }
     }
     const summary =
-      `${pageFormulas} formula(s), ${popups.opened} pop-up(s) with ` +
+      `${pageFormulas} formula(s), ${popups.opened}/${popups.total} pop-up(s) with ` +
       `${popups.formulas} formula(s)`;
     if (problems.length) {
       failures += problems.length;
