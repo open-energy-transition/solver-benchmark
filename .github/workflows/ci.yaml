@@ -1,7 +1,8 @@
 # Runs on pull requests to main, pushes to main, a weekly schedule and manual
 # runs. The jobs run in parallel:
 #
-#   lint      pre-commit, always
+#   lint      pre-commit, always, and on pull requests a scan of their commits
+#             for secrets
 #   metadata  benchmark metadata and results checks
 #   runner    runner unit tests, campaign generator and a sample benchmark run
 #   website   website lint, build and accessibility checks
@@ -49,8 +50,9 @@ jobs:
       runner: ${{ steps.filter.outputs.runner }}
       website: ${{ steps.filter.outputs.website }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Find the areas this change touches
@@ -89,11 +91,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0 # for comparing against origin/main
 
-      - uses: prefix-dev/setup-pixi@v0.11.2
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
         with:
           environments: dev
 
@@ -113,14 +116,22 @@ jobs:
             pixi run -e dev pre-commit run --show-diff-on-failure --from-ref origin/main --to-ref HEAD
           fi
 
+      - name: Scan the pull request's commits for secrets
+        # The gitleaks hook in the step above only scans staged changes, and
+        # CI has none
+        if: github.event_name == 'pull_request'
+        run: pixi run -e dev pre-commit run gitleaks-commits --hook-stage manual
+
   metadata:
     needs: changes
     if: needs.changes.outputs.metadata == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: prefix-dev/setup-pixi@v0.11.2
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
         with:
           environments: dev benchmarks
 
@@ -162,9 +173,11 @@ jobs:
     if: needs.changes.outputs.runner == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: prefix-dev/setup-pixi@v0.11.2
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
         with:
           environments: runner benchmarks
 
@@ -219,9 +232,11 @@ jobs:
       run:
         working-directory: website
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "22"
           cache: npm
@@ -229,7 +244,7 @@ jobs:
 
       - name: Check reCAPTCHA key is configured
         # Skipped for PRs from forks and Dependabot, which don't get secrets.
-        if: ${{ !(github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]')) }}
+        if: ${{ !(github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.event.pull_request.user.login == 'dependabot[bot]')) }}
         env:
           NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
         run: |
@@ -259,6 +274,7 @@ jobs:
         # both paths for the accessibility tests.
         run: |
           npx --yes browser-driver-manager@2.0.1 install chrome
+          # shellcheck source=/dev/null
           source ~/.browser-driver-manager/.env
           echo "CHROME_BIN_PATH=${CHROME_TEST_PATH}" >> "${GITHUB_ENV}"
           echo "CHROMEDRIVER_PATH=${CHROMEDRIVER_TEST_PATH}" >> "${GITHUB_ENV}"
@@ -275,6 +291,16 @@ jobs:
       - name: Extract URLs from sitemap
         run: npm run axe:extract
 
+      - name: Check pages for blocked resources and formula errors
+        # The build passes either way, so only a browser catches e.g. a script
+        # or font blocked by the Content Security Policy.
+        env:
+          AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
+          AXE_LOAD_DELAY: "5000"
+        run: |
+          export CHROME_BIN="$CHROME_BIN_PATH"
+          npm run check:pages
+
       - name: Run axe-core accessibility tests on all pages
         env:
           AXE_CHROME_OPTIONS: "no-sandbox,disable-dev-shm-usage,disable-setuid-sandbox,headless=new,disable-gpu"
@@ -288,7 +314,7 @@ jobs:
 
       - name: Upload accessibility report
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: accessibility-report
           path: website/axe-results.json

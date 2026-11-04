@@ -1,5 +1,5 @@
 import { useScrollSpy } from "@/hooks/useScrollSpy";
-import { MathJax } from "better-react-mathjax";
+import MathFormula from "@/components/common/MathFormula";
 
 const HASH_NAME = "metrics";
 const Metrics = () => {
@@ -63,12 +63,11 @@ const Metrics = () => {
           returned solution is to the optimal solution, and we set a tolerance
           in order to allow solvers to terminate in a reasonable time period
           when they have found a close-to-optimal solution. Precisely, if{" "}
-          <MathJax inline>{"$p$"}</MathJax> is the primal objective bound (i.e.,
-          the incumbent objective value, which is the upper bound for
-          minimization problems), and <MathJax inline>{"$d$"}</MathJax> is the
-          dual objective bound (i.e., the lower bound for minimization
-          problems), then the relative duality gap is defined as{" "}
-          <MathJax inline>{"$|p - d| / |p|$"}</MathJax>.
+          <MathFormula tex={"p"} /> is the primal objective bound (i.e., the
+          incumbent objective value, which is the upper bound for minimization
+          problems), and <MathFormula tex={"d"} /> is the dual objective bound
+          (i.e., the lower bound for minimization problems), then the relative
+          duality gap is defined as <MathFormula tex={"|p - d| / |p|"} />.
         </li>
       </ol>
       <p>
