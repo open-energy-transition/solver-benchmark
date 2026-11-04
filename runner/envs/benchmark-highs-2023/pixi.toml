@@ -6,11 +6,13 @@ channels = ["conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
-python = ">=3.12,<3.13"
+# HiGHS 1.6.0 builds with Python 3.13 when using GCC 14.
+# GCC 15 fails on the bundled zstr header (missing <cstdint>).
+python = ">=3.12,<3.14"
 pip = "*"
 psutil = ">=5.9"
 requests = ">=2.32"
-cxx-compiler = "*"
+cxx-compiler = "==1.11.0"
 zlib = "*"
 
 [pypi-dependencies]
