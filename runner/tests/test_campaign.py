@@ -43,6 +43,13 @@ class TestAllocateVmsGreedy:
         _allocation, vm_weights = allocate_vms_greedy(problem_ids, weights, num_vms=2)
         assert sorted(vm_weights) == [10, 11]
 
+    def test_prints_the_weights_by_name(self, capsys):
+        """The printed allocation names the weights rather than calling them hours."""
+        allocate_vms_greedy(["a", "b"], {"a": 7200, "b": 3600}, 1, "Num. variables")
+        output = capsys.readouterr().out
+        assert "Allocated 2 problems to 1 VMs by Num. variables:" in output
+        assert "VM 00: 2 problems, Num. variables 10,800" in output
+
     def test_single_vm_gets_everything(self):
         problem_ids = ["a", "b"]
         weights = {"a": 1, "b": 2}
