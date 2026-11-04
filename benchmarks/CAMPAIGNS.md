@@ -220,20 +220,29 @@ timeout settings, allocation decisions, and metadata used to create the campaign
 
 ## Cost estimate
 
-Before writing the files of a cloud campaign, the script prints an estimate of its cost and asks for confirmation:
+Before writing the files of a cloud campaign, the script prints an estimate of its cost and asks for confirmation. For example, for two S/M problems with the default solvers and year:
+
+```bash
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+  --campaign example \
+  --problem pypsa-de-elec-2-1h genx-3_three_zones_w_co2_capture-no_uc-3-1h
+```
 
 ```text
+Allocated 2 problems to 2 VMs by Num. variables:
+  VM 00: 1 problem, Num. variables 569,341
+  VM 01: 1 problem, Num. variables 103,506
+
 Cost estimate
 =============
-Runs:                3,978 (2,316 with a past run of the same problem and solver version)
-VM-hours:            15,294 expected, 20,942 if every run hits its timeout
-Cost:                $14,615 expected, $18,784 if every run hits its timeout
-Longest VM:          118.1 h expected, 120.5 h if every run hits its timeout
+Runs:                6 (3 with a past run of the same problem and solver version)
+VM-hours:            2.3 expected, 7.0 if every run hits its timeout
+Cost:                $0.24 expected, $0.72 if every run hits its timeout
+Longest VM:          1.8 h expected, 3.5 h if every run hits its timeout
 Prices:              on-demand in us-central1, checked on 2026-11-04
 
 By machine type:
-  c4-highmem-16: 146 VMs, 730 runs, $14,461 expected, $18,441 at most
-  c4-standard-2: 203 VMs, 3,248 runs, $153 expected, $343 at most
+  c4-standard-2: 2 VMs, 6 runs, $0.24 expected, $0.72 at most
 
 Create the campaign? [y/N]
 ```
