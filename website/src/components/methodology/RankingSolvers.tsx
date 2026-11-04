@@ -1,5 +1,5 @@
 import { useScrollSpy } from "@/hooks/useScrollSpy";
-import { MathJax } from "better-react-mathjax";
+import MathFormula from "@/components/common/MathFormula";
 
 const HASH_NAME = "ranking-solvers";
 
@@ -29,18 +29,18 @@ const RankingSolvers = () => {
         SGM above stands for (normalized) shifted geometric mean, and is a more
         robust summary metric compared to the arithmetic mean (AM) or geometric
         mean (GM). Given a set of measured values{" "}
-        <MathJax inline>{"$t_1, \\ldots, t_n$"}</MathJax>, e.g. runtimes of a
-        solver on a set of benchmark problems, the SGM value is defined as:
+        <MathFormula tex={"t_1, \\ldots, t_n"} />, e.g. runtimes of a solver on
+        a set of benchmark problems, the SGM value is defined as:
       </p>
-      <MathJax className="my-4">
-        {
-          "$\\Large{e^{\\sum_{i \\in 1..n} \\frac{\\ln(\\max(1, t_i + s))}{n}} - s}$"
+      <MathFormula
+        className="block my-4"
+        tex={
+          "\\Large{e^{\\sum_{i \\in 1..n} \\frac{\\ln(\\max(1, t_i + s))}{n}} - s}"
         }
-      </MathJax>
+      />
       <p>
         The SGM differs from the geometric mean because it uses a <em>shift</em>{" "}
-        <MathJax inline>{"$s$"}</MathJax> and also uses a max with 1. Key
-        features are:
+        <MathFormula tex={"s"} /> and also uses a max with 1. Key features are:
       </p>
       <ul className="list-disc list-outside ml-6">
         <li className="mb-2">(S)GM commutes with normalization</li>
@@ -60,8 +60,8 @@ const RankingSolvers = () => {
         </li>
       </ul>
       <p>
-        We use a shift of <MathJax inline>{"$s = 10$"}</MathJax>, which is also
-        the shift used by the{" "}
+        We use a shift of <MathFormula tex={"s = 10"} />, which is also the
+        shift used by the{" "}
         <a href="https://plato.asu.edu/ftp/shgeom.html">Mittlemann benchmark</a>
         .
       </p>
