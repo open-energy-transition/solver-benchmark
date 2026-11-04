@@ -56,4 +56,5 @@ repos:
         name: Detect hardcoded secrets in the commits not on main
         entry: gitleaks git --redact --verbose --log-opts=origin/main..HEAD
         always_run: true
+        verbose: true
         stages: [manual]
