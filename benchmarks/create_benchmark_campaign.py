@@ -7,8 +7,10 @@ either:
 - a cloud OpenTofu campaign under infrastructure/benchmarks/<run-id>/;
 - a local benchmark campaign under infrastructure/local/benchmarks/<run-id>/.
 
-Cloud campaigns stop before running `tofu apply`. Local campaigns generate a
-local run script and ask for confirmation before executing it.
+Cloud campaigns print an estimate of their cost (see `runner.utils.cost`) and
+ask for confirmation before writing their files, and stop before running
+`tofu apply`. Local campaigns generate a local run script and ask for
+confirmation before executing it.
 """
 
 from __future__ import annotations
@@ -424,20 +426,16 @@ def print_next_steps(run_id: str) -> None:
 
     print("\nBefore launching:")
     print(
-        "  1. Estimate the cost before launching the run. "
-        "It is easy to start a campaign costing $1000."
+        "  1. Check that the run is parallelized as much as reasonably "
+        "possible: the longest VM in the cost estimate sets how long it takes."
     )
     print(
-        "  2. Estimate runtime and check that the run is parallelized "
-        "as much as reasonably possible."
-    )
-    print(
-        "  3. Check whether anyone else is already running benchmarks, "
+        "  2. Check whether anyone else is already running benchmarks, "
         "and whether enough Gurobi licenses are available for the number "
         "of VMs you want to launch. The current limit is 40."
     )
     print(
-        "  4. Inspect the generated YAML files in "
+        "  3. Inspect the generated YAML files in "
         f"infrastructure/benchmarks/{run_id}/ "
         "and verify that they contain the expected problems."
     )
@@ -482,7 +480,10 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         "--yes",
         action="store_true",
         default=argparse.SUPPRESS,
-        help="Skip confirmation prompt for local execution.",
+        help=(
+            "Skip the confirmation prompt: of the cost estimate for a cloud "
+            "campaign, or of running a local campaign."
+        ),
     )
 
     parser.add_argument(
@@ -1003,6 +1004,26 @@ def create_local_campaign(
     return run_script
 
 
+def confirm(question: str) -> bool:
+    """Ask a yes/no question, returning whether the answer was yes.
+
+    Parameters
+    ----------
+    question : str
+        The question, ending with its "[y/N]" choices.
+
+    Returns
+    -------
+    bool
+        True only if the answer is "y", in any case; False without an
+        interactive stdin, e.g. in CI.
+    """
+    try:
+        return input(question).strip().lower() == "y"
+    except EOFError:
+        return False
+
+
 def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
     """
     Ask whether to run the generated local benchmark campaign.
@@ -1014,14 +1035,9 @@ def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
     yes : bool
         If ``True``, skip confirmation and run immediately.
     """
-    if not yes:
-        try:
-            answer = input("\nProceed with local execution? [y/N] ").strip().lower()
-        except EOFError:  # no interactive stdin, e.g. in CI
-            answer = ""
-        if answer != "y":
-            print("\nLocal campaign generated, execution skipped.")
-            return
+    if not yes and not confirm("\nProceed with local execution? [y/N] "):
+        print("\nLocal campaign generated, execution skipped.")
+        return
 
     subprocess.run(["bash", str(run_script)], cwd=REPO_ROOT, check=True)
 
@@ -1041,9 +1057,6 @@ def main() -> None:
 
     if not args.campaign:
         parser.error("--campaign is required unless provided in --configfile")
-
-    if args.yes and args.target != "local":
-        parser.error("--yes can only be used with --target local")
 
     campaign_slug = slugify_campaign_name(args.campaign)
     run_id = f"{datetime.now(UTC):%Y%m%d}-{campaign_slug}"
@@ -1098,6 +1111,15 @@ def main() -> None:
             print_validation,
             validate_campaign,
         )
+        from runner.utils.cost import (  # pylint: disable=import-outside-toplevel
+            estimate_campaign_cost,
+            format_estimate,
+        )
+
+        print(format_estimate(estimate_campaign_cost(vm_yamls, problems_df)))
+        if not args.yes and not confirm("\nCreate the campaign? [y/N] "):
+            print("\nCampaign not created.")
+            return
 
         # The VMs run the checked-out branch, or main if HEAD is detached
         git_ref = current_git_branch(REPO_ROOT) or "main"

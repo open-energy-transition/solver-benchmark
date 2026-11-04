@@ -1,0 +1,16 @@
+# VM costs used by runner/utils/cost.py to estimate the cost of a benchmark
+# campaign before it is created. Prices are hourly on-demand prices in USD in
+# `region`, as listed on https://gcloud-compute.com on `checked_on`; other
+# regions can cost up to about 20% more.
+region: us-central1
+checked_on: 2026-11-04
+
+machine_types:
+  c4-standard-2: 0.0969
+  c4-highmem-16: 1.0427
+
+# The 50 GB boot disk of each VM
+disk_per_hour: 0.0055
+
+# Booting, installing the solver environments and downloading the problems
+setup_hours_per_vm: 0.5
