@@ -467,7 +467,7 @@ def analyze_model_file(file_path: Path) -> ModelStats | None:
             num_integer_variables=num_int,
             size_category=determine_size_category(num_variables),
             problem_class="MILP" if num_int > 0 else "LP",
-            share_integer_variables=num_int / num_variables,
+            share_integer_variables=float(f"{num_int / num_variables:.3g}"),
         )
 
         print(f"Analysis complete for {file_path}. Stats:\n  {stats}")

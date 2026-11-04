@@ -1,5 +1,7 @@
 # Dependabot keeps the website's npm packages (website/) and the GitHub Actions
-# used by the workflows up to date, with weekly version updates:
+# used by the workflows up to date, with weekly version updates. A new release
+# is only proposed 7 days after it is published (cooldown), so a broken or
+# compromised release can be pulled first:
 #
 # - npm: all minor and patch updates are grouped into one PR. Major updates of
 #   packages that only work at matching versions arrive together in one PR:
@@ -10,15 +12,18 @@
 #
 # Security updates (switched on in the repository settings, not here) fix
 # vulnerable dependencies, including indirect ones that version updates never
-# touch. Fixes that only need a minor or patch update are grouped into one PR
-# per ecosystem. Fixes that need a major update arrive separately, so a
-# breaking upgrade cannot hold back the others.
+# touch. They arrive as soon as an advisory is published, without cooldown.
+# Fixes that only need a minor or patch update are grouped into one PR per
+# ecosystem. Fixes that need a major update arrive separately, so a breaking
+# upgrade cannot hold back the others.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /website
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     # @types/node follows the Node version the site runs on (22, see
     # "engines" in website/package.json), so only its minor and patch
     # updates are wanted
@@ -46,6 +51,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     groups:
       github-actions:
         patterns: ["*"]

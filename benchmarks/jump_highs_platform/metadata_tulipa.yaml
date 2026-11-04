@@ -12,6 +12,7 @@ problems:
     Num. nonzeros: 16364
     Num. continuous variables: 4495
     Num. integer variables: 252
+    Share integer variables: 0.0531
     MILP features:
     - Unit commitment
     Modelling framework: Tulipa
@@ -37,6 +38,7 @@ problems:
     Num. nonzeros: 114852
     Num. continuous variables: 31111
     Num. integer variables: 252
+    Share integer variables: 0.00803
     MILP features:
     - Unit commitment
     Modelling framework: Tulipa
@@ -62,6 +64,7 @@ problems:
     Num. nonzeros: 459770
     Num. continuous variables: 124267
     Num. integer variables: 252
+    Share integer variables: 0.00202
     MILP features:
     - Unit commitment
     Modelling framework: Tulipa
@@ -87,6 +90,7 @@ problems:
     Num. nonzeros: 1382610
     Num. continuous variables: 372683
     Num. integer variables: 252
+    Share integer variables: 0.000676
     MILP features:
     - Unit commitment
     Modelling framework: Tulipa
@@ -112,6 +116,7 @@ problems:
     Num. nonzeros: 2775202
     Num. continuous variables: 745307
     Num. integer variables: 252
+    Share integer variables: 0.000338
     MILP features:
     - Unit commitment
     Modelling framework: Tulipa
@@ -139,6 +144,7 @@ problems:
     Num. nonzeros: 6027950
     Num. continuous variables: 1619199
     Num. integer variables: 252
+    Share integer variables: 0.000156
     MILP features:
     - Unit commitment
     Modelling framework: Tulipa
