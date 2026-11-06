@@ -1,6 +1,7 @@
-"""Tests for benchmarks/create_benchmark_campaign.py's config handling: the
-shipped benchmarks/config.campaign.default.yaml must keep matching the
-script's current selection schema and the repo's metadata/solver config.
+"""Tests for benchmarks/create_benchmark_campaign.py's config handling and
+confirmation prompts: the shipped benchmarks/config.campaign.default.yaml must
+keep matching the script's current selection schema and the repo's
+metadata/solver config.
 """
 
 import argparse
@@ -68,3 +69,22 @@ def test_shipped_config_uses_registered_years(default_args):
 def test_unknown_keys_are_rejected(stale_config):
     with pytest.raises(ValueError, match="Unknown campaign config key"):
         create_benchmark_campaign.flatten_config(stale_config)
+
+
+@pytest.mark.parametrize(
+    ("answer", "expected"), [("y", True), ("Y ", True), ("", False), ("n", False)]
+)
+def test_confirm_is_yes_only_for_y(monkeypatch, answer, expected):
+    """Only "y", in any case, confirms."""
+    monkeypatch.setattr("builtins.input", lambda _question: answer)
+    assert create_benchmark_campaign.confirm("Continue? [y/N] ") is expected
+
+
+def test_confirm_is_no_without_an_interactive_stdin(monkeypatch):
+    """Without stdin to read an answer from, nothing is confirmed."""
+
+    def no_stdin(_question):
+        raise EOFError
+
+    monkeypatch.setattr("builtins.input", no_stdin)
+    assert create_benchmark_campaign.confirm("Continue? [y/N] ") is False

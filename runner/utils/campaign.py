@@ -39,8 +39,16 @@ _VM_NAME_PATTERN = re.compile(r"[a-z]([-a-z0-9]{0,61}[a-z0-9])?")
 _REQUIRED_PROBLEM_FIELDS = ("Problem class", "Size", "URL")
 
 
+def count(number: int, noun: str) -> str:
+    """Return `number` followed by `noun`, in the plural unless `number` is 1."""
+    return f"{number:,} {noun}" if number == 1 else f"{number:,} {noun}s"
+
+
 def allocate_vms_greedy(
-    problem_ids: list[str], problem_weights: dict[str, float], num_vms: int
+    problem_ids: list[str],
+    problem_weights: dict[str, float],
+    num_vms: int,
+    weight_name: str = "weight",
 ) -> tuple[list[list[str]], list[float]]:
     """Split problems across VMs with longest-processing-time-first greedy bin-packing.
 
@@ -49,9 +57,12 @@ def allocate_vms_greedy(
     problem_ids : list[str]
         Problem identifiers to allocate.
     problem_weights : dict[str, float]
-        Estimated runtime (or other cost) per problem identifier.
+        Weight per problem identifier, e.g. its number of variables, that
+        the VMs are balanced by.
     num_vms : int
         Number of VMs (bins) to split `problem_ids` across.
+    weight_name : str, optional
+        What the weights are, for the printed allocation.
 
     Returns
     -------
@@ -71,9 +82,15 @@ def allocate_vms_greedy(
         allocation[lightest_vm].append(p)
         weights[lightest_vm] += t
 
-    print(f"Allocated. Estimated runtime: {max(weights) / 3600:.1f}h")
+    print(
+        f"Allocated {count(len(problem_ids), 'problem')} to {count(num_vms, 'VM')} "
+        f"by {weight_name}:"
+    )
     for i in range(num_vms):
-        print(f"  VM {i:02d}: {len(allocation[i])} problems, {weights[i] / 3600:.1f}h")
+        print(
+            f"  VM {i:02d}: {count(len(allocation[i]), 'problem')}, "
+            f"{weight_name} {weights[i]:,.0f}"
+        )
     return allocation, weights
 
 
@@ -97,7 +114,7 @@ def allocate_problems(
         indexed by "Problem").
     weight_col : str
         Column in `problems_df` to use as each problem's allocation weight
-        (e.g. an estimated runtime column).
+        (e.g. "Num. variables").
     num_vms : int
         Number of VMs to split problems across.
     machine_type : str, optional
@@ -129,7 +146,7 @@ def allocate_problems(
         return []
 
     allocation, _ = allocate_vms_greedy(
-        problems_df.index, problems_df[weight_col], num_vms
+        problems_df.index, problems_df[weight_col], num_vms, weight_name=weight_col
     )
 
     vm_yamls = []

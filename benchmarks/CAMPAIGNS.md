@@ -218,6 +218,48 @@ campaign_summary.csv
 containing the problem selection, campaign configuration, solver selection,
 timeout settings, allocation decisions, and metadata used to create the campaign.
 
+## Cost estimate
+
+Before writing the files of a cloud campaign, the script prints an estimate of its cost and asks for confirmation. For example, for two S/M problems with the default solvers and year:
+
+```bash
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+  --campaign example \
+  --problem pypsa-de-elec-2-1h genx-3_three_zones_w_co2_capture-no_uc-3-1h
+```
+
+```text
+Allocated 2 problems to 2 VMs by Num. variables:
+  VM 00: 1 problem, Num. variables 569,341
+  VM 01: 1 problem, Num. variables 103,506
+
+Cost estimate
+=============
+Runs:                6 (3 with a past run of the same problem and solver version)
+VM-hours:            2.3 expected, 7.0 if every run hits its timeout
+Cost:                $0.24 expected, $0.72 if every run hits its timeout
+Longest VM:          1.8 h expected, 3.5 h if every run hits its timeout
+Prices:              on-demand in us-central1, checked on 2026-11-04
+
+By machine type:
+  c4-standard-2: 2 VMs, 6 runs, $0.24 expected, $0.72 at most
+
+Create the campaign? [y/N]
+```
+
+The estimate counts the runs of each VM: every solver configuration and year that is registered in `runner/config/solvers.yaml` and eligible under `runner/config/eligibility_rules.yaml` for each of its problems. A run's expected time is that of the latest past run of the same problem and solver version in `results/benchmark_results.csv`, or else the average share of the timeout the solver used on similar problems, or else its whole timeout. The worst case is every run hitting its timeout.
+
+VM prices, disk cost and setup time per VM are in `runner/config/vm_costs.yaml`. Update them when Google Cloud prices change, and add the price of any new machine type.
+
+Answer `y` to create the campaign; any other answer creates nothing. Skip the question with:
+
+```bash
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test \
+  --all \
+  --yes
+```
+
 ## Existing campaign directories
 
 The script fails if the target campaign directory already exists.
