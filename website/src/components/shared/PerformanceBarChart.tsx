@@ -320,7 +320,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
         // Add hover effect
-        d3.select(event.currentTarget)
+        d3.select(event.currentTarget as SVGRectElement)
           .transition()
           .duration(100)
           .attr("opacity", 1);
@@ -357,7 +357,7 @@ const PerformanceBarChart = ({ data, baseSolver, availableSolvers }: Props) => {
       })
       .on("mouseout", (event) => {
         // Remove hover effect
-        d3.select(event.currentTarget)
+        d3.select(event.currentTarget as SVGRectElement)
           .transition()
           .duration(100)
           .attr("opacity", 0.8);
