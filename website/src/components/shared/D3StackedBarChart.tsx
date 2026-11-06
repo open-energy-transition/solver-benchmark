@@ -137,9 +137,9 @@ const D3StackedBarChart = ({
       .attr("height", (d) => yScale(d[0]) - yScale(d[1]))
       .attr("width", xScale.bandwidth())
       .on("mouseover", (event, d) => {
-        const key = (
-          d3.select(event.target.parentNode).datum() as { key: string }
-        ).key;
+        const parent = (event.currentTarget as SVGRectElement).parentElement;
+        if (!parent) return;
+        const key = (d3.select(parent).datum() as { key: string }).key;
         const value = d.data[key];
         tooltip
           .style("opacity", 1)

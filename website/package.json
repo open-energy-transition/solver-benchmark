@@ -2,6 +2,9 @@
   "name": "website-nextjs",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev --webpack",
     "move-results": "mkdir -p public/results && cp ../results/benchmark_results.csv public/results/ && cp ../results/metadata.yaml public/results/",
@@ -56,7 +59,7 @@
     "@types/d3": "^7.4.3",
     "@types/js-yaml": "^4.0.9",
     "@types/lodash.camelcase": "^4.3.9",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",

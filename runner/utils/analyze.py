@@ -56,7 +56,7 @@ def load_results(folder: str | list[str]) -> tuple[pd.DataFrame, pd.DataFrame]:
     variability = reference_results.groupby(["Hostname", "Run ID", "VM Zone"]).agg(
         {"Runtime (s)": ["count", "min", "max", "std", "mean"]}
     )
-    variability["std %"] = (
+    variability[("std %", "")] = (
         variability[("Runtime (s)", "std")] * 100 / variability[("Runtime (s)", "mean")]
     )
 
