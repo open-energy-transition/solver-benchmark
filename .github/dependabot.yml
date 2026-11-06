@@ -7,7 +7,8 @@
 #   packages that only work at matching versions arrive together in one PR:
 #   React with its type packages, and Next.js with its ESLint config. Other
 #   major updates arrive as separate PRs, since they may need code changes.
-#   @types/node gets no major updates, since it follows the site's Node version.
+#   @types/node gets no major updates, since it follows the Node version the
+#   site runs on (22, set by "engines" in website/package.json).
 # - GitHub Actions: all updates are grouped into one PR.
 #
 # Security updates (switched on in the repository settings, not here) fix
@@ -24,9 +25,6 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7
-    # @types/node follows the Node version the site runs on (22, see
-    # "engines" in website/package.json), so only its minor and patch
-    # updates are wanted
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
