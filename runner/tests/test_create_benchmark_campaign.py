@@ -12,6 +12,7 @@ import pytest
 import yaml
 
 from runner.utils import config
+from runner.utils.cost import load_vm_costs
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _DEFAULT_CONFIG = _REPO_ROOT / "benchmarks" / "config.campaign.default.yaml"
@@ -88,3 +89,10 @@ def test_confirm_is_no_without_an_interactive_stdin(monkeypatch):
 
     monkeypatch.setattr("builtins.input", no_stdin)
     assert create_benchmark_campaign.confirm("Continue? [y/N] ") is False
+
+
+def test_every_machine_profile_has_a_price():
+    """The cost estimate needs a price for each machine type a campaign uses."""
+    prices = load_vm_costs()["machine_types"]
+    for profile in create_benchmark_campaign.MACHINE_PROFILES.values():
+        assert profile["machine_type"] in prices

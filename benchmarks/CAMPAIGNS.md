@@ -236,20 +236,20 @@ Allocated 2 problems to 2 VMs by Num. variables:
 Cost estimate
 =============
 Runs:                6 (3 with a past run of the same problem and solver version)
-VM-hours:            2.3 expected, 7.0 if every run hits its timeout
-Cost:                $0.24 expected, $0.72 if every run hits its timeout
-Longest VM:          1.8 h expected, 3.5 h if every run hits its timeout
+VM-hours:            1.9 expected, 6.9 if every run times out
+Cost:                $0.20 expected, $0.70 if every run times out
+Longest VM:          1.6 h expected, 3.4 h if every run times out
 Prices:              on-demand in us-central1, checked on 2026-11-04
 
 By machine type:
-  c4-standard-2: 2 VMs, 6 runs, $0.24 expected, $0.72 at most
+  c4-standard-2: 2 VMs, 6 runs, $0.20 expected, $0.70 if every run times out
 
 Create the campaign? [y/N]
 ```
 
 The estimate counts the runs of each VM: every solver configuration and year that is registered in `runner/config/solvers.yaml` and eligible under `runner/config/eligibility_rules.yaml` for each of its problems. A run's expected time is that of the latest past run of the same problem and solver version in `results/benchmark_results.csv`, or else the average share of the timeout the solver used on similar problems, or else its whole timeout. The worst case is every run hitting its timeout.
 
-VM prices, disk cost and setup time per VM are in `runner/config/vm_costs.yaml`. Update them when Google Cloud prices change, and add the price of any new machine type.
+Each VM's hours also include its setup (booting, installing the solver environments, downloading the problems and uploading the results) and the reference benchmarks the runner runs once an hour (`reference_benchmark_interval` in `infrastructure/main.tf`). VM prices, disk cost, setup time and the time of a reference benchmark are in `runner/config/vm_costs.yaml`. Update them when Google Cloud prices change, and add the price of any new machine type: the script stops with an error for a machine type without a price. The setup and reference benchmark times are typical values measured on the campaigns of 2026, so the case in which every run times out is not a strict upper bound.
 
 Answer `y` to create the campaign; any other answer creates nothing. Skip the question with:
 

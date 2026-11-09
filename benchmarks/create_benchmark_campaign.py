@@ -1116,7 +1116,11 @@ def main() -> None:
             format_estimate,
         )
 
-        print(format_estimate(estimate_campaign_cost(vm_yamls, problems_df)))
+        try:
+            estimate = estimate_campaign_cost(vm_yamls, problems_df)
+        except ValueError as e:
+            sys.exit(f"ERROR: {e}")
+        print(format_estimate(estimate))
         if not args.yes and not confirm("\nCreate the campaign? [y/N] "):
             print("\nCampaign not created.")
             return

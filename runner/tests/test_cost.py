@@ -5,7 +5,12 @@ benchmark campaign from its VM YAMLs and past results.
 import pandas as pd
 import pytest
 
-from runner.utils.cost import estimate_campaign_cost, format_estimate
+from runner.utils.cost import (
+    add_reference_benchmarks,
+    estimate_campaign_cost,
+    format_estimate,
+    load_reference_interval_hours,
+)
 
 _VM_COSTS = {
     "region": "us-central1",
@@ -13,6 +18,7 @@ _VM_COSTS = {
     "machine_types": {"c4-standard-2": 1.0},
     "disk_per_hour": 0.5,
     "setup_hours_per_vm": 1.0,
+    "reference_benchmark_hours": 0.1,
 }
 
 _METADATA = pd.DataFrame(
@@ -70,10 +76,14 @@ def results_csv(tmp_path):
     return write
 
 
-def _estimate(vm_yamls, results_path):
-    """Estimate `vm_yamls` with the test VM costs."""
+def _estimate(vm_yamls, results_path, reference_interval_hours=0):
+    """Estimate `vm_yamls` with the test VM costs, by default without references."""
     return estimate_campaign_cost(
-        vm_yamls, _METADATA, results_csv=results_path, vm_costs=_VM_COSTS
+        vm_yamls,
+        _METADATA,
+        results_csv=results_path,
+        vm_costs=_VM_COSTS,
+        reference_interval_hours=reference_interval_hours,
     )
 
 
@@ -143,14 +153,41 @@ def test_cost_includes_the_disk_and_the_setup_time(results_csv):
     assert estimate.worst_cost == pytest.approx(2.0 * 1.5)
 
 
-def test_machine_types_without_a_price_are_left_out_of_the_cost(results_csv):
-    """A VM of a machine type without a price adds runs but no cost."""
+def test_a_machine_type_without_a_price_is_an_error(results_csv):
+    """A VM of a machine type without a price stops the estimate."""
     vm = _vm_yaml(["small-1"])
     vm["machine-type"] = "n2-standard-4"
-    estimate = _estimate([vm], results_csv([]))
-    assert estimate.runs == 1
-    assert estimate.worst_cost == 0
-    assert "WARNING" in format_estimate(estimate)
+    with pytest.raises(ValueError, match="n2-standard-4"):
+        _estimate([vm], results_csv([]))
+
+
+def test_reference_benchmarks_follow_the_interval():
+    """References run before the first run and once an hour has passed."""
+    hours = add_reference_benchmarks([1.0, 1.0, 0.5, 0.5], 1.0, 0.1)
+    assert hours == pytest.approx(3.0 + 3 * 0.1)
+
+
+def test_no_reference_benchmarks_without_an_interval():
+    """An interval of 0 turns reference benchmarks off."""
+    assert add_reference_benchmarks([1.0, 1.0], 0, 0.1) == pytest.approx(2.0)
+
+
+def test_vm_hours_include_reference_benchmarks(results_csv):
+    """One run of a VM adds one reference benchmark to its hours."""
+    estimate = _estimate(
+        [_vm_yaml(["small-1"])], results_csv([]), reference_interval_hours=1.0
+    )
+    assert estimate.worst_hours == pytest.approx(1.0 + 0.1 + 1.0)
+
+
+def test_reads_the_reference_interval_of_main_tf(tmp_path):
+    """The interval is the default of reference_benchmark_interval, in hours."""
+    main_tf = tmp_path / "main.tf"
+    main_tf.write_text(
+        'variable "zone" {\n  default = "us-central1-a"\n}\n'
+        'variable "reference_benchmark_interval" {\n  default = 1800\n}\n'
+    )
+    assert load_reference_interval_hours(main_tf) == pytest.approx(0.5)
 
 
 def test_format_notes_vms_outside_the_priced_region(results_csv):
