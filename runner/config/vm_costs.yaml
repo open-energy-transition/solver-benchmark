@@ -14,7 +14,7 @@ disk_per_hour: 0.0055
 
 # Booting, installing the solver environments, downloading the problems and
 # uploading the results, which took under 15 minutes per VM in the campaigns
-# of June-September 2026
+# of December 2025 to September 2026, including the L problems of v2
 setup_hours_per_vm: 0.25
 
 # The HiGHS reference benchmark, which took 3.2-3.6 minutes in the same
