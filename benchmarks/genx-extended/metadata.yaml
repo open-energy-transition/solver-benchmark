@@ -68,7 +68,7 @@ problems:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex-15-168h-cleaned.lp.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex-15-168h.lp.gz
     Problem class: LP
     Size: L
     Num. constraints: 11832658
@@ -93,7 +93,7 @@ problems:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_co2-15-168h-cleaned.lp.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_co2-15-168h.lp.gz
     Problem class: LP
     Size: L
     Num. constraints: 11832689
@@ -147,7 +147,7 @@ problems:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_co2-15-168h-cleaned.lp.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_co2-15-168h.lp.gz
     Problem class: LP
     Size: L
     Num. constraints: 11832633
