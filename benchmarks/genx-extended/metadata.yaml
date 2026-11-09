@@ -68,11 +68,11 @@ problems:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex-15-168h.lp.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex-15-168h-cleaned.lp.gz
     Problem class: LP
     Size: L
     Num. constraints: 11832658
-    Num. variables: 13777226
+    Num. variables: 8646506
     Num. nonzeros: 41476545
     MILP features: []
     Modelling framework: GenX
@@ -93,11 +93,11 @@ problems:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_co2-15-168h.lp.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_trex_co2-15-168h-cleaned.lp.gz
     Problem class: LP
     Size: L
     Num. constraints: 11832689
-    Num. variables: 13777227
+    Num. variables: 8656587
     Num. nonzeros: 43263428
     MILP features: []
     Modelling framework: GenX
@@ -147,11 +147,11 @@ problems:
     Contributor(s)/Source: Gabe Mantegna, Princeton University; Daniele Lerede, Open
       Energy Transition
     License: CC BY 4.0
-    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_co2-15-168h.lp.gz
+    URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-elec_co2-15-168h-cleaned.lp.gz
     Problem class: LP
     Size: L
     Num. constraints: 11832633
-    Num. variables: 13777201
+    Num. variables: 8656561
     Num. nonzeros: 42847400
     MILP features: []
     Modelling framework: GenX
