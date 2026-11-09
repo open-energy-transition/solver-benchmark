@@ -22,7 +22,7 @@ pixi install --all                       # or pixi install -e <environment>
 pixi run -e dev pre-commit install       # run the hooks on every commit
 ```
 
-The runner needs Linux, as it limits the memory of the solvers with `systemd-run`; on macOS and Windows, use the [Docker image](README.md#running-with-docker).
+The runner needs Linux, as it limits the memory of the solvers with `systemd-run`; on macOS and Windows, use the [Docker image](README.md#running-with-docker). See [notebooks/README.md](notebooks/README.md) for running the notebooks.
 
 The website needs Node.js 22, the version in `engines` of `website/package.json`:
 
@@ -50,9 +50,9 @@ Running the benchmark locally writes to `results/benchmark_results.csv`: don't c
 
 ### Contributing benchmark problems
 
-New problems from energy system models are the most valuable contribution. See [this page](https://openenergybenchmark.org/key-insights#what-benchmark-problems-do-we-have-and-what-are-missing) for the problems we have and the gaps we would love your help to fill, and the [benchmarks README](benchmarks/README.md) for the steps:
+New problems from energy system models are the most valuable contribution. See [this page](https://openenergybenchmark.org/key-insights#what-benchmark-problems-do-we-have-and-what-are-missing) for the problems we have and the gaps we would love your help to fill. To contribute:
 
-1. Generate an MPS file (preferred) or LP file of each problem with your modelling framework.
+1. Generate an MPS file (preferred) or LP file of each problem with your modelling framework. How to do this depends on the framework: reach out if you need help. The [benchmarks README](benchmarks/README.md) describes how some of the existing problems were generated.
 2. Describe each problem in a metadata YAML file in a new folder `benchmarks/<framework-or-source>/`, following [benchmarks/metadata_schema.yaml](benchmarks/metadata_schema.yaml), including the names of the benchmark and its size instance. Add a README with the steps to reproduce the problems from the framework's code.
 3. Upload the files to any file-sharing service, and regenerate the merged metadata with `pixi run -e benchmarks python benchmarks/merge_metadata.py`: CI checks that `results/metadata.yaml` is up to date and valid.
 4. Open a pull request. The benchmark team uploads the files to our storage, computes their size category and statistics, and checks that a solver solves them within our timeouts.
