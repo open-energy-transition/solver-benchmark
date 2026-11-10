@@ -33,6 +33,10 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _ENVS_DIR = Path(__file__).resolve().parent.parent / "envs"
 _LOGS_DIR = Path(__file__).resolve().parent.parent / "logs"
 
+# A solver with a native time limit gets this much extra wall-clock time to
+# terminate gracefully, write its solution, and let linopy collect metrics.
+_SOLVER_TIMEOUT_GRACE_SECONDS = 60
+
 
 def parse_memory(output: str) -> float:
     """Extract peak memory usage from `/usr/bin/time`'s output.
@@ -115,7 +119,7 @@ def run_solver(
     dict[str, Any]
         Metrics with at least `status` (one of `"ok"`, `"TO"`, `"OOM"`,
         `"ER"`), `condition`, `objective`, `runtime`, `reported_runtime`,
-        `duality_gap`, `max_integrality_violation`, `memory` (MB, or None if
+        `mip_gap`, `max_integrality_violation`, `memory` (MB, or None if
         unparseable), and `timeout` (the budget passed in, for reference).
     """
     available_memory_bytes = psutil.virtual_memory().available
@@ -123,6 +127,12 @@ def run_solver(
     memory_limit_mb = memory_limit_bytes / (1024 * 1024)
 
     command = []
+
+    solver_package = config.resolve_solver_name(solver_configuration)
+    has_solver_timeout = config.get_timeout_option(solver_package) is not None
+    external_timeout = (
+        timeout + _SOLVER_TIMEOUT_GRACE_SECONDS if has_solver_timeout else timeout
+    )
 
     if _systemd_available():
         print(
@@ -138,7 +148,6 @@ def run_solver(
                 "--property=MemorySwapMax=0",
             ]
         )
-        solver_package = config.resolve_solver_name(solver_configuration)
         for env_var in config.get_license_env_vars(solver_package):
             value = os.environ.get(env_var)
             if value:
@@ -154,7 +163,7 @@ def run_solver(
             "--format",
             "MaxResidentSetSizeKB=%M",
             "timeout",
-            f"{timeout}s",
+            f"{external_timeout}s",
         ]
     )
 
@@ -173,6 +182,8 @@ def run_solver(
             solver_configuration,
             str(input_file),
             solver_version,
+            "--timeout",
+            str(timeout),
         ]
     )
     if seed is not None:
@@ -225,7 +236,7 @@ def run_solver(
             "objective": None,
             "runtime": timeout,
             "reported_runtime": timeout,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     # systemd-run uses sigkill (9) or sigterm (15) to terminate the process and returns 128 + signal exit code
@@ -239,7 +250,7 @@ def run_solver(
             "objective": None,
             "runtime": "N/A",
             "reported_runtime": None,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     elif result.returncode != 0:
@@ -256,7 +267,7 @@ def run_solver(
             "objective": None,
             "runtime": timeout,
             "reported_runtime": timeout,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     else:
@@ -340,7 +351,7 @@ def run_reference_highs_binary() -> dict[str, Any]:
             "condition": "Error",
             "objective": None,
             "runtime": runtime,
-            "duality_gap": None,
+            "mip_gap": None,
             "max_integrality_violation": None,
         }
     else:
@@ -357,7 +368,7 @@ def run_reference_highs_binary() -> dict[str, Any]:
             "objective": objective,
             "runtime": runtime,
             "memory": "N/A",
-            "duality_gap": None,  # Not available from command line output
+            "mip_gap": None,  # Not available from command line output
             "max_integrality_violation": None,  # Not available from command line output
         }
 

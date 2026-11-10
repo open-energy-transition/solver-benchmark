@@ -188,6 +188,28 @@ class TestLoadResults:
             "pypsa-eur-elec-op-2-1h",
         }
 
+    def test_historical_duality_gap_is_normalized_to_mip_gap(self, tmp_path):
+        self._write_csv(
+            tmp_path,
+            "results.csv",
+            [
+                {
+                    "Problem": "sample-mip",
+                    "Solver": "gurobi",
+                    "Solver Version": "12.0.0",
+                    "Status": "ok",
+                    "Runtime (s)": 1.0,
+                    "Duality Gap": 0.0123,
+                    "Hostname": "h",
+                    "Run ID": "20240101-r1",
+                    "VM Zone": "us-central1-a",
+                }
+            ],
+        )
+        results, _ = load_results(str(tmp_path))
+        assert "Duality Gap" not in results.columns
+        assert results.iloc[0]["MIP Gap"] == pytest.approx(0.0123)
+
     def test_reference_benchmark_rows_are_excluded_from_results(self, tmp_path):
         self._write_csv(
             tmp_path,
