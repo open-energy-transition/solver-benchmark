@@ -67,7 +67,8 @@ const Metrics = () => {
           incumbent objective value, which is the upper bound for minimization
           problems), and <MathFormula tex={"d"} /> is the dual objective bound
           (i.e., the lower bound for minimization problems), then the relative
-          MIP gap is defined as <MathFormula tex={"|p - d| / |p|"} />.        </li>
+          MIP gap is defined as <MathFormula tex={"|p - d| / |p|"} />.{" "}
+        </li>
       </ol>
       <p>
         After running benchmark problems, we manually check any runs where the
