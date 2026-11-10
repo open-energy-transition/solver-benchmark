@@ -13,18 +13,48 @@ repos:
         args: ["--maxkb=2000"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.3
+    rev: v0.17.4
     hooks:
       - id: ruff
         types_or: [python, pyi, jupyter]
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
 
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.9.10
     hooks:
       - id: prettier
         types_or: [javascript, jsx, ts, tsx]
         additional_dependencies:
           - prettier@3.1.0
         language_version: 18.18.0
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.39.0
+    hooks:
+      - id: check-dependabot
+      - id: check-github-workflows
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.32.0
+    hooks:
+      - id: zizmor
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      # Scans the staged changes, so only when committing locally
+      - id: gitleaks
+      # Scans the commits not yet on main; CI runs it on pull requests
+      - id: gitleaks
+        alias: gitleaks-commits
+        name: Detect hardcoded secrets in the commits not on main
+        entry: gitleaks git --redact --verbose --log-opts=origin/main..HEAD
+        always_run: true
+        verbose: true
+        stages: [manual]

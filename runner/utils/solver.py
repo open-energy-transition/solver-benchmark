@@ -17,6 +17,7 @@ still be driven directly, e.g. for debugging:
 import json
 import math
 import sys
+from inspect import signature
 from pathlib import Path
 from time import perf_counter
 from traceback import format_exc
@@ -85,7 +86,13 @@ def get_solver(
 
     solver_enum = SolverName(solver_package)
     solver_class = getattr(solvers, solver_enum.name)
-    return solver_class(options=kwargs), solver_package
+
+    if "options" in signature(solvers.Solver).parameters:
+        solver = solver_class(options=kwargs)
+    else:
+        solver = solver_class(**kwargs)
+
+    return solver, solver_package
 
 
 def is_mip_problem(solver_model: Any, solver_package: str) -> bool | None:

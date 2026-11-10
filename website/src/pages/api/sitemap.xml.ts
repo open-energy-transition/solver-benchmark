@@ -9,7 +9,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     "/methodology",
     "/dashboard/aggregated-results",
     "/dashboard/benchmark-problem-set",
-    "/dashboard/benchmark-summary",
     "/dashboard/solver-vs-all",
     "/dashboard/solver-vs-solver",
     "/dashboard/performance-history",
