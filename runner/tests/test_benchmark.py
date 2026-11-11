@@ -25,7 +25,7 @@ _FAKE_METRICS = {
     "objective": 1.0,
     "runtime": 0.5,
     "reported_runtime": 0.4,
-    "duality_gap": 0.0,
+    "mip_gap": 0.0,
     "max_integrality_violation": 0.0,
     "memory": 12.3,
 }
@@ -226,7 +226,7 @@ class TestBenchmarkCli:
         results_csv.write_text(
             "Problem,Solver,Solver Version,Solver Release Year,Status,Termination "
             "Condition,Runtime (s),Memory Usage (MB),Objective Value,Max "
-            "Integrality Violation,Duality Gap,Reported Runtime (s),Timeout,"
+            "Integrality Violation,MIP Gap,Reported Runtime (s),Timeout,"
             "Hostname,Run ID,Timestamp,VM Instance Type,VM Zone,Solver benchmark "
             "version\nprior-problem,highs,1.9.0,2024,ok,Optimal,1.0,10.0,1.0,0.0,"
             "0.0,1.0,,h,old-run,2024-01-01 00:00:00,unknown,unknown,abc\n"
