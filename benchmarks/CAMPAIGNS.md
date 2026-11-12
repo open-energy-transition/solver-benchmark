@@ -218,6 +218,48 @@ campaign_summary.csv
 containing the problem selection, campaign configuration, solver selection,
 timeout settings, allocation decisions, and metadata used to create the campaign.
 
+## Cost estimate
+
+Before writing the files of a cloud campaign, the script prints an estimate of its cost and asks for confirmation. For example, for two S/M problems with the default solvers and year:
+
+```bash
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+  --campaign example \
+  --problem pypsa-de-elec-2-1h genx-3_three_zones_w_co2_capture-no_uc-3-1h
+```
+
+```text
+Allocated 2 problems to 2 VMs by Num. variables:
+  VM 00: 1 problem, Num. variables 569,341
+  VM 01: 1 problem, Num. variables 103,506
+
+Cost estimate
+=============
+Runs:                6 (3 with a past run of the same problem and solver version)
+VM-hours:            1.9 expected, 6.9 if every run times out
+Cost:                $0.20 expected, $0.70 if every run times out
+Longest VM:          1.6 h expected, 3.4 h if every run times out
+Prices:              on-demand in us-central1, checked on 2026-11-04
+
+By machine type:
+  c4-standard-2: 2 VMs, 6 runs, $0.20 expected, $0.70 if every run times out
+
+Create the campaign? [y/N]
+```
+
+The estimate counts the runs of each VM: every solver configuration and year that is registered in `runner/config/solvers.yaml` and eligible under `runner/config/eligibility_rules.yaml` for each of its problems. A run's expected time is that of the latest past run of the same problem and solver version in `results/benchmark_results.csv`, or else the average share of the timeout the solver used on similar problems, or else its whole timeout. The worst case is every run hitting its timeout.
+
+Each VM's hours also include its setup (booting, installing the solver environments, downloading the problems and uploading the results) and the reference benchmarks the runner runs once an hour (`reference_benchmark_interval` in `infrastructure/main.tf`). VM prices, disk cost, setup time and the time of a reference benchmark are in `runner/config/vm_costs.yaml`. Update them when Google Cloud prices change, and add the price of any new machine type: the script stops with an error for a machine type without a price. The setup and reference benchmark times are typical values measured on the campaigns of 2026, so the case in which every run times out is not a strict upper bound.
+
+Answer `y` to create the campaign; any other answer creates nothing. Skip the question with:
+
+```bash
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test \
+  --all \
+  --yes
+```
+
 ## Existing campaign directories
 
 The script fails if the target campaign directory already exists.
