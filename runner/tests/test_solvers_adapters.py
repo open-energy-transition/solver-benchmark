@@ -545,3 +545,59 @@ class TestPyscipopt4CompatibleModel:
         scip.use_pyscipopt_4_compatible_model()
 
         assert module.Model is Pyscipopt5Model
+
+
+class TestOldHighspyCompatibleStatuses:
+    """Test compatibility with historical HiGHS status enumerations."""
+
+    @pytest.mark.parametrize(
+        ("available", "missing"),
+        [
+            ((), {"kMemoryLimit", "kSolutionLimit", "kInterrupt"}),
+            (("kSolutionLimit", "kInterrupt"), {"kMemoryLimit"}),
+        ],
+    )
+    def test_missing_statuses_are_added(self, monkeypatch, available, missing):
+        highs = importlib.import_module("runner.utils.solvers.highs")
+
+        values = {"kOptimal": object()}
+        values.update({name: object() for name in available})
+
+        native_statuses = type("NativeStatuses", (), values)
+        highspy = SimpleNamespace(HighsModelStatus=native_statuses)
+
+        monkeypatch.setitem(sys.modules, "highspy", highspy)
+
+        highs.use_old_highspy_compatible_statuses()
+
+        compatible = highspy.HighsModelStatus
+
+        assert compatible is not native_statuses
+
+        # Existing native status values must be preserved.
+        for name, value in values.items():
+            assert getattr(compatible, name) is value
+
+        # Missing statuses must have distinct placeholder values.
+        placeholders = [getattr(compatible, name) for name in missing]
+        assert len({id(value) for value in placeholders}) == len(missing)
+
+        # Applying the workaround again must not modify the result.
+        highs.use_old_highspy_compatible_statuses()
+        assert highspy.HighsModelStatus is compatible
+
+    def test_modern_highspy_is_unchanged(self, monkeypatch):
+        highs = importlib.import_module("runner.utils.solvers.highs")
+
+        class ModernStatuses:
+            kOptimal = object()
+            kMemoryLimit = object()
+            kSolutionLimit = object()
+            kInterrupt = object()
+
+        highspy = SimpleNamespace(HighsModelStatus=ModernStatuses)
+        monkeypatch.setitem(sys.modules, "highspy", highspy)
+
+        highs.use_old_highspy_compatible_statuses()
+
+        assert highspy.HighsModelStatus is ModernStatuses
