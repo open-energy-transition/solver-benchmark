@@ -83,6 +83,35 @@ class TestGetSolverOptions:
         assert get_solver_options("not-a-configuration", config) == {}
 
 
+def test_solver_configurations_disable_basic_solution_recovery():
+    """Ensure crossover is disabled where the solver supports it."""
+    from runner.utils.config import load_solver_configurations
+
+    config = load_solver_configurations()
+
+    expected_options = {
+        "highs": ("run_crossover", "off"),
+        "gurobi": ("SolutionTarget", 1),
+        "cplex": ("solutiontype", 2),
+        "knitro": ("bar_maxcrossit", 0),
+        "xpress": ("crossover", 0),
+        "mosek": ("MSK_IPAR_INTPNT_BASIS", "MSK_BI_NEVER"),
+    }
+
+    for name, entry in config["configurations"].items():
+        solver = entry["solver_package"]
+
+        if solver not in expected_options:
+            continue
+
+        option, expected = expected_options[solver]
+        options = get_solver_options(name, config)
+
+        assert options.get(option) == expected, (
+            f"{name}: expected {option}={expected!r}, got {options.get(option)!r}"
+        )
+
+
 class TestGetDefaultConfigurations:
     def test_reads_default_configurations_list(self):
         config = {"default_configurations": ["highs", "scip"]}

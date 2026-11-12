@@ -75,14 +75,14 @@ configurations:
       mip_rel_gap: { shared: mip_gap }
       primal_feasibility_tolerance: { shared: lp_tolerance }
       dual_feasibility_tolerance: { shared: lp_tolerance }
-      run_crossover: choose # Basic solutions not needed
+      run_crossover: "off" # Basic solutions not needed
 
   highs-hipo:
     solver_package: highs
     options:
       solver: hipo
       hipo_block_size: 64
-      run_crossover: choose
+      run_crossover: "off"
       random_seed: 0
       mip_rel_gap: { shared: mip_gap }
 
@@ -91,7 +91,7 @@ configurations:
     options:
       solver: hipo
       hipo_block_size: 32
-      run_crossover: choose
+      run_crossover: "off"
       random_seed: 0
       mip_rel_gap: { shared: mip_gap }
 
@@ -100,7 +100,7 @@ configurations:
     options:
       solver: hipo
       hipo_block_size: 64
-      run_crossover: choose
+      run_crossover: "off"
       random_seed: 0
       mip_rel_gap: { shared: mip_gap }
 
@@ -109,7 +109,7 @@ configurations:
     options:
       solver: hipo
       hipo_block_size: 128
-      run_crossover: choose
+      run_crossover: "off"
       random_seed: 0
       mip_rel_gap: { shared: mip_gap }
 
@@ -117,7 +117,7 @@ configurations:
     solver_package: highs
     options:
       solver: ipx
-      run_crossover: choose
+      run_crossover: "off"
       random_seed: 0
       mip_rel_gap: { shared: mip_gap }
 
@@ -156,7 +156,7 @@ configurations:
       miprelstop: { shared: mip_gap }
       FEASTOL: { shared: lp_tolerance }
       OPTIMALITYTOL: { shared: lp_tolerance }
-      crossover: -1 # Basic solutions not needed (crossover=choose)
+      crossover: 0 # Disable crossover
 
   mosek-default:
     solver_package: mosek
