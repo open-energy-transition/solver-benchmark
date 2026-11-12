@@ -65,7 +65,7 @@
     "@types/react-dom": "^19",
     "@types/semver": "^7.8.0",
     "eslint": "^9",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "postcss": ">=8.5.32",
     "selenium-webdriver": "^4.50.0",
