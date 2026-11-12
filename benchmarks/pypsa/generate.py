@@ -33,6 +33,7 @@ import os
 import pathlib
 import re
 import subprocess
+from copy import deepcopy
 from pathlib import Path
 
 import ruamel.yaml
@@ -150,7 +151,8 @@ def select_yaml_files(
             "pypsa-eur-elec-trex_copt-dfp.yaml",
             "pypsa-eur-elec-trex_vopt.yaml",
             "pypsa-eur-elec-trex_vopt-dfp.yaml",
-            "pypsa-eur-elec-uc.yamlpypsa-eur-elec-uc-dfp.yaml",
+            "pypsa-eur-elec-uc.yaml",
+            "pypsa-eur-elec-uc-dfp.yaml",
             "pypsa-eur-elec-trex_copt-uc.yaml",
             "pypsa-eur-elec-trex_copt-uc-dfp.yaml",
             "pypsa-eur-elec-trex_vopt-uc.yaml",
@@ -301,14 +303,49 @@ def generate_benchmark(name: str, config_path: pathlib.Path, dry: bool) -> None:
         )
 
 
+def build_benchmark_config(
+    default_cfg: dict,
+    bench_cfg: dict,
+    clusters: int,
+    time_resolution: str,
+    bench_type: str,
+    horizon: str = "2050",
+) -> dict:
+    """Build an isolated benchmark configuration."""
+    final_cfg = recursive_merge(deepcopy(default_cfg), deepcopy(bench_cfg))
+
+    final_cfg.setdefault("scenario", {})
+    final_cfg["scenario"]["clusters"] = [clusters]
+    final_cfg["scenario"]["planning_horizons"] = [horizon]
+
+    final_cfg.setdefault("clustering", {})
+    final_cfg["clustering"].setdefault("temporal", {})
+
+    if bench_type == "elec":
+        final_cfg["clustering"]["temporal"]["resolution_elec"] = time_resolution
+    elif bench_type == "sec":
+        final_cfg["clustering"]["temporal"]["resolution_sector"] = time_resolution
+    else:
+        raise ValueError(f"Unsupported benchmark type: {bench_type}")
+
+    if "countries" in final_cfg:
+        cleaned = []
+        for country in final_cfg["countries"]:
+            if country is False or country == "NO":
+                cleaned.append(DoubleQuotedScalarString("NO"))
+            else:
+                cleaned.append(DoubleQuotedScalarString(str(country)))
+        final_cfg["countries"] = cleaned
+
+    return final_cfg
+
+
 if __name__ == "__main__":
     args = parse_args()
 
     base_dir = pathlib.Path(__file__).parent
     default_cfg = load_yaml(pathlib.Path(base_dir, "config", "config.default.yaml"))
-    benchmark_files = select_yaml_files(
-        args.benchmark_name, pathlib.Path(base_dir, "config")
-    )
+    benchmark_files = select_yaml_files(args.benchmark_name, base_dir)
 
     bench_type = "elec" if "elec" in args.benchmark_name else "sec"
     horizon = "2050"
@@ -318,29 +355,14 @@ if __name__ == "__main__":
 
         for clusters in args.clusters:
             for t_res in args.time_resolutions:
-                # Build merged config
-                final_cfg = recursive_merge(default_cfg.copy(), bench_cfg.copy())
-
-                final_cfg.setdefault("scenario", {})
-                final_cfg["scenario"]["clusters"] = [clusters]
-                final_cfg["scenario"]["planning_horizons"] = [horizon]
-
-                final_cfg.setdefault("clustering", {})
-                final_cfg["clustering"].setdefault("temporal", {})
-                if bench_type == "elec":
-                    final_cfg["clustering"]["temporal"]["resolution_elec"] = t_res
-                else:
-                    final_cfg["clustering"]["temporal"]["resolution_sector"] = t_res
-
-                # Fix NO/False issue
-                if "countries" in final_cfg:
-                    cleaned = []
-                    for c in final_cfg["countries"]:
-                        if c is False or c == "NO":
-                            cleaned.append(DoubleQuotedScalarString("NO"))
-                        else:
-                            cleaned.append(DoubleQuotedScalarString(str(c)))
-                    final_cfg["countries"] = cleaned
+                final_cfg = build_benchmark_config(
+                    default_cfg,
+                    bench_cfg,
+                    clusters,
+                    t_res,
+                    bench_type,
+                    horizon,
+                )
 
                 out_cfg = bench_file.with_stem(
                     f"{bench_file.stem}_{clusters}_{t_res}_{horizon}"
