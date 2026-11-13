@@ -28,7 +28,7 @@ pixi install --all                                    # install the environments
 pixi run -e runner pytest runner/tests                # run the tests
 pixi run -e dev pre-commit run --all-files            # lint, format and check everything
 pixi run -e benchmarks python benchmarks/merge_metadata.py   # after changing benchmarks/
-pixi run -e benchmarks python tests/validate_urls.py         # check the URLs of the metadata
+pixi run -e benchmarks python tests/validate_urls.py         # rename URLs in the metadata to match the problem IDs (--dry-run only reports)
 cd website && npm ci && npm run lint && npm run build        # if you changed the website
 ```
 
@@ -37,7 +37,7 @@ Run the tests and the pre-commit hooks before you finish: CI runs both, and only
 ## Conventions
 
 - Ruff formatting and linting, with lines of at most 88 characters and NumPy-style docstrings (enforced by Ruff's pydocstyle rules). Use `pathlib` for paths and time-zone-aware datetimes.
-- Docstrings follow PEP 257 and numpydoc. Each file starts with a descriptive, concise, clear and simple docstring (or comment, for files that are not Python) that states what the module does and the data behind it. The docstring of each function, class and test states what it does, with the reasons and data facts that apply only to it in a Notes section. Inline comments are only for lines a reader would otherwise misread, such as an unusual timeout or a deliberately hidden error, never to explain ordinary behaviour or to repeat a docstring. Comments, docstrings and documentation describe the current code, with no history of changes and no comparisons with other code: those belong in commit messages and pull requests.
+- Docstrings follow PEP 257 and numpydoc. Each file starts with a descriptive, concise, clear and simple docstring (or comment, for files that are not Python) that states what the module does and the data behind it. The docstring of each function, class and test states what it does, with the reasons and data facts that apply only to it in a Notes section. Inline comments are only for lines a reader would otherwise misread, such as an unusual timeout or a deliberately hidden error, never to explain ordinary behaviour or to repeat a docstring. Comments, docstrings and documentation describe the current code, with no history of changes and no comparisons with other code: those belong in commit messages and pull requests. Ruff checks the docstrings everywhere except in `runner/tests/`, `notebooks/` and the problem-generation code in `benchmarks/<framework>/` (see `ruff.toml`), so existing code there may have none; new code follows these rules there too.
 - `runner/utils/solver.py`, `runner/utils/config.py` and `runner/utils/solvers/` also run inside the solver environments, some of which use Python 3.10: keep them compatible with it (`ruff.toml` sets their target version).
 - Solver versions, configurations and eligibility rules are data in `runner/config/`: add or change entries there rather than code, as described in `runner/SOLVERS.md`.
 - Edit the metadata of a problem in its file under `benchmarks/`, never `results/metadata.yaml`, and regenerate the latter with `merge_metadata.py`; CI checks that it is up to date and valid against `benchmarks/metadata_schema.yaml`.
@@ -59,7 +59,7 @@ Run the tests and the pre-commit hooks before you finish: CI runs both, and only
 
 Follow the steps in [CONTRIBUTING.md](CONTRIBUTING.md#contributing-benchmark-problems) and [runner/SOLVERS.md](runner/SOLVERS.md). In particular:
 
-- name benchmarks and size instances as `benchmarks/metadata_schema.yaml` requires, and run `tests/validate_urls.py`;
+- give each problem an ID of the form `<benchmark>-<spatial resolution>-<temporal resolution>` (see the top of `benchmarks/metadata_schema.yaml`), and run `tests/validate_urls.py`, which renames the files in the URLs to match;
 - for a new solver package, add its pixi environments, its entry in `solvers.yaml`, an adapter in `runner/utils/solvers/<package>.py` (copy an existing one) and a `<package>-default` configuration.
 
 ## Pull requests
