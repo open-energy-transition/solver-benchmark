@@ -15,4 +15,5 @@ requests = ">=2.32"
 
 [pypi-dependencies]
 highspy = "==1.5.0.dev0"
+# Last Linopy release supporting Python 3.10.
 linopy = "==0.7.0"

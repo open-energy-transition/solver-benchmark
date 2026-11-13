@@ -15,7 +15,7 @@ requests = ">=2.32"
 # include <cstdint>
 cxx-compiler = "==1.11.0"
 zlib = "*"
-linopy = "==0.10.1"
+linopy = ">=0.10.1"
 
 [pypi-dependencies]
 highspy = { git = "https://github.com/ERGO-Code/HiGHS", tag = "v1.6.0" }  # 1.6.0 was never released to PyPI

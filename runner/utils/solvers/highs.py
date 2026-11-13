@@ -20,11 +20,14 @@ except ModuleNotFoundError:
 def use_old_highspy_compatible_statuses() -> None:
     """Provide missing HiGHS statuses expected by released Linopy versions.
 
+    Notes
+    -----
     HiGHS 1.5 lacks kMemoryLimit, kSolutionLimit and kInterrupt.
     HiGHS 1.6 lacks kMemoryLimit.
 
-    Missing statuses are represented by unique objects that cannot match
-    any native HiGHS termination status. Modern versions are unaffected.
+    Linopy looks up these statuses when solving. Missing statuses are
+    represented by unique objects that cannot match native termination
+    statuses. Modern HiGHS versions are unaffected.
 
     See https://github.com/open-energy-transition/solver-benchmark/issues/638.
     """

@@ -390,7 +390,7 @@ def main(
         solver_configuration, seed=seed, timeout=timeout
     )
     if solver_package == "highs":
-        # Temporary, see issue #638
+        # highspy 1.5 and 1.6 lack statuses required by released Linopy.
         use_old_highspy_compatible_statuses()
     elif solver_package == "scip":
         # Temporary, see issue #622
