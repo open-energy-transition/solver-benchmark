@@ -28,6 +28,7 @@ from linopy.solvers import SolverName
 
 from . import config
 from .solvers import SOLVER_ADAPTERS
+from .solvers.highs import use_old_highspy_compatible_statuses
 from .solvers.scip import use_pyscipopt_4_compatible_model
 
 
@@ -388,7 +389,10 @@ def main(
     solver, solver_package = get_solver(
         solver_configuration, seed=seed, timeout=timeout
     )
-    if solver_package == "scip":
+    if solver_package == "highs":
+        # highspy 1.5 and 1.6 lack statuses required by released Linopy.
+        use_old_highspy_compatible_statuses()
+    elif solver_package == "scip":
         # Temporary, see issue #622
         use_pyscipopt_4_compatible_model()
 

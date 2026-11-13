@@ -497,3 +497,33 @@ class TestNativeSolverTimeoutDetection:
         assert result["condition"] == "Timeout"
         assert result["objective"] == 12.5
         assert result["mip_gap"] == pytest.approx(0.05)
+
+
+class TestMainHighsCompatibility:
+    """Verify that historical HiGHS compatibility is applied before solving."""
+
+    def test_workaround_runs_before_solve(self, monkeypatch, capsys):
+        workaround = MagicMock()
+        solver = MagicMock()
+
+        def solve_problem(**_kwargs):
+            workaround.assert_called_once_with()
+            raise RuntimeError("Stop after compatibility check")
+
+        solver.solve_problem.side_effect = solve_problem
+
+        monkeypatch.setattr(
+            "runner.utils.solver.get_solver",
+            lambda *_args, **_kwargs: (solver, "highs"),
+        )
+        monkeypatch.setattr(
+            "runner.utils.solver.use_old_highspy_compatible_statuses",
+            workaround,
+        )
+
+        main("highs-default", "problem.lp", "1.5.0")
+
+        result = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+
+        assert result["status"] == "ER"
+        workaround.assert_called_once_with()

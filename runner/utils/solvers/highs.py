@@ -17,6 +17,45 @@ except ModuleNotFoundError:
     _highspy = None
 
 
+def use_old_highspy_compatible_statuses() -> None:
+    """Provide missing HiGHS statuses expected by released Linopy versions.
+
+    Notes
+    -----
+    HiGHS 1.5 lacks kMemoryLimit, kSolutionLimit and kInterrupt.
+    HiGHS 1.6 lacks kMemoryLimit.
+
+    Linopy looks up these statuses when solving. Missing statuses are
+    represented by unique objects that cannot match native termination
+    statuses. Modern HiGHS versions are unaffected.
+
+    See https://github.com/open-energy-transition/solver-benchmark/issues/638.
+    """
+    import highspy
+
+    native_statuses = highspy.HighsModelStatus
+    missing = [
+        name
+        for name in ("kMemoryLimit", "kSolutionLimit", "kInterrupt")
+        if not hasattr(native_statuses, name)
+    ]
+
+    if not missing:
+        return
+
+    class CompatibleHighsModelStatus:
+        def __getattr__(self, name: str) -> Any:
+            return getattr(native_statuses, name)
+
+    compatible_statuses = CompatibleHighsModelStatus()
+
+    for name in missing:
+        setattr(compatible_statuses, name, object())
+
+    # Linopy accesses highspy.HighsModelStatus during solving.
+    highspy.HighsModelStatus = compatible_statuses
+
+
 def solver_version() -> str:
     """Return the version of the HiGHS library this env loads."""
     try:
