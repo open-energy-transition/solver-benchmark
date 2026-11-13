@@ -69,7 +69,7 @@ Run `npm run lint` and `npm run build`, and check your change in the browser. CI
 
 ### Running benchmark campaigns in the cloud
 
-Only maintainers launch campaigns on Google Cloud, as they cost money. See [benchmarks/CAMPAIGNS.md](benchmarks/CAMPAIGNS.md) and [infrastructure/README.md](infrastructure/README.md).
+Only maintainers launch campaigns on Google Cloud, as they cost money: the campaign generator prints an estimate of the cost, from the prices in `runner/config/vm_costs.yaml`, and asks for confirmation before it writes a campaign. See [benchmarks/CAMPAIGNS.md](benchmarks/CAMPAIGNS.md) and [infrastructure/README.md](infrastructure/README.md).
 
 ## Pull requests
 

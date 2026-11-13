@@ -9,9 +9,9 @@ The Open Energy Benchmark measures the performance of optimization solvers on pr
 ## Layout
 
 - `runner/`: the benchmark runner, run with `python -m runner.benchmark`.
-  - `utils/`: the run loop (`orchestrator.py`), the solver dispatch (`solver.py`, which runs inside each solver's environment), the solver registry and eligibility rules (`config.py`), the solver environments (`env.py`), and campaign allocation and checks (`campaign.py`).
+  - `utils/`: the run loop (`orchestrator.py`), the solver dispatch (`solver.py`, which runs inside each solver's environment), the solver registry and eligibility rules (`config.py`), the solver environments (`env.py`), campaign allocation and checks (`campaign.py`) and the campaign cost estimate (`cost.py`).
   - `utils/solvers/`: one adapter module per solver package, found by its file name.
-  - `config/`: the data that drives the runner: `solvers.yaml` (versions, years and environments), `solver_configurations.yaml` (named ways of running a solver, and the default list), `eligibility_rules.yaml` (which solver, year, size and problem class combinations run).
+  - `config/`: the data that drives the runner: `solvers.yaml` (versions, years and environments), `solver_configurations.yaml` (named ways of running a solver, and the default list), `eligibility_rules.yaml` (which solver, year, size and problem class combinations run) and `vm_costs.yaml` (VM prices, setup time and reference benchmark time, for the cost estimate).
   - `envs/benchmark-<solver>-<year>/`: one pixi manifest and lock file per solver version, outside the root workspace.
   - `tests/`: the pytest suite.
 - `benchmarks/`: the metadata of the problems, one folder per modelling framework or source, with `metadata_schema.yaml`, the scripts that merge and categorize them, and the campaign generator (`create_benchmark_campaign.py`, documented in `CAMPAIGNS.md`).
@@ -46,7 +46,7 @@ Run the tests and the pre-commit hooks before you finish: CI runs both, and only
 - The website runs on Node.js 22 (`engines` in `website/package.json`), and its JavaScript and TypeScript are formatted by the Prettier hook of pre-commit.
 - GitHub Actions are pinned to full commit SHAs with the version in a comment, check out code with `persist-credentials: false` and get only the permissions they need; actionlint and zizmor check this. The YAML files in `.github/` start with a comment that describes them.
 - Never commit secrets, licence files (such as `gurobi.lic`), `.env` files or OpenTofu state; gitleaks scans every commit.
-- Never launch cloud campaigns or run `tofu apply`: campaigns cost money and only maintainers launch them.
+- Never launch cloud campaigns or run `tofu apply`: campaigns cost money and only maintainers launch them. A new machine type in the campaign generator needs its price in `runner/config/vm_costs.yaml`, or the generator stops with an error.
 
 ## pandas 3 pitfalls
 
