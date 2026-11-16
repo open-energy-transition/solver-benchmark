@@ -622,6 +622,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -724,6 +725,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -827,6 +829,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -933,6 +936,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1038,6 +1042,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1140,6 +1145,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1242,6 +1248,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1344,6 +1351,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1447,6 +1455,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1553,6 +1562,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1659,6 +1669,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -1765,6 +1776,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -3717,6 +3729,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-50-1h.mps.gz
     Problem class: LP
+    Size: L
     MILP features: []
     Modelling framework: PyPSA
     Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
@@ -3816,6 +3829,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt-50-1h.mps.gz
     Problem class: LP
+    Size: L
     MILP features: []
     Modelling framework: PyPSA
     Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
@@ -4079,6 +4093,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -4183,6 +4198,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -4670,6 +4686,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
@@ -4777,6 +4794,7 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-1h.mps.gz
     Problem class: MILP
+    Size: L
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
