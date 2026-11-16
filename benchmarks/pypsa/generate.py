@@ -33,6 +33,7 @@ import os
 import pathlib
 import re
 import subprocess
+import sys
 from copy import deepcopy
 from pathlib import Path
 
@@ -222,8 +223,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--benchmark_name", choices=DEFAULT_BENCHMARKS, default="pypsa-eur-elec"
     )
-    p.add_argument("--file_extension", default=".lp")
+    p.add_argument("--file_extension", default=".mps")
     p.add_argument("--output_dir", default="/tmp/")
+    p.add_argument("--configuration", default=None)
+    p.add_argument("--germany", action="store_true")
     p.add_argument("-n", "--dry_run", action="store_true")
     p.add_argument("-c", "--clusters", nargs="+", type=int, default=[50, 100])
     p.add_argument(
@@ -269,38 +272,21 @@ def run(cmd: str) -> None:
         raise RuntimeError(f"Snakemake failed (rc={proc.returncode}): {cmd}")
 
 
-def generate_benchmark(name: str, config_path: pathlib.Path, dry: bool) -> None:
-    """
-    Generate a benchmark instance by running a Snakemake workflow.
+def generate_benchmark(
+    config_path: pathlib.Path,
+    network_path: pathlib.Path,
+    dry: bool,
+) -> None:
+    """Run PyPSA-Eur only up to the composed network."""
+    command = (
+        f"snakemake --snakefile Snakefile {network_path} "
+        f"--configfile {config_path} --cores {os.environ.get('SLURM_CPUS_PER_TASK', 'all')}"
+    )
 
-    This function constructs and executes a Snakemake command to solve a
-    network model based on the provided benchmark name and configuration.
-    It selects the appropriate Snakemake rule (`solve_elec_networks` or
-    `solve_sector_networks`) depending on whether 'elec' is in the name.
+    if dry:
+        command += " -n"
 
-    Parameters
-    ----------
-    name : str
-        The name of the benchmark (e.g., 'pypsa-eur-elec').
-    config_path : pathlib.Path
-        The path to the configuration file for the Snakemake workflow.
-    dry : bool
-        If True, a dry run is performed by adding the '-n' flag to the
-        Snakemake command.
-    """
-    dry_flag = "-n" if dry else ""
-
-    # ONLY FIRST-STAGE SOLVES ARE KEPT
-    if "elec" in name:
-        run(
-            f"snakemake --snakefile Snakefile solve_elec_networks "
-            f"--configfile {config_path} {dry_flag} --cores all"
-        )
-    else:
-        run(
-            f"snakemake --snakefile Snakefile solve_sector_networks "
-            f"--configfile {config_path} {dry_flag} --cores all"
-        )
+    run(command)
 
 
 def build_benchmark_config(
@@ -310,32 +296,42 @@ def build_benchmark_config(
     time_resolution: str,
     bench_type: str,
     horizon: str = "2050",
+    benchmark_id: str | None = None,
 ) -> dict:
-    """Build an isolated benchmark configuration."""
-    final_cfg = recursive_merge(deepcopy(default_cfg), deepcopy(bench_cfg))
-
-    final_cfg.setdefault("scenario", {})
-    final_cfg["scenario"]["clusters"] = [clusters]
-    final_cfg["scenario"]["planning_horizons"] = [horizon]
-
-    final_cfg.setdefault("clustering", {})
-    final_cfg["clustering"].setdefault("temporal", {})
-
-    if bench_type == "elec":
-        final_cfg["clustering"]["temporal"]["resolution_elec"] = time_resolution
-    elif bench_type == "sec":
-        final_cfg["clustering"]["temporal"]["resolution_sector"] = time_resolution
-    else:
+    """Build an isolated configuration for the current PyPSA-Eur workflow."""
+    if bench_type not in {"elec", "sec"}:
         raise ValueError(f"Unsupported benchmark type: {bench_type}")
 
+    final_cfg = recursive_merge(deepcopy(default_cfg), deepcopy(bench_cfg))
+
+    final_cfg["planning_horizons"] = [int(horizon)]
+
+    final_cfg.setdefault("clustering", {}).setdefault("cluster_network", {})
+    final_cfg["clustering"]["cluster_network"]["n_clusters"] = clusters
+
+    resolution = validate_time_resolution(time_resolution).lower()
+    final_cfg["clustering"]["temporal"] = {
+        "averaging": resolution if resolution != "1h" else False,
+        "segmentation": False,
+        "representative": False,
+    }
+
+    final_cfg.setdefault("sector", {})["enabled"] = bench_type == "sec"
+
+    if benchmark_id is not None:
+        run_config = final_cfg.setdefault("run", {})
+        run_config["name"] = benchmark_id
+        run_config["prefix"] = ""
+        run_config.setdefault("scenarios", {})["enable"] = False
+        run_config.setdefault("shared_resources", {})["policy"] = False
+
     if "countries" in final_cfg:
-        cleaned = []
-        for country in final_cfg["countries"]:
-            if country is False or country == "NO":
-                cleaned.append(DoubleQuotedScalarString("NO"))
-            else:
-                cleaned.append(DoubleQuotedScalarString(str(country)))
-        final_cfg["countries"] = cleaned
+        final_cfg["countries"] = [
+            DoubleQuotedScalarString(
+                "NO" if country is False or country == "NO" else str(country)
+            )
+            for country in final_cfg["countries"]
+        ]
 
     return final_cfg
 
@@ -343,39 +339,86 @@ def build_benchmark_config(
 if __name__ == "__main__":
     args = parse_args()
 
-    base_dir = pathlib.Path(__file__).parent
-    default_cfg = load_yaml(pathlib.Path(base_dir, "config", "config.default.yaml"))
+    base_dir = pathlib.Path(__file__).resolve().parent
+    default_cfg = load_yaml(base_dir / "config" / "config.default.yaml")
     benchmark_files = select_yaml_files(args.benchmark_name, base_dir)
+
+    if args.configuration:
+        benchmark_files = [
+            path for path in benchmark_files if path.stem == args.configuration
+        ]
+        if not benchmark_files:
+            raise ValueError(f"Unknown configuration: {args.configuration}")
 
     bench_type = "elec" if "elec" in args.benchmark_name else "sec"
     horizon = "2050"
+
+    output_dir = pathlib.Path(args.output_dir).expanduser().resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.file_extension not in {".lp", ".mps"}:
+        raise ValueError("File extension must be .lp or .mps")
 
     for bench_file in benchmark_files:
         bench_cfg = load_yaml(bench_file)
 
         for clusters in args.clusters:
-            for t_res in args.time_resolutions:
-                final_cfg = build_benchmark_config(
+            for time_resolution in args.time_resolutions:
+                resolution = validate_time_resolution(time_resolution).lower()
+                benchmark_id = f"{bench_file.stem}-{clusters}-{resolution}"
+
+                if args.germany:
+                    benchmark_id = benchmark_id.replace("pypsa-eur-", "pypsa-de-", 1)
+
+                config = build_benchmark_config(
                     default_cfg,
                     bench_cfg,
                     clusters,
-                    t_res,
+                    time_resolution,
                     bench_type,
                     horizon,
+                    benchmark_id=benchmark_id,
                 )
 
-                out_cfg = bench_file.with_stem(
-                    f"{bench_file.stem}_{clusters}_{t_res}_{horizon}"
+                if args.germany:
+                    config["countries"] = ["DE"]
+
+                config_path = output_dir / f"{benchmark_id}.yaml"
+                problem_path = output_dir / (f"{benchmark_id}{args.file_extension}")
+                prepared_network_path = output_dir / f"{benchmark_id}.nc"
+
+                composed_network_path = (
+                    pathlib.Path("resources")
+                    / benchmark_id
+                    / "networks"
+                    / f"composed_{horizon}.nc"
                 )
-                save_yaml(out_cfg, final_cfg)
 
-                # We still generate MPS/LP for the **first stage only**
-                mps_path = (
-                    pathlib.Path(args.output_dir)
-                    / out_cfg.with_suffix(args.file_extension).name
+                save_yaml(config_path, config)
+
+                generate_benchmark(
+                    config_path,
+                    composed_network_path,
+                    args.dry_run,
                 )
-                os.environ["ONLY_GENERATE_PROBLEM_FILE"] = str(mps_path)
 
-                generate_benchmark(args.benchmark_name, out_cfg, args.dry_run)
+                if args.dry_run:
+                    continue
 
-                out_cfg.unlink(missing_ok=True)
+                subprocess.run(
+                    [
+                        sys.executable,
+                        str(base_dir / "export_model.py"),
+                        "--network",
+                        str(composed_network_path),
+                        "--config",
+                        str(config_path),
+                        "--problem",
+                        str(problem_path),
+                        "--prepared-network",
+                        str(prepared_network_path),
+                        "--horizon",
+                        horizon,
+                    ],
+                    check=True,
+                )

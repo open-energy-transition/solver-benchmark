@@ -88,67 +88,90 @@ def test_time_resolution_normalization():
 
 
 def test_build_benchmark_config_isolation():
-    """Check that consecutive benchmark configurations remain independent."""
+    """Check independent configurations with the updated PyPSA-Eur schema."""
     base = {
-        "scenario": {
-            "clusters": [50],
-            "planning_horizons": ["2050"],
-        },
+        "planning_horizons": [2030],
         "clustering": {
+            "cluster_network": {"n_clusters": 50},
             "temporal": {
-                "resolution_elec": False,
-                "resolution_sector": False,
-            }
+                "averaging": False,
+                "segmentation": False,
+                "representative": False,
+            },
         },
-        "electricity": {"transmission_limit": "v1"},
+        "sector": {"enabled": True},
         "conventional": {
             "unit_commitment": False,
             "dynamic_fuel_price": False,
         },
-        "countries": ["DE", "NO"],
+        "run": {
+            "name": "",
+            "shared_resources": {"policy": False},
+        },
     }
 
     original = deepcopy(base)
 
     uc_override = generator.load_yaml(GENERATOR_DIR / "pypsa-eur-elec-uc.yaml")
-    normal_override = generator.load_yaml(GENERATOR_DIR / "pypsa-eur-elec.yaml")
 
-    uc = generator.build_benchmark_config(base, uc_override, 50, "3H", "elec")
-
-    normal = generator.build_benchmark_config(
-        base, normal_override, 100, "168H", "elec"
+    uc = generator.build_benchmark_config(
+        base,
+        uc_override,
+        50,
+        "3H",
+        "elec",
+        benchmark_id="pypsa-eur-elec-uc-50-3h",
     )
 
-    assert uc["conventional"]["unit_commitment"]
-    assert uc["scenario"]["clusters"] == [50]
-    assert uc["clustering"]["temporal"]["resolution_elec"] == "3H"
+    assert uc["planning_horizons"] == [2050]
+    assert uc["clustering"]["cluster_network"]["n_clusters"] == 50
+    assert uc["clustering"]["temporal"]["averaging"] == "3h"
+    assert uc["sector"]["enabled"] is False
+    assert uc["conventional"]["unit_commitment"] is True
+    assert uc["run"]["name"] == "pypsa-eur-elec-uc-50-3h"
+    assert uc["run"]["shared_resources"]["policy"] is False
 
-    assert not normal["conventional"]["unit_commitment"]
-    assert normal["scenario"]["clusters"] == [100]
-    assert normal["clustering"]["temporal"]["resolution_elec"] == "168H"
-
-    assert uc["scenario"]["planning_horizons"] == ["2050"]
     assert base == original
-    assert uc_override["conventional"]["unit_commitment"]
 
 
 def test_build_sector_benchmark_config():
-    """Check sector-specific temporal resolution configuration."""
+    """Check sector coupling and native temporal resolution."""
     base = {
-        "scenario": {},
+        "planning_horizons": [2030],
         "clustering": {
+            "cluster_network": {"n_clusters": 50},
             "temporal": {
-                "resolution_elec": False,
-                "resolution_sector": False,
-            }
+                "averaging": False,
+                "segmentation": False,
+                "representative": False,
+            },
         },
+        "sector": {"enabled": False},
     }
 
     override = generator.load_yaml(GENERATOR_DIR / "pypsa-eur-sec.yaml")
 
-    result = generator.build_benchmark_config(base, override, 50, "24H", "sec")
+    result = generator.build_benchmark_config(base, override, 100, "1H", "sec")
 
-    assert result["scenario"]["clusters"] == [50]
-    assert result["scenario"]["planning_horizons"] == ["2050"]
-    assert result["clustering"]["temporal"]["resolution_sector"] == "24H"
-    assert result["clustering"]["temporal"]["resolution_elec"] is False
+    assert result["planning_horizons"] == [2050]
+    assert result["clustering"]["cluster_network"]["n_clusters"] == 100
+    assert result["clustering"]["temporal"]["averaging"] is False
+    assert result["sector"]["enabled"] is True
+
+
+def test_generate_benchmark_uses_composed_network(monkeypatch):
+    """Check that Snakemake stops before optimization."""
+    commands = []
+    monkeypatch.setattr(generator, "run", commands.append)
+
+    generator.generate_benchmark(
+        Path("/tmp/benchmark.yaml"),
+        Path("resources/example/networks/composed_2050.nc"),
+        dry=True,
+    )
+
+    assert len(commands) == 1
+    assert "composed_2050.nc" in commands[0]
+    assert "--configfile /tmp/benchmark.yaml" in commands[0]
+    assert " -n" in commands[0]
+    assert "solve_network" not in commands[0]

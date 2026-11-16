@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y git wget && \
 FROM pypsa_benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
-    && git checkout 2739717
-    # This is the last commit of PyPSA-Eur on Dec 2, 2025
+    && git checkout 1b83697f9c2c18ac4c7e0c8c719aff327c221843
+    # Pinned PyPSA-Eur revision for reproducible benchmark generation
 
 FROM repo_clone AS pixi_env
 RUN wget -qO- https://pixi.sh/install.sh | sh
@@ -26,15 +26,10 @@ RUN cd pypsa-eur && \
     pixi install --locked && \
     pixi run python -m ensurepip && \
     pixi run python -m pip install --upgrade pip && \
-    pixi run python -m pip install ruamel.yaml && \
-    pixi run python -m pip install --no-deps git+https://github.com/open-energy-transition/linopy.git@9116e17
-
-# Now patch solve_network.py so that it generates LP files without solving:
-COPY solve_network.patch pypsa-eur/solve_network.patch
-RUN cd pypsa-eur && git apply solve_network.patch
+    pixi run python -m pip install ruamel.yaml
 
 FROM pypsa_eur_setup AS pypsa_benchmark_gen
 ENV PYTHONUNBUFFERED=1
-COPY --chown=pixi . pypsa-eur/
+COPY . pypsa-eur/
 WORKDIR pypsa-eur/
 CMD ["bash"]
