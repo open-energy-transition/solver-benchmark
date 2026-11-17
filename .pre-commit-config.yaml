@@ -13,7 +13,7 @@ repos:
         args: ["--maxkb=2000"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.4
+    rev: v0.17.5
     hooks:
       - id: ruff
         types_or: [python, pyi, jupyter]
@@ -21,7 +21,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.9.10
+    rev: v3.10.1
     hooks:
       - id: prettier
         types_or: [javascript, jsx, ts, tsx]
