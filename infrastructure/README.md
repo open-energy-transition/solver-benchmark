@@ -5,7 +5,7 @@ The OpenTofu configuration in `main.tf` creates one Google Cloud VM per benchmar
 1. installs the dependencies, pixi, the Gurobi license and the HiGHS binary of the reference benchmark;
 2. clones this repository at `git_ref`;
 3. runs `runner.benchmark` on the VM's problems, with its years and solver configurations;
-4. uploads the results to `gs://<gcs_bucket_name>/results/<run_id>/`, and the logs and solutions to `gs://<gcs_bucket_name>/logs/<run_id>/` and `gs://<gcs_bucket_name>/solutions/<run_id>/` (the Gurobi logs to `gs://<gcs_bucket_name>-restricted/logs/<run_id>/`);
+4. uploads the results, logs and solutions to the `results/`, `logs/` and `solutions/` folders of `gs://<gcs_bucket_name>/`, under `<run_id>/`, and the Gurobi logs to `gs://<gcs_bucket_name>-restricted/logs/<run_id>/`;
 5. deletes the VM, if `auto_destroy_vm` is set.
 
 Campaigns are usually created with the campaign generator: see [benchmarks/CAMPAIGNS.md](../benchmarks/CAMPAIGNS.md). Only maintainers launch them, as they cost money.
@@ -44,7 +44,7 @@ problems:
 | `zone` | Zone of the VM. Default: the `zone` variable. |
 | `years` | Solver-version years to run. Default: 2020 and 2022 to 2025. |
 | `solver_configuration` | Space-separated solver configurations. Default: `default_configurations` in `runner/config/solver_configurations.yaml`. |
-| `timeout_seconds` | Timeout of each run. Default: 1 hour for S and M problems, 24 hours for L problems. |
+| `timeout_seconds` | Timeout of each run, in seconds. Default: 1 hour for S and M problems, 24 hours for L problems. |
 | `problems` | Map of problem IDs to their `Problem class`, `Size` and `URL`, as in `results/metadata.yaml`. |
 
 ## Variables
@@ -92,7 +92,7 @@ tail -f /solver-benchmark/runner/logs/*                   # solver logs
 tail -f /solver-benchmark/results/benchmark_results.csv   # results of the VM
 ```
 
-### Cost tracking labels
+## Cost tracking labels
 
 Each VM and its boot disk get four [labels](https://docs.cloud.google.com/compute/docs/labeling-resources), to filter and group costs in Cloud Billing:
 

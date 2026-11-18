@@ -8,7 +8,7 @@ The runner itself runs in the `runner` pixi environment of the root `pixi.toml`.
 
 ## Running benchmarks
 
-Run `runner.benchmark` from the repository root, with a YAML file of problems: `results/metadata.yaml`, or a file in the format of [infrastructure/README.md](../infrastructure/README.md#benchmark-yaml-format).
+Run `runner.benchmark` from the repository root, with a YAML file of problems, such as `results/metadata.yaml` or a file in the [benchmark YAML format](../infrastructure/README.md#benchmark-yaml-format).
 
 ```bash
 pixi run -e runner python -m runner.benchmark [OPTIONS] PROBLEMS_YAML_PATH
@@ -21,9 +21,9 @@ pixi run -e runner python -m runner.benchmark [OPTIONS] PROBLEMS_YAML_PATH
 | `-a, --append` | Append to the results files instead of overwriting them. |
 | `-n, --num-seeds N` | Number of seeds per problem and configuration (default 1). Above 1, each repetition uses seed 1, 2, 3, ... instead of the configuration's own seed, to measure the solver's sensitivity to it. Each seed's row goes to `results/benchmark_results_seeds.csv`, and `results/benchmark_results.csv` gets one row per problem and configuration, with the mean runtime and memory, and the status, objective and other values of the last seed. |
 | `-r, --ref-bench-interval SECONDS` | Run the reference benchmark at most once every N seconds (default 0, off). |
-| `-u, --run-id RUN_ID` | Identifier of every row of this run. Default: generated from the time and host name. |
+| `-u, --run-id RUN_ID` | Identifier written in every row of this run. Default: generated from the time and host name. |
 
-The runner only runs the combinations of solver, year, problem size and problem class allowed by `config/eligibility_rules.yaml`. It solves each problem with all its years and configurations, in a random order, before the next problem, so that a slow drift in the speed of the machine doesn't favour the solvers that would run first. Before solving, it checks that each environment runs the registered solver version, and skips a year with an `ER` alert if it doesn't.
+The runner only runs the combinations of solver, year, problem size and problem class allowed by `config/eligibility_rules.yaml`. It runs all years and configurations on one problem, in a random order, before moving to the next problem, so that a slow drift in the speed of the machine doesn't favour the solvers that would always run first. Before solving, it checks that each environment runs the registered solver version, and skips a year with an `ER` alert if it doesn't.
 
 The reference benchmark solves a fixed problem with a HiGHS binary, to compare the speed of different machines. Only the benchmark VMs install the binary, and they run it once an hour (see `reference_benchmark_interval` in [infrastructure/README.md](../infrastructure/README.md#variables)).
 
@@ -35,7 +35,7 @@ pixi run -e runner python -m runner.benchmark --append --years 2025 \
   --solver-configurations highs-default --solver-configurations scip-default \
   infrastructure/benchmarks/sample_run/standard-00.yaml
 
-# Every default configuration on every problem of the website, for 2025
+# Every default configuration on every problem on the website, for 2025
 pixi run -e runner python -m runner.benchmark --years 2025 results/metadata.yaml
 
 # Three seeds per problem and configuration

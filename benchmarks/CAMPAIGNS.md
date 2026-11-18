@@ -36,7 +36,7 @@ pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
 | `--size S M L` | Only problems of these sizes, with `--all` or `--problem`. |
 | `--do-not-skip` | Also the problems with a `Skip because` field, which are left out by default as they time out or run out of memory. |
 
-For example, the S and M problems among two PyPSA problems:
+For example, to select the S and M problems among two PyPSA problems:
 
 ```bash
 pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
@@ -56,7 +56,7 @@ Each configuration and year runs only where it is registered in `runner/config/s
 
 ## VMs and timeouts
 
-These options only apply to cloud campaigns. By default, each problem gets its own VM, of a machine profile set by its size:
+By default, each problem of a cloud campaign gets its own VM, whose machine profile and timeout depend on the size of the problem:
 
 | Size | Profile | Machine type | Timeout |
 |---|---|---|---|
@@ -67,9 +67,9 @@ These options only apply to cloud campaigns. By default, each problem gets its o
 |---|---|
 | `--num-vms N` | Allocate the problems of each profile to N VMs, balancing their `--weight-col` (default `Num. variables`). |
 | `--machine-type short\|long` | Use this profile for all problems. |
-| `--timeout-hours H` | Use this timeout for all problems. |
 | `--zone ZONE` | Create the VMs in this zone (default `us-central1-a`). |
-| `--vm-prefix PREFIX` | Prefix of the VM files (default `benchmark-instance-<campaign>`). |
+| `--vm-prefix PREFIX` | Prefix of the names of the VM files (default `benchmark-instance-<campaign>`). |
+| `--timeout-hours H` | Use this timeout for all problems, also in local campaigns. |
 
 ## Cost estimate
 
@@ -139,7 +139,7 @@ infrastructure/local/benchmarks/<run-id>/
 └── run_local.sh
 ```
 
-The script then asks whether to run the campaign, which `run_local.sh` does with `runner.benchmark`, one problem after the other. Add `--yes` to run it without asking, or run the script later:
+The script then asks whether to run the campaign now. `run_local.sh` runs the problems one after the other with `runner.benchmark`. Add `--yes` to start it without asking, or run it later:
 
 ```bash
 bash infrastructure/local/benchmarks/<run-id>/run_local.sh
@@ -147,7 +147,7 @@ bash infrastructure/local/benchmarks/<run-id>/run_local.sh
 
 ## Running your own problems
 
-To run your own problems, give the runner a YAML file with their size, problem class and URL, or for local runs their path:
+To run your own problems, write a YAML file with their size, their problem class and their URL or, for local runs, their path:
 
 ```yaml
 problems:
@@ -161,4 +161,4 @@ problems:
     Path: tests/sample_benchmarks/sample_lp.lp
 ```
 
-and run it as in [Running benchmarks locally](../README.md#running-benchmarks-locally). To run a solver that the runner doesn't support yet, see [Adding a new solver](../runner/SOLVERS.md#adding-a-new-solver), and open an issue if you need help.
+Then run it as in [Running benchmarks locally](../README.md#running-benchmarks-locally). To run a solver that the runner doesn't support yet, see [Adding a new solver](../runner/SOLVERS.md#adding-a-new-solver), and open an issue if you need help.

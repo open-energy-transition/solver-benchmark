@@ -1,11 +1,16 @@
-# Instructions to generate ReEDS benchmarks
-- Follow the instructions in the [Installation Guide](https://reeds-model.github.io/ReEDS/setup.html#installation-guide) to install [ReEDS](https://github.com/ReEDS-Model/ReEDS).
-- In `postprocessing/diagnose/diagnose.gms`, add the following line before `$offecho`
-```
-fixedmps outputs%ds%model_diagnose%ds%model_diagnose_%cur_year%.mps
-```
-- You can solve the cases used for this benchmark by creating a CSV with the contents below, saving it as `cases_benchmark.csv` in the root directory of ReEDS, and then running `python runreeds.py` and entering "benchmark" as the case suffix when prompted:
-```
+# Generating the ReEDS problems
+
+1. Install [ReEDS](https://github.com/ReEDS-Model/ReEDS), following its [installation guide](https://reeds-model.github.io/ReEDS/setup.html#installation-guide).
+2. In `postprocessing/diagnose/diagnose.gms`, add this line before `$offecho`:
+
+   ```text
+   fixedmps outputs%ds%model_diagnose%ds%model_diagnose_%cur_year%.mps
+   ```
+
+3. Save the CSV below as `cases_benchmark.csv` in the root folder of ReEDS.
+4. Run `python runreeds.py`, and enter `benchmark` as the case suffix when asked.
+
+```csv
 ,Default Value,USA_defaults,USA_default_z90,USA_defaults_40_yr_step,USA_CC,USA_fast,USA_365_3hrs,USA_decarb_H2,PJM_county,WECC_county,ISONE_full_year,ERCOT_full_year,ISONE_d365_h1,ERCOT_d365_h1
 ignore,1,,,,,,0,,0,,,,,
 diagnose,1,,,,,,,,,,,,,

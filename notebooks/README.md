@@ -6,7 +6,7 @@ The notebooks analyze benchmark results and run benchmark campaigns. They run in
 pixi run -e notebooks jupyter lab
 ```
 
-or open a shell in the environment with `pixi shell -e notebooks`.
+To open a shell in the environment instead, run `pixi shell -e notebooks`.
 
 ## Downloading results from Google Cloud Storage
 

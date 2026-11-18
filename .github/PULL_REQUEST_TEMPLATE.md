@@ -8,7 +8,7 @@ Fixes # <!-- the issue it closes, if any; otherwise delete this line -->
 
 ### New benchmark problems
 
-In the metadata of each problem, give in `Short description`, `Contributor(s)/Source` and `Notes`:
+In the metadata of each problem (`Short description`, `Contributor(s)/Source` and `Notes`), give:
 - a link to the model's code;
 - any paper that describes the model and its equations;
 - the sources of its data;

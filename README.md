@@ -10,7 +10,7 @@ All problems are open LP or MPS files, which can be downloaded from the website'
 
 ## Solvers
 
-The runner runs HiGHS, SCIP, CBC, GLPK and Gurobi, with one version per release year, and also supports CPLEX, MOSEK, Knitro and Xpress. [runner/SOLVERS.md](runner/SOLVERS.md) lists the versions and describes how to add a solver.
+The benchmark runs HiGHS, SCIP, CBC, GLPK and Gurobi, with one version per release year. The runner also supports CPLEX, MOSEK, Knitro and Xpress. [runner/SOLVERS.md](runner/SOLVERS.md) lists the versions and describes how to add a solver.
 
 ## Project structure
 
@@ -46,7 +46,7 @@ The runner writes the results to `results/benchmark_results.csv`, replacing the 
 
 ## Benchmark campaigns
 
-The campaign generator selects problems from `results/metadata.yaml`, allocates them to VMs and writes a campaign, either for Google Cloud or as a local run script: see [benchmarks/CAMPAIGNS.md](benchmarks/CAMPAIGNS.md), and [infrastructure/README.md](infrastructure/README.md) for the VMs. Only maintainers launch cloud campaigns, as they cost money.
+The campaign generator selects problems from `results/metadata.yaml`, allocates them to VMs and writes a campaign for Google Cloud, or a script that runs it locally. See [benchmarks/CAMPAIGNS.md](benchmarks/CAMPAIGNS.md), and [infrastructure/README.md](infrastructure/README.md) for the VMs. Only maintainers launch cloud campaigns, as they cost money.
 
 ## Contributing
 

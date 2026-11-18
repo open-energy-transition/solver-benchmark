@@ -1,6 +1,6 @@
 # Open Energy Benchmark website
 
-The [Next.js](https://nextjs.org) website that presents the benchmark results at [openenergybenchmark.org](https://openenergybenchmark.org/). It reads `results/benchmark_results.csv` and `results/metadata.yaml`.
+This folder holds the [Next.js](https://nextjs.org) website that presents the benchmark results at [openenergybenchmark.org](https://openenergybenchmark.org/). It reads `results/benchmark_results.csv` and `results/metadata.yaml`.
 
 ## Running locally
 
@@ -21,7 +21,7 @@ Run `npm run move-results` again after a benchmark run to see its results, e.g. 
 - `npm run build`: copy the results and build the website for production.
 - `npm start`: serve the production build.
 - `npm run lint`: run ESLint.
-- `npm run axe:full`: check the accessibility (WCAG 2 A and AA) of every page with [axe](https://github.com/dequelabs/axe-core), on a running website. `npm run axe:extract` lists the pages in `scripts/urls.txt`, which `npm run axe:test` checks; `npm run axe` checks the home page only.
+- `npm run axe:full`: on a running website, check the accessibility (WCAG 2 A and AA) of every page with [axe](https://github.com/dequelabs/axe-core). It runs `npm run axe:extract`, which lists the pages in `scripts/urls.txt`, and `npm run axe:test`, which checks them. `npm run axe` checks only the home page.
 - `npm run check:pages`: open every page in `scripts/urls.txt` and its hover pop-ups in Chrome, and fail if a page doesn't load, the Content Security Policy blocks anything, or a formula doesn't render.
 
 CI runs the lint, the build, and the accessibility and page checks on every pull request that changes the website.

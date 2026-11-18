@@ -1,6 +1,6 @@
 # Solvers
 
-The runner runs, for each solver, the last version released in each calendar year. The versions are registered in [`config/solvers.yaml`](config/solvers.yaml):
+For each solver, the benchmark uses the last version released in each calendar year. The versions are registered in [`config/solvers.yaml`](config/solvers.yaml):
 
 | Solver | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
 | ------ | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
@@ -10,7 +10,7 @@ The runner runs, for each solver, the last version released in each calendar yea
 | GLPK | 5.0 | | | | | | |
 | Gurobi | (4) | (4) | 10.0.0 | 11.0.0 | 12.0.0 | 13.0.0 | |
 
-An empty cell is a year without a release. The other versions are not run:
+An empty cell is a year without a release or, for 2026, a version not added yet. The numbered cells are versions that are not run:
 
 1. HiGHS 1.1.1 was not released on PyPI and cannot be installed with pip or conda.
 2. SCIP 7.0.2 and 7.0.3 fail with PySCIPOpt: `'pyscipopt.scip.Model' object has no attribute 'getDualSolVal'`.
@@ -41,7 +41,7 @@ If the solver package has no build for the newest Python, pin `python` in the ma
 1. Check that [Linopy](https://github.com/PyPSA/linopy) supports the solver: `linopy.solvers.SolverName` lists the solvers it can run.
 2. Add a pixi manifest for each of its versions, as in [Updating a solver version](#updating-a-solver-version).
 3. Add the solver to `config/solvers.yaml`: its versions under `solvers`, and its entries in `packages` and `seed_options`, in `timeout_options` if it has a time limit option, and in `license_env_vars` if it needs a license. The header of the file describes each section.
-4. Add an adapter module `utils/solvers/<solver_package>.py` that exports `solver_version()`, `is_mip(model)`, `mip_gap(model, log_fn)`, `reported_runtime(model)` and `integer_values(model, problem_fn, solution_fn)`. Copy an existing module: the runner finds the module by its file name.
+4. Add an adapter module `utils/solvers/<solver_package>.py` that exports `solver_version()`, `is_mip(model)`, `mip_gap(model, log_fn)`, `reported_runtime(model)` and `integer_values(model, problem_fn, solution_fn)`. Copy an existing module as a template: the runner finds the module by its file name, so nothing else needs to change.
 5. Add at least a `<solver_package>-default` configuration (see below), and list it in `default_configurations` if it should run when no configuration is given.
 
 ## Adding a solver configuration
