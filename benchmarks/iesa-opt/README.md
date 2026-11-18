@@ -1,7 +1,6 @@
-# Generating MPS Files from IESA-Opt-NL Model
+# Generating the IESA-Opt-NL problems
 
-This guide explains how to generate MPS files from the IESA-Opt-NL model using AIMMS and Gurobi.
-
+The MPS files of the IESA-Opt-NL model are generated with AIMMS and Gurobi.
 
 ## Prerequisites
 
@@ -18,8 +17,7 @@ This guide explains how to generate MPS files from the IESA-Opt-NL model using A
      ```
    - Navigate to the cloned directory.
 
-
-## Steps to Generate MPS Files
+## Steps
 
 1. **Open the Model**
    - Either:
@@ -42,5 +40,5 @@ This guide explains how to generate MPS files from the IESA-Opt-NL model using A
 ## Notes
 - Ensure that your academic licenses for AIMMS and Gurobi are active.
 - The generated MPS file can be used for benchmarking or solver testing.
-- The temporal reoslution of the model can be modified by selecting hours-grouping in the user interface.
-- The different geographical resolutions are not included.
+- The temporal resolution of the model can be changed by selecting the grouping of hours in the user interface.
+- The model has a single geographical resolution.

@@ -1,7 +1,7 @@
-# Numerical Issues and Solver Options
+# SpineOpt problems: numerical issues and solver options
 
-This directory contains benchmarks that highlight numerical issues encountered when solving optimization problems using the SpineOpt framework. These issues often arise due to scaling problems due to the wide range of magnitudes in the data used for modeling energy systems, i.e., operational cost and investment cost over multiple time periods, and different units across sectors.
+This folder contains problems that show numerical issues encountered when solving optimization problems using the SpineOpt framework. These issues come from poor scaling, due to the wide range of magnitudes in the data used for modeling energy systems, e.g. operational and and investment cost over multiple time periods, and different units across sectors.
 
-To address these numerical challenges, specific solver options and configurations should be considered when benchmarking. For instance, when using HiGHS consider the `user_objective_scale` option value of -7 and `user_bound_scale` option value of -12, for the case study named `12rp-per-year` in this folder. Commercial solvers have automatic scaling rutines that normally handle these issues better, but it is still recommended to experiment with different scaling options.
+Solver options can help. For example, for the `12rp-per-year` case with HiGHS, try `user_objective_scale` = -7 and `user_bound_scale` = -12. Commercial solvers have automatic scaling routines that usually handle these issues better, but other scaling options are still worth trying.
 
-Finally, when running this files, for both open-source and commercial solvers, it is recommended to disable the `crossover`, given the complexity of the problems.
+Given the complexity of the problems, we recommend turning crossover off, with both open-source and commercial solvers.

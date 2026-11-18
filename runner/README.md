@@ -1,121 +1,98 @@
-# Benchmark Runner
+# Benchmark runner
 
-This folder contains the scripts used to benchmark various solvers.
+The runner solves a set of benchmark problems with each requested solver configuration and solver version, and records the runtime, memory use, status and objective of each run in `results/benchmark_results.csv`.
 
-## Environment Structure
+## Environments
 
-The orchestration tooling itself (this folder's own dependencies, e.g. `pyyaml`,
-`pandas`, `psutil`, `requests`) is managed by the `runner` [pixi](https://pixi.sh)
-environment defined in the root `pixi.toml` — install it with `pixi install -e runner`.
-This is separate from the per-solver-year environments described below, which each
-solver actually runs in.
+The runner itself runs in the `runner` pixi environment of the root `pixi.toml`. Each solver version runs in its own pixi environment, `envs/benchmark-<solver>-<year>/`, with its own manifest and lock file. The runner installs the environments a run needs, so no setup is needed beyond [pixi](https://pixi.sh). [SOLVERS.md](SOLVERS.md) lists the solver versions and describes how to add one.
 
-Each solver-version pair has its own pixi environment (e.g., `benchmark-highs-2025`, `benchmark-scip-2025`), enabling running solvers independently.
+## Running benchmarks
 
-### `solvers.yaml` — Solver Registry
+Run `runner.benchmark` from the repository root, with a YAML file of problems: `results/metadata.yaml`, or a file in the format of [infrastructure/README.md](../infrastructure/README.md#benchmark-yaml-format).
 
-The source of truth for mapping solver names to version, release year, and env is `runner/config/solvers.yaml`
-
-Before solving, the runner checks that each env runs the version registered for it, as reported by the solver itself (`python -m runner.utils.solvers <solver>` prints it from inside an env). A year whose env runs a different version fails with an ER alert, since its results would be labelled with the wrong version.
-
-Example:
-```yaml
-solvers:
-  highs:
-    "1.12.0":
-      year: 2025
-      env: benchmark-highs-2025
+```bash
+pixi run -e runner python -m runner.benchmark [OPTIONS] PROBLEMS_YAML_PATH
 ```
 
-### Per-solver Environment Manifests
+| Option | Description |
+|---|---|
+| `-y, --years YEAR` | Solver-version year to run (repeatable), or `tests` for the environment that CI uses. Default: every year with a registered solver version. |
+| `-s, --solver-configurations CONFIG` | Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Default: `default_configurations` in `config/solver_configurations.yaml`. |
+| `-a, --append` | Append to the results files instead of overwriting them. |
+| `-n, --num-seeds N` | Number of seeds per problem and configuration (default 1). Above 1, each repetition uses seed 1, 2, 3, ... instead of the configuration's own seed, to measure the solver's sensitivity to it. Each seed's row goes to `results/benchmark_results_seeds.csv`, and `results/benchmark_results.csv` gets one row per problem and configuration, with the mean runtime and memory, and the status, objective and other values of the last seed. |
+| `-r, --ref-bench-interval SECONDS` | Run the reference benchmark at most once every N seconds (default 0, off). |
+| `-u, --run-id RUN_ID` | Identifier of every row of this run. Default: generated from the time and host name. |
 
-Each solver-version pair has its own **self-contained pixi manifest** at `runner/envs/<env>/pixi.toml`, with its own `pixi.lock` (not part of the root workspace). Unlike the root `pixi.toml`, these aren't installed up front -- `runner.benchmark` installs whichever ones a given run actually needs, on demand (see [Updating Solver Versions](SOLVERS.md#updating-solver-versions) for how to add or change one).
+The runner only runs the combinations of solver, year, problem size and problem class allowed by `config/eligibility_rules.yaml`. It solves each problem with all its years and configurations, in a random order, before the next problem, so that a slow drift in the speed of the machine doesn't favour the solvers that would run first. Before solving, it checks that each environment runs the registered solver version, and skips a year with an `ER` alert if it doesn't.
 
-## Running runner.benchmark
+The reference benchmark solves a fixed problem with a HiGHS binary, to compare the speed of different machines. Only the benchmark VMs install the binary, and they run it once an hour (see `reference_benchmark_interval` in [infrastructure/README.md](../infrastructure/README.md#variables)).
 
-`runner/benchmark.py` is a Typer CLI that takes a YAML file of problems and runs each requested solver configuration against it, for one or more solver-version years. It installs any missing per-solver-year envs automatically (see `runner/envs/`), so no manual env setup is needed first. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
+Examples:
 
-```shell
-$ pixi run -e runner python -m runner.benchmark --help
-Usage: python -m runner.benchmark [OPTIONS] {problems_yaml_path}
+```bash
+# HiGHS and SCIP 2025 on the sample problems, added to the existing results
+pixi run -e runner python -m runner.benchmark --append --years 2025 \
+  --solver-configurations highs-default --solver-configurations scip-default \
+  infrastructure/benchmarks/sample_run/standard-00.yaml
 
-Run every problem in PROBLEMS_YAML_PATH against each solver configuration,
-for each given year.
-```
-
-Each problem gets every (year, solver configuration) pair, in a random order, before the next problem starts. This way a slow drift in the machine's speed during a run doesn't systematically favor the solvers or years that would otherwise always run first.
-
-**Required Arguments:**
-- `problems_yaml_path` - Path to the problems YAML file
-
-**Optional Arguments:**
-- `-a, --append` - Append to the results CSVs instead of overwriting them
-- `-y, --years YEAR` - Solver-version year to run (repeatable), or `tests` for the shared CI smoke-test env. Defaults to every year with a registered solver version
-- `-s, --solver-configurations CONFIG` - Solver configuration to run (repeatable), e.g. `highs-default` or `highs-hipo`. Defaults to `solver_configurations.yaml`'s `default_configurations`
-- `-n, --num-seeds N` - Number of seeds to try per (problem, solver configuration) pair. When greater than 1, each repetition uses a different seed (1, 2, 3, ...) instead of the configuration's own fixed seed, to gauge the solver's sensitivity to it. Each seed's row goes to `results/benchmark_results_seeds.csv`, and `results/benchmark_results.csv` gets one combined row per pair (mean runtime and memory; the last seed's status, objective and other values, so the status is `ok` only if every seed was). Default: 1 (no repetition, the configuration's own fixed seed applies)
-- `-r, --ref-bench-interval SECONDS` - Run a reference benchmark at most once every N seconds. 0 disables it
-- `-u, --run-id RUN_ID` - Identifier shared by every row from this run. Auto-generated if not given
-- `--help` - Show this message and exit
-
-Usage examples:
-
-1. Add results to the results CSV files instead of overwriting them:
-```shell
-pixi run -e runner python -m runner.benchmark --append --years 2025 --run-id "local-run" benchmarks/sample_run/standard-00.yaml
-```
-
-2. Run specific solver configurations by repeating the `-s`/`--solver-configurations` flag:
-```shell
-pixi run -e runner python -m runner.benchmark --solver-configurations highs-default --solver-configurations scip-default --years 2025 benchmarks/sample_run/standard-00.yaml
-```
-
-3. Full run for the entire website problem set for 2025:
-
-```shell
+# Every default configuration on every problem of the website, for 2025
 pixi run -e runner python -m runner.benchmark --years 2025 results/metadata.yaml
+
+# Three seeds per problem and configuration
+pixi run -e runner python -m runner.benchmark --num-seeds 3 --years 2025 \
+  infrastructure/benchmarks/sample_run/standard-00.yaml
 ```
 
-4. Run each problem 3 times per solver configuration, under 3 different seeds, to gauge runtime sensitivity to the seed:
-```shell
-pixi run -e runner python -m runner.benchmark --num-seeds 3 --years 2025 benchmarks/sample_run/standard-00.yaml
+The runner downloads the problems to `runner/benchmarks/`, and writes the solver logs to `runner/logs/` and the solutions to `runner/solutions/`.
+
+## Running one solver on one problem
+
+To debug a solver, run `runner.utils.solver` in the solver's environment, from the repository root:
+
+```bash
+pixi run --manifest-path runner/envs/<env> python -m runner.utils.solver \
+  <solver_configuration> <problem_file> <solver_version> [--seed N] [--timeout SECONDS]
 ```
+
+- `solver_configuration`: e.g. `highs-default` or `highs-hipo`.
+- `problem_file`: an LP or MPS file.
+- `solver_version`: the version, used in the names of the output files and in the metrics.
+- `--seed N`: replaces the configuration's own seed.
+- `--timeout SECONDS`: sets the solver's time limit, for the solvers with an entry in `timeout_options` of `config/solvers.yaml`.
+
+For example:
+
+```bash
+pixi run --manifest-path runner/envs/benchmark-highs-2025 python -m runner.utils.solver \
+  highs-default tests/sample_benchmarks/sample_lp.lp 1.12.0
+```
+
+It prints the metrics as JSON (status, runtime, objective and others), and writes the log to `runner/logs/` and the solution to `runner/solutions/`.
 
 ## Running with Docker
 
-Docker is optional. On native Linux with systemd, you can run the scripts directly (see above). Memory limit enforcement via `systemd-run` is skipped automatically when systemd is not available.
+On macOS and Windows, or without systemd, run the runner in Docker. The container can't limit the memory of the solvers with `systemd-run`: a solver that uses too much memory is stopped by the kernel instead. For the published results, we run the runner directly on Linux.
 
-### Build
+Build the image from the repository root:
 
-```sh
+```bash
 docker build -t solver-benchmark-runner -f runner/Dockerfile .
 ```
 
-### Run
+The container runs `runner.benchmark` and takes the same arguments. Mount `results/` to get the results on the host, and a named volume on pixi's package cache (`/opt/pixi-cache`) to keep the solver packages between runs:
 
-The container entrypoint runs `runner.benchmark`, so pass the same flags you would use natively. Mount `results/` to get output on the host:
-
-```sh
-docker run --rm \
-  -v $(pwd)/results:/solver-benchmark/results \
-  solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
-```
-
-### Caching pixi packages
-
-Per-solver-year pixi environments are installed at runtime. To avoid re-downloading their packages on every run, mount a named Docker volume on pixi's package cache (`PIXI_CACHE_DIR=/opt/pixi-cache` in the image). Don't mount a volume over `runner/envs/`: it would hide the `pixi.toml`/`pixi.lock` files copied into the image.
-
-```sh
+```bash
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
   -v solver-pixi-cache:/opt/pixi-cache \
   solver-benchmark-runner --solver-configurations highs-default --years 2025 results/metadata.yaml
 ```
 
-### Gurobi licensing
+Don't mount a volume on `runner/envs/`: it would hide the manifests and lock files copied into the image.
 
-Gurobi requires a license file. Mount it into the container:
+Gurobi needs a license file:
 
-```sh
+```bash
 docker run --rm \
   -v $(pwd)/results:/solver-benchmark/results \
   -v solver-pixi-cache:/opt/pixi-cache \
@@ -123,40 +100,3 @@ docker run --rm \
   -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \
   solver-benchmark-runner --solver-configurations gurobi-default --years 2025 results/metadata.yaml
 ```
-
-### Limitations
-
-- **No memory limit enforcement**: `systemd-run` is not available inside Docker, so OOM protection is skipped. Solvers that exceed available memory will be killed by the kernel OOM killer instead.
-- **Performance overhead**: Docker adds minimal overhead, but for official benchmark submissions native Linux is recommended.
-
-## Running a single solver (`runner.utils.solver`)
-
-Use `runner.utils.solver` to test a single solver on a single problem. This is useful for debugging. Since it's a package module (not a standalone script), run it with `-m` **from the repo root**, not from `runner/`:
-
-```bash
-python -m runner.utils.solver <solver_configuration> <input_file> <solver_version> [--seed N]
-```
-
-**Arguments:**
-- `solver_configuration` - Solver configuration name (e.g., highs-default, highs-hipo, scip-default)
-- `input_file` - Path to a problem file (.lp or .mps)
-- `solver_version` - Solver version string (e.g., 1.9.0)
-- `--seed N` - Optional. Overrides the configuration's own fixed seed (see `runner/config/solvers.yaml`'s `seed_options`)
-
-**Examples:**
-
-```bash
-# Test HiGHS (from the repo root)
-pixi run --locked --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.9.0
-
-# Test SCIP
-pixi run --locked --manifest-path runner/envs/benchmark-scip-2024 python -m runner.utils.solver scip-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 9.2.0
-
-# Test HiGHS with a specific seed instead of highs-default's own fixed one
-pixi run --locked --manifest-path runner/envs/benchmark-highs-2024 python -m runner.utils.solver highs-default runner/benchmarks/pypsa-eur-elec-op-2-1h.lp 1.9.0 --seed 7
-```
-
-**Output:**
-- Solution files are saved to `runner/solutions/`
-- Detailed logs are saved to `runner/logs/`
-- JSON metrics are printed to stdout (runtime, status, objective value, etc.)

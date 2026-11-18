@@ -1,222 +1,75 @@
-# Benchmark Campaign Creation
+# Benchmark campaigns
 
-This repository contains tooling to create benchmark campaigns from the problem metadata.
+`create_benchmark_campaign.py` selects problems from `results/metadata.yaml` and creates a benchmark campaign:
 
-Campaigns can target either:
+- `--target cloud` (default): the VM files of a Google Cloud campaign, under `infrastructure/benchmarks/<run-id>/`. Only maintainers launch cloud campaigns, as they cost money.
+- `--target local`: a script that runs the campaign on your machine, under `infrastructure/local/benchmarks/<run-id>/`.
 
-- cloud execution using Google Cloud Platform VMs (currently allowed to maintainers only);
-- local execution using the existing benchmark runner workflow.
-
-The main entry point is:
+For example, to create a campaign of all problems:
 
 ```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py --campaign my-test --all
 ```
 
-The script prepares problem metadata, selects problems, and creates
-either:
+The run ID is `YYYYMMDD-<campaign>`. The script stops if the campaign's folder exists, unless you add `--force` to overwrite it.
 
-- a cloud campaign under `infrastructure/benchmarks/<run-id>/`; or
-- a local campaign under `infrastructure/local/benchmarks/<run-id>/`.
+Before selecting problems, the script runs `merge_metadata.py` and `categorize_benchmarks.py` (see [README.md](README.md#scripts)), which update the metadata and download every problem without statistics. Add `--skip-prepare` to skip them.
 
-## Execution targets
-
-The campaign generator supports two execution targets:
-
-| Target | Description |
-|----------|-------------|
-| `cloud` | Generates OpenTofu VM configuration files under `infrastructure/benchmarks/<run-id>/`. |
-| `local` | Generates local run files under `infrastructure/local/benchmarks/<run-id>/`. |
-
-The default target is:
-
-```text
-cloud
-```
-
-Override it with:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --target local
-```
-
-to launch a benchmark campaign on your local machine.
-
-## Basic usage
-
-Create a campaign for all problems (please do this very carefully, especially if running on the cloud):
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign my-test \
-  --all
-```
-
-This creates a run ID of the form:
-
-```text
-YYYYMMDD-my-test
-```
+Every campaign includes a `campaign_summary.csv` with its problems, settings and VM allocation.
 
 ## Configuration files
 
-Campaigns can also be defined through a YAML configuration file.
-
-A complete template is provided in:
-
-```text
-benchmarks/config.campaign.default.yaml
-```
-
-Run a campaign directly from a configuration file:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml
-```
-
-Command-line arguments always override values defined in the configuration file.
-
-For example:
+[`config.campaign.default.yaml`](config.campaign.default.yaml) is a template with every setting and its description. Arguments on the command line replace the values of the file:
 
 ```bash
 pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
   --configfile benchmarks/config.campaign.default.yaml \
-  --campaign my-test \
-  --timeout-hours 6
+  --campaign my-test --timeout-hours 6
 ```
 
-## Select problems
+## Selecting problems
 
-Select one or more problems by their exact `results/metadata.yaml` ID:
+| Option | Selects |
+|---|---|
+| `--all` | All problems. |
+| `--problem ID [ID ...]` | Problems by their ID in `results/metadata.yaml`. |
+| `--size S M L` | Only problems of these sizes, with `--all` or `--problem`. |
+| `--do-not-skip` | Also the problems with a `Skip because` field, which are left out by default as they time out or run out of memory. |
+
+For example, the S and M problems among two PyPSA problems:
 
 ```bash
 pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign pypsa-eur-test \
-  --problem pypsa-de-elec-2-1h pypsa-de-elec-4-1h
+  --campaign pypsa-de-test --problem pypsa-de-elec-2-1h pypsa-de-elec-4-1h --size S M
 ```
 
-Select problems by size class:
+## Solvers and years
+
+By default, campaigns run the configurations `gurobi-default`, `highs-default`, `scip-default`, `cbc-default` and `glpk-default`, with the 2025 solver versions. Choose others with `--solver-configurations` and `--years`:
 
 ```bash
 pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign pypsa-eur-small-medium \
-  --all \
-  --size S M
+  --campaign year-test --all --solver-configurations cbc-default highs-default --years 2024 2025
 ```
 
-Combine a problem list with a size filter:
+Each configuration and year runs only where it is registered in `runner/config/solvers.yaml` and eligible under `runner/config/eligibility_rules.yaml`. `runner/config/solver_configurations.yaml` lists the configurations, e.g. `highs-hipo`.
 
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign pypsa-eur-filtered \
-  --problem pypsa-de-elec-2-1h pypsa-de-elec-4-1h \
-  --size S M
-```
+## VMs and timeouts
 
-Include metadata entries marked as skipped (due to known timeout or memory issues):
+These options only apply to cloud campaigns. By default, each problem gets its own VM, of a machine profile set by its size:
 
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign clean-test \
-  --all \
-  --do-not-skip
-```
+| Size | Profile | Machine type | Timeout |
+|---|---|---|---|
+| S, M | `short` | c4-standard-2 | 1 hour |
+| L | `long` | c4-highmem-16 | 24 hours |
 
-## Cloud VM allocation
-
-This section only applies to cloud campaigns.
-
-By default, the script creates one VM per selected problem.
-
-Use a custom number of VMs with:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign packed-test \
-  --all \
-  --num-vms 5
-```
-
-## Cloud machine settings
-
-By default, problems are assigned to VM profiles automatically based on their metadata size class:
-
-| Size class | Machine profile | GCP machine type | Timeout |
-| ---------- | --------------- | ---------------- | -------- |
-| S, M | short | c4-standard-2 | 1 hour |
-| L | long | c4-highmem-16 | 24 hours |
-
-Default zone:
-
-```text
-us-central1-a
-```
-
-When `--machine-type` is specified, all selected problems use the chosen profile regardless of their size classification.
-
-## Timeout policy
-
-If no timeout is provided, the script applies the default timeout policy:
-
-```text
-S/M problems: 1 hour
-L problems:   24 hours
-```
-
-Override the timeout:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign timeout-test \
-  --all \
-  --timeout-hours 6
-```
-
-## Solver and year selection
-
-By default, the generated VM YAML files run all the following solver configurations:
-
-```text
-gurobi-default highs-default scip-default cbc-default glpk-default
-```
-
-The default solver year is:
-
-```text
-2025
-```
-
-Each solver configuration runs in its own per-solver-year pixi env, e.g. for `highs-default` in 2025:
-
-```text
-benchmark-highs-2025
-```
-
-See `runner/config/solvers.yaml` for the full registry, and `runner/config/solver_configurations.yaml`
-for the available named configurations (e.g. `highs-hipo`).
-
-Run specific solvers for one or more years:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign year-test \
-  --all \
-  --solver-configurations cbc-default highs-default \
-  --years 2024 2025
-```
-
-## Campaign summary
-
-Every generated campaign includes a:
-
-```text
-campaign_summary.csv
-```
-
-containing the problem selection, campaign configuration, solver selection,
-timeout settings, allocation decisions, and metadata used to create the campaign.
+| Option | Effect |
+|---|---|
+| `--num-vms N` | Allocate the problems of each profile to N VMs, balancing their `--weight-col` (default `Num. variables`). |
+| `--machine-type short\|long` | Use this profile for all problems. |
+| `--timeout-hours H` | Use this timeout for all problems. |
+| `--zone ZONE` | Create the VMs in this zone (default `us-central1-a`). |
+| `--vm-prefix PREFIX` | Prefix of the VM files (default `benchmark-instance-<campaign>`). |
 
 ## Cost estimate
 
@@ -251,59 +104,30 @@ The estimate counts the runs of each VM: every solver configuration and year tha
 
 Each VM's hours also include its setup (booting, installing the solver environments, downloading the problems and uploading the results) and the reference benchmarks the runner runs once an hour (`reference_benchmark_interval` in `infrastructure/main.tf`). VM prices, disk cost, setup time and the time of a reference benchmark are in `runner/config/vm_costs.yaml`. Update them when Google Cloud prices change, and add the price of any new machine type: the script stops with an error for a machine type without a price. The setup and reference benchmark times are typical values measured on the campaigns of 2026, so the case in which every run times out is not a strict upper bound.
 
-Answer `y` to create the campaign; any other answer creates nothing. Skip the question with:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign my-test \
-  --all \
-  --yes
-```
-
-## Existing campaign directories
-
-The script fails if the target campaign directory already exists.
-
-Use a different campaign name, remove the existing directory, or overwrite it:
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --campaign my-test \
-  --all \
-  --force
-```
+Answer `y` to create the campaign; any other answer creates nothing. Add `--yes` to skip the question.
 
 ## Launching a cloud campaign
 
-The VMs clone the repository from GitHub at the branch or tag in `run.tfvars`'s `git_ref`, which is the branch checked out when the campaign was generated (or `main` if HEAD was detached). Push that branch before launching.
+The VMs clone the repository from GitHub at the branch or tag in `git_ref` of `run.tfvars`: the branch checked out when the campaign was created, or `main` if HEAD was detached. Push that branch before launching.
 
-After generating a cloud campaign, the script checks it and exits with an error if it would fail: VM names that GCE rejects, VM YAML files missing problems, problem fields or years, unknown solver configurations, or a `git_ref` that isn't on GitHub. It warns if the local checkout differs from what the VMs will run: uncommitted or untracked changes, a different branch, or unpushed commits.
-
-Run the same check again before launching, e.g. after editing the generated files:
+After creating a cloud campaign, the script checks it and stops with an error if it would fail: VM names that Google Cloud rejects, VM files without problems, problem fields or years, unknown solver configurations, or a `git_ref` that isn't on GitHub. It warns if the local checkout differs from what the VMs will run: uncommitted or untracked changes, another branch, or unpushed commits. Run the same check again after editing the generated files:
 
 ```bash
 pixi run -e runner python -m runner.utils.campaign infrastructure/benchmarks/<run-id>
 ```
 
-After reviewing the generated files, launch the campaign from the infrastructure directory:
+Then launch the campaign from `infrastructure/`, with a state file of its own (see [infrastructure/README.md](../infrastructure/README.md) for the setup and the VM options):
 
 ```bash
 cd infrastructure
-
-tofu apply \
-  -var-file benchmarks/<run-id>/run.tfvars \
-  -state=states/<run-id>.tfstate
+tofu apply -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
 ```
 
-## Launching a local campaign
-
-Generate a local campaign:
+## Running a local campaign
 
 ```bash
 pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --target local \
-  --campaign my-local-run \
-  --problem pypsa-de-elec-2-1h
+  --target local --campaign my-local-run --problem pypsa-de-elec-2-1h
 ```
 
 This creates:
@@ -315,61 +139,26 @@ infrastructure/local/benchmarks/<run-id>/
 └── run_local.sh
 ```
 
-By default, local campaigns ask for confirmation before execution.
-
-The generated run script can also be executed manually:
+The script then asks whether to run the campaign, which `run_local.sh` does with `runner.benchmark`, one problem after the other. Add `--yes` to run it without asking, or run the script later:
 
 ```bash
 bash infrastructure/local/benchmarks/<run-id>/run_local.sh
 ```
 
-Local campaigns use the existing `runner.benchmark` CLI and execute problems sequentially.
+## Running your own problems
 
-## Example workflows
-
-### Cloud campaign
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml \
-  --campaign pypsa-de-scaling
-
-cd infrastructure
-
-tofu apply \
-  -var-file benchmarks/<run-id>/run.tfvars \
-  -state=states/<run-id>.tfstate
-```
-
-### Local campaign
-
-```bash
-pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
-  --configfile benchmarks/config.campaign.default.yaml \
-  --target local \
-  --campaign pypsa-de-local
-```
-
-The campaign generator creates the local benchmark files and asks whether the benchmark run should be started immediately.
-
-### Running your own problems
-
-To run your own problems, either locally or on the cloud, follow the steps in the appropriate section above but using a `problems.yaml` file of your own that gives the details (metadata) and URL/path of each problem.
-Here is a small example:
+To run your own problems, give the runner a YAML file with their size, problem class and URL, or for local runs their path:
 
 ```yaml
 problems:
   genx-3_three_zones_w_co2_capture-no_uc-3-1h:
-    # Size classification
     Size: M
-    # URL of the problem (needed for cloud runs)
+    Problem class: LP
     URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp.gz
-    # ALTERNATIVELY, for local runs, you can also give a local path
+  my-problem:
+    Size: S
+    Problem class: LP
     Path: tests/sample_benchmarks/sample_lp.lp
 ```
 
-You can quickly try running your own problem locally on our supported set of solvers by following the [instructions in the root README](../README.md#running-supported-solvers-on-problems).
-
-### Running other solvers
-
-To run either our problems, or your own (see the previous section), on a solver that we do not yet support, see [Adding a New Solver](../runner/SOLVERS.md#adding-a-new-solver). Please reach out to us (or open an issue) if you would like more details, or any help with this.
+and run it as in [Running benchmarks locally](../README.md#running-benchmarks-locally). To run a solver that the runner doesn't support yet, see [Adding a new solver](../runner/SOLVERS.md#adding-a-new-solver), and open an issue if you need help.
