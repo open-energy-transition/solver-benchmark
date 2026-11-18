@@ -33,7 +33,7 @@ pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
 |---|---|
 | `--all` | All problems. |
 | `--problem ID [ID ...]` | Problems by their ID in `results/metadata.yaml`. |
-| `--size S M L` | Only problems of these sizes, with `--all` or `--problem`. |
+| `--size S M L` | Only the problems of these sizes, among those of `--all` or `--problem`. |
 | `--do-not-skip` | Also the problems with a `Skip because` field, which are left out by default as they time out or run out of memory. |
 
 For example, to select the S and M problems among two PyPSA problems:
@@ -52,7 +52,7 @@ pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
   --campaign year-test --all --solver-configurations cbc-default highs-default --years 2024 2025
 ```
 
-Each configuration and year runs only where it is registered in `runner/config/solvers.yaml` and eligible under `runner/config/eligibility_rules.yaml`. `runner/config/solver_configurations.yaml` lists the configurations, e.g. `highs-hipo`.
+A configuration runs in a year only if it has a version registered in `runner/config/solvers.yaml` and is eligible for the problem under `runner/config/eligibility_rules.yaml`. `runner/config/solver_configurations.yaml` lists all configurations, such as `highs-hipo`.
 
 ## VMs and timeouts
 

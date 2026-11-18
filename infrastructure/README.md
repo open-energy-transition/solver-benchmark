@@ -107,7 +107,7 @@ The values are lowercased, with characters other than `a-z`, `0-9`, `_` and `-` 
 
 ## Failure notifications
 
-To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per GCP project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
+To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per Google Cloud project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
 
 For each such run, the runner prints a line starting with `BENCHMARK_ALERT`, naming the problem, solver configuration, year, run ID and VM. The runner runs inside the VM's startup script, and the Compute Engine guest agent sends the startup script's output to Cloud Logging (the VMs have the `logging-write` scope for this; no serial port logging is needed). A log-based alert policy emails the recipients when it sees that line: at most one email every 5 minutes, however many runs fail.
 
