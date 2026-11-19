@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { cloneElement, isValidElement, useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import { QuestionLineIcon } from "@/assets/icons";
 
 interface InfoPopupProps {
+  openOn?: Array<"hover" | "click" | "focus">;
   tooltipContent?: React.ReactNode;
   tooltipText?: string;
   title?: string;
@@ -32,6 +33,7 @@ const InfoPopup = ({
   trigger = undefined,
   arrow = false,
   className = "popup-wrapper",
+  openOn = ["hover"],
   disabled = false,
   arrowStyle,
   children,
@@ -54,11 +56,23 @@ const InfoPopup = ({
     return <>{renderTrigger()}</>;
   }
 
+  // Marks the trigger with how the pop-up opens, and whether it is disabled
+  // and so never opens, for scripts/check-pages.mjs to open each pop-up
+  const renderPopupTrigger = () => {
+    const element = renderTrigger();
+    return isValidElement(element)
+      ? cloneElement(element as React.ReactElement<Record<string, unknown>>, {
+          "data-popup-on": openOn.join(" "),
+          "data-popup-disabled": disabled ? "" : undefined,
+        })
+      : element;
+  };
+
   return (
     <Popup
-      on={["hover"]}
+      on={openOn}
       disabled={disabled}
-      trigger={renderTrigger}
+      trigger={renderPopupTrigger}
       position={position}
       closeOnDocumentClick={closeOnDocumentClick}
       arrow={arrow}

@@ -1,0 +1,27 @@
+# Labels added by the Pull Request Labeler workflow, based on the files a pull
+# request changes. A pull request gets every label whose files it touches.
+
+website:
+  - changed-files:
+      - any-glob-to-any-file: website/**
+
+benchmark:
+  - changed-files:
+      - any-glob-to-any-file: [benchmarks/**, results/**]
+
+runner:
+  - changed-files:
+      - any-glob-to-any-file: runner/**
+
+infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: infrastructure/**
+
+github_actions:
+  - changed-files:
+      - any-glob-to-any-file: .github/**
+
+# Markdown files other than the blog posts, which are website content
+documentation:
+  - changed-files:
+      - all-globs-to-any-file: ["**/*.md", "!website/src/data/posts/**"]

@@ -1,18 +1,6 @@
 ### Contributing Benchmark Problems
 
-We welcome contributions of new problems from the community! See [this page](https://openenergybenchmark.org/key-insights#what-benchmark-problems-do-we-have-and-what-are-missing) for details about our current problem set, and what gaps we have that we would love your help to fill.
-
-To contribute, if you are familiar with git and GitHub, we request that you:
-
-1. Generate an MPS file (preferred; alternatively, LP files are also acceptable) for each optimization problem using your energy modelling framework. (The steps for how to do this depend on the framework, but reach out if you need help -- we are happy to support you through this.)
-
-1. Write up the details and classification of each problem you contribute in a YAML file, using [benchmarks/metadata_schema.yaml](benchmarks/metadata_schema.yaml) as a guide.
-
-1. Upload the MPS file to any file sharing service of your choice.
-
-1. Open a pull request (PR) which adds the metadata file to a new directory `benchmarks/<model-framework-or-source>/`. We will review the contribution and work with you to add suitable problems to our platform.
-
-Don't worry if you're not familiar with git or GitHub! Please write to us, or open an issue, and we can support you through the above steps. We thank you in advance for your contributions.
+See [Contributing benchmark problems](../CONTRIBUTING.md#contributing-benchmark-problems) in CONTRIBUTING.md.
 
 ### Generating Benchmark Problems
 

@@ -54,6 +54,19 @@ problems:
 
 Each entry under `problems:` is a single, specific problem instance (see `runner/utils/metadata.py`'s `load_problems`) -- there's no separate nested list for multiple sizes of the same model; each size gets its own top-level entry with a distinct ID.
 
+### Cost tracking labels
+
+Each benchmark VM and its boot disk get four [GCP labels](https://docs.cloud.google.com/compute/docs/labeling-resources) for filtering and grouping costs in Cloud Billing:
+
+| Label | Value |
+|-------|-------|
+| `run_id` | Shared campaign run ID, provided through `run_id` or generated automatically |
+| `benchmark` | Benchmark YAML key (the filename without `.yaml`), identifying the VM's assigned workload |
+| `machine_type` | Machine type from the YAML, or `c4-standard-2` by default |
+| `zone` | Zone from the YAML, or the `zone` variable by default |
+
+Label values are lowercased, characters outside `a-z`, `0-9`, `_`, and `-` are replaced with `-`, and values are truncated to 63 characters. The VM's metadata and settings keep the original values.
+
 ### 3. Set Up Opentofu Variables
 
 ### OpenTofu Variables
@@ -71,6 +84,7 @@ Each entry under `problems:` is a single, specific problem instance (see `runner
 | `ssh_user`                     | SSH username                                                                    | ""                                                        |
 | `ssh_key_path`                 | Path to SSH public key                                                          | ""                                                        |
 | `run_id`                       | Run ID for the benchmarking session                                             | 20251106_153156_batch (calculated from current date-time) |
+| `git_ref`                      | Branch or tag of this repository that the VMs clone and run                     | main                                                      |
 
 
 Create a `run.tfvars` file with your GCP configuration:
@@ -133,6 +147,59 @@ to `false` in the configuration option, you can delete the whole infrastructure 
 
 ```bash
 tofu destroy -var-file benchmarks/sample_run/run.tfvars
+```
+
+## Failure Notifications
+
+To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per GCP project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
+
+For each such run, the runner prints a line starting with `BENCHMARK_ALERT`, naming the problem, solver configuration, year, run ID and VM. The runner runs inside the VM's startup script, and the Compute Engine guest agent sends the startup script's output to Cloud Logging (the VMs have the `logging-write` scope for this; no serial port logging is needed). A log-based alert policy emails the recipients when it sees that line: at most one email every 5 minutes, however many runs fail.
+
+Setting it up needs permission to create Cloud Monitoring alert policies and notification channels in the project (e.g. the Monitoring Editor role). If you have no application-default credentials, OpenTofu can use your gcloud login's token:
+
+```bash
+gcloud auth login
+cd alerts
+export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+tofu init
+tofu apply -var project_id=<your-gcp-project> -var 'notification_emails=["you@example.org"]'
+```
+
+### Testing the alert
+
+To check the whole path, from a VM's output to the email:
+
+1. Set up the alert as above. It doesn't fire for log lines written before it existed.
+2. Start a small VM with the same image and logging scope as the benchmark VMs, whose startup script prints an alert line:
+
+   ```bash
+   gcloud compute instances create benchmark-alert-test --project <your-gcp-project> \
+     --zone europe-west4-a --machine-type e2-micro \
+     --image-family debian-13 --image-project debian-cloud --scopes logging-write \
+     --metadata startup-script='echo "BENCHMARK_ALERT status=ER test=vm"'
+   ```
+
+3. After a minute or two, check that the line reached Cloud Logging, under the `google_metadata_script_runner` log:
+
+   ```bash
+   gcloud logging read '"BENCHMARK_ALERT" AND resource.type="gce_instance"' \
+     --project <your-gcp-project> --freshness 15m --limit 5
+   ```
+
+4. Wait a few minutes for the email.
+5. Delete the VM:
+
+   ```bash
+   gcloud compute instances delete benchmark-alert-test --project <your-gcp-project> \
+     --zone europe-west4-a --quiet
+   ```
+
+To try again, create a new VM rather than rebooting this one: after a reboot, the startup script reruns, but its output isn't logged again. Benchmark VMs boot only once, so this doesn't affect them.
+
+To check only the alert policy and the email, without a VM, write a test entry to Cloud Logging:
+
+```bash
+gcloud logging write solver-benchmark-alert-test "BENCHMARK_ALERT status=ER test=policy" --project <your-gcp-project>
 ```
 
 ## Configuration Options

@@ -7,8 +7,10 @@ either:
 - a cloud OpenTofu campaign under infrastructure/benchmarks/<run-id>/;
 - a local benchmark campaign under infrastructure/local/benchmarks/<run-id>/.
 
-Cloud campaigns stop before running `tofu apply`. Local campaigns generate a
-local run script and ask for confirmation before executing it.
+Cloud campaigns print an estimate of their cost (see `runner.utils.cost`) and
+ask for confirmation before writing their files, and stop before running
+`tofu apply`. Local campaigns generate a local run script and ask for
+confirmation before executing it.
 """
 
 from __future__ import annotations
@@ -333,13 +335,14 @@ def print_campaign_summary(
     *,
     run_id: str,
     vm_prefix: str,
+    git_ref: str,
     selected: pd.DataFrame,
     vm_yamls: list[dict],
     years: list[int],
     timeout_seconds: int | None,
     machine_profile: str | None,
 ) -> None:
-    """Print a concise summary and the next OpenTofu command.
+    """Print a concise summary of the generated campaign.
 
     Parameters
     ----------
@@ -347,6 +350,8 @@ def print_campaign_summary(
         Campaign run identifier.
     vm_prefix : str
         Prefix used to name generated VMs.
+    git_ref : str
+        Branch or tag of this repository that the VMs clone and run.
     selected : pandas.DataFrame
         Selected problems after applying all campaign filters.
     vm_yamls : list[dict]
@@ -369,6 +374,7 @@ def print_campaign_summary(
     print("================")
     print(f"Run ID:              {run_id}")
     print(f"VM prefix:           {vm_prefix}")
+    print(f"Git ref:             {git_ref}")
     print(f"Years:               {', '.join(map(str, years))}")
     if machine_profile is None:
         print("Machine policy:      S/M = short, L = long")
@@ -401,6 +407,15 @@ def print_campaign_summary(
     for idx in range(len(vm_yamls)):
         print(f"  {campaign_dir.relative_to(REPO_ROOT)}/{vm_prefix}-{idx:02d}.yaml")
 
+
+def print_next_steps(run_id: str) -> None:
+    """Print the checklist and OpenTofu command for launching a campaign.
+
+    Parameters
+    ----------
+    run_id : str
+        Campaign run identifier.
+    """
     print("\nNext steps:")
     print("  cd infrastructure")
     print(
@@ -411,20 +426,16 @@ def print_campaign_summary(
 
     print("\nBefore launching:")
     print(
-        "  1. Estimate the cost before launching the run. "
-        "It is easy to start a campaign costing $1000."
+        "  1. Check that the run is parallelized as much as reasonably "
+        "possible: the longest VM in the cost estimate sets how long it takes."
     )
     print(
-        "  2. Estimate runtime and check that the run is parallelized "
-        "as much as reasonably possible."
-    )
-    print(
-        "  3. Check whether anyone else is already running benchmarks, "
+        "  2. Check whether anyone else is already running benchmarks, "
         "and whether enough Gurobi licenses are available for the number "
         "of VMs you want to launch. The current limit is 40."
     )
     print(
-        "  4. Inspect the generated YAML files in "
+        "  3. Inspect the generated YAML files in "
         f"infrastructure/benchmarks/{run_id}/ "
         "and verify that they contain the expected problems."
     )
@@ -469,7 +480,10 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         "--yes",
         action="store_true",
         default=argparse.SUPPRESS,
-        help="Skip confirmation prompt for local execution.",
+        help=(
+            "Skip the confirmation prompt: of the cost estimate for a cloud "
+            "campaign, or of running a local campaign."
+        ),
     )
 
     parser.add_argument(
@@ -990,6 +1004,26 @@ def create_local_campaign(
     return run_script
 
 
+def confirm(question: str) -> bool:
+    """Ask a yes/no question, returning whether the answer was yes.
+
+    Parameters
+    ----------
+    question : str
+        The question, ending with its "[y/N]" choices.
+
+    Returns
+    -------
+    bool
+        True only if the answer is "y", in any case; False without an
+        interactive stdin, e.g. in CI.
+    """
+    try:
+        return input(question).strip().lower() == "y"
+    except EOFError:
+        return False
+
+
 def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
     """
     Ask whether to run the generated local benchmark campaign.
@@ -1001,14 +1035,9 @@ def maybe_run_local_campaign(run_script: Path, *, yes: bool) -> None:
     yes : bool
         If ``True``, skip confirmation and run immediately.
     """
-    if not yes:
-        try:
-            answer = input("\nProceed with local execution? [y/N] ").strip().lower()
-        except EOFError:  # no interactive stdin, e.g. in CI
-            answer = ""
-        if answer != "y":
-            print("\nLocal campaign generated, execution skipped.")
-            return
+    if not yes and not confirm("\nProceed with local execution? [y/N] "):
+        print("\nLocal campaign generated, execution skipped.")
+        return
 
     subprocess.run(["bash", str(run_script)], cwd=REPO_ROOT, check=True)
 
@@ -1028,9 +1057,6 @@ def main() -> None:
 
     if not args.campaign:
         parser.error("--campaign is required unless provided in --configfile")
-
-    if args.yes and args.target != "local":
-        parser.error("--yes can only be used with --target local")
 
     campaign_slug = slugify_campaign_name(args.campaign)
     run_id = f"{datetime.now(UTC):%Y%m%d}-{campaign_slug}"
@@ -1080,6 +1106,28 @@ def main() -> None:
             solver=" ".join(args.solver_configurations),
         )
 
+        from runner.utils.campaign import (  # pylint: disable=import-outside-toplevel
+            current_git_branch,
+            print_validation,
+            validate_campaign,
+        )
+        from runner.utils.cost import (  # pylint: disable=import-outside-toplevel
+            estimate_campaign_cost,
+            format_estimate,
+        )
+
+        try:
+            estimate = estimate_campaign_cost(vm_yamls, problems_df)
+        except ValueError as e:
+            sys.exit(f"ERROR: {e}")
+        print(format_estimate(estimate))
+        if not args.yes and not confirm("\nCreate the campaign? [y/N] "):
+            print("\nCampaign not created.")
+            return
+
+        # The VMs run the checked-out branch, or main if HEAD is detached
+        git_ref = current_git_branch(REPO_ROOT) or "main"
+
         # create_benchmark_campaign uses relative paths like ../infrastructure.
         # Run it from runner/ to preserve the existing path convention.
         old_cwd = Path.cwd()
@@ -1087,7 +1135,7 @@ def main() -> None:
             import os
 
             os.chdir(RUNNER_DIR)
-            create_benchmark_campaign(run_id, vm_prefix, vm_yamls)
+            create_benchmark_campaign(run_id, vm_prefix, vm_yamls, git_ref)
         finally:
             os.chdir(old_cwd)
 
@@ -1103,12 +1151,26 @@ def main() -> None:
         print_campaign_summary(
             run_id=run_id,
             vm_prefix=vm_prefix,
+            git_ref=git_ref,
             selected=selected,
             vm_yamls=vm_yamls,
             years=args.years,
             timeout_seconds=timeout_seconds,
             machine_profile=args.machine_type,
         )
+
+        print("\nCampaign check")
+        print("==============")
+        if not print_validation(*validate_campaign(campaign_dir)):
+            print(
+                "\nThe campaign files were written but would fail as they are. "
+                "Fix the errors and regenerate with --force, or edit the files "
+                "and check them again with:\n"
+                "  pixi run -e runner python -m runner.utils.campaign "
+                f"{campaign_dir.relative_to(REPO_ROOT)}"
+            )
+            sys.exit(1)
+        print_next_steps(run_id)
 
     else:
         run_script = create_local_campaign(

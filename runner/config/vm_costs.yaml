@@ -1,0 +1,22 @@
+# VM costs and times used by runner/utils/cost.py to estimate the cost of a
+# benchmark campaign before it is created. Prices are hourly on-demand prices
+# in USD in `region`, as listed on https://gcloud-compute.com on `checked_on`;
+# other regions can cost up to about 20% more.
+region: us-central1
+checked_on: 2026-11-04
+
+machine_types:
+  c4-standard-2: 0.0969
+  c4-highmem-16: 1.0427
+
+# The 50 GB boot disk of each VM
+disk_per_hour: 0.0055
+
+# Booting, installing the solver environments, downloading the problems and
+# uploading the results, which took under 15 minutes per VM in the campaigns
+# of December 2025 to September 2026, including the L problems of v2
+setup_hours_per_vm: 0.25
+
+# The HiGHS reference benchmark, which took 3.2-3.6 minutes in the same
+# campaigns
+reference_benchmark_hours: 0.06

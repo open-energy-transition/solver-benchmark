@@ -1,0 +1,28 @@
+# Labels pull requests by the files they change (see .github/labeler.yml). It
+# only adds labels, so labels added by hand stay.
+#
+# pull_request_target runs in the context of the base branch and gives write
+# access, also on pull requests from forks, so this workflow must never check
+# out or run their code.
+
+name: Pull Request Labeler
+
+on: # zizmor: ignore[dangerous-triggers] -- no PR code is checked out or run
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  labeler:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # to read .github/labeler.yml
+      pull-requests: write
+    steps:
+      - uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0

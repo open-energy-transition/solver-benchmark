@@ -6,8 +6,18 @@ writes to the solution file instead.
 """
 
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
+
+
+def solver_version() -> str:
+    """Return the version of the `glpsol` program linopy runs in this env."""
+    output = subprocess.run(
+        ["glpsol", "--version"], capture_output=True, text=True, check=True
+    ).stdout
+    # e.g. "GLPSOL--GLPK LP/MIP Solver 5.0" or "GLPSOL: GLPK LP/MIP Solver, v4.65"
+    return re.search(r"\d+(?:\.\d+)+", output.splitlines()[0]).group(0)
 
 
 def is_mip(model: Any) -> bool | None:
@@ -15,8 +25,8 @@ def is_mip(model: Any) -> bool | None:
     return None
 
 
-def duality_gap(model: Any, log_fn: Path) -> float | None:
-    """Return None: GLPK doesn't expose a duality gap from Python."""
+def mip_gap(model: Any, log_fn: Path) -> float | None:
+    """Return None: GLPK doesn't expose a MIP gap from Python."""
     return None
 
 

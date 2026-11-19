@@ -125,7 +125,7 @@ const MethodologySection = () => {
           <li className="mb-4">
             <p>
               We run all solvers using their default options, with two
-              exceptions: the first is that we set a duality gap tolerance of{" "}
+              exceptions: the first is that we set a MIP gap tolerance of{" "}
               <code>1e-4</code> for all MILP problems.
             </p>
             <ul className="list-disc list-outside ml-6 mt-2 text-base leading-relaxed">

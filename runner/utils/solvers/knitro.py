@@ -5,8 +5,21 @@
 available.
 """
 
+import re
 from pathlib import Path
 from typing import Any
+
+# knitro is only installed in the Knitro solver environment
+try:
+    import knitro as _knitro
+except ModuleNotFoundError:
+    _knitro = None
+
+
+def solver_version() -> str:
+    """Return the version of the Knitro library this env loads."""
+    # e.g. "Knitro 15.1.0"
+    return re.search(r"\d+(?:\.\d+)+", _knitro.KN_get_release()).group(0)
 
 
 def is_mip(model: Any) -> bool | None:
@@ -15,7 +28,7 @@ def is_mip(model: Any) -> bool | None:
     return None if n_integer_vars is None else n_integer_vars > 0
 
 
-def duality_gap(model: Any, log_fn: Path) -> float | None:
+def mip_gap(model: Any, log_fn: Path) -> float | None:
     """Knitro's own reported relative MIP gap, if present."""
     return getattr(model, "mip_rel_gap", None)
 

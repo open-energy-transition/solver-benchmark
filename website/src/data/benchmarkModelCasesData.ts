@@ -1,6 +1,5 @@
 export interface IBenchmarkModelCases {
   header: string;
-  DCOPF: string;
   ETHOS_FINE: string;
   GenX: string;
   "IESA-Opt": string;
@@ -22,7 +21,6 @@ export interface IBenchmarkModelCases {
 export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   {
     header: "Problem Classes",
-    DCOPF: "",
     ETHOS_FINE: "",
     GenX: "",
     "IESA-Opt": "",
@@ -41,7 +39,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "LP",
-    DCOPF: "true",
     ETHOS_FINE: "true",
     GenX: "true",
     "IESA-Opt": "true",
@@ -60,7 +57,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "MILP",
-    DCOPF: "true",
     ETHOS_FINE: "true",
     GenX: "true",
     "IESA-Opt": "false",
@@ -79,7 +75,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Applications",
-    DCOPF: "",
     ETHOS_FINE: "",
     GenX: "",
     "IESA-Opt": "",
@@ -98,7 +93,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Infrastructure & Capacity Expansion",
-    DCOPF: "false",
     ETHOS_FINE: "true",
     GenX: "true",
     "IESA-Opt": "true",
@@ -117,7 +111,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Operational",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -136,7 +129,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Production cost modelling",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -155,7 +147,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Steady-state Optimal Power Flow",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "true",
     "IESA-Opt": "false",
@@ -174,7 +165,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Resource Adequacy",
-    DCOPF: "true",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -193,7 +183,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "MILP Features",
-    DCOPF: "",
     ETHOS_FINE: "",
     GenX: "",
     "IESA-Opt": "",
@@ -212,7 +201,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "None",
-    DCOPF: "true",
     ETHOS_FINE: "true",
     GenX: "true",
     "IESA-Opt": "true",
@@ -231,7 +219,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Unit commitment",
-    DCOPF: "true",
     ETHOS_FINE: "false",
     GenX: "true",
     "IESA-Opt": "false",
@@ -250,7 +237,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Transmission switching",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -269,7 +255,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Modularity",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -288,7 +273,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Binary transmission investment decisions",
-    DCOPF: "false",
     ETHOS_FINE: "true",
     GenX: "false",
     "IESA-Opt": "false",
@@ -307,7 +291,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Piecewise fuel usage",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "true",
     "IESA-Opt": "false",
@@ -326,7 +309,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Piecewise-linear part-load efficiency modeling",
-    DCOPF: "false",
     ETHOS_FINE: "true",
     GenX: "false",
     "IESA-Opt": "false",
@@ -345,7 +327,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Piecewise efficiency",
-    DCOPF: "false",
     ETHOS_FINE: "true",
     GenX: "false",
     "IESA-Opt": "false",
@@ -364,7 +345,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Modelling of fixed costs",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -383,7 +363,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "NonConvex operation",
-    DCOPF: "false",
     ETHOS_FINE: "false",
     GenX: "false",
     "IESA-Opt": "false",
@@ -402,7 +381,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Realistic",
-    DCOPF: "",
     ETHOS_FINE: "",
     GenX: "",
     "IESA-Opt": "",
@@ -421,7 +399,6 @@ export const benchmarkModelCasesData: IBenchmarkModelCases[] = [
   },
   {
     header: "Realistic",
-    DCOPF: "true",
     ETHOS_FINE: "false",
     GenX: "true",
     "IESA-Opt": "true",

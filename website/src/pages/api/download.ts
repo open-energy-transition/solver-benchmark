@@ -7,6 +7,13 @@ export const config = {
   },
 };
 
+// Only benchmark problem files are proxied, so this can't be used to fetch
+// arbitrary URLs through the website.
+const ALLOWED_URL_PREFIXES = [
+  "https://storage.googleapis.com/solver-benchmarks/",
+  "https://raw.githubusercontent.com/jump-dev/",
+];
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -17,11 +24,37 @@ export default async function handler(
     return;
   }
 
+  // Check the parsed URL, which resolves e.g. "../" segments
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(url);
+  } catch {
+    res.status(400).send("Missing or invalid url");
+    return;
+  }
+  if (
+    !ALLOWED_URL_PREFIXES.some((prefix) => parsedUrl.href.startsWith(prefix))
+  ) {
+    res.status(403).send("Only benchmark problem files can be downloaded");
+    return;
+  }
+  const fileName = (parsedUrl.pathname.split("/").pop() || "download").replace(
+    /[^A-Za-z0-9._+-]/g,
+    "_",
+  );
+
   try {
     // Use native Node.js http/https for streaming
     const fetchModule = await import("node-fetch");
     const fetch = fetchModule.default || fetchModule;
-    const response = await fetch(url);
+    // Don't follow redirects, which could lead outside the allowed URLs.
+    // Forward Range, so large files can be fetched in parts that each finish
+    // before the serverless function times out.
+    const range = req.headers.range;
+    const response = await fetch(parsedUrl.href, {
+      redirect: "error",
+      headers: range ? { Range: range } : {},
+    });
 
     if (!response.ok || !response.body) {
       res.status(response.status).send("Failed to fetch file");
@@ -29,14 +62,21 @@ export default async function handler(
     }
 
     // Set headers for file download
+    res.status(response.status);
+    const contentRange = response.headers.get("content-range");
+    if (contentRange) {
+      res.setHeader("Content-Range", contentRange);
+    }
+    // node-fetch decompresses encoded responses, which changes their length
+    const contentLength = response.headers.get("content-length");
+    if (contentLength && !response.headers.get("content-encoding")) {
+      res.setHeader("Content-Length", contentLength);
+    }
     res.setHeader(
       "Content-Type",
       response.headers.get("content-type") || "application/octet-stream",
     );
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${url.split("/").pop()}"`,
-    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
 
     // Pipe the response body directly to the client
     response.body.pipe(res);

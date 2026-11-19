@@ -5,9 +5,9 @@
 # version listed for a given year is the latest release of that solver
 # available in that year, not necessarily the version it was first released.
 #
-# `packages`: the PyPI package name for each solver, where it differs
-# from the solver's own name (used to cross-check what's actually installed
-# in an env against what this file expects).
+# `packages`: the package name for each solver, where it differs from the
+# solver's own name (used to check the `tests` block below against the
+# versions runner/envs/benchmark-tests/pixi.toml pins).
 #
 # `tests`: not a release year -- the versions actually pinned in
 # runner/envs/benchmark-tests/pixi.toml, the single shared env CI solves
@@ -141,6 +141,18 @@ license_env_vars:
   knitro: [ARTELYS_LICENSE]
   xpress: [XPRESS, LD_LIBRARY_PATH]
   mosek: [MOSEKLM_LICENSE_FILE]
+
+# Solver-native time-limit option. When present, the runner gives the solver
+# the benchmark timeout directly and keeps the outer Linux timeout only as a
+# short watchdog. Solvers not listed here continue to use only the outer
+# timeout, preserving the existing behaviour.
+timeout_options:
+  highs: time_limit
+  scip: limits/time
+  cbc: seconds
+  gurobi: TimeLimit
+  cplex: timelimit
+  xpress: timelimit
 
 seed_options:
   glpk: seed

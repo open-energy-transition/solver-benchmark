@@ -25,7 +25,7 @@ _FAKE_METRICS = {
     "objective": 1.0,
     "runtime": 0.5,
     "reported_runtime": 0.4,
-    "duality_gap": 0.0,
+    "mip_gap": 0.0,
     "max_integrality_violation": 0.0,
     "memory": 12.3,
 }
@@ -190,7 +190,7 @@ class TestBenchmarkCli:
             [str(problems_yaml), "--solver-configurations", "highs-default"],
         )
         assert result.exit_code == 0, result.output
-        assert "Running the benchmark for year 2024" in result.output
+        assert "Running the benchmark for year(s) 2024..." in result.output
         assert "2025" not in result.output.split("run ID")[0]
 
     def test_first_year_overwrites_subsequent_years_append(
@@ -226,7 +226,7 @@ class TestBenchmarkCli:
         results_csv.write_text(
             "Problem,Solver,Solver Version,Solver Release Year,Status,Termination "
             "Condition,Runtime (s),Memory Usage (MB),Objective Value,Max "
-            "Integrality Violation,Duality Gap,Reported Runtime (s),Timeout,"
+            "Integrality Violation,MIP Gap,Reported Runtime (s),Timeout,"
             "Hostname,Run ID,Timestamp,VM Instance Type,VM Zone,Solver benchmark "
             "version\nprior-problem,highs,1.9.0,2024,ok,Optimal,1.0,10.0,1.0,0.0,"
             "0.0,1.0,,h,old-run,2024-01-01 00:00:00,unknown,unknown,abc\n"
@@ -263,9 +263,11 @@ class TestBenchmarkCli:
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert results["Run ID"].nunique() == 1
 
-    def test_a_failing_year_does_not_abort_remaining_years(
+    def test_a_crashing_solver_run_does_not_abort_the_others(
         self, problems_yaml, tmp_path, mocker
     ):
+        # Keep the run order 2024 then 2025, so the 2024 run is the one that crashes
+        mocker.patch.object(orchestrator.random, "shuffle")
         mocker.patch.object(
             orchestrator,
             "run_solver",
@@ -283,10 +285,54 @@ class TestBenchmarkCli:
                 "highs-default",
             ],
         )
-        # Every year is still attempted, but the failure is reported via the
+        # Every run is still attempted, but the failure is reported via the
         # exit code (infrastructure/startup-script.sh relies on it).
         assert result.exit_code == 1, result.output
-        assert "ERROR running the benchmark for year 2024" in result.output
+        assert "ERROR running highs-default (2024) on tiny-problem" in result.output
+        assert "1 solver run(s) failed" in result.output
+        # One alert, for the crashed run, and none for the run as a whole
+        alerts = [
+            line
+            for line in result.output.splitlines()
+            if line.startswith("BENCHMARK_ALERT")
+        ]
+        assert len(alerts) == 1
+        assert alerts[0].startswith(
+            "BENCHMARK_ALERT status=ER problem=tiny-problem solver=highs-default "
+            "year=2024"
+        )
+        results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
+        assert list(results["Solver Release Year"]) == [2025]
+
+    def test_a_year_that_fails_to_set_up_alerts_and_the_others_run(
+        self, problems_yaml, tmp_path, mocker
+    ):
+        # E.g. pixi failing to install 2024's envs
+        mocker.patch(
+            "runner.benchmark.env.ensure_solver_envs_installed",
+            side_effect=[FileNotFoundError("pixi"), None],
+        )
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2024",
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+            ],
+        )
+        assert result.exit_code == 1, result.output
+        assert "ERROR preparing the benchmark for year 2024: pixi" in result.output
+        alerts = [
+            line
+            for line in result.output.splitlines()
+            if line.startswith("BENCHMARK_ALERT")
+        ]
+        assert len(alerts) == 1
+        assert alerts[0].startswith("BENCHMARK_ALERT status=ER year=2024")
         results = pd.read_csv(tmp_path / "results" / "benchmark_results.csv")
         assert list(results["Solver Release Year"]) == [2025]
 
@@ -403,6 +449,29 @@ class TestBenchmarkCli:
         )
         assert result.exit_code == 1, result.output
         assert "no registered solver version" in result.output
+
+    def test_unknown_solver_configuration_fails_before_running(
+        self, problems_yaml, tmp_path
+    ):
+        # A bare solver name isn't a configuration, so it must not silently
+        # run with the solver's own defaults
+        result = runner_cli.invoke(
+            benchmark.app,
+            [
+                str(problems_yaml),
+                "--years",
+                "2025",
+                "--solver-configurations",
+                "highs-default",
+                "--solver-configurations",
+                "highs",
+            ],
+        )
+        assert result.exit_code == 1, result.output
+        assert "unknown solver configuration(s) highs;" in result.output
+        assert "BENCHMARK_ALERT status=ER" in result.output
+        assert not (tmp_path / "results" / "benchmark_results.csv").exists()
+        orchestrator.run_solver.assert_not_called()
 
 
 class TestBenchmarkCliInvocation:

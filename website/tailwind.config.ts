@@ -5,6 +5,8 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    // Blog posts can use Tailwind classes in raw HTML
+    "./src/data/posts/**/*.md",
   ],
   safelist: [
     "grid-cols-1",

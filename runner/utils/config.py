@@ -250,27 +250,6 @@ def get_all_registered_years(config: dict[str, Any] | None = None) -> list[str]:
     return sorted(years)
 
 
-def get_package_name(solver_package: str, config: dict[str, Any] | None = None) -> str:
-    """Return the PyPI package name that provides a solver.
-
-    Parameters
-    ----------
-    solver_package : str
-        The underlying solver package, e.g. ``"highs"``.
-    config : dict[str, Any], optional
-        A pre-loaded solver registry. Defaults to :func:`load_solver_registry`.
-
-    Returns
-    -------
-    str
-        The package name, e.g. ``"highspy"`` for ``"highs"``. Falls back to
-        `solver_package` itself if there's no entry in ``solvers.yaml``'s
-        ``packages`` map.
-    """
-    config = config if config is not None else load_solver_registry()
-    return config.get("packages", {}).get(solver_package, solver_package)
-
-
 def get_license_env_vars(
     solver_package: str, config: dict[str, Any] | None = None
 ) -> list[str]:
@@ -316,6 +295,18 @@ def get_seed_option(
     """
     config = config if config is not None else load_solver_registry()
     return config.get("seed_options", {}).get(solver_package)
+
+
+def get_timeout_option(
+    solver_package: str, config: dict[str, Any] | None = None
+) -> str | None:
+    """Return the solver-native option key used to set a time limit.
+
+    Solvers without a registered key keep using only the outer process
+    timeout enforced by :mod:`runner.utils.execution`.
+    """
+    config = config if config is not None else load_solver_registry()
+    return config.get("timeout_options", {}).get(solver_package)
 
 
 def get_configured_seed(solver_configuration: str) -> Any:

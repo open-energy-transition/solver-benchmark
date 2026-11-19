@@ -3,13 +3,24 @@
 from pathlib import Path
 from typing import Any
 
+# cplex is only installed in the CPLEX solver environment
+try:
+    import cplex as _cplex
+except ModuleNotFoundError:
+    _cplex = None
+
+
+def solver_version() -> str:
+    """Return the version of the CPLEX library this env loads."""
+    return _cplex.Cplex().get_version()
+
 
 def is_mip(model: Any) -> bool:
     """Whether any variable is integer or binary."""
     return any(t in ("I", "B") for t in model.variables.get_types())
 
 
-def duality_gap(model: Any, log_fn: Path) -> float:
+def mip_gap(model: Any, log_fn: Path) -> float:
     """CPLEX's own reported relative MIP gap."""
     return model.solution.MIP.get_mip_relative_gap()
 

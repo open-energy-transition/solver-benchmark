@@ -10,12 +10,17 @@ except ModuleNotFoundError:
     _mosek = None
 
 
+def solver_version() -> str:
+    """Return the version of the MOSEK library this env loads."""
+    return ".".join(str(part) for part in _mosek.Env.getversion())
+
+
 def is_mip(model: Any) -> bool:
     """Whether the model has any integer variables."""
     return model.getnumintvar() > 0
 
 
-def duality_gap(model: Any, log_fn: Path) -> float | None:
+def mip_gap(model: Any, log_fn: Path) -> float | None:
     """MOSEK's own reported relative MIP gap, if the model is a MIP."""
     if is_mip(model):
         return model.getdouinf(_mosek.dinfitem.mio_obj_rel_gap)

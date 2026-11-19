@@ -40,6 +40,7 @@ problems:
     Num. nonzeros: 279562
     Num. continuous variables: 55927
     Num. integer variables: 52
+    Share integer variables: 0.000929
     MILP features:
     - Modelling of fixed costs
     Modelling framework: ETHOS.FINE
@@ -67,6 +68,7 @@ problems:
     Num. nonzeros: 188064
     Num. continuous variables: 33163
     Num. integer variables: 52
+    Share integer variables: 0.00157
     MILP features:
     - Modelling of fixed costs
     Modelling framework: ETHOS.FINE
@@ -208,6 +210,7 @@ problems:
     Num. nonzeros: 122595
     Num. continuous variables: 16528
     Num. integer variables: 52
+    Share integer variables: 0.00314
     MILP features:
     - Binary investment decisions
     Modelling framework: ETHOS.FINE
@@ -233,6 +236,7 @@ problems:
     Num. nonzeros: 88140
     Num. continuous variables: 15228
     Num. integer variables: 32
+    Share integer variables: 0.0021
     MILP features:
     - Binary investment decisions
     Modelling framework: ETHOS.FINE
@@ -259,6 +263,7 @@ problems:
     Num. nonzeros: 22120
     Num. continuous variables: 4679
     Num. integer variables: 22
+    Share integer variables: 0.00468
     MILP features:
     - Binary investment decisions
     Modelling framework: ETHOS.FINE
@@ -331,6 +336,7 @@ problems:
     Num. nonzeros: 10620
     Num. continuous variables: 2370
     Num. integer variables: 337
+    Share integer variables: 0.124
     MILP features:
     - Binary investment decisions
     - Piecewise efficiency

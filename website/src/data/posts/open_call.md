@@ -44,7 +44,7 @@ To ensure the benchmark set remains relevant and up-to-date, we prioritize insta
 A benchmark contribution consists of:
 
 1. One or more **LP or MPS files** (MPS preferred), either building on the same case with different sizes (e.g., varying spatial/temporal resolutions) or representing different problems (in terms of features and/or constraints).
-2. A **metadata YAML file** describing the benchmark and its size instances, following the provided [template](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/_template_metadata.yaml).
+2. A **metadata YAML file** describing the benchmark and its size instances, following the [metadata schema](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/metadata_schema.yaml).
 
 Each benchmark entry must document:
 
@@ -87,7 +87,7 @@ After submission, the benchmark team will review your contribution and validate 
 
 ## Licensing
 
-All benchmark instances are distributed under the open [CC BY 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. Note that this license applies only to the optimization problem (the LP/MPS file itself), not to the model code or underlying data used to generate it. See the FAQs below for more details.
+All benchmark instances are distributed under the open [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license. Note that this license applies only to the optimization problem (the LP/MPS file itself), not to the model code or underlying data used to generate it. See the FAQs below for more details.
 
 ## FAQs
 

@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
       "https://cloud.umami.is",
       "https://www.google.com/recaptcha/",
       "https://www.gstatic.com/recaptcha/",
-      "https://cdnjs.cloudflare.com",
     ];
 
     return [

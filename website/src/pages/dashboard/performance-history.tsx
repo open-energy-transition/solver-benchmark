@@ -11,6 +11,7 @@ import {
   SolverVersions,
 } from "@/components/shared";
 import NumberProblemsSolved from "@/components/admin/performance-history/NumberProblemsSolved";
+import ScipVersionNote from "@/components/shared/ScipVersionNote";
 import NormalizedSection from "@/components/admin/performance-history/NormalizedSection";
 import SolverEvolutionSection from "@/components/admin/performance-history/SolverEvolutionSection";
 
@@ -208,6 +209,7 @@ const PagePerformanceHistory = () => {
           }
         >
           {/* Content */}
+          <ScipVersionNote className="mb-4" />
           {commonProblems.length ? (
             <>
               <NumberProblemsSolved
