@@ -1,35 +1,33 @@
-<!-- Title: Please prefix your PR title with `Benchmarks:`, `Website:`, `Runner:` etc, and use a short description of your changes in active voice, e.g. `add TIMES instances` or `fix scrollbar on performance history page`. -->
+<!-- Title: the area it changes and a short description in the active voice, e.g. `Benchmarks: add TIMES instances` or `Website: fix scrollbar on performance history page` (see CONTRIBUTING.md). -->
 
-<!-- Please include a summary of the changes and the related issue. Please also include relevant motivation and context. -->
+<!-- What the change does and why, and how you tested it. Say which AI tools you used, if any, and for what. -->
 
-Fixes # [issue] <!-- if applicable, otherwise delete -->
+Fixes # <!-- the issue it closes, if any; otherwise delete this line -->
 
-### Benchmark contributions
+<!-- Delete the sections that don't apply to this pull request. -->
 
-Please add the following information to the description field of the metadata for each benchmark instance:
-- Model code link
-- Any paper describing the energy system model and its equations
-- Data sources used in constructing the model
-- Reference to any real-world study or published paper that this model was used for
+### New benchmark problems
 
-Please add a README with instructions on how to run the modelling framework's code to reproduce benchmark generation, particularly if the code doesn't automatically generate MPS or LP files (see, for instance, this [example](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/switch/README.md)).
+In the metadata of each problem (`Short description`, `Contributor(s)/Source` and `Notes`), give:
+- a link to the model's code;
+- any paper that describes the model and its equations;
+- the sources of its data;
+- any study or paper that used the model.
 
-### Checklist
+Add a README with the steps to reproduce the problems from the framework's code (see [CONTRIBUTING.md](https://github.com/open-energy-transition/solver-benchmark/blob/main/CONTRIBUTING.md#contributing-benchmark-problems)).
 
-<!-- Delete the section(s) that are not relevant to this PR type -->
+- [ ] I consent to releasing these problem files under the CC BY 4.0 license.
+- [ ] The problem IDs follow the convention in [benchmarks/metadata_schema.yaml](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/metadata_schema.yaml).
+- [ ] [solver] solves each problem to optimality in [time], with [options], on a machine with [CPU and RAM].
 
-**For PRs adding new benchmark instances:**
-- [ ] I consent to releasing these benchmark instance files under the CC BY 4.0 license
-- [ ] The benchmark name and size instance name follow the conventions indicated in [benchmarks/metadata_schema.yaml](https://github.com/open-energy-transition/solver-benchmark/blob/main/benchmarks/metadata_schema.yaml)
-- [ ] I have tested that this model instance can be solved to optimality in [time] with [solver] solver, using [options], on a [spec] machine <!-- please indicate which solver, how much RAM memory your machine has, and what solver options were used -->
+For the benchmark team:
+- [ ] Upload the files, compressed with `gzip -9`, to our Cloud Storage bucket.
+- [ ] Run `benchmarks/categorize_benchmarks.py` to add their statistics and size category.
+- [ ] Run `tests/validate_urls.py` to check that the URLs match the problem IDs.
+- [ ] Check that each problem's `License` is CC BY 4.0.
+- [ ] Check that a solver solves the problems within our timeouts on our VMs.
+- [ ] Update the summary table of the Key Insights page, if the problems add new features.
 
-For Benchmark team:
-- [ ] Upload the LP/MPS files (compressed using `gzip -9 <filename>`) to our GCS bucket
-- [ ] Run `benchmarks/categorize_benchmarks.py` on them to obtain problem stats and size category
-- [ ] Run `tests/validate_urls.py` to ensure URLs are consistent with benchmark and size instance name
-- [ ] Update the summary table in the Key Insights page (if the proposed benchmark(s) is/are adding any new features)
-- [ ] Test that some solver solves these benchmarks within our timeouts on our infra
-- [ ] Add CC BY 4.0 license to the metadata file
+### Website changes
 
-**For changes to the website:**
-- [ ] I have tested my changes by running the website locally
+- [ ] I have checked my changes on the website running locally.

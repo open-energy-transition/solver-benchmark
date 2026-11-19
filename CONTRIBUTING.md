@@ -11,7 +11,7 @@ For larger changes, please open an issue first so that we can agree on the appro
 
 ## Development setup
 
-The repository has four parts: the benchmark runner (`runner/`), the benchmark problems and their metadata (`benchmarks/`, merged into `results/metadata.yaml`), the website (`website/`) and the cloud infrastructure (`infrastructure/`). The [README](README.md#project-structure) describes the layout.
+The repository has four main parts: the benchmark runner (`runner/`), the benchmark problems and their metadata (`benchmarks/`, merged into `results/metadata.yaml`), the website (`website/`) and the cloud infrastructure (`infrastructure/`). The [README](README.md#project-structure) describes the layout.
 
 The Python environments are managed by [pixi](https://pixi.sh) from the root `pixi.toml`: `runner`, `benchmarks`, `notebooks` and `dev`. Each solver version has its own environment in `runner/envs/benchmark-<solver>-<year>/`, which the runner installs when it needs it.
 
@@ -22,15 +22,9 @@ pixi install --all                       # or pixi install -e <environment>
 pixi run -e dev pre-commit install       # run the hooks on every commit
 ```
 
-The runner needs Linux, as it limits the memory of the solvers with `systemd-run`; on macOS and Windows, use the [Docker image](README.md#running-with-docker). See [notebooks/README.md](notebooks/README.md) for running the notebooks.
+The runner needs Linux, as it limits the memory of the solvers with `systemd-run`; on macOS and Windows, use the [Docker image](runner/README.md#running-with-docker). See [notebooks/README.md](notebooks/README.md) for running the notebooks.
 
-The website needs Node.js 22, the version in `engines` of `website/package.json`:
-
-```bash
-cd website
-npm ci
-npm run dev    # http://localhost:3000
-```
+The website needs Node.js 22: see [website/README.md](website/README.md#running-locally) to run it locally.
 
 ## Making changes
 
@@ -52,7 +46,7 @@ Running the benchmark locally writes to `results/benchmark_results.csv`: don't c
 
 New problems from energy system models are the most valuable contribution. See [this page](https://openenergybenchmark.org/key-insights#what-benchmark-problems-do-we-have-and-what-are-missing) for the problems we have and the gaps we would love your help to fill. To contribute:
 
-1. Generate an MPS file (preferred) or LP file of each problem with your modelling framework. How to do this depends on the framework: reach out if you need help. The [benchmarks README](benchmarks/README.md) describes how some of the existing problems were generated.
+1. Generate an MPS file (preferred) or LP file of each problem with your modelling framework. How to do this depends on the framework: reach out if you need help. The [benchmarks README](benchmarks/README.md) lists the existing folders and links to the READMEs that describe how their problems were generated.
 2. Describe each problem in a metadata YAML file in a new folder `benchmarks/<framework-or-source>/`, following [benchmarks/metadata_schema.yaml](benchmarks/metadata_schema.yaml). Each problem's ID has the form `<benchmark>-<spatial resolution>-<temporal resolution>`, e.g. `pypsa-de-elec-2-1h` (2 nodes, hourly time steps) or `FINE-1-node-energy-system-workflow-1-8760ts` (1 node, 8760 time slices); the schema describes the convention and every field. Add a README with the steps to reproduce the problems from the framework's code.
 3. Upload the files to any file-sharing service, and regenerate the merged metadata with `pixi run -e benchmarks python benchmarks/merge_metadata.py`: CI checks that `results/metadata.yaml` is up to date and valid.
 4. Open a pull request. The benchmark team uploads the files to our storage, computes their size category and statistics, and checks that a solver solves them within our timeouts.

@@ -1,16 +1,16 @@
-# Instructions to generate GenX benchmarks
+# Generating the GenX problems
 
-- Install Julia following the [instructions](https://julialang.org/downloads/) and switch to version 1.9 (the latest version to be compatible with GenX)
-    - `juliaup status`shows the available versions
-    - `juliaup add 1.9` installs Julia 1.9
-    - `juliaup default 1.9` sets Julia 1.9 as default version
-- Clone the [GenX](https://github.com/GenXProject/GenX.jl) repository
-- Copy the `case_for_oet` benchmark folder in /GenX.jl
-- Subsitute `GenX.jl/case_for_oet/settings/genx_settings.yml` with any of the `.yml` files in [`benchmarks/genx-extended/`](.) and rename it to `genx_settings.yml`
-- Run each case in the GenX.jl Julia project (follow instructions [here](https://genxproject.github.io/GenX.jl/dev/Getting_Started/examples_casestudies/)) using the command `include("/path-to-GenX/Run.jl")`
+1. Install Julia following the [instructions](https://julialang.org/downloads/), and switch to version 1.9, the latest version compatible with GenX:
+   - `juliaup status` shows the available versions;
+   - `juliaup add 1.9` installs Julia 1.9;
+   - `juliaup default 1.9` makes it the default version.
+2. Clone the [GenX](https://github.com/GenXProject/GenX.jl) repository.
+3. Copy the `case_for_oet` case folder into `GenX.jl/`.
+4. Replace `GenX.jl/case_for_oet/settings/genx_settings.yml` with one of the `.yml` files of this folder, renamed to `genx_settings.yml`.
+5. Run each case in the GenX.jl Julia project with `include("/path-to-GenX/Run.jl")`, following the [GenX instructions](https://genxproject.github.io/GenX.jl/dev/Getting_Started/examples_casestudies/).
 
-The abovementioned workflow takes advantage of the content of the `GenX.jl/case_for_oet/TDR_Results` folder for inputs clustered according to a time resolution of 168 h (as reported in `GenX.jl/case_for_oet/settings/time_domain_reduction_settings.yml`)
-Whenever the temporal resolution of the model requires changes one should adopt a simple workflow:
-- If already present, the `TDR_Results` folder should be deleted (or its name should be modified)
-- The TimestepsPerRepPeriod entry in `GenX.jl/case_for_oet/settings/time_domain_reduction_settings.yml` should be adjusted according to the desired temporal resolution (e.g. 1 for hourly resolution, 24 for daily resolution - the `genx-elec_trex_uc` benchmark only runs with such resolution - 168 for weekly resolution, etc.). For more information, follow the [GenX project Guide](https://genxproject.github.io/GenX.jl/dev/User_Guide/TDR_input/)
-- The model can be run using again and a new `TDR_Results` folder will generated according to the new temporal resolution
+This uses the inputs in `GenX.jl/case_for_oet/TDR_Results`, clustered with a time resolution of 168 h (see `GenX.jl/case_for_oet/settings/time_domain_reduction_settings.yml`). To change the temporal resolution:
+
+1. Delete or rename the `TDR_Results` folder.
+2. Set `TimestepsPerRepPeriod` in `GenX.jl/case_for_oet/settings/time_domain_reduction_settings.yml` to the resolution: 1 for hourly, 24 for daily (the only resolution at which `genx-elec_trex_uc` runs) or 168 for weekly. See the [GenX guide](https://genxproject.github.io/GenX.jl/dev/User_Guide/TDR_input/).
+3. Run the model again: it creates a new `TDR_Results` folder at the new resolution.

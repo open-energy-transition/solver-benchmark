@@ -1,157 +1,113 @@
-# Reproducible Solver Benchmark Infrastructure
+# Benchmark infrastructure
 
-This module automates the deployment of VMs on Google Cloud Platform to run energy system model benchmarks. Each VM is provisioned based on YAML configuration files that specify the benchmarks to run.
+The OpenTofu configuration in `main.tf` creates one Google Cloud VM per benchmark YAML file of a campaign. Each VM runs `startup-script.sh`, which:
+
+1. installs the dependencies, pixi, the Gurobi license and the HiGHS binary of the reference benchmark;
+2. clones this repository at `git_ref`;
+3. runs `runner.benchmark` on the VM's problems, with its years and solver configurations;
+4. uploads the results, logs and solutions to the `results/`, `logs/` and `solutions/` folders of `gs://<gcs_bucket_name>/`, under `<run_id>/`, and the Gurobi logs to `gs://<gcs_bucket_name>-restricted/logs/<run_id>/`;
+5. deletes the VM, if `auto_destroy_vm` is set.
+
+Campaigns are usually created with the campaign generator: see [benchmarks/CAMPAIGNS.md](../benchmarks/CAMPAIGNS.md). Only maintainers launch them, as they cost money.
 
 ## Prerequisites
 
-- [OpenTofu](https://opentofu.org/docs/intro/install/) installed on your machine
-- A Google Cloud Platform account with a project set up
-- [gcloud CLI](https://cloud.google.com/sdk/docs/install) installed on your machine
-- SSH key pair (optional, for VM access).
+- [OpenTofu](https://opentofu.org/docs/intro/install/) and the [gcloud CLI](https://cloud.google.com/sdk/docs/install).
+- A Google Cloud project, and Application Default Credentials, which OpenTofu uses:
 
-## Quick Start
+  ```bash
+  gcloud auth application-default login   # your own account
+  gcloud auth login --quiet --force --update-adc --cred-file "$GOOGLE_APPLICATION_CREDENTIALS"   # a service account
+  ```
 
-### 1. Set up GCP Application Default Credentials
+- Optionally, an SSH key pair to log in to the VMs.
 
-To set up Google Cloud Application Default Credentials (ADC) for local development and scripts, you can use either your own user account or a service account.
+## Benchmark YAML format
 
-This method stores credentials in ~/.config/gcloud/application_default_credentials.json for use by Google Cloud client libraries. Opentofu will use these credentials to authenticate with GCP.
-
-```sh
-# Use your personal account, open browser to authenticate your Google account
-gcloud auth application-default login
-
-# Use a service account
-gcloud auth login --quiet --force --update-adc --cred-file "$GOOGLE_APPLICATION_CREDENTIALS"
-```
-
-### 2. Create Your Benchmark Files
-
-2.1. Create a directory for your benchmarking session in `infrastructure/benchmarks` directory
-
-```sh
-cd infrastructure
-mkdir benchmarks/sample_run
-```
-
-2.2 Place your benchmark YAML files in the `benchmarks` directory. Example:
+Each YAML file in `benchmarks_dir` becomes a VM named `<instance_name>-<file name>`. For example, [`benchmarks/sample_run/standard-00.yaml`](benchmarks/sample_run/standard-00.yaml):
 
 ```yaml
 machine-type: c4-standard-2
 years:
 - 2025
-solver_configuration: highs-default scip-default # configurations to run; runs runner.benchmark's own defaults if omitted
+solver_configuration: highs-default scip-default
 problems:
   genx-3_three_zones_w_co2_capture-no_uc-3-1h:
     Problem class: LP
     Size: M
     URL: https://storage.googleapis.com/solver-benchmarks/instances/genx-3_three_zones_w_co2_capture-no_uc-3-1h.lp.gz
-  Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-73-1h:
-    Problem class: MILP
-    Size: M
-    URL: https://raw.githubusercontent.com/jump-dev/open-energy-modeling-benchmarks/main/instances/Sienna_modified_RTS_GMLC_DA_sys_NetTransport_Horizon24_Day314-868ad371df2ae99f1427c0d6f5d6af4f1c520d51224598e1dc085b0736df5955.mps.gz
 ```
 
-Each entry under `problems:` is a single, specific problem instance (see `runner/utils/metadata.py`'s `load_problems`) -- there's no separate nested list for multiple sizes of the same model; each size gets its own top-level entry with a distinct ID.
+| Field | Description |
+|---|---|
+| `machine-type` | Machine type of the VM. Default: `c4-standard-2`. |
+| `zone` | Zone of the VM. Default: the `zone` variable. |
+| `years` | Solver-version years to run. Default: 2020 and 2022 to 2025. |
+| `solver_configuration` | Space-separated solver configurations. Default: `default_configurations` in `runner/config/solver_configurations.yaml`. |
+| `timeout_seconds` | Timeout of each run, in seconds. Default: 1 hour for S and M problems, 24 hours for L problems. |
+| `problems` | Map of problem IDs to their `Problem class`, `Size` and `URL`, as in `results/metadata.yaml`. |
 
-### Cost tracking labels
+## Variables
 
-Each benchmark VM and its boot disk get four [GCP labels](https://docs.cloud.google.com/compute/docs/labeling-resources) for filtering and grouping costs in Cloud Billing:
+Set the variables in a `run.tfvars` file, such as [`benchmarks/sample_run/run.tfvars`](benchmarks/sample_run/run.tfvars):
 
-| Label | Value |
-|-------|-------|
-| `run_id` | Shared campaign run ID, provided through `run_id` or generated automatically |
-| `benchmark` | Benchmark YAML key (the filename without `.yaml`), identifying the VM's assigned workload |
-| `machine_type` | Machine type from the YAML, or `c4-standard-2` by default |
-| `zone` | Zone from the YAML, or the `zone` variable by default |
+| Variable | Description | Default |
+|---|---|---|
+| `project_id` | Google Cloud project | required |
+| `benchmarks_dir` | Folder of the benchmark YAML files, relative to `infrastructure/` | `runtime_optimized` |
+| `zone` | Zone of the VMs without a `zone` field | `europe-west4-a` |
+| `instance_name` | Prefix of the VM names | `benchmark-instance` |
+| `run_id` | Identifier of the campaign, shared by all its VMs | `<YYYYMMDD_hhmmss>_batch`, at `tofu apply` |
+| `git_ref` | Branch or tag of this repository that the VMs run | `main` |
+| `reference_benchmark_interval` | Seconds between two reference benchmarks; 0 turns them off | `3600` |
+| `enable_gcs_upload` | Upload the results and logs to Cloud Storage | `true` |
+| `gcs_bucket_name` | Bucket of the results and logs | `solver-benchmarks` |
+| `auto_destroy_vm` | Delete each VM when its benchmarks finish | `true` |
+| `startup_script_path` | Startup script of the VMs | `startup-script.sh` |
+| `ssh_user`, `ssh_key_path` | User and public key for SSH access | none |
 
-Label values are lowercased, characters outside `a-z`, `0-9`, `_`, and `-` are replaced with `-`, and values are truncated to 63 characters. The VM's metadata and settings keep the original values.
+The campaign generator writes a `run.tfvars` for each campaign.
 
-### 3. Set Up Opentofu Variables
+## Launching and stopping VMs
 
-### OpenTofu Variables
-
-| Variable                       | Description                                                                     | Default                                                   |
-|--------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------|
-| `project_id`                   | GCP Project ID                                                                  | *Required*                                                |
-| `zone`                         | GCP Zone (Will be overridden if a value is specified in the input metadata file) | europe-west4-a                                            |
-| `instance_name`                | Base name for instances                                                         | benchmark-instance                                        |
-| `startup_script_path`          | Path to startup script                                                          | startup-script.sh                                         |
-| `enable_gcs_upload`            | Enable/disable results upload to GCS bucket                                     | true                                                      |
-| `gcs_bucket_name`              | Name of the GCS bucket to upload the results                                    | solver-benchmarks                                         |
-| `auto_destroy_vm`              | Enable/disable auto deletion of VM on benchmark completion                      | true                                                      |
-| `reference_benchmark_interval` | Time interval in seconds to run the reference benchmark                         | 3600                                                      |
-| `ssh_user`                     | SSH username                                                                    | ""                                                        |
-| `ssh_key_path`                 | Path to SSH public key                                                          | ""                                                        |
-| `run_id`                       | Run ID for the benchmarking session                                             | 20251106_153156_batch (calculated from current date-time) |
-| `git_ref`                      | Branch or tag of this repository that the VMs clone and run                     | main                                                      |
-
-
-Create a `run.tfvars` file with your GCP configuration:
-
-```hcl
-project_id = "your-gcp-project"
-# This will be overridden if a value is specified in the input metadata file
-zone = "europe-west4-a"
-
-# Optional
-run_id = "my_benchmark_run" # calculated from current time if not provided
-
-# Setting enable_gcs_uploads to true results and log artifacts to `gcs`
-# results are available at gs://<gcs_bucket_name>/results/<run_id>
-# logs are available at 'gs://<gcs_bucket_name>/logs/<run_id>
-enable_gcs_upload = true
-auto_destroy_vm = false # destroys the VM after running benchmarks and uploading artifacts
-benchmarks_dir = "benchmarks/sample_run"
-```
-
-### 4. Initialize OpenTofu
+From `infrastructure/`, with a state file per campaign:
 
 ```bash
 tofu init
+tofu apply -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
 ```
-### 5. Provision and submit your benchmarking session
+
+OpenTofu prints the IP address of each VM (`instance_ips`) and the run ID (`shared_run_id`). VMs with `auto_destroy_vm = false` stay up until you delete them:
 
 ```bash
-tofu apply -var-file benchmarks/sample_run/run.tfvars
-
-google_compute_instance.benchmark_instances["standard-00"]: Creating...
-google_compute_instance.benchmark_instances["standard-01"]: Creating...
-google_compute_instance.benchmark_instances["standard-01"]: Still creating... [10s elapsed]
-google_compute_instance.benchmark_instances["standard-00"]: Still creating... [10s elapsed]
-google_compute_instance.benchmark_instances["standard-01"]: Still creating... [20s elapsed]
-google_compute_instance.benchmark_instances["standard-00"]: Still creating... [20s elapsed]
-google_compute_instance.benchmark_instances["standard-00"]: Creation complete after 21s [id=projects/your-gcp-project/zones/europe-west4-a/instances/benchmark-instance-standard-00]
-google_compute_instance.benchmark_instances["standard-01"]: Creation complete after 21s [id=projects/your-gcp-project/zones/europe-west4-a/instances/benchmark-instance-standard-01]
-
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-instance_ips = {
-  "standard-00" = "34.xxx.xxx.xxx"
-  "standard-01" = "34.xxx.xxx.xxx"
-}
-run_id = "20251106_153156_batch"
+tofu destroy -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
 ```
 
-### 7. Monitor Your Instances
-
-Once deployed, you'll see the IP addresses/instance FQDN of your VMs and the `run_id`
-You can use this to ssh into your machines to examine the benchmark process
-
-### 8. Destroy Infrastructure When Done
-
-Once the benchmarks finish, by default the VM will auto delete its self. If you change `auto_destroy_vm`
-to `false` in the configuration option, you can delete the whole infrastructure with:
+To follow a VM's progress:
 
 ```bash
-tofu destroy -var-file benchmarks/sample_run/run.tfvars
+gcloud compute ssh <instance_name>-<file name> --project <project_id> --zone <zone>
+tail -f /var/log/startup-script.log                       # overall progress
+tail -f /solver-benchmark/runner/logs/*                   # solver logs
+tail -f /solver-benchmark/results/benchmark_results.csv   # results of the VM
 ```
 
-## Failure Notifications
+## Cost tracking labels
 
-To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per GCP project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
+Each VM and its boot disk get four [labels](https://docs.cloud.google.com/compute/docs/labeling-resources), to filter and group costs in Cloud Billing:
+
+| Label | Value |
+|---|---|
+| `run_id` | The campaign's run ID |
+| `benchmark` | The benchmark YAML file name, without `.yaml` |
+| `machine_type` | The VM's machine type |
+| `zone` | The VM's zone |
+
+The values are lowercased, with characters other than `a-z`, `0-9`, `_` and `-` replaced by `-`, and cut to 63 characters.
+
+## Failure notifications
+
+To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per Google Cloud project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
 
 For each such run, the runner prints a line starting with `BENCHMARK_ALERT`, naming the problem, solver configuration, year, run ID and VM. The runner runs inside the VM's startup script, and the Compute Engine guest agent sends the startup script's output to Cloud Logging (the VMs have the `logging-write` scope for this; no serial port logging is needed). A log-based alert policy emails the recipients when it sees that line: at most one email every 5 minutes, however many runs fail.
 
@@ -200,24 +156,4 @@ To check only the alert policy and the email, without a VM, write a test entry t
 
 ```bash
 gcloud logging write solver-benchmark-alert-test "BENCHMARK_ALERT status=ER test=policy" --project <your-gcp-project>
-```
-
-## Configuration Options
-
-### Benchmark YAML Format
-
-Each YAML file defines a benchmark with specific configuration:
-
-- `machine-type`: GCP machine type to use
-- `years`: Solver-version years to run
-- `solver_configuration`: Space-separated solver configurations to run (optional; defaults to `default_configurations` in `runner/config/solver_configurations.yaml`)
-- `problems`: Map of problem ID to `{Problem class, Size, URL}` (or `Path` instead of `URL` for a local file) -- the same flat schema as `results/metadata.yaml`
-
-## Troubleshooting
-
-```bash
-gcloud compute ssh projects/your-gcp-project/zones/europe-west4-a/instances/benchmark-instance-standard-01
-tail -f /var/log/startup-script.log # overall progress
-tail -f /solver-benchmark/runner/logs/* # solver logs
-tail -f /solver-benchmark/results/benchmark_results.csv # benchmark results for the VM
 ```
