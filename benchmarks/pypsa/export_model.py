@@ -18,7 +18,24 @@ logger = logging.getLogger(__name__)
 
 
 def get_custom_functionality(config: dict) -> str | None:
-    """Resolve the custom functionality path relative to the rules directory."""
+    """
+    Resolve the path to the custom functionality module.
+
+    Parameters
+    ----------
+    config : dict
+        PyPSA-Eur configuration containing the solving options.
+
+    Returns
+    -------
+    str or None
+        Absolute path to the custom functionality module, or None if unset.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the configured module does not exist.
+    """
     configured = config["solving"]["options"].get("custom_extra_functionality")
 
     if not configured:
@@ -39,7 +56,22 @@ def export_model(
     prepared_network_path: Path,
     horizon: str,
 ) -> None:
-    """Prepare a network, construct its optimization model, and export it."""
+    """
+    Prepare the network, construct its optimization model, and export it.
+
+    Parameters
+    ----------
+    network_path : pathlib.Path
+        Path to the composed PyPSA-Eur network.
+    config_path : pathlib.Path
+        Path to the benchmark-specific configuration.
+    problem_path : pathlib.Path
+        Destination for the exported LP or MPS problem.
+    prepared_network_path : pathlib.Path
+        Destination for the prepared network in NetCDF format.
+    horizon : str
+        Planning horizon used to construct the optimization model.
+    """
     with config_path.open() as file:
         config = yaml.safe_load(file)
 
