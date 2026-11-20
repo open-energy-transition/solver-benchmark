@@ -14,7 +14,7 @@ FROM pypsa_benchmark_gen_base AS repo_clone
 RUN git clone --filter=blob:none https://github.com/PyPSA/pypsa-eur.git \
     && cd pypsa-eur \
     && git checkout 1b83697f9c2c18ac4c7e0c8c719aff327c221843
-    # Pinned PyPSA-Eur revision for reproducible benchmark generation
+    # Pinned PyPSA-Eur revision (11 Nov 2026) for reproducible benchmark generation
 
 FROM repo_clone AS pixi_env
 RUN wget -qO- https://pixi.sh/install.sh | sh
