@@ -638,6 +638,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 38606381
+    Num. variables: 15383112
+    Num. nonzeros: 92026123
+    Num. continuous variables: 12492312
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion and including unit commitment.
@@ -741,6 +747,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 72797569
+    Num. variables: 28602483
+    Num. nonzeros: 171062046
+    Num. continuous variables: 23556723
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion and including unit commitment.
@@ -845,6 +857,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_vopt-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with transmission expansion based on optimal volume increase and including
@@ -952,6 +970,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_vopt-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with transmission expansion based on optimal volume increase and including
@@ -1058,6 +1082,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_copt-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with cost-optimal transmission expansion and including unit commitment.
@@ -1161,6 +1191,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_copt-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with cost-optimal transmission expansion and including unit commitment.
@@ -1264,6 +1300,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 38606381
+    Num. variables: 15383112
+    Num. nonzeros: 92026123
+    Num. continuous variables: 12492312
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-uc-dfp-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing and including unit commitment.
@@ -1367,6 +1409,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 72797569
+    Num. variables: 28602483
+    Num. nonzeros: 171062046
+    Num. continuous variables: 23556723
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-uc-dfp-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing and including unit commitment.
@@ -1471,6 +1519,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_vopt-uc-dfp-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, transmission expansion based on optimal volume
@@ -1578,6 +1632,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_vopt-uc-dfp-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, transmission expansion based on optimal volume
@@ -1685,6 +1745,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_copt-uc-dfp-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, cost-optimal transmission expansion, and including
@@ -1792,6 +1858,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_copt-uc-dfp-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, cost-optimal transmission expansion, and including
@@ -3743,6 +3815,12 @@ problems:
     Sectors: Electric, Heating, Transport, Industry, Hydrogen, Biomass
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 119597487
+    Num. variables: 54105079
+    Num. nonzeros: 285135080
+    Num. continuous variables: 54105079
+    Num. integer variables: 0
+    Share integer variables: 0.0
   pypsa-de-sec-trex_copt-50-168h:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with cost-optimal
       transmission expansion.
@@ -3843,6 +3921,12 @@ problems:
     Sectors: Electric, Heating, Transport, Industry, Hydrogen, Biomass
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 119597487
+    Num. variables: 54105079
+    Num. nonzeros: 285135080
+    Num. continuous variables: 54105079
+    Num. integer variables: 0
+    Share integer variables: 0.0
   pypsa-de-sec-trex_vopt-50-168h:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with transmission
       expansion based on optimal volume increase.
@@ -4109,6 +4193,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 35119534
+    Num. variables: 14628439
+    Num. nonzeros: 83423384
+    Num. continuous variables: 11133199
+    Num. integer variables: 3495240
+    Share integer variables: 0.239
   pypsa-de-elec-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       without transmission expansion and including unit commitment.
@@ -4214,6 +4304,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 64264669
+    Num. variables: 26717395
+    Num. nonzeros: 152563272
+    Num. continuous variables: 20305075
+    Num. integer variables: 6412320
+    Share integer variables: 0.24
   pypsa-de-elec-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       without transmission expansion and including unit commitment.
@@ -4702,6 +4798,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 38448560
+    Num. variables: 14628552
+    Num. nonzeros: 91903290
+    Num. continuous variables: 11133312
+    Num. integer variables: 3495240
+    Share integer variables: 0.239
   pypsa-de-elec-trex_vopt-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       with transmission expansion based on optimal volume increase and including unit
@@ -4810,6 +4912,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 70572265
+    Num. variables: 26717593
+    Num. nonzeros: 168489348
+    Num. continuous variables: 20305273
+    Num. integer variables: 6412320
+    Share integer variables: 0.24
   pypsa-de-elec-trex_vopt-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       with transmission expansion based on optimal volume increase and including unit
