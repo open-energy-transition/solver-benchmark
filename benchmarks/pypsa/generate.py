@@ -309,6 +309,7 @@ def build_benchmark_config(
     bench_type: str,
     horizon: str = "2050",
     benchmark_id: str | None = None,
+    germany: bool = False,
 ) -> dict:
     """
     Build an isolated configuration for the PyPSA-Eur benchmark.
@@ -329,6 +330,8 @@ def build_benchmark_config(
         Planning horizon. Defaults to "2050".
     benchmark_id : str or None, optional
         Benchmark identifier used to configure the run.
+    germany : bool, optional
+        Whether to restrict the benchmark to Germany.
 
     Returns
     -------
@@ -358,6 +361,9 @@ def build_benchmark_config(
     }
 
     final_cfg.setdefault("sector", {})["enabled"] = bench_type == "sec"
+
+    if germany:
+        final_cfg["countries"] = ["DE"]
 
     if benchmark_id is not None:
         run_config = final_cfg.setdefault("run", {})
@@ -419,10 +425,8 @@ if __name__ == "__main__":
                     bench_type,
                     horizon,
                     benchmark_id=benchmark_id,
+                    germany=args.germany,
                 )
-
-                if args.germany:
-                    config["countries"] = ["DE"]
 
                 config_path = output_dir / f"{benchmark_id}.yaml"
                 problem_path = output_dir / (f"{benchmark_id}{args.file_extension}")
@@ -446,20 +450,18 @@ if __name__ == "__main__":
                 if args.dry_run:
                     continue
 
-                subprocess.run(
-                    [
-                        sys.executable,
-                        str(base_dir / "export_model.py"),
-                        "--network",
-                        str(composed_network_path),
-                        "--config",
-                        str(config_path),
-                        "--problem",
-                        str(problem_path),
-                        "--prepared-network",
-                        str(prepared_network_path),
-                        "--horizon",
-                        horizon,
-                    ],
-                    check=True,
-                )
+                export_cmd = [
+                    sys.executable,
+                    str(base_dir / "export_model.py"),
+                    "--network",
+                    str(composed_network_path),
+                    "--config",
+                    str(config_path),
+                    "--problem",
+                    str(problem_path),
+                    "--prepared-network",
+                    str(prepared_network_path),
+                    "--horizon",
+                    horizon,
+                ]
+                subprocess.run(export_cmd, check=True)

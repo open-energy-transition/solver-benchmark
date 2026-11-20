@@ -75,6 +75,11 @@ def export_model(
     with config_path.open() as file:
         config = yaml.safe_load(file)
 
+    if not isinstance(config.get("solving"), dict) or not isinstance(
+        config["solving"].get("options"), dict
+    ):
+        raise ValueError("Config missing required 'solving.options' section")
+
     solve_options = config["solving"]["options"]
 
     if solve_options.get("rolling_horizon", False):

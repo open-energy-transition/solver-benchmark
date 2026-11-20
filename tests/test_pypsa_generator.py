@@ -175,3 +175,21 @@ def test_generate_benchmark_uses_composed_network(monkeypatch):
     assert "--configfile /tmp/benchmark.yaml" in commands[0]
     assert " -n" in commands[0]
     assert "solve_network" not in commands[0]
+
+
+def test_build_german_benchmark_config():
+    """Check Germany selection is applied during config construction."""
+    base = {"countries": ["DE", "FR"]}
+    original = deepcopy(base)
+
+    config = generator.build_benchmark_config(
+        base,
+        {},
+        50,
+        "3h",
+        "elec",
+        germany=True,
+    )
+
+    assert config["countries"] == ["DE"]
+    assert base == original
