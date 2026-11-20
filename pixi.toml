@@ -71,7 +71,6 @@ pytest-mock = "*"
 pre-commit = "*"
 mypy = "*"
 yamale = "*"
-"ruamel.yaml" = ">=0.19.1,<0.20"
 
 [environments]
 runner = ["runner", "dev"]
