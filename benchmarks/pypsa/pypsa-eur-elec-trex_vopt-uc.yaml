@@ -7,7 +7,7 @@ electricity:
     - "offwind-ac"
     - "offwind-dc"
     - "offwind-float"
-  transmission_limit: v1
+  transmission_limit: vopt
 
 conventional:
   unit_commitment: true

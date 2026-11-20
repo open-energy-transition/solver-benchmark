@@ -133,8 +133,21 @@ def main() -> None:
     with Path("results/metadata.yaml").open() as f:
         meta = yaml.safe_load(f)
 
+    # These instances changed from M to L, so historical results use
+    # the wrong timeout category. See #680 for legacy result handling.
+    excluded_legacy_pypsa_ids = {
+        "pypsa-eur-elec-50-12h",
+        "pypsa-de-elec-4-1h",
+    }
+
+    historical_problems = {
+        problem_id: problem
+        for problem_id, problem in meta["problems"].items()
+        if problem_id not in excluded_legacy_pypsa_ids
+    }
+
     short_timeout_ids, long_timeout_ids, skipped_ids = bucket_problems_by_timeout(
-        meta["problems"]
+        historical_problems
     )
 
     short_solvers_lp: set[str] | None = None
@@ -151,6 +164,7 @@ def main() -> None:
         data.loc[old_format, "Problem"] = (
             data.loc[old_format, "Benchmark"] + "-" + data.loc[old_format, "Size"]
         )
+    data = data.loc[~data["Problem"].isin(excluded_legacy_pypsa_ids)].copy()
     data["solver-version"] = data["Solver"] + "-" + data["Solver Version"]
 
     # Check that every problem has metadata and the same set of solvers run on it

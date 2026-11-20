@@ -3394,12 +3394,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 7379675
-    Num. variables: 3542548
-    Num. nonzeros: 14013661
+    Num. constraints: 10013634
+    Num. variables: 4164523
+    Num. nonzeros: 20365778
+    Num. continuous variables: 4164523
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -3418,13 +3421,16 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-12h.mps.gz
     Problem class: LP
-    Size: M
-    Num. constraints: 1845545
-    Num. variables: 886078
-    Num. nonzeros: 3538736
+    Size: L
+    Num. constraints: 2504124
+    Num. variables: 1041583
+    Num. nonzeros: 5127495
+    Num. continuous variables: 1041583
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 12 hours
     Realistic: false
@@ -3442,12 +3448,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 923190
-    Num. variables: 443333
-    Num. nonzeros: 1771173
+    Num. constraints: 1252539
+    Num. variables: 521093
+    Num. nonzeros: 2565733
+    Num. continuous variables: 521093
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -3465,12 +3474,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 134766
-    Num. variables: 64877
-    Num. nonzeros: 258209
+    Num. constraints: 182691
+    Num. variables: 76181
+    Num. nonzeros: 373785
+    Num. continuous variables: 76181
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3488,12 +3500,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-100-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 14064375
-    Num. variables: 6720092
-    Num. nonzeros: 27072974
+    Num. constraints: 19308909
+    Num. variables: 7853068
+    Num. nonzeros: 39662935
+    Num. continuous variables: 7853068
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -3513,12 +3528,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3517335
-    Num. variables: 1680902
-    Num. nonzeros: 6840825
+    Num. constraints: 4828629
+    Num. variables: 1964158
+    Num. nonzeros: 9988317
+    Num. continuous variables: 1964158
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 12 hours
     Realistic: true
@@ -3538,12 +3556,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-100-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1759495
-    Num. variables: 841037
-    Num. nonzeros: 3424437
+    Num. constraints: 2415249
+    Num. variables: 982673
+    Num. nonzeros: 4998447
+    Num. continuous variables: 982673
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -3561,12 +3582,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 135086
-    Num. variables: 65037
-    Num. nonzeros: 273793
+    Num. constraints: 193193
+    Num. variables: 76344
+    Num. nonzeros: 409992
+    Num. continuous variables: 76344
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3584,12 +3608,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3517891
-    Num. variables: 1681180
-    Num. nonzeros: 7220251
+    Num. constraints: 5131405
+    Num. variables: 1964436
+    Num. nonzeros: 10972913
+    Num. continuous variables: 1964436
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 12 hours
     Realistic: true
@@ -3609,12 +3636,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 135086
-    Num. variables: 65037
-    Num. nonzeros: 273793
+    Num. constraints: 193193
+    Num. variables: 76344
+    Num. nonzeros: 409992
+    Num. continuous variables: 76344
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3632,12 +3662,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3517891
-    Num. variables: 1681180
-    Num. nonzeros: 7220251
+    Num. constraints: 5131405
+    Num. variables: 1964436
+    Num. nonzeros: 10972913
+    Num. continuous variables: 1964436
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 12 hours
     Realistic: true
@@ -3657,12 +3690,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 134766
-    Num. variables: 64877
-    Num. nonzeros: 258209
+    Num. constraints: 182691
+    Num. variables: 76181
+    Num. nonzeros: 373785
+    Num. continuous variables: 76181
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3680,12 +3716,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3517335
-    Num. variables: 1680902
-    Num. nonzeros: 6840825
+    Num. constraints: 4828629
+    Num. variables: 1964158
+    Num. nonzeros: 9988317
+    Num. continuous variables: 1964158
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 12 hours
     Realistic: true
@@ -3706,12 +3745,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 135086
-    Num. variables: 65037
-    Num. nonzeros: 273793
+    Num. constraints: 193193
+    Num. variables: 76344
+    Num. nonzeros: 409992
+    Num. continuous variables: 76344
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3730,12 +3772,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3517891
-    Num. variables: 1681180
-    Num. nonzeros: 7220251
+    Num. constraints: 5131405
+    Num. variables: 1964436
+    Num. nonzeros: 10972913
+    Num. continuous variables: 1964436
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 12 hours
     Realistic: true
@@ -3755,12 +3800,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 135086
-    Num. variables: 65037
-    Num. nonzeros: 273793
+    Num. constraints: 193193
+    Num. variables: 76344
+    Num. nonzeros: 409992
+    Num. continuous variables: 76344
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3778,12 +3826,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3517891
-    Num. variables: 1681180
-    Num. nonzeros: 7220251
+    Num. constraints: 5131405
+    Num. variables: 1964436
+    Num. nonzeros: 10972913
+    Num. continuous variables: 1964436
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 12 hours
     Realistic: true
@@ -3803,12 +3854,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-50-24h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4723309
-    Num. variables: 2237826
-    Num. nonzeros: 11030338
+    Num. constraints: 5079986
+    Num. variables: 2336062
+    Num. nonzeros: 11946154
+    Num. continuous variables: 2336062
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -3826,12 +3880,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 677039
-    Num. variables: 321282
-    Num. nonzeros: 1603304
+    Num. constraints: 742562
+    Num. variables: 343006
+    Num. nonzeros: 1741215
+    Num. continuous variables: 343006
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3849,12 +3906,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt-50-24h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4723761
-    Num. variables: 2238052
-    Num. nonzeros: 11147590
+    Num. constraints: 5150593
+    Num. variables: 2336292
+    Num. nonzeros: 12205898
+    Num. continuous variables: 2336292
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -3872,12 +3932,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_copt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 690537
-    Num. variables: 328924
-    Num. nonzeros: 1624296
+    Num. constraints: 753265
+    Num. variables: 343236
+    Num. nonzeros: 1779439
+    Num. continuous variables: 343236
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -3895,12 +3958,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt-50-24h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4723761
-    Num. variables: 2238052
-    Num. nonzeros: 11147590
+    Num. constraints: 5150593
+    Num. variables: 2336292
+    Num. nonzeros: 12205898
+    Num. continuous variables: 2336292
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -3918,12 +3984,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-sec-trex_vopt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 690537
-    Num. variables: 328924
-    Num. nonzeros: 1624296
+    Num. constraints: 753265
+    Num. variables: 343236
+    Num. nonzeros: 1779439
+    Num. continuous variables: 343236
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -3940,26 +4009,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 28602269
-    Num. variables: 14419506
-    Num. nonzeros: 67396325
-    Num. continuous variables: 11449866
-    Num. integer variables: 2969640
-    Share integer variables: 0.206
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 38606381
+    Num. variables: 15383112
+    Num. nonzeros: 92026123
+    Num. continuous variables: 12492312
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion and including unit commitment.
@@ -3968,16 +4038,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9534669
-    Num. variables: 4806866
-    Num. nonzeros: 22479908
-    Num. continuous variables: 3816986
-    Num. integer variables: 989880
-    Share integer variables: 0.206
+    Num. constraints: 12869501
+    Num. variables: 5128072
+    Num. nonzeros: 30688572
+    Num. continuous variables: 4164472
+    Num. integer variables: 963600
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -3996,16 +4066,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1192594
-    Num. variables: 601336
-    Num. nonzeros: 2827078
-    Num. continuous variables: 477601
-    Num. integer variables: 123735
-    Share integer variables: 0.206
+    Num. constraints: 1609616
+    Num. variables: 641492
+    Num. nonzeros: 3851492
+    Num. continuous variables: 521042
+    Num. integer variables: 120450
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4022,16 +4092,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 173914
-    Num. variables: 87784
-    Num. nonzeros: 408597
-    Num. continuous variables: 69817
-    Num. integer variables: 17967
-    Share integer variables: 0.205
+    Num. constraints: 234632
+    Num. variables: 93620
+    Num. nonzeros: 556000
+    Num. continuous variables: 76130
+    Num. integer variables: 17490
+    Share integer variables: 0.187
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4048,26 +4118,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 51869560
-    Num. variables: 26044544
-    Num. nonzeros: 120588241
-    Num. continuous variables: 20972504
-    Num. integer variables: 5072040
-    Share integer variables: 0.195
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 72797569
+    Num. variables: 28602483
+    Num. nonzeros: 171062046
+    Num. continuous variables: 23556723
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) without transmission expansion and including unit commitment.
@@ -4076,16 +4147,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17290920
-    Num. variables: 8682224
-    Num. nonzeros: 40226481
-    Num. continuous variables: 6991544
-    Num. integer variables: 1690680
-    Share integer variables: 0.195
+    Num. constraints: 24267169
+    Num. variables: 9534883
+    Num. nonzeros: 57048995
+    Num. continuous variables: 7852963
+    Num. integer variables: 1681920
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4104,16 +4175,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2162765
-    Num. variables: 1086209
-    Num. nonzeros: 5063992
-    Num. continuous variables: 874874
-    Num. integer variables: 211335
-    Share integer variables: 0.195
+    Num. constraints: 3035119
+    Num. variables: 1192808
+    Num. nonzeros: 7164372
+    Num. continuous variables: 982568
+    Num. integer variables: 210240
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4130,16 +4201,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 315413
-    Num. variables: 158633
-    Num. nonzeros: 732787
-    Num. continuous variables: 127946
-    Num. integer variables: 30687
-    Share integer variables: 0.193
+    Num. constraints: 442399
+    Num. variables: 174128
+    Num. nonzeros: 1035584
+    Num. continuous variables: 143600
+    Num. integer variables: 30528
+    Share integer variables: 0.175
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4157,26 +4228,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 28602269
-    Num. variables: 14419506
-    Num. nonzeros: 67396325
-    Num. continuous variables: 11449866
-    Num. integer variables: 2969640
-    Share integer variables: 0.206
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_vopt-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with transmission expansion based on optimal volume increase and including
@@ -4186,16 +4258,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9534669
-    Num. variables: 4806866
-    Num. nonzeros: 22479908
-    Num. continuous variables: 3816986
-    Num. integer variables: 989880
-    Share integer variables: 0.206
+    Num. constraints: 13430467
+    Num. variables: 5128235
+    Num. nonzeros: 32665738
+    Num. continuous variables: 4164635
+    Num. integer variables: 963600
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4215,16 +4287,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1192594
-    Num. variables: 601336
-    Num. nonzeros: 2827078
-    Num. continuous variables: 477601
-    Num. integer variables: 123735
-    Share integer variables: 0.206
+    Num. constraints: 1680022
+    Num. variables: 641655
+    Num. nonzeros: 4098923
+    Num. continuous variables: 521205
+    Num. integer variables: 120450
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4242,16 +4314,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 173914
-    Num. variables: 87784
-    Num. nonzeros: 408597
-    Num. continuous variables: 69817
-    Num. integer variables: 17967
-    Share integer variables: 0.205
+    Num. constraints: 245134
+    Num. variables: 93783
+    Num. nonzeros: 592207
+    Num. continuous variables: 76293
+    Num. integer variables: 17490
+    Share integer variables: 0.186
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4269,26 +4341,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 51869560
-    Num. variables: 26044544
-    Num. nonzeros: 120588241
-    Num. continuous variables: 20972504
-    Num. integer variables: 5072040
-    Share integer variables: 0.195
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_vopt-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with transmission expansion based on optimal volume increase and including
@@ -4298,16 +4371,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17290920
-    Num. variables: 8682224
-    Num. nonzeros: 40226481
-    Num. continuous variables: 6991544
-    Num. integer variables: 1690680
-    Share integer variables: 0.195
+    Num. constraints: 25476605
+    Num. variables: 9535161
+    Num. nonzeros: 60985711
+    Num. continuous variables: 7853241
+    Num. integer variables: 1681920
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4327,16 +4400,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2162765
-    Num. variables: 1086209
-    Num. nonzeros: 5063992
-    Num. continuous variables: 874874
-    Num. integer variables: 211335
-    Share integer variables: 0.195
+    Num. constraints: 3186785
+    Num. variables: 1193086
+    Num. nonzeros: 7656948
+    Num. continuous variables: 982846
+    Num. integer variables: 210240
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4354,16 +4427,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 315413
-    Num. variables: 158633
-    Num. nonzeros: 732787
-    Num. continuous variables: 127946
-    Num. integer variables: 30687
-    Share integer variables: 0.193
+    Num. constraints: 464897
+    Num. variables: 174406
+    Num. nonzeros: 1107584
+    Num. continuous variables: 143878
+    Num. integer variables: 30528
+    Share integer variables: 0.175
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4380,26 +4453,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 28602597
-    Num. variables: 14419670
-    Num. nonzeros: 69972093
-    Num. continuous variables: 11450030
-    Num. integer variables: 2969640
-    Share integer variables: 0.206
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_copt-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with cost-optimal transmission expansion and including unit commitment.
@@ -4408,16 +4482,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9534997
-    Num. variables: 4807030
-    Num. nonzeros: 23338716
-    Num. continuous variables: 3817150
-    Num. integer variables: 989880
-    Share integer variables: 0.206
+    Num. constraints: 13430467
+    Num. variables: 5128235
+    Num. nonzeros: 32665738
+    Num. continuous variables: 4164635
+    Num. integer variables: 963600
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4436,16 +4510,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1192922
-    Num. variables: 601500
-    Num. nonzeros: 2934716
-    Num. continuous variables: 477765
-    Num. integer variables: 123735
-    Share integer variables: 0.206
+    Num. constraints: 1680022
+    Num. variables: 641655
+    Num. nonzeros: 4098923
+    Num. continuous variables: 521205
+    Num. integer variables: 120450
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4462,16 +4536,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 174242
-    Num. variables: 87948
-    Num. nonzeros: 424507
-    Num. continuous variables: 69981
-    Num. integer variables: 17967
-    Share integer variables: 0.204
+    Num. constraints: 245134
+    Num. variables: 93783
+    Num. nonzeros: 592207
+    Num. continuous variables: 76293
+    Num. integer variables: 17490
+    Share integer variables: 0.186
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4488,26 +4562,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 51870114
-    Num. variables: 26044821
-    Num. nonzeros: 125117715
-    Num. continuous variables: 20972781
-    Num. integer variables: 5072040
-    Share integer variables: 0.195
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_copt-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with cost-optimal transmission expansion and including unit commitment.
@@ -4516,16 +4591,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17291474
-    Num. variables: 8682501
-    Num. nonzeros: 41736675
-    Num. continuous variables: 6991821
-    Num. integer variables: 1690680
-    Share integer variables: 0.195
+    Num. constraints: 25476605
+    Num. variables: 9535161
+    Num. nonzeros: 60985711
+    Num. continuous variables: 7853241
+    Num. integer variables: 1681920
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4544,16 +4619,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2163319
-    Num. variables: 1086486
-    Num. nonzeros: 5253251
-    Num. continuous variables: 875151
-    Num. integer variables: 211335
-    Share integer variables: 0.195
+    Num. constraints: 3186785
+    Num. variables: 1193086
+    Num. nonzeros: 7656948
+    Num. continuous variables: 982846
+    Num. integer variables: 210240
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4570,16 +4645,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 315967
-    Num. variables: 158910
-    Num. nonzeros: 760742
-    Num. continuous variables: 128223
-    Num. integer variables: 30687
-    Share integer variables: 0.193
+    Num. constraints: 464897
+    Num. variables: 174406
+    Num. nonzeros: 1107584
+    Num. continuous variables: 143878
+    Num. integer variables: 30528
+    Share integer variables: 0.175
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4596,26 +4671,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 28602269
-    Num. variables: 14419506
-    Num. nonzeros: 67396325
-    Num. continuous variables: 11449866
-    Num. integer variables: 2969640
-    Share integer variables: 0.206
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 38606381
+    Num. variables: 15383112
+    Num. nonzeros: 92026123
+    Num. continuous variables: 12492312
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-uc-dfp-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing and including unit commitment.
@@ -4624,16 +4700,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9534669
-    Num. variables: 4806866
-    Num. nonzeros: 22479908
-    Num. continuous variables: 3816986
-    Num. integer variables: 989880
-    Share integer variables: 0.206
+    Num. constraints: 12869501
+    Num. variables: 5128072
+    Num. nonzeros: 30688572
+    Num. continuous variables: 4164472
+    Num. integer variables: 963600
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4652,16 +4728,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1192594
-    Num. variables: 601336
-    Num. nonzeros: 2827078
-    Num. continuous variables: 477601
-    Num. integer variables: 123735
-    Share integer variables: 0.206
+    Num. constraints: 1609616
+    Num. variables: 641492
+    Num. nonzeros: 3851492
+    Num. continuous variables: 521042
+    Num. integer variables: 120450
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4678,16 +4754,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 173914
-    Num. variables: 87784
-    Num. nonzeros: 408597
-    Num. continuous variables: 69817
-    Num. integer variables: 17967
-    Share integer variables: 0.205
+    Num. constraints: 234632
+    Num. variables: 93620
+    Num. nonzeros: 556000
+    Num. continuous variables: 76130
+    Num. integer variables: 17490
+    Share integer variables: 0.187
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4704,26 +4780,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 51869560
-    Num. variables: 26044544
-    Num. nonzeros: 120588241
-    Num. continuous variables: 20972504
-    Num. integer variables: 5072040
-    Share integer variables: 0.195
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 72797569
+    Num. variables: 28602483
+    Num. nonzeros: 171062046
+    Num. continuous variables: 23556723
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-uc-dfp-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing and including unit commitment.
@@ -4732,16 +4809,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17290920
-    Num. variables: 8682224
-    Num. nonzeros: 40226481
-    Num. continuous variables: 6991544
-    Num. integer variables: 1690680
-    Share integer variables: 0.195
+    Num. constraints: 24267169
+    Num. variables: 9534883
+    Num. nonzeros: 57048995
+    Num. continuous variables: 7852963
+    Num. integer variables: 1681920
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4760,16 +4837,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2162765
-    Num. variables: 1086209
-    Num. nonzeros: 5063992
-    Num. continuous variables: 874874
-    Num. integer variables: 211335
-    Share integer variables: 0.195
+    Num. constraints: 3035119
+    Num. variables: 1192808
+    Num. nonzeros: 7164372
+    Num. continuous variables: 982568
+    Num. integer variables: 210240
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4786,16 +4863,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 315413
-    Num. variables: 158633
-    Num. nonzeros: 732787
-    Num. continuous variables: 127946
-    Num. integer variables: 30687
-    Share integer variables: 0.193
+    Num. constraints: 442399
+    Num. variables: 174128
+    Num. nonzeros: 1035584
+    Num. continuous variables: 143600
+    Num. integer variables: 30528
+    Share integer variables: 0.175
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4813,26 +4890,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 28602597
-    Num. variables: 14419670
-    Num. nonzeros: 69972093
-    Num. continuous variables: 11450030
-    Num. integer variables: 2969640
-    Share integer variables: 0.206
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_vopt-uc-dfp-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, transmission expansion based on optimal volume
@@ -4842,16 +4920,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9534997
-    Num. variables: 4807030
-    Num. nonzeros: 23338716
-    Num. continuous variables: 3817150
-    Num. integer variables: 989880
-    Share integer variables: 0.206
+    Num. constraints: 13430467
+    Num. variables: 5128235
+    Num. nonzeros: 32665738
+    Num. continuous variables: 4164635
+    Num. integer variables: 963600
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4871,16 +4949,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1192922
-    Num. variables: 601500
-    Num. nonzeros: 2934716
-    Num. continuous variables: 477765
-    Num. integer variables: 123735
-    Share integer variables: 0.206
+    Num. constraints: 1680022
+    Num. variables: 641655
+    Num. nonzeros: 4098923
+    Num. continuous variables: 521205
+    Num. integer variables: 120450
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -4898,16 +4976,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 174242
-    Num. variables: 87948
-    Num. nonzeros: 424507
-    Num. continuous variables: 69981
-    Num. integer variables: 17967
-    Share integer variables: 0.204
+    Num. constraints: 245134
+    Num. variables: 93783
+    Num. nonzeros: 592207
+    Num. continuous variables: 76293
+    Num. integer variables: 17490
+    Share integer variables: 0.186
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -4925,26 +5003,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 51870114
-    Num. variables: 26044821
-    Num. nonzeros: 125117715
-    Num. continuous variables: 20972781
-    Num. integer variables: 5072040
-    Share integer variables: 0.195
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_vopt-uc-dfp-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, transmission expansion based on optimal volume
@@ -4954,16 +5033,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17291474
-    Num. variables: 8682501
-    Num. nonzeros: 41736675
-    Num. continuous variables: 6991821
-    Num. integer variables: 1690680
-    Share integer variables: 0.195
+    Num. constraints: 25476605
+    Num. variables: 9535161
+    Num. nonzeros: 60985711
+    Num. continuous variables: 7853241
+    Num. integer variables: 1681920
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -4983,16 +5062,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2163319
-    Num. variables: 1086486
-    Num. nonzeros: 5253251
-    Num. continuous variables: 875151
-    Num. integer variables: 211335
-    Share integer variables: 0.195
+    Num. constraints: 3186785
+    Num. variables: 1193086
+    Num. nonzeros: 7656948
+    Num. continuous variables: 982846
+    Num. integer variables: 210240
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -5010,16 +5089,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 315967
-    Num. variables: 158910
-    Num. nonzeros: 760742
-    Num. continuous variables: 128223
-    Num. integer variables: 30687
-    Share integer variables: 0.193
+    Num. constraints: 464897
+    Num. variables: 174406
+    Num. nonzeros: 1107584
+    Num. continuous variables: 143878
+    Num. integer variables: 30528
+    Share integer variables: 0.175
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -5037,26 +5116,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 28602597
-    Num. variables: 14419670
-    Num. nonzeros: 69972093
-    Num. continuous variables: 11450030
-    Num. integer variables: 2969640
-    Share integer variables: 0.206
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 40288627
+    Num. variables: 15383275
+    Num. nonzeros: 97956969
+    Num. continuous variables: 12492475
+    Num. integer variables: 2890800
+    Share integer variables: 0.188
   pypsa-eur-elec-trex_copt-uc-dfp-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, cost-optimal transmission expansion, and including
@@ -5066,16 +5146,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9534997
-    Num. variables: 4807030
-    Num. nonzeros: 23338716
-    Num. continuous variables: 3817150
-    Num. integer variables: 989880
-    Share integer variables: 0.206
+    Num. constraints: 13430467
+    Num. variables: 5128235
+    Num. nonzeros: 32665738
+    Num. continuous variables: 4164635
+    Num. integer variables: 963600
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -5095,16 +5175,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1192922
-    Num. variables: 601500
-    Num. nonzeros: 2934716
-    Num. continuous variables: 477765
-    Num. integer variables: 123735
-    Share integer variables: 0.206
+    Num. constraints: 1680022
+    Num. variables: 641655
+    Num. nonzeros: 4098923
+    Num. continuous variables: 521205
+    Num. integer variables: 120450
+    Share integer variables: 0.188
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -5122,16 +5202,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 174242
-    Num. variables: 87948
-    Num. nonzeros: 424507
-    Num. continuous variables: 69981
-    Num. integer variables: 17967
-    Share integer variables: 0.204
+    Num. constraints: 245134
+    Num. variables: 93783
+    Num. nonzeros: 592207
+    Num. continuous variables: 76293
+    Num. integer variables: 17490
+    Share integer variables: 0.186
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -5149,26 +5229,27 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 51870114
-    Num. variables: 26044821
-    Num. nonzeros: 125117715
-    Num. continuous variables: 20972781
-    Num. integer variables: 5072040
-    Share integer variables: 0.195
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
     Realistic motivation: Sufficient spatial and temporal resolution over the considered
       time horizon to allow the benchmark to be defined as Realistic.
+    Skip because: TO
     Application: Infrastructure & Capacity Expansion
     Sectoral focus: Power-only
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 76424765
+    Num. variables: 28602761
+    Num. nonzeros: 182871082
+    Num. continuous variables: 23557001
+    Num. integer variables: 5045760
+    Share integer variables: 0.176
   pypsa-eur-elec-trex_copt-uc-dfp-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for all Europe (year
       2050) with dynamic fuel pricing, cost-optimal transmission expansion, and including
@@ -5178,16 +5259,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17291474
-    Num. variables: 8682501
-    Num. nonzeros: 41736675
-    Num. continuous variables: 6991821
-    Num. integer variables: 1690680
-    Share integer variables: 0.195
+    Num. constraints: 25476605
+    Num. variables: 9535161
+    Num. nonzeros: 60985711
+    Num. continuous variables: 7853241
+    Num. integer variables: 1681920
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -5207,16 +5288,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2163319
-    Num. variables: 1086486
-    Num. nonzeros: 5253251
-    Num. continuous variables: 875151
-    Num. integer variables: 211335
-    Share integer variables: 0.195
+    Num. constraints: 3186785
+    Num. variables: 1193086
+    Num. nonzeros: 7656948
+    Num. continuous variables: 982846
+    Num. integer variables: 210240
+    Share integer variables: 0.176
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -5234,16 +5315,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 315967
-    Num. variables: 158910
-    Num. nonzeros: 760742
-    Num. continuous variables: 128223
-    Num. integer variables: 30687
-    Share integer variables: 0.193
+    Num. constraints: 464897
+    Num. variables: 174406
+    Num. nonzeros: 1107584
+    Num. continuous variables: 143878
+    Num. integer variables: 30528
+    Share integer variables: 0.175
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -5261,12 +5342,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1501029
-    Num. variables: 703831
-    Num. nonzeros: 2817460
+    Num. constraints: 2102579
+    Num. variables: 919832
+    Num. nonzeros: 4292053
+    Num. continuous variables: 919832
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: false
@@ -5284,12 +5368,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6123937
-    Num. variables: 2879645
-    Num. nonzeros: 11971163
+    Num. constraints: 8503880
+    Num. variables: 3711578
+    Num. nonzeros: 17805238
+    Num. continuous variables: 3711578
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -5309,12 +5396,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-2-1h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1165120
-    Num. variables: 569341
-    Num. nonzeros: 2133907
+    Num. constraints: 1322805
+    Num. variables: 604381
+    Num. nonzeros: 2607391
+    Num. continuous variables: 604381
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5331,13 +5421,16 @@ problems:
     License: CC BY 4.0
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-4-1h.mps.gz
     Problem class: LP
-    Size: M
-    Num. constraints: 2041145
-    Num. variables: 963648
-    Num. nonzeros: 3812907
+    Size: L
+    Num. constraints: 2847077
+    Num. variables: 1235035
+    Num. nonzeros: 5713691
+    Num. continuous variables: 1235035
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 4 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5355,12 +5448,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-6-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 2943457
-    Num. variables: 1384151
-    Num. nonzeros: 5498751
+    Num. constraints: 4248715
+    Num. variables: 1804372
+    Num. nonzeros: 8599910
+    Num. continuous variables: 1804372
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 6 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5378,12 +5474,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-8-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3731883
-    Num. variables: 1752091
-    Num. nonzeros: 6956950
+    Num. constraints: 5133507
+    Num. variables: 2277390
+    Num. nonzeros: 10434969
+    Num. continuous variables: 2277390
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 8 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5401,12 +5500,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4502789
-    Num. variables: 2111271
-    Num. nonzeros: 8442185
+    Num. constraints: 6307379
+    Num. variables: 2759168
+    Num. nonzeros: 12865907
+    Num. continuous variables: 2759168
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5424,12 +5526,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-12-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 5221135
-    Num. variables: 2444171
-    Num. nonzeros: 9778117
+    Num. constraints: 7638931
+    Num. variables: 3284746
+    Num. nonzeros: 15743675
+    Num. continuous variables: 3284746
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 12 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5447,12 +5552,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-14-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6053365
-    Num. variables: 2838393
-    Num. nonzeros: 11376001
+    Num. constraints: 8479923
+    Num. variables: 3696400
+    Num. nonzeros: 17499718
+    Num. continuous variables: 3696400
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 14 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5470,12 +5578,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-16-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6754193
-    Num. variables: 3171294
-    Num. nonzeros: 12684994
+    Num. constraints: 9548675
+    Num. variables: 4178134
+    Num. nonzeros: 19622988
+    Num. continuous variables: 4178134
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 16 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5493,12 +5604,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-18-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 7568897
-    Num. variables: 3539233
-    Num. nonzeros: 14248409
+    Num. constraints: 10626187
+    Num. variables: 4651108
+    Num. nonzeros: 21808496
+    Num. continuous variables: 4651108
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 18 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -5516,12 +5630,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8208403
-    Num. variables: 3854613
-    Num. nonzeros: 15540441
+    Num. constraints: 11686183
+    Num. variables: 5115368
+    Num. nonzeros: 24054477
+    Num. continuous variables: 5115368
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5541,12 +5658,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-22-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 9066911
-    Num. variables: 4240074
-    Num. nonzeros: 17322007
+    Num. constraints: 12684855
+    Num. variables: 5544586
+    Num. nonzeros: 26169054
+    Num. continuous variables: 5544586
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 22 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5566,12 +5686,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-24-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 9802781
-    Num. variables: 4581736
-    Num. nonzeros: 18700792
+    Num. constraints: 13736087
+    Num. variables: 6017560
+    Num. nonzeros: 28405641
+    Num. continuous variables: 6017560
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 24 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5591,12 +5714,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-26-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 10459811
-    Num. variables: 4897118
-    Num. nonzeros: 19922369
+    Num. constraints: 14594603
+    Num. variables: 6394264
+    Num. nonzeros: 30186682
+    Num. continuous variables: 6394264
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 26 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5616,12 +5742,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-28-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 11134357
-    Num. variables: 5212498
-    Num. nonzeros: 21598028
+    Num. constraints: 15479397
+    Num. variables: 6788443
+    Num. nonzeros: 31952451
+    Num. continuous variables: 6788443
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 28 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5641,12 +5770,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-30-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 11843941
-    Num. variables: 5554157
-    Num. nonzeros: 22592234
+    Num. constraints: 16224027
+    Num. variables: 7103868
+    Num. nonzeros: 33565633
+    Num. continuous variables: 7103868
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 30 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5666,12 +5798,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-32-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 12404607
-    Num. variables: 5825737
-    Num. nonzeros: 23726812
+    Num. constraints: 17029983
+    Num. variables: 7498004
+    Num. nonzeros: 35296230
+    Num. continuous variables: 7498004
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 32 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5691,12 +5826,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-34-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 12991559
-    Num. variables: 6106080
-    Num. nonzeros: 25044646
+    Num. constraints: 18422857
+    Num. variables: 8014867
+    Num. nonzeros: 38227519
+    Num. continuous variables: 8014867
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 34 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5716,12 +5854,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-36-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 13718665
-    Num. variables: 6438980
-    Num. nonzeros: 26676672
+    Num. constraints: 19211291
+    Num. variables: 8400242
+    Num. nonzeros: 40033681
+    Num. continuous variables: 8400242
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 36 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5741,12 +5882,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-38-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 14410731
-    Num. variables: 6771880
-    Num. nonzeros: 27800922
+    Num. constraints: 20174925
+    Num. variables: 8794465
+    Num. nonzeros: 42077381
+    Num. continuous variables: 8794465
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 38 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5766,12 +5910,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-40-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 15111557
-    Num. variables: 7096020
-    Num. nonzeros: 29512278
+    Num. constraints: 21103515
+    Num. variables: 9232398
+    Num. nonzeros: 44287466
+    Num. continuous variables: 9232398
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 40 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5791,12 +5938,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-42-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 15768587
-    Num. variables: 7411402
-    Num. nonzeros: 30574634
+    Num. constraints: 22067149
+    Num. variables: 9609101
+    Num. nonzeros: 46053720
+    Num. continuous variables: 9609101
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 42 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5816,12 +5966,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-44-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 16416849
-    Num. variables: 7726780
-    Num. nonzeros: 31482914
+    Num. constraints: 22864345
+    Num. variables: 9994521
+    Num. nonzeros: 47764452
+    Num. continuous variables: 9994521
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 44 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5841,12 +5994,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-46-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 17135203
-    Num. variables: 8050924
-    Num. nonzeros: 33060560
+    Num. constraints: 23644013
+    Num. variables: 10309945
+    Num. nonzeros: 49696055
+    Num. continuous variables: 10309945
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 46 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5866,12 +6022,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-48-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 17792225
-    Num. variables: 8348782
-    Num. nonzeros: 34448220
+    Num. constraints: 24826649
+    Num. variables: 10817961
+    Num. nonzeros: 51757412
+    Num. continuous variables: 10817961
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 48 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5891,12 +6050,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18458019
-    Num. variables: 8672926
-    Num. nonzeros: 35789890
+    Num. constraints: 25509960
+    Num. variables: 11133298
+    Num. nonzeros: 53362687
+    Num. continuous variables: 11133298
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5916,12 +6078,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-52-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 19123801
-    Num. variables: 8979544
-    Num. nonzeros: 37101970
+    Num. constraints: 26403512
+    Num. variables: 11501284
+    Num. nonzeros: 55748877
+    Num. continuous variables: 11501284
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 52 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5941,12 +6106,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-54-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 19719513
-    Num. variables: 9277407
-    Num. nonzeros: 38188361
+    Num. constraints: 27778864
+    Num. variables: 12018102
+    Num. nonzeros: 59142567
+    Num. continuous variables: 12018102
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 54 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5966,12 +6134,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-56-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 20341493
-    Num. variables: 9575264
-    Num. nonzeros: 39113498
+    Num. constraints: 28435900
+    Num. variables: 12316054
+    Num. nonzeros: 59645606
+    Num. continuous variables: 12316054
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 56 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -5991,12 +6162,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-58-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 21121159
-    Num. variables: 9916924
-    Num. nonzeros: 41138848
+    Num. constraints: 28873928
+    Num. variables: 12561310
+    Num. nonzeros: 61100100
+    Num. continuous variables: 12561310
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 58 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6016,12 +6190,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-60-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 21655553
-    Num. variables: 10179748
-    Num. nonzeros: 42306638
+    Num. constraints: 30555888
+    Num. variables: 13157016
+    Num. nonzeros: 64495402
+    Num. continuous variables: 13157016
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 60 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6041,12 +6218,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4502865
-    Num. variables: 2111309
-    Num. nonzeros: 8967861
+    Num. constraints: 6692893
+    Num. variables: 2759205
+    Num. nonzeros: 14153701
+    Num. continuous variables: 2759205
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -6064,12 +6244,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1501105
-    Num. variables: 703869
-    Num. nonzeros: 2992736
+    Num. constraints: 2231133
+    Num. variables: 919869
+    Num. nonzeros: 4721367
+    Num. continuous variables: 919869
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: false
@@ -6087,12 +6270,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8208517
-    Num. variables: 3854670
-    Num. nonzeros: 16381515
+    Num. constraints: 13157983
+    Num. variables: 5115428
+    Num. nonzeros: 27891477
+    Num. continuous variables: 5115428
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6112,12 +6298,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-20-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 2736437
-    Num. variables: 1285070
-    Num. nonzeros: 5467383
+    Num. constraints: 4386303
+    Num. variables: 1705396
+    Num. nonzeros: 9304108
+    Num. continuous variables: 1705396
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6137,12 +6326,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18370653
-    Num. variables: 8638003
-    Num. nonzeros: 37770662
+    Num. constraints: 28838986
+    Num. variables: 11133411
+    Num. nonzeros: 61842593
+    Num. continuous variables: 11133411
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6162,12 +6354,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 766338
-    Num. variables: 360533
-    Num. nonzeros: 1596484
+    Num. constraints: 1202646
+    Num. variables: 464594
+    Num. nonzeros: 2599612
+    Num. continuous variables: 464594
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6185,12 +6380,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4502865
-    Num. variables: 2111309
-    Num. nonzeros: 8967861
+    Num. constraints: 6692893
+    Num. variables: 2759205
+    Num. nonzeros: 14153701
+    Num. continuous variables: 2759205
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -6208,12 +6406,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1501105
-    Num. variables: 703869
-    Num. nonzeros: 2992736
+    Num. constraints: 2231133
+    Num. variables: 919869
+    Num. nonzeros: 4721367
+    Num. continuous variables: 919869
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6233,12 +6434,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8208517
-    Num. variables: 3854670
-    Num. nonzeros: 16381515
+    Num. constraints: 13157983
+    Num. variables: 5115428
+    Num. nonzeros: 27891477
+    Num. continuous variables: 5115428
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6258,12 +6462,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-20-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 2736437
-    Num. variables: 1285070
-    Num. nonzeros: 5467383
+    Num. constraints: 4386303
+    Num. variables: 1705396
+    Num. nonzeros: 9304108
+    Num. continuous variables: 1705396
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6283,12 +6490,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18370653
-    Num. variables: 8638003
-    Num. nonzeros: 37770662
+    Num. constraints: 28838986
+    Num. variables: 11133411
+    Num. nonzeros: 61842593
+    Num. continuous variables: 11133411
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6308,12 +6518,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6124173
-    Num. variables: 2879763
-    Num. nonzeros: 12607959
+    Num. constraints: 9613706
+    Num. variables: 3711691
+    Num. nonzeros: 20632024
+    Num. continuous variables: 3711691
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6333,12 +6546,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 766338
-    Num. variables: 360533
-    Num. nonzeros: 1596484
+    Num. constraints: 1202646
+    Num. variables: 464594
+    Num. nonzeros: 2599612
+    Num. continuous variables: 464594
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6356,12 +6572,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4502789
-    Num. variables: 2111271
-    Num. nonzeros: 8442185
+    Num. constraints: 6307379
+    Num. variables: 2759168
+    Num. nonzeros: 12865907
+    Num. continuous variables: 2759168
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -6379,12 +6598,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1501029
-    Num. variables: 703831
-    Num. nonzeros: 2817460
+    Num. constraints: 2102579
+    Num. variables: 919832
+    Num. nonzeros: 4292053
+    Num. continuous variables: 919832
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: false
@@ -6402,12 +6624,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8208403
-    Num. variables: 3854613
-    Num. nonzeros: 15540441
+    Num. constraints: 11686183
+    Num. variables: 5115368
+    Num. nonzeros: 24054477
+    Num. continuous variables: 5115368
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6427,12 +6652,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18370417
-    Num. variables: 8637885
-    Num. nonzeros: 35860746
+    Num. constraints: 25509960
+    Num. variables: 11133298
+    Num. nonzeros: 53362687
+    Num. continuous variables: 11133298
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6452,12 +6680,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6123937
-    Num. variables: 2879645
-    Num. nonzeros: 11971163
+    Num. constraints: 8503880
+    Num. variables: 3711578
+    Num. nonzeros: 17805238
+    Num. continuous variables: 3711578
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6477,12 +6708,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 766102
-    Num. variables: 360415
-    Num. nonzeros: 1516678
+    Num. constraints: 1063720
+    Num. variables: 464481
+    Num. nonzeros: 2246066
+    Num. continuous variables: 464481
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6500,12 +6734,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4502865
-    Num. variables: 2111309
-    Num. nonzeros: 8967861
+    Num. constraints: 6692893
+    Num. variables: 2759205
+    Num. nonzeros: 14153701
+    Num. continuous variables: 2759205
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -6523,12 +6760,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1501105
-    Num. variables: 703869
-    Num. nonzeros: 2992736
+    Num. constraints: 2231133
+    Num. variables: 919869
+    Num. nonzeros: 4721367
+    Num. continuous variables: 919869
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: false
@@ -6546,12 +6786,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8208517
-    Num. variables: 3854670
-    Num. nonzeros: 16381515
+    Num. constraints: 13157983
+    Num. variables: 5115428
+    Num. nonzeros: 27891477
+    Num. continuous variables: 5115428
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6571,12 +6814,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-20-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 2736437
-    Num. variables: 1285070
-    Num. nonzeros: 5467383
+    Num. constraints: 4386303
+    Num. variables: 1705396
+    Num. nonzeros: 9304108
+    Num. continuous variables: 1705396
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6596,12 +6842,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18370653
-    Num. variables: 8638003
-    Num. nonzeros: 37770662
+    Num. constraints: 28838986
+    Num. variables: 11133411
+    Num. nonzeros: 61842593
+    Num. continuous variables: 11133411
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6621,12 +6870,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 766338
-    Num. variables: 360533
-    Num. nonzeros: 1596484
+    Num. constraints: 1202646
+    Num. variables: 464594
+    Num. nonzeros: 2599612
+    Num. continuous variables: 464594
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6644,12 +6896,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4502865
-    Num. variables: 2111309
-    Num. nonzeros: 8967861
+    Num. constraints: 6692893
+    Num. variables: 2759205
+    Num. nonzeros: 14153701
+    Num. continuous variables: 2759205
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: false
@@ -6667,12 +6922,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1501105
-    Num. variables: 703869
-    Num. nonzeros: 2992736
+    Num. constraints: 2231133
+    Num. variables: 919869
+    Num. nonzeros: 4721367
+    Num. continuous variables: 919869
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: false
@@ -6690,12 +6948,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8208517
-    Num. variables: 3854670
-    Num. nonzeros: 16381515
+    Num. constraints: 13157983
+    Num. variables: 5115428
+    Num. nonzeros: 27891477
+    Num. continuous variables: 5115428
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6715,12 +6976,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18370653
-    Num. variables: 8638003
-    Num. nonzeros: 37770662
+    Num. constraints: 28838986
+    Num. variables: 11133411
+    Num. nonzeros: 61842593
+    Num. continuous variables: 11133411
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6740,12 +7004,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6124173
-    Num. variables: 2879763
-    Num. nonzeros: 12607959
+    Num. constraints: 9613706
+    Num. variables: 3711691
+    Num. nonzeros: 20632024
+    Num. continuous variables: 3711691
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -6765,12 +7032,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 766338
-    Num. variables: 360533
-    Num. nonzeros: 1596484
+    Num. constraints: 1202646
+    Num. variables: 464594
+    Num. nonzeros: 2599612
+    Num. continuous variables: 464594
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6788,12 +7058,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-10-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 142147
-    Num. variables: 67416
-    Num. nonzeros: 332009
+    Num. constraints: 150129
+    Num. variables: 70054
+    Num. nonzeros: 351853
+    Num. continuous variables: 70054
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -6811,12 +7084,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-20-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3797984
-    Num. variables: 1791010
-    Num. nonzeros: 8932707
+    Num. constraints: 4063291
+    Num. variables: 1891011
+    Num. nonzeros: 9629009
+    Num. continuous variables: 1891011
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 12 hours
     Realistic: false
@@ -6834,12 +7110,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 677039
-    Num. variables: 321282
-    Num. nonzeros: 1603304
+    Num. constraints: 709103
+    Num. variables: 331748
+    Num. nonzeros: 1688159
+    Num. continuous variables: 331748
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -6857,12 +7136,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-10-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 973111
-    Num. variables: 459030
-    Num. nonzeros: 2306551
+    Num. constraints: 1043340
+    Num. variables: 477266
+    Num. nonzeros: 2472948
+    Num. continuous variables: 477266
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6880,12 +7162,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-20-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3798134
-    Num. variables: 1791085
-    Num. nonzeros: 9016077
+    Num. constraints: 4186105
+    Num. variables: 1891089
+    Num. nonzeros: 9962081
+    Num. continuous variables: 1891089
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 12 hours
     Realistic: false
@@ -6903,12 +7188,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 111090778
-    Num. variables: 52371864
-    Num. nonzeros: 264794044
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -6919,6 +7201,12 @@ problems:
     Sectors: Electric, Heating, Transport, Industry, Hydrogen, Biomass
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 119597487
+    Num. variables: 54105079
+    Num. nonzeros: 285135080
+    Num. continuous variables: 54105079
+    Num. integer variables: 0
+    Share integer variables: 0.0
   pypsa-de-sec-trex_copt-50-168h:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with cost-optimal
       transmission expansion.
@@ -6928,12 +7216,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_copt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 677311
-    Num. variables: 321418
-    Num. nonzeros: 1616084
+    Num. constraints: 729523
+    Num. variables: 331879
+    Num. nonzeros: 1740715
+    Num. continuous variables: 331879
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -6951,12 +7242,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt-10-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 973111
-    Num. variables: 459030
-    Num. nonzeros: 2306551
+    Num. constraints: 1043340
+    Num. variables: 477266
+    Num. nonzeros: 2472948
+    Num. continuous variables: 477266
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -6974,12 +7268,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt-20-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 3798134
-    Num. variables: 1791085
-    Num. nonzeros: 9016077
+    Num. constraints: 4186105
+    Num. variables: 1891089
+    Num. nonzeros: 9962081
+    Num. continuous variables: 1891089
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 12 hours
     Realistic: false
@@ -6997,12 +7294,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 111090778
-    Num. variables: 52371864
-    Num. nonzeros: 264794044
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7013,6 +7307,12 @@ problems:
     Sectors: Electric, Heating, Transport, Industry, Hydrogen, Biomass
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 119597487
+    Num. variables: 54105079
+    Num. nonzeros: 285135080
+    Num. continuous variables: 54105079
+    Num. integer variables: 0
+    Share integer variables: 0.0
   pypsa-de-sec-trex_vopt-50-168h:
     Short description: Sector-coupled PyPSA-Eur runs for Germany with transmission
       expansion based on optimal volume increase.
@@ -7022,12 +7322,15 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-sec-trex_vopt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 677311
-    Num. variables: 321418
-    Num. nonzeros: 1616084
+    Num. constraints: 729523
+    Num. variables: 331879
+    Num. nonzeros: 1740715
+    Num. continuous variables: 331879
+    Num. integer variables: 0
+    Share integer variables: 0.0
     MILP features: []
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7044,16 +7347,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 6754110
-    Num. variables: 3529983
-    Num. nonzeros: 16394847
-    Num. continuous variables: 2531343
-    Num. integer variables: 998640
-    Share integer variables: 0.283
+    Num. constraints: 8970417
+    Num. variables: 3705228
+    Num. nonzeros: 21904919
+    Num. continuous variables: 2759148
+    Num. integer variables: 946080
+    Share integer variables: 0.255
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7072,16 +7375,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2251470
-    Num. variables: 1176760
-    Num. nonzeros: 5467835
-    Num. continuous variables: 843880
-    Num. integer variables: 332880
-    Share integer variables: 0.283
+    Num. constraints: 2990257
+    Num. variables: 1235172
+    Num. nonzeros: 7304185
+    Num. continuous variables: 919812
+    Num. integer variables: 315360
+    Share integer variables: 0.255
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7100,16 +7403,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 281565
-    Num. variables: 147193
-    Num. nonzeros: 686752
-    Num. continuous variables: 105583
-    Num. integer variables: 41610
-    Share integer variables: 0.283
+    Num. constraints: 373937
+    Num. variables: 154495
+    Num. nonzeros: 915897
+    Num. continuous variables: 115075
+    Num. integer variables: 39420
+    Share integer variables: 0.255
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7126,16 +7429,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 41013
-    Num. variables: 21458
-    Num. nonzeros: 99178
-    Num. continuous variables: 15416
-    Num. integer variables: 6042
-    Share integer variables: 0.282
+    Num. constraints: 54449
+    Num. variables: 22519
+    Num. nonzeros: 132079
+    Num. continuous variables: 16795
+    Num. integer variables: 5724
+    Share integer variables: 0.254
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7152,16 +7455,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 11694859
-    Num. variables: 6122815
-    Num. nonzeros: 27714822
-    Num. continuous variables: 4467175
-    Num. integer variables: 1655640
-    Share integer variables: 0.27
+    Num. constraints: 16460358
+    Num. variables: 6823528
+    Num. nonzeros: 39864102
+    Num. continuous variables: 5115328
+    Num. integer variables: 1708200
+    Share integer variables: 0.25
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7181,16 +7484,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3898459
-    Num. variables: 2041117
-    Num. nonzeros: 9244348
-    Num. continuous variables: 1489237
-    Num. integer variables: 551880
-    Share integer variables: 0.27
+    Num. constraints: 5486998
+    Num. variables: 2274696
+    Num. nonzeros: 13293453
+    Num. continuous variables: 1705296
+    Num. integer variables: 569400
+    Share integer variables: 0.25
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7209,16 +7512,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 487534
-    Num. variables: 255325
-    Num. nonzeros: 1162574
-    Num. continuous variables: 186340
-    Num. integer variables: 68985
-    Share integer variables: 0.27
+    Num. constraints: 686153
+    Num. variables: 284527
+    Num. nonzeros: 1667864
+    Num. continuous variables: 213352
+    Num. integer variables: 71175
+    Share integer variables: 0.25
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7235,16 +7538,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 71014
-    Num. variables: 37238
-    Num. nonzeros: 168132
-    Num. continuous variables: 27221
-    Num. integer variables: 10017
-    Share integer variables: 0.269
+    Num. constraints: 99905
+    Num. variables: 41479
+    Num. nonzeros: 240735
+    Num. continuous variables: 31144
+    Num. integer variables: 10335
+    Share integer variables: 0.249
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7261,16 +7564,10 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 25781277
-    Num. variables: 13516004
-    Num. nonzeros: 60976098
-    Num. continuous variables: 9915644
-    Num. integer variables: 3600360
-    Share integer variables: 0.266
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7282,6 +7579,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 35119534
+    Num. variables: 14628439
+    Num. nonzeros: 83423384
+    Num. continuous variables: 11133199
+    Num. integer variables: 3495240
+    Share integer variables: 0.239
   pypsa-de-elec-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       without transmission expansion and including unit commitment.
@@ -7290,16 +7593,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 8594157
-    Num. variables: 4505738
-    Num. nonzeros: 20341458
-    Num. continuous variables: 3305618
-    Num. integer variables: 1200120
-    Share integer variables: 0.266
+    Num. constraints: 11706974
+    Num. variables: 4876559
+    Num. nonzeros: 27823055
+    Num. continuous variables: 3711479
+    Num. integer variables: 1165080
+    Share integer variables: 0.239
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7319,16 +7622,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1074792
-    Num. variables: 563657
-    Num. nonzeros: 2560928
-    Num. continuous variables: 413642
-    Num. integer variables: 150015
-    Share integer variables: 0.266
+    Num. constraints: 1463979
+    Num. variables: 610017
+    Num. nonzeros: 3495123
+    Num. continuous variables: 464382
+    Num. integer variables: 145635
+    Share integer variables: 0.239
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7346,16 +7649,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 156576
-    Num. variables: 82247
-    Num. nonzeros: 370792
-    Num. continuous variables: 60464
-    Num. integer variables: 21783
-    Share integer variables: 0.265
+    Num. constraints: 213171
+    Num. variables: 88981
+    Num. nonzeros: 505474
+    Num. continuous variables: 67834
+    Num. integer variables: 21147
+    Share integer variables: 0.238
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7372,16 +7675,10 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 46683175
-    Num. variables: 24544950
-    Num. nonzeros: 109602873
-    Num. continuous variables: 18053790
-    Num. integer variables: 6491160
-    Share integer variables: 0.264
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7393,6 +7690,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 64264669
+    Num. variables: 26717395
+    Num. nonzeros: 152563272
+    Num. continuous variables: 20305075
+    Num. integer variables: 6412320
+    Share integer variables: 0.24
   pypsa-de-elec-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       without transmission expansion and including unit commitment.
@@ -7401,16 +7704,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 15561815
-    Num. variables: 8182388
-    Num. nonzeros: 36567903
-    Num. continuous variables: 6018668
-    Num. integer variables: 2163720
-    Share integer variables: 0.264
+    Num. constraints: 21422429
+    Num. variables: 8906546
+    Num. nonzeros: 50886752
+    Num. continuous variables: 6769106
+    Num. integer variables: 2137440
+    Share integer variables: 0.24
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7430,16 +7733,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 1946220
-    Num. variables: 1023645
-    Num. nonzeros: 4608334
-    Num. continuous variables: 753180
-    Num. integer variables: 270465
-    Share integer variables: 0.264
+    Num. constraints: 2678949
+    Num. variables: 1114175
+    Num. nonzeros: 6396634
+    Num. continuous variables: 846995
+    Num. integer variables: 267180
+    Share integer variables: 0.24
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7457,16 +7760,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 283572
-    Num. variables: 149432
-    Num. nonzeros: 667792
-    Num. continuous variables: 110159
-    Num. integer variables: 39273
-    Share integer variables: 0.263
+    Num. constraints: 390117
+    Num. variables: 162585
+    Num. nonzeros: 925958
+    Num. continuous variables: 123789
+    Num. integer variables: 38796
+    Share integer variables: 0.239
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7483,16 +7786,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-3h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 426361
-    Num. variables: 219025
-    Num. nonzeros: 1053656
-    Num. continuous variables: 157705
-    Num. integer variables: 61320
-    Share integer variables: 0.28
+    Num. constraints: 639527
+    Num. variables: 271563
+    Num. nonzeros: 1558660
+    Num. continuous variables: 201483
+    Num. integer variables: 70080
+    Share integer variables: 0.258
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 3 hours
     Realistic: false
@@ -7510,16 +7813,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-5h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 296128
-    Num. variables: 155943
-    Num. nonzeros: 711397
-    Num. continuous variables: 113895
+    Num. constraints: 383735
+    Num. variables: 162951
+    Num. nonzeros: 935607
+    Num. continuous variables: 120903
     Num. integer variables: 42048
-    Share integer variables: 0.27
+    Share integer variables: 0.258
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 5 hours
     Realistic: false
@@ -7536,16 +7839,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-8h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 185095
-    Num. variables: 97476
-    Num. nonzeros: 445244
-    Num. continuous variables: 71196
+    Num. constraints: 239852
+    Num. variables: 101856
+    Num. nonzeros: 585310
+    Num. continuous variables: 75576
     Num. integer variables: 26280
-    Share integer variables: 0.27
+    Share integer variables: 0.258
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 8 hours
     Realistic: false
@@ -7562,16 +7865,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-12h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 123410
-    Num. variables: 64993
-    Num. nonzeros: 297601
-    Num. continuous variables: 47473
+    Num. constraints: 159917
+    Num. variables: 67913
+    Num. nonzeros: 390928
+    Num. continuous variables: 50393
     Num. integer variables: 17520
-    Share integer variables: 0.27
+    Share integer variables: 0.258
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 12 hours
     Realistic: false
@@ -7588,16 +7891,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-36h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 41276
-    Num. variables: 21741
-    Num. nonzeros: 99408
-    Num. continuous variables: 15885
+    Num. constraints: 53483
+    Num. variables: 22717
+    Num. nonzeros: 130518
+    Num. continuous variables: 16861
     Num. integer variables: 5856
-    Share integer variables: 0.269
+    Share integer variables: 0.258
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 36 hours
     Realistic: false
@@ -7614,16 +7917,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-84h.mps.gz
     Problem class: MILP
     Size: S
-    Num. constraints: 17785
-    Num. variables: 9370
-    Num. nonzeros: 42698
-    Num. continuous variables: 6850
+    Num. constraints: 23042
+    Num. variables: 9790
+    Num. nonzeros: 56016
+    Num. continuous variables: 7270
     Num. integer variables: 2520
-    Share integer variables: 0.269
+    Share integer variables: 0.257
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 2 nodes
     Temporal resolution: 84 hours
     Realistic: false
@@ -7641,16 +7944,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 6754110
-    Num. variables: 3529983
-    Num. nonzeros: 16394847
-    Num. continuous variables: 2531343
-    Num. integer variables: 998640
-    Share integer variables: 0.283
+    Num. constraints: 9355931
+    Num. variables: 3705265
+    Num. nonzeros: 23192713
+    Num. continuous variables: 2759185
+    Num. integer variables: 946080
+    Share integer variables: 0.255
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7670,16 +7973,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2251470
-    Num. variables: 1176760
-    Num. nonzeros: 5467835
-    Num. continuous variables: 843880
-    Num. integer variables: 332880
-    Share integer variables: 0.283
+    Num. constraints: 3118811
+    Num. variables: 1235209
+    Num. nonzeros: 7733499
+    Num. continuous variables: 919849
+    Num. integer variables: 315360
+    Share integer variables: 0.255
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7699,16 +8002,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 281565
-    Num. variables: 147193
-    Num. nonzeros: 686752
-    Num. continuous variables: 105583
-    Num. integer variables: 41610
-    Share integer variables: 0.283
+    Num. constraints: 390071
+    Num. variables: 154532
+    Num. nonzeros: 969626
+    Num. continuous variables: 115112
+    Num. integer variables: 39420
+    Share integer variables: 0.255
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7726,16 +8029,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 41013
-    Num. variables: 21458
-    Num. nonzeros: 99178
-    Num. continuous variables: 15416
-    Num. integer variables: 6042
-    Share integer variables: 0.282
+    Num. constraints: 56855
+    Num. variables: 22556
+    Num. nonzeros: 139944
+    Num. continuous variables: 16832
+    Num. integer variables: 5724
+    Share integer variables: 0.254
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 10 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7753,16 +8056,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 11694859
-    Num. variables: 6122815
-    Num. nonzeros: 27714822
-    Num. continuous variables: 4467175
-    Num. integer variables: 1655640
-    Share integer variables: 0.27
+    Num. constraints: 17932158
+    Num. variables: 6823588
+    Num. nonzeros: 43701102
+    Num. continuous variables: 5115388
+    Num. integer variables: 1708200
+    Share integer variables: 0.25
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7783,16 +8086,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3898459
-    Num. variables: 2041117
-    Num. nonzeros: 9244348
-    Num. continuous variables: 1489237
-    Num. integer variables: 551880
-    Share integer variables: 0.27
+    Num. constraints: 5977678
+    Num. variables: 2274756
+    Num. nonzeros: 14572533
+    Num. continuous variables: 1705356
+    Num. integer variables: 569400
+    Share integer variables: 0.25
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7812,16 +8115,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 487534
-    Num. variables: 255325
-    Num. nonzeros: 1162574
-    Num. continuous variables: 186340
-    Num. integer variables: 68985
-    Share integer variables: 0.27
+    Num. constraints: 747593
+    Num. variables: 284587
+    Num. nonzeros: 1827854
+    Num. continuous variables: 213412
+    Num. integer variables: 71175
+    Share integer variables: 0.25
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7839,16 +8142,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 71014
-    Num. variables: 37238
-    Num. nonzeros: 168132
-    Num. continuous variables: 27221
-    Num. integer variables: 10017
-    Share integer variables: 0.269
+    Num. constraints: 108929
+    Num. variables: 41539
+    Num. nonzeros: 264069
+    Num. continuous variables: 31204
+    Num. integer variables: 10335
+    Share integer variables: 0.249
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 20 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7866,16 +8169,10 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 25781277
-    Num. variables: 13516004
-    Num. nonzeros: 60976098
-    Num. continuous variables: 9915644
-    Num. integer variables: 3600360
-    Share integer variables: 0.266
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -7887,6 +8184,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 38448560
+    Num. variables: 14628552
+    Num. nonzeros: 91903290
+    Num. continuous variables: 11133312
+    Num. integer variables: 3495240
+    Share integer variables: 0.239
   pypsa-de-elec-trex_vopt-uc-50-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       with transmission expansion based on optimal volume increase and including unit
@@ -7896,16 +8199,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 8594157
-    Num. variables: 4505738
-    Num. nonzeros: 20341458
-    Num. continuous variables: 3305618
-    Num. integer variables: 1200120
-    Share integer variables: 0.266
+    Num. constraints: 12816800
+    Num. variables: 4876672
+    Num. nonzeros: 30649841
+    Num. continuous variables: 3711592
+    Num. integer variables: 1165080
+    Share integer variables: 0.239
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -7926,16 +8229,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1074792
-    Num. variables: 563657
-    Num. nonzeros: 2560928
-    Num. continuous variables: 413642
-    Num. integer variables: 150015
-    Share integer variables: 0.266
+    Num. constraints: 1602905
+    Num. variables: 610130
+    Num. nonzeros: 3848669
+    Num. continuous variables: 464495
+    Num. integer variables: 145635
+    Share integer variables: 0.239
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -7953,16 +8256,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 156576
-    Num. variables: 82247
-    Num. nonzeros: 370792
-    Num. continuous variables: 60464
-    Num. integer variables: 21783
-    Share integer variables: 0.265
+    Num. constraints: 233537
+    Num. variables: 89094
+    Num. nonzeros: 557004
+    Num. continuous variables: 67947
+    Num. integer variables: 21147
+    Share integer variables: 0.237
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 50 nodes
     Temporal resolution: 168 hours
     Realistic: false
@@ -7980,16 +8283,10 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 46683175
-    Num. variables: 24544950
-    Num. nonzeros: 109602873
-    Num. continuous variables: 18053790
-    Num. integer variables: 6491160
-    Share integer variables: 0.264
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 1 hour
     Realistic: true
@@ -8001,6 +8298,12 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
+    Num. constraints: 70572265
+    Num. variables: 26717593
+    Num. nonzeros: 168489348
+    Num. continuous variables: 20305273
+    Num. integer variables: 6412320
+    Share integer variables: 0.24
   pypsa-de-elec-trex_vopt-uc-100-3h:
     Short description: Power-sector PyPSA-Eur overnight runs for Germany (year 2050)
       with transmission expansion based on optimal volume increase and including unit
@@ -8010,16 +8313,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 15561815
-    Num. variables: 8182388
-    Num. nonzeros: 36567903
-    Num. continuous variables: 6018668
-    Num. integer variables: 2163720
-    Share integer variables: 0.264
+    Num. constraints: 23525225
+    Num. variables: 8906744
+    Num. nonzeros: 56195708
+    Num. continuous variables: 6769304
+    Num. integer variables: 2137440
+    Share integer variables: 0.24
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 3 hours
     Realistic: true
@@ -8040,16 +8343,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 1946220
-    Num. variables: 1023645
-    Num. nonzeros: 4608334
-    Num. continuous variables: 753180
-    Num. integer variables: 270465
-    Share integer variables: 0.264
+    Num. constraints: 2942145
+    Num. variables: 1114373
+    Num. nonzeros: 7060600
+    Num. continuous variables: 847193
+    Num. integer variables: 267180
+    Share integer variables: 0.24
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 24 hours
     Realistic: false
@@ -8068,16 +8371,16 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 283572
-    Num. variables: 149432
-    Num. nonzeros: 667792
-    Num. continuous variables: 110159
-    Num. integer variables: 39273
-    Share integer variables: 0.263
+    Num. constraints: 428673
+    Num. variables: 162783
+    Num. nonzeros: 1022708
+    Num. continuous variables: 123987
+    Num. integer variables: 38796
+    Share integer variables: 0.238
     MILP features:
     - Unit commitment
     Modelling framework: PyPSA
-    Version:
+    Version: PyPSA-Eur 1b83697f9c2c18ac4c7e0c8c719aff327c221843
     Spatial resolution: 100 nodes
     Temporal resolution: 168 hours
     Realistic: false
