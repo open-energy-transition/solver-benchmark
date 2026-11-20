@@ -362,6 +362,14 @@ def build_benchmark_config(
 
     final_cfg.setdefault("sector", {})["enabled"] = bench_type == "sec"
 
+    # Preserve the historical electricity-only benchmark configuration.
+    # Sector-coupled benchmarks retain their CO2 budget.
+    if bench_type == "elec":
+        final_cfg.setdefault("co2_budget", {}).update(
+            upper=None,
+            lower=None,
+        )
+
     if germany:
         final_cfg["countries"] = ["DE"]
 
