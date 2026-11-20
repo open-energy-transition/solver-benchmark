@@ -1,0 +1,24 @@
+campaign: test-pypsa-1.x-milp
+target: cloud
+selection:
+  all: false
+  problem:
+  - pypsa-de-elec-uc-10-24h
+  - pypsa-de-elec-uc-10-3h
+  - pypsa-de-elec-uc-2-84h
+  - pypsa-eur-elec-trex_vopt-uc-50-168h
+  - pypsa-eur-elec-trex_vopt-uc-50-3h
+  - pypsa-eur-elec-uc-50-24h
+  size: null
+  do_not_skip: false
+allocation:
+  num_vms: null
+  weight_col: Num. variables
+  machine_type: null
+  zone: us-central1-a
+  timeout_hours: null
+  years:
+  - 2025
+  solver_configurations:
+  - gurobi-default
+  - scip-default

@@ -81,8 +81,16 @@ gunzip benchmark-test-model.lp.gz
 # env runner/benchmark.py installs at runtime (each its own pixi manifest
 # under runner/envs/).
 echo "Installing pixi..."
+
+# Set HOME explicitly for non-interactive GCE startup scripts.
+export HOME=/root
+export PIXI_HOME="${HOME}/.pixi"
+
 curl -fsSL https://pixi.sh/install.sh | bash
-export PATH="$HOME/.pixi/bin:$PATH"
+export PATH="${PIXI_HOME}/bin:${PATH}"
+
+# Verify Pixi is installed before starting benchmarks.
+pixi --version
 echo "Elapsed: $(($(date +%s)-start_time))s"
 
 # Get benchmark years from instance metadata
