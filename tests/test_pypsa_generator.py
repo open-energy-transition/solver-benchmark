@@ -193,3 +193,52 @@ def test_build_german_benchmark_config():
 
     assert config["countries"] == ["DE"]
     assert base == original
+
+
+def test_electricity_benchmarks_disable_co2_budget():
+    """All electricity-only configurations must omit CO2 emission limits."""
+    base = {
+        "co2_budget": {
+            "relative": True,
+            "upper": {2050: 0.0},
+            "lower": None,
+        },
+    }
+
+    for path in generator.select_yaml_files("pypsa-eur-elec", GENERATOR_DIR):
+        result = generator.build_benchmark_config(
+            base,
+            generator.load_yaml(path),
+            50,
+            "168h",
+            "elec",
+        )
+
+        assert result["co2_budget"]["upper"] is None, path.name
+        assert result["co2_budget"]["lower"] is None, path.name
+        assert result["sector"]["enabled"] is False, path.name
+
+    assert base["co2_budget"]["upper"] == {2050: 0.0}
+
+
+def test_sector_benchmarks_preserve_co2_budget():
+    """Sector-coupled configurations must retain the CO2 budget."""
+    base = {
+        "co2_budget": {
+            "relative": True,
+            "upper": {2050: 0.0},
+            "lower": None,
+        },
+    }
+
+    for path in generator.select_yaml_files("pypsa-eur-sec", GENERATOR_DIR):
+        result = generator.build_benchmark_config(
+            base,
+            generator.load_yaml(path),
+            50,
+            "168h",
+            "sec",
+        )
+
+        assert result["co2_budget"] == base["co2_budget"], path.name
+        assert result["sector"]["enabled"] is True, path.name
