@@ -8,9 +8,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 10013634
+    Num. constraints: 10013633
     Num. variables: 4164523
-    Num. nonzeros: 20365778
+    Num. nonzeros: 19892738
     Num. continuous variables: 4164523
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -36,9 +36,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 2504124
+    Num. constraints: 2504123
     Num. variables: 1041583
-    Num. nonzeros: 5127495
+    Num. nonzeros: 5009235
     Num. continuous variables: 1041583
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -62,9 +62,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1252539
+    Num. constraints: 1252538
     Num. variables: 521093
-    Num. nonzeros: 2565733
+    Num. nonzeros: 2506603
     Num. continuous variables: 521093
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -88,9 +88,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 182691
+    Num. constraints: 182690
     Num. variables: 76181
-    Num. nonzeros: 373785
+    Num. nonzeros: 365199
     Num. continuous variables: 76181
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -114,9 +114,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-100-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 19308909
+    Num. constraints: 19308908
     Num. variables: 7853068
-    Num. nonzeros: 39662935
+    Num. nonzeros: 38836575
     Num. continuous variables: 7853068
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -142,9 +142,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4828629
+    Num. constraints: 4828628
     Num. variables: 1964158
-    Num. nonzeros: 9988317
+    Num. nonzeros: 9781727
     Num. continuous variables: 1964158
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -170,9 +170,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-100-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2415249
+    Num. constraints: 2415248
     Num. variables: 982673
-    Num. nonzeros: 4998447
+    Num. nonzeros: 4895152
     Num. continuous variables: 982673
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -196,9 +196,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 193193
+    Num. constraints: 193192
     Num. variables: 76344
-    Num. nonzeros: 409992
+    Num. nonzeros: 401406
     Num. continuous variables: 76344
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -222,9 +222,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 5131405
+    Num. constraints: 5131404
     Num. variables: 1964436
-    Num. nonzeros: 10972913
+    Num. nonzeros: 10766323
     Num. continuous variables: 1964436
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -250,9 +250,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 193193
+    Num. constraints: 193192
     Num. variables: 76344
-    Num. nonzeros: 409992
+    Num. nonzeros: 401406
     Num. continuous variables: 76344
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -276,9 +276,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 5131405
+    Num. constraints: 5131404
     Num. variables: 1964436
-    Num. nonzeros: 10972913
+    Num. nonzeros: 10766323
     Num. continuous variables: 1964436
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -304,9 +304,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 182691
+    Num. constraints: 182690
     Num. variables: 76181
-    Num. nonzeros: 373785
+    Num. nonzeros: 365199
     Num. continuous variables: 76181
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -330,9 +330,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-dfp-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4828629
+    Num. constraints: 4828628
     Num. variables: 1964158
-    Num. nonzeros: 9988317
+    Num. nonzeros: 9781727
     Num. continuous variables: 1964158
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -359,9 +359,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 193193
+    Num. constraints: 193192
     Num. variables: 76344
-    Num. nonzeros: 409992
+    Num. nonzeros: 401406
     Num. continuous variables: 76344
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -386,9 +386,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-dfp-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 5131405
+    Num. constraints: 5131404
     Num. variables: 1964436
-    Num. nonzeros: 10972913
+    Num. nonzeros: 10766323
     Num. continuous variables: 1964436
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -414,9 +414,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp-50-168h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 193193
+    Num. constraints: 193192
     Num. variables: 76344
-    Num. nonzeros: 409992
+    Num. nonzeros: 401406
     Num. continuous variables: 76344
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -440,9 +440,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-dfp-100-12h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 5131405
+    Num. constraints: 5131404
     Num. variables: 1964436
-    Num. nonzeros: 10972913
+    Num. nonzeros: 10766323
     Num. continuous variables: 1964436
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -638,9 +638,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 38606381
+    Num. constraints: 38606380
     Num. variables: 15383112
-    Num. nonzeros: 92026123
+    Num. nonzeros: 90607003
     Num. continuous variables: 12492312
     Num. integer variables: 2890800
     Share integer variables: 0.188
@@ -652,9 +652,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 12869501
+    Num. constraints: 12869500
     Num. variables: 5128072
-    Num. nonzeros: 30688572
+    Num. nonzeros: 30215532
     Num. continuous variables: 4164472
     Num. integer variables: 963600
     Share integer variables: 0.188
@@ -680,9 +680,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1609616
+    Num. constraints: 1609615
     Num. variables: 641492
-    Num. nonzeros: 3851492
+    Num. nonzeros: 3792362
     Num. continuous variables: 521042
     Num. integer variables: 120450
     Share integer variables: 0.188
@@ -706,9 +706,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 234632
+    Num. constraints: 234631
     Num. variables: 93620
-    Num. nonzeros: 556000
+    Num. nonzeros: 547414
     Num. continuous variables: 76130
     Num. integer variables: 17490
     Share integer variables: 0.187
@@ -747,9 +747,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 72797569
+    Num. constraints: 72797568
     Num. variables: 28602483
-    Num. nonzeros: 171062046
+    Num. nonzeros: 168582966
     Num. continuous variables: 23556723
     Num. integer variables: 5045760
     Share integer variables: 0.176
@@ -761,9 +761,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 24267169
+    Num. constraints: 24267168
     Num. variables: 9534883
-    Num. nonzeros: 57048995
+    Num. nonzeros: 56222635
     Num. continuous variables: 7852963
     Num. integer variables: 1681920
     Share integer variables: 0.176
@@ -789,9 +789,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3035119
+    Num. constraints: 3035118
     Num. variables: 1192808
-    Num. nonzeros: 7164372
+    Num. nonzeros: 7061077
     Num. continuous variables: 982568
     Num. integer variables: 210240
     Share integer variables: 0.176
@@ -815,9 +815,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 442399
+    Num. constraints: 442398
     Num. variables: 174128
-    Num. nonzeros: 1035584
+    Num. nonzeros: 1020585
     Num. continuous variables: 143600
     Num. integer variables: 30528
     Share integer variables: 0.175
@@ -857,9 +857,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 40288627
+    Num. constraints: 40288626
     Num. variables: 15383275
-    Num. nonzeros: 97956969
+    Num. nonzeros: 96537849
     Num. continuous variables: 12492475
     Num. integer variables: 2890800
     Share integer variables: 0.188
@@ -872,9 +872,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 13430467
+    Num. constraints: 13430466
     Num. variables: 5128235
-    Num. nonzeros: 32665738
+    Num. nonzeros: 32192698
     Num. continuous variables: 4164635
     Num. integer variables: 963600
     Share integer variables: 0.188
@@ -901,9 +901,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1680022
+    Num. constraints: 1680021
     Num. variables: 641655
-    Num. nonzeros: 4098923
+    Num. nonzeros: 4039793
     Num. continuous variables: 521205
     Num. integer variables: 120450
     Share integer variables: 0.188
@@ -928,9 +928,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 245134
+    Num. constraints: 245133
     Num. variables: 93783
-    Num. nonzeros: 592207
+    Num. nonzeros: 583621
     Num. continuous variables: 76293
     Num. integer variables: 17490
     Share integer variables: 0.186
@@ -970,9 +970,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 76424765
+    Num. constraints: 76424764
     Num. variables: 28602761
-    Num. nonzeros: 182871082
+    Num. nonzeros: 180392002
     Num. continuous variables: 23557001
     Num. integer variables: 5045760
     Share integer variables: 0.176
@@ -985,9 +985,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 25476605
+    Num. constraints: 25476604
     Num. variables: 9535161
-    Num. nonzeros: 60985711
+    Num. nonzeros: 60159351
     Num. continuous variables: 7853241
     Num. integer variables: 1681920
     Share integer variables: 0.176
@@ -1014,9 +1014,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3186785
+    Num. constraints: 3186784
     Num. variables: 1193086
-    Num. nonzeros: 7656948
+    Num. nonzeros: 7553653
     Num. continuous variables: 982846
     Num. integer variables: 210240
     Share integer variables: 0.176
@@ -1041,9 +1041,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 464897
+    Num. constraints: 464896
     Num. variables: 174406
-    Num. nonzeros: 1107584
+    Num. nonzeros: 1092585
     Num. continuous variables: 143878
     Num. integer variables: 30528
     Share integer variables: 0.175
@@ -1082,9 +1082,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 40288627
+    Num. constraints: 40288626
     Num. variables: 15383275
-    Num. nonzeros: 97956969
+    Num. nonzeros: 96537849
     Num. continuous variables: 12492475
     Num. integer variables: 2890800
     Share integer variables: 0.188
@@ -1096,9 +1096,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 13430467
+    Num. constraints: 13430466
     Num. variables: 5128235
-    Num. nonzeros: 32665738
+    Num. nonzeros: 32192698
     Num. continuous variables: 4164635
     Num. integer variables: 963600
     Share integer variables: 0.188
@@ -1124,9 +1124,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1680022
+    Num. constraints: 1680021
     Num. variables: 641655
-    Num. nonzeros: 4098923
+    Num. nonzeros: 4039793
     Num. continuous variables: 521205
     Num. integer variables: 120450
     Share integer variables: 0.188
@@ -1150,9 +1150,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 245134
+    Num. constraints: 245133
     Num. variables: 93783
-    Num. nonzeros: 592207
+    Num. nonzeros: 583621
     Num. continuous variables: 76293
     Num. integer variables: 17490
     Share integer variables: 0.186
@@ -1191,9 +1191,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 76424765
+    Num. constraints: 76424764
     Num. variables: 28602761
-    Num. nonzeros: 182871082
+    Num. nonzeros: 180392002
     Num. continuous variables: 23557001
     Num. integer variables: 5045760
     Share integer variables: 0.176
@@ -1205,9 +1205,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 25476605
+    Num. constraints: 25476604
     Num. variables: 9535161
-    Num. nonzeros: 60985711
+    Num. nonzeros: 60159351
     Num. continuous variables: 7853241
     Num. integer variables: 1681920
     Share integer variables: 0.176
@@ -1233,9 +1233,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3186785
+    Num. constraints: 3186784
     Num. variables: 1193086
-    Num. nonzeros: 7656948
+    Num. nonzeros: 7553653
     Num. continuous variables: 982846
     Num. integer variables: 210240
     Share integer variables: 0.176
@@ -1259,9 +1259,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 464897
+    Num. constraints: 464896
     Num. variables: 174406
-    Num. nonzeros: 1107584
+    Num. nonzeros: 1092585
     Num. continuous variables: 143878
     Num. integer variables: 30528
     Share integer variables: 0.175
@@ -1300,9 +1300,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 38606381
+    Num. constraints: 38606380
     Num. variables: 15383112
-    Num. nonzeros: 92026123
+    Num. nonzeros: 90607003
     Num. continuous variables: 12492312
     Num. integer variables: 2890800
     Share integer variables: 0.188
@@ -1314,9 +1314,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 12869501
+    Num. constraints: 12869500
     Num. variables: 5128072
-    Num. nonzeros: 30688572
+    Num. nonzeros: 30215532
     Num. continuous variables: 4164472
     Num. integer variables: 963600
     Share integer variables: 0.188
@@ -1342,9 +1342,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1609616
+    Num. constraints: 1609615
     Num. variables: 641492
-    Num. nonzeros: 3851492
+    Num. nonzeros: 3792362
     Num. continuous variables: 521042
     Num. integer variables: 120450
     Share integer variables: 0.188
@@ -1368,9 +1368,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 234632
+    Num. constraints: 234631
     Num. variables: 93620
-    Num. nonzeros: 556000
+    Num. nonzeros: 547414
     Num. continuous variables: 76130
     Num. integer variables: 17490
     Share integer variables: 0.187
@@ -1409,9 +1409,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 72797569
+    Num. constraints: 72797568
     Num. variables: 28602483
-    Num. nonzeros: 171062046
+    Num. nonzeros: 168582966
     Num. continuous variables: 23556723
     Num. integer variables: 5045760
     Share integer variables: 0.176
@@ -1423,9 +1423,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 24267169
+    Num. constraints: 24267168
     Num. variables: 9534883
-    Num. nonzeros: 57048995
+    Num. nonzeros: 56222635
     Num. continuous variables: 7852963
     Num. integer variables: 1681920
     Share integer variables: 0.176
@@ -1451,9 +1451,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3035119
+    Num. constraints: 3035118
     Num. variables: 1192808
-    Num. nonzeros: 7164372
+    Num. nonzeros: 7061077
     Num. continuous variables: 982568
     Num. integer variables: 210240
     Share integer variables: 0.176
@@ -1477,9 +1477,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-uc-dfp-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 442399
+    Num. constraints: 442398
     Num. variables: 174128
-    Num. nonzeros: 1035584
+    Num. nonzeros: 1020585
     Num. continuous variables: 143600
     Num. integer variables: 30528
     Share integer variables: 0.175
@@ -1519,9 +1519,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 40288627
+    Num. constraints: 40288626
     Num. variables: 15383275
-    Num. nonzeros: 97956969
+    Num. nonzeros: 96537849
     Num. continuous variables: 12492475
     Num. integer variables: 2890800
     Share integer variables: 0.188
@@ -1534,9 +1534,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 13430467
+    Num. constraints: 13430466
     Num. variables: 5128235
-    Num. nonzeros: 32665738
+    Num. nonzeros: 32192698
     Num. continuous variables: 4164635
     Num. integer variables: 963600
     Share integer variables: 0.188
@@ -1563,9 +1563,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1680022
+    Num. constraints: 1680021
     Num. variables: 641655
-    Num. nonzeros: 4098923
+    Num. nonzeros: 4039793
     Num. continuous variables: 521205
     Num. integer variables: 120450
     Share integer variables: 0.188
@@ -1590,9 +1590,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 245134
+    Num. constraints: 245133
     Num. variables: 93783
-    Num. nonzeros: 592207
+    Num. nonzeros: 583621
     Num. continuous variables: 76293
     Num. integer variables: 17490
     Share integer variables: 0.186
@@ -1632,9 +1632,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 76424765
+    Num. constraints: 76424764
     Num. variables: 28602761
-    Num. nonzeros: 182871082
+    Num. nonzeros: 180392002
     Num. continuous variables: 23557001
     Num. integer variables: 5045760
     Share integer variables: 0.176
@@ -1647,9 +1647,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 25476605
+    Num. constraints: 25476604
     Num. variables: 9535161
-    Num. nonzeros: 60985711
+    Num. nonzeros: 60159351
     Num. continuous variables: 7853241
     Num. integer variables: 1681920
     Share integer variables: 0.176
@@ -1676,9 +1676,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3186785
+    Num. constraints: 3186784
     Num. variables: 1193086
-    Num. nonzeros: 7656948
+    Num. nonzeros: 7553653
     Num. continuous variables: 982846
     Num. integer variables: 210240
     Share integer variables: 0.176
@@ -1703,9 +1703,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_vopt-uc-dfp-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 464897
+    Num. constraints: 464896
     Num. variables: 174406
-    Num. nonzeros: 1107584
+    Num. nonzeros: 1092585
     Num. continuous variables: 143878
     Num. integer variables: 30528
     Share integer variables: 0.175
@@ -1745,9 +1745,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 40288627
+    Num. constraints: 40288626
     Num. variables: 15383275
-    Num. nonzeros: 97956969
+    Num. nonzeros: 96537849
     Num. continuous variables: 12492475
     Num. integer variables: 2890800
     Share integer variables: 0.188
@@ -1760,9 +1760,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 13430467
+    Num. constraints: 13430466
     Num. variables: 5128235
-    Num. nonzeros: 32665738
+    Num. nonzeros: 32192698
     Num. continuous variables: 4164635
     Num. integer variables: 963600
     Share integer variables: 0.188
@@ -1789,9 +1789,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1680022
+    Num. constraints: 1680021
     Num. variables: 641655
-    Num. nonzeros: 4098923
+    Num. nonzeros: 4039793
     Num. continuous variables: 521205
     Num. integer variables: 120450
     Share integer variables: 0.188
@@ -1816,9 +1816,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 245134
+    Num. constraints: 245133
     Num. variables: 93783
-    Num. nonzeros: 592207
+    Num. nonzeros: 583621
     Num. continuous variables: 76293
     Num. integer variables: 17490
     Share integer variables: 0.186
@@ -1858,9 +1858,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 76424765
+    Num. constraints: 76424764
     Num. variables: 28602761
-    Num. nonzeros: 182871082
+    Num. nonzeros: 180392002
     Num. continuous variables: 23557001
     Num. integer variables: 5045760
     Share integer variables: 0.176
@@ -1873,9 +1873,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 25476605
+    Num. constraints: 25476604
     Num. variables: 9535161
-    Num. nonzeros: 60985711
+    Num. nonzeros: 60159351
     Num. continuous variables: 7853241
     Num. integer variables: 1681920
     Share integer variables: 0.176
@@ -1902,9 +1902,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3186785
+    Num. constraints: 3186784
     Num. variables: 1193086
-    Num. nonzeros: 7656948
+    Num. nonzeros: 7553653
     Num. continuous variables: 982846
     Num. integer variables: 210240
     Share integer variables: 0.176
@@ -1929,9 +1929,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-eur-elec-trex_copt-uc-dfp-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 464897
+    Num. constraints: 464896
     Num. variables: 174406
-    Num. nonzeros: 1107584
+    Num. nonzeros: 1092585
     Num. continuous variables: 143878
     Num. integer variables: 30528
     Share integer variables: 0.175
@@ -1956,9 +1956,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2102579
+    Num. constraints: 2102578
     Num. variables: 919832
-    Num. nonzeros: 4292053
+    Num. nonzeros: 4122693
     Num. continuous variables: 919832
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -1982,9 +1982,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8503880
+    Num. constraints: 8503879
     Num. variables: 3711578
-    Num. nonzeros: 17805238
+    Num. nonzeros: 17121958
     Num. continuous variables: 3711578
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2010,9 +2010,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-2-1h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1322805
+    Num. constraints: 1322804
     Num. variables: 604381
-    Num. nonzeros: 2607391
+    Num. nonzeros: 2484751
     Num. continuous variables: 604381
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2036,9 +2036,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-4-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 2847077
+    Num. constraints: 2847076
     Num. variables: 1235035
-    Num. nonzeros: 5713691
+    Num. nonzeros: 5485931
     Num. continuous variables: 1235035
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2062,9 +2062,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-6-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4248715
+    Num. constraints: 4248714
     Num. variables: 1804372
-    Num. nonzeros: 8599910
+    Num. nonzeros: 8275790
     Num. continuous variables: 1804372
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2088,9 +2088,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-8-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 5133507
+    Num. constraints: 5133506
     Num. variables: 2277390
-    Num. nonzeros: 10434969
+    Num. nonzeros: 10014489
     Num. continuous variables: 2277390
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2114,9 +2114,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6307379
+    Num. constraints: 6307378
     Num. variables: 2759168
-    Num. nonzeros: 12865907
+    Num. nonzeros: 12357827
     Num. continuous variables: 2759168
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2140,9 +2140,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-12-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 7638931
+    Num. constraints: 7638930
     Num. variables: 3284746
-    Num. nonzeros: 15743675
+    Num. nonzeros: 15147995
     Num. continuous variables: 3284746
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2166,9 +2166,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-14-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8479923
+    Num. constraints: 8479922
     Num. variables: 3696400
-    Num. nonzeros: 17499718
+    Num. nonzeros: 16807678
     Num. continuous variables: 3696400
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2192,9 +2192,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-16-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 9548675
+    Num. constraints: 9548674
     Num. variables: 4178134
-    Num. nonzeros: 19622988
+    Num. nonzeros: 18852108
     Num. continuous variables: 4178134
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2218,9 +2218,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-18-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 10626187
+    Num. constraints: 10626186
     Num. variables: 4651108
-    Num. nonzeros: 21808496
+    Num. nonzeros: 20958776
     Num. continuous variables: 4651108
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2244,9 +2244,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 11686183
+    Num. constraints: 11686182
     Num. variables: 5115368
-    Num. nonzeros: 24054477
+    Num. nonzeros: 23108397
     Num. continuous variables: 5115368
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2272,9 +2272,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-22-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 12684855
+    Num. constraints: 12684854
     Num. variables: 5544586
-    Num. nonzeros: 26169054
+    Num. nonzeros: 25152894
     Num. continuous variables: 5544586
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2300,9 +2300,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-24-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 13736087
+    Num. constraints: 13736086
     Num. variables: 6017560
-    Num. nonzeros: 28405641
+    Num. nonzeros: 27319401
     Num. continuous variables: 6017560
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2328,9 +2328,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-26-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 14594603
+    Num. constraints: 14594602
     Num. variables: 6394264
-    Num. nonzeros: 30186682
+    Num. nonzeros: 29021602
     Num. continuous variables: 6394264
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2356,9 +2356,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-28-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 15479397
+    Num. constraints: 15479396
     Num. variables: 6788443
-    Num. nonzeros: 31952451
+    Num. nonzeros: 30717291
     Num. continuous variables: 6788443
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2384,9 +2384,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-30-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 16224027
+    Num. constraints: 16224026
     Num. variables: 7103868
-    Num. nonzeros: 33565633
+    Num. nonzeros: 32251633
     Num. continuous variables: 7103868
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2412,9 +2412,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-32-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 17029983
+    Num. constraints: 17029982
     Num. variables: 7498004
-    Num. nonzeros: 35296230
+    Num. nonzeros: 33903390
     Num. continuous variables: 7498004
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2440,9 +2440,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-34-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 18422857
+    Num. constraints: 18422856
     Num. variables: 8014867
-    Num. nonzeros: 38227519
+    Num. nonzeros: 36755839
     Num. continuous variables: 8014867
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2468,9 +2468,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-36-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 19211291
+    Num. constraints: 19211290
     Num. variables: 8400242
-    Num. nonzeros: 40033681
+    Num. nonzeros: 38500681
     Num. continuous variables: 8400242
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2496,9 +2496,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-38-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 20174925
+    Num. constraints: 20174924
     Num. variables: 8794465
-    Num. nonzeros: 42077381
+    Num. nonzeros: 40456781
     Num. continuous variables: 8794465
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2524,9 +2524,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-40-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 21103515
+    Num. constraints: 21103514
     Num. variables: 9232398
-    Num. nonzeros: 44287466
+    Num. nonzeros: 42579266
     Num. continuous variables: 9232398
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2552,9 +2552,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-42-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 22067149
+    Num. constraints: 22067148
     Num. variables: 9609101
-    Num. nonzeros: 46053720
+    Num. nonzeros: 44284200
     Num. continuous variables: 9609101
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2580,9 +2580,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-44-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 22864345
+    Num. constraints: 22864344
     Num. variables: 9994521
-    Num. nonzeros: 47764452
+    Num. nonzeros: 45924852
     Num. continuous variables: 9994521
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2608,9 +2608,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-46-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 23644013
+    Num. constraints: 23644012
     Num. variables: 10309945
-    Num. nonzeros: 49696055
+    Num. nonzeros: 47768855
     Num. continuous variables: 10309945
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2636,9 +2636,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-48-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 24826649
+    Num. constraints: 24826648
     Num. variables: 10817961
-    Num. nonzeros: 51757412
+    Num. nonzeros: 49751372
     Num. continuous variables: 10817961
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2664,9 +2664,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 25509960
+    Num. constraints: 25509959
     Num. variables: 11133298
-    Num. nonzeros: 53362687
+    Num. nonzeros: 51312847
     Num. continuous variables: 11133298
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2692,9 +2692,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-52-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 26403512
+    Num. constraints: 26403511
     Num. variables: 11501284
-    Num. nonzeros: 55748877
+    Num. nonzeros: 53620197
     Num. continuous variables: 11501284
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2720,9 +2720,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-54-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 27778864
+    Num. constraints: 27778863
     Num. variables: 12018102
-    Num. nonzeros: 59142567
+    Num. nonzeros: 56935047
     Num. continuous variables: 12018102
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2748,9 +2748,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-56-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 28435900
+    Num. constraints: 28435899
     Num. variables: 12316054
-    Num. nonzeros: 59645606
+    Num. nonzeros: 57359246
     Num. continuous variables: 12316054
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2776,9 +2776,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-58-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 28873928
+    Num. constraints: 28873927
     Num. variables: 12561310
-    Num. nonzeros: 61100100
+    Num. nonzeros: 58769940
     Num. continuous variables: 12561310
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2804,9 +2804,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-60-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 30555888
+    Num. constraints: 30555887
     Num. variables: 13157016
-    Num. nonzeros: 64495402
+    Num. nonzeros: 62060122
     Num. continuous variables: 13157016
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2832,9 +2832,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6692893
+    Num. constraints: 6692892
     Num. variables: 2759205
-    Num. nonzeros: 14153701
+    Num. nonzeros: 13645621
     Num. continuous variables: 2759205
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2858,9 +2858,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2231133
+    Num. constraints: 2231132
     Num. variables: 919869
-    Num. nonzeros: 4721367
+    Num. nonzeros: 4552007
     Num. continuous variables: 919869
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2884,9 +2884,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 13157983
+    Num. constraints: 13157982
     Num. variables: 5115428
-    Num. nonzeros: 27891477
+    Num. nonzeros: 26945397
     Num. continuous variables: 5115428
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2912,9 +2912,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-20-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4386303
+    Num. constraints: 4386302
     Num. variables: 1705396
-    Num. nonzeros: 9304108
+    Num. nonzeros: 8988748
     Num. continuous variables: 1705396
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2940,9 +2940,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 28838986
+    Num. constraints: 28838985
     Num. variables: 11133411
-    Num. nonzeros: 61842593
+    Num. nonzeros: 59792753
     Num. continuous variables: 11133411
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2968,9 +2968,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1202646
+    Num. constraints: 1202645
     Num. variables: 464594
-    Num. nonzeros: 2599612
+    Num. nonzeros: 2514202
     Num. continuous variables: 464594
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -2994,9 +2994,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6692893
+    Num. constraints: 6692892
     Num. variables: 2759205
-    Num. nonzeros: 14153701
+    Num. nonzeros: 13645621
     Num. continuous variables: 2759205
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3020,9 +3020,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2231133
+    Num. constraints: 2231132
     Num. variables: 919869
-    Num. nonzeros: 4721367
+    Num. nonzeros: 4552007
     Num. continuous variables: 919869
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3048,9 +3048,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 13157983
+    Num. constraints: 13157982
     Num. variables: 5115428
-    Num. nonzeros: 27891477
+    Num. nonzeros: 26945397
     Num. continuous variables: 5115428
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3076,9 +3076,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-20-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4386303
+    Num. constraints: 4386302
     Num. variables: 1705396
-    Num. nonzeros: 9304108
+    Num. nonzeros: 8988748
     Num. continuous variables: 1705396
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3104,9 +3104,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 28838986
+    Num. constraints: 28838985
     Num. variables: 11133411
-    Num. nonzeros: 61842593
+    Num. nonzeros: 59792753
     Num. continuous variables: 11133411
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3132,9 +3132,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 9613706
+    Num. constraints: 9613705
     Num. variables: 3711691
-    Num. nonzeros: 20632024
+    Num. nonzeros: 19948744
     Num. continuous variables: 3711691
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3160,9 +3160,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1202646
+    Num. constraints: 1202645
     Num. variables: 464594
-    Num. nonzeros: 2599612
+    Num. nonzeros: 2514202
     Num. continuous variables: 464594
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3186,9 +3186,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6307379
+    Num. constraints: 6307378
     Num. variables: 2759168
-    Num. nonzeros: 12865907
+    Num. nonzeros: 12357827
     Num. continuous variables: 2759168
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3212,9 +3212,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2102579
+    Num. constraints: 2102578
     Num. variables: 919832
-    Num. nonzeros: 4292053
+    Num. nonzeros: 4122693
     Num. continuous variables: 919832
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3238,9 +3238,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 11686183
+    Num. constraints: 11686182
     Num. variables: 5115368
-    Num. nonzeros: 24054477
+    Num. nonzeros: 23108397
     Num. continuous variables: 5115368
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3266,9 +3266,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 25509960
+    Num. constraints: 25509959
     Num. variables: 11133298
-    Num. nonzeros: 53362687
+    Num. nonzeros: 51312847
     Num. continuous variables: 11133298
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3294,9 +3294,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 8503880
+    Num. constraints: 8503879
     Num. variables: 3711578
-    Num. nonzeros: 17805238
+    Num. nonzeros: 17121958
     Num. continuous variables: 3711578
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3322,9 +3322,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-dfp-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1063720
+    Num. constraints: 1063719
     Num. variables: 464481
-    Num. nonzeros: 2246066
+    Num. nonzeros: 2160656
     Num. continuous variables: 464481
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3348,9 +3348,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6692893
+    Num. constraints: 6692892
     Num. variables: 2759205
-    Num. nonzeros: 14153701
+    Num. nonzeros: 13645621
     Num. continuous variables: 2759205
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3374,9 +3374,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2231133
+    Num. constraints: 2231132
     Num. variables: 919869
-    Num. nonzeros: 4721367
+    Num. nonzeros: 4552007
     Num. continuous variables: 919869
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3400,9 +3400,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 13157983
+    Num. constraints: 13157982
     Num. variables: 5115428
-    Num. nonzeros: 27891477
+    Num. nonzeros: 26945397
     Num. continuous variables: 5115428
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3428,9 +3428,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-20-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 4386303
+    Num. constraints: 4386302
     Num. variables: 1705396
-    Num. nonzeros: 9304108
+    Num. nonzeros: 8988748
     Num. continuous variables: 1705396
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3456,9 +3456,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 28838986
+    Num. constraints: 28838985
     Num. variables: 11133411
-    Num. nonzeros: 61842593
+    Num. nonzeros: 59792753
     Num. continuous variables: 11133411
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3484,9 +3484,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-dfp-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1202646
+    Num. constraints: 1202645
     Num. variables: 464594
-    Num. nonzeros: 2599612
+    Num. nonzeros: 2514202
     Num. continuous variables: 464594
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3510,9 +3510,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-10-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 6692893
+    Num. constraints: 6692892
     Num. variables: 2759205
-    Num. nonzeros: 14153701
+    Num. nonzeros: 13645621
     Num. continuous variables: 2759205
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3536,9 +3536,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-10-3h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 2231133
+    Num. constraints: 2231132
     Num. variables: 919869
-    Num. nonzeros: 4721367
+    Num. nonzeros: 4552007
     Num. continuous variables: 919869
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3562,9 +3562,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-20-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 13157983
+    Num. constraints: 13157982
     Num. variables: 5115428
-    Num. nonzeros: 27891477
+    Num. nonzeros: 26945397
     Num. continuous variables: 5115428
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3590,9 +3590,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-50-1h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 28838986
+    Num. constraints: 28838985
     Num. variables: 11133411
-    Num. nonzeros: 61842593
+    Num. nonzeros: 59792753
     Num. continuous variables: 11133411
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3618,9 +3618,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-50-3h.mps.gz
     Problem class: LP
     Size: L
-    Num. constraints: 9613706
+    Num. constraints: 9613705
     Num. variables: 3711691
-    Num. nonzeros: 20632024
+    Num. nonzeros: 19948744
     Num. continuous variables: 3711691
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3646,9 +3646,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_copt-dfp-50-24h.mps.gz
     Problem class: LP
     Size: M
-    Num. constraints: 1202646
+    Num. constraints: 1202645
     Num. variables: 464594
-    Num. nonzeros: 2599612
+    Num. nonzeros: 2514202
     Num. continuous variables: 464594
     Num. integer variables: 0
     Share integer variables: 0.0
@@ -3961,9 +3961,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 8970417
+    Num. constraints: 8970416
     Num. variables: 3705228
-    Num. nonzeros: 21904919
+    Num. nonzeros: 21396839
     Num. continuous variables: 2759148
     Num. integer variables: 946080
     Share integer variables: 0.255
@@ -3989,9 +3989,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2990257
+    Num. constraints: 2990256
     Num. variables: 1235172
-    Num. nonzeros: 7304185
+    Num. nonzeros: 7134825
     Num. continuous variables: 919812
     Num. integer variables: 315360
     Share integer variables: 0.255
@@ -4017,9 +4017,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 373937
+    Num. constraints: 373936
     Num. variables: 154495
-    Num. nonzeros: 915897
+    Num. nonzeros: 894727
     Num. continuous variables: 115075
     Num. integer variables: 39420
     Share integer variables: 0.255
@@ -4043,9 +4043,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-10-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 54449
+    Num. constraints: 54448
     Num. variables: 22519
-    Num. nonzeros: 132079
+    Num. nonzeros: 129005
     Num. continuous variables: 16795
     Num. integer variables: 5724
     Share integer variables: 0.254
@@ -4069,9 +4069,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 16460358
+    Num. constraints: 16460357
     Num. variables: 6823528
-    Num. nonzeros: 39864102
+    Num. nonzeros: 38918022
     Num. continuous variables: 5115328
     Num. integer variables: 1708200
     Share integer variables: 0.25
@@ -4098,9 +4098,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 5486998
+    Num. constraints: 5486997
     Num. variables: 2274696
-    Num. nonzeros: 13293453
+    Num. nonzeros: 12978093
     Num. continuous variables: 1705296
     Num. integer variables: 569400
     Share integer variables: 0.25
@@ -4126,9 +4126,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 686153
+    Num. constraints: 686152
     Num. variables: 284527
-    Num. nonzeros: 1667864
+    Num. nonzeros: 1628444
     Num. continuous variables: 213352
     Num. integer variables: 71175
     Share integer variables: 0.25
@@ -4152,9 +4152,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-20-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 99905
+    Num. constraints: 99904
     Num. variables: 41479
-    Num. nonzeros: 240735
+    Num. nonzeros: 235011
     Num. continuous variables: 31144
     Num. integer variables: 10335
     Share integer variables: 0.249
@@ -4193,9 +4193,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 35119534
+    Num. constraints: 35119533
     Num. variables: 14628439
-    Num. nonzeros: 83423384
+    Num. nonzeros: 81373544
     Num. continuous variables: 11133199
     Num. integer variables: 3495240
     Share integer variables: 0.239
@@ -4207,9 +4207,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 11706974
+    Num. constraints: 11706973
     Num. variables: 4876559
-    Num. nonzeros: 27823055
+    Num. nonzeros: 27139775
     Num. continuous variables: 3711479
     Num. integer variables: 1165080
     Share integer variables: 0.239
@@ -4236,9 +4236,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1463979
+    Num. constraints: 1463978
     Num. variables: 610017
-    Num. nonzeros: 3495123
+    Num. nonzeros: 3409713
     Num. continuous variables: 464382
     Num. integer variables: 145635
     Share integer variables: 0.239
@@ -4263,9 +4263,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 213171
+    Num. constraints: 213170
     Num. variables: 88981
-    Num. nonzeros: 505474
+    Num. nonzeros: 493072
     Num. continuous variables: 67834
     Num. integer variables: 21147
     Share integer variables: 0.238
@@ -4304,9 +4304,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 64264669
+    Num. constraints: 64264668
     Num. variables: 26717395
-    Num. nonzeros: 152563272
+    Num. nonzeros: 148831512
     Num. continuous variables: 20305075
     Num. integer variables: 6412320
     Share integer variables: 0.24
@@ -4318,9 +4318,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 21422429
+    Num. constraints: 21422428
     Num. variables: 8906546
-    Num. nonzeros: 50886752
+    Num. nonzeros: 49642832
     Num. continuous variables: 6769106
     Num. integer variables: 2137440
     Share integer variables: 0.24
@@ -4347,9 +4347,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2678949
+    Num. constraints: 2678948
     Num. variables: 1114175
-    Num. nonzeros: 6396634
+    Num. nonzeros: 6241144
     Num. continuous variables: 846995
     Num. integer variables: 267180
     Share integer variables: 0.24
@@ -4374,9 +4374,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 390117
+    Num. constraints: 390116
     Num. variables: 162585
-    Num. nonzeros: 925958
+    Num. nonzeros: 903380
     Num. continuous variables: 123789
     Num. integer variables: 38796
     Share integer variables: 0.239
@@ -4400,9 +4400,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-3h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 639527
+    Num. constraints: 639526
     Num. variables: 271563
-    Num. nonzeros: 1558660
+    Num. nonzeros: 1517780
     Num. continuous variables: 201483
     Num. integer variables: 70080
     Share integer variables: 0.258
@@ -4427,9 +4427,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-5h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 383735
+    Num. constraints: 383734
     Num. variables: 162951
-    Num. nonzeros: 935607
+    Num. nonzeros: 911079
     Num. continuous variables: 120903
     Num. integer variables: 42048
     Share integer variables: 0.258
@@ -4453,9 +4453,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-8h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 239852
+    Num. constraints: 239851
     Num. variables: 101856
-    Num. nonzeros: 585310
+    Num. nonzeros: 569980
     Num. continuous variables: 75576
     Num. integer variables: 26280
     Share integer variables: 0.258
@@ -4479,9 +4479,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-12h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 159917
+    Num. constraints: 159916
     Num. variables: 67913
-    Num. nonzeros: 390928
+    Num. nonzeros: 380708
     Num. continuous variables: 50393
     Num. integer variables: 17520
     Share integer variables: 0.258
@@ -4505,9 +4505,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-36h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 53483
+    Num. constraints: 53482
     Num. variables: 22717
-    Num. nonzeros: 130518
+    Num. nonzeros: 127102
     Num. continuous variables: 16861
     Num. integer variables: 5856
     Share integer variables: 0.258
@@ -4531,9 +4531,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-uc-2-84h.mps.gz
     Problem class: MILP
     Size: S
-    Num. constraints: 23042
+    Num. constraints: 23041
     Num. variables: 9790
-    Num. nonzeros: 56016
+    Num. nonzeros: 54546
     Num. continuous variables: 7270
     Num. integer variables: 2520
     Share integer variables: 0.257
@@ -4558,9 +4558,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 9355931
+    Num. constraints: 9355930
     Num. variables: 3705265
-    Num. nonzeros: 23192713
+    Num. nonzeros: 22684633
     Num. continuous variables: 2759185
     Num. integer variables: 946080
     Share integer variables: 0.255
@@ -4587,9 +4587,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 3118811
+    Num. constraints: 3118810
     Num. variables: 1235209
-    Num. nonzeros: 7733499
+    Num. nonzeros: 7564139
     Num. continuous variables: 919849
     Num. integer variables: 315360
     Share integer variables: 0.255
@@ -4616,9 +4616,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 390071
+    Num. constraints: 390070
     Num. variables: 154532
-    Num. nonzeros: 969626
+    Num. nonzeros: 948456
     Num. continuous variables: 115112
     Num. integer variables: 39420
     Share integer variables: 0.255
@@ -4643,9 +4643,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-10-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 56855
+    Num. constraints: 56854
     Num. variables: 22556
-    Num. nonzeros: 139944
+    Num. nonzeros: 136870
     Num. continuous variables: 16832
     Num. integer variables: 5724
     Share integer variables: 0.254
@@ -4670,9 +4670,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-1h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 17932158
+    Num. constraints: 17932157
     Num. variables: 6823588
-    Num. nonzeros: 43701102
+    Num. nonzeros: 42755022
     Num. continuous variables: 5115388
     Num. integer variables: 1708200
     Share integer variables: 0.25
@@ -4700,9 +4700,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 5977678
+    Num. constraints: 5977677
     Num. variables: 2274756
-    Num. nonzeros: 14572533
+    Num. nonzeros: 14257173
     Num. continuous variables: 1705356
     Num. integer variables: 569400
     Share integer variables: 0.25
@@ -4729,9 +4729,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 747593
+    Num. constraints: 747592
     Num. variables: 284587
-    Num. nonzeros: 1827854
+    Num. nonzeros: 1788434
     Num. continuous variables: 213412
     Num. integer variables: 71175
     Share integer variables: 0.25
@@ -4756,9 +4756,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-20-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 108929
+    Num. constraints: 108928
     Num. variables: 41539
-    Num. nonzeros: 264069
+    Num. nonzeros: 258345
     Num. continuous variables: 31204
     Num. integer variables: 10335
     Share integer variables: 0.249
@@ -4798,9 +4798,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 38448560
+    Num. constraints: 38448559
     Num. variables: 14628552
-    Num. nonzeros: 91903290
+    Num. nonzeros: 89853450
     Num. continuous variables: 11133312
     Num. integer variables: 3495240
     Share integer variables: 0.239
@@ -4813,9 +4813,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 12816800
+    Num. constraints: 12816799
     Num. variables: 4876672
-    Num. nonzeros: 30649841
+    Num. nonzeros: 29966561
     Num. continuous variables: 3711592
     Num. integer variables: 1165080
     Share integer variables: 0.239
@@ -4843,9 +4843,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-24h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 1602905
+    Num. constraints: 1602904
     Num. variables: 610130
-    Num. nonzeros: 3848669
+    Num. nonzeros: 3763259
     Num. continuous variables: 464495
     Num. integer variables: 145635
     Share integer variables: 0.239
@@ -4870,9 +4870,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-50-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 233537
+    Num. constraints: 233536
     Num. variables: 89094
-    Num. nonzeros: 557004
+    Num. nonzeros: 544602
     Num. continuous variables: 67947
     Num. integer variables: 21147
     Share integer variables: 0.237
@@ -4912,9 +4912,9 @@ problems:
     Sectors: Electric
     Time horizon: Single period (2050)
     Model name: PyPSA-Eur
-    Num. constraints: 70572265
+    Num. constraints: 70572264
     Num. variables: 26717593
-    Num. nonzeros: 168489348
+    Num. nonzeros: 164757588
     Num. continuous variables: 20305273
     Num. integer variables: 6412320
     Share integer variables: 0.24
@@ -4927,9 +4927,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-3h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 23525225
+    Num. constraints: 23525224
     Num. variables: 8906744
-    Num. nonzeros: 56195708
+    Num. nonzeros: 54951788
     Num. continuous variables: 6769304
     Num. integer variables: 2137440
     Share integer variables: 0.24
@@ -4957,9 +4957,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-24h.mps.gz
     Problem class: MILP
     Size: L
-    Num. constraints: 2942145
+    Num. constraints: 2942144
     Num. variables: 1114373
-    Num. nonzeros: 7060600
+    Num. nonzeros: 6905110
     Num. continuous variables: 847193
     Num. integer variables: 267180
     Share integer variables: 0.24
@@ -4985,9 +4985,9 @@ problems:
     URL: https://storage.googleapis.com/solver-benchmarks/instances/pypsa-de-elec-trex_vopt-uc-100-168h.mps.gz
     Problem class: MILP
     Size: M
-    Num. constraints: 428673
+    Num. constraints: 428672
     Num. variables: 162783
-    Num. nonzeros: 1022708
+    Num. nonzeros: 1000130
     Num. continuous variables: 123987
     Num. integer variables: 38796
     Share integer variables: 0.238
