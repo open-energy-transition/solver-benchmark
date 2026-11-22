@@ -1,22 +1,26 @@
-campaign: test-pypsa-1.x-lp
+campaign: pypsa-v3-refresh-lp
 target: cloud
 selection:
   all: false
   problem:
   - pypsa-de-elec-10-3h
-  - pypsa-de-elec-20-1h
-  - pypsa-de-elec-50-3h
+  - pypsa-de-elec-trex_vopt-10-3h
+  - pypsa-de-elec-dfp-50-24h
   - pypsa-de-sec-10-168h
-  - pypsa-de-sec-20-12h
-  - pypsa-eur-elec-100-12h
-  - pypsa-eur-elec-100-24h
+  - pypsa-de-sec-50-168h
   - pypsa-eur-elec-50-168h
   - pypsa-eur-elec-50-24h
+  - pypsa-eur-elec-100-24h
+  - pypsa-eur-sec-50-168h
+  - pypsa-de-elec-trex_copt-10-3h
+  - pypsa-de-elec-50-3h
+  - pypsa-de-elec-trex_vopt-dfp-10-3h
+  - pypsa-de-sec-20-12h
+  - pypsa-eur-elec-50-12h
   - pypsa-eur-elec-50-3h
   - pypsa-eur-elec-trex_copt-50-168h
-  - pypsa-eur-elec-trex_vopt-50-168h
-  - pypsa-eur-sec-50-168h
   - pypsa-eur-sec-50-24h
+  - pypsa-eur-sec-trex_copt-50-168h
   size: null
   do_not_skip: false
 allocation:
@@ -27,7 +31,6 @@ allocation:
   timeout_hours: null
   years:
   - 2025
-  - 2026
   solver_configurations:
   - gurobi-default
-  - highs-hipo
+  - highs-default

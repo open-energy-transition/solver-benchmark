@@ -1,14 +1,26 @@
-campaign: test-pypsa-1.x-milp
+campaign: pypsa-v3-refresh-milp
 target: cloud
 selection:
   all: false
   problem:
-  - pypsa-de-elec-uc-10-24h
-  - pypsa-de-elec-uc-10-3h
   - pypsa-de-elec-uc-2-84h
-  - pypsa-eur-elec-trex_vopt-uc-50-168h
-  - pypsa-eur-elec-trex_vopt-uc-50-3h
+  - pypsa-de-elec-uc-10-168h
+  - pypsa-de-elec-uc-10-24h
+  - pypsa-de-elec-uc-20-24h
+  - pypsa-de-elec-trex_vopt-uc-50-168h
+  - pypsa-de-elec-uc-100-168h
+  - pypsa-eur-elec-uc-50-168h
   - pypsa-eur-elec-uc-50-24h
+  - pypsa-eur-elec-uc-100-168h
+  - pypsa-eur-elec-trex_vopt-uc-50-168h
+  - pypsa-de-elec-uc-10-3h
+  - pypsa-de-elec-uc-20-3h
+  - pypsa-de-elec-uc-20-168h
+  - pypsa-eur-elec-uc-50-3h
+  - pypsa-eur-elec-uc-100-24h
+  - pypsa-eur-elec-trex_vopt-uc-50-3h
+  - pypsa-eur-elec-trex_copt-uc-50-168h
+  - pypsa-eur-elec-uc-dfp-50-168h
   size: null
   do_not_skip: false
 allocation:
