@@ -82,7 +82,7 @@ jobs:
             if grep -qE "$1|${workflows}" <<< "${changed}"; then echo true; else echo false; fi
           }
           {
-            echo "metadata=$(matches "^benchmarks/|^results/|^tests/validate_|${pixi}")"
+            echo "metadata=$(matches "^benchmarks/|^results/|^tests/validate_|^tests/test_pypsa_generator\.py$|${pixi}")"
             echo "runner=$(matches "^runner/|^benchmarks/[^/]+\.(py|yaml)$|^results/metadata(_subset)?\.yaml$|^tests/sample_benchmarks/|^pytest\.ini$|${pixi}")"
             # The website build reads results/.
             echo "website=$(matches "^website/|^results/")"
@@ -167,6 +167,9 @@ jobs:
 
       - name: Validate results against metadata
         run: pixi run -e benchmarks python tests/validate_results.py
+
+      - name: Test PyPSA benchmark generator
+        run: pixi run -e benchmarks pytest tests/test_pypsa_generator.py
 
   runner:
     needs: changes
