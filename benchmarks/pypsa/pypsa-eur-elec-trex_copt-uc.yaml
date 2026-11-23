@@ -11,7 +11,6 @@ electricity:
 
 conventional:
   unit_commitment: true
-  dynamic_fuel_price: true
 
 solving:
   options:
