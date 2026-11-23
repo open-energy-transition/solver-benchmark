@@ -362,8 +362,8 @@ def build_benchmark_config(
 
     final_cfg.setdefault("sector", {})["enabled"] = bench_type == "sec"
 
-    # Preserve the historical electricity-only benchmark configuration.
-    # Sector-coupled benchmarks retain their CO2 budget.
+    # Electricity-only benchmarks have no CO2 budget: PyPSA-Eur's default 2050
+    # budget of zero makes their unit commitment problems infeasible.
     if bench_type == "elec":
         final_cfg.setdefault("co2_budget", {}).update(
             upper=None,
