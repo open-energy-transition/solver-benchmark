@@ -1,8 +1,9 @@
 """Alert lines for failed runs, used by the cloud failure notifications.
 
-On cloud VMs, everything the runner prints goes to Cloud Logging, where the
-alert policy in `infrastructure/alerts/` emails its recipients whenever a line
-contains `ALERT_MARKER`. Locally, the line is just part of the output.
+On cloud VMs, everything the runner prints goes to Cloud Logging, where a
+campaign's alert policy (see `infrastructure/main.tf`) emails its recipients
+whenever a line contains `ALERT_MARKER` and the campaign's run ID. Locally, the
+line is just part of the output.
 """
 
 from __future__ import annotations

@@ -22,6 +22,10 @@ campaign: test-pypsa
 # In local mode, VM-specific settings such as num_vms, machine_type and zone are ignored.
 target: local
 
+# Email addresses to notify when a run of a cloud campaign ends in ER or OOM.
+# No notifications if empty.
+notify: []
+
 selection:
   # Problem selection mode.
   #

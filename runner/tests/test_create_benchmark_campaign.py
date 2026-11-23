@@ -96,3 +96,29 @@ def test_every_machine_profile_has_a_price():
     prices = load_vm_costs()["machine_types"]
     for profile in create_benchmark_campaign.MACHINE_PROFILES.values():
         assert profile["machine_type"] in prices
+
+
+def test_notify_is_read_from_the_config_file():
+    """A config file's `notify` list becomes the --notify default."""
+    defaults = create_benchmark_campaign.flatten_config(
+        {"campaign": "x", "notify": ["a@example.org"]}
+    )
+    args = create_benchmark_campaign.merge_cli_with_defaults(
+        argparse.Namespace(), defaults
+    )
+    assert args.notify == ["a@example.org"]
+
+
+@pytest.mark.parametrize(
+    ("email", "valid"),
+    [
+        ("a@example.org", True),
+        ("first.last@sub.example.org", True),
+        ("a@example", False),
+        ("example.org", False),
+        ("a b@example.org", False),
+    ],
+)
+def test_email_pattern(email, valid):
+    """--notify takes only email addresses, as main.tf checks them too."""
+    assert bool(create_benchmark_campaign.EMAIL_PATTERN.fullmatch(email)) is valid

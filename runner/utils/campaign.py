@@ -179,6 +179,7 @@ def create_benchmark_campaign(
     vm_prefix: str,
     vm_yamls: list[dict],
     git_ref: str = _DEFAULT_GIT_REF,
+    notification_emails: list[str] | None = None,
 ) -> None:
     """Scaffold a campaign's Terraform/OpenTofu files from allocated VM YAMLs.
 
@@ -193,17 +194,22 @@ def create_benchmark_campaign(
         Per-VM campaign configs, as returned by `allocate_problems`.
     git_ref : str, optional
         Branch or tag of this repository that the VMs clone and run.
+    notification_emails : list[str], optional
+        Email addresses to notify when a run of the campaign ends in ER or
+        OOM (see `infrastructure/main.tf`). No alert is created if empty.
     """
-    tfvars = "\n".join(
-        [
-            'project_id = "compute-app-427709"',
-            "enable_gcs_upload = true",
-            "auto_destroy_vm = true",
-            f'benchmarks_dir = "benchmarks/{batch_id}"',
-            f'run_id = "{batch_id}"',
-            f'git_ref = "{git_ref}"',
-        ]
-    )
+    tfvars_lines = [
+        'project_id = "compute-app-427709"',
+        "enable_gcs_upload = true",
+        "auto_destroy_vm = true",
+        f'benchmarks_dir = "benchmarks/{batch_id}"',
+        f'run_id = "{batch_id}"',
+        f'git_ref = "{git_ref}"',
+    ]
+    if notification_emails:
+        emails = ", ".join(f'"{email}"' for email in notification_emails)
+        tfvars_lines.append(f"notification_emails = [{emails}]")
+    tfvars = "\n".join(tfvars_lines)
 
     # Create a campaign folder ../infrastructure/benchmarks/{batch_id}
     bench_dir = Path(f"../infrastructure/benchmarks/{batch_id}")

@@ -123,6 +123,24 @@ cd infrastructure
 tofu apply -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
 ```
 
+## Failure notifications
+
+To get an email when a run of a cloud campaign ends in ER or OOM, add `--notify` with your email address, or several:
+
+```bash
+pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
+  --campaign my-test --all --notify you@example.org
+```
+
+`tofu apply` then creates an alert for this campaign only, which sends at most one email every 5 minutes. The last VM to finish deletes it. If any VM stops before finishing, or with `auto_destroy_vm = false`, delete what is left once the campaign is over:
+
+```bash
+cd infrastructure
+tofu destroy -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
+```
+
+See [infrastructure/README.md](../infrastructure/README.md#failure-notifications) for how the alert works, the permissions it needs and how to test it.
+
 ## Running a local campaign
 
 ```bash

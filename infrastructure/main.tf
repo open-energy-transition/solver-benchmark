@@ -1,3 +1,9 @@
+# Creates the Google Cloud VMs of a benchmark campaign, one per benchmark YAML
+# file in benchmarks_dir, each running startup-script.sh. With
+# notification_emails, it also creates an alert policy that emails them when a
+# run of this campaign ends in ER or OOM; the last VM to finish deletes it.
+# See README.md.
+
 terraform {
     required_providers {
         google = {
@@ -89,6 +95,19 @@ variable "run_id" {
   default     = ""
 }
 
+variable "notification_emails" {
+  description = "Email addresses to notify when a run of this campaign ends in ER or OOM. No alert is created if empty."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for email in var.notification_emails : can(regex("^[^@ ]+@[^@ ]+[.][^@ ]+$", email))
+    ])
+    error_message = "Each notification email must be an email address."
+  }
+}
+
 locals {
   # The run_id provided, or else one generated from the current date and time,
   # e.g. 20251106_153156_batch
@@ -127,6 +146,75 @@ locals {
           zone         = lookup(benchmark.content, "zone", var.zone)
         } : key => substr(replace(lower(value), "/[^a-z0-9_-]/", "-"), 0, 63)
       }
+  }
+
+  alerts_enabled = length(var.notification_emails) > 0
+  run_id_label   = substr(replace(lower(local.shared_run_id), "/[^a-z0-9_-]/", "-"), 0, 63)
+
+  # The runner's alert lines contain "run_id=<run ID> host=..." (see
+  # runner/utils/alerts.py). Characters other than letters, digits, _ and -
+  # become ".", which also matches them, so the pattern needs no escaping.
+  run_id_pattern = "run_id=${replace(local.shared_run_id, "/[^A-Za-z0-9_-]/", ".")}( |$)"
+}
+
+# Email channels and alert policy of this campaign's ER and OOM runs. The last
+# VM to finish deletes them (see startup-script.sh).
+resource "google_monitoring_notification_channel" "campaign" {
+  for_each = toset(var.notification_emails)
+
+  display_name = "Solver benchmark ${local.shared_run_id}: ${each.value}"
+  type         = "email"
+  labels = {
+    email_address = each.value
+  }
+  user_labels = {
+    run_id = local.run_id_label
+  }
+}
+
+resource "google_monitoring_alert_policy" "campaign" {
+  count = local.alerts_enabled ? 1 : 0
+
+  display_name = "Solver benchmark ${local.shared_run_id}: run ended in ER or OOM"
+  combiner     = "OR"
+  user_labels = {
+    run_id = local.run_id_label
+  }
+
+  conditions {
+    display_name = "The runner reported ER or OOM"
+    condition_matched_log {
+      # The guest agent logs the startup script's output as textPayload or
+      # jsonPayload.message, depending on its version. Audit logs of changes
+      # to this policy contain the filter text itself, so leave them out.
+      filter = join(" ", [
+        "\"BENCHMARK_ALERT\"",
+        "AND (textPayload=~\"${local.run_id_pattern}\" OR jsonPayload.message=~\"${local.run_id_pattern}\")",
+        "AND NOT logName:\"cloudaudit.googleapis.com\"",
+      ])
+    }
+  }
+
+  alert_strategy {
+    # At most one email per 5 minutes, however many runs fail
+    notification_rate_limit {
+      period = "300s"
+    }
+    auto_close = "1800s"
+  }
+
+  notification_channels = [
+    for channel in google_monitoring_notification_channel.campaign : channel.name
+  ]
+
+  documentation {
+    mime_type = "text/markdown"
+    content   = <<-EOT
+      A run of benchmark campaign ${local.shared_run_id} ended in ER (error) or
+      OOM (out of memory). The log entry names the problem, solver
+      configuration, year and VM (host). Check that VM's logs, and stop the
+      campaign if the failure points to a bug or a misconfigured run.
+    EOT
   }
 }
 
@@ -168,7 +256,13 @@ resource "google_compute_instance" "benchmark_instances" {
     zone = lookup(each.value.content, "zone", var.zone)
     reference_benchmark_interval = tostring(var.reference_benchmark_interval)
     run_id = local.shared_run_id
+    run_id_label = local.run_id_label
     git_ref = var.git_ref
+    # Deleted by the last VM to finish (see startup-script.sh)
+    alert_policy = local.alerts_enabled ? google_monitoring_alert_policy.campaign[0].name : ""
+    alert_channels = join(" ", [
+      for channel in google_monitoring_notification_channel.campaign : channel.name
+    ])
   }
 
   # Add the startup script from external file
@@ -184,7 +278,9 @@ resource "google_compute_instance" "benchmark_instances" {
         "monitoring-write"
       ],
       # Conditional scope for GCS upload
-      var.enable_gcs_upload ? ["storage-rw"] : ["storage-ro"]
+      var.enable_gcs_upload ? ["storage-rw"] : ["storage-ro"],
+      # Full Monitoring access to delete the campaign's alert policy
+      local.alerts_enabled ? ["monitoring"] : []
     )
   }
 }
