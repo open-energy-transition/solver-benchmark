@@ -143,16 +143,16 @@ gcloud logging write solver-benchmark-alert-test \
   "BENCHMARK_ALERT status=ER run_id=alert-test host=test" --project <project>
 ```
 
-To check the whole path, from a VM's output to the email, also start a small VM with the image and logging scope of the benchmark VMs, whose startup script prints an alert line:
+To check the whole path, from a VM's output to the email, also start a small VM with the image and logging scope of the benchmark VMs, whose startup script prints an alert line. The `sleep` lets the guest agent start sending the output to Cloud Logging first:
 
 ```bash
 gcloud compute instances create benchmark-alert-test --project <project> \
   --zone europe-west4-a --machine-type e2-micro \
   --image-family debian-13 --image-project debian-cloud --scopes logging-write \
-  --metadata startup-script='echo "BENCHMARK_ALERT status=ER run_id=alert-test host=vm"'
+  --metadata startup-script='sleep 60; echo "BENCHMARK_ALERT status=ER run_id=alert-test host=vm"'
 ```
 
-After a minute or two, the line is in Cloud Logging, under the `google_metadata_script_runner` log, and the email follows:
+After about two minutes, the line is in Cloud Logging, under the `google_metadata_script_runner` log, and the email follows:
 
 ```bash
 gcloud logging read '"BENCHMARK_ALERT" AND resource.type="gce_instance"' \
