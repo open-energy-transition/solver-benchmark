@@ -166,6 +166,29 @@ _VALID_VM_YAML = {
 }
 
 
+class TestCreateBenchmarkCampaign:
+    def _create(self, tmp_path, monkeypatch, **kwargs):
+        """Create a campaign under `tmp_path` and return its run.tfvars."""
+        (tmp_path / "runner").mkdir()
+        monkeypatch.chdir(tmp_path / "runner")
+        campaign.create_benchmark_campaign(
+            "test-run", "vm", [_VALID_VM_YAML], "main", **kwargs
+        )
+        return campaign._read_tfvars(
+            tmp_path / "infrastructure" / "benchmarks" / "test-run" / "run.tfvars"
+        )
+
+    def test_notification_emails_are_written(self, tmp_path, monkeypatch):
+        """The emails go to run.tfvars, which the campaign check can read."""
+        emails = ["a@example.org", "b@example.org"]
+        tfvars = self._create(tmp_path, monkeypatch, notification_emails=emails)
+        assert tfvars["notification_emails"] == emails
+
+    def test_no_notification_emails_by_default(self, tmp_path, monkeypatch):
+        """Without emails, run.tfvars creates no alert."""
+        assert "notification_emails" not in self._create(tmp_path, monkeypatch)
+
+
 class TestValidateCampaign:
     @pytest.fixture
     def bench_dir(self, tmp_path, mocker):

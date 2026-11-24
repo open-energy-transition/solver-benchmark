@@ -1,3 +1,9 @@
+# Creates the Google Cloud VMs of a benchmark campaign, one per benchmark YAML
+# file in benchmarks_dir, each running startup-script.sh. With
+# notification_emails, it also creates an alert policy that emails them when a
+# run of this campaign ends in ER or OOM, which `tofu destroy` deletes once the
+# campaign is over. See README.md.
+
 terraform {
     required_providers {
         google = {
@@ -87,6 +93,24 @@ variable "run_id" {
   description = "Unique identifier for this benchmark run, shared by all its VMs to group them into a single benchmark campaign. If not provided, one is generated from the current date and time."
   type        = string
   default     = ""
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9._-]*$", var.run_id))
+    error_message = "The run ID may only contain letters, digits, ., _ and -."
+  }
+}
+
+variable "notification_emails" {
+  description = "Email addresses to notify when a run of this campaign ends in ER or OOM. No alert is created if empty."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for email in var.notification_emails : can(regex("^[^@ ]+@[^@ ]+[.][^@ ]+$", email))
+    ])
+    error_message = "Each notification email must be an email address."
+  }
 }
 
 locals {
@@ -127,6 +151,73 @@ locals {
           zone         = lookup(benchmark.content, "zone", var.zone)
         } : key => substr(replace(lower(value), "/[^a-z0-9_-]/", "-"), 0, 63)
       }
+  }
+
+  alerts_enabled = length(var.notification_emails) > 0
+  run_id_label   = substr(replace(lower(local.shared_run_id), "/[^a-z0-9_-]/", "-"), 0, 63)
+
+  # The runner's alert lines contain "run_id=<run ID> host=..." (see
+  # runner/utils/alerts.py). "[.]" matches a dot of the run ID literally.
+  run_id_pattern = "run_id=${replace(local.shared_run_id, ".", "[.]")}( |$)"
+}
+
+# Email channels and alert policy of this campaign's ER and OOM runs
+resource "google_monitoring_notification_channel" "campaign" {
+  for_each = toset(var.notification_emails)
+
+  display_name = "Solver benchmark ${local.shared_run_id}: ${each.value}"
+  type         = "email"
+  labels = {
+    email_address = each.value
+  }
+  user_labels = {
+    run_id = local.run_id_label
+  }
+}
+
+resource "google_monitoring_alert_policy" "campaign" {
+  count = local.alerts_enabled ? 1 : 0
+
+  display_name = "Solver benchmark ${local.shared_run_id}: run ended in ER or OOM"
+  combiner     = "OR"
+  user_labels = {
+    run_id = local.run_id_label
+  }
+
+  conditions {
+    display_name = "The runner reported ER or OOM"
+    condition_matched_log {
+      # The guest agent logs the startup script's output as textPayload or
+      # jsonPayload.message, depending on its version. Audit logs of changes
+      # to this policy contain the filter text itself, so leave them out.
+      filter = join(" ", [
+        "\"BENCHMARK_ALERT\"",
+        "AND (textPayload=~\"${local.run_id_pattern}\" OR jsonPayload.message=~\"${local.run_id_pattern}\")",
+        "AND NOT logName:\"cloudaudit.googleapis.com\"",
+      ])
+    }
+  }
+
+  alert_strategy {
+    # At most one email per 5 minutes, however many runs fail
+    notification_rate_limit {
+      period = "300s"
+    }
+    auto_close = "1800s"
+  }
+
+  notification_channels = [
+    for channel in google_monitoring_notification_channel.campaign : channel.name
+  ]
+
+  documentation {
+    mime_type = "text/markdown"
+    content   = <<-EOT
+      A run of benchmark campaign ${local.shared_run_id} ended in ER (error) or
+      OOM (out of memory). The log entry names the problem, solver
+      configuration, year and VM (host). Check that VM's logs, and stop the
+      campaign if the failure points to a bug or a misconfigured run.
+    EOT
   }
 }
 

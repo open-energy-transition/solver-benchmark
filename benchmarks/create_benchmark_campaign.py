@@ -33,6 +33,9 @@ METADATA_FILE = REPO_ROOT / "results" / "metadata.yaml"
 INFRASTRUCTURE_DIR = REPO_ROOT / "infrastructure"
 LOCAL_BENCHMARKS_DIR = INFRASTRUCTURE_DIR / "local" / "benchmarks"
 
+# The same check as notification_emails in infrastructure/main.tf
+EMAIL_PATTERN = re.compile(r"[^@ ]+@[^@ ]+\.[^@ ]+")
+
 MACHINE_PROFILES = {
     "short": {
         "machine_type": "c4-standard-2",
@@ -341,6 +344,7 @@ def print_campaign_summary(
     years: list[int],
     timeout_seconds: int | None,
     machine_profile: str | None,
+    notification_emails: list[str] | None = None,
 ) -> None:
     """Print a concise summary of the generated campaign.
 
@@ -364,6 +368,8 @@ def print_campaign_summary(
     machine_profile : str | None
         Machine profile override. If ``None``, the automatic size-based
         machine policy is reported instead.
+    notification_emails : list[str] | None, optional
+        Email addresses notified when a run ends in ER or OOM.
     """
     campaign_dir = INFRASTRUCTURE_DIR / "benchmarks" / run_id
 
@@ -375,6 +381,7 @@ def print_campaign_summary(
     print(f"Run ID:              {run_id}")
     print(f"VM prefix:           {vm_prefix}")
     print(f"Git ref:             {git_ref}")
+    print(f"Notifications:       {', '.join(notification_emails or ['none'])}")
     print(f"Years:               {', '.join(map(str, years))}")
     if machine_profile is None:
         print("Machine policy:      S/M = short, L = long")
@@ -408,13 +415,16 @@ def print_campaign_summary(
         print(f"  {campaign_dir.relative_to(REPO_ROOT)}/{vm_prefix}-{idx:02d}.yaml")
 
 
-def print_next_steps(run_id: str) -> None:
-    """Print the checklist and OpenTofu command for launching a campaign.
+def print_next_steps(run_id: str, notification_emails: list[str] | None = None) -> None:
+    """Print the checklist and OpenTofu commands for launching a campaign.
 
     Parameters
     ----------
     run_id : str
         Campaign run identifier.
+    notification_emails : list[str] | None, optional
+        Email addresses notified of failed runs. With any, the campaign has an
+        alert policy, which ``tofu destroy`` deletes once the campaign is over.
     """
     print("\nNext steps:")
     print("  cd infrastructure")
@@ -439,6 +449,15 @@ def print_next_steps(run_id: str) -> None:
         f"infrastructure/benchmarks/{run_id}/ "
         "and verify that they contain the expected problems."
     )
+
+    if notification_emails:
+        print("\nWhen the campaign is over, delete its alert:")
+        print("  cd infrastructure")
+        print(
+            "  tofu destroy "
+            f"-var-file benchmarks/{run_id}/run.tfvars "
+            f"-state=states/{run_id}.tfstate"
+        )
 
 
 def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
@@ -490,6 +509,17 @@ def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
         "--campaign",
         default=argparse.SUPPRESS,
         help="Short campaign name. The run ID is generated as YYYYMMDD-<campaign>.",
+    )
+
+    parser.add_argument(
+        "--notify",
+        nargs="+",
+        metavar="EMAIL",
+        default=argparse.SUPPRESS,
+        help=(
+            "Email addresses to notify when a run of a cloud campaign ends in "
+            "ER or OOM."
+        ),
     )
 
     selection = parser.add_argument_group("selection")
@@ -693,7 +723,7 @@ def flatten_config(config: dict) -> dict:
         a selector left over from an older schema, which would otherwise be
         silently ignored.
     """
-    top_level_keys = ["target", "campaign", "selection", "allocation"]
+    top_level_keys = ["target", "campaign", "notify", "selection", "allocation"]
     selection_keys = ["all", "problem", "size", "do_not_skip"]
     allocation_keys = [
         "num_vms",
@@ -716,7 +746,9 @@ def flatten_config(config: dict) -> dict:
     if unknown_keys:
         raise ValueError(f"Unknown campaign config key(s): {', '.join(unknown_keys)}")
 
-    flat = {key: config[key] for key in ["target", "campaign"] if key in config}
+    flat = {
+        key: config[key] for key in ["target", "campaign", "notify"] if key in config
+    }
     flat.update({key: selection[key] for key in selection_keys if key in selection})
     flat.update({key: allocation[key] for key in allocation_keys if key in allocation})
     return flat
@@ -745,6 +777,7 @@ def merge_cli_with_defaults(
     hardcoded = {
         "target": "cloud",
         "campaign": None,
+        "notify": None,
         "all": False,
         "problem": None,
         "size": None,
@@ -1058,6 +1091,14 @@ def main() -> None:
     if not args.campaign:
         parser.error("--campaign is required unless provided in --configfile")
 
+    if args.notify:
+        invalid = [email for email in args.notify if not EMAIL_PATTERN.fullmatch(email)]
+        if invalid:
+            parser.error(f"--notify takes email addresses, not: {', '.join(invalid)}")
+        if args.target == "local":
+            print("Ignoring --notify: local campaigns send no notifications.")
+            args.notify = None
+
     campaign_slug = slugify_campaign_name(args.campaign)
     run_id = f"{datetime.now(UTC):%Y%m%d}-{campaign_slug}"
     vm_prefix = args.vm_prefix or f"benchmark-instance-{campaign_slug}"
@@ -1135,7 +1176,9 @@ def main() -> None:
             import os
 
             os.chdir(RUNNER_DIR)
-            create_benchmark_campaign(run_id, vm_prefix, vm_yamls, git_ref)
+            create_benchmark_campaign(
+                run_id, vm_prefix, vm_yamls, git_ref, notification_emails=args.notify
+            )
         finally:
             os.chdir(old_cwd)
 
@@ -1157,6 +1200,7 @@ def main() -> None:
             years=args.years,
             timeout_seconds=timeout_seconds,
             machine_profile=args.machine_type,
+            notification_emails=args.notify,
         )
 
         print("\nCampaign check")
@@ -1170,7 +1214,7 @@ def main() -> None:
                 f"{campaign_dir.relative_to(REPO_ROOT)}"
             )
             sys.exit(1)
-        print_next_steps(run_id)
+        print_next_steps(run_id, notification_emails=args.notify)
 
     else:
         run_script = create_local_campaign(

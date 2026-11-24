@@ -57,8 +57,9 @@ Set the variables in a `run.tfvars` file, such as [`benchmarks/sample_run/run.tf
 | `benchmarks_dir` | Folder of the benchmark YAML files, relative to `infrastructure/` | `runtime_optimized` |
 | `zone` | Zone of the VMs without a `zone` field | `europe-west4-a` |
 | `instance_name` | Prefix of the VM names | `benchmark-instance` |
-| `run_id` | Identifier of the campaign, shared by all its VMs | `<YYYYMMDD_hhmmss>_batch`, at `tofu apply` |
+| `run_id` | Identifier of the campaign, shared by all its VMs: letters, digits, `.`, `_` and `-` | `<YYYYMMDD_hhmmss>_batch`, at `tofu apply` |
 | `git_ref` | Branch or tag of this repository that the VMs run | `main` |
+| `notification_emails` | Email addresses to notify when a run ends in ER or OOM | none |
 | `reference_benchmark_interval` | Seconds between two reference benchmarks; 0 turns them off | `3600` |
 | `enable_gcs_upload` | Upload the results and logs to Cloud Storage | `true` |
 | `gcs_bucket_name` | Bucket of the results and logs | `solver-benchmarks` |
@@ -107,53 +108,61 @@ The values are lowercased, with characters other than `a-z`, `0-9`, `_` and `-` 
 
 ## Failure notifications
 
-To get an email when a benchmark run on a VM ends in ER (error) or OOM (out of memory), set up the alert in [`alerts/`](alerts/main.tf) once per Google Cloud project. It isn't part of a campaign, so it isn't created or destroyed with the VMs.
+To get an email when a run of a campaign ends in ER (error) or OOM (out of memory), give the campaign generator `--notify` with one or more email addresses, which it writes to `notification_emails` in `run.tfvars`. `tofu apply` then also creates, for this campaign only:
 
-For each such run, the runner prints a line starting with `BENCHMARK_ALERT`, naming the problem, solver configuration, year, run ID and VM. The runner runs inside the VM's startup script, and the Compute Engine guest agent sends the startup script's output to Cloud Logging (the VMs have the `logging-write` scope for this; no serial port logging is needed). A log-based alert policy emails the recipients when it sees that line: at most one email every 5 minutes, however many runs fail.
+- an email notification channel for each address;
+- a log-based alert policy that matches the `BENCHMARK_ALERT` lines of the campaign's run ID. The runner prints one for each such run, naming the problem, solver configuration, year and VM, and the VMs send their output to Cloud Logging. The policy sends at most one email every 5 minutes, however many runs fail.
 
-Setting it up needs permission to create Cloud Monitoring alert policies and notification channels in the project (e.g. the Monitoring Editor role). If you have no application-default credentials, OpenTofu can use your gcloud login's token:
+Whoever runs `tofu apply` needs permission to create alert policies and notification channels in the project, e.g. the Monitoring Editor role.
+
+### Clean-up
+
+The alert stays until you delete it. Once the campaign is over and you have received its emails, delete the alert, and any VMs left, from `infrastructure/`:
 
 ```bash
-gcloud auth login
-cd alerts
-export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
-tofu init
-tofu apply -var project_id=<your-gcp-project> -var 'notification_emails=["you@example.org"]'
+tofu destroy -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
 ```
 
 ### Testing the alert
 
-To check the whole path, from a VM's output to the email:
-
-1. Set up the alert as above. It doesn't fire for log lines written before it existed.
-2. Start a small VM with the same image and logging scope as the benchmark VMs, whose startup script prints an alert line:
-
-   ```bash
-   gcloud compute instances create benchmark-alert-test --project <your-gcp-project> \
-     --zone europe-west4-a --machine-type e2-micro \
-     --image-family debian-13 --image-project debian-cloud --scopes logging-write \
-     --metadata startup-script='echo "BENCHMARK_ALERT status=ER test=vm"'
-   ```
-
-3. After a minute or two, check that the line reached Cloud Logging, under the `google_metadata_script_runner` log:
-
-   ```bash
-   gcloud logging read '"BENCHMARK_ALERT" AND resource.type="gce_instance"' \
-     --project <your-gcp-project> --freshness 15m --limit 5
-   ```
-
-4. Wait a few minutes for the email.
-5. Delete the VM:
-
-   ```bash
-   gcloud compute instances delete benchmark-alert-test --project <your-gcp-project> \
-     --zone europe-west4-a --quiet
-   ```
-
-To try again, create a new VM rather than rebooting this one: after a reboot, the startup script reruns, but its output isn't logged again. Benchmark VMs boot only once, so this doesn't affect them.
-
-To check only the alert policy and the email, without a VM, write a test entry to Cloud Logging:
+To check the alert policy and the email without running benchmarks, create the alert of a campaign without VMs, from `infrastructure/`:
 
 ```bash
-gcloud logging write solver-benchmark-alert-test "BENCHMARK_ALERT status=ER test=policy" --project <your-gcp-project>
+mkdir -p benchmarks/alert-test
+tofu apply -var project_id=<project> -var benchmarks_dir=benchmarks/alert-test \
+  -var run_id=alert-test -var 'notification_emails=["you@example.org"]' \
+  -state=states/alert-test.tfstate
+```
+
+Write an alert line to Cloud Logging, and wait a few minutes for the email:
+
+```bash
+gcloud logging write solver-benchmark-alert-test \
+  "BENCHMARK_ALERT status=ER run_id=alert-test host=test" --project <project>
+```
+
+To check the whole path, from a VM's output to the email, also start a small VM with the image and logging scope of the benchmark VMs, whose startup script prints an alert line. The `sleep` lets the guest agent start sending the output to Cloud Logging first:
+
+```bash
+gcloud compute instances create benchmark-alert-test --project <project> \
+  --zone europe-west4-a --machine-type e2-micro \
+  --image-family debian-13 --image-project debian-cloud --scopes logging-write \
+  --metadata startup-script='sleep 60; echo "BENCHMARK_ALERT status=ER run_id=alert-test host=vm"'
+```
+
+After about two minutes, the line is in Cloud Logging, under the `google_metadata_script_runner` log, and the email follows:
+
+```bash
+gcloud logging read '"BENCHMARK_ALERT" AND resource.type="gce_instance"' \
+  --project <project> --freshness 15m --limit 5
+```
+
+The policy sends at most one email every 5 minutes, so leave 5 minutes between the two checks. Then delete the VM and the alert:
+
+```bash
+gcloud compute instances delete benchmark-alert-test --project <project> \
+  --zone europe-west4-a --quiet
+tofu destroy -var project_id=<project> -var benchmarks_dir=benchmarks/alert-test \
+  -var run_id=alert-test -var 'notification_emails=["you@example.org"]' \
+  -state=states/alert-test.tfstate
 ```
