@@ -132,7 +132,7 @@ pixi run -e benchmarks python benchmarks/create_benchmark_campaign.py \
   --campaign my-test --all --notify you@example.org
 ```
 
-`tofu apply` then creates an alert for this campaign only, which sends at most one email every 5 minutes. The last VM to finish deletes it. If any VM stops before finishing, or with `auto_destroy_vm = false`, delete what is left once the campaign is over:
+`tofu apply` then creates an alert for this campaign only, which sends at most one email every 5 minutes. Once the campaign is over, delete the alert, and any VMs left, as the script's next steps remind you:
 
 ```bash
 cd infrastructure

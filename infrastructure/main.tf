@@ -1,8 +1,8 @@
 # Creates the Google Cloud VMs of a benchmark campaign, one per benchmark YAML
 # file in benchmarks_dir, each running startup-script.sh. With
 # notification_emails, it also creates an alert policy that emails them when a
-# run of this campaign ends in ER or OOM; the last VM to finish deletes it.
-# See README.md.
+# run of this campaign ends in ER or OOM, which `tofu destroy` deletes once the
+# campaign is over. See README.md.
 
 terraform {
     required_providers {
@@ -93,6 +93,11 @@ variable "run_id" {
   description = "Unique identifier for this benchmark run, shared by all its VMs to group them into a single benchmark campaign. If not provided, one is generated from the current date and time."
   type        = string
   default     = ""
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9._-]*$", var.run_id))
+    error_message = "The run ID may only contain letters, digits, ., _ and -."
+  }
 }
 
 variable "notification_emails" {
@@ -152,13 +157,11 @@ locals {
   run_id_label   = substr(replace(lower(local.shared_run_id), "/[^a-z0-9_-]/", "-"), 0, 63)
 
   # The runner's alert lines contain "run_id=<run ID> host=..." (see
-  # runner/utils/alerts.py). Characters other than letters, digits, _ and -
-  # become ".", which also matches them, so the pattern needs no escaping.
-  run_id_pattern = "run_id=${replace(local.shared_run_id, "/[^A-Za-z0-9_-]/", ".")}( |$)"
+  # runner/utils/alerts.py). "[.]" matches a dot of the run ID literally.
+  run_id_pattern = "run_id=${replace(local.shared_run_id, ".", "[.]")}( |$)"
 }
 
-# Email channels and alert policy of this campaign's ER and OOM runs. The last
-# VM to finish deletes them (see startup-script.sh).
+# Email channels and alert policy of this campaign's ER and OOM runs
 resource "google_monitoring_notification_channel" "campaign" {
   for_each = toset(var.notification_emails)
 
@@ -256,13 +259,7 @@ resource "google_compute_instance" "benchmark_instances" {
     zone = lookup(each.value.content, "zone", var.zone)
     reference_benchmark_interval = tostring(var.reference_benchmark_interval)
     run_id = local.shared_run_id
-    run_id_label = local.run_id_label
     git_ref = var.git_ref
-    # Deleted by the last VM to finish (see startup-script.sh)
-    alert_policy = local.alerts_enabled ? google_monitoring_alert_policy.campaign[0].name : ""
-    alert_channels = join(" ", [
-      for channel in google_monitoring_notification_channel.campaign : channel.name
-    ])
   }
 
   # Add the startup script from external file
@@ -278,9 +275,7 @@ resource "google_compute_instance" "benchmark_instances" {
         "monitoring-write"
       ],
       # Conditional scope for GCS upload
-      var.enable_gcs_upload ? ["storage-rw"] : ["storage-ro"],
-      # Full Monitoring access to delete the campaign's alert policy
-      local.alerts_enabled ? ["monitoring"] : []
+      var.enable_gcs_upload ? ["storage-rw"] : ["storage-ro"]
     )
   }
 }

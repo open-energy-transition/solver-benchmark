@@ -415,13 +415,16 @@ def print_campaign_summary(
         print(f"  {campaign_dir.relative_to(REPO_ROOT)}/{vm_prefix}-{idx:02d}.yaml")
 
 
-def print_next_steps(run_id: str) -> None:
-    """Print the checklist and OpenTofu command for launching a campaign.
+def print_next_steps(run_id: str, notification_emails: list[str] | None = None) -> None:
+    """Print the checklist and OpenTofu commands for launching a campaign.
 
     Parameters
     ----------
     run_id : str
         Campaign run identifier.
+    notification_emails : list[str] | None, optional
+        Email addresses notified of failed runs. With any, the campaign has an
+        alert policy, which ``tofu destroy`` deletes once the campaign is over.
     """
     print("\nNext steps:")
     print("  cd infrastructure")
@@ -446,6 +449,15 @@ def print_next_steps(run_id: str) -> None:
         f"infrastructure/benchmarks/{run_id}/ "
         "and verify that they contain the expected problems."
     )
+
+    if notification_emails:
+        print("\nWhen the campaign is over, delete its alert:")
+        print("  cd infrastructure")
+        print(
+            "  tofu destroy "
+            f"-var-file benchmarks/{run_id}/run.tfvars "
+            f"-state=states/{run_id}.tfstate"
+        )
 
 
 def build_parser(defaults: dict | None = None) -> argparse.ArgumentParser:
@@ -1202,7 +1214,7 @@ def main() -> None:
                 f"{campaign_dir.relative_to(REPO_ROOT)}"
             )
             sys.exit(1)
-        print_next_steps(run_id)
+        print_next_steps(run_id, notification_emails=args.notify)
 
     else:
         run_script = create_local_campaign(

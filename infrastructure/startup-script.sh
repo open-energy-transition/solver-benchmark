@@ -283,48 +283,6 @@ else
     echo "GCS upload is disabled. Skipping upload."
 fi
 
-# ----- CAMPAIGN ALERT CLEAN-UP -----
-# The campaign's alert policy and email channels (see main.tf) are deleted by
-# its last VM to finish. Each VM labels itself as done, then deletes them if no
-# other VM of the campaign is still running without that label: two VMs that
-# finish together may both try, and the second deletion just fails.
-delete_campaign_alert_if_last() {
-    local attributes="http://metadata.google.internal/computeMetadata/v1/instance/attributes"
-    local policy channels run_id_label others token channel
-    policy=$(curl -sf -H "Metadata-Flavor: Google" "${attributes}/alert_policy" || true)
-    if [ -z "${policy}" ]; then
-        return 0
-    fi
-    channels=$(curl -sf -H "Metadata-Flavor: Google" "${attributes}/alert_channels" || true)
-    run_id_label=$(curl -sf -H "Metadata-Flavor: Google" "${attributes}/run_id_label" || true)
-
-    gcloud compute instances add-labels "${INSTANCE_NAME}" \
-        --project "${PROJECT_ID}" --zone "${ZONE}" --labels benchmark_done=true
-
-    # Leave the alert policy time to email this VM's last failed runs
-    if grep -q "BENCHMARK_ALERT" /var/log/startup-script.log; then
-        sleep 300
-    fi
-
-    others=$(gcloud compute instances list --project "${PROJECT_ID}" \
-        --filter="labels.run_id=${run_id_label} AND status=RUNNING AND NOT labels.benchmark_done:* AND name!=${INSTANCE_NAME}" \
-        --format="value(name)")
-    if [ -n "${others}" ]; then
-        echo "Keeping the campaign alert: other VMs are still running: ${others//$'\n'/ }"
-        return 0
-    fi
-
-    echo "Last VM of the campaign: deleting its alert policy and email channels"
-    token=$(curl -sf -H "Metadata-Flavor: Google" \
-        "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token" | jq -r .access_token)
-    curl -sS -X DELETE -H "Authorization: Bearer ${token}" \
-        "https://monitoring.googleapis.com/v3/${policy}"
-    for channel in ${channels}; do
-        curl -sS -X DELETE -H "Authorization: Bearer ${token}" \
-            "https://monitoring.googleapis.com/v3/${channel}?force=true"
-    done
-}
-
 # ----- AUTO-DESTROY CONFIGURATION -----
 AUTO_DESTROY=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/auto_destroy_vm")
 if [ "${AUTO_DESTROY}" == "true" ]; then
@@ -335,8 +293,6 @@ if [ "${AUTO_DESTROY}" == "true" ]; then
     ZONE=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/zone")
 
     echo "Preparing to destroy instance: ${INSTANCE_NAME} in zone: ${ZONE}, project: ${PROJECT_ID}"
-
-    delete_campaign_alert_if_last
 
     # Schedule deletion to happen after this script finishes
     nohup bash -c "sleep 30 && curl -X DELETE \

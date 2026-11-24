@@ -122,3 +122,12 @@ def test_notify_is_read_from_the_config_file():
 def test_email_pattern(email, valid):
     """--notify takes only email addresses, as main.tf checks them too."""
     assert bool(create_benchmark_campaign.EMAIL_PATTERN.fullmatch(email)) is valid
+
+
+@pytest.mark.parametrize(
+    ("emails", "destroy"), [(["a@example.org"], True), (None, False)]
+)
+def test_next_steps_ask_to_delete_the_alert(capsys, emails, destroy):
+    """A campaign with an alert must be destroyed once it is over."""
+    create_benchmark_campaign.print_next_steps("20261124-x", notification_emails=emails)
+    assert ("tofu destroy" in capsys.readouterr().out) is destroy

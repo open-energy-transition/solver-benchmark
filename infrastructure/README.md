@@ -6,7 +6,7 @@ The OpenTofu configuration in `main.tf` creates one Google Cloud VM per benchmar
 2. clones this repository at `git_ref`;
 3. runs `runner.benchmark` on the VM's problems, with its years and solver configurations;
 4. uploads the results, logs and solutions to the `results/`, `logs/` and `solutions/` folders of `gs://<gcs_bucket_name>/`, under `<run_id>/`, and the Gurobi logs to `gs://<gcs_bucket_name>-restricted/logs/<run_id>/`;
-5. if `auto_destroy_vm` is set, deletes the VM, and the campaign's alert if it is the last VM to finish (see [Failure notifications](#failure-notifications)).
+5. deletes the VM, if `auto_destroy_vm` is set.
 
 Campaigns are usually created with the campaign generator: see [benchmarks/CAMPAIGNS.md](../benchmarks/CAMPAIGNS.md). Only maintainers launch them, as they cost money.
 
@@ -57,7 +57,7 @@ Set the variables in a `run.tfvars` file, such as [`benchmarks/sample_run/run.tf
 | `benchmarks_dir` | Folder of the benchmark YAML files, relative to `infrastructure/` | `runtime_optimized` |
 | `zone` | Zone of the VMs without a `zone` field | `europe-west4-a` |
 | `instance_name` | Prefix of the VM names | `benchmark-instance` |
-| `run_id` | Identifier of the campaign, shared by all its VMs | `<YYYYMMDD_hhmmss>_batch`, at `tofu apply` |
+| `run_id` | Identifier of the campaign, shared by all its VMs: letters, digits, `.`, `_` and `-` | `<YYYYMMDD_hhmmss>_batch`, at `tofu apply` |
 | `git_ref` | Branch or tag of this repository that the VMs run | `main` |
 | `notification_emails` | Email addresses to notify when a run ends in ER or OOM | none |
 | `reference_benchmark_interval` | Seconds between two reference benchmarks; 0 turns them off | `3600` |
@@ -117,9 +117,7 @@ Whoever runs `tofu apply` needs permission to create alert policies and notifica
 
 ### Clean-up
 
-With `auto_destroy_vm` set, the last VM of the campaign to finish deletes the alert policy and the channels. Each VM labels itself `benchmark_done` when it finishes, and deletes them if no other VM of the campaign is still running without that label. A VM that printed alerts first waits 5 minutes, so that the policy can email them. For this, the VMs get the `monitoring` scope, and their service account needs permission to delete alert policies and notification channels; the default Compute Engine service account has it through the Editor role.
-
-The alert stays if `auto_destroy_vm` is false, or if a VM stops before finishing. Once the campaign is over, delete what is left of it, VMs included, from `infrastructure/`:
+The alert stays until you delete it. Once the campaign is over and you have received its emails, delete the alert, and any VMs left, from `infrastructure/`:
 
 ```bash
 tofu destroy -var-file benchmarks/<run-id>/run.tfvars -state=states/<run-id>.tfstate
