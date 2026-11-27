@@ -1,0 +1,58 @@
+ # Updates the pixi lockfile weekly for the notebooks and dev environments and opens a PR with the changes.
+# Only the notebooks and dev environments are updated. The benchmarks and runner
+# environments stay on their current versions for benchmark reproducibility.
+
+name: Pixi Dependency Updates
+
+on:
+  schedule:
+    # Mondays at 09:00 UTC
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+jobs:
+  update-lockfile:
+    # Only run on the main branch (scheduled runs and manual triggers)
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    name: Update pixi lockfile
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup pixi
+        uses: prefix-dev/setup-pixi@9936258fee697aff89b3fed6ca1f80a382ef694e # v0.11.3
+
+      - name: Update notebooks and dev environments
+        run: |
+          # Remove the lockfile and regenerate it with the latest versions
+          rm pixi.lock
+          pixi install -e notebooks -e dev
+          # Restore pixi.toml in case install modified it
+          git checkout pixi.toml
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: pixi-update-notebooks-dev
+          delete-branch: true
+          commit-message: "Dependencies: update pixi lockfile for notebooks and dev environments"
+          title: "Dependencies: Weekly pixi update (notebooks and dev)"
+          body: |
+            Automated weekly update of the pixi lockfile for the `notebooks` and `dev` environments.
+
+            This PR updates `pixi.lock` to the latest versions that satisfy the constraints in `pixi.toml`. The `benchmarks` and `runner` environments use the same lockfile but are not explicitly updated here. The per-solver environments in `runner/envs/*` are not touched.
+
+            **Review:** Check the diff in `pixi.lock` for unexpected major version bumps or new dependencies. Run the notebooks and dev tools locally to verify the update.
+
+            🤖 Generated with [Claude Code](https://claude.com/claude-code)
+          labels: dependencies
