@@ -6,6 +6,7 @@ import pytest
 
 from tests.check_objectives import (
     check_results,
+    cluster,
     load_problem_classes,
     main,
     read_ok_runs,
@@ -185,3 +186,9 @@ def test_custom_tolerance(tol):
     runs = [run("gurobi", 100.0), run("highs", 100.0), run("scip", 100.5)]
     expected = "agree" if tol == 1e-2 else "outlier"
     assert statuses(runs, "LP", lp_tol=tol)[("scip", "1")] == expected
+
+
+def test_clusters_do_not_chain():
+    # each step is within tol of the previous value, but the ends are not
+    clusters = cluster({"a": 0.0, "b": 0.6e-5, "c": 1.2e-5}, 1e-5)
+    assert clusters == [["a", "b"], ["c"]]

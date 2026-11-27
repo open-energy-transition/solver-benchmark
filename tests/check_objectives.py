@@ -46,6 +46,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 DEFAULT_LP_TOL = 1e-5
 DEFAULT_MILP_TOL = 1e-3
 FLAGGED = ("outlier", "disagree_no_majority")
@@ -87,8 +89,6 @@ def load_problem_classes(metadata_path: Path | None) -> dict[str, str]:
     """
     if metadata_path is None or not metadata_path.exists():
         return {}
-    import yaml
-
     with metadata_path.open() as f:
         problems = yaml.safe_load(f)["problems"]
     return {
@@ -139,7 +139,11 @@ def read_ok_runs(results_path: Path) -> list[dict[str, Any]]:
 
 
 def cluster(values: dict[str, float], tol: float) -> list[list[str]]:
-    """Group families whose values chain together within `tol` of each other.
+    """Group families whose values lie within `tol` of their cluster's first value.
+
+    Values are sorted and each cluster is anchored at its smallest value, so the
+    two ends of a cluster are never further apart than the tolerance (no
+    chaining).
 
     Parameters
     ----------
@@ -157,8 +161,8 @@ def cluster(values: dict[str, float], tol: float) -> list[list[str]]:
     clusters: list[list[str]] = []
     for fam in ordered:
         if clusters:
-            prev = values[clusters[-1][-1]]
-            if abs(values[fam] - prev) / max(1.0, abs(prev), abs(values[fam])) <= tol:
+            first = values[clusters[-1][0]]
+            if abs(values[fam] - first) / max(1.0, abs(first), abs(values[fam])) <= tol:
                 clusters[-1].append(fam)
                 continue
         clusters.append([fam])
@@ -299,6 +303,18 @@ def summarize(rows: list[dict[str, Any]], split: dict[str, list[list[str]]]) -> 
         ]
     else:
         lines.append("No run is flagged.")
+    if split:
+        lines += [
+            "",
+            "### Problems where the solver families split into groups",
+            "",
+            "| Problem | Groups (largest first) |",
+            "|---|---|",
+        ]
+        lines += [
+            f"| {pid} | {' / '.join(', '.join(c) for c in groups)} |"
+            for pid, groups in sorted(split.items())
+        ]
     return "\n".join(lines) + "\n"
 
 
