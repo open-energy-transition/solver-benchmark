@@ -373,3 +373,13 @@ You can quickly try running your own problem locally on our supported set of sol
 ### Running other solvers
 
 To run either our problems, or your own (see the previous section), on a solver that we do not yet support, see [Adding a New Solver](../runner/SOLVERS.md#adding-a-new-solver). Please reach out to us (or open an issue) if you would like more details, or any help with this.
+
+## Checking the objective values
+
+After a campaign, check that the solvers agree on the objective value of each problem:
+
+```sh
+pixi run -e benchmarks python tests/check_objectives.py --output objective_check.csv
+```
+
+It reads `results/benchmark_results.csv` and the problem classes in `results/metadata.yaml`, and flags the "ok" runs whose objective differs from the other solvers' by more than a relative tolerance (`--lp-tol`, default 1e-5, and `--milp-tol`, default 1e-3). Problems that only one solver solved are reported but not flagged; if two solvers disagree, both are flagged. `--fail-on-flag` makes it exit with 1 when a run is flagged. See the docstring of the script for the voting rules.
