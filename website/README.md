@@ -1,25 +1,38 @@
-# Open Energy Benchmark Website
+# Open Energy Benchmark website
 
-The [Next.js](https://nextjs.org) website that presents the benchmark results, at https://openenergybenchmark.org/.
+This folder holds the [Next.js](https://nextjs.org) website that presents the benchmark results at [openenergybenchmark.org](https://openenergybenchmark.org/). It reads `results/benchmark_results.csv` and `results/metadata.yaml`.
 
-For how to build and run the website locally to view results from your own benchmark runs, see the root [README's Running the Website section](../README.md#running-the-website).
+## Running locally
+
+The website needs Node.js 22, the version in `engines` of `package.json`. From this folder:
+
+```bash
+npm ci
+npm run move-results   # copy results/ into public/results/
+npm run dev            # http://localhost:3000
+```
+
+Run `npm run move-results` again after a benchmark run to see its results, e.g. on the [results page](http://localhost:3000/dashboard/aggregated-results).
+
+## Scripts
+
+- `npm run dev`: start the development server, which reloads on changes.
+- `npm run move-results`: copy `results/benchmark_results.csv` and `results/metadata.yaml` into `public/results/`.
+- `npm run build`: copy the results and build the website for production.
+- `npm start`: serve the production build.
+- `npm run lint`: run ESLint.
+- `npm run axe:full`: on a running website, check the accessibility (WCAG 2 A and AA) of every page with [axe](https://github.com/dequelabs/axe-core). It runs `npm run axe:extract`, which lists the pages in `scripts/urls.txt`, and `npm run axe:test`, which checks them. `npm run axe` checks only the home page.
+- `npm run check:pages`: open every page in `scripts/urls.txt` and its hover pop-ups in Chrome, and fail if a page doesn't load, the Content Security Policy blocks anything, or a formula doesn't render.
+
+CI runs the lint, the build, and the accessibility and page checks on every pull request that changes the website.
 
 ## Environment variables
 
-Copy `.env.example` to `.env.local` and fill in the values to enable the optional integrations it configures:
+Copy `.env.example` to `.env.local` to set the optional integrations:
 
-- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `NEXT_PUBLIC_EMAILJS_*`: the contact form's reCAPTCHA and [EmailJS](https://www.emailjs.com/) integration. Not needed to run the rest of the site.
-- `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`: HTTP basic auth, used to password-protect preview deployments.
-
-## Available scripts
-
-- `npm run dev` -- start the development server (auto-reloads on changes).
-- `npm run build` -- copy the latest `results/` files into `public/results/`, then build for production.
-- `npm start` -- serve the production build (run `npm run build` first).
-- `npm run lint` -- run ESLint.
-- `npm run axe` / `npm run axe:full` -- accessibility checks (WCAG 2 A/AA) via [axe](https://github.com/dequelabs/axe-core), used by CI's accessibility-check job.
-- `npm run check:pages` -- loads every page in `scripts/urls.txt` (from `npm run axe:extract`) in Chrome and opens its hover pop-ups. Fails if a page doesn't load (e.g. a 404), the Content Security Policy blocks anything, or a formula doesn't render on the page or in a pop-up. Also run by CI's accessibility-check job.
+- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` and `NEXT_PUBLIC_EMAILJS_*`: the reCAPTCHA and [EmailJS](https://www.emailjs.com/) integration of the contact form. The rest of the website works without them.
+- `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD`: HTTP basic authentication, which protects preview deployments.
 
 ## Deployment
 
-The website deploys to [Vercel](https://vercel.com) on merge to `main`, with preview deployments for pull requests.
+The website deploys to [Vercel](https://vercel.com) on every merge to `main`, with a preview deployment for each pull request.
