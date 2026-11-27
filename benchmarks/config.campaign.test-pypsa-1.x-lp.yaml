@@ -1,0 +1,36 @@
+campaign: pypsa-v3-refresh-lp
+target: cloud
+selection:
+  all: false
+  problem:
+  - pypsa-de-elec-10-3h
+  - pypsa-de-elec-trex_vopt-10-3h
+  - pypsa-de-elec-dfp-50-24h
+  - pypsa-de-sec-10-168h
+  - pypsa-de-sec-50-168h
+  - pypsa-eur-elec-50-168h
+  - pypsa-eur-elec-50-24h
+  - pypsa-eur-elec-100-24h
+  - pypsa-eur-sec-50-168h
+  - pypsa-de-elec-trex_copt-10-3h
+  - pypsa-de-elec-50-3h
+  - pypsa-de-elec-trex_vopt-dfp-10-3h
+  - pypsa-de-sec-20-12h
+  - pypsa-eur-elec-50-12h
+  - pypsa-eur-elec-50-3h
+  - pypsa-eur-elec-trex_copt-50-168h
+  - pypsa-eur-sec-50-24h
+  - pypsa-eur-sec-trex_copt-50-168h
+  size: null
+  do_not_skip: false
+allocation:
+  num_vms: null
+  weight_col: Num. variables
+  machine_type: null
+  zone: us-central1-a
+  timeout_hours: null
+  years:
+  - 2025
+  solver_configurations:
+  - gurobi-default
+  - highs-default
